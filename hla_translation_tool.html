@@ -2318,6 +2318,25 @@ function renderProjects() {
 
 
 /* =========================== GLOBAL TEXT STATS FUNCTIONS START =========================== */
+function calculateGlobalTextStats() {
+    // Zähle EN/DE/Both/Total über die gesamte Datenbank
+    let en = 0, de = 0, both = 0, tot = 0;
+
+    Object.entries(textDatabase).forEach(([fileKey, texts]) => {
+        if (ignoredFiles[fileKey]) return;
+
+        const hasEN = texts.en && texts.en.trim().length > 0;
+        const hasDE = texts.de && texts.de.trim().length > 0;
+
+        if (hasEN) en++;
+        if (hasDE) de++;
+        if (hasEN && hasDE) both++;
+        tot++;
+    });
+
+    return { en, de, both, total: tot };
+}
+
 function updateGlobalTextStats() {
     // Suche das Element sowohl in der normalen Ansicht als auch im Dialog
     let box = document.getElementById('globalTextStatsValue');
@@ -2332,32 +2351,18 @@ function updateGlobalTextStats() {
         return;
     }
 
-    let en = 0, de = 0, both = 0, tot = 0;
+    const { en, de, both, total } = calculateGlobalTextStats();
     
-    // Durchsuche textDatabase für globale Statistiken
-    Object.entries(textDatabase).forEach(([fileKey, texts]) => {
-        // Ignorierte Dateien überspringen
-        if (ignoredFiles[fileKey]) return;
-        
-        const hasEN = texts.en && texts.en.trim().length > 0;
-        const hasDE = texts.de && texts.de.trim().length > 0;
-        
-        if (hasEN) en++;
-        if (hasDE) de++;
-        if (hasEN && hasDE) both++;
-        tot++;
-    });
-    
-    console.log(`[GLOBAL STATS] EN: ${en}, DE: ${de}, Both: ${both}, Total: ${tot}`);
-    box.textContent = `${en} / ${de} / ${both} / ${tot}`;
+    console.log(`[GLOBAL STATS] EN: ${en}, DE: ${de}, Both: ${both}, Total: ${total}`);
+    box.textContent = `${en} / ${de} / ${both} / ${total}`;
     
     // Auch die Farbe entsprechend setzen
-    if (both === tot && tot > 0) {
-        box.style.color = '#4caf50'; // Grün wenn alles übersetzt
+    if (both === total && total > 0) {
+        box.style.color = "#4caf50"; // Grün wenn alles übersetzt
     } else if (both > 0) {
-        box.style.color = '#ff9800'; // Orange wenn teilweise übersetzt
+        box.style.color = "#ff9800"; // Orange wenn teilweise übersetzt
     } else {
-        box.style.color = '#666'; // Grau wenn nichts übersetzt
+        box.style.color = "#666"; // Grau wenn nichts übersetzt
     }
 }
 /* =========================== GLOBAL TEXT STATS FUNCTIONS END =========================== */
@@ -4382,6 +4387,7 @@ function cleanupMissingFolders(scannedFiles) {
     });
     
     console.log(`[CLEANUP] Gefundene Ordner im Scan: ${Array.from(scannedFolders).join(', ')}`);
+    console.log(`[GLOBAL STATS] EN: ${globalEN}, DE: ${globalDE}, Both: ${globalBoth}, Total: ${globalTotal}`);
     
     // Finde Ordner in Database die nicht mehr gescannt wurden
     const existingFolders = new Set();
@@ -5430,19 +5436,7 @@ function showFolderGrid() {
     const completedFiles = Array.from(folderStats.values()).reduce((sum, s) => sum + s.completed, 0);
     const overallPercentage = totalFiles > 0 ? Math.round((completedFiles / totalFiles) * 100) : 0;
     
-    // 🔥 KORREKTUR: Berechne globale Textstatistiken korrekt
-    let globalEN = 0, globalDE = 0, globalBoth = 0, globalTotal = 0;
-    Object.entries(textDatabase).forEach(([fileKey, texts]) => {
-        if (ignoredFiles[fileKey]) return; // Ignorierte überspringen
-        
-        const hasEN = texts.en && texts.en.trim().length > 0;
-        const hasDE = texts.de && texts.de.trim().length > 0;
-        
-        if (hasEN) globalEN++;
-        if (hasDE) globalDE++;
-        if (hasEN && hasDE) globalBoth++;
-        globalTotal++;
-    });
+    const { en: globalEN, de: globalDE, both: globalBoth, total: globalTotal } = calculateGlobalTextStats();
     
     // Update description with stats and cleanup button
     description.innerHTML = `
