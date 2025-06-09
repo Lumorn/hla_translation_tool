@@ -5281,9 +5281,7 @@ function calculateFolderCompletionStats() {
 
                     if (chooseProject) {
                         updateStatus('Projektordner wird geöffnet...');
-                        waehleProjektOrdner().then(() => {
-                            scanEnOrdner();
-                        });
+                        waehleProjektOrdner();
                         return true; // Scan started via project folder
                     } else {
                         updateStatus(`${functionName}: Abgebrochen - Kein Projektordner`);
@@ -7453,7 +7451,11 @@ async function waehleProjektOrdner() {
         }
 
         await leseOrdner(enOrdnerHandle, deOrdnerHandle);
-        updateStatus('Projektordner eingelesen');
+
+        // Automatischer Scan des EN-Ordners nach der Auswahl
+        await scanEnOrdner();
+
+        updateStatus('Projektordner eingelesen und gescannt');
     } catch (e) {
         console.error('Ordnerauswahl fehlgeschlagen:', e);
     }
