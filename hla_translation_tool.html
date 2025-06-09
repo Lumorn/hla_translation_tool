@@ -570,6 +570,39 @@ th:nth-child(9) {
             animation: pulse 1s infinite;
         }
 
+        .de-play-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .de-play-btn.playing,
+        .de-play-btn:hover {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .upload-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .upload-btn:hover {
+            background: #1976d2;
+            color: white;
+        }
+
         .delete-row-btn {
             background: none;
             border: none;
@@ -1725,7 +1758,6 @@ th:nth-child(9) {
                     <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
                     <button class="btn" onclick="addFiles()">Hinzufügen</button>
                     <input type="file" id="folderPicker" webkitdirectory multiple style="display: none;" onchange="scanFolder(this)">
-                    <button class="file-browser-btn" onclick="document.getElementById('folderPicker').click()">📁 Ordner scannen</button>
                     <button class="btn btn-secondary" onclick="waehleProjektOrdner()">📂 Projektordner wählen</button>
                 </div>
 
@@ -1804,6 +1836,8 @@ th:nth-child(9) {
         <th>DE Text</th>
         <th width="200" title="Debug: Aufgelöster Pfad">🔍 Aufgelöster Pfad</th>
         <th width="60">Audio</th>
+        <th width="60">DE Audio</th>
+        <th width="60">Upload</th>
         <th width="50"></th>
     </tr>
 </thead>
@@ -2027,6 +2061,7 @@ let exportZip              = null; // ZIP Export
 let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
+let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
@@ -2162,8 +2197,8 @@ function handleAccessStatusClick() {
         `Status: ${stats.accessibleFiles}/${stats.selectedFiles} Dateien verfügbar\n` +
         `${stats.inaccessibleFiles} Dateien benötigen neue Berechtigungen\n\n` +
         `Grund: Browser-Berechtigungen sind abgelaufen oder\n` +
-        `Dateien wurden in einem anderen Ordner gescannt.\n\n` +
-        `✅ JA - Ordner scannen (erneuert Berechtigungen)\n` +
+        `Dateien wurden in einem anderen Ordner gefunden.\n\n` +
+        `✅ JA - Projektordner wählen\n` +
         `❌ NEIN - Abbrechen\n\n` +
         `Möchten Sie den Ordner-Scan starten?`
     );
@@ -2677,7 +2712,7 @@ function addFiles() {
     
     if (notFound.length > 0) {
         setTimeout(() => {
-            alert(`Folgende Dateien wurden nicht gefunden:\n${notFound.join('\n')}\n\nTipp: Nutze "📁 Ordner scannen" um Dateien zu indizieren.`);
+            alert(`Folgende Dateien wurden nicht gefunden:\n${notFound.join('\n')}\n\nBitte prüfen Sie den EN-Ordner des Projekts.`);
         }, 100);
     }
     
@@ -3316,6 +3351,8 @@ function renderFileTableWithOrder(sortedFiles) {
     emptyState.style.display = 'none';
     
     tbody.innerHTML = sortedFiles.map((file, displayIndex) => {
+        const relPath = `${file.folder}/${file.filename}`;
+        const hasDeAudio = !!deAudioCache[relPath];
         // Find original index for display
         const originalIndex = files.findIndex(f => f.id === file.id);
         
@@ -3384,6 +3421,10 @@ return `
             ${getDebugPathInfo(file)}
         </td>
         <td><button class="play-btn" onclick="playAudio(${file.id})">▶</button></td>
+        <td>
+            ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+        </td>
+        <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">×</button></td>
     </tr>
 `;
@@ -4914,6 +4955,61 @@ function playAudio(fileId) {
     });
 }
 // =========================== PLAYAUDIO END ===========================
+
+// =========================== PLAYDEAUDIO START ======================
+// Spiele die vorhandene DE-Datei ab
+async function playDeAudio(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+
+    const relPath = `${file.folder}/${file.filename}`;
+
+    if (!deAudioCache[relPath]) {
+        try {
+            let handle = deOrdnerHandle;
+            const parts = file.folder.split('/');
+            for (const part of parts) {
+                if (part) {
+                    handle = await handle.getDirectoryHandle(part);
+                }
+            }
+            const fh = await handle.getFileHandle(file.filename);
+            deAudioCache[relPath] = await fh.getFile();
+        } catch (e) {
+            updateStatus('DE-Datei nicht gefunden');
+            return;
+        }
+    }
+
+    const audio = document.getElementById('audioPlayer');
+    const playBtns = document.querySelectorAll('.de-play-btn');
+    playBtns.forEach(btn => { btn.classList.remove('playing'); btn.textContent = '▶'; });
+
+    const playBtn = document.querySelector(`tr[data-id="${fileId}"] .de-play-btn`);
+
+    if (currentlyPlaying === `de-${fileId}`) {
+        audio.pause();
+        currentlyPlaying = null;
+        return;
+    }
+
+    const url = URL.createObjectURL(deAudioCache[relPath]);
+    audio.src = url;
+    audio.play().then(() => {
+        if (playBtn) { playBtn.classList.add('playing'); playBtn.textContent = '⏸'; }
+        currentlyPlaying = `de-${fileId}`;
+        audio.onended = () => {
+            URL.revokeObjectURL(url);
+            if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
+            currentlyPlaying = null;
+        };
+    }).catch(err => {
+        console.error('DE-Playback fehlgeschlagen', err);
+        updateStatus('Fehler beim Abspielen der DE-Datei');
+        URL.revokeObjectURL(url);
+    });
+}
+// =========================== PLAYDEAUDIO END ========================
 
 // Bereinigung: Entferne fullPath aus allen Projekten
 function updateAllFilePaths() {
@@ -7309,6 +7405,7 @@ async function waehleProjektOrdner() {
         enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
 
         enDateien = [];
+        deAudioCache = {};
 
         // Rekursives Einlesen aller Unterordner
         async function leseOrdner(handle, deHandle, pfad = '') {
@@ -7318,6 +7415,13 @@ async function waehleProjektOrdner() {
                 if (child.kind === 'file') {
                     if (name.match(/\.(mp3|wav|ogg)$/i)) {
                         enDateien.push({ pfad: pfad + name, handle: child });
+                        try {
+                            const deFileHandle = await deHandle.getFileHandle(name);
+                            const deFile = await deFileHandle.getFile();
+                            deAudioCache[pfad + name] = deFile;
+                        } catch (e) {
+                            // Datei existiert nicht im DE-Ordner
+                        }
                     }
                 } else if (child.kind === 'directory') {
                     const neuesDe = await deHandle.getDirectoryHandle(name, { create: true });
@@ -7351,11 +7455,23 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     }
 
     const fileHandle = await zielOrdner.getFileHandle(dateiname, { create: true });
-const writable = await fileHandle.createWritable();
+    const writable = await fileHandle.createWritable();
     await writable.write(datei);
     await writable.close();
+
+    // DE-Audio im Cache aktualisieren
+    deAudioCache[relativerPfad] = datei;
 }
 // =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
+
+// =========================== INITIATEDEUPLOAD START ==========================
+function initiateDeUpload(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    aktuellerUploadPfad = `${file.folder}/${file.filename}`;
+    document.getElementById('deUploadInput').click();
+}
+// =========================== INITIATEDEUPLOAD END ============================
 
 // =========================== HANDLEDEUPLOAD START ============================
 async function handleDeUpload(input) {
@@ -7364,8 +7480,16 @@ async function handleDeUpload(input) {
         return;
     }
     await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
+
+    // Zugehörige Datei als fertig markieren
+    const file = files.find(f => `${f.folder}/${f.filename}` === aktuellerUploadPfad);
+    if (file) {
+        file.completed = true;
+    }
+
     aktuellerUploadPfad = null;
     input.value = '';
+    renderFileTable();
     updateStatus('DE-Datei gespeichert');
 }
 // =========================== HANDLEDEUPLOAD END ==============================
