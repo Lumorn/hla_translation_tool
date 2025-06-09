@@ -33,7 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Level‑Management**       | Projekte besitzen jetzt **Level‑Namen** + **Teil‑Nummern**.<br>Alle vorhandenen Namen werden beim Anlegen/Umbenennen als Dropdown angeboten.                |
 | **Projekt‑Metaleiste**     | Über der Tabelle erscheint **Projekt • Level • Teil** + Ein‑Klick‑Button ⧉ zum Kopieren des Level‑Namens.                                                   |
 | **Globale Text‑Statistik** | Neue Kachel **EN / DE / BEIDE / ∑** in den globalen Statistiken + Live‑Update beim Tippen.                                                                  |
-| **Level‑Statistik‑Panel**  | Aufklappbares Panel im Ordner‑Browser: zeigt pro Level<br>• Anzahl Teile  • Fertig‑Prozent  • EN/DE/Both/∑.                                                 |
+| **Level‑Statistik‑Panel**  | Aufklappbares Panel im Ordner‑Browser: zeigt pro Level<br>• Anzahl Teile  • Fertig‑Prozent  • EN/DE/BEIDE/∑.                                                 |
 | **Dateien ignorieren**     | Dateien können als *Nicht benötigt* markiert & jederzeit wieder aufgenommen werden (Ignorieren‑Toggle im Detail‑Dialog).                                    |
 | **Pfad‑Anzeige**           | Jeder Eintrag im Ordner‑Browser zeigt den aufgelösten Dateipfad mit Status‑Icons (✅ verfügbar / ❌ problematisch).                                          |
 | **Datenbank‑Bereinigung**  | **Ordnernamen bereinigen**: Korrigiert falsche Ordnernamen basierend auf echten Dateipfaden.                                                                |
@@ -55,7 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 📊 Fortschritts‑Tracking
 
-* **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/Both/∑**
+* **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
 * **Projekt‑übergreifende Verfolgung:** Dateien zeigen Status über alle Projekte
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
