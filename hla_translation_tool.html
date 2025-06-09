@@ -5344,19 +5344,6 @@ function calculateFolderCompletionStats() {
 // =========================== CALCFOLDERCOMPLETIONSTATS END ===========================
 
 
-        // Folder Browser functionality
-        function showFolderBrowser() {
-            document.getElementById('folderBrowserDialog').style.display = 'flex';
-            
-            // Debug info
-            console.log('Ordner-Browser geöffnet');
-            console.log('filePathDatabase Einträge:', Object.keys(filePathDatabase).length);
-            console.log('Aktuelle Projektdateien:', files.length);
-            console.log('textDatabase Einträge:', Object.keys(textDatabase).length);
-            
-            showFolderGrid();
-        }
-
         // Auto-scan system for missing permissions
         function checkAndAutoScan(requiredFiles = [], functionName = 'Funktion') {
             let missingFiles = [];
