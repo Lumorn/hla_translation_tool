@@ -5268,7 +5268,29 @@ function calculateFolderCompletionStats() {
             
             if (missingFiles.length > 0) {
                 console.log(`Auto-Scan ausgelöst von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
-                
+
+                if (!projektOrdnerHandle) {
+                    const chooseProject = confirm(
+                        `🔒 Dateiberechtigungen erforderlich\n\n` +
+                        `${functionName} benötigt Zugriff auf Audio-Dateien.\n` +
+                        `Es wurde noch kein Projektordner gewählt.\n\n` +
+                        `✅ JA - Projektordner wählen\n` +
+                        `❌ NEIN - Abbrechen\n\n` +
+                        `Projektordner wählen?`
+                    );
+
+                    if (chooseProject) {
+                        updateStatus('Projektordner wird geöffnet...');
+                        waehleProjektOrdner().then(() => {
+                            scanEnOrdner();
+                        });
+                        return true; // Scan started via project folder
+                    } else {
+                        updateStatus(`${functionName}: Abgebrochen - Kein Projektordner`);
+                        return false; // User cancelled
+                    }
+                }
+
                 // Show user-friendly message
                 const shouldScan = confirm(
                     `🔒 Dateiberechtigungen erforderlich\n\n` +
@@ -5279,7 +5301,7 @@ function calculateFolderCompletionStats() {
                     `❌ NEIN - Abbrechen\n\n` +
                     `Ordner-Scan starten?`
                 );
-                
+
                 if (shouldScan) {
                     updateStatus(`${functionName}: Starte automatischen Ordner-Scan...`);
                     setTimeout(() => {
@@ -7437,6 +7459,39 @@ async function waehleProjektOrdner() {
     }
 }
 // =========================== WAEHLEPROJEKTORDNER END =========================
+
+// =========================== SCANENORDNER START =============================
+async function scanEnOrdner() {
+    if (!enOrdnerHandle) {
+        console.error('EN-Ordner nicht initialisiert');
+        return;
+    }
+
+    const filesToScan = [];
+
+    async function traverse(handle, path = '') {
+        for await (const [name, child] of handle.entries()) {
+            if (name === 'DE') continue;
+
+            if (child.kind === 'file') {
+                if (name.match(/\.(mp3|wav|ogg)$/i)) {
+                    const file = await child.getFile();
+                    file.webkitRelativePath = path + name;
+                    file.fullPath = path + name;
+                    filesToScan.push(file);
+                }
+            } else if (child.kind === 'directory') {
+                await traverse(child, path + name + '/');
+            }
+        }
+    }
+
+    await traverse(enOrdnerHandle);
+    if (filesToScan.length > 0) {
+        scanFolder({ files: filesToScan });
+    }
+}
+// =========================== SCANENORDNER END ===============================
 
 
 // =========================== SPEICHEREUEBERSETZUNGSDATEI START ===============
