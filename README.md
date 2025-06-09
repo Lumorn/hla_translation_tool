@@ -419,8 +419,24 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.6.0** - Level‑Management & Datenbank‑Tools Edition  
+**Version 3.6.0** - Level‑Management & Datenbank‑Tools Edition
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
+
+## 🧪 Tests
+
+Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
+
+1. Abhängigkeiten installieren
+   ```bash
+   npm install
+   ```
+2. Tests starten
+   ```bash
+   npm test
+   ```
+
+Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
+anderem die Funktion `calculateProjectStats`.
 
 
 ## Code-Ausgabe Regeln
