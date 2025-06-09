@@ -452,4 +452,3 @@ function meineFunktion() {
 - Sagen welche Funktion gesucht und ersetzt werden soll
 - Eindeutige Such-Strings angeben
 
-Ist das korrekt zusammengefasst?
