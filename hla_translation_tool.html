@@ -7304,6 +7304,8 @@ async function waehleProjektOrdner() {
 
         // DE-Ordner anlegen oder öffnen
         deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+        // EN-Ordner sicherstellen (falls nicht vorhanden, wird er erstellt)
+        await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
 
         enDateien = [];
 
