@@ -2025,6 +2025,10 @@ let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
+let projektOrdnerHandle    = null; // Gewählter Projektordner
+let deOrdnerHandle         = null; // Handle für den DE-Ordner
+let enDateien              = [];   // Gefundene EN-Audiodateien
+
 let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
@@ -7486,8 +7490,123 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             saveFilePathDatabase();
             saveFolderCustomizations();
             updateStatus('Datei-Datenbank und Ordner-Anpassungen zurückgesetzt. Bitte Ordner neu scannen.');
-            updateFileAccessStatus();
+        updateFileAccessStatus();
         }
+
+
+// =========================== WAEHLEPROJEKTORDNER START =======================
+async function waehleProjektOrdner() {
+    try {
+        // Nutzer wählt den Wurzelordner aus
+        projektOrdnerHandle = await window.showDirectoryPicker();
+
+        // DE-Ordner anlegen oder öffnen
+        deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+
+        enDateien = [];
+
+        // Rekursives Einlesen aller Unterordner
+        async function leseOrdner(handle, deHandle, pfad = '') {
+            for await (const [name, child] of handle.entries()) {
+                if (name === 'DE') continue; // DE-Ordner überspringen
+
+                if (child.kind === 'file') {
+                    if (name.match(/\.(mp3|wav|ogg)$/i)) {
+                        enDateien.push({ pfad: pfad + name, handle: child });
+                    }
+                } else if (child.kind === 'directory') {
+                    const neuesDe = await deHandle.getDirectoryHandle(name, { create: true });
+                    await leseOrdner(child, neuesDe, pfad + name + '/');
+                }
+            }
+        }
+
+        await leseOrdner(projektOrdnerHandle, deOrdnerHandle);
+        updateStatus('Projektordner eingelesen');
+    } catch (e) {
+        console.error('Ordnerauswahl fehlgeschlagen:', e);
+    }
+}
+// =========================== WAEHLEPROJEKTORDNER END =========================
+
+
+// =========================== SPEICHEREUEBERSETZUNGSDATEI START ===============
+async function speichereUebersetzungsDatei(datei, relativerPfad) {
+    if (!deOrdnerHandle) {
+        console.error('DE-Ordner nicht initialisiert');
+        return;
+    }
+
+    const teile = relativerPfad.split('/');
+    const dateiname = teile.pop();
+    let zielOrdner = deOrdnerHandle;
+
+    for (const teil of teile) {
+        zielOrdner = await zielOrdner.getDirectoryHandle(teil, { create: true });
+    }
+
+    const fileHandle = await zielOrdner.getFileHandle(dateiname, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(datei);
+    await writable.close();
+}
+// =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
+
+
+// =========================== RENAMEFOLDER START ==============================
+async function renameFolder(oldName, newName, parentHandle) {
+    const src = await parentHandle.getDirectoryHandle(oldName);
+    const dest = await parentHandle.getDirectoryHandle(newName, { create: true });
+
+    // Kopiere alle Inhalte rekursiv
+    async function kopiere(srcHandle, destHandle, pfad = '') {
+        for await (const [name, child] of srcHandle.entries()) {
+            if (child.kind === 'file') {
+                const file = await child.getFile();
+                const fh = await destHandle.getFileHandle(name, { create: true });
+                const w = await fh.createWritable();
+                await w.write(file);
+                await w.close();
+            } else if (child.kind === 'directory') {
+                const newDir = await destHandle.getDirectoryHandle(name, { create: true });
+                await kopiere(child, newDir, pfad + name + '/');
+            }
+        }
+    }
+
+    await kopiere(src, dest);
+    await parentHandle.removeEntry(oldName, { recursive: true });
+
+    aktualisiereDBNachRename(oldName, newName);
+}
+// =========================== RENAMEFOLDER END ================================
+
+
+// =========================== AKTUALISIEREDBNACHRENAME START ==================
+function aktualisiereDBNachRename(altOrdner, neuOrdner) {
+    for (const [filename, paths] of Object.entries(filePathDatabase)) {
+        paths.forEach(p => {
+            if (p.folder.startsWith(altOrdner)) {
+                p.folder = p.folder.replace(altOrdner, neuOrdner);
+                p.fullPath = p.fullPath.replace(altOrdner, neuOrdner);
+            }
+        });
+    }
+
+    const neuesTextDB = {};
+    for (const [key, val] of Object.entries(textDatabase)) {
+        if (key.startsWith(altOrdner + '/')) {
+            const neuerKey = neuOrdner + key.slice(altOrdner.length);
+            neuesTextDB[neuerKey] = val;
+            delete textDatabase[key];
+        }
+    }
+    Object.assign(textDatabase, neuesTextDB);
+
+    saveFilePathDatabase();
+    saveTextDatabase();
+}
+// =========================== AKTUALISIEREDBNACHRENAME END ====================
 
 
 // =========================== SCANFOLDER IMPROVED START ===========================
