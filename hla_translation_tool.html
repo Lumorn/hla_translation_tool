@@ -2032,6 +2032,7 @@ let isDirty                = false;
 
 let projektOrdnerHandle    = null; // Gewählter Projektordner
 let deOrdnerHandle         = null; // Handle für den DE-Ordner
+let enOrdnerHandle         = null; // Handle für den EN-Ordner
 let enDateien              = [];   // Gefundene EN-Audiodateien
 let aktuellerUploadPfad    = null; // Zielpfad für hochgeladene Dateien
 
@@ -7304,8 +7305,8 @@ async function waehleProjektOrdner() {
 
         // DE-Ordner anlegen oder öffnen
         deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
-        // EN-Ordner sicherstellen (falls nicht vorhanden, wird er erstellt)
-        await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
+        // EN-Ordner anlegen oder öffnen
+        enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
 
         enDateien = [];
 
@@ -7325,7 +7326,7 @@ async function waehleProjektOrdner() {
             }
         }
 
-        await leseOrdner(projektOrdnerHandle, deOrdnerHandle);
+        await leseOrdner(enOrdnerHandle, deOrdnerHandle);
         updateStatus('Projektordner eingelesen');
     } catch (e) {
         console.error('Ordnerauswahl fehlgeschlagen:', e);
