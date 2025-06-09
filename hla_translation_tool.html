@@ -4725,7 +4725,7 @@ function findAudioInFilePathCache(filename, folder) {
                 console.log(`File ${index}: ${file.filename} - ID: ${file.id} (Type: ${typeof file.id})`);
             });
             
-            alert(`Debug Info (Version 3.4.0 Enhanced):\n\n` +
+            alert(`Debug Info (Version 3.6.0 Level-Management & Datenbank-Tools):\n\n` +
                   `Projekte: ${info.projects.count} (mit Icons/Farben)\n` +
                   `Aktuelles Projekt: ${info.currentProject.icon} ${info.currentProject.name} (${info.currentProject.fileCount} Dateien)\n` +
                   `filePathDatabase: ${info.filePathDatabase.count} Dateien\n` +
@@ -7213,7 +7213,7 @@ function checkFileAccess() {
         // Backup and Restore functionality
         function backupData() {
             const backup = {
-                version: '3.4.0',
+                version: '3.6.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -8886,7 +8886,7 @@ function showProjectCustomization(id, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.5.0 Global Completion Tracking - Projekt-übergreifende Übersetzungsstatistiken!');
+        console.log('Version 3.6.0 Level-Management & Datenbank-Tools Edition');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
