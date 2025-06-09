@@ -7435,16 +7435,26 @@ async function waehleProjektOrdner() {
                 if (child.kind === 'file') {
                     if (name.match(/\.(mp3|wav|ogg)$/i)) {
                         enDateien.push({ pfad: pfad + name, handle: child });
-                        try {
-                            const deFileHandle = await deHandle.getFileHandle(name);
-                            const deFile = await deFileHandle.getFile();
-                            deAudioCache[pfad + name] = deFile;
-                        } catch (e) {
-                            // Datei existiert nicht im DE-Ordner
+                        if (deHandle) {
+                            try {
+                                const deFileHandle = await deHandle.getFileHandle(name);
+                                const deFile = await deFileHandle.getFile();
+                                deAudioCache[pfad + name] = deFile;
+                            } catch (e) {
+                                // Datei existiert nicht im DE-Ordner
+                            }
                         }
                     }
                 } else if (child.kind === 'directory') {
-                    const neuesDe = await deHandle.getDirectoryHandle(name, { create: true });
+                    let neuesDe = null;
+                    if (deHandle) {
+                        try {
+                            neuesDe = await deHandle.getDirectoryHandle(name, { create: false });
+                        } catch (e) {
+                            // Ordner existiert noch nicht
+                            neuesDe = null;
+                        }
+                    }
                     await leseOrdner(child, neuesDe, pfad + name + '/');
                 }
             }
