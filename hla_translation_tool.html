@@ -5945,12 +5945,16 @@ function showFolderFiles(folderName) {
 
 // =========================== REFRESHGLOBAL START ===========================
 function refreshGlobalStatsAndGrids() {
-    // Ordner-Fortschritt neu berechnen
+    // Aktuelle Statistiken der Ordner ermitteln
     const folderStats = calculateFolderCompletionStats();
 
-    // Bereits vorhandene Funktionen anwerfen
-    renderFolderGrid(folderStats);    // deine bestehende Grid-Render-Funktion
-    updateStatusBars();               // globale Prozent-Boxen aktualisieren
+    // Fortschrittsbalken neu berechnen
+    updateProgressStats();
+
+    // Grid nur neu zeichnen, falls es sichtbar ist
+    if (document.getElementById('folderGrid').style.display !== 'none') {
+        showFolderGrid();
+    }
 }
 // =========================== REFRESHGLOBAL END ===========================
 
