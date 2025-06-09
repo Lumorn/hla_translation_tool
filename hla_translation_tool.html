@@ -1726,6 +1726,7 @@ th:nth-child(9) {
                     <button class="btn" onclick="addFiles()">Hinzufügen</button>
                     <input type="file" id="folderPicker" webkitdirectory multiple style="display: none;" onchange="scanFolder(this)">
                     <button class="file-browser-btn" onclick="document.getElementById('folderPicker').click()">📁 Ordner scannen</button>
+                    <button class="btn btn-secondary" onclick="waehleProjektOrdner()">📂 Projektordner wählen</button>
                 </div>
 
                 <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
@@ -1843,6 +1844,9 @@ th:nth-child(9) {
         </div>
         <div class="context-menu-item" onclick="contextMenuAction('pasteDE')">
             <span>📋</span> In DE Text einfügen
+        </div>
+        <div class="context-menu-item" onclick="contextMenuAction('uploadDE')">
+            <span>⬆️</span> DE-Datei hochladen
         </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item" onclick="contextMenuAction('openFolder')">
@@ -2006,6 +2010,7 @@ th:nth-child(9) {
 
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
+    <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
 
     <!-- JSZip Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -2028,6 +2033,7 @@ let isDirty                = false;
 let projektOrdnerHandle    = null; // Gewählter Projektordner
 let deOrdnerHandle         = null; // Handle für den DE-Ordner
 let enDateien              = [];   // Gefundene EN-Audiodateien
+let aktuellerUploadPfad    = null; // Zielpfad für hochgeladene Dateien
 
 let draggedElement         = null;
 let currentlyPlaying       = null;
@@ -3200,6 +3206,10 @@ function addFiles() {
                         updateText(contextMenuFile.id, 'de', deText);
                         renderFileTable();
                         updateStatus(`Text in DE eingefügt: ${contextMenuFile.filename}`);
+                        break;
+                    case 'uploadDE':
+                        aktuellerUploadPfad = `${contextMenuFile.folder}/${contextMenuFile.filename}`;
+                        document.getElementById('deUploadInput').click();
                         break;
                     case 'openFolder':
                         showFolderBrowser();
@@ -7546,11 +7556,24 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     }
 
     const fileHandle = await zielOrdner.getFileHandle(dateiname, { create: true });
-    const writable = await fileHandle.createWritable();
+const writable = await fileHandle.createWritable();
     await writable.write(datei);
     await writable.close();
 }
 // =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
+
+// =========================== HANDLEDEUPLOAD START ============================
+async function handleDeUpload(input) {
+    const datei = input.files[0];
+    if (!datei || !aktuellerUploadPfad) {
+        return;
+    }
+    await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
+    aktuellerUploadPfad = null;
+    input.value = '';
+    updateStatus('DE-Datei gespeichert');
+}
+// =========================== HANDLEDEUPLOAD END ==============================
 
 
 // =========================== RENAMEFOLDER START ==============================
