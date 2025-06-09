@@ -1756,10 +1756,10 @@ th:nth-child(9) {
             <div class="table-controls">
                 <div class="sort-controls">
                     <span style="color: #999;">Sortierung:</span>
-                    <button class="sort-btn active" onclick="sortTable('position')">Position</button>
-                    <button class="sort-btn" onclick="sortTable('filename')">Dateiname</button>
-                    <button class="sort-btn" onclick="sortTable('folder')">Ordner</button>
-                    <button class="sort-btn" onclick="sortTable('completion')">Fertig</button>
+                    <button class="sort-btn active" onclick="sortTable('position', event)">Position</button>
+                    <button class="sort-btn" onclick="sortTable('filename', event)">Dateiname</button>
+                    <button class="sort-btn" onclick="sortTable('folder', event)">Ordner</button>
+                    <button class="sort-btn" onclick="sortTable('completion', event)">Fertig</button>
                 </div>
                 <div class="progress-info">
                     <div class="progress-stat" id="totalProgress">0% vollständig</div>
@@ -3214,10 +3214,11 @@ function addFiles() {
         }
 
         // Table Sorting
-        function sortTable(column) {
+        function sortTable(column, evt) {
+            const target = evt.target;
             // Update sort buttons
             document.querySelectorAll('.sort-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            target.classList.add('active');
             
             // Determine sort direction
             if (currentSort.column === column) {
@@ -3268,7 +3269,7 @@ function addFiles() {
             });
             
             if (column !== 'position') {
-                const header = event.target.closest('th') || 
+                const header = target.closest('th') ||
                              document.querySelector(`th[onclick*="${column}"]`);
                 if (header) {
                     header.classList.add(currentSort.direction === 'asc' ? 'sort-asc' : 'sort-desc');
