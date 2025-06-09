@@ -5633,8 +5633,15 @@ function showFolderGrid() {
         
         return `
             <div class="folder-card ${completionClass}" style="background: ${folderColor}; position: relative;">
+                <!-- Anpassungs-Button oben links -->
+                <button class="folder-customize-btn"
+                        onclick="event.stopPropagation(); showFolderCustomization('${folder.name}')"
+                        title="Ordner anpassen"
+                        style="position: absolute; top: 8px; left: 8px;">
+                    ⚙️
+                </button>
                 <!-- Lösch-Button oben rechts -->
-                <button class="folder-delete-btn" 
+                <button class="folder-delete-btn"
                         onclick="event.stopPropagation(); deleteFolderFromDatabase('${folder.name}')"
                         title="Ordner aus Datenbank löschen"
                         style="position: absolute; top: 8px; right: 8px; background: rgba(244,67,54,0.8); border: none; color: white; width: 24px; height: 24px; border-radius: 12px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
@@ -5887,7 +5894,7 @@ function showFolderFiles(folderName) {
     const completed = folderFiles.filter(f => f.isCompleted).length;
     const ignored   = folderFiles.filter(f => f.isIgnored).length;
 
-    title.innerHTML = `${folderIcon} ${lastFolderName}`;
+    title.innerHTML = `${folderIcon} ${lastFolderName} <button class="folder-customize-btn" onclick="showFolderCustomization('${folderName}')">⚙️</button>`;
     description.innerHTML = `✅ ${completed} übersetzt – 🚫 ${ignored} ignoriert – ⏳ ${total - completed - ignored} offen`;
 
     // --- Rendern mit Pfad-Anzeige ---
