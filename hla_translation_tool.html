@@ -4675,81 +4675,12 @@ function findAudioInFilePathCache(filename, folder) {
 }
 // =========================== FINDAUDIOINFILEPATHCACHE END ===========================
 
-
-        function debugDataSources() {
-            const info = {
-                filePathDatabase: {
-                    count: Object.keys(filePathDatabase).length,
-                    files: Object.keys(filePathDatabase)
-                },
-                currentProject: {
-                    name: currentProject?.name || 'Kein Projekt',
-                    icon: currentProject?.icon || '🗂️',
-                    color: currentProject?.color || '#333333',
-                    fileCount: files.length,
-                    files: files.map(f => ({ 
-                        name: f.filename, 
-                        folder: f.folder, 
-                        completed: f.completed,
-                        id: f.id,
-                        idType: typeof f.id
-                    }))
-                },
-                projects: {
-                    count: projects.length,
-                    list: projects.map(p => ({ 
-                        name: p.name, 
-                        icon: p.icon || '🗂️', 
-                        color: p.color || '#333333',
-                        fileCount: p.files?.length || 0 
-                    }))
-                },
-                textDatabase: {
-                    count: Object.keys(textDatabase).length,
-                    keys: Object.keys(textDatabase)
-                },
-                audioFileCache: {
-                    count: Object.keys(audioFileCache).length,
-                    paths: Object.keys(audioFileCache)
-                },
-                folderCustomizations: {
-                    count: Object.keys(folderCustomizations).length,
-                    customized: Object.keys(folderCustomizations)
-                }
-            };
-            
-            console.log('=== DEBUG: Datenquellen ===');
-            console.log(info);
-            console.log('=== File ID Details ===');
-            files.forEach((file, index) => {
-                console.log(`File ${index}: ${file.filename} - ID: ${file.id} (Type: ${typeof file.id})`);
-            });
-            
-            alert(`Debug Info (Version 3.6.0 Level-Management & Datenbank-Tools):\n\n` +
-                  `Projekte: ${info.projects.count} (mit Icons/Farben)\n` +
-                  `Aktuelles Projekt: ${info.currentProject.icon} ${info.currentProject.name} (${info.currentProject.fileCount} Dateien)\n` +
-                  `filePathDatabase: ${info.filePathDatabase.count} Dateien\n` +
-                  `audioFileCache: ${info.audioFileCache.count} verfügbare Audio-Dateien\n` +
-                  `textDatabase: ${info.textDatabase.count} Einträge\n` +
-                  `Ordner-Anpassungen: ${info.folderCustomizations.count} angepasste Ordner\n\n` +
-                  `🔄 Auto-Scan System: Aktiv für alle Funktionen\n` +
-                  `🎨 Projekt-Anpassung: Icons und Farben verfügbar\n` +
-                  `🔢 Zeilennummer-Anpassung: Doppelklick auf # verfügbar\n` +
-                  `⌨️ Keyboard-Navigation: Tab, Pfeiltasten, Leertaste\n` +
-                  `🖱️ Context-Menu: Rechtsklick für erweiterte Optionen\n` +
-                  `📊 Fortschritts-Tracking: Completion-Status verfügbar\n` +
-                  `🔍 Erweiterte Suche: Ähnlichkeitssuche mit Normalisierung\n` +
-                  `📋 Spalten-Sortierung: Mit Original-Position Erhaltung\n` +
-                  `📋 Copy-Buttons: Direkte Kopierfunktion neben Textfeldern\n\n` +
-                  `Siehe Console für Details (F12)`);
-        }
-
-        // Table rendering
-        function renderFileTable() {
-            // Reset display order when rendering normally
-            displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
-            renderFileTableWithOrder(files);
-        }
+    // Tabellenanzeige
+    function renderFileTable() {
+        // Reset display order when rendering normally
+        displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
+        renderFileTableWithOrder(files);
+    }
 
 function addDragAndDropHandlers() {
     const tbody = document.getElementById('fileTableBody');
