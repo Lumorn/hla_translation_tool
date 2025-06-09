@@ -4371,6 +4371,7 @@ function normalizeFolderPath(folderPath) {
 // =========================== CLEANUPMISSINGFOLDERS START ===========================
 // Bereinige nicht mehr gefundene Ordner ohne Texte
 function cleanupMissingFolders(scannedFiles) {
+    const { en: globalEN, de: globalDE, both: globalBoth, total: globalTotal } = calculateGlobalTextStats();
     const scannedFolders = new Set();
     
     // Sammle alle Ordner aus dem aktuellen Scan
