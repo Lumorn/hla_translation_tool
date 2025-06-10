@@ -75,6 +75,14 @@ if not os.path.exists(os.path.join(repo_path, ".git")):
 else:
     os.chdir(repo_path)
 
+# ----------------------- Lokale Änderungen verwerfen --------------------
+log("Verwerfe lokale Änderungen")
+try:
+    run("git reset --hard")
+    log("Lokale Änderungen verworfen")
+except subprocess.CalledProcessError:
+    log("git reset fehlgeschlagen")
+
 # ----------------------- git pull --------------------------
 log("git pull starten")
 print("Neueste Aenderungen werden geholt...")
