@@ -2087,11 +2087,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Desktop-Version: automatisch EN- und DE-Ordner einlesen
     if (window.electronAPI) {
         window.electronAPI.scanFolders().then(data => {
-            // EN-Dateien wie üblich verarbeiten
+            // EN-Dateien einlesen (nur Pfade)
             verarbeiteGescannteDateien(data.enFiles);
-            // DE-Dateien in den Cache legen
+            // DE-Dateien als Pfade merken
             data.deFiles.forEach(file => {
-                deAudioCache[file.fullPath] = file;
+                deAudioCache[file.fullPath] = `sounds/DE/${file.fullPath}`;
             });
         });
     }
@@ -4983,6 +4983,8 @@ function deleteFile(fileId) {
 function playAudio(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
+
+    // Unter Electron spielen wir direkt aus dem sounds-Ordner ab
     
     console.log(`[PLAYAUDIO] ====== Playing: ${file.filename} ======`);
     console.log(`[PLAYAUDIO] File folder: ${file.folder}`);
@@ -5026,11 +5028,17 @@ function playAudio(fileId) {
         return;
     }
     
-    // Play from cached File object
-    const blob = new Blob([audioResult.audioFile], { type: audioResult.audioFile.type });
-    const url = URL.createObjectURL(blob);
-    
-    audio.src = url;
+    // Wiedergabe je nach Umgebung
+    let url = null;
+    if (window.electronAPI && typeof audioResult.audioFile === 'string') {
+        // Direkt vom Dateipfad abspielen
+        audio.src = audioResult.audioFile;
+    } else {
+        const blob = new Blob([audioResult.audioFile], { type: audioResult.audioFile.type });
+        url = URL.createObjectURL(blob);
+        audio.src = url;
+    }
+
     audio.play().then(() => {
         if (playBtn) {
             playBtn.classList.add('playing');
@@ -5039,7 +5047,7 @@ function playAudio(fileId) {
         currentlyPlaying = fileId;
         
         audio.onended = () => {
-            URL.revokeObjectURL(url);
+            if (url) URL.revokeObjectURL(url);
             if (playBtn) {
                 playBtn.classList.remove('playing');
                 playBtn.textContent = '▶';
@@ -5049,7 +5057,7 @@ function playAudio(fileId) {
     }).catch(err => {
         console.error('[PLAYAUDIO] Playback failed:', err);
         updateStatus(`Fehler beim Abspielen: ${file.filename}`);
-        URL.revokeObjectURL(url);
+        if (url) URL.revokeObjectURL(url);
     });
 }
 // =========================== PLAYAUDIO END ===========================
@@ -5060,22 +5068,28 @@ async function playDeAudio(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
+    // In Electron greifen wir direkt über den Dateipfad zu
+
     const relPath = `${file.folder}/${file.filename}`;
 
     if (!deAudioCache[relPath]) {
-        try {
-            let handle = deOrdnerHandle;
-            const parts = file.folder.split('/');
-            for (const part of parts) {
-                if (part) {
-                    handle = await handle.getDirectoryHandle(part);
+        if (window.electronAPI) {
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+        } else {
+            try {
+                let handle = deOrdnerHandle;
+                const parts = file.folder.split('/');
+                for (const part of parts) {
+                    if (part) {
+                        handle = await handle.getDirectoryHandle(part);
+                    }
                 }
+                const fh = await handle.getFileHandle(file.filename);
+                deAudioCache[relPath] = await fh.getFile();
+            } catch (e) {
+                updateStatus('DE-Datei nicht gefunden');
+                return;
             }
-            const fh = await handle.getFileHandle(file.filename);
-            deAudioCache[relPath] = await fh.getFile();
-        } catch (e) {
-            updateStatus('DE-Datei nicht gefunden');
-            return;
         }
     }
 
@@ -5091,20 +5105,25 @@ async function playDeAudio(fileId) {
         return;
     }
 
-    const url = URL.createObjectURL(deAudioCache[relPath]);
-    audio.src = url;
+    let url = null;
+    if (window.electronAPI && typeof deAudioCache[relPath] === 'string') {
+        audio.src = deAudioCache[relPath];
+    } else {
+        url = URL.createObjectURL(deAudioCache[relPath]);
+        audio.src = url;
+    }
     audio.play().then(() => {
         if (playBtn) { playBtn.classList.add('playing'); playBtn.textContent = '⏸'; }
         currentlyPlaying = `de-${fileId}`;
         audio.onended = () => {
-            URL.revokeObjectURL(url);
+            if (url) URL.revokeObjectURL(url);
             if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
             currentlyPlaying = null;
         };
     }).catch(err => {
         console.error('DE-Playback fehlgeschlagen', err);
         updateStatus('Fehler beim Abspielen der DE-Datei');
-        URL.revokeObjectURL(url);
+        if (url) URL.revokeObjectURL(url);
     });
 }
 // =========================== PLAYDEAUDIO END ========================
@@ -6113,6 +6132,7 @@ function deleteFolderFromDatabase(folderName) {
 // =========================== DELETEFOLDERFROMBROWSER END ===========================
 
         function playFolderBrowserAudio(fullPath, button) {
+            // In Electron nutzen wir den Dateipfad direkt zur Wiedergabe
             // Check if file is accessible, auto-scan if needed
             const fakeFile = { fullPath: fullPath, filename: fullPath.split('/').pop() };
             const scanResult = checkAndAutoScan([fakeFile], 'Ordner-Browser Audio');
@@ -6144,17 +6164,22 @@ function deleteFolderFromDatabase(folderName) {
             // Try to play from cached File object
             if (audioFileCache[fullPath]) {
                 const fileObject = audioFileCache[fullPath];
-                const blob = new Blob([fileObject], { type: fileObject.type });
-                const url = URL.createObjectURL(blob);
-                
-                audio.src = url;
+                let url = null;
+                if (window.electronAPI && typeof fileObject === 'string') {
+                    audio.src = fileObject;
+                } else {
+                    const blob = new Blob([fileObject], { type: fileObject.type });
+                    url = URL.createObjectURL(blob);
+                    audio.src = url;
+                }
+
                 audio.play().then(() => {
                     button.textContent = '⏸';
                     button.style.background = '#ff6b1a';
                     currentlyPlaying = fullPath;
-                    
+
                     audio.onended = () => {
-                        URL.revokeObjectURL(url);
+                        if (url) URL.revokeObjectURL(url);
                         button.textContent = '▶';
                         button.style.background = '#444';
                         currentlyPlaying = null;
@@ -6162,7 +6187,7 @@ function deleteFolderFromDatabase(folderName) {
                 }).catch(err => {
                     console.error('Playback failed:', err);
                     updateStatus(`Fehler beim Abspielen`);
-                    URL.revokeObjectURL(url);
+                    if (url) URL.revokeObjectURL(url);
                 });
             } else {
                 // This should not happen after auto-scan check, but just in case
@@ -7621,7 +7646,12 @@ function verarbeiteGescannteDateien(dateien) {
 
         if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
         filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
-        audioFileCache[relPath] = file;
+        // In Electron besitzen wir nur Pfade, im Browser File-Objekte
+        if (window.electronAPI) {
+            audioFileCache[relPath] = `sounds/EN/${relPath}`;
+        } else {
+            audioFileCache[relPath] = file;
+        }
     }
 
     saveFilePathDatabase();
