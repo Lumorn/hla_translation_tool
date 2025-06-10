@@ -15,22 +15,34 @@ const isDebug = process.argv.includes('--debug');
 
 // Pfade zu EN und DE relativ zur HTML-Datei
 
+// =========================== READAUDIOFILES START ===========================
+// Liest rekursiv Audiodateien ein und liefert Pfade in POSIX-Notation
 function readAudioFiles(dir) {
   const result = [];
+
   function walk(current, rel = '') {
     const entries = fs.readdirSync(current, { withFileTypes: true });
     for (const entry of entries) {
-      const full = path.join(current, entry.name);
+      const full = path.join(current, entry.name); // Absoluter Pfad zum Einlesen
+
       if (entry.isDirectory()) {
-        walk(full, path.join(rel, entry.name));
+        // Unterordner weiter durchsuchen und Pfad mit '/' verketten
+        walk(full, path.posix.join(rel, entry.name));
       } else if (/\.(mp3|wav|ogg)$/i.test(entry.name)) {
-        result.push({ fullPath: path.join(rel, entry.name) });
+        // Dateipfad in POSIX-Form speichern (immer '/')
+        const relPath = path.posix.join(rel, entry.name);
+        result.push({ fullPath: relPath });
       }
     }
   }
-  if (fs.existsSync(dir)) walk(dir);
+
+  if (fs.existsSync(dir)) {
+    walk(dir);
+  }
+
   return result;
 }
+// =========================== READAUDIOFILES END =============================
 
 function createWindow() {
   const win = new BrowserWindow({
