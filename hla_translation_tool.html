@@ -1852,8 +1852,9 @@ th:nth-child(9) {
                     <span id="statusText">Bereit</span>
                 </div>
                 <div class="status-info">
-                    <span id="fileCount">0 Dateien</span> | 
+                    <span id="fileCount">0 Dateien</span> |
                     <span id="selectedCount">0 ausgewählt</span> |
+                    <span id="projectFolderPath">Kein Projektordner</span> |
                     <span id="accessStatus" class="access-status" onclick="handleAccessStatusClick()" title="Klicken um Dateiberechtigungen zu erneuern">
                         📂 Keine Auswahl
                     </span>
@@ -2130,6 +2131,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const choose = confirm('Kein Projektordner gefunden. Jetzt auswählen?');
         if (choose) waehleProjektOrdner();
     }
+
+    updateProjectFolderPathDisplay();
 
     // 💾 Auto-Save alle 30 Sekunden
     setInterval(saveCurrentProject, 30000);
@@ -7542,10 +7545,11 @@ async function waehleProjektOrdner() {
         await scanEnOrdner();
 
         updateStatus('Projektordner eingelesen und gescannt');
+        updateProjectFolderPathDisplay();
     } catch (e) {
         console.error('Ordnerauswahl fehlgeschlagen:', e);
     }
-} 
+}
 // =========================== WAEHLEPROJEKTORDNER END =========================
 
 // =========================== STANDARDORDNERAENDERN START ====================
@@ -8966,6 +8970,14 @@ function showProjectCustomization(id, ev) {
             selectedCount.textContent = `${files.filter(f => f.selected).length} ausgewählt`;
             
             updateFileAccessStatus();
+        }
+
+        // Anzeige des aktuellen Projektordnerpfads aktualisieren
+        function updateProjectFolderPathDisplay() {
+            const pathSpan = document.getElementById('projectFolderPath');
+            if (pathSpan) {
+                pathSpan.textContent = projektOrdnerHandle ? projektOrdnerHandle.name : 'Kein Projektordner';
+            }
         }
 
         // Utility functions
