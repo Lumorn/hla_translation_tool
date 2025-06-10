@@ -1,2 +1,4 @@
 node_modules/
 electron/node_modules/
+package-lock.json
+electron/package-lock.json
