@@ -2047,7 +2047,7 @@ th:nth-child(9) {
 
     <!-- Umschaltbare Debug-Konsole -->
     <details id="debugConsoleWrapper" style="margin:10px 0;">
-        <summary>🛠️ Debug-Konsole</summary>
+        <summary>🛠️ Debug-Konsole <button id="devToolsBtn" type="button">DevTools</button></summary>
         <pre id="debugConsole" style="max-height:200px; overflow:auto; background:#000; color:#0f0; padding:5px;"></pre>
     </details>
 
@@ -2102,6 +2102,14 @@ function debugLog(...args) {
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
     loadProjects();
+
+    // Klick auf den DevTools-Knopf registrieren
+    const devBtn = document.getElementById('devToolsBtn');
+    if (devBtn && window.electronAPI) {
+        devBtn.addEventListener('click', () => {
+            window.electronAPI.toggleDevTools();
+        });
+    }
 
     // Desktop-Version: automatisch EN- und DE-Ordner einlesen
     if (window.electronAPI) {
