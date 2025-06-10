@@ -2045,6 +2045,12 @@ th:nth-child(9) {
     <audio id="audioPlayer"></audio>
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
 
+    <!-- Umschaltbare Debug-Konsole -->
+    <details id="debugConsoleWrapper" style="margin:10px 0;">
+        <summary>🛠️ Debug-Konsole</summary>
+        <pre id="debugConsole" style="max-height:200px; overflow:auto; background:#000; color:#0f0; padding:5px;"></pre>
+    </details>
+
     <!-- JSZip Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
@@ -2078,6 +2084,19 @@ let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
 
 // =========================== GLOBAL STATE END ===========================
+
+
+// =========================== DEBUG LOG START ===========================
+// Schreibt Meldungen in die Browser-Konsole und die Debug-Anzeige
+function debugLog(...args) {
+    console.log(...args);
+    const div = document.getElementById('debugConsole');
+    if (div) {
+        div.textContent += args.join(' ') + '\n';
+        div.scrollTop = div.scrollHeight;
+    }
+}
+// =========================== DEBUG LOG END ===========================
 
 
 // =========================== DOM READY INITIALISIERUNG ===========================
@@ -4496,12 +4515,12 @@ function cleanupMissingFiles(scannedFiles) {
 // =========================== FINDAUDIOINFILEPATHCACHE START ===========================
 // Helper function to find audio file in cache with flexible matching
 function findAudioInFilePathCache(filename, folder) {
-    console.log(`[FINDAUDIO] Searching for: ${filename} in folder: ${folder}`);
+    debugLog(`[FINDAUDIO] Searching for: ${filename} in folder: ${folder}`);
     
     // 1. Versuche direkte Übereinstimmungen in filePathDatabase
     if (filePathDatabase[filename]) {
         const paths = filePathDatabase[filename];
-        console.log(`[FINDAUDIO] Found ${paths.length} paths in database`);
+        debugLog(`[FINDAUDIO] Found ${paths.length} paths in database`);
         
         // Sortiere Pfade nach Priorität mit Ordner-Präferenz
         const sortedPaths = paths.sort((a, b) => {
@@ -4532,11 +4551,12 @@ function findAudioInFilePathCache(filename, folder) {
         // Prüfe alle Pfade in sortierter Reihenfolge
         for (const pathInfo of sortedPaths) {
             if (audioFileCache[pathInfo.fullPath]) {
-                console.log(`[FINDAUDIO] Found audio in cache: ${pathInfo.fullPath} (folder: ${pathInfo.folder})`);
+                debugLog(`[FINDAUDIO] Found audio in cache: ${pathInfo.fullPath} (folder: ${pathInfo.folder})`);
                 
                 // WARNUNG: Wenn nicht exakte Ordner-Übereinstimmung
                 if (pathInfo.folder !== folder) {
                     console.warn(`[FINDAUDIO] Using different folder: requested "${folder}", using "${pathInfo.folder}"`);
+                    debugLog(`[FINDAUDIO] Using different folder: requested "${folder}", using "${pathInfo.folder}"`);
                 }
                 
                 return {
@@ -4550,7 +4570,7 @@ function findAudioInFilePathCache(filename, folder) {
     }
     
     // 2. Fallback: Durchsuche audioFileCache direkt mit flexiblem Matching
-    console.log(`[FINDAUDIO] No direct match, searching cache with flexible matching...`);
+    debugLog(`[FINDAUDIO] No direct match, searching cache with flexible matching...`);
     
     const normalizedFolder = normalizeFolderPath(folder);
     const possiblePaths = [];
@@ -4570,9 +4590,9 @@ function findAudioInFilePathCache(filename, folder) {
                 const cacheFolder = pathParts.slice(0, fileIndex).join('/');
                 const normalizedCacheFolder = normalizeFolderPath(cacheFolder);
                 
-                console.log(`[FINDAUDIO] Cache path: ${cachePath}`);
-                console.log(`[FINDAUDIO] Cache folder: ${cacheFolder} -> ${normalizedCacheFolder}`);
-                console.log(`[FINDAUDIO] Looking for: ${folder} -> ${normalizedFolder}`);
+                debugLog(`[FINDAUDIO] Cache path: ${cachePath}`);
+                debugLog(`[FINDAUDIO] Cache folder: ${cacheFolder} -> ${normalizedCacheFolder}`);
+                debugLog(`[FINDAUDIO] Looking for: ${folder} -> ${normalizedFolder}`);
                 
                 // Bewerte Übereinstimmung
                 let score = 0;
@@ -4612,10 +4632,11 @@ function findAudioInFilePathCache(filename, folder) {
     
     if (possiblePaths.length > 0) {
         const best = possiblePaths[0];
-        console.log(`[FINDAUDIO] Found via flexible matching: ${best.path} (score: ${best.score})`);
+        debugLog(`[FINDAUDIO] Found via flexible matching: ${best.path} (score: ${best.score})`);
         
         if (!best.isExactMatch) {
             console.warn(`[FINDAUDIO] Using approximate match: requested "${folder}", using "${best.folder}"`);
+            debugLog(`[FINDAUDIO] Using approximate match: requested "${folder}", using "${best.folder}"`);
         }
         
         return {
@@ -4626,7 +4647,7 @@ function findAudioInFilePathCache(filename, folder) {
         };
     }
     
-    console.log(`[FINDAUDIO] No audio found for ${filename} in ${folder}`);
+    debugLog(`[FINDAUDIO] No audio found for ${filename} in ${folder}`);
     return null;
 }
 // =========================== FINDAUDIOINFILEPATHCACHE END ===========================
@@ -4989,14 +5010,14 @@ function playAudio(fileId) {
 
     // Unter Electron spielen wir direkt aus dem sounds-Ordner ab
     
-    console.log(`[PLAYAUDIO] ====== Playing: ${file.filename} ======`);
-    console.log(`[PLAYAUDIO] File folder: ${file.folder}`);
+    debugLog(`[PLAYAUDIO] ====== Playing: ${file.filename} ======`);
+    debugLog(`[PLAYAUDIO] File folder: ${file.folder}`);
     
     // Nutze die neue Hilfsfunktion
     const audioResult = findAudioInFilePathCache(file.filename, file.folder);
     
     if (!audioResult) {
-        console.log(`[PLAYAUDIO] Audio not found, triggering auto-scan...`);
+        debugLog(`[PLAYAUDIO] Audio not found, triggering auto-scan...`);
         
         const scanResult = checkAndAutoScan([file], 'Audio-Wiedergabe');
         if (scanResult === true) {
@@ -5010,7 +5031,7 @@ function playAudio(fileId) {
         return;
     }
     
-    console.log(`[PLAYAUDIO] Audio found: ${audioResult.resolvedPath}`);
+    debugLog(`[PLAYAUDIO] Audio found: ${audioResult.resolvedPath}`);
     
     // Audio abspielen
     const audio = document.getElementById('audioPlayer');
@@ -5059,6 +5080,7 @@ function playAudio(fileId) {
         };
     }).catch(err => {
         console.error('[PLAYAUDIO] Playback failed:', err);
+        debugLog('[PLAYAUDIO] Playback failed:', err);
         updateStatus(`Fehler beim Abspielen: ${file.filename}`);
         if (url) URL.revokeObjectURL(url);
     });
@@ -8458,6 +8480,7 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
 
 // =========================== playPreview START ===========================
 function playPreview(fullPath) {
+    debugLog(`[PREVIEW] Versuche ${fullPath} abzuspielen`);
     const audioPlayer = document.getElementById('audioPlayer');
     const fileObj = audioFileCache[fullPath];
     if (fileObj) {
@@ -8466,12 +8489,15 @@ function playPreview(fullPath) {
             const url = URL.createObjectURL(fileObj);
             audioPlayer.src = url;
             audioPlayer.play().catch(err => {
+                debugLog('[PREVIEW] Abspielen fehlgeschlagen:', err.message);
                 alert('Abspielen fehlgeschlagen: ' + err.message);
             });
         } catch (e) {
+            debugLog('[PREVIEW] Fehler beim Erzeugen der Audio-URL:', e.message);
             alert('Fehler beim Erzeugen der Audio-URL: ' + e.message);
         }
     } else {
+        debugLog(`[PREVIEW] Nicht im Cache: ${fullPath}`);
         alert('⚠️ Audio-Datei nicht im Cache verfügbar');
     }
 }
