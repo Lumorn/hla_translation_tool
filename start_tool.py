@@ -84,6 +84,17 @@ try:
 except subprocess.CalledProcessError:
     log("git pull fehlgeschlagen")
 
+# Sicherstellen, dass der Electron-Ordner existiert
+if not os.path.isdir("electron"):
+    print("'electron'-Ordner fehlt, wird wiederhergestellt...")
+    log("Electron-Ordner fehlt - versuche Wiederherstellung")
+    try:
+        run("git checkout -- electron")
+        log("Electron-Ordner wiederhergestellt")
+    except subprocess.CalledProcessError:
+        log("Electron-Ordner konnte nicht wiederhergestellt werden")
+        sys.exit(1)
+
 # ----------------------- Electron-Setup --------------------
 os.chdir("electron")
 log("npm install starten")
