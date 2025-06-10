@@ -70,6 +70,10 @@ function createWindow() {
   });
 }
 
+// GPU-Beschleunigung ausschalten, um Cache-Probleme zu vermeiden
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+
 app.whenReady().then(() => {
   // Basis- und Sprachordner relativ zur App bestimmen
   const projectBase = path.join(__dirname, '..', 'sounds');
