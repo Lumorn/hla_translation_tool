@@ -34,9 +34,14 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  // Basis- und Sprachordner sicherstellen
+  const projectBase = path.resolve(config.projectPath);
+  const enPath = path.join(projectBase, config.enFolder);
+  const dePath = path.join(projectBase, config.deFolder);
+  fs.mkdirSync(enPath, { recursive: true }); // EN-Ordner anlegen
+  fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
+
   ipcMain.handle('scan-folders', () => {
-    const enPath = path.join(config.projectPath, config.enFolder);
-    const dePath = path.join(config.projectPath, config.deFolder);
     return {
       enFiles: readAudioFiles(enPath),
       deFiles: readAudioFiles(dePath),
