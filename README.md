@@ -437,6 +437,7 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
    ```bash
    npm install
    ```
+   > Hinweis: Vor `npm test` einmal `npm install` ausführen, um Jest zu installieren.
 2. Tests starten
    ```bash
    npm test
