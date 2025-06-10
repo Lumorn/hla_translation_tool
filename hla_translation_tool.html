@@ -7287,7 +7287,9 @@ function findDuplicates() {
             const folderGroups = new Map();
             
             paths.forEach((pathInfo, index) => {
-                const folder = pathInfo.folder;
+                // Ordnername auf Kleinbuchstaben normalisieren, damit die
+                // Duplikatsuche nicht von Groß-/Kleinschreibung abhängt
+                const folder = pathInfo.folder.toLowerCase();
                 if (!folderGroups.has(folder)) {
                     folderGroups.set(folder, []);
                 }
