@@ -82,6 +82,19 @@ try {
     log('git pull fehlgeschlagen');
 }
 
+// Sicherstellen, dass der Electron-Ordner vorhanden ist
+if (!fs.existsSync('electron')) {
+    console.log("'electron'-Ordner fehlt, wird wiederhergestellt...");
+    log('Electron-Ordner fehlt - versuche Wiederherstellung');
+    try {
+        run('git checkout -- electron');
+        log('Electron-Ordner wiederhergestellt');
+    } catch (err) {
+        log('Electron-Ordner konnte nicht wiederhergestellt werden');
+        process.exit(1);
+    }
+}
+
 // ----------------------- Electron-Setup --------------------
 process.chdir('electron');
 log('npm install starten');

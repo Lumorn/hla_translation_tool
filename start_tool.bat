@@ -81,6 +81,19 @@ IF ERRORLEVEL 1 (
     call :log "git pull erfolgreich"
 )
 
+REM Sicherstellen, dass der Electron-Ordner existiert
+IF NOT EXIST "electron" (
+    echo 'electron'-Ordner fehlt, wird wiederhergestellt...
+    call :log "Electron-Ordner fehlt - versuche Wiederherstellung"
+    git checkout -- electron
+    IF ERRORLEVEL 1 (
+        call :log "Electron-Ordner konnte nicht wiederhergestellt werden"
+        exit /b 1
+    ) ELSE (
+        call :log "Electron-Ordner wiederhergestellt"
+    )
+)
+
 REM ======================= Electron-Setup ================================
 cd electron
 call :log "npm install starten"
