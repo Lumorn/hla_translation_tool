@@ -2234,7 +2234,8 @@ function handleAccessStatusClick() {
     if (shouldScan) {
         updateStatus('Erneuere Dateiberechtigungen - Ordner-Scan...');
         setTimeout(() => {
-            document.getElementById('folderPicker').click();
+            // Projektordner erneut wählen und danach automatisch scannen
+            waehleProjektOrdner();
         }, 500);
     }
 }
@@ -5384,9 +5385,10 @@ function calculateFolderCompletionStats() {
                 if (shouldScan) {
                     updateStatus(`${functionName}: Starte automatischen Ordner-Scan...`);
                     setTimeout(() => {
-                        document.getElementById('folderPicker').click();
+                        // EN-Ordner erneut scannen
+                        scanEnOrdner();
                     }, 500);
-                    return true; // Scan started
+                    return true; // Scan gestartet
                 } else {
                     updateStatus(`${functionName}: Abgebrochen - Keine Berechtigungen`);
                     return false; // User cancelled
@@ -5557,7 +5559,8 @@ function showFolderGrid() {
         setTimeout(() => {
             closeFolderBrowser();
             updateStatus('Ordner-Browser: Starte automatischen Ordner-Scan...');
-            document.getElementById('folderPicker').click();
+            // Projektordner wählen und scannen
+            waehleProjektOrdner();
         }, 1000);
         
         folderGrid.innerHTML = `
