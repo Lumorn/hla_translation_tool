@@ -1766,8 +1766,9 @@ th:nth-child(9) {
                 <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
                 <button class="btn btn-secondary" onclick="restoreData()">📂 Restore</button>
                 <button class="btn btn-danger" onclick="resetFileDatabase()">🔄 Reset DB</button>
-				<button class="btn btn-secondary" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</button>
-			<button class="btn btn-success" onclick="repairProjectFolders()">🔧 Ordner reparieren</button>
+                                <button class="btn btn-secondary" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</button>
+                        <button class="btn btn-success" onclick="repairProjectFolders()">🔧 Ordner reparieren</button>
+                <button class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
             </div>
 			
 <!-- =========================== PROJECT META BAR START =========================== -->
@@ -7574,6 +7575,13 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             saveFolderCustomizations();
             updateStatus('Datei-Datenbank und Ordner-Anpassungen zurückgesetzt. Bitte Ordner neu scannen.');
         updateFileAccessStatus();
+        }
+
+        // Öffnet oder schließt die DevTools in der Desktop-Version
+        function toggleDevTools() {
+            if (window.electronAPI) {
+                window.electronAPI.toggleDevTools();
+            }
         }
 
 
