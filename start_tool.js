@@ -92,7 +92,12 @@ try {
 
 console.log('Anwendung wird gestartet...');
 log('Starte Anwendung');
-run('npm start');
+// Wenn das Skript als root ausgeführt wird, muss Electron ohne Sandbox starten
+if (process.getuid && process.getuid() === 0) {
+    run('npm start -- --no-sandbox');
+} else {
+    run('npm start');
+}
 log('Anwendung beendet');
 
 console.log(`Log gespeichert unter ${LOGFILE}`);
