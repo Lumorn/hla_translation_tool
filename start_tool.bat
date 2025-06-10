@@ -1,22 +1,63 @@
 @echo off
-REM Prüfen, ob der Ordner 'hla_translation_tool' vorhanden ist
+
+REM ======================= Grundverzeichnis setzen ========================
+REM Sicherstellen, dass alle Befehle relativ zum Pfad der BAT-Datei laufen
+cd /d %~dp0
+
+echo === Starte HLA Translation Tool Setup ===
+
+REM ======================= Git prüfen ====================================
+git --version >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo [Fehler] Git wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.
+    pause
+    exit /b 1
+) ELSE (
+    FOR /f "tokens=*" %%G in ('git --version') do echo Gefundene Git-Version: %%G
+)
+
+REM ======================= Node pruefen ==================================
+node --version >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo [Fehler] Node.js wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.
+    pause
+    exit /b 1
+) ELSE (
+    FOR /f "tokens=*" %%G in ('node --version') do echo Gefundene Node-Version: %%G
+)
+
+REM ======================= npm pruefen ===================================
+npm --version >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo [Fehler] npm wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.
+    pause
+    exit /b 1
+) ELSE (
+    FOR /f "tokens=*" %%G in ('npm --version') do echo Gefundene npm-Version: %%G
+)
+
+echo.
+REM ======================= Repository einrichten ==========================
 IF NOT EXIST "hla_translation_tool" (
-    REM Repository klonen, falls noch nicht vorhanden
+    echo Repository wird geklont...
     git clone <REPOSITORY_URL>
     cd hla_translation_tool
 ) ELSE (
     cd hla_translation_tool
-    REM Neueste Änderungen holen
+    echo Neueste Aenderungen werden geholt...
     git pull
 )
 
-REM In das Electron-Verzeichnis wechseln
+REM ======================= Electron-Setup ================================
 cd electron
-
-REM Abhängigkeiten installieren, falls node_modules fehlt
 IF NOT EXIST "node_modules" (
+    echo Abhaengigkeiten werden installiert...
     npm install
 )
 
-REM Desktop-App starten
-npm start
+echo Anwendung wird gestartet...
+call npm start
+
+echo.
+echo Vorgang abgeschlossen.
+pause
