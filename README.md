@@ -115,8 +115,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
 4. Alternativ kann `start_tool.bat` (Windows) oder `start_tool.js` (plattformunabhängig) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet
 > **Hinweis:** Diese Skripte sollten **nicht** im Repository‑Ordner selbst ausgeführt werden, da sonst innerhalb dieses Ordners ein Unterordner geklont wird. Am besten legt man ein leeres Verzeichnis an und startet sie dort.
-5. Beim Start werden EN- und DE-Ordner automatisch eingelesen
-6. Während des Setups erzeugen beide Skripte (`start_tool.bat` bzw. `start_tool.js`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden
+5. Beim Start werden die Ordner `sounds/EN` und `sounds/DE` automatisch erstellt und eingelesen
+6. Kopieren Sie Ihre Originaldateien in `sounds/EN` und legen Sie Übersetzungen in `sounds/DE` ab
+7. Während des Setups erzeugen beide Skripte (`start_tool.bat` bzw. `start_tool.js`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden
 
 ---
 
@@ -124,9 +125,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 1. 📁 Ordner scannen
 * Klicken Sie auf **„📁 Ordner scannen"**
-* Wählen Sie Ihren Haupt‑`sounds`‑Ordner
-* Die App indiziert automatisch alle Audio‑Dateien
-> **Hinweis:** Beim ersten Start muss der Projektordner über den Dialog `waehleProjektOrdner()` ausgewählt werden. Das Handle wird von `loadProjectFolderHandle` gespeichert, doch je nach Browser kann die Berechtigung beim erneuten Öffnen erneut abgefragt werden. Ohne diese Freigabe ist ein automatischer Zugriff auf die Unterordner `EN` und `DE` nicht möglich.
+* Die App indiziert automatisch alle Audio‑Dateien aus `sounds/EN` und vorhandene Übersetzungen aus `sounds/DE`
 
 ### 2. 📂 Neues Projekt erstellen
 * Klicken Sie auf **„+ Neues Projekt"**
