@@ -114,6 +114,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 2. Pfade zu `EN` und `DE` in `electron/config.json` anpassen
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
 4. Alternativ kann `start_tool.bat` (Windows) oder `start_tool.js` (plattformunabhängig) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet
+> **Hinweis:** Diese Skripte sollten **nicht** im Repository‑Ordner selbst ausgeführt werden, da sonst innerhalb dieses Ordners ein Unterordner geklont wird. Am besten legt man ein leeres Verzeichnis an und startet sie dort.
 5. Beim Start werden EN- und DE-Ordner automatisch eingelesen
 6. Während des Setups erzeugen beide Skripte (`start_tool.bat` bzw. `start_tool.js`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden
 
