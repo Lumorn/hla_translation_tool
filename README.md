@@ -109,6 +109,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Lokaler Dateizugriff** für Audio‑Wiedergabe & Export
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 
+### Desktop-Version (Electron)
+1. In das Verzeichnis `electron/` wechseln und `npm install` ausführen
+2. Pfade zu `EN` und `DE` in `electron/config.json` anpassen
+3. Mit `npm start` startet die Desktop-App ohne Browserdialog
+
 ---
 
 ## 🏁 Erste Schritte
@@ -117,6 +122,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Klicken Sie auf **„📁 Ordner scannen"**
 * Wählen Sie Ihren Haupt‑`sounds`‑Ordner
 * Die App indiziert automatisch alle Audio‑Dateien
+> **Hinweis:** Beim ersten Start muss der Projektordner über den Dialog `waehleProjektOrdner()` ausgewählt werden. Das Handle wird von `loadProjectFolderHandle` gespeichert, doch je nach Browser kann die Berechtigung beim erneuten Öffnen erneut abgefragt werden. Ohne diese Freigabe ist ein automatischer Zugriff auf die Unterordner `EN` und `DE` nicht möglich.
 
 ### 2. 📂 Neues Projekt erstellen
 * Klicken Sie auf **„+ Neues Projekt"**

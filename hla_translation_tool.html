@@ -1757,7 +1757,6 @@ th:nth-child(9) {
                 <div class="add-files-container">
                     <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
                     <button class="btn" onclick="addFiles()">Hinzufügen</button>
-                    <input type="file" id="folderPicker" webkitdirectory multiple style="display: none;" onchange="scanFolder(this)">
                     <button class="btn btn-secondary" onclick="waehleProjektOrdner()">📂 Projektordner wählen</button>
                 </div>
 
@@ -7591,10 +7590,29 @@ async function scanEnOrdner() {
 
     await traverse(enOrdnerHandle);
     if (filesToScan.length > 0) {
-        scanFolder({ files: filesToScan });
+        verarbeiteGescannteDateien(filesToScan);
     }
 }
 // =========================== SCANENORDNER END ===============================
+
+// =========================== VERARBEITEGESCANNTE START =====================
+function verarbeiteGescannteDateien(dateien) {
+    for (const file of dateien) {
+        const relPath  = file.fullPath;
+        const parts    = relPath.split('/');
+        const filename = parts.pop();
+        const folder   = extractRelevantFolder(parts, relPath);
+
+        if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
+        filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
+        audioFileCache[relPath] = file;
+    }
+
+    saveFilePathDatabase();
+    updateStatus(`${dateien.length} Dateien eingelesen`);
+    updateFileAccessStatus();
+}
+// =========================== VERARBEITEGESCANNTE END =======================
 
 
 // =========================== SPEICHEREUEBERSETZUNGSDATEI START ===============
@@ -7709,168 +7727,6 @@ function aktualisiereDBNachRename(altOrdner, neuOrdner) {
 // =========================== AKTUALISIEREDBNACHRENAME END ====================
 
 
-// =========================== SCANFOLDER IMPROVED START ===========================
-function scanFolder(input) {
-    const scannedFiles = input.files;
-    if (!scannedFiles.length) return;
-
-    const progress     = document.getElementById('scanProgress');
-    const progressFill = document.getElementById('progressFill');
-    const scanStatus   = document.getElementById('scanStatus');
-
-    progress.classList.add('active');
-
-    let processed         = 0;
-    const totalFiles      = scannedFiles.length;
-    let duplicatesSkipped = 0;
-    let newFilesAdded     = 0;
-    let pathsUpdated      = 0;
-
-    const batchSize   = 100;
-    let currentBatch  = 0;
-
-    function processBatch() {
-        const start = currentBatch * batchSize;
-        const end   = Math.min(start + batchSize, totalFiles);
-
-        for (let i = start; i < end; i++) {
-            const file     = scannedFiles[i];
-            const rawPath  = file.webkitRelativePath;
-
-            // Nur Audio-Dateien
-            if (!rawPath.match(/\.(mp3|wav|ogg)$/i)) continue;
-
-            let parts   = rawPath.split('/');
-            let lang    = null;
-
-            // Sprache anhand des ersten Unterordners erkennen
-            if (parts[0].toUpperCase() === 'DE') {
-                lang = 'DE';
-                parts.shift();
-            } else if (parts[0].toUpperCase() === 'EN') {
-                lang = 'EN';
-                parts.shift();
-            }
-
-            const filename = parts.pop();
-            const relPath  = parts.length ? parts.join('/') + '/' + filename : filename;
-
-            if (lang === 'DE') {
-                // DE-Dateien nur im Übersetzungs‑Cache speichern
-                deAudioCache[relPath] = file;
-                continue; // Nicht in die EN-Datenbank aufnehmen
-            }
-
-            const folder = extractRelevantFolder(parts, relPath);
-            file.fullPath = relPath; // Pfad ohne Sprach-Präfix speichern
-
-            // ---------- VERBESSERTES Duplicate-Handling ----------
-            let shouldAdd = true;
-            let wasUpdated = false;
-
-            if (filePathDatabase[filename]) {
-                // Suche nach EXAKTER Ordner + Pfad Kombination
-                const exactIndex = filePathDatabase[filename].findIndex(p =>
-                    p.folder === folder && p.fullPath === relPath
-                );
-
-                if (exactIndex !== -1) {
-                    // EXAKT derselbe Pfad und Ordner → Cache aktualisieren, aber nicht zählen
-                    audioFileCache[relPath] = file;
-                    duplicatesSkipped++;
-                    shouldAdd = false;
-                    console.log(`[SCAN] Exact duplicate skipped: ${filename} in ${folder} at ${relPath}`);
-                } else {
-                    // Suche nach gleichem Ordner aber anderem Pfad
-                    const sameFolder = filePathDatabase[filename].findIndex(p => p.folder === folder);
-                    
-                    if (sameFolder !== -1) {
-                        // Gleicher Ordner, anderer Pfad → Pfad aktualisieren
-                        const existing = filePathDatabase[filename][sameFolder];
-                        console.log(`[SCAN] Updating path for ${filename} in ${folder}: ${existing.fullPath} → ${relPath}`);
-                        
-                        // Entferne alten Cache-Eintrag
-                        if (audioFileCache[existing.fullPath]) {
-                            delete audioFileCache[existing.fullPath];
-                        }
-                        
-                        // Aktualisiere Eintrag
-                        filePathDatabase[filename][sameFolder] = { folder, fullPath: relPath, fileObject: file };
-                        audioFileCache[relPath] = file;
-                        pathsUpdated++;
-                        shouldAdd = false;
-                        wasUpdated = true;
-                    }
-                    // Wenn kein gleicher Ordner gefunden → Es ist ein neuer Ordner für diese Datei
-                    // → shouldAdd bleibt true, neue Datei wird hinzugefügt
-                }
-            }
-
-            if (shouldAdd) {
-                // Neue Datei hinzufügen (neuer Dateiname ODER gleicher Dateiname in neuem Ordner)
-                if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
-                
-                filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
-                audioFileCache[relPath] = file;
-                newFilesAdded++;
-                
-                console.log(`[SCAN] Added: ${filename} in ${folder} (${filePathDatabase[filename].length} total paths for this file)`);
-            }
-
-            processed++;
-        }
-
-        // Fortschritt aktualisieren
-        const percent = Math.round((processed / totalFiles) * 100);
-        progressFill.style.width = percent + '%';
-        scanStatus.textContent =
-            `Verarbeite Datei ${processed} von ${totalFiles}. ` +
-            `(${newFilesAdded} neu, ${pathsUpdated} aktualisiert, ${duplicatesSkipped} übersprungen)`;
-
-        currentBatch++;
-        if (processed < totalFiles) {
-            setTimeout(processBatch, 10);
-        } else {
-            // ---------------- Nachbearbeitung ----------------
-            saveFilePathDatabase();
-
-            // 1. Ordner-Bereinigung (nur leere Ordner ohne Texte)
-            const folderCleanup = cleanupMissingFolders(scannedFiles);
-
-            // 2. Datei-Bereinigung (nur Dateien ohne Audio UND ohne Texte)
-            const fileCleanup = cleanupMissingFiles(scannedFiles);
-
-            // 3. Projekte synchronisieren
-            updateAllProjectsAfterScan();
-
-            // 4. UI-Updates
-            setTimeout(() => {
-                progress.classList.remove('active');
-                
-                let statusMsg = `${newFilesAdded} neue Dateien, ${pathsUpdated} Pfade aktualisiert, ${duplicatesSkipped} Duplikate übersprungen`;
-                if (folderCleanup.deletedFolders > 0 || fileCleanup > 0) {
-                    statusMsg += `, ${folderCleanup.deletedFolders} Ordner & ${fileCleanup} Dateien bereinigt`;
-                }
-                
-                updateStatus(statusMsg);
-                updateFileAccessStatus();
-                
-                // Zeige Zusammenfassung für mehrere Pfade
-                const multiPathFiles = Object.entries(filePathDatabase)
-                    .filter(([filename, paths]) => paths.length > 1)
-                    .length;
-                
-                if (multiPathFiles > 0) {
-                    console.log(`[SCAN] ${multiPathFiles} Dateien haben mehrere Ordner-Pfade (das ist normal für Dateien in verschiedenen Ordnern)`);
-                }
-                
-            }, 500);
-        }
-    }
-
-    processBatch();
-}
-// =========================== SCANFOLDER IMPROVED END ===========================
 
 // =========================== IMPROVED IMPORT PROCESS START ===========================
 async function startImportProcess() {
