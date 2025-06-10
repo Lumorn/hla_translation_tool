@@ -1757,7 +1757,6 @@ th:nth-child(9) {
                 <div class="add-files-container">
                     <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
                     <button class="btn" onclick="addFiles()">Hinzufügen</button>
-                    <button class="btn btn-secondary" onclick="waehleProjektOrdner()">📂 Projektordner wählen</button>
                 </div>
 
                 <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
@@ -1853,7 +1852,7 @@ th:nth-child(9) {
                 <div class="status-info">
                     <span id="fileCount">0 Dateien</span> |
                     <span id="selectedCount">0 ausgewählt</span> |
-                    <span id="projectFolderPath">Kein Projektordner</span> |
+                    <span id="projectFolderPath">sounds</span> |
                     <span id="accessStatus" class="access-status" onclick="handleAccessStatusClick()" title="Klicken um Dateiberechtigungen zu erneuern">
                         📂 Keine Auswahl
                     </span>
@@ -2037,7 +2036,6 @@ th:nth-child(9) {
             <div class="folder-files-view" id="folderFilesView"></div>
             
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="standardOrdnerAendern()">Standardordner ändern</button>
                 <button class="btn btn-secondary" onclick="closeFolderBrowser()">Schließen</button>
             </div>
         </div>
@@ -2118,32 +2116,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         filePathDatabase = JSON.parse(savedPathDB);
     }
 
-    // 👉 Zuletzt verwendeten Projektordner laden
-    const savedHandle = await loadProjectFolderHandle();
-    if (savedHandle) {
-        let perm = await savedHandle.queryPermission({ mode: 'read' });
-        if (perm !== 'granted') {
-            perm = await savedHandle.requestPermission({ mode: 'read' });
-        }
-
-        if (perm === 'granted') {
-            const rescan = confirm('Letzten Projektordner erneut scannen?');
-            if (rescan) {
-                projektOrdnerHandle = savedHandle;
-                deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
-                enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
-                await scanEnOrdner();
-                updateStatus('Projektordner eingelesen und gescannt');
-            } else {
-                projektOrdnerHandle = savedHandle;
+    if (!window.electronAPI) {
+        // 👉 Zuletzt verwendeten Projektordner laden (Browser-Version)
+        const savedHandle = await loadProjectFolderHandle();
+        if (savedHandle) {
+            let perm = await savedHandle.queryPermission({ mode: 'read' });
+            if (perm !== 'granted') {
+                perm = await savedHandle.requestPermission({ mode: 'read' });
             }
-        }
-    } else {
-        const choose = confirm('Kein Projektordner gefunden. Jetzt auswählen?');
-        if (choose) waehleProjektOrdner();
-    }
 
-    updateProjectFolderPathDisplay();
+            if (perm === 'granted') {
+                const rescan = confirm('Letzten Projektordner erneut scannen?');
+                if (rescan) {
+                    projektOrdnerHandle = savedHandle;
+                    deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+                    enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
+                    await scanEnOrdner();
+                    updateStatus('Projektordner eingelesen und gescannt');
+                } else {
+                    projektOrdnerHandle = savedHandle;
+                }
+            }
+        } else {
+            const choose = confirm('Kein Projektordner gefunden. Jetzt auswählen?');
+            if (choose) waehleProjektOrdner();
+        }
+
+        updateProjectFolderPathDisplay();
+    } else {
+        // 👉 Desktop-Version: Ordnerpfad ist fest definiert
+        projektOrdnerHandle = { name: 'sounds' };
+        updateProjectFolderPathDisplay();
+    }
 
     // 💾 Auto-Save alle 30 Sekunden
     setInterval(saveCurrentProject, 30000);
@@ -7571,10 +7575,7 @@ async function waehleProjektOrdner() {
 // =========================== WAEHLEPROJEKTORDNER END =========================
 
 // =========================== STANDARDORDNERAENDERN START ====================
-function standardOrdnerAendern() {
-    // Öffnet den Dialog zur Wahl eines neuen Standardordners
-    waehleProjektOrdner();
-}
+// Funktion nicht mehr benötigt – Pfad ist fest definiert
 // =========================== STANDARDORDNERAENDERN END ======================
 
 // =========================== SCANENORDNER START =============================
@@ -8852,7 +8853,11 @@ function showProjectCustomization(id, ev) {
         function updateProjectFolderPathDisplay() {
             const pathSpan = document.getElementById('projectFolderPath');
             if (pathSpan) {
-                pathSpan.textContent = projektOrdnerHandle ? projektOrdnerHandle.name : 'Kein Projektordner';
+                if (window.electronAPI) {
+                    pathSpan.textContent = 'sounds';
+                } else {
+                    pathSpan.textContent = projektOrdnerHandle ? projektOrdnerHandle.name : 'Kein Projektordner';
+                }
             }
         }
 

@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const config = require('./config.json');
+// Pfade zu EN und DE relativ zur HTML-Datei
 
 function readAudioFiles(dir) {
   const result = [];
@@ -34,10 +34,10 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  // Basis- und Sprachordner sicherstellen
-  const projectBase = path.resolve(config.projectPath);
-  const enPath = path.join(projectBase, config.enFolder);
-  const dePath = path.join(projectBase, config.deFolder);
+  // Basis- und Sprachordner relativ zur App bestimmen
+  const projectBase = path.join(__dirname, '..', 'sounds');
+  const enPath = path.join(projectBase, 'EN');
+  const dePath = path.join(projectBase, 'DE');
   fs.mkdirSync(enPath, { recursive: true }); // EN-Ordner anlegen
   fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
 
