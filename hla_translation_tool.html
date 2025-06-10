@@ -8359,10 +8359,10 @@ async function addFromSearch(result) {
         
         // Verwende ausgewählten Pfad
         const selectedPath = paths[selection.selectedIndex];
-        addFileToProject(result.filename, selectedPath.folder, selectedPath.fullPath, result);
+        addFileToProject(result.filename, selectedPath.folder, result);
     } else {
         // Nur ein Pfad oder bereits spezifischer Pfad aus Suchergebnis
-        addFileToProject(result.filename, result.folder, result.fullPath, result);
+        addFileToProject(result.filename, result.folder, result);
     }
 }
 
@@ -8547,7 +8547,8 @@ function playPreview(fullPath) {
 
 
 // Hilfsfunktion zum Hinzufügen einer Datei zum Projekt
-function addFileToProject(filename, folder, fullPath, originalResult) {
+// fullPath wird nicht mehr als Parameter übergeben
+function addFileToProject(filename, folder, originalResult) {
     const fileKey = `${folder}/${filename}`;
     const newFile = {
         id: Date.now() + Math.random(),
