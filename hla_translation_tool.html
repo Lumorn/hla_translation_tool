@@ -2037,6 +2037,7 @@ th:nth-child(9) {
             <div class="folder-files-view" id="folderFilesView"></div>
             
             <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="standardOrdnerAendern()">Standardordner ändern</button>
                 <button class="btn btn-secondary" onclick="closeFolderBrowser()">Schließen</button>
             </div>
         </div>
@@ -2082,7 +2083,7 @@ let displayOrder           = []; // Original-Dateireihenfolge
 
 
 // =========================== DOM READY INITIALISIERUNG ===========================
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     loadProjects();
 
     // 🟩 NEU: Level-Farben laden
@@ -2103,6 +2104,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedPathDB = localStorage.getItem('hla_filePathDatabase');
     if (savedPathDB) {
         filePathDatabase = JSON.parse(savedPathDB);
+    }
+
+    // 👉 Zuletzt verwendeten Projektordner laden
+    const savedHandle = await loadProjectFolderHandle();
+    if (savedHandle) {
+        let perm = await savedHandle.queryPermission({ mode: 'read' });
+        if (perm !== 'granted') {
+            perm = await savedHandle.requestPermission({ mode: 'read' });
+        }
+
+        if (perm === 'granted') {
+            const rescan = confirm('Letzten Projektordner erneut scannen?');
+            if (rescan) {
+                projektOrdnerHandle = savedHandle;
+                deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+                enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
+                await scanEnOrdner();
+                updateStatus('Projektordner eingelesen und gescannt');
+            } else {
+                projektOrdnerHandle = savedHandle;
+            }
+        }
+    } else {
+        const choose = confirm('Kein Projektordner gefunden. Jetzt auswählen?');
+        if (choose) waehleProjektOrdner();
     }
 
     // 💾 Auto-Save alle 30 Sekunden
@@ -2284,6 +2310,46 @@ function loadProjects() {
         function saveFolderCustomizations() {
             localStorage.setItem('hla_folderCustomizations', JSON.stringify(folderCustomizations));
         }
+
+        // =========================== HANDLE-DATENBANK START =====================
+        let ordnerHandleDB = null; // IndexedDB-Instanz
+
+        function openOrdnerHandleDB() {
+            return new Promise((resolve, reject) => {
+                if (ordnerHandleDB) return resolve(ordnerHandleDB);
+
+                const request = indexedDB.open('hla_projectFolder', 1);
+                request.onupgradeneeded = () => {
+                    request.result.createObjectStore('handles');
+                };
+                request.onsuccess = () => {
+                    ordnerHandleDB = request.result;
+                    resolve(ordnerHandleDB);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function saveProjectFolderHandle(handle) {
+            const db = await openOrdnerHandleDB();
+            const tx = db.transaction('handles', 'readwrite');
+            tx.objectStore('handles').put(handle, 'project');
+            return new Promise((res, rej) => {
+                tx.oncomplete = () => res();
+                tx.onerror = () => rej(tx.error);
+            });
+        }
+
+        async function loadProjectFolderHandle() {
+            const db = await openOrdnerHandleDB();
+            const tx = db.transaction('handles', 'readonly');
+            const req = tx.objectStore('handles').get('project');
+            return new Promise((res) => {
+                req.onsuccess = () => res(req.result);
+                req.onerror = () => res(null);
+            });
+        }
+        // =========================== HANDLE-DATENBANK END =======================
 
 /* =========================== RENDER PROJECTS START =========================== */
 function renderProjects() {
@@ -7418,6 +7484,7 @@ async function waehleProjektOrdner() {
     try {
         // Nutzer wählt den Wurzelordner aus
         projektOrdnerHandle = await window.showDirectoryPicker();
+        await saveProjectFolderHandle(projektOrdnerHandle); // Merken des Ordners
 
         // DE-Ordner anlegen oder öffnen
         deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
@@ -7469,8 +7536,15 @@ async function waehleProjektOrdner() {
     } catch (e) {
         console.error('Ordnerauswahl fehlgeschlagen:', e);
     }
-}
+} 
 // =========================== WAEHLEPROJEKTORDNER END =========================
+
+// =========================== STANDARDORDNERAENDERN START ====================
+function standardOrdnerAendern() {
+    // Öffnet den Dialog zur Wahl eines neuen Standardordners
+    waehleProjektOrdner();
+}
+// =========================== STANDARDORDNERAENDERN END ======================
 
 // =========================== SCANENORDNER START =============================
 async function scanEnOrdner() {
