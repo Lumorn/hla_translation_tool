@@ -4287,11 +4287,14 @@ function normalizeFolderPath(folderPath) {
 function cleanupMissingFolders(scannedFiles) {
     const { en: globalEN, de: globalDE, both: globalBoth, total: globalTotal } = calculateGlobalTextStats();
     const scannedFolders = new Set();
-    
+
     // Sammle alle Ordner aus dem aktuellen Scan
     Array.from(scannedFiles).forEach(file => {
         if (file.webkitRelativePath.match(/\.(mp3|wav|ogg)$/i)) {
-            const fullPath = file.webkitRelativePath;
+            let fullPath = file.webkitRelativePath;
+            // Sprach-Präfixe entfernen, damit die Ordner passen
+            if (fullPath.startsWith('EN/')) fullPath = fullPath.slice(3);
+            if (fullPath.startsWith('DE/')) fullPath = fullPath.slice(3);
             const parts = fullPath.split('/');
             const folderParts = parts.slice(0, -1);
             const folder = extractRelevantFolder(folderParts, fullPath);
@@ -4393,9 +4396,15 @@ function cleanupMissingFolders(scannedFiles) {
 // Entferne Dateieinträge ohne vorhandene Datei und ohne EN/DE-Texte
 function cleanupMissingFiles(scannedFiles) {
     // 1. Alle tatsächlich gefundenen Pfade des Scans sammeln
+    //    EN/DE-Präfixe werden entfernt, damit die Pfade zu unserer Datenbank passen
     const scannedPaths = new Set(
         Array.from(scannedFiles)
-             .map(f => f.webkitRelativePath)
+             .map(f => {
+                 let p = f.webkitRelativePath;
+                 if (p.startsWith('EN/')) p = p.slice(3);
+                 if (p.startsWith('DE/')) p = p.slice(3);
+                 return p;
+             })
     );
 
     let deletedCount = 0;
@@ -7718,14 +7727,34 @@ function scanFolder(input) {
 
         for (let i = start; i < end; i++) {
             const file     = scannedFiles[i];
-            const fullPath = file.webkitRelativePath;
+            const rawPath  = file.webkitRelativePath;
 
             // Nur Audio-Dateien
-            if (!fullPath.match(/\.(mp3|wav|ogg)$/i)) continue;
+            if (!rawPath.match(/\.(mp3|wav|ogg)$/i)) continue;
 
-            const parts    = fullPath.split('/');
+            let parts   = rawPath.split('/');
+            let lang    = null;
+
+            // Sprache anhand des ersten Unterordners erkennen
+            if (parts[0].toUpperCase() === 'DE') {
+                lang = 'DE';
+                parts.shift();
+            } else if (parts[0].toUpperCase() === 'EN') {
+                lang = 'EN';
+                parts.shift();
+            }
+
             const filename = parts.pop();
-            const folder   = extractRelevantFolder(parts, fullPath);
+            const relPath  = parts.length ? parts.join('/') + '/' + filename : filename;
+
+            if (lang === 'DE') {
+                // DE-Dateien nur im Übersetzungs‑Cache speichern
+                deAudioCache[relPath] = file;
+                continue; // Nicht in die EN-Datenbank aufnehmen
+            }
+
+            const folder = extractRelevantFolder(parts, relPath);
+            file.fullPath = relPath; // Pfad ohne Sprach-Präfix speichern
 
             // ---------- VERBESSERTES Duplicate-Handling ----------
             let shouldAdd = true;
@@ -7733,16 +7762,16 @@ function scanFolder(input) {
 
             if (filePathDatabase[filename]) {
                 // Suche nach EXAKTER Ordner + Pfad Kombination
-                const exactIndex = filePathDatabase[filename].findIndex(p => 
-                    p.folder === folder && p.fullPath === fullPath
+                const exactIndex = filePathDatabase[filename].findIndex(p =>
+                    p.folder === folder && p.fullPath === relPath
                 );
 
                 if (exactIndex !== -1) {
                     // EXAKT derselbe Pfad und Ordner → Cache aktualisieren, aber nicht zählen
-                    audioFileCache[fullPath] = file;
+                    audioFileCache[relPath] = file;
                     duplicatesSkipped++;
                     shouldAdd = false;
-                    console.log(`[SCAN] Exact duplicate skipped: ${filename} in ${folder} at ${fullPath}`);
+                    console.log(`[SCAN] Exact duplicate skipped: ${filename} in ${folder} at ${relPath}`);
                 } else {
                     // Suche nach gleichem Ordner aber anderem Pfad
                     const sameFolder = filePathDatabase[filename].findIndex(p => p.folder === folder);
@@ -7750,7 +7779,7 @@ function scanFolder(input) {
                     if (sameFolder !== -1) {
                         // Gleicher Ordner, anderer Pfad → Pfad aktualisieren
                         const existing = filePathDatabase[filename][sameFolder];
-                        console.log(`[SCAN] Updating path for ${filename} in ${folder}: ${existing.fullPath} → ${fullPath}`);
+                        console.log(`[SCAN] Updating path for ${filename} in ${folder}: ${existing.fullPath} → ${relPath}`);
                         
                         // Entferne alten Cache-Eintrag
                         if (audioFileCache[existing.fullPath]) {
@@ -7758,8 +7787,8 @@ function scanFolder(input) {
                         }
                         
                         // Aktualisiere Eintrag
-                        filePathDatabase[filename][sameFolder] = { folder, fullPath, fileObject: file };
-                        audioFileCache[fullPath] = file;
+                        filePathDatabase[filename][sameFolder] = { folder, fullPath: relPath, fileObject: file };
+                        audioFileCache[relPath] = file;
                         pathsUpdated++;
                         shouldAdd = false;
                         wasUpdated = true;
@@ -7773,8 +7802,8 @@ function scanFolder(input) {
                 // Neue Datei hinzufügen (neuer Dateiname ODER gleicher Dateiname in neuem Ordner)
                 if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
                 
-                filePathDatabase[filename].push({ folder, fullPath, fileObject: file });
-                audioFileCache[fullPath] = file;
+                filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
+                audioFileCache[relPath] = file;
                 newFilesAdded++;
                 
                 console.log(`[SCAN] Added: ${filename} in ${folder} (${filePathDatabase[filename].length} total paths for this file)`);
