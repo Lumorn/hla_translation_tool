@@ -54,15 +54,19 @@ try {
 }
 
 log('Repository-Pruefung');
-const repoPath = path.join(__dirname, 'hla_translation_tool');
-const gitFolder = path.join(repoPath, '.git');
-
-// Repository klonen, falls es noch nicht vorhanden ist
-if (!fs.existsSync(gitFolder)) {
-    if (!fs.existsSync(repoPath)) {
-        console.log('Repository wird geklont...');
-        log('Repository wird geklont');
-        run(`git clone https://github.com/Lumorn/hla_translation_tool "${repoPath}"`);
+// Standardpfad ist das Verzeichnis dieses Skripts
+let repoPath = __dirname;
+// Liegt hier kein Git-Repo, wird in den Unterordner gewechselt bzw. geklont
+if (!fs.existsSync(path.join(repoPath, '.git'))) {
+    repoPath = path.join(__dirname, 'hla_translation_tool');
+    const gitFolder = path.join(repoPath, '.git');
+    // Repository klonen, falls es noch nicht vorhanden ist
+    if (!fs.existsSync(gitFolder)) {
+        if (!fs.existsSync(repoPath)) {
+            console.log('Repository wird geklont...');
+            log('Repository wird geklont');
+            run(`git clone https://github.com/Lumorn/hla_translation_tool "${repoPath}"`);
+        }
     }
 }
 

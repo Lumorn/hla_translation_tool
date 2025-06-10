@@ -61,14 +61,16 @@ except subprocess.CalledProcessError:
     sys.exit(1)
 
 log("Repository-Pruefung")
-repo_path = os.path.join(BASE_DIR, "hla_translation_tool")
-
-# Repository klonen, falls nicht vorhanden
+# Standardpfad ist der Ordner dieses Skripts
+repo_path = BASE_DIR
+# Liegt hier kein Git-Repo, wird in den Unterordner gewechselt bzw. geklont
 if not os.path.exists(os.path.join(repo_path, ".git")):
-    if not os.path.exists(repo_path):
-        print("Repository wird geklont...")
-        log("Repository wird geklont")
-        run(f"git clone https://github.com/Lumorn/hla_translation_tool \"{repo_path}\"")
+    repo_path = os.path.join(BASE_DIR, "hla_translation_tool")
+    if not os.path.exists(os.path.join(repo_path, ".git")):
+        if not os.path.exists(repo_path):
+            print("Repository wird geklont...")
+            log("Repository wird geklont")
+            run(f"git clone https://github.com/Lumorn/hla_translation_tool \"{repo_path}\"")
     os.chdir(repo_path)
 else:
     os.chdir(repo_path)
