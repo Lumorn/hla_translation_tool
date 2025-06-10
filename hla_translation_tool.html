@@ -2540,31 +2540,26 @@ function showFolderBrowser() {
 
 /* =========================== ADD PROJECT START =========================== */
 function addProject() {
-    const name = prompt('Projektname:');
-    if (!name) return;
-
-    const levelNames = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
-    const lvl = prompt('Level-Name (bekannt: ' + (levelNames.join(', ') || '–') + ')') || '';
-    const part = parseInt(prompt('Teil-Nummer (1-99):', '1')) || 1;
-
-    const color = getLevelColor(lvl) || '#54428E';    // Default-Farbe, falls neu
-
+    // Neues Projekt mit Platzhalterwerten erstellen
     const prj = {
         id: Date.now(),
-        name: name.trim(),
-        levelName: lvl.trim(),
-        levelPart: part,
+        name: 'Neues Projekt',
+        levelName: '',
+        levelPart: 1,
         files: [],
         icon: '🗂️',
-        color: color
+        color: '#54428E'
     };
 
+    // Projekt in die Liste aufnehmen
     projects.push(prj);
-    if (!levelColors[lvl]) setLevelColor(lvl, color);
 
     saveProjects();
     renderProjects();
     selectProject(prj.id);
+
+    // Direkt im Anschluss den Bearbeitungsdialog anzeigen
+    showProjectCustomization(prj.id);
 }
 /* =========================== ADD PROJECT END =========================== */
 
@@ -8991,15 +8986,8 @@ function showProjectCustomization(id, ev) {
                 const projectId = parseInt(projectItem.dataset.projectId);
                 const project = projects.find(p => p.id === projectId);
                 if (project) {
-                    const newName = prompt('Projekt umbenennen:', project.name);
-                    if (newName && newName !== project.name) {
-                        project.name = newName;
-                        saveProjects();
-                        renderProjects();
-                        document.querySelectorAll('.project-item').forEach(item => {
-                            item.classList.toggle('active', item.dataset.projectId == projectId);
-                        });
-                    }
+                    // Projekt über Dialog anpassen statt prompt()
+                    showProjectCustomization(projectId, e);
                 }
             }
         });
