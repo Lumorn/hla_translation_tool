@@ -2,6 +2,14 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electro
 const path = require('path');
 const fs = require('fs');
 
+// =========================== USER-DATA-PFAD START ===========================
+// Benutzer-Datenordner festlegen, damit lokale Daten auch nach einem Neustart
+// verfügbar bleiben und nicht durch Zugriffsrechte im Standardpfad verloren gehen
+const userDataPath = path.join(app.getPath('home'), '.hla_translation_tool');
+fs.mkdirSync(userDataPath, { recursive: true });
+app.setPath('userData', userDataPath);
+// =========================== USER-DATA-PFAD END =============================
+
 // Flag, ob die DevTools beim Start geöffnet werden sollen
 const isDebug = process.argv.includes('--debug');
 
