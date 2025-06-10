@@ -1,6 +1,9 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
 const path = require('path');
 const fs = require('fs');
+
+// Flag, ob die DevTools beim Start geöffnet werden sollen
+const isDebug = process.argv.includes('--debug');
 
 // Pfade zu EN und DE relativ zur HTML-Datei
 
@@ -31,6 +34,20 @@ function createWindow() {
   });
 
   win.loadFile(path.join(__dirname, '..', 'hla_translation_tool.html'));
+
+  // DevTools optional öffnen, wenn das Flag gesetzt ist
+  if (isDebug) {
+    win.webContents.openDevTools();
+  }
+
+  // Shortcut zum Ein- und Ausblenden der DevTools
+  globalShortcut.register('CommandOrControl+Shift+I', () => {
+    if (win.webContents.isDevToolsOpened()) {
+      win.webContents.closeDevTools();
+    } else {
+      win.webContents.openDevTools();
+    }
+  });
 }
 
 app.whenReady().then(() => {
@@ -49,6 +66,11 @@ app.whenReady().then(() => {
   });
 
   createWindow();
+
+  // Beim Beenden alle Shortcuts wieder freigeben
+  app.on('will-quit', () => {
+    globalShortcut.unregisterAll();
+  });
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
