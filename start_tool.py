@@ -98,7 +98,11 @@ except subprocess.CalledProcessError:
 print("Anwendung wird gestartet...")
 log("Starte Anwendung")
 
-if os.geteuid() == 0:
+# Unter Windows existiert os.geteuid nicht. Darum pruefen wir zuerst,
+# ob die Funktion vorhanden ist. Wenn sie vorhanden ist und einen
+# Root-User meldet, muss Electron ohne Sandbox gestartet werden.
+geteuid = getattr(os, "geteuid", None)
+if geteuid is not None and geteuid() == 0:
     run("npm start -- --no-sandbox")
 else:
     run("npm start")
