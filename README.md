@@ -113,6 +113,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 1. In das Verzeichnis `electron/` wechseln und `npm install` ausführen
 2. Pfade zu `EN` und `DE` in `electron/config.json` anpassen
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
+4. Alternativ kann `start_tool.bat` im Projektstamm genutzt werden, um das Repository zu aktualisieren und die App zu starten
 
 ---
 
