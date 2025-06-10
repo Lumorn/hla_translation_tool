@@ -2093,6 +2093,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             data.deFiles.forEach(file => {
                 deAudioCache[file.fullPath] = `sounds/DE/${file.fullPath}`;
             });
+            // Nach dem Einlesen Projekte und Zugriffsstatus aktualisieren
+            updateAllProjectsAfterScan();
+            updateFileAccessStatus();
         });
     }
 
@@ -7596,6 +7599,9 @@ async function waehleProjektOrdner() {
 
         // Automatischer Scan des EN-Ordners nach der Auswahl
         await scanEnOrdner();
+        // Projekte und Zugriffsstatus nach dem Scan aktualisieren
+        updateAllProjectsAfterScan();
+        updateFileAccessStatus();
 
         updateStatus('Projektordner eingelesen und gescannt');
         updateProjectFolderPathDisplay();
@@ -7638,6 +7644,9 @@ async function scanEnOrdner() {
     await traverse(enOrdnerHandle);
     if (filesToScan.length > 0) {
         verarbeiteGescannteDateien(filesToScan);
+        // Nach dem Scan Projekte und Zugriffsstatus aktualisieren
+        updateAllProjectsAfterScan();
+        updateFileAccessStatus();
     }
 }
 // =========================== SCANENORDNER END ===============================
