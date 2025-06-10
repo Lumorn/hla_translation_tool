@@ -65,6 +65,16 @@ app.whenReady().then(() => {
     };
   });
 
+  // DevTools per IPC ein-/ausblenden
+  ipcMain.on('toggle-devtools', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (win.webContents.isDevToolsOpened()) {
+      win.webContents.closeDevTools();
+    } else {
+      win.webContents.openDevTools();
+    }
+  });
+
   createWindow();
 
   // Beim Beenden alle Shortcuts wieder freigeben
