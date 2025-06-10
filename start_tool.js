@@ -75,7 +75,8 @@ process.chdir(repoPath);
 // ----------------------- Lokale Änderungen verwerfen --------------------
 log('Verwerfe lokale Änderungen');
 try {
-    run('git reset --hard');
+    // Sounds-Ordner nicht überschreiben
+    run('git reset --hard HEAD -- :!sounds');
     log('Lokale Änderungen verworfen');
 } catch (err) {
     log('git reset fehlgeschlagen');
