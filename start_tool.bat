@@ -40,7 +40,7 @@ echo.
 REM ======================= Repository einrichten ==========================
 IF NOT EXIST "hla_translation_tool" (
     echo Repository wird geklont...
-    git clone <REPOSITORY_URL>
+    git clone https://github.com/Lumorn/hla_translation_tool
     cd hla_translation_tool
 ) ELSE (
     cd hla_translation_tool
