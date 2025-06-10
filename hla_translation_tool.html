@@ -7112,26 +7112,30 @@ async function startExport() {
             try {
                 document.getElementById('downloadBtn').disabled = true;
                 document.getElementById('downloadBtn').textContent = 'Erstelle Download...';
-                
+
+                // Unter Electron erzeugen wir ein Uint8Array, im Browser ein Blob
+                const exportType = window.electronAPI ? 'uint8array' : 'blob';
                 const content = await exportZip.generateAsync({
-                    type: "blob",
-                    compression: "DEFLATE",
-                    compressionOptions: {
-                        level: 6
-                    }
+                    type: exportType,
+                    compression: 'DEFLATE',
+                    compressionOptions: { level: 6 }
                 });
-                
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(content);
-                link.download = `${currentProject.name}_export_${new Date().toISOString().split('T')[0]}.zip`;
-                link.click();
-                
-                setTimeout(() => {
-                    URL.revokeObjectURL(link.href);
-                }, 1000);
-                
+
+                const filename = `${currentProject.name}_export_${new Date().toISOString().split('T')[0]}.zip`;
+
+                if (window.electronAPI && window.electronAPI.saveFile) {
+                    // Direkt über Electron speichern
+                    await window.electronAPI.saveFile(Array.from(content), filename);
+                } else {
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(content);
+                    link.download = filename;
+                    link.click();
+                    setTimeout(() => { URL.revokeObjectURL(link.href); }, 1000);
+                }
+
                 updateStatus('ZIP-Download gestartet');
-                
+
             } catch (error) {
                 console.error('Download error:', error);
                 alert('Fehler beim Download: ' + error.message);
@@ -7224,13 +7228,22 @@ function checkFileAccess() {
                 folderCustomizations: folderCustomizations,
                 currentProjectId: currentProject?.id
             };
-            
-            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = `hla_translation_backup_${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
-            
+
+            const json = JSON.stringify(backup, null, 2);
+
+            // In Electron speichern wir die Datei direkt
+            if (window.electronAPI && window.electronAPI.saveFile) {
+                const filename = `hla_translation_backup_${new Date().toISOString().split('T')[0]}.json`;
+                const data = Array.from(new TextEncoder().encode(json));
+                window.electronAPI.saveFile(data, filename);
+            } else {
+                const blob = new Blob([json], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `hla_translation_backup_${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+            }
+
             updateStatus('Backup erstellt');
         }
 
