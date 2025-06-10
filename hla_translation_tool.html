@@ -4355,10 +4355,14 @@ function cleanupMissingFolders(scannedFiles) {
         if (!hasTexts && !isInProject) {
             // Lösche alle Dateien aus diesem Ordner aus filePathDatabase
             Object.keys(filePathDatabase).forEach(filename => {
+                // Ursprüngliche Anzahl der Pfade merken für das Logging
                 const originalLength = filePathDatabase[filename].length;
-                filePathDatabase[filename] = filePathDatabase[filename].filter(pathInfo => 
+                filePathDatabase[filename] = filePathDatabase[filename].filter(pathInfo =>
                     pathInfo.folder !== folder
                 );
+                if (filePathDatabase[filename].length < originalLength) {
+                    console.log(`[CLEANUP] ${originalLength - filePathDatabase[filename].length} Pfade aus ${filename} entfernt`);
+                }
                 
                 // Entferne leere Einträge
                 if (filePathDatabase[filename].length === 0) {
