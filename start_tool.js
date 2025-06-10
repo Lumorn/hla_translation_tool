@@ -72,6 +72,15 @@ if (!fs.existsSync(path.join(repoPath, '.git'))) {
 
 process.chdir(repoPath);
 
+// ----------------------- Lokale Änderungen verwerfen --------------------
+log('Verwerfe lokale Änderungen');
+try {
+    run('git reset --hard');
+    log('Lokale Änderungen verworfen');
+} catch (err) {
+    log('git reset fehlgeschlagen');
+}
+
 // ----------------------- git pull --------------------------
 log('git pull starten');
 console.log('Neueste Aenderungen werden geholt...');

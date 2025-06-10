@@ -68,7 +68,16 @@ IF NOT EXIST ".git" (
         git clone https://github.com/Lumorn/hla_translation_tool
         IF ERRORLEVEL 1 call :log "git clone fehlgeschlagen" ELSE call :log "git clone erfolgreich"
     )
-    cd hla_translation_tool
+cd hla_translation_tool
+)
+
+REM ----------------------- Lokale Änderungen verwerfen --------------------
+call :log "Verwerfe lokale Änderungen"
+git reset --hard
+IF ERRORLEVEL 1 (
+    call :log "git reset fehlgeschlagen"
+) ELSE (
+    call :log "Lokale Änderungen verworfen"
 )
 
 call :log "git pull starten"
