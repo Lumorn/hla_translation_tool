@@ -5373,6 +5373,10 @@ function calculateFolderCompletionStats() {
 
         // Auto-scan system for missing permissions
         function checkAndAutoScan(requiredFiles = [], functionName = 'Funktion') {
+            // Desktop-Version nutzt feste Ordnerpfade - kein automatischer Scan nötig
+            if (window.electronAPI) {
+                return null;
+            }
             let missingFiles = [];
             
             // Check if specific files are accessible
