@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -63,6 +63,16 @@ app.whenReady().then(() => {
       enFiles: readAudioFiles(enPath),
       deFiles: readAudioFiles(dePath),
     };
+  });
+
+  // Speichert eine Datei über einen Dialog auf der Festplatte
+  ipcMain.handle('save-file', async (event, { data, defaultPath }) => {
+    const { canceled, filePath } = await dialog.showSaveDialog({
+      defaultPath,
+    });
+    if (canceled || !filePath) return null;
+    fs.writeFileSync(filePath, Buffer.from(data));
+    return filePath;
   });
 
   // DevTools per IPC ein-/ausblenden
