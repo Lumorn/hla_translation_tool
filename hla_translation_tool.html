@@ -5228,9 +5228,17 @@ function updateAllProjectsAfterScan() {
                 if (matchingPaths.length > 0) {
                     // Finde den besten Pfad (kürzester normalisierter Pfad hat Vorrang)
                     bestPath = matchingPaths.reduce((best, current) => {
+                        // Erst prüfen, ob einer der beiden Pfade bereits im Cache vorhanden ist.
+                        // Ist nur ein Pfad vorhanden, wird dieser bevorzugt.
+                        const bestCached    = !!audioFileCache[best.fullPath];
+                        const currentCached = !!audioFileCache[current.fullPath];
+                        if (bestCached !== currentCached) {
+                            return currentCached ? current : best;
+                        }
+
                         const bestNormalized = normalizeFolderPath(best.folder);
                         const currentNormalized = normalizeFolderPath(current.folder);
-                        
+
                         // Bevorzuge kürzere, normalisierte Pfade (vo/alyx statt sounds/vo/alyx)
                         if (currentNormalized.length < bestNormalized.length) {
                             return current;
