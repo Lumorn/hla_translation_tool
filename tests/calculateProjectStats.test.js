@@ -11,6 +11,17 @@ describe('calculateProjectStats', () => {
         });
     });
 
+    // Testfall: Aufruf ohne "files"-Eigenschaft
+    test('project ohne files liefert 0% Statistiken', () => {
+        const result = calculateProjectStats({});
+        expect(result).toEqual({
+            enPercent: 0,
+            dePercent: 0,
+            completedPercent: 0,
+            totalFiles: 0
+        });
+    });
+
     test('single completed file returns 100% in all categories', () => {
         const result = calculateProjectStats({
             files: [{ enText: 'EN', deText: 'DE', completed: true }]
