@@ -38,22 +38,22 @@ IF ERRORLEVEL 1 (
 
 echo.
 REM ======================= Repository einrichten ==========================
-IF NOT EXIST "hla_translation_tool" (
-    echo Repository wird geklont...
-    git clone https://github.com/Lumorn/hla_translation_tool
+REM Wenn sich bereits ein .git-Ordner befindet, sind wir schon im Repository
+IF NOT EXIST ".git" (
+    REM Repository ist noch nicht vorhanden
+    IF NOT EXIST "hla_translation_tool" (
+        echo Repository wird geklont...
+        git clone https://github.com/Lumorn/hla_translation_tool
+    )
     cd hla_translation_tool
-) ELSE (
-    cd hla_translation_tool
-    echo Neueste Aenderungen werden geholt...
-    git pull
 )
+echo Neueste Aenderungen werden geholt...
+git pull
 
 REM ======================= Electron-Setup ================================
 cd electron
-IF NOT EXIST "node_modules" (
-    echo Abhaengigkeiten werden installiert...
-    npm install
-)
+echo Abhaengigkeiten werden installiert...
+npm install
 
 echo Anwendung wird gestartet...
 call npm start
