@@ -4117,131 +4117,20 @@ function addFromSearch(result) {
 
 // =========================== EXTRACTRELEVANTFOLDER START ===========================
 function extractRelevantFolder(folderParts, fullPath) {
+    // Gibt den direkten Ordner der Datei zurück.
+    // Liegt die Datei in einem "vo"-Ordner, wird "vo/Ordnername" zurückgegeben.
+
     if (folderParts.length === 0) return 'root';
-    
-    // Known character/location names for Half-Life Alyx
-    const knownCharacters = [
-        'alyx', 'gman', 'russell', 'eli', 'vortigaunt', 'combine', 
-        'jeff', 'zombie', 'larry', 'suppressor', 'strider', 'grunt',
-        'officer', 'charger', 'contractor', 'drone', 'overwatch'
-    ];
-    
-    const knownLocations = [
-        'city', 'quarantine', 'hotel', 'sewers', 'refinery', 'vault',
-        'zoo', 'northern_star', 'residential', 'distillery'
-    ];
-    
-    const knownFolders = [...knownCharacters, ...knownLocations, 'vo', 'sounds', 'music', 'ambient'];
-    
-    // WICHTIG: Für combine Ordner, behalte die Unterordner-Struktur
-    let voIndex = -1;
-    let combineIndex = -1;
-    
-    for (let i = 0; i < folderParts.length; i++) {
-        const part = folderParts[i].toLowerCase();
-        if (part === 'vo') {
-            voIndex = i;
-        }
-        if (part === 'combine') {
-            combineIndex = i;
-        }
+
+    const last = folderParts[folderParts.length - 1];
+    const prev = folderParts[folderParts.length - 2];
+
+    // Wenn das übergeordnete Verzeichnis "vo" heißt, füge es als Präfix hinzu
+    if (prev && prev.toLowerCase() === 'vo') {
+        return `vo/${last}`;
     }
-    
-    // Spezialbehandlung für combine mit Unterordnern
-    if (combineIndex >= 0 && folderParts.length > combineIndex + 1) {
-        const nextPart = folderParts[combineIndex + 1].toLowerCase();
-        // Wenn nach combine ein bekannter Unterordner kommt, nimm beide
-        if (['charger', 'officer', 'grunt', 'suppressor', 'drone', 'contractor', 'overwatch'].includes(nextPart)) {
-            if (voIndex >= 0) {
-                return `vo/combine/${folderParts[combineIndex + 1]}`;
-            } else {
-                return `combine/${folderParts[combineIndex + 1]}`;
-            }
-        }
-    }
-    
-    // Strategy 1: Look for vo/character pattern
-    let characterIndex = -1;
-    
-    for (let i = 0; i < folderParts.length; i++) {
-        const part = folderParts[i].toLowerCase();
-        if (knownCharacters.includes(part) && part !== 'combine') {
-            characterIndex = i;
-        }
-    }
-    
-    // If we found vo and character, create normalized path
-    if (voIndex >= 0 && characterIndex >= 0 && characterIndex > voIndex) {
-        const character = folderParts[characterIndex];
-        return `vo/${character}`;
-    }
-    
-    // Strategy 2: Look for known character/location names
-    for (let i = folderParts.length - 1; i >= 0; i--) {
-        const part = folderParts[i].toLowerCase();
-        if (knownCharacters.includes(part) && part !== 'combine') {
-            // Found character, create normalized vo path
-            return `vo/${folderParts[i]}`;
-        }
-    }
-    
-    // Strategy 3: Look for 'vo' or 'sounds' and take everything from there
-    for (let i = 0; i < folderParts.length; i++) {
-        const part = folderParts[i].toLowerCase();
-        if (part === 'vo') {
-            const remaining = folderParts.slice(i);
-            // Nimm bis zu 3 Ebenen nach 'vo' (z.B. vo/combine/charger)
-            const relevantParts = remaining.slice(0, 4); // vo + 3 weitere
-            return relevantParts.join('/');
-        } else if (part === 'sounds' && i < folderParts.length - 1) {
-            const nextPart = folderParts[i + 1].toLowerCase();
-            if (nextPart === 'vo') {
-                // Skip sounds/ prefix for vo folders
-                const remaining = folderParts.slice(i + 1);
-                const relevantParts = remaining.slice(0, 4); // vo + 3 weitere
-                return relevantParts.join('/');
-            }
-        }
-    }
-    
-    // Strategy 4: Look for any known folder names and include subfolders
-    for (let i = folderParts.length - 1; i >= 0; i--) {
-        const part = folderParts[i].toLowerCase();
-        if (knownFolders.includes(part)) {
-            const startIndex = Math.max(0, i - 1);
-            // Nimm mehr Kontext mit (bis zu 3 Ebenen)
-            const endIndex = Math.min(folderParts.length, i + 3);
-            return folderParts.slice(startIndex, endIndex).join('/');
-        }
-    }
-    
-    // Strategy 5: Take the last 3 meaningful folders
-    if (folderParts.length >= 3) {
-        // Skip generic folders like 'Projekte', 'Neu', 'OneDrive'
-        const genericFolders = ['projekte', 'neu', 'onedrive', 'documents', 'desktop', 'downloads'];
-        let meaningfulParts = [];
-        
-        for (let i = folderParts.length - 1; i >= 0 && meaningfulParts.length < 3; i--) {
-            const part = folderParts[i].toLowerCase();
-            if (!genericFolders.includes(part)) {
-                meaningfulParts.unshift(folderParts[i]);
-            }
-        }
-        
-        if (meaningfulParts.length > 0) {
-            return meaningfulParts.join('/');
-        }
-    }
-    
-    // Strategy 6: Fallback - take last 3 folders
-    if (folderParts.length >= 3) {
-        return folderParts.slice(-3).join('/');
-    } else if (folderParts.length >= 2) {
-        return folderParts.slice(-2).join('/');
-    }
-    
-    // Strategy 7: Final fallback - take last folder
-    return folderParts[folderParts.length - 1] || 'unknown';
+
+    return last;
 }
 // =========================== EXTRACTRELEVANTFOLDER END ===========================
 
@@ -7704,7 +7593,13 @@ function verarbeiteGescannteDateien(dateien) {
         const folder   = extractRelevantFolder(parts, relPath);
 
         if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
+
+        // Vorhandene Einträge mit gleichem Pfad entfernen
+        filePathDatabase[filename] = filePathDatabase[filename].filter(p => p.fullPath !== relPath);
+
+        // Aktuellen Pfad speichern
         filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
+
         // In Electron besitzen wir nur Pfade, im Browser File-Objekte
         if (window.electronAPI) {
             audioFileCache[relPath] = `sounds/EN/${relPath}`;
