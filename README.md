@@ -117,6 +117,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 4. Beim Start werden die Ordner `sounds/EN` und `sounds/DE` automatisch erstellt und eingelesen
 5. Kopieren Sie Ihre Originaldateien in `sounds/EN` und legen Sie Übersetzungen in `sounds/DE` ab
 6. Während des Setups erzeugen beide Skripte (`start_tool.bat` bzw. `start_tool.js`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden
+7. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `sounds` anzutasten – Projektdaten bleiben somit erhalten
 
 ---
 
