@@ -68,7 +68,16 @@ IF NOT EXIST ".git" (
         git clone https://github.com/Lumorn/hla_translation_tool
         IF ERRORLEVEL 1 call :log "git clone fehlgeschlagen" ELSE call :log "git clone erfolgreich"
     )
-    cd hla_translation_tool
+cd hla_translation_tool
+)
+
+REM ----------------------- Lokale Änderungen verwerfen --------------------
+call :log "Verwerfe lokale Änderungen"
+git reset --hard
+IF ERRORLEVEL 1 (
+    call :log "git reset fehlgeschlagen"
+) ELSE (
+    call :log "Lokale Änderungen verworfen"
 )
 
 call :log "git pull starten"
@@ -79,6 +88,19 @@ IF ERRORLEVEL 1 (
     call :log "git pull fehlgeschlagen"
 ) ELSE (
     call :log "git pull erfolgreich"
+)
+
+REM Sicherstellen, dass der Electron-Ordner existiert
+IF NOT EXIST "electron" (
+    echo 'electron'-Ordner fehlt, wird wiederhergestellt...
+    call :log "Electron-Ordner fehlt - versuche Wiederherstellung"
+    git checkout -- electron
+    IF ERRORLEVEL 1 (
+        call :log "Electron-Ordner konnte nicht wiederhergestellt werden"
+        exit /b 1
+    ) ELSE (
+        call :log "Electron-Ordner wiederhergestellt"
+    )
 )
 
 REM ======================= Electron-Setup ================================

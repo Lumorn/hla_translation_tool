@@ -72,6 +72,15 @@ if (!fs.existsSync(path.join(repoPath, '.git'))) {
 
 process.chdir(repoPath);
 
+// ----------------------- Lokale Änderungen verwerfen --------------------
+log('Verwerfe lokale Änderungen');
+try {
+    run('git reset --hard');
+    log('Lokale Änderungen verworfen');
+} catch (err) {
+    log('git reset fehlgeschlagen');
+}
+
 // ----------------------- git pull --------------------------
 log('git pull starten');
 console.log('Neueste Aenderungen werden geholt...');
@@ -80,6 +89,19 @@ try {
     log('git pull erfolgreich');
 } catch (err) {
     log('git pull fehlgeschlagen');
+}
+
+// Sicherstellen, dass der Electron-Ordner vorhanden ist
+if (!fs.existsSync('electron')) {
+    console.log("'electron'-Ordner fehlt, wird wiederhergestellt...");
+    log('Electron-Ordner fehlt - versuche Wiederherstellung');
+    try {
+        run('git checkout -- electron');
+        log('Electron-Ordner wiederhergestellt');
+    } catch (err) {
+        log('Electron-Ordner konnte nicht wiederhergestellt werden');
+        process.exit(1);
+    }
 }
 
 // ----------------------- Electron-Setup --------------------

@@ -75,6 +75,14 @@ if not os.path.exists(os.path.join(repo_path, ".git")):
 else:
     os.chdir(repo_path)
 
+# ----------------------- Lokale Änderungen verwerfen --------------------
+log("Verwerfe lokale Änderungen")
+try:
+    run("git reset --hard")
+    log("Lokale Änderungen verworfen")
+except subprocess.CalledProcessError:
+    log("git reset fehlgeschlagen")
+
 # ----------------------- git pull --------------------------
 log("git pull starten")
 print("Neueste Aenderungen werden geholt...")
@@ -83,6 +91,17 @@ try:
     log("git pull erfolgreich")
 except subprocess.CalledProcessError:
     log("git pull fehlgeschlagen")
+
+# Sicherstellen, dass der Electron-Ordner existiert
+if not os.path.isdir("electron"):
+    print("'electron'-Ordner fehlt, wird wiederhergestellt...")
+    log("Electron-Ordner fehlt - versuche Wiederherstellung")
+    try:
+        run("git checkout -- electron")
+        log("Electron-Ordner wiederhergestellt")
+    except subprocess.CalledProcessError:
+        log("Electron-Ordner konnte nicht wiederhergestellt werden")
+        sys.exit(1)
 
 # ----------------------- Electron-Setup --------------------
 os.chdir("electron")
