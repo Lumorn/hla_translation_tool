@@ -2086,6 +2086,18 @@ let displayOrder           = []; // Original-Dateireihenfolge
 document.addEventListener('DOMContentLoaded', async () => {
     loadProjects();
 
+    // Desktop-Version: automatisch EN- und DE-Ordner einlesen
+    if (window.electronAPI) {
+        window.electronAPI.scanFolders().then(data => {
+            // EN-Dateien wie üblich verarbeiten
+            verarbeiteGescannteDateien(data.enFiles);
+            // DE-Dateien in den Cache legen
+            data.deFiles.forEach(file => {
+                deAudioCache[file.fullPath] = file;
+            });
+        });
+    }
+
     // 🟩 NEU: Level-Farben laden
     const savedLevelColors = localStorage.getItem('hla_levelColors');
     if (savedLevelColors) {
