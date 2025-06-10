@@ -2272,10 +2272,8 @@ function handleAccessStatusClick() {
     
     if (shouldScan) {
         updateStatus('Erneuere Dateiberechtigungen - Ordner-Scan...');
-        setTimeout(() => {
-            // Projektordner erneut wählen und danach automatisch scannen
-            waehleProjektOrdner();
-        }, 500);
+        // Ordnerauswahl direkt aufrufen, damit die Browser-Berechtigung erhalten bleibt
+        waehleProjektOrdner();
     }
 }
 
