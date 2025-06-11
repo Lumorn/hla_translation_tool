@@ -791,7 +791,8 @@ th:nth-child(9) {
             background: #2a2a2a;
             border-radius: 8px;
             padding: 30px;
-            max-width: 600px;
+            /* Breiter für neue Play/Stop-Buttons */
+            max-width: 700px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
@@ -2103,7 +2104,9 @@ let editEnBuffer           = null; // AudioBuffer der NE-Datei
 let editProgressTimer      = null; // Intervall für Fortschrittsanzeige
 let editPlaying            = null; // "orig" oder "de" während Wiedergabe
 let editPaused             = false; // merkt Pausenstatus
-let editCursor             = 0;    // Position der Wiedergabe in ms
+// Eigene Cursorpositionen für EN und DE
+let editOrigCursor         = 0;    // Position der EN-Wiedergabe in ms
+let editDeCursor           = 0;    // Position der DE-Wiedergabe in ms
 let editBlobUrl            = null; // aktuelle Blob-URL
 
 let draggedElement         = null;
@@ -7507,7 +7510,9 @@ async function openDeEdit(fileId) {
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-    editCursor = 0;
+    // Beide Cursor zurücksetzen
+    editOrigCursor = 0;
+    editDeCursor = 0;
     editPaused = false;
     editPlaying = null;
     if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
@@ -7533,17 +7538,13 @@ async function openDeEdit(fileId) {
             editDragging = 'end';
         } else {
             editDragging = null;
-            editCursor = (x / width) * editDurationMs;
-            if (editPlaying) {
+            editDeCursor = (x / width) * editDurationMs;
+            if (editPlaying === 'de') {
                 const audio = document.getElementById('audioPlayer');
-                if (editPlaying === 'de') {
-                    const dur = editDurationMs - editStartTrim - editEndTrim;
-                    audio.currentTime = Math.min(Math.max(editCursor - editStartTrim, 0), dur) / 1000;
-                } else {
-                    audio.currentTime = Math.min(editCursor, editDurationMs) / 1000;
-                }
+                const dur = editDurationMs - editStartTrim - editEndTrim;
+                audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
             }
-            updateDeEditWaveforms();
+            updateDeEditWaveforms(null, null);
         }
     };
     window.onmousemove = e => {
@@ -7565,21 +7566,23 @@ window.onmouseup = () => { editDragging = null; };
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
-    if (progressOrig !== null || progressDe !== null) {
-        editCursor = progressOrig !== null ? progressOrig : editStartTrim + progressDe;
+    // Cursor aktualisieren, falls neue Positionen mitgegeben werden
+    if (progressOrig !== null) {
+        editOrigCursor = progressOrig;
     }
-    if (progressOrig === null && progressDe === null) {
-        progressOrig = editCursor;
-        progressDe = editCursor;
-    } else {
-        progressDe = progressDe !== null ? progressDe + editStartTrim : editCursor;
+    if (progressDe !== null) {
+        editDeCursor = editStartTrim + progressDe;
     }
+
+    const showOrig = progressOrig !== null ? progressOrig : editOrigCursor;
+    const showDe   = progressDe !== null ? progressDe + editStartTrim : editDeCursor;
+
     if (editEnBuffer) {
-        drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, { progress: progressOrig });
+        drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, { progress: showOrig });
     }
     if (originalEditBuffer) {
         const endPos = editDurationMs - editEndTrim;
-        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: progressDe });
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: showDe });
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
     document.getElementById('editEnd').value = Math.round(editEndTrim);
@@ -7595,7 +7598,8 @@ function stopEditPlayback() {
     editProgressTimer = null;
     editPlaying = null;
     editPaused = false;
-    editCursor = 0;
+    editOrigCursor = 0;
+    editDeCursor = 0;
     if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
     document.getElementById('playOrigPreview').classList.remove('playing');
     document.getElementById('playOrigPreview').textContent = '▶';
@@ -7625,7 +7629,8 @@ function playOriginalPreview() {
             if (editProgressTimer) clearInterval(editProgressTimer);
             editProgressTimer = null;
             editPaused = true;
-            editCursor = audio.currentTime * 1000;
+            // Aktuelle Position merken
+            editOrigCursor = audio.currentTime * 1000;
             btn.classList.remove('playing');
             btn.textContent = '▶';
             updateDeEditWaveforms();
@@ -7636,7 +7641,7 @@ function playOriginalPreview() {
     const blob = bufferToWav(editEnBuffer);
     editBlobUrl = URL.createObjectURL(blob);
     audio.src = editBlobUrl;
-    audio.currentTime = editCursor / 1000;
+    audio.currentTime = editOrigCursor / 1000;
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
@@ -7670,7 +7675,8 @@ function playDePreview() {
             if (editProgressTimer) clearInterval(editProgressTimer);
             editProgressTimer = null;
             editPaused = true;
-            editCursor = editStartTrim + audio.currentTime * 1000;
+            // Position für DE merken
+            editDeCursor = editStartTrim + audio.currentTime * 1000;
             btn.classList.remove('playing');
             btn.textContent = '▶';
             updateDeEditWaveforms();
@@ -7682,7 +7688,7 @@ function playDePreview() {
     const blob = bufferToWav(trimmed);
     editBlobUrl = URL.createObjectURL(blob);
     audio.src = editBlobUrl;
-    audio.currentTime = Math.max(editCursor - editStartTrim, 0) / 1000;
+    audio.currentTime = Math.max(editDeCursor - editStartTrim, 0) / 1000;
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
