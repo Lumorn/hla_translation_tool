@@ -2137,6 +2137,7 @@ function calculateProjectStats(project) {
         return {
             enPercent: 0,
             dePercent: 0,
+            deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0
         };
@@ -2145,10 +2146,12 @@ function calculateProjectStats(project) {
     const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
     const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
     const filesCompleted = files.filter(f => f.completed).length;
+    const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
     
     return {
         enPercent: Math.round((filesWithEN / totalFiles) * 100),
         dePercent: Math.round((filesWithDE / totalFiles) * 100),
+        deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
         completedPercent: Math.round((filesCompleted / totalFiles) * 100),
         totalFiles: totalFiles
     };
@@ -2310,6 +2313,7 @@ function renderProjects() {
         const stats = calculateProjectStats(p);
         const done  = stats.enPercent === 100 &&
                       stats.dePercent === 100 &&
+                      stats.deAudioPercent === 100 &&
                       stats.completedPercent === 100;
 
         /* ► Kachel-Container */
@@ -2335,6 +2339,7 @@ function renderProjects() {
                     <div class="project-stats">
                         <span title="EN-Text">EN: ${stats.enPercent}%</span>
                         <span title="DE-Text">DE: ${stats.dePercent}%</span>
+                        <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
                         <span title="Fertig">✓ ${stats.completedPercent}%</span>
                     </div>
                     <div style="font-size:9px;color:rgba(255,255,255,0.6);">
@@ -2356,7 +2361,8 @@ function renderProjects() {
             (p.levelName ? `Level: ${p.levelName}\n` : '') +
             `Teil:  ${p.levelPart}\n\n` +
             `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
-            `• Fertig: ${stats.completedPercent}%  • Dateien: ${stats.totalFiles}`;
+            `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%\n` +
+            `• Dateien: ${stats.totalFiles}`;
 
         /* ► Klick / Drag */
         card.onclick = e => {
