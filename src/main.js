@@ -5663,7 +5663,7 @@ let currentEditFile = null;
 let originalEditBuffer = null;
 let savedOriginalBuffer = null; // Unverändertes DE-Audio
 let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
-let isVolumeMatched = false;   // Aktueller Status des Lautstärke-Toggles
+let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -5686,7 +5686,6 @@ async function openDeEdit(fileId) {
     savedOriginalBuffer = originalEditBuffer;
     volumeMatchedBuffer = null;
     isVolumeMatched = false;
-    document.getElementById('volumeMatchToggle').checked = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -5778,25 +5777,20 @@ window.onmouseup = () => { editDragging = null; };
 }
 // =========================== OPENDEEDIT END ================================
 
-// =========================== TOGGLEVOLUMEMATCH START =======================
-// Reagiert auf das An- oder Abschalten des Lautstärke-Toggles
-function toggleVolumeMatch() {
-    const cb = document.getElementById('volumeMatchToggle');
-    isVolumeMatched = cb.checked;
-    if (isVolumeMatched) {
-        if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
-            volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
-        }
-        if (volumeMatchedBuffer) {
-            originalEditBuffer = volumeMatchedBuffer;
-        }
-    } else {
-        originalEditBuffer = savedOriginalBuffer;
+// =========================== APPLYVOLUMEMATCH START =======================
+// Führt den Lautstärkeabgleich einmalig aus
+function applyVolumeMatch() {
+    if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
+        volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
     }
-    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-    updateDeEditWaveforms();
+    if (volumeMatchedBuffer) {
+        originalEditBuffer = volumeMatchedBuffer;
+        isVolumeMatched = true;
+        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+        updateDeEditWaveforms();
+    }
 }
-// =========================== TOGGLEVOLUMEMATCH END =========================
+// =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
@@ -6009,8 +6003,7 @@ async function resetDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
-    // Sicherstellen, dass der aktuelle Zustand des Toggles berücksichtigt wird
-    isVolumeMatched = document.getElementById('volumeMatchToggle').checked;
+    // Aktuellen Status des Lautstärkeabgleichs nutzen
     const relPath = getFullPath(currentEditFile);
     if (window.electronAPI && window.electronAPI.backupDeFile) {
         // Sicherstellen, dass ein Backup existiert
