@@ -622,6 +622,13 @@ th:nth-child(9) {
             color: white;
         }
 
+        .wave-label {
+            color: #aaa;
+            font-size: 13px;
+            margin-left: 8px;
+            white-space: nowrap;
+        }
+
         .delete-row-btn {
             background: none;
             border: none;
@@ -2026,8 +2033,16 @@ th:nth-child(9) {
 <button class="dialog-close-btn" onclick="closeDeEdit()">×</button>
             <h3>✂️ DE-Audio bearbeiten</h3>
             <div style="margin-bottom:15px;">
-                <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
-                <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111; margin-top:10px;"></canvas>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                    <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()">▶</button>
+                    <span class="wave-label">NE (Original)</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+                    <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                    <button id="playDePreview" class="de-play-btn" onclick="playDePreview()">▶</button>
+                    <span class="wave-label">DE (bearbeiten)</span>
+                </div>
             </div>
             <div style="margin-bottom:15px; display:flex; gap:10px;">
                 <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
@@ -2071,6 +2086,14 @@ let deOrdnerHandle         = null; // Handle für den DE-Ordner
 let enOrdnerHandle         = null; // Handle für den EN-Ordner
 let enDateien              = [];   // Gefundene EN-Audiodateien
 let aktuellerUploadPfad    = null; // Zielpfad für hochgeladene Dateien
+
+let editStartTrim          = 0;    // Start-Schnitt in ms
+let editEndTrim            = 0;    // End-Schnitt in ms
+let editDurationMs         = 0;    // Gesamtdauer der Datei in ms
+let editDragging           = null; // "start" oder "end" beim Ziehen
+let editEnBuffer           = null; // AudioBuffer der NE-Datei
+let editProgressTimer      = null; // Intervall für Fortschrittsanzeige
+let editPlaying            = null; // "orig" oder "de" während Wiedergabe
 
 let draggedElement         = null;
 let currentlyPlaying       = null;
@@ -7343,7 +7366,7 @@ async function loadAudioBuffer(source) {
 
 // =========================== DRAWWAVEFORM START =============================
 // Zeichnet ein einfaches Wellenbild in ein Canvas
-function drawWaveform(canvas, buffer) {
+function drawWaveform(canvas, buffer, opts = {}) {
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
@@ -7365,6 +7388,32 @@ function drawWaveform(canvas, buffer) {
         ctx.lineTo(i, (1 + max) * height / 2);
     }
     ctx.stroke();
+
+    const durationMs = buffer.length / buffer.sampleRate * 1000;
+    if (opts.start !== undefined && opts.end !== undefined) {
+        ctx.strokeStyle = '#0f0';
+        ctx.beginPath();
+        const startX = (opts.start / durationMs) * width;
+        const endX = (opts.end / durationMs) * width;
+        ctx.moveTo(startX, 0);
+        ctx.lineTo(startX, height);
+        ctx.moveTo(endX, 0);
+        ctx.lineTo(endX, height);
+        ctx.stroke();
+
+        ctx.fillStyle = '#e0e0e0';
+        ctx.font = '10px sans-serif';
+        ctx.fillText(Math.round(opts.start) + 'ms', startX + 2, 10);
+        ctx.fillText(Math.round(opts.end) + 'ms', endX + 2, 10);
+    }
+    if (opts.progress !== undefined) {
+        ctx.strokeStyle = '#fff';
+        const x = (opts.progress / durationMs) * width;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+    }
 }
 // =========================== DRAWWAVEFORM END ===============================
 
@@ -7441,19 +7490,122 @@ async function openDeEdit(fileId) {
         originalEditBuffer = await loadAudioBuffer(deSrc);
     }
     const enBuffer = await loadAudioBuffer(enSrc);
-    drawWaveform(document.getElementById('waveOriginal'), enBuffer);
-    drawWaveform(document.getElementById('waveEdited'), originalEditBuffer);
+    editEnBuffer = enBuffer;
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    editStartTrim = 0;
+    editEndTrim = 0;
     document.getElementById('editStart').value = 0;
     document.getElementById('editEnd').value = 0;
+    document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
+    document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
+    updateDeEditWaveforms();
     document.getElementById('deEditDialog').style.display = 'flex';
+
+    const canvas = document.getElementById('waveEdited');
+    canvas.onmousedown = e => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const width = canvas.width;
+        const startX = (editStartTrim / editDurationMs) * width;
+        const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
+        if (Math.abs(x - startX) < 5) {
+            editDragging = 'start';
+        } else if (Math.abs(x - endX) < 5) {
+            editDragging = 'end';
+        } else {
+            editDragging = null;
+        }
+    };
+    window.onmousemove = e => {
+        if (!editDragging) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+        const ratio = x / rect.width;
+        const time = ratio * editDurationMs;
+        if (editDragging === 'start') {
+            editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
+        } else if (editDragging === 'end') {
+            editEndTrim = Math.min(editDurationMs - time, editDurationMs - editStartTrim - 1);
+        }
+        updateDeEditWaveforms();
+    };
+window.onmouseup = () => { editDragging = null; };
 }
 // =========================== OPENDEEDIT END ================================
+
+// =========================== UPDATEDEEDITWAVEFORMS START ==================
+function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
+    if (editEnBuffer) {
+        drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, { progress: progressOrig });
+    }
+    if (originalEditBuffer) {
+        const endPos = editDurationMs - editEndTrim;
+        const prog = progressDe !== null ? editStartTrim + progressDe : undefined;
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: prog });
+    }
+    document.getElementById('editStart').value = Math.round(editStartTrim);
+    document.getElementById('editEnd').value = Math.round(editEndTrim);
+}
+// =========================== UPDATEDEEDITWAVEFORMS END ====================
+
+// =========================== STOPEDITPLAYBACK START =======================
+function stopEditPlayback() {
+    const audio = document.getElementById('audioPlayer');
+    audio.pause();
+    audio.currentTime = 0;
+    if (editProgressTimer) clearInterval(editProgressTimer);
+    editProgressTimer = null;
+    editPlaying = null;
+    updateDeEditWaveforms();
+}
+// =========================== STOPEDITPLAYBACK END =========================
+
+// =========================== PLAYORIGINALPREVIEW START ====================
+function playOriginalPreview() {
+    if (!editEnBuffer) return;
+    stopEditPlayback();
+    const blob = bufferToWav(editEnBuffer);
+    const url = URL.createObjectURL(blob);
+    const audio = document.getElementById('audioPlayer');
+    audio.src = url;
+    audio.play().then(() => {
+        editPlaying = 'orig';
+        editProgressTimer = setInterval(() => {
+            updateDeEditWaveforms(audio.currentTime * 1000, null);
+        }, 50);
+        audio.onended = () => { URL.revokeObjectURL(url); stopEditPlayback(); };
+    });
+}
+// =========================== PLAYORIGINALPREVIEW END ======================
+
+// =========================== PLAYDEPREVIEW START ==========================
+function playDePreview() {
+    if (!originalEditBuffer) return;
+    stopEditPlayback();
+    const trimmed = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+    const blob = bufferToWav(trimmed);
+    const url = URL.createObjectURL(blob);
+    const audio = document.getElementById('audioPlayer');
+    audio.src = url;
+    audio.play().then(() => {
+        editPlaying = 'de';
+        editProgressTimer = setInterval(() => {
+            updateDeEditWaveforms(null, audio.currentTime * 1000);
+        }, 50);
+        audio.onended = () => { URL.revokeObjectURL(url); stopEditPlayback(); };
+    });
+}
+// =========================== PLAYDEPREVIEW END ============================
 
 // =========================== CLOSEDEEDIT START =============================
 function closeDeEdit() {
     document.getElementById('deEditDialog').style.display = 'none';
+    stopEditPlayback();
     currentEditFile = null;
     originalEditBuffer = null;
+    editEnBuffer = null;
+    window.onmousemove = null;
+    window.onmouseup = null;
 }
 // =========================== CLOSEDEEDIT END ===============================
 
@@ -7461,10 +7613,8 @@ function closeDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
-    const startMs = parseInt(document.getElementById('editStart').value) || 0;
-    const endMs = parseInt(document.getElementById('editEnd').value) || 0;
-    const newBuffer = trimAndPadBuffer(originalEditBuffer, startMs, endMs);
-    drawWaveform(document.getElementById('waveEdited'), newBuffer);
+    const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+    drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
     const blob = bufferToWav(newBuffer);
     const relPath = getFullPath(currentEditFile);
     if (window.electronAPI && window.electronAPI.backupDeFile) {
