@@ -40,6 +40,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Ordner‑Löschfunktion**   | Komplette Ordner können sicher aus der Datenbank gelöscht werden (mit Schutz vor Datenverlust).                                                             |
 | **Cleanup‑Routine**        | Fehlende Dateien **ohne** EN & DE werden automatisch aus der DB entfernt.                                                                                   |
 | **Verbesserter UI‑Polish** | • Schließen‑Knopf (×) nun oben rechts 🡆 hover‑animiert.<br>• Fertige Projekte/Ordner erhalten leuchtend grünen Rahmen.<br>• Dark‑Theme‑Kontrast optimiert. |
+| **DE-Audio-Bearbeitung**   | DE-Audiodateien lassen sich direkt kürzen oder verlängern. Vor dem Speichern wird automatisch eine Sicherung im Ordner `DE-Backup` angelegt. |
 
 ---
 

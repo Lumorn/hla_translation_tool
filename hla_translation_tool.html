@@ -606,6 +606,22 @@ th:nth-child(9) {
             color: white;
         }
 
+        .edit-audio-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .edit-audio-btn:hover {
+            background: #ff6b1a;
+            color: white;
+        }
+
         .delete-row-btn {
             background: none;
             border: none;
@@ -1827,6 +1843,7 @@ th:nth-child(9) {
         <th width="60">Audio</th>
         <th width="60">DE Audio</th>
         <th width="60">Upload</th>
+        <th width="60">Bearbeiten</th>
         <th width="50"></th>
     </tr>
 </thead>
@@ -1999,6 +2016,26 @@ th:nth-child(9) {
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
                 <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DE Edit Dialog -->
+    <div class="dialog-overlay" id="deEditDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeDeEdit()">×</button>
+            <h3>✂️ DE-Audio bearbeiten</h3>
+            <div style="margin-bottom:15px;">
+                <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111; margin-top:10px;"></canvas>
+            </div>
+            <div style="margin-bottom:15px; display:flex; gap:10px;">
+                <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
+                <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="applyDeEdit()">Speichern</button>
+                <button class="btn btn-secondary" onclick="closeDeEdit()">Abbrechen</button>
             </div>
         </div>
     </div>
@@ -3522,6 +3559,7 @@ return `
             ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
+        <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">×</button></td>
     </tr>
 `;
@@ -7287,6 +7325,185 @@ async function handleDeUpload(input) {
     updateStatus('DE-Datei gespeichert');
 }
 // =========================== HANDLEDEUPLOAD END ==============================
+
+// =========================== LOADAUDIOBUFFER START ===========================
+// Lädt eine Audiodatei (String-URL oder File) und liefert ein AudioBuffer
+async function loadAudioBuffer(source) {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let arrayBuffer;
+    if (typeof source === 'string') {
+        const resp = await fetch(source);
+        arrayBuffer = await resp.arrayBuffer();
+    } else {
+        arrayBuffer = await source.arrayBuffer();
+    }
+    return await ctx.decodeAudioData(arrayBuffer);
+}
+// =========================== LOADAUDIOBUFFER END =============================
+
+// =========================== DRAWWAVEFORM START =============================
+// Zeichnet ein einfaches Wellenbild in ein Canvas
+function drawWaveform(canvas, buffer) {
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.strokeStyle = '#ff6b1a';
+    ctx.beginPath();
+    const data = buffer.getChannelData(0);
+    const step = Math.ceil(data.length / width);
+    for (let i = 0; i < width; i++) {
+        const start = i * step;
+        let min = 1.0;
+        let max = -1.0;
+        for (let j = 0; j < step; j++) {
+            const sample = data[start + j] || 0;
+            if (sample < min) min = sample;
+            if (sample > max) max = sample;
+        }
+        ctx.moveTo(i, (1 + min) * height / 2);
+        ctx.lineTo(i, (1 + max) * height / 2);
+    }
+    ctx.stroke();
+}
+// =========================== DRAWWAVEFORM END ===============================
+
+// =========================== TRIMANDBUFFER START ============================
+// Kürzt oder verlängert ein AudioBuffer um die angegebenen Millisekunden
+function trimAndPadBuffer(buffer, startMs, endMs) {
+    const sr = buffer.sampleRate;
+    const startSamples = Math.max(0, Math.floor(startMs > 0 ? startMs * sr / 1000 : 0));
+    const endSamples = Math.max(0, Math.floor(endMs > 0 ? endMs * sr / 1000 : 0));
+    const padStart = Math.max(0, Math.floor(startMs < 0 ? -startMs * sr / 1000 : 0));
+    const padEnd = Math.max(0, Math.floor(endMs < 0 ? -endMs * sr / 1000 : 0));
+    const newLength = padStart + buffer.length - startSamples - endSamples + padEnd;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const newBuffer = ctx.createBuffer(buffer.numberOfChannels, newLength, sr);
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const oldData = buffer.getChannelData(ch);
+        const newData = newBuffer.getChannelData(ch);
+        newData.set(oldData.subarray(startSamples, buffer.length - endSamples), padStart);
+    }
+    return newBuffer;
+}
+// =========================== TRIMANDBUFFER END ==============================
+
+// =========================== BUFFERTOWAV START ==============================
+// Wandelt einen AudioBuffer in einen WAV-Blob um
+function bufferToWav(buffer) {
+    const numOfChan = buffer.numberOfChannels;
+    const length = buffer.length * numOfChan * 2 + 44;
+    const arrBuffer = new ArrayBuffer(length);
+    const view = new DataView(arrBuffer);
+    const writeString = (o, s) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)); };
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + buffer.length * numOfChan * 2, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numOfChan, true);
+    view.setUint32(24, buffer.sampleRate, true);
+    view.setUint32(28, buffer.sampleRate * numOfChan * 2, true);
+    view.setUint16(32, numOfChan * 2, true);
+    view.setUint16(34, 16, true);
+    writeString(36, 'data');
+    view.setUint32(40, buffer.length * numOfChan * 2, true);
+    let offset = 44;
+    for (let i = 0; i < buffer.length; i++) {
+        for (let ch = 0; ch < numOfChan; ch++) {
+            let sample = buffer.getChannelData(ch)[i];
+            sample = Math.max(-1, Math.min(1, sample));
+            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+            offset += 2;
+        }
+    }
+    return new Blob([view], { type: 'audio/wav' });
+}
+// =========================== BUFFERTOWAV END ================================
+
+let currentEditFile = null;
+let originalEditBuffer = null;
+
+// =========================== OPENDEEDIT START ===============================
+// Öffnet den Bearbeitungsdialog für eine DE-Datei
+async function openDeEdit(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    currentEditFile = file;
+    const enSrc = `sounds/EN/${getFullPath(file)}`;
+    const rel = getDeFilePath(file) || getFullPath(file);
+    let deSrc = deAudioCache[rel];
+    if (!deSrc) return;
+    if (typeof deSrc !== 'string') {
+        originalEditBuffer = await loadAudioBuffer(deSrc);
+    } else {
+        originalEditBuffer = await loadAudioBuffer(deSrc);
+    }
+    const enBuffer = await loadAudioBuffer(enSrc);
+    drawWaveform(document.getElementById('waveOriginal'), enBuffer);
+    drawWaveform(document.getElementById('waveEdited'), originalEditBuffer);
+    document.getElementById('editStart').value = 0;
+    document.getElementById('editEnd').value = 0;
+    document.getElementById('deEditDialog').style.display = 'flex';
+}
+// =========================== OPENDEEDIT END ================================
+
+// =========================== CLOSEDEEDIT START =============================
+function closeDeEdit() {
+    document.getElementById('deEditDialog').style.display = 'none';
+    currentEditFile = null;
+    originalEditBuffer = null;
+}
+// =========================== CLOSEDEEDIT END ===============================
+
+// =========================== APPLYDEEDIT START =============================
+// Speichert die bearbeitete DE-Datei und legt ein Backup an
+async function applyDeEdit() {
+    if (!currentEditFile || !originalEditBuffer) return;
+    const startMs = parseInt(document.getElementById('editStart').value) || 0;
+    const endMs = parseInt(document.getElementById('editEnd').value) || 0;
+    const newBuffer = trimAndPadBuffer(originalEditBuffer, startMs, endMs);
+    drawWaveform(document.getElementById('waveEdited'), newBuffer);
+    const blob = bufferToWav(newBuffer);
+    const relPath = getFullPath(currentEditFile);
+    if (window.electronAPI && window.electronAPI.backupDeFile) {
+        await window.electronAPI.backupDeFile(relPath);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
+    } else {
+        // Backup in Browser-Version
+        if (deOrdnerHandle) {
+            try {
+                const teile = relPath.split('/');
+                const name = teile.pop();
+                let ordner = deOrdnerHandle;
+                for (const t of teile) {
+                    ordner = await ordner.getDirectoryHandle(t, { create: true });
+                }
+                const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+                const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
+                let ziel = backupDir;
+                for (const t of teile) {
+                    ziel = await ziel.getDirectoryHandle(t, { create: true });
+                }
+                const orgFile = await ordner.getFileHandle(name);
+                const backupFile = await ziel.getFileHandle(name, { create: true });
+                const orgData = await orgFile.getFile();
+                const w = await backupFile.createWritable();
+                await w.write(orgData);
+                await w.close();
+            } catch {}
+        }
+        await speichereUebersetzungsDatei(blob, relPath);
+        deAudioCache[relPath] = blob;
+    }
+    renderFileTable();
+    closeDeEdit();
+    updateStatus('DE-Audio bearbeitet und gespeichert');
+}
+// =========================== APPLYDEEDIT END ===============================
 
 
 // =========================== RENAMEFOLDER START ==============================
