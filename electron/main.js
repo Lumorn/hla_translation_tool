@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -9,7 +9,8 @@ const userDataPath = path.join(app.getPath('home'), '.hla_translation_tool');
 fs.mkdirSync(userDataPath, { recursive: true });
 app.setPath('userData', userDataPath);
 // Ordner für automatische Backups im Benutzerverzeichnis anlegen
-const backupPath = path.join(userDataPath, 'backups');
+// Neuer Pfad 'Backups' laut Benutzerwunsch
+const backupPath = path.join(userDataPath, 'Backups');
 fs.mkdirSync(backupPath, { recursive: true });
 // =========================== USER-DATA-PFAD END =============================
 
@@ -127,6 +128,12 @@ app.whenReady().then(() => {
   // Backup löschen
   ipcMain.handle('delete-backup', async (event, name) => {
     fs.unlinkSync(path.join(backupPath, name));
+    return true;
+  });
+
+  // Backup-Ordner im Dateimanager öffnen
+  ipcMain.handle('open-backup-folder', async () => {
+    shell.openPath(backupPath);
     return true;
   });
 

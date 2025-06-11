@@ -1961,6 +1961,7 @@ th:nth-child(9) {
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
             </div>
         </div>
@@ -6613,6 +6614,14 @@ function checkFileAccess() {
 
         function closeBackupDialog() {
             document.getElementById('backupDialog').style.display = 'none';
+        }
+
+        function openBackupFolder() {
+            if (window.electronAPI && window.electronAPI.openBackupFolder) {
+                window.electronAPI.openBackupFolder();
+            } else {
+                alert('Nur in der Desktop-Version verfügbar');
+            }
         }
 // =========================== SHOWBACKUPDIALOG END ========================
 

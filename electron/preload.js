@@ -12,4 +12,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveBackup: (data) => ipcRenderer.invoke('save-backup', data),
   readBackup: (name) => ipcRenderer.invoke('read-backup', name),
   deleteBackup: (name) => ipcRenderer.invoke('delete-backup', name),
+  openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
 });
