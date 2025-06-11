@@ -1240,6 +1240,21 @@ th:nth-child(9) {
             margin-left: 10px;
         }
 
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .history-item button {
+            margin-left: 10px;
+        }
+
         /* Folder customization */
         .folder-header {
             display: flex;

@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const historyUtils = require('../historyUtils');
 
 // =========================== USER-DATA-PFAD START ===========================
 // Benutzer-Datenordner festlegen, damit lokale Daten auch nach einem Neustart
@@ -85,9 +86,11 @@ app.whenReady().then(() => {
   const enPath = path.join(projectBase, 'EN');
   const dePath = path.join(projectBase, 'DE');
   const deBackupPath = path.join(projectBase, 'DE-Backup');
+  const deHistoryPath = path.join(projectBase, 'DE-History');
   fs.mkdirSync(enPath, { recursive: true }); // EN-Ordner anlegen
   fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
   fs.mkdirSync(deBackupPath, { recursive: true }); // DE-Backup-Ordner anlegen
+  fs.mkdirSync(deHistoryPath, { recursive: true }); // History-Ordner anlegen
 
   ipcMain.handle('scan-folders', () => {
     return {
@@ -185,8 +188,22 @@ app.whenReady().then(() => {
   ipcMain.handle('save-de-file', async (event, { relPath, data }) => {
     const target = path.join(dePath, relPath);
     fs.mkdirSync(path.dirname(target), { recursive: true });
+    // Vor dem Überschreiben alte Version in den History-Ordner kopieren
+    if (fs.existsSync(target)) {
+      historyUtils.saveVersion(deHistoryPath, relPath, target);
+    }
     fs.writeFileSync(target, Buffer.from(data));
     return target;
+  });
+
+  // Liefert die History-Dateien zu einer DE-Datei
+  ipcMain.handle('list-de-history', async (event, relPath) => {
+    return historyUtils.listVersions(deHistoryPath, relPath);
+  });
+
+  // Stellt eine gewählte History-Version wieder her
+  ipcMain.handle('restore-de-history', async (event, { relPath, name }) => {
+    return historyUtils.restoreVersion(deHistoryPath, relPath, name, dePath);
   });
   // =========================== SAVE-DE-FILE END =============================
 
