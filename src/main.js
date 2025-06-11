@@ -2450,6 +2450,15 @@ function addDragAndDropHandlers() {
         row.addEventListener('dragleave', handleFileDragLeave);
         row.addEventListener('dragover', handleRowDragOver);
         row.addEventListener('drop', handleRowDrop);
+
+        // Zusätzlich alle Zellen als Drop-Bereich registrieren, damit die
+        // komplette Zeile reagiert
+        row.querySelectorAll('td').forEach(cell => {
+            cell.addEventListener('dragenter', handleFileDragEnter);
+            cell.addEventListener('dragleave', handleFileDragLeave);
+            cell.addEventListener('dragover', handleRowDragOver);
+            cell.addEventListener('drop', handleRowDrop);
+        });
     });
 }
 
@@ -7052,15 +7061,19 @@ function showProjectCustomization(id, ev) {
             }
             if (Array.from(e.dataTransfer.types).includes('Files')) {
                 e.dataTransfer.dropEffect = 'copy';
+                const row = e.currentTarget.closest('tr');
+                if (row) handleFileDragEnter(e);
                 return;
             }
             e.dataTransfer.dropEffect = 'move';
-            
-            const afterElement = getDragAfterElement(e.currentTarget.parentNode, e.clientY);
+
+            const row = e.currentTarget.closest('tr');
+            const container = row.parentNode;
+            const afterElement = getDragAfterElement(container, e.clientY);
             if (afterElement == null) {
-                e.currentTarget.parentNode.appendChild(draggedElement);
+                container.appendChild(draggedElement);
             } else {
-                e.currentTarget.parentNode.insertBefore(draggedElement, afterElement);
+                container.insertBefore(draggedElement, afterElement);
             }
             
             return false;
@@ -7095,7 +7108,7 @@ function showProjectCustomization(id, ev) {
         function handleFileDragEnter(e) {
             if (!Array.from(e.dataTransfer.types).includes('Files')) return;
             e.preventDefault();
-            const row = e.currentTarget;
+            const row = e.currentTarget.closest('tr');
             row.classList.add('upload-drop-target');
             let overlay = row.querySelector('.upload-overlay');
             if (!overlay) {
@@ -7110,16 +7123,19 @@ function showProjectCustomization(id, ev) {
 
         function handleFileDragLeave(e) {
             if (!Array.from(e.dataTransfer.types).includes('Files')) return;
-            const row = e.currentTarget;
-            row.classList.remove('upload-drop-target');
-            const overlay = row.querySelector('.upload-overlay');
-            if (overlay) overlay.remove();
+            const row = e.currentTarget.closest('tr');
+            // Nur entfernen, wenn die Zeile tatsächlich verlassen wird
+            if (!row.contains(e.relatedTarget)) {
+                row.classList.remove('upload-drop-target');
+                const overlay = row.querySelector('.upload-overlay');
+                if (overlay) overlay.remove();
+            }
         }
 
         async function handleRowDrop(e) {
             if (Array.from(e.dataTransfer.types).includes('Files')) {
                 e.preventDefault();
-                const row = e.currentTarget;
+                const row = e.currentTarget.closest('tr');
                 const fileId = parseFloat(row.dataset.id);
                 const fileObj = files.find(f => f.id === fileId);
                 const dropped = e.dataTransfer.files[0];
