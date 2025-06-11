@@ -1829,12 +1829,12 @@ th:nth-child(6) {
     filter: brightness(1.2);
 }
 
-/* Details für Pfadangaben erst beim Hover anzeigen */
+/* Details für Pfadangaben über Rechtsklick anzeigen */
 .path-cell .path-detail {
     display: none;
 }
 
-.path-cell:hover .path-detail {
+.path-cell.show-path .path-detail {
     display: inline;
 }
 
