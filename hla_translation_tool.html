@@ -2039,6 +2039,7 @@ th:nth-child(9) {
                     <div style="display:flex;align-items:center;gap:10px;">
                         <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
                         <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()">▶</button>
+                        <button class="de-play-btn" onclick="stopEditPlayback()">⏹</button>
                     </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
@@ -2046,6 +2047,7 @@ th:nth-child(9) {
                     <div style="display:flex;align-items:center;gap:10px;">
                         <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
                         <button id="playDePreview" class="de-play-btn" onclick="playDePreview()">▶</button>
+                        <button class="de-play-btn" onclick="stopEditPlayback()">⏹</button>
                     </div>
                 </div>
             </div>
@@ -2100,6 +2102,9 @@ let editDragging           = null; // "start" oder "end" beim Ziehen
 let editEnBuffer           = null; // AudioBuffer der NE-Datei
 let editProgressTimer      = null; // Intervall für Fortschrittsanzeige
 let editPlaying            = null; // "orig" oder "de" während Wiedergabe
+let editPaused             = false; // merkt Pausenstatus
+let editCursor             = 0;    // Position der Wiedergabe in ms
+let editBlobUrl            = null; // aktuelle Blob-URL
 
 let draggedElement         = null;
 let currentlyPlaying       = null;
@@ -7398,6 +7403,7 @@ function drawWaveform(canvas, buffer, opts = {}) {
     const durationMs = buffer.length / buffer.sampleRate * 1000;
     if (opts.start !== undefined && opts.end !== undefined) {
         ctx.strokeStyle = '#0f0';
+        ctx.lineWidth = 2;
         ctx.beginPath();
         const startX = (opts.start / durationMs) * width;
         const endX = (opts.end / durationMs) * width;
@@ -7406,6 +7412,7 @@ function drawWaveform(canvas, buffer, opts = {}) {
         ctx.moveTo(endX, 0);
         ctx.lineTo(endX, height);
         ctx.stroke();
+        ctx.lineWidth = 1;
 
         ctx.fillStyle = '#e0e0e0';
         ctx.font = '10px sans-serif';
@@ -7413,12 +7420,14 @@ function drawWaveform(canvas, buffer, opts = {}) {
         ctx.fillText(Math.round(opts.end) + 'ms', endX + 2, 10);
     }
     if (opts.progress !== undefined) {
-        ctx.strokeStyle = '#fff';
+        ctx.strokeStyle = '#ff0';
+        ctx.lineWidth = 2;
         const x = (opts.progress / durationMs) * width;
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
         ctx.stroke();
+        ctx.lineWidth = 1;
     }
 }
 // =========================== DRAWWAVEFORM END ===============================
@@ -7498,6 +7507,10 @@ async function openDeEdit(fileId) {
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    editCursor = 0;
+    editPaused = false;
+    editPlaying = null;
+    if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
     editStartTrim = 0;
     editEndTrim = 0;
     document.getElementById('editStart').value = 0;
@@ -7514,12 +7527,23 @@ async function openDeEdit(fileId) {
         const width = canvas.width;
         const startX = (editStartTrim / editDurationMs) * width;
         const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
-        if (Math.abs(x - startX) < 5) {
+        if (Math.abs(x - startX) < 7) {
             editDragging = 'start';
-        } else if (Math.abs(x - endX) < 5) {
+        } else if (Math.abs(x - endX) < 7) {
             editDragging = 'end';
         } else {
             editDragging = null;
+            editCursor = (x / width) * editDurationMs;
+            if (editPlaying) {
+                const audio = document.getElementById('audioPlayer');
+                if (editPlaying === 'de') {
+                    const dur = editDurationMs - editStartTrim - editEndTrim;
+                    audio.currentTime = Math.min(Math.max(editCursor - editStartTrim, 0), dur) / 1000;
+                } else {
+                    audio.currentTime = Math.min(editCursor, editDurationMs) / 1000;
+                }
+            }
+            updateDeEditWaveforms();
         }
     };
     window.onmousemove = e => {
@@ -7541,13 +7565,21 @@ window.onmouseup = () => { editDragging = null; };
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
+    if (progressOrig !== null || progressDe !== null) {
+        editCursor = progressOrig !== null ? progressOrig : editStartTrim + progressDe;
+    }
+    if (progressOrig === null && progressDe === null) {
+        progressOrig = editCursor;
+        progressDe = editCursor;
+    } else {
+        progressDe = progressDe !== null ? progressDe + editStartTrim : editCursor;
+    }
     if (editEnBuffer) {
         drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, { progress: progressOrig });
     }
     if (originalEditBuffer) {
         const endPos = editDurationMs - editEndTrim;
-        const prog = progressDe !== null ? editStartTrim + progressDe : undefined;
-        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: prog });
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: progressDe });
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
     document.getElementById('editEnd').value = Math.round(editEndTrim);
@@ -7562,6 +7594,9 @@ function stopEditPlayback() {
     if (editProgressTimer) clearInterval(editProgressTimer);
     editProgressTimer = null;
     editPlaying = null;
+    editPaused = false;
+    editCursor = 0;
+    if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
     document.getElementById('playOrigPreview').classList.remove('playing');
     document.getElementById('playOrigPreview').textContent = '▶';
     document.getElementById('playDePreview').classList.remove('playing');
@@ -7574,20 +7609,43 @@ function stopEditPlayback() {
 function playOriginalPreview() {
     if (!editEnBuffer) return;
     const btn = document.getElementById('playOrigPreview');
-    if (editPlaying === 'orig') { stopEditPlayback(); return; }
+    const audio = document.getElementById('audioPlayer');
+    if (editPlaying === 'orig') {
+        if (editPaused) {
+            audio.play().then(() => {
+                btn.classList.add('playing');
+                btn.textContent = '⏸';
+                editPaused = false;
+                editProgressTimer = setInterval(() => {
+                    updateDeEditWaveforms(audio.currentTime * 1000, null);
+                }, 50);
+            });
+        } else {
+            audio.pause();
+            if (editProgressTimer) clearInterval(editProgressTimer);
+            editProgressTimer = null;
+            editPaused = true;
+            editCursor = audio.currentTime * 1000;
+            btn.classList.remove('playing');
+            btn.textContent = '▶';
+            updateDeEditWaveforms();
+        }
+        return;
+    }
     stopEditPlayback();
     const blob = bufferToWav(editEnBuffer);
-    const url = URL.createObjectURL(blob);
-    const audio = document.getElementById('audioPlayer');
-    audio.src = url;
+    editBlobUrl = URL.createObjectURL(blob);
+    audio.src = editBlobUrl;
+    audio.currentTime = editCursor / 1000;
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
         editPlaying = 'orig';
+        editPaused = false;
         editProgressTimer = setInterval(() => {
             updateDeEditWaveforms(audio.currentTime * 1000, null);
         }, 50);
-        audio.onended = () => { URL.revokeObjectURL(url); stopEditPlayback(); };
+        audio.onended = () => { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; stopEditPlayback(); };
     });
 }
 // =========================== PLAYORIGINALPREVIEW END ======================
@@ -7596,21 +7654,44 @@ function playOriginalPreview() {
 function playDePreview() {
     if (!originalEditBuffer) return;
     const btn = document.getElementById('playDePreview');
-    if (editPlaying === 'de') { stopEditPlayback(); return; }
+    const audio = document.getElementById('audioPlayer');
+    if (editPlaying === 'de') {
+        if (editPaused) {
+            audio.play().then(() => {
+                btn.classList.add('playing');
+                btn.textContent = '⏸';
+                editPaused = false;
+                editProgressTimer = setInterval(() => {
+                    updateDeEditWaveforms(null, audio.currentTime * 1000);
+                }, 50);
+            });
+        } else {
+            audio.pause();
+            if (editProgressTimer) clearInterval(editProgressTimer);
+            editProgressTimer = null;
+            editPaused = true;
+            editCursor = editStartTrim + audio.currentTime * 1000;
+            btn.classList.remove('playing');
+            btn.textContent = '▶';
+            updateDeEditWaveforms();
+        }
+        return;
+    }
     stopEditPlayback();
     const trimmed = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
     const blob = bufferToWav(trimmed);
-    const url = URL.createObjectURL(blob);
-    const audio = document.getElementById('audioPlayer');
-    audio.src = url;
+    editBlobUrl = URL.createObjectURL(blob);
+    audio.src = editBlobUrl;
+    audio.currentTime = Math.max(editCursor - editStartTrim, 0) / 1000;
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
         editPlaying = 'de';
+        editPaused = false;
         editProgressTimer = setInterval(() => {
             updateDeEditWaveforms(null, audio.currentTime * 1000);
         }, 50);
-        audio.onended = () => { URL.revokeObjectURL(url); stopEditPlayback(); };
+        audio.onended = () => { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; stopEditPlayback(); };
     });
 }
 // =========================== PLAYDEPREVIEW END ============================
