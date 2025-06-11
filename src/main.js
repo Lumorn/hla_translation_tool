@@ -5633,6 +5633,10 @@ async function openDeEdit(fileId) {
     }
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
+    // Länge der beiden Dateien in Sekunden bestimmen
+    const enSeconds = enBuffer.length / enBuffer.sampleRate;
+    const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
+    const maxSeconds = Math.max(enSeconds, deSeconds);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     // Beide Cursor zurücksetzen
     editOrigCursor = 0;
@@ -5646,11 +5650,25 @@ async function openDeEdit(fileId) {
     document.getElementById('editEnd').value = editEndTrim;
     document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
-    updateDeEditWaveforms();
-    document.getElementById('deEditDialog').style.display = 'flex';
 
     const deCanvas = document.getElementById('waveEdited');
     const origCanvas = document.getElementById('waveOriginal');
+
+    // Wellenbreite passend zur Länge setzen
+    const enRatio = enSeconds / maxSeconds;
+    const deRatio = deSeconds / maxSeconds;
+    const baseWidth = 500;
+    origCanvas.width = Math.round(baseWidth * enRatio);
+    deCanvas.width  = Math.round(baseWidth * deRatio);
+    origCanvas.style.width = `${enRatio * 100}%`;
+    deCanvas.style.width  = `${deRatio * 100}%`;
+
+    // Längen in Sekunden anzeigen
+    document.getElementById('waveLabelOriginal').textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
+    document.getElementById('waveLabelEdited').textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
+
+    updateDeEditWaveforms();
+    document.getElementById('deEditDialog').style.display = 'flex';
 
     // Klick auf das Original-Wellenbild setzt den EN-Cursor
     origCanvas.onmousedown = e => {
