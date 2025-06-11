@@ -639,7 +639,7 @@ th:nth-child(6) {
             color: white;
         }
 
-        /* Kleine Statussymbole hinter dem ✂️-Button */
+        /* Kleine Statussymbole rechts neben dem ✂️-Button */
         .edit-status-icon {
             background: #444;
             color: #e0e0e0;
@@ -648,10 +648,16 @@ th:nth-child(6) {
             font-size: 11px;
             min-width: 24px;
             height: 24px;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 2px;
+        }
+
+        /* Vertikale Anordnung der Bearbeitungs-Symbole */
+        .edit-column {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
 
         .upload-btn {
