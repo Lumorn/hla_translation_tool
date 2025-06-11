@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -8,6 +8,9 @@ const fs = require('fs');
 const userDataPath = path.join(app.getPath('home'), '.hla_translation_tool');
 fs.mkdirSync(userDataPath, { recursive: true });
 app.setPath('userData', userDataPath);
+// Ordner für automatische Backups im Programmverzeichnis anlegen
+const backupPath = path.join(app.getAppPath(), 'backups');
+fs.mkdirSync(backupPath, { recursive: true });
 // =========================== USER-DATA-PFAD END =============================
 
 // Flag, ob die DevTools beim Start geöffnet werden sollen
@@ -97,6 +100,40 @@ app.whenReady().then(() => {
     if (canceled || !filePath) return null;
     fs.writeFileSync(filePath, Buffer.from(data));
     return filePath;
+  });
+
+  // Liste der vorhandenen Backups abrufen
+  ipcMain.handle('list-backups', async () => {
+    return fs.readdirSync(backupPath)
+      .filter(f => f.endsWith('.json'))
+      .sort()
+      .reverse();
+  });
+
+  // Neues Backup im Backup-Ordner speichern
+  ipcMain.handle('save-backup', async (event, data) => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const file = path.join(backupPath, `backup_${timestamp}.json`);
+    fs.writeFileSync(file, data);
+    return file;
+  });
+
+  // Backup-Datei lesen
+  ipcMain.handle('read-backup', async (event, name) => {
+    const file = path.join(backupPath, name);
+    return fs.readFileSync(file, 'utf8');
+  });
+
+  // Backup löschen
+  ipcMain.handle('delete-backup', async (event, name) => {
+    fs.unlinkSync(path.join(backupPath, name));
+    return true;
+  });
+
+  // Backup-Ordner im Dateimanager anzeigen
+  ipcMain.handle('open-backup-folder', async () => {
+    await shell.openPath(backupPath);
+    return true;
   });
 
   // =========================== SAVE-DE-FILE START ===========================

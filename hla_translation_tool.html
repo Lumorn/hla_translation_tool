@@ -1178,6 +1178,21 @@ th:nth-child(9) {
             background: #555;
         }
 
+        .backup-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .backup-item button {
+            margin-left: 10px;
+        }
+
         /* Folder customization */
         .folder-header {
             display: flex;
@@ -1701,7 +1716,7 @@ th:nth-child(9) {
                 <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
                 <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
                 <button class="btn btn-secondary" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</button>
-                <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
+                <button class="btn btn-secondary" onclick="showBackupDialog()">💾 Backup</button>
                 <button class="btn btn-secondary" onclick="restoreData()">📂 Restore</button>
                 <button class="btn btn-danger" onclick="resetFileDatabase()">🔄 Reset DB</button>
                                 <button class="btn btn-secondary" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</button>
@@ -1930,6 +1945,28 @@ th:nth-child(9) {
         </div>
     </div>
 
+    <!-- Backup Dialog -->
+    <div class="dialog-overlay" id="backupDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeBackupDialog()">×</button>
+            <h3>💾 Backups</h3>
+            <div id="backupList" style="margin-bottom:15px;"></div>
+            <div style="margin-bottom:15px;">
+                <label>Intervall (Minuten):
+                    <input type="number" id="backupInterval" min="1" style="width:60px;">
+                </label>
+                <label style="margin-left:10px;">Anzahl Backups:
+                    <input type="number" id="backupLimit" min="1" style="width:60px;">
+                </label>
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
+                <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
@@ -1968,6 +2005,11 @@ let selectedRow            = null; // für Tastatur-Navigation
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
+
+// Automatische Backup-Einstellungen
+let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
+let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
+let autoBackupTimer    = null;
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -2084,6 +2126,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 💾 Auto-Save alle 30 Sekunden
     setInterval(saveCurrentProject, 30000);
+
+    // Automatische Backups starten
+    startAutoBackup();
 
     // 💡 Speichern beim Verlassen
     window.addEventListener('beforeunload', (e) => {
@@ -6473,7 +6518,8 @@ function checkFileAccess() {
         }
 
         // Backup and Restore functionality
-        function backupData() {
+// =========================== CREATEBACKUP START ===========================
+        function createBackup(showMsg = false) {
             const backup = {
                 version: '3.6.0',
                 date: new Date().toISOString(),
@@ -6486,21 +6532,181 @@ function checkFileAccess() {
 
             const json = JSON.stringify(backup, null, 2);
 
-            // In Electron speichern wir die Datei direkt
-            if (window.electronAPI && window.electronAPI.saveFile) {
-                const filename = `hla_translation_backup_${new Date().toISOString().split('T')[0]}.json`;
-                const data = Array.from(new TextEncoder().encode(json));
-                window.electronAPI.saveFile(data, filename);
+            if (window.electronAPI && window.electronAPI.saveBackup) {
+                window.electronAPI.saveBackup(json).then(() => {
+                    enforceBackupLimit();
+                    if (showMsg) updateStatus('Backup erstellt');
+                    loadBackupList();
+                });
             } else {
-                const blob = new Blob([json], { type: 'application/json' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = `hla_translation_backup_${new Date().toISOString().split('T')[0]}.json`;
-                link.click();
+                let list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                const name = `backup_${new Date().toISOString()}.json`;
+                list.push({ name, data: json });
+                if (list.length > autoBackupLimit) list = list.slice(list.length - autoBackupLimit);
+                localStorage.setItem('hla_backups', JSON.stringify(list));
+                if (showMsg) updateStatus('Backup erstellt');
+                loadBackupList();
+            }
+        }
+// =========================== CREATEBACKUP END =============================
+
+// =========================== ENFORCEBACKUPLIMIT START =====================
+        async function enforceBackupLimit() {
+            if (window.electronAPI && window.electronAPI.listBackups) {
+                const files = await window.electronAPI.listBackups();
+                if (files.length > autoBackupLimit) {
+                    const remove = files.slice(autoBackupLimit);
+                    for (const f of remove) {
+                        await window.electronAPI.deleteBackup(f);
+                    }
+                }
+            }
+        }
+// =========================== ENFORCEBACKUPLIMIT END =======================
+
+// =========================== LOADBACKUPLIST START ========================
+        async function loadBackupList() {
+            const listDiv = document.getElementById('backupList');
+            listDiv.innerHTML = '';
+            let files = [];
+            if (window.electronAPI && window.electronAPI.listBackups) {
+                files = await window.electronAPI.listBackups();
+            } else {
+                files = (JSON.parse(localStorage.getItem('hla_backups') || '[]')).map(b => b.name);
+            }
+            files.slice(0, 10).forEach(name => {
+                const item = document.createElement('div');
+                item.className = 'backup-item';
+                const label = document.createElement('span');
+                label.textContent = name;
+                const restoreBtn = document.createElement('button');
+                restoreBtn.textContent = 'Wiederherstellen';
+                restoreBtn.onclick = () => restoreFromBackup(name);
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Löschen';
+                deleteBtn.onclick = () => { deleteBackup(name); };
+                item.appendChild(label);
+                item.appendChild(restoreBtn);
+                item.appendChild(deleteBtn);
+                listDiv.appendChild(item);
+            });
+            document.getElementById('backupInterval').value = autoBackupInterval;
+            document.getElementById('backupLimit').value = autoBackupLimit;
+        }
+// =========================== LOADBACKUPLIST END ==========================
+
+// =========================== SHOWBACKUPDIALOG START ======================
+        function showBackupDialog() {
+            document.getElementById('backupDialog').style.display = 'flex';
+            loadBackupList();
+            document.getElementById('backupInterval').onchange = () => {
+                autoBackupInterval = parseInt(document.getElementById('backupInterval').value) || 1;
+                localStorage.setItem('hla_autoBackupInterval', autoBackupInterval);
+                startAutoBackup();
+            };
+            document.getElementById('backupLimit').onchange = () => {
+                autoBackupLimit = parseInt(document.getElementById('backupLimit').value) || 1;
+                localStorage.setItem('hla_autoBackupLimit', autoBackupLimit);
+                enforceBackupLimit();
+                startAutoBackup();
+            };
+        }
+
+        // Öffnet den Backup-Ordner im Dateimanager
+        function openBackupFolder() {
+            if (window.electronAPI && window.electronAPI.openBackupFolder) {
+                window.electronAPI.openBackupFolder();
+            }
+        }
+
+        function closeBackupDialog() {
+            document.getElementById('backupDialog').style.display = 'none';
+        }
+// =========================== SHOWBACKUPDIALOG END ========================
+
+// =========================== RESTOREFROMBACKUP START =====================
+        async function restoreFromBackup(name) {
+            try {
+                let content;
+                if (window.electronAPI && window.electronAPI.readBackup) {
+                    content = await window.electronAPI.readBackup(name);
+                } else {
+                    const list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                    const entry = list.find(b => b.name === name);
+                    if (!entry) return;
+                    content = entry.data;
+                }
+                const backup = JSON.parse(content);
+                applyBackupData(backup);
+            } catch (err) {
+                alert('Fehler beim Wiederherstellen: ' + err.message);
+            }
+        }
+
+        async function deleteBackup(name) {
+            if (window.electronAPI && window.electronAPI.deleteBackup) {
+                await window.electronAPI.deleteBackup(name);
+            } else {
+                let list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                list = list.filter(b => b.name !== name);
+                localStorage.setItem('hla_backups', JSON.stringify(list));
+            }
+            loadBackupList();
+        }
+// =========================== RESTOREFROMBACKUP END =======================
+
+// =========================== STARTAUTOBACKUP START =======================
+        function startAutoBackup() {
+            if (autoBackupTimer) clearInterval(autoBackupTimer);
+            autoBackupTimer = setInterval(() => createBackup(false), autoBackupInterval * 60000);
+        }
+// =========================== STARTAUTOBACKUP END =========================
+
+// =========================== APPLYBACKUPDATA START =======================
+        function applyBackupData(backup) {
+            if (!backup.version || !backup.projects) {
+                throw new Error('Ungültiges Backup-Format');
+            }
+            if (!confirm('Dies wird alle aktuellen Daten überschreiben. Fortfahren?')) {
+                return;
             }
 
-            updateStatus('Backup erstellt');
+            projects = backup.projects;
+            textDatabase = backup.textDatabase || {};
+            filePathDatabase = backup.filePathDatabase || {};
+            folderCustomizations = backup.folderCustomizations || {};
+
+            let migrationNeeded = false;
+            projects.forEach(project => {
+                if (!project.hasOwnProperty('icon')) {
+                    project.icon = '🗂️';
+                    migrationNeeded = true;
+                }
+                if (!project.hasOwnProperty('color')) {
+                    project.color = '#333333';
+                    migrationNeeded = true;
+                }
+            });
+            if (migrationNeeded) {
+                console.log('Wiederhergestellte Projekte migriert: Icons und Farben hinzugefügt');
+            }
+
+            saveProjects();
+            saveTextDatabase();
+            saveFilePathDatabase();
+            saveFolderCustomizations();
+
+            renderProjects();
+
+            if (backup.currentProjectId) {
+                selectProject(backup.currentProjectId);
+            } else if (projects.length > 0) {
+                selectProject(projects[0].id);
+            }
+
+            updateStatus('Backup wiederhergestellt');
         }
+// =========================== APPLYBACKUPDATA END =========================
 
         function restoreData() {
             const input = document.createElement('input');
@@ -6515,51 +6721,7 @@ function checkFileAccess() {
                 reader.onload = (event) => {
                     try {
                         const backup = JSON.parse(event.target.result);
-                        
-                        if (!backup.version || !backup.projects) {
-                            throw new Error('Ungültiges Backup-Format');
-                        }
-                        
-                        if (!confirm('Dies wird alle aktuellen Daten überschreiben. Fortfahren?')) {
-                            return;
-                        }
-                        
-                        projects = backup.projects;
-                        textDatabase = backup.textDatabase || {};
-                        filePathDatabase = backup.filePathDatabase || {};
-                        folderCustomizations = backup.folderCustomizations || {};
-                        
-                        // Migrate restored projects if they don't have icon/color
-                        let migrationNeeded = false;
-                        projects.forEach(project => {
-                            if (!project.hasOwnProperty('icon')) {
-                                project.icon = '🗂️';
-                                migrationNeeded = true;
-                            }
-                            if (!project.hasOwnProperty('color')) {
-                                project.color = '#333333';
-                                migrationNeeded = true;
-                            }
-                        });
-                        
-                        if (migrationNeeded) {
-                            console.log('Wiederhergestellte Projekte migriert: Icons und Farben hinzugefügt');
-                        }
-                        
-                        saveProjects();
-                        saveTextDatabase();
-                        saveFilePathDatabase();
-                        saveFolderCustomizations();
-                        
-                        renderProjects();
-                        
-                        if (backup.currentProjectId) {
-                            selectProject(backup.currentProjectId);
-                        } else if (projects.length > 0) {
-                            selectProject(projects[0].id);
-                        }
-                        
-                        updateStatus('Backup wiederhergestellt');
+                        applyBackupData(backup);
                     } catch (err) {
                         alert('Fehler beim Wiederherstellen: ' + err.message);
                     }
