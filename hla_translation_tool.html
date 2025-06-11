@@ -2152,15 +2152,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             if (perm === 'granted') {
+                // Projekt-Handles immer initialisieren
+                projektOrdnerHandle = savedHandle;
+                deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+                enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
+
                 const rescan = confirm('Letzten Projektordner erneut scannen?');
                 if (rescan) {
-                    projektOrdnerHandle = savedHandle;
-                    deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
-                    enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
                     await scanEnOrdner();
                     updateStatus('Projektordner eingelesen und gescannt');
-                } else {
-                    projektOrdnerHandle = savedHandle;
                 }
             }
         } else {
