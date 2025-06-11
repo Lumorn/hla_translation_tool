@@ -1540,10 +1540,11 @@ return `
             </div>
         </div></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
-            ${getDebugPathInfo(file)}
-        </td>
-        <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
-            ${dePath ? `✅<span class="path-detail"> sounds/DE/${dePath}</span>` : '❌'}
+            <div class="btn-column">
+                <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>
+                <span class="path-btn ${dePath ? 'exists' : 'missing'}" title="Pfad der DE-Datei">DE</span>
+            </div>
+            <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
