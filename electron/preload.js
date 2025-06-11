@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', { relPath, data }),
   backupDeFile: (relPath) => ipcRenderer.invoke('backup-de-file', relPath),
   restoreDeFile: (relPath) => ipcRenderer.invoke('restore-de-file', relPath),
+  deleteDeBackupFile: (relPath) => ipcRenderer.invoke('delete-de-backup-file', relPath),
   // Backup-Funktionen
   listBackups: () => ipcRenderer.invoke('list-backups'),
   saveBackup: (data) => ipcRenderer.invoke('save-backup', data),
