@@ -39,4 +39,19 @@ function restoreVersion(historyRoot, relPath, name, targetRoot) {
     return target;
 }
 
-module.exports = { saveVersion, listVersions, restoreVersion };
+// Tauscht die aktuelle Datei mit einer History-Version aus und aktualisiert die Historie
+function switchVersion(historyRoot, relPath, name, targetRoot, limit = 10) {
+    const source = path.join(historyRoot, relPath, name);
+    const target = path.join(targetRoot, relPath);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    if (fs.existsSync(target)) {
+        // Aktuelle Datei vorher in die Historie verschieben
+        saveVersion(historyRoot, relPath, target, limit);
+    }
+    fs.copyFileSync(source, target);
+    // Wiederhergestellte Version aus der Historie entfernen
+    fs.unlinkSync(source);
+    return target;
+}
+
+module.exports = { saveVersion, listVersions, restoreVersion, switchVersion };
