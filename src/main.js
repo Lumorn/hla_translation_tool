@@ -4786,6 +4786,18 @@ function checkFileAccess() {
                 listDiv.textContent = 'Nur in der Desktop-Version verfügbar';
                 return;
             }
+            // Aktuelle Datei anzeigen
+            const currentItem = document.createElement('div');
+            currentItem.className = 'history-item';
+            const curLabel = document.createElement('span');
+            curLabel.textContent = 'Aktuelle Datei';
+            const curPlay = document.createElement('button');
+            curPlay.textContent = '▶';
+            curPlay.onclick = () => playCurrentSample(relPath);
+            currentItem.appendChild(curLabel);
+            currentItem.appendChild(curPlay);
+            listDiv.appendChild(currentItem);
+
             const files = await window.electronAPI.listDeHistory(relPath);
             files.forEach(name => {
                 const item = document.createElement('div');
@@ -4808,6 +4820,12 @@ function checkFileAccess() {
         function playHistorySample(relPath, name) {
             const audio = document.getElementById('audioPlayer');
             audio.src = `sounds/DE-History/${relPath}/${name}`;
+            audio.play();
+        }
+
+        function playCurrentSample(relPath) {
+            const audio = document.getElementById('audioPlayer');
+            audio.src = `sounds/DE/${relPath}`;
             audio.play();
         }
 

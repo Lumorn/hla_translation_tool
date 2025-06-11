@@ -201,9 +201,9 @@ app.whenReady().then(() => {
     return historyUtils.listVersions(deHistoryPath, relPath);
   });
 
-  // Stellt eine gewählte History-Version wieder her
+  // Stellt eine gewählte History-Version wieder her und tauscht sie mit der aktuellen
   ipcMain.handle('restore-de-history', async (event, { relPath, name }) => {
-    return historyUtils.restoreVersion(deHistoryPath, relPath, name, dePath);
+    return historyUtils.switchVersion(deHistoryPath, relPath, name, dePath);
   });
   // =========================== SAVE-DE-FILE END =============================
 
