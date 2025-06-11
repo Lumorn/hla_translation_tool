@@ -1550,10 +1550,13 @@ return `
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
-        <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
-            ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
-            ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
-        </td>
+        <td><div style="display:flex;align-items:flex-start;gap:5px;">
+            <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
+            <div class="edit-column">
+                ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
+                ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
+            </div>
+        </div></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
     </tr>
 `;
