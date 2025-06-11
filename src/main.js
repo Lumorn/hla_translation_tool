@@ -1539,11 +1539,11 @@ return `
                 ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
             </div>
         </div></td>
-        <td style="font-size: 11px; color: #666; word-break: break-all;">
+        <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             ${getDebugPathInfo(file)}
         </td>
-        <td style="font-size: 11px; color: #666; word-break: break-all;">
-            ${dePath ? `✅ sounds/DE/${dePath}` : '❌'}
+        <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
+            ${dePath ? `✅<span class="path-detail"> sounds/DE/${dePath}</span>` : '❌'}
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
@@ -1976,19 +1976,19 @@ function getDebugPathInfo(file) {
         const bestPath = exactMatches[0];
         const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
         const status = isAudioAvailable ? '✅' : '❌';
-        return `${status} EXAKT<br><small>${bestPath.fullPath}</small>`;
+        return `${status} EXAKT<span class="path-detail"><br><small>${bestPath.fullPath}</small></span>`;
     }
     
     if (normalizedMatches.length > 0) {
         const bestPath = normalizedMatches[0];
         const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
         const status = isAudioAvailable ? '✅' : '⚠️';
-        return `${status} NORMALISIERT<br><small>Projekt: ${file.folder}<br>DB: ${bestPath.folder}</small>`;
+        return `${status} NORMALISIERT<span class="path-detail"><br><small>Projekt: ${file.folder}<br>DB: ${bestPath.folder}</small></span>`;
     }
     
     // Keine Matches - zeige was verfügbar ist
     const availableFolders = dbPaths.map(p => p.folder).join('<br>');
-    return `❌ KEINE MATCHES<br><small>Projekt: ${file.folder}<br>DB hat:<br>${availableFolders}</small>`;
+    return `❌ KEINE MATCHES<span class="path-detail"><br><small>Projekt: ${file.folder}<br>DB hat:<br>${availableFolders}</small></span>`;
 }
 
 // Repariere Ordnernamen in allen Projekten basierend auf Database
