@@ -54,7 +54,7 @@
         }
 		
 		/* Debug column styling */
-td:nth-child(9) {
+td:nth-child(9), td:nth-child(10) {
     max-width: 200px;
     font-size: 11px;
     color: #666;
@@ -62,7 +62,7 @@ td:nth-child(9) {
     line-height: 1.2;
 }
 
-th:nth-child(9) {
+th:nth-child(9), th:nth-child(10) {
     max-width: 200px;
     font-size: 12px;
 }
@@ -532,7 +532,8 @@ th:nth-child(9) {
         min-width: 180px;
     }
     /* Debug-Spalte bei kleinen Bildschirmen ausblenden */
-    td:nth-child(9), th:nth-child(9) {
+    td:nth-child(9), th:nth-child(9),
+    td:nth-child(10), th:nth-child(10) {
         display: none;
     }
 }
@@ -546,7 +547,8 @@ th:nth-child(9) {
         width: 30%;
         min-width: 160px;
     }
-    td:nth-child(9), th:nth-child(9) {
+    td:nth-child(9), th:nth-child(9),
+    td:nth-child(10), th:nth-child(10) {
         display: none;
     }
 }
@@ -1757,6 +1759,7 @@ th:nth-child(9) {
         <th>EN Text</th>
         <th>DE Text</th>
         <th width="200" title="Debug: Aufgelöster Pfad">🔍 Aufgelöster Pfad</th>
+        <th width="200" title="Pfad der DE-Datei">DE Pfad</th>
         <th width="60">Audio</th>
         <th width="60">DE Audio</th>
         <th width="60">Upload</th>
@@ -1936,7 +1939,7 @@ let files                  = [];
 let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
-let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
+let deAudioCache = {}; /* BasisPfad -> {file: DateiOderPfad, path: vollstaendigerPfad} */ // Zwischenspeicher für DE-Audios
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
@@ -2005,7 +2008,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             verarbeiteGescannteDateien(data.enFiles);
             // DE-Dateien als Pfade merken
             data.deFiles.forEach(file => {
-                deAudioCache[file.fullPath] = `sounds/DE/${file.fullPath}`;
+                const key = file.fullPath.replace(/\.(mp3|wav|ogg)$/i, '');
+                deAudioCache[key] = { file: `sounds/DE/${file.fullPath}`, path: file.fullPath };
             });
             // Nach dem Einlesen Projekte und Zugriffsstatus aktualisieren
             updateAllProjectsAfterScan();
@@ -3343,7 +3347,8 @@ function renderFileTableWithOrder(sortedFiles) {
     
     tbody.innerHTML = sortedFiles.map((file, displayIndex) => {
         const relPath = getFullPath(file);
-        const hasDeAudio = !!deAudioCache[relPath];
+        const basePath = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
+        const hasDeAudio = !!deAudioCache[basePath];
         // Find original index for display
         const originalIndex = files.findIndex(f => f.id === file.id);
         
@@ -3410,6 +3415,9 @@ return `
         </div></td>
         <td style="font-size: 11px; color: #666; word-break: break-all;">
             ${getDebugPathInfo(file)}
+        </td>
+        <td style="font-size: 11px; color: #666; word-break: break-all;">
+            ${getDeFilePath(file) || ''}
         </td>
         <td><button class="play-btn" onclick="playAudio(${file.id})">▶</button></td>
         <td>
@@ -3856,6 +3864,13 @@ function getDebugPathInfo(file) {
     // Keine Matches - zeige was verfügbar ist
     const availableFolders = dbPaths.map(p => p.folder).join('<br>');
     return `❌ KEINE MATCHES<br><small>Projekt: ${file.folder}<br>DB hat:<br>${availableFolders}</small>`;
+}
+
+// Liefert den Pfad der zugeh\u00f6rigen DE-Datei, falls vorhanden
+function getDeFilePath(file) {
+    const rel = getFullPath(file).replace(/\.(mp3|wav|ogg)$/i, '');
+    const entry = deAudioCache[rel];
+    return entry ? entry.path : null;
 }
 
 // Repariere Ordnernamen in allen Projekten basierend auf Database
@@ -4655,10 +4670,11 @@ async function playDeAudio(fileId) {
     // In Electron greifen wir direkt über den Dateipfad zu
 
     const relPath = getFullPath(file);
+    const basePath = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
 
-    if (!deAudioCache[relPath]) {
+    if (!deAudioCache[basePath]) {
         if (window.electronAPI) {
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            deAudioCache[basePath] = { file: `sounds/DE/${relPath}`, path: relPath };
         } else {
             try {
                 let handle = deOrdnerHandle;
@@ -4668,8 +4684,25 @@ async function playDeAudio(fileId) {
                         handle = await handle.getDirectoryHandle(part);
                     }
                 }
-                const fh = await handle.getFileHandle(file.filename);
-                deAudioCache[relPath] = await fh.getFile();
+                const basisName = file.filename.replace(/\.(mp3|wav|ogg)$/i, '');
+                const endungen = ['.mp3', '.wav', '.ogg'];
+                let datei = null;
+                let gefunden = null;
+                for (const endung of endungen) {
+                    try {
+                        const fh = await handle.getFileHandle(basisName + endung);
+                        datei = await fh.getFile();
+                        gefunden = basisName + endung;
+                        break;
+                    } catch {}
+                }
+                if (datei) {
+                    const deRel = (file.folder ? file.folder + '/' : '') + gefunden;
+                    deAudioCache[basePath] = { file: datei, path: deRel };
+                } else {
+                    updateStatus('DE-Datei nicht gefunden');
+                    return;
+                }
             } catch (e) {
                 updateStatus('DE-Datei nicht gefunden');
                 return;
@@ -4687,10 +4720,11 @@ async function playDeAudio(fileId) {
     stopCurrentPlayback();
 
     let url = null;
-    if (window.electronAPI && typeof deAudioCache[relPath] === 'string') {
-        audio.src = deAudioCache[relPath];
+    const cache = deAudioCache[basePath];
+    if (window.electronAPI && typeof cache.file === 'string') {
+        audio.src = cache.file;
     } else {
-        url = URL.createObjectURL(deAudioCache[relPath]);
+        url = URL.createObjectURL(cache.file);
         audio.src = url;
     }
     audio.play().then(() => {
@@ -4857,7 +4891,7 @@ function updateAllProjectsAfterScan() {
             }
 
             // Wenn eine passende DE-Datei existiert, als erledigt markieren
-            const deRel = getFullPath(file);
+            const deRel = getFullPath(file).replace(/\.(mp3|wav|ogg)$/i, '');
             if (deAudioCache[deRel] && !file.completed) {
                 file.completed = true;
                 totalCompleted++;
@@ -6794,11 +6828,25 @@ async function waehleProjektOrdner() {
                         enDateien.push({ pfad: pfad + name, handle: child });
                         if (deHandle) {
                             try {
-                                const deFileHandle = await deHandle.getFileHandle(name);
-                                const deFile = await deFileHandle.getFile();
-                                deAudioCache[pfad + name] = deFile;
+                                const basisName = name.replace(/\.(mp3|wav|ogg)$/i, '');
+                                const endungen = ['.mp3', '.wav', '.ogg'];
+                                let deFile = null;
+                                let foundExt = null;
+                                for (const endung of endungen) {
+                                    try {
+                                        const deFileHandle = await deHandle.getFileHandle(basisName + endung);
+                                        deFile = await deFileHandle.getFile();
+                                        foundExt = endung;
+                                        break;
+                                    } catch {}
+                                }
+                                if (deFile) {
+                                    const base = (pfad + name).replace(/\.(mp3|wav|ogg)$/i, '');
+                                    const deRel = pfad + basisName + foundExt;
+                                    deAudioCache[base] = { file: deFile, path: deRel };
+                                }
                             } catch (e) {
-                                // Datei existiert nicht im DE-Ordner
+                                // Keine passende DE-Datei gefunden
                             }
                         }
                     }
@@ -6925,7 +6973,8 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     await writable.close();
 
     // DE-Audio im Cache aktualisieren
-    deAudioCache[relativerPfad] = datei;
+    const base = relativerPfad.replace(/\.(mp3|wav|ogg)$/i, '');
+    deAudioCache[base] = { file: datei, path: relativerPfad };
 }
 // =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
 
@@ -6947,7 +6996,8 @@ async function handleDeUpload(input) {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await datei.arrayBuffer();
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
-        deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
+        const baseUp = aktuellerUploadPfad.replace(/\.(mp3|wav|ogg)$/i, '');
+        deAudioCache[baseUp] = { file: `sounds/DE/${aktuellerUploadPfad}`, path: aktuellerUploadPfad };
     } else {
         await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
     }
