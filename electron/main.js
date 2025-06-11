@@ -150,6 +150,18 @@ app.whenReady().then(() => {
     }
     return target;
   });
+  // =========================== RESTORE-DE-FILE START ========================
+  // Stellt eine DE-Datei aus dem Backup-Ordner wieder her
+  ipcMain.handle('restore-de-file', async (event, relPath) => {
+    const backupFile = path.join(deBackupPath, relPath);
+    const targetFile = path.join(dePath, relPath);
+    if (fs.existsSync(backupFile)) {
+      fs.mkdirSync(path.dirname(targetFile), { recursive: true });
+      fs.copyFileSync(backupFile, targetFile);
+    }
+    return targetFile;
+  });
+  // =========================== RESTORE-DE-FILE END ==========================
   // =========================== BACKUP-DE-FILE END =============================
 
   // =========================== SAVE-DE-FILE START ===========================
