@@ -7525,11 +7525,27 @@ async function openDeEdit(fileId) {
     updateDeEditWaveforms();
     document.getElementById('deEditDialog').style.display = 'flex';
 
-    const canvas = document.getElementById('waveEdited');
-    canvas.onmousedown = e => {
-        const rect = canvas.getBoundingClientRect();
+    const deCanvas = document.getElementById('waveEdited');
+    const origCanvas = document.getElementById('waveOriginal');
+
+    // Klick auf das Original-Wellenbild setzt den EN-Cursor
+    origCanvas.onmousedown = e => {
+        const rect = origCanvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
-        const width = canvas.width;
+        const ratio = x / rect.width;
+        editOrigCursor = ratio * editDurationMs;
+        if (editPlaying === 'orig') {
+            const audio = document.getElementById('audioPlayer');
+            audio.currentTime = Math.min(editOrigCursor, editDurationMs) / 1000;
+        }
+        updateDeEditWaveforms(null, null);
+    };
+
+    // Klick auf das bearbeitete Wellenbild setzt Cursor bzw. Trimmer
+    deCanvas.onmousedown = e => {
+        const rect = deCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const width = rect.width;
         const startX = (editStartTrim / editDurationMs) * width;
         const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
         if (Math.abs(x - startX) < 7) {
@@ -7549,7 +7565,7 @@ async function openDeEdit(fileId) {
     };
     window.onmousemove = e => {
         if (!editDragging) return;
-        const rect = canvas.getBoundingClientRect();
+        const rect = deCanvas.getBoundingClientRect();
         const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
         const ratio = x / rect.width;
         const time = ratio * editDurationMs;
