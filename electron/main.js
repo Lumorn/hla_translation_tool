@@ -83,8 +83,10 @@ app.whenReady().then(() => {
   const projectBase = path.join(__dirname, '..', 'sounds');
   const enPath = path.join(projectBase, 'EN');
   const dePath = path.join(projectBase, 'DE');
+  const deBackupPath = path.join(projectBase, 'DE-Backup');
   fs.mkdirSync(enPath, { recursive: true }); // EN-Ordner anlegen
   fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
+  fs.mkdirSync(deBackupPath, { recursive: true }); // DE-Backup-Ordner anlegen
 
   ipcMain.handle('scan-folders', () => {
     return {
@@ -136,6 +138,19 @@ app.whenReady().then(() => {
     shell.openPath(backupPath);
     return true;
   });
+
+  // =========================== BACKUP-DE-FILE START ===========================
+  // Kopiert eine vorhandene DE-Datei in den Backup-Ordner
+  ipcMain.handle('backup-de-file', async (event, relPath) => {
+    const source = path.join(dePath, relPath);
+    const target = path.join(deBackupPath, relPath);
+    if (fs.existsSync(source)) {
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      fs.copyFileSync(source, target);
+    }
+    return target;
+  });
+  // =========================== BACKUP-DE-FILE END =============================
 
   // =========================== SAVE-DE-FILE START ===========================
   // Speichert eine hochgeladene DE-Datei im richtigen Unterordner
