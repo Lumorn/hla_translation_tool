@@ -226,7 +226,7 @@ function calculateProjectStats(project) {
     
     const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
     const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
-    const filesCompleted = files.filter(f => f.completed).length;
+    const filesCompleted = files.filter(isFileCompleted).length;
     const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
     
     return {
@@ -792,7 +792,6 @@ function addFiles() {
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
                 selected: true,
-                completed: false,
                 trimStartMs: 0,
                 trimEndMs: 0,
                 volumeMatched: false
@@ -1511,7 +1510,7 @@ async function renderFileTableWithOrder(sortedFiles) {
         }
         
 return `
-    <tr data-id="${file.id}" ${file.completed ? 'class="completed"' : ''}>
+    <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" ondblclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Doppelklick um Position zu ändern">${originalIndex + 1}</td>
         <td>${file.filename}</td>
@@ -2190,6 +2189,14 @@ function getDeFilePath(file) {
 }
 // =========================== GETDEFILEPATH END ===========================
 
+// Prüft, ob eine Datei EN- und DE-Text sowie ein DE-Audio besitzt
+function isFileCompleted(file) {
+    const hasEn = file.enText && file.enText.trim().length > 0;
+    const hasDe = file.deText && file.deText.trim().length > 0;
+    const hasAudio = !!getDeFilePath(file);
+    return hasEn && hasDe && hasAudio;
+}
+
 // =========================== HISTORY CACHE START ===========================
 // Prüft, ob für eine Datei History-Versionen existieren
 async function checkHistoryAvailable(file) {
@@ -2561,31 +2568,18 @@ function redoEdit() {
         // File completion status
 function toggleFileCompletion(fileId) {
     const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    
-    file.completed = !file.completed;
-    isDirty = true;
-    
-    // Update row appearance
-    const row = document.querySelector(`tr[data-id="${fileId}"]`);
-    if (row) {
-        if (file.completed) {
-            row.classList.add('completed');
-        } else {
-            row.classList.remove('completed');
-        }
-    }
-    
+
+    // Fertig-Status wird nun anhand der Daten ermittelt
     updateProgressStats();
-    renderProjects(); // HINZUFÜGEN für live Update
-    updateStatus(file.completed ? 'Als fertig markiert' : 'Als unfertig markiert');
-    
+    renderProjects();
+    updateStatus('Fertig-Status wird automatisch berechnet');
+
     // Update folder browser if it's open
     const folderBrowserOpen = document.getElementById('folderBrowserDialog').style.display === 'flex';
     if (folderBrowserOpen) {
         // Check if we're in folder grid or file view
         const folderFilesView = document.getElementById('folderFilesView');
-        if (folderFilesView.style.display === 'block') {
+        if (folderFilesView.style.display === 'block' && file) {
             // We're in file view - refresh it
             showFolderFiles(file.folder);
         } else {
@@ -2598,7 +2592,7 @@ function toggleFileCompletion(fileId) {
         // Progress statistics
         function updateProgressStats() {
             const totalFiles = files.length;
-            const completedFiles = files.filter(f => f.completed).length;
+            const completedFiles = files.filter(isFileCompleted).length;
             const completionPercent = totalFiles > 0 ? Math.round((completedFiles / totalFiles) * 100) : 0;
             
             // Get folder statistics
@@ -2608,7 +2602,7 @@ function toggleFileCompletion(fileId) {
                     folderStats[file.folder] = { total: 0, completed: 0 };
                 }
                 folderStats[file.folder].total++;
-                if (file.completed) {
+                if (isFileCompleted(file)) {
                     folderStats[file.folder].completed++;
                 }
             });
@@ -2732,14 +2726,13 @@ function toggleCompletionAll() {
             const fileId = parseFloat(checkbox.closest('tr').dataset.id);
             const file = files.find(f => f.id === fileId);
             if (file) {
-                file.completed = newState;
-                
-                // Update row appearance
                 const row = checkbox.closest('tr');
-                if (newState) {
-                    row.classList.add('completed');
-                } else {
-                    row.classList.remove('completed');
+                if (row) {
+                    if (newState && isFileCompleted(file)) {
+                        row.classList.add('completed');
+                    } else {
+                        row.classList.remove('completed');
+                    }
                 }
             }
         }
@@ -2750,10 +2743,7 @@ function toggleCompletionAll() {
     renderProjects(); // HINZUFÜGEN für live Update
     
     const count = Array.from(completionCheckboxes).filter(cb => cb.checked).length;
-    updateStatus(newState ? 
-        `Alle ${count} Dateien als fertig markiert` : 
-        'Alle Dateien als unfertig markiert'
-    );
+    updateStatus(`Status für ${count} Dateien aktualisiert`);
 }
 
         // Selection
@@ -3154,10 +3144,9 @@ function updateAllProjectsAfterScan() {
                 console.log(`   Pfad: ${oldPath} -> ${bestPath.fullPath}`);
             }
 
-            // Wenn eine passende DE-Datei existiert, als erledigt markieren
+            // Wenn eine passende DE-Datei existiert, zählen
             const deRel = getFullPath(file);
-            if (deAudioCache[deRel] && !file.completed) {
-                file.completed = true;
+            if (deAudioCache[deRel] && isFileCompleted(file)) {
                 totalCompleted++;
             }
         });
@@ -4102,7 +4091,6 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         selected: true,
-        completed: false,
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false
@@ -5496,7 +5484,7 @@ async function handleDeUpload(input) {
     // Zugehörige Datei als fertig markieren
     const file = files.find(f => getFullPath(f) === aktuellerUploadPfad);
     if (file) {
-        file.completed = true;
+        // Fertig-Status ergibt sich nun automatisch
     }
 
     aktuellerUploadPfad = null;
@@ -6830,7 +6818,6 @@ function addFileToProject(filename, folder, originalResult) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         selected: true,
-        completed: false,
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false
@@ -7257,7 +7244,9 @@ function showProjectCustomization(id, ev) {
                 await speichereUebersetzungsDatei(datei, zielPfad);
             }
             const f = files.find(fl => getFullPath(fl) === zielPfad);
-            if (f) f.completed = true;
+            if (f) {
+                // Fertig-Status ergibt sich nun automatisch
+            }
             renderFileTable();
             updateStatus('DE-Datei gespeichert');
         }

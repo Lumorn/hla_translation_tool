@@ -28,13 +28,14 @@ describe('calculateProjectStats', () => {
     });
 
     test('single completed file returns 100% in all categories', () => {
+        global.deAudioCache = { '/file.wav': true };
         const result = calculateProjectStats({
-            files: [{ enText: 'EN', deText: 'DE', completed: true }]
+            files: [{ enText: 'EN', deText: 'DE', fullPath: '/file.wav' }]
         });
         expect(result).toEqual({
             enPercent: 100,
             dePercent: 100,
-            deAudioPercent: 0,
+            deAudioPercent: 100,
             completedPercent: 100,
             totalFiles: 1
         });
@@ -44,9 +45,9 @@ describe('calculateProjectStats', () => {
     test('only EN texts present', () => {
         const result = calculateProjectStats({
             files: [
-                { enText: 'EN1', deText: '', completed: false },
-                { enText: 'EN2', deText: '', completed: false },
-                { enText: 'EN3', deText: '', completed: false }
+                { enText: 'EN1', deText: '' },
+                { enText: 'EN2', deText: '' },
+                { enText: 'EN3', deText: '' }
             ]
         });
         expect(result).toEqual({
@@ -62,8 +63,8 @@ describe('calculateProjectStats', () => {
     test('only DE texts present', () => {
         const result = calculateProjectStats({
             files: [
-                { enText: '', deText: 'DE1', completed: false },
-                { enText: '', deText: 'DE2', completed: false }
+                { enText: '', deText: 'DE1' },
+                { enText: '', deText: 'DE2' }
             ]
         });
         expect(result).toEqual({
@@ -79,8 +80,8 @@ describe('calculateProjectStats', () => {
     test('mixed ratio of 50% EN and 50% DE texts', () => {
         const result = calculateProjectStats({
             files: [
-                { enText: 'EN1', deText: '', completed: false },
-                { enText: '', deText: 'DE1', completed: false }
+                { enText: 'EN1', deText: '' },
+                { enText: '', deText: 'DE1' }
             ]
         });
         expect(result).toEqual({
@@ -96,8 +97,8 @@ describe('calculateProjectStats', () => {
         global.deAudioCache = { '/game/file1.wav': true };
         const result = calculateProjectStats({
             files: [
-                { enText: 'EN', deText: 'DE', fullPath: '/game/file1.wav', completed: true },
-                { enText: 'EN2', deText: 'DE2', fullPath: '/game/file2.wav', completed: false }
+                { enText: 'EN', deText: 'DE', fullPath: '/game/file1.wav' },
+                { enText: 'EN2', deText: 'DE2', fullPath: '/game/file2.wav' }
             ]
         });
         expect(result).toEqual({
