@@ -7781,6 +7781,8 @@ async function resetDeEdit() {
         editEndTrim = 0;
         currentEditFile.trimStartMs = 0;
         currentEditFile.trimEndMs = 0;
+        // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
+        isDirty = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
         updateStatus('DE-Audio zurückgesetzt');
@@ -7856,6 +7858,8 @@ async function applyDeEdit() {
     }
     currentEditFile.trimStartMs = editStartTrim;
     currentEditFile.trimEndMs = editEndTrim;
+    // Änderungen sichern
+    isDirty = true;
     renderFileTable();
     closeDeEdit();
     updateStatus('DE-Audio bearbeitet und gespeichert');
