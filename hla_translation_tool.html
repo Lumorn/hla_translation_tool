@@ -7784,6 +7784,10 @@ async function resetDeEdit() {
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
         updateStatus('DE-Audio zurückgesetzt');
+        // Tabelle neu zeichnen, damit der Play-Button die aktuelle Datei nutzt
+        renderFileTable();
+        // Bearbeitungsfenster schließen
+        closeDeEdit();
     } catch (err) {
         console.error('Fehler beim Zurücksetzen', err);
         updateStatus('Fehler beim Zurücksetzen');
