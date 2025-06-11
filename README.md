@@ -18,7 +18,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [🏁 Erste Schritte](#-erste-schritte)
 * [🎮 Bedienung](#-bedienung)
 * [⌨️ Keyboard Shortcuts](#-keyboard-shortcuts)
-* [📥📤 Import & Export](#-import--export)
+* [📥 Import](#-import)
 * [📁 Ordner-Management](#-ordner-management)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
@@ -106,7 +106,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Moderner Browser:** Chrome, Firefox, Edge, Safari
 * **JavaScript aktiviert**
-* **Lokaler Dateizugriff** für Audio‑Wiedergabe & Export
+* **Lokaler Dateizugriff** für Audio‑Wiedergabe 
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 
 ### Desktop-Version (Electron)
@@ -191,8 +191,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | -------------------------- | --------------------------------------------------- |
 | **`Ctrl + S`**            | Projekt manuell speichern                         |
 | **`Ctrl + I`**            | Import‑Dialog öffnen                              |
-| **`Ctrl + E`**            | Export‑Dialog öffnen                              |
-| **`Ctrl + F`**            | Ordner‑Browser öffnen                             |
 | **`Escape`**              | Dialoge schließen / Context‑Menu schließen        |
 
 ### Tabellen‑Navigation
@@ -215,7 +213,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## 📥📤 Import & Export
+## 📥 Import
 
 ### Import‑Funktionen
 
@@ -225,21 +223,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
   * **Intelligente Zuordnung:** Dateinamen‑Spalte wird automatisch erkannt
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
-
-### Export‑Funktionen
-
-* **📤 ZIP‑Export**
-  * **Audio‑Dateien** mit angepassten Namen
-  * **CSV‑Datei** mit Übersetzungen
-  * **Manifest‑JSON** mit Metadaten
-  * **Flexible Namensformate:** Nummer‑Ordner, Ordner‑Nummer, Präfix
-  * **Fortschritts‑Anzeige** mit Dateiliste
-
-### Backup & Restore
-
-* **💾 Backup:** Vollständige Datensicherung als JSON
-* **📂 Restore:** Wiederherstellung mit Migrations‑Support
-* **Auto‑Save:** Kontinuierliche Speicherung alle 30 Sekunden
 
 ---
 
@@ -309,9 +292,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * ▶ **Lösung:** Haupt‑Audio‑Ordner erneut einlesen
 * ▶ **Prüfung:** Debug‑Spalte zeigt Pfad‑Status
 
-**💾 Export funktioniert nicht**
-* ▶ **Lösung:** Erst Dateien auswählen, dann Export starten
-* ▶ **Auto‑Check:** Tool prüft Berechtigungen vor Export
 
 **🔄 Duplikate in Datenbank**
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
@@ -373,7 +353,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Intelligenter Import:** Automatische Spalten‑Erkennung
 * **Ähnlichkeitssuche:** Normalisierte Suche mit Scoring
 * **Multi‑Ordner‑Auswahl:** Lösung für mehrdeutige Dateien
-* **Erweiterte Export‑Optionen:** Flexible Dateinamen‑Formate
 
 ### 3.2.0 - Audio & Visual Enhancements
 
@@ -397,7 +376,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Multi‑Projekt‑Support:** Verwaltung mehrerer Übersetzungsprojekte
 * **Intelligenter Ordner‑Scan:** Automatische Audio‑Datei‑Erkennung
 * **Text‑Datenbank:** Globale Speicherung aller Übersetzungen
-* **Import/Export:** Wiki‑Tabellen und ZIP‑Archive
+* **Import:** Wiki‑Tabellen
 * **Offline‑Fähigkeit:** Vollständig lokale Web‑App
 
 ---

@@ -963,85 +963,6 @@ th:nth-child(9) {
             color: #999;
         }
 
-        /* Export progress */
-        .export-progress {
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .export-status {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 10px;
-        }
-
-        .file-list {
-            max-height: 300px;
-            overflow-y: auto;
-            background: #242424;
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 10px;
-            margin: 10px 0;
-        }
-
-        .file-list-item {
-            padding: 5px 0;
-            font-size: 12px;
-            color: #999;
-            border-bottom: 1px solid #333;
-        }
-
-        .file-list-item:last-child {
-            border-bottom: none;
-        }
-
-        .file-list-item.success {
-            color: #4caf50;
-        }
-
-        .file-list-item.error {
-            color: #f44336;
-        }
-
-        /* ZIP Download Button */
-        .download-section {
-            background: #242424;
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .download-info {
-            color: #999;
-            margin-bottom: 15px;
-        }
-
-        .download-btn {
-            padding: 12px 30px;
-            background: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-
-        .download-btn:hover {
-            background: #66bb6a;
-        }
-
-        .download-btn:disabled {
-            background: #666;
-            cursor: not-allowed;
-        }
 
 /* =========================== DIALOG CLOSE BTN STYLE START =========================== */
 .folder-browser-dialog .dialog { position:relative; }
@@ -1765,7 +1686,6 @@ th:nth-child(9) {
                 <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
                 <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
                 <button class="btn btn-secondary" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</button>
-                <button class="btn btn-success" onclick="showExportDialog()">📤 Export ZIP</button>
                 <button class="btn btn-secondary" onclick="backupData()">💾 Backup</button>
                 <button class="btn btn-secondary" onclick="restoreData()">📂 Restore</button>
                 <button class="btn btn-danger" onclick="resetFileDatabase()">🔄 Reset DB</button>
@@ -1956,57 +1876,6 @@ th:nth-child(9) {
         </div>
     </div>
 
-    <!-- Export Dialog -->
-    <div class="dialog-overlay" id="exportDialog">
-        <div class="dialog">
-            <h3>📤 Audio-Dateien als ZIP exportieren</h3>
-            <p style="margin-bottom: 15px; color: #999;">
-                Erstellt eine ZIP-Datei mit allen ausgewählten Audio-Dateien und angepassten Dateinamen.
-            </p>
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px;">Präfix für Dateinamen:</label>
-                <input type="text" id="exportPrefix" value="HLA_DE_" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;">
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px;">Dateiformat:</label>
-                <select id="exportFormat" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;">
-                    <option value="number_folder">001_ordner_dateiname.ext</option>
-                    <option value="folder_number">ordner_001_dateiname.ext</option>
-                    <option value="prefix_only">präfix_dateiname.ext</option>
-                </select>
-            </div>
-            <div style="margin-bottom: 20px;">
-                <label>
-                    <input type="checkbox" id="exportCSV" checked> CSV-Datei mit Übersetzungen erstellen
-                </label>
-            </div>
-            
-            <!-- Export Progress -->
-            <div class="export-progress" id="exportProgress" style="display: none;">
-                <div class="export-status" id="exportStatus">Bereite Export vor...</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="exportProgressFill"></div>
-                </div>
-                <div class="file-list" id="exportFileList"></div>
-            </div>
-
-            <!-- Download Section -->
-            <div class="download-section" id="downloadSection" style="display: none;">
-                <div class="download-info">
-                    <strong>Export abgeschlossen!</strong><br>
-                    ZIP-Datei ist bereit zum Download.
-                </div>
-                <button class="download-btn" id="downloadBtn" onclick="downloadZip()">
-                    📦 ZIP-Datei herunterladen
-                </button>
-            </div>
-
-            <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeExportDialog()">Abbrechen</button>
-                <button class="btn btn-success" id="startExportBtn" onclick="startExport()">Export starten</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Folder Browser Dialog -->
     <div class="dialog-overlay folder-browser-dialog" id="folderBrowserDialog">
@@ -2055,8 +1924,6 @@ th:nth-child(9) {
         <pre id="debugConsole" style="max-height:200px; overflow:auto; background:#000; color:#0f0; padding:5px;"></pre>
     </details>
 
-    <!-- JSZip Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
     <script>
 	
@@ -2066,7 +1933,6 @@ let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let currentProject         = null;
 let files                  = [];
-let exportZip              = null; // ZIP Export
 let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
@@ -3099,10 +2965,6 @@ function addFiles() {
                     case 'i':
                         e.preventDefault();
                         showImportDialog();
-                        break;
-                    case 'e':
-                        e.preventDefault();
-                        showExportDialog();
                         break;
                     case 'f':
                         e.preventDefault();
@@ -6452,237 +6314,6 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
 
 
 
-        // Export functions
-        function showExportDialog() {
-            // Auto-check and scan if needed
-            if (!checkFileAccessWithAutoScan('ZIP-Export')) {
-                return; // Cancelled or no files selected
-            }
-            
-            document.getElementById('exportDialog').style.display = 'flex';
-            document.getElementById('exportProgress').style.display = 'none';
-            document.getElementById('downloadSection').style.display = 'none';
-            document.getElementById('startExportBtn').style.display = 'block';
-            document.getElementById('startExportBtn').disabled = false;
-        }
-
-// =========================== CLOSEEXPORTDIALOG START ===========================
-function closeExportDialog() {
-    document.getElementById('exportDialog').style.display = 'none';
-    if (typeof exportZip !== 'undefined' && exportZip !== null) {
-        exportZip = null;
-    }
-}
-// =========================== CLOSEEXPORTDIALOG END ===========================
-
-
-
-// =========================== STARTEXPORT START ===========================
-async function startExport() {
-    const selectedFiles = files.filter(f => f.selected);
-    if (selectedFiles.length === 0) {
-        alert('Keine Dateien ausgewählt!');
-        return;
-    }
-
-    // Final check before export - auto-scan if needed
-    const scanResult = checkAndAutoScan(selectedFiles, 'ZIP-Export Start');
-    if (scanResult === true) {
-        // Scan started, close dialog and wait
-        updateStatus('ZIP-Export: Warte auf Ordner-Scan...');
-        closeExportDialog();
-        return;
-    } else if (scanResult === false) {
-        // User cancelled
-        return;
-    }
-    // scanResult === null means all files are accessible, continue
-
-    const prefix = document.getElementById('exportPrefix').value || 'HLA_';
-    const format = document.getElementById('exportFormat').value;
-    const createCSV = document.getElementById('exportCSV').checked;
-
-    document.getElementById('startExportBtn').style.display = 'none';
-    document.getElementById('exportProgress').style.display = 'block';
-    
-    const exportStatus = document.getElementById('exportStatus');
-    const exportProgressFill = document.getElementById('exportProgressFill');
-    const exportFileList = document.getElementById('exportFileList');
-
-    exportStatus.textContent = 'Erstelle ZIP-Archiv...';
-    exportProgressFill.style.width = '0%';
-    exportFileList.innerHTML = '';
-
-    try {
-        exportZip = new JSZip();
-        let processedFiles = 0;
-        let successCount = 0;
-        let errorCount = 0;
-
-        const exportData = [];
-        
-        for (let i = 0; i < selectedFiles.length; i++) {
-            const file = selectedFiles[i];
-            const num = String(i + 1).padStart(3, '0');
-            let newName;
-            
-            switch(format) {
-                case 'number_folder':
-                    newName = `${num}_${file.folder.replace(/\//g, '_')}_${file.filename}`;
-                    break;
-                case 'folder_number':
-                    newName = `${file.folder.replace(/\//g, '_')}_${num}_${file.filename}`;
-                    break;
-                case 'prefix_only':
-                    newName = `${prefix}${file.filename}`;
-                    break;
-            }
-            
-            exportData.push({
-                originalPath: file.fullPath,
-                newName: newName,
-                file: file,
-                index: i
-            });
-        }
-
-        for (const data of exportData) {
-            const file = data.file;
-            const progress = Math.round((processedFiles / selectedFiles.length) * 100);
-            
-            exportStatus.textContent = `Verarbeite ${file.filename}... (${processedFiles + 1}/${selectedFiles.length})`;
-            exportProgressFill.style.width = progress + '%';
-            
-            const listItem = document.createElement('div');
-            listItem.className = 'file-list-item';
-            listItem.textContent = `${data.newName} ← ${file.filename}`;
-            exportFileList.appendChild(listItem);
-            
-            try {
-                // Nutze die dynamische Audio-Suche
-                const audioResult = findAudioInFilePathCache(file.filename, file.folder);
-                
-                if (audioResult && audioResult.audioFile) {
-                    exportZip.file(data.newName, audioResult.audioFile);
-                    listItem.classList.add('success');
-                    listItem.textContent += ' ✓';
-                    successCount++;
-                    console.log(`[EXPORT] Success: ${file.filename} -> ${data.newName}`);
-                } else {
-                    listItem.classList.add('error');
-                    listItem.textContent += ' ✗ (Audio nicht gefunden)';
-                    errorCount++;
-                    console.log(`[EXPORT] Error: ${file.filename} - Audio nicht gefunden`);
-                }
-            } catch (error) {
-                listItem.classList.add('error');
-                listItem.textContent += ' ✗ (Fehler)';
-                errorCount++;
-                console.error(`[EXPORT] Error processing file: ${file.filename}`, error);
-            }
-            
-            processedFiles++;
-            
-            if (processedFiles % 10 === 0) {
-                await new Promise(resolve => setTimeout(resolve, 10));
-            }
-        }
-
-        if (createCSV && successCount > 0) {
-            exportStatus.textContent = 'Erstelle CSV-Datei...';
-            
-            const csvContent = 'Original Dateiname;Ordner;Export Name;EN Text;DE Text;Fertig\n' +
-                exportData.map(d => 
-                    `${d.file.filename};${d.file.folder};${d.newName};"${d.file.enText.replace(/"/g, '""')}";"${d.file.deText.replace(/"/g, '""')}";${d.file.completed ? 'Ja' : 'Nein'}`
-                ).join('\n');
-            
-            exportZip.file(`translations_${currentProject.name}_${new Date().toISOString().split('T')[0]}.csv`, csvContent);
-        }
-
-        const manifest = {
-            project: currentProject.name,
-            exportDate: new Date().toISOString(),
-            prefix: prefix,
-            format: format,
-            totalFiles: selectedFiles.length,
-            successfulFiles: successCount,
-            failedFiles: errorCount,
-            files: exportData.map(d => ({
-                original: d.file.filename,
-                exported: d.newName,
-                folder: d.file.folder,
-                enText: d.file.enText,
-                deText: d.file.deText,
-                completed: d.file.completed
-            }))
-        };
-        
-        exportZip.file('export_manifest.json', JSON.stringify(manifest, null, 2));
-
-        exportStatus.textContent = 'Finalisiere ZIP-Archiv...';
-        exportProgressFill.style.width = '100%';
-        
-        document.getElementById('downloadSection').style.display = 'block';
-        document.getElementById('downloadBtn').disabled = false;
-        
-        if (errorCount > 0) {
-            exportStatus.textContent = `Export abgeschlossen mit Fehlern. ${successCount} Dateien erfolgreich, ${errorCount} Fehler.`;
-        } else {
-            exportStatus.textContent = `Export erfolgreich abgeschlossen! ${successCount} Dateien hinzugefügt.`;
-        }
-        
-        updateStatus(`ZIP-Export vorbereitet: ${successCount}/${selectedFiles.length} Dateien`);
-
-    } catch (error) {
-        console.error('Export error:', error);
-        exportStatus.textContent = 'Fehler beim Export: ' + error.message;
-        document.getElementById('startExportBtn').style.display = 'block';
-        document.getElementById('startExportBtn').disabled = false;
-    }
-}
-// =========================== STARTEXPORT END ===========================
-
-        async function downloadZip() {
-            if (!exportZip) {
-                alert('Kein Export verfügbar!');
-                return;
-            }
-
-            try {
-                document.getElementById('downloadBtn').disabled = true;
-                document.getElementById('downloadBtn').textContent = 'Erstelle Download...';
-
-                // Unter Electron erzeugen wir ein Uint8Array, im Browser ein Blob
-                const exportType = window.electronAPI ? 'uint8array' : 'blob';
-                const content = await exportZip.generateAsync({
-                    type: exportType,
-                    compression: 'DEFLATE',
-                    compressionOptions: { level: 6 }
-                });
-
-                const filename = `${currentProject.name}_export_${new Date().toISOString().split('T')[0]}.zip`;
-
-                if (window.electronAPI && window.electronAPI.saveFile) {
-                    // Direkt über Electron speichern
-                    await window.electronAPI.saveFile(Array.from(content), filename);
-                } else {
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(content);
-                    link.download = filename;
-                    link.click();
-                    setTimeout(() => { URL.revokeObjectURL(link.href); }, 1000);
-                }
-
-                updateStatus('ZIP-Download gestartet');
-
-            } catch (error) {
-                console.error('Download error:', error);
-                alert('Fehler beim Download: ' + error.message);
-            } finally {
-                document.getElementById('downloadBtn').disabled = false;
-                document.getElementById('downloadBtn').textContent = '📦 ZIP-Datei herunterladen';
-            }
-        }
 
 function checkFileAccess() {
     const totalFiles = files.length;
@@ -8600,7 +8231,6 @@ function showProjectCustomization(id, ev) {
         console.log('• 📏 Auto-Height Textboxen - EN/DE gleich breit, Höhe synchronisiert');
         console.log('• 📐 Responsive Spaltenbreite für alle Fenstergrößen');
         console.log('• ▶ Audio-Wiedergabe mit Auto-Scan direkt im Browser');
-        console.log('• 📦 ZIP-Export mit Auto-Scan für echte Audio-Dateien');
         console.log('• 💾 Backup/Restore mit Projekt-Migration');
         console.log('• 🛠️ Debug-Tools für Datenquellen-Analyse');
         console.log('• 🎯 Highlighting von Suchbegriffen');
