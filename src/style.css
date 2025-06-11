@@ -1686,6 +1686,17 @@ th:nth-child(6) {
     pointer-events:none;
     text-shadow:0 0 4px rgba(0,0,0,0.6);
 }
+/* =========================== PROJECT DONE MARKER STYLE START ================ */
+.project-done-marker{
+    position:absolute;
+    top:6px;
+    left:10px;
+    font-size:18px;
+    color:#4caf50;
+    pointer-events:none;
+    text-shadow:0 0 4px rgba(0,0,0,0.6);
+}
+/* =========================== PROJECT DONE MARKER STYLE END ================== */
 /* =========================== PROJECT LEVEL BADGE STYLE END =========================== */
 
 /* =========================== PROJECT PERCENT STYLE START =========================== */
