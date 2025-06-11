@@ -1757,6 +1757,7 @@ th:nth-child(9) {
         <th>EN Text</th>
         <th>DE Text</th>
         <th width="200" title="Debug: Aufgelöster Pfad">🔍 Aufgelöster Pfad</th>
+        <th width="200" title="Pfad der DE-Datei">DE Pfad</th>
         <th width="60">Audio</th>
         <th width="60">DE Audio</th>
         <th width="60">Upload</th>
@@ -3343,7 +3344,8 @@ function renderFileTableWithOrder(sortedFiles) {
     
     tbody.innerHTML = sortedFiles.map((file, displayIndex) => {
         const relPath = getFullPath(file);
-        const hasDeAudio = !!deAudioCache[relPath];
+        const dePath = getDeFilePath(file);
+        const hasDeAudio = !!dePath;
         // Find original index for display
         const originalIndex = files.findIndex(f => f.id === file.id);
         
@@ -3410,6 +3412,9 @@ return `
         </div></td>
         <td style="font-size: 11px; color: #666; word-break: break-all;">
             ${getDebugPathInfo(file)}
+        </td>
+        <td style="font-size: 11px; color: #666; word-break: break-all;">
+            ${dePath ? `sounds/DE/${dePath}` : ''}
         </td>
         <td><button class="play-btn" onclick="playAudio(${file.id})">▶</button></td>
         <td>
@@ -3995,6 +4000,7 @@ function extractRelevantFolder(folderParts, fullPath) {
 // =========================== GETFULLPATH START ===========================
 // Liefert den vollständigen relativen Pfad einer Datei anhand der Datenbank
 function getFullPath(file) {
+    // Zuerst nach exaktem Dateinamen suchen
     if (filePathDatabase[file.filename]) {
         const exact = filePathDatabase[file.filename].find(p => p.folder === file.folder);
         if (exact) {
@@ -4005,9 +4011,43 @@ function getFullPath(file) {
             return first.fullPath;
         }
     }
+
+    // Fallback: andere Endungen mit gleichem Basisnamen pruefen
+    const basisName = file.filename.replace(/\.(mp3|wav|ogg)$/i, '');
+    const endungen = ['.mp3', '.wav', '.ogg'];
+    for (const endung of endungen) {
+        const kandidat = basisName + endung;
+        if (kandidat !== file.filename && filePathDatabase[kandidat]) {
+            const exact = filePathDatabase[kandidat].find(p => p.folder === file.folder);
+            if (exact) {
+                return exact.fullPath;
+            }
+            const first = filePathDatabase[kandidat][0];
+            if (first) {
+                return first.fullPath;
+            }
+        }
+    }
+
+    // Kein Treffer -> Standardpfad zurueckgeben
     return `${file.folder}/${file.filename}`;
 }
 // =========================== GETFULLPATH END ===========================
+
+// =========================== GETDEFILEPATH START ===========================
+// Liefert den relativen Pfad der vorhandenen DE-Datei oder null
+function getDeFilePath(file) {
+    const basisRel = getFullPath(file).replace(/\.(mp3|wav|ogg)$/i, '');
+    const endungen = ['.mp3', '.wav', '.ogg'];
+    for (const endung of endungen) {
+        const kandidat = basisRel + endung;
+        if (deAudioCache[kandidat]) {
+            return kandidat;
+        }
+    }
+    return null;
+}
+// =========================== GETDEFILEPATH END ===========================
 
 // =========================== NORMALIZEFOLDERPATH START ===========================
 // Consistent folder normalization for duplicate detection
@@ -4654,7 +4694,7 @@ async function playDeAudio(fileId) {
 
     // In Electron greifen wir direkt über den Dateipfad zu
 
-    const relPath = getFullPath(file);
+    let relPath = getDeFilePath(file) || getFullPath(file);
 
     if (!deAudioCache[relPath]) {
         if (window.electronAPI) {
