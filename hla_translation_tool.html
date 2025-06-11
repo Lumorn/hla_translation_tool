@@ -2100,6 +2100,31 @@ function debugLog(...args) {
         div.scrollTop = div.scrollHeight;
     }
 }
+// Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
+function stopCurrentPlayback() {
+    const audio = document.getElementById('audioPlayer');
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+    document.querySelectorAll('.play-btn').forEach(btn => {
+        btn.classList.remove('playing');
+        btn.textContent = '▶';
+    });
+
+    document.querySelectorAll('.de-play-btn').forEach(btn => {
+        btn.classList.remove('playing');
+        btn.textContent = '▶';
+    });
+
+    document.querySelectorAll('.folder-file-play').forEach(btn => {
+        btn.textContent = '▶';
+        btn.style.background = '#444';
+    });
+
+    currentlyPlaying = null;
+}
 // =========================== DEBUG LOG END ===========================
 
 
@@ -4938,22 +4963,13 @@ function playAudio(fileId) {
     
     // Audio abspielen
     const audio = document.getElementById('audioPlayer');
-    const playBtns = document.querySelectorAll('.play-btn');
-    
-    // Reset all buttons
-    playBtns.forEach(btn => {
-        btn.classList.remove('playing');
-        btn.textContent = '▶';
-    });
-    
     const playBtn = document.querySelector(`tr[data-id="${fileId}"] .play-btn`);
-    
-    // Stop current playback
+
     if (currentlyPlaying === fileId) {
-        audio.pause();
-        currentlyPlaying = null;
+        stopCurrentPlayback();
         return;
     }
+    stopCurrentPlayback();
     
     // Wiedergabe je nach Umgebung
     let url = null;
@@ -5022,16 +5038,13 @@ async function playDeAudio(fileId) {
     }
 
     const audio = document.getElementById('audioPlayer');
-    const playBtns = document.querySelectorAll('.de-play-btn');
-    playBtns.forEach(btn => { btn.classList.remove('playing'); btn.textContent = '▶'; });
-
     const playBtn = document.querySelector(`tr[data-id="${fileId}"] .de-play-btn`);
 
     if (currentlyPlaying === `de-${fileId}`) {
-        audio.pause();
-        currentlyPlaying = null;
+        stopCurrentPlayback();
         return;
     }
+    stopCurrentPlayback();
 
     let url = null;
     if (window.electronAPI && typeof deAudioCache[relPath] === 'string') {
@@ -6087,19 +6100,12 @@ function deleteFolderFromDatabase(folderName) {
             // scanResult === null means file is accessible, continue
             
             const audio = document.getElementById('audioPlayer');
-            
-            // Reset all play buttons in folder browser
-            document.querySelectorAll('.folder-file-play').forEach(btn => {
-                btn.textContent = '▶';
-                btn.style.background = '#444';
-            });
-            
-            // Stop current playback
+
             if (currentlyPlaying === fullPath) {
-                audio.pause();
-                currentlyPlaying = null;
+                stopCurrentPlayback();
                 return;
             }
+            stopCurrentPlayback();
             
             // Try to play from cached File object
             if (audioFileCache[fullPath]) {
@@ -8417,6 +8423,7 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
 function playPreview(fullPath) {
     debugLog(`[PREVIEW] Versuche ${fullPath} abzuspielen`);
     const audioPlayer = document.getElementById('audioPlayer');
+    stopCurrentPlayback();
     const fileObj = audioFileCache[fullPath];
     if (fileObj) {
         try {
