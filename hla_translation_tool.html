@@ -7675,7 +7675,13 @@ async function handleDeUpload(input) {
     if (!datei || !aktuellerUploadPfad) {
         return;
     }
-    await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        const buffer = await datei.arrayBuffer();
+        await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
+        deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
+    } else {
+        await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
+    }
 
     // Zugehörige Datei als fertig markieren
     const file = files.find(f => getFullPath(f) === aktuellerUploadPfad);
