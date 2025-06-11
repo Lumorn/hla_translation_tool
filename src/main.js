@@ -5674,17 +5674,13 @@ async function openDeEdit(fileId) {
     const rel = getDeFilePath(file) || getFullPath(file);
     let deSrc = deAudioCache[rel];
     if (!deSrc) return;
-    const backupSrc = `sounds/DE-Backup/${rel}`;
+    // Zuerst versuchen wir, die aktuelle DE-Datei zu laden
     try {
-        // Versuche zunächst das unbeschnittene Backup zu laden
-        originalEditBuffer = await loadAudioBuffer(backupSrc);
+        originalEditBuffer = await loadAudioBuffer(deSrc);
     } catch {
-        // Fallback: aktuelle DE-Datei nutzen
-        if (typeof deSrc !== 'string') {
-            originalEditBuffer = await loadAudioBuffer(deSrc);
-        } else {
-            originalEditBuffer = await loadAudioBuffer(deSrc);
-        }
+        // Falls das fehlschlägt, greifen wir auf das Backup zurück
+        const backupSrc = `sounds/DE-Backup/${rel}`;
+        originalEditBuffer = await loadAudioBuffer(backupSrc);
     }
     savedOriginalBuffer = originalEditBuffer;
     volumeMatchedBuffer = null;
@@ -6018,10 +6014,8 @@ async function applyDeEdit() {
     if (window.electronAPI && window.electronAPI.backupDeFile) {
         // Sicherstellen, dass ein Backup existiert
         await window.electronAPI.backupDeFile(relPath);
-        // Original aus dem Backup zurückkopieren
-        await window.electronAPI.restoreDeFile(relPath);
-        originalEditBuffer = await loadAudioBuffer(`sounds/DE/${relPath}`);
-        savedOriginalBuffer = originalEditBuffer;
+        // Bereits geladene Originaldatei weiterverwenden
+        originalEditBuffer = savedOriginalBuffer;
         volumeMatchedBuffer = null;
         const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
@@ -6053,20 +6047,9 @@ async function applyDeEdit() {
                 const w = await backupFile.createWritable();
                 await w.write(orgData);
                 await w.close();
-                // Original aus Backup kopieren
-                let quell = backupDir;
-                for (const t of teile) {
-                    quell = await quell.getDirectoryHandle(t);
-                }
-                const backupFile2 = await quell.getFileHandle(name);
-                const fileData = await backupFile2.getFile();
-                const destFile = await ordner.getFileHandle(name, { create: true });
-                const wr = await destFile.createWritable();
-                await wr.write(fileData);
-                await wr.close();
-                originalEditBuffer = await loadAudioBuffer(fileData);
             } catch {}
         }
+        originalEditBuffer = savedOriginalBuffer;
         const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
