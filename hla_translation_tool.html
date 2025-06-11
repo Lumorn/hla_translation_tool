@@ -6950,12 +6950,48 @@ async function scanEnOrdner() {
     await traverse(enOrdnerHandle);
     if (filesToScan.length > 0) {
         verarbeiteGescannteDateien(filesToScan);
-        // Nach dem Scan Projekte und Zugriffsstatus aktualisieren
-        updateAllProjectsAfterScan();
-        updateFileAccessStatus();
     }
+
+    // 🟧 Nach dem EN-Scan auch den DE-Ordner durchsuchen
+    await scanDeOrdner();
+
+    // 🟧 Danach Projekt-Statistiken aktualisieren
+    updateAllProjectsAfterScan();
+    updateFileAccessStatus();
 }
 // =========================== SCANENORDNER END ===============================
+
+// =========================== SCANDEORDNER START =============================
+async function scanDeOrdner() {
+    if (!deOrdnerHandle) {
+        console.error('DE-Ordner nicht initialisiert');
+        return;
+    }
+
+    const gefundeneDateien = [];
+
+    async function traverse(handle, pfad = '') {
+        for await (const [name, child] of handle.entries()) {
+            if (child.kind === 'file') {
+                if (name.match(/\.(mp3|wav|ogg)$/i)) {
+                    const datei = await child.getFile();
+                    datei.fullPath = pfad + name;
+                    gefundeneDateien.push(datei);
+                }
+            } else if (child.kind === 'directory') {
+                await traverse(child, pfad + name + '/');
+            }
+        }
+    }
+
+    await traverse(deOrdnerHandle);
+    if (gefundeneDateien.length > 0) {
+        gefundeneDateien.forEach(d => {
+            deAudioCache[d.fullPath] = d;
+        });
+    }
+}
+// =========================== SCANDEORDNER END ===============================
 
 // =========================== VERARBEITEGESCANNTE START =====================
 function verarbeiteGescannteDateien(dateien) {
