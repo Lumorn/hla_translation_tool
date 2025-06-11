@@ -1807,4 +1807,13 @@ th:nth-child(6) {
     filter: brightness(1.2);
 }
 
+/* Details für Pfadangaben erst beim Hover anzeigen */
+.path-cell .path-detail {
+    display: none;
+}
+
+.path-cell:hover .path-detail {
+    display: inline;
+}
+
 		
