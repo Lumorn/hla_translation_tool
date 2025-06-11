@@ -1485,6 +1485,21 @@ th:nth-child(9) {
 }
 /* =========================== PROJECT LEVEL BADGE STYLE END =========================== */
 
+/* =========================== PROJECT PERCENT STYLE START =========================== */
+.project-stats{
+    font-size:10px;
+    color:rgba(255,255,255,0.8);
+    margin-top:4px;
+    display:flex;
+    gap:8px;
+}
+.project-stats span{
+    display:flex;
+    align-items:center;
+    gap:2px;
+}
+/* =========================== PROJECT PERCENT STYLE END ============================= */
+
 /* File Exchange Dialog Styling */
 .file-exchange-dialog {
     position: fixed;
@@ -2317,11 +2332,10 @@ function renderProjects() {
                     <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                         ${p.name}
                     </div>
-                    <div style="font-size:10px;color:rgba(255,255,255,0.8);
-                                 margin-top:4px;display:flex;gap:8px;">
-                        <span title="EN-Text">${stats.enPercent}%</span>
-                        <span title="DE-Text">${stats.dePercent}%</span>
-                        <span title="Fertig">${stats.completedPercent}%</span>
+                    <div class="project-stats">
+                        <span title="EN-Text">EN: ${stats.enPercent}%</span>
+                        <span title="DE-Text">DE: ${stats.dePercent}%</span>
+                        <span title="Fertig">✓ ${stats.completedPercent}%</span>
                     </div>
                     <div style="font-size:9px;color:rgba(255,255,255,0.6);">
                         ${stats.totalFiles} Dateien
