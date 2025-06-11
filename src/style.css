@@ -611,9 +611,31 @@ th:nth-child(6) {
             justify-content: center;
         }
 
+        /* Stopp-Button im Audio-Editor */
+        .de-stop-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 4px 6px; /* gleiche Größe wie Copy-Button */
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 11px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .de-play-btn.playing,
         .de-play-btn:hover {
             background: #2e7d32;
+            color: white;
+        }
+
+        .de-stop-btn:hover {
+            background: #b71c1c;
             color: white;
         }
 
