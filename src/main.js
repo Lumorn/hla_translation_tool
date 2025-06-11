@@ -5570,6 +5570,42 @@ function trimAndPadBuffer(buffer, startMs, endMs) {
     }
     return newBuffer;
 }
+// =========================== LAUTSTAERKEANGLEICH START =====================
+// Passt die Lautstärke eines Buffers an einen Ziel-Buffer an
+function matchVolume(sourceBuffer, targetBuffer) {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const rms = bufferRms(sourceBuffer);
+    const targetRms = bufferRms(targetBuffer);
+    if (rms === 0) return sourceBuffer;
+    const gain = targetRms / rms;
+
+    const out = ctx.createBuffer(sourceBuffer.numberOfChannels, sourceBuffer.length, sourceBuffer.sampleRate);
+    for (let ch = 0; ch < sourceBuffer.numberOfChannels; ch++) {
+        const inData = sourceBuffer.getChannelData(ch);
+        const outData = out.getChannelData(ch);
+        for (let i = 0; i < inData.length; i++) {
+            let sample = inData[i] * gain;
+            outData[i] = Math.max(-1, Math.min(1, sample));
+        }
+    }
+    return out;
+}
+
+// Berechnet die RMS-Lautstärke eines Buffers
+function bufferRms(buffer) {
+    let sum = 0;
+    let len = 0;
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const data = buffer.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            sum += data[i] * data[i];
+        }
+        len += data.length;
+    }
+    return Math.sqrt(sum / len);
+}
+// =========================== LAUTSTAERKEANGLEICH END =======================
 // =========================== TRIMANDBUFFER END ==============================
 
 // =========================== BUFFERTOWAV START ==============================
@@ -5608,6 +5644,9 @@ function bufferToWav(buffer) {
 
 let currentEditFile = null;
 let originalEditBuffer = null;
+let savedOriginalBuffer = null; // Unverändertes DE-Audio
+let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
+let isVolumeMatched = false;   // Aktueller Status des Lautstärke-Toggles
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -5631,6 +5670,10 @@ async function openDeEdit(fileId) {
             originalEditBuffer = await loadAudioBuffer(deSrc);
         }
     }
+    savedOriginalBuffer = originalEditBuffer;
+    volumeMatchedBuffer = null;
+    isVolumeMatched = false;
+    document.getElementById('volumeMatchToggle').checked = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -5721,6 +5764,26 @@ async function openDeEdit(fileId) {
 window.onmouseup = () => { editDragging = null; };
 }
 // =========================== OPENDEEDIT END ================================
+
+// =========================== TOGGLEVOLUMEMATCH START =======================
+// Reagiert auf das An- oder Abschalten des Lautstärke-Toggles
+function toggleVolumeMatch() {
+    const cb = document.getElementById('volumeMatchToggle');
+    isVolumeMatched = cb.checked;
+    if (isVolumeMatched) {
+        if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
+            volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
+        }
+        if (volumeMatchedBuffer) {
+            originalEditBuffer = volumeMatchedBuffer;
+        }
+    } else {
+        originalEditBuffer = savedOriginalBuffer;
+    }
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    updateDeEditWaveforms();
+}
+// =========================== TOGGLEVOLUMEMATCH END =========================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
@@ -5866,6 +5929,9 @@ function closeDeEdit() {
     stopEditPlayback();
     currentEditFile = null;
     originalEditBuffer = null;
+    savedOriginalBuffer = null;
+    volumeMatchedBuffer = null;
+    isVolumeMatched = false;
     editEnBuffer = null;
     window.onmousemove = null;
     window.onmouseup = null;
@@ -5937,7 +6003,10 @@ async function applyDeEdit() {
         // Original aus dem Backup zurückkopieren
         await window.electronAPI.restoreDeFile(relPath);
         originalEditBuffer = await loadAudioBuffer(`sounds/DE/${relPath}`);
-        const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+        savedOriginalBuffer = originalEditBuffer;
+        volumeMatchedBuffer = null;
+        const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
@@ -5980,7 +6049,8 @@ async function applyDeEdit() {
                 originalEditBuffer = await loadAudioBuffer(fileData);
             } catch {}
         }
-        const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+        const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
