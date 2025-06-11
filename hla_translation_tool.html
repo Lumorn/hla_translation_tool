@@ -4772,8 +4772,9 @@ function updateAllFilePaths() {
 
 // Automatische Aktualisierung aller Projekte nach einem Ordner-Scan
 function updateAllProjectsAfterScan() {
-    let totalUpdated = 0;
-    let totalProjects = 0;
+    let totalUpdated   = 0; // Geänderte Pfade
+    let totalCompleted = 0; // Neu als fertig markierte Dateien
+    let totalProjects  = 0;
     
     console.log('=== Automatische Projekt-Aktualisierung nach Scan ===');
     
@@ -4854,6 +4855,13 @@ function updateAllProjectsAfterScan() {
                 console.log(`   Ordner: ${oldFolder} -> ${bestPath.folder}`);
                 console.log(`   Pfad: ${oldPath} -> ${bestPath.fullPath}`);
             }
+
+            // Wenn eine passende DE-Datei existiert, als erledigt markieren
+            const deRel = getFullPath(file);
+            if (deAudioCache[deRel] && !file.completed) {
+                file.completed = true;
+                totalCompleted++;
+            }
         });
         
         if (projectUpdated > 0) {
@@ -4861,10 +4869,10 @@ function updateAllProjectsAfterScan() {
         }
     });
     
-    if (totalUpdated > 0) {
+    if (totalUpdated > 0 || totalCompleted > 0) {
         // Speichere alle aktualisierten Projekte
         saveProjects();
-        console.log(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten aktualisiert`);
+        console.log(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten aktualisiert, ${totalCompleted} abgeschlossen`);
         
         // Aktualisiere das aktuelle Projekt falls betroffen
         if (currentProject) {
@@ -4877,7 +4885,7 @@ function updateAllProjectsAfterScan() {
         }
         
         setTimeout(() => {
-            updateStatus(`📁 Projekt-Sync: ${totalUpdated} Dateipfade automatisch aktualisiert`);
+            updateStatus(`📁 Projekt-Sync: ${totalUpdated} Pfade, ${totalCompleted} abgeschlossen`);
         }, 1000);
     } else {
         console.log('✅ Alle Projekt-Pfade sind bereits aktuell');
