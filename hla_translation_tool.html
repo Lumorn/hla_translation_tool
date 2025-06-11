@@ -2122,6 +2122,10 @@ let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')
 let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
 let autoBackupTimer    = null;
 
+// === Stacks für Undo/Redo ===
+let undoStack          = [];
+let redoStack          = [];
+
 // =========================== GLOBAL STATE END ===========================
 
 
@@ -3117,6 +3121,16 @@ function addFiles() {
         function handleKeyboardNavigation(e) {
             // Skip if user is typing in an input field
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                if (e.ctrlKey && e.key === 'z') {
+                    e.preventDefault();
+                    undoEdit();
+                    return;
+                }
+                if (e.ctrlKey && e.key === 'y') {
+                    e.preventDefault();
+                    redoEdit();
+                    return;
+                }
                 // Tab navigation between text fields
                 if (e.key === 'Tab') {
                     handleTabNavigation(e);
@@ -3136,6 +3150,14 @@ function addFiles() {
             // Global shortcuts
             if (e.ctrlKey) {
                 switch(e.key) {
+                    case 'z':
+                        e.preventDefault();
+                        undoEdit();
+                        break;
+                    case 'y':
+                        e.preventDefault();
+                        redoEdit();
+                        break;
                     case 's':
                         e.preventDefault();
                         saveCurrentProject();
@@ -4476,10 +4498,16 @@ function addDragAndDropHandlers() {
 }
 
         // Text editing
-function updateText(fileId, lang, value) {
+function updateText(fileId, lang, value, skipUndo) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
-    
+
+    if (!skipUndo) {
+        // Vorherigen Zustand sichern und Redo-Stack leeren
+        undoStack.push({ fileId: file.id, enText: file.enText, deText: file.deText });
+        redoStack = [];
+    }
+
     if (lang === 'en') {
         file.enText = value;
     } else {
@@ -4496,6 +4524,48 @@ function updateText(fileId, lang, value) {
     isDirty = true;
     updateProgressStats();
     renderProjects(); // HINZUFÜGEN für live Update
+}
+
+// Stellt den letzten Textzustand wieder her
+function undoEdit() {
+    const last = undoStack.pop();
+    if (!last) return;
+    const file = files.find(f => f.id === last.fileId);
+    if (!file) return;
+
+    // Aktuellen Zustand für Redo merken
+    redoStack.push({ fileId: file.id, enText: file.enText, deText: file.deText });
+
+    updateText(file.id, 'en', last.enText, true);
+    updateText(file.id, 'de', last.deText, true);
+
+    const row = document.querySelector(`tr[data-id="${file.id}"]`);
+    if (row) {
+        const inputs = row.querySelectorAll('.text-input');
+        if (inputs[0]) { inputs[0].value = last.enText; autoResizeInput(inputs[0]); }
+        if (inputs[1]) { inputs[1].value = last.deText; autoResizeInput(inputs[1]); }
+    }
+}
+
+// Setzt den zuletzt rückgängig gemachten Text erneut
+function redoEdit() {
+    const last = redoStack.pop();
+    if (!last) return;
+    const file = files.find(f => f.id === last.fileId);
+    if (!file) return;
+
+    // Aktuellen Zustand in den Undo-Stack legen
+    undoStack.push({ fileId: file.id, enText: file.enText, deText: file.deText });
+
+    updateText(file.id, 'en', last.enText, true);
+    updateText(file.id, 'de', last.deText, true);
+
+    const row = document.querySelector(`tr[data-id="${file.id}"]`);
+    if (row) {
+        const inputs = row.querySelectorAll('.text-input');
+        if (inputs[0]) { inputs[0].value = last.enText; autoResizeInput(inputs[0]); }
+        if (inputs[1]) { inputs[1].value = last.deText; autoResizeInput(inputs[1]); }
+    }
 }
 
         // File completion status
