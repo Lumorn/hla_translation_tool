@@ -541,15 +541,21 @@ th:nth-child(6) {
     }
 }
 
+        /* Play-Buttons neben den Textfeldern */
         .play-btn {
             background: #444;
             border: none;
             color: #e0e0e0;
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 4px 6px; /* gleiche Größe wie Copy-Button */
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 16px;
+            font-size: 11px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .play-btn:hover {
@@ -567,11 +573,16 @@ th:nth-child(6) {
             background: #444;
             border: none;
             color: #e0e0e0;
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 4px 6px; /* gleiche Größe wie Copy-Button */
+            border-radius: 3px;
             cursor: pointer;
             transition: all 0.2s;
-            font-size: 16px;
+            font-size: 11px;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .de-play-btn.playing,
@@ -676,6 +687,13 @@ th:nth-child(6) {
 
         .copy-btn:active {
             transform: scale(0.95);
+        }
+
+        /* Vertikale Anordnung von Copy- und Play-Button */
+        .btn-column {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
         }
 
         .completion-checkbox {
