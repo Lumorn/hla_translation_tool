@@ -409,8 +409,10 @@ function renderProjects() {
         const badge = `<span class="level-part-badge">${p.levelPart}</span>`;
 
         /* ► HTML-Inhalt */
+        const doneMark = done ? `<span class="project-done-marker">✅</span>` : '';
         card.innerHTML = `
             ${badge}
+            ${doneMark}
             <div style="display:flex;gap:8px;align-items:flex-start;">
                 <span style="font-size:16px;">${p.icon || '🗂️'}</span>
                 <div style="flex:1;min-width:0;">
@@ -442,7 +444,7 @@ function renderProjects() {
             (p.levelName ? `Level: ${p.levelName}\n` : '') +
             `Teil:  ${p.levelPart}\n\n` +
             `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
-            `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%\n` +
+            `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
             `• Dateien: ${stats.totalFiles}`;
 
         /* ► Klick / Drag */
