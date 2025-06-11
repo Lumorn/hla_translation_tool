@@ -254,6 +254,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **🔄 Projekte bereinigen:** Entfernt veraltete Pfad‑Referenzen
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
+Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
+
 ---
 
 ## 🔧 Erweiterte Funktionen
