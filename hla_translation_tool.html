@@ -4925,7 +4925,8 @@ async function playDeAudio(fileId) {
 
     let url = null;
     if (window.electronAPI && typeof deAudioCache[relPath] === 'string') {
-        audio.src = deAudioCache[relPath];
+        // Cache-Buster anhängen, damit nach Bearbeitungen sofort die neue Datei gespielt wird
+        audio.src = `${deAudioCache[relPath]}?v=${Date.now()}`;
     } else {
         url = URL.createObjectURL(deAudioCache[relPath]);
         audio.src = url;
