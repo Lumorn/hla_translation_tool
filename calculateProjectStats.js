@@ -1,3 +1,4 @@
+// Ermittelt Statistiken fuer ein Projekt
 function calculateProjectStats(project) {
     const files = project.files || [];
     const totalFiles = files.length;
@@ -15,7 +16,7 @@ function calculateProjectStats(project) {
     const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
     const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
     const filesCompleted = files.filter(f => f.completed).length;
-    const filesWithDeAudio = files.filter(f => f.hasDeAudio || f.deAudioPath || f.deAudio).length;
+    const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
 
     return {
         enPercent: Math.round((filesWithEN / totalFiles) * 100),
@@ -24,6 +25,17 @@ function calculateProjectStats(project) {
         completedPercent: Math.round((filesCompleted / totalFiles) * 100),
         totalFiles: totalFiles
     };
+}
+
+// Liefert den Pfad einer vorhandenen DE-Audiodatei oder null
+function getDeFilePath(file) {
+    if (file.deAudioPath) return file.deAudioPath;
+    if (file.deAudio) return file.deAudio;
+    if (file.hasDeAudio) return true;
+    if (global.deAudioCache && file.fullPath && global.deAudioCache[file.fullPath]) {
+        return file.fullPath;
+    }
+    return null;
 }
 
 module.exports = calculateProjectStats;

@@ -1,6 +1,9 @@
 const calculateProjectStats = require('../calculateProjectStats');
 
 describe('calculateProjectStats', () => {
+    afterEach(() => {
+        delete global.deAudioCache;
+    });
     test('empty file list returns 0% stats', () => {
         const result = calculateProjectStats({ files: [] });
         expect(result).toEqual({
@@ -90,10 +93,11 @@ describe('calculateProjectStats', () => {
     });
 
     test('de audio percentage calculated correctly', () => {
+        global.deAudioCache = { '/game/file1.wav': true };
         const result = calculateProjectStats({
             files: [
-                { enText: 'EN', deText: 'DE', hasDeAudio: true, completed: true },
-                { enText: 'EN2', deText: 'DE2', hasDeAudio: false, completed: false }
+                { enText: 'EN', deText: 'DE', fullPath: '/game/file1.wav', completed: true },
+                { enText: 'EN2', deText: 'DE2', fullPath: '/game/file2.wav', completed: false }
             ]
         });
         expect(result).toEqual({
