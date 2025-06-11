@@ -1555,6 +1555,7 @@ return `
     tbody.innerHTML = rows.join('');
     
     addDragAndDropHandlers();
+    addPathCellContextMenus();
     updateCounts();
     
     // Auto-resize all text inputs after rendering
@@ -2459,6 +2460,21 @@ function addDragAndDropHandlers() {
             cell.addEventListener('dragover', handleRowDragOver);
             cell.addEventListener('drop', handleRowDrop);
         });
+    });
+}
+
+// Registriert Rechtsklick-Handler für Pfad-Zellen, um Details anzuzeigen
+function addPathCellContextMenus() {
+    document.querySelectorAll('.path-cell').forEach(cell => {
+        cell.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            cell.classList.toggle('show-path');
+        });
+    });
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.path-cell')) {
+            document.querySelectorAll('.path-cell.show-path').forEach(c => c.classList.remove('show-path'));
+        }
     });
 }
 
@@ -5996,6 +6012,8 @@ async function resetDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
+    // Sicherstellen, dass der aktuelle Zustand des Toggles berücksichtigt wird
+    isVolumeMatched = document.getElementById('volumeMatchToggle').checked;
     const relPath = getFullPath(currentEditFile);
     if (window.electronAPI && window.electronAPI.backupDeFile) {
         // Sicherstellen, dass ein Backup existiert
