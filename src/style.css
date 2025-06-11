@@ -738,11 +738,34 @@ th:nth-child(6) {
         }
 
         /* Vertikale Anordnung von Copy- und Play-Button */
-        .btn-column {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
+.btn-column {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+/* Symbole für Pfad-Verfügbarkeit */
+.path-btn {
+    background: #444;
+    border: none;
+    color: #e0e0e0;
+    padding: 4px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.path-btn.exists {
+    background: #2e7d32;
+}
+
+.path-btn.missing {
+    background: #b71c1c;
+}
 
         .completion-checkbox {
             width: 18px;
