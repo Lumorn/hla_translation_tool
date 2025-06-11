@@ -5,4 +5,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   toggleDevTools: () => ipcRenderer.send('toggle-devtools'),
   // Datei speichern (z.B. ZIP oder Backup)
   saveFile: (data, defaultPath) => ipcRenderer.invoke('save-file', { data, defaultPath }),
+  // DE-Datei im Projektordner speichern
+  saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', { relPath, data }),
 });

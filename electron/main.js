@@ -99,6 +99,16 @@ app.whenReady().then(() => {
     return filePath;
   });
 
+  // =========================== SAVE-DE-FILE START ===========================
+  // Speichert eine hochgeladene DE-Datei im richtigen Unterordner
+  ipcMain.handle('save-de-file', async (event, { relPath, data }) => {
+    const target = path.join(dePath, relPath);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, Buffer.from(data));
+    return target;
+  });
+  // =========================== SAVE-DE-FILE END =============================
+
   // DevTools per IPC ein-/ausblenden
   ipcMain.on('toggle-devtools', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
