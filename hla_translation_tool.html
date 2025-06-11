@@ -4109,38 +4109,6 @@ function repairProjectFolders() {
     console.log('=== Ordner-Reparatur abgeschlossen ===');
 }
 
-function addFromSearch(result) {
-    if (files.find(f => f.filename === result.filename && f.folder === result.folder)) {
-        updateStatus('Datei bereits im Projekt');
-        return;
-    }
-    
-    const fileKey = `${result.folder}/${result.filename}`;
-    const newFile = {
-        id: Date.now() + Math.random(),
-        filename: result.filename,
-        folder: result.folder,
-        // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
-        enText: textDatabase[fileKey]?.en || '',
-        deText: textDatabase[fileKey]?.de || '',
-        selected: true,
-        completed: false
-    };
-    
-    files.push(newFile);
-    
-    // Update display order for new file
-    displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
-    
-    isDirty = true;
-    renderFileTable();
-    renderProjects(); // HINZUGEFÜGT für live Update
-    updateStatus('Datei hinzugefügt');
-    updateProgressStats();
-    
-    document.getElementById('searchInput').value = '';
-    document.getElementById('searchResults').style.display = 'none';
-}
 
 
 // =========================== EXTRACTRELEVANTFOLDER START ===========================
