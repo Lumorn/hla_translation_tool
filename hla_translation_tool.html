@@ -3348,7 +3348,7 @@ function addFiles() {
                         updateStatus(`Text in DE eingefügt: ${contextMenuFile.filename}`);
                         break;
                     case 'uploadDE':
-                        aktuellerUploadPfad = `${contextMenuFile.folder}/${contextMenuFile.filename}`;
+                        aktuellerUploadPfad = getFullPath(contextMenuFile);
                         document.getElementById('deUploadInput').click();
                         break;
                     case 'openFolder':
@@ -3455,7 +3455,7 @@ function renderFileTableWithOrder(sortedFiles) {
     emptyState.style.display = 'none';
     
     tbody.innerHTML = sortedFiles.map((file, displayIndex) => {
-        const relPath = `${file.folder}/${file.filename}`;
+        const relPath = getFullPath(file);
         const hasDeAudio = !!deAudioCache[relPath];
         // Find original index for display
         const originalIndex = files.findIndex(f => f.id === file.id);
@@ -4136,6 +4136,23 @@ function extractRelevantFolder(folderParts, fullPath) {
     return last;
 }
 // =========================== EXTRACTRELEVANTFOLDER END ===========================
+
+// =========================== GETFULLPATH START ===========================
+// Liefert den vollständigen relativen Pfad einer Datei anhand der Datenbank
+function getFullPath(file) {
+    if (filePathDatabase[file.filename]) {
+        const exact = filePathDatabase[file.filename].find(p => p.folder === file.folder);
+        if (exact) {
+            return exact.fullPath;
+        }
+        const first = filePathDatabase[file.filename][0];
+        if (first) {
+            return first.fullPath;
+        }
+    }
+    return `${file.folder}/${file.filename}`;
+}
+// =========================== GETFULLPATH END ===========================
 
 // =========================== NORMALIZEFOLDERPATH START ===========================
 // Consistent folder normalization for duplicate detection
@@ -4981,7 +4998,7 @@ async function playDeAudio(fileId) {
 
     // In Electron greifen wir direkt über den Dateipfad zu
 
-    const relPath = `${file.folder}/${file.filename}`;
+    const relPath = getFullPath(file);
 
     if (!deAudioCache[relPath]) {
         if (window.electronAPI) {
@@ -7647,7 +7664,7 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
 function initiateDeUpload(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
-    aktuellerUploadPfad = `${file.folder}/${file.filename}`;
+    aktuellerUploadPfad = getFullPath(file);
     document.getElementById('deUploadInput').click();
 }
 // =========================== INITIATEDEUPLOAD END ============================
@@ -7661,7 +7678,7 @@ async function handleDeUpload(input) {
     await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
 
     // Zugehörige Datei als fertig markieren
-    const file = files.find(f => `${f.folder}/${f.filename}` === aktuellerUploadPfad);
+    const file = files.find(f => getFullPath(f) === aktuellerUploadPfad);
     if (file) {
         file.completed = true;
     }
