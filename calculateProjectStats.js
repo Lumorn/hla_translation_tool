@@ -15,7 +15,7 @@ function calculateProjectStats(project) {
 
     const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
     const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
-    const filesCompleted = files.filter(f => f.completed).length;
+    const filesCompleted = files.filter(isFileCompleted).length;
     const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
 
     return {
@@ -36,6 +36,14 @@ function getDeFilePath(file) {
         return file.fullPath;
     }
     return null;
+}
+
+// Prueft, ob eine Datei EN-Text, DE-Text und ein DE-Audio besitzt
+function isFileCompleted(file) {
+    const hasEn = file.enText && file.enText.trim().length > 0;
+    const hasDe = file.deText && file.deText.trim().length > 0;
+    const hasAudio = !!getDeFilePath(file);
+    return hasEn && hasDe && hasAudio;
 }
 
 module.exports = calculateProjectStats;
