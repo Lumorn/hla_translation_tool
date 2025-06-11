@@ -15,6 +15,7 @@ let deOrdnerHandle         = null; // Handle für den DE-Ordner
 let enOrdnerHandle         = null; // Handle für den EN-Ordner
 let enDateien              = [];   // Gefundene EN-Audiodateien
 let aktuellerUploadPfad    = null; // Zielpfad für hochgeladene Dateien
+let currentHistoryPath     = null; // Pfad für History-Anzeige
 
 let editStartTrim          = 0;    // Start-Schnitt in ms
 let editEndTrim            = 0;    // End-Schnitt in ms
@@ -1357,6 +1358,9 @@ function addFiles() {
                     case 'uploadDE':
                         aktuellerUploadPfad = getFullPath(contextMenuFile);
                         document.getElementById('deUploadInput').click();
+                        break;
+                    case 'history':
+                        showHistoryDialog(contextMenuFile);
                         break;
                     case 'openFolder':
                         showFolderBrowser();
@@ -4729,6 +4733,61 @@ function checkFileAccess() {
             } else {
                 alert('Nur in der Desktop-Version verfügbar');
             }
+        }
+
+        function showHistoryDialog(file) {
+            currentHistoryPath = getFullPath(file);
+            document.getElementById('historyDialog').style.display = 'flex';
+            loadHistoryList(currentHistoryPath);
+        }
+
+        function closeHistoryDialog() {
+            document.getElementById('historyDialog').style.display = 'none';
+            currentHistoryPath = null;
+        }
+
+        async function loadHistoryList(relPath) {
+            const listDiv = document.getElementById('historyList');
+            listDiv.innerHTML = '';
+            if (!window.electronAPI || !window.electronAPI.listDeHistory) {
+                listDiv.textContent = 'Nur in der Desktop-Version verfügbar';
+                return;
+            }
+            const files = await window.electronAPI.listDeHistory(relPath);
+            files.forEach(name => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                const label = document.createElement('span');
+                label.textContent = name;
+                const playBtn = document.createElement('button');
+                playBtn.textContent = '▶';
+                playBtn.onclick = () => playHistorySample(relPath, name);
+                const restoreBtn = document.createElement('button');
+                restoreBtn.textContent = 'Wiederherstellen';
+                restoreBtn.onclick = () => restoreHistoryVersion(relPath, name);
+                item.appendChild(label);
+                item.appendChild(playBtn);
+                item.appendChild(restoreBtn);
+                listDiv.appendChild(item);
+            });
+        }
+
+        function playHistorySample(relPath, name) {
+            const audio = document.getElementById('audioPlayer');
+            audio.src = `sounds/DE-History/${relPath}/${name}`;
+            audio.play();
+        }
+
+        async function restoreHistoryVersion(relPath, name) {
+            if (!window.electronAPI || !window.electronAPI.restoreDeHistory) {
+                alert('Nur in der Desktop-Version verfügbar');
+                return;
+            }
+            await window.electronAPI.restoreDeHistory(relPath, name);
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            renderFileTable();
+            loadHistoryList(relPath);
+            updateStatus('Version wiederhergestellt');
         }
 // =========================== SHOWBACKUPDIALOG END ========================
 

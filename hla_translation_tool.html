@@ -163,6 +163,9 @@
         <div class="context-menu-item" onclick="contextMenuAction('uploadDE')">
             <span>⬆️</span> DE-Datei hochladen
         </div>
+        <div class="context-menu-item" onclick="contextMenuAction('history')">
+            <span>🕒</span> Historie
+        </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item" onclick="contextMenuAction('openFolder')">
             <span>📁</span> In Ordner-Browser öffnen
@@ -290,6 +293,18 @@
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
                 <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Dialog -->
+    <div class="dialog-overlay" id="historyDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeHistoryDialog()">×</button>
+            <h3>🕒 Historie</h3>
+            <div id="historyList" style="margin-bottom:15px;"></div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeHistoryDialog()">Schließen</button>
             </div>
         </div>
     </div>
