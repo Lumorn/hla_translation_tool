@@ -639,6 +639,21 @@ th:nth-child(6) {
             color: white;
         }
 
+        /* Kleine Statussymbole hinter dem ✂️-Button */
+        .edit-status-icon {
+            background: #444;
+            color: #e0e0e0;
+            padding: 4px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            min-width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 2px;
+        }
+
         .upload-btn {
             background: #444;
             border: none;
