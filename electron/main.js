@@ -50,7 +50,8 @@ function readAudioFiles(dir) {
 
 function createWindow() {
   const win = new BrowserWindow({
-    width: 1200,
+    // Fensterbreite etwas vergrößern, damit Play- und Stop-Knopf Platz haben
+    width: 1300,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
