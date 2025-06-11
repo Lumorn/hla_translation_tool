@@ -477,6 +477,26 @@ th:nth-child(6) {
             background: #333 !important;
         }
 
+        /* Hervorhebung beim Datei-Upload per Drag & Drop */
+        .upload-drop-target {
+            position: relative;
+            outline: 2px dashed #1976d2;
+        }
+
+        .upload-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(25, 118, 210, 0.8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 5;
+        }
+
         .text-input {
             width: 100%;
             padding: 8px 10px;

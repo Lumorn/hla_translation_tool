@@ -1510,6 +1510,7 @@ async function renderFileTableWithOrder(sortedFiles) {
         
 return `
     <tr data-id="${file.id}" ${file.completed ? 'class="completed"' : ''}>
+        <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" ondblclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Doppelklick um Position zu ändern">${originalIndex + 1}</td>
         <td>${file.filename}</td>
         <td>
@@ -1547,6 +1548,7 @@ return `
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button></td>
+        <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
     </tr>
 `;
     }));
@@ -2443,9 +2445,11 @@ function addDragAndDropHandlers() {
             });
         });
         
-        // Row drop zone handlers
-        row.addEventListener('dragover', handleDragOver);
-        row.addEventListener('drop', handleDrop);
+        // Drop-Ziel für Datei-Upload und Drag-Reihenfolge
+        row.addEventListener('dragenter', handleFileDragEnter);
+        row.addEventListener('dragleave', handleFileDragLeave);
+        row.addEventListener('dragover', handleRowDragOver);
+        row.addEventListener('drop', handleRowDrop);
     });
 }
 
@@ -7024,17 +7028,13 @@ function showProjectCustomization(id, ev) {
             if (popup) popup.remove();
         }
 
-        // File Drag and Drop
-        function handleDragStart(e) {
-            draggedElement = e.target;
-            e.target.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/html', e.target.innerHTML);
-        }
-
-        function handleDragOver(e) {
+        function handleRowDragOver(e) {
             if (e.preventDefault) {
                 e.preventDefault();
+            }
+            if (Array.from(e.dataTransfer.types).includes('Files')) {
+                e.dataTransfer.dropEffect = 'copy';
+                return;
             }
             e.dataTransfer.dropEffect = 'move';
             
@@ -7048,7 +7048,7 @@ function showProjectCustomization(id, ev) {
             return false;
         }
 
-        function handleDrop(e) {
+        function handleReorderDrop(e) {
             if (e.stopPropagation) {
                 e.stopPropagation();
             }
@@ -7073,11 +7073,64 @@ function showProjectCustomization(id, ev) {
             return false;
         }
 
-        function handleDragEnd(e) {
-            e.target.classList.remove('dragging');
-            document.querySelectorAll('.drag-over').forEach(el => {
-                el.classList.remove('drag-over');
-            });
+        // Datei-Upload per Drag & Drop
+        function handleFileDragEnter(e) {
+            if (!Array.from(e.dataTransfer.types).includes('Files')) return;
+            e.preventDefault();
+            const row = e.currentTarget;
+            row.classList.add('upload-drop-target');
+            let overlay = row.querySelector('.upload-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.className = 'upload-overlay';
+                const id = parseFloat(row.dataset.id);
+                const f = files.find(fl => fl.id === id);
+                overlay.textContent = `Upload für ${f?.filename || ''}`;
+                row.appendChild(overlay);
+            }
+        }
+
+        function handleFileDragLeave(e) {
+            if (!Array.from(e.dataTransfer.types).includes('Files')) return;
+            const row = e.currentTarget;
+            row.classList.remove('upload-drop-target');
+            const overlay = row.querySelector('.upload-overlay');
+            if (overlay) overlay.remove();
+        }
+
+        async function handleRowDrop(e) {
+            if (Array.from(e.dataTransfer.types).includes('Files')) {
+                e.preventDefault();
+                const row = e.currentTarget;
+                const fileId = parseFloat(row.dataset.id);
+                const fileObj = files.find(f => f.id === fileId);
+                const dropped = e.dataTransfer.files[0];
+                row.classList.remove('upload-drop-target');
+                const overlay = row.querySelector('.upload-overlay');
+                if (overlay) overlay.remove();
+                if (dropped && fileObj) {
+                    await uploadDeFile(dropped, getFullPath(fileObj));
+                }
+                return false;
+            }
+
+            handleReorderDrop(e);
+        }
+
+        async function uploadDeFile(datei, zielPfad) {
+            if (!datei || !zielPfad) return;
+            if (window.electronAPI && window.electronAPI.saveDeFile) {
+                const buffer = await datei.arrayBuffer();
+                await window.electronAPI.saveDeFile(zielPfad, new Uint8Array(buffer));
+                deAudioCache[zielPfad] = `sounds/DE/${zielPfad}`;
+                await updateHistoryCache(zielPfad);
+            } else {
+                await speichereUebersetzungsDatei(datei, zielPfad);
+            }
+            const f = files.find(fl => getFullPath(fl) === zielPfad);
+            if (f) f.completed = true;
+            renderFileTable();
+            updateStatus('DE-Datei gespeichert');
         }
 
         function getDragAfterElement(container, y) {
