@@ -2865,7 +2865,9 @@ function addFiles() {
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
                 selected: true,
-                completed: false
+                completed: false,
+                trimStartMs: 0,
+                trimEndMs: 0
             };
             
             files.push(newFile);
@@ -6037,7 +6039,9 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         selected: true,
-        completed: false
+        completed: false,
+        trimStartMs: 0,
+        trimEndMs: 0
     };
     
     files.push(newFile);
@@ -7502,10 +7506,17 @@ async function openDeEdit(fileId) {
     const rel = getDeFilePath(file) || getFullPath(file);
     let deSrc = deAudioCache[rel];
     if (!deSrc) return;
-    if (typeof deSrc !== 'string') {
-        originalEditBuffer = await loadAudioBuffer(deSrc);
-    } else {
-        originalEditBuffer = await loadAudioBuffer(deSrc);
+    const backupSrc = `sounds/DE-Backup/${rel}`;
+    try {
+        // Versuche zunächst das unbeschnittene Backup zu laden
+        originalEditBuffer = await loadAudioBuffer(backupSrc);
+    } catch {
+        // Fallback: aktuelle DE-Datei nutzen
+        if (typeof deSrc !== 'string') {
+            originalEditBuffer = await loadAudioBuffer(deSrc);
+        } else {
+            originalEditBuffer = await loadAudioBuffer(deSrc);
+        }
     }
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
@@ -7516,10 +7527,10 @@ async function openDeEdit(fileId) {
     editPaused = false;
     editPlaying = null;
     if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
-    editStartTrim = 0;
-    editEndTrim = 0;
-    document.getElementById('editStart').value = 0;
-    document.getElementById('editEnd').value = 0;
+    editStartTrim = file.trimStartMs || 0;
+    editEndTrim = file.trimEndMs || 0;
+    document.getElementById('editStart').value = editStartTrim;
+    document.getElementById('editEnd').value = editEndTrim;
     document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     updateDeEditWaveforms();
@@ -7738,6 +7749,7 @@ async function resetDeEdit() {
     try {
         if (window.electronAPI && window.electronAPI.restoreDeFile) {
             await window.electronAPI.restoreDeFile(relPath);
+            await window.electronAPI.deleteDeBackupFile(relPath);
             deAudioCache[relPath] = `sounds/DE/${relPath}`;
             originalEditBuffer = await loadAudioBuffer(deAudioCache[relPath]);
         } else if (deOrdnerHandle) {
@@ -7759,11 +7771,14 @@ async function resetDeEdit() {
             const w = await dest.createWritable();
             await w.write(fileData);
             await w.close();
+            await quell.removeEntry(name);
             deAudioCache[relPath] = fileData;
             originalEditBuffer = await loadAudioBuffer(fileData);
         }
         editStartTrim = 0;
         editEndTrim = 0;
+        currentEditFile.trimStartMs = 0;
+        currentEditFile.trimEndMs = 0;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
         updateStatus('DE-Audio zurückgesetzt');
@@ -7778,12 +7793,16 @@ async function resetDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
-    const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
-    drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-    const blob = bufferToWav(newBuffer);
     const relPath = getFullPath(currentEditFile);
     if (window.electronAPI && window.electronAPI.backupDeFile) {
+        // Sicherstellen, dass ein Backup existiert
         await window.electronAPI.backupDeFile(relPath);
+        // Original aus dem Backup zurückkopieren
+        await window.electronAPI.restoreDeFile(relPath);
+        originalEditBuffer = await loadAudioBuffer(`sounds/DE/${relPath}`);
+        const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+        drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
+        const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
@@ -7809,11 +7828,28 @@ async function applyDeEdit() {
                 const w = await backupFile.createWritable();
                 await w.write(orgData);
                 await w.close();
+                // Original aus Backup kopieren
+                let quell = backupDir;
+                for (const t of teile) {
+                    quell = await quell.getDirectoryHandle(t);
+                }
+                const backupFile2 = await quell.getFileHandle(name);
+                const fileData = await backupFile2.getFile();
+                const destFile = await ordner.getFileHandle(name, { create: true });
+                const wr = await destFile.createWritable();
+                await wr.write(fileData);
+                await wr.close();
+                originalEditBuffer = await loadAudioBuffer(fileData);
             } catch {}
         }
+        const newBuffer = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
+        drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
+        const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
         deAudioCache[relPath] = blob;
     }
+    currentEditFile.trimStartMs = editStartTrim;
+    currentEditFile.trimEndMs = editEndTrim;
     renderFileTable();
     closeDeEdit();
     updateStatus('DE-Audio bearbeitet und gespeichert');
@@ -8577,7 +8613,9 @@ function addFileToProject(filename, folder, originalResult) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         selected: true,
-        completed: false
+        completed: false,
+        trimStartMs: 0,
+        trimEndMs: 0
     };
     
     files.push(newFile);

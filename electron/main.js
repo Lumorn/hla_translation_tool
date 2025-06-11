@@ -141,15 +141,30 @@ app.whenReady().then(() => {
   });
 
   // =========================== BACKUP-DE-FILE START ===========================
-  // Kopiert eine vorhandene DE-Datei in den Backup-Ordner
+  // Kopiert eine vorhandene DE-Datei nur dann ins Backup,
+  // wenn dort noch keine Sicherung existiert
   ipcMain.handle('backup-de-file', async (event, relPath) => {
     const source = path.join(dePath, relPath);
     const target = path.join(deBackupPath, relPath);
-    if (fs.existsSync(source)) {
+    if (!fs.existsSync(target) && fs.existsSync(source)) {
       fs.mkdirSync(path.dirname(target), { recursive: true });
       fs.copyFileSync(source, target);
     }
     return target;
+  });
+
+  // Backup-Datei wieder entfernen (inkl. leerer Ordner)
+  ipcMain.handle('delete-de-backup-file', async (event, relPath) => {
+    const target = path.join(deBackupPath, relPath);
+    if (fs.existsSync(target)) {
+      fs.unlinkSync(target);
+      let dir = path.dirname(target);
+      while (dir.startsWith(deBackupPath) && fs.existsSync(dir) && fs.readdirSync(dir).length === 0) {
+        fs.rmdirSync(dir);
+        dir = path.dirname(dir);
+      }
+    }
+    return true;
   });
   // =========================== RESTORE-DE-FILE START ========================
   // Stellt eine DE-Datei aus dem Backup-Ordner wieder her
