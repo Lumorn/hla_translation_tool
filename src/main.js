@@ -1524,15 +1524,19 @@ return `
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
-            <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en')" title="EN Text kopieren">📋</button>
-            <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
+            <div class="btn-column">
+                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en')" title="EN Text kopieren">📋</button>
+                <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
+            </div>
         </div></td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
-            <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
-            ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+            <div class="btn-column">
+                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
+                ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+            </div>
         </div></td>
         <td style="font-size: 11px; color: #666; word-break: break-all;">
             ${getDebugPathInfo(file)}
