@@ -625,7 +625,8 @@ th:nth-child(9) {
         .wave-label {
             color: #aaa;
             font-size: 13px;
-            margin-left: 8px;
+            margin-left: 0;
+            margin-bottom: 2px;
             white-space: nowrap;
         }
 
@@ -2033,15 +2034,19 @@ th:nth-child(9) {
 <button class="dialog-close-btn" onclick="closeDeEdit()">×</button>
             <h3>✂️ DE-Audio bearbeiten</h3>
             <div style="margin-bottom:15px;">
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
-                    <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()">▶</button>
+                <div style="display:flex;flex-direction:column;gap:5px;">
                     <span class="wave-label">NE (Original)</span>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                        <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()">▶</button>
+                    </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;margin-top:10px;">
-                    <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
-                    <button id="playDePreview" class="de-play-btn" onclick="playDePreview()">▶</button>
+                <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
                     <span class="wave-label">DE (bearbeiten)</span>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                        <button id="playDePreview" class="de-play-btn" onclick="playDePreview()">▶</button>
+                    </div>
                 </div>
             </div>
             <div style="margin-bottom:15px; display:flex; gap:10px;">
@@ -2049,6 +2054,7 @@ th:nth-child(9) {
                 <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
             </div>
             <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="resetDeEdit()">Zurücksetzen</button>
                 <button class="btn btn-secondary" onclick="applyDeEdit()">Speichern</button>
                 <button class="btn btn-secondary" onclick="closeDeEdit()">Abbrechen</button>
             </div>
@@ -7556,6 +7562,10 @@ function stopEditPlayback() {
     if (editProgressTimer) clearInterval(editProgressTimer);
     editProgressTimer = null;
     editPlaying = null;
+    document.getElementById('playOrigPreview').classList.remove('playing');
+    document.getElementById('playOrigPreview').textContent = '▶';
+    document.getElementById('playDePreview').classList.remove('playing');
+    document.getElementById('playDePreview').textContent = '▶';
     updateDeEditWaveforms();
 }
 // =========================== STOPEDITPLAYBACK END =========================
@@ -7563,12 +7573,16 @@ function stopEditPlayback() {
 // =========================== PLAYORIGINALPREVIEW START ====================
 function playOriginalPreview() {
     if (!editEnBuffer) return;
+    const btn = document.getElementById('playOrigPreview');
+    if (editPlaying === 'orig') { stopEditPlayback(); return; }
     stopEditPlayback();
     const blob = bufferToWav(editEnBuffer);
     const url = URL.createObjectURL(blob);
     const audio = document.getElementById('audioPlayer');
     audio.src = url;
     audio.play().then(() => {
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
         editPlaying = 'orig';
         editProgressTimer = setInterval(() => {
             updateDeEditWaveforms(audio.currentTime * 1000, null);
@@ -7581,6 +7595,8 @@ function playOriginalPreview() {
 // =========================== PLAYDEPREVIEW START ==========================
 function playDePreview() {
     if (!originalEditBuffer) return;
+    const btn = document.getElementById('playDePreview');
+    if (editPlaying === 'de') { stopEditPlayback(); return; }
     stopEditPlayback();
     const trimmed = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
     const blob = bufferToWav(trimmed);
@@ -7588,6 +7604,8 @@ function playDePreview() {
     const audio = document.getElementById('audioPlayer');
     audio.src = url;
     audio.play().then(() => {
+        btn.classList.add('playing');
+        btn.textContent = '⏸';
         editPlaying = 'de';
         editProgressTimer = setInterval(() => {
             updateDeEditWaveforms(null, audio.currentTime * 1000);
@@ -7608,6 +7626,50 @@ function closeDeEdit() {
     window.onmouseup = null;
 }
 // =========================== CLOSEDEEDIT END ===============================
+
+// =========================== RESETDEEDIT START =============================
+// Stellt die letzte gespeicherte Version der DE-Datei aus dem Backup wieder her
+async function resetDeEdit() {
+    if (!currentEditFile) return;
+    const relPath = getFullPath(currentEditFile);
+    try {
+        if (window.electronAPI && window.electronAPI.restoreDeFile) {
+            await window.electronAPI.restoreDeFile(relPath);
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            originalEditBuffer = await loadAudioBuffer(deAudioCache[relPath]);
+        } else if (deOrdnerHandle) {
+            const teile = relPath.split('/');
+            const name = teile.pop();
+            let ordner = deOrdnerHandle;
+            for (const t of teile) {
+                ordner = await ordner.getDirectoryHandle(t, { create: true });
+            }
+            const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+            const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', {});
+            let quell = backupDir;
+            for (const t of teile) {
+                quell = await quell.getDirectoryHandle(t);
+            }
+            const backupFile = await quell.getFileHandle(name);
+            const fileData = await backupFile.getFile();
+            const dest = await ordner.getFileHandle(name, { create: true });
+            const w = await dest.createWritable();
+            await w.write(fileData);
+            await w.close();
+            deAudioCache[relPath] = fileData;
+            originalEditBuffer = await loadAudioBuffer(fileData);
+        }
+        editStartTrim = 0;
+        editEndTrim = 0;
+        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+        updateDeEditWaveforms();
+        updateStatus('DE-Audio zurückgesetzt');
+    } catch (err) {
+        console.error('Fehler beim Zurücksetzen', err);
+        updateStatus('Fehler beim Zurücksetzen');
+    }
+}
+// =========================== RESETDEEDIT END ===============================
 
 // =========================== APPLYDEEDIT START =============================
 // Speichert die bearbeitete DE-Datei und legt ein Backup an

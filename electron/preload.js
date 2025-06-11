@@ -8,6 +8,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // DE-Datei im Projektordner speichern
   saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', { relPath, data }),
   backupDeFile: (relPath) => ipcRenderer.invoke('backup-de-file', relPath),
+  restoreDeFile: (relPath) => ipcRenderer.invoke('restore-de-file', relPath),
   // Backup-Funktionen
   listBackups: () => ipcRenderer.invoke('list-backups'),
   saveBackup: (data) => ipcRenderer.invoke('save-backup', data),
