@@ -6,6 +6,7 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 0,
             dePercent: 0,
+            deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0
         });
@@ -17,6 +18,7 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 0,
             dePercent: 0,
+            deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0
         });
@@ -29,6 +31,7 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 100,
             dePercent: 100,
+            deAudioPercent: 0,
             completedPercent: 100,
             totalFiles: 1
         });
@@ -46,6 +49,7 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 100,
             dePercent: 0,
+            deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 3
         });
@@ -62,6 +66,7 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 0,
             dePercent: 100,
+            deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 2
         });
@@ -78,7 +83,24 @@ describe('calculateProjectStats', () => {
         expect(result).toEqual({
             enPercent: 50,
             dePercent: 50,
+            deAudioPercent: 0,
             completedPercent: 0,
+            totalFiles: 2
+        });
+    });
+
+    test('de audio percentage calculated correctly', () => {
+        const result = calculateProjectStats({
+            files: [
+                { enText: 'EN', deText: 'DE', hasDeAudio: true, completed: true },
+                { enText: 'EN2', deText: 'DE2', hasDeAudio: false, completed: false }
+            ]
+        });
+        expect(result).toEqual({
+            enPercent: 100,
+            dePercent: 100,
+            deAudioPercent: 50,
+            completedPercent: 50,
             totalFiles: 2
         });
     });
