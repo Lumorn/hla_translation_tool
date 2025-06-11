@@ -4668,8 +4668,22 @@ async function playDeAudio(fileId) {
                         handle = await handle.getDirectoryHandle(part);
                     }
                 }
-                const fh = await handle.getFileHandle(file.filename);
-                deAudioCache[relPath] = await fh.getFile();
+                const basisName = file.filename.replace(/\.(mp3|wav|ogg)$/i, '');
+                const endungen = ['.mp3', '.wav', '.ogg'];
+                let datei = null;
+                for (const endung of endungen) {
+                    try {
+                        const fh = await handle.getFileHandle(basisName + endung);
+                        datei = await fh.getFile();
+                        break;
+                    } catch {}
+                }
+                if (datei) {
+                    deAudioCache[relPath] = datei;
+                } else {
+                    updateStatus('DE-Datei nicht gefunden');
+                    return;
+                }
             } catch (e) {
                 updateStatus('DE-Datei nicht gefunden');
                 return;
@@ -6794,11 +6808,21 @@ async function waehleProjektOrdner() {
                         enDateien.push({ pfad: pfad + name, handle: child });
                         if (deHandle) {
                             try {
-                                const deFileHandle = await deHandle.getFileHandle(name);
-                                const deFile = await deFileHandle.getFile();
-                                deAudioCache[pfad + name] = deFile;
+                                const basisName = name.replace(/\.(mp3|wav|ogg)$/i, '');
+                                const endungen = ['.mp3', '.wav', '.ogg'];
+                                let deFile = null;
+                                for (const endung of endungen) {
+                                    try {
+                                        const deFileHandle = await deHandle.getFileHandle(basisName + endung);
+                                        deFile = await deFileHandle.getFile();
+                                        break;
+                                    } catch {}
+                                }
+                                if (deFile) {
+                                    deAudioCache[pfad + name] = deFile;
+                                }
                             } catch (e) {
-                                // Datei existiert nicht im DE-Ordner
+                                // Keine passende DE-Datei gefunden
                             }
                         }
                     }
