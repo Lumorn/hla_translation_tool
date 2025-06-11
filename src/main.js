@@ -597,6 +597,7 @@ function selectProject(id){
     let migrated=false;
     files.forEach(f=>{
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
+        if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
     });
     if(migrated) isDirty=true;
 
@@ -793,7 +794,8 @@ function addFiles() {
                 selected: true,
                 completed: false,
                 trimStartMs: 0,
-                trimEndMs: 0
+                trimEndMs: 0,
+                volumeMatched: false
             };
             
             files.push(newFile);
@@ -1548,7 +1550,10 @@ return `
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
-        <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button></td>
+        <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
+            ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
+            ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
+        </td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
     </tr>
 `;
@@ -4096,7 +4101,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         selected: true,
         completed: false,
         trimStartMs: 0,
-        trimEndMs: 0
+        trimEndMs: 0,
+        volumeMatched: false
     };
     
     files.push(newFile);
@@ -5983,6 +5989,7 @@ async function resetDeEdit() {
         editEndTrim = 0;
         currentEditFile.trimStartMs = 0;
         currentEditFile.trimEndMs = 0;
+        currentEditFile.volumeMatched = false;
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -6054,6 +6061,7 @@ async function applyDeEdit() {
     }
     currentEditFile.trimStartMs = editStartTrim;
     currentEditFile.trimEndMs = editEndTrim;
+    currentEditFile.volumeMatched = isVolumeMatched;
     // Änderungen sichern
     isDirty = true;
     renderFileTable();
@@ -6821,7 +6829,8 @@ function addFileToProject(filename, folder, originalResult) {
         selected: true,
         completed: false,
         trimStartMs: 0,
-        trimEndMs: 0
+        trimEndMs: 0,
+        volumeMatched: false
     };
     
     files.push(newFile);
