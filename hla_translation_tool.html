@@ -1852,6 +1852,7 @@ th:nth-child(9) {
         <th width="60">Audio</th>
         <th width="60">DE Audio</th>
         <th width="60">Upload</th>
+        <th width="30" title="DE-Audio beschnitten">✂️</th>
         <th width="60">Bearbeiten</th>
         <th width="50"></th>
     </tr>
@@ -3598,6 +3599,7 @@ return `
             ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
+        <td style="text-align:center;">${(file.trimStartMs || file.trimEndMs) ? '✔️' : ''}</td>
         <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">×</button></td>
     </tr>
