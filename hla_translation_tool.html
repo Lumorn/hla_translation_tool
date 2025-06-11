@@ -717,6 +717,38 @@ th:nth-child(9) {
             margin: 5px 0;
         }
 
+        /* Einstellungen-Menü */
+        .settings-container {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .settings-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 5px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            min-width: 180px;
+            display: none;
+            z-index: 2000;
+        }
+
+        .settings-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .settings-item:hover {
+            background: #333;
+        }
+
         /* Import/Export Dialog */
         .dialog-overlay {
             position: fixed;
@@ -1715,12 +1747,16 @@ th:nth-child(9) {
 
                 <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
                 <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
-                <button class="btn btn-secondary" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</button>
-                <button class="btn btn-secondary" onclick="showBackupDialog()">💾 Backup</button>
-                <button class="btn btn-secondary" onclick="restoreData()">📂 Restore</button>
-                <button class="btn btn-danger" onclick="resetFileDatabase()">🔄 Reset DB</button>
-                                <button class="btn btn-secondary" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</button>
-                        <button class="btn btn-success" onclick="repairProjectFolders()">🔧 Ordner reparieren</button>
+                <div class="settings-container">
+                    <button id="settingsButton" class="btn btn-secondary" onclick="toggleSettingsMenu()">⚙️ Einstellungen</button>
+                    <div class="settings-menu" id="settingsMenu">
+                        <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
+                        <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
+                        <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
+                        <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
+                        <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+                    </div>
+                </div>
                 <button class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
             </div>
 			
@@ -6709,30 +6745,7 @@ function checkFileAccess() {
         }
 // =========================== APPLYBACKUPDATA END =========================
 
-        function restoreData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const backup = JSON.parse(event.target.result);
-                        applyBackupData(backup);
-                    } catch (err) {
-                        alert('Fehler beim Wiederherstellen: ' + err.message);
-                    }
-                };
-                
-                reader.readAsText(file);
-            };
-            
-            input.click();
-        }
+
 
 // =========================== FINDDUPLICATES START ===========================
 function findDuplicates() {
@@ -7005,6 +7018,30 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         function toggleDevTools() {
             if (window.electronAPI) {
                 window.electronAPI.toggleDevTools();
+            }
+        }
+
+        // Zeigt oder versteckt das Einstellungen-Menü
+        function toggleSettingsMenu() {
+            const menu = document.getElementById('settingsMenu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+                document.removeEventListener('click', closeSettingsMenuOnOutside);
+            } else {
+                menu.style.display = 'block';
+                setTimeout(() => {
+                    document.addEventListener('click', closeSettingsMenuOnOutside);
+                }, 0);
+            }
+        }
+
+        // Schließt das Menü, wenn außerhalb geklickt wird
+        function closeSettingsMenuOnOutside(e) {
+            const menu = document.getElementById('settingsMenu');
+            const btn = document.getElementById('settingsButton');
+            if (!menu.contains(e.target) && e.target !== btn) {
+                menu.style.display = 'none';
+                document.removeEventListener('click', closeSettingsMenuOnOutside);
             }
         }
 
