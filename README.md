@@ -430,6 +430,17 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`.
 
+## 🧩 Wichtige Funktionen
+
+* **`readAudioFiles(dir)`** – liest alle Audiodateien eines Ordners rekursiv ein und gibt ihre Pfade im POSIX‑Format zurück.
+* **`createWindow()`** – öffnet das Hauptfenster der Electron‑App und richtet einen Shortcut zum Ein‑/Ausblenden der DevTools ein.
+* **`backup-de-file(relPath)`** – kopiert eine vorhandene deutsche Audiodatei nach `DE-Backup`, sofern dort noch keine Sicherung existiert.
+* **`delete-de-backup-file(relPath)`** – löscht eine Sicherung aus `DE-Backup` und entfernt leere Unterordner.
+* **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
+* **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
+
+> Die im Abschnitt **Code-Ausgabe Regeln** gezeigte `meineFunktion` ist lediglich ein Beispiel aus der Anleitung.
+
 
 ## Code-Ausgabe Regeln
 
