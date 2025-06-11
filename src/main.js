@@ -7,6 +7,7 @@ let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
 let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
+let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
@@ -1451,7 +1452,7 @@ function addFiles() {
         }
 
 // =========================== RENDER FILE TABLE WITH ORDER START ===========================
-function renderFileTableWithOrder(sortedFiles) {
+async function renderFileTableWithOrder(sortedFiles) {
     const tbody = document.getElementById('fileTableBody');
     const table = document.getElementById('fileTable');
     const emptyState = document.getElementById('emptyState');
@@ -1465,10 +1466,11 @@ function renderFileTableWithOrder(sortedFiles) {
     table.style.display = 'table';
     emptyState.style.display = 'none';
     
-    tbody.innerHTML = sortedFiles.map((file, displayIndex) => {
+    const rows = await Promise.all(sortedFiles.map(async (file, displayIndex) => {
         const relPath = getFullPath(file);
         const dePath = getDeFilePath(file);
         const hasDeAudio = !!dePath;
+        const hasHistory = await checkHistoryAvailable(file);
         // Find original index for display
         const originalIndex = files.findIndex(f => f.id === file.id);
         
@@ -1508,13 +1510,10 @@ function renderFileTableWithOrder(sortedFiles) {
         
 return `
     <tr data-id="${file.id}" ${file.completed ? 'class="completed"' : ''}>
-        <td class="drag-handle" draggable="true">⋮⋮</td>
         <td class="row-number" data-file-id="${file.id}" ondblclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Doppelklick um Position zu ändern">${originalIndex + 1}</td>
-        <td><input type="checkbox" ${file.selected ? 'checked' : ''} onchange="toggleFileSelection(${file.id})"></td>
-        <td><input type="checkbox" class="completion-checkbox" ${file.completed ? 'checked' : ''} onchange="toggleFileCompletion(${file.id})" title="Deutsche Version vorhanden"></td>
         <td>${file.filename}</td>
         <td>
-            <span class="folder-badge clickable" 
+            <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"
                   title="Ordner: ${file.folder} - Klick für Datei-Austausch"
                   onclick="showFileExchangeOptions(${file.id})">
@@ -1522,16 +1521,18 @@ return `
             </span>
         </td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="text-input" 
-                 onchange="updateText(${file.id}, 'en', this.value)" 
+            <textarea class="text-input"
+                 onchange="updateText(${file.id}, 'en', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
             <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en')" title="EN Text kopieren">📋</button>
+            <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
         </div></td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="text-input" 
+            <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
             <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
+            ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
         </div></td>
         <td style="font-size: 11px; color: #666; word-break: break-all;">
             ${getDebugPathInfo(file)}
@@ -1539,17 +1540,13 @@ return `
         <td style="font-size: 11px; color: #666; word-break: break-all;">
             ${dePath ? `✅ sounds/DE/${dePath}` : '❌'}
         </td>
-        <td><button class="play-btn" onclick="playAudio(${file.id})">▶</button></td>
-        <td>
-            ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
-        </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
-        <td style="text-align:center;">${(file.trimStartMs || file.trimEndMs) ? '✔️' : ''}</td>
+        <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button></td>
-        <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">×</button></td>
     </tr>
 `;
-    }).join('');
+    }));
+    tbody.innerHTML = rows.join('');
     
     addDragAndDropHandlers();
     updateCounts();
@@ -2177,6 +2174,34 @@ function getDeFilePath(file) {
 }
 // =========================== GETDEFILEPATH END ===========================
 
+// =========================== HISTORY CACHE START ===========================
+// Prüft, ob für eine Datei History-Versionen existieren
+async function checkHistoryAvailable(file) {
+    const relPath = getFullPath(file);
+    if (historyPresenceCache[relPath] !== undefined) return historyPresenceCache[relPath];
+    if (!window.electronAPI || !window.electronAPI.listDeHistory) {
+        historyPresenceCache[relPath] = false;
+        return false;
+    }
+    const list = await window.electronAPI.listDeHistory(relPath);
+    const has = Array.isArray(list) && list.length > 0;
+    historyPresenceCache[relPath] = has;
+    return has;
+}
+
+// Aktualisiert den Cache nach Änderungen an einer Datei
+async function updateHistoryCache(relPath) {
+    if (!window.electronAPI || !window.electronAPI.listDeHistory) return;
+    const list = await window.electronAPI.listDeHistory(relPath);
+    historyPresenceCache[relPath] = Array.isArray(list) && list.length > 0;
+}
+
+function openHistory(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (file) showHistoryDialog(file);
+}
+// =========================== HISTORY CACHE END =============================
+
 // =========================== NORMALIZEFOLDERPATH START ===========================
 // Consistent folder normalization for duplicate detection
 function normalizeFolderPath(folderPath) {
@@ -2389,10 +2414,10 @@ function findAudioInFilePathCache(filename, folder) {
 // =========================== FINDAUDIOINFILEPATHCACHE END ===========================
 
     // Tabellenanzeige
-    function renderFileTable() {
+    async function renderFileTable() {
         // Reset display order when rendering normally
         displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
-        renderFileTableWithOrder(files);
+        await renderFileTableWithOrder(files);
     }
 
 function addDragAndDropHandlers() {
@@ -4785,6 +4810,7 @@ function checkFileAccess() {
             }
             await window.electronAPI.restoreDeHistory(relPath, name);
             deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            await updateHistoryCache(relPath);
             renderFileTable();
             loadHistoryList(relPath);
             updateStatus('Version wiederhergestellt');
@@ -5401,6 +5427,7 @@ async function handleDeUpload(input) {
         const buffer = await datei.arrayBuffer();
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
         deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
+        await updateHistoryCache(aktuellerUploadPfad);
     } else {
         await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
     }
@@ -5863,6 +5890,7 @@ async function applyDeEdit() {
         const buf = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(relPath);
     } else {
         // Backup in Browser-Version
         if (deOrdnerHandle) {
@@ -5904,6 +5932,7 @@ async function applyDeEdit() {
         const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
         deAudioCache[relPath] = blob;
+        await updateHistoryCache(relPath);
     }
     currentEditFile.trimStartMs = editStartTrim;
     currentEditFile.trimEndMs = editEndTrim;
