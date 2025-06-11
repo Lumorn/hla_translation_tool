@@ -49,9 +49,6 @@ let redoStack          = [];
 
 // =========================== GLOBAL STATE END ===========================
 
-// Wird zur Laufzeit geladen, um Projektstatistiken zu berechnen
-let calculateProjectStats;
-
 
 // =========================== DEBUG LOG START ===========================
 // Schreibt Meldungen in die Browser-Konsole und die Debug-Anzeige
@@ -93,8 +90,6 @@ function stopCurrentPlayback() {
 
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
-    // Berechnungsfunktion dynamisch nachladen
-    ({ default: calculateProjectStats } = await import('../calculateProjectStats.js'));
     loadProjects();
 
     // Desktop-Version: automatisch EN- und DE-Ordner einlesen
@@ -214,7 +209,34 @@ function saveLevelColors() {
 
 
 
-// Berechnung wird aus externem Modul geladen
+// Berechne Projekt-Statistiken
+function calculateProjectStats(project) {
+    const files = project.files || [];
+    const totalFiles = files.length;
+    
+    if (totalFiles === 0) {
+        return {
+            enPercent: 0,
+            dePercent: 0,
+            deAudioPercent: 0,
+            completedPercent: 0,
+            totalFiles: 0
+        };
+    }
+    
+    const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
+    const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
+    const filesCompleted = files.filter(isFileCompleted).length;
+    const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
+    
+    return {
+        enPercent: Math.round((filesWithEN / totalFiles) * 100),
+        dePercent: Math.round((filesWithDE / totalFiles) * 100),
+        deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
+        completedPercent: Math.round((filesCompleted / totalFiles) * 100),
+        totalFiles: totalFiles
+    };
+}
 
 // Handle Access Status Click - für den Button unten rechts
 function handleAccessStatusClick() {
