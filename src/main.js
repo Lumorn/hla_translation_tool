@@ -4823,7 +4823,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.13.0',
+                version: '3.13.1',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4934,7 +4934,15 @@ function checkFileAccess() {
 
             const list = document.getElementById('voiceIdList');
             list.innerHTML = '';
-            const folders = [...new Set(files.map(f => f.folder))];
+
+            // Alle bekannten Ordner sammeln – projektübergreifend
+            const folderSet = new Set();
+            Object.values(filePathDatabase).forEach(paths => {
+                paths.forEach(p => folderSet.add(p.folder));
+            });
+            Object.keys(folderCustomizations).forEach(f => folderSet.add(f));
+            const folders = Array.from(folderSet).sort();
+
             folders.forEach(name => {
                 const cust = folderCustomizations[name] || {};
                 const id = cust.voiceId || '';
@@ -7702,7 +7710,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.13.0 - API-Menü & Voice-IDs');
+        console.log('Version 3.13.1 - Ordnerübergreifende Voice-IDs');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
