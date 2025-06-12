@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.8';
+const APP_VERSION = '1.13.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -1741,7 +1741,7 @@ return `
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
-        <td><button class="dubbing-btn" onclick="showDubbingSettings(${file.id})">🔈</button></td>
+        <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
@@ -6159,9 +6159,44 @@ async function handleDeUpload(input) {
     aktuellerUploadPfad = null;
     input.value = '';
     renderFileTable();
-    updateStatus('DE-Datei gespeichert');
+updateStatus('DE-Datei gespeichert');
 }
 // =========================== HANDLEDEUPLOAD END ==============================
+
+// =========================== INITIATEDUBBING START ==========================
+function initiateDubbing(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    if (file.dubbingId) {
+        const html = `
+            <div class="dialog-overlay" id="dubbingActionDialog">
+                <div class="dialog">
+                    <h3>Vorhandenes Dubbing</h3>
+                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file.dubbingId}</p>
+                    <div class="dialog-buttons">
+                        <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
+                        <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
+                        <button class="btn btn-success" onclick="redownloadDubbing(${fileId})">Erneut herunterladen</button>
+                    </div>
+                </div>
+            </div>`;
+        document.body.insertAdjacentHTML('beforeend', html);
+        document.getElementById('dubbingActionDialog').style.display = 'flex';
+    } else {
+        showDubbingSettings(fileId);
+    }
+}
+
+function closeDubbingAction() {
+    const dlg = document.getElementById('dubbingActionDialog');
+    if (dlg) dlg.remove();
+}
+
+function proceedNewDubbing(fileId) {
+    closeDubbingAction();
+    showDubbingSettings(fileId);
+}
+// =========================== INITIATEDUBBING END ============================
 
 // =========================== SHOWDUBBINGSETTINGS START ======================
 async function getDefaultVoiceSettings(apiKey) {
@@ -6454,11 +6489,69 @@ async function startDubbing(fileId, settings = {}) {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
         addDubbingLog('Datei im Browser gespeichert');
     }
+    // 🟠 Dubbing-ID merken und Projekt speichern
+    file.dubbingId = id;
+    saveCurrentProject();
     renderFileTable();
     updateStatus('Dubbing abgeschlossen');
     addDubbingLog('Fertig.');
 }
 // =========================== STARTDUBBING END ===============================
+
+// =========================== REDOWNLOADDUBBING START ========================
+// Lädt bereits erzeugtes Dubbing mithilfe der gespeicherten ID erneut herunter
+async function redownloadDubbing(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.dubbingId) return;
+    openDubbingLog();
+    addDubbingLog(`Lade Dubbing ${file.dubbingId} erneut`);
+    if (!elevenLabsApiKey) {
+        updateStatus('API-Key fehlt');
+        addDubbingLog('API-Key fehlt');
+        return;
+    }
+
+    let audioRes;
+    let errText = '';
+    for (let attempt = 0; attempt < 4; attempt++) {
+        try {
+            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${file.dubbingId}/audio/de`, {
+                headers: { 'xi-api-key': elevenLabsApiKey }
+            });
+            if (audioRes.ok) break;
+            errText = await audioRes.text();
+            addDubbingLog(`Download fehlgeschlagen (${audioRes.status} ${errText}). Versuch ${attempt + 1}`);
+        } catch (e) {
+            errText = e.message;
+            addDubbingLog('Fehler: ' + errText);
+        }
+        if (attempt < 3) {
+            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
+            addDubbingLog('Neuer Versuch...');
+        }
+    }
+    if (!audioRes || !audioRes.ok) {
+        updateStatus('Download fehlgeschlagen');
+        addDubbingLog(`Endgültig fehlgeschlagen: ${errText}`);
+        return;
+    }
+    const dubbedBlob = await audioRes.blob();
+    const relPath = getFullPath(file);
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        const buffer = await dubbedBlob.arrayBuffer();
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(relPath);
+        addDubbingLog('Datei in Desktop-Version gespeichert');
+    } else {
+        await speichereUebersetzungsDatei(dubbedBlob, relPath);
+        addDubbingLog('Datei im Browser gespeichert');
+    }
+    updateStatus('Download abgeschlossen');
+    addDubbingLog('Fertig.');
+    renderFileTable();
+}
+// =========================== REDOWNLOADDUBBING END ==========================
 
 // =========================== LOADAUDIOBUFFER START ===========================
 // Lädt eine Audiodatei (String-URL oder File) und liefert ein AudioBuffer
@@ -8523,5 +8616,12 @@ function showLevelCustomization(levelName, ev) {
         console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
 
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { showDubbingSettings, createDubbingCSV, msToHHMMSS, startDubbing };
+    module.exports = {
+        showDubbingSettings,
+        createDubbingCSV,
+        msToHHMMSS,
+        startDubbing,
+        redownloadDubbing,
+        initiateDubbing
+    };
 }
