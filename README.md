@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.18.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.19.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.18.0](#-neue-features-in-3180)
+* [✨ Neue Features in 3.19.0](#-neue-features-in-3190)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.18.0
+## ✨ Neue Features in 3.19.0
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
@@ -40,6 +40,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Fortschrittsanzeige** | Projektübergreifender Fortschritt mit Farbkennzeichnung im Dashboard. |
 | **Stimmenverwaltung**  | Benutzerdefinierte IDs umbenennen, löschen und Name abrufen. |
 | **CSP-Fix**          | API-Tests im Browser funktionieren jetzt dank angepasster Content Security Policy. |
+| **Ordner-Debug**     | Zeigt alle Ordner aus der Datenbank und löscht nicht mehr existente Einträge. |
 ---
 
 ## 🚀 Features (komplett)
@@ -330,13 +331,14 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.18.0 (aktuell) - Stimmenverwaltung
+### 3.19.0 (aktuell) - Ordner-Debug
 
 **✨ Neue Features:**
 * Benutzerdefinierte Stimmen lassen sich jetzt bearbeiten und löschen.
 * Voice-Namen können per API abgerufen werden.
 * Test-Button für den API-Key mit grüner Erfolgsanzeige.
 * Fehler beim "Neue Stimme"-Knopf behoben; neuer Dialog zum Hinzufügen.
+* Neues Ordner-Debug-Tool zeigt alle Ordnernamen an und löscht veraltete Einträge.
 
 ### 3.15.0 - Überarbeitetes API-Menü
 
@@ -475,7 +477,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.18.0** - Stimmenverwaltung und Name-Abruf
+**Version 3.19.0** - Ordner-Debug und Stimmenverwaltung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
