@@ -4823,12 +4823,19 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.13.1',
+                version: '3.13.2',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
                 filePathDatabase: filePathDatabase,
                 folderCustomizations: folderCustomizations,
+                levelColors: levelColors,
+                levelOrders: levelOrders,
+                levelIcons: levelIcons,
+                autoBackupInterval: autoBackupInterval,
+                autoBackupLimit: autoBackupLimit,
+                ignoredFiles: ignoredFiles,
+                elevenLabsApiKey: elevenLabsApiKey,
                 currentProjectId: currentProject?.id
             };
 
@@ -5104,6 +5111,13 @@ function checkFileAccess() {
             textDatabase = backup.textDatabase || {};
             filePathDatabase = backup.filePathDatabase || {};
             folderCustomizations = backup.folderCustomizations || {};
+            levelColors = backup.levelColors || {};
+            levelOrders = backup.levelOrders || {};
+            levelIcons = backup.levelIcons || {};
+            autoBackupInterval = backup.autoBackupInterval || autoBackupInterval;
+            autoBackupLimit = backup.autoBackupLimit || autoBackupLimit;
+            ignoredFiles = backup.ignoredFiles || {};
+            elevenLabsApiKey = backup.elevenLabsApiKey || elevenLabsApiKey;
 
             let migrationNeeded = false;
             projects.forEach(project => {
@@ -5125,6 +5139,14 @@ function checkFileAccess() {
             saveTextDatabase();
             saveFilePathDatabase();
             saveFolderCustomizations();
+            saveLevelColors();
+            saveLevelOrders();
+            saveLevelIcons();
+            saveIgnoredFiles();
+            localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
+            localStorage.setItem('hla_autoBackupInterval', autoBackupInterval);
+            localStorage.setItem('hla_autoBackupLimit', autoBackupLimit);
+            startAutoBackup();
 
             renderProjects();
 
@@ -7710,7 +7732,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.13.1 - Ordnerübergreifende Voice-IDs');
+        console.log('Version 3.13.2 - Verbesserte Backup-Funktion');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
