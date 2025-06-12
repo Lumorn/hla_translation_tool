@@ -3561,6 +3561,9 @@ function showFolderGrid() {
             <button class="btn btn-secondary" onclick="cleanupIncorrectFolderNames()" title="Bereinigt falsche Ordnernamen in der Datenbank">
                 🧹 Ordnernamen bereinigen
             </button>
+            <button class="btn btn-secondary" onclick="searchMissingFolders()" title="Findet Einträge ohne vorhandenen Ordner">
+                🚮 Fehlende Ordner suchen
+            </button>
         </div>
     `;
     
@@ -3911,6 +3914,50 @@ function showFolderDebug() {
 }
 // =========================== SHOWFOLDERDEBUG END =============================
 
+// =========================== MISSINGFOLDERS START ===========================
+function getMissingFolders() {
+    const folders = new Set();
+    Object.values(filePathDatabase).forEach(paths => {
+        paths.forEach(p => folders.add(p.folder));
+    });
+
+    const missing = [];
+    folders.forEach(folder => {
+        const exists = Object.keys(audioFileCache).some(p => p.startsWith(folder + '/'));
+        if (!exists) missing.push(folder);
+    });
+    return missing.sort();
+}
+
+function searchMissingFolders() {
+    const missing = getMissingFolders();
+    if (missing.length === 0) {
+        alert('Alle Ordner existieren noch.');
+        return;
+    }
+    const list = document.getElementById('missingFoldersList');
+    list.innerHTML = missing.map(f => `<label style="display:block"><input type="checkbox" data-folder="${f}" checked> ${f}</label>`).join('');
+    document.getElementById('missingFoldersDialog').style.display = 'flex';
+}
+
+function closeMissingFoldersDialog() {
+    document.getElementById('missingFoldersDialog').style.display = 'none';
+}
+
+function deleteSelectedMissingFolders() {
+    const checkboxes = document.querySelectorAll('#missingFoldersList input[type="checkbox"]:checked');
+    if (checkboxes.length === 0) {
+        alert('Keine Ordner ausgewählt.');
+        return;
+    }
+    if (!confirm(`${checkboxes.length} Ordner löschen?`)) return;
+    checkboxes.forEach(cb => {
+        deleteFolderFromDatabase(cb.dataset.folder, true);
+    });
+    closeMissingFoldersDialog();
+    showFolderGrid();
+}
+// =========================== MISSINGFOLDERS END =============================
 // =========================== GETBROWSERDEBUGPATHINFO START ===========================
 // Debug-Pfad-Information für Ordner-Browser
 function getBrowserDebugPathInfo(file) {
@@ -4089,7 +4136,7 @@ function refreshGlobalStatsAndGrids() {
 
 
 // =========================== DELETEFOLDERFROMBROWSER START ===========================
-function deleteFolderFromDatabase(folderName) {
+function deleteFolderFromDatabase(folderName, skipConfirm = false) {
     // Doppelte Sicherheitsprüfung
     let hasTexts = false;
     let hasProjectFiles = false;
@@ -4120,7 +4167,7 @@ function deleteFolderFromDatabase(folderName) {
         
         const warningText = warnings.join(' und ');
         
-        if (!confirm(`⚠️ WARNUNG: Ordner kann nicht sicher gelöscht werden!\n\nDer Ordner "${lastFolderName}" enthält:\n• ${warningText}\n\nDas Löschen würde diese Daten beschädigen.\n\n💡 Empfehlung:\n1. Entfernen Sie zuerst alle Dateien aus Ihren Projekten\n2. Löschen Sie die Übersetzungen manuell\n3. Versuchen Sie dann erneut\n\nTROTZDEM LÖSCHEN? (Nicht empfohlen)`)) {
+        if (!skipConfirm && !confirm(`⚠️ WARNUNG: Ordner kann nicht sicher gelöscht werden!\n\nDer Ordner "${lastFolderName}" enthält:\n• ${warningText}\n\nDas Löschen würde diese Daten beschädigen.\n\n💡 Empfehlung:\n1. Entfernen Sie zuerst alle Dateien aus Ihren Projekten\n2. Löschen Sie die Übersetzungen manuell\n3. Versuchen Sie dann erneut\n\nTROTZDEM LÖSCHEN? (Nicht empfohlen)`)) {
             return;
         }
     }
@@ -4130,7 +4177,7 @@ function deleteFolderFromDatabase(folderName) {
         return count + paths.filter(p => p.folder === folderName).length;
     }, 0);
     
-    if (!confirm(`🗑️ Ordner endgültig löschen\n\nMöchten Sie den Ordner "${lastFolderName}" wirklich aus der Datenbank löschen?\n\nDies entfernt:\n• ${fileCount} Dateipfade\n• Audio-Cache-Einträge\n• Ordner-Anpassungen\n${hasTexts ? '• Alle Übersetzungen (EN/DE)\n' : ''}${hasProjectFiles ? '• Alle Dateien aus Projekten\n' : ''}\n⚠️ Die Aktion kann NICHT rückgängig gemacht werden!\n\nFortfahren?`)) {
+    if (!skipConfirm && !confirm(`🗑️ Ordner endgültig löschen\n\nMöchten Sie den Ordner "${lastFolderName}" wirklich aus der Datenbank löschen?\n\nDies entfernt:\n• ${fileCount} Dateipfade\n• Audio-Cache-Einträge\n• Ordner-Anpassungen\n${hasTexts ? '• Alle Übersetzungen (EN/DE)\n' : ''}${hasProjectFiles ? '• Alle Dateien aus Projekten\n' : ''}\n⚠️ Die Aktion kann NICHT rückgängig gemacht werden!\n\nFortfahren?`)) {
         return;
     }
     
@@ -4912,7 +4959,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.19.0',
+                version: '3.20.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -8044,7 +8091,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.19.0 - Ordner-Debug');
+        console.log('Version 3.20.0 - Verwaiste Ordner');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
