@@ -68,6 +68,7 @@ async function getDubbingStatus(apiKey, dubbingId) {
 async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) {
     let response;
     let errText = '';
+
     for (let attempt = 0; attempt < 4; attempt++) {
         response = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}/audio/${lang}`, {
             headers: { 'xi-api-key': apiKey }
@@ -75,28 +76,27 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
 
         if (response.ok) break;
         errText = await response.text();
+
+        // Studio/Manual-Dub nutzt einen anderen Endpunkt
+        if (response.status === 404 && errText.includes('dubbing_not_found')) {
+            const info = await getDubbingResource(apiKey, dubbingId).catch(() => null);
+            const url = info && info.render_url && info.render_url[lang];
+            if (url) {
+                return await downloadFromUrl(url, targetPath);
+            }
+            throw new Error('Download fehlgeschlagen: ' + errText + ' - Zielsprache fehlt oder falscher Download-Pfad');
+        }
+
         if (attempt < 3) {
             await new Promise(r => setTimeout(r, 1000));
         }
     }
 
     if (!response.ok) {
-        let hinweis = '';
-        // Spezieller Hinweis für 'dubbing_not_found'
-        if (errText.includes('dubbing_not_found')) {
-            hinweis = ' - Zielsprache fehlt oder falscher Download-Pfad';
-        }
-        throw new Error('Download fehlgeschlagen: ' + errText + hinweis);
+        throw new Error('Download fehlgeschlagen: ' + errText);
     }
 
-    return await new Promise((resolve, reject) => {
-        const fileStream = fs.createWriteStream(targetPath);
-        const nodeStream = require('stream').Readable.fromWeb(response.body);
-        nodeStream.pipe(fileStream);
-        nodeStream.on('error', err => reject(err));
-        fileStream.on('finish', () => resolve(targetPath));
-        fileStream.on('error', err => reject(err));
-    });
+    return await downloadFromUrl(response.url, targetPath, response);
 }
 // =========================== DOWNLOADDUBBING END ==========================
 
@@ -119,9 +119,72 @@ async function getDefaultVoiceSettings(apiKey) {
 }
 // =========================== GETDEFAULTVOICESETTINGS END ==================
 
+// =========================== DUBSEGMENTS START ============================
+// Startet die Vertonung aller Clips eines Projekts
+async function dubSegments(apiKey, resourceId) {
+    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}/dub`, {
+        method: 'POST',
+        headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) {
+        throw new Error('Dub-Auftrag fehlgeschlagen: ' + await res.text());
+    }
+    return await res.json();
+}
+// =========================== DUBSEGMENTS END ==============================
+
+// =========================== RENDERRESOURCE START ========================
+// Rendert die komplette Audiodatei fuer eine Sprache
+async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
+    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}/render/${lang}`, {
+        method: 'POST',
+        headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ render_type: type })
+    });
+    if (!res.ok) {
+        throw new Error('Rendern fehlgeschlagen: ' + await res.text());
+    }
+    return await res.json();
+}
+// =========================== RENDERRESOURCE END ==========================
+
+// =========================== GETRESOURCE START ===========================
+// Liefert den aktuellen Status eines Dubbing-Resources
+async function getDubbingResource(apiKey, resourceId) {
+    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}`, {
+        headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) {
+        throw new Error('Abfrage fehlgeschlagen: ' + await res.text());
+    }
+    return await res.json();
+}
+// =========================== GETRESOURCE END =============================
+
+// =========================== DOWNLOADFROMURL START =======================
+// Hilfsfunktion zum Speichern eines Response-Streams
+async function downloadFromUrl(url, targetPath, existingResponse = null) {
+    const response = existingResponse || await fetch(url);
+    if (!response.ok) {
+        throw new Error('Download fehlgeschlagen: ' + await response.text());
+    }
+    return await new Promise((resolve, reject) => {
+        const fileStream = fs.createWriteStream(targetPath);
+        const nodeStream = require('stream').Readable.fromWeb(response.body);
+        nodeStream.pipe(fileStream);
+        nodeStream.on('error', err => reject(err));
+        fileStream.on('finish', () => resolve(targetPath));
+        fileStream.on('error', err => reject(err));
+    });
+}
+// =========================== DOWNLOADFROMURL END ========================
+
 module.exports = {
     createDubbing,
     getDubbingStatus,
     downloadDubbingAudio,
-    getDefaultVoiceSettings
+    getDefaultVoiceSettings,
+    dubSegments,
+    renderDubbingResource,
+    getDubbingResource
 };
