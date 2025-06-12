@@ -23,12 +23,12 @@ afterEach(() => {
 });
 
 describe('ElevenLabs API', () => {
-    test('erfolgreicher Dubbing-Auftrag', async () => {
+    test('erfolgreicher Dubbing-Auftrag mit voice_settings', async () => {
         nock(API)
-            .post('/v1/dubbing')
+            .post('/v1/dubbing', body => body.includes('voice_settings'))
             .reply(200, { id: '123' });
 
-        const result = await createDubbing('key', tempAudio);
+        const result = await createDubbing('key', tempAudio, 'de', { speed: 1.2 });
         expect(result).toEqual({ id: '123' });
     });
 

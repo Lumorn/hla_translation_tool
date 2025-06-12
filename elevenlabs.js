@@ -6,9 +6,10 @@ const fs = require('fs');
  * @param {string} apiKey - Eigener API-Schluessel.
  * @param {string} audioPath - Pfad zur englischen Audiodatei.
  * @param {string} [targetLang='de'] - Ziel-Sprache fuer das Dubbing.
+ * @param {object} [voiceSettings=null] - Optionale Voice-Settings.
  * @returns {Promise<object>} Antwort der API als Objekt.
  */
-async function createDubbing(apiKey, audioPath, targetLang = 'de') {
+async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings = null) {
     if (!fs.existsSync(audioPath)) {
         throw new Error('Audio-Datei nicht gefunden: ' + audioPath);
     }
@@ -16,6 +17,10 @@ async function createDubbing(apiKey, audioPath, targetLang = 'de') {
     const form = new FormData();
     form.append('file', fs.createReadStream(audioPath));
     form.append('target_lang', targetLang);
+    // Optional: Voice-Settings als JSON anhängen
+    if (voiceSettings && Object.keys(voiceSettings).length > 0) {
+        form.append('voice_settings', JSON.stringify(voiceSettings));
+    }
 
     const response = await fetch('https://api.elevenlabs.io/v1/dubbing', {
         method: 'POST',
