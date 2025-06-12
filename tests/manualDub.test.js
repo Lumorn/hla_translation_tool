@@ -95,7 +95,7 @@ describe('Manual Dub', () => {
         const file = { enText: 'Hello', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
         const blob = createDubbingCSV(file, 1000);
         const text = await blob.text();
-        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000,"Hello","Hallo"\n');
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,0.000,1.000,"Hello","Hallo"\n');
     });
 
     test('createDubbingCSV mit CRLF', async () => {
@@ -103,7 +103,7 @@ describe('Manual Dub', () => {
         const file = { enText: 'Hi', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
         const blob = createDubbingCSV(file, 1000);
         const text = await blob.text();
-        expect(text).toBe('speaker,start_time,end_time,transcription,translation\r\n0,00:00:00.000,00:00:01.000,"Hi","Hallo"\r\n');
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\r\n0,0.000,1.000,"Hi","Hallo"\r\n');
     });
 
     describe('startDubbing()', () => {
@@ -145,7 +145,7 @@ describe('Manual Dub', () => {
     });
 
     test('validateCsv lehnt fehlerhafte CSV ab', () => {
-        const csv = 'speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000';
+        const csv = 'speaker,start_time,end_time,transcription,translation\n0,0.000,1.000';
         expect(validateCsv(csv)).toBe(false);
     });
 });

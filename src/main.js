@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.18.5';
+const APP_VERSION = '1.18.6';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6311,16 +6311,11 @@ function resetStoredVoiceSettings() {
     }
 }
 
-// Erstellt eine CSV-Zeile für das Manual Dubbing
-// Wandelt Millisekunden in HH:MM:SS.mmm um
-function msToHHMMSS(ms) {
-    const abs = Math.max(0, Math.floor(ms));
-    const h = Math.floor(abs / 3600000);
-    const m = Math.floor((abs % 3600000) / 60000);
-    const s = Math.floor((abs % 60000) / 1000);
-    const rest = abs % 1000;
-    return [h, m, s].map(v => String(v).padStart(2, '0')).join(':') +
-           '.' + String(rest).padStart(3, '0');
+// Hilfsfunktion für das Manual Dubbing
+// Wandelt Millisekunden in Sekundenwerte mit drei Nachkommastellen um
+function msToSeconds(ms) {
+    const seconds = Math.max(0, ms) / 1000;
+    return seconds.toFixed(3);
 }
 
 // Erstellt eine CSV-Zeile für das Manual Dubbing
@@ -6334,13 +6329,13 @@ function createDubbingCSV(file, durationMs) {
     const lineEnd = csvLineEnding === 'CRLF' ? '\r\n' : '\n';
     const header = 'speaker,start_time,end_time,transcription,translation' + lineEnd;
     const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
-    const startTime = msToHHMMSS(file.trimStartMs || 0);
+    const startTime = msToSeconds(file.trimStartMs || 0);
     let endTime = '';
     if (typeof durationMs === 'number') {
         const endMs = durationMs - (file.trimEndMs || 0);
-        endTime = msToHHMMSS(endMs);
+        endTime = msToSeconds(endMs);
     } else {
-        endTime = msToHHMMSS(file.trimEndMs || 0);
+        endTime = msToSeconds(file.trimEndMs || 0);
     }
     const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
     // CSV-Zeile mit Zeilenende abschließen
@@ -8694,7 +8689,7 @@ if (typeof module !== "undefined" && module.exports) {
         showDubbingSettings,
         createDubbingCSV,
         validateCsv,
-        msToHHMMSS,
+        msToSeconds,
         startDubbing,
         redownloadDubbing,
         initiateDubbing

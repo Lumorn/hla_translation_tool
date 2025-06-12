@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.5-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.6-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.18.5](#-neue-features-in-1.18.5)
+* [✨ Neue Features in 1.18.6](#-neue-features-in-1.18.6)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,16 +27,17 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.18.5
+## ✨ Neue Features in 1.18.6
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.5` statt fester Zahlen. |
+| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.6` statt fester Zahlen. |
 | **Update-Skript** | `npm run update-version` ersetzt alle Platzhalter automatisch. |
 | **cliRedownload.js** | Neues Node-Skript lädt eine vorhandene Dub-Datei erneut herunter. |
 | **CSV prüfen** | `validateCsv()` stellt sicher, dass die CSV korrekt aufgebaut ist. |
 | **Fehlerprotokoll** | Bei fehlgeschlagenen Git-, Node- oder npm-Aufrufen wird nun der genaue Fehler in `setup.log` gespeichert. |
 | **Fehlerdetails** | `detail.message` aus der API-Antwort wird separat geloggt. |
+| **Sekundenformat** | `createDubbingCSV()` nutzt nun Sekundenwerte statt `HH:MM:SS.mmm`. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -61,6 +62,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **HH:MM:SS Zeitformat**   | `createDubbingCSV()` liefert Start- und Endzeiten nun als `HH:MM:SS.mmm`. |
+|                           | Ab Version 1.18.6 werden wieder Sekundenwerte genutzt. |
 
 ## ✨ Neue Features in 1.12.6
 
@@ -236,13 +238,13 @@ Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
 
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Ist eine Voice-ID hinterlegt, wird sie beim Dubbing automatisch genutzt und Voice Cloning abgeschaltet. Ohne Voice-ID bleibt Voice Cloning aktiv.
 
-Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit erscheinen jetzt als `HH:MM:SS.mmm` und leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
+Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Die Felder `start_time` und `end_time` enthalten seit Version 1.18.6 Sekundenwerte mit drei Nachkommastellen und leiten sich aus `trimStartMs` bzw. `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
 Beispiel einer gültigen CSV:
 
 ```csv
 speaker,start_time,end_time,transcription,translation
-0,00:00:00.000,00:00:01.000,"Hello","Hallo"
+0,0.000,1.000,"Hello","Hallo"
 ```
 *Hinweis:* Die Datei schließt mit CRLF (`\r\n`). Vor dem Upload prüft das Tool, dass ein Zeilenumbruch vorhanden ist und alle Felder korrekt in Anführungszeichen stehen.
 
@@ -254,7 +256,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 ### Version aktualisieren
 
 1. Nach jeder Änderung `package.json` anpassen.
-2. Mit `npm run update-version` werden alle `1.18.5`-Platzhalter automatisch durch die Versionsnummer ersetzt.
+2. Mit `npm run update-version` werden alle `1.18.6`-Platzhalter automatisch durch die Versionsnummer ersetzt.
 
 ---
 
@@ -453,7 +455,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.18.5 (aktuell) - Fehlerbehandlung erweitert
+### 1.18.6 (aktuell) - Sekundenformat
+
+**✨ Neue Features:**
+* `createDubbingCSV()` erzeugt Sekundenwerte in den Feldern `start_time` und `end_time`.
+
+### 1.18.5 - Fehlerbehandlung erweitert
 
 **✨ Neue Features:**
 * Alle festen Versionsnummern wurden durch den Platzhalter `1.18.5` ersetzt.
@@ -506,6 +513,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 **✨ Neue Features:**
 * Start- und Endzeit in `createDubbingCSV()` erscheinen nun als `HH:MM:SS.mmm`.
+* Seit Version 1.18.6 werden wieder Sekundenwerte genutzt.
 
 ### 1.12.6 - Neuer Download-Retry
 
@@ -710,7 +718,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.18.5** - Fehlerbehandlung erweitert
+**Version 1.18.6** - Sekundenformat im CSV
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
