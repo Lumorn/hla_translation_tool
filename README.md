@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.15.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.16.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.15.0](#-neue-features-in-3150)
+* [✨ Neue Features in 3.16.0](#-neue-features-in-3160)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,15 +27,16 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.15.0
+## ✨ Neue Features in 3.16.0
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
 | **API-Menü**            | Einstellungsdialog jetzt mit Kategorien, Dropdowns und Live-Validierung des Keys. |
 | **Alle zurücksetzen**   | Ein Klick leert sämtliche Voice-IDs. |
 | **Voice-IDs testen**    | Prüft alle gewählten Stimmen auf Erreichbarkeit. |
+| **API-Key testen**      | Getrennter Button prüft den Key und färbt sich grün bei Erfolg. |
 | **Sichtbarer API-Key**  | Augen-Button zeigt/versteckt den eingegebenen Schlüssel. |
-| **Eigene IDs**          | Neue Voice-IDs können manuell hinzugefügt werden. |
+| **Eigene IDs**          | Neue Voice-IDs können über einen Dialog hinzugefügt werden. |
 ---
 
 ## 🚀 Features (komplett)
@@ -326,7 +327,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.15.0 (aktuell) - Überarbeitetes API-Menü
+### 3.16.0 (aktuell) - Verbesserter API-Dialog
+
+**✨ Neue Features:**
+* Test-Button für den API-Key mit grüner Erfolgsanzeige.
+* Fehler beim "Neue Stimme"-Knopf behoben; neuer Dialog zum Hinzufügen.
+
+### 3.15.0 - Überarbeitetes API-Menü
 
 **✨ Neue Features:**
 * Gruppierte Voice-IDs, Dropdown-Auswahl und Key-Prüfung.
@@ -463,7 +470,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.15.0** - Überarbeitetes API-Menü
+**Version 3.16.0** - Verbesserter API-Dialog
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

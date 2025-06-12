@@ -298,8 +298,9 @@
             <h3>🔊 ElevenLabs API</h3>
             <div class="customize-field api-key-field">
                 <label>API-Key:</label>
-                <input type="password" id="apiKeyInput" style="width:70%;" oninput="validateApiKey()">
+                <input type="password" id="apiKeyInput" style="width:55%;" oninput="validateApiKey()">
                 <button class="btn eye-btn" onclick="toggleApiKey()">👁</button>
+                <button class="btn" id="testApiKeyBtn" onclick="testApiKey()">API-Key testen</button>
                 <span id="apiKeyStatus" class="status-indicator"></span>
             </div>
             <div id="voiceIdList" class="voice-id-list"></div>
@@ -309,6 +310,26 @@
                 <button class="btn" onclick="addCustomVoice()">Neue Stimme</button>
                 <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Neue Stimme Dialog -->
+    <div class="dialog-overlay" id="addVoiceDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeAddVoiceDialog()">×</button>
+            <h3>🆕 Neue Stimme</h3>
+            <div class="customize-field">
+                <label>Voice-ID:</label>
+                <input type="text" id="newVoiceId" style="width:70%;">
+            </div>
+            <div class="customize-field">
+                <label>Name:</label>
+                <input type="text" id="newVoiceName" style="width:70%;">
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeAddVoiceDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="confirmAddVoice()">Hinzufügen</button>
             </div>
         </div>
     </div>
@@ -373,7 +394,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.15.0</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.16.0</a>
 
     <script src="src/main.js"></script>
 </body>
