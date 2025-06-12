@@ -1690,7 +1690,7 @@ th:nth-child(6) {
 .project-done-marker{
     position:absolute;
     top:6px;
-    left:10px;
+    left:36px; /* nicht mehr über dem Icon */
     font-size:18px;
     color:#4caf50;
     pointer-events:none;
