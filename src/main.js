@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.6';
+const APP_VERSION = '1.12.7';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6256,19 +6256,31 @@ function resetStoredVoiceSettings() {
 }
 
 // Erstellt eine CSV-Zeile für das Manual Dubbing
+// Wandelt Millisekunden in HH:MM:SS.mmm um
+function msToHHMMSS(ms) {
+    const abs = Math.max(0, Math.floor(ms));
+    const h = Math.floor(abs / 3600000);
+    const m = Math.floor((abs % 3600000) / 60000);
+    const s = Math.floor((abs % 60000) / 1000);
+    const rest = abs % 1000;
+    return [h, m, s].map(v => String(v).padStart(2, '0')).join(':') +
+           '.' + String(rest).padStart(3, '0');
+}
+
+// Erstellt eine CSV-Zeile für das Manual Dubbing
 function createDubbingCSV(file, durationMs) {
     // Kopfzeile wird immer vorangestellt
     const header = 'speaker,start_time,end_time,transcription,translation\n';
     const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
-    const startSec = ((file.trimStartMs || 0) / 1000).toFixed(3);
-    let endSec = '';
+    const startTime = msToHHMMSS(file.trimStartMs || 0);
+    let endTime = '';
     if (typeof durationMs === 'number') {
         const endMs = durationMs - (file.trimEndMs || 0);
-        endSec = (endMs / 1000).toFixed(3);
+        endTime = msToHHMMSS(endMs);
     } else {
-        endSec = ((file.trimEndMs || 0) / 1000).toFixed(3);
+        endTime = msToHHMMSS(file.trimEndMs || 0);
     }
-    const row = ['0', startSec, endSec, esc(file.enText), esc(file.deText)].join(',');
+    const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
     return new Blob([header, row], { type: 'text/csv' });
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
@@ -8505,5 +8517,5 @@ function showLevelCustomization(levelName, ev) {
         console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
 
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { showDubbingSettings, createDubbingCSV };
+    module.exports = { showDubbingSettings, createDubbingCSV, msToHHMMSS };
 }
