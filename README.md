@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.12.1](#-neue-features-in-3121)
+* [✨ Neue Features in 3.12.2](#-neue-features-in-3122)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.12.1
+## ✨ Neue Features in 3.12.2
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -344,7 +344,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.12.1 (aktuell) - ElevenLabs-Anbindung
+### 3.12.2 (aktuell) - ElevenLabs-Anbindung
 
 **✨ Neue Features:**
 * **ElevenLabs-Dubbing**: Audiodateien lassen sich jetzt direkt per API vertonen.
@@ -460,7 +460,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.12.1** - ElevenLabs-Anbindung
+**Version 3.12.2** - ElevenLabs-Anbindung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
@@ -478,7 +478,8 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
    ```
 
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
-anderem die Funktion `calculateProjectStats`.
+anderem die Funktion `calculateProjectStats`. Neu ist ein Test für die
+ElevenLabs‑Anbindung, der die API‑Aufrufe mit **nock** simuliert.
 
 ## 🧩 Wichtige Funktionen
 
