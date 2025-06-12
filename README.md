@@ -33,7 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | -------------------------- | ----------------------------------------------- |
 | **Schneller Dialog**      | Dubbing-Einstellungsfenster öffnet sich nun sofort. |
 
-## ✨ Neue Features in 1.10.1
+## ✨ Neue Features in 1.10.2
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
@@ -374,7 +374,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 **✨ Neue Features:**
 * Einstellungsfenster öffnet sich ohne Verzögerung.
 
-### 1.10.1 - Dubbing-Dialog erklärt
+### 1.10.2 - Dubbing-Dialog erklärt
 
 **✨ Neue Features:**
 * Dubbing-Einstellungen werden automatisch gespeichert und lassen sich per "Reset" im Dialog löschen. Zudem erklärt die Dokumentation nun alle Parameter des Einstellungsdialogs.
