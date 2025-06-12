@@ -33,6 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | -------------------------- | ----------------------------------------------- |
 | **Versionsplatzhalter** | HTML und JavaScript nutzen nun `__VERSION__` statt fester Zahlen. |
 | **Update-Skript** | `npm run update-version` ersetzt alle Platzhalter automatisch. |
+| **cliRedownload.js** | Neues Node-Skript lädt eine vorhandene Dub-Datei erneut herunter. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -220,6 +221,15 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
+
+Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
+Es wird so aufgerufen:
+
+```bash
+node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei>
+```
+
+Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
 
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Ist eine Voice-ID hinterlegt, wird sie beim Dubbing automatisch genutzt und Voice Cloning abgeschaltet. Ohne Voice-ID bleibt Voice Cloning aktiv.
 
@@ -445,6 +455,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 **✨ Neue Features:**
 * Alle festen Versionsnummern wurden durch den Platzhalter `__VERSION__` ersetzt.
 * Das Skript `npm run update-version` trägt die aktuelle Version automatisch ein.
+* Neues CLI-Skript `cliRedownload.js` lädt Dub-Dateien erneut herunter.
 
 ### 1.16.3 - CSV-Validierung
 
