@@ -2,7 +2,7 @@ const fs = require('fs');
 const nock = require('nock');
 const path = require('path');
 
-const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings } = require('../elevenlabs');
+const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, dubSegments, renderDubbingResource, getDubbingResource } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io';
@@ -50,12 +50,22 @@ describe('ElevenLabs API', () => {
     });
 
     test('Hinweis bei dubbing_not_found', async () => {
+        const outPath = path.join(__dirname, 'hint.mp3');
         nock(API)
             .get('/v1/dubbing/hint/audio/de')
-            .times(4)
             .reply(404, 'dubbing_not_found');
+        nock(API)
+            .get('/v1/dubbing/resource/hint')
+            .reply(200, { render_url: { de: `${API}/files/hint.mp3` }, render_status: { de: 'completed' } });
+        nock(API)
+            .get('/files/hint.mp3')
+            .reply(200, 'sound');
 
-        await expect(downloadDubbingAudio('key', 'hint', 'de', 'out.mp3')).rejects.toThrow('falscher Download-Pfad');
+        const result = await downloadDubbingAudio('key', 'hint', 'de', outPath);
+        const data = fs.readFileSync(outPath, 'utf8');
+        fs.unlinkSync(outPath);
+        expect(result).toBe(outPath);
+        expect(data).toBe('sound');
     });
 
     test('Download erfolgreich', async () => {
@@ -118,6 +128,36 @@ describe('ElevenLabs API', () => {
             .reply(500, 'kaputt');
 
         await expect(getDefaultVoiceSettings('key')).rejects.toThrow('Fehler beim Abrufen der Default-Settings');
+    });
+
+    test('dubSegments sendet Request', async () => {
+        const scope = nock(API)
+            .post('/v1/dubbing/resource/55/dub')
+            .reply(200, { ok: true });
+
+        const res = await dubSegments('key', '55');
+        expect(scope.isDone()).toBe(true);
+        expect(res).toEqual({ ok: true });
+    });
+
+    test('renderDubbingResource sendet Request', async () => {
+        const scope = nock(API)
+            .post('/v1/dubbing/resource/55/render/de', { render_type: 'mp3' })
+            .reply(200, { url: 'x' });
+
+        const res = await renderDubbingResource('key', '55', 'de', 'mp3');
+        expect(scope.isDone()).toBe(true);
+        expect(res).toEqual({ url: 'x' });
+    });
+
+    test('getDubbingResource liefert Daten', async () => {
+        const scope = nock(API)
+            .get('/v1/dubbing/resource/55')
+            .reply(200, { render_url: { de: 'x' } });
+
+        const res = await getDubbingResource('key', '55');
+        expect(scope.isDone()).toBe(true);
+        expect(res).toEqual({ render_url: { de: 'x' } });
     });
 
     // Neuer Test für GET /v1/dubbing/{id} mit Erfolg
