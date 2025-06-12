@@ -1923,4 +1923,16 @@ th:nth-child(6) {
 .level-group.collapsed .level-projects { display: none; }
 /* =========================== LEVEL-GROUP STYLES END ========================= */
 
+/* Versionsnummer unten rechts */
+#versionLink {
+    position: fixed;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: #888;
+    text-decoration: none;
+}
+
+#versionLink:hover { color: #ff6b1a; }
+
 		
