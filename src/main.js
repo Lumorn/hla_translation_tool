@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.10.2';
+const APP_VERSION = '1.10.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6256,6 +6256,29 @@ function resetStoredVoiceSettings() {
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
+// Erstellt aus dem gespeicherten DE-Text eine CSV-Zeile für das manuelle Dubbing
+async function createDubbingCSV(file) {
+    const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
+    if (!audioInfo) return '';
+    let audioBlob;
+    if (typeof audioInfo.audioFile === 'string') {
+        const resp = await fetch(audioInfo.audioFile);
+        if (!resp.ok) return '';
+        audioBlob = await resp.blob();
+    } else {
+        audioBlob = audioInfo.audioFile;
+    }
+    const buffer = await loadAudioBuffer(audioBlob);
+    const durationMs = buffer.length / buffer.sampleRate * 1000;
+    const startSec = (file.trimStartMs || 0) / 1000;
+    const endSec = (durationMs - (file.trimEndMs || 0)) / 1000;
+    const transcription = (file.enText || '').replace(/"/g, '""');
+    const translation = (file.deText || '').replace(/"/g, '""');
+    return `0,${startSec.toFixed(3)},${endSec.toFixed(3)},"${transcription}","${translation}"`;
+}
+
+// =========================== STARTDUBBING START =============================
+
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
 async function startDubbing(fileId, settings = {}) {
@@ -6295,6 +6318,14 @@ async function startDubbing(fileId, settings = {}) {
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     form.append('target_lang', 'de');
+
+    const csvLine = await createDubbingCSV(file);
+    if (csvLine) {
+        form.append('csv_file', new Blob([csvLine], { type: 'text/csv' }), 'lines.csv');
+        form.append('mode', 'manual');
+        form.append('dubbing_studio', 'true');
+    }
+
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {
         form.append('voice_settings', JSON.stringify(settings));

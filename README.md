@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.10.2](#-neue-features-in-1.10.2)
+* [✨ Neue Features in 1.10.3](#-neue-features-in-1.10.3)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,16 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.10.2
+## ✨ Neue Features in 1.10.3
 
 |  Kategorie                 |  Beschreibung |
-| -------------------------- | ----------------------------------------------- |
+| -------------------------- | ------------------------------------------------ |
+| **CSV-Dubbing**           | Eigener DE-Text wird als CSV (`speaker,start_time,end_time,transcription,translation`) an ElevenLabs gesendet. |
 | **Schneller Dialog**      | Dubbing-Einstellungsfenster öffnet sich nun sofort. |
-
-## ✨ Neue Features in 1.10.2
-
-|  Kategorie                 |  Beschreibung |
-| -------------------------- | ----------------------------------------------- |
 | **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert, lassen sich per `getDefaultVoiceSettings` zurücksetzen und zeigen jetzt ein Einstellungsfenster vor dem Start. |
 
 ## ✨ Neue Features in 1.8.0
@@ -153,6 +149,8 @@ const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'de', {
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
 await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
+
+Ab Version **1.10.3** wird der eingegebene DE-Text verwendet. Die App erzeugt eine CSV-Datei mit `speaker,start_time,end_time,transcription,translation` und übergibt diese zusammen mit dem Originalaudio.
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
 
@@ -369,7 +367,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.10.2 (aktuell) - Sofort sichtbarer Dubbing-Dialog
+### 1.10.3 (aktuell) - Manuelle Übersetzung per CSV
+
+**✨ Neue Features:**
+* Eigener DE-Text wird für das Dubbing verwendet (CSV mit `speaker,start_time,end_time,transcription,translation`).
+
+### 1.10.2 - Sofort sichtbarer Dubbing-Dialog
 
 **✨ Neue Features:**
 * Einstellungsfenster öffnet sich ohne Verzögerung.
@@ -542,7 +545,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.10.2** - Sofort sichtbarer Dubbing-Dialog
+**Version 1.10.3** - Manuelle Übersetzung per CSV
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
