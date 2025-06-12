@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.10.1](#-neue-features-in-1.10.1)
+* [✨ Neue Features in 1.10.2](#-neue-features-in-1.10.2)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -26,6 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.10.2
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Schneller Dialog**      | Dubbing-Einstellungsfenster öffnet sich nun sofort. |
 
 ## ✨ Neue Features in 1.10.1
 
@@ -363,7 +369,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.10.1 (aktuell) - Dubbing-Dialog erklärt
+### 1.10.2 (aktuell) - Sofort sichtbarer Dubbing-Dialog
+
+**✨ Neue Features:**
+* Einstellungsfenster öffnet sich ohne Verzögerung.
+
+### 1.10.1 - Dubbing-Dialog erklärt
 
 **✨ Neue Features:**
 * Dubbing-Einstellungen werden automatisch gespeichert und lassen sich per "Reset" im Dialog löschen. Zudem erklärt die Dokumentation nun alle Parameter des Einstellungsdialogs.
@@ -531,7 +542,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.10.1** - Dubbing-Dialog erklärt
+**Version 1.10.2** - Sofort sichtbarer Dubbing-Dialog
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

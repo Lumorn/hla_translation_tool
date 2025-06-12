@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.10.1';
+const APP_VERSION = '1.10.2';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6221,6 +6221,8 @@ async function showDubbingSettings(fileId) {
             </div>
         </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
+    // Dialog sofort anzeigen
+    document.getElementById('dubbingSettingsDialog').style.display = 'flex';
 }
 
 function closeDubbingSettings() {
