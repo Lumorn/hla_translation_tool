@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.16.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.16.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.16.0](#-neue-features-in-1.16.0)
+* [✨ Neue Features in 1.16.1](#-neue-features-in-1.16.1)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -26,6 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.16.1
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **CSV-Validierung** | Vor dem Upload wird die komplette CSV geloggt und ein fehlender Zeilenumbruch automatisch ergänzt. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -224,7 +230,7 @@ Beispiel einer gültigen CSV:
 speaker,start_time,end_time,transcription,translation
 0,00:00:00.000,00:00:01.000,"Hello","Hallo"
 ```
-*Hinweis:* Die Datei schließt mit CRLF (`\r\n`).
+*Hinweis:* Die Datei schließt mit CRLF (`\r\n`). Vor dem Upload prüft das Tool, dass ein Zeilenumbruch vorhanden ist und alle Felder korrekt in Anführungszeichen stehen.
 
 ### Dubbing-Protokoll
 
@@ -433,7 +439,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.16.0 (aktuell) - Log löschen
+### 1.16.1 (aktuell) - CSV-Validierung
+
+**✨ Neue Features:**
+* Vor dem Upload wird die komplette CSV geloggt.
+* Fehlender Zeilenumbruch wird automatisch ergänzt.
+
+### 1.16.0 - Log löschen
 
 **✨ Neue Features:**
 * Dubbing-Protokoll besitzt nun einen Button, um das Log zu leeren.
@@ -673,7 +685,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.16.0** - Log löschen
+**Version 1.16.1** - CSV-Validierung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
