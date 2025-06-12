@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.10.2';
+const APP_VERSION = '1.10.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -8429,3 +8429,7 @@ function showLevelCustomization(levelName, ev) {
         console.log('• 🛠️ Debug-Tools für Datenquellen-Analyse');
         console.log('• 🎯 Highlighting von Suchbegriffen');
         console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
+
+if (typeof module !== "undefined" && module.exports) {
+    module.exports = { showDubbingSettings };
+}
