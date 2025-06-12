@@ -52,13 +52,17 @@ let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
 let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
+// Gespeicherte Voice-Settings aus dem LocalStorage laden
+let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') || 'null');
+// Merkt die Datei, für die der Dubbing-Dialog geöffnet wurde
+let currentDubbingFileId = null;
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.9.0';
+const APP_VERSION = '1.10.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6169,6 +6173,7 @@ async function getDefaultVoiceSettings(apiKey) {
 }
 
 async function showDubbingSettings(fileId) {
+    currentDubbingFileId = fileId;
     let defaults = {
         stability: 1.0,
         similarity_boost: 1.0,
@@ -6176,7 +6181,11 @@ async function showDubbingSettings(fileId) {
         speed: 1.0,
         use_speaker_boost: true
     };
-    if (elevenLabsApiKey) {
+    if (storedVoiceSettings) {
+        // Zuerst die gespeicherten Werte verwenden
+        defaults = storedVoiceSettings;
+    } else if (elevenLabsApiKey) {
+        // Ansonsten Defaults von der API holen
         try {
             defaults = await getDefaultVoiceSettings(elevenLabsApiKey);
         } catch (e) {
@@ -6205,6 +6214,7 @@ async function showDubbingSettings(fileId) {
                     <label><input type="checkbox" id="dubSetSpeaker" ${defaults.use_speaker_boost ? 'checked' : ''}> use_speaker_boost</label>
                 </div>
                 <div class="dialog-buttons">
+                    <button class="btn btn-warning" onclick="resetStoredVoiceSettings()">Reset</button>
                     <button class="btn btn-secondary" onclick="closeDubbingSettings()">Abbrechen</button>
                     <button class="btn btn-success" onclick="confirmDubbingSettings(${fileId})">Dubben</button>
                 </div>
@@ -6226,8 +6236,21 @@ function confirmDubbingSettings(fileId) {
         speed: parseFloat(document.getElementById('dubSetSpeed').value),
         use_speaker_boost: document.getElementById('dubSetSpeaker').checked
     };
+    // Gewählte Einstellungen persistent speichern
+    localStorage.setItem('hla_voiceSettings', JSON.stringify(settings));
+    storedVoiceSettings = settings;
     closeDubbingSettings();
     startDubbing(fileId, settings);
+}
+
+// Entfernt gespeicherte Voice-Settings und lädt den Dialog neu
+function resetStoredVoiceSettings() {
+    localStorage.removeItem('hla_voiceSettings');
+    storedVoiceSettings = null;
+    closeDubbingSettings();
+    if (currentDubbingFileId !== null) {
+        showDubbingSettings(currentDubbingFileId);
+    }
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 

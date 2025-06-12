@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.9.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.9.0](#-neue-features-in-1.9.0)
+* [✨ Neue Features in 1.10.0](#-neue-features-in-1.10.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.9.0
+## ✨ Neue Features in 1.10.0
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Voice-Settings**        | `createDubbing` akzeptiert jetzt ein Objekt mit Voice-Einstellungen. |
+| **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert und können zurückgesetzt werden. |
 
 ## ✨ Neue Features in 1.8.0
 
@@ -147,6 +147,9 @@ const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'de', {
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
 await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
+
+Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
+Über den Button **Reset** lassen sich diese wieder auf die API-Defaults zurücksetzen.
 
 ### Version aktualisieren
 
@@ -350,10 +353,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.9.0 (aktuell) - Voice-Settings
+### 1.10.0 (aktuell) - Voice-Settings Speichern
 
 **✨ Neue Features:**
-* `createDubbing` akzeptiert jetzt ein optionales Objekt `voiceSettings`.
+* Dubbing-Einstellungen werden automatisch gespeichert und lassen sich per "Reset" im Dialog löschen.
 
 ### 1.8.0 - Automatische Versionsverwaltung
 
@@ -518,7 +521,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.9.0** - Voice-Settings
+**Version 1.10.0** - Voice-Settings Speichern
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
