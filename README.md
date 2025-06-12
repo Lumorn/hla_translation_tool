@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.10.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.11.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.10.0](#-neue-features-in-3100)
+* [✨ Neue Features in 3.11.0](#-neue-features-in-3110)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.10.0
+## ✨ Neue Features in 3.11.0
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -51,6 +51,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Versionslink oben**      | Die Versionsnummer befindet sich jetzt oben links. |
 | **Level-Haken**            | Level-Reiter zeigen einen grünen Haken, wenn alle Projekte darin 100% abgeschlossen sind. |
 | **Level-Icons**            | Jedes Level besitzt ein eigenes Icon, einstellbar im Level-Dialog. |
+| **Icon-Auswahl**           | Neben freier Eingabe kann man nun aus vordefinierten Icons wählen. |
 ---
 
 ## 🚀 Features (komplett)
@@ -326,7 +327,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.10.0 (aktuell) - Gemeinsame Projekt-Icons
+### 3.11.0 (aktuell) - Icon-Auswahl & Haken-Fix
+
+**✨ Neue Features:**
+* **Icon-Auswahl**: Im Level-Dialog steht nun eine Liste gängiger Icons zur Verfügung.
+* **Haken unter dem Icon**: Der grüne Fertig-Haken wird unter dem Icon angezeigt.
+
+### 3.10.0 - Gemeinsame Projekt-Icons
 
 **✨ Neue Features:**
 * **Gemeinsame Icons**: Projekte eines Levels verwenden automatisch das Icon des Levels.
@@ -431,7 +438,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.10.0** - Gemeinsame Projekt-Icons
+**Version 3.11.0** - Icon-Auswahl & Haken-Fix
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
