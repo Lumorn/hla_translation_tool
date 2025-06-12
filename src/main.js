@@ -37,6 +37,7 @@ let selectedRow            = null; // für Tastatur-Navigation
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
+let expandedLevel          = null; // aktuell geöffneter Level
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -390,78 +391,100 @@ function renderProjects() {
     const list = document.getElementById('projectList');
     list.innerHTML = '';
 
+    // Projekte nach Level gruppieren
+    const levelMap = {};
     projects.forEach(p => {
-        const stats = calculateProjectStats(p);
-        const done  = stats.enPercent === 100 &&
-                      stats.dePercent === 100 &&
-                      stats.deAudioPercent === 100 &&
-                      stats.completedPercent === 100;
+        const lvl = p.levelName || '–';
+        if (!levelMap[lvl]) levelMap[lvl] = [];
+        levelMap[lvl].push(p);
+    });
 
-        /* ► Kachel-Container */
-        const card = document.createElement('div');
-        card.className = 'project-item';
-        if (done) card.classList.add('completed');
-        card.dataset.projectId = p.id;
-        card.draggable = true;
-        card.style.background = getLevelColor(p.levelName);
+    Object.entries(levelMap).forEach(([lvl, prjs]) => {
+        const group = document.createElement('div');
+        group.className = 'level-group';
+        if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
-        /* ► Großes Teil-Badge */
-        const badge = `<span class="level-part-badge">${p.levelPart}</span>`;
+        const header = document.createElement('div');
+        header.className = 'level-header';
+        header.style.background = getLevelColor(lvl);
+        header.textContent = lvl;
+        header.onclick = () => {
+            expandedLevel = expandedLevel === lvl ? null : lvl;
+            renderProjects();
+        };
+        group.appendChild(header);
 
-        /* ► HTML-Inhalt */
-        const doneMark = done ? `<span class="project-done-marker">✅</span>` : '';
-        card.innerHTML = `
-            ${badge}
-            ${doneMark}
-            <div style="display:flex;gap:8px;align-items:flex-start;">
-                <span style="font-size:16px;">${p.icon || '🗂️'}</span>
-                <div style="flex:1;min-width:0;">
-                    <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                        ${p.name}
-                    </div>
-                    <div class="project-stats">
-                        <span title="EN-Text">EN: ${stats.enPercent}%</span>
-                        <span title="DE-Text">DE: ${stats.dePercent}%</span>
-                        <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
-                        <span title="Fertig">✓ ${stats.completedPercent}%</span>
-                    </div>
-                    <div style="font-size:9px;color:rgba(255,255,255,0.6);">
-                        ${stats.totalFiles} Dateien
+        const wrap = document.createElement('div');
+        wrap.className = 'level-projects';
+
+        prjs.forEach(p => {
+            const stats = calculateProjectStats(p);
+            const done  = stats.enPercent === 100 &&
+                          stats.dePercent === 100 &&
+                          stats.deAudioPercent === 100 &&
+                          stats.completedPercent === 100;
+
+            const card = document.createElement('div');
+            card.className = 'project-item';
+            if (done) card.classList.add('completed');
+            card.dataset.projectId = p.id;
+            card.draggable = true;
+            card.style.background = getLevelColor(p.levelName);
+
+            const badge = `<span class="level-part-badge">${p.levelPart}</span>`;
+            const doneMark = done ? `<span class="project-done-marker">✅</span>` : '';
+            card.innerHTML = `
+                ${badge}
+                ${doneMark}
+                <div style="display:flex;gap:8px;align-items:flex-start;">
+                    <span style="font-size:16px;">${p.icon || '🗂️'}</span>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                            ${p.name}
+                        </div>
+                        <div class="project-stats">
+                            <span title="EN-Text">EN: ${stats.enPercent}%</span>
+                            <span title="DE-Text">DE: ${stats.dePercent}%</span>
+                            <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
+                            <span title="Fertig">✓ ${stats.completedPercent}%</span>
+                        </div>
+                        <div style="font-size:9px;color:rgba(255,255,255,0.6);">
+                            ${stats.totalFiles} Dateien
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div style="display:flex;gap:5px;">
-                <button class="project-customize-btn"
-                        onclick="showProjectCustomization(${p.id}, event)">⚙️</button>
-                <button class="delete-btn"
-                        onclick="deleteProject(${p.id}, event)">×</button>
-            </div>
-        `;
+                <div style="display:flex;gap:5px;">
+                    <button class="project-customize-btn" onclick="showProjectCustomization(${p.id}, event)">⚙️</button>
+                    <button class="delete-btn" onclick="deleteProject(${p.id}, event)">×</button>
+                </div>
+            `;
 
-        /* ► Tooltip */
-        card.title =
-            `${p.name}\n` +
-            (p.levelName ? `Level: ${p.levelName}\n` : '') +
-            `Teil:  ${p.levelPart}\n\n` +
-            `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
-            `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
-            `• Dateien: ${stats.totalFiles}`;
+            card.title =
+                `${p.name}\n` +
+                (p.levelName ? `Level: ${p.levelName}\n` : '') +
+                `Teil:  ${p.levelPart}\n\n` +
+                `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
+                `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
+                `• Dateien: ${stats.totalFiles}`;
 
-        /* ► Klick / Drag */
-        card.onclick = e => {
-            if (!e.target.classList.contains('delete-btn') &&
-                !e.target.classList.contains('project-customize-btn')) {
-                selectProject(p.id);
-            }
-        };
-        card.addEventListener('dragstart', handleProjectDragStart);
-        card.addEventListener('dragover',  handleProjectDragOver);
-        card.addEventListener('drop',      handleProjectDrop);
-        card.addEventListener('dragend',   handleProjectDragEnd);
-        card.addEventListener('dragenter', handleProjectDragEnter);
-        card.addEventListener('dragleave', handleProjectDragLeave);
+            card.onclick = e => {
+                if (!e.target.classList.contains('delete-btn') &&
+                    !e.target.classList.contains('project-customize-btn')) {
+                    selectProject(p.id);
+                }
+            };
+            card.addEventListener('dragstart', handleProjectDragStart);
+            card.addEventListener('dragover',  handleProjectDragOver);
+            card.addEventListener('drop',      handleProjectDrop);
+            card.addEventListener('dragend',   handleProjectDragEnd);
+            card.addEventListener('dragenter', handleProjectDragEnter);
+            card.addEventListener('dragleave', handleProjectDragLeave);
 
-        list.appendChild(card);
+            wrap.appendChild(card);
+        });
+
+        group.appendChild(wrap);
+        list.appendChild(group);
     });
 }
 /* =========================== RENDER PROJECTS END =========================== */
@@ -590,6 +613,8 @@ function selectProject(id){
 
     localStorage.setItem('hla_lastActiveProject',id);
 
+    expandedLevel = currentProject.levelName;
+    renderProjects();
     document.querySelectorAll('.project-item')
         .forEach(item=>item.classList.toggle('active',item.dataset.projectId==id));
 
