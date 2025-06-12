@@ -79,8 +79,28 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
 }
 // =========================== DOWNLOADDUBBING END ==========================
 
+// =========================== GETDEFAULTVOICESETTINGS START ================
+/**
+ * Holt die Standardwerte für Voice-Einstellungen von ElevenLabs.
+ * @param {string} apiKey - Eigener API-Schlüssel.
+ * @returns {Promise<object>} Einstellungen der API als Objekt.
+ */
+async function getDefaultVoiceSettings(apiKey) {
+    const response = await fetch('https://api.elevenlabs.io/v1/voices/settings/default', {
+        headers: { 'xi-api-key': apiKey }
+    });
+
+    if (!response.ok) {
+        throw new Error('Fehler beim Abrufen der Default-Settings: ' + await response.text());
+    }
+
+    return await response.json();
+}
+// =========================== GETDEFAULTVOICESETTINGS END ==================
+
 module.exports = {
     createDubbing,
     getDubbingStatus,
-    downloadDubbingAudio
+    downloadDubbingAudio,
+    getDefaultVoiceSettings
 };

@@ -2,7 +2,7 @@ const fs = require('fs');
 const nock = require('nock');
 const path = require('path');
 
-const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('../elevenlabs');
+const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io';
@@ -76,5 +76,22 @@ describe('ElevenLabs API', () => {
             .reply(500, 'kaputt');
 
         await expect(getDubbingStatus('key', '123')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
+    });
+
+    test('Default-Settings erfolgreich abgerufen', async () => {
+        nock(API)
+            .get('/v1/voices/settings/default')
+            .reply(200, { stability: 1 });
+
+        const result = await getDefaultVoiceSettings('key');
+        expect(result).toEqual({ stability: 1 });
+    });
+
+    test('Fehler bei getDefaultVoiceSettings', async () => {
+        nock(API)
+            .get('/v1/voices/settings/default')
+            .reply(500, 'kaputt');
+
+        await expect(getDefaultVoiceSettings('key')).rejects.toThrow('Fehler beim Abrufen der Default-Settings');
     });
 });

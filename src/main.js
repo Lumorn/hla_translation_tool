@@ -58,7 +58,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '__VERSION__';
+const APP_VERSION = '1.8.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -1737,7 +1737,7 @@ return `
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
-        <td><button class="dubbing-btn" onclick="startDubbing(${file.id})">🔈</button></td>
+        <td><button class="dubbing-btn" onclick="showDubbingSettings(${file.id})">🔈</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
@@ -6159,9 +6159,81 @@ async function handleDeUpload(input) {
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
+// =========================== SHOWDUBBINGSETTINGS START ======================
+async function getDefaultVoiceSettings(apiKey) {
+    const res = await fetch('https://api.elevenlabs.io/v1/voices/settings/default', {
+        headers: { 'xi-api-key': apiKey }
+    });
+    if (!res.ok) throw new Error('Fehler beim Abrufen der Default-Settings');
+    return await res.json();
+}
+
+async function showDubbingSettings(fileId) {
+    let defaults = {
+        stability: 1.0,
+        similarity_boost: 1.0,
+        style: 0.0,
+        speed: 1.0,
+        use_speaker_boost: true
+    };
+    if (elevenLabsApiKey) {
+        try {
+            defaults = await getDefaultVoiceSettings(elevenLabsApiKey);
+        } catch (e) {
+            console.warn('Default-Settings konnten nicht geladen werden');
+        }
+    }
+
+    const html = `
+        <div class="dialog-overlay" id="dubbingSettingsDialog">
+            <div class="dialog">
+                <button class="dialog-close-btn" onclick="closeDubbingSettings()">×</button>
+                <h3>🎤 Dubbing-Einstellungen</h3>
+                <div class="customize-field"><label>stability:</label>
+                    <input type="number" id="dubSetStability" min="0" max="1" step="0.1" value="${defaults.stability}">
+                </div>
+                <div class="customize-field"><label>similarity_boost:</label>
+                    <input type="number" id="dubSetSimilarity" min="0" max="1" step="0.1" value="${defaults.similarity_boost}">
+                </div>
+                <div class="customize-field"><label>style:</label>
+                    <input type="number" id="dubSetStyle" min="0" max="1" step="0.1" value="${defaults.style}">
+                </div>
+                <div class="customize-field"><label>speed:</label>
+                    <input type="number" id="dubSetSpeed" min="0.5" max="4" step="0.1" value="${defaults.speed}">
+                </div>
+                <div class="customize-field">
+                    <label><input type="checkbox" id="dubSetSpeaker" ${defaults.use_speaker_boost ? 'checked' : ''}> use_speaker_boost</label>
+                </div>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="closeDubbingSettings()">Abbrechen</button>
+                    <button class="btn btn-success" onclick="confirmDubbingSettings(${fileId})">Dubben</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function closeDubbingSettings() {
+    const dlg = document.getElementById('dubbingSettingsDialog');
+    if (dlg) dlg.remove();
+}
+
+function confirmDubbingSettings(fileId) {
+    const settings = {
+        stability: parseFloat(document.getElementById('dubSetStability').value),
+        similarity_boost: parseFloat(document.getElementById('dubSetSimilarity').value),
+        style: parseFloat(document.getElementById('dubSetStyle').value),
+        speed: parseFloat(document.getElementById('dubSetSpeed').value),
+        use_speaker_boost: document.getElementById('dubSetSpeaker').checked
+    };
+    closeDubbingSettings();
+    startDubbing(fileId, settings);
+}
+// =========================== SHOWDUBBINGSETTINGS END ========================
+
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
-async function startDubbing(fileId) {
+async function startDubbing(fileId, settings = {}) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     openDubbingLog();
@@ -6197,6 +6269,9 @@ async function startDubbing(fileId) {
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     form.append('target_lang', 'de');
+    if (settings && Object.keys(settings).length > 0) {
+        form.append('voice_settings', JSON.stringify(settings));
+    }
 
     const res = await fetch('https://api.elevenlabs.io/v1/dubbing', {
         method: 'POST',

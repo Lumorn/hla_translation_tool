@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-__VERSION__-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.8.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in __VERSION__](#-neue-features-in-__VERSION__)
+* [✨ Neue Features in 1.8.0](#-neue-features-in-1.8.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in __VERSION__
+## ✨ Neue Features in 1.8.0
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
@@ -46,6 +46,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Bereinigung**      | API-Menü und Ordner-Browser verwenden jetzt dieselbe Liste. |
 | **Dubbing-Knopf**    | Automatische Vertonung jeder Datei per ElevenLabs. |
 | **Dubbing-Protokoll**| Neues Fenster zeigt jeden Schritt beim Dubbing an und bleibt offen, bis es manuell geschlossen wird. |
+| **Dubbing-Einstellungen** | Vor dem Start lassen sich Stabilität, Tempo und mehr anpassen. |
 ---
 
 ## 🚀 Features (komplett)
@@ -341,10 +342,15 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### __VERSION__ (aktuell) - Automatische Versionsverwaltung
+### 1.8.0 (aktuell) - Automatische Versionsverwaltung
 
 **✨ Neue Features:**
 * Versionsnummer wird nun automatisch aus `package.json` in HTML und JS eingetragen.
+
+### 3.22.0 - Dubbing-Feinjustierung
+
+**✨ Neue Features:**
+* Dialog fragt vor dem Vertonen nach Stabilität, Ähnlichkeit, Stil, Geschwindigkeit und Speaker-Boost.
 
 ### 3.21.1 - Ordnerlisten bereinigt
 
@@ -499,7 +505,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version __VERSION__** - Automatische Versionsverwaltung
+**Version 1.8.0** - Automatische Versionsverwaltung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
