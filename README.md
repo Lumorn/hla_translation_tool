@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.11.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.10.3](#-neue-features-in-1.10.3)
+* [✨ Neue Features in 1.11.0](#-neue-features-in-1.11.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.10.3
+## ✨ Neue Features in 1.11.0
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **Schneller Dialog**      | Dubbing-Einstellungsfenster öffnet sich nun sofort. |
+| **Manual Dub**            | Eigener DE-Text wird zusammen mit Start- und Endzeiten \*als CSV\* an die API geschickt. |
 
 ## ✨ Neue Features in 1.10.3
 
@@ -166,6 +167,8 @@ Die Standardwerte werden über `getDefaultVoiceSettings` geladen und nach dem Sp
 
 Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Über den Button **Reset** lassen sich diese wieder auf die API-Defaults zurücksetzen.
+
+Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab und werden zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
 ### Version aktualisieren
 
@@ -369,10 +372,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.10.3 (aktuell) - Test für Dubbing-Dialog
+### 1.11.0 (aktuell) - Manual Dub per CSV
 
 **✨ Neue Features:**
-* Neuer Jest-Test prüft das Anzeigen des Dubbing-Dialogs.
+* Eigener deutscher Text wird als CSV übermittelt; Start- und Endzeit nutzen `trimStartMs` und `trimEndMs`.
 ### 1.10.2 - Dubbing-Dialog erklärt
 
 **✨ Neue Features:**
@@ -541,7 +544,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.10.3** - Test für Dubbing-Dialog
+**Version 1.11.0** - Manual Dub per CSV
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

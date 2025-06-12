@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.10.3';
+const APP_VERSION = '1.11.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6254,6 +6254,21 @@ function resetStoredVoiceSettings() {
         showDubbingSettings(currentDubbingFileId);
     }
 }
+
+// Erstellt eine CSV-Zeile für das Manual Dubbing
+function createDubbingCSV(file, durationMs) {
+    const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
+    const startSec = ((file.trimStartMs || 0) / 1000).toFixed(3);
+    let endSec = '';
+    if (typeof durationMs === 'number') {
+        const endMs = durationMs - (file.trimEndMs || 0);
+        endSec = (endMs / 1000).toFixed(3);
+    } else {
+        endSec = ((file.trimEndMs || 0) / 1000).toFixed(3);
+    }
+    const row = ['0', startSec, endSec, esc(file.enText), esc(file.deText)].join(',');
+    return new Blob([row], { type: 'text/csv' });
+}
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
 // =========================== STARTDUBBING START =============================
@@ -6291,10 +6306,18 @@ async function startDubbing(fileId, settings = {}) {
         addDubbingLog('EN-Datei aus Cache geladen');
     }
 
+    // Dauer der Audiodatei bestimmen
+    const buffer = await loadAudioBuffer(audioBlob);
+    const durationMs = buffer.length / buffer.sampleRate * 1000;
+
     // FormData für das Dubbing zusammenstellen
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     form.append('target_lang', 'de');
+    form.append('mode', 'manual');
+    form.append('dubbing_studio', 'true');
+    const csvBlob = createDubbingCSV(file, durationMs);
+    form.append('csv_file', csvBlob, 'input.csv');
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {
         form.append('voice_settings', JSON.stringify(settings));
