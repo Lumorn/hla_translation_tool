@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.18.0](#-neue-features-in-1.18.0)
+* [✨ Neue Features in 1.18.1](#-neue-features-in-1.18.1)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.18.0
+## ✨ Neue Features in 1.18.1
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.0` statt fester Zahlen. |
+| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.1` statt fester Zahlen. |
 | **Update-Skript** | `npm run update-version` ersetzt alle Platzhalter automatisch. |
 | **cliRedownload.js** | Neues Node-Skript lädt eine vorhandene Dub-Datei erneut herunter. |
 | **CSV prüfen** | `validateCsv()` stellt sicher, dass die CSV korrekt aufgebaut ist. |
@@ -252,7 +252,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 ### Version aktualisieren
 
 1. Nach jeder Änderung `package.json` anpassen.
-2. Mit `npm run update-version` werden alle `1.18.0`-Platzhalter automatisch durch die Versionsnummer ersetzt.
+2. Mit `npm run update-version` werden alle `1.18.1`-Platzhalter automatisch durch die Versionsnummer ersetzt.
 
 ---
 
@@ -451,10 +451,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.18.0 (aktuell) - Versionsplatzhalter
+### 1.18.1 (aktuell) - Versionsplatzhalter
 
 **✨ Neue Features:**
-* Alle festen Versionsnummern wurden durch den Platzhalter `1.18.0` ersetzt.
+* Alle festen Versionsnummern wurden durch den Platzhalter `1.18.1` ersetzt.
 * Das Skript `npm run update-version` trägt die aktuelle Version automatisch ein.
 * Neues CLI-Skript `cliRedownload.js` lädt Dub-Dateien erneut herunter.
 * `validateCsv()` prüft CSV vor dem Upload.
@@ -706,21 +706,16 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.18.0** - Versionsplatzhalter
+**Version 1.18.1** - Versionsplatzhalter
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
 
 Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 
-Vor dem Ausführen der Tests muss `npm install` ausgeführt werden.
+`npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten.
 
-1. Abhängigkeiten installieren
-   ```bash
-   npm install
-   ```
-   > Hinweis: Vor `npm test` einmal `npm install` ausführen, um Jest zu installieren.
-2. Tests starten
+1. Tests starten
    ```bash
    npm test
    ```
