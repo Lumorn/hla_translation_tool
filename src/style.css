@@ -1486,6 +1486,24 @@ th:nth-child(6) {
             vertical-align: middle;
         }
 
+        .custom-voices-list {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .custom-voice-item {
+            display: grid;
+            grid-template-columns: 2fr 2fr auto auto;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .custom-voice-item input {
+            width: 100%;
+        }
+
         .customize-buttons {
             display: flex;
             gap: 10px;

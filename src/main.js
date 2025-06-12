@@ -5043,10 +5043,41 @@ function checkFileAccess() {
                 list.appendChild(details);
             });
 
+            const customList = document.getElementById('customVoicesList');
+            customList.innerHTML = '';
+            customVoices.forEach(v => {
+                const item = document.createElement('div');
+                item.className = 'custom-voice-item';
+
+                const idInput = document.createElement('input');
+                idInput.type = 'text';
+                idInput.value = v.voice_id;
+                idInput.className = 'custom-voice-id';
+
+                const nameInput = document.createElement('input');
+                nameInput.type = 'text';
+                nameInput.value = v.name;
+                nameInput.className = 'custom-voice-name';
+
+                const fetchBtn = document.createElement('button');
+                fetchBtn.textContent = '🔄';
+                fetchBtn.onclick = () => fetchVoiceName(fetchBtn);
+
+                const delBtn = document.createElement('button');
+                delBtn.textContent = '🗑';
+                delBtn.onclick = () => item.remove();
+
+                item.appendChild(idInput);
+                item.appendChild(nameInput);
+                item.appendChild(fetchBtn);
+                item.appendChild(delBtn);
+                customList.appendChild(item);
+            });
+
             document.getElementById('apiKeyInput').focus();
         }
 
-        function saveApiSettings() {
+        async function saveApiSettings() {
             elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
             localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
 
@@ -5060,7 +5091,18 @@ function checkFileAccess() {
                     delete folderCustomizations[folder].voiceId;
                 }
             });
+            const newVoices = [];
+            document.querySelectorAll('#customVoicesList .custom-voice-item').forEach(item => {
+                const id = item.querySelector('.custom-voice-id').value.trim();
+                if (!id) return;
+                const name = item.querySelector('.custom-voice-name').value.trim() || id;
+                newVoices.push({ voice_id: id, name });
+            });
+            customVoices = newVoices;
+            localStorage.setItem('hla_customVoices', JSON.stringify(customVoices));
+
             saveFolderCustomizations();
+            await validateApiKey();
             closeApiDialog();
             updateStatus('API-Einstellungen gespeichert');
         }
@@ -5147,6 +5189,36 @@ function checkFileAccess() {
 
         function closeAddVoiceDialog() {
             document.getElementById('addVoiceDialog').style.display = 'none';
+        }
+
+        async function fetchNewVoiceName() {
+            const id = document.getElementById('newVoiceId').value.trim();
+            if (!id || !elevenLabsApiKey) return;
+            try {
+                const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                    headers: { 'xi-api-key': elevenLabsApiKey }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('newVoiceName').value = data.name || '';
+                }
+            } catch (e) {}
+        }
+
+        async function fetchVoiceName(btn) {
+            const item = btn.parentElement;
+            const id = item.querySelector('.custom-voice-id').value.trim();
+            const nameInput = item.querySelector('.custom-voice-name');
+            if (!id || !elevenLabsApiKey) return;
+            try {
+                const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                    headers: { 'xi-api-key': elevenLabsApiKey }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    nameInput.value = data.name || '';
+                }
+            } catch (e) {}
         }
 
         async function confirmAddVoice() {
