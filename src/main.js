@@ -1705,6 +1705,7 @@ return `
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
+        <td><button class="dubbing-btn" onclick="startDubbing(${file.id})">🔈</button></td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
@@ -5020,7 +5021,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.21.1',
+                version: '3.22.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -6125,6 +6126,93 @@ async function handleDeUpload(input) {
     updateStatus('DE-Datei gespeichert');
 }
 // =========================== HANDLEDEUPLOAD END ==============================
+
+// =========================== STARTDUBBING START =============================
+// Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
+async function startDubbing(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    if (!elevenLabsApiKey) {
+        updateStatus('API-Key fehlt');
+        return;
+    }
+
+    const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
+    if (!audioInfo) {
+        updateStatus('EN-Datei nicht gefunden');
+        return;
+    }
+
+    let audioBlob;
+    if (typeof audioInfo.audioFile === 'string') {
+        const resp = await fetch(audioInfo.audioFile);
+        if (!resp.ok) {
+            updateStatus('EN-Datei nicht ladbar');
+            return;
+        }
+        audioBlob = await resp.blob();
+    } else {
+        audioBlob = audioInfo.audioFile;
+    }
+
+    const form = new FormData();
+    form.append('file', audioBlob, file.filename);
+    form.append('target_lang', 'de');
+
+    const res = await fetch('https://api.elevenlabs.io/v1/dubbing', {
+        method: 'POST',
+        headers: { 'xi-api-key': elevenLabsApiKey },
+        body: form
+    });
+    if (!res.ok) {
+        updateStatus('Dubbing fehlgeschlagen');
+        return;
+    }
+    const data = await res.json();
+    const id = data.dubbing_id || data.id;
+    if (!id) {
+        updateStatus('Keine Dubbing-ID erhalten');
+        return;
+    }
+
+    updateStatus('Dubbing läuft...');
+    let status = 'dubbing';
+    for (let i = 0; i < 30 && status === 'dubbing'; i++) {
+        await new Promise(r => setTimeout(r, 2000));
+        const st = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}`, {
+            headers: { 'xi-api-key': elevenLabsApiKey }
+        });
+        if (st.ok) {
+            const js = await st.json();
+            status = js.status;
+        }
+    }
+    if (status !== 'dubbed') {
+        updateStatus('Dubbing nicht fertig');
+        return;
+    }
+
+    const audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/de`, {
+        headers: { 'xi-api-key': elevenLabsApiKey }
+    });
+    if (!audioRes.ok) {
+        updateStatus('Download fehlgeschlagen');
+        return;
+    }
+    const dubbedBlob = await audioRes.blob();
+    const relPath = getFullPath(file);
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        const buffer = await dubbedBlob.arrayBuffer();
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(relPath);
+    } else {
+        await speichereUebersetzungsDatei(dubbedBlob, relPath);
+    }
+    renderFileTable();
+    updateStatus('Dubbing abgeschlossen');
+}
+// =========================== STARTDUBBING END ===============================
 
 // =========================== LOADAUDIOBUFFER START ===========================
 // Lädt eine Audiodatei (String-URL oder File) und liefert ein AudioBuffer
@@ -8154,7 +8242,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.21.1 - Ordnerlisten bereinigt');
+        console.log('Version 3.22.0 - Dubbing-Knopf hinzugefügt');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');

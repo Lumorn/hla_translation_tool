@@ -676,6 +676,22 @@ th:nth-child(6) {
             color: white;
         }
 
+        .dubbing-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .dubbing-btn:hover {
+            background: #388e3c;
+            color: white;
+        }
+
         .history-btn {
             background: #444;
             border: none;
