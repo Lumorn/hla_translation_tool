@@ -67,9 +67,15 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
         throw new Error('Download fehlgeschlagen: ' + await response.text());
     }
 
-    const buffer = await response.arrayBuffer();
-    fs.writeFileSync(targetPath, Buffer.from(buffer));
-    return targetPath;
+    return await new Promise((resolve, reject) => {
+        // Antwort-Stream direkt in die Zieldatei schreiben
+        const fileStream = fs.createWriteStream(targetPath);
+        const nodeStream = require('stream').Readable.fromWeb(response.body);
+        nodeStream.pipe(fileStream);
+        nodeStream.on('error', err => reject(err));
+        fileStream.on('finish', () => resolve(targetPath));
+        fileStream.on('error', err => reject(err));
+    });
 }
 // =========================== DOWNLOADDUBBING END ==========================
 
