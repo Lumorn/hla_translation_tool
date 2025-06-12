@@ -50,6 +50,8 @@ let autoBackupTimer    = null;
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
+// Manuell hinzugefügte Stimmen
+let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -4825,7 +4827,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.14.0',
+                version: '3.15.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4993,7 +4995,7 @@ function checkFileAccess() {
                     empty.value = '';
                     empty.textContent = '-- wählen --';
                     select.appendChild(empty);
-                    availableVoices.forEach(v => {
+                    [...availableVoices, ...customVoices].forEach(v => {
                         const opt = document.createElement('option');
                         opt.value = v.voice_id;
                         opt.textContent = v.name;
@@ -5045,10 +5047,13 @@ function checkFileAccess() {
                 if (!res.ok) throw new Error('Fehler');
                 const data = await res.json();
                 availableVoices = data.voices || [];
+                // Eigene Stimmen anhaengen
+                availableVoices.push(...customVoices);
                 status.textContent = '✔';
                 status.style.color = '#6cc644';
             } catch (e) {
-                availableVoices = [];
+                // Bei Fehler nur eigene Stimmen anzeigen
+                availableVoices = [...customVoices];
                 status.textContent = '✖';
                 status.style.color = '#e74c3c';
             }
@@ -5079,6 +5084,33 @@ function checkFileAccess() {
                 }
             }
             updateStatus('Alle Stimmen OK');
+        }
+
+        // Fuegt eine eigene Voice-ID hinzu
+        async function addCustomVoice() {
+            const id = prompt('Neue Voice-ID eingeben:');
+            if (!id) return;
+            let name = '';
+            // Versuche Namen ueber die API abzurufen
+            if (elevenLabsApiKey) {
+                try {
+                    const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                        headers: { 'xi-api-key': elevenLabsApiKey }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        name = data.name || '';
+                    }
+                } catch (e) {}
+            }
+            if (!name) {
+                name = prompt('Name der Stimme eingeben:') || id;
+            }
+            const neu = { voice_id: id, name };
+            customVoices.push(neu);
+            localStorage.setItem('hla_customVoices', JSON.stringify(customVoices));
+            availableVoices.push(neu);
+            showApiDialog();
         }
 
         function showHistoryDialog(file) {
@@ -7828,7 +7860,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.14.0 - Überarbeitetes API-Menü');
+        console.log('Version 3.15.0 - Überarbeitetes API-Menü');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
