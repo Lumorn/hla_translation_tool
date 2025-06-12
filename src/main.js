@@ -57,6 +57,9 @@ let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || 
 let undoStack          = [];
 let redoStack          = [];
 
+// Version wird zur Laufzeit ersetzt
+const APP_VERSION = '__VERSION__';
+
 // =========================== GLOBAL STATE END ===========================
 
 
@@ -5050,7 +5053,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.23.2',
+                version: APP_VERSION,
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -8291,7 +8294,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.23.2 - Streaming-Fix');
+        console.log(`Version ${APP_VERSION} - Streaming-Fix`);
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
