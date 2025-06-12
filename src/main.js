@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.15.0';
+const APP_VERSION = '1.16.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -110,6 +110,15 @@ function closeDubbingLog() {
 function copyDubbingLog() {
     navigator.clipboard.writeText(dubbingLogMessages.join('\n'));
     updateStatus('Dubbing-Log kopiert');
+}
+
+function clearDubbingLog() {
+    // Log-Einträge entfernen und Speicher leeren
+    dubbingLogMessages = [];
+    localStorage.removeItem('hla_dubbingLog');
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
+    updateStatus('Dubbing-Log gelöscht');
 }
 // =========================== DUBBING-LOG END ===========================
 // Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
