@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.8-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.7](#-neue-features-in-1.12.7)
+* [✨ Neue Features in 1.12.8](#-neue-features-in-1.12.8)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -26,6 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.12.8
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Abbruch bei Fehler**    | Polling erkennt `failed` und stoppt das Dubbing mit Meldung. |
 
 ## ✨ Neue Features in 1.12.7
 
@@ -410,7 +416,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.7 (aktuell) - HH:MM:SS-Zeitformat
+### 1.12.8 (aktuell) - Polling-Abbruch
+
+**✨ Neue Features:**
+* Bei `failed` stoppt der Polling-Loop sofort und zeigt die Fehlermeldung an.
+
+### 1.12.7 - HH:MM:SS-Zeitformat
 
 **✨ Neue Features:**
 * Start- und Endzeit in `createDubbingCSV()` erscheinen nun als `HH:MM:SS.mmm`.
@@ -618,7 +629,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.7** - Verbesserte Fehlerausgabe
+**Version 1.12.8** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

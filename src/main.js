@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.7';
+const APP_VERSION = '1.12.8';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6396,6 +6396,12 @@ async function startDubbing(fileId, settings = {}) {
                 const js = await st.json();
                 status = js.status;
                 addDubbingLog(`Polling: ${status}`);
+                // Abbrechen, wenn der Auftrag fehlgeschlagen ist
+                if (status === 'failed') {
+                    updateStatus('Dubbing fehlgeschlagen');
+                    addDubbingLog(`Server: ${js.error || js.message || 'Fehler'}`);
+                    return;
+                }
             } else {
                 const errText = await st.text();
                 addDubbingLog(`Polling fehlgeschlagen: ${st.status} ${errText}`);
@@ -8517,5 +8523,5 @@ function showLevelCustomization(levelName, ev) {
         console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
 
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { showDubbingSettings, createDubbingCSV, msToHHMMSS };
+    module.exports = { showDubbingSettings, createDubbingCSV, msToHHMMSS, startDubbing };
 }
