@@ -94,4 +94,23 @@ describe('ElevenLabs API', () => {
 
         await expect(getDefaultVoiceSettings('key')).rejects.toThrow('Fehler beim Abrufen der Default-Settings');
     });
+
+    // Neuer Test für GET /v1/dubbing/{id} mit Erfolg
+    test('getDubbingStatus liefert JSON', async () => {
+        nock(API)
+            .get('/v1/dubbing/42')
+            .reply(200, { status: 'dubbed', progress: 100 });
+
+        const res = await getDubbingStatus('key', '42');
+        expect(res).toEqual({ status: 'dubbed', progress: 100 });
+    });
+
+    // Neuer Test für GET /v1/dubbing/{id} mit Fehler
+    test('getDubbingStatus wirft Fehler', async () => {
+        nock(API)
+            .get('/v1/dubbing/42')
+            .reply(404, 'nicht gefunden');
+
+        await expect(getDubbingStatus('key', '42')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
+    });
 });
