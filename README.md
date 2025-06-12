@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.10.0](#-neue-features-in-1.10.0)
+* [✨ Neue Features in 1.10.1](#-neue-features-in-1.10.1)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.10.0
+## ✨ Neue Features in 1.10.1
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert und können zurückgesetzt werden. |
+| **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert, lassen sich per `getDefaultVoiceSettings` zurücksetzen und zeigen jetzt ein Einstellungsfenster vor dem Start. |
 
 ## ✨ Neue Features in 1.8.0
 
@@ -147,6 +147,16 @@ const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'de', {
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
 await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
+
+Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
+
+* **Stability** – Ausgeglichenheit vs. Lebendigkeit
+* **Similarity-Boost** – Nähe zum Original
+* **Style** – Überzeichnung des Sprechstils
+* **Speed** – Tempo-Faktor
+* **Speaker-Boost** – zusätzliche Ähnlichkeit
+
+Die Standardwerte werden über `getDefaultVoiceSettings` geladen und nach dem Speichern dauerhaft im Browser hinterlegt.
 
 Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Über den Button **Reset** lassen sich diese wieder auf die API-Defaults zurücksetzen.
@@ -353,10 +363,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.10.0 (aktuell) - Voice-Settings Speichern
+### 1.10.1 (aktuell) - Dubbing-Dialog erklärt
 
 **✨ Neue Features:**
-* Dubbing-Einstellungen werden automatisch gespeichert und lassen sich per "Reset" im Dialog löschen.
+* Dubbing-Einstellungen werden automatisch gespeichert und lassen sich per "Reset" im Dialog löschen. Zudem erklärt die Dokumentation nun alle Parameter des Einstellungsdialogs.
 
 ### 1.8.0 - Automatische Versionsverwaltung
 
@@ -521,7 +531,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.10.0** - Voice-Settings Speichern
+**Version 1.10.1** - Dubbing-Dialog erklärt
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
