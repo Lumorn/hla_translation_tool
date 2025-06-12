@@ -1893,4 +1893,18 @@ th:nth-child(6) {
     display: inline;
 }
 
+/* =========================== LEVEL-GROUP STYLES START ======================= */
+.level-group { margin-bottom: 10px; }
+.level-header {
+    padding: 6px 10px;
+    background: #333;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+.level-group.collapsed .level-projects { display: none; }
+/* =========================== LEVEL-GROUP STYLES END ========================= */
+
 		
