@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.8.5-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.8.6-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.8.5](#-neue-features-in-385)
+* [✨ Neue Features in 3.8.6](#-neue-features-in-386)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.8.5
+## ✨ Neue Features in 3.8.6
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -324,13 +324,14 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.8.5 (aktuell) - Fehlerkorrekturen
+### 3.8.6 (aktuell) - Fehlerkorrekturen
 
 **✨ Neue Features:**
 * **Dialog-Fokus**: Eingabefelder bekommen automatisch den Cursor (Projekt-, Level-, Ordner- und Import-Dialog).
 * **Versionsanzeige**: Oben links zeigt ein Link die aktuelle Version und öffnet GitHub.
 * **Fix**: Umbenannte Level speichern nun den Namen korrekt und behalten die eingestellte Reihenfolge.
 * **Neu**: Beim Umbenennen eines Levels werden passende Projektnamen automatisch angepasst.
+* **Fix**: Abgebrochene Projekte werden nicht mehr angelegt und fehlende Levelangaben melden einen Fehler.
 
 ### 3.7.1 - Level‑Nummern-Fix
 
@@ -431,7 +432,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.8.5** - Fehlerkorrekturen & Versionslink oben
+**Version 3.8.6** - Fehlerkorrekturen & Versionslink oben
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
