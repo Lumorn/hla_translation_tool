@@ -70,6 +70,35 @@ function debugLog(...args) {
         div.scrollTop = div.scrollHeight;
     }
 }
+
+// =========================== DUBBING-LOG START ===========================
+let dubbingLogMessages = [];
+
+function addDubbingLog(msg) {
+    dubbingLogMessages.push(msg);
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) {
+        logPre.textContent = dubbingLogMessages.join('\n');
+        logPre.scrollTop = logPre.scrollHeight;
+    }
+}
+
+function openDubbingLog() {
+    dubbingLogMessages = [];
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
+    document.getElementById('dubbingLogDialog').style.display = 'flex';
+}
+
+function closeDubbingLog() {
+    document.getElementById('dubbingLogDialog').style.display = 'none';
+}
+
+function copyDubbingLog() {
+    navigator.clipboard.writeText(dubbingLogMessages.join('\n'));
+    updateStatus('Dubbing-Log kopiert');
+}
+// =========================== DUBBING-LOG END ===========================
 // Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
 function stopCurrentPlayback() {
     const audio = document.getElementById('audioPlayer');
@@ -5021,7 +5050,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.22.0',
+                version: '3.23.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -6132,14 +6161,18 @@ async function handleDeUpload(input) {
 async function startDubbing(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
+    openDubbingLog();
+    addDubbingLog(`Starte Dubbing für ${file.filename}`);
     if (!elevenLabsApiKey) {
         updateStatus('API-Key fehlt');
+        addDubbingLog('API-Key fehlt');
         return;
     }
 
     const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
     if (!audioInfo) {
         updateStatus('EN-Datei nicht gefunden');
+        addDubbingLog('EN-Datei nicht gefunden');
         return;
     }
 
@@ -6148,11 +6181,14 @@ async function startDubbing(fileId) {
         const resp = await fetch(audioInfo.audioFile);
         if (!resp.ok) {
             updateStatus('EN-Datei nicht ladbar');
+            addDubbingLog('EN-Datei nicht ladbar');
             return;
         }
         audioBlob = await resp.blob();
+        addDubbingLog('EN-Datei geladen');
     } else {
         audioBlob = audioInfo.audioFile;
+        addDubbingLog('EN-Datei aus Cache geladen');
     }
 
     const form = new FormData();
@@ -6166,16 +6202,21 @@ async function startDubbing(fileId) {
     });
     if (!res.ok) {
         updateStatus('Dubbing fehlgeschlagen');
+        addDubbingLog('Dubbing fehlgeschlagen');
         return;
     }
     const data = await res.json();
     const id = data.dubbing_id || data.id;
     if (!id) {
         updateStatus('Keine Dubbing-ID erhalten');
+        addDubbingLog('Keine Dubbing-ID erhalten');
         return;
     }
 
+    addDubbingLog(`Dubbing-ID erhalten: ${id}`);
+
     updateStatus('Dubbing läuft...');
+    addDubbingLog('Status: dubbing');
     let status = 'dubbing';
     for (let i = 0; i < 30 && status === 'dubbing'; i++) {
         await new Promise(r => setTimeout(r, 2000));
@@ -6185,18 +6226,23 @@ async function startDubbing(fileId) {
         if (st.ok) {
             const js = await st.json();
             status = js.status;
+            addDubbingLog(`Polling: ${status}`);
         }
     }
     if (status !== 'dubbed') {
         updateStatus('Dubbing nicht fertig');
+        addDubbingLog('Dubbing nicht fertig');
         return;
     }
+
+    addDubbingLog('Dubbing abgeschlossen, lade Audio...');
 
     const audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/de`, {
         headers: { 'xi-api-key': elevenLabsApiKey }
     });
     if (!audioRes.ok) {
         updateStatus('Download fehlgeschlagen');
+        addDubbingLog('Download fehlgeschlagen');
         return;
     }
     const dubbedBlob = await audioRes.blob();
@@ -6206,11 +6252,14 @@ async function startDubbing(fileId) {
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
+        addDubbingLog('Datei in Desktop-Version gespeichert');
     } else {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
+        addDubbingLog('Datei im Browser gespeichert');
     }
     renderFileTable();
     updateStatus('Dubbing abgeschlossen');
+    addDubbingLog('Fertig.');
 }
 // =========================== STARTDUBBING END ===============================
 
@@ -8242,7 +8291,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.22.0 - Dubbing-Knopf hinzugefügt');
+        console.log('Version 3.23.0 - Dubbing-Protokoll');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');

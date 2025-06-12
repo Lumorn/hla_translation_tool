@@ -2009,4 +2009,10 @@ th:nth-child(6) {
 
 #versionLink:hover { color: #ff6b1a; }
 
+/* Dubbing-Log */
+#dubbingLog {
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
 		
