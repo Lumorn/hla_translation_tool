@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.2';
+const APP_VERSION = '1.12.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6257,6 +6257,8 @@ function resetStoredVoiceSettings() {
 
 // Erstellt eine CSV-Zeile für das Manual Dubbing
 function createDubbingCSV(file, durationMs) {
+    // Kopfzeile wird immer vorangestellt
+    const header = 'speaker,start_time,end_time,transcription,translation\n';
     const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
     const startSec = ((file.trimStartMs || 0) / 1000).toFixed(3);
     let endSec = '';
@@ -6267,7 +6269,7 @@ function createDubbingCSV(file, durationMs) {
         endSec = ((file.trimEndMs || 0) / 1000).toFixed(3);
     }
     const row = ['0', startSec, endSec, esc(file.enText), esc(file.deText)].join(',');
-    return new Blob([row], { type: 'text/csv' });
+    return new Blob([header, row], { type: 'text/csv' });
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
@@ -8491,5 +8493,5 @@ function showLevelCustomization(levelName, ev) {
         console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
 
 if (typeof module !== "undefined" && module.exports) {
-    module.exports = { showDubbingSettings };
+    module.exports = { showDubbingSettings, createDubbingCSV };
 }
