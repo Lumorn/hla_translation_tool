@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.4';
+const APP_VERSION = '1.12.5';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6324,7 +6324,9 @@ async function startDubbing(fileId, settings = {}) {
     // FormData für das Dubbing zusammenstellen
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
+    // Zielsprachen sowohl einzeln als auch als Liste übergeben
     form.append('target_lang', 'de');
+    form.append('target_languages', JSON.stringify(['de']));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
     const csvBlob = createDubbingCSV(file, durationMs);
@@ -6358,6 +6360,8 @@ async function startDubbing(fileId, settings = {}) {
         return;
     }
     const data = await res.json();
+    // Vollständige Server-Antwort ausgeben
+    addDubbingLog('Server-Antwort: ' + JSON.stringify(data));
     const id = data.dubbing_id || data.id;
     if (!id) {
         updateStatus('Keine Dubbing-ID erhalten');
