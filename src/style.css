@@ -1444,6 +1444,28 @@ th:nth-child(6) {
             font-size: 14px;
         }
 
+        .api-key-field {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .voice-id-list {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .voice-id-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .eye-btn { padding: 6px 10px; }
+
+        .status-indicator { font-size: 18px; width: 20px; }
+
         .icon-preview {
             display: inline-block;
             font-size: 24px;

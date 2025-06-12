@@ -48,6 +48,8 @@ let autoBackupTimer    = null;
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
+// Liste der verfügbaren Stimmen der API
+let availableVoices    = [];
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -4823,7 +4825,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.13.3',
+                version: '3.14.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4935,9 +4937,11 @@ function checkFileAccess() {
         }
 
         // =========================== SHOWAPIDIALOG START ======================
-        function showApiDialog() {
+        async function showApiDialog() {
             document.getElementById('apiDialog').style.display = 'flex';
             document.getElementById('apiKeyInput').value = elevenLabsApiKey;
+
+            await validateApiKey();
 
             const list = document.getElementById('voiceIdList');
             list.innerHTML = '';
@@ -4950,14 +4954,60 @@ function checkFileAccess() {
             Object.keys(folderCustomizations).forEach(f => folderSet.add(f));
             const folders = Array.from(folderSet).sort();
 
+            const groups = { combine: [], vortigaunt: [], citizen: [], other: [] };
             folders.forEach(name => {
-                const cust = folderCustomizations[name] || {};
-                const id = cust.voiceId || '';
-                const row = document.createElement('div');
-                row.className = 'voice-id-item';
-                row.innerHTML = `<label>${escapeHtml(name)}<input data-folder="${escapeHtml(name)}" value="${id}" placeholder="voice_id"></label>`;
-                list.appendChild(row);
+                const lower = name.toLowerCase();
+                if (lower.includes('combine')) groups.combine.push(name);
+                else if (lower.includes('vort')) groups.vortigaunt.push(name);
+                else if (lower.includes('citizen') || lower.includes('civilian')) groups.citizen.push(name);
+                else groups.other.push(name);
             });
+
+            const order = [
+                ['combine', 'Combine'],
+                ['vortigaunt', 'Vortigaunts'],
+                ['citizen', 'Zivilisten'],
+                ['other', 'Sonstige']
+            ];
+
+            order.forEach(([key, label]) => {
+                if (groups[key].length === 0) return;
+                const details = document.createElement('details');
+                const summary = document.createElement('summary');
+                summary.textContent = label;
+                details.appendChild(summary);
+
+                const container = document.createElement('div');
+                container.className = 'voice-group';
+                groups[key].forEach(name => {
+                    const cust = folderCustomizations[name] || {};
+                    const id = cust.voiceId || '';
+                    const row = document.createElement('div');
+                    row.className = 'voice-id-item';
+
+                    const lab = document.createElement('label');
+                    lab.textContent = name;
+                    const select = document.createElement('select');
+                    select.dataset.folder = name;
+                    const empty = document.createElement('option');
+                    empty.value = '';
+                    empty.textContent = '-- wählen --';
+                    select.appendChild(empty);
+                    availableVoices.forEach(v => {
+                        const opt = document.createElement('option');
+                        opt.value = v.voice_id;
+                        opt.textContent = v.name;
+                        select.appendChild(opt);
+                    });
+                    select.value = id;
+                    row.appendChild(lab);
+                    row.appendChild(select);
+                    container.appendChild(row);
+                });
+                details.appendChild(container);
+                list.appendChild(details);
+            });
+
             document.getElementById('apiKeyInput').focus();
         }
 
@@ -4965,9 +5015,9 @@ function checkFileAccess() {
             elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
             localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
 
-            document.querySelectorAll('#voiceIdList input').forEach(inp => {
-                const folder = inp.dataset.folder;
-                const val = inp.value.trim();
+            document.querySelectorAll('#voiceIdList select').forEach(sel => {
+                const folder = sel.dataset.folder;
+                const val = sel.value.trim();
                 if (!folderCustomizations[folder]) folderCustomizations[folder] = {};
                 if (val) {
                     folderCustomizations[folder].voiceId = val;
@@ -4984,6 +5034,52 @@ function checkFileAccess() {
             document.getElementById('apiDialog').style.display = 'none';
         }
         // =========================== SHOWAPIDIALOG END ========================
+        // Prueft den eingegebenen API-Key und laedt die verfuegbaren Stimmen
+        async function validateApiKey() {
+            const status = document.getElementById('apiKeyStatus');
+            status.textContent = '⏳';
+            try {
+                const res = await fetch('https://api.elevenlabs.io/v1/voices', {
+                    headers: { 'xi-api-key': document.getElementById('apiKeyInput').value.trim() }
+                });
+                if (!res.ok) throw new Error('Fehler');
+                const data = await res.json();
+                availableVoices = data.voices || [];
+                status.textContent = '✔';
+                status.style.color = '#6cc644';
+            } catch (e) {
+                availableVoices = [];
+                status.textContent = '✖';
+                status.style.color = '#e74c3c';
+            }
+        }
+
+        function toggleApiKey() {
+            const input = document.getElementById('apiKeyInput');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function clearAllVoiceIds() {
+            document.querySelectorAll('#voiceIdList select').forEach(sel => sel.value = '');
+        }
+
+        async function testVoiceIds() {
+            updateStatus('Teste Stimmen...');
+            for (const sel of document.querySelectorAll('#voiceIdList select')) {
+                const id = sel.value.trim();
+                if (!id) continue;
+                try {
+                    const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                        headers: { 'xi-api-key': elevenLabsApiKey }
+                    });
+                    if (!res.ok) throw new Error('Fehler');
+                } catch (e) {
+                    updateStatus('Fehler bei Stimme ' + id);
+                    return;
+                }
+            }
+            updateStatus('Alle Stimmen OK');
+        }
 
         function showHistoryDialog(file) {
             currentHistoryPath = getFullPath(file);
@@ -7732,7 +7828,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.13.3 - GPU-Cache-Fehler behoben');
+        console.log('Version 3.14.0 - Überarbeitetes API-Menü');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
