@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.18.2](#-neue-features-in-1.18.2)
+* [✨ Neue Features in 1.18.3](#-neue-features-in-1.18.3)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,15 +27,16 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.18.2
+## ✨ Neue Features in 1.18.3
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.2` statt fester Zahlen. |
+| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `1.18.3` statt fester Zahlen. |
 | **Update-Skript** | `npm run update-version` ersetzt alle Platzhalter automatisch. |
 | **cliRedownload.js** | Neues Node-Skript lädt eine vorhandene Dub-Datei erneut herunter. |
 | **CSV prüfen** | `validateCsv()` stellt sicher, dass die CSV korrekt aufgebaut ist. |
 | **Fehlerprotokoll** | Bei fehlgeschlagenen Git-, Node- oder npm-Aufrufen wird nun der genaue Fehler in `setup.log` gespeichert. |
+| **Fehlerdetails** | `detail.message` aus der API-Antwort wird separat geloggt. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -253,7 +254,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 ### Version aktualisieren
 
 1. Nach jeder Änderung `package.json` anpassen.
-2. Mit `npm run update-version` werden alle `1.18.2`-Platzhalter automatisch durch die Versionsnummer ersetzt.
+2. Mit `npm run update-version` werden alle `1.18.3`-Platzhalter automatisch durch die Versionsnummer ersetzt.
 
 ---
 
@@ -452,14 +453,15 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.18.2 (aktuell) - Fehlerprotokoll verbessert
+### 1.18.3 (aktuell) - Fehlerbehandlung erweitert
 
 **✨ Neue Features:**
-* Alle festen Versionsnummern wurden durch den Platzhalter `1.18.2` ersetzt.
+* Alle festen Versionsnummern wurden durch den Platzhalter `1.18.3` ersetzt.
 * Das Skript `npm run update-version` trägt die aktuelle Version automatisch ein.
 * Neues CLI-Skript `cliRedownload.js` lädt Dub-Dateien erneut herunter.
 * `validateCsv()` prüft CSV vor dem Upload.
 * Bei Fehlermeldungen von Git, Node oder npm landet nun die genaue Ursache in `setup.log`.
+* JSON-Fehlermeldung aus `detail.message` wird im Dubbing-Protokoll angezeigt.
 
 ### 1.16.3 - CSV-Validierung
 
@@ -708,7 +710,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.18.2** - Fehlerprotokoll verbessert
+**Version 1.18.3** - Fehlerbehandlung erweitert
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

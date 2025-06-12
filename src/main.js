@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.18.2';
+const APP_VERSION = '1.18.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6463,6 +6463,14 @@ async function startDubbing(fileId, settings = {}) {
     }
     if (!res.ok) {
         const errText = await res.text();
+        let errorMsg = errText;
+        try {
+            const js = JSON.parse(errText);
+            if (js.detail && js.detail.message) {
+                errorMsg = js.detail.message;
+            }
+        } catch {}
+        addDubbingLog(`Fehler: ${errorMsg}`);
         updateStatus('Dubbing fehlgeschlagen');
         addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${errText}`);
         // Bei HTTP 400 den Anfang der CSV ausgeben
