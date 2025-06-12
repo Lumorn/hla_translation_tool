@@ -54,6 +54,31 @@ async function getDubbingStatus(apiKey, dubbingId) {
     }
     return await response.json();
 }
+// =========================== WAITFORDUBBING START ==========================
+/**
+ * Wartet, bis das Dubbing für eine Sprache fertig ist.
+ * @param {string} apiKey - Eigener API-Schlüssel.
+ * @param {string} dubbingId - ID des Dubbings.
+ * @param {string} [lang='de'] - Gewünschte Sprache.
+ * @param {number} [timeout=180] - Maximale Wartezeit in Sekunden.
+ * @returns {Promise<void>} Auflösung, wenn fertig; Fehler bei Abbruch.
+ */
+async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
+    const start = Date.now();
+    while (Date.now() - start < timeout * 1000) {
+        const info = await getDubbingStatus(apiKey, dubbingId);
+        const status = info.status;
+        const langInfo = info.progress && info.progress.langs && info.progress.langs[lang];
+        const finished = langInfo && (langInfo.state === 'finished' || langInfo.progress === 100);
+        if (status === 'failed') {
+            throw new Error('Dubbing fehlgeschlagen: ' + (info.error || 'unknown'));
+        }
+        if (status === 'dubbed' && finished) return;
+        await new Promise(r => setTimeout(r, 3000));
+    }
+    throw new Error('Dubbing nicht fertig');
+}
+// =========================== WAITFORDUBBING END ============================
 // =========================== GETDUBBINGSTATUS END =========================
 
 // =========================== DOWNLOADDUBBING START ========================
@@ -66,6 +91,9 @@ async function getDubbingStatus(apiKey, dubbingId) {
  * @returns {Promise<string>} Pfad zur gespeicherten Datei.
  */
 async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) {
+    // Zuerst sicherstellen, dass die gewuenschte Sprache fertig gerendert ist
+    await waitForDubbing(apiKey, dubbingId, lang);
+
     let response;
     let errText = '';
 
@@ -188,5 +216,6 @@ module.exports = {
     createDubbing,
     getDubbingStatus,
     downloadDubbingAudio,
-    getDefaultVoiceSettings
+    getDefaultVoiceSettings,
+    waitForDubbing
 };

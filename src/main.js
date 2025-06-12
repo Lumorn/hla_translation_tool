@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.19.2';
+const APP_VERSION = '1.19.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6492,6 +6492,7 @@ async function startDubbing(fileId, settings = {}) {
     addDubbingLog('Warte auf Fertigstellung...');
 
     let status = '';
+    let langDone = false;
     for (let i = 0; i < 60; i++) {
         await new Promise(r => setTimeout(r, 3000));
         try {
@@ -6501,8 +6502,12 @@ async function startDubbing(fileId, settings = {}) {
             if (st.ok) {
                 const js = await st.json();
                 status = js.status;
+                const langInfo = js.progress && js.progress.langs && js.progress.langs.de;
+                if (langInfo) {
+                    langDone = langInfo.state === 'finished' || langInfo.progress === 100;
+                }
                 addDubbingLog('Polling: ' + status);
-                if (status === 'dubbed') break;
+                if (status === 'dubbed' && langDone) break;
                 if (status === 'failed') {
                     updateStatus('Dubbing fehlgeschlagen');
                     addDubbingLog(js.error || 'Server meldet failed');
@@ -6513,7 +6518,7 @@ async function startDubbing(fileId, settings = {}) {
             addDubbingLog('Fehler: ' + e.message);
         }
     }
-    if (status !== 'dubbed') {
+    if (status !== 'dubbed' || !langDone) {
         updateStatus('Dubbing nicht fertig');
         addDubbingLog('Dubbing nicht fertig');
         return;
