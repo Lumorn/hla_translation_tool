@@ -120,11 +120,26 @@ async function getDefaultVoiceSettings(apiKey) {
 // =========================== GETDEFAULTVOICESETTINGS END ==================
 
 // =========================== DUBSEGMENTS START ============================
-// Startet die Vertonung aller Clips eines Projekts
-async function dubSegments(apiKey, resourceId) {
+// Vertont alle Segmente eines Projekts im Studio-Workflow
+async function dubSegments(apiKey, resourceId, languages = ['de']) {
+    // Zuerst die vorhandenen Segment-IDs abfragen
+    const infoRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}`, {
+        headers: { 'xi-api-key': apiKey }
+    });
+    if (!infoRes.ok) {
+        throw new Error('Segmente konnten nicht geladen werden: ' + await infoRes.text());
+    }
+    const info = await infoRes.json();
+    const segIds = Object.keys(info.speaker_segments || {});
+
+    // Anschließend alle Segmente in den gewählten Sprachen vertonen
     const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}/dub`, {
         method: 'POST',
-        headers: { 'xi-api-key': apiKey }
+        headers: {
+            'xi-api-key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ segments: segIds, languages })
     });
     if (!res.ok) {
         throw new Error('Dub-Auftrag fehlgeschlagen: ' + await res.text());

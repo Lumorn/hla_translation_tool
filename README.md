@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,6 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
+* [✨ Neue Features in 1.19.1](#-neue-features-in-1.19.1)
 * [✨ Neue Features in 1.19.0](#-neue-features-in-1.19.0)
 * [✨ Neue Features in 1.18.8](#-neue-features-in-1.18.8)
 * [✨ Neue Features in 1.18.7](#-neue-features-in-1.18.7)
@@ -28,6 +29,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.19.1
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Fehlerbehebung**        | API-Aufruf übergibt jetzt `segments` und `languages`. |
 
 ## ✨ Neue Features in 1.19.0
 
@@ -481,7 +488,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.19.0 (aktuell)
+### 1.19.1 (aktuell)
+
+**✨ Neue Features:**
+* API-Aufruf übergibt jetzt `segments` und `languages`.
+
+### 1.19.0
 
 **✨ Neue Features:**
 * Studio-Workflow nutzt jetzt `resource/dub` und `resource/render`.
