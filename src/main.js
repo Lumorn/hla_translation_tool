@@ -54,6 +54,8 @@ let availableVoices    = [];
 let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
 let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') || 'null');
+// Bevorzugtes Zeilenende für CSV-Dateien
+let csvLineEnding = localStorage.getItem('hla_lineEnding') || 'LF';
 // Merkt die Datei, für die der Dubbing-Dialog geöffnet wurde
 let currentDubbingFileId = null;
 
@@ -62,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.14.0';
+const APP_VERSION = '1.15.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -5158,6 +5160,12 @@ function checkFileAccess() {
                 enforceBackupLimit();
                 startAutoBackup();
             };
+            const sel = document.getElementById('lineEndingSelect');
+            sel.value = csvLineEnding;
+            sel.onchange = () => {
+                csvLineEnding = sel.value;
+                localStorage.setItem('hla_lineEnding', csvLineEnding);
+            };
         }
 
         function closeBackupDialog() {
@@ -6314,7 +6322,8 @@ function createDubbingCSV(file, durationMs) {
         return null;
     }
     // Kopfzeile wird immer vorangestellt
-    const header = 'speaker,start_time,end_time,transcription,translation\n';
+    const lineEnd = csvLineEnding === 'CRLF' ? '\r\n' : '\n';
+    const header = 'speaker,start_time,end_time,transcription,translation' + lineEnd;
     const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
     const startTime = msToHHMMSS(file.trimStartMs || 0);
     let endTime = '';
@@ -6326,7 +6335,7 @@ function createDubbingCSV(file, durationMs) {
     }
     const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
     // CSV-Zeile mit CRLF abschließen für Windows-Kompatibilität
-    const csv = header + row + '\r\n';
+    const csv = header + row + lineEnd;
     return new Blob([csv], { type: 'text/csv' });
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================

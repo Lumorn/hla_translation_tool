@@ -9,20 +9,25 @@ afterEach(() => {
 
 let createDubbingCSV;
 let startDubbing;
+let storage;
 
-beforeAll(() => {
+function loadMain(lineEnd) {
+    jest.resetModules();
+    storage = {};
+    if (lineEnd) storage['hla_lineEnding'] = lineEnd;
     global.document = { addEventListener: jest.fn() };
     global.window = { addEventListener: jest.fn() };
     global.localStorage = {
-        getItem: () => null,
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-        clear: jest.fn()
+        getItem: key => storage[key] || null,
+        setItem: (k, v) => { storage[k] = v; },
+        removeItem: k => { delete storage[k]; },
+        clear: () => { storage = {}; }
     };
     ({ createDubbingCSV, startDubbing } = require('../src/main.js'));
-});
+}
 
 beforeEach(() => {
+    loadMain('LF');
     global.openDubbingLog = jest.fn();
     global.addDubbingLog = jest.fn();
     global.updateStatus = jest.fn();
@@ -86,11 +91,19 @@ describe('Manual Dub', () => {
         expect(scope.isDone()).toBe(true);
     });
 
-    test('createDubbingCSV liefert Kopfzeile und Daten', async () => {
+    test('createDubbingCSV nutzt LF als Standard', async () => {
         const file = { enText: 'Hello', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
         const blob = createDubbingCSV(file, 1000);
         const text = await blob.text();
-        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000,"Hello","Hallo"\r\n');
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000,"Hello","Hallo"\n');
+    });
+
+    test('createDubbingCSV mit CRLF', async () => {
+        loadMain('CRLF');
+        const file = { enText: 'Hi', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
+        const blob = createDubbingCSV(file, 1000);
+        const text = await blob.text();
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\r\n0,00:00:00.000,00:00:01.000,"Hi","Hallo"\r\n');
     });
 
     test('startDubbing bricht bei fehlender Übersetzung ab', async () => {

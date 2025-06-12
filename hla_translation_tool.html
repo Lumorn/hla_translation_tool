@@ -284,6 +284,12 @@
                 <label style="margin-left:10px;">Anzahl Backups:
                     <input type="number" id="backupLimit" min="1" style="width:60px;">
                 </label>
+                <label style="margin-left:10px;">Zeilenende:
+                    <select id="lineEndingSelect" style="width:70px;">
+                        <option value="LF">LF</option>
+                        <option value="CRLF">CRLF</option>
+                    </select>
+                </label>
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
@@ -428,7 +434,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.12.7</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.15.0</a>
 
     <script src="src/main.js"></script>
 </body>
