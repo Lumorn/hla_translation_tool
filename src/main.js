@@ -3919,7 +3919,9 @@ function showFolderDebug() {
 function showMissingFoldersDialog() {
     const dialog  = document.getElementById('missingFoldersDialog');
     const listDiv = document.getElementById('missingFoldersList');
+    const dbDiv   = document.getElementById('databaseFoldersList');
     listDiv.innerHTML = '';
+    dbDiv.innerHTML   = '';
 
     const folderMap = {};
     Object.values(filePathDatabase).forEach(paths => {
@@ -3928,6 +3930,10 @@ function showMissingFoldersDialog() {
             folderMap[p.folder].push(p.fullPath);
         });
     });
+
+    // Alle Ordner aus der Datenbank sortiert sammeln
+    const allFolders = Object.entries(folderMap)
+        .sort((a, b) => a[0].localeCompare(b[0]));
 
     const missing = Object.entries(folderMap)
         .filter(([folder, paths]) => !paths.some(full => audioFileCache[full]))
@@ -3963,6 +3969,24 @@ function showMissingFoldersDialog() {
             missing.forEach(folder => deleteFolderFromDatabase(folder));
             showMissingFoldersDialog();
         };
+    }
+
+    // Zweite Liste mit allen Ordnern und erstem Pfad anzeigen
+    if (allFolders.length === 0) {
+        dbDiv.textContent = 'Keine Ordner in der Datenbank.';
+    } else {
+        const dbUl = document.createElement('ul');
+        dbUl.style.listStyle = 'none';
+        dbUl.style.padding = '0';
+
+        allFolders.forEach(([folder, paths]) => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '6px';
+            li.textContent = `${folder} – ${paths[0]}`;
+            dbUl.appendChild(li);
+        });
+
+        dbDiv.appendChild(dbUl);
     }
 
     dialog.style.display = 'flex';
@@ -4974,7 +4998,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.20.0',
+                version: '3.21.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -8106,7 +8130,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.20.0 - Fehlende Ordner');
+        console.log('Version 3.21.0 - Fehlende Ordner');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
