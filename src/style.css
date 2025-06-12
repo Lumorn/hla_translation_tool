@@ -1953,4 +1953,16 @@ th:nth-child(6) {
 
 #versionLink:hover { color: #ff6b1a; }
 
+/* ===== API-Dialog-Stile ===== */
+.voice-group { margin-bottom: 10px; }
+.voice-group-header { background:#333; padding:5px; cursor:pointer; border-radius:4px; }
+.voice-group-content { display:none; margin-top:5px; }
+.voice-group.open .voice-group-content { display:block; }
+.voice-id-grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+.voice-id-item { display:flex; flex-direction:column; gap:4px; background:#1a1a1a; padding:5px; border-radius:4px; }
+.voice-id-item label { font-size:12px; color:#ccc; }
+.voice-id-item select { width:100%; }
+.valid { border-color:#4caf50; }
+.invalid { border-color:#f44336; }
+
 		

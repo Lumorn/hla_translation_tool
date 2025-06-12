@@ -298,10 +298,15 @@
             <h3>🔊 ElevenLabs API</h3>
             <div class="customize-field">
                 <label>API-Key:</label>
-                <input type="password" id="apiKeyInput" style="width:80%;">
+                <div style="display:flex; gap:5px; align-items:center;">
+                    <input type="password" id="apiKeyInput" style="flex:1;">
+                    <button class="btn" onclick="toggleApiKeyVisibility()">👁</button>
+                </div>
             </div>
             <div id="voiceIdList" style="margin-top:15px;"></div>
             <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="testVoiceIds()">Voice-IDs testen</button>
+                <button class="btn btn-secondary" onclick="resetAllVoiceIds()">Alle zurücksetzen</button>
                 <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
             </div>
@@ -368,7 +373,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.13.1</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.14.0</a>
 
     <script src="src/main.js"></script>
 </body>
