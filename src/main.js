@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.18.4';
+const APP_VERSION = '1.18.5';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6347,7 +6347,8 @@ function createDubbingCSV(file, durationMs) {
     let csv = header + row + lineEnd;
     // Sicherheitshalber prüfen, ob ein Zeilenumbruch vorhanden ist
     if (!csv.endsWith('\n')) csv += '\n';
-    return new Blob([csv], { type: 'text/csv' });
+    // CSV-Blob jetzt mit UTF-8-Kodierung erzeugen
+    return new Blob([csv], { type: 'text/csv;charset=utf-8' });
 }
 
 // Prüft den Aufbau einer CSV-Datei für Manual Dub
