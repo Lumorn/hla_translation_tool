@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.13.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.13.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.13.1](#-neue-features-in-3131)
+* [✨ Neue Features in 3.13.2](#-neue-features-in-3132)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.13.1
+## ✨ Neue Features in 3.13.2
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -56,6 +56,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **ElevenLabs-Dubbing**     | Erste Anbindung an die ElevenLabs-API zum automatischen Vertonen. |
 | **API-Menü**               | Neues Menü zur Eingabe des API-Keys und Zuweisung von Voice-IDs je Ordner. |
 | **Ordnerübergreifende Voice-IDs** | Voice-IDs gelten jetzt in allen Projekten und werden im API-Dialog für alle Ordner angezeigt. |
+| **Backup-Verbesserung** | Alle Einstellungen wie Level-Farben und Auto-Backup werden nun mitgesichert. |
 ---
 
 ## 🚀 Features (komplett)
@@ -346,7 +347,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.13.1 (aktuell) - Ordnerübergreifende Voice-IDs
+### 3.13.2 (aktuell) - Verbesserte Backup-Funktion
+
+**✨ Neue Features:**
+* Backups enthalten nun Level-Farben, Reihenfolgen, Icons, ignorierte Dateien, Auto-Backup-Einstellungen und den API-Key.
+
+### 3.13.1 - Ordnerübergreifende Voice-IDs
 
 **✨ Neue Features:**
 * API-Dialog listet jetzt alle Ordner aus der Datenbank.
@@ -468,7 +474,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.13.1** - Ordnerübergreifende Voice-IDs
+**Version 3.13.2** - Verbesserte Backup-Funktion
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
