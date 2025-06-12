@@ -4254,6 +4254,9 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
             
             document.body.appendChild(overlay);
             document.body.appendChild(popup);
+
+            // Fokussiere das Icon-Feld
+            popup.querySelector('#customIcon').focus();
         }
 
         function updateCustomizationPreview() {
@@ -4355,7 +4358,9 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
             document.getElementById('columnSelection').style.display = 'none';
             document.getElementById('analyzeDataBtn').style.display = 'block';
             document.getElementById('startImportBtn').style.display = 'none';
-            document.getElementById('importData').value = '';
+            const field = document.getElementById('importData');
+            field.value = '';
+            field.focus();
         }
 
         function closeImportDialog() {
@@ -4758,7 +4763,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.6.0',
+                version: '3.8.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4836,6 +4841,7 @@ function checkFileAccess() {
         function showBackupDialog() {
             document.getElementById('backupDialog').style.display = 'flex';
             loadBackupList();
+            document.getElementById('backupInterval').focus();
             document.getElementById('backupInterval').onchange = () => {
                 autoBackupInterval = parseInt(document.getElementById('backupInterval').value) || 1;
                 localStorage.setItem('hla_autoBackupInterval', autoBackupInterval);
@@ -7092,6 +7098,16 @@ function showProjectCustomization(id, ev) {
     ov.appendChild(pop);
     document.body.appendChild(ov);
 
+    // Fokussiere das Namensfeld
+    pop.querySelector('#lvlName').focus();
+
+    // Fokussiere direkt das passende Eingabefeld
+    if (!sel.value) {
+        inp.focus();
+    } else {
+        pop.querySelector('#cName').focus();
+    }
+
     /* Eingabedynamik */
     const sel = pop.querySelector('#cLevel');
     const inp = pop.querySelector('#cLevelNew');
@@ -7100,6 +7116,9 @@ function showProjectCustomization(id, ev) {
         const show = !sel.value;
         inp.style.display = show ? 'block' : 'none';
         ordInp.style.display = show ? 'block' : 'none';
+        if (show) {
+            inp.focus();
+        }
     };
 
     pop.querySelector('#cCancel').onclick = () => document.body.removeChild(ov);
@@ -7524,7 +7543,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.6.0 Level-Management & Datenbank-Tools Edition');
+        console.log('Version 3.8.0 - Verbesserte Dialoge');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');

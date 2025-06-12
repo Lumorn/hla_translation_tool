@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.7.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.8.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.7.3](#-neue-features-in-373)
+* [✨ Neue Features in 3.8.0](#-neue-features-in-380)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,10 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.7.3
+## ✨ Neue Features in 3.8.0
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Dialog-Fokus**           | Eingabefelder in Dialogen erhalten nun direkt den Cursor. |
+| **Versionsanzeige**        | Unten rechts zeigt ein Link die aktuelle Version und öffnet GitHub. |
 | **Level‑Management**       | Projekte besitzen jetzt **Level‑Namen** + **Teil‑Nummern**.<br>Alle vorhandenen Namen werden beim Anlegen/Umbenennen als Dropdown angeboten.                |
 | **Projekt‑Metaleiste**     | Über der Tabelle erscheint **Projekt • Level • Teil** + Ein‑Klick‑Button ⧉ zum Kopieren des Level‑Namens.                                                   |
 | **Globale Text‑Statistik** | Neue Kachel **EN / DE / BEIDE / ∑** in den globalen Statistiken + Live‑Update beim Tippen.                                                                  |
@@ -319,10 +321,11 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.7.3 (aktuell) - Level-Nummer beim Anlegen
+### 3.8.0 (aktuell) - Verbesserte Dialoge & Versionslink
 
 **✨ Neue Features:**
-* **Level-Nummer beim Erstellen**: Beim Anlegen eines neuen Levels kann sofort eine Reihenfolge-Zahl vergeben werden.
+* **Dialog-Fokus**: Eingabefelder bekommen automatisch den Cursor (Projekt-, Level-, Ordner- und Import-Dialog).
+* **Versionsanzeige**: Unten rechts zeigt ein Link die aktuelle Version und öffnet GitHub.
 
 ### 3.7.1 - Level‑Nummern-Fix
 
@@ -423,7 +426,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.7.3** - Level-Nummer beim Anlegen
+**Version 3.8.0** - Verbesserte Dialoge & Versionslink
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
