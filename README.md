@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,9 +12,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.12.0](#-neue-features-in-3120)
+* [✨ Neue Features in 3.12.1](#-neue-features-in-3121)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
+* [ElevenLabs-Dubbing](#elevenlabs-dubbing)
 * [🏁 Erste Schritte](#-erste-schritte)
 * [🎮 Bedienung](#-bedienung)
 * [⌨️ Keyboard Shortcuts](#-keyboard-shortcuts)
@@ -26,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.12.0
+## ✨ Neue Features in 3.12.1
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,8 +119,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Moderner Browser:** Chrome, Firefox, Edge, Safari
 * **JavaScript aktiviert**
-* **Lokaler Dateizugriff** für Audio‑Wiedergabe 
+* **Lokaler Dateizugriff** für Audio‑Wiedergabe
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
+* **Node.js ≥18** für ElevenLabs-Dubbing (benötigt `fetch` und `FormData`)
 
 ### Desktop-Version (Electron)
 1. In das Verzeichnis `electron/` wechseln und `npm install` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
@@ -130,6 +132,20 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 5. Kopieren Sie Ihre Originaldateien in `sounds/EN` und legen Sie Übersetzungen in `sounds/DE` ab
 6. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden
 7. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `sounds` anzutasten – Projektdaten bleiben somit erhalten
+
+### ElevenLabs-Dubbing
+
+1. API-Schlüssel bei [ElevenLabs](https://elevenlabs.io) erstellen.
+2. Den Schlüssel als Umgebungsvariable `ELEVEN_API_KEY` setzen oder beim Aufruf der Funktionen eingeben.
+3. Beispielhafte Nutzung:
+
+```javascript
+const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
+const apiKey = process.env.ELEVEN_API_KEY;
+const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav');
+const status = await getDubbingStatus(apiKey, job.dubbing_id);
+await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
+```
 
 ---
 
@@ -328,7 +344,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.12.0 (aktuell) - ElevenLabs-Anbindung
+### 3.12.1 (aktuell) - ElevenLabs-Anbindung
 
 **✨ Neue Features:**
 * **ElevenLabs-Dubbing**: Audiodateien lassen sich jetzt direkt per API vertonen.
@@ -444,7 +460,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.12.0** - ElevenLabs-Anbindung
+**Version 3.12.1** - ElevenLabs-Anbindung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
