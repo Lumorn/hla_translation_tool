@@ -1921,6 +1921,12 @@ th:nth-child(6) {
 .level-header:hover .level-edit-btn { opacity: 1; }
 .level-edit-btn:hover { background: rgba(255,255,255,0.2); }
 .level-group.collapsed .level-projects { display: none; }
+.level-done-marker {
+    margin-left: 6px;
+    font-size: 16px;
+    color: #4caf50;
+}
+
 /* =========================== LEVEL-GROUP STYLES END ========================= */
 
 /* Versionsnummer oben links */
