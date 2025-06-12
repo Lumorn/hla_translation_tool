@@ -146,6 +146,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (savedPathDB) {
         filePathDatabase = JSON.parse(savedPathDB);
     }
+    // Verwaiste Ordner-Anpassungen bereinigen
+    cleanupOrphanCustomizations();
 
     if (!window.electronAPI) {
         // 👉 Zuletzt verwendeten Projektordner laden (Browser-Version)
@@ -3995,6 +3997,26 @@ function showMissingFoldersDialog() {
 function closeMissingFoldersDialog() {
     document.getElementById('missingFoldersDialog').style.display = 'none';
 }
+// =========================== CLEANUPORPHANCUSTOMIZATIONS START =============
+// Entfernt gespeicherte Ordner-Anpassungen, die keinen Datenbankeintrag mehr besitzen
+function cleanupOrphanCustomizations() {
+    const knownFolders = new Set();
+    Object.values(filePathDatabase).forEach(paths => {
+        paths.forEach(p => knownFolders.add(p.folder));
+    });
+    let removed = 0;
+    Object.keys(folderCustomizations).forEach(folder => {
+        if (!knownFolders.has(folder)) {
+            delete folderCustomizations[folder];
+            removed++;
+        }
+    });
+    if (removed > 0) {
+        saveFolderCustomizations();
+        console.log(`[CLEANUP] ${removed} verwaiste Ordner-Anpassungen entfernt`);
+    }
+}
+// =========================== CLEANUPORPHANCUSTOMIZATIONS END ===============
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
 
 // =========================== GETBROWSERDEBUGPATHINFO START ===========================
@@ -4998,7 +5020,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.21.0',
+                version: '3.21.1',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -5116,6 +5138,9 @@ function checkFileAccess() {
 
             await validateApiKey();
 
+            // Vor dem Aufbau verwaiste Anpassungen entfernen
+            cleanupOrphanCustomizations();
+
             const list = document.getElementById('voiceIdList');
             list.innerHTML = '';
 
@@ -5124,7 +5149,6 @@ function checkFileAccess() {
             Object.values(filePathDatabase).forEach(paths => {
                 paths.forEach(p => folderSet.add(p.folder));
             });
-            Object.keys(folderCustomizations).forEach(f => folderSet.add(f));
             const folders = Array.from(folderSet).sort();
 
             const groups = { combine: [], vortigaunt: [], citizen: [], other: [] };
@@ -8130,7 +8154,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.21.0 - Fehlende Ordner');
+        console.log('Version 3.21.1 - Ordnerlisten bereinigt');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
