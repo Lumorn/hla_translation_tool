@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.20.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.21.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.20.0](#-neue-features-in-3200)
+* [✨ Neue Features in 3.21.0](#-neue-features-in-3210)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.20.0
+## ✨ Neue Features in 3.21.0
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
@@ -41,6 +41,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Stimmenverwaltung**  | Benutzerdefinierte IDs umbenennen, löschen und Name abrufen. |
 | **CSP-Fix**          | API-Tests im Browser funktionieren jetzt dank angepasster Content Security Policy. |
 | **Fehlende Ordner**  | Neues Tool sucht in der Datenbank nach Ordnern ohne Dateien und bietet deren Löschung an. |
+| **Ordnerliste**      | Zweite Liste zeigt alle Ordner mit Pfad aus der Datenbank. |
 ---
 
 ## 🚀 Features (komplett)
@@ -331,7 +332,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.20.0 (aktuell) - Fehlende Ordner
+### 3.21.0 (aktuell) - Fehlende Ordner
 
 **✨ Neue Features:**
 * Benutzerdefinierte Stimmen lassen sich jetzt bearbeiten und löschen.
@@ -339,6 +340,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * Test-Button für den API-Key mit grüner Erfolgsanzeige.
 * Fehler beim "Neue Stimme"-Knopf behoben; neuer Dialog zum Hinzufügen.
 * Neues Tool listet fehlende Ordner auf und erlaubt deren Löschung.
+* Zusätzlich zeigt eine zweite Liste alle Ordner mit Pfad aus der Datenbank an.
 
 ### 3.15.0 - Überarbeitetes API-Menü
 
@@ -477,7 +479,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.20.0** - Fehlende Ordner und Stimmenverwaltung
+**Version 3.21.0** - Fehlende Ordner, Stimmenverwaltung und Ordnerliste
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
