@@ -4827,7 +4827,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.15.0',
+                version: '3.16.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -5051,12 +5051,30 @@ function checkFileAccess() {
                 availableVoices.push(...customVoices);
                 status.textContent = '✔';
                 status.style.color = '#6cc644';
+                return true;
             } catch (e) {
                 // Bei Fehler nur eigene Stimmen anzeigen
                 availableVoices = [...customVoices];
                 status.textContent = '✖';
                 status.style.color = '#e74c3c';
+                return false;
             }
+        }
+
+        function testApiKey() {
+            const btn = document.getElementById('testApiKeyBtn');
+            btn.textContent = 'Teste...';
+            btn.disabled = true;
+            validateApiKey().then(ok => {
+                btn.disabled = false;
+                if (ok) {
+                    btn.textContent = 'Alles in Ordnung';
+                    btn.style.background = '#4caf50';
+                } else {
+                    btn.textContent = 'Ungültig';
+                    btn.style.background = '#d32f2f';
+                }
+            });
         }
 
         function toggleApiKey() {
@@ -5087,12 +5105,22 @@ function checkFileAccess() {
         }
 
         // Fuegt eine eigene Voice-ID hinzu
-        async function addCustomVoice() {
-            const id = prompt('Neue Voice-ID eingeben:');
+        function addCustomVoice() {
+            document.getElementById('newVoiceId').value = '';
+            document.getElementById('newVoiceName').value = '';
+            document.getElementById('addVoiceDialog').style.display = 'flex';
+            document.getElementById('newVoiceId').focus();
+        }
+
+        function closeAddVoiceDialog() {
+            document.getElementById('addVoiceDialog').style.display = 'none';
+        }
+
+        async function confirmAddVoice() {
+            const id = document.getElementById('newVoiceId').value.trim();
+            let name = document.getElementById('newVoiceName').value.trim();
             if (!id) return;
-            let name = '';
-            // Versuche Namen ueber die API abzurufen
-            if (elevenLabsApiKey) {
+            if (!name && elevenLabsApiKey) {
                 try {
                     const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
                         headers: { 'xi-api-key': elevenLabsApiKey }
@@ -5103,13 +5131,12 @@ function checkFileAccess() {
                     }
                 } catch (e) {}
             }
-            if (!name) {
-                name = prompt('Name der Stimme eingeben:') || id;
-            }
+            if (!name) name = id;
             const neu = { voice_id: id, name };
             customVoices.push(neu);
             localStorage.setItem('hla_customVoices', JSON.stringify(customVoices));
             availableVoices.push(neu);
+            closeAddVoiceDialog();
             showApiDialog();
         }
 
@@ -7860,7 +7887,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.15.0 - Überarbeitetes API-Menü');
+        console.log('Version 3.16.0 - Verbesserter API-Dialog');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
