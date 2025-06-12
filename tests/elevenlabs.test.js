@@ -43,6 +43,7 @@ describe('ElevenLabs API', () => {
     test('Download-Fehler', async () => {
         nock(API)
             .get('/v1/dubbing/abc/audio/de')
+            .times(4)
             .reply(404, 'not found');
 
         await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3')).rejects.toThrow('Download fehlgeschlagen');
@@ -55,6 +56,21 @@ describe('ElevenLabs API', () => {
             .reply(200, 'sound');
 
         const result = await downloadDubbingAudio('key', 'xyz', 'de', outPath);
+        const data = fs.readFileSync(outPath, 'utf8');
+        fs.unlinkSync(outPath);
+        expect(result).toBe(outPath);
+        expect(data).toBe('sound');
+    });
+
+    test('Download klappt nach zweitem Versuch', async () => {
+        const outPath = path.join(__dirname, 'retry.mp3');
+        nock(API)
+            .get('/v1/dubbing/retry/audio/de')
+            .reply(500, 'dubbing_not_found')
+            .get('/v1/dubbing/retry/audio/de')
+            .reply(200, 'sound');
+
+        const result = await downloadDubbingAudio('key', 'retry', 'de', outPath);
         const data = fs.readFileSync(outPath, 'utf8');
         fs.unlinkSync(outPath);
         expect(result).toBe(outPath);

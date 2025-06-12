@@ -66,16 +66,25 @@ async function getDubbingStatus(apiKey, dubbingId) {
  * @returns {Promise<string>} Pfad zur gespeicherten Datei.
  */
 async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) {
-    const response = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}/audio/${lang}`, {
-        headers: { 'xi-api-key': apiKey }
-    });
+    let response;
+    let errText = '';
+    for (let attempt = 0; attempt < 4; attempt++) {
+        response = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}/audio/${lang}`, {
+            headers: { 'xi-api-key': apiKey }
+        });
+
+        if (response.ok) break;
+        errText = await response.text();
+        if (attempt < 3) {
+            await new Promise(r => setTimeout(r, 1000));
+        }
+    }
 
     if (!response.ok) {
-        throw new Error('Download fehlgeschlagen: ' + await response.text());
+        throw new Error('Download fehlgeschlagen: ' + errText);
     }
 
     return await new Promise((resolve, reject) => {
-        // Antwort-Stream direkt in die Zieldatei schreiben
         const fileStream = fs.createWriteStream(targetPath);
         const nodeStream = require('stream').Readable.fromWeb(response.body);
         nodeStream.pipe(fileStream);

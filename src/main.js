@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.5';
+const APP_VERSION = '1.12.6';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6401,19 +6401,27 @@ async function startDubbing(fileId, settings = {}) {
     addDubbingLog('Dubbing abgeschlossen, lade Audio...');
 
     let audioRes;
-    try {
-        audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/de`, {
-            headers: { 'xi-api-key': elevenLabsApiKey }
-        });
-    } catch (e) {
-        addDubbingLog('Fehler: ' + e.message);
-        updateStatus('Download fehlgeschlagen');
-        return;
+    let errText = '';
+    for (let attempt = 0; attempt < 4; attempt++) {
+        try {
+            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/de`, {
+                headers: { 'xi-api-key': elevenLabsApiKey }
+            });
+            if (audioRes.ok) break;
+            errText = await audioRes.text();
+            addDubbingLog(`Download fehlgeschlagen (${audioRes.status} ${errText}). Versuch ${attempt + 1}`);
+        } catch (e) {
+            errText = e.message;
+            addDubbingLog('Fehler: ' + errText);
+        }
+        if (attempt < 3) {
+            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
+            addDubbingLog('Neuer Versuch...');
+        }
     }
-    if (!audioRes.ok) {
-        const errText = await audioRes.text();
+    if (!audioRes || !audioRes.ok) {
         updateStatus('Download fehlgeschlagen');
-        addDubbingLog(`Download fehlgeschlagen: ${audioRes.status} ${errText}`);
+        addDubbingLog(`Endgültig fehlgeschlagen: ${errText}`);
         return;
     }
     const dubbedBlob = await audioRes.blob();
