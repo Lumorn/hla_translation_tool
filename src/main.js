@@ -397,6 +397,7 @@ function loadProjects() {
     if (savedPDB) filePathDatabase = JSON.parse(savedPDB);
 
     renderProjects();
+    updateGlobalProjectProgress();
 
     const lastActive = localStorage.getItem('hla_lastActiveProject');
     const first     = projects.find(p => p.id == lastActive) || projects[0];
@@ -407,6 +408,7 @@ function loadProjects() {
 
         function saveProjects() {
             localStorage.setItem('hla_projects', JSON.stringify(projects));
+            updateGlobalProjectProgress();
         }
 
         function saveTextDatabase() {
@@ -643,6 +645,34 @@ function updateGlobalTextStats() {
 }
 /* =========================== GLOBAL TEXT STATS FUNCTIONS END =========================== */
 
+/* =========================== GLOBAL PROJECT PROGRESS START ============================ */
+function calculateGlobalProjectProgress() {
+    let total = 0;
+    let done  = 0;
+
+    projects.forEach(p => {
+        const pFiles = p.files || [];
+        total += pFiles.length;
+        done  += pFiles.filter(isFileCompleted).length;
+    });
+
+    const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+    return { percent, done, total };
+}
+
+function updateGlobalProjectProgress() {
+    const box = document.getElementById('globalProjectProgress');
+    if (!box) return;
+
+    const { percent, done, total } = calculateGlobalProjectProgress();
+
+    box.textContent = `${percent}% gesamt (${done}/${total})`;
+    box.className = 'progress-stat';
+    if (percent >= 80)      box.classList.add('good');
+    else if (percent >= 40) box.classList.add('warning');
+}
+/* =========================== GLOBAL PROJECT PROGRESS END ============================== */
+
 // =========================== SHOWFOLDERBROWSER START ===========================
 function showFolderBrowser() {
     document.getElementById('folderBrowserDialog').style.display = 'flex';
@@ -728,6 +758,7 @@ function selectProject(id){
     updateStatus();
     updateFileAccessStatus();
     updateProgressStats();
+    updateGlobalProjectProgress();
     updateProjectMetaBar();          //  <-- NEU!
 }
 // =========================== SELECT PROJECT END ===========================
@@ -2765,6 +2796,8 @@ function toggleFileCompletion(fileId) {
                 .join('\n');
             
             folderProgress.title = `Ordner-Fortschritt:\n${folderDetails}`;
+
+            updateGlobalProjectProgress();
         }
 
         // Auto-resize text inputs based on content (HEIGHT not width)
@@ -4827,7 +4860,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.16.0',
+                version: '3.17.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7887,7 +7920,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.16.0 - Verbesserter API-Dialog');
+        console.log('Version 3.17.0 - Globale Fortschrittsanzeige');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
