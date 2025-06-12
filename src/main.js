@@ -3859,6 +3859,58 @@ function cleanupIncorrectFolderNames() {
 }
 // =========================== CLEANUPINCORRECTFOLDERNAMES END ===========================
 
+// =========================== SHOWFOLDERDEBUG START ===========================
+// Zeigt alle bekannten Ordner aus der Datenbank an und markiert nicht gefundene
+// Ordner. Fehlende Ordner lassen sich direkt löschen.
+function showFolderDebug() {
+    const wrapper = document.getElementById('debugConsoleWrapper');
+    wrapper.open = true;
+
+    const listDiv = document.getElementById('folderDebug');
+    if (!listDiv) return;
+    listDiv.innerHTML = '';
+
+    // Sammle eindeutige Ordnernamen aus der Datenbank
+    const folders = new Set();
+    Object.values(filePathDatabase).forEach(paths => {
+        paths.forEach(p => folders.add(p.folder));
+    });
+
+    if (folders.size === 0) {
+        listDiv.textContent = 'Keine Ordner in der Datenbank.';
+        return;
+    }
+
+    const ul = document.createElement('ul');
+    ul.style.listStyle = 'none';
+    ul.style.padding = '0';
+
+    folders.forEach(folder => {
+        const li = document.createElement('li');
+        li.style.marginBottom = '4px';
+
+        const exists = Object.keys(audioFileCache).some(p => p.startsWith(folder + '/'));
+        const status = document.createElement('span');
+        status.textContent = exists ? '✅' : '❌';
+        li.appendChild(status);
+        li.append(' ' + folder);
+
+        if (!exists) {
+            const btn = document.createElement('button');
+            btn.textContent = 'Löschen';
+            btn.className = 'btn btn-danger';
+            btn.style.marginLeft = '10px';
+            btn.onclick = () => deleteFolderFromDatabase(folder);
+            li.appendChild(btn);
+        }
+
+        ul.appendChild(li);
+    });
+
+    listDiv.appendChild(ul);
+}
+// =========================== SHOWFOLDERDEBUG END =============================
+
 // =========================== GETBROWSERDEBUGPATHINFO START ===========================
 // Debug-Pfad-Information für Ordner-Browser
 function getBrowserDebugPathInfo(file) {
@@ -4860,7 +4912,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.17.1',
+                version: '3.19.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7992,7 +8044,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.17.1 - Globale Fortschrittsanzeige');
+        console.log('Version 3.19.0 - Ordner-Debug');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
