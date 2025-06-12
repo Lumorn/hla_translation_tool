@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.13.0';
+const APP_VERSION = '1.13.1';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -82,7 +82,9 @@ function debugLog(...args) {
 let dubbingLogMessages = [];
 
 function addDubbingLog(msg) {
+    // Neue Meldung ans Ende hängen und dauerhaft speichern
     dubbingLogMessages.push(msg);
+    localStorage.setItem('hla_dubbingLog', JSON.stringify(dubbingLogMessages));
     const logPre = document.getElementById('dubbingLog');
     if (logPre) {
         logPre.textContent = dubbingLogMessages.join('\n');
@@ -91,9 +93,11 @@ function addDubbingLog(msg) {
 }
 
 function openDubbingLog() {
-    dubbingLogMessages = [];
+    // Beim Öffnen gespeicherte Einträge laden
+    const stored = localStorage.getItem('hla_dubbingLog');
+    dubbingLogMessages = stored ? JSON.parse(stored) : [];
     const logPre = document.getElementById('dubbingLog');
-    if (logPre) logPre.textContent = '';
+    if (logPre) logPre.textContent = dubbingLogMessages.join('\n');
     document.getElementById('dubbingLogDialog').style.display = 'flex';
 }
 
