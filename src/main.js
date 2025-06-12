@@ -3561,6 +3561,9 @@ function showFolderGrid() {
             <button class="btn btn-secondary" onclick="cleanupIncorrectFolderNames()" title="Bereinigt falsche Ordnernamen in der Datenbank">
                 🧹 Ordnernamen bereinigen
             </button>
+            <button class="btn btn-secondary" onclick="showMissingFoldersDialog()" title="Listet nicht mehr existierende Ordner auf">
+                ❓ Fehlende Ordner
+            </button>
         </div>
     `;
     
@@ -3910,6 +3913,65 @@ function showFolderDebug() {
     listDiv.appendChild(ul);
 }
 // =========================== SHOWFOLDERDEBUG END =============================
+
+// =========================== SHOWMISSINGFOLDERSDIALOG START =================
+// Öffnet ein Dialogfenster mit allen Ordnern, die keine vorhandenen Dateien mehr besitzen
+function showMissingFoldersDialog() {
+    const dialog  = document.getElementById('missingFoldersDialog');
+    const listDiv = document.getElementById('missingFoldersList');
+    listDiv.innerHTML = '';
+
+    const folderMap = {};
+    Object.values(filePathDatabase).forEach(paths => {
+        paths.forEach(p => {
+            if (!folderMap[p.folder]) folderMap[p.folder] = [];
+            folderMap[p.folder].push(p.fullPath);
+        });
+    });
+
+    const missing = Object.entries(folderMap)
+        .filter(([folder, paths]) => !paths.some(full => audioFileCache[full]))
+        .map(([folder]) => folder)
+        .sort();
+
+    if (missing.length === 0) {
+        listDiv.textContent = 'Alle Ordner existieren noch.';
+        document.getElementById('deleteAllMissingBtn').onclick = null;
+    } else {
+        const ul = document.createElement('ul');
+        ul.style.listStyle = 'none';
+        ul.style.padding = '0';
+
+        missing.forEach(folder => {
+            const li = document.createElement('li');
+            li.style.marginBottom = '6px';
+            li.textContent = folder;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'Löschen';
+            btn.className = 'btn btn-danger';
+            btn.style.marginLeft = '10px';
+            btn.onclick = () => { deleteFolderFromDatabase(folder); li.remove(); };
+            li.appendChild(btn);
+
+            ul.appendChild(li);
+        });
+
+        listDiv.appendChild(ul);
+
+        document.getElementById('deleteAllMissingBtn').onclick = () => {
+            missing.forEach(folder => deleteFolderFromDatabase(folder));
+            showMissingFoldersDialog();
+        };
+    }
+
+    dialog.style.display = 'flex';
+}
+
+function closeMissingFoldersDialog() {
+    document.getElementById('missingFoldersDialog').style.display = 'none';
+}
+// =========================== SHOWMISSINGFOLDERSDIALOG END ===================
 
 // =========================== GETBROWSERDEBUGPATHINFO START ===========================
 // Debug-Pfad-Information für Ordner-Browser
@@ -4912,7 +4974,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.19.0',
+                version: '3.20.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -8044,7 +8106,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.19.0 - Ordner-Debug');
+        console.log('Version 3.20.0 - Fehlende Ordner');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
