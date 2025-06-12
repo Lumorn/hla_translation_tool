@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.11.0';
+const APP_VERSION = '1.12.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6276,6 +6276,8 @@ function createDubbingCSV(file, durationMs) {
 async function startDubbing(fileId, settings = {}) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
+    // Ordnerspezifische Voice-ID ermitteln
+    const folderVoiceId = folderCustomizations[file.folder]?.voiceId;
     openDubbingLog();
     addDubbingLog(`Starte Dubbing für ${file.filename}`);
     if (!elevenLabsApiKey) {
@@ -6322,6 +6324,11 @@ async function startDubbing(fileId, settings = {}) {
     if (settings && Object.keys(settings).length > 0) {
         form.append('voice_settings', JSON.stringify(settings));
     }
+    // Bei vorhandener Ordner-Stimme diese übergeben und Voice Cloning deaktivieren
+    if (folderVoiceId) {
+        form.append('voice_id', folderVoiceId);
+    }
+    form.append('disable_voice_cloning', 'true');
 
     const res = await fetch('https://api.elevenlabs.io/v1/dubbing', {
         method: 'POST',
