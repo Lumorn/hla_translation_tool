@@ -58,7 +58,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.8.0';
+const APP_VERSION = '1.9.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6266,9 +6266,11 @@ async function startDubbing(fileId, settings = {}) {
         addDubbingLog('EN-Datei aus Cache geladen');
     }
 
+    // FormData für das Dubbing zusammenstellen
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     form.append('target_lang', 'de');
+    // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {
         form.append('voice_settings', JSON.stringify(settings));
     }

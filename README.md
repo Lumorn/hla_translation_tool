@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.8.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.9.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.8.0](#-neue-features-in-1.8.0)
+* [✨ Neue Features in 1.9.0](#-neue-features-in-1.9.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -26,6 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.9.0
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Voice-Settings**        | `createDubbing` akzeptiert jetzt ein Objekt mit Voice-Einstellungen. |
 
 ## ✨ Neue Features in 1.8.0
 
@@ -135,7 +141,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ```javascript
 const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
-const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav');
+const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'de', {
+    speed: 1.2
+});
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
 await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
@@ -342,7 +350,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.8.0 (aktuell) - Automatische Versionsverwaltung
+### 1.9.0 (aktuell) - Voice-Settings
+
+**✨ Neue Features:**
+* `createDubbing` akzeptiert jetzt ein optionales Objekt `voiceSettings`.
+
+### 1.8.0 - Automatische Versionsverwaltung
 
 **✨ Neue Features:**
 * Versionsnummer wird nun automatisch aus `package.json` in HTML und JS eingetragen.
@@ -505,7 +518,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.8.0** - Automatische Versionsverwaltung
+**Version 1.9.0** - Voice-Settings
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
