@@ -528,36 +528,3 @@ ElevenLabs‑Anbindung (z. B. `getDubbingStatus`), die die API‑Aufrufe mit *
 * **`delete-de-backup-file(relPath)`** – löscht eine Sicherung aus `DE-Backup` und entfernt leere Unterordner.
 * **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
-
-> Die im Abschnitt **Code-Ausgabe Regeln** gezeigte `meineFunktion` ist lediglich ein Beispiel aus der Anleitung.
-
-
-## Code-Ausgabe Regeln
-
-**1. Vollständige Funktionen:**
-- Immer die **komplette** Funktion ausgeben, damit sie einfach ersetzt werden kann
-- Nie nur Teile oder Snippets
-
-**2. Klare Markierungen:**
-- Jede Funktion mit Start- und End-Kommentaren umrahmen:
-```javascript
-// =========================== FUNKTIONSNAME START ===========================
-function meineFunktion() {
-    // code hier
-}
-// =========================== FUNKTIONSNAME END ===========================
-```
-
-**3. Schritt für Schritt:**
-- **Nur eine Funktion pro Antwort**
-- Nach jeder Änderung testen lassen
-- Erst wenn eine Funktion funktioniert, zur nächsten
-
-**4. Sichere Änderungen:**
-- Minimale Änderungen bevorzugen
-- Bei Fehlern sofort zur ursprünglichen Version zurück
-
-**5. Klare Anweisungen:**
-- Sagen welche Funktion gesucht und ersetzt werden soll
-- Eindeutige Such-Strings angeben
-
