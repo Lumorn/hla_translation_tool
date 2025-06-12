@@ -48,8 +48,6 @@ let autoBackupTimer    = null;
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
-// Liste aller verfügbaren Stimmen (wird beim Öffnen des API-Dialogs geladen)
-let availableVoices    = [];
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -4825,7 +4823,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.14.0',
+                version: '3.13.1',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4930,14 +4928,12 @@ function checkFileAccess() {
         }
 
         // =========================== SHOWAPIDIALOG START ======================
-        async function showApiDialog() {
+        function showApiDialog() {
             document.getElementById('apiDialog').style.display = 'flex';
             document.getElementById('apiKeyInput').value = elevenLabsApiKey;
 
             const list = document.getElementById('voiceIdList');
             list.innerHTML = '';
-
-            await loadVoiceList();
 
             // Alle bekannten Ordner sammeln – projektübergreifend
             const folderSet = new Set();
@@ -4947,73 +4943,14 @@ function checkFileAccess() {
             Object.keys(folderCustomizations).forEach(f => folderSet.add(f));
             const folders = Array.from(folderSet).sort();
 
-            const groups = {
-                combine: { title: 'Combine', items: [] },
-                vortigaunts: { title: 'Vortigaunts', items: [] },
-                zivilisten: { title: 'Zivilisten', items: [] },
-                sonstige: { title: 'Sonstige', items: [] }
-            };
-
             folders.forEach(name => {
-                const lower = name.toLowerCase();
-                let key = 'sonstige';
-                if (lower.includes('combine')) key = 'combine';
-                else if (lower.includes('vort')) key = 'vortigaunts';
-                else if (lower.includes('citizen')) key = 'zivilisten';
-                groups[key].items.push(name);
+                const cust = folderCustomizations[name] || {};
+                const id = cust.voiceId || '';
+                const row = document.createElement('div');
+                row.className = 'voice-id-item';
+                row.innerHTML = `<label>${escapeHtml(name)}<input data-folder="${escapeHtml(name)}" value="${id}" placeholder="voice_id"></label>`;
+                list.appendChild(row);
             });
-
-            Object.values(groups).forEach(group => {
-                if (group.items.length === 0) return;
-                const wrapper = document.createElement('div');
-                wrapper.className = 'voice-group';
-                const header = document.createElement('div');
-                header.className = 'voice-group-header';
-                header.textContent = group.title;
-                wrapper.appendChild(header);
-                const content = document.createElement('div');
-                content.className = 'voice-group-content';
-                const grid = document.createElement('div');
-                grid.className = 'voice-id-grid';
-                group.items.forEach(name => {
-                    const cust = folderCustomizations[name] || {};
-                    const id = cust.voiceId || '';
-                    const item = document.createElement('div');
-                    item.className = 'voice-id-item';
-
-                    const label = document.createElement('label');
-                    label.textContent = name;
-                    label.title = `Diese Stimme wird für ${name} verwendet`;
-
-                    const select = document.createElement('select');
-                    select.dataset.folder = name;
-                    const emptyOpt = document.createElement('option');
-                    emptyOpt.value = '';
-                    emptyOpt.textContent = '--';
-                    select.appendChild(emptyOpt);
-                    availableVoices.forEach(v => {
-                        const opt = document.createElement('option');
-                        opt.value = v.voice_id;
-                        opt.textContent = v.name;
-                        if (v.voice_id === id) opt.selected = true;
-                        select.appendChild(opt);
-                    });
-
-                    const play = document.createElement('button');
-                    play.textContent = '▶';
-                    play.onclick = () => playVoicePreview(select.value);
-
-                    item.appendChild(label);
-                    item.appendChild(select);
-                    item.appendChild(play);
-                    grid.appendChild(item);
-                });
-                content.appendChild(grid);
-                wrapper.appendChild(content);
-                header.onclick = () => wrapper.classList.toggle('open');
-                list.appendChild(wrapper);
-            });
-
             document.getElementById('apiKeyInput').focus();
         }
 
@@ -5021,9 +4958,9 @@ function checkFileAccess() {
             elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
             localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
 
-            document.querySelectorAll('#voiceIdList select').forEach(sel => {
-                const folder = sel.dataset.folder;
-                const val = sel.value.trim();
+            document.querySelectorAll('#voiceIdList input').forEach(inp => {
+                const folder = inp.dataset.folder;
+                const val = inp.value.trim();
                 if (!folderCustomizations[folder]) folderCustomizations[folder] = {};
                 if (val) {
                     folderCustomizations[folder].voiceId = val;
@@ -5038,51 +4975,6 @@ function checkFileAccess() {
 
         function closeApiDialog() {
             document.getElementById('apiDialog').style.display = 'none';
-        }
-
-        async function loadVoiceList() {
-            if (!elevenLabsApiKey) return;
-            try {
-                const res = await fetch('https://api.elevenlabs.io/v1/voices', {
-                    headers: { 'xi-api-key': elevenLabsApiKey }
-                });
-                if (!res.ok) throw new Error();
-                const data = await res.json();
-                availableVoices = data.voices || [];
-                document.getElementById('apiKeyInput').classList.add('valid');
-                document.getElementById('apiKeyInput').classList.remove('invalid');
-            } catch (e) {
-                availableVoices = [];
-                document.getElementById('apiKeyInput').classList.remove('valid');
-                document.getElementById('apiKeyInput').classList.add('invalid');
-            }
-        }
-
-        function playVoicePreview(id) {
-            const voice = availableVoices.find(v => v.voice_id === id);
-            if (voice && voice.preview_url) {
-                const audio = new Audio(voice.preview_url);
-                audio.play();
-            }
-        }
-
-        function resetAllVoiceIds() {
-            document.querySelectorAll('#voiceIdList select').forEach(sel => sel.value = '');
-            Object.keys(folderCustomizations).forEach(f => {
-                if (folderCustomizations[f]) delete folderCustomizations[f].voiceId;
-            });
-        }
-
-        function toggleApiKeyVisibility() {
-            const inp = document.getElementById('apiKeyInput');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        }
-
-        function testVoiceIds() {
-            loadVoiceList().then(() => {
-                if (availableVoices.length > 0) updateStatus('API-Key gültig');
-                else updateStatus('Fehler beim Abrufen der Stimmen');
-            });
         }
         // =========================== SHOWAPIDIALOG END ========================
 
@@ -7818,7 +7710,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.14.0 - Überarbeitetes API-Menü');
+        console.log('Version 3.13.1 - Ordnerübergreifende Voice-IDs');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
