@@ -77,16 +77,6 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
         if (response.ok) break;
         errText = await response.text();
 
-        // Studio/Manual-Dub nutzt einen anderen Endpunkt
-        if (response.status === 404 && errText.includes('dubbing_not_found')) {
-            const info = await getDubbingResource(apiKey, dubbingId).catch(() => null);
-            const url = info && info.render_url && info.render_url[lang];
-            if (url) {
-                return await downloadFromUrl(url, targetPath);
-            }
-            throw new Error('Download fehlgeschlagen: ' + errText + ' - Zielsprache fehlt oder falscher Download-Pfad');
-        }
-
         if (attempt < 3) {
             await new Promise(r => setTimeout(r, 1000));
         }
@@ -198,8 +188,5 @@ module.exports = {
     createDubbing,
     getDubbingStatus,
     downloadDubbingAudio,
-    getDefaultVoiceSettings,
-    dubSegments,
-    renderDubbingResource,
-    getDubbingResource
+    getDefaultVoiceSettings
 };
