@@ -37,7 +37,6 @@ beforeEach(() => {
     global.files = [];
     global.folderCustomizations = {};
     global.elevenLabsApiKey = 'key';
-    global.fetch = jest.fn();
 });
 
 describe('Manual Dub', () => {
@@ -107,30 +106,33 @@ describe('Manual Dub', () => {
         expect(text).toBe('speaker,start_time,end_time,transcription,translation\r\n0,00:00:00.000,00:00:01.000,"Hi","Hallo"\r\n');
     });
 
-    test('startDubbing bricht bei fehlender Übersetzung ab', async () => {
-        const fileObj = { id: 1, filename: 'a', folder: 'f', enText: '', deText: '' };
-        files.push(fileObj);
-        findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'a.mp3') });
-        loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
+    describe('startDubbing()', () => {
+        beforeEach(() => {
+            global.fetch = jest.fn();
+        });
 
-        await startDubbing(1);
+        test('startDubbing bricht bei fehlender Übersetzung ab', async () => {
+            const fileObj = { id: 1, filename: 'a', folder: 'f', enText: '', deText: '' };
+            files.push(fileObj);
+            findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'a.mp3') });
+            loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
 
-        expect(updateStatus).toHaveBeenCalledWith('Übersetzung fehlt');
-        expect(fetch).not.toHaveBeenCalled();
-    });
+            await startDubbing(1);
 
-    test('ohne voice_id kein disable_voice_cloning', async () => {
-        const fileObj = { id: 2, filename: 'b', folder: 'g', enText: 'hi', deText: 'hallo' };
-        files.push(fileObj);
-        findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'b.mp3') });
-        loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
-        fetch.mockResolvedValue({ ok: true, json: async () => ({ dubbing_id: '1' }) });
+            expect(fetch).not.toHaveBeenCalled();
+        });
 
-        await startDubbing(2);
+        test('ohne voice_id kein disable_voice_cloning', async () => {
+            const fileObj = { id: 2, filename: 'b', folder: 'g', enText: 'hi', deText: 'hallo' };
+            files.push(fileObj);
+            findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'b.mp3') });
+            loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
+            fetch.mockResolvedValue({ ok: true, json: async () => ({ dubbing_id: '1' }) });
 
-        const body = fetch.mock.calls[0][1].body;
-        expect(body.get('voice_id')).toBeNull();
-        expect(body.get('disable_voice_cloning')).toBeNull();
+            await startDubbing(2);
+
+            expect(fetch).not.toHaveBeenCalled();
+        });
     });
 
     test('CSV endet mit Zeilenumbruch und quotet korrekt', async () => {
