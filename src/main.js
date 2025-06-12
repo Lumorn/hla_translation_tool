@@ -603,7 +603,7 @@ function showFolderBrowser() {
 
 /* =========================== ADD PROJECT START =========================== */
 function addProject() {
-    // Neues Projekt mit Platzhalterwerten erstellen
+    // Platzhalter für ein neues Projekt erstellen, aber noch nicht speichern
     const prj = {
         id: Date.now(),
         name: 'Neues Projekt',
@@ -614,15 +614,8 @@ function addProject() {
         color: '#54428E'
     };
 
-    // Projekt in die Liste aufnehmen
-    projects.push(prj);
-
-    saveProjects();
-    renderProjects();
-    selectProject(prj.id);
-
-    // Direkt im Anschluss den Bearbeitungsdialog anzeigen
-    showProjectCustomization(prj.id);
+    // Dialog öffnen; erst nach Bestätigung wird es gespeichert
+    showProjectCustomization(null, null, prj);
 }
 /* =========================== ADD PROJECT END =========================== */
 
@@ -4763,7 +4756,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.5',
+                version: '3.8.6',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7039,10 +7032,11 @@ function toggleSkipFile(folder, filename) {
         }
 
 /* =========================== SHOW PROJECT CUSTOMIZATION START =========================== */
-function showProjectCustomization(id, ev) {
+function showProjectCustomization(id, ev, tempProject) {
     ev?.stopPropagation();
-    const prj = projects.find(p => p.id === id);
+    let prj = tempProject || projects.find(p => p.id === id);
     if (!prj) return;
+    const isNew = !!tempProject;
 
     const knownLevels = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
 
@@ -7125,8 +7119,26 @@ function showProjectCustomization(id, ev) {
     pop.querySelector('#cCancel').onclick = () => document.body.removeChild(ov);
 
     pop.querySelector('#cSave').onclick = () => {
-        prj.name      = pop.querySelector('#cName').value.trim() || prj.name;
-        prj.levelName = sel.value || inp.value.trim();
+        prj.name = pop.querySelector('#cName').value.trim();
+        const selectedLevel = sel.value;
+        const newLevel = inp.value.trim();
+        const orderVal = parseInt(ordInp.value);
+
+        // Eingaben prüfen
+        if (!selectedLevel && !newLevel) {
+            alert('Bitte einen Levelnamen auswählen oder einen neuen vergeben und eine Nummer angeben.');
+            return;
+        }
+        if (!selectedLevel && newLevel && !ordInp.value) {
+            alert('Bitte auch eine Level-Nummer angeben.');
+            return;
+        }
+        if (!prj.name) {
+            alert('Bitte einen Projektnamen eingeben.');
+            return;
+        }
+
+        prj.levelName = selectedLevel || newLevel;
         prj.levelPart = Math.max(1, parseInt(pop.querySelector('#cPart').value) || 1);
 
         /* Level-Farbe global anwenden */
@@ -7134,12 +7146,19 @@ function showProjectCustomization(id, ev) {
         setLevelColor(prj.levelName, newColor);
 
         // Level-Reihenfolge setzen, falls neuer Level angelegt wird
-        if (!sel.value) {
-            const order = Math.max(1, parseInt(ordInp.value) || 1);
+        if (!selectedLevel) {
+            const order = Math.max(1, orderVal || 1);
             setLevelOrder(prj.levelName, order);
         }
 
+        // Neues Projekt erst jetzt speichern
+        if (isNew) {
+            projects.push(prj);
+        }
+
         saveProjects();
+        renderProjects();
+        selectProject(prj.id);
         updateProjectMetaBar();
         document.body.removeChild(ov);
     };
@@ -7554,7 +7573,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.5 - Fehlerkorrekturen');
+        console.log('Version 3.8.6 - Fehlerkorrekturen');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
