@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.13.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.13.0](#-neue-features-in-3130)
+* [✨ Neue Features in 3.12.3](#-neue-features-in-3123)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.13.0
+## ✨ Neue Features in 3.12.3
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -54,7 +54,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Level-Icons**            | Jedes Level besitzt ein eigenes Icon, einstellbar im Level-Dialog. |
 | **Icon-Auswahl**           | Neben freier Eingabe kann man nun aus vordefinierten Icons wählen. |
 | **ElevenLabs-Dubbing**     | Erste Anbindung an die ElevenLabs-API zum automatischen Vertonen. |
-| **API-Menü**               | Neues Menü zur Eingabe des API-Keys und Zuweisung von Voice-IDs je Ordner. |
 ---
 
 ## 🚀 Features (komplett)
@@ -345,11 +344,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.13.0 (aktuell) - API-Menü & Voice-IDs
+### 3.12.3 (aktuell) - ElevenLabs-Anbindung
 
 **✨ Neue Features:**
 * **ElevenLabs-Dubbing**: Audiodateien lassen sich jetzt direkt per API vertonen.
-* **API-Menü**: API-Key eingeben und Stimmen für Ordner hinterlegen.
 
 ### 3.11.0 - Icon-Auswahl & Haken-Fix
 
@@ -462,7 +460,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.13.0** - API-Menü & Voice-IDs
+**Version 3.12.3** - ElevenLabs-Anbindung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

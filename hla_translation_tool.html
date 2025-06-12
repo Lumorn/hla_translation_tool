@@ -41,7 +41,6 @@
                     <div class="settings-menu" id="settingsMenu">
                         <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
                         <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
-                        <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
                         <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
                         <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
                         <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
@@ -291,23 +290,6 @@
         </div>
     </div>
 
-    <!-- ElevenLabs API Dialog -->
-    <div class="dialog-overlay" id="apiDialog">
-        <div class="dialog">
-<button class="dialog-close-btn" onclick="closeApiDialog()">×</button>
-            <h3>🔊 ElevenLabs API</h3>
-            <div class="customize-field">
-                <label>API-Key:</label>
-                <input type="password" id="apiKeyInput" style="width:80%;">
-            </div>
-            <div id="voiceIdList" style="margin-top:15px;"></div>
-            <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
-                <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
-            </div>
-        </div>
-    </div>
-
     <!-- History Dialog -->
     <div class="dialog-overlay" id="historyDialog">
         <div class="dialog">
@@ -368,7 +350,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.13.0</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.12.3</a>
 
     <script src="src/main.js"></script>
 </body>
