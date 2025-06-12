@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,6 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
+* [✨ Neue Features in 1.19.2](#-neue-features-in-1.19.2)
 * [✨ Neue Features in 1.19.1](#-neue-features-in-1.19.1)
 * [✨ Neue Features in 1.19.0](#-neue-features-in-1.19.0)
 * [✨ Neue Features in 1.18.8](#-neue-features-in-1.18.8)
@@ -30,6 +31,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
+## ✨ Neue Features in 1.19.2
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Bugfix**                | Verwendet nur noch `/v1/dubbing`-Endpunkte und behebt `no_dubbing_api_access`. |
+
 ## ✨ Neue Features in 1.19.1
 
 |  Kategorie                 |  Beschreibung |
@@ -40,7 +47,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Studio-Workflow**        | Clips werden jetzt über `resource/dub` vertont und anschließend gerendert. |
+| **Studio-Workflow**        | Entfernt: Ab 1.19.2 genügt `POST/GET /v1/dubbing` zum Dubben. |
 
 ## ✨ Neue Features in 1.18.8
 
@@ -267,7 +274,7 @@ Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
 
 Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Die Felder `start_time` und `end_time` enthalten seit Version 1.18.6 Sekundenwerte mit drei Nachkommastellen und leiten sich aus `trimStartMs` bzw. `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
-Seit Version 1.19.0 wird der Studio-Workflow vollständig unterstützt. Nach dem Upload startet das Tool automatisch `POST /v1/dubbing/resource/<ID>/dub` und wartet, bis alle Segmente `dubbed` sind. Anschließend erfolgt ein `POST /v1/dubbing/resource/<ID>/render/de` und das Herunterladen der Datei über die in `render_url.de` bereitgestellte Adresse.
+Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und `resource/render`. Ab Version 1.19.2 erfolgt das Dubbing ausschließlich über die Standard-Endpunkte: Nach `POST /v1/dubbing` wird regelmäßig `GET /v1/dubbing/<ID>` aufgerufen und das Ergebnis anschließend via `GET /v1/dubbing/<ID>/audio/de` heruntergeladen.
 
 Beispiel einer gültigen CSV:
 
@@ -488,7 +495,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.19.1 (aktuell)
+### 1.19.2 (aktuell)
+
+**✨ Neue Features:**
+* Nur noch Basis-Endpunkte `/v1/dubbing` – Fehler `no_dubbing_api_access` behoben.
+
+### 1.19.1
 
 **✨ Neue Features:**
 * API-Aufruf übergibt jetzt `segments` und `languages`.
@@ -496,7 +508,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 ### 1.19.0
 
 **✨ Neue Features:**
-* Studio-Workflow nutzt jetzt `resource/dub` und `resource/render`.
+* Studio-Workflow über `resource/dub` und `resource/render` (entfernt ab 1.19.2).
 
 ### 1.18.8
 
