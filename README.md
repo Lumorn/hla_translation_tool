@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.8.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.8.8-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.8.7](#-neue-features-in-387)
+* [✨ Neue Features in 3.8.8](#-neue-features-in-388)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.8.7
+## ✨ Neue Features in 3.8.8
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -49,6 +49,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **DE-Audio-Bearbeitung**   | DE-Audiodateien lassen sich direkt kürzen oder verlängern. Vor dem Speichern wird automatisch eine Sicherung im Ordner `DE-Backup` angelegt. |
 | **Bugfix Projekt-Daten**   | Korrigiert das Zurücksetzen von Namen und Nummern beim Bearbeiten. |
 | **Versionslink oben**      | Die Versionsnummer befindet sich jetzt oben links. |
+| **Level-Haken**            | Level-Reiter zeigen einen grünen Haken, wenn alle Projekte darin 100% abgeschlossen sind. |
 ---
 
 ## 🚀 Features (komplett)
@@ -324,13 +325,14 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.8.7 (aktuell) - Fehlerkorrekturen
+### 3.8.8 (aktuell) - Fehlerkorrekturen
 
 **✨ Neue Features:**
 * **Dialog-Fokus**: Eingabefelder bekommen automatisch den Cursor (Projekt-, Level-, Ordner- und Import-Dialog).
 * **Versionsanzeige**: Oben links zeigt ein Link die aktuelle Version und öffnet GitHub.
 * **Fix**: Umbenannte Level speichern nun den Namen korrekt und behalten die eingestellte Reihenfolge.
 * **Neu**: Beim Umbenennen eines Levels werden passende Projektnamen automatisch angepasst.
+* **Level-Haken**: Level-Reiter erhalten einen grünen Haken, wenn alle Projekte abgeschlossen sind.
 * **Fix**: Abgebrochene Projekte werden nicht mehr angelegt und fehlende Levelangaben melden einen Fehler.
 * **Projektverschiebung**: Beim Wechsel in einen anderen Level übernimmt das Projekt automatisch dessen Farbe.
 
@@ -433,7 +435,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.8.7** - Fehlerkorrekturen & Versionslink oben
+**Version 3.8.8** - Neuer Level-Haken & Versionslink oben
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

@@ -444,6 +444,9 @@ function renderProjects() {
         const header = document.createElement('div');
         header.className = 'level-header';
         header.style.background = getLevelColor(lvl);
+
+        let levelDone = true; // Flag, ob alle Projekte fertig sind
+
         header.innerHTML = `
             <span class="level-title">${order}.${lvl}</span>
             <button class="level-edit-btn" data-level="${lvl}" onclick="showLevelCustomization(this.dataset.level, event)">⚙️</button>
@@ -465,6 +468,8 @@ function renderProjects() {
                           stats.dePercent === 100 &&
                           stats.deAudioPercent === 100 &&
                           stats.completedPercent === 100;
+
+            if (!done) levelDone = false; // Sobald ein Projekt nicht fertig ist
 
             const card = document.createElement('div');
             card.className = 'project-item';
@@ -524,6 +529,14 @@ function renderProjects() {
 
             wrap.appendChild(card);
         });
+
+        // Haken an Level-Header anhängen, wenn alle Projekte fertig sind
+        if (levelDone) {
+            const mark = document.createElement('span');
+            mark.className = 'level-done-marker';
+            mark.textContent = '✅';
+            header.appendChild(mark);
+        }
 
         group.appendChild(wrap);
         list.appendChild(group);
@@ -4756,7 +4769,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.7',
+                version: '3.8.8',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7576,11 +7589,12 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.7 - Fehlerkorrekturen');
+        console.log('Version 3.8.8 - Fehlerkorrekturen');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
         console.log('• ✅ Datei-Markierungen: Einzelne Dateien zeigen Übersetzungsstatus');
+        console.log('• ✅ Level-Haken: Level-Reiter zeigen Vollständigkeit an');
         console.log('• 📈 Fortschritts-Prozentsätze: Detaillierte Statistiken pro Ordner');
         console.log('• 🎯 Smart-Sortierung: Übersetzte Dateien werden gruppiert angezeigt');
         console.log('• 📋 Projekt-Integration: Zeigt in welchen Projekten Dateien übersetzt sind');
