@@ -4763,7 +4763,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.1',
+                version: '3.8.2',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7205,6 +7205,8 @@ function showLevelCustomization(levelName, ev) {
 
         levelColors[newName] = newColor;
         levelOrders[newName] = newOrder;
+        // Reihenfolge direkt sichern, falls sie neu vergeben wurde
+        setLevelOrder(newName, newOrder);
 
         if (expandedLevel === levelName) expandedLevel = newName;
 
@@ -7544,7 +7546,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.1 - Fehlerkorrekturen');
+        console.log('Version 3.8.2 - Fehlerkorrekturen');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
