@@ -9,6 +9,7 @@ afterEach(() => {
 
 let createDubbingCSV;
 let startDubbing;
+let validateCsv;
 let storage;
 
 function loadMain(lineEnd) {
@@ -23,7 +24,7 @@ function loadMain(lineEnd) {
         removeItem: k => { delete storage[k]; },
         clear: () => { storage = {}; }
     };
-    ({ createDubbingCSV, startDubbing } = require('../src/main.js'));
+    ({ createDubbingCSV, startDubbing, validateCsv } = require('../src/main.js'));
 }
 
 beforeEach(() => {
@@ -139,5 +140,10 @@ describe('Manual Dub', () => {
         expect(text.endsWith('\n')).toBe(true);
         expect(text).toContain('"Hi ""Alice"""');
         expect(text).toContain('"Hallo ""Bob"""');
+    });
+
+    test('validateCsv lehnt fehlerhafte CSV ab', () => {
+        const csv = 'speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000';
+        expect(validateCsv(csv)).toBe(false);
     });
 });
