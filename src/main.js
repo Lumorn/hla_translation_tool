@@ -1,6 +1,7 @@
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
+let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let currentProject         = null;
 let files                  = [];
 let textDatabase           = {};
@@ -114,6 +115,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         levelColors = JSON.parse(savedLevelColors);
     }
 
+    const savedLevelOrders = localStorage.getItem('hla_levelOrders');
+    if (savedLevelOrders) {
+        levelOrders = JSON.parse(savedLevelOrders);
+    }
+
     initializeEventListeners();
 
     // 📁 Ordner-Anpassungen laden
@@ -197,6 +203,18 @@ function setLevelColor(levelName, color) {
 }
 /* =========================== LEVEL COLOR HELPERS END =========================== */
 
+/* =========================== LEVEL ORDER HELPERS START ======================== */
+function getLevelOrder(levelName) {
+    // Standardwert, falls keine Reihenfolge gesetzt ist
+    return levelOrders[levelName] || 999;
+}
+
+function setLevelOrder(levelName, order) {
+    levelOrders[levelName] = order;
+    saveLevelOrders();
+}
+/* =========================== LEVEL ORDER HELPERS END ========================== */
+
 // =========================== SAVELEVELCOLORS START ===========================
 function saveLevelColors() {
     try {
@@ -207,6 +225,16 @@ function saveLevelColors() {
     }
 }
 // =========================== SAVELEVELCOLORS END ===========================
+
+// =========================== SAVELEVELORDERS START ==========================
+function saveLevelOrders() {
+    try {
+        localStorage.setItem('hla_levelOrders', JSON.stringify(levelOrders));
+    } catch (e) {
+        console.error('[saveLevelOrders] Speichern fehlgeschlagen:', e);
+    }
+}
+// =========================== SAVELEVELORDERS END ============================
 
 
 
@@ -399,7 +427,9 @@ function renderProjects() {
         levelMap[lvl].push(p);
     });
 
-    Object.entries(levelMap).forEach(([lvl, prjs]) => {
+    Object.entries(levelMap)
+        .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]))
+        .forEach(([lvl, prjs]) => {
         const group = document.createElement('div');
         group.className = 'level-group';
         if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
@@ -407,8 +437,12 @@ function renderProjects() {
         const header = document.createElement('div');
         header.className = 'level-header';
         header.style.background = getLevelColor(lvl);
-        header.textContent = lvl;
-        header.onclick = () => {
+        header.innerHTML = `
+            <span class="level-title">${lvl}</span>
+            <button class="level-edit-btn" onclick="showLevelCustomization('${lvl}', event)">⚙️</button>
+        `;
+        header.onclick = (e) => {
+            if (e.target.classList.contains('level-edit-btn')) return;
             expandedLevel = expandedLevel === lvl ? null : lvl;
             renderProjects();
         };
@@ -417,6 +451,7 @@ function renderProjects() {
         const wrap = document.createElement('div');
         wrap.className = 'level-projects';
 
+        prjs.sort((a,b) => a.levelPart - b.levelPart);
         prjs.forEach(p => {
             const stats = calculateProjectStats(p);
             const done  = stats.enPercent === 100 &&
@@ -7067,6 +7102,78 @@ function showProjectCustomization(id, ev) {
     };
 }
 /* =========================== SHOW PROJECT CUSTOMIZATION END =========================== */
+/* =========================== SHOW LEVEL CUSTOMIZATION START ======================== */
+function showLevelCustomization(levelName, ev) {
+    ev?.stopPropagation();
+    const order = getLevelOrder(levelName) || 1;
+    const color = getLevelColor(levelName);
+
+    const ov = document.createElement('div');
+    ov.className = 'customize-popup-overlay';
+    ov.onclick   = () => document.body.removeChild(ov);
+
+    const pop = document.createElement('div');
+    pop.className = 'folder-customize-popup';
+    pop.onclick   = e => e.stopPropagation();
+
+    pop.innerHTML = `
+      <h4>⚙️ Level-Einstellungen</h4>
+
+      <div class="customize-field">
+        <label>Level-Name:</label>
+        <input id="lvlName" value="${levelName}">
+      </div>
+
+      <div class="customize-field">
+        <label>Reihenfolge:</label>
+        <input type="number" id="lvlOrder" min="1" max="99" value="${order}">
+      </div>
+
+      <div class="customize-field">
+        <label>Farbe:</label>
+        <input type="color" id="lvlColor" value="${color}">
+      </div>
+
+      <div class="customize-buttons">
+        <button class="btn btn-secondary" id="lvlCancel">Abbrechen</button>
+        <button class="btn btn-success"   id="lvlSave">Speichern</button>
+      </div>
+    `;
+
+    ov.appendChild(pop);
+    document.body.appendChild(ov);
+
+    pop.querySelector('#lvlCancel').onclick = () => document.body.removeChild(ov);
+
+    pop.querySelector('#lvlSave').onclick = () => {
+        const newName  = pop.querySelector('#lvlName').value.trim() || levelName;
+        const newOrder = Math.max(1, parseInt(pop.querySelector('#lvlOrder').value) || 1);
+        const newColor = pop.querySelector('#lvlColor').value;
+
+        projects.forEach(p => {
+            if (p.levelName === levelName) {
+                p.levelName = newName;
+                p.color = newColor;
+            }
+        });
+
+        if (levelColors[levelName] && levelName !== newName) delete levelColors[levelName];
+        if (levelOrders[levelName] && levelName !== newName) delete levelOrders[levelName];
+
+        levelColors[newName] = newColor;
+        levelOrders[newName] = newOrder;
+
+        if (expandedLevel === levelName) expandedLevel = newName;
+
+        saveProjects();
+        saveLevelColors();
+        saveLevelOrders();
+        renderProjects();
+
+        document.body.removeChild(ov);
+    };
+}
+/* =========================== SHOW LEVEL CUSTOMIZATION END ========================== */
 
 
 
