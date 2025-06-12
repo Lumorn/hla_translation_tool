@@ -434,11 +434,12 @@ function renderProjects() {
         group.className = 'level-group';
         if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
+        const order  = getLevelOrder(lvl);
         const header = document.createElement('div');
         header.className = 'level-header';
         header.style.background = getLevelColor(lvl);
         header.innerHTML = `
-            <span class="level-title">${lvl}</span>
+            <span class="level-title">${order}.${lvl}</span>
             <button class="level-edit-btn" onclick="showLevelCustomization('${lvl}', event)">⚙️</button>
         `;
         header.onclick = (e) => {
@@ -762,9 +763,10 @@ function renderLevelStats() {
         const col  = pct === 100 ? '#4caf50' : pct >= 50 ? '#ff9800' : '#f44336';
         const cols = getLevelColor(lvl);
 
+        const ord = getLevelOrder(lvl);
         html += `
           <tr>
-            <td style="padding:6px 8px;border-bottom:1px solid #333;color:${cols};font-weight:600;">${lvl}</td>
+            <td style="padding:6px 8px;border-bottom:1px solid #333;color:${cols};font-weight:600;">${ord}.${lvl}</td>
             <td style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${b.parts.size}</td>
             <td style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${b.en} / ${b.de} / ${b.both} / ${b.total}</td>
             <td style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;color:${col};font-weight:600;">${pct}%</td>
@@ -7052,7 +7054,10 @@ function showProjectCustomization(id, ev) {
         <label>Level-Name:</label>
         <select id="cLevel">
           <option value="">– neu –</option>
-          ${knownLevels.map(l => `<option ${l===prj.levelName?'selected':''}>${l}</option>`).join('')}
+          ${knownLevels.map(l => {
+              const ord = getLevelOrder(l);
+              return `<option ${l===prj.levelName?'selected':''} value="${l}">${ord}.${l}</option>`;
+          }).join('')}
         </select>
         <input id="cLevelNew"
                placeholder="Neuen Level-Namen"
