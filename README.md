@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.18.8-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,6 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
+* [✨ Neue Features in 1.18.8](#-neue-features-in-1.18.8)
 * [✨ Neue Features in 1.18.7](#-neue-features-in-1.18.7)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
@@ -26,6 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.18.8
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Besseres Fehlerlogging** | Hinweis bei `dubbing_not_found` im Download. |
 
 ## ✨ Neue Features in 1.18.7
 
@@ -439,6 +446,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Lösung:** Haupt‑Audio‑Ordner erneut einlesen
 * ▶ **Prüfung:** Debug‑Spalte zeigt Pfad‑Status
 
+**⚠️ dubbing_not_found**
+* ▶ **Ursache:** Die deutsche Spur wurde noch nicht erzeugt.
+* ▶ **Lösung:** Beim Anlegen `target_lang:"de"` setzen und Datei unter `/audio/de` abrufen.
+
 
 **🔄 Duplikate in Datenbank**
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
@@ -461,7 +472,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.18.7 (aktuell)
+### 1.18.8 (aktuell)
+
+**✨ Neue Features:**
+* Hinweistext bei `dubbing_not_found` erklärt fehlende Zielsprache.
+
+### 1.18.7
 
 **✨ Neue Features:**
 * Dubbing-Log wird nicht mehr im Browser gespeichert und bei jedem Dub automatisch geleert.

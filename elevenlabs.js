@@ -81,7 +81,12 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
     }
 
     if (!response.ok) {
-        throw new Error('Download fehlgeschlagen: ' + errText);
+        let hinweis = '';
+        // Spezieller Hinweis für 'dubbing_not_found'
+        if (errText.includes('dubbing_not_found')) {
+            hinweis = ' - Zielsprache fehlt oder falscher Download-Pfad';
+        }
+        throw new Error('Download fehlgeschlagen: ' + errText + hinweis);
     }
 
     return await new Promise((resolve, reject) => {
