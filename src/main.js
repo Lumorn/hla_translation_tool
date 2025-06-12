@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.13.3';
+const APP_VERSION = '1.14.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6393,6 +6393,8 @@ async function startDubbing(fileId, settings = {}) {
         addDubbingLog('Übersetzung fehlt');
         return;
     }
+    // CSV-Text für Fehlerausgabe zwischenspeichern
+    const csvText = await csvBlob.text();
     form.append('csv_file', csvBlob, 'input.csv');
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {
@@ -6420,6 +6422,10 @@ async function startDubbing(fileId, settings = {}) {
         const errText = await res.text();
         updateStatus('Dubbing fehlgeschlagen');
         addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${errText}`);
+        // Bei HTTP 400 den Anfang der CSV ausgeben
+        if (res.status === 400) {
+            addDubbingLog('CSV-Ausschnitt: ' + csvText.slice(0, 200));
+        }
         return;
     }
     const data = await res.json();

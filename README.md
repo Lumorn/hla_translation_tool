@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.13.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.14.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.13.3](#-neue-features-in-1.13.3)
+* [✨ Neue Features in 1.14.0](#-neue-features-in-1.14.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,15 +27,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.13.3
+## ✨ Neue Features in 1.14.0
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Übersetzung prüfen** | `startDubbing()` bricht nun ab, wenn EN- oder DE-Text fehlt. |
-| **Abbruch bei Fehler**    | Polling erkennt `failed` und stoppt das Dubbing mit Meldung. |
-| **Dubbing-ID merken**     | Nach dem Download wird die ID gespeichert und kann zum erneuten Herunterladen genutzt werden. |
-| **Log im Browser gespeichert** | Dubbing-Protokoll wird lokal im Browser gesichert. |
-| **CRLF-Zeilenende** | CSV-Dateien für Manual Dub besitzen nun `\r\n` am Ende. |
+| **CSV-Ausschnitt bei Fehler** | Upload schlägt mit Status 400 fehl? Im Dubbing-Protokoll erscheinen nun die ersten 200 Zeichen der CSV. |
 
 ## ✨ Neue Features in 1.12.7
 
@@ -221,6 +217,7 @@ speaker,start_time,end_time,transcription,translation
 ### Dubbing-Protokoll
 
 Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
+Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeugten CSV angezeigt. So lässt sich schnell prüfen, ob die Daten korrekt formatiert sind.
 
 ### Version aktualisieren
 
@@ -424,10 +421,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.13.3 (aktuell) - Fehlende Übersetzung
+### 1.14.0 (aktuell) - CSV im Log
 
 **✨ Neue Features:**
-* Abbruch bei fehlendem Text in `startDubbing()`.
+* Bei Upload-Fehlern (Status 400) zeigt das Protokoll die ersten 200 Zeichen der erzeugten CSV an.
 
 ### 1.13.2 - CSV-CRLF
 
@@ -654,7 +651,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.13.3** - Verbesserte Fehlerausgabe
+**Version 1.14.0** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
