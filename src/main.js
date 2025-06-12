@@ -517,12 +517,15 @@ function renderProjects() {
             card.style.background = getLevelColor(p.levelName);
 
             const badge = `<span class="level-part-badge">${p.levelPart}</span>`;
-            const doneMark = done ? `<span class="project-done-marker">✅</span>` : '';
+            const iconWrapper = `
+                <div class="project-icon-wrapper" style="display:flex;flex-direction:column;align-items:center;">
+                    <span style="font-size:16px;">${getLevelIcon(p.levelName)}</span>
+                    ${done ? '<span class="project-done-marker">✅</span>' : ''}
+                </div>`;
             card.innerHTML = `
                 ${badge}
-                ${doneMark}
                 <div style="display:flex;gap:8px;align-items:flex-start;">
-                    <span style="font-size:16px;">${getLevelIcon(p.levelName)}</span>
+                    ${iconWrapper}
                     <div style="flex:1;min-width:0;">
                         <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             ${p.name}
@@ -4807,7 +4810,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.10.0',
+                version: '3.11.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7254,7 +7257,15 @@ function showLevelCustomization(levelName, ev) {
 
       <div class="customize-field">
         <label>Icon:</label>
-        <input id="lvlIcon" value="${icon}">
+        <input id="lvlIcon" value="${icon}" maxlength="2">
+        <select id="lvlIconSelect">
+          <option value="">-- Icon wählen --</option>
+          <option value="👤">👤</option>
+          <option value="👩">👩</option>
+          <option value="🤖">🤖</option>
+          <option value="🧟">🧟</option>
+          <option value="📁">📁</option>
+        </select>
       </div>
 
       <div class="customize-buttons">
@@ -7265,6 +7276,14 @@ function showLevelCustomization(levelName, ev) {
 
     ov.appendChild(pop);
     document.body.appendChild(ov);
+
+    const iconInput = pop.querySelector('#lvlIcon');
+    const iconSelect = pop.querySelector('#lvlIconSelect');
+    if(iconSelect){
+        iconSelect.onchange = () => {
+            if(iconSelect.value) iconInput.value = iconSelect.value;
+        };
+    }
 
     pop.querySelector('#lvlCancel').onclick = () => document.body.removeChild(ov);
 
@@ -7627,7 +7646,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.10.0 - Gemeinsame Projekt-Icons');
+        console.log('Version 3.11.0 - Icon-Auswahl & Haken-Fix');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
