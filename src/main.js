@@ -92,18 +92,6 @@ function stopCurrentPlayback() {
 
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
-    // Zuerst Level-Farben und Level-Reihenfolgen aus dem Local Storage laden
-    const savedLevelColors = localStorage.getItem('hla_levelColors');
-    if (savedLevelColors) {
-        levelColors = JSON.parse(savedLevelColors);
-    }
-
-    const savedLevelOrders = localStorage.getItem('hla_levelOrders');
-    if (savedLevelOrders) {
-        levelOrders = JSON.parse(savedLevelOrders);
-    }
-
-    // Danach Projekte einlesen und anzeigen
     loadProjects();
 
     // Desktop-Version: automatisch EN- und DE-Ordner einlesen
@@ -218,7 +206,7 @@ function setLevelColor(levelName, color) {
 /* =========================== LEVEL ORDER HELPERS START ======================== */
 function getLevelOrder(levelName) {
     // Standardwert, falls keine Reihenfolge gesetzt ist
-    return levelOrders[levelName] || 9999;
+    return levelOrders[levelName] || 999;
 }
 
 function setLevelOrder(levelName, order) {
@@ -7143,7 +7131,7 @@ function showLevelCustomization(levelName, ev) {
 
       <div class="customize-field">
         <label>Reihenfolge:</label>
-        <input type="number" id="lvlOrder" min="1" max="9999" value="${order}">
+        <input type="number" id="lvlOrder" min="1" max="99" value="${order}">
       </div>
 
       <div class="customize-field">
