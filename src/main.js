@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '__VERSION__';
+const APP_VERSION = '1.18.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6349,6 +6349,23 @@ function createDubbingCSV(file, durationMs) {
     if (!csv.endsWith('\n')) csv += '\n';
     return new Blob([csv], { type: 'text/csv' });
 }
+
+// Prüft den Aufbau einer CSV-Datei für Manual Dub
+function validateCsv(csvText) {
+    // Zeilen aufteilen (Leerzeilen ignorieren)
+    const lines = csvText.trim().split(/\r?\n/).filter(l => l.length > 0);
+    if (lines.length < 2) return false;
+    // Kopfzeile muss exakt passen
+    if (lines[0].trim() !== 'speaker,start_time,end_time,transcription,translation') {
+        return false;
+    }
+    // Jede weitere Zeile muss genau 5 Spalten besitzen
+    for (let i = 1; i < lines.length; i++) {
+        const cells = lines[i].match(/(?:"(?:[^"]|"")*"|[^,]+)/g) || [];
+        if (cells.length !== 5) return false;
+    }
+    return true;
+}
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
 // =========================== STARTDUBBING START =============================
@@ -6416,6 +6433,11 @@ async function startDubbing(fileId, settings = {}) {
     // CSV-Text für Log und Fehlerausgabe zwischenspeichern
     const csvText = await csvBlob.text();
     addDubbingLog('CSV-Text: ' + csvText);
+    // Vor dem Upload die CSV-Struktur prüfen
+    if (!validateCsv(csvText)) {
+        addDubbingLog('Ungültige CSV');
+        return;
+    }
     form.append('csv_file', csvBlob, 'input.csv');
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {
@@ -8662,6 +8684,7 @@ if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         showDubbingSettings,
         createDubbingCSV,
+        validateCsv,
         msToHHMMSS,
         startDubbing,
         redownloadDubbing,
