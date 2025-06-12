@@ -46,6 +46,9 @@ let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')
 let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
 let autoBackupTimer    = null;
 
+// API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
+let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
+
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
@@ -4273,6 +4276,11 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
                     <input type="color" id="customColor" value="${currentColor}" onInput="updateCustomizationPreview()">
                     <span class="color-preview" id="colorPreview" style="background: ${currentColor};"></span>
                 </div>
+
+                <div class="customize-field">
+                    <label>Voice ID:</label>
+                    <input type="text" id="customVoiceId" value="${customization.voiceId || ''}" placeholder="ElevenLabs-ID">
+                </div>
                 
                 <div class="customize-field">
                     <label>Voreinstellungen:</label>
@@ -4349,11 +4357,16 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         function saveFolderCustomization(folderName) {
             const iconInput = document.getElementById('customIcon');
             const colorInput = document.getElementById('customColor');
-            
+            const voiceInput = document.getElementById('customVoiceId');
+
             folderCustomizations[folderName] = {
                 icon: iconInput.value || '📁',
-                color: colorInput.value || '#333333'
+                color: colorInput.value || '#333333',
+                voiceId: voiceInput.value.trim()
             };
+            if (!folderCustomizations[folderName].voiceId) {
+                delete folderCustomizations[folderName].voiceId;
+            }
             
             saveFolderCustomizations();
             closeFolderCustomization();
@@ -4810,7 +4823,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.12.3',
+                version: '3.13.1',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -4913,6 +4926,56 @@ function checkFileAccess() {
                 alert('Nur in der Desktop-Version verfügbar');
             }
         }
+
+        // =========================== SHOWAPIDIALOG START ======================
+        function showApiDialog() {
+            document.getElementById('apiDialog').style.display = 'flex';
+            document.getElementById('apiKeyInput').value = elevenLabsApiKey;
+
+            const list = document.getElementById('voiceIdList');
+            list.innerHTML = '';
+
+            // Alle bekannten Ordner sammeln – aus der Pfaddatenbank und bereits gespeicherten Anpassungen
+            const folderSet = new Set(Object.keys(folderCustomizations));
+            Object.values(filePathDatabase).forEach(paths => {
+                paths.forEach(p => folderSet.add(p.folder));
+            });
+            const folders = [...folderSet].sort();
+
+            folders.forEach(name => {
+                const cust = folderCustomizations[name] || {};
+                const id = cust.voiceId || '';
+                const row = document.createElement('div');
+                row.className = 'voice-id-item';
+                row.innerHTML = `<label>${escapeHtml(name)}<input data-folder="${escapeHtml(name)}" value="${id}" placeholder="voice_id"></label>`;
+                list.appendChild(row);
+            });
+            document.getElementById('apiKeyInput').focus();
+        }
+
+        function saveApiSettings() {
+            elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
+            localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
+
+            document.querySelectorAll('#voiceIdList input').forEach(inp => {
+                const folder = inp.dataset.folder;
+                const val = inp.value.trim();
+                if (!folderCustomizations[folder]) folderCustomizations[folder] = {};
+                if (val) {
+                    folderCustomizations[folder].voiceId = val;
+                } else {
+                    delete folderCustomizations[folder].voiceId;
+                }
+            });
+            saveFolderCustomizations();
+            closeApiDialog();
+            updateStatus('API-Einstellungen gespeichert');
+        }
+
+        function closeApiDialog() {
+            document.getElementById('apiDialog').style.display = 'none';
+        }
+        // =========================== SHOWAPIDIALOG END ========================
 
         function showHistoryDialog(file) {
             currentHistoryPath = getFullPath(file);
@@ -7646,7 +7709,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.12.3 - ElevenLabs-Anbindung');
+        console.log('Version 3.13.1 - API-Menü erweitert');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
