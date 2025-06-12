@@ -42,6 +42,9 @@ describe('ElevenLabs API', () => {
 
     test('Download-Fehler', async () => {
         nock(API)
+            .get('/v1/dubbing/abc')
+            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+        nock(API)
             .get('/v1/dubbing/abc/audio/de')
             .times(4)
             .reply(404, 'not found');
@@ -52,6 +55,9 @@ describe('ElevenLabs API', () => {
 
     test('Download erfolgreich', async () => {
         const outPath = path.join(__dirname, 'out.mp3');
+        nock(API)
+            .get('/v1/dubbing/xyz')
+            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
             .get('/v1/dubbing/xyz/audio/de')
             .reply(200, 'sound');
@@ -65,6 +71,9 @@ describe('ElevenLabs API', () => {
 
     test('Download klappt nach zweitem Versuch', async () => {
         const outPath = path.join(__dirname, 'retry.mp3');
+        nock(API)
+            .get('/v1/dubbing/retry')
+            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
             .get('/v1/dubbing/retry/audio/de')
             .reply(500, 'dubbing_not_found')

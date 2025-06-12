@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,6 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
+* [✨ Neue Features in 1.19.3](#-neue-features-in-1.19.3)
 * [✨ Neue Features in 1.19.2](#-neue-features-in-1.19.2)
 * [✨ Neue Features in 1.19.1](#-neue-features-in-1.19.1)
 * [✨ Neue Features in 1.19.0](#-neue-features-in-1.19.0)
@@ -30,6 +31,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.19.3
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Fehlerbehebung**        | Prüft `progress.langs.de` und wartet auf `finished`. |
 
 ## ✨ Neue Features in 1.19.2
 
@@ -495,7 +502,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.19.2 (aktuell)
+### 1.19.3 (aktuell)
+
+**✨ Neue Features:**
+* Prüft `progress.langs.de` und wartet auf `finished`.
+
+### 1.19.2
 
 **✨ Neue Features:**
 * Nur noch Basis-Endpunkte `/v1/dubbing` – Fehler `no_dubbing_api_access` behoben.
@@ -783,7 +795,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.18.6** - Sekundenformat im CSV
+**Version 1.19.3** - Prüft Fortschritt beim Dubbing
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
