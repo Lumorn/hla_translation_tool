@@ -7068,6 +7068,9 @@ function showProjectCustomization(id, ev) {
         <input id="cLevelNew"
                placeholder="Neuen Level-Namen"
                style="margin-top:8px;display:${prj.levelName?'none':'block'};">
+        <input type="number" id="cLevelOrder" min="1" max="9999"
+               placeholder="Level-Nummer"
+               style="margin-top:8px;display:${prj.levelName?'none':'block'};">
       </div>
 
       <div class="customize-field">
@@ -7092,8 +7095,11 @@ function showProjectCustomization(id, ev) {
     /* Eingabedynamik */
     const sel = pop.querySelector('#cLevel');
     const inp = pop.querySelector('#cLevelNew');
+    const ordInp = pop.querySelector('#cLevelOrder');
     sel.onchange = () => {
-        inp.style.display = sel.value ? 'none' : 'block';
+        const show = !sel.value;
+        inp.style.display = show ? 'block' : 'none';
+        ordInp.style.display = show ? 'block' : 'none';
     };
 
     pop.querySelector('#cCancel').onclick = () => document.body.removeChild(ov);
@@ -7106,6 +7112,12 @@ function showProjectCustomization(id, ev) {
         /* Level-Farbe global anwenden */
         const newColor = pop.querySelector('#cColor').value;
         setLevelColor(prj.levelName, newColor);
+
+        // Level-Reihenfolge setzen, falls neuer Level angelegt wird
+        if (!sel.value) {
+            const order = Math.max(1, parseInt(ordInp.value) || 1);
+            setLevelOrder(prj.levelName, order);
+        }
 
         saveProjects();
         updateProjectMetaBar();

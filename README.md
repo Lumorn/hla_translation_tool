@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.7.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.7.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.7.2](#-neue-features-in-372)
+* [✨ Neue Features in 3.7.3](#-neue-features-in-373)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.7.2
+## ✨ Neue Features in 3.7.3
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -40,6 +40,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Ordner‑Löschfunktion**   | Komplette Ordner können sicher aus der Datenbank gelöscht werden (mit Schutz vor Datenverlust). |
 | **Level-Reihenfolge sichtbar** | Dropdowns und Level-Kopfzeilen zeigen jetzt die zugehörige Zahl, z.B. `1.Levelname`. |
 | **Level-Nummern bis 9999** | Level-Reihenfolge und Teil-Nummern unterstützen jetzt Werte bis 9999. |
+| **Level-Nummer beim Erstellen** | Beim Anlegen eines neuen Levels kann sofort eine Reihenfolge-Zahl vergeben werden. |
 | **Cleanup‑Routine**        | Fehlende Dateien **ohne** EN & DE werden automatisch aus der DB entfernt. |
 | **Verbesserter UI‑Polish** | • Schließen‑Knopf (×) nun oben rechts 🡆 hover‑animiert.<br>• Fertige Projekte/Ordner erhalten leuchtend grünen Rahmen.<br>• Dark‑Theme‑Kontrast optimiert. |
 | **DE-Audio-Bearbeitung**   | DE-Audiodateien lassen sich direkt kürzen oder verlängern. Vor dem Speichern wird automatisch eine Sicherung im Ordner `DE-Backup` angelegt. |
@@ -318,10 +319,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.7.2 (aktuell) - Initialisierungsfehler behoben
+### 3.7.3 (aktuell) - Level-Nummer beim Anlegen
 
-**🐞 Bugfixes:**
-* Korrigiert die Anzeige der Level-Reihenfolge beim Start des Tools.
+**✨ Neue Features:**
+* **Level-Nummer beim Erstellen**: Beim Anlegen eines neuen Levels kann sofort eine Reihenfolge-Zahl vergeben werden.
 
 ### 3.7.1 - Level‑Nummern-Fix
 
@@ -422,7 +423,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.7.2** - Initialisierungsfehler behoben
+**Version 3.7.3** - Level-Nummer beim Anlegen
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
