@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.16.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-__VERSION__-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.16.3](#-neue-features-in-1.16.3)
+* [✨ Neue Features in __VERSION__](#-neue-features-in-__VERSION__)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,12 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.16.3
+## ✨ Neue Features in __VERSION__
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **CSV-Validierung** | Vor dem Upload wird die komplette CSV geloggt und ein fehlender Zeilenumbruch automatisch ergänzt. |
-| **Voice Cloning** | Ohne gespeicherte Voice-ID bleibt Voice Cloning aktiv. |
+| **Versionsplatzhalter** | HTML und JavaScript nutzen nun `__VERSION__` statt fester Zahlen. |
+| **Update-Skript** | `npm run update-version` ersetzt alle Platzhalter automatisch. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -241,7 +241,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 ### Version aktualisieren
 
 1. Nach jeder Änderung `package.json` anpassen.
-2. Platzhalter in allen Dateien mit `npm run update-version` füllen.
+2. Mit `npm run update-version` werden alle `__VERSION__`-Platzhalter automatisch durch die Versionsnummer ersetzt.
 
 ---
 
@@ -440,7 +440,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.16.3 (aktuell) - CSV-Validierung
+### __VERSION__ (aktuell) - Versionsplatzhalter
+
+**✨ Neue Features:**
+* Alle festen Versionsnummern wurden durch den Platzhalter `__VERSION__` ersetzt.
+* Das Skript `npm run update-version` trägt die aktuelle Version automatisch ein.
+
+### 1.16.3 - CSV-Validierung
 
 **✨ Neue Features:**
 * Vor dem Upload wird die komplette CSV geloggt.
@@ -687,7 +693,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.16.3** - CSV-Validierung
+**Version __VERSION__** - Versionsplatzhalter
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
