@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.6-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.7-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.6](#-neue-features-in-1.12.6)
+* [✨ Neue Features in 1.12.7](#-neue-features-in-1.12.7)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -26,6 +26,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+
+## ✨ Neue Features in 1.12.7
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **HH:MM:SS Zeitformat**   | `createDubbingCSV()` liefert Start- und Endzeiten nun als `HH:MM:SS.mmm`. |
 
 ## ✨ Neue Features in 1.12.6
 
@@ -189,13 +195,13 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Beim Dubbing wird diese Voice-ID automatisch verwendet und Voice Cloning deaktiviert.
 
-Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab und werden zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
+Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit erscheinen jetzt als `HH:MM:SS.mmm` und leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
 Beispiel einer gültigen CSV:
 
 ```csv
 speaker,start_time,end_time,transcription,translation
-0,0.000,1.000,"Hello","Hallo"
+0,00:00:00.000,00:00:01.000,"Hello","Hallo"
 ```
 
 ### Dubbing-Protokoll
@@ -404,7 +410,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.6 (aktuell) - Neuer Download-Retry
+### 1.12.7 (aktuell) - HH:MM:SS-Zeitformat
+
+**✨ Neue Features:**
+* Start- und Endzeit in `createDubbingCSV()` erscheinen nun als `HH:MM:SS.mmm`.
+
+### 1.12.6 - Neuer Download-Retry
 
 **✨ Neue Features:**
 * Bei fehlgeschlagenem Download folgen bis zu drei weitere Versuche.
@@ -607,7 +618,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.6** - Verbesserte Fehlerausgabe
+**Version 1.12.7** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
