@@ -29,13 +29,15 @@ describe('Manual Dub', () => {
                 return str.includes('name="csv_file"') &&
                        str.includes('name="mode"') &&
                        str.includes('manual') &&
-                       str.includes('name="voice_id"');
+                       str.includes('name="voice_id"') &&
+                       str.includes('name="target_languages"');
             })
             .reply(200, { id: '1' });
 
         const form = new FormData();
         form.append('file', new File(['dummy'], 'audio.mp3'));
         form.append('target_lang', 'de');
+        form.append('target_languages', '["de"]');
         form.append('mode', 'manual');
         form.append('dubbing_studio', 'true');
         form.append('csv_file', new File(['speaker,start,end,text,text'], 'input.csv'));
@@ -53,13 +55,15 @@ describe('Manual Dub', () => {
                 return str.includes('name="csv_file"') &&
                        str.includes('name="mode"') &&
                        str.includes('manual') &&
-                       !str.includes('name="voice_id"');
+                       !str.includes('name="voice_id"') &&
+                       str.includes('name="target_languages"');
             })
             .reply(200, { id: '2' });
 
         const form = new FormData();
         form.append('file', new File(['dummy'], 'audio.mp3'));
         form.append('target_lang', 'de');
+        form.append('target_languages', '["de"]');
         form.append('mode', 'manual');
         form.append('dubbing_studio', 'true');
         form.append('csv_file', new File(['speaker,start,end,text,text'], 'input.csv'));

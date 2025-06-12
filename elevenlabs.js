@@ -16,7 +16,9 @@ async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings
 
     const form = new FormData();
     form.append('file', fs.createReadStream(audioPath));
+    // Zielsprachen im neuen wie im alten Format senden
     form.append('target_lang', targetLang);
+    form.append('target_languages', JSON.stringify([targetLang]));
     // Optional: Voice-Settings als JSON anhängen
     if (voiceSettings && Object.keys(voiceSettings).length > 0) {
         form.append('voice_settings', JSON.stringify(voiceSettings));
