@@ -206,7 +206,7 @@ function setLevelColor(levelName, color) {
 /* =========================== LEVEL ORDER HELPERS START ======================== */
 function getLevelOrder(levelName) {
     // Standardwert, falls keine Reihenfolge gesetzt ist
-    return levelOrders[levelName] || 999;
+    return levelOrders[levelName] || 9999;
 }
 
 function setLevelOrder(levelName, order) {
@@ -7066,7 +7066,7 @@ function showProjectCustomization(id, ev) {
 
       <div class="customize-field">
         <label>Teil-Nummer:</label>
-        <input type="number" id="cPart" min="1" max="99" value="${prj.levelPart}">
+        <input type="number" id="cPart" min="1" max="9999" value="${prj.levelPart}">
       </div>
 
       <div class="customize-field">
@@ -7131,7 +7131,7 @@ function showLevelCustomization(levelName, ev) {
 
       <div class="customize-field">
         <label>Reihenfolge:</label>
-        <input type="number" id="lvlOrder" min="1" max="99" value="${order}">
+        <input type="number" id="lvlOrder" min="1" max="9999" value="${order}">
       </div>
 
       <div class="customize-field">
