@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.11.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.12.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.11.0](#-neue-features-in-3110)
+* [✨ Neue Features in 3.12.0](#-neue-features-in-3120)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.11.0
+## ✨ Neue Features in 3.12.0
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -52,6 +52,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Level-Haken**            | Level-Reiter zeigen einen grünen Haken, wenn alle Projekte darin 100% abgeschlossen sind. |
 | **Level-Icons**            | Jedes Level besitzt ein eigenes Icon, einstellbar im Level-Dialog. |
 | **Icon-Auswahl**           | Neben freier Eingabe kann man nun aus vordefinierten Icons wählen. |
+| **ElevenLabs-Dubbing**     | Erste Anbindung an die ElevenLabs-API zum automatischen Vertonen. |
 ---
 
 ## 🚀 Features (komplett)
@@ -327,7 +328,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.11.0 (aktuell) - Icon-Auswahl & Haken-Fix
+### 3.12.0 (aktuell) - ElevenLabs-Anbindung
+
+**✨ Neue Features:**
+* **ElevenLabs-Dubbing**: Audiodateien lassen sich jetzt direkt per API vertonen.
+
+### 3.11.0 - Icon-Auswahl & Haken-Fix
 
 **✨ Neue Features:**
 * **Icon-Auswahl**: Im Level-Dialog steht nun eine Liste gängiger Icons zur Verfügung.
@@ -438,7 +444,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.11.0** - Icon-Auswahl & Haken-Fix
+**Version 3.12.0** - ElevenLabs-Anbindung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
