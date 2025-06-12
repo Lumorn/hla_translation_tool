@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.4-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.19.3](#-neue-features-in-1.19.3)
+* [✨ Neue Features in 1.19.4](#-neue-features-in-1.19.4)
 * [✨ Neue Features in 1.19.2](#-neue-features-in-1.19.2)
 * [✨ Neue Features in 1.19.1](#-neue-features-in-1.19.1)
 * [✨ Neue Features in 1.19.0](#-neue-features-in-1.19.0)
@@ -32,11 +32,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.19.3
+## ✨ Neue Features in 1.19.4
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Fehlerbehebung**        | Prüft `progress.langs.de` und wartet auf `finished`. |
+| **Neue Funktion**        | StartDubbing akzeptiert jetzt eine frei wählbare Sprache. |
 
 ## ✨ Neue Features in 1.19.2
 
@@ -245,11 +245,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ```javascript
 const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
-const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'de', {
+const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'fr', {
     speed: 1.2
 });
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
-await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
+await downloadDubbingAudio(apiKey, job.dubbing_id, 'fr', 'sounds/FR/beispiel_fr.mp3');
 ```
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
@@ -281,7 +281,7 @@ Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
 
 Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Die Felder `start_time` und `end_time` enthalten seit Version 1.18.6 Sekundenwerte mit drei Nachkommastellen und leiten sich aus `trimStartMs` bzw. `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
-Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und `resource/render`. Ab Version 1.19.2 erfolgt das Dubbing ausschließlich über die Standard-Endpunkte: Nach `POST /v1/dubbing` wird regelmäßig `GET /v1/dubbing/<ID>` aufgerufen und das Ergebnis anschließend via `GET /v1/dubbing/<ID>/audio/de` heruntergeladen.
+Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und `resource/render`. Ab Version 1.19.2 erfolgt das Dubbing ausschließlich über die Standard-Endpunkte: Nach `POST /v1/dubbing` wird regelmäßig `GET /v1/dubbing/<ID>` aufgerufen und das Ergebnis anschließend via `GET /v1/dubbing/<ID>/audio/<sprache>` heruntergeladen.
 
 Beispiel einer gültigen CSV:
 
@@ -477,8 +477,8 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Prüfung:** Debug‑Spalte zeigt Pfad‑Status
 
 **⚠️ dubbing_not_found**
-* ▶ **Ursache:** Die deutsche Spur wurde noch nicht erzeugt.
-* ▶ **Lösung:** Beim Anlegen `target_lang:"de"` setzen und Datei unter `/audio/de` abrufen.
+* ▶ **Ursache:** Die gewählte Sprachspur wurde noch nicht erzeugt.
+* ▶ **Lösung:** Beim Anlegen `target_lang:"<sprache>"` setzen und Datei unter `/audio/<sprache>` abrufen.
 
 
 **🔄 Duplikate in Datenbank**
@@ -502,10 +502,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.19.3 (aktuell)
+### 1.19.4 (aktuell)
 
 **✨ Neue Features:**
-* Prüft `progress.langs.de` und wartet auf `finished`.
+* Dubbing-Sprache über Parameter frei wählbar.
 
 ### 1.19.2
 
@@ -795,7 +795,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.19.3** - Prüft Fortschritt beim Dubbing
+**Version 1.19.4** - Sprache für Dubbing wählbar
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
