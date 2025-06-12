@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.19.3';
+const APP_VERSION = '1.19.4';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6316,9 +6316,10 @@ function msToSeconds(ms) {
 }
 
 // Erstellt eine CSV-Zeile für das Manual Dubbing
-function createDubbingCSV(file, durationMs) {
+function createDubbingCSV(file, durationMs, lang = 'de') {
     // Prüfen, ob beide Texte vorhanden sind
-    if (!file.enText || !file.deText) {
+    const translation = file[`${lang}Text`] || file.deText;
+    if (!file.enText || !translation) {
         addDubbingLog('Übersetzung fehlt');
         return null;
     }
@@ -6334,7 +6335,7 @@ function createDubbingCSV(file, durationMs) {
     } else {
         endTime = msToSeconds(file.trimEndMs || 0);
     }
-    const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
+    const row = ['0', startTime, endTime, esc(file.enText), esc(translation)].join(',');
     // CSV-Zeile mit Zeilenende abschließen
     let csv = header + row + lineEnd;
     // Sicherheitshalber prüfen, ob ein Zeilenumbruch vorhanden ist
@@ -6363,7 +6364,7 @@ function validateCsv(csvText) {
 
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
-async function startDubbing(fileId, settings = {}) {
+async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     // Ordnerspezifische Voice-ID ermitteln
@@ -6417,11 +6418,11 @@ async function startDubbing(fileId, settings = {}) {
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     // Zielsprachen sowohl einzeln als auch als Liste übergeben
-    form.append('target_lang', 'de');
-    form.append('target_languages', JSON.stringify(['de']));
+    form.append('target_lang', targetLang);
+    form.append('target_languages', JSON.stringify([targetLang]));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
-    const csvBlob = createDubbingCSV(file, durationMs);
+    const csvBlob = createDubbingCSV(file, durationMs, targetLang);
     if (!csvBlob) {
         updateStatus('Übersetzung fehlt');
         addDubbingLog('Übersetzung fehlt');
@@ -6502,7 +6503,7 @@ async function startDubbing(fileId, settings = {}) {
             if (st.ok) {
                 const js = await st.json();
                 status = js.status;
-                const langInfo = js.progress && js.progress.langs && js.progress.langs.de;
+                const langInfo = js.progress && js.progress.langs && js.progress.langs[targetLang];
                 if (langInfo) {
                     langDone = langInfo.state === 'finished' || langInfo.progress === 100;
                 }
@@ -6530,7 +6531,7 @@ async function startDubbing(fileId, settings = {}) {
     let errText = '';
     for (let attempt = 0; attempt < 4; attempt++) {
         try {
-            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/de`, {
+            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/${targetLang}`, {
                 headers: { 'xi-api-key': elevenLabsApiKey }
             });
             if (audioRes.ok) break;
