@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.18.6';
+const APP_VERSION = '1.18.7';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -81,12 +81,12 @@ function debugLog(...args) {
 }
 
 // =========================== DUBBING-LOG START ===========================
+// Aktuelles Dubbing-Protokoll (wird nicht mehr gespeichert)
 let dubbingLogMessages = [];
 
 function addDubbingLog(msg) {
-    // Neue Meldung ans Ende hängen und dauerhaft speichern
+    // Neue Meldung anhängen, aber nur im Arbeitsspeicher behalten
     dubbingLogMessages.push(msg);
-    localStorage.setItem('hla_dubbingLog', JSON.stringify(dubbingLogMessages));
     const logPre = document.getElementById('dubbingLog');
     if (logPre) {
         logPre.textContent = dubbingLogMessages.join('\n');
@@ -95,9 +95,7 @@ function addDubbingLog(msg) {
 }
 
 function openDubbingLog() {
-    // Beim Öffnen gespeicherte Einträge laden
-    const stored = localStorage.getItem('hla_dubbingLog');
-    dubbingLogMessages = stored ? JSON.parse(stored) : [];
+    // Einfachen Log anzeigen (ohne Laden aus dem Speicher)
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = dubbingLogMessages.join('\n');
     document.getElementById('dubbingLogDialog').style.display = 'flex';
@@ -113,9 +111,8 @@ function copyDubbingLog() {
 }
 
 function clearDubbingLog() {
-    // Log-Einträge entfernen und Speicher leeren
+    // Log-Einträge entfernen (keine Speicherung mehr)
     dubbingLogMessages = [];
-    localStorage.removeItem('hla_dubbingLog');
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     updateStatus('Dubbing-Log gelöscht');
@@ -6371,6 +6368,10 @@ async function startDubbing(fileId, settings = {}) {
     if (!file) return;
     // Ordnerspezifische Voice-ID ermitteln
     const folderVoiceId = folderCustomizations[file.folder]?.voiceId;
+    // Log zu Beginn leeren
+    dubbingLogMessages = [];
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
     openDubbingLog();
     addDubbingLog(`Starte Dubbing für ${file.filename}`);
     if (!elevenLabsApiKey) {
@@ -6572,6 +6573,10 @@ async function startDubbing(fileId, settings = {}) {
 async function redownloadDubbing(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.dubbingId) return;
+    // Log zu Beginn leeren
+    dubbingLogMessages = [];
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
     openDubbingLog();
     addDubbingLog(`Lade Dubbing ${file.dubbingId} erneut`);
     if (!elevenLabsApiKey) {
