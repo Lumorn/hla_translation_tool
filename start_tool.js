@@ -29,7 +29,9 @@ try {
     run('git --version');
 } catch (err) {
     console.error('[Fehler] Git wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.');
+    console.error('Weitere Details siehe setup.log');
     log('Git nicht gefunden');
+    log(err.toString());
     process.exit(1);
 }
 
@@ -39,7 +41,9 @@ try {
     run('node --version');
 } catch (err) {
     console.error('[Fehler] Node.js wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.');
+    console.error('Weitere Details siehe setup.log');
     log('Node.js nicht gefunden');
+    log(err.toString());
     process.exit(1);
 }
 
@@ -49,7 +53,9 @@ try {
     run('npm --version');
 } catch (err) {
     console.error('[Fehler] npm wurde nicht gefunden. Node 22 enthaelt standardmaessig kein npm. Bitte "npm install -g npm" oder "corepack enable" ausfuehren.');
+    console.error('Weitere Details siehe setup.log');
     log('npm nicht gefunden');
+    log(err.toString());
     process.exit(1);
 }
 
@@ -79,7 +85,9 @@ try {
     run('git reset --hard HEAD -- :!sounds');
     log('Lokale Änderungen verworfen');
 } catch (err) {
+    console.error('git reset fehlgeschlagen. Weitere Details siehe setup.log');
     log('git reset fehlgeschlagen');
+    log(err.toString());
 }
 
 // ----------------------- git pull --------------------------
@@ -89,7 +97,9 @@ try {
     run('git pull');
     log('git pull erfolgreich');
 } catch (err) {
+    console.error('git pull fehlgeschlagen. Weitere Details siehe setup.log');
     log('git pull fehlgeschlagen');
+    log(err.toString());
 }
 
 // Sicherstellen, dass der Electron-Ordner vorhanden ist
@@ -100,7 +110,9 @@ if (!fs.existsSync('electron')) {
         run('git checkout -- electron');
         log('Electron-Ordner wiederhergestellt');
     } catch (err) {
+        console.error('Electron-Ordner konnte nicht wiederhergestellt werden. Weitere Details siehe setup.log');
         log('Electron-Ordner konnte nicht wiederhergestellt werden');
+        log(err.toString());
         process.exit(1);
     }
 }
@@ -113,7 +125,9 @@ try {
     run('npm install');
     log('npm install erfolgreich');
 } catch (err) {
+    console.error('npm install fehlgeschlagen. Weitere Details siehe setup.log');
     log('npm install fehlgeschlagen');
+    log(err.toString());
     process.exit(1);
 }
 

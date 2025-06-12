@@ -37,27 +37,33 @@ print("=== Starte HLA Translation Tool Setup ===")
 log("Pruefe Git-Version")
 try:
     run("git --version")
-except subprocess.CalledProcessError:
+except subprocess.CalledProcessError as e:
     print("[Fehler] Git wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.")
+    print("Weitere Details siehe setup.log")
     log("Git nicht gefunden")
+    log(str(e))
     sys.exit(1)
 
 # ----------------------- Node pruefen ----------------------
 log("Pruefe Node-Version")
 try:
     run("node --version")
-except subprocess.CalledProcessError:
+except subprocess.CalledProcessError as e:
     print("[Fehler] Node.js wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.")
+    print("Weitere Details siehe setup.log")
     log("Node.js nicht gefunden")
+    log(str(e))
     sys.exit(1)
 
 # ----------------------- npm pruefen -----------------------
 log("Pruefe npm-Version")
 try:
     run("npm --version")
-except subprocess.CalledProcessError:
+except subprocess.CalledProcessError as e:
     print("[Fehler] npm wurde nicht gefunden. Node 22 enthaelt standardmaessig kein npm. Bitte \"npm install -g npm\" oder \"corepack enable\" ausfuehren.")
+    print("Weitere Details siehe setup.log")
     log("npm nicht gefunden")
+    log(str(e))
     sys.exit(1)
 
 log("Repository-Pruefung")
@@ -82,7 +88,9 @@ try:
     run("git reset --hard HEAD -- :!sounds")
     log("Lokale Änderungen verworfen")
 except subprocess.CalledProcessError:
+    print("git reset fehlgeschlagen. Weitere Details siehe setup.log")
     log("git reset fehlgeschlagen")
+    log(str(sys.exc_info()[1]))
 
 # ----------------------- git pull --------------------------
 log("git pull starten")
@@ -91,7 +99,9 @@ try:
     run("git pull")
     log("git pull erfolgreich")
 except subprocess.CalledProcessError:
+    print("git pull fehlgeschlagen. Weitere Details siehe setup.log")
     log("git pull fehlgeschlagen")
+    log(str(sys.exc_info()[1]))
 
 # Sicherstellen, dass der Electron-Ordner existiert
 if not os.path.isdir("electron"):
@@ -100,8 +110,10 @@ if not os.path.isdir("electron"):
     try:
         run("git checkout -- electron")
         log("Electron-Ordner wiederhergestellt")
-    except subprocess.CalledProcessError:
+    except subprocess.CalledProcessError as e:
+        print("Electron-Ordner konnte nicht wiederhergestellt werden. Weitere Details siehe setup.log")
         log("Electron-Ordner konnte nicht wiederhergestellt werden")
+        log(str(e))
         sys.exit(1)
 
 # ----------------------- Electron-Setup --------------------
@@ -112,7 +124,9 @@ try:
     run("npm install")
     log("npm install erfolgreich")
 except subprocess.CalledProcessError:
+    print("npm install fehlgeschlagen. Weitere Details siehe setup.log")
     log("npm install fehlgeschlagen")
+    log(str(sys.exc_info()[1]))
     sys.exit(1)
 
 print("Anwendung wird gestartet...")
