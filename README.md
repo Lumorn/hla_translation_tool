@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.8-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.13.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.8](#-neue-features-in-1.12.8)
+* [✨ Neue Features in 1.13.0](#-neue-features-in-1.13.0)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.12.8
+## ✨ Neue Features in 1.13.0
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **Abbruch bei Fehler**    | Polling erkennt `failed` und stoppt das Dubbing mit Meldung. |
+| **Dubbing-ID merken**     | Nach dem Download wird die ID gespeichert und kann zum erneuten Herunterladen genutzt werden. |
 
 ## ✨ Neue Features in 1.12.7
 
@@ -198,6 +199,9 @@ Die Standardwerte werden über `getDefaultVoiceSettings` geladen und nach dem Sp
 
 Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Über den Button **Reset** lassen sich diese wieder auf die API-Defaults zurücksetzen.
+
+Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
+So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Beim Dubbing wird diese Voice-ID automatisch verwendet und Voice Cloning deaktiviert.
 
@@ -416,7 +420,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.8 (aktuell) - Polling-Abbruch
+### 1.13.0 (aktuell) - Dubbing-ID gespeichert
+
+**✨ Neue Features:**
+* Nach dem Download wird die Dubbing-ID im Projekt abgelegt.
+* Bei erneutem Klick auf **Dubbing** erscheint ein Menü zum erneuten Download oder Neu-Dubben.
+
+### 1.12.8 - Polling-Abbruch
 
 **✨ Neue Features:**
 * Bei `failed` stoppt der Polling-Loop sofort und zeigt die Fehlermeldung an.
@@ -629,7 +639,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.8** - Verbesserte Fehlerausgabe
+**Version 1.13.0** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
