@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.4-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.3](#-neue-features-in-1.12.3)
+* [✨ Neue Features in 1.12.4](#-neue-features-in-1.12.4)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,12 +27,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.12.3
+## ✨ Neue Features in 1.12.4
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **CSV-Header**            | `createDubbingCSV()` fügt nun eine Kopfzeile ein. |
 | **Neuer Test**            | `manualDub.test.js` kontrolliert den CSV-Inhalt. |
+| **GET-Test**              | `elevenlabs.test.js` simuliert `getDubbingStatus`. |
 
 ## ✨ Neue Features in 1.11.0
 
@@ -391,7 +392,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.3 (aktuell) - CSV-Header für Manual Dub
+### 1.12.4 (aktuell) - Zusätzliche GET-Tests
+
+**✨ Neue Features:**
+* Neue Jest-Tests prüfen `getDubbingStatus` auf korrekte Fehlerbehandlung.
+
+### 1.12.3 - CSV-Header für Manual Dub
 
 **✨ Neue Features:**
 * CSV-Dateien besitzen jetzt eine Kopfzeile.
@@ -577,7 +583,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.3** - Verbesserte Fehlerausgabe
+**Version 1.12.4** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
