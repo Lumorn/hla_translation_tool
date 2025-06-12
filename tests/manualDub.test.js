@@ -7,6 +7,20 @@ afterEach(() => {
     nock.cleanAll();
 });
 
+let createDubbingCSV;
+
+beforeAll(() => {
+    global.document = { addEventListener: jest.fn() };
+    global.window = { addEventListener: jest.fn() };
+    global.localStorage = {
+        getItem: () => null,
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+        clear: jest.fn()
+    };
+    ({ createDubbingCSV } = require('../src/main.js'));
+});
+
 describe('Manual Dub', () => {
     test('csv_file und voice_id werden übermittelt', async () => {
         const scope = nock(API)
@@ -53,5 +67,12 @@ describe('Manual Dub', () => {
         await fetch(`${API}/v1/dubbing`, { method: 'POST', body: form });
 
         expect(scope.isDone()).toBe(true);
+    });
+
+    test('createDubbingCSV liefert Kopfzeile und Daten', async () => {
+        const file = { enText: 'Hello', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
+        const blob = createDubbingCSV(file, 1000);
+        const text = await blob.text();
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,0.000,1.000,"Hello","Hallo"');
     });
 });

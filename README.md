@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.2](#-neue-features-in-1.12.2)
+* [✨ Neue Features in 1.12.3](#-neue-features-in-1.12.3)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,12 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.12.2
+## ✨ Neue Features in 1.12.3
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Ordnerstimmen**         | Jeder Ordner kann eine feste ElevenLabs-Stimme erhalten. |
-| **Neue Tests**            | `manualDub.test.js` prüft den manuellen Dubbing-Aufruf. |
+| **CSV-Header**            | `createDubbingCSV()` fügt nun eine Kopfzeile ein. |
+| **Neuer Test**            | `manualDub.test.js` kontrolliert den CSV-Inhalt. |
 
 ## ✨ Neue Features in 1.11.0
 
@@ -177,6 +177,13 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Beim Dubbing wird diese Voice-ID automatisch verwendet und Voice Cloning deaktiviert.
 
 Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab und werden zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
+
+Beispiel einer gültigen CSV:
+
+```csv
+speaker,start_time,end_time,transcription,translation
+0,0.000,1.000,"Hello","Hallo"
+```
 
 ### Dubbing-Protokoll
 
@@ -384,7 +391,14 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.2 (aktuell) - Verbesserte Fehlermeldungen
+### 1.12.3 (aktuell) - CSV-Header für Manual Dub
+
+**✨ Neue Features:**
+* CSV-Dateien besitzen jetzt eine Kopfzeile.
+* Jest-Test prüft den Inhalt von `createDubbingCSV()`.
+* Dokumentation enthält ein Beispiel für eine gültige CSV.
+
+### 1.12.2 - Verbesserte Fehlermeldungen
 
 **✨ Neue Features:**
 * Ordner können feste ElevenLabs-Stimmen erhalten. Die API erhält diese Voice-ID automatisch, Voice Cloning wird deaktiviert.
@@ -563,7 +577,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.2** - Verbesserte Fehlerausgabe
+**Version 1.12.3** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
