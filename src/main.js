@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.12.0';
+const APP_VERSION = '1.12.1';
 
 // =========================== GLOBAL STATE END ===========================
 
