@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.13.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.13.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.13.2](#-neue-features-in-1.13.2)
+* [✨ Neue Features in 1.13.3](#-neue-features-in-1.13.3)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,10 +27,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.13.2
+## ✨ Neue Features in 1.13.3
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
+| **Übersetzung prüfen** | `startDubbing()` bricht nun ab, wenn EN- oder DE-Text fehlt. |
 | **Abbruch bei Fehler**    | Polling erkennt `failed` und stoppt das Dubbing mit Meldung. |
 | **Dubbing-ID merken**     | Nach dem Download wird die ID gespeichert und kann zum erneuten Herunterladen genutzt werden. |
 | **Log im Browser gespeichert** | Dubbing-Protokoll wird lokal im Browser gesichert. |
@@ -423,7 +424,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.13.2 (aktuell) - CSV-CRLF
+### 1.13.3 (aktuell) - Fehlende Übersetzung
+
+**✨ Neue Features:**
+* Abbruch bei fehlendem Text in `startDubbing()`.
+
+### 1.13.2 - CSV-CRLF
 
 **✨ Neue Features:**
 * CSV-Dateien für Manual Dub enden nun mit `\r\n`.
@@ -648,7 +654,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.13.2** - Verbesserte Fehlerausgabe
+**Version 1.13.3** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

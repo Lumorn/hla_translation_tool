@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.13.2';
+const APP_VERSION = '1.13.3';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6308,6 +6308,11 @@ function msToHHMMSS(ms) {
 
 // Erstellt eine CSV-Zeile für das Manual Dubbing
 function createDubbingCSV(file, durationMs) {
+    // Prüfen, ob beide Texte vorhanden sind
+    if (!file.enText || !file.deText) {
+        addDubbingLog('Übersetzung fehlt');
+        return null;
+    }
     // Kopfzeile wird immer vorangestellt
     const header = 'speaker,start_time,end_time,transcription,translation\n';
     const esc = t => '"' + String(t || '').replace(/"/g, '""') + '"';
@@ -6383,6 +6388,11 @@ async function startDubbing(fileId, settings = {}) {
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
     const csvBlob = createDubbingCSV(file, durationMs);
+    if (!csvBlob) {
+        updateStatus('Übersetzung fehlt');
+        addDubbingLog('Übersetzung fehlt');
+        return;
+    }
     form.append('csv_file', csvBlob, 'input.csv');
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {

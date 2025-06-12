@@ -8,6 +8,7 @@ afterEach(() => {
 });
 
 let createDubbingCSV;
+let startDubbing;
 
 beforeAll(() => {
     global.document = { addEventListener: jest.fn() };
@@ -18,7 +19,19 @@ beforeAll(() => {
         removeItem: jest.fn(),
         clear: jest.fn()
     };
-    ({ createDubbingCSV } = require('../src/main.js'));
+    ({ createDubbingCSV, startDubbing } = require('../src/main.js'));
+});
+
+beforeEach(() => {
+    global.openDubbingLog = jest.fn();
+    global.addDubbingLog = jest.fn();
+    global.updateStatus = jest.fn();
+    global.findAudioInFilePathCache = jest.fn();
+    global.loadAudioBuffer = jest.fn();
+    global.files = [];
+    global.folderCustomizations = {};
+    global.elevenLabsApiKey = 'key';
+    global.fetch = jest.fn();
 });
 
 describe('Manual Dub', () => {
@@ -78,5 +91,17 @@ describe('Manual Dub', () => {
         const blob = createDubbingCSV(file, 1000);
         const text = await blob.text();
         expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,00:00:00.000,00:00:01.000,"Hello","Hallo"\r\n');
+    });
+
+    test('startDubbing bricht bei fehlender Übersetzung ab', async () => {
+        const fileObj = { id: 1, filename: 'a', folder: 'f', enText: '', deText: '' };
+        files.push(fileObj);
+        findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'a.mp3') });
+        loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
+
+        await startDubbing(1);
+
+        expect(updateStatus).toHaveBeenCalledWith('Übersetzung fehlt');
+        expect(fetch).not.toHaveBeenCalled();
     });
 });
