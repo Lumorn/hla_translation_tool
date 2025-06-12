@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.16.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.17.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.16.0](#-neue-features-in-3160)
+* [✨ Neue Features in 3.17.0](#-neue-features-in-3170)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.16.0
+## ✨ Neue Features in 3.17.0
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
@@ -37,6 +37,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **API-Key testen**      | Getrennter Button prüft den Key und färbt sich grün bei Erfolg. |
 | **Sichtbarer API-Key**  | Augen-Button zeigt/versteckt den eingegebenen Schlüssel. |
 | **Eigene IDs**          | Neue Voice-IDs können über einen Dialog hinzugefügt werden. |
+| **Fortschrittsanzeige** | Projektübergreifender Fortschritt mit Farbkennzeichnung im Dashboard. |
 ---
 
 ## 🚀 Features (komplett)
@@ -53,7 +54,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
-* **Projekt‑übergreifende Verfolgung:** Dateien zeigen Status über alle Projekte
+* **Projekt‑übergreifende Fortschrittsanzeige:** Dateien und Dashboard zeigen Status über alle Projekte
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen
 
@@ -327,11 +328,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.16.0 (aktuell) - Verbesserter API-Dialog
+### 3.17.0 (aktuell) - Globale Fortschrittsanzeige
 
 **✨ Neue Features:**
 * Test-Button für den API-Key mit grüner Erfolgsanzeige.
 * Fehler beim "Neue Stimme"-Knopf behoben; neuer Dialog zum Hinzufügen.
+* Neuer globaler Fortschrittsbalken über alle Projekte.
 
 ### 3.15.0 - Überarbeitetes API-Menü
 
@@ -470,7 +472,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.16.0** - Verbesserter API-Dialog
+**Version 3.17.0** - Globale Fortschrittsanzeige
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
