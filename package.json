@@ -1,6 +1,6 @@
 {
   "name": "hla_translation_tool",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "devDependencies": {
     "jest": "^29.6.1"
   },
