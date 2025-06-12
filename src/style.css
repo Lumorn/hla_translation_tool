@@ -1907,6 +1907,14 @@ th:nth-child(6) {
     align-items: center;
     justify-content: space-between;
 }
+.level-header-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.level-icon {
+    font-size: 16px;
+}
 .level-edit-btn {
     background: none;
     border: none;

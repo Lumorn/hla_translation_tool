@@ -2,6 +2,7 @@
 let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
+let levelIcons             = {}; // ⬅️ NEU: Icon je Level
 let currentProject         = null;
 let files                  = [];
 let textDatabase           = {};
@@ -120,6 +121,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         levelOrders = JSON.parse(savedLevelOrders);
     }
 
+    const savedLevelIcons = localStorage.getItem('hla_levelIcons');
+    if (savedLevelIcons) {
+        levelIcons = JSON.parse(savedLevelIcons);
+    }
+
     initializeEventListeners();
 
     // 📁 Ordner-Anpassungen laden
@@ -215,6 +221,18 @@ function setLevelOrder(levelName, order) {
 }
 /* =========================== LEVEL ORDER HELPERS END ========================== */
 
+
+/* =========================== LEVEL-ICON-HILFSFUNKTIONEN START ============== */
+function getLevelIcon(levelName) {
+    return levelIcons[levelName] || '📁';
+}
+
+function setLevelIcon(levelName, icon) {
+    levelIcons[levelName] = icon || '📁';
+    saveLevelIcons();
+}
+/* =========================== LEVEL-ICON-HILFSFUNKTIONEN ENDE =============== */
+
 // =========================== SAVELEVELCOLORS START ===========================
 function saveLevelColors() {
     try {
@@ -235,6 +253,16 @@ function saveLevelOrders() {
     }
 }
 // =========================== SAVELEVELORDERS END ============================
+
+// =========================== SAVELEVELICONS START ===========================
+function saveLevelIcons() {
+    try {
+        localStorage.setItem('hla_levelIcons', JSON.stringify(levelIcons));
+    } catch (e) {
+        console.error('[saveLevelIcons] Speichern fehlgeschlagen:', e);
+    }
+}
+// =========================== SAVELEVELICONS END =============================
 
 
 
@@ -312,6 +340,12 @@ function loadProjects() {
     const savedLevelOrders = localStorage.getItem('hla_levelOrders');
     if (savedLevelOrders) {
         levelOrders = JSON.parse(savedLevelOrders);
+    }
+
+    // 🆕 Level-Icons laden
+    const savedLevelIcons = localStorage.getItem('hla_levelIcons');
+    if (savedLevelIcons) {
+        levelIcons = JSON.parse(savedLevelIcons);
     }
 
     // DANN: Projekte laden
@@ -447,8 +481,12 @@ function renderProjects() {
 
         let levelDone = true; // Flag, ob alle Projekte fertig sind
 
+        const icon = getLevelIcon(lvl);
         header.innerHTML = `
-            <span class="level-title">${order}.${lvl}</span>
+            <div class="level-header-left">
+                <span class="level-icon">${icon}</span>
+                <span class="level-title">${order}.${lvl}</span>
+            </div>
             <button class="level-edit-btn" data-level="${lvl}" onclick="showLevelCustomization(this.dataset.level, event)">⚙️</button>
         `;
         header.onclick = (e) => {
@@ -535,7 +573,7 @@ function renderProjects() {
             const mark = document.createElement('span');
             mark.className = 'level-done-marker';
             mark.textContent = '✅';
-            header.appendChild(mark);
+            header.querySelector('.level-header-left').appendChild(mark);
         }
 
         group.appendChild(wrap);
@@ -4769,7 +4807,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.8',
+                version: '3.9.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7185,6 +7223,7 @@ function showLevelCustomization(levelName, ev) {
     ev?.stopPropagation();
     const order = getLevelOrder(levelName) || 1;
     const color = getLevelColor(levelName);
+    const icon  = getLevelIcon(levelName);
 
     const ov = document.createElement('div');
     ov.className = 'customize-popup-overlay';
@@ -7212,6 +7251,11 @@ function showLevelCustomization(levelName, ev) {
         <input type="color" id="lvlColor" value="${color}">
       </div>
 
+      <div class="customize-field">
+        <label>Icon:</label>
+        <input id="lvlIcon" value="${icon}">
+      </div>
+
       <div class="customize-buttons">
         <button class="btn btn-secondary" id="lvlCancel">Abbrechen</button>
         <button class="btn btn-success"   id="lvlSave">Speichern</button>
@@ -7228,6 +7272,7 @@ function showLevelCustomization(levelName, ev) {
         const newName  = pop.querySelector('#lvlName').value.trim() || levelName;
         const newOrder = Math.max(1, parseInt(pop.querySelector('#lvlOrder').value) || oldOrder);
         const newColor = pop.querySelector('#lvlColor').value;
+        const newIcon  = pop.querySelector('#lvlIcon').value || '📁';
 
         // Anzeigenamen der Projekte, falls noch identisch mit dem Levelnamen, ebenfalls aktualisieren
         const oldDisplayName = `${oldOrder}.${levelName}`;
@@ -7246,8 +7291,10 @@ function showLevelCustomization(levelName, ev) {
 
         if (levelColors[levelName] && levelName !== newName) delete levelColors[levelName];
         if (levelOrders[levelName] && levelName !== newName) delete levelOrders[levelName];
+        if (levelIcons[levelName]  && levelName !== newName) delete levelIcons[levelName];
 
         levelColors[newName] = newColor;
+        levelIcons[newName]  = newIcon;
         // Reihenfolge immer speichern
         setLevelOrder(newName, newOrder);
 
@@ -7256,6 +7303,7 @@ function showLevelCustomization(levelName, ev) {
         saveProjects();
         saveLevelColors();
         saveLevelOrders();
+        saveLevelIcons();
         renderProjects();
 
         document.body.removeChild(ov);
@@ -7589,7 +7637,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.8 - Fehlerkorrekturen');
+        console.log('Version 3.9.0 - Level-Icons');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
