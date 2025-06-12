@@ -289,6 +289,19 @@
                 <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
             </div>
+    </div>
+    </div>
+
+    <!-- Missing Folders Dialog -->
+    <div class="dialog-overlay" id="missingFoldersDialog" style="display:none">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeMissingFoldersDialog()">×</button>
+            <h3>🚮 Fehlende Ordner</h3>
+            <div id="missingFoldersList" style="margin:15px 0; max-height:300px; overflow:auto;"></div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeMissingFoldersDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="deleteSelectedMissingFolders()">Ausgewählte löschen</button>
+            </div>
         </div>
     </div>
 
@@ -399,7 +412,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.19.0</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.20.0</a>
 
     <script src="src/main.js"></script>
 </body>
