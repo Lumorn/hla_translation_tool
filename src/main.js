@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.16.1';
+const APP_VERSION = '1.16.2';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6421,11 +6421,11 @@ async function startDubbing(fileId, settings = {}) {
     if (settings && Object.keys(settings).length > 0) {
         form.append('voice_settings', JSON.stringify(settings));
     }
-    // Bei vorhandener Ordner-Stimme diese übergeben und Voice Cloning deaktivieren
+    // Bei vorhandener Ordner-Stimme Voice-ID übergeben und Voice Cloning abschalten
     if (folderVoiceId) {
         form.append('voice_id', folderVoiceId);
+        form.append('disable_voice_cloning', 'true');
     }
-    form.append('disable_voice_cloning', 'true');
 
     let res;
     try {
