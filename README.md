@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.23.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.23.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.23.1](#-neue-features-in-3231)
+* [✨ Neue Features in 3.23.2](#-neue-features-in-3232)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.23.1
+## ✨ Neue Features in 3.23.2
 
 |  Kategorie                 |  Beschreibung
 | -------------------------- | ------------------------------------------------- |
@@ -335,11 +335,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.23.1 (aktuell) - Dubbing-Protokoll
+### 3.23.2 (aktuell) - Streaming-Fix
 
 **✨ Neue Features:**
 * Pro Datei kann per Klick ein automatisches Dubbing via ElevenLabs gestartet werden.
 * Neues Protokollfenster zeigt den Ablauf und kann kopiert werden.
+* Download speichert Audios jetzt per Stream (schneller und speicherschonend).
 
 ### 3.21.1 - Ordnerlisten bereinigt
 
@@ -494,7 +495,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.23.1** - Dubbing-Protokoll hinzugefügt
+**Version 3.23.2** - Streaming-Fix beim Audio-Download
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

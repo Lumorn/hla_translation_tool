@@ -48,6 +48,19 @@ describe('ElevenLabs API', () => {
         await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3')).rejects.toThrow('Download fehlgeschlagen');
     });
 
+    test('Download erfolgreich', async () => {
+        const outPath = path.join(__dirname, 'out.mp3');
+        nock(API)
+            .get('/v1/dubbing/xyz/audio/de')
+            .reply(200, 'sound');
+
+        const result = await downloadDubbingAudio('key', 'xyz', 'de', outPath);
+        const data = fs.readFileSync(outPath, 'utf8');
+        fs.unlinkSync(outPath);
+        expect(result).toBe(outPath);
+        expect(data).toBe('sound');
+    });
+
     test('Status erfolgreich abgefragt', async () => {
         nock(API)
             .get('/v1/dubbing/123')
