@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.10.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.10.2](#-neue-features-in-1.10.2)
+* [✨ Neue Features in 1.10.3](#-neue-features-in-1.10.3)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,13 +27,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.10.2
+## ✨ Neue Features in 1.10.3
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **Schneller Dialog**      | Dubbing-Einstellungsfenster öffnet sich nun sofort. |
 
-## ✨ Neue Features in 1.10.2
+## ✨ Neue Features in 1.10.3
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
@@ -369,11 +369,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.10.2 (aktuell) - Sofort sichtbarer Dubbing-Dialog
+### 1.10.3 (aktuell) - Test für Dubbing-Dialog
 
 **✨ Neue Features:**
-* Einstellungsfenster öffnet sich ohne Verzögerung.
-
+* Neuer Jest-Test prüft das Anzeigen des Dubbing-Dialogs.
 ### 1.10.2 - Dubbing-Dialog erklärt
 
 **✨ Neue Features:**
@@ -542,7 +541,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.10.2** - Sofort sichtbarer Dubbing-Dialog
+**Version 1.10.3** - Test für Dubbing-Dialog
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
@@ -561,7 +560,7 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
-ElevenLabs‑Anbindung (z. B. `getDubbingStatus`), die die API‑Aufrufe mit **nock** simulieren.
+ElevenLabs‑Anbindung (z. B. `getDubbingStatus`), die die API‑Aufrufe mit **nock** simulieren. Neu prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint.
 
 ## 🧩 Wichtige Funktionen
 
