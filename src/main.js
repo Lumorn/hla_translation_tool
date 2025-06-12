@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.19.0';
+const APP_VERSION = '1.19.1';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6491,9 +6491,26 @@ async function startDubbing(fileId, settings = {}) {
     updateStatus('Dubbing läuft...');
     addDubbingLog('Clips werden vertont...');
     try {
+        // Segment-IDs abrufen
+        const infoRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${id}`, {
+            headers: { 'xi-api-key': elevenLabsApiKey }
+        });
+        if (!infoRes.ok) {
+            const t = await infoRes.text();
+            addDubbingLog(t);
+            updateStatus('Dubbing fehlgeschlagen');
+            return;
+        }
+        const info = await infoRes.json();
+        const segIds = Object.keys(info.speaker_segments || {});
+
         const dubCall = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${id}/dub`, {
             method: 'POST',
-            headers: { 'xi-api-key': elevenLabsApiKey }
+            headers: {
+                'xi-api-key': elevenLabsApiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ segments: segIds, languages: ['de'] })
         });
         if (!dubCall.ok) {
             const t = await dubCall.text();

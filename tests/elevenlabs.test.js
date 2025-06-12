@@ -131,11 +131,15 @@ describe('ElevenLabs API', () => {
     });
 
     test('dubSegments sendet Request', async () => {
+        const resInfo = nock(API)
+            .get('/v1/dubbing/resource/55')
+            .reply(200, { speaker_segments: { '0': {} } });
         const scope = nock(API)
-            .post('/v1/dubbing/resource/55/dub')
+            .post('/v1/dubbing/resource/55/dub', { segments: ['0'], languages: ['de'] })
             .reply(200, { ok: true });
 
         const res = await dubSegments('key', '55');
+        expect(resInfo.isDone()).toBe(true);
         expect(scope.isDone()).toBe(true);
         expect(res).toEqual({ ok: true });
     });
