@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.1](#-neue-features-in-1.12.1)
+* [✨ Neue Features in 1.12.2](#-neue-features-in-1.12.2)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,7 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.12.1
+## ✨ Neue Features in 1.12.2
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
@@ -177,6 +177,10 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Beim Dubbing wird diese Voice-ID automatisch verwendet und Voice Cloning deaktiviert.
 
 Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab und werden zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
+
+### Dubbing-Protokoll
+
+Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
 
 ### Version aktualisieren
 
@@ -380,11 +384,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.1 (aktuell) - Manual-Dub-Test
+### 1.12.2 (aktuell) - Verbesserte Fehlermeldungen
 
 **✨ Neue Features:**
 * Ordner können feste ElevenLabs-Stimmen erhalten. Die API erhält diese Voice-ID automatisch, Voice Cloning wird deaktiviert.
 * Zusätzlicher Jest-Test `manualDub.test.js` sichert den manuellen Dubbing-Workflow.
+* Dubbing-Protokoll zeigt jetzt HTTP-Code und Server-Text bei Fehlern an.
 
 ### 1.11.0 - Manual Dub per CSV
 
@@ -558,7 +563,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.1** - Feste Ordnerstimmen
+**Version 1.12.2** - Verbesserte Fehlerausgabe
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
