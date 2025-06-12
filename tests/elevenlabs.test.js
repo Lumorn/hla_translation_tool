@@ -49,6 +49,15 @@ describe('ElevenLabs API', () => {
         await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3')).rejects.toThrow('Download fehlgeschlagen');
     });
 
+    test('Hinweis bei dubbing_not_found', async () => {
+        nock(API)
+            .get('/v1/dubbing/hint/audio/de')
+            .times(4)
+            .reply(404, 'dubbing_not_found');
+
+        await expect(downloadDubbingAudio('key', 'hint', 'de', 'out.mp3')).rejects.toThrow('falscher Download-Pfad');
+    });
+
     test('Download erfolgreich', async () => {
         const outPath = path.join(__dirname, 'out.mp3');
         nock(API)
