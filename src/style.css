@@ -1923,11 +1923,11 @@ th:nth-child(6) {
 .level-group.collapsed .level-projects { display: none; }
 /* =========================== LEVEL-GROUP STYLES END ========================= */
 
-/* Versionsnummer unten rechts */
+/* Versionsnummer oben links */
 #versionLink {
     position: fixed;
-    bottom: 5px;
-    right: 10px;
+    top: 5px;
+    left: 10px;
     font-size: 12px;
     color: #888;
     text-decoration: none;

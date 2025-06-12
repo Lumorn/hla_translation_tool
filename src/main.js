@@ -4763,7 +4763,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.0',
+                version: '3.8.1',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7098,20 +7098,21 @@ function showProjectCustomization(id, ev) {
     ov.appendChild(pop);
     document.body.appendChild(ov);
 
-    // Fokussiere das Namensfeld
-    pop.querySelector('#lvlName').focus();
+    // ⬇️ Eingabeelemente nach dem Einfügen referenzieren
+    const sel    = pop.querySelector('#cLevel');
+    const inp    = pop.querySelector('#cLevelNew');
+    const ordInp = pop.querySelector('#cLevelOrder');
 
-    // Fokussiere direkt das passende Eingabefeld
+    // Fokus direkt aufs richtige Feld setzen
     if (!sel.value) {
+        inp.style.display = 'block';
+        ordInp.style.display = 'block';
         inp.focus();
     } else {
         pop.querySelector('#cName').focus();
     }
 
     /* Eingabedynamik */
-    const sel = pop.querySelector('#cLevel');
-    const inp = pop.querySelector('#cLevelNew');
-    const ordInp = pop.querySelector('#cLevelOrder');
     sel.onchange = () => {
         const show = !sel.value;
         inp.style.display = show ? 'block' : 'none';
@@ -7543,7 +7544,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.0 - Verbesserte Dialoge');
+        console.log('Version 3.8.1 - Fehlerkorrekturen');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
