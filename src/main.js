@@ -4763,7 +4763,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.8.2',
+                version: '3.8.3',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -7189,8 +7189,9 @@ function showLevelCustomization(levelName, ev) {
     pop.querySelector('#lvlCancel').onclick = () => document.body.removeChild(ov);
 
     pop.querySelector('#lvlSave').onclick = () => {
+        const oldOrder = getLevelOrder(levelName);
         const newName  = pop.querySelector('#lvlName').value.trim() || levelName;
-        const newOrder = Math.max(1, parseInt(pop.querySelector('#lvlOrder').value) || 1);
+        const newOrder = Math.max(1, parseInt(pop.querySelector('#lvlOrder').value) || oldOrder);
         const newColor = pop.querySelector('#lvlColor').value;
 
         projects.forEach(p => {
@@ -7204,8 +7205,7 @@ function showLevelCustomization(levelName, ev) {
         if (levelOrders[levelName] && levelName !== newName) delete levelOrders[levelName];
 
         levelColors[newName] = newColor;
-        levelOrders[newName] = newOrder;
-        // Reihenfolge direkt sichern, falls sie neu vergeben wurde
+        // Reihenfolge immer speichern
         setLevelOrder(newName, newOrder);
 
         if (expandedLevel === levelName) expandedLevel = newName;
@@ -7546,7 +7546,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.8.2 - Fehlerkorrekturen');
+        console.log('Version 3.8.3 - Fehlerkorrekturen');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
