@@ -118,6 +118,20 @@ describe('Manual Dub', () => {
         expect(fetch).not.toHaveBeenCalled();
     });
 
+    test('ohne voice_id kein disable_voice_cloning', async () => {
+        const fileObj = { id: 2, filename: 'b', folder: 'g', enText: 'hi', deText: 'hallo' };
+        files.push(fileObj);
+        findAudioInFilePathCache.mockReturnValue({ audioFile: new File(['x'], 'b.mp3') });
+        loadAudioBuffer.mockResolvedValue({ length: 1000, sampleRate: 1000 });
+        fetch.mockResolvedValue({ ok: true, json: async () => ({ dubbing_id: '1' }) });
+
+        await startDubbing(2);
+
+        const body = fetch.mock.calls[0][1].body;
+        expect(body.get('voice_id')).toBeNull();
+        expect(body.get('disable_voice_cloning')).toBeNull();
+    });
+
     test('CSV endet mit Zeilenumbruch und quotet korrekt', async () => {
         const file = { enText: 'Hi "Alice"', deText: 'Hallo "Bob"', trimStartMs: 0, trimEndMs: 0 };
         const blob = createDubbingCSV(file, 1000);

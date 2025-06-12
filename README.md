@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.16.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.16.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.16.1](#-neue-features-in-1.16.1)
+* [✨ Neue Features in 1.16.2](#-neue-features-in-1.16.2)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.16.1
+## ✨ Neue Features in 1.16.2
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **CSV-Validierung** | Vor dem Upload wird die komplette CSV geloggt und ein fehlender Zeilenumbruch automatisch ergänzt. |
+| **Voice Cloning** | Ohne gespeicherte Voice-ID bleibt Voice Cloning aktiv. |
 
 ## ✨ Neue Features in 1.16.0
 
@@ -220,7 +221,7 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 
-Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Beim Dubbing wird diese Voice-ID automatisch verwendet und Voice Cloning deaktiviert.
+Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Ist eine Voice-ID hinterlegt, wird sie beim Dubbing automatisch genutzt und Voice Cloning abgeschaltet. Ohne Voice-ID bleibt Voice Cloning aktiv.
 
 Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Start- und Endzeit erscheinen jetzt als `HH:MM:SS.mmm` und leiten sich aus den Feldern `trimStartMs` und `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
 
@@ -439,11 +440,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.16.1 (aktuell) - CSV-Validierung
+### 1.16.2 (aktuell) - CSV-Validierung
 
 **✨ Neue Features:**
 * Vor dem Upload wird die komplette CSV geloggt.
 * Fehlender Zeilenumbruch wird automatisch ergänzt.
+* Voice Cloning bleibt aktiv, wenn keine Voice-ID hinterlegt ist.
 
 ### 1.16.0 - Log löschen
 
@@ -685,7 +687,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.16.1** - CSV-Validierung
+**Version 1.16.2** - CSV-Validierung
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
