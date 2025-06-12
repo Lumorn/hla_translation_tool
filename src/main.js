@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.16.0';
+const APP_VERSION = '1.16.1';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6343,8 +6343,10 @@ function createDubbingCSV(file, durationMs) {
         endTime = msToHHMMSS(file.trimEndMs || 0);
     }
     const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
-    // CSV-Zeile mit CRLF abschließen für Windows-Kompatibilität
-    const csv = header + row + lineEnd;
+    // CSV-Zeile mit Zeilenende abschließen
+    let csv = header + row + lineEnd;
+    // Sicherheitshalber prüfen, ob ein Zeilenumbruch vorhanden ist
+    if (!csv.endsWith('\n')) csv += '\n';
     return new Blob([csv], { type: 'text/csv' });
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
@@ -6411,8 +6413,9 @@ async function startDubbing(fileId, settings = {}) {
         addDubbingLog('Übersetzung fehlt');
         return;
     }
-    // CSV-Text für Fehlerausgabe zwischenspeichern
+    // CSV-Text für Log und Fehlerausgabe zwischenspeichern
     const csvText = await csvBlob.text();
+    addDubbingLog('CSV-Text: ' + csvText);
     form.append('csv_file', csvBlob, 'input.csv');
     // 🟢 Neue Funktion: gewünschte Voice-Settings übermitteln
     if (settings && Object.keys(settings).length > 0) {

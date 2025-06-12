@@ -117,4 +117,13 @@ describe('Manual Dub', () => {
         expect(updateStatus).toHaveBeenCalledWith('Übersetzung fehlt');
         expect(fetch).not.toHaveBeenCalled();
     });
+
+    test('CSV endet mit Zeilenumbruch und quotet korrekt', async () => {
+        const file = { enText: 'Hi "Alice"', deText: 'Hallo "Bob"', trimStartMs: 0, trimEndMs: 0 };
+        const blob = createDubbingCSV(file, 1000);
+        const text = await blob.text();
+        expect(text.endsWith('\n')).toBe(true);
+        expect(text).toContain('"Hi ""Alice"""');
+        expect(text).toContain('"Hallo ""Bob"""');
+    });
 });
