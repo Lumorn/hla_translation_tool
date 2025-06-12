@@ -2,7 +2,7 @@ const fs = require('fs');
 const nock = require('nock');
 const path = require('path');
 
-const { createDubbing, downloadDubbingAudio } = require('../elevenlabs');
+const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io';
@@ -46,5 +46,22 @@ describe('ElevenLabs API', () => {
             .reply(404, 'not found');
 
         await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3')).rejects.toThrow('Download fehlgeschlagen');
+    });
+
+    test('Status erfolgreich abgefragt', async () => {
+        nock(API)
+            .get('/v1/dubbing/123')
+            .reply(200, { status: 'dubbed' });
+
+        const result = await getDubbingStatus('key', '123');
+        expect(result).toEqual({ status: 'dubbed' });
+    });
+
+    test('Fehler bei getDubbingStatus', async () => {
+        nock(API)
+            .get('/v1/dubbing/123')
+            .reply(500, 'kaputt');
+
+        await expect(getDubbingStatus('key', '123')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
     });
 });
