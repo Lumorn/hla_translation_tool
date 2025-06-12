@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.12.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 1.12.0](#-neue-features-in-1.12.0)
+* [✨ Neue Features in 1.12.1](#-neue-features-in-1.12.1)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,11 +27,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 1.12.0
+## ✨ Neue Features in 1.12.1
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
 | **Ordnerstimmen**         | Jeder Ordner kann eine feste ElevenLabs-Stimme erhalten. |
+| **Neue Tests**            | `manualDub.test.js` prüft den manuellen Dubbing-Aufruf. |
 
 ## ✨ Neue Features in 1.11.0
 
@@ -379,10 +380,11 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.12.0 (aktuell) - Feste Ordnerstimmen
+### 1.12.1 (aktuell) - Manual-Dub-Test
 
 **✨ Neue Features:**
 * Ordner können feste ElevenLabs-Stimmen erhalten. Die API erhält diese Voice-ID automatisch, Voice Cloning wird deaktiviert.
+* Zusätzlicher Jest-Test `manualDub.test.js` sichert den manuellen Dubbing-Workflow.
 
 ### 1.11.0 - Manual Dub per CSV
 
@@ -556,7 +558,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.12.0** - Feste Ordnerstimmen
+**Version 1.12.1** - Feste Ordnerstimmen
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
@@ -575,7 +577,7 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
-ElevenLabs‑Anbindung (z. B. `getDubbingStatus`), die die API‑Aufrufe mit **nock** simulieren. Neu prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint.
+ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint.
 
 ## 🧩 Wichtige Funktionen
 
