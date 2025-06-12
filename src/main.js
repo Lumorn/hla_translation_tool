@@ -308,6 +308,12 @@ function loadProjects() {
         levelColors = JSON.parse(savedLevelColors);
     }
 
+    // 🟢 Ebenfalls Reihenfolge der Level laden
+    const savedLevelOrders = localStorage.getItem('hla_levelOrders');
+    if (savedLevelOrders) {
+        levelOrders = JSON.parse(savedLevelOrders);
+    }
+
     // DANN: Projekte laden
     const savedProjects = localStorage.getItem('hla_projects');
     if (savedProjects) {
