@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.6.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.7.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.6.0](#-neue-features-in-360)
+* [✨ Neue Features in 3.7.0](#-neue-features-in-370)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [🏁 Erste Schritte](#-erste-schritte)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.6.0
+## ✨ Neue Features in 3.7.0
 
 |  Kategorie                 |  Beschreibung                                                                                                                                               |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,13 +35,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 | **Globale Text‑Statistik** | Neue Kachel **EN / DE / BEIDE / ∑** in den globalen Statistiken + Live‑Update beim Tippen.                                                                  |
 | **Level‑Statistik‑Panel**  | Aufklappbares Panel im Ordner‑Browser: zeigt pro Level<br>• Anzahl Teile  • Fertig‑Prozent  • EN/DE/BEIDE/∑.                                                 |
 | **Dateien ignorieren**     | Dateien können als *Nicht benötigt* markiert & jederzeit wieder aufgenommen werden (Ignorieren‑Toggle im Detail‑Dialog).                                    |
-| **Pfad‑Anzeige**           | Jeder Eintrag im Ordner‑Browser zeigt den aufgelösten Dateipfad mit Status‑Icons (✅ verfügbar / ❌ problematisch).                                          |
-| **Datenbank‑Bereinigung**  | **Ordnernamen bereinigen**: Korrigiert falsche Ordnernamen basierend auf echten Dateipfaden.                                                                |
-| **Ordner‑Löschfunktion**   | Komplette Ordner können sicher aus der Datenbank gelöscht werden (mit Schutz vor Datenverlust).                                                             |
-| **Cleanup‑Routine**        | Fehlende Dateien **ohne** EN & DE werden automatisch aus der DB entfernt.                                                                                   |
+| **Pfad‑Anzeige**           | Jeder Eintrag im Ordner‑Browser zeigt den aufgelösten Dateipfad mit Status‑Icons (✅ verfügbar / ❌ problematisch). |
+| **Datenbank‑Bereinigung**  | **Ordnernamen bereinigen**: Korrigiert falsche Ordnernamen basierend auf echten Dateipfaden. |
+| **Ordner‑Löschfunktion**   | Komplette Ordner können sicher aus der Datenbank gelöscht werden (mit Schutz vor Datenverlust). |
+| **Level-Reihenfolge sichtbar** | Dropdowns und Level-Kopfzeilen zeigen jetzt die zugehörige Zahl, z.B. `1.Levelname`. |
+| **Cleanup‑Routine**        | Fehlende Dateien **ohne** EN & DE werden automatisch aus der DB entfernt. |
 | **Verbesserter UI‑Polish** | • Schließen‑Knopf (×) nun oben rechts 🡆 hover‑animiert.<br>• Fertige Projekte/Ordner erhalten leuchtend grünen Rahmen.<br>• Dark‑Theme‑Kontrast optimiert. |
 | **DE-Audio-Bearbeitung**   | DE-Audiodateien lassen sich direkt kürzen oder verlängern. Vor dem Speichern wird automatisch eine Sicherung im Ordner `DE-Backup` angelegt. |
-
 ---
 
 ## 🚀 Features (komplett)
@@ -317,7 +317,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.6.0 (aktuell) - Level‑Management & Datenbank‑Tools
+### 3.7.0 (aktuell) - Level‑UI-Verbesserungen
+
+**✨ Neue Features:**
+* **Level-Reihenfolge sichtbar**: Dropdowns und Level-Kopfzeilen zeigen jetzt die zugehörige Zahl, z.B. `1.Levelname`.
+
+### 3.6.0 - Level‑Management & Datenbank‑Tools
 
 **✨ Neue Features:**
 * **Level‑System:** Projekte erhalten Level‑Name + Teil‑Nummer
@@ -410,7 +415,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.6.0** - Level‑Management & Datenbank‑Tools Edition
+**Version 3.7.0** - Level‑UI-Verbesserungen Edition
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
