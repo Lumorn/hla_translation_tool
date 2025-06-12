@@ -62,7 +62,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.13.1';
+const APP_VERSION = '1.13.2';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6320,7 +6320,9 @@ function createDubbingCSV(file, durationMs) {
         endTime = msToHHMMSS(file.trimEndMs || 0);
     }
     const row = ['0', startTime, endTime, esc(file.enText), esc(file.deText)].join(',');
-    return new Blob([header, row], { type: 'text/csv' });
+    // CSV-Zeile mit CRLF abschließen für Windows-Kompatibilität
+    const csv = header + row + '\r\n';
+    return new Blob([csv], { type: 'text/csv' });
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
