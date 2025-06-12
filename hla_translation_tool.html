@@ -305,6 +305,7 @@
                 <span id="apiKeyStatus" class="status-indicator"></span>
             </div>
             <div id="voiceIdList" class="voice-id-list"></div>
+            <div id="customVoicesList" class="custom-voices-list"></div>
             <div class="dialog-buttons">
                 <button class="btn" onclick="testVoiceIds()">Voice-IDs testen</button>
                 <button class="btn" onclick="clearAllVoiceIds()">Alle zurücksetzen</button>
@@ -327,6 +328,7 @@
             <div class="customize-field">
                 <label>Name:</label>
                 <input type="text" id="newVoiceName" style="width:70%;">
+                <button class="btn" onclick="fetchNewVoiceName()">Name abrufen</button>
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="closeAddVoiceDialog()">Abbrechen</button>
@@ -395,7 +397,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.17.1</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v3.18.0</a>
 
     <script src="src/main.js"></script>
 </body>
