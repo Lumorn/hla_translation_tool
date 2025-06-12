@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.13.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-3.14.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -12,7 +12,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 📋 Inhaltsverzeichnis
 
-* [✨ Neue Features in 3.13.3](#-neue-features-in-3133)
+* [✨ Neue Features in 3.14.0](#-neue-features-in-3140)
 * [🚀 Features (komplett)](#-features-komplett)
 * [🛠️ Installation](#-installation)
 * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
@@ -27,36 +27,14 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## ✨ Neue Features in 3.13.3
+## ✨ Neue Features in 3.14.0
 
-|  Kategorie                 |  Beschreibung                                                                                                                                               |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Dialog-Fokus**           | Eingabefelder in Dialogen erhalten nun direkt den Cursor. |
-| **Versionsanzeige**        | Oben links zeigt ein Link die aktuelle Version und öffnet GitHub. |
-| **Automatische Projektumbenennung** | Beim Umbenennen eines Levels werden gleichnamige Projekte aktualisiert. |
-| **Level‑Management**       | Projekte besitzen jetzt **Level‑Namen** + **Teil‑Nummern**.<br>Alle vorhandenen Namen werden beim Anlegen/Umbenennen als Dropdown angeboten.                |
-| **Projekt‑Metaleiste**     | Über der Tabelle erscheint **Projekt • Level • Teil** + Ein‑Klick‑Button ⧉ zum Kopieren des Level‑Namens.                                                   |
-| **Globale Text‑Statistik** | Neue Kachel **EN / DE / BEIDE / ∑** in den globalen Statistiken + Live‑Update beim Tippen.                                                                  |
-| **Level‑Statistik‑Panel**  | Aufklappbares Panel im Ordner‑Browser: zeigt pro Level<br>• Anzahl Teile  • Fertig‑Prozent  • EN/DE/BEIDE/∑.                                                 |
-| **Dateien ignorieren**     | Dateien können als *Nicht benötigt* markiert & jederzeit wieder aufgenommen werden (Ignorieren‑Toggle im Detail‑Dialog).                                    |
-| **Pfad‑Anzeige**           | Jeder Eintrag im Ordner‑Browser zeigt den aufgelösten Dateipfad mit Status‑Icons (✅ verfügbar / ❌ problematisch). |
-| **Datenbank‑Bereinigung**  | **Ordnernamen bereinigen**: Korrigiert falsche Ordnernamen basierend auf echten Dateipfaden. |
-| **Ordner‑Löschfunktion**   | Komplette Ordner können sicher aus der Datenbank gelöscht werden (mit Schutz vor Datenverlust). |
-| **Level-Reihenfolge sichtbar** | Dropdowns und Level-Kopfzeilen zeigen jetzt die zugehörige Zahl, z.B. `1.Levelname`. |
-| **Level-Nummern bis 9999** | Level-Reihenfolge und Teil-Nummern unterstützen jetzt Werte bis 9999. |
-| **Level-Nummer beim Erstellen** | Beim Anlegen eines neuen Levels kann sofort eine Reihenfolge-Zahl vergeben werden. |
-| **Cleanup‑Routine**        | Fehlende Dateien **ohne** EN & DE werden automatisch aus der DB entfernt. |
-| **Verbesserter UI‑Polish** | • Schließen‑Knopf (×) nun oben rechts 🡆 hover‑animiert.<br>• Fertige Projekte/Ordner erhalten leuchtend grünen Rahmen.<br>• Dark‑Theme‑Kontrast optimiert. |
-| **DE-Audio-Bearbeitung**   | DE-Audiodateien lassen sich direkt kürzen oder verlängern. Vor dem Speichern wird automatisch eine Sicherung im Ordner `DE-Backup` angelegt. |
-| **Bugfix Projekt-Daten**   | Korrigiert das Zurücksetzen von Namen und Nummern beim Bearbeiten. |
-| **Versionslink oben**      | Die Versionsnummer befindet sich jetzt oben links. |
-| **Level-Haken**            | Level-Reiter zeigen einen grünen Haken, wenn alle Projekte darin 100% abgeschlossen sind. |
-| **Level-Icons**            | Jedes Level besitzt ein eigenes Icon, einstellbar im Level-Dialog. |
-| **Icon-Auswahl**           | Neben freier Eingabe kann man nun aus vordefinierten Icons wählen. |
-| **ElevenLabs-Dubbing**     | Erste Anbindung an die ElevenLabs-API zum automatischen Vertonen. |
-| **API-Menü**               | Neues Menü zur Eingabe des API-Keys und Zuweisung von Voice-IDs je Ordner. |
-| **Ordnerübergreifende Voice-IDs** | Voice-IDs gelten jetzt in allen Projekten und werden im API-Dialog für alle Ordner angezeigt. |
-| **Backup-Verbesserung** | Alle Einstellungen wie Level-Farben und Auto-Backup werden nun mitgesichert. |
+|  Kategorie                 |  Beschreibung
+| -------------------------- | ------------------------------------------------- |
+| **API-Menü**            | Einstellungsdialog jetzt mit Kategorien, Dropdowns und Live-Validierung des Keys. |
+| **Alle zurücksetzen**   | Ein Klick leert sämtliche Voice-IDs. |
+| **Voice-IDs testen**    | Prüft alle gewählten Stimmen auf Erreichbarkeit. |
+| **Sichtbarer API-Key**  | Augen-Button zeigt/versteckt den eingegebenen Schlüssel. |
 ---
 
 ## 🚀 Features (komplett)
@@ -347,7 +325,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 3.13.3 (aktuell) - GPU-Cache-Fehler behoben
+### 3.14.0 (aktuell) - Überarbeitetes API-Menü
+
+**✨ Neue Features:**
+* Gruppierte Voice-IDs, Dropdown-Auswahl und Key-Prüfung.
+
+### 3.13.3 - GPU-Cache-Fehler behoben
 
 **🛠️ Bugfix:**
 * Fehlerhafte GPU-Cache-Erstellung führte zu Fehlermeldungen; der Shader-Cache wird nun deaktiviert.
@@ -479,7 +462,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 3.13.3** - GPU-Cache-Fehler behoben
+**Version 3.14.0** - Überarbeitetes API-Menü
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
