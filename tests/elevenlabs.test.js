@@ -129,4 +129,26 @@ describe('ElevenLabs API', () => {
 
         await expect(getDubbingStatus('key', '42')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
     });
+
+    // Simuliere Polling-Abbruch bei failed
+    test('Polling stoppt bei Status failed', async () => {
+        const scope = nock(API)
+            .get('/v1/dubbing/fail')
+            .reply(200, { status: 'failed', error: 'kaputt' });
+
+        let status = 'dubbing';
+        let error = '';
+        for (let i = 0; i < 3 && status === 'dubbing'; i++) {
+            const res = await getDubbingStatus('key', 'fail');
+            status = res.status;
+            if (status === 'failed') {
+                error = res.error;
+                break;
+            }
+        }
+
+        expect(scope.isDone()).toBe(true);
+        expect(status).toBe('failed');
+        expect(error).toBe('kaputt');
+    });
 });
