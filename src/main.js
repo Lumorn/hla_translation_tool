@@ -355,7 +355,8 @@ function loadProjects() {
 
         let migrated = false;
         projects.forEach(p => {
-            if (!p.hasOwnProperty('icon'))  { p.icon  = '🗂️'; migrated = true; }
+            // Alte Icon-Felder entfernen, Projekte erben nun das Level-Icon
+            if (p.hasOwnProperty('icon')) { delete p.icon; migrated = true; }
             if (!p.hasOwnProperty('color')) { p.color = '#333333'; migrated = true; }
             if (!p.hasOwnProperty('levelName')) { p.levelName = ''; migrated = true; }
             if (!p.hasOwnProperty('levelPart')) { p.levelPart = 1;  migrated = true; }
@@ -377,7 +378,6 @@ function loadProjects() {
             levelName: '',
             levelPart: 1,
             files: [],
-            icon: '🎮',
             color: '#ff6b1a'
         }];
         saveProjects();
@@ -522,7 +522,7 @@ function renderProjects() {
                 ${badge}
                 ${doneMark}
                 <div style="display:flex;gap:8px;align-items:flex-start;">
-                    <span style="font-size:16px;">${p.icon || '🗂️'}</span>
+                    <span style="font-size:16px;">${getLevelIcon(p.levelName)}</span>
                     <div style="flex:1;min-width:0;">
                         <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                             ${p.name}
@@ -4807,7 +4807,7 @@ function checkFileAccess() {
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
             const backup = {
-                version: '3.9.0',
+                version: '3.10.0',
                 date: new Date().toISOString(),
                 projects: projects,
                 textDatabase: textDatabase,
@@ -5040,8 +5040,9 @@ function checkFileAccess() {
 
             let migrationNeeded = false;
             projects.forEach(project => {
-                if (!project.hasOwnProperty('icon')) {
-                    project.icon = '🗂️';
+                // Icon-Felder aus alten Backups entfernen
+                if (project.hasOwnProperty('icon')) {
+                    delete project.icon;
                     migrationNeeded = true;
                 }
                 if (!project.hasOwnProperty('color')) {
@@ -7315,15 +7316,9 @@ function showLevelCustomization(levelName, ev) {
 
 
         function updateProjectCustomizationPreview() {
-            const iconInput = document.getElementById('customProjectIcon');
             const colorInput = document.getElementById('customProjectColor');
-            const iconPreview = document.getElementById('projectIconPreview');
             const colorPreview = document.getElementById('projectColorPreview');
-            
-            if (iconInput && iconPreview) {
-                iconPreview.textContent = iconInput.value || '🗂️';
-            }
-            
+
             if (colorInput && colorPreview) {
                 colorPreview.style.background = colorInput.value;
             }
@@ -7333,7 +7328,6 @@ function showLevelCustomization(levelName, ev) {
 
         function applyProjectPreset(projectId) {
             const presetSelect = document.getElementById('projectPresetSelect');
-            const iconInput = document.getElementById('customProjectIcon');
             const colorInput = document.getElementById('customProjectColor');
             
             const presets = {
@@ -7350,19 +7344,16 @@ function showLevelCustomization(levelName, ev) {
             
             const preset = presets[presetSelect.value];
             if (preset) {
-                iconInput.value = preset.icon;
                 colorInput.value = preset.color;
                 updateProjectCustomizationPreview();
             }
         }
 
         function saveProjectCustomization(projectId) {
-            const iconInput = document.getElementById('customProjectIcon');
             const colorInput = document.getElementById('customProjectColor');
-            
+
             const project = projects.find(p => p.id === projectId);
             if (project) {
-                project.icon = iconInput.value || '🗂️';
                 project.color = colorInput.value || '#333333';
                 
                 saveProjects();
@@ -7382,7 +7373,6 @@ function showLevelCustomization(levelName, ev) {
             if (confirm('Möchten Sie die Anpassungen für dieses Projekt wirklich zurücksetzen?')) {
                 const project = projects.find(p => p.id === projectId);
                 if (project) {
-                    project.icon = '🗂️';
                     project.color = '#333333';
                     
                     saveProjects();
@@ -7637,7 +7627,7 @@ function showLevelCustomization(levelName, ev) {
 
         // Initialize app
         console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log('Version 3.9.0 - Level-Icons');
+        console.log('Version 3.10.0 - Gemeinsame Projekt-Icons');
         console.log('✨ NEUE FEATURES:');
         console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
         console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
