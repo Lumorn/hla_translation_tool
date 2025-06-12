@@ -79,6 +79,8 @@ function createWindow() {
 // GPU-Beschleunigung ausschalten, um Cache-Probleme zu vermeiden
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-gpu-compositing');
+// Shader-Cache deaktivieren, um Fehlermeldungen wie "Unable to move the cache" zu vermeiden
+app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 
 app.whenReady().then(() => {
   // Basis- und Sprachordner relativ zur App bestimmen
