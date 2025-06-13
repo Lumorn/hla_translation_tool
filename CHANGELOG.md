@@ -1,6 +1,9 @@
 # Changelog
 ## ✨ Neue Features in 1.40.0
 * GitHub-Workflow `node-test.yml` führt automatisch `npm ci` und `npm test` für Node 18–22 bei jedem Push und Pull Request aus.
+
+## 🛠️ Patch in 1.40.1
+* Abhängigkeit `glob` auf Version `^9.0.0` aktualisiert.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
