@@ -575,6 +575,7 @@ Ab Version 1.40.3 nutzt `manualDub.test.js` einen kleinen Polyfill, damit der `F
 Ab Version 1.40.3 lädt die Desktop-Version `config.js` auch im gepackten Zustand zuverlässig.
 Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil seine Funktion global bereitsteht.
 Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
+Ab Version 1.40.6 stürzt das Debug-Fenster im Browser nicht mehr ab, wenn kein Node-Prozess vorhanden ist.
 
 ## ▶️ E2E-Test
 

@@ -6115,11 +6115,14 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             }
 
             // Versionsinformationen separat sammeln
+            // Versionen der genutzten Plattformen sammeln; bei fehlendem
+            // Node-Prozess werden leere Platzhalter verwendet
+            const nodeDefined = typeof process !== 'undefined';
             const versionInfo = {
                 'App-Version': info.appVersion ?? info['App-Version'] ?? APP_VERSION,
-                'Node-Version': info.nodeVersion ?? info['Node-Version'] ?? (typeof process !== 'undefined' ? process.version : 'n/a'),
-                'Electron-Version': info.electronVersion ?? info['Electron-Version'] ?? (process.versions ? process.versions.electron || 'n/a' : 'n/a'),
-                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (process.versions ? process.versions.chrome || 'n/a' : 'n/a')
+                'Node-Version': info.nodeVersion ?? info['Node-Version'] ?? (nodeDefined ? process.version : 'n/a'),
+                'Electron-Version': info.electronVersion ?? info['Electron-Version'] ?? (nodeDefined && process.versions ? process.versions.electron || 'n/a' : 'n/a'),
+                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (nodeDefined && process.versions ? process.versions.chrome || 'n/a' : 'n/a')
             };
             delete info.appVersion; delete info['App-Version'];
             delete info.nodeVersion; delete info['Node-Version'];
