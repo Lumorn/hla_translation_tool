@@ -2,7 +2,7 @@ const fs = require('fs');
 const nock = require('nock');
 const path = require('path');
 
-const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings } = require('../elevenlabs');
+const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, waitForDubbing } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io';
@@ -161,5 +161,29 @@ describe('ElevenLabs API', () => {
         expect(scope.isDone()).toBe(true);
         expect(status).toBe('failed');
         expect(error).toBe('kaputt');
+    });
+
+    test('waitForDubbing beendet sich bei Erfolg', async () => {
+        nock(API)
+            .get('/v1/dubbing/success')
+            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+
+        await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
+    });
+
+    test('waitForDubbing wirft bei failed', async () => {
+        nock(API)
+            .get('/v1/dubbing/bad')
+            .reply(200, { status: 'failed', error: 'kaputt' });
+
+        await expect(waitForDubbing('key', 'bad', 'de', 3)).rejects.toThrow('kaputt');
+    });
+
+    test('waitForDubbing gibt Timeout zurück', async () => {
+        nock(API)
+            .get('/v1/dubbing/slow')
+            .reply(200, { status: 'dubbing' });
+
+        await expect(waitForDubbing('key', 'slow', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');
     });
 });

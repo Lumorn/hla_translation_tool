@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.19.4-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.20.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,7 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
-
+* [✨ Neue Features in 1.20.0](#-neue-features-in-1.20.0)
 * [✨ Neue Features in 1.19.4](#-neue-features-in-1.19.4)
 * [✨ Neue Features in 1.19.2](#-neue-features-in-1.19.2)
 * [✨ Neue Features in 1.19.1](#-neue-features-in-1.19.1)
@@ -31,6 +31,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.20.0
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Gemeinsame Funktion**    | `waitForDubbing()` überwacht den Dub-Status und wird nun überall genutzt. |
+
 
 ## ✨ Neue Features in 1.19.4
 
@@ -502,10 +508,15 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.19.4 (aktuell)
+### 1.20.0 (aktuell)
+
+**✨ Neue Features:**
+* Gemeinsame Funktion `waitForDubbing()` ersetzt doppelte Polling-Schleifen.
+### 1.19.4
 
 **✨ Neue Features:**
 * Dubbing-Sprache über Parameter frei wählbar.
+
 
 ### 1.19.2
 
@@ -795,7 +806,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.19.4** - Sprache für Dubbing wählbar
+**Version 1.20.0 - Gemeinsame waitForDubbing-Funktion
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

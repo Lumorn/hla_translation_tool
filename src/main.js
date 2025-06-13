@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.19.4';
+const APP_VERSION = '1.20.0';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6362,6 +6362,40 @@ function validateCsv(csvText) {
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
+// =========================== WAITFORDUBBING START ===========================
+// Wartet auf die Fertigstellung eines Dubbings. Optional kann ein Timeout
+// festgelegt werden. Ohne Erfolg wird ein Fehler geworfen.
+async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
+    let status = '';
+    let langDone = false;
+    const maxLoops = Math.ceil(timeout / 3);
+    for (let i = 0; i < maxLoops; i++) {
+        await new Promise(r => setTimeout(r, 3000));
+        try {
+            const st = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}`, {
+                headers: { 'xi-api-key': apiKey }
+            });
+            if (st.ok) {
+                const js = await st.json();
+                status = js.status;
+                const langInfo = js.progress && js.progress.langs && js.progress.langs[lang];
+                if (langInfo) {
+                    langDone = langInfo.state === 'finished' || langInfo.progress === 100;
+                }
+                if (typeof addDubbingLog === 'function') addDubbingLog('Polling: ' + status);
+                if (status === 'dubbed' && langDone) return;
+                if (status === 'failed') {
+                    throw new Error(js.error || 'Server meldet failed');
+                }
+            }
+        } catch (e) {
+            if (typeof addDubbingLog === 'function') addDubbingLog('Fehler: ' + e.message);
+        }
+    }
+    throw new Error('Dubbing nicht fertig');
+}
+// =========================== WAITFORDUBBING END =============================
+
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
 async function startDubbing(fileId, settings = {}, targetLang = 'de') {
@@ -6492,36 +6526,11 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     updateStatus('Dubbing läuft...');
     addDubbingLog('Warte auf Fertigstellung...');
 
-    let status = '';
-    let langDone = false;
-    for (let i = 0; i < 60; i++) {
-        await new Promise(r => setTimeout(r, 3000));
-        try {
-            const st = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}`, {
-                headers: { 'xi-api-key': elevenLabsApiKey }
-            });
-            if (st.ok) {
-                const js = await st.json();
-                status = js.status;
-                const langInfo = js.progress && js.progress.langs && js.progress.langs[targetLang];
-                if (langInfo) {
-                    langDone = langInfo.state === 'finished' || langInfo.progress === 100;
-                }
-                addDubbingLog('Polling: ' + status);
-                if (status === 'dubbed' && langDone) break;
-                if (status === 'failed') {
-                    updateStatus('Dubbing fehlgeschlagen');
-                    addDubbingLog(js.error || 'Server meldet failed');
-                    return;
-                }
-            }
-        } catch (e) {
-            addDubbingLog('Fehler: ' + e.message);
-        }
-    }
-    if (status !== 'dubbed' || !langDone) {
-        updateStatus('Dubbing nicht fertig');
-        addDubbingLog('Dubbing nicht fertig');
+    try {
+        await waitForDubbing(elevenLabsApiKey, id, targetLang);
+    } catch (err) {
+        updateStatus('Dubbing fehlgeschlagen');
+        addDubbingLog(err.message);
         return;
     }
 
@@ -8700,6 +8709,7 @@ if (typeof module !== "undefined" && module.exports) {
         createDubbingCSV,
         validateCsv,
         msToSeconds,
+        waitForDubbing,
         startDubbing,
         redownloadDubbing,
         initiateDubbing
