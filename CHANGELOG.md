@@ -2,6 +2,12 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.30.0
+
+* Fehler-Toast bei fehlgeschlagenem Dubbing
+* Automatische Status-Prüfung alle 60 s
+* Gewählte Stimme im Dubbing-Dialog sichtbar
+
 ## ✨ Neue Features in 1.29.0
 
 * Neues Protokoll-Menü listet alle API-Aufrufe mit Zeitstempel und Statuscode

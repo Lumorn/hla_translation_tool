@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.29.0';
+const APP_VERSION = '1.30.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -266,6 +266,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 💾 Auto-Save alle 30 Sekunden
     setInterval(saveCurrentProject, 30000);
+
+    // Alle 60 Sekunden Status von offenen Dubbings prüfen
+    setInterval(updatePendingDubStatuses, 60000);
 
     // Automatische Backups starten
     startAutoBackup();
@@ -2782,6 +2785,18 @@ async function updateDubStatusForFiles() {
     });
     await Promise.all(promises);
     updateDubButtons();
+}
+
+// Prüft nur Dateien mit gelbem Icon erneut
+async function updatePendingDubStatuses() {
+    const pending = files.filter(f => f.dubbingId && f.dubReady === false);
+    for (const f of pending) {
+        try {
+            f.dubReady = await isDubReady(f.dubbingId);
+        } catch {}
+        updateDubStatusIcon(f);
+    }
+    if (pending.length) updateDubButtons();
 }
 
 // Setzt das Icon je nach Status
@@ -6330,6 +6345,13 @@ async function getDefaultVoiceSettings(apiKey) {
 
 async function showDubbingSettings(fileId) {
     currentDubbingFileId = fileId;
+    const file = files.find(f => f.id === fileId) || {};
+    const voiceId = folderCustomizations[file.folder]?.voiceId || '';
+    let voiceName = voiceId;
+    if (voiceId) {
+        const v = availableVoices.find(v => v.voice_id === voiceId);
+        if (v) voiceName = v.name;
+    }
     let defaults = {
         stability: 1.0,
         similarity_boost: 1.0,
@@ -6354,6 +6376,8 @@ async function showDubbingSettings(fileId) {
             <div class="dialog">
                 <button class="dialog-close-btn" onclick="closeDubbingSettings()">×</button>
                 <h3>🎤 Dubbing-Einstellungen</h3>
+                <p><strong>${file.filename || ''}</strong></p>
+                <p class="current-voice-line">Aktuelle Stimme: <span class="current-voice">${voiceName || 'Keine'}</span></p>
                 <div class="customize-field"><label>stability:</label>
                     <input type="number" id="dubSetStability" min="0" max="1" step="0.1" value="${defaults.stability}">
                 </div>
@@ -6602,6 +6626,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
         } catch {}
         addDubbingLog(`Fehler: ${errorMsg}`);
         updateStatus('Dubbing fehlgeschlagen');
+        showToast(errorMsg, 'error');
         addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${resText}`);
         // Bei HTTP 400 den Anfang der CSV ausgeben
         if (res.status === 400) {
@@ -8666,6 +8691,15 @@ function showLevelCustomization(levelName, ev) {
             } else {
                 statusText.textContent = isDirty ? 'Ungespeicherte Änderungen' : 'Bereit';
             }
+        }
+
+        // Zeigt kurz eingeblendete Hinweise an
+        function showToast(message, type = '') {
+            const div = document.createElement('div');
+            div.className = 'toast' + (type ? ' ' + type : '');
+            div.textContent = message;
+            document.getElementById('toastContainer').appendChild(div);
+            setTimeout(() => div.remove(), 4000);
         }
 
         function updateCounts() {
