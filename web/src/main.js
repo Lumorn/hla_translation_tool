@@ -6071,6 +6071,8 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             }
             openDebugInfo();
         }
+        // Funktion global verfügbar machen, damit der Button im HTML immer wirkt
+        window.toggleDevTools = toggleDevTools;
 
         // Öffnet ein Fenster mit detaillierten Debug-Informationen
         async function openDebugInfo() {
