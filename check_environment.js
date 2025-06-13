@@ -147,4 +147,26 @@ function fetchJson(url) {
   electronProcess.kill('SIGTERM');
   log(`ElectronAPI verfügbar: ${apiResult}`);
   console.log('Ergebnis der Prüfung:', apiResult ? 'OK' : 'FEHLER');
+
+  // Optionaler Kurztest der Desktop-App mit Python
+  if (process.argv.includes('--tool-check')) {
+    log('Starte Python-Testlauf');
+    const beforeSize = fs.existsSync(LOGFILE) ? fs.statSync(LOGFILE).size : 0;
+    let exitCode = 0;
+    try {
+      run('python start_tool.py --check');
+    } catch (err) {
+      exitCode = err.status || 1;
+    }
+    const afterSize = fs.existsSync(LOGFILE) ? fs.statSync(LOGFILE).size : 0;
+    const diff = fs.readFileSync(LOGFILE, 'utf8').slice(beforeSize, afterSize);
+    const hasError = /Fehler/i.test(diff);
+    if (exitCode !== 0 || hasError) {
+      console.error('Desktop-App Test fehlgeschlagen. Siehe setup.log.');
+      log('Python-Testlauf nicht erfolgreich');
+    } else {
+      console.log('Desktop-App Test erfolgreich.');
+      log('Python-Testlauf erfolgreich');
+    }
+  }
 })();
