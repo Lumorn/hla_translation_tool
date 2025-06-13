@@ -11,6 +11,9 @@
 ## 🛠️ Patch in 1.38.3
 * `start_tool.bat` prueft nun die installierte Node-Version und verlangt Node 18 bis 22.
 
+## 🛠️ Patch in 1.38.6
+* Debug-Fenster zeigt nun ausfuehrliche System- und Pfadinformationen sowie die letzten Zeilen aus `setup.log`.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6
