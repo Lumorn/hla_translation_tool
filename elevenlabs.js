@@ -161,6 +161,26 @@ async function getDefaultVoiceSettings(apiKey) {
 }
 // =========================== GETDEFAULTVOICESETTINGS END ==================
 
+// =========================== RENDERLANGUAGE START ==========================
+// Rendert eine Sprache eines bestehenden Dubbings neu
+async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey) {
+    const res = await fetch(`${API}/dubbing/${dubbingId}/render/${targetLang}`, {
+        method: 'POST',
+        headers: {
+            'xi-api-key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ render_type: renderType })
+    });
+
+    if (!res.ok) {
+        throw new Error(`Render language failed: ${res.status} ${await res.text()}`);
+    }
+
+    return await res.json();
+}
+// =========================== RENDERLANGUAGE END ============================
+
 // =========================== DUBSEGMENTS START ============================
 // Vertont alle Segmente eines Projekts im Studio-Workflow
 async function dubSegments(apiKey, resourceId, languages = ['de']) {
@@ -241,5 +261,6 @@ module.exports = {
     getDubbingStatus,
     downloadDubbingAudio,
     getDefaultVoiceSettings,
-    waitForDubbing
+    waitForDubbing,
+    renderLanguage
 };
