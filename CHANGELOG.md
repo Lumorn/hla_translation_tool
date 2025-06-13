@@ -10,6 +10,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * DevTools-Button wird wieder dauerhaft angezeigt
 
+## 🛠️ Verbesserung in 1.35.2
+
+* Dev-Button öffnet nun zusätzlich die Debug-Konsole
+
 
 ## ✨ Neue Features in 1.34.0
 

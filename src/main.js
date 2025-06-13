@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.35.1';
+const APP_VERSION = '1.35.2';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6074,8 +6074,12 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         updateFileAccessStatus();
         }
 
-        // Öffnet oder schließt die DevTools in der Desktop-Version
+        // Öffnet die Debug-Konsole und bei der Desktop-Version zusätzlich die DevTools
         function toggleDevTools() {
+            const wrapper = document.getElementById('debugConsoleWrapper');
+            if (wrapper) {
+                wrapper.open = true; // Zeigt die eingebettete Konsole an
+            }
             if (window.electronAPI) {
                 window.electronAPI.toggleDevTools();
             }
