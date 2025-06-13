@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.32.0';
+const APP_VERSION = '1.33.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -201,6 +201,23 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateAllProjectsAfterScan();
             updateFileAccessStatus();
         });
+
+        // Meldung bei neuen Dateien aus dem Download-Ordner
+        if (window.electronAPI.onManualFile) {
+            window.electronAPI.onManualFile(async file => {
+                const current = getActiveDubItem();
+                if (!current) return;
+                const rel = getFullPath(current).replace(/\.(mp3|wav|ogg)$/i, '');
+                const ext = file.substring(file.lastIndexOf('.'));
+                const dest = `sounds/DE/${rel}${ext}`;
+                await window.electronAPI.moveFile(file, dest);
+                deAudioCache[`${rel}${ext}`] = dest;
+                current.dubReady = true;
+                current.waitingForManual = false;
+                renderFileTable();
+                showToast(`${dest.split('/').pop()} importiert.`);
+            });
+        }
     }
 
     // 🟩 NEU: Level-Farben laden
@@ -8754,6 +8771,24 @@ function showLevelCustomization(levelName, ev) {
             document.getElementById('toastContainer').appendChild(div);
             setTimeout(() => div.remove(), 4000);
         }
+
+        // Liefert die Zeile, die auf einen manuellen Import wartet
+        function getActiveDubItem() {
+            return files.find(f => f.waitingForManual);
+        }
+
+        // Markiert eine Datei als bereit und aktualisiert die Anzeige
+        function markDubAsReady(id, dest) {
+            const file = files.find(f => f.id === id);
+            if (!file) return;
+            const rel = dest.replace(/^sounds\/DE\//, '');
+            deAudioCache[rel] = dest;
+            file.dubReady = true;
+            file.waitingForManual = false;
+            renderFileTable();
+        }
+
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');

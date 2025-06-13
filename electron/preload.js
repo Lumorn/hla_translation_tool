@@ -18,4 +18,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   readBackup: (name) => ipcRenderer.invoke('read-backup', name),
   deleteBackup: (name) => ipcRenderer.invoke('delete-backup', name),
   openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
+  moveFile: (src, dest) => ipcRenderer.invoke('move-file', { src, dest }),
+  onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
 });

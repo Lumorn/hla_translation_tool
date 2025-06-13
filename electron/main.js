@@ -3,6 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const { DL_WATCH_PATH } = require('../src/config.js');
 const historyUtils = require('../historyUtils');
+const { watchDownloadFolder } = require('../src/watcher.js');
+let mainWindow;
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
 // =========================== USER-DATA-PFAD START ===========================
@@ -81,6 +83,8 @@ function createWindow() {
       win.webContents.openDevTools();
     }
   });
+
+  return win;
 }
 
 // GPU-Beschleunigung ausschalten, um Cache-Probleme zu vermeiden
@@ -205,6 +209,13 @@ app.whenReady().then(() => {
     return target;
   });
 
+  // Verschiebt eine Datei innerhalb des Projekts
+  ipcMain.handle('move-file', async (event, { src, dest }) => {
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.renameSync(src, dest);
+    return dest;
+  });
+
   // Liefert die History-Dateien zu einer DE-Datei
   ipcMain.handle('list-de-history', async (event, relPath) => {
     return historyUtils.listVersions(deHistoryPath, relPath);
@@ -226,7 +237,14 @@ app.whenReady().then(() => {
     }
   });
 
-  createWindow();
+  mainWindow = createWindow();
+
+  // Download-Ordner überwachen und Renderer informieren
+  watchDownloadFolder(file => {
+    if (mainWindow) {
+      mainWindow.webContents.send('manual-file', file);
+    }
+  });
 
   // Beim Beenden alle Shortcuts wieder freigeben
   app.on('will-quit', () => {
@@ -234,7 +252,7 @@ app.whenReady().then(() => {
   });
 
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) mainWindow = createWindow();
   });
 });
 
