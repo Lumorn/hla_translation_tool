@@ -166,7 +166,7 @@ describe('ElevenLabs API', () => {
     test('waitForDubbing beendet sich bei Erfolg', async () => {
         nock(API)
             .get('/dubbing/success')
-            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+            .reply(200, { status: 'dubbed' });
 
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
     });
