@@ -197,6 +197,14 @@ describe('ElevenLabs API', () => {
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
     });
 
+    test('waitForDubbing nutzt targetLang-Parameter', async () => {
+        nock(API)
+            .get('/dubbing/frjob')
+            .reply(200, { status: 'complete', progress: { langs: { fr: { state: 'finished' } } } });
+
+        await expect(waitForDubbing('key', 'frjob', 'fr', 3)).resolves.toBeUndefined();
+    });
+
     test('waitForDubbing wirft bei failed', async () => {
         nock(API)
             .get('/dubbing/bad')
