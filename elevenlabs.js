@@ -108,9 +108,10 @@ async function waitForDubbing(apiKey, dubbingId, targetLang = 'de', timeout = 18
  * @param {number} [options.retryDelay=2000] - Wartezeit in Millisekunden.
  * @returns {Promise<string>} Pfad zur gespeicherten Datei.
 */
-async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath, options = {}) {
+// Lädt die gerenderte Audiodatei einer Sprache herunter
+async function downloadDubbingAudio(apiKey, dubbingId, targetLang = 'de', targetPath, options = {}) {
     // Erst warten, bis die Sprache laut API komplett gerendert ist
-    await waitForDubbing(apiKey, dubbingId, lang);
+    await waitForDubbing(apiKey, dubbingId, targetLang);
     // Manche Jobs benötigen einen kurzen Moment, bis die Datei bereit steht
     await new Promise(r => setTimeout(r, 1000));
 
@@ -122,7 +123,7 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath, 
 
     // Bis zu maxRetries Versuche mit Abstand starten
     for (let attempt = 0; attempt < maxRetries; attempt++) {
-        response = await fetch(`${API}/dubbing/${dubbingId}/audio/${lang}`, {
+        response = await fetch(`${API}/dubbing/${dubbingId}/audio/${targetLang}`, {
             headers: { 'xi-api-key': apiKey }
         });
 
@@ -138,7 +139,19 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath, 
         throw new Error('Download fehlgeschlagen: ' + errText);
     }
 
-    return await downloadFromUrl(response.url, targetPath, response);
+    const filePath = await downloadFromUrl(response.url, targetPath, response);
+
+    // Nach dem Speichern pruefen, ob die Datei tatsaechlich Inhalt enthaelt
+    try {
+        const size = fs.statSync(filePath).size;
+        if (size === 0) {
+            console.error('Die Datei ist leer. Wurde der Render-Schritt ausgefuehrt?');
+        }
+    } catch (err) {
+        console.error('Datei konnte nicht geprueft werden:', err.message);
+    }
+
+    return filePath;
 }
 // =========================== DOWNLOADDUBBING END ==========================
 
