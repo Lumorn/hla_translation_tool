@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.24.0
+
+* Halb-manueller Studio-Workflow ohne `renderLanguage`
+* Neue Funktion `isDubReady` prüft den Status eines Dubbings
+
 ## ✨ Neue Features in 1.23.1
 
 * `renderLanguage` und `waitForDubbing` verwenden nun `/dubbing/resource/...`.

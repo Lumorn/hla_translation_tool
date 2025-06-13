@@ -5,7 +5,7 @@ const path = require('path');
 // Tests dürfen länger dauern, da Downloads bis zu 10 Versuche brauchen
 jest.setTimeout(30000);
 
-const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, waitForDubbing, renderLanguage } = require('../elevenlabs');
+const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, waitForDubbing, isDubReady } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
@@ -232,20 +232,19 @@ describe('ElevenLabs API', () => {
         errSpy.mockRestore();
     });
 
-    test('renderLanguage ruft korrektes Endpoint auf', async () => {
+    test('isDubReady liefert true bei fertig', async () => {
         nock(API)
-            .post('/dubbing/resource/321/render/de', { render_type: 'wav' })
-            .reply(200, { task_id: 'abc' });
+            .get('/dubbing/777')
+            .reply(200, { status: 'dubbed', target_languages: ['de'] });
 
-        const res = await renderLanguage('321', 'de', 'wav', 'key');
-        expect(res).toEqual({ task_id: 'abc' });
+        await expect(isDubReady('777', 'de', 'key')).resolves.toBe(true);
     });
 
-    test('renderLanguage wirft Fehler bei 500', async () => {
+    test('isDubReady liefert false bei unfertig', async () => {
         nock(API)
-            .post('/dubbing/resource/321/render/de', { render_type: 'wav' })
-            .reply(500, 'kaputt');
+            .get('/dubbing/888')
+            .reply(200, { status: 'dubbing', target_languages: [] });
 
-        await expect(renderLanguage('321', 'de', 'wav', 'key')).rejects.toThrow('Render language failed');
+        await expect(isDubReady('888', 'de', 'key')).resolves.toBe(false);
     });
 });

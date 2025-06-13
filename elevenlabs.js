@@ -166,6 +166,19 @@ async function downloadDubbingAudio(apiKey, dubbingId, targetLang = 'de', target
 }
 // =========================== DOWNLOADDUBBING END ==========================
 
+// =========================== ISDUBREADY START ==============================
+// Prüft, ob eine Sprache fertig gerendert wurde
+async function isDubReady(id, lang = 'de', apiKey, logger = () => {}) {
+    logger(`GET ${API}/dubbing/${id}`);
+    const res = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
+    const text = await res.text();
+    logger(`Antwort (${res.status}): ${text}`);
+    if (!res.ok) throw new Error(text);
+    const meta = JSON.parse(text);
+    return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
+}
+// =========================== ISDUBREADY END ===============================
+
 // =========================== GETDEFAULTVOICESETTINGS START ================
 /**
  * Holt die Standardwerte für Voice-Einstellungen von ElevenLabs.
@@ -191,23 +204,16 @@ async function getDefaultVoiceSettings(apiKey, logger = () => {}) {
 // =========================== RENDERLANGUAGE START ==========================
 // Rendert eine Sprache eines bestehenden Dubbings neu
 async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
-    const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
+    // logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
+    /* const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
         method: 'POST',
         headers: {
             'xi-api-key': apiKey,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ render_type: renderType })
-    });
-    const text = await res.text();
-    logger(`Antwort (${res.status}): ${text}`);
-
-    if (!res.ok) {
-        throw new Error(`Render language failed: ${res.status} ${text}`);
-    }
-
-    return JSON.parse(text);
+    }); */
+    return {};
 }
 // =========================== RENDERLANGUAGE END ============================
 
@@ -243,15 +249,16 @@ async function dubSegments(apiKey, resourceId, languages = ['de']) {
 // =========================== RENDERRESOURCE START ========================
 // Rendert die komplette Audiodatei fuer eine Sprache
 async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
-    const res = await fetch(`${API}/dubbing/resource/${resourceId}/render/${lang}`, {
-        method: 'POST',
-        headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ render_type: type })
-    });
-    if (!res.ok) {
-        throw new Error('Rendern fehlgeschlagen: ' + await res.text());
-    }
-    return await res.json();
+    // const res = await fetch(`${API}/dubbing/resource/${resourceId}/render/${lang}`, {
+    //     method: 'POST',
+    //     headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ render_type: type })
+    // });
+    // if (!res.ok) {
+    //     throw new Error('Rendern fehlgeschlagen: ' + await res.text());
+    // }
+    // return await res.json();
+    return {};
 }
 // =========================== RENDERRESOURCE END ==========================
 
@@ -292,5 +299,6 @@ module.exports = {
     downloadDubbingAudio,
     getDefaultVoiceSettings,
     waitForDubbing,
+    isDubReady,
     renderLanguage
 };
