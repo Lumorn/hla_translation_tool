@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.34.3';
+const APP_VERSION = '1.34.4';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -253,7 +253,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     cleanupOrphanCustomizations();
 
     if (!window.electronAPI) {
-        // 👉 Zuletzt verwendeten Projektordner laden (Browser-Version)
+        // 👉 Browser-Version
+        if (!window.showDirectoryPicker) {
+            // Fallback ohne File-System-API: Standardordner 'sounds' verwenden
+            projektOrdnerHandle = { name: 'sounds' };
+            updateProjectFolderPathDisplay();
+        }
+        // Zuletzt verwendeten Projektordner laden (wenn File-System-API verfuegbar)
         const savedHandle = await loadProjectFolderHandle();
         if (savedHandle) {
             let perm = await savedHandle.queryPermission({ mode: 'read' });
@@ -5321,7 +5327,9 @@ function checkFileAccess() {
             if (window.electronAPI && window.electronAPI.openBackupFolder) {
                 window.electronAPI.openBackupFolder();
             } else {
-                alert('Nur in der Desktop-Version verfügbar');
+                // Fallback fuer Browser-Version: oeffnet den Unterordner "backups" im neuen Tab
+                const url = new URL('backups/', window.location.href).toString();
+                window.open(url, '_blank');
             }
         }
 

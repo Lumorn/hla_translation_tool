@@ -21,6 +21,11 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Start-Skripte installieren automatisch die Haupt-Abhängigkeiten
 
+## ✨ Neue Features in 1.34.4
+
+* Backup-Ordner lässt sich jetzt auch im Browser öffnen
+* Fallback auf Standardordner `sounds`, falls kein Directory Picker vorhanden ist
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios

@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.34.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.34.4-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -153,6 +153,7 @@ Ab Version 1.33.0 überwacht das Tool den Download-Ordner und importiert Dateien
 Ab Version 1.34.1 verwendet das Tool `path.resolve` für alle Pfade und meldet "Spur manuell generieren oder Beta freischalten" bei fehlendem Download.
 Ab Version 1.34.2 behebt die Desktop-Version ein fehlendes `chokidar`-Modul.
 Ab Version 1.34.3 installieren die Start-Skripte automatisch die Haupt-Abhängigkeiten.
+Ab Version 1.34.4 öffnet der Button "Ordner öffnen" den Backup-Ordner auch im Browser.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -450,6 +451,8 @@ Alle Pfade nutzen nun `path.resolve`. Bei fehlenden Dubbings erscheint die Meldu
 Behebt ein fehlendes `chokidar`-Modul in der Desktop-Version.
 **Version 1.34.3 - Auto-Install**
 Start-Skripte führen nun `npm install` im Hauptordner aus.
+**Version 1.34.4 - Backup-Fallback**
+Der Backup-Button öffnet nun auch im Browser den `backups`-Ordner.
 **Version 1.26.0 - Studio-Workflow**
 Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.
 
