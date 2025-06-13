@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.11-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.12-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.12](#-neue-features-in-1.22.12)
 * [✨ Neue Features in 1.22.11](#-neue-features-in-1.22.11)
 * [✨ Neue Features in 1.22.10](#-neue-features-in-1.22.10)
 * [✨ Neue Features in 1.22.8](#-neue-features-in-1.22.8)
@@ -44,6 +45,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.12
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Dokumentation** | Neuer Abschnitt "E2E-Test" beschreibt den kompletten Testablauf. |
+
 ## ✨ Neue Features in 1.22.11
 
 | Kategorie | Beschreibung |
@@ -611,7 +618,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.11 (aktuell)
+### 1.22.12 (aktuell)
+
+**✨ Neue Features:**
+* Neuer Abschnitt "E2E-Test" im README beschreibt den kompletten Ablauftest.
+
+### 1.22.11
 
 **✨ Neue Features:**
 * Nach `createDubbing` folgt `renderLanguage('de')`, danach warten und herunterladen.
@@ -970,7 +982,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.11 - Workflow-Update
+**Version 1.22.12 - Dokumentation-Update
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
@@ -987,6 +999,21 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
 ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint.
+
+## ▶️ E2E-Test
+
+1. **Entwicklungsserver starten**
+   ```bash
+   npm start
+   ```
+2. **Audiodatei hochladen** – im geöff­neten Tool eine WAV‑ oder MP3‑Datei auswählen.
+3. **Logs prüfen** – in der Konsole erscheinen Meldungen zu Upload und Dubbing.
+4. **Audio anhören** – nach Abschluss wird die generierte Sprachausgabe abgespielt.
+
+**Erfolgskriterien**
+
+* Ausgabe erfolgt auf Deutsch.
+* Timing der Sprachausgabe passt zum Original.
 
 ## 🧩 Wichtige Funktionen
 
