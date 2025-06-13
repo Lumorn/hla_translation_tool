@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.33.0
+
+* Ordnerüberwachung für manuell heruntergeladene Audios
+
 ## ✨ Neue Features in 1.31.0
 
 * Neuer Ordner `Download` für manuelle Audios
