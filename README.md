@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.26.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.27.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -140,6 +140,9 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
+
+Ab Version 1.27.0 gibt es zusätzlich in der Dateitabelle einen Button **Download DE**.
+Ist das Dubbing fertig, lässt sich damit die deutsche Audiodatei direkt speichern.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -410,6 +413,9 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 ---
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
+
+**Version 1.27.0 - Download-Button**
+Neue Spalte mit "Download DE" ermöglicht schnellen Zugriff auf fertige Dubbings.
 
 **Version 1.26.0 - Studio-Workflow**
 Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.

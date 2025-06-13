@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.27.0
+
+* Neue Spalte mit "Download DE"-Button in der Datei-Tabelle
+
 ## ✨ Neue Features in 1.26.0
 
 * Öffnet nach dem Starten des Dubbings automatisch das ElevenLabs Studio
