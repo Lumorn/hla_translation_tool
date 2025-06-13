@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.35.5-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-__VERSION__-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -196,8 +196,8 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 
 ### Version aktualisieren
 
-1. Nach jeder Änderung `package.json` anpassen.
-2. Mit `npm run update-version` werden alle `1.18.6`-Platzhalter automatisch durch die Versionsnummer ersetzt.
+1. In `package.json` die neue Versionsnummer eintragen.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `__VERSION__`-Platzhalter in `README.md`, `src/main.js` und `hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
