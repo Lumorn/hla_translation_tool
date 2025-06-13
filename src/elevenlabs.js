@@ -78,23 +78,20 @@ export async function downloadDubbingAudio(apiKey, id, targetLang = 'de', logger
     return await res.blob();
 }
 
-// Rendert eine bestimmte Sprache neu
-export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
-    const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
-        method: 'POST',
-        headers: {
-            'xi-api-key': apiKey,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ render_type: renderType })
-    });
+// Prüft, ob ein Dubbing bereits generiert wurde
+export async function isDubReady(id, lang = 'de', apiKey, logger = () => {}) {
+    logger(`GET ${API}/dubbing/${id}`);
+    const res = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
     const text = await res.text();
     logger(`Antwort (${res.status}): ${text}`);
+    if (!res.ok) throw new Error(text);
+    const meta = JSON.parse(text);
+    return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
+}
 
-    if (!res.ok) {
-        throw new Error(`Render language failed: ${res.status} ${text}`);
-    }
-
-    return JSON.parse(text);
+// Rendert eine bestimmte Sprache neu
+export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
+    // Funktion deaktiviert – Studio-Workflow nutzt kein Rendering mehr
+    logger('renderLanguage wird nicht mehr verwendet');
+    return {};
 }

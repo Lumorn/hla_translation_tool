@@ -64,20 +64,17 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.23.1';
+const APP_VERSION = '1.24.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
-let createDubbing, waitForDubbing, downloadDubbingAudio, renderLanguage;
+let createDubbing;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ createDubbing, waitForDubbing, downloadDubbingAudio, renderLanguage } = require('../elevenlabs'));
+    ({ createDubbing } = require('../elevenlabs'));
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
-        waitForDubbing = mod.waitForDubbing;
-        downloadDubbingAudio = mod.downloadDubbingAudio;
-        renderLanguage = mod.renderLanguage;
     });
 }
 
@@ -6508,53 +6505,26 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     addDubbingLog(`Dubbing-ID erhalten: ${id}`);
 
-    updateStatus('Rendere Sprache ...');
-    try {
-        await renderLanguage(id, 'de', 'wav', elevenLabsApiKey, addDubbingLog);
-    } catch (err) {
-        addDubbingLog('Render-Fehler: ' + err.message);
-    }
-
-    updateStatus('Dubbing läuft...');
-    addDubbingLog('Warte auf Fertigstellung...');
-
-    try {
-        await waitForDubbing(elevenLabsApiKey, id, 'de', undefined, undefined, addDubbingLog);
-    } catch (err) {
-        updateStatus('Dubbing fehlgeschlagen');
-        addDubbingLog(err.message);
-        return;
-    }
-
-    addDubbingLog('Dubbing abgeschlossen, lade Audio...');
-
-    let dubbedBlob;
-    try {
-        dubbedBlob = await downloadDubbingAudio(elevenLabsApiKey, id, 'de', addDubbingLog);
-    } catch (err) {
-        updateStatus('Download fehlgeschlagen');
-        addDubbingLog(err.message);
-        return;
-    }
-    const relPath = getFullPath(file);
-    if (window.electronAPI && window.electronAPI.saveDeFile) {
-        const buffer = await dubbedBlob.arrayBuffer();
-        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        deAudioCache[relPath] = `sounds/DE/${relPath}`;
-        await updateHistoryCache(relPath);
-        addDubbingLog('Datei in Desktop-Version gespeichert');
-    } else {
-        await speichereUebersetzungsDatei(dubbedBlob, relPath);
-        addDubbingLog('Datei im Browser gespeichert');
-    }
-    // 🟠 Dubbing-ID merken und Projekt speichern
+    // Dubbing-ID sofort merken und anzeigen
     file.dubbingId = id;
     saveCurrentProject();
     renderFileTable();
-    updateStatus('Dubbing abgeschlossen');
-    addDubbingLog('Fertig.');
+const studioUrl = `https://elevenlabs.io/studio/dubbing/${id}`;
+    window.open(studioUrl, '_blank');
+    updateStatus('Bitte im Studio „Generate Audio“ klicken.');
 }
 // =========================== STARTDUBBING END ===============================
+
+// =========================== ISDUBREADY START ===============================
+// Prüft, ob eine Dub-Datei fertig ist
+async function isDubReady(id, lang = 'de') {
+    const hdr = { headers: { 'xi-api-key': elevenLabsApiKey } };
+    const metaRes = await fetch(`${API}/dubbing/${id}`, hdr);
+    if (!metaRes.ok) return false;
+    const meta = await metaRes.json();
+    return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
+}
+// =========================== ISDUBREADY END =================================
 
 // =========================== REDOWNLOADDUBBING START ========================
 // Lädt bereits erzeugtes Dubbing mithilfe der gespeicherten ID erneut herunter
@@ -6573,34 +6543,18 @@ async function redownloadDubbing(fileId) {
         return;
     }
 
-    let audioRes;
-    let errText = '';
-    for (let attempt = 0; attempt < 4; attempt++) {
-        try {
-            audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
-                headers: { 'xi-api-key': elevenLabsApiKey }
-            });
-            if (audioRes.ok) break;
-            errText = await audioRes.text();
-            addDubbingLog(`Download fehlgeschlagen (${audioRes.status} ${errText}). Versuch ${attempt + 1}`);
-        } catch (e) {
-            errText = e.message;
-            addDubbingLog('Fehler: ' + errText);
-        }
-        if (attempt < 3) {
-            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
-            addDubbingLog('Neuer Versuch...');
-        }
+    if (!(await isDubReady(file.dubbingId))) {
+        alert('Deutsch noch nicht fertig – erst im Studio generieren!');
+        return;
     }
 
-    if (!audioRes || !audioRes.ok) {
-        let reason = errText;
-        try {
-            const js = JSON.parse(errText);
-            reason = js.detail?.message || js.error || reason;
-        } catch {}
+    const audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
+        headers: { 'xi-api-key': elevenLabsApiKey }
+    });
+    if (!audioRes.ok) {
+        const errText = await audioRes.text();
         updateStatus('Download fehlgeschlagen');
-        addDubbingLog(`Endgültig fehlgeschlagen: ${reason}`);
+        addDubbingLog(errText);
         return;
     }
     const dubbedBlob = await audioRes.blob();
@@ -8689,7 +8643,7 @@ if (typeof module !== "undefined" && module.exports) {
         createDubbingCSV,
         validateCsv,
         msToSeconds,
-        waitForDubbing,
+        isDubReady,
         startDubbing,
         redownloadDubbing,
         initiateDubbing

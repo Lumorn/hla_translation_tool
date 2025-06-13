@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.23.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.24.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -109,7 +109,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 4. Beispielhafte Nutzung (neue Reihenfolge):
 
 ```javascript
-const { createDubbing, renderLanguage, waitForDubbing, downloadDubbingAudio } = require('./elevenlabs.js');
+const { createDubbing, isDubReady } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
 const job = await createDubbing({
     audioFile: 'sounds/EN/beispiel.wav',
@@ -117,9 +117,12 @@ const job = await createDubbing({
     voiceId: '',
     apiKey
 });
-await renderLanguage(job.dubbing_id, 'de', 'wav', apiKey);
-await waitForDubbing(apiKey, job.dubbing_id, 'de');
-await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
+const url = `https://elevenlabs.io/studio/dubbing/${job.dubbing_id}`;
+console.log('Im Studio öffnen:', url);
+if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
+    const blob = await fetch(`${API}/dubbing/${job.dubbing_id}/audio/de`, { headers: { 'xi-api-key': apiKey } }).then(r => r.blob());
+    // blob speichern ...
+}
 ```
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
@@ -155,7 +158,7 @@ Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und 
 
 Ab Version 1.20.3 wertet `waitForDubbing` nur noch `status` aus. Angaben in `progress.langs` oder `state` werden ignoriert.
 
-Ab Version 1.23.1 rufen `renderLanguage` und `waitForDubbing` intern `/dubbing/resource/...` auf.
+Ab Version 1.24.0 entfällt `renderLanguage`. Erzeugte Projekte werden im Studio manuell gerendert. `isDubReady(id)` prüft dabei, ob die deutsche Spur bereitsteht.
 
 Beispiel einer gültigen CSV:
 
@@ -408,7 +411,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.23.1 - Ausführliche API-Logs
+**Version 1.24.0 - Halb-manueller Studio-Workflow
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
