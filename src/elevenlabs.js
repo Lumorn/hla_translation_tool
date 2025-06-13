@@ -2,10 +2,10 @@ const API = 'https://api.elevenlabs.io/v1';
 const WAIT_INTERVAL_MS = 5000;
 
 // Erstellt ein Dubbing-Projekt bei ElevenLabs
+// target_lang und target_languages sind fest auf "de" gesetzt
 export async function createDubbing({
     audioFile,
     csvContent,
-    targetLang = 'de',
     voiceId = '',
     apiKey
 }) {
@@ -13,8 +13,9 @@ export async function createDubbing({
 
     form.append('file', audioFile);
     form.append('csv_file', new Blob([csvContent], { type: 'text/csv' }), 'script.csv');
-    form.append('target_lang', targetLang);
-    form.append('target_languages', JSON.stringify([targetLang]));
+    const lang = 'de';
+    form.append('target_lang', lang);
+    form.append('target_languages', JSON.stringify([lang]));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
 

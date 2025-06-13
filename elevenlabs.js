@@ -8,11 +8,13 @@ const API = 'https://api.elevenlabs.io/v1';
  * Startet einen Dubbing-Auftrag bei ElevenLabs und gibt die Antwort zurueck.
  * @param {string} apiKey - Eigener API-Schluessel.
  * @param {string} audioPath - Pfad zur englischen Audiodatei.
- * @param {string} [targetLang='de'] - Ziel-Sprache fuer das Dubbing.
- * @param {object} [voiceSettings=null] - Optionale Voice-Settings.
+ * @param {string} [voiceId=''] - Optionale Stimme.
+ *
+ * `target_lang` und `target_languages` werden immer auf `de` gesetzt.
  * @returns {Promise<object>} Antwort der API als Objekt.
  */
-async function createDubbing({ audioFile, csvContent, targetLang = 'de', voiceId = '', apiKey }) {
+// Erstellt einen Dubbing-Job bei ElevenLabs
+async function createDubbing({ audioFile, csvContent, voiceId = '', apiKey }) {
     if (!fs.existsSync(audioFile)) {
         throw new Error('Audio-Datei nicht gefunden: ' + audioFile);
     }
@@ -20,8 +22,9 @@ async function createDubbing({ audioFile, csvContent, targetLang = 'de', voiceId
     const form = new FormData();
     form.append('file', fs.createReadStream(audioFile));
     form.append('csv_file', new Blob([csvContent], { type: 'text/csv' }), 'script.csv');
-    form.append('target_lang', targetLang);
-    form.append('target_languages', JSON.stringify([targetLang]));
+    const lang = 'de';
+    form.append('target_lang', lang);
+    form.append('target_languages', JSON.stringify([lang]));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
 

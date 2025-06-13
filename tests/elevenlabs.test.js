@@ -28,16 +28,34 @@ afterEach(() => {
 describe('ElevenLabs API', () => {
     test('erfolgreicher Dubbing-Auftrag ohne Voice-ID', async () => {
         nock(API)
-            .post('/dubbing', body => body.includes('disable_voice_cloning'))
+            .post('/dubbing', body => body.includes('disable_voice_cloning') &&
+                                     body.includes('name="target_lang"') &&
+                                     body.includes('de') &&
+                                     !body.includes('fr'))
             .reply(200, { dubbing_id: '123', expected_duration_sec: 1 });
 
         const result = await createDubbing({
             audioFile: tempAudio,
             csvContent: 'speaker,start_time,end_time,transcription,translation\n',
-            targetLang: 'de',
+            targetLang: 'fr',
             apiKey: 'key'
         });
         expect(result).toEqual({ dubbing_id: '123', expected_duration_sec: 1 });
+    });
+
+    test('Dubbing mit Voice-ID übermittelt voice_id', async () => {
+        nock(API)
+            .post('/dubbing', body => body.includes('voice_id') &&
+                                     !body.includes('disable_voice_cloning'))
+            .reply(200, { dubbing_id: '124', expected_duration_sec: 1 });
+
+        const result = await createDubbing({
+            audioFile: tempAudio,
+            csvContent: 'speaker,start_time,end_time,transcription,translation\n',
+            voiceId: 'abc',
+            apiKey: 'key'
+        });
+        expect(result).toEqual({ dubbing_id: '124', expected_duration_sec: 1 });
     });
 
     test('fehlerhafte Antwort bei createDubbing', async () => {

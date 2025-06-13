@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.6-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.7-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.7](#-neue-features-in-1.22.7)
 * [✨ Neue Features in 1.22.6](#-neue-features-in-1.22.6)
 * [✨ Neue Features in 1.22.5](#-neue-features-in-1.22.5)
 * [✨ Neue Features in 1.22.4](#-neue-features-in-1.22.4)
@@ -40,6 +41,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.7
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Deutsches Dubbing** | `target_lang` und `target_languages` sind nun immer `de`. |
+
 ## ✨ Neue Features in 1.22.6
 
 | Kategorie | Beschreibung |
@@ -316,11 +323,14 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ```javascript
 const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
-const job = await createDubbing(apiKey, 'sounds/EN/beispiel.wav', 'fr', {
-    speed: 1.2
+const job = await createDubbing({
+    audioFile: 'sounds/EN/beispiel.wav',
+    csvContent: csvData,
+    voiceId: '',
+    apiKey
 });
 const status = await getDubbingStatus(apiKey, job.dubbing_id);
-await downloadDubbingAudio(apiKey, job.dubbing_id, 'fr', 'sounds/FR/beispiel_fr.mp3');
+await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
@@ -579,7 +589,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.6 (aktuell)
+### 1.22.7 (aktuell)
+
+**✨ Neue Features:**
+* `target_lang` ist immer `de` und `disable_voice_cloning` wird ohne Voice-ID gesetzt.
+
+### 1.22.6
 
 **✨ Neue Features:**
 * `.env.local` speichert den API-Schlüssel.
@@ -923,7 +938,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.6 - Deutsches Dubbing ohne Voice-ID
+**Version 1.22.7 - Deutsches Dubbing ohne Voice-ID
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
