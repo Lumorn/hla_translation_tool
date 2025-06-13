@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.38.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.38.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -101,6 +101,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 7. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin.
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Ergebnisse stehen in `setup.log`.
+10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
 
 ### ElevenLabs-Dubbing
 
@@ -213,7 +214,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.38.2`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.38.3`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -524,6 +525,8 @@ Fehlt nach `npm ci` das Electron-Modul, wird es automatisch nachinstalliert.
 Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und testet Electron.
 **Version 1.38.1 - Einfacherer Reset**
 `git reset --hard HEAD` entfernt lokale Änderungen, ohne `web/sounds` und `web/backups` anzutasten.
+**Version 1.38.3 - Node-Check in start_tool.bat**
+Die Batch-Datei prueft nun die installierte Node-Version und verlangt Node 18 bis 22.
 **Version 1.38.2 - Zuverlaessiges Electron-Modul**
 Nach `npm ci` pruefen die Start-Skripte, ob `electron/node_modules/electron` fehlt und installieren das Modul bei Bedarf nach. Schlaegt dies erneut fehl, bricht das Skript mit einer Fehlermeldung ab.
 **Version 1.36.11 - Bessere Fehleranzeige**

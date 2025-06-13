@@ -8,6 +8,9 @@
 ## 🛠️ Patch in 1.38.2
 * Start-Skripte pruefen nach `npm ci`, ob das Electron-Modul vorhanden ist. Fehlt es, wird `npm install electron` ausgefuehrt. Scheitert auch dieser Versuch, bricht das Skript mit einem Fehler ab.
 
+## 🛠️ Patch in 1.38.3
+* `start_tool.bat` prueft nun die installierte Node-Version und verlangt Node 18 bis 22.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6
