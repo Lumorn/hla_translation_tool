@@ -1,4 +1,8 @@
 node_modules/
 electron/node_modules/
-sounds/
 .env.local
+
+# Lokale Ordner in der Web-App
+web/sounds/
+web/backups/
+web/Download/

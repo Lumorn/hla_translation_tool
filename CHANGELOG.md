@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.1
+* `.gitignore` ignoriert nun `web/sounds/`, `web/backups/` und `web/Download/`
+
 ## 🛠️ Strukturänderung in 1.36.0
 * Web-Dateien befinden sich nun im Ordner `web/`
 
