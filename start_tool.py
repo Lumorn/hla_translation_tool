@@ -167,3 +167,6 @@ else:
 log("Anwendung beendet")
 print(f"Log gespeichert unter {LOGFILE}")
 print("Vorgang abgeschlossen.")
+
+# Fenster offen halten, damit Fehlermeldungen sichtbar bleiben
+input("Zum Beenden Enter drücken...")
