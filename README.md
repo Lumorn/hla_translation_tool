@@ -569,7 +569,7 @@ Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Req
 
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
-ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint.
+ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint. Ebenfalls neu ist `watcher.test.js`, der das Anlegen einer Datei im Download‑Ordner simuliert und den entsprechenden Callback testet.
 Ab Version 1.40.3 nutzt `manualDub.test.js` einen kleinen Polyfill, damit der `File`-Konstruktor auch in Node-Umgebungen verfügbar ist.
 Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil seine Funktion global bereitsteht.
 Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
