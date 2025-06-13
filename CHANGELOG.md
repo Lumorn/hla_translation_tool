@@ -2,8 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.37.3
+* `package.json` verlangt jetzt Node 18–21.
+
 ## 🛠️ Patch in 1.37.2
-* `start_tool.py` und `start_tool.js` pruefen die installierte Node-Version und erwarten Node 18 bis 21.
+* `start_tool.py` und `start_tool.js` pruefen die installierte Node-Version und erwarten Node 18–21.
 
 ## 🛠️ Patch in 1.37.1
 * `start_tool.py` erkennt nun automatisch, ob es im Repository oder davor gestartet wurde.

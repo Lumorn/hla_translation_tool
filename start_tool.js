@@ -46,7 +46,7 @@ try {
     log(`Gefundene Node-Version: ${output}`);
     const major = parseInt(output.replace(/^v/, '').split('.')[0], 10);
     if (isNaN(major) || major < 18 || major >= 22) {
-        console.error(`[Fehler] Node.js Version ${output} wird nicht unterstuetzt. Bitte Node 18 bis 21 installieren.`);
+        console.error(`[Fehler] Node.js Version ${output} wird nicht unterstuetzt. Bitte Node 18–21 installieren.`);
         log('Unpassende Node-Version');
         process.exit(1);
     }
