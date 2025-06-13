@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Verbesserung in 1.35.7
+
+* `.env.example` als Vorlage für `.env.local`
+
 ## 🛠️ Aufräumarbeiten in 1.35.5
 
 * Überflüssige TypeScript-Dateien entfernt
@@ -151,7 +155,7 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 | Kategorie | Beschreibung |
 | ---------- | ------------- |
-| **Konfiguration** | `.env.local` mit `ELEVEN_API_KEY` nutzen. |
+| **Konfiguration** | `.env.example` als Vorlage für `.env.local` nutzen. |
 
 ## ✨ Neue Features in 1.22.5
 
