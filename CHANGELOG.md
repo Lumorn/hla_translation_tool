@@ -17,6 +17,9 @@
 ## 🛠️ Patch in 1.38.7
 * Debug-Fenster meldet jetzt, ob das Programm mit Administratorrechten gestartet wurde.
 
+## 🛠️ Patch in 1.38.8
+* Debug-Fenster zeigt nun die App-, Node-, Electron- und Chrome-Version an.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6

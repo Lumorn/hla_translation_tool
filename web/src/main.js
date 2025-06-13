@@ -65,7 +65,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.38.7';
+const APP_VERSION = '1.38.8';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6081,9 +6081,10 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                 info = await window.electronAPI.getDebugInfo();
             } else {
                 // Fallback für die Browser-Version ohne Electron
+                // Basisinformationen ohne Electron-API
                 info = {
                     Hinweis: 'Browser-Version ohne Electron-API',
-                    'App-Version': APP_VERSION,
+                    appVersion: APP_VERSION,
                     Browser: navigator.userAgent,
                     URL: location.href,
                     Plattform: navigator.platform,
@@ -6094,10 +6095,10 @@ function executeCleanup(cleanupPlan, totalToDelete) {
 
                 // Zusätzliche Infos, wenn ein Node-Process existiert
                 if (typeof process !== 'undefined') {
-                    info['Node-Version'] = process.version;
+                    info.nodeVersion = process.version;
                     if (process.versions) {
-                        info['Electron-Version'] = process.versions.electron || 'n/a';
-                        info['Chrome-Version'] = process.versions.chrome || 'n/a';
+                        info.electronVersion = process.versions.electron || 'n/a';
+                        info.chromeVersion = process.versions.chrome || 'n/a';
                     }
                     info['Process-Plattform'] = process.platform;
                     info['CPU-Architektur'] = process.arch;
@@ -6139,8 +6140,25 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                 delete info.setupLog;
             }
 
+            // Versionsinformationen separat sammeln
+            const versionInfo = {
+                'App-Version': info.appVersion ?? info['App-Version'] ?? APP_VERSION,
+                'Node-Version': info.nodeVersion ?? info['Node-Version'] ?? (typeof process !== 'undefined' ? process.version : 'n/a'),
+                'Electron-Version': info.electronVersion ?? info['Electron-Version'] ?? (process.versions ? process.versions.electron || 'n/a' : 'n/a'),
+                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (process.versions ? process.versions.chrome || 'n/a' : 'n/a')
+            };
+            delete info.appVersion; delete info['App-Version'];
+            delete info.nodeVersion; delete info['Node-Version'];
+            delete info.electronVersion; delete info['Electron-Version'];
+            delete info.chromeVersion; delete info['Chrome-Version'];
+
             // HTML für die Anzeige aufbauen
-            let html = '<h3>Debug-Informationen</h3><ul id="debugInfoList">';
+            let html = '<h3>Debug-Informationen</h3>';
+            html += '<h4>Programmversionen</h4><ul id="debugVersionList">';
+            for (const [key, value] of Object.entries(versionInfo)) {
+                html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(String(value))}</code></li>`;
+            }
+            html += '</ul><ul id="debugInfoList">';
             for (const [key, value] of Object.entries(info)) {
                 const val = String(value);
                 if (val.includes('\n')) {
@@ -6158,7 +6176,8 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             if (copyBtn) {
                 copyBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const text = Object.entries(info)
+                    const allData = { ...versionInfo, ...info };
+                    const text = Object.entries(allData)
                         .map(([k, v]) => `${k}: ${v}`)
                         .join('\n');
                     navigator.clipboard.writeText(text)
