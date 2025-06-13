@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.36.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.36.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -163,6 +163,7 @@ Ab Version 1.35.5 wurden überflüssige TypeScript-Dateien entfernt.
 
 Ab Version 1.36.0 liegen alle Web-Dateien im Ordner `web/`.
 Ab Version 1.36.1 werden die lokalen Ordner `web/sounds`, `web/backups` und `web/Download` ignoriert.
+Ab Version 1.36.2 verwerfen die Start-Skripte beim Zurücksetzen auch keine Backups mehr.
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
 
@@ -199,7 +200,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.36.1`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.36.2`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -473,6 +474,8 @@ Der Dev-Button öffnet die Debug-Konsole jetzt automatisch und zeigt JavaScript-
 Nicht benötigte TypeScript-Dateien wurden entfernt.
 **Version 1.36.1 - Gitignore-Anpassung**
 Ignoriert jetzt die lokalen Ordner `web/sounds`, `web/backups` und `web/Download`.
+**Version 1.36.2 - Sicheres Reset**
+Die Start-Skripte lassen beim Zurücksetzen auch den Ordner `web/backups` unverändert.
 
 **Version 1.35.0 - Backup-Upload**
 Backups können im Browser hochgeladen und sofort wiederhergestellt werden.
