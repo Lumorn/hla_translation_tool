@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.8
+* Electron startet jetzt garantiert mit aktivierter `contextIsolation`.
+
 ## 🛠️ Patch in 1.36.7
 * Debug-Fenster besitzt nun einen Kopierknopf.
 
