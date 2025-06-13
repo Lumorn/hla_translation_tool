@@ -64,14 +64,20 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.22.1';
+const APP_VERSION = '1.22.2';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
-// Gemeinsame Funktion aus elevenlabs.js laden (nur in Node-Umgebung)
-let waitForDubbing;
+// Gemeinsame Funktionen aus elevenlabs.js laden
+let createDubbing, waitForDubbing, downloadDubbingAudio;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ waitForDubbing } = require('../elevenlabs'));
+    ({ createDubbing, waitForDubbing, downloadDubbingAudio } = require('../elevenlabs'));
+} else {
+    import('./elevenlabs.js').then(mod => {
+        createDubbing = mod.createDubbing;
+        waitForDubbing = mod.waitForDubbing;
+        downloadDubbingAudio = mod.downloadDubbingAudio;
+    });
 }
 
 // =========================== GLOBAL STATE END ===========================
