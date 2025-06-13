@@ -48,6 +48,7 @@
                     </div>
                 </div>
                 <button class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
+                <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
             </div>
 			
 <!-- =========================== PROJECT META BAR START =========================== -->
@@ -394,12 +395,13 @@
         </div>
     </div>
 
-    <!-- Dubbing Log Dialog -->
+    <!-- Protokoll Dialog -->
     <div class="dialog-overlay" id="dubbingLogDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDubbingLog()">×</button>
             <h3>📝 Dubbing-Protokoll</h3>
-            <pre id="dubbingLog" style="max-height:300px; overflow:auto; background:#000; color:#0f0; padding:10px;"></pre>
+            <ul id="protocolList" class="protocol-list"></ul>
+            <pre id="dubbingLog" style="max-height:200px; overflow:auto; background:#000; color:#0f0; padding:10px;"></pre>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="copyDubbingLog()">Log kopieren</button>
                 <button class="btn btn-danger" onclick="clearDubbingLog()">Log löschen</button>
@@ -437,7 +439,7 @@
 
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.28.0</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.29.0</a>
 
     <script src="src/main.js"></script>
 </body>

@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.29.0
+
+* Neues Protokoll-Menü listet alle API-Aufrufe mit Zeitstempel und Statuscode
+
 ## ✨ Neue Features in 1.28.0
 
 * Farbige Status-Punkte zeigen den Fortschritt jedes Dubbings direkt in der Tabelle
