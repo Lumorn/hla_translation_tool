@@ -1,6 +1,6 @@
 {
   "name": "hla_translation_tool",
-  "version": "1.38.3",
+  "version": "1.38.4",
   "devDependencies": {
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^30.0.0",
