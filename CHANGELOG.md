@@ -30,6 +30,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Backups aus dem alten Ordner `backups` werden wieder erkannt
 
+## 🛠️ Bugfix in 1.34.6
+
+* DevTools-Button wird im Browser ausgeblendet
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios
