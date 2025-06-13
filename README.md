@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.4-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.4](#-neue-features-in-1.22.4)
 * [✨ Neue Features in 1.22.3](#-neue-features-in-1.22.3)
 * [✨ Neue Features in 1.22.2](#-neue-features-in-1.22.2)
 * [✨ Neue Features in 1.22.0](#-neue-features-in-1.22.0)
@@ -37,6 +38,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.4
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Cache-Fix** | Session-Daten werden nun im Ordner `.hla_translation_tool/SessionData` gespeichert, um Cache-Fehler unter Windows zu verhindern. |
+
 ## ✨ Neue Features in 1.22.3
 
 | Kategorie | Beschreibung |
@@ -557,7 +564,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.3 (aktuell)
+### 1.22.4 (aktuell)
+
+**✨ Neue Features:**
+* Cache-Pfad in Electron wurde auf einen neuen SessionData-Ordner gelegt.
+
+### 1.22.3
 
 **✨ Neue Features:**
 * `downloadDubbingAudio` wartet auf `complete` und versucht bis zu 10 Downloads.
@@ -886,7 +898,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.3 - Polling-Fix und 404-Hinweise hinzugefügt
+**Version 1.22.4 - Cache-Fix im Electron-Startskript
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
