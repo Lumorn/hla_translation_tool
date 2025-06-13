@@ -102,7 +102,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
 10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
-11. Bei Problemen mit lokalen Aenderungen kann `reset_repo.py` diese verwerfen und das Repository aktualisieren.
+11. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 
 ### ElevenLabs-Dubbing
 
@@ -576,6 +576,7 @@ Ab Version 1.40.3 lädt die Desktop-Version `config.js` auch im gepackten Zustan
 Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil seine Funktion global bereitsteht.
 Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
 Ab Version 1.40.6 stürzt das Debug-Fenster im Browser nicht mehr ab, wenn kein Node-Prozess vorhanden ist.
+Ab Version 1.40.7 kann `reset_repo.py` das Repository komplett aktualisieren, alle Abhängigkeiten installieren und anschließend die Desktop-App starten.
 
 ## ▶️ E2E-Test
 
