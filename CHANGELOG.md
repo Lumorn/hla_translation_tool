@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.31.0
+
+* Neuer Ordner `Download` für manuelle Audios
+* Konstante `DL_WATCH_PATH` sorgt beim Start für die Ordner-Erstellung
+
 ## ✨ Neue Features in 1.30.0
 
 * Fehler-Toast bei fehlgeschlagenem Dubbing

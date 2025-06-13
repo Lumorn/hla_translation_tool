@@ -1,7 +1,9 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const { DL_WATCH_PATH } = require('../src/config.js');
 const historyUtils = require('../historyUtils');
+if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
 // =========================== USER-DATA-PFAD START ===========================
 // Benutzer-Datenordner festlegen, damit lokale Daten auch nach einem Neustart
