@@ -35,6 +35,41 @@ log("Setup gestartet")
 log(f"Python-Version: {sys.version.split()[0]} auf {sys.platform}")
 print("=== Starte HLA Translation Tool Setup ===")
 
+# "--check" startet nur einen kurzen Testlauf der Desktop-App
+CHECK_MODE = "--check" in sys.argv
+
+if CHECK_MODE:
+    log("Check-Modus aktiviert")
+    print("Kurzer Testlauf wird gestartet...")
+    os.chdir(os.path.join(BASE_DIR, "electron"))
+    uid = None
+    geteuid = getattr(os, "geteuid", None)
+    if geteuid is not None:
+        uid = geteuid()
+        log(f"Aktuelle UID: {uid}")
+    else:
+        log("Keine UID verfuegbar (Windows?)")
+
+    try:
+        if uid == 0:
+            log("Starte Electron ohne Sandbox (Test)")
+            proc = subprocess.Popen("npm start -- --no-sandbox", shell=True)
+        else:
+            log("Starte Electron mit Sandbox (Test)")
+            proc = subprocess.Popen("npm start", shell=True)
+        # Fünf Sekunden laufen lassen
+        import time
+        time.sleep(5)
+        proc.terminate()
+        proc.wait(timeout=10)
+        log("Testlauf beendet")
+        sys.exit(0 if proc.returncode == 0 else 1)
+    except Exception as e:
+        log("Testlauf fehlgeschlagen")
+        log(str(e))
+        print("[Fehler] Testlauf fehlgeschlagen. Weitere Details siehe setup.log")
+        sys.exit(1)
+
 # ----------------------- Git pruefen -----------------------
 log("Pruefe Git-Version")
 try:
@@ -230,5 +265,6 @@ finally:
     log("Anwendung beendet")
     print(f"Log gespeichert unter {LOGFILE}")
     print("Vorgang abgeschlossen.")
-    # Fenster offen halten, damit Fehlermeldungen sichtbar bleiben
-    input("Zum Beenden Enter drücken...")
+    # Im normalen Modus auf Nutzereingabe warten
+    if not CHECK_MODE:
+        input("Zum Beenden Enter drücken...")

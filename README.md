@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.38.4-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.38.5-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -100,7 +100,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` und legen Sie Übersetzungen in `web/sounds/DE` ab
 7. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin.
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
-9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Ergebnisse stehen in `setup.log`.
+9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
 10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
 
 ### ElevenLabs-Dubbing
@@ -214,7 +214,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.38.4`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.38.5`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -527,6 +527,8 @@ Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigke
 `git reset --hard HEAD` entfernt lokale Änderungen, ohne `web/sounds` und `web/backups` anzutasten.
 **Version 1.38.4 - Zuverlaessiger Environment-Check**
 `check_environment.js` stellt nach `npm ci` sicher, dass das Electron-Modul vorhanden ist und installiert es sonst nach.
+**Version 1.38.5 - Python-App-Test**
+`check_environment.js` kann jetzt mit `--tool-check` einen kurzen Start der Desktop-App per `python start_tool.py --check` ausfuehren.
 **Version 1.38.3 - Node-Check in start_tool.bat**
 Die Batch-Datei prueft nun die installierte Node-Version und verlangt Node 18 bis 22.
 **Version 1.38.2 - Zuverlaessiges Electron-Modul**
