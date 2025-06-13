@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.20.1';
+const APP_VERSION = '1.20.2';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6387,7 +6387,8 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
                 if (typeof addDubbingLog === 'function') addDubbingLog('Polling: ' + status);
                 if (status === 'dubbed' && langDone) return;
                 if (status === 'failed') {
-                    throw new Error(js.error || 'Server meldet failed');
+                    const reason = js.detail?.message || js.error || 'Server meldet failed';
+                    throw new Error(reason);
                 }
             }
         } catch (e) {
@@ -6558,8 +6559,13 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
         }
     }
     if (!audioRes || !audioRes.ok) {
+        let reason = errText;
+        try {
+            const js = JSON.parse(errText);
+            reason = js.detail?.message || js.error || reason;
+        } catch {}
         updateStatus('Download fehlgeschlagen');
-        addDubbingLog(`Endgültig fehlgeschlagen: ${errText}`);
+        addDubbingLog(`Endgültig fehlgeschlagen: ${reason}`);
         return;
     }
     const dubbedBlob = await audioRes.blob();
@@ -6621,8 +6627,13 @@ async function redownloadDubbing(fileId) {
     }
 
     if (!audioRes || !audioRes.ok) {
+        let reason = errText;
+        try {
+            const js = JSON.parse(errText);
+            reason = js.detail?.message || js.error || reason;
+        } catch {}
         updateStatus('Download fehlgeschlagen');
-        addDubbingLog(`Endgültig fehlgeschlagen: ${errText}`);
+        addDubbingLog(`Endgültig fehlgeschlagen: ${reason}`);
         return;
     }
     const dubbedBlob = await audioRes.blob();
