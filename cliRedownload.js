@@ -4,17 +4,19 @@
 
 const { downloadDubbingAudio } = require('./elevenlabs');
 
-// Parameter auslesen: node cliRedownload.js API-KEY DUBBING-ID AUSGABEDATEI
-const [,, apiKey, dubbingId, outFile] = process.argv;
+// Parameter auslesen: node cliRedownload.js API-KEY DUBBING-ID AUSGABEDATEI [SPRACHE]
+const [,, apiKey, dubbingId, outFile, lang = 'de'] = process.argv;
 
+// Mindestens drei Parameter muessen vorhanden sein
 if (!apiKey || !dubbingId || !outFile) {
-    console.log('Aufruf: node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei>');
+    console.log('Aufruf: node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei> [Sprache]');
     process.exit(1);
 }
 
 (async () => {
     try {
-        await downloadDubbingAudio(apiKey, dubbingId, 'de', outFile);
+        // Gewuenschte Sprache an downloadDubbingAudio weiterreichen
+        await downloadDubbingAudio(apiKey, dubbingId, lang, outFile);
         console.log('Download abgeschlossen:', outFile);
     } catch (err) {
         console.error('Fehler:', err.message);

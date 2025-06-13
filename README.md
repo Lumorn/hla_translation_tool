@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.21.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.0](#-neue-features-in-1.22.0)
 * [✨ Neue Features in 1.21.0](#-neue-features-in-1.21.0)
 * [✨ Neue Features in 1.20.3](#-neue-features-in-1.20.3)
 * [✨ Neue Features in 1.20.2](#-neue-features-in-1.20.2)
@@ -34,6 +35,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.0
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **CLI-Update**             | `cliRedownload.js` akzeptiert jetzt optional einen Sprachparameter. |
+
 ## ✨ Neue Features in 1.21.0
 
 |  Kategorie                 |  Beschreibung |
@@ -299,7 +306,7 @@ Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
 
 ```bash
-node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei>
+node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei> [Sprache]
 ```
 
 Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
@@ -532,7 +539,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.21.0 (aktuell)
+### 1.22.0 (aktuell)
+
+**✨ Neue Features:**
+* `cliRedownload.js` nimmt optional eine Sprache entgegen.
+
+### 1.21.0
 
 **✨ Neue Features:**
 * `waitForDubbing` liegt jetzt in `elevenlabs.js` und wird überall genutzt.
@@ -845,7 +857,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.21.0 - Zentrale API-Konstante
+**Version 1.22.0 - CLI erweitert
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
