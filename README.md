@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.8-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.9-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.9](#-neue-features-in-1.22.9)
 * [✨ Neue Features in 1.22.8](#-neue-features-in-1.22.8)
 * [✨ Neue Features in 1.22.7](#-neue-features-in-1.22.7)
 * [✨ Neue Features in 1.22.6](#-neue-features-in-1.22.6)
@@ -42,6 +43,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.9
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Bugfix** | `waitForDubbing` berücksichtigt jetzt den übergebenen `targetLang`-Parameter. |
+
 ## ✨ Neue Features in 1.22.8
 
 | Kategorie | Beschreibung |
@@ -596,7 +603,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.8 (aktuell)
+### 1.22.9 (aktuell)
+
+**✨ Neue Features:**
+* Bugfix: `waitForDubbing` berücksichtigt den `targetLang`-Parameter.
+
+### 1.22.8
 
 **✨ Neue Features:**
 * Neue Funktion `renderLanguage` rendert eine Sprache in gewünschtem Format.
@@ -950,7 +962,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.8 - Neue Funktion renderLanguage
+**Version 1.22.9 - Bugfix WaitForDubbing
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
