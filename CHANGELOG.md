@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.37.0
+* Debug-Fenster zeigt nun weitere Systeminformationen wie Fenster- und Bildschirmgröße sowie den Sandbox-Status.
+
 ## 🛠️ Patch in 1.36.12
 * Start-Skripte protokollieren UID und melden den Sandbox-Modus von Electron.
 
