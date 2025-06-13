@@ -43,25 +43,27 @@ export async function createDubbing({
 export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 180, onProgress = () => {}, logger = () => {}) {
     const start = Date.now();
     let info = null;
+
     while (Date.now() - start < timeout * 1000) {
-        logger(`GET ${API}/dubbing/resource/${id}`);
-        const res = await fetch(`${API}/dubbing/resource/${id}`, {
-            headers: { 'xi-api-key': apiKey }
-        });
+        logger(`GET ${API}/dubbing/${id}`);
+        const res  = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
         const text = await res.text();
         logger(`Antwort (${res.status}): ${text}`);
         if (!res.ok) throw new Error(text);
         info = JSON.parse(text);
         onProgress(info.status);
-        const state = info.renders?.[targetLang]?.status;
-        if (state === 'complete') return;
-        if (state === 'failed') {
-            const reason = info.renders?.[targetLang]?.error || 'Server meldet failed';
+
+        const ready = info.status === 'dubbed' && (info.target_languages || []).includes(targetLang);
+        if (ready) return;
+        if (info.status === 'failed') {
+            const reason = info.error || 'Server meldet failed';
             throw new Error(reason);
         }
+
         await new Promise(r => setTimeout(r, WAIT_INTERVAL_MS));
     }
-    if (!info?.renders || !info.renders[targetLang]) {
+
+    if (info && info.status === 'dubbed' && !(info.target_languages || []).includes(targetLang)) {
         console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
@@ -79,7 +81,7 @@ export async function downloadDubbingAudio(apiKey, id, targetLang = 'de', logger
 }
 
 // Prüft, ob ein Dubbing bereits generiert wurde
-export async function isDubReady(id, lang = 'de', apiKey, logger = () => {}) {
+export async function isDubReady(id, lang = 'de', apiKey = import.meta.env.ELEVEN_API_KEY, logger = () => {}) {
     logger(`GET ${API}/dubbing/${id}`);
     const res = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
     const text = await res.text();
@@ -89,9 +91,8 @@ export async function isDubReady(id, lang = 'de', apiKey, logger = () => {}) {
     return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
 }
 
-// Rendert eine bestimmte Sprache neu
-export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    // Funktion deaktiviert – Studio-Workflow nutzt kein Rendering mehr
-    logger('renderLanguage wird nicht mehr verwendet');
-    return {};
-}
+// export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
+//     // Funktion wurde entfernt, da der Studio-Workflow das manuelle Rendering uebernimmt
+//     logger('renderLanguage wird nicht mehr verwendet');
+//     return {};
+// }

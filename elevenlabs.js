@@ -82,22 +82,24 @@ async function getDubbingStatus(apiKey, dubbingId, logger = () => {}) {
 async function waitForDubbing(apiKey, dubbingId, targetLang = 'de', timeout = 180, logger = () => {}) {
     const start = Date.now();
     let info = null; // Letzte Status-Info merken
+
     while (Date.now() - start < timeout * 1000) {
-        logger(`GET ${API}/dubbing/resource/${dubbingId}`);
-        const res = await fetch(`${API}/dubbing/resource/${dubbingId}`, { headers: { 'xi-api-key': apiKey } });
+        logger(`GET ${API}/dubbing/${dubbingId}`);
+        const res = await fetch(`${API}/dubbing/${dubbingId}`, { headers: { 'xi-api-key': apiKey } });
         const text = await res.text();
         logger(`Antwort (${res.status}): ${text}`);
         if (!res.ok) throw new Error(text);
         info = JSON.parse(text);
-        const state = info.renders?.[targetLang]?.status;
-        if (state === 'complete') return;
-        if (state === 'failed') {
-            const reason = info.renders?.[targetLang]?.error || 'Server meldet failed';
+        const ready = info.status === 'dubbed' && (info.target_languages || []).includes(targetLang);
+        if (ready) return;
+        if (info.status === 'failed') {
+            const reason = info.error || 'Server meldet failed';
             throw new Error(reason);
         }
         await new Promise(r => setTimeout(r, 3000));
     }
-    if (!info?.renders || !info.renders[targetLang]) {
+
+    if (info && info.status === 'dubbed' && !(info.target_languages || []).includes(targetLang)) {
         console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
@@ -202,77 +204,57 @@ async function getDefaultVoiceSettings(apiKey, logger = () => {}) {
 // =========================== GETDEFAULTVOICESETTINGS END ==================
 
 // =========================== RENDERLANGUAGE START ==========================
-// Rendert eine Sprache eines bestehenden Dubbings neu
-async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    // logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
-    /* const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
-        method: 'POST',
-        headers: {
-            'xi-api-key': apiKey,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ render_type: renderType })
-    }); */
-    return {};
-}
+// async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
+//     // Funktion entfernt, da Rendering nun manuell im Studio erfolgt
+//     return {};
+// }
 // =========================== RENDERLANGUAGE END ============================
 
 // =========================== DUBSEGMENTS START ============================
 // Vertont alle Segmente eines Projekts im Studio-Workflow
-async function dubSegments(apiKey, resourceId, languages = ['de']) {
-    // Zuerst die vorhandenen Segment-IDs abfragen
-    const infoRes = await fetch(`${API}/dubbing/resource/${resourceId}`, {
-        headers: { 'xi-api-key': apiKey }
-    });
-    if (!infoRes.ok) {
-        throw new Error('Segmente konnten nicht geladen werden: ' + await infoRes.text());
-    }
-    const info = await infoRes.json();
-    const segIds = Object.keys(info.speaker_segments || {});
+// async function dubSegments(apiKey, resourceId, languages = ['de']) {
+//     const infoRes = await fetch(`${API}/dubbing/resource/${resourceId}`, {
+//         headers: { 'xi-api-key': apiKey }
+//     });
+//     if (!infoRes.ok) {
+//         throw new Error('Segmente konnten nicht geladen werden: ' + await infoRes.text());
+//     }
+//     const info = await infoRes.json();
+//     const segIds = Object.keys(info.speaker_segments || {});
 
-    // Anschließend alle Segmente in den gewählten Sprachen vertonen
-    const res = await fetch(`${API}/dubbing/resource/${resourceId}/dub`, {
-        method: 'POST',
-        headers: {
-            'xi-api-key': apiKey,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ segments: segIds, languages })
-    });
-    if (!res.ok) {
-        throw new Error('Dub-Auftrag fehlgeschlagen: ' + await res.text());
-    }
-    return await res.json();
-}
+//     const res = await fetch(`${API}/dubbing/resource/${resourceId}/dub`, {
+//         method: 'POST',
+//         headers: {
+//             'xi-api-key': apiKey,
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ segments: segIds, languages })
+//     });
+//     if (!res.ok) {
+//         throw new Error('Dub-Auftrag fehlgeschlagen: ' + await res.text());
+//     }
+//     return await res.json();
+// }
 // =========================== DUBSEGMENTS END ==============================
 
 // =========================== RENDERRESOURCE START ========================
 // Rendert die komplette Audiodatei fuer eine Sprache
-async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
-    // const res = await fetch(`${API}/dubbing/resource/${resourceId}/render/${lang}`, {
-    //     method: 'POST',
-    //     headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ render_type: type })
-    // });
-    // if (!res.ok) {
-    //     throw new Error('Rendern fehlgeschlagen: ' + await res.text());
-    // }
-    // return await res.json();
-    return {};
-}
+// async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
+//     return {};
+// }
 // =========================== RENDERRESOURCE END ==========================
 
 // =========================== GETRESOURCE START ===========================
 // Liefert den aktuellen Status eines Dubbing-Resources
-async function getDubbingResource(apiKey, resourceId) {
-    const res = await fetch(`${API}/dubbing/resource/${resourceId}`, {
-        headers: { 'xi-api-key': apiKey }
-    });
-    if (!res.ok) {
-        throw new Error('Abfrage fehlgeschlagen: ' + await res.text());
-    }
-    return await res.json();
-}
+// async function getDubbingResource(apiKey, resourceId) {
+//     const res = await fetch(`${API}/dubbing/resource/${resourceId}`, {
+//         headers: { 'xi-api-key': apiKey }
+//     });
+//     if (!res.ok) {
+//         throw new Error('Abfrage fehlgeschlagen: ' + await res.text());
+//     }
+//     return await res.json();
+// }
 // =========================== GETRESOURCE END =============================
 
 // =========================== DOWNLOADFROMURL START =======================
@@ -299,6 +281,5 @@ module.exports = {
     downloadDubbingAudio,
     getDefaultVoiceSettings,
     waitForDubbing,
-    isDubReady,
-    renderLanguage
+    isDubReady
 };

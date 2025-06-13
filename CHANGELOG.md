@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.25.0
+
+* API-Modul nutzt ausschließlich `/dubbing/{id}`
+* `renderLanguage` und Studio-Endpunkte entfernt
+
 ## ✨ Neue Features in 1.24.0
 
 * Halb-manueller Studio-Workflow ohne `renderLanguage`
