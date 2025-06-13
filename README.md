@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.4-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.5-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.5](#-neue-features-in-1.22.5)
 * [✨ Neue Features in 1.22.4](#-neue-features-in-1.22.4)
 * [✨ Neue Features in 1.22.3](#-neue-features-in-1.22.3)
 * [✨ Neue Features in 1.22.2](#-neue-features-in-1.22.2)
@@ -38,6 +39,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.5
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Deutsches Dubbing** | `disable_voice_cloning` wird gesetzt, wenn keine Voice-ID gewählt ist. |
+
 ## ✨ Neue Features in 1.22.4
 
 | Kategorie | Beschreibung |
@@ -564,7 +571,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.4 (aktuell)
+### 1.22.5 (aktuell)
+
+**✨ Neue Features:**
+* `disable_voice_cloning` wenn keine Voice-ID gesetzt ist.
+
+### 1.22.4
 
 **✨ Neue Features:**
 * Cache-Pfad in Electron wurde auf einen neuen SessionData-Ordner gelegt.
@@ -898,7 +910,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.4 - Cache-Fix im Electron-Startskript
+**Version 1.22.5 - Deutsches Dubbing ohne Voice-ID
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
