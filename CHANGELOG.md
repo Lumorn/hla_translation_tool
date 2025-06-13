@@ -6,6 +6,8 @@
 * Abhängigkeit `glob` auf Version `^9.0.0` aktualisiert.
 ## 🛠️ Patch in 1.40.2
 * `updateVersion.js` aktualisiert jetzt zusätzlich `electron/package.json`.
+## 🛠️ Patch in 1.40.3
+* Pfad zur Konfiguration wird in der Desktop-Version nun dynamisch ermittelt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

@@ -1,5 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const { DL_WATCH_PATH } = require('../web/src/config.js');
+const path = require('path');
+// Konfiguration dynamisch laden, damit der Pfad auch nach dem Packen stimmt
+const { DL_WATCH_PATH } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 contextBridge.exposeInMainWorld('electronAPI', {
   scanFolders: () => ipcRenderer.invoke('scan-folders'),
   // Befehl an Hauptprozess senden, um DevTools umzuschalten
