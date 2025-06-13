@@ -1,5 +1,17 @@
 const nock = require('nock');
 
+// Polyfill für die File-API unter Node
+if (typeof File === 'undefined') {
+    const { Blob } = require('buffer');
+    global.File = class File extends Blob {
+        constructor(parts, name, options = {}) {
+            super(parts, options);
+            this.name = name;
+            this.lastModified = options.lastModified || Date.now();
+        }
+    };
+}
+
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
