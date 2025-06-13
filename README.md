@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,7 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
-* [✨ Neue Features in 1.22.1](#-neue-features-in-1.22.1)
+* [✨ Neue Features in 1.22.2](#-neue-features-in-1.22.2)
 * [✨ Neue Features in 1.22.0](#-neue-features-in-1.22.0)
 * [✨ Neue Features in 1.21.0](#-neue-features-in-1.21.0)
 * [✨ Neue Features in 1.20.3](#-neue-features-in-1.20.3)
@@ -36,11 +36,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
-## ✨ Neue Features in 1.22.1
+## ✨ Neue Features in 1.22.2
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Hinweis bei Timeout**    | `waitForDubbing` meldet jetzt "target_lang nicht gesetzt?" wenn die Sprache fehlt. |
+| **Browser-Dubbing**        | Neue Datei `src/elevenlabs.js` stellt die Dubbing-Funktionen im Browser bereit. |
 
 ## ✨ Neue Features in 1.22.0
 
@@ -549,10 +549,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.1 (aktuell)
+### 1.22.2 (aktuell)
 
 **✨ Neue Features:**
-* waitForDubbing meldet bei fehlender Sprache "target_lang nicht gesetzt?"
+* Browser-Version nutzt jetzt `src/elevenlabs.js` zum Dubben
 
 ### 1.22.0
 
@@ -872,7 +872,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.1 - Hinweis bei Timeout
+**Version 1.22.2 - Browser-Dubbing hinzugefügt
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
