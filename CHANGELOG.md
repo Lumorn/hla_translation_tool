@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.37.5
+* Nach einem erfolgreichen `npm install` im `electron`-Ordner pruefen die Start-Skripte, ob das Electron-Modul fehlt und installieren es gegebenenfalls nach.
+
 ## 🛠️ Patch in 1.37.4
 * Node 22 wird jetzt unterstuetzt. `start_tool.py` und `start_tool.js` akzeptieren diese Version.
 
