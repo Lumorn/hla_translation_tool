@@ -5,7 +5,7 @@
 const { downloadDubbingAudio } = require('./elevenlabs');
 
 // Parameter auslesen: node cliRedownload.js API-KEY DUBBING-ID AUSGABEDATEI [SPRACHE]
-const [,, apiKey, dubbingId, outFile, lang = 'de'] = process.argv;
+const [,, apiKey, dubbingId, outFile, targetLang = 'de'] = process.argv;
 
 // Mindestens drei Parameter muessen vorhanden sein
 if (!apiKey || !dubbingId || !outFile) {
@@ -16,7 +16,7 @@ if (!apiKey || !dubbingId || !outFile) {
 (async () => {
     try {
         // Gewuenschte Sprache an downloadDubbingAudio weiterreichen
-        await downloadDubbingAudio(apiKey, dubbingId, lang, outFile);
+        await downloadDubbingAudio(apiKey, dubbingId, targetLang, outFile);
         console.log('Download abgeschlossen:', outFile);
     } catch (err) {
         console.error('Fehler:', err.message);

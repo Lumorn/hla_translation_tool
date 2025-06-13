@@ -58,8 +58,9 @@ export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 18
     throw new Error('Dubbing nicht fertig');
 }
 
-export async function downloadDubbingAudio(apiKey, id, lang = 'de') {
-    const res = await fetch(`${API}/dubbing/${id}/audio/${lang}`, {
+// Lädt die gerenderte Audiodatei einer Sprache herunter
+export async function downloadDubbingAudio(apiKey, id, targetLang = 'de') {
+    const res = await fetch(`${API}/dubbing/${id}/audio/${targetLang}`, {
         headers: { 'xi-api-key': apiKey }
     });
     if (!res.ok) throw new Error(await res.text());
