@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.34.5';
+const APP_VERSION = '1.34.6';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -187,6 +187,12 @@ function stopCurrentPlayback() {
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
     loadProjects();
+
+    // DevTools-Knopf ausblenden, falls keine Electron-Umgebung vorhanden ist
+    const devBtn = document.getElementById('devToolsButton');
+    if (devBtn && !window.electronAPI) {
+        devBtn.style.display = 'none';
+    }
 
     // Desktop-Version: automatisch EN- und DE-Ordner einlesen
     if (window.electronAPI) {
