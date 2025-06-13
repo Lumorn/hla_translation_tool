@@ -7,6 +7,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 * Neuer Ordner `Download` für manuelle Audios
 * Konstante `DL_WATCH_PATH` sorgt beim Start für die Ordner-Erstellung
 
+## ✨ Neue Features in 1.32.0
+
+* Automatischer Download über die Resource-API (Beta)
+
 ## ✨ Neue Features in 1.30.0
 
 * Fehler-Toast bei fehlgeschlagenem Dubbing

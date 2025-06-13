@@ -64,18 +64,22 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.31.0';
+const APP_VERSION = '1.32.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
-let createDubbing, downloadDubbingAudio;
+let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ createDubbing, downloadDubbingAudio } = require('../elevenlabs'));
+    ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../elevenlabs'));
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
         downloadDubbingAudio = mod.downloadDubbingAudio;
+    });
+    import('./lib/elevenlabs.js').then(mod => {
+        renderLanguage = mod.renderLanguage;
+        pollRender = mod.pollRender;
     });
 }
 
@@ -6459,6 +6463,31 @@ function closeStudioOverlay() {
     if (ov) ov.remove();
 }
 
+// Öffnet das Studio und wartet auf Benutzerbestätigung
+async function openStudioAndWait(dubId) {
+    const url = `https://elevenlabs.io/studio/dubbing/${dubId}`;
+    window.open(url, '_blank');
+    return new Promise(resolve => {
+        const ov = document.createElement('div');
+        ov.className = 'dialog-overlay';
+        ov.id = 'studioWaitDialog';
+        ov.style.display = 'flex';
+        ov.innerHTML = `
+            <div class="dialog">
+                <h3>🎧 ElevenLabs Studio</h3>
+                <p>Bitte dort "Generate Audio" anklicken und die Datei im Ordner Download speichern.</p>
+                <div class="dialog-buttons">
+                    <button class="btn btn-success" id="studioWaitOk">OK</button>
+                </div>
+            </div>`;
+        document.body.appendChild(ov);
+        document.getElementById('studioWaitOk').onclick = () => {
+            ov.remove();
+            resolve();
+        };
+    });
+}
+
 // Hilfsfunktion für das Manual Dubbing
 // Wandelt Millisekunden in Sekundenwerte mit drei Nachkommastellen um
 function msToSeconds(ms) {
@@ -6651,10 +6680,34 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     file.dubReady = false; // Status auf "in Arbeit" setzen
     saveCurrentProject();
     renderFileTable();
-    const studioUrl = `https://elevenlabs.io/studio/dubbing/${id}`;
-    window.open(studioUrl, '_blank');
-    showStudioOverlay();
-    updateStatus('Studio geöffnet – bitte dort „Generate Audio“ anklicken.');
+
+    try {
+        await renderLanguage(id);
+        const url = await pollRender(id);
+        const dubbedBlob = await fetch(url).then(r => r.blob());
+        const relPath = getFullPath(file);
+        if (window.electronAPI && window.electronAPI.saveDeFile) {
+            const buffer = await dubbedBlob.arrayBuffer();
+            await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            await updateHistoryCache(relPath);
+        } else {
+            await speichereUebersetzungsDatei(dubbedBlob, relPath);
+        }
+        file.dubReady = true;
+        updateStatus('Download abgeschlossen');
+        showToast('Auto-Download erfolgreich.');
+        addDubbingLog('Auto-Download erfolgreich');
+        renderFileTable();
+    } catch (e) {
+        if (e.message === 'BETA_LOCKED') {
+            showToast('Kein Beta-Zugang – bitte Studio nutzen & Datei in Download-Ordner legen.');
+            await openStudioAndWait(id);
+        } else {
+            addDubbingLog('Fehler: ' + e.message);
+            showToast('Fehler beim Auto-Download: ' + e.message, 'error');
+        }
+    }
 }
 // =========================== STARTDUBBING END ===============================
 
