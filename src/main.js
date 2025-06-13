@@ -64,9 +64,15 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.20.3';
+const APP_VERSION = '1.21.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
+
+// Gemeinsame Funktion aus elevenlabs.js laden (nur in Node-Umgebung)
+let waitForDubbing;
+if (typeof module !== 'undefined' && module.exports) {
+    ({ waitForDubbing } = require('../elevenlabs'));
+}
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -6364,35 +6370,6 @@ function validateCsv(csvText) {
 }
 // =========================== SHOWDUBBINGSETTINGS END ========================
 
-// =========================== WAITFORDUBBING START ===========================
-// Wartet auf die Fertigstellung eines Dubbings. Optional kann ein Timeout
-// festgelegt werden. Ohne Erfolg wird ein Fehler geworfen.
-async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
-    let status = '';
-    const maxLoops = Math.ceil(timeout / 3);
-    for (let i = 0; i < maxLoops; i++) {
-        await new Promise(r => setTimeout(r, 3000));
-        try {
-            const st = await fetch(`${API}/dubbing/${dubbingId}`, {
-                headers: { 'xi-api-key': apiKey }
-            });
-            if (st.ok) {
-                const js = await st.json();
-                status = js.status;
-                if (typeof addDubbingLog === 'function') addDubbingLog('Polling: ' + status);
-                if (status === 'dubbed') return;
-                if (status === 'failed') {
-                    const reason = js.detail?.message || js.error || 'Server meldet failed';
-                    throw new Error(reason);
-                }
-            }
-        } catch (e) {
-            if (typeof addDubbingLog === 'function') addDubbingLog('Fehler: ' + e.message);
-        }
-    }
-    throw new Error('Dubbing nicht fertig');
-}
-// =========================== WAITFORDUBBING END =============================
 
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
