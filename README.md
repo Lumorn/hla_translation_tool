@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.13-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.23.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -367,6 +367,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * **📊 Datenquellen‑Analyse:** Console‑Logs für Entwickler
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
 * **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen Sie mit `npm start -- --debug` oder per `Ctrl+Shift+I` die DevTools.
+* **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 
 ### Performance‑Tipps
 
@@ -405,7 +406,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.13 - Dokumentation-Update
+**Version 1.23.0 - Ausführliche API-Logs
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
