@@ -64,14 +64,14 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.35.7';
+const APP_VERSION = '1.36.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../elevenlabs'));
+    ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;

@@ -85,7 +85,7 @@ else:
 log("Verwerfe lokale Änderungen")
 try:
     # Sounds-Ordner nicht überschreiben
-    run("git reset --hard HEAD -- :!sounds")
+    run("git reset --hard HEAD -- :!web/sounds")
     log("Lokale Änderungen verworfen")
 except subprocess.CalledProcessError:
     print("git reset fehlgeschlagen. Weitere Details siehe setup.log")

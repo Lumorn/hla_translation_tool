@@ -24,7 +24,7 @@ function loadMain(lineEnd) {
         removeItem: k => { delete storage[k]; },
         clear: () => { storage = {}; }
     };
-    ({ createDubbingCSV, startDubbing, validateCsv } = require('../src/main.js'));
+    ({ createDubbingCSV, startDubbing, validateCsv } = require('../web/src/main.js'));
 }
 
 beforeEach(() => {

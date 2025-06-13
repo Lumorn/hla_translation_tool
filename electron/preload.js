@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const { DL_WATCH_PATH } = require('../src/config.js');
+const { DL_WATCH_PATH } = require('../web/src/config.js');
 contextBridge.exposeInMainWorld('electronAPI', {
   scanFolders: () => ipcRenderer.invoke('scan-folders'),
   // Befehl an Hauptprozess senden, um DevTools umzuschalten

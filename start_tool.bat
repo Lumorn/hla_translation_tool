@@ -74,7 +74,7 @@ cd hla_translation_tool
 REM ----------------------- Lokale Änderungen verwerfen --------------------
 call :log "Verwerfe lokale Änderungen"
 REM Sounds-Ordner nicht überschreiben
-git reset --hard HEAD -- ":!sounds"
+git reset --hard HEAD -- ":!web/sounds"
 IF ERRORLEVEL 1 (
     call :log "git reset fehlgeschlagen"
 ) ELSE (
