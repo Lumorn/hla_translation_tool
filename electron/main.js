@@ -17,6 +17,8 @@ app.setPath('userData', userDataPath);
 // Neuer Pfad 'Backups' laut Benutzerwunsch
 const backupPath = path.join(userDataPath, 'Backups');
 fs.mkdirSync(backupPath, { recursive: true });
+// Alter Backup-Pfad im Projektordner (Kompatibilitätsmodus)
+const oldBackupPath = path.join(projectRoot, 'backups');
 // Zusätzlichen Ordner für Session-Daten anlegen und verwenden,
 // um Cache-Fehler wie "Unable to move the cache" zu vermeiden
 const sessionDataPath = path.join(userDataPath, 'SessionData');
@@ -124,10 +126,14 @@ app.whenReady().then(() => {
 
   // Liste der vorhandenen Backups abrufen
   ipcMain.handle('list-backups', async () => {
-    return fs.readdirSync(backupPath)
-      .filter(f => f.endsWith('.json'))
-      .sort()
-      .reverse();
+    let files = [];
+    if (fs.existsSync(backupPath)) {
+      files.push(...fs.readdirSync(backupPath).filter(f => f.endsWith('.json')));
+    }
+    if (fs.existsSync(oldBackupPath)) {
+      files.push(...fs.readdirSync(oldBackupPath).filter(f => f.endsWith('.json')));
+    }
+    return files.sort().reverse();
   });
 
   // Neues Backup im Backup-Ordner speichern
@@ -140,13 +146,20 @@ app.whenReady().then(() => {
 
   // Backup-Datei lesen
   ipcMain.handle('read-backup', async (event, name) => {
-    const file = path.join(backupPath, name);
+    let file = path.join(backupPath, name);
+    if (!fs.existsSync(file)) {
+      file = path.join(oldBackupPath, name);
+    }
     return fs.readFileSync(file, 'utf8');
   });
 
   // Backup löschen
   ipcMain.handle('delete-backup', async (event, name) => {
-    fs.unlinkSync(path.join(backupPath, name));
+    let file = path.join(backupPath, name);
+    if (!fs.existsSync(file)) {
+      file = path.join(oldBackupPath, name);
+    }
+    if (fs.existsSync(file)) fs.unlinkSync(file);
     return true;
   });
 

@@ -26,6 +26,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 * Backup-Ordner lässt sich jetzt auch im Browser öffnen
 * Fallback auf Standardordner `sounds`, falls kein Directory Picker vorhanden ist
 
+## 🛠️ Bugfix in 1.34.5
+
+* Backups aus dem alten Ordner `backups` werden wieder erkannt
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios
