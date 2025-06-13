@@ -9,7 +9,7 @@ beforeAll(() => {
     localStorage.removeItem('hla_elevenLabsApiKey');
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'warn').mockImplementation(() => {});
-    ({ showDubbingSettings } = require('../src/main.js'));
+    ({ showDubbingSettings } = require('../web/src/main.js'));
 });
 
 let showDubbingSettings;

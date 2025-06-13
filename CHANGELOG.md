@@ -2,8 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
-## 🛠️ Verbesserung in 1.35.7
+## 🛠️ Strukturänderung in 1.36.0
+* Web-Dateien befinden sich nun im Ordner `web/`
 
+## 🛠️ Verbesserung in 1.35.7
 * `.env.example` als Vorlage für `.env.local`
 
 ## 🛠️ Aufräumarbeiten in 1.35.5

@@ -1,9 +1,9 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { DL_WATCH_PATH, projectRoot } = require('../src/config.js');
+const { DL_WATCH_PATH, projectRoot } = require('../web/src/config.js');
 const historyUtils = require('../historyUtils');
-const { watchDownloadFolder } = require('../src/watcher.js');
+const { watchDownloadFolder } = require('../web/src/watcher.js');
 let mainWindow;
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
@@ -70,7 +70,7 @@ function createWindow() {
     },
   });
 
-  win.loadFile(path.join(__dirname, '..', 'hla_translation_tool.html'));
+  win.loadFile(path.join(__dirname, '..', 'web', 'hla_translation_tool.html'));
 
   // DevTools optional öffnen, wenn das Flag gesetzt ist
   if (isDebug) {

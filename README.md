@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.35.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.36.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -78,7 +78,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ## 🛠️ Installation
 
-1. **`hla_translation_tool.html`** herunterladen
+1. **`web/hla_translation_tool.html`** herunterladen
 2. **Datei lokal öffnen** (Doppelklick) – fertig!
 
 > **💡 Tipp:** Desktop‑Verknüpfung erstellen ⇒ Ein‑Klick‑Start
@@ -97,10 +97,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
 4. Alternativ kann `start_tool.bat` (Windows), `start_tool.js` (plattformunabhängig) oder `start_tool.py` (Python-Version) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet
 > **Hinweis:** Diese Skripte sollten **nicht** im Repository‑Ordner selbst ausgeführt werden, da sonst innerhalb dieses Ordners ein Unterordner geklont wird. Am besten legt man ein leeres Verzeichnis an und startet sie dort.
-5. Beim Start werden die Ordner `sounds/EN` und `sounds/DE` automatisch erstellt und eingelesen
-6. Kopieren Sie Ihre Originaldateien in `sounds/EN` und legen Sie Übersetzungen in `sounds/DE` ab
+5. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen
+6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` und legen Sie Übersetzungen in `web/sounds/DE` ab
 7. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin.
-8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `sounds` anzutasten – Projektdaten bleiben somit erhalten
+8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 
 ### ElevenLabs-Dubbing
 
@@ -113,7 +113,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 const { createDubbing, isDubReady } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
 const job = await createDubbing({
-    audioFile: 'sounds/EN/beispiel.wav',
+    audioFile: 'web/sounds/EN/beispiel.wav',
     csvContent: csvData,
     voiceId: '',
     apiKey
@@ -197,14 +197,14 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.35.7`-Platzhalter in `README.md`, `src/main.js` und `hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.36.0`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
 ## 🏁 Erste Schritte
 
 ### 1. 📁 Programm starten
-* Beim Start liest die App automatisch alle Audio‑Dateien aus `sounds/EN` und vorhandene Übersetzungen aus `sounds/DE` ein
+* Beim Start liest die App automatisch alle Audio‑Dateien aus `web/sounds/EN` und vorhandene Übersetzungen aus `web/sounds/DE` ein
 
 ### 2. 📂 Neues Projekt erstellen
 * Klicken Sie auf **„+ Neues Projekt"**
@@ -464,7 +464,7 @@ Backups aus dem alten Ordner `backups` werden wieder erkannt.
 **Version 1.35.2 - Dev-Button zeigt Debug-Konsole**
 Der Dev-Button öffnet nun die eingebaute Debug-Konsole und in der Desktop-Version zusätzlich die DevTools.
 **Version 1.35.3 - Fester Sounds-Pfad**
-Die Browser-Version nutzt nun automatisch den Ordner `sounds` neben der HTML-Datei.
+Die Browser-Version nutzt nun automatisch den Ordner `web/sounds` neben der HTML-Datei.
 **Version 1.35.4 - Besseres Debugging**
 Der Dev-Button öffnet die Debug-Konsole jetzt automatisch und zeigt JavaScript-Fehler an.
 **Version 1.35.5 - Aufräumarbeiten**

@@ -7,8 +7,8 @@ const { version } = require('./package.json');
 // Dateien mit Platzhalter
 const files = [
   'README.md',
-  'src/main.js',
-  'hla_translation_tool.html'
+  'web/src/main.js',
+  'web/hla_translation_tool.html'
 ];
 
 for (const file of files) {
