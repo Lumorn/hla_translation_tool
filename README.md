@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.10-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.11-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.11](#-neue-features-in-1.22.11)
 * [✨ Neue Features in 1.22.10](#-neue-features-in-1.22.10)
 * [✨ Neue Features in 1.22.8](#-neue-features-in-1.22.8)
 * [✨ Neue Features in 1.22.7](#-neue-features-in-1.22.7)
@@ -43,6 +44,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.11
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Workflow** | Nach `createDubbing` wird automatisch `renderLanguage('de')`, `waitForDubbing(id, 'de')` und `downloadDubbingAudio(id, 'de')` ausgeführt. |
+
 ## ✨ Neue Features in 1.22.10
 
 | Kategorie | Beschreibung |
@@ -332,10 +339,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 1. API-Schlüssel bei [ElevenLabs](https://elevenlabs.io) erstellen.
 2. Den Schlüssel als Umgebungsvariable `ELEVEN_API_KEY` setzen oder beim Aufruf der Funktionen eingeben.
 3. Alternativ die Datei `.env.local` mit `ELEVEN_API_KEY=<dein-Key>` anlegen.
-4. Beispielhafte Nutzung:
+4. Beispielhafte Nutzung (neue Reihenfolge):
 
 ```javascript
-const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
+const { createDubbing, renderLanguage, waitForDubbing, downloadDubbingAudio } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
 const job = await createDubbing({
     audioFile: 'sounds/EN/beispiel.wav',
@@ -343,7 +350,8 @@ const job = await createDubbing({
     voiceId: '',
     apiKey
 });
-const status = await getDubbingStatus(apiKey, job.dubbing_id);
+await renderLanguage(job.dubbing_id, 'de', 'wav', apiKey);
+await waitForDubbing(apiKey, job.dubbing_id, 'de');
 await downloadDubbingAudio(apiKey, job.dubbing_id, 'de', 'sounds/DE/beispiel_de.mp3');
 ```
 
@@ -603,12 +611,10 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.10 (aktuell)
+### 1.22.11 (aktuell)
 
 **✨ Neue Features:**
-* Bugfix: `waitForDubbing` berücksichtigt den `targetLang`-Parameter.
-* `downloadDubbingAudio` nutzt jetzt die URL `/audio/${targetLang}`.
-* Nach dem Herunterladen wird gewarnt, wenn keine Audiodaten vorliegen.
+* Nach `createDubbing` folgt `renderLanguage('de')`, danach warten und herunterladen.
 
 ### 1.22.8
 
@@ -964,7 +970,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.10 - Bugfix WaitForDubbing
+**Version 1.22.11 - Workflow-Update
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
