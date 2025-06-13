@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
-const path = require('path'); // Pfadmodul einbinden
+// 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
+const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
 const { execSync } = require('child_process');
 // Lade Konfiguration relativ zum aktuellen Verzeichnis

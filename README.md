@@ -577,6 +577,7 @@ Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil sein
 Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
 Ab Version 1.40.6 stürzt das Debug-Fenster im Browser nicht mehr ab, wenn kein Node-Prozess vorhanden ist.
 Ab Version 1.40.7 kann `reset_repo.py` das Repository komplett aktualisieren, alle Abhängigkeiten installieren und anschließend die Desktop-App starten.
+Ab Version 1.40.8 nutzt das Preload-Skript `node:path`, damit Electron-Pakete fehlerfrei starten.
 
 ## ▶️ E2E-Test
 
