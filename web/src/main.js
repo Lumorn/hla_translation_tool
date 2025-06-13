@@ -65,7 +65,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.38.6';
+const APP_VERSION = '1.38.7';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6088,7 +6088,8 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                     URL: location.href,
                     Plattform: navigator.platform,
                     Sprache: navigator.language,
-                    'Electron-API vorhanden': typeof window.electronAPI !== 'undefined'
+                    'Electron-API vorhanden': typeof window.electronAPI !== 'undefined',
+                    'Im Browser gestartet': true
                 };
 
                 // Zusätzliche Infos, wenn ein Node-Process existiert
@@ -6122,7 +6123,9 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             info['Benutzeragent'] = navigator.userAgent;
             info['Verwendete Sprache'] = navigator.language;
             info.URL = location.href;
-            info['Electron-API vorhanden'] = typeof window.electronAPI !== 'undefined';
+            const hasElectron = typeof window.electronAPI !== 'undefined';
+            info['Electron-API vorhanden'] = hasElectron;
+            info['Im Browser gestartet'] = !hasElectron;
 
             // Debug-Konsole auslesen
             const debugText = document.getElementById('debugConsole')?.textContent || '';
