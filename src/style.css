@@ -653,6 +653,26 @@ th:nth-child(6) {
             justify-content: center;
         }
 
+        /* Anzeige des Dubbing-Status */
+        .dub-status {
+            font-size: 18px;
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+        }
+
+        .dub-status.none {
+            color: #777;
+        }
+
+        .dub-status.pending {
+            color: #ffc107;
+        }
+
+        .dub-status.done {
+            color: #4caf50;
+        }
+
         /* Vertikale Anordnung der Bearbeitungs-Symbole */
         .edit-column {
             display: flex;
