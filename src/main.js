@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.28.0';
+const APP_VERSION = '1.29.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -94,8 +94,25 @@ function debugLog(...args) {
 }
 
 // =========================== DUBBING-LOG START ===========================
-// Aktuelles Dubbing-Protokoll (wird nicht mehr gespeichert)
+// Aktuelles Dubbing-Protokoll
 let dubbingLogMessages = [];
+let dubbingLog        = []; // Merkt jeden API-Aufruf
+
+function logApiCall(method, url, status) {
+    // Zeitstempel erzeugen und Eintrag merken
+    const time = new Date().toLocaleString();
+    dubbingLog.push({ time, method, url, status });
+    renderProtocolList();
+}
+
+function renderProtocolList() {
+    const ul = document.getElementById('protocolList');
+    if (!ul) return;
+    ul.innerHTML = dubbingLog.map(entry => {
+        const color = entry.status >= 400 ? 'error' : '';
+        return `<li class="${color}">${entry.time} ${entry.method} ${entry.url} → ${entry.status}</li>`;
+    }).join('');
+}
 
 function addDubbingLog(msg) {
     // Neue Meldung anhängen, aber nur im Arbeitsspeicher behalten
@@ -108,9 +125,13 @@ function addDubbingLog(msg) {
 }
 
 function openDubbingLog() {
-    // Einfachen Log anzeigen (ohne Laden aus dem Speicher)
+    // Aktuellen Text und Protokoll anzeigen
     const logPre = document.getElementById('dubbingLog');
-    if (logPre) logPre.textContent = dubbingLogMessages.join('\n');
+    if (logPre) {
+        logPre.textContent = dubbingLogMessages.join('\n');
+        logPre.scrollTop = logPre.scrollHeight;
+    }
+    renderProtocolList();
     document.getElementById('dubbingLogDialog').style.display = 'flex';
 }
 
@@ -6563,6 +6584,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
             headers: { 'xi-api-key': elevenLabsApiKey },
             body: form
         });
+        logApiCall('POST', `${API}/dubbing`, res.status);
     } catch (e) {
         addDubbingLog('Fehler: ' + e.message);
         updateStatus('Dubbing fehlgeschlagen');
@@ -6616,6 +6638,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 async function isDubReady(id, lang = 'de') {
     const hdr = { headers: { 'xi-api-key': elevenLabsApiKey } };
     const metaRes = await fetch(`${API}/dubbing/${id}`, hdr);
+    logApiCall('GET', `${API}/dubbing/${id}`, metaRes.status);
     if (!metaRes.ok) return false;
     const meta = await metaRes.json();
     return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
@@ -6647,10 +6670,15 @@ async function redownloadDubbing(fileId) {
     const audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
         headers: { 'xi-api-key': elevenLabsApiKey }
     });
+    logApiCall('GET', `${API}/dubbing/${file.dubbingId}/audio/de`, audioRes.status);
     if (!audioRes.ok) {
         const errText = await audioRes.text();
         updateStatus('Download fehlgeschlagen');
         addDubbingLog(errText);
+        if (errText.includes('dubbing_not_found')) {
+            const studioUrl = `https://elevenlabs.io/studio/dubbing/${file.dubbingId}`;
+            window.open(studioUrl, '_blank');
+        }
         return;
     }
     const dubbedBlob = await audioRes.blob();

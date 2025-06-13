@@ -2035,4 +2035,17 @@ th:nth-child(6) {
     white-space: pre-wrap;
 }
 
+/* Protokoll-Liste */
+.protocol-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: monospace;
+}
+.protocol-list li.error {
+    color: red;
+}
+
 		

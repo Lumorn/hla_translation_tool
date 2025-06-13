@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.28.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.29.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -144,6 +144,7 @@ So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 Ab Version 1.27.0 gibt es zusätzlich in der Dateitabelle einen Button **Download DE**.
 Ist das Dubbing fertig, lässt sich damit die deutsche Audiodatei direkt speichern.
 Ab Version 1.28.0 zeigt jede Zeile einen farbigen Punkt für den Dubbing‑Status (grau/gelb/grün).
+Ab Version 1.29.0 gibt es ein erweitertes Protokoll aller API-Aufrufe.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -420,6 +421,9 @@ Neue Spalte mit "Download DE" ermöglicht schnellen Zugriff auf fertige Dubbings
 
 **Version 1.28.0 - Dubbing-Status**
 Jede Dateizeile enthält nun einen farbigen Punkt für den aktuellen Dubbing-Status.
+
+**Version 1.29.0 - Protokoll-Menü**
+Neues Protokoll-Menü zeigt alle API-Aufrufe mit Statuscode an.
 
 **Version 1.26.0 - Studio-Workflow**
 Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.
