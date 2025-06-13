@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.34.4';
+const APP_VERSION = '1.34.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
