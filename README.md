@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -95,8 +95,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 1. Im Hauptverzeichnis `npm install` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
 2. In das Verzeichnis `electron/` wechseln und `npm install` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
-4. Alternativ kann `start_tool.bat` (Windows), `start_tool.js` (plattformunabhängig) oder `start_tool.py` (Python-Version) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet
-> **Hinweis:** Diese Skripte sollten **nicht** im Repository‑Ordner selbst ausgeführt werden, da sonst innerhalb dieses Ordners ein Unterordner geklont wird. Am besten legt man ein leeres Verzeichnis an und startet sie dort.
+4. Alternativ kann `start_tool.bat` (Windows), `start_tool.js` (plattformunabhängig) oder `start_tool.py` (Python-Version) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
 5. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen
 6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` und legen Sie Übersetzungen in `web/sounds/DE` ab
 7. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin.
@@ -174,6 +173,7 @@ Ab Version 1.36.10 hält das Python-Startskript das Fenster nach Abschluss offen
 Ab Version 1.36.11 gibt das Python-Startskript bei einem Fehler von `npm start` eine verständliche Meldung aus und schreibt sie in `setup.log`.
 Ab Version 1.36.12 protokollieren die Start-Skripte die UID und ob Electron mit oder ohne Sandbox startet.
 Ab Version 1.37.0 zeigt das Debug-Fenster weitere Systeminformationen wie Fenstergröße und Sandbox-Status an.
+Ab Version 1.37.1 kann `start_tool.py` sowohl im Repository-Ordner als auch davor gestartet werden.
 Die Meldung "Electron-API nicht verfügbar" weist darauf hin, dass das Tool im Browser ausgeführt wird. Pfad-Informationen sind nur in der Desktop-Version sichtbar.
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -211,7 +211,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.0`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.1`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -506,6 +506,8 @@ Das Debug-Fenster zeigt nun zusätzliche Browser- und Prozessinformationen an.
 Die Start-Skripte protokollieren jetzt die UID und melden, ob Electron mit oder ohne Sandbox startet.
 **Version 1.37.0 - Extremes Debug-Fenster**
 Das Debug-Fenster liefert nun zusätzliche Informationen wie Fenstergröße, Bildschirmauflösung und den Sandbox-Status.
+**Version 1.37.1 - Flexibler Start**
+`start_tool.py` erkennt nun automatisch, ob es im Repository oder im darüberliegenden Ordner ausgeführt wird.
 **Version 1.36.11 - Bessere Fehleranzeige**
 Beim Starten der Anwendung erscheint nun eine verständliche Meldung, falls `npm start` fehlschlägt. Der Fehler wird zusätzlich in `setup.log` protokolliert.
 

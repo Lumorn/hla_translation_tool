@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.37.1
+* `start_tool.py` erkennt nun automatisch, ob es im Repository oder davor gestartet wurde.
+
 ## 🛠️ Patch in 1.37.0
 * Debug-Fenster zeigt nun weitere Systeminformationen wie Fenster- und Bildschirmgröße sowie den Sandbox-Status.
 
