@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.6
+* Fehlende Electron-API wird im Debug-Fenster erklärt.
+
 ## 🛠️ Patch in 1.36.5
 * Debug-Button zeigt nun Pfad-Informationen an.
 
