@@ -13,6 +13,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 * Fehlermeldung bei `dubbing_not_found` ersetzt durch "Spur manuell generieren oder Beta freischalten"
 * Nach dem Verschieben wird die Datei im Download-Ordner entfernt
 
+## ✨ Neue Features in 1.34.2
+
+* Fehlendes `chokidar`-Modul in der Desktop-Version ergänzt
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios

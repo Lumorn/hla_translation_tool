@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.34.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.34.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -150,6 +150,7 @@ Ab Version 1.31.0 speichert das Tool manuell heruntergeladene Audios im neuen Or
 Ab Version 1.32.0 versucht das Tool automatisch, die gerenderte Datei über die Resource-API herunterzuladen.
 Ab Version 1.33.0 überwacht das Tool den Download-Ordner und importiert Dateien automatisch.
 Ab Version 1.34.1 verwendet das Tool `path.resolve` für alle Pfade und meldet "Spur manuell generieren oder Beta freischalten" bei fehlendem Download.
+Ab Version 1.34.2 behebt die Desktop-Version ein fehlendes `chokidar`-Modul.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -443,6 +444,8 @@ Automatisches Erkennen und Importieren manuell gespeicherter Audios.
 Status-Spalte zeigt nun graue, gelbe oder grüne Punkte. Ein Klick auf Gelb öffnet das Studio erneut.
 **Version 1.34.1 - Pfad-Fixes & Clean-Up**
 Alle Pfade nutzen nun `path.resolve`. Bei fehlenden Dubbings erscheint die Meldung „Spur manuell generieren oder Beta freischalten“. Nach dem Import wird die Quelldatei entfernt.
+**Version 1.34.2 - Chokidar-Fix**
+Behebt ein fehlendes `chokidar`-Modul in der Desktop-Version.
 **Version 1.26.0 - Studio-Workflow**
 Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.
 
