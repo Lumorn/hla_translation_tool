@@ -91,6 +91,18 @@ IF ERRORLEVEL 1 (
     call :log "git pull erfolgreich"
 )
 
+REM ----------------------- Haupt-Abhaengigkeiten installieren -----------------
+call :log "npm install (root) starten"
+echo Abhaengigkeiten im Hauptverzeichnis werden installiert...
+npm install
+IF ERRORLEVEL 1 (
+    call :log "npm install (root) fehlgeschlagen"
+    pause
+    exit /b 1
+) ELSE (
+    call :log "npm install (root) erfolgreich"
+)
+
 REM Sicherstellen, dass der Electron-Ordner existiert
 IF NOT EXIST "electron" (
     echo 'electron'-Ordner fehlt, wird wiederhergestellt...

@@ -17,6 +17,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Fehlendes `chokidar`-Modul in der Desktop-Version ergänzt
 
+## ✨ Neue Features in 1.34.3
+
+* Start-Skripte installieren automatisch die Haupt-Abhängigkeiten
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios

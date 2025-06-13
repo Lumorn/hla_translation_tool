@@ -103,6 +103,18 @@ except subprocess.CalledProcessError:
     log("git pull fehlgeschlagen")
     log(str(sys.exc_info()[1]))
 
+# ----------------------- Haupt-Abhaengigkeiten installieren -----------------
+log("npm install (root) starten")
+print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
+try:
+    run("npm install")
+    log("npm install (root) erfolgreich")
+except subprocess.CalledProcessError as e:
+    print("npm install im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log")
+    log("npm install (root) fehlgeschlagen")
+    log(str(e))
+    sys.exit(1)
+
 # Sicherstellen, dass der Electron-Ordner existiert
 if not os.path.isdir("electron"):
     print("'electron'-Ordner fehlt, wird wiederhergestellt...")

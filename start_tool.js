@@ -95,11 +95,24 @@ log('git pull starten');
 console.log('Neueste Aenderungen werden geholt...');
 try {
     run('git pull');
-    log('git pull erfolgreich');
+  log('git pull erfolgreich');
 } catch (err) {
-    console.error('git pull fehlgeschlagen. Weitere Details siehe setup.log');
-    log('git pull fehlgeschlagen');
+  console.error('git pull fehlgeschlagen. Weitere Details siehe setup.log');
+  log('git pull fehlgeschlagen');
+  log(err.toString());
+}
+
+// ----------------------- Haupt-Abhängigkeiten installieren --------------------
+log('npm install (root) starten');
+console.log('Abhaengigkeiten im Hauptverzeichnis werden installiert...');
+try {
+    run('npm install');
+    log('npm install (root) erfolgreich');
+} catch (err) {
+    console.error('npm install im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log');
+    log('npm install (root) fehlgeschlagen');
     log(err.toString());
+    process.exit(1);
 }
 
 // Sicherstellen, dass der Electron-Ordner vorhanden ist
