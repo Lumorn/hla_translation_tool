@@ -2,6 +2,9 @@
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
+## 🛠️ Patch in 1.38.1
+* Start-Skripte nutzen nun `git reset --hard HEAD`, da `web/sounds` und `web/backups` durch `.gitignore` geschuetzt sind.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6
