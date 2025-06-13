@@ -20,6 +20,9 @@
 ## 🛠️ Patch in 1.38.8
 * Debug-Fenster zeigt nun die App-, Node-, Electron- und Chrome-Version an.
 
+## ✨ Neue Features in 1.39.0
+* Neues Skript `reset_repo.py` setzt das Repository per Doppelklick zurueck und holt Updates.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6

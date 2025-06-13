@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.38.8-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.39.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -102,6 +102,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
 10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
+11. Bei Problemen mit lokalen Aenderungen kann `reset_repo.py` diese verwerfen und das Repository aktualisieren.
 
 ### ElevenLabs-Dubbing
 
@@ -214,7 +215,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.38.8`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.39.0`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
