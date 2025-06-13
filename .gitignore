@@ -6,3 +6,5 @@ electron/node_modules/
 web/sounds/
 web/backups/
 web/Download/
+
+setup.log
