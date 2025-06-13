@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.22.10';
+const APP_VERSION = '1.22.11';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6458,8 +6458,9 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
         form.append('voice_settings', JSON.stringify(settings));
     }
     // Bei vorhandener Ordner-Stimme Voice-ID übergeben und Voice Cloning abschalten
-    if (folderVoiceId) {
-        form.append('voice_id', folderVoiceId);
+    const selectedVoiceId = (folderVoiceId || '').trim();
+    if (selectedVoiceId) {
+        form.append('voice_id', selectedVoiceId);
         form.append('disable_voice_cloning', 'true');
     }
 
@@ -6505,11 +6506,18 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     addDubbingLog(`Dubbing-ID erhalten: ${id}`);
 
+    updateStatus('Rendere Sprache ...');
+    try {
+        await renderLanguage(id, 'de', 'wav', elevenLabsApiKey);
+    } catch (err) {
+        addDubbingLog('Render-Fehler: ' + err.message);
+    }
+
     updateStatus('Dubbing läuft...');
     addDubbingLog('Warte auf Fertigstellung...');
 
     try {
-        await waitForDubbing(elevenLabsApiKey, id, targetLang);
+        await waitForDubbing(elevenLabsApiKey, id, 'de');
     } catch (err) {
         updateStatus('Dubbing fehlgeschlagen');
         addDubbingLog(err.message);
@@ -6518,36 +6526,14 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     addDubbingLog('Dubbing abgeschlossen, lade Audio...');
 
-    let audioRes;
-    let errText = '';
-    for (let attempt = 0; attempt < 4; attempt++) {
-        try {
-            audioRes = await fetch(`${API}/dubbing/${id}/audio/${targetLang}`, {
-                headers: { 'xi-api-key': elevenLabsApiKey }
-            });
-            if (audioRes.ok) break;
-            errText = await audioRes.text();
-            addDubbingLog(`Download fehlgeschlagen (${audioRes.status} ${errText}). Versuch ${attempt + 1}`);
-        } catch (e) {
-            errText = e.message;
-            addDubbingLog('Fehler: ' + errText);
-        }
-        if (attempt < 3) {
-            await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
-            addDubbingLog('Neuer Versuch...');
-        }
-    }
-    if (!audioRes || !audioRes.ok) {
-        let reason = errText;
-        try {
-            const js = JSON.parse(errText);
-            reason = js.detail?.message || js.error || reason;
-        } catch {}
+    let dubbedBlob;
+    try {
+        dubbedBlob = await downloadDubbingAudio(elevenLabsApiKey, id, 'de');
+    } catch (err) {
         updateStatus('Download fehlgeschlagen');
-        addDubbingLog(`Endgültig fehlgeschlagen: ${reason}`);
+        addDubbingLog(err.message);
         return;
     }
-    const dubbedBlob = await audioRes.blob();
     const relPath = getFullPath(file);
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await dubbedBlob.arrayBuffer();
