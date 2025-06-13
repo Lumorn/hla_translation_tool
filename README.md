@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.5-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.6-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.6](#-neue-features-in-1.22.6)
 * [✨ Neue Features in 1.22.5](#-neue-features-in-1.22.5)
 * [✨ Neue Features in 1.22.4](#-neue-features-in-1.22.4)
 * [✨ Neue Features in 1.22.3](#-neue-features-in-1.22.3)
@@ -39,6 +40,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.6
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **Konfiguration** | `.env.local` mit `ELEVEN_API_KEY` nutzen. |
+
 ## ✨ Neue Features in 1.22.5
 
 | Kategorie | Beschreibung |
@@ -303,7 +310,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 1. API-Schlüssel bei [ElevenLabs](https://elevenlabs.io) erstellen.
 2. Den Schlüssel als Umgebungsvariable `ELEVEN_API_KEY` setzen oder beim Aufruf der Funktionen eingeben.
-3. Beispielhafte Nutzung:
+3. Alternativ die Datei `.env.local` mit `ELEVEN_API_KEY=<dein-Key>` anlegen.
+4. Beispielhafte Nutzung:
 
 ```javascript
 const { createDubbing, getDubbingStatus, downloadDubbingAudio } = require('./elevenlabs.js');
@@ -571,7 +579,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.5 (aktuell)
+### 1.22.6 (aktuell)
+
+**✨ Neue Features:**
+* `.env.local` speichert den API-Schlüssel.
+
+### 1.22.5
 
 **✨ Neue Features:**
 * `disable_voice_cloning` wenn keine Voice-ID gesetzt ist.
@@ -910,7 +923,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.5 - Deutsches Dubbing ohne Voice-ID
+**Version 1.22.6 - Deutsches Dubbing ohne Voice-ID
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
