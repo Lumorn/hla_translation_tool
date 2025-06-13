@@ -1,0 +1,24 @@
+name: Node.js Tests
+
+# Dieser Workflow reagiert auf alle Pushes und Pull Requests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 19.x, 20.x, 21.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node.js ${{ matrix.node-version }} einrichten
+        # Installiert die gewünschte Node-Version
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Abhängigkeiten installieren
+        # Stellt das Projekt auf den passenden Stand
+        run: npm ci
+      - name: Tests ausführen
+        # Führt die definierten Jest-Tests aus
+        run: npm test
