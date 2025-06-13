@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.35.3-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.35.4-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -158,6 +158,7 @@ Ab Version 1.34.5 erkennt das Tool auch Backups im alten Ordner `backups`.
 Ab Version 1.35.0 lassen sich Backups im Browser hochladen und wiederherstellen.
 Seit Version 1.35.2 öffnet der Dev-Button zusätzlich die eingebaute Debug-Konsole.
 Ab Version 1.35.3 wird der Ordner `sounds` automatisch erkannt.
+Ab Version 1.35.4 zeigt der Dev-Button nun JavaScript-Fehler in der Debug-Konsole an.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -463,6 +464,8 @@ Backups aus dem alten Ordner `backups` werden wieder erkannt.
 Der Dev-Button öffnet nun die eingebaute Debug-Konsole und in der Desktop-Version zusätzlich die DevTools.
 **Version 1.35.3 - Fester Sounds-Pfad**
 Die Browser-Version nutzt nun automatisch den Ordner `sounds` neben der HTML-Datei.
+**Version 1.35.4 - Besseres Debugging**
+Der Dev-Button öffnet die Debug-Konsole jetzt automatisch und zeigt JavaScript-Fehler an.
 **Version 1.35.0 - Backup-Upload**
 Backups können im Browser hochgeladen und sofort wiederhergestellt werden.
 **Version 1.26.0 - Studio-Workflow**

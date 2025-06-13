@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.35.3';
+const APP_VERSION = '1.35.4';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -96,6 +96,19 @@ function debugLog(...args) {
         div.scrollTop = div.scrollHeight;
     }
 }
+
+// =========================== ERROR-HANDLING START ===========================
+// Leitet JavaScript-Fehler in die Debug-Konsole um
+window.addEventListener('error', (event) => {
+    debugLog('FEHLER:', event.message);
+});
+// Ergänzt console.error, damit Fehler im Debug-Bereich auftauchen
+const origConsoleError = console.error;
+console.error = function(...args) {
+    origConsoleError.apply(console, args);
+    debugLog('FEHLER:', ...args);
+};
+// =========================== ERROR-HANDLING END =============================
 
 // =========================== DUBBING-LOG START ===========================
 // Aktuelles Dubbing-Protokoll
@@ -6051,6 +6064,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             if (wrapper) {
                 wrapper.open = true; // Zeigt die eingebettete Konsole an
             }
+            debugLog('Dev-Button aktiviert');
             if (window.electronAPI) {
                 window.electronAPI.toggleDevTools();
             }

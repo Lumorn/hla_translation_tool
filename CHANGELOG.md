@@ -18,6 +18,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Browser-Version erkennt den Ordner `sounds` jetzt automatisch
 
+## 🛠️ Verbesserung in 1.35.4
+
+* Dev-Button zeigt nun JavaScript-Fehler im Debug-Bereich an
+
 
 ## ✨ Neue Features in 1.34.0
 
