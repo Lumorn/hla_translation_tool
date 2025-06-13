@@ -159,14 +159,19 @@ log("Starte Anwendung")
 # ob die Funktion vorhanden ist. Wenn sie vorhanden ist und einen
 # Root-User meldet, muss Electron ohne Sandbox gestartet werden.
 geteuid = getattr(os, "geteuid", None)
-if geteuid is not None and geteuid() == 0:
-    run("npm start -- --no-sandbox")
-else:
-    run("npm start")
 
-log("Anwendung beendet")
-print(f"Log gespeichert unter {LOGFILE}")
-print("Vorgang abgeschlossen.")
-
-# Fenster offen halten, damit Fehlermeldungen sichtbar bleiben
-input("Zum Beenden Enter drücken...")
+try:
+    if geteuid is not None and geteuid() == 0:
+        run("npm start -- --no-sandbox")
+    else:
+        run("npm start")
+except subprocess.CalledProcessError as e:
+    print("[Fehler] Anwendung konnte nicht gestartet werden. Weitere Details siehe setup.log")
+    log("Anwendung konnte nicht gestartet werden")
+    log(str(e))
+finally:
+    log("Anwendung beendet")
+    print(f"Log gespeichert unter {LOGFILE}")
+    print("Vorgang abgeschlossen.")
+    # Fenster offen halten, damit Fehlermeldungen sichtbar bleiben
+    input("Zum Beenden Enter drücken...")

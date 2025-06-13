@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.11
+* Fehlermeldungen beim Starten der Anwendung werden verständlich angezeigt und im Log festgehalten.
+
 ## 🛠️ Patch in 1.36.10
 * Python-Startskript hält das Fenster offen, damit Fehlermeldungen sichtbar bleiben.
 
