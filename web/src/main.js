@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.36.4';
+const APP_VERSION = '1.36.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6068,6 +6068,23 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             if (window.electronAPI) {
                 window.electronAPI.toggleDevTools();
             }
+            openDebugInfo();
+        }
+
+        // Öffnet ein Fenster mit detaillierten Debug-Informationen
+        async function openDebugInfo() {
+            let info = {};
+            if (window.electronAPI && window.electronAPI.getDebugInfo) {
+                info = await window.electronAPI.getDebugInfo();
+            } else {
+                info = { Fehler: 'Electron-API nicht verfügbar' };
+            }
+            let html = '<h3>Debug-Informationen</h3><ul>';
+            for (const [key, value] of Object.entries(info)) {
+                html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(String(value))}</code></li>`;
+            }
+            html += '</ul>';
+            ui.showModal(html);
         }
 
         // Zeigt oder versteckt das Einstellungen-Menü
