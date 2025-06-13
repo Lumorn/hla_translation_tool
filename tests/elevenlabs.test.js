@@ -2,6 +2,9 @@ const fs = require('fs');
 const nock = require('nock');
 const path = require('path');
 
+// Tests dürfen länger dauern, da Downloads bis zu 10 Versuche brauchen
+jest.setTimeout(30000);
+
 const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, waitForDubbing } = require('../elevenlabs');
 
 // Basis-URL der API
@@ -43,13 +46,13 @@ describe('ElevenLabs API', () => {
     test('Download-Fehler', async () => {
         nock(API)
             .get('/dubbing/abc')
-            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
             .get('/dubbing/abc/audio/de')
             .times(4)
             .reply(404, 'not found');
 
-        await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3')).rejects.toThrow('Download fehlgeschlagen');
+        await expect(downloadDubbingAudio('key', 'abc', 'de', 'out.mp3', { maxRetries: 2, retryDelay: 10 })).rejects.toThrow('Download fehlgeschlagen');
     });
 
 
@@ -57,12 +60,12 @@ describe('ElevenLabs API', () => {
         const outPath = path.join(__dirname, 'out.mp3');
         nock(API)
             .get('/dubbing/xyz')
-            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
             .get('/dubbing/xyz/audio/de')
             .reply(200, 'sound');
 
-        const result = await downloadDubbingAudio('key', 'xyz', 'de', outPath);
+        const result = await downloadDubbingAudio('key', 'xyz', 'de', outPath, { maxRetries: 2, retryDelay: 10 });
         const data = fs.readFileSync(outPath, 'utf8');
         fs.unlinkSync(outPath);
         expect(result).toBe(outPath);
@@ -73,14 +76,14 @@ describe('ElevenLabs API', () => {
         const outPath = path.join(__dirname, 'retry.mp3');
         nock(API)
             .get('/dubbing/retry')
-            .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
+            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
             .get('/dubbing/retry/audio/de')
             .reply(500, 'dubbing_not_found')
             .get('/dubbing/retry/audio/de')
             .reply(200, 'sound');
 
-        const result = await downloadDubbingAudio('key', 'retry', 'de', outPath);
+        const result = await downloadDubbingAudio('key', 'retry', 'de', outPath, { maxRetries: 2, retryDelay: 10 });
         const data = fs.readFileSync(outPath, 'utf8');
         fs.unlinkSync(outPath);
         expect(result).toBe(outPath);
@@ -90,10 +93,10 @@ describe('ElevenLabs API', () => {
     test('Status erfolgreich abgefragt', async () => {
         nock(API)
             .get('/dubbing/123')
-            .reply(200, { status: 'dubbed' });
+            .reply(200, { status: 'complete' });
 
         const result = await getDubbingStatus('key', '123');
-        expect(result).toEqual({ status: 'dubbed' });
+        expect(result).toEqual({ status: 'complete' });
     });
 
     test('Fehler bei getDubbingStatus', async () => {
@@ -126,10 +129,10 @@ describe('ElevenLabs API', () => {
     test('getDubbingStatus liefert JSON', async () => {
         nock(API)
             .get('/dubbing/42')
-            .reply(200, { status: 'dubbed', progress: 100 });
+            .reply(200, { status: 'complete', progress: 100 });
 
         const res = await getDubbingStatus('key', '42');
-        expect(res).toEqual({ status: 'dubbed', progress: 100 });
+        expect(res).toEqual({ status: 'complete', progress: 100 });
     });
 
     // Neuer Test für GET /dubbing/{id} mit Fehler
@@ -166,7 +169,7 @@ describe('ElevenLabs API', () => {
     test('waitForDubbing beendet sich bei Erfolg', async () => {
         nock(API)
             .get('/dubbing/success')
-            .reply(200, { status: 'dubbed' });
+            .reply(200, { status: 'complete' });
 
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
     });
