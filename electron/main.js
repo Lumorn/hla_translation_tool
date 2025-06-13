@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
 const { DL_WATCH_PATH, projectRoot } = require('../web/src/config.js');
 const { chooseExisting } = require('../pathUtils');
 // Nach dem Laden der Projektwurzel pruefen wir auf Gross-/Kleinschreibung.
@@ -183,6 +184,34 @@ app.whenReady().then(() => {
   ipcMain.handle('get-debug-info', () => {
     const soundsPath = path.resolve(projectRoot, soundsDirName);
     const backupsPath = path.resolve(projectRoot, backupsDirName);
+
+    // Pfade zu wichtigen Dateien
+    const pkgPath = path.join(projectRoot, 'package.json');
+    const nodeModulesPath = path.join(projectRoot, 'node_modules');
+
+    // Git-Informationen ermitteln
+    let gitVersion = '';
+    let gitCommit = '';
+    try {
+      gitVersion = execSync('git --version').toString().trim();
+      gitCommit = execSync('git rev-parse HEAD').toString().trim();
+    } catch {}
+
+    // Python-Pfad bestimmen
+    let pythonPath = '';
+    try {
+      const cmd = process.platform === 'win32' ? 'where python' : 'which python';
+      pythonPath = execSync(cmd).toString().split(/\r?\n/)[0].trim();
+    } catch {}
+
+    // Letzte Zeilen aus setup.log lesen
+    const logFile = path.join(__dirname, 'setup.log');
+    let setupLog = '';
+    if (fs.existsSync(logFile)) {
+      const lines = fs.readFileSync(logFile, 'utf8').trim().split(/\r?\n/);
+      setupLog = lines.slice(-10).join('\n');
+    }
+
     return {
       projectRoot,
       soundsDirName,
@@ -196,6 +225,29 @@ app.whenReady().then(() => {
       oldBackupPath,
       downloadWatchPath: DL_WATCH_PATH,
       appVersion: app.getVersion(),
+      nodeVersion: process.version,
+      electronVersion: process.versions.electron,
+      chromeVersion: process.versions.chrome,
+      processPlatform: process.platform,
+      cpuArch: process.arch,
+      processType: 'browser',
+      contextIsolation: true,
+      sandbox: mainWindow ? mainWindow.webContents.getLastWebPreferences().sandbox : false,
+      NODE_ENV: process.env.NODE_ENV,
+      ELECTRON_RUN_AS_NODE: process.env.ELECTRON_RUN_AS_NODE,
+      ELECTRON_DISABLE_SANDBOX: process.env.ELECTRON_DISABLE_SANDBOX,
+      cwd: process.cwd(),
+      scriptPath: __filename,
+      uid: process.getuid ? process.getuid() : '',
+      nodeExecPath: process.execPath,
+      pythonExecPath: pythonPath,
+      electronExecPath: app.getPath('exe'),
+      packageJsonPath: pkgPath,
+      nodeModulesPath,
+      gitVersion,
+      gitCommit,
+      startArgs: process.argv.join(' '),
+      setupLog,
     };
   });
   // =========================== DEBUG-INFO END ===============================

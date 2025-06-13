@@ -65,7 +65,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.38.5';
+const APP_VERSION = '1.38.6';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6077,7 +6077,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             // Zu sammelnde Informationen
             let info = {};
             if (window.electronAPI && window.electronAPI.getDebugInfo) {
-                // Desktop-Version liefert Pfad‑Informationen über die Electron-API
+                // Desktop-Version liefert Pfad- und System-Informationen
                 info = await window.electronAPI.getDebugInfo();
             } else {
                 // Fallback für die Browser-Version ohne Electron
@@ -6119,11 +6119,32 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             info['Seitenzustand'] = document.readyState;
             info['Sicherer Kontext'] = window.isSecureContext;
             info['Protokoll'] = location.protocol;
+            info['Benutzeragent'] = navigator.userAgent;
+            info['Verwendete Sprache'] = navigator.language;
+            info.URL = location.href;
+            info['Electron-API vorhanden'] = typeof window.electronAPI !== 'undefined';
+
+            // Debug-Konsole auslesen
+            const debugText = document.getElementById('debugConsole')?.textContent || '';
+            if (debugText.trim()) {
+                info['Debug-Konsole'] = debugText.trim().split('\n').slice(-10).join('\n');
+            }
+
+            // setup.log wurde aus dem Hauptprozess geliefert
+            if (info.setupLog) {
+                info['setup.log'] = info.setupLog;
+                delete info.setupLog;
+            }
 
             // HTML für die Anzeige aufbauen
             let html = '<h3>Debug-Informationen</h3><ul id="debugInfoList">';
             for (const [key, value] of Object.entries(info)) {
-                html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(String(value))}</code></li>`;
+                const val = String(value);
+                if (val.includes('\n')) {
+                    html += `<li><strong>${escapeHtml(key)}</strong>:<pre>${escapeHtml(val)}</pre></li>`;
+                } else {
+                    html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(val)}</code></li>`;
+                }
             }
             html += '</ul>';
             html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
