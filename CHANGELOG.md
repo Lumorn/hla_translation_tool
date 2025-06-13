@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.10
+* Python-Startskript hält das Fenster offen, damit Fehlermeldungen sichtbar bleiben.
+
 ## 🛠️ Patch in 1.36.9
 * Debug-Fenster zeigt zusätzliche Browser- und Prozessinformationen.
 
