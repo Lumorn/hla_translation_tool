@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.23.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.23.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -154,6 +154,8 @@ Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutz
 Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und `resource/render`. Ab Version 1.19.2 erfolgt das Dubbing ausschließlich über die Standard-Endpunkte: Nach `POST /v1/dubbing` wird regelmäßig `GET /v1/dubbing/<ID>` aufgerufen und das Ergebnis anschließend via `GET /v1/dubbing/<ID>/audio/<sprache>` heruntergeladen.
 
 Ab Version 1.20.3 wertet `waitForDubbing` nur noch `status` aus. Angaben in `progress.langs` oder `state` werden ignoriert.
+
+Ab Version 1.23.1 rufen `renderLanguage` und `waitForDubbing` intern `/dubbing/resource/...` auf.
 
 Beispiel einer gültigen CSV:
 
@@ -406,7 +408,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.23.0 - Ausführliche API-Logs
+**Version 1.23.1 - Ausführliche API-Logs
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests

@@ -68,8 +68,8 @@ describe('ElevenLabs API', () => {
 
     test('Download-Fehler', async () => {
         nock(API)
-            .get('/dubbing/abc')
-            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
+            .get('/dubbing/resource/abc')
+            .reply(200, { renders: { de: { status: 'complete' } } });
         nock(API)
             .get('/dubbing/abc/audio/de')
             .times(4)
@@ -82,8 +82,8 @@ describe('ElevenLabs API', () => {
     test('Download erfolgreich', async () => {
         const outPath = path.join(__dirname, 'out.mp3');
         nock(API)
-            .get('/dubbing/xyz')
-            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
+            .get('/dubbing/resource/xyz')
+            .reply(200, { renders: { de: { status: 'complete' } } });
         nock(API)
             .get('/dubbing/xyz/audio/de')
             .reply(200, 'sound');
@@ -98,8 +98,8 @@ describe('ElevenLabs API', () => {
     test('Download klappt nach zweitem Versuch', async () => {
         const outPath = path.join(__dirname, 'retry.mp3');
         nock(API)
-            .get('/dubbing/retry')
-            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
+            .get('/dubbing/resource/retry')
+            .reply(200, { renders: { de: { status: 'complete' } } });
         nock(API)
             .get('/dubbing/retry/audio/de')
             .reply(500, 'dubbing_not_found')
@@ -191,40 +191,40 @@ describe('ElevenLabs API', () => {
 
     test('waitForDubbing beendet sich bei Erfolg', async () => {
         nock(API)
-            .get('/dubbing/success')
-            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
+            .get('/dubbing/resource/success')
+            .reply(200, { renders: { de: { status: 'complete' } } });
 
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
     });
 
     test('waitForDubbing nutzt targetLang-Parameter', async () => {
         nock(API)
-            .get('/dubbing/frjob')
-            .reply(200, { status: 'complete', progress: { langs: { fr: { state: 'finished' } } } });
+            .get('/dubbing/resource/frjob')
+            .reply(200, { renders: { fr: { status: 'complete' } } });
 
         await expect(waitForDubbing('key', 'frjob', 'fr', 3)).resolves.toBeUndefined();
     });
 
     test('waitForDubbing wirft bei failed', async () => {
         nock(API)
-            .get('/dubbing/bad')
-            .reply(200, { status: 'failed', error: 'kaputt' });
+            .get('/dubbing/resource/bad')
+            .reply(200, { renders: { de: { status: 'failed', error: 'kaputt' } } });
 
         await expect(waitForDubbing('key', 'bad', 'de', 3)).rejects.toThrow('kaputt');
     });
 
     test('waitForDubbing gibt Timeout zurück', async () => {
         nock(API)
-            .get('/dubbing/slow')
-            .reply(200, { status: 'dubbing' });
+            .get('/dubbing/resource/slow')
+            .reply(200, { renders: { de: { status: 'in-progress' } } });
 
         await expect(waitForDubbing('key', 'slow', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');
     });
 
     test('waitForDubbing meldet fehlendes target_lang', async () => {
         nock(API)
-            .get('/dubbing/nolang')
-            .reply(200, { status: 'dubbing', progress: {} });
+            .get('/dubbing/resource/nolang')
+            .reply(200, { renders: {} });
 
         const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         await expect(waitForDubbing('key', 'nolang', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');
@@ -234,7 +234,7 @@ describe('ElevenLabs API', () => {
 
     test('renderLanguage ruft korrektes Endpoint auf', async () => {
         nock(API)
-            .post('/dubbing/321/render/de', { render_type: 'wav' })
+            .post('/dubbing/resource/321/render/de', { render_type: 'wav' })
             .reply(200, { task_id: 'abc' });
 
         const res = await renderLanguage('321', 'de', 'wav', 'key');
@@ -243,7 +243,7 @@ describe('ElevenLabs API', () => {
 
     test('renderLanguage wirft Fehler bei 500', async () => {
         nock(API)
-            .post('/dubbing/321/render/de', { render_type: 'wav' })
+            .post('/dubbing/resource/321/render/de', { render_type: 'wav' })
             .reply(500, 'kaputt');
 
         await expect(renderLanguage('321', 'de', 'wav', 'key')).rejects.toThrow('Render language failed');

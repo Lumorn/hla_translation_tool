@@ -83,18 +83,21 @@ async function waitForDubbing(apiKey, dubbingId, targetLang = 'de', timeout = 18
     const start = Date.now();
     let info = null; // Letzte Status-Info merken
     while (Date.now() - start < timeout * 1000) {
-        info = await getDubbingStatus(apiKey, dubbingId, logger);
-        const status = info.status;
-        if (status === 'failed') {
-            const reason = info.detail?.message || info.error || 'Server meldet failed';
-            throw new Error('Dubbing fehlgeschlagen: ' + reason);
+        logger(`GET ${API}/dubbing/resource/${dubbingId}`);
+        const res = await fetch(`${API}/dubbing/resource/${dubbingId}`, { headers: { 'xi-api-key': apiKey } });
+        const text = await res.text();
+        logger(`Antwort (${res.status}): ${text}`);
+        if (!res.ok) throw new Error(text);
+        info = JSON.parse(text);
+        const state = info.renders?.[targetLang]?.status;
+        if (state === 'complete') return;
+        if (state === 'failed') {
+            const reason = info.renders?.[targetLang]?.error || 'Server meldet failed';
+            throw new Error(reason);
         }
-        const finished = info.progress?.langs?.[targetLang]?.state === 'finished';
-        if (finished) return;
         await new Promise(r => setTimeout(r, 3000));
     }
-    // Falls kein Eintrag für die Sprache existiert, Hinweis ausgeben
-    if (!info?.progress?.langs || !info.progress.langs[targetLang]) {
+    if (!info?.renders || !info.renders[targetLang]) {
         console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
@@ -188,8 +191,8 @@ async function getDefaultVoiceSettings(apiKey, logger = () => {}) {
 // =========================== RENDERLANGUAGE START ==========================
 // Rendert eine Sprache eines bestehenden Dubbings neu
 async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    logger(`POST ${API}/dubbing/${dubbingId}/render/${targetLang} (${renderType})`);
-    const res = await fetch(`${API}/dubbing/${dubbingId}/render/${targetLang}`, {
+    logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
+    const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
         method: 'POST',
         headers: {
             'xi-api-key': apiKey,
