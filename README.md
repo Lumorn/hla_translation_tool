@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.20.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.20.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.20.2](#-neue-features-in-1.20.2)
 * [✨ Neue Features in 1.20.1](#-neue-features-in-1.20.1)
 * [✨ Neue Features in 1.19.4](#-neue-features-in-1.19.4)
 * [✨ Neue Features in 1.19.2](#-neue-features-in-1.19.2)
@@ -31,6 +32,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.20.2
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Fehler-Protokoll**       | Detaillierte Meldungen aus `detail.message` und `error` werden angezeigt. |
+
 ## ✨ Neue Features in 1.20.1
 
 |  Kategorie                 |  Beschreibung |
@@ -301,6 +308,7 @@ speaker,start_time,end_time,transcription,translation
 
 Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
 Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeugten CSV angezeigt. So lässt sich schnell prüfen, ob die Daten korrekt formatiert sind.
+Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` aus der Server-Antwort.
 
 ### Version aktualisieren
 
@@ -508,7 +516,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.20.1 (aktuell)
+### 1.20.2 (aktuell)
+
+**✨ Neue Features:**
+* Fehlermeldungen aus `detail.message` und `error` im Dubbing-Protokoll
+
+### 1.20.1
 
 **✨ Neue Features:**
 * Alle API-Aufrufe nutzen nun die Variable `API`.
@@ -806,7 +819,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.20.1 - Zentrale API-Konstante
+**Version 1.20.2 - Zentrale API-Konstante
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
