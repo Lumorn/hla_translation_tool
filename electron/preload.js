@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron');
+const { DL_WATCH_PATH } = require('../src/config.js');
 contextBridge.exposeInMainWorld('electronAPI', {
   scanFolders: () => ipcRenderer.invoke('scan-folders'),
   // Befehl an Hauptprozess senden, um DevTools umzuschalten
@@ -20,4 +21,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
   moveFile: (src, dest) => ipcRenderer.invoke('move-file', { src, dest }),
   onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
+  getDownloadPath: () => DL_WATCH_PATH,
 });
