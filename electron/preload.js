@@ -22,4 +22,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   moveFile: (src, dest) => ipcRenderer.invoke('move-file', { src, dest }),
   onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
   getDownloadPath: () => DL_WATCH_PATH,
+  // Liefert Pfad-Informationen für das Debug-Fenster
+  getDebugInfo: () => ipcRenderer.invoke('get-debug-info'),
 });

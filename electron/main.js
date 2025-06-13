@@ -174,6 +174,28 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // =========================== DEBUG-INFO START =============================
+  // Liefert Pfad-Informationen für das Debug-Fenster
+  ipcMain.handle('get-debug-info', () => {
+    const soundsPath = path.resolve(projectRoot, soundsDirName);
+    const backupsPath = path.resolve(projectRoot, backupsDirName);
+    return {
+      projectRoot,
+      soundsDirName,
+      backupsDirName,
+      soundsPath,
+      backupsPath,
+      existsSoundsPath: fs.existsSync(soundsPath),
+      existsBackupsPath: fs.existsSync(backupsPath),
+      userDataPath,
+      backupPath,
+      oldBackupPath,
+      downloadWatchPath: DL_WATCH_PATH,
+      appVersion: app.getVersion(),
+    };
+  });
+  // =========================== DEBUG-INFO END ===============================
+
   // =========================== BACKUP-DE-FILE START ===========================
   // Kopiert eine vorhandene DE-Datei nur dann ins Backup,
   // wenn dort noch keine Sicherung existiert
