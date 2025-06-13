@@ -68,8 +68,9 @@ async function getDubbingStatus(apiKey, dubbingId) {
  */
 async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
     const start = Date.now();
+    let info = null; // Letzte Status-Info merken
     while (Date.now() - start < timeout * 1000) {
-        const info = await getDubbingStatus(apiKey, dubbingId);
+        info = await getDubbingStatus(apiKey, dubbingId);
         const status = info.status;
         if (status === 'failed') {
             const reason = info.detail?.message || info.error || 'Server meldet failed';
@@ -77,6 +78,10 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
         }
         if (status === 'dubbed') return;
         await new Promise(r => setTimeout(r, 3000));
+    }
+    // Falls kein Eintrag für die Sprache existiert, Hinweis ausgeben
+    if (!info?.progress?.langs || !info.progress.langs[lang]) {
+        console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
 }
