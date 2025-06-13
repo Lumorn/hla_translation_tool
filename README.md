@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.30.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.31.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -146,6 +146,7 @@ Ist das Dubbing fertig, lässt sich damit die deutsche Audiodatei direkt speiche
 Ab Version 1.28.0 zeigt jede Zeile einen farbigen Punkt für den Dubbing‑Status (grau/gelb/grün).
 Ab Version 1.29.0 gibt es ein erweitertes Protokoll aller API-Aufrufe.
 Ab Version 1.30.0 werden Fehler beim Starten des Dubbings als roter Toast angezeigt und der Status wird alle 60 Sekunden automatisch aktualisiert.
+Ab Version 1.31.0 speichert das Tool manuell heruntergeladene Audios im neuen Ordner `Download`.
 
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -429,6 +430,8 @@ Neues Protokoll-Menü zeigt alle API-Aufrufe mit Statuscode an.
 **Version 1.30.0 - Fehler- und UX-Feinschliff**
 Dubbing-Fehler erscheinen sofort in einem roten Toast. Gelbe Status-Icons werden alle 60 Sekunden automatisch geprüft.
 
+**Version 1.31.0 - Doppel-Workflow**
+Neuer Ordner `Download` für manuelle Audios, der beim Start erstellt wird.
 **Version 1.26.0 - Studio-Workflow**
 Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.
 
