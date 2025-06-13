@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.25.0';
+const APP_VERSION = '1.26.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6320,6 +6320,30 @@ function resetStoredVoiceSettings() {
     }
 }
 
+// Zeigt einen Hinweis an, dass das Studio geöffnet wurde
+function showStudioOverlay() {
+    const ov = document.createElement('div');
+    ov.className = 'dialog-overlay';
+    ov.id = 'studioNoticeDialog';
+    ov.style.display = 'flex';
+    ov.innerHTML = `
+        <div class="dialog">
+            <h3>🎧 ElevenLabs Studio</h3>
+            <p>Das Studio ist in einem neuen Tab geöffnet.<br>
+               Klicken Sie dort auf „Generate Audio" und danach auf OK.</p>
+            <div class="dialog-buttons">
+                <button class="btn btn-success" onclick="closeStudioOverlay()">OK</button>
+            </div>
+        </div>`;
+    document.body.appendChild(ov);
+}
+
+// Schließt den Studio-Hinweis
+function closeStudioOverlay() {
+    const ov = document.getElementById('studioNoticeDialog');
+    if (ov) ov.remove();
+}
+
 // Hilfsfunktion für das Manual Dubbing
 // Wandelt Millisekunden in Sekundenwerte mit drei Nachkommastellen um
 function msToSeconds(ms) {
@@ -6509,9 +6533,10 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     file.dubbingId = id;
     saveCurrentProject();
     renderFileTable();
-const studioUrl = `https://elevenlabs.io/studio/dubbing/${id}`;
+    const studioUrl = `https://elevenlabs.io/studio/dubbing/${id}`;
     window.open(studioUrl, '_blank');
-    updateStatus('Bitte im Studio „Generate Audio“ klicken.');
+    showStudioOverlay();
+    updateStatus('Studio geöffnet – bitte dort „Generate Audio“ anklicken.');
 }
 // =========================== STARTDUBBING END ===============================
 

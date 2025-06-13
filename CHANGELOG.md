@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.26.0
+
+* Öffnet nach dem Starten des Dubbings automatisch das ElevenLabs Studio
+* Neues Overlay hält den Vorgang an, bis der Benutzer "OK" klickt
+
 ## ✨ Neue Features in 1.25.0
 
 * API-Modul nutzt ausschließlich `/dubbing/{id}`
