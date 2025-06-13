@@ -59,7 +59,7 @@ async function getDubbingStatus(apiKey, dubbingId) {
 }
 // =========================== WAITFORDUBBING START ==========================
 /**
- * Wartet, bis das Dubbing für eine Sprache fertig ist.
+ * Wartet so lange, bis die API den Status "complete" liefert.
  * @param {string} apiKey - Eigener API-Schlüssel.
  * @param {string} dubbingId - ID des Dubbings.
  * @param {string} [lang='de'] - Gewünschte Sprache.
@@ -76,7 +76,7 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
             const reason = info.detail?.message || info.error || 'Server meldet failed';
             throw new Error('Dubbing fehlgeschlagen: ' + reason);
         }
-        if (status === 'dubbed') return;
+        if (status === 'complete') return;
         await new Promise(r => setTimeout(r, 3000));
     }
     // Falls kein Eintrag für die Sprache existiert, Hinweis ausgeben
@@ -95,16 +95,25 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
  * @param {string} dubbingId - ID des Dubbings.
  * @param {string} [lang='de'] - Sprache der gewuenschten Datei.
  * @param {string} targetPath - Dateipfad fuer die gespeicherte Ausgabe.
+ * @param {object} [options] - Optional: Anzahl der Versuche und Delay.
+ * @param {number} [options.maxRetries=10] - Maximale Download-Versuche.
+ * @param {number} [options.retryDelay=2000] - Wartezeit in Millisekunden.
  * @returns {Promise<string>} Pfad zur gespeicherten Datei.
- */
-async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) {
-    // Zuerst sicherstellen, dass die gewuenschte Sprache fertig gerendert ist
+*/
+async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath, options = {}) {
+    // Erst warten, bis die Sprache laut API komplett gerendert ist
     await waitForDubbing(apiKey, dubbingId, lang);
+    // Manche Jobs benötigen einen kurzen Moment, bis die Datei bereit steht
+    await new Promise(r => setTimeout(r, 1000));
 
     let response;
     let errText = '';
 
-    for (let attempt = 0; attempt < 4; attempt++) {
+    const maxRetries = options.maxRetries ?? 10;
+    const delayMs    = options.retryDelay ?? 2000;
+
+    // Bis zu maxRetries Versuche mit Abstand starten
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
         response = await fetch(`${API}/dubbing/${dubbingId}/audio/${lang}`, {
             headers: { 'xi-api-key': apiKey }
         });
@@ -112,8 +121,8 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
         if (response.ok) break;
         errText = await response.text();
 
-        if (attempt < 3) {
-            await new Promise(r => setTimeout(r, 1000));
+        if (attempt < maxRetries - 1) {
+            await new Promise(r => setTimeout(r, delayMs));
         }
     }
 

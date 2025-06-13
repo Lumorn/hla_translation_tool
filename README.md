@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.3](#-neue-features-in-1.22.3)
 * [✨ Neue Features in 1.22.2](#-neue-features-in-1.22.2)
 * [✨ Neue Features in 1.22.0](#-neue-features-in-1.22.0)
 * [✨ Neue Features in 1.21.0](#-neue-features-in-1.21.0)
@@ -36,6 +37,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.3
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **ElevenLabs-Fix** | Stabileres Polling bis `status="complete"` und bis zu 10 Download-Versuche. |
+| **Dokumentation** | Anleitung gegen 404-Fehler beim Dubbing ergänzt. |
+
 ## ✨ Neue Features in 1.22.2
 
 |  Kategorie                 |  Beschreibung |
@@ -549,7 +557,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.2 (aktuell)
+### 1.22.3 (aktuell)
+
+**✨ Neue Features:**
+* `downloadDubbingAudio` wartet auf `complete` und versucht bis zu 10 Downloads.
+* Anleitung zu 404-Fehlern ergänzt.
+
+### 1.22.2
 
 **✨ Neue Features:**
 * Browser-Version nutzt jetzt `src/elevenlabs.js` zum Dubben
@@ -872,7 +886,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.2 - Browser-Dubbing hinzugefügt
+**Version 1.22.3 - Polling-Fix und 404-Hinweise hinzugefügt
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
