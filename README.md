@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.1-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.2-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -89,7 +89,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **JavaScript aktiviert**
 * **Lokaler Dateizugriff** für Audio‑Wiedergabe
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
-* **Node.js ≥18** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
+* **Node.js 18 bis 21** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
 
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm install` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
@@ -174,6 +174,7 @@ Ab Version 1.36.11 gibt das Python-Startskript bei einem Fehler von `npm start` 
 Ab Version 1.36.12 protokollieren die Start-Skripte die UID und ob Electron mit oder ohne Sandbox startet.
 Ab Version 1.37.0 zeigt das Debug-Fenster weitere Systeminformationen wie Fenstergröße und Sandbox-Status an.
 Ab Version 1.37.1 kann `start_tool.py` sowohl im Repository-Ordner als auch davor gestartet werden.
+Ab Version 1.37.2 pruefen `start_tool.py` und `start_tool.js`, ob Node 18 bis 21 installiert ist.
 Die Meldung "Electron-API nicht verfügbar" weist darauf hin, dass das Tool im Browser ausgeführt wird. Pfad-Informationen sind nur in der Desktop-Version sichtbar.
 Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
 Es wird so aufgerufen:
@@ -211,7 +212,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.1`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.2`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -508,6 +509,8 @@ Die Start-Skripte protokollieren jetzt die UID und melden, ob Electron mit oder 
 Das Debug-Fenster liefert nun zusätzliche Informationen wie Fenstergröße, Bildschirmauflösung und den Sandbox-Status.
 **Version 1.37.1 - Flexibler Start**
 `start_tool.py` erkennt nun automatisch, ob es im Repository oder im darüberliegenden Ordner ausgeführt wird.
+**Version 1.37.2 - Node-Pruefung**
+`start_tool.py` und `start_tool.js` stellen sicher, dass Node 18 bis 21 verwendet wird.
 **Version 1.36.11 - Bessere Fehleranzeige**
 Beim Starten der Anwendung erscheint nun eine verständliche Meldung, falls `npm start` fehlschlägt. Der Fehler wird zusätzlich in `setup.log` protokolliert.
 

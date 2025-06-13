@@ -50,6 +50,17 @@ except subprocess.CalledProcessError as e:
 log("Pruefe Node-Version")
 try:
     run("node --version")
+    # Version erneut abfragen, um sie auswerten zu koennen
+    output = subprocess.check_output("node --version", shell=True, text=True).strip()
+    log(f"Gefundene Node-Version: {output}")
+    try:
+        major = int(output.lstrip("v").split(".")[0])
+    except ValueError:
+        major = None
+    if major is None or major < 18 or major >= 22:
+        print(f"[Fehler] Node.js Version {output} wird nicht unterstuetzt. Bitte Node 18 bis 21 installieren.")
+        log("Unpassende Node-Version")
+        sys.exit(1)
 except subprocess.CalledProcessError as e:
     print("[Fehler] Node.js wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.")
     print("Weitere Details siehe setup.log")
