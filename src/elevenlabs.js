@@ -65,3 +65,21 @@ export async function downloadDubbingAudio(apiKey, id, lang = 'de') {
     if (!res.ok) throw new Error(await res.text());
     return await res.blob();
 }
+
+// Rendert eine bestimmte Sprache neu
+export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey) {
+    const res = await fetch(`${API}/dubbing/${dubbingId}/render/${targetLang}`, {
+        method: 'POST',
+        headers: {
+            'xi-api-key': apiKey,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ render_type: renderType })
+    });
+
+    if (!res.ok) {
+        throw new Error(`Render language failed: ${res.status} ${await res.text()}`);
+    }
+
+    return await res.json();
+}

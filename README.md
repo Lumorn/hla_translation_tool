@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.8-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.8](#-neue-features-in-1.22.8)
 * [✨ Neue Features in 1.22.7](#-neue-features-in-1.22.7)
 * [✨ Neue Features in 1.22.6](#-neue-features-in-1.22.6)
 * [✨ Neue Features in 1.22.5](#-neue-features-in-1.22.5)
@@ -41,6 +42,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.8
+
+| Kategorie | Beschreibung |
+| ---------- | ------------- |
+| **API** | Neue Funktion `renderLanguage` rendert eine Sprache mit gewünschtem Format. |
+
 ## ✨ Neue Features in 1.22.7
 
 | Kategorie | Beschreibung |
@@ -589,7 +596,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.7 (aktuell)
+### 1.22.8 (aktuell)
+
+**✨ Neue Features:**
+* Neue Funktion `renderLanguage` rendert eine Sprache in gewünschtem Format.
+
+### 1.22.7
 
 **✨ Neue Features:**
 * `target_lang` ist immer `de` und `disable_voice_cloning` wird ohne Voice-ID gesetzt.
@@ -938,7 +950,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.7 - Deutsches Dubbing ohne Voice-ID
+**Version 1.22.8 - Neue Funktion renderLanguage
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
