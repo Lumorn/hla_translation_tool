@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.36.8';
+const APP_VERSION = '1.36.9';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6084,8 +6084,22 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                     Hinweis: 'Browser-Version ohne Electron-API',
                     'App-Version': APP_VERSION,
                     Browser: navigator.userAgent,
-                    URL: location.href
+                    URL: location.href,
+                    Plattform: navigator.platform,
+                    Sprache: navigator.language,
+                    'Electron-API vorhanden': typeof window.electronAPI !== 'undefined'
                 };
+
+                // Zusätzliche Infos, wenn ein Node-Process existiert
+                if (typeof process !== 'undefined') {
+                    info['Node-Version'] = process.version;
+                    if (process.versions) {
+                        info['Electron-Version'] = process.versions.electron || 'n/a';
+                        info['Chrome-Version'] = process.versions.chrome || 'n/a';
+                    }
+                    info['Process-Plattform'] = process.platform;
+                    info['CPU-Architektur'] = process.arch;
+                }
             }
 
             // HTML für die Anzeige aufbauen
