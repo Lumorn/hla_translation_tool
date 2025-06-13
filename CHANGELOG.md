@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.35.0
+
+* Backup-Dateien lassen sich im Browser hochladen und sofort wiederherstellen
+
 ## ✨ Neue Features in 1.34.0
 
 * Neue Spalte "Dub-Status" mit farbigen Punkten

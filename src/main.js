@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.34.6';
+const APP_VERSION = '1.35.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -5337,6 +5337,25 @@ function checkFileAccess() {
                 const url = new URL('backups/', window.location.href).toString();
                 window.open(url, '_blank');
             }
+        }
+
+        // Backup aus Datei laden
+        function initiateBackupUpload() {
+            document.getElementById('backupUploadInput').click();
+        }
+
+        // Eingelesene Backup-Datei verarbeiten
+        async function handleBackupUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            try {
+                const text = await file.text();
+                const backup = JSON.parse(text);
+                applyBackupData(backup);
+            } catch (err) {
+                alert('Fehler beim Importieren: ' + err.message);
+            }
+            input.value = '';
         }
 
         // =========================== SHOWAPIDIALOG START ======================

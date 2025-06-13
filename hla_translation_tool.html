@@ -296,6 +296,7 @@
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="initiateBackupUpload()">Backup hochladen</button>
                 <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
             </div>
@@ -428,6 +429,7 @@
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
+    <input type="file" id="backupUploadInput" style="display:none" accept=".json" onchange="handleBackupUpload(this)">
 
     <!-- Umschaltbare Debug-Konsole -->
     <details id="debugConsoleWrapper" style="margin:10px 0;">
@@ -442,7 +444,7 @@
     <div id="toastContainer"></div>
 
     <!-- Versionsanzeige -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.34.6</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.35.0</a>
 
     <script src="src/main.js"></script>
 </body>
