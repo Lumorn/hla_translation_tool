@@ -26,13 +26,18 @@ afterEach(() => {
 });
 
 describe('ElevenLabs API', () => {
-    test('erfolgreicher Dubbing-Auftrag mit voice_settings', async () => {
+    test('erfolgreicher Dubbing-Auftrag ohne Voice-ID', async () => {
         nock(API)
-            .post('/dubbing', body => body.includes('voice_settings'))
-            .reply(200, { id: '123' });
+            .post('/dubbing', body => body.includes('disable_voice_cloning'))
+            .reply(200, { dubbing_id: '123', expected_duration_sec: 1 });
 
-        const result = await createDubbing('key', tempAudio, 'de', { speed: 1.2 });
-        expect(result).toEqual({ id: '123' });
+        const result = await createDubbing({
+            audioFile: tempAudio,
+            csvContent: 'speaker,start_time,end_time,transcription,translation\n',
+            targetLang: 'de',
+            apiKey: 'key'
+        });
+        expect(result).toEqual({ dubbing_id: '123', expected_duration_sec: 1 });
     });
 
     test('fehlerhafte Antwort bei createDubbing', async () => {
@@ -40,7 +45,7 @@ describe('ElevenLabs API', () => {
             .post('/dubbing')
             .reply(500, 'Fehler');
 
-        await expect(createDubbing('key', tempAudio)).rejects.toThrow('Fehler beim Dubbing');
+        await expect(createDubbing({ audioFile: tempAudio, csvContent: '', apiKey: 'key' })).rejects.toThrow('Create dubbing failed');
     });
 
     test('Download-Fehler', async () => {
@@ -169,7 +174,7 @@ describe('ElevenLabs API', () => {
     test('waitForDubbing beendet sich bei Erfolg', async () => {
         nock(API)
             .get('/dubbing/success')
-            .reply(200, { status: 'complete' });
+            .reply(200, { status: 'complete', progress: { langs: { de: { state: 'finished' } } } });
 
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
     });

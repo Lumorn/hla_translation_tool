@@ -12,19 +12,23 @@ const API = 'https://api.elevenlabs.io/v1';
  * @param {object} [voiceSettings=null] - Optionale Voice-Settings.
  * @returns {Promise<object>} Antwort der API als Objekt.
  */
-async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings = null) {
-    if (!fs.existsSync(audioPath)) {
-        throw new Error('Audio-Datei nicht gefunden: ' + audioPath);
+async function createDubbing({ audioFile, csvContent, targetLang = 'de', voiceId = '', apiKey }) {
+    if (!fs.existsSync(audioFile)) {
+        throw new Error('Audio-Datei nicht gefunden: ' + audioFile);
     }
 
     const form = new FormData();
-    form.append('file', fs.createReadStream(audioPath));
-    // Zielsprachen im neuen wie im alten Format senden
+    form.append('file', fs.createReadStream(audioFile));
+    form.append('csv_file', new Blob([csvContent], { type: 'text/csv' }), 'script.csv');
     form.append('target_lang', targetLang);
     form.append('target_languages', JSON.stringify([targetLang]));
-    // Optional: Voice-Settings als JSON anhängen
-    if (voiceSettings && Object.keys(voiceSettings).length > 0) {
-        form.append('voice_settings', JSON.stringify(voiceSettings));
+    form.append('mode', 'manual');
+    form.append('dubbing_studio', 'true');
+
+    if (voiceId) {
+        form.append('voice_id', voiceId);
+    } else {
+        form.append('disable_voice_cloning', 'true');
     }
 
     const response = await fetch(`${API}/dubbing`, {
@@ -34,7 +38,7 @@ async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings
     });
 
     if (!response.ok) {
-        throw new Error('Fehler beim Dubbing: ' + await response.text());
+        throw new Error(`Create dubbing failed: ${response.status} ${await response.text()}`);
     }
     return await response.json();
 }
@@ -66,7 +70,7 @@ async function getDubbingStatus(apiKey, dubbingId) {
  * @param {number} [timeout=180] - Maximale Wartezeit in Sekunden.
  * @returns {Promise<void>} Auflösung, wenn fertig; Fehler bei Abbruch.
  */
-async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
+async function waitForDubbing(apiKey, dubbingId, targetLang = 'de', timeout = 180) {
     const start = Date.now();
     let info = null; // Letzte Status-Info merken
     while (Date.now() - start < timeout * 1000) {
@@ -76,11 +80,12 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
             const reason = info.detail?.message || info.error || 'Server meldet failed';
             throw new Error('Dubbing fehlgeschlagen: ' + reason);
         }
-        if (status === 'complete') return;
+        const finished = info.progress?.langs?.[targetLang]?.state === 'finished';
+        if (finished) return;
         await new Promise(r => setTimeout(r, 3000));
     }
     // Falls kein Eintrag für die Sprache existiert, Hinweis ausgeben
-    if (!info?.progress?.langs || !info.progress.langs[lang]) {
+    if (!info?.progress?.langs || !info.progress.langs[targetLang]) {
         console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
