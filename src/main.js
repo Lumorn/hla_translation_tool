@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.22.13';
+const APP_VERSION = '1.23.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6464,6 +6464,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
         form.append('disable_voice_cloning', 'true');
     }
 
+    addDubbingLog(`POST ${API}/dubbing`);
     let res;
     try {
         res = await fetch(`${API}/dubbing`, {
@@ -6476,25 +6477,26 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
         updateStatus('Dubbing fehlgeschlagen');
         return;
     }
+    const resText = await res.text();
+    addDubbingLog(`Antwort (${res.status}): ${resText}`);
     if (!res.ok) {
-        const errText = await res.text();
-        let errorMsg = errText;
+        let errorMsg = resText;
         try {
-            const js = JSON.parse(errText);
+            const js = JSON.parse(resText);
             if (js.detail && js.detail.message) {
                 errorMsg = js.detail.message;
             }
         } catch {}
         addDubbingLog(`Fehler: ${errorMsg}`);
         updateStatus('Dubbing fehlgeschlagen');
-        addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${errText}`);
+        addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${resText}`);
         // Bei HTTP 400 den Anfang der CSV ausgeben
         if (res.status === 400) {
             addDubbingLog('CSV-Ausschnitt: ' + csvText.slice(0, 200));
         }
         return;
     }
-    const data = await res.json();
+    const data = JSON.parse(resText);
     // Vollständige Server-Antwort ausgeben
     addDubbingLog('Server-Antwort: ' + JSON.stringify(data));
     const id = data.dubbing_id || data.id;
@@ -6508,7 +6510,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     updateStatus('Rendere Sprache ...');
     try {
-        await renderLanguage(id, 'de', 'wav', elevenLabsApiKey);
+        await renderLanguage(id, 'de', 'wav', elevenLabsApiKey, addDubbingLog);
     } catch (err) {
         addDubbingLog('Render-Fehler: ' + err.message);
     }
@@ -6517,7 +6519,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     addDubbingLog('Warte auf Fertigstellung...');
 
     try {
-        await waitForDubbing(elevenLabsApiKey, id, 'de');
+        await waitForDubbing(elevenLabsApiKey, id, 'de', undefined, undefined, addDubbingLog);
     } catch (err) {
         updateStatus('Dubbing fehlgeschlagen');
         addDubbingLog(err.message);
@@ -6528,7 +6530,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     let dubbedBlob;
     try {
-        dubbedBlob = await downloadDubbingAudio(elevenLabsApiKey, id, 'de');
+        dubbedBlob = await downloadDubbingAudio(elevenLabsApiKey, id, 'de', addDubbingLog);
     } catch (err) {
         updateStatus('Download fehlgeschlagen');
         addDubbingLog(err.message);

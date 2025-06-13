@@ -8,7 +8,7 @@ export async function createDubbing({
     csvContent,
     voiceId = '',
     apiKey
-}) {
+}, logger = () => {}) {
     const form = new FormData();
 
     form.append('file', audioFile);
@@ -26,27 +26,32 @@ export async function createDubbing({
         form.append('disable_voice_cloning', 'true');
     }
 
+    logger(`POST ${API}/dubbing`);
     const res = await fetch(`${API}/dubbing`, {
         method: 'POST',
         headers: { 'xi-api-key': apiKey },
         body: form
     });
-
+    const text = await res.text();
+    logger(`Antwort (${res.status}): ${text}`);
     if (!res.ok) {
-        throw new Error(`Create dubbing failed: ${res.status} ${await res.text()}`);
+        throw new Error(`Create dubbing failed: ${res.status} ${text}`);
     }
-    return await res.json();
+    return JSON.parse(text);
 }
 
-export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 180, onProgress = () => {}) {
+export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 180, onProgress = () => {}, logger = () => {}) {
     const start = Date.now();
     let info = null;
     while (Date.now() - start < timeout * 1000) {
+        logger(`GET ${API}/dubbing/${id}`);
         const res = await fetch(`${API}/dubbing/${id}`, {
             headers: { 'xi-api-key': apiKey }
         });
-        if (!res.ok) throw new Error(await res.text());
-        info = await res.json();
+        const text = await res.text();
+        logger(`Antwort (${res.status}): ${text}`);
+        if (!res.ok) throw new Error(text);
+        info = JSON.parse(text);
         onProgress(info.status);
         const finished = info.progress?.langs?.[targetLang]?.state === 'finished';
         if (finished) return;
@@ -59,16 +64,19 @@ export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 18
 }
 
 // Lädt die gerenderte Audiodatei einer Sprache herunter
-export async function downloadDubbingAudio(apiKey, id, targetLang = 'de') {
+export async function downloadDubbingAudio(apiKey, id, targetLang = 'de', logger = () => {}) {
+    logger(`GET ${API}/dubbing/${id}/audio/${targetLang}`);
     const res = await fetch(`${API}/dubbing/${id}/audio/${targetLang}`, {
         headers: { 'xi-api-key': apiKey }
     });
+    logger(`Antwort (${res.status})`);
     if (!res.ok) throw new Error(await res.text());
     return await res.blob();
 }
 
 // Rendert eine bestimmte Sprache neu
-export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey) {
+export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
+    logger(`POST ${API}/dubbing/${dubbingId}/render/${targetLang} (${renderType})`);
     const res = await fetch(`${API}/dubbing/${dubbingId}/render/${targetLang}`, {
         method: 'POST',
         headers: {
@@ -77,10 +85,12 @@ export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 
         },
         body: JSON.stringify({ render_type: renderType })
     });
+    const text = await res.text();
+    logger(`Antwort (${res.status}): ${text}`);
 
     if (!res.ok) {
-        throw new Error(`Render language failed: ${res.status} ${await res.text()}`);
+        throw new Error(`Render language failed: ${res.status} ${text}`);
     }
 
-    return await res.json();
+    return JSON.parse(text);
 }

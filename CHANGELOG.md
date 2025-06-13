@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.23.0
+
+* Ausführlicheres Logging aller API-Aufrufe
+
 ## ✨ Neue Features in 1.22.13
 
 * Changelog ausgelagert in eigene Datei.
