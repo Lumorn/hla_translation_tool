@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.2-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.3-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -215,7 +215,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript aktualisiert `electron/package.json` und ersetzt alle `1.40.2`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript aktualisiert `electron/package.json` und ersetzt alle `1.40.3`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -572,6 +572,7 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
 anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
 ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint. Ebenfalls neu ist `watcher.test.js`, der das Anlegen einer Datei im Download‑Ordner simuliert und den entsprechenden Callback testet.
 Ab Version 1.40.3 nutzt `manualDub.test.js` einen kleinen Polyfill, damit der `File`-Konstruktor auch in Node-Umgebungen verfügbar ist.
+Ab Version 1.40.3 lädt die Desktop-Version `config.js` auch im gepackten Zustand zuverlässig.
 Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil seine Funktion global bereitsteht.
 Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
 

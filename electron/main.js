@@ -1,8 +1,9 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
-const path = require('path');
+const path = require('path'); // Pfadmodul einbinden
 const fs = require('fs');
 const { execSync } = require('child_process');
-const { DL_WATCH_PATH, projectRoot } = require('../web/src/config.js');
+// Lade Konfiguration relativ zum aktuellen Verzeichnis
+const { DL_WATCH_PATH, projectRoot } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 const { chooseExisting } = require('../pathUtils');
 // Nach dem Laden der Projektwurzel pruefen wir auf Gross-/Kleinschreibung.
 // Ist ein Ordner nur mit großem Anfangsbuchstaben vorhanden, wird dieser verwendet.
