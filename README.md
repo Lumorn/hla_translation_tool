@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.39.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.0-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -215,7 +215,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.39.0`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.40.0`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -558,6 +558,7 @@ Backups können im Browser hochgeladen und sofort wiederhergestellt werden.
 ## 🧪 Tests
 
 Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
+Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Request automatisch `npm ci` und `npm test` mit Node 18 bis 22 aus.
 
 `npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten.
 
