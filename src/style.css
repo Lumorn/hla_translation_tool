@@ -2049,3 +2049,28 @@ th:nth-child(6) {
 }
 
 		
+
+/* Toast-Meldungen */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    z-index: 3000;
+    animation: fadeout 4s forwards;
+}
+.toast.error { background: #e74c3c; }
+@keyframes fadeout {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+
+.current-voice-line { margin-bottom: 10px; font-size: 14px; }
+.current-voice { color: #ff6b1a; }
+
