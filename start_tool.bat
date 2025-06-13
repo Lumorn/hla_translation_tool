@@ -35,11 +35,20 @@ IF ERRORLEVEL 1 (
     pause
     exit /b 1
 ) ELSE (
-    FOR /f "tokens=*" %%G in ('node --version') do (
-        echo Gefundene Node-Version: %%G
-        call :log "Node-Version %%G"
-    )
+    FOR /f "tokens=*" %%G in ('node --version') do set "NODE_VERSION=%%G"
+    echo Gefundene Node-Version: %NODE_VERSION%
+    call :log "Node-Version %NODE_VERSION%"
+    FOR /f "tokens=2 delims=v." %%H in ("%NODE_VERSION%") do set "NODE_MAJOR=%%H"
+    set /a NODE_MAJOR_NUM=%NODE_MAJOR% >nul 2>&1
+    IF %NODE_MAJOR_NUM% LSS 18 GOTO bad_node
+    IF %NODE_MAJOR_NUM% GEQ 23 GOTO bad_node
 )
+goto node_ok
+:bad_node
+echo [Fehler] Node.js Version %NODE_VERSION% wird nicht unterstuetzt. Bitte Node 18–22 installieren.
+call :log "Unpassende Node-Version"
+exit /b 1
+:node_ok
 
 REM ======================= npm pruefen ===================================
 call :log "Pruefe npm-Version"
