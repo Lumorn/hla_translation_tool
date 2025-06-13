@@ -13,6 +13,11 @@ app.setPath('userData', userDataPath);
 // Neuer Pfad 'Backups' laut Benutzerwunsch
 const backupPath = path.join(userDataPath, 'Backups');
 fs.mkdirSync(backupPath, { recursive: true });
+// Zusätzlichen Ordner für Session-Daten anlegen und verwenden,
+// um Cache-Fehler wie "Unable to move the cache" zu vermeiden
+const sessionDataPath = path.join(userDataPath, 'SessionData');
+fs.mkdirSync(sessionDataPath, { recursive: true });
+app.setPath('sessionData', sessionDataPath);
 // =========================== USER-DATA-PFAD END =============================
 
 // Flag, ob die DevTools beim Start geöffnet werden sollen
