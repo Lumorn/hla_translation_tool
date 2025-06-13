@@ -12,7 +12,7 @@
     "node": ">=18 <23"
   },
   "scripts": {
-    "pretest": "npm install",
+    "pretest": "npm ci",
     "test": "jest",
     "update-version": "node updateVersion.js"
   },
