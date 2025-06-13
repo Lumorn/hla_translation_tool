@@ -1,3 +1,4 @@
+// Benötigt das npm-Paket 'chokidar'
 const chokidar = require('chokidar');
 const { DL_WATCH_PATH } = require('./config.js');
 
