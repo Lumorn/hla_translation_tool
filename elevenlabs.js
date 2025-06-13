@@ -204,10 +204,34 @@ async function getDefaultVoiceSettings(apiKey, logger = () => {}) {
 // =========================== GETDEFAULTVOICESETTINGS END ==================
 
 // =========================== RENDERLANGUAGE START ==========================
-// async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-//     // Funktion entfernt, da Rendering nun manuell im Studio erfolgt
-//     return {};
-// }
+// Rendert ein Dubbing-Resource ueber die Beta-API
+async function renderLanguage(id, lang = 'de', apiKey, logger = () => {}) {
+    logger(`POST ${API}/dubbing/resource/${id}/render/${lang}`);
+    const res = await fetch(`${API}/dubbing/resource/${id}/render/${lang}`, {
+        method: 'POST',
+        headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ render_type: 'wav' })
+    });
+    const text = await res.text();
+    logger(`Antwort (${res.status}): ${text}`);
+    if (res.status === 401 || res.status === 403) throw new Error('BETA_LOCKED');
+    if (!res.ok) throw new Error(text);
+}
+
+// Wartet auf das Rendering und liefert die URL der fertigen Datei
+async function pollRender(id, lang = 'de', apiKey, logger = () => {}) {
+    while (true) {
+        logger(`GET ${API}/dubbing/resource/${id}`);
+        const res = await fetch(`${API}/dubbing/resource/${id}`, { headers: { 'xi-api-key': apiKey } });
+        const text = await res.text();
+        logger(`Antwort (${res.status}): ${text}`);
+        if (!res.ok) throw new Error(text);
+        const info = JSON.parse(text);
+        const r = info.renders?.[lang];
+        if (r?.status === 'complete') return r.url;
+        await new Promise(r => setTimeout(r, 5000));
+    }
+}
 // =========================== RENDERLANGUAGE END ============================
 
 // =========================== DUBSEGMENTS START ============================
@@ -281,5 +305,7 @@ module.exports = {
     downloadDubbingAudio,
     getDefaultVoiceSettings,
     waitForDubbing,
-    isDubReady
+    isDubReady,
+    renderLanguage,
+    pollRender
 };
