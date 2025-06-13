@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.36.12';
+const APP_VERSION = '1.37.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6099,8 +6099,25 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                     }
                     info['Process-Plattform'] = process.platform;
                     info['CPU-Architektur'] = process.arch;
+
+                    // Renderer-spezifische Eigenschaften
+                    if ('type' in process) info['Process-Typ'] = process.type;
+                    if ('contextIsolated' in process) info['Context Isolation'] = String(process.contextIsolated);
+                    if ('sandboxed' in process) info['Sandbox'] = String(process.sandboxed);
+
+                    // Ein paar häufige Umgebungsvariablen
+                    if (process.env.NODE_ENV) info['NODE_ENV'] = process.env.NODE_ENV;
+                    if (process.env.ELECTRON_RUN_AS_NODE) info['ELECTRON_RUN_AS_NODE'] = process.env.ELECTRON_RUN_AS_NODE;
+                    if (process.env.ELECTRON_DISABLE_SANDBOX) info['ELECTRON_DISABLE_SANDBOX'] = process.env.ELECTRON_DISABLE_SANDBOX;
                 }
             }
+
+            // Allgemeine Browser-Informationen
+            info['Fenstergröße'] = `${window.innerWidth}x${window.innerHeight}`;
+            info['Bildschirmauflösung'] = `${screen.width}x${screen.height}`;
+            info['Seitenzustand'] = document.readyState;
+            info['Sicherer Kontext'] = window.isSecureContext;
+            info['Protokoll'] = location.protocol;
 
             // HTML für die Anzeige aufbauen
             let html = '<h3>Debug-Informationen</h3><ul id="debugInfoList">';
