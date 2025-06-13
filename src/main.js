@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.27.0';
+const APP_VERSION = '1.28.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -818,6 +818,7 @@ function selectProject(id){
     if(migrated) isDirty=true;
 
     renderFileTable();
+    updateDubStatusForFiles();
     updateStatus();
     updateFileAccessStatus();
     updateProgressStats();
@@ -1767,6 +1768,7 @@ return `
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
+        <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}">●</span></td>
         <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
@@ -2728,13 +2730,56 @@ async function updateDubButtons() {
         const id = parseInt(btn.dataset.fileId, 10);
         const file = files.find(f => f.id === id);
         if (!file) continue;
-        try {
-            const ready = await isDubReady(file.dubbingId);
-            if (ready) btn.disabled = false;
-        } catch (err) {
-            console.error('isDubReady fehlgeschlagen', err);
+        if (file.dubbingId) {
+            if (typeof file.dubReady === 'undefined') {
+                try {
+                    file.dubReady = await isDubReady(file.dubbingId);
+                } catch (err) {
+                    console.error('isDubReady fehlgeschlagen', err);
+                    file.dubReady = false;
+                }
+            }
+            if (file.dubReady) btn.disabled = false;
         }
     }
+}
+
+// Ruft für alle Dateien einmal den Dubbing-Status ab
+async function updateDubStatusForFiles() {
+    const promises = files.map(async f => {
+        if (f.dubbingId) {
+            try {
+                f.dubReady = await isDubReady(f.dubbingId);
+            } catch (err) {
+                console.error('isDubReady fehlgeschlagen', err);
+                f.dubReady = false;
+            }
+        } else {
+            f.dubReady = null;
+        }
+        updateDubStatusIcon(f);
+    });
+    await Promise.all(promises);
+    updateDubButtons();
+}
+
+// Setzt das Icon je nach Status
+function updateDubStatusIcon(file) {
+    const el = document.querySelector(`tr[data-id="${file.id}"] .dub-status`);
+    if (!el) return;
+    let cls, title;
+    if (!file.dubbingId) {
+        cls = 'none';
+        title = 'kein Dubbing';
+    } else if (file.dubReady) {
+        cls = 'done';
+        title = 'fertig';
+    } else {
+        cls = 'pending';
+        title = 'Studio generiert noch';
+    }
+    el.className = 'dub-status ' + cls;
+    el.title = title;
 }
 
         // Text editing
@@ -6556,6 +6601,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     // Dubbing-ID sofort merken und anzeigen
     file.dubbingId = id;
+    file.dubReady = false; // Status auf "in Arbeit" setzen
     saveCurrentProject();
     renderFileTable();
     const studioUrl = `https://elevenlabs.io/studio/dubbing/${id}`;
@@ -6619,6 +6665,7 @@ async function redownloadDubbing(fileId) {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
         addDubbingLog('Datei im Browser gespeichert');
     }
+    file.dubReady = true; // Nach erneutem Download fertig
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
@@ -6646,6 +6693,7 @@ async function downloadDe(fileId) {
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
     }
+    file.dubReady = true; // Status auf fertig setzen
     updateStatus('Deutsche Audiodatei gespeichert.');
     renderFileTable();
 }
@@ -8724,6 +8772,7 @@ if (typeof module !== "undefined" && module.exports) {
         startDubbing,
         redownloadDubbing,
         initiateDubbing,
-        downloadDe
+        downloadDe,
+        updateDubStatusForFiles
     };
 }

@@ -2,6 +2,10 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.28.0
+
+* Farbige Status-Punkte zeigen den Fortschritt jedes Dubbings direkt in der Tabelle
+
 ## ✨ Neue Features in 1.27.0
 
 * Neue Spalte mit "Download DE"-Button in der Datei-Tabelle
