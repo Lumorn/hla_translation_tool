@@ -41,6 +41,15 @@ try {
 log('Pruefe Node-Version');
 try {
     run('node --version');
+    // Version erneut auslesen, um die Hauptversion zu pruefen
+    const output = execSync('node --version').toString().trim();
+    log(`Gefundene Node-Version: ${output}`);
+    const major = parseInt(output.replace(/^v/, '').split('.')[0], 10);
+    if (isNaN(major) || major < 18 || major >= 22) {
+        console.error(`[Fehler] Node.js Version ${output} wird nicht unterstuetzt. Bitte Node 18 bis 21 installieren.`);
+        log('Unpassende Node-Version');
+        process.exit(1);
+    }
 } catch (err) {
     console.error('[Fehler] Node.js wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.');
     console.error('Weitere Details siehe setup.log');
