@@ -2,6 +2,11 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## ✨ Neue Features in 1.34.0
+
+* Neue Spalte "Dub-Status" mit farbigen Punkten
+* Klick auf gelben Punkt öffnet erneut das Studio
+
 ## ✨ Neue Features in 1.33.0
 
 * Ordnerüberwachung für manuell heruntergeladene Audios

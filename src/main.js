@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.33.0';
+const APP_VERSION = '1.34.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -1813,7 +1813,7 @@ return `
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
-        <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}">●</span></td>
+        <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick="dubStatusClicked(${file.id})"`}>●</span></td>
         <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
@@ -6480,29 +6480,38 @@ function closeStudioOverlay() {
     if (ov) ov.remove();
 }
 
-// Öffnet das Studio und wartet auf Benutzerbestätigung
+// Öffnet das Studio und zeigt einen Hinweis mit Download-Pfad an
 async function openStudioAndWait(dubId) {
     const url = `https://elevenlabs.io/studio/dubbing/${dubId}`;
     window.open(url, '_blank');
-    return new Promise(resolve => {
-        const ov = document.createElement('div');
-        ov.className = 'dialog-overlay';
-        ov.id = 'studioWaitDialog';
-        ov.style.display = 'flex';
-        ov.innerHTML = `
-            <div class="dialog">
-                <h3>🎧 ElevenLabs Studio</h3>
-                <p>Bitte dort "Generate Audio" anklicken und die Datei im Ordner Download speichern.</p>
-                <div class="dialog-buttons">
-                    <button class="btn btn-success" id="studioWaitOk">OK</button>
-                </div>
-            </div>`;
-        document.body.appendChild(ov);
-        document.getElementById('studioWaitOk').onclick = () => {
-            ov.remove();
-            resolve();
-        };
-    });
+
+    // Pfad aus Electron abrufen, falls verfügbar
+    let dlPath = 'Download';
+    if (window.electronAPI && window.electronAPI.getDownloadPath) {
+        dlPath = await window.electronAPI.getDownloadPath();
+    }
+
+    ui.showModal(`
+        <h3>Studio geöffnet</h3>
+        <p>Generiere die deutsche Spur,
+        lade die WAV herunter und lege sie in
+        <code>${dlPath}</code>.</p>
+        <p>Das Tool erkennt die Datei automatisch.</p>
+    `);
+
+    const currentItem = files.find(f => f.dubbingId === dubId);
+    if (currentItem) {
+        currentItem.waitingForManual = true;
+        ui.setActiveDubItem(currentItem);
+        renderFileTable();
+    }
+}
+
+// Wird aufgerufen, wenn der gelbe Status-Punkt angeklickt wird
+function dubStatusClicked(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.dubbingId || file.dubReady) return;
+    openStudioAndWait(file.dubbingId);
 }
 
 // Hilfsfunktion für das Manual Dubbing
@@ -8772,6 +8781,22 @@ function showLevelCustomization(levelName, ev) {
             setTimeout(() => div.remove(), 4000);
         }
 
+        // Zeigt ein modales Dialogfenster mit HTML-Inhalt an
+        function showModal(html) {
+            const ov = document.createElement('div');
+            ov.className = 'dialog-overlay';
+            ov.style.display = 'flex';
+            ov.innerHTML = `<div class="dialog">${html}</div>`;
+            ov.addEventListener('click', () => ov.remove());
+            document.body.appendChild(ov);
+        }
+
+        // Merkt das aktuelle Dubbing-Item für den Ordner-Watcher
+        function setActiveDubItem(item) {
+            files.forEach(f => delete f.waitingForManual);
+            if (item) item.waitingForManual = true;
+        }
+
         // Liefert die Zeile, die auf einen manuellen Import wartet
         function getActiveDubItem() {
             return files.find(f => f.waitingForManual);
@@ -8788,7 +8813,7 @@ function showLevelCustomization(levelName, ev) {
             renderFileTable();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, setActiveDubItem };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
