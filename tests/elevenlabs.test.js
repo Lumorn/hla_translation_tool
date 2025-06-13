@@ -186,4 +186,15 @@ describe('ElevenLabs API', () => {
 
         await expect(waitForDubbing('key', 'slow', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');
     });
+
+    test('waitForDubbing meldet fehlendes target_lang', async () => {
+        nock(API)
+            .get('/dubbing/nolang')
+            .reply(200, { status: 'dubbing', progress: {} });
+
+        const errSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        await expect(waitForDubbing('key', 'nolang', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');
+        expect(errSpy).toHaveBeenCalledWith('target_lang nicht gesetzt?');
+        errSpy.mockRestore();
+    });
 });

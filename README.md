@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.0-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.22.1-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -11,6 +11,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ---
 
 ## 📋 Inhaltsverzeichnis
+* [✨ Neue Features in 1.22.1](#-neue-features-in-1.22.1)
 * [✨ Neue Features in 1.22.0](#-neue-features-in-1.22.0)
 * [✨ Neue Features in 1.21.0](#-neue-features-in-1.21.0)
 * [✨ Neue Features in 1.20.3](#-neue-features-in-1.20.3)
@@ -35,6 +36,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📝 Changelog](#-changelog)
 
 ---
+## ✨ Neue Features in 1.22.1
+
+|  Kategorie                 |  Beschreibung |
+| -------------------------- | ----------------------------------------------- |
+| **Hinweis bei Timeout**    | `waitForDubbing` meldet jetzt "target_lang nicht gesetzt?" wenn die Sprache fehlt. |
+
 ## ✨ Neue Features in 1.22.0
 
 |  Kategorie                 |  Beschreibung |
@@ -517,6 +524,9 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Ursache:** Die gewählte Sprachspur wurde noch nicht erzeugt.
 * ▶ **Lösung:** Beim Anlegen `target_lang:"<sprache>"` setzen und Datei unter `/audio/<sprache>` abrufen.
 
+**❓ target_lang nicht gesetzt?**
+* ▶ **Hinweis:** Diese Meldung erscheint, wenn `waitForDubbing` im Fortschritt keine Zielsprache findet.
+
 
 **🔄 Duplikate in Datenbank**
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
@@ -539,7 +549,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ## 📝 Changelog
 
-### 1.22.0 (aktuell)
+### 1.22.1 (aktuell)
+
+**✨ Neue Features:**
+* waitForDubbing meldet bei fehlender Sprache "target_lang nicht gesetzt?"
+
+### 1.22.0
 
 **✨ Neue Features:**
 * `cliRedownload.js` nimmt optional eine Sprache entgegen.
@@ -857,7 +872,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 © 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
 
-**Version 1.22.0 - CLI erweitert
+**Version 1.22.1 - Hinweis bei Timeout
 🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
