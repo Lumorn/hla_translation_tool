@@ -130,6 +130,24 @@ IF ERRORLEVEL 1 (
     call :log "npm ci erfolgreich"
 )
 
+REM Nach der Installation pruefen, ob das Electron-Modul existiert
+if not exist "node_modules\electron" (
+    echo Electron-Modul fehlt, wird nachinstalliert...
+    call :log "Electron-Modul fehlt - versuche 'npm install electron'"
+    npm install electron
+    if ERRORLEVEL 1 (
+        call :log "npm install electron fehlgeschlagen"
+    ) else (
+        call :log "npm install electron erfolgreich"
+    )
+    REM Nochmals pruefen
+    if not exist "node_modules\electron" (
+        echo [Fehler] Electron-Modul fehlt weiterhin.
+        call :log "Electron-Modul weiterhin nicht vorhanden"
+        exit /b 1
+    )
+)
+
 echo Anwendung wird gestartet...
 call :log "Starte Anwendung"
 call npm start

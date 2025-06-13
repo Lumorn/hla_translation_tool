@@ -183,13 +183,23 @@ except subprocess.CalledProcessError:
 if not os.path.isdir(os.path.join("node_modules", "electron")):
     print("Electron-Modul fehlt, wird nachinstalliert...")
     log("Electron-Modul fehlt - versuche 'npm install electron'")
+    install_error = False
     try:
         run("npm install electron")
         log("npm install electron erfolgreich")
     except subprocess.CalledProcessError as e:
+        install_error = True
         print("npm install electron fehlgeschlagen. Weitere Details siehe setup.log")
         log("npm install electron fehlgeschlagen")
         log(str(e))
+    # Nach der Installation erneut pruefen
+    if not os.path.isdir(os.path.join("node_modules", "electron")):
+        print("[Fehler] Electron-Modul fehlt weiterhin.")
+        log("Electron-Modul weiterhin nicht vorhanden")
+        sys.exit(1)
+    elif install_error:
+        # Modul existiert, aber die Installation meldete Fehler
+        print("Electron wurde installiert, trotz Fehlermeldung.")
 
 print("Anwendung wird gestartet...")
 log("Starte Anwendung")

@@ -160,13 +160,24 @@ try {
 if (!fs.existsSync(path.join('node_modules', 'electron'))) {
     console.log('Electron-Modul fehlt, wird nachinstalliert...');
     log('Electron-Modul fehlt - versuche "npm install electron"');
+    let installError = false;
     try {
         run('npm install electron');
         log('npm install electron erfolgreich');
     } catch (err) {
+        installError = true;
         console.error('npm install electron fehlgeschlagen. Weitere Details siehe setup.log');
         log('npm install electron fehlgeschlagen');
         log(err.toString());
+    }
+    // Nach der Installation erneut pruefen
+    if (!fs.existsSync(path.join('node_modules', 'electron'))) {
+        console.error('[Fehler] Electron-Modul fehlt weiterhin.');
+        log('Electron-Modul weiterhin nicht vorhanden');
+        process.exit(1);
+    } else if (installError) {
+        // Modul existiert, aber Installation meldete Fehler
+        console.log('Electron wurde installiert, trotz Fehlermeldung.');
     }
 }
 
