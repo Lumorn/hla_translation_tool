@@ -1,6 +1,6 @@
 {
   "name": "hla_translation_tool",
-  "version": "1.37.3",
+  "version": "1.37.4",
   "devDependencies": {
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^30.0.0",
@@ -8,7 +8,7 @@
     "nock": "^14.0.5"
   },
   "engines": {
-    "node": ">=18 <22"
+    "node": ">=18 <23"
   },
   "scripts": {
     "pretest": "npm install",

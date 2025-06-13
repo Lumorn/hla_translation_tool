@@ -57,8 +57,9 @@ try:
         major = int(output.lstrip("v").split(".")[0])
     except ValueError:
         major = None
-    if major is None or major < 18 or major >= 22:
-        print(f"[Fehler] Node.js Version {output} wird nicht unterstuetzt. Bitte Node 18–21 installieren.")
+    # Node 22 wird nun ebenfalls unterstuetzt
+    if major is None or major < 18 or major >= 23:
+        print(f"[Fehler] Node.js Version {output} wird nicht unterstuetzt. Bitte Node 18–22 installieren.")
         log("Unpassende Node-Version")
         sys.exit(1)
 except subprocess.CalledProcessError as e:
