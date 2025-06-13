@@ -2,6 +2,11 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('
 const path = require('path');
 const fs = require('fs');
 const { DL_WATCH_PATH, projectRoot } = require('../web/src/config.js');
+const { chooseExisting } = require('../pathUtils');
+// Nach dem Laden der Projektwurzel pruefen wir auf Gross-/Kleinschreibung.
+// Ist ein Ordner nur mit großem Anfangsbuchstaben vorhanden, wird dieser verwendet.
+const soundsDirName = chooseExisting(projectRoot, ['Sounds', 'sounds']);
+const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
 const { watchDownloadFolder } = require('../web/src/watcher.js');
 let mainWindow;
@@ -18,7 +23,7 @@ app.setPath('userData', userDataPath);
 const backupPath = path.join(userDataPath, 'Backups');
 fs.mkdirSync(backupPath, { recursive: true });
 // Alter Backup-Pfad im Projektordner (Kompatibilitätsmodus)
-const oldBackupPath = path.join(projectRoot, 'backups');
+const oldBackupPath = path.join(projectRoot, backupsDirName);
 // Zusätzlichen Ordner für Session-Daten anlegen und verwenden,
 // um Cache-Fehler wie "Unable to move the cache" zu vermeiden
 const sessionDataPath = path.join(userDataPath, 'SessionData');
@@ -97,7 +102,7 @@ app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 
 app.whenReady().then(() => {
   // Basis- und Sprachordner relativ zur Projektwurzel bestimmen
-  const projectBase = path.resolve(projectRoot, 'sounds');
+  const projectBase = path.resolve(projectRoot, soundsDirName);
   const enPath = path.resolve(projectBase, 'EN');
   const dePath = path.resolve(projectBase, 'DE');
   const deBackupPath = path.resolve(projectBase, 'DE-Backup');
