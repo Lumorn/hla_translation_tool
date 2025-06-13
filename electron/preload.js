@@ -1,5 +1,6 @@
 const { contextBridge, ipcRenderer } = require('electron');
-const path = require('path');
+// 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
+const path = require('node:path');
 // Konfiguration dynamisch laden, damit der Pfad auch nach dem Packen stimmt
 const { DL_WATCH_PATH } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 contextBridge.exposeInMainWorld('electronAPI', {
