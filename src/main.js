@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.34.0';
+const APP_VERSION = '1.34.1';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6780,8 +6780,9 @@ async function redownloadDubbing(fileId) {
         updateStatus('Download fehlgeschlagen');
         addDubbingLog(errText);
         if (errText.includes('dubbing_not_found')) {
-            const studioUrl = `https://elevenlabs.io/studio/dubbing/${file.dubbingId}`;
-            window.open(studioUrl, '_blank');
+            const msg = 'Spur manuell generieren oder Beta freischalten';
+            showToast(msg, 'error');
+            addDubbingLog(msg);
         }
         return;
     }

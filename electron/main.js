@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const { DL_WATCH_PATH } = require('../src/config.js');
+const { DL_WATCH_PATH, projectRoot } = require('../src/config.js');
 const historyUtils = require('../historyUtils');
 const { watchDownloadFolder } = require('../src/watcher.js');
 let mainWindow;
@@ -94,12 +94,12 @@ app.commandLine.appendSwitch('disable-gpu-compositing');
 app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 
 app.whenReady().then(() => {
-  // Basis- und Sprachordner relativ zur App bestimmen
-  const projectBase = path.join(__dirname, '..', 'sounds');
-  const enPath = path.join(projectBase, 'EN');
-  const dePath = path.join(projectBase, 'DE');
-  const deBackupPath = path.join(projectBase, 'DE-Backup');
-  const deHistoryPath = path.join(projectBase, 'DE-History');
+  // Basis- und Sprachordner relativ zur Projektwurzel bestimmen
+  const projectBase = path.resolve(projectRoot, 'sounds');
+  const enPath = path.resolve(projectBase, 'EN');
+  const dePath = path.resolve(projectBase, 'DE');
+  const deBackupPath = path.resolve(projectBase, 'DE-Backup');
+  const deHistoryPath = path.resolve(projectBase, 'DE-History');
   fs.mkdirSync(enPath, { recursive: true }); // EN-Ordner anlegen
   fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
   fs.mkdirSync(deBackupPath, { recursive: true }); // DE-Backup-Ordner anlegen
@@ -199,7 +199,8 @@ app.whenReady().then(() => {
   // =========================== SAVE-DE-FILE START ===========================
   // Speichert eine hochgeladene DE-Datei im richtigen Unterordner
   ipcMain.handle('save-de-file', async (event, { relPath, data }) => {
-    const target = path.join(dePath, relPath);
+    // Absoluten Zielpfad aufbauen
+    const target = path.resolve(dePath, relPath);
     fs.mkdirSync(path.dirname(target), { recursive: true });
     // Vor dem Überschreiben alte Version in den History-Ordner kopieren
     if (fs.existsSync(target)) {
@@ -211,9 +212,13 @@ app.whenReady().then(() => {
 
   // Verschiebt eine Datei innerhalb des Projekts
   ipcMain.handle('move-file', async (event, { src, dest }) => {
-    fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.renameSync(src, dest);
-    return dest;
+    // Zielpfad absolut bestimmen
+    const target = path.resolve(projectRoot, dest);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.renameSync(src, target);
+    // Sicherheitshalber alten Pfad löschen
+    if (fs.existsSync(src)) fs.unlinkSync(src);
+    return target;
   });
 
   // Liefert die History-Dateien zu einer DE-Datei
