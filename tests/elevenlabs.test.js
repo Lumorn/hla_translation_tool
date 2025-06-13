@@ -5,7 +5,7 @@ const path = require('path');
 const { createDubbing, getDubbingStatus, downloadDubbingAudio, getDefaultVoiceSettings, waitForDubbing } = require('../elevenlabs');
 
 // Basis-URL der API
-const API = 'https://api.elevenlabs.io';
+const API = 'https://api.elevenlabs.io/v1';
 
 // Temporäre Audiodatei für die Tests
 const tempAudio = path.join(__dirname, 'temp.mp3');
@@ -25,7 +25,7 @@ afterEach(() => {
 describe('ElevenLabs API', () => {
     test('erfolgreicher Dubbing-Auftrag mit voice_settings', async () => {
         nock(API)
-            .post('/v1/dubbing', body => body.includes('voice_settings'))
+            .post('/dubbing', body => body.includes('voice_settings'))
             .reply(200, { id: '123' });
 
         const result = await createDubbing('key', tempAudio, 'de', { speed: 1.2 });
@@ -34,7 +34,7 @@ describe('ElevenLabs API', () => {
 
     test('fehlerhafte Antwort bei createDubbing', async () => {
         nock(API)
-            .post('/v1/dubbing')
+            .post('/dubbing')
             .reply(500, 'Fehler');
 
         await expect(createDubbing('key', tempAudio)).rejects.toThrow('Fehler beim Dubbing');
@@ -42,10 +42,10 @@ describe('ElevenLabs API', () => {
 
     test('Download-Fehler', async () => {
         nock(API)
-            .get('/v1/dubbing/abc')
+            .get('/dubbing/abc')
             .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
-            .get('/v1/dubbing/abc/audio/de')
+            .get('/dubbing/abc/audio/de')
             .times(4)
             .reply(404, 'not found');
 
@@ -56,10 +56,10 @@ describe('ElevenLabs API', () => {
     test('Download erfolgreich', async () => {
         const outPath = path.join(__dirname, 'out.mp3');
         nock(API)
-            .get('/v1/dubbing/xyz')
+            .get('/dubbing/xyz')
             .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
-            .get('/v1/dubbing/xyz/audio/de')
+            .get('/dubbing/xyz/audio/de')
             .reply(200, 'sound');
 
         const result = await downloadDubbingAudio('key', 'xyz', 'de', outPath);
@@ -72,12 +72,12 @@ describe('ElevenLabs API', () => {
     test('Download klappt nach zweitem Versuch', async () => {
         const outPath = path.join(__dirname, 'retry.mp3');
         nock(API)
-            .get('/v1/dubbing/retry')
+            .get('/dubbing/retry')
             .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
         nock(API)
-            .get('/v1/dubbing/retry/audio/de')
+            .get('/dubbing/retry/audio/de')
             .reply(500, 'dubbing_not_found')
-            .get('/v1/dubbing/retry/audio/de')
+            .get('/dubbing/retry/audio/de')
             .reply(200, 'sound');
 
         const result = await downloadDubbingAudio('key', 'retry', 'de', outPath);
@@ -89,7 +89,7 @@ describe('ElevenLabs API', () => {
 
     test('Status erfolgreich abgefragt', async () => {
         nock(API)
-            .get('/v1/dubbing/123')
+            .get('/dubbing/123')
             .reply(200, { status: 'dubbed' });
 
         const result = await getDubbingStatus('key', '123');
@@ -98,7 +98,7 @@ describe('ElevenLabs API', () => {
 
     test('Fehler bei getDubbingStatus', async () => {
         nock(API)
-            .get('/v1/dubbing/123')
+            .get('/dubbing/123')
             .reply(500, 'kaputt');
 
         await expect(getDubbingStatus('key', '123')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
@@ -106,7 +106,7 @@ describe('ElevenLabs API', () => {
 
     test('Default-Settings erfolgreich abgerufen', async () => {
         nock(API)
-            .get('/v1/voices/settings/default')
+            .get('/voices/settings/default')
             .reply(200, { stability: 1 });
 
         const result = await getDefaultVoiceSettings('key');
@@ -115,27 +115,27 @@ describe('ElevenLabs API', () => {
 
     test('Fehler bei getDefaultVoiceSettings', async () => {
         nock(API)
-            .get('/v1/voices/settings/default')
+            .get('/voices/settings/default')
             .reply(500, 'kaputt');
 
         await expect(getDefaultVoiceSettings('key')).rejects.toThrow('Fehler beim Abrufen der Default-Settings');
     });
 
 
-    // Neuer Test für GET /v1/dubbing/{id} mit Erfolg
+    // Neuer Test für GET /dubbing/{id} mit Erfolg
     test('getDubbingStatus liefert JSON', async () => {
         nock(API)
-            .get('/v1/dubbing/42')
+            .get('/dubbing/42')
             .reply(200, { status: 'dubbed', progress: 100 });
 
         const res = await getDubbingStatus('key', '42');
         expect(res).toEqual({ status: 'dubbed', progress: 100 });
     });
 
-    // Neuer Test für GET /v1/dubbing/{id} mit Fehler
+    // Neuer Test für GET /dubbing/{id} mit Fehler
     test('getDubbingStatus wirft Fehler', async () => {
         nock(API)
-            .get('/v1/dubbing/42')
+            .get('/dubbing/42')
             .reply(404, 'nicht gefunden');
 
         await expect(getDubbingStatus('key', '42')).rejects.toThrow('Status-Abfrage fehlgeschlagen');
@@ -144,7 +144,7 @@ describe('ElevenLabs API', () => {
     // Simuliere Polling-Abbruch bei failed
     test('Polling stoppt bei Status failed', async () => {
         const scope = nock(API)
-            .get('/v1/dubbing/fail')
+            .get('/dubbing/fail')
             .reply(200, { status: 'failed', error: 'kaputt' });
 
         let status = 'dubbing';
@@ -165,7 +165,7 @@ describe('ElevenLabs API', () => {
 
     test('waitForDubbing beendet sich bei Erfolg', async () => {
         nock(API)
-            .get('/v1/dubbing/success')
+            .get('/dubbing/success')
             .reply(200, { status: 'dubbed', progress: { langs: { de: { state: 'finished' } } } });
 
         await expect(waitForDubbing('key', 'success', 'de', 3)).resolves.toBeUndefined();
@@ -173,7 +173,7 @@ describe('ElevenLabs API', () => {
 
     test('waitForDubbing wirft bei failed', async () => {
         nock(API)
-            .get('/v1/dubbing/bad')
+            .get('/dubbing/bad')
             .reply(200, { status: 'failed', error: 'kaputt' });
 
         await expect(waitForDubbing('key', 'bad', 'de', 3)).rejects.toThrow('kaputt');
@@ -181,7 +181,7 @@ describe('ElevenLabs API', () => {
 
     test('waitForDubbing gibt Timeout zurück', async () => {
         nock(API)
-            .get('/v1/dubbing/slow')
+            .get('/dubbing/slow')
             .reply(200, { status: 'dubbing' });
 
         await expect(waitForDubbing('key', 'slow', 'de', 3)).rejects.toThrow('Dubbing nicht fertig');

@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+// Basis-URL der API
+const API = 'https://api.elevenlabs.io/v1';
+
 // =========================== CREATEDUBBING START ===========================
 /**
  * Startet einen Dubbing-Auftrag bei ElevenLabs und gibt die Antwort zurueck.
@@ -24,7 +27,7 @@ async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings
         form.append('voice_settings', JSON.stringify(voiceSettings));
     }
 
-    const response = await fetch('https://api.elevenlabs.io/v1/dubbing', {
+    const response = await fetch(`${API}/dubbing`, {
         method: 'POST',
         headers: { 'xi-api-key': apiKey },
         body: form
@@ -45,7 +48,7 @@ async function createDubbing(apiKey, audioPath, targetLang = 'de', voiceSettings
  * @returns {Promise<object>} Status-Objekt der API.
  */
 async function getDubbingStatus(apiKey, dubbingId) {
-    const response = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}`, {
+    const response = await fetch(`${API}/dubbing/${dubbingId}`, {
         headers: { 'xi-api-key': apiKey }
     });
 
@@ -98,7 +101,7 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
     let errText = '';
 
     for (let attempt = 0; attempt < 4; attempt++) {
-        response = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}/audio/${lang}`, {
+        response = await fetch(`${API}/dubbing/${dubbingId}/audio/${lang}`, {
             headers: { 'xi-api-key': apiKey }
         });
 
@@ -125,7 +128,7 @@ async function downloadDubbingAudio(apiKey, dubbingId, lang = 'de', targetPath) 
  * @returns {Promise<object>} Einstellungen der API als Objekt.
  */
 async function getDefaultVoiceSettings(apiKey) {
-    const response = await fetch('https://api.elevenlabs.io/v1/voices/settings/default', {
+    const response = await fetch(`${API}/voices/settings/default`, {
         headers: { 'xi-api-key': apiKey }
     });
 
@@ -141,7 +144,7 @@ async function getDefaultVoiceSettings(apiKey) {
 // Vertont alle Segmente eines Projekts im Studio-Workflow
 async function dubSegments(apiKey, resourceId, languages = ['de']) {
     // Zuerst die vorhandenen Segment-IDs abfragen
-    const infoRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}`, {
+    const infoRes = await fetch(`${API}/dubbing/resource/${resourceId}`, {
         headers: { 'xi-api-key': apiKey }
     });
     if (!infoRes.ok) {
@@ -151,7 +154,7 @@ async function dubSegments(apiKey, resourceId, languages = ['de']) {
     const segIds = Object.keys(info.speaker_segments || {});
 
     // Anschließend alle Segmente in den gewählten Sprachen vertonen
-    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}/dub`, {
+    const res = await fetch(`${API}/dubbing/resource/${resourceId}/dub`, {
         method: 'POST',
         headers: {
             'xi-api-key': apiKey,
@@ -169,7 +172,7 @@ async function dubSegments(apiKey, resourceId, languages = ['de']) {
 // =========================== RENDERRESOURCE START ========================
 // Rendert die komplette Audiodatei fuer eine Sprache
 async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
-    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}/render/${lang}`, {
+    const res = await fetch(`${API}/dubbing/resource/${resourceId}/render/${lang}`, {
         method: 'POST',
         headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify({ render_type: type })
@@ -184,7 +187,7 @@ async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp
 // =========================== GETRESOURCE START ===========================
 // Liefert den aktuellen Status eines Dubbing-Resources
 async function getDubbingResource(apiKey, resourceId) {
-    const res = await fetch(`https://api.elevenlabs.io/v1/dubbing/resource/${resourceId}`, {
+    const res = await fetch(`${API}/dubbing/resource/${resourceId}`, {
         headers: { 'xi-api-key': apiKey }
     });
     if (!res.ok) {

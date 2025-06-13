@@ -64,7 +64,9 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.20.0';
+const APP_VERSION = '1.20.1';
+// Basis-URL der API
+const API = 'https://api.elevenlabs.io/v1';
 
 // =========================== GLOBAL STATE END ===========================
 
@@ -5333,7 +5335,7 @@ function checkFileAccess() {
             const status = document.getElementById('apiKeyStatus');
             status.textContent = '⏳';
             try {
-                const res = await fetch('https://api.elevenlabs.io/v1/voices', {
+                const res = await fetch(`${API}/voices`, {
                     headers: { 'xi-api-key': document.getElementById('apiKeyInput').value.trim() }
                 });
                 if (!res.ok) throw new Error('Fehler');
@@ -5384,7 +5386,7 @@ function checkFileAccess() {
                 const id = sel.value.trim();
                 if (!id) continue;
                 try {
-                    const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                    const res = await fetch(`${API}/voices/${id}`, {
                         headers: { 'xi-api-key': elevenLabsApiKey }
                     });
                     if (!res.ok) throw new Error('Fehler');
@@ -5412,7 +5414,7 @@ function checkFileAccess() {
             const id = document.getElementById('newVoiceId').value.trim();
             if (!id || !elevenLabsApiKey) return;
             try {
-                const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                const res = await fetch(`${API}/voices/${id}`, {
                     headers: { 'xi-api-key': elevenLabsApiKey }
                 });
                 if (res.ok) {
@@ -5428,7 +5430,7 @@ function checkFileAccess() {
             const nameInput = item.querySelector('.custom-voice-name');
             if (!id || !elevenLabsApiKey) return;
             try {
-                const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                const res = await fetch(`${API}/voices/${id}`, {
                     headers: { 'xi-api-key': elevenLabsApiKey }
                 });
                 if (res.ok) {
@@ -5444,7 +5446,7 @@ function checkFileAccess() {
             if (!id) return;
             if (!name && elevenLabsApiKey) {
                 try {
-                    const res = await fetch(`https://api.elevenlabs.io/v1/voices/${id}`, {
+                    const res = await fetch(`${API}/voices/${id}`, {
                         headers: { 'xi-api-key': elevenLabsApiKey }
                     });
                     if (res.ok) {
@@ -6218,7 +6220,7 @@ function proceedNewDubbing(fileId) {
 
 // =========================== SHOWDUBBINGSETTINGS START ======================
 async function getDefaultVoiceSettings(apiKey) {
-    const res = await fetch('https://api.elevenlabs.io/v1/voices/settings/default', {
+    const res = await fetch(`${API}/voices/settings/default`, {
         headers: { 'xi-api-key': apiKey }
     });
     if (!res.ok) throw new Error('Fehler beim Abrufen der Default-Settings');
@@ -6372,7 +6374,7 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
     for (let i = 0; i < maxLoops; i++) {
         await new Promise(r => setTimeout(r, 3000));
         try {
-            const st = await fetch(`https://api.elevenlabs.io/v1/dubbing/${dubbingId}`, {
+            const st = await fetch(`${API}/dubbing/${dubbingId}`, {
                 headers: { 'xi-api-key': apiKey }
             });
             if (st.ok) {
@@ -6483,7 +6485,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
 
     let res;
     try {
-        res = await fetch('https://api.elevenlabs.io/v1/dubbing', {
+        res = await fetch(`${API}/dubbing`, {
             method: 'POST',
             headers: { 'xi-api-key': elevenLabsApiKey },
             body: form
@@ -6540,7 +6542,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     let errText = '';
     for (let attempt = 0; attempt < 4; attempt++) {
         try {
-            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${id}/audio/${targetLang}`, {
+            audioRes = await fetch(`${API}/dubbing/${id}/audio/${targetLang}`, {
                 headers: { 'xi-api-key': elevenLabsApiKey }
             });
             if (audioRes.ok) break;
@@ -6602,7 +6604,7 @@ async function redownloadDubbing(fileId) {
     let errText = '';
     for (let attempt = 0; attempt < 4; attempt++) {
         try {
-            audioRes = await fetch(`https://api.elevenlabs.io/v1/dubbing/${file.dubbingId}/audio/de`, {
+            audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
                 headers: { 'xi-api-key': elevenLabsApiKey }
             });
             if (audioRes.ok) break;
