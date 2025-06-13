@@ -103,6 +103,17 @@ except subprocess.CalledProcessError:
     log("git pull fehlgeschlagen")
     log(str(sys.exc_info()[1]))
 
+# ----------------------- Nicht mehr benötigte Dateien entfernen -----------------
+log("Bereinige verwaiste Dateien")
+try:
+    # Sounds- und Backups-Ordner niemals löschen
+    run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
+    log("Verwaiste Dateien bereinigt")
+except subprocess.CalledProcessError:
+    print("git clean fehlgeschlagen. Weitere Details siehe setup.log")
+    log("git clean fehlgeschlagen")
+    log(str(sys.exc_info()[1]))
+
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
 log("npm install (root) starten")
 print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
