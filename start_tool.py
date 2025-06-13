@@ -142,14 +142,14 @@ except subprocess.CalledProcessError:
     log(str(sys.exc_info()[1]))
 
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
-log("npm install (root) starten")
+log("npm ci (root) starten")
 print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
 try:
-    run("npm install")
-    log("npm install (root) erfolgreich")
+    run("npm ci")
+    log("npm ci (root) erfolgreich")
 except subprocess.CalledProcessError as e:
-    print("npm install im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log")
-    log("npm install (root) fehlgeschlagen")
+    print("npm ci im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log")
+    log("npm ci (root) fehlgeschlagen")
     log(str(e))
     sys.exit(1)
 
@@ -168,14 +168,14 @@ if not os.path.isdir("electron"):
 
 # ----------------------- Electron-Setup --------------------
 os.chdir("electron")
-log("npm install starten")
+log("npm ci starten")
 print("Abhaengigkeiten werden installiert...")
 try:
-    run("npm install")
-    log("npm install erfolgreich")
+    run("npm ci")
+    log("npm ci erfolgreich")
 except subprocess.CalledProcessError:
-    print("npm install fehlgeschlagen. Weitere Details siehe setup.log")
-    log("npm install fehlgeschlagen")
+    print("npm ci fehlgeschlagen. Weitere Details siehe setup.log")
+    log("npm ci fehlgeschlagen")
     log(str(sys.exc_info()[1]))
     sys.exit(1)
 

@@ -92,15 +92,15 @@ IF ERRORLEVEL 1 (
 )
 
 REM ----------------------- Haupt-Abhaengigkeiten installieren -----------------
-call :log "npm install (root) starten"
+call :log "npm ci (root) starten"
 echo Abhaengigkeiten im Hauptverzeichnis werden installiert...
-npm install
+npm ci
 IF ERRORLEVEL 1 (
-    call :log "npm install (root) fehlgeschlagen"
+    call :log "npm ci (root) fehlgeschlagen"
     pause
     exit /b 1
 ) ELSE (
-    call :log "npm install (root) erfolgreich"
+    call :log "npm ci (root) erfolgreich"
 )
 
 REM Sicherstellen, dass der Electron-Ordner existiert
@@ -118,16 +118,16 @@ IF NOT EXIST "electron" (
 
 REM ======================= Electron-Setup ================================
 cd electron
-call :log "npm install starten"
+call :log "npm ci starten"
 
 echo Abhaengigkeiten werden installiert...
-npm install
+npm ci
 IF ERRORLEVEL 1 (
-    call :log "npm install fehlgeschlagen"
+    call :log "npm ci fehlgeschlagen"
     pause
     exit /b 1
 ) ELSE (
-    call :log "npm install erfolgreich"
+    call :log "npm ci erfolgreich"
 )
 
 echo Anwendung wird gestartet...

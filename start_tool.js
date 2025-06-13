@@ -115,14 +115,14 @@ try {
 }
 
 // ----------------------- Haupt-Abhängigkeiten installieren --------------------
-log('npm install (root) starten');
+log('npm ci (root) starten');
 console.log('Abhaengigkeiten im Hauptverzeichnis werden installiert...');
 try {
-    run('npm install');
-    log('npm install (root) erfolgreich');
+    run('npm ci');
+    log('npm ci (root) erfolgreich');
 } catch (err) {
-    console.error('npm install im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log');
-    log('npm install (root) fehlgeschlagen');
+    console.error('npm ci im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log');
+    log('npm ci (root) fehlgeschlagen');
     log(err.toString());
     process.exit(1);
 }
@@ -144,14 +144,14 @@ if (!fs.existsSync('electron')) {
 
 // ----------------------- Electron-Setup --------------------
 process.chdir('electron');
-log('npm install starten');
+log('npm ci starten');
 console.log('Abhaengigkeiten werden installiert...');
 try {
-    run('npm install');
-    log('npm install erfolgreich');
+    run('npm ci');
+    log('npm ci erfolgreich');
 } catch (err) {
-    console.error('npm install fehlgeschlagen. Weitere Details siehe setup.log');
-    log('npm install fehlgeschlagen');
+    console.error('npm ci fehlgeschlagen. Weitere Details siehe setup.log');
+    log('npm ci fehlgeschlagen');
     log(err.toString());
     process.exit(1);
 }

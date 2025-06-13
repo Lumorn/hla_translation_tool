@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.5-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.37.6-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -92,8 +92,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
 
 ### Desktop-Version (Electron)
-1. Im Hauptverzeichnis `npm install` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
-2. In das Verzeichnis `electron/` wechseln und `npm install` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
+1. Im Hauptverzeichnis `npm ci` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
+2. In das Verzeichnis `electron/` wechseln und `npm ci` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
 4. Alternativ kann `start_tool.bat` (Windows), `start_tool.js` (plattformunabhängig) oder `start_tool.py` (Python-Version) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
 5. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen
@@ -212,7 +212,7 @@ Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` a
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
-2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.5`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
+2. Danach `npm run update-version` ausführen. Das Skript ersetzt alle `1.37.6`-Platzhalter in `README.md`, `web/src/main.js` und `web/hla_translation_tool.html` durch die aktuelle Nummer.
 
 ---
 
@@ -471,7 +471,7 @@ Alle Pfade nutzen nun `path.resolve`. Bei fehlenden Dubbings erscheint die Meldu
 **Version 1.34.2 - Chokidar-Fix**
 Behebt ein fehlendes `chokidar`-Modul in der Desktop-Version.
 **Version 1.34.3 - Auto-Install**
-Start-Skripte führen nun `npm install` im Hauptordner aus.
+Start-Skripte führen nun `npm ci` im Hauptordner aus.
 **Version 1.34.4 - Backup-Fallback**
 Der Backup-Button öffnet nun auch im Browser den `backups`-Ordner.
 **Version 1.34.5 - Backup-Kompatibilität**
@@ -515,8 +515,10 @@ Das Debug-Fenster liefert nun zusätzliche Informationen wie Fenstergröße, Bil
 `package.json` erwartet jetzt Node 18–21.
 **Version 1.37.4 - Node 22-Unterstützung**
 `start_tool.py` und `start_tool.js` akzeptieren nun Node 22.
+**Version 1.37.6 - Verbesserte Installation**
+Start-Skripte nutzen nun `npm ci` statt `npm install`.
 **Version 1.37.5 - Electron-Fallback**
-Fehlt nach `npm install` das Electron-Modul, wird es automatisch nachinstalliert.
+Fehlt nach `npm ci` das Electron-Modul, wird es automatisch nachinstalliert.
 **Version 1.36.11 - Bessere Fehleranzeige**
 Beim Starten der Anwendung erscheint nun eine verständliche Meldung, falls `npm start` fehlschlägt. Der Fehler wird zusätzlich in `setup.log` protokolliert.
 
