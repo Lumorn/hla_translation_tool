@@ -2,11 +2,14 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
-## 🛠️ Patch in 1.36.2
-* Start-Skripte bewahren nun auch `web/backups/` bei `git reset`
+## 🛠️ Patch in 1.36.4
+* Start-Skripte löschen automatisch Dateien, die nicht mehr im Repository vorhanden sind. `web/sounds` und `web/backups` bleiben erhalten.
 
 ## 🛠️ Patch in 1.36.3
 * Desktop-Version erkennt nun `web/Sounds` und `web/Backups`
+
+## 🛠️ Patch in 1.36.2
+* Start-Skripte bewahren nun auch `web/backups/` bei `git reset`
 
 ## 🛠️ Patch in 1.36.1
 * `.gitignore` ignoriert nun `web/sounds/`, `web/backups/` und `web/Download/`
