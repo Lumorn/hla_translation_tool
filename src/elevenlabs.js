@@ -44,8 +44,8 @@ export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 18
     const start = Date.now();
     let info = null;
     while (Date.now() - start < timeout * 1000) {
-        logger(`GET ${API}/dubbing/${id}`);
-        const res = await fetch(`${API}/dubbing/${id}`, {
+        logger(`GET ${API}/dubbing/resource/${id}`);
+        const res = await fetch(`${API}/dubbing/resource/${id}`, {
             headers: { 'xi-api-key': apiKey }
         });
         const text = await res.text();
@@ -53,11 +53,15 @@ export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 18
         if (!res.ok) throw new Error(text);
         info = JSON.parse(text);
         onProgress(info.status);
-        const finished = info.progress?.langs?.[targetLang]?.state === 'finished';
-        if (finished) return;
+        const state = info.renders?.[targetLang]?.status;
+        if (state === 'complete') return;
+        if (state === 'failed') {
+            const reason = info.renders?.[targetLang]?.error || 'Server meldet failed';
+            throw new Error(reason);
+        }
         await new Promise(r => setTimeout(r, WAIT_INTERVAL_MS));
     }
-    if (!info?.progress?.langs || !info.progress.langs[targetLang]) {
+    if (!info?.renders || !info.renders[targetLang]) {
         console.error('target_lang nicht gesetzt?');
     }
     throw new Error('Dubbing nicht fertig');
@@ -76,8 +80,8 @@ export async function downloadDubbingAudio(apiKey, id, targetLang = 'de', logger
 
 // Rendert eine bestimmte Sprache neu
 export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
-    logger(`POST ${API}/dubbing/${dubbingId}/render/${targetLang} (${renderType})`);
-    const res = await fetch(`${API}/dubbing/${dubbingId}/render/${targetLang}`, {
+    logger(`POST ${API}/dubbing/resource/${dubbingId}/render/${targetLang} (${renderType})`);
+    const res = await fetch(`${API}/dubbing/resource/${dubbingId}/render/${targetLang}`, {
         method: 'POST',
         headers: {
             'xi-api-key': apiKey,
