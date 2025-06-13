@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.20.2';
+const APP_VERSION = '1.20.3';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6369,7 +6369,6 @@ function validateCsv(csvText) {
 // festgelegt werden. Ohne Erfolg wird ein Fehler geworfen.
 async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
     let status = '';
-    let langDone = false;
     const maxLoops = Math.ceil(timeout / 3);
     for (let i = 0; i < maxLoops; i++) {
         await new Promise(r => setTimeout(r, 3000));
@@ -6380,12 +6379,8 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
             if (st.ok) {
                 const js = await st.json();
                 status = js.status;
-                const langInfo = js.progress && js.progress.langs && js.progress.langs[lang];
-                if (langInfo) {
-                    langDone = langInfo.state === 'finished' || langInfo.progress === 100;
-                }
                 if (typeof addDubbingLog === 'function') addDubbingLog('Polling: ' + status);
-                if (status === 'dubbed' && langDone) return;
+                if (status === 'dubbed') return;
                 if (status === 'failed') {
                     const reason = js.detail?.message || js.error || 'Server meldet failed';
                     throw new Error(reason);

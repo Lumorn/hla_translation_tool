@@ -71,13 +71,11 @@ async function waitForDubbing(apiKey, dubbingId, lang = 'de', timeout = 180) {
     while (Date.now() - start < timeout * 1000) {
         const info = await getDubbingStatus(apiKey, dubbingId);
         const status = info.status;
-        const langInfo = info.progress && info.progress.langs && info.progress.langs[lang];
-        const finished = langInfo && (langInfo.state === 'finished' || langInfo.progress === 100);
         if (status === 'failed') {
             const reason = info.detail?.message || info.error || 'Server meldet failed';
             throw new Error('Dubbing fehlgeschlagen: ' + reason);
         }
-        if (status === 'dubbed' && finished) return;
+        if (status === 'dubbed') return;
         await new Promise(r => setTimeout(r, 3000));
     }
     throw new Error('Dubbing nicht fertig');
