@@ -1,11 +1,12 @@
 {
   "name": "hla_translation_tool",
-  "version": "1.37.6",
+  "version": "1.38.0",
   "devDependencies": {
     "jest": "^29.6.1",
     "jest-environment-jsdom": "^30.0.0",
     "jsdom": "^26.1.0",
-    "nock": "^14.0.5"
+    "nock": "^14.0.5",
+    "ws": "^8.17.0"
   },
   "engines": {
     "node": ">=18 <23"

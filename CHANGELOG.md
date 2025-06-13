@@ -1,4 +1,6 @@
 # Changelog
+## ✨ Neue Features in 1.38.0
+* Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
