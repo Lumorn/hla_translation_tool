@@ -17,10 +17,12 @@ function log(msg) {
 
 // Kommando ausführen und Ausgabe an das Terminal weiterreichen
 function run(cmd) {
+    log(`Fuehre aus: ${cmd}`);
     execSync(cmd, { stdio: 'inherit' });
 }
 
 log('Setup gestartet');
+log(`Node-Version: ${process.version} auf ${process.platform}`);
 console.log('=== Starte HLA Translation Tool Setup ===');
 
 // ----------------------- Git prüfen -----------------------
@@ -146,10 +148,18 @@ try {
 
 console.log('Anwendung wird gestartet...');
 log('Starte Anwendung');
-// Wenn das Skript als root ausgeführt wird, muss Electron ohne Sandbox starten
-if (process.getuid && process.getuid() === 0) {
+// UID ermitteln und Start-Parameter entsprechend setzen
+const uid = process.getuid ? process.getuid() : null;
+if (uid !== null) {
+    log(`Aktuelle UID: ${uid}`);
+} else {
+    log('Keine UID verfügbar (Windows?)');
+}
+if (uid === 0) {
+    log('Starte Electron ohne Sandbox');
     run('npm start -- --no-sandbox');
 } else {
+    log('Starte Electron mit Sandbox');
     run('npm start');
 }
 log('Anwendung beendet');

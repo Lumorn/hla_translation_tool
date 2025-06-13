@@ -27,10 +27,12 @@ def log(message: str) -> None:
 
 def run(cmd: str) -> None:
     """Kommando ausfuehren und Ausgabe direkt weitergeben."""
+    log(f"Fuehre aus: {cmd}")
     subprocess.check_call(cmd, shell=True)
 
 
 log("Setup gestartet")
+log(f"Python-Version: {sys.version.split()[0]} auf {sys.platform}")
 print("=== Starte HLA Translation Tool Setup ===")
 
 # ----------------------- Git pruefen -----------------------
@@ -155,15 +157,23 @@ except subprocess.CalledProcessError:
 print("Anwendung wird gestartet...")
 log("Starte Anwendung")
 
-# Unter Windows existiert os.geteuid nicht. Darum pruefen wir zuerst,
-# ob die Funktion vorhanden ist. Wenn sie vorhanden ist und einen
-# Root-User meldet, muss Electron ohne Sandbox gestartet werden.
+# Betriebssystem und Benutzer-ID protokollieren
+uid = None
 geteuid = getattr(os, "geteuid", None)
+if geteuid is not None:
+    uid = geteuid()
+    log(f"Aktuelle UID: {uid}")
+else:
+    log("Keine UID verfuegbar (Windows?)")
 
+# Unter Windows existiert os.geteuid nicht. Darum pruefen wir zuerst,
+# ob die Funktion vorhanden ist. Wenn root erkannt wird, startet Electron ohne Sandbox.
 try:
-    if geteuid is not None and geteuid() == 0:
+    if uid == 0:
+        log("Starte Electron ohne Sandbox")
         run("npm start -- --no-sandbox")
     else:
+        log("Starte Electron mit Sandbox")
         run("npm start")
 except subprocess.CalledProcessError as e:
     print("[Fehler] Anwendung konnte nicht gestartet werden. Weitere Details siehe setup.log")
