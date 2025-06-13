@@ -2,6 +2,9 @@
 
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
+## 🛠️ Patch in 1.36.12
+* Start-Skripte protokollieren UID und melden den Sandbox-Modus von Electron.
+
 ## 🛠️ Patch in 1.36.11
 * Fehlermeldungen beim Starten der Anwendung werden verständlich angezeigt und im Log festgehalten.
 
