@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.36.5';
+const APP_VERSION = '1.36.6';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6077,7 +6077,8 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             if (window.electronAPI && window.electronAPI.getDebugInfo) {
                 info = await window.electronAPI.getDebugInfo();
             } else {
-                info = { Fehler: 'Electron-API nicht verfügbar' };
+                // Hinweis anzeigen, wenn die App im Browser läuft und keine Electron-API hat
+                info = { Fehler: 'Electron-API nicht verfügbar. Wahrscheinlich läuft die Browser-Version.' };
             }
             let html = '<h3>Debug-Informationen</h3><ul>';
             for (const [key, value] of Object.entries(info)) {
