@@ -4,6 +4,8 @@
 
 ## 🛠️ Patch in 1.40.1
 * Abhängigkeit `glob` auf Version `^9.0.0` aktualisiert.
+## 🛠️ Patch in 1.40.2
+* `updateVersion.js` aktualisiert jetzt zusätzlich `electron/package.json`.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
