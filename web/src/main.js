@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.36.6';
+const APP_VERSION = '1.36.7';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6073,19 +6073,43 @@ function executeCleanup(cleanupPlan, totalToDelete) {
 
         // Öffnet ein Fenster mit detaillierten Debug-Informationen
         async function openDebugInfo() {
+            // Zu sammelnde Informationen
             let info = {};
             if (window.electronAPI && window.electronAPI.getDebugInfo) {
+                // Desktop-Version liefert Pfad‑Informationen über die Electron-API
                 info = await window.electronAPI.getDebugInfo();
             } else {
-                // Hinweis anzeigen, wenn die App im Browser läuft und keine Electron-API hat
-                info = { Fehler: 'Electron-API nicht verfügbar. Wahrscheinlich läuft die Browser-Version.' };
+                // Fallback für die Browser-Version ohne Electron
+                info = {
+                    Hinweis: 'Browser-Version ohne Electron-API',
+                    'App-Version': APP_VERSION,
+                    Browser: navigator.userAgent,
+                    URL: location.href
+                };
             }
-            let html = '<h3>Debug-Informationen</h3><ul>';
+
+            // HTML für die Anzeige aufbauen
+            let html = '<h3>Debug-Informationen</h3><ul id="debugInfoList">';
             for (const [key, value] of Object.entries(info)) {
                 html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(String(value))}</code></li>`;
             }
             html += '</ul>';
+            html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
             ui.showModal(html);
+
+            // Kopier-Knopf mit Funktion belegen
+            const copyBtn = document.getElementById('copyDebugInfoBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const text = Object.entries(info)
+                        .map(([k, v]) => `${k}: ${v}`)
+                        .join('\n');
+                    navigator.clipboard.writeText(text)
+                        .then(() => ui.notify('Debug-Daten kopiert'))
+                        .catch(err => ui.notify('Kopieren fehlgeschlagen: ' + err, 'error'));
+                });
+            }
         }
 
         // Zeigt oder versteckt das Einstellungen-Menü
