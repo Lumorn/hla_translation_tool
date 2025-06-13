@@ -69,6 +69,29 @@ function fetchJson(url) {
   try {
     log('Installiere Abhängigkeiten im electron-Ordner');
     run('npm ci', { cwd: path.join(__dirname, 'electron') });
+    // Nach der Installation prüfen, ob das Electron-Modul vorhanden ist
+    const electronPath = path.join(__dirname, 'electron', 'node_modules', 'electron');
+    if (!fs.existsSync(electronPath)) {
+      console.log('Electron-Modul fehlt, wird nachinstalliert...');
+      log('Electron-Modul fehlt - versuche "npm install electron"');
+      let installError = false;
+      try {
+        run('npm install electron', { cwd: path.join(__dirname, 'electron') });
+        log('npm install electron erfolgreich');
+      } catch (err) {
+        installError = true;
+        log('npm install electron fehlgeschlagen');
+        log(err.toString());
+      }
+      // Nach der Installation erneut prüfen
+      if (!fs.existsSync(electronPath)) {
+        console.error('[Fehler] Electron-Modul fehlt weiterhin.');
+        log('Electron-Modul weiterhin nicht vorhanden');
+        process.exit(1);
+      } else if (installError) {
+        console.log('Electron wurde installiert, trotz Fehlermeldung.');
+      }
+    }
   } catch (err) {
     log('npm ci im electron-Ordner fehlgeschlagen');
     log(err.toString());
