@@ -64,17 +64,18 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.26.0';
+const APP_VERSION = '1.27.0';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
-let createDubbing;
+let createDubbing, downloadDubbingAudio;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ createDubbing } = require('../elevenlabs'));
+    ({ createDubbing, downloadDubbingAudio } = require('../elevenlabs'));
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
+        downloadDubbingAudio = mod.downloadDubbingAudio;
     });
 }
 
@@ -1766,6 +1767,7 @@ return `
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
+        <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
@@ -1783,7 +1785,8 @@ return `
     addDragAndDropHandlers();
     addPathCellContextMenus();
     updateCounts();
-    
+    updateDubButtons();
+
     // Auto-resize all text inputs after rendering
     setTimeout(() => {
         autoResizeAllInputs();
@@ -2710,6 +2713,28 @@ function addPathCellContextMenus() {
             document.querySelectorAll('.path-cell.show-path').forEach(c => c.classList.remove('show-path'));
         }
     });
+}
+
+// Prüft bei allen Download-Buttons den Status und aktiviert sie ggf.
+async function updateDubButtons() {
+    const header = document.getElementById('dubDownloadHeader');
+    const buttons = document.querySelectorAll('.download-de-btn');
+    if (buttons.length === 0) {
+        if (header) header.style.display = 'none';
+        return;
+    }
+    if (header) header.style.display = 'table-cell';
+    for (const btn of buttons) {
+        const id = parseInt(btn.dataset.fileId, 10);
+        const file = files.find(f => f.id === id);
+        if (!file) continue;
+        try {
+            const ready = await isDubReady(file.dubbingId);
+            if (ready) btn.disabled = false;
+        } catch (err) {
+            console.error('isDubReady fehlgeschlagen', err);
+        }
+    }
 }
 
         // Text editing
@@ -6598,6 +6623,33 @@ async function redownloadDubbing(fileId) {
     addDubbingLog('Fertig.');
     renderFileTable();
 }
+// =========================== DOWNLOADDE START ===============================
+// Lädt die fertige DE-Audiodatei ohne Protokoll herunter
+async function downloadDe(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.dubbingId) return;
+    if (!elevenLabsApiKey) {
+        updateStatus('API-Key fehlt');
+        return;
+    }
+    if (!(await isDubReady(file.dubbingId))) {
+        alert('Deutsch noch nicht fertig – erst im Studio generieren!');
+        return;
+    }
+    const blob = await downloadDubbingAudio(elevenLabsApiKey, file.dubbingId, 'de');
+    const relPath = getFullPath(file);
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        const buffer = await blob.arrayBuffer();
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(relPath);
+    } else {
+        await speichereUebersetzungsDatei(blob, relPath);
+    }
+    updateStatus('Deutsche Audiodatei gespeichert.');
+    renderFileTable();
+}
+// =========================== DOWNLOADDE END =================================
 // =========================== REDOWNLOADDUBBING END ==========================
 
 // =========================== LOADAUDIOBUFFER START ===========================
@@ -8671,6 +8723,7 @@ if (typeof module !== "undefined" && module.exports) {
         isDubReady,
         startDubbing,
         redownloadDubbing,
-        initiateDubbing
+        initiateDubbing,
+        downloadDe
     };
 }
