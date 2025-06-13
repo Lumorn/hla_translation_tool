@@ -64,7 +64,7 @@ let undoStack          = [];
 let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
-const APP_VERSION = '1.35.2';
+const APP_VERSION = '1.35.3';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -255,37 +255,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     cleanupOrphanCustomizations();
 
     if (!window.electronAPI) {
-        // 👉 Browser-Version
-        if (!window.showDirectoryPicker) {
-            // Fallback ohne File-System-API: Standardordner 'sounds' verwenden
-            projektOrdnerHandle = { name: 'sounds' };
-            updateProjectFolderPathDisplay();
-        }
-        // Zuletzt verwendeten Projektordner laden (wenn File-System-API verfuegbar)
-        const savedHandle = await loadProjectFolderHandle();
-        if (savedHandle) {
-            let perm = await savedHandle.queryPermission({ mode: 'read' });
-            if (perm !== 'granted') {
-                perm = await savedHandle.requestPermission({ mode: 'read' });
-            }
-
-            if (perm === 'granted') {
-                // Projekt-Handles immer initialisieren
-                projektOrdnerHandle = savedHandle;
-                deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
-                enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
-
-                const rescan = confirm('Letzten Projektordner erneut scannen?');
-                if (rescan) {
-                    await scanEnOrdner();
-                    updateStatus('Projektordner eingelesen und gescannt');
-                }
-            }
-        } else {
-            const choose = confirm('Kein Projektordner gefunden. Jetzt auswählen?');
-            if (choose) waehleProjektOrdner();
-        }
-
+        // 👉 Browser-Version: Ordner ist fest "sounds"
+        projektOrdnerHandle = { name: 'sounds' };
         updateProjectFolderPathDisplay();
     } else {
         // 👉 Desktop-Version: Ordnerpfad ist fest definiert

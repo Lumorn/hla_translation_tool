@@ -14,6 +14,10 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Dev-Button öffnet nun zusätzlich die Debug-Konsole
 
+## 🛠️ Bugfix in 1.35.3
+
+* Browser-Version erkennt den Ordner `sounds` jetzt automatisch
+
 
 ## ✨ Neue Features in 1.34.0
 
