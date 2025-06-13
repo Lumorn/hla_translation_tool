@@ -6,6 +6,11 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 * Backup-Dateien lassen sich im Browser hochladen und sofort wiederherstellen
 
+## 🛠️ Bugfix in 1.35.1
+
+* DevTools-Button wird wieder dauerhaft angezeigt
+
+
 ## ✨ Neue Features in 1.34.0
 
 * Neue Spalte "Dub-Status" mit farbigen Punkten
