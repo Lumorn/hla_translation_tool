@@ -14,6 +14,9 @@
 ## 🛠️ Patch in 1.38.6
 * Debug-Fenster zeigt nun ausfuehrliche System- und Pfadinformationen sowie die letzten Zeilen aus `setup.log`.
 
+## 🛠️ Patch in 1.38.7
+* Debug-Fenster meldet jetzt, ob das Programm mit Administratorrechten gestartet wurde.
+
 Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht an erster Stelle.
 
 ## 🛠️ Patch in 1.37.6

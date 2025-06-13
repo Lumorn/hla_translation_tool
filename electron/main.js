@@ -185,6 +185,19 @@ app.whenReady().then(() => {
     const soundsPath = path.resolve(projectRoot, soundsDirName);
     const backupsPath = path.resolve(projectRoot, backupsDirName);
 
+    // Helper zum Pruefen, ob das Programm mit Adminrechten laeuft
+    function isElevated() {
+      if (process.platform === 'win32') {
+        try {
+          execSync('net session', { stdio: 'ignore' });
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      return process.getuid && process.getuid() === 0;
+    }
+
     // Pfade zu wichtigen Dateien
     const pkgPath = path.join(projectRoot, 'package.json');
     const nodeModulesPath = path.join(projectRoot, 'node_modules');
@@ -248,6 +261,7 @@ app.whenReady().then(() => {
       gitCommit,
       startArgs: process.argv.join(' '),
       setupLog,
+      admin: isElevated(),
     };
   });
   // =========================== DEBUG-INFO END ===============================
