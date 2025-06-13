@@ -3596,69 +3596,41 @@ function calculateFolderCompletionStats() {
 
 
         // Auto-scan system for missing permissions
+        // Versucht fehlende Dateiberechtigungen ohne Rueckfragen automatisch zu beheben
         function checkAndAutoScan(requiredFiles = [], functionName = 'Funktion') {
-            // Desktop-Version nutzt feste Ordnerpfade - kein automatischer Scan nötig
+            // Desktop-Version nutzt feste Ordnerpfade - kein automatischer Scan noetig
             if (window.electronAPI) {
                 return null;
             }
+
             let missingFiles = [];
-            
-            // Check if specific files are accessible
+
+            // Pruefen, welche Dateien nicht im Cache liegen
             if (requiredFiles.length > 0) {
                 missingFiles = requiredFiles.filter(file => !audioFileCache[file.fullPath]);
             } else {
-                // General check - if we have files but no audio cache
                 missingFiles = files.filter(f => f.selected && !audioFileCache[f.fullPath]);
             }
-            
+
             if (missingFiles.length > 0) {
-                console.log(`Auto-Scan ausgelöst von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
+                console.log(`Auto-Scan ausgeloest von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
 
                 if (!projektOrdnerHandle) {
-                    const chooseProject = confirm(
-                        `🔒 Dateiberechtigungen erforderlich\n\n` +
-                        `${functionName} benötigt Zugriff auf Audio-Dateien.\n` +
-                        `Es wurde noch kein Projektordner gewählt.\n\n` +
-                        `✅ JA - Projektordner wählen\n` +
-                        `❌ NEIN - Abbrechen\n\n` +
-                        `Projektordner wählen?`
-                    );
-
-                    if (chooseProject) {
-                        updateStatus('Projektordner wird geöffnet...');
-                        waehleProjektOrdner();
-                        return true; // Scan started via project folder
-                    } else {
-                        updateStatus(`${functionName}: Abgebrochen - Kein Projektordner`);
-                        return false; // User cancelled
-                    }
-                }
-
-                // Show user-friendly message
-                const shouldScan = confirm(
-                    `🔒 Dateiberechtigungen erforderlich\n\n` +
-                    `${functionName} benötigt Zugriff auf Audio-Dateien.\n` +
-                    `${missingFiles.length} von ${requiredFiles.length > 0 ? requiredFiles.length : files.length} Dateien sind nicht verfügbar.\n\n` +
-                    `Grund: Browser-Berechtigungen sind abgelaufen oder Dateien wurden nicht gescannt.\n\n` +
-                    `✅ JA - Ordner jetzt scannen (automatisch)\n` +
-                    `❌ NEIN - Abbrechen\n\n` +
-                    `Ordner-Scan starten?`
-                );
-
-                if (shouldScan) {
-                    updateStatus(`${functionName}: Starte automatischen Ordner-Scan...`);
-                    setTimeout(() => {
-                        // EN-Ordner erneut scannen
-                        scanEnOrdner();
-                    }, 500);
+                    // Kein Ordner gewaehlt → automatisch Auswahl öffnen
+                    updateStatus('Projektordner wird geoeffnet...');
+                    waehleProjektOrdner();
                     return true; // Scan gestartet
-                } else {
-                    updateStatus(`${functionName}: Abgebrochen - Keine Berechtigungen`);
-                    return false; // User cancelled
                 }
+
+                // Ordner wurde bereits gewaehlt → automatisch scannen
+                updateStatus(`${functionName}: Starte automatischen Ordner-Scan...`);
+                setTimeout(() => {
+                    scanEnOrdner(); // EN-Ordner erneut scannen
+                }, 500);
+                return true;
             }
-            
-            return null; // No scan needed
+
+            return null; // Kein Scan notwendig
         }
 
         // Enhanced file access check with auto-scan
