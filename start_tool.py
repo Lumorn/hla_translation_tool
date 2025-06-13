@@ -69,19 +69,32 @@ except subprocess.CalledProcessError as e:
     sys.exit(1)
 
 log("Repository-Pruefung")
-# Standardpfad ist der Ordner dieses Skripts
-repo_path = BASE_DIR
-# Liegt hier kein Git-Repo, wird in den Unterordner gewechselt bzw. geklont
-if not os.path.exists(os.path.join(repo_path, ".git")):
+# Arbeitsverzeichnis, in dem das Skript gestartet wurde
+cwd = os.getcwd()
+# Spaeter genutzter Pfad zum Repository
+repo_path = None
+
+# 1) Liegt im aktuellen Arbeitsverzeichnis bereits ein Git-Repository?
+if os.path.exists(os.path.join(cwd, ".git")):
+    repo_path = cwd
+# 2) Liegt im Arbeitsverzeichnis ein Unterordner mit dem Repository?
+elif os.path.exists(os.path.join(cwd, "hla_translation_tool", ".git")):
+    repo_path = os.path.join(cwd, "hla_translation_tool")
+# 3) Befindet sich das Repository im Ordner dieses Skripts?
+elif os.path.exists(os.path.join(BASE_DIR, ".git")):
+    repo_path = BASE_DIR
+# 4) Liegt es als Unterordner neben diesem Skript?
+elif os.path.exists(os.path.join(BASE_DIR, "hla_translation_tool", ".git")):
     repo_path = os.path.join(BASE_DIR, "hla_translation_tool")
-    if not os.path.exists(os.path.join(repo_path, ".git")):
-        if not os.path.exists(repo_path):
-            print("Repository wird geklont...")
-            log("Repository wird geklont")
-            run(f"git clone https://github.com/Lumorn/hla_translation_tool \"{repo_path}\"")
-    os.chdir(repo_path)
 else:
-    os.chdir(repo_path)
+    # Kein Repository vorhanden -> Klonen in den Skriptordner
+    repo_path = os.path.join(BASE_DIR, "hla_translation_tool")
+    if not os.path.exists(repo_path):
+        print("Repository wird geklont...")
+        log("Repository wird geklont")
+        run(f"git clone https://github.com/Lumorn/hla_translation_tool \"{repo_path}\"")
+
+os.chdir(repo_path)
 
 # ----------------------- Lokale Änderungen verwerfen --------------------
 log("Verwerfe lokale Änderungen")
