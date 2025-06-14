@@ -229,6 +229,17 @@ function stopCurrentPlayback() {
         btn.style.background = '#444';
     });
 
+    document.querySelectorAll('.project-play-btn').forEach(btn => {
+        btn.textContent = '▶';
+    });
+
+    projectPlayback = { projectId: null, index: 0, order: [], paused: false };
+
+    if (selectedRow) {
+        selectedRow.classList.remove('selected-row');
+        selectedRow = null;
+    }
+
     currentlyPlaying = null;
 }
 // =========================== DEBUG LOG END ===========================
@@ -847,6 +858,8 @@ function renderProjects() {
                     </div>
                 </div>
                 <div class="project-buttons" style="display:flex;gap:5px;">
+                    <button class="project-play-btn" onclick="toggleProjectPlayback(${p.id})">▶</button>
+                    <button class="project-stop-btn" onclick="stopProjectPlayback()">■</button>
                     <button class="project-customize-btn" onclick="showProjectCustomization(${p.id}, event)">⚙️</button>
                     <button class="delete-btn" onclick="deleteProject(${p.id}, event)">×</button>
                 </div>
@@ -3400,7 +3413,12 @@ function deleteFile(fileId) {
 
 // =========================== PLAYAUDIO START ===========================
 // Audio playback with dynamic path resolution from database
-function playAudio(fileId) {
+// Audio-Wiedergabe; optionaler Callback nach Ende
+function playAudio(fileId, onEnded) {
+    // Beende ggf. laufende Projekt-Wiedergabe
+    if (projectPlayback.projectId !== null) {
+        stopProjectPlayback();
+    }
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -3464,6 +3482,7 @@ function playAudio(fileId) {
                 playBtn.textContent = '▶';
             }
             currentlyPlaying = null;
+            if (typeof onEnded === 'function') onEnded();
         };
     }).catch(err => {
         console.error('[PLAYAUDIO] Playback failed:', err);
@@ -3476,7 +3495,11 @@ function playAudio(fileId) {
 
 // =========================== PLAYDEAUDIO START ======================
 // Spiele die vorhandene DE-Datei ab
-async function playDeAudio(fileId) {
+// Wiedergibt die vorhandene DE-Datei; optional Callback nach Ende
+async function playDeAudio(fileId, onEnded) {
+    if (projectPlayback.projectId !== null) {
+        stopProjectPlayback();
+    }
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -3543,6 +3566,7 @@ async function playDeAudio(fileId) {
             if (url) URL.revokeObjectURL(url);
             if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
             currentlyPlaying = null;
+            if (typeof onEnded === 'function') onEnded();
         };
     }).catch(err => {
         console.error('DE-Playback fehlgeschlagen', err);
@@ -3551,6 +3575,74 @@ async function playDeAudio(fileId) {
     });
 }
 // =========================== PLAYDEAUDIO END ========================
+
+// =========================== PROJECT PLAYBACK START ===========================
+// Verwaltet die sequentielle Wiedergabe aller Dateien eines Projekts
+let projectPlayback = { projectId: null, index: 0, order: [], paused: false };
+
+// Beendet die Projekt-Wiedergabe komplett
+function stopProjectPlayback() {
+    stopCurrentPlayback();
+    if (projectPlayback.projectId !== null) {
+        const btn = document.querySelector(`.project-item[data-project-id="${projectPlayback.projectId}"] .project-play-btn`);
+        if (btn) btn.textContent = '▶';
+    }
+    if (selectedRow) {
+        selectedRow.classList.remove('selected-row');
+        selectedRow = null;
+    }
+    projectPlayback = { projectId: null, index: 0, order: [], paused: false };
+}
+
+// Spielt die aktuelle Datei des Projekts ab
+function playCurrentProjectFile() {
+    if (projectPlayback.index >= projectPlayback.order.length) {
+        stopProjectPlayback();
+        return;
+    }
+    const file = projectPlayback.order[projectPlayback.index];
+    const row  = document.querySelector(`tr[data-id="${file.id}"]`);
+    if (row) selectRow(row);
+    playAudio(file.id, () => {
+        if (!projectPlayback.paused) {
+            projectPlayback.index++;
+            playCurrentProjectFile();
+        }
+    });
+}
+
+// Startet oder pausiert die Projekt-Wiedergabe
+function toggleProjectPlayback(projectId) {
+    const audio = document.getElementById('audioPlayer');
+    // Gleiches Projekt: Pause/Resume
+    if (projectPlayback.projectId === projectId) {
+        const btn = document.querySelector(`.project-item[data-project-id="${projectId}"] .project-play-btn`);
+        if (projectPlayback.paused) {
+            audio.play();
+            projectPlayback.paused = false;
+            if (btn) btn.textContent = '⏸';
+        } else {
+            audio.pause();
+            projectPlayback.paused = true;
+            if (btn) btn.textContent = '▶';
+        }
+        return;
+    }
+
+    // Neues Projekt starten
+    stopProjectPlayback();
+    selectProject(projectId);
+    const btn = document.querySelector(`.project-item[data-project-id="${projectId}"] .project-play-btn`);
+    if (btn) btn.textContent = '⏸';
+    projectPlayback.projectId = projectId;
+    projectPlayback.order = files.slice();
+    projectPlayback.index = 0;
+    projectPlayback.paused = false;
+    if (projectPlayback.order.length > 0) {
+        playCurrentProjectFile();
+    }
+}
+// =========================== PROJECT PLAYBACK END =============================
 
 // Bereinigung: Entferne fullPath aus allen Projekten
 function updateAllFilePaths() {
@@ -4705,6 +4797,9 @@ function deleteFolderFromDatabase(folderName) {
 // =========================== DELETEFOLDERFROMBROWSER END ===========================
 
         function playFolderBrowserAudio(fullPath, button) {
+            if (projectPlayback.projectId !== null) {
+                stopProjectPlayback();
+            }
             // In Electron nutzen wir den Dateipfad direkt zur Wiedergabe
             // Check if file is accessible, auto-scan if needed
             const fakeFile = { fullPath: fullPath, filename: fullPath.split('/').pop() };
