@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { saveVersion, listVersions, restoreVersion, switchVersion } = require('../historyUtils');
+const { saveVersion, listVersions, restoreVersion, switchVersion, saveBufferVersion } = require('../historyUtils');
 
 describe('history utils', () => {
     test('keeps maximal zehn Versionen', () => {
@@ -51,5 +51,16 @@ describe('history utils', () => {
         expect(histFiles.length).toBe(1);
         const histInhalt = fs.readFileSync(path.join(historyRoot, relPath, histFiles[0]), 'utf8');
         expect(histInhalt).toBe('neu');
+    });
+
+    test('saveBufferVersion speichert Daten korrekt', () => {
+        const historyRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'hist-'));
+        const relPath = 'buf/test.wav';
+        const data = Buffer.from('xyz');
+        saveBufferVersion(historyRoot, relPath, data, 10);
+        const list = listVersions(historyRoot, relPath);
+        expect(list.length).toBe(1);
+        const stored = fs.readFileSync(path.join(historyRoot, relPath, list[0]));
+        expect(stored.toString()).toBe('xyz');
     });
 });

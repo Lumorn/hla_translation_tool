@@ -358,6 +358,11 @@ app.whenReady().then(() => {
   ipcMain.handle('restore-de-history', async (event, { relPath, name }) => {
     return historyUtils.switchVersion(deHistoryPath, relPath, name, dePath);
   });
+
+  // Speichert einen übergebenen Buffer als neue History-Version
+  ipcMain.handle('save-de-history-buffer', async (event, { relPath, data }) => {
+    return historyUtils.saveBufferVersion(deHistoryPath, relPath, Buffer.from(data));
+  });
   // =========================== SAVE-DE-FILE END =============================
 
   // DevTools per IPC ein-/ausblenden

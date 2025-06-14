@@ -7569,11 +7569,19 @@ window.onmouseup = () => { editDragging = null; };
 
 // =========================== APPLYVOLUMEMATCH START =======================
 // Führt den Lautstärkeabgleich einmalig aus
-function applyVolumeMatch() {
+// Beim ersten Aufruf wird das Original in die Historie geschrieben
+async function applyVolumeMatch() {
     if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
         volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
     }
     if (volumeMatchedBuffer) {
+        if (!isVolumeMatched && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+            const relPath = getFullPath(currentEditFile);
+            const blob = bufferToWav(savedOriginalBuffer);
+            const buf = await blob.arrayBuffer();
+            await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+            await updateHistoryCache(relPath);
+        }
         originalEditBuffer = volumeMatchedBuffer;
         isVolumeMatched = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;

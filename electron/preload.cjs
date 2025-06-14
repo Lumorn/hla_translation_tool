@@ -32,6 +32,7 @@ if (typeof require !== 'function') {
     deleteDeBackupFile: (relPath) => ipcRenderer.invoke('delete-de-backup-file', relPath),
     listDeHistory: (relPath) => ipcRenderer.invoke('list-de-history', relPath),
     restoreDeHistory: (relPath, name) => ipcRenderer.invoke('restore-de-history', { relPath, name }),
+    saveDeHistoryBuffer: (relPath, data) => ipcRenderer.invoke('save-de-history-buffer', { relPath, data }),
     // Backup-Funktionen
     listBackups: () => ipcRenderer.invoke('list-backups'),
     saveBackup: (data) => ipcRenderer.invoke('save-backup', data),
