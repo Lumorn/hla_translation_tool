@@ -43,6 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
 * **Projekt‑übergreifende Fortschrittsanzeige:** Dateien und Dashboard zeigen Status über alle Projekte
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
+* **Grüne Haken** für abgeschlossene Kapitel
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen
 
 ### 📁 Ordner‑Management
