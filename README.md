@@ -594,6 +594,7 @@ Ab Version 1.40.12 lädt `main.js` die HTML-Datei über einen absoluten Pfad, da
 Ab Version 1.40.13 protokolliert das Preload-Skript Fehler und meldet "erfolgreich geladen". Die Renderer-Logik prüft jetzt `window.electronAPI`.
 Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
 Ab Version 1.40.15 öffnet die Desktop-Version die DevTools automatisch und zeigt im Preload `[PRELOAD] start` an.
+Ab Version 1.40.16 prüft der Renderer die Electron-Umgebung nur noch über `window.electronAPI` und speichert das Ergebnis in `isElectron`.
 
 ## ▶️ E2E-Test
 
