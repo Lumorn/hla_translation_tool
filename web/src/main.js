@@ -14,8 +14,8 @@ let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
 // Verfügbarkeit der Electron-API einmalig prüfen
-const hasElectron = !!window.electronAPI;
-if (!hasElectron) {
+const isElectron = !!window.electronAPI;
+if (!isElectron) {
     console.warn('🚫 Electron-API nicht verfügbar – Fallback auf Browser-Modus');
 }
 
@@ -6072,7 +6072,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                     URL: location.href,
                     Plattform: navigator.platform,
                     Sprache: navigator.language,
-                    'Electron-API vorhanden': hasElectron,
+                    'Electron-API vorhanden': isElectron,
                     'Im Browser gestartet': true
                 };
 
@@ -6107,8 +6107,8 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             info['Benutzeragent'] = navigator.userAgent;
             info['Verwendete Sprache'] = navigator.language;
             info.URL = location.href;
-            info['Electron-API vorhanden'] = hasElectron;
-            info['Im Browser gestartet'] = !hasElectron;
+            info['Electron-API vorhanden'] = isElectron;
+            info['Im Browser gestartet'] = !isElectron;
 
             // Debug-Konsole auslesen
             const debugText = document.getElementById('debugConsole')?.textContent || '';
