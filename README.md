@@ -144,7 +144,7 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 
-Ein Watcher überwacht zudem den Ordner `Download`. Taucht dort eine fertig gerenderte Datei auf, wird sie automatisch nach `web/sounds/DE` verschoben und der Status der entsprechenden Zeile springt auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs.
+Ein Watcher überwacht jetzt automatisch den systemweiten **Download**-Ordner. Taucht dort eine fertig gerenderte Datei auf, wird sie in `web/sounds/DE` verschoben und der Status der entsprechenden Zeile springt auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs.
 
 
 Beispiel einer gültigen CSV:

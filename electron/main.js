@@ -191,6 +191,11 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Pfad des systemweiten Download-Ordners liefern
+  ipcMain.handle('get-download-path', () => {
+    return app.getPath('downloads');
+  });
+
   // =========================== DEBUG-INFO START =============================
   // Liefert Pfad-Informationen für das Debug-Fenster
   ipcMain.handle('get-debug-info', () => {
@@ -390,7 +395,8 @@ app.whenReady().then(() => {
       onError: info => {
         if (mainWindow) mainWindow.webContents.send('dub-error', info);
       },
-      log: msg => console.log('[Watcher]', msg)
+      log: msg => console.log('[Watcher]', msg),
+      path: app.getPath('downloads')
     }
   );
 
