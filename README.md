@@ -141,6 +141,7 @@ Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 * **Style** – Überzeichnung des Sprechstils
 * **Speed** – Tempo-Faktor
 * **Speaker-Boost** – zusätzliche Ähnlichkeit
+* Die angezeigten Werte aktualisieren sich sofort beim Verschieben der Regler
 
 Seit dem neuen Layout werden alle Werte über komfortable Slider eingestellt. Ein Info-Icon erklärt jeden Parameter in einfachen Worten. Fortgeschrittene Optionen wie `disable_voice_cloning`, `num_speakers` und `seed` lassen sich über ein ausklappbares Menü anpassen. Eine **Probe abspielen**-Funktion spielt ein kurzes Beispiel mit den gewählten Einstellungen ab.
 Über ein Dropdown stehen zudem Presets wie **Neutral**, **Podcast** oder **Drama** bereit.

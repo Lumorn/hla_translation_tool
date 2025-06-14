@@ -6660,11 +6660,29 @@ async function showDubbingSettings(fileId, mode = currentDubMode) {
     document.body.insertAdjacentHTML('beforeend', html);
     // Dialog sofort anzeigen
     document.getElementById('dubbingSettingsDialog').style.display = 'flex';
+    bindDubSettingListeners();
 }
 
 function closeDubbingSettings() {
     const dlg = document.getElementById('dubbingSettingsDialog');
     if (dlg) dlg.remove();
+}
+
+// Verbindet alle Slider mit der zugehörigen Anzeige
+function bindDubSettingListeners() {
+    const felder = [
+        ['dubSetStability', 'valStability'],
+        ['dubSetSimilarity', 'valSimilarity'],
+        ['dubSetStyle', 'valStyle'],
+        ['dubSetSpeed', 'valSpeed']
+    ];
+    for (const [inputId, valId] of felder) {
+        const eingabe = document.getElementById(inputId);
+        const anzeige = document.getElementById(valId);
+        if (eingabe && anzeige) {
+            eingabe.oninput = () => { anzeige.textContent = eingabe.value; };
+        }
+    }
 }
 
 async function confirmDubbingSettings(fileId) {
