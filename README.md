@@ -142,6 +142,9 @@ Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 * **Speed** – Tempo-Faktor
 * **Speaker-Boost** – zusätzliche Ähnlichkeit
 
+Seit dem neuen Layout werden alle Werte über komfortable Slider eingestellt. Ein Info-Icon erklärt jeden Parameter in einfachen Worten. Fortgeschrittene Optionen wie `disable_voice_cloning`, `num_speakers` und `seed` lassen sich über ein ausklappbares Menü anpassen. Eine **Probe abspielen**-Funktion spielt ein kurzes Beispiel mit den gewählten Einstellungen ab.
+Über ein Dropdown stehen zudem Presets wie **Neutral**, **Podcast** oder **Drama** bereit.
+
 Die Standardwerte werden über `getDefaultVoiceSettings` geladen und nach dem Speichern dauerhaft im Browser hinterlegt.
 
 Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.

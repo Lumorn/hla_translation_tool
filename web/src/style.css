@@ -2074,3 +2074,70 @@ th:nth-child(6) {
 .current-voice-line { margin-bottom: 10px; font-size: 14px; }
 .current-voice { color: #ff6b1a; }
 
+/* Neuer Dialog für Dubbing-Einstellungen */
+.dubbing-dialog {
+    max-width: 600px;
+}
+
+.dub-settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-wrapper input[type=range] {
+    flex: 1;
+}
+
+.slider-value {
+    width: 40px;
+    text-align: right;
+}
+
+.info-icon {
+    margin-left: 5px;
+    cursor: pointer;
+    color: #999;
+}
+
+.info-tooltip {
+    position: fixed;
+    background: #333;
+    color: #f0f0f0;
+    padding: 8px 10px;
+    border-radius: 4px;
+    max-width: 250px;
+    z-index: 4000;
+}
+
+.advanced-block {
+    margin-top: 10px;
+}
+
+.accordion-content {
+    display: none;
+    margin-top: 10px;
+}
+
+.loading-spinner {
+    border: 3px solid #2a2a2a;
+    border-top: 3px solid #ff6b1a;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+

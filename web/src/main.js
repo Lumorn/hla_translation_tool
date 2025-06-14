@@ -6617,30 +6617,43 @@ async function showDubbingSettings(fileId, mode = currentDubMode) {
 
     const html = `
         <div class="dialog-overlay" id="dubbingSettingsDialog">
-            <div class="dialog">
+            <div class="dialog dubbing-dialog">
                 <button class="dialog-close-btn" onclick="closeDubbingSettings()">×</button>
                 <h3>🎤 Dubbing-Einstellungen</h3>
-                <p><strong>${file.filename || ''}</strong></p>
+                <p class="file-name"><strong>${file.filename || ''}</strong></p>
                 <p class="current-voice-line">Aktuelle Stimme: <span class="current-voice">${voiceName || 'Keine'}</span></p>
-                <div class="customize-field"><label>stability:</label>
-                    <input type="number" id="dubSetStability" min="0" max="1" step="0.1" value="${defaults.stability}">
+                <div class="dub-settings-grid">
+                    <label for="dubSetStability">Stability <span class="info-icon" onclick="openDubTooltip(event, 'stability')">ⓘ</span></label>
+                    <div class="slider-wrapper"><input type="range" id="dubSetStability" min="0" max="1" step="0.01" value="${defaults.stability}"><span class="slider-value" id="valStability">${defaults.stability}</span></div>
+
+                    <label for="dubSetSimilarity">Similarity Boost <span class="info-icon" onclick="openDubTooltip(event, 'similarity')">ⓘ</span></label>
+                    <div class="slider-wrapper"><input type="range" id="dubSetSimilarity" min="0" max="1" step="0.01" value="${defaults.similarity_boost}"><span class="slider-value" id="valSimilarity">${defaults.similarity_boost}</span></div>
+
+                    <label for="dubSetStyle">Style <span class="info-icon" onclick="openDubTooltip(event, 'style')">ⓘ</span></label>
+                    <div class="slider-wrapper"><input type="range" id="dubSetStyle" min="0" max="1" step="0.01" value="${defaults.style}"><span class="slider-value" id="valStyle">${defaults.style}</span></div>
+
+                    <label for="dubSetSpeed">Speed <span class="info-icon" onclick="openDubTooltip(event, 'speed')">ⓘ</span></label>
+                    <div class="slider-wrapper"><input type="range" id="dubSetSpeed" min="0.5" max="2" step="0.05" value="${defaults.speed}"><span class="slider-value" id="valSpeed">${defaults.speed}</span></div>
+
+                    <label for="dubSetSpeaker">use_speaker_boost <span class="info-icon" onclick="openDubTooltip(event, 'speaker')">ⓘ</span></label>
+                    <div class="slider-wrapper"><input type="checkbox" id="dubSetSpeaker" ${defaults.use_speaker_boost ? 'checked' : ''}></div>
                 </div>
-                <div class="customize-field"><label>similarity_boost:</label>
-                    <input type="number" id="dubSetSimilarity" min="0" max="1" step="0.1" value="${defaults.similarity_boost}">
+
+                <button class="btn btn-primary preview-btn" onclick="playDubPreview()">Probe abspielen</button>
+
+                <div class="advanced-block">
+                    <div class="accordion-header" onclick="toggleDubAdvanced()">Fortgeschrittene Einstellungen ▸</div>
+                    <div class="accordion-content" id="dubAdvanced">
+                        <div class="customize-field"><label>disable_voice_cloning</label><input type="checkbox" id="dubOptVoiceClone"></div>
+                        <div class="customize-field"><label>num_speakers</label><input type="number" id="dubOptNumSpeakers" min="1" max="10" value="1"></div>
+                        <div class="customize-field"><label>seed</label><input type="number" id="dubOptSeed" value="0"></div>
+                    </div>
                 </div>
-                <div class="customize-field"><label>style:</label>
-                    <input type="number" id="dubSetStyle" min="0" max="1" step="0.1" value="${defaults.style}">
-                </div>
-                <div class="customize-field"><label>speed:</label>
-                    <input type="number" id="dubSetSpeed" min="0.5" max="4" step="0.1" value="${defaults.speed}">
-                </div>
-                <div class="customize-field">
-                    <label><input type="checkbox" id="dubSetSpeaker" ${defaults.use_speaker_boost ? 'checked' : ''}> use_speaker_boost</label>
-                </div>
+
                 <div class="dialog-buttons">
                     <button class="btn btn-warning" onclick="resetStoredVoiceSettings()">Reset</button>
                     <button class="btn btn-secondary" onclick="closeDubbingSettings()">Abbrechen</button>
-                    <button class="btn btn-success" onclick="confirmDubbingSettings(${fileId})">Dubben</button>
+                    <button class="btn btn-success" id="dubStartBtn" onclick="confirmDubbingSettings(${fileId})">Dubben</button>
                 </div>
             </div>
         </div>`;
@@ -6654,7 +6667,12 @@ function closeDubbingSettings() {
     if (dlg) dlg.remove();
 }
 
-function confirmDubbingSettings(fileId) {
+async function confirmDubbingSettings(fileId) {
+    const btn = document.getElementById('dubStartBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span>';
+    }
     const settings = {
         stability: parseFloat(document.getElementById('dubSetStability').value),
         similarity_boost: parseFloat(document.getElementById('dubSetSimilarity').value),
@@ -6662,11 +6680,18 @@ function confirmDubbingSettings(fileId) {
         speed: parseFloat(document.getElementById('dubSetSpeed').value),
         use_speaker_boost: document.getElementById('dubSetSpeaker').checked
     };
+    // Erweiterte Optionen erfassen
+    const adv = {
+        disable_voice_cloning: document.getElementById('dubOptVoiceClone').checked,
+        num_speakers: parseInt(document.getElementById('dubOptNumSpeakers').value, 10),
+        seed: parseInt(document.getElementById('dubOptSeed').value, 10)
+    };
+    settings.advanced = adv;
     // Gewählte Einstellungen persistent speichern
     localStorage.setItem('hla_voiceSettings', JSON.stringify(settings));
     storedVoiceSettings = settings;
+    await startDubbing(fileId, settings, 'de', currentDubMode);
     closeDubbingSettings();
-    startDubbing(fileId, settings, 'de', currentDubMode);
 }
 
 // Entfernt gespeicherte Voice-Settings und lädt den Dialog neu
@@ -6677,6 +6702,70 @@ function resetStoredVoiceSettings() {
     if (currentDubbingFileId !== null) {
         showDubbingSettings(currentDubbingFileId);
     }
+}
+
+// Schaltet den Abschnitt mit erweiterten Optionen ein oder aus
+function toggleDubAdvanced() {
+    const cont = document.getElementById('dubAdvanced');
+    if (!cont) return;
+    cont.style.display = cont.style.display === 'block' ? 'none' : 'block';
+}
+
+// Öffnet ein kleines Tooltip-Fenster mit einer Beschreibung
+function openDubTooltip(ev, key) {
+    const tips = {
+        stability: 'Je höher, desto gleichmäßiger und weniger emotional klingt die Stimme. Niedrigere Werte bringen mehr Lebendigkeit.',
+        similarity: 'Bestimmt, wie nah die Stimme am Original bleibt. Hohe Werte bewahren den Charakter besser.',
+        style: 'Verstärkt den Sprechausdruck. Hohe Werte wirken dramatischer.',
+        speed: 'Geschwindigkeit der Ausgabe. 1,0 ist unverändert.',
+        speaker: 'Aktiviert zusätzliche Ähnlichkeit zum Sprecher.'
+    };
+    closeDubTooltip();
+    const box = document.createElement('div');
+    box.className = 'info-tooltip';
+    box.id = 'dubTooltip';
+    box.textContent = tips[key] || '';
+    box.style.left = ev.clientX + 'px';
+    box.style.top = ev.clientY + 'px';
+    document.body.appendChild(box);
+    document.addEventListener('keydown', escCloseDubTooltip);
+}
+
+// Schliesst das Tooltip-Fenster
+function closeDubTooltip() {
+    const box = document.getElementById('dubTooltip');
+    if (box) box.remove();
+    document.removeEventListener('keydown', escCloseDubTooltip);
+}
+
+function escCloseDubTooltip(e) { if (e.key === 'Escape') closeDubTooltip(); }
+
+// Spielt ein kurzes Sample mit den aktuellen Einstellungen ab
+async function playDubPreview() {
+    const voiceId = folderCustomizations[files.find(f => f.id === currentDubbingFileId)?.folder]?.voiceId;
+    if (!voiceId || !elevenLabsApiKey) return;
+    const settings = {
+        stability: parseFloat(document.getElementById('dubSetStability').value),
+        similarity_boost: parseFloat(document.getElementById('dubSetSimilarity').value),
+        style: parseFloat(document.getElementById('dubSetStyle').value),
+        speed: parseFloat(document.getElementById('dubSetSpeed').value),
+        use_speaker_boost: document.getElementById('dubSetSpeaker').checked
+    };
+    const body = {
+        text: 'Dies ist eine Probe.',
+        voice_settings: settings,
+        model_id: 'eleven_monolingual_v1'
+    };
+    const res = await fetch(`${API}/text-to-speech/${voiceId}/stream`, {
+        method: 'POST',
+        headers: { 'xi-api-key': elevenLabsApiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    });
+    if (!res.ok) return;
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.play();
 }
 
 // Zeigt einen Hinweis an, dass das Studio geöffnet wurde
