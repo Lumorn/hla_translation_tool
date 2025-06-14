@@ -2040,6 +2040,20 @@ th:nth-child(6) {
     color: #4caf50;
 }
 
+/* =========================== CHAPTER-GROUP STYLES START ==================== */
+.chapter-group { margin-bottom: 14px; }
+.chapter-header {
+    padding: 8px 10px;
+    background: #222;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 6px;
+}
+.chapter-group.collapsed .chapter-levels { display: none; }
+/* =========================== CHAPTER-GROUP STYLES END ====================== */
+
 /* =========================== LEVEL-GROUP STYLES END ========================= */
 
 /* Versionsnummer oben links */

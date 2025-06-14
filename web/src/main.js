@@ -47,6 +47,9 @@ let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
 let expandedLevel          = null; // aktuell geöffneter Level
+let levelChapters         = {}; // Zuordnung Level → Kapitel
+let chapterOrders         = {}; // Reihenfolge der Kapitel
+let expandedChapter       = null; // aktuell geöffnetes Kapitel
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -322,6 +325,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         levelIcons = JSON.parse(savedLevelIcons);
     }
 
+    const savedLevelChapters = localStorage.getItem('hla_levelChapters');
+    if (savedLevelChapters) {
+        levelChapters = JSON.parse(savedLevelChapters);
+    }
+
+    const savedChapterOrders = localStorage.getItem('hla_chapterOrders');
+    if (savedChapterOrders) {
+        chapterOrders = JSON.parse(savedChapterOrders);
+    }
+
     initializeEventListeners();
 
     // 📁 Ordner-Anpassungen laden
@@ -411,6 +424,26 @@ function setLevelIcon(levelName, icon) {
 }
 /* =========================== LEVEL-ICON-HILFSFUNKTIONEN ENDE =============== */
 
+/* =========================== KAPITEL-HILFSFUNKTIONEN START ================= */
+function getLevelChapter(levelName) {
+    return levelChapters[levelName] || '–';
+}
+
+function setLevelChapter(levelName, chapterName) {
+    levelChapters[levelName] = chapterName;
+    saveLevelChapters();
+}
+
+function getChapterOrder(chapterName) {
+    return chapterOrders[chapterName] || 9999;
+}
+
+function setChapterOrder(chapterName, order) {
+    chapterOrders[chapterName] = order;
+    saveChapterOrders();
+}
+/* =========================== KAPITEL-HILFSFUNKTIONEN ENDE ================== */
+
 // =========================== SAVELEVELCOLORS START ===========================
 function saveLevelColors() {
     try {
@@ -441,6 +474,26 @@ function saveLevelIcons() {
     }
 }
 // =========================== SAVELEVELICONS END =============================
+
+// =========================== SAVELEVELCHAPTERS START ========================
+function saveLevelChapters() {
+    try {
+        localStorage.setItem('hla_levelChapters', JSON.stringify(levelChapters));
+    } catch (e) {
+        console.error('[saveLevelChapters] Speichern fehlgeschlagen:', e);
+    }
+}
+// =========================== SAVELEVELCHAPTERS END ==========================
+
+// =========================== SAVECHAPTERORDERS START ========================
+function saveChapterOrders() {
+    try {
+        localStorage.setItem('hla_chapterOrders', JSON.stringify(chapterOrders));
+    } catch (e) {
+        console.error('[saveChapterOrders] Speichern fehlgeschlagen:', e);
+    }
+}
+// =========================== SAVECHAPTERORDERS END ==========================
 /* =========================== LEVEL-COLOR-HISTORY START ===================== */
 function updateLevelColorHistory(color) {
     const idx = levelColorHistory.indexOf(color);
@@ -656,20 +709,41 @@ function renderProjects() {
     const list = document.getElementById('projectList');
     list.innerHTML = '';
 
-    // Projekte nach Level gruppieren
-    const levelMap = {};
+    // Projekte nach Kapitel und Level gruppieren
+    const chapterMap = {};
     projects.forEach(p => {
         const lvl = p.levelName || '–';
-        if (!levelMap[lvl]) levelMap[lvl] = [];
-        levelMap[lvl].push(p);
+        const chp = getLevelChapter(lvl);
+        if (!chapterMap[chp]) chapterMap[chp] = {};
+        if (!chapterMap[chp][lvl]) chapterMap[chp][lvl] = [];
+        chapterMap[chp][lvl].push(p);
     });
 
-    Object.entries(levelMap)
-        .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]))
-        .forEach(([lvl, prjs]) => {
-        const group = document.createElement('div');
-        group.className = 'level-group';
-        if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
+    Object.entries(chapterMap)
+        .sort((a,b)=> getChapterOrder(a[0]) - getChapterOrder(b[0]))
+        .forEach(([chp, levels]) => {
+        const chGroup = document.createElement('div');
+        chGroup.className = 'chapter-group';
+        if (expandedChapter && expandedChapter !== chp) chGroup.classList.add('collapsed');
+
+        const chHeader = document.createElement('div');
+        chHeader.className = 'chapter-header';
+        chHeader.textContent = `${getChapterOrder(chp)}.${chp}`;
+        chHeader.onclick = () => {
+            expandedChapter = expandedChapter === chp ? null : chp;
+            renderProjects();
+        };
+        chGroup.appendChild(chHeader);
+
+        const levelWrap = document.createElement('div');
+        levelWrap.className = 'chapter-levels';
+
+        Object.entries(levels)
+            .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]))
+            .forEach(([lvl, prjs]) => {
+            const group = document.createElement('div');
+            group.className = 'level-group';
+            if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
         const order  = getLevelOrder(lvl);
         const header = document.createElement('div');
@@ -776,8 +850,12 @@ function renderProjects() {
             header.querySelector('.level-header-left').appendChild(mark);
         }
 
-        group.appendChild(wrap);
-        list.appendChild(group);
+            group.appendChild(wrap);
+            levelWrap.appendChild(group);
+        });
+
+        chGroup.appendChild(levelWrap);
+        list.appendChild(chGroup);
     });
 }
 /* =========================== RENDER PROJECTS END =========================== */
@@ -928,6 +1006,7 @@ function selectProject(id){
     localStorage.setItem('hla_lastActiveProject',id);
 
     expandedLevel = currentProject.levelName;
+    expandedChapter = getLevelChapter(currentProject.levelName);
     renderProjects();
     document.querySelectorAll('.project-item')
         .forEach(item=>item.classList.toggle('active',item.dataset.projectId==id));
@@ -8923,6 +9002,8 @@ function showLevelCustomization(levelName, ev) {
     const order = getLevelOrder(levelName) || 1;
     const color = getLevelColor(levelName);
     const icon  = getLevelIcon(levelName);
+    const currentChapter = getLevelChapter(levelName);
+    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))];
 
     const ov = document.createElement('div');
     ov.className = 'customize-popup-overlay';
@@ -8964,6 +9045,16 @@ function showLevelCustomization(levelName, ev) {
         </select>
       </div>
 
+      <div class="customize-field">
+        <label>Kapitel:</label>
+        <select id="lvlChapter">
+          <option value="">– neu –</option>
+          ${knownChapters.map(c => `<option ${c===currentChapter?'selected':''} value="${c}">${getChapterOrder(c)}.${c}</option>`).join('')}
+        </select>
+        <input id="lvlChapterNew" placeholder="Neues Kapitel" style="margin-top:8px;display:${currentChapter?'none':'block'};">
+        <input type="number" id="lvlChapterOrder" min="1" max="9999" placeholder="Kapitel-Nr" style="margin-top:8px;display:${currentChapter?'none':'block'};">
+      </div>
+
       <div class="customize-buttons">
         <button class="btn btn-secondary" id="lvlCancel">Abbrechen</button>
         <button class="btn btn-success"   id="lvlSave">Speichern</button>
@@ -8975,6 +9066,9 @@ function showLevelCustomization(levelName, ev) {
 
     const iconInput = pop.querySelector('#lvlIcon');
     const iconSelect = pop.querySelector('#lvlIconSelect');
+    const chapterSel  = pop.querySelector('#lvlChapter');
+    const chapterInp  = pop.querySelector('#lvlChapterNew');
+    const chapterOrd  = pop.querySelector('#lvlChapterOrder');
     if(iconSelect){
         iconSelect.onchange = () => {
             if(iconSelect.value) iconInput.value = iconSelect.value;
@@ -8992,6 +9086,15 @@ function showLevelCustomization(levelName, ev) {
         });
     }
 
+    if(chapterSel){
+        chapterSel.onchange = () => {
+            const show = !chapterSel.value;
+            if(chapterInp) chapterInp.style.display = show ? 'block' : 'none';
+            if(chapterOrd) chapterOrd.style.display = show ? 'block' : 'none';
+            if(show && chapterInp) chapterInp.focus();
+        };
+    }
+
     pop.querySelector('#lvlCancel').onclick = () => document.body.removeChild(ov);
 
     pop.querySelector('#lvlSave').onclick = () => {
@@ -9000,6 +9103,14 @@ function showLevelCustomization(levelName, ev) {
         const newOrder = Math.max(1, parseInt(pop.querySelector('#lvlOrder').value) || oldOrder);
         const newColor = pop.querySelector('#lvlColor').value;
         const newIcon  = pop.querySelector('#lvlIcon').value || '📁';
+        const selCh    = chapterSel ? chapterSel.value : '';
+        const newCh    = chapterInp ? chapterInp.value.trim() : '';
+        const chOrder  = parseInt(chapterOrd?.value);
+
+        if(!selCh && newCh && !chapterOrd.value){
+            alert('Bitte auch eine Kapitel-Nummer angeben.');
+            return;
+        }
 
         // Anzeigenamen der Projekte, falls noch identisch mit dem Levelnamen, ebenfalls aktualisieren
         const oldDisplayName = `${oldOrder}.${levelName}`;
@@ -9016,6 +9127,10 @@ function showLevelCustomization(levelName, ev) {
             }
         });
 
+        if (levelName !== newName && levelChapters[levelName]) {
+            delete levelChapters[levelName];
+        }
+
         if (levelColors[levelName] && levelName !== newName) delete levelColors[levelName];
         if (levelOrders[levelName] && levelName !== newName) delete levelOrders[levelName];
         if (levelIcons[levelName]  && levelName !== newName) delete levelIcons[levelName];
@@ -9026,12 +9141,21 @@ function showLevelCustomization(levelName, ev) {
         // Reihenfolge immer speichern
         setLevelOrder(newName, newOrder);
 
+        const chapterName = selCh || newCh || getLevelChapter(levelName);
+        setLevelChapter(newName, chapterName);
+        if (!selCh && newCh) {
+            const ord = Math.max(1, chOrder || 1);
+            setChapterOrder(chapterName, ord);
+        }
+
         if (expandedLevel === levelName) expandedLevel = newName;
 
         saveProjects();
         saveLevelColors();
         saveLevelOrders();
         saveLevelIcons();
+        saveLevelChapters();
+        saveChapterOrders();
         renderProjects();
 
         document.body.removeChild(ov);
