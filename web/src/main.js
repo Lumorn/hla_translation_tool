@@ -7090,7 +7090,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
 
     // Hauptprozess über neuen Job informieren
     if (window.electronAPI && window.electronAPI.sendDubStart) {
-        window.electronAPI.sendDubStart({ id, fileId: file.id, relPath: getFullPath(file) });
+        // Modus mitgeben, damit der Hauptprozess Beta- und manuelle Jobs unterscheiden kann
+        window.electronAPI.sendDubStart({ id, fileId: file.id, relPath: getFullPath(file), mode });
     }
 
     if (mode === 'manual') {

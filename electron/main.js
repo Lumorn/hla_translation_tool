@@ -374,10 +374,12 @@ app.whenReady().then(() => {
   ipcMain.on('dub-start', (event, info) => {
     // Vor jedem neuen Dubbing den Download-Ordner leeren
     clearDownloadFolder(DL_WATCH_PATH);
+    // Modus speichern, um Beta-Jobs später bereinigen zu können
     pendingDubs.push({
       id: info.id,
       fileId: info.fileId,
       relPath: info.relPath,
+      mode: info.mode || 'beta',
     });
   });
 
@@ -406,11 +408,16 @@ app.whenReady().then(() => {
   // Regelmäßige Status-Abfrage aller offenen Dubbings
   const apiKey = process.env.ELEVEN_API_KEY || '';
   setInterval(async () => {
-    for (const job of pendingDubs) {
+    for (let i = pendingDubs.length - 1; i >= 0; i--) {
+      const job = pendingDubs[i];
       try {
         const ready = await isDubReady(job.id, 'de', apiKey);
         if (mainWindow) {
           mainWindow.webContents.send('dub-status', { fileId: job.fileId, ready });
+        }
+        // Bei fertig gerenderten Beta-Jobs Eintrag entfernen
+        if (ready && job.mode !== 'manual') {
+          pendingDubs.splice(i, 1);
         }
       } catch (e) {
         if (mainWindow) {
