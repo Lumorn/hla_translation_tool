@@ -72,7 +72,7 @@ function createWindow() {
     height: 800,
     webPreferences: {
       // Preload-Skript bindet die Electron-API im Renderer ein
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, 'preload.cjs'),
       // Explizit aktivieren, damit die Brücke sicher funktioniert
       contextIsolation: true,
       nodeIntegration: false,

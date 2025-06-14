@@ -409,7 +409,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 | Typischer Fehler | Ursache | Kurzlösung |
 | --- | --- | --- |
-| `ReferenceError: require is not defined` | `sandbox:true` verbogen oder `contextIsolation` unsauber verdreht | `main.js`: `webPreferences:{ contextIsolation:true, sandbox:false, nodeIntegration:false, preload:path.join(__dirname,'preload.js') }` |
+| `ReferenceError: require is not defined` | `sandbox:true` verbogen oder `contextIsolation` unsauber verdreht | `main.js`: `webPreferences:{ contextIsolation:true, sandbox:false, nodeIntegration:false, preload:path.join(__dirname,'preload.cjs') }` |
 | `Cannot find module 'fs'` o. Ä. | Preload als ESM geschrieben (import …) statt CommonJS | Komplett auf `require()` umstellen oder `filename.mjs` + "type":"module" vermeiden. |
 | Zugriff auf `window`/`document` | DOM im Preload nicht verfügbar | Alles DOM-abhängige in ein Renderer-Script verschieben. |
 
@@ -595,6 +595,7 @@ Ab Version 1.40.13 protokolliert das Preload-Skript Fehler und meldet "erfolgrei
 Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
 Ab Version 1.40.15 öffnet die Desktop-Version die DevTools automatisch und zeigt im Preload `[PRELOAD] start` an.
 Ab Version 1.40.16 prüft der Renderer die Electron-Umgebung nur noch über `window.electronAPI` und speichert das Ergebnis in `isElectron`.
+Ab Version 1.40.17 nutzt die Desktop-Version das Preload-Skript `preload.cjs`, damit `__filename` und `require` verfügbar sind.
 
 ## ▶️ E2E-Test
 
