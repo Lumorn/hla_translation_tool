@@ -15,6 +15,8 @@
 * Manuell heruntergeladene Dateien werden nun auch nach einem Neustart automatisch erkannt und importiert.
 ## 🛠️ Patch in 1.40.6
 * `validateCsv` kommt jetzt mit Zeilenumbrüchen in Übersetzungen zurecht.
+## 🛠️ Patch in 1.40.7
+* Der fertige Dubbing-Status wird jetzt dauerhaft im Projekt gespeichert.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

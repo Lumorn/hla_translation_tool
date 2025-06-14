@@ -250,6 +250,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ziel.dubReady = true;
                 ziel.waitingForManual = false;
                 renderFileTable();
+                saveCurrentProject();
                 const name = dest.split('/').pop();
                 showToast(`${name} importiert.`);
                 updateDownloadWaitDialog(name);
@@ -6876,6 +6877,7 @@ async function openStudioAndWait(dubId) {
         currentItem.waitingForManual = true;
         ui.setActiveDubItem(currentItem);
         renderFileTable();
+        saveCurrentProject();
     }
 }
 
@@ -7225,6 +7227,7 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
+    saveCurrentProject();
 }
 // =========================== DOWNLOADDE START ===============================
 // Lädt die fertige DE-Audiodatei ohne Protokoll herunter
@@ -7252,6 +7255,7 @@ async function downloadDe(fileId) {
     file.dubReady = true; // Status auf fertig setzen
     updateStatus('Deutsche Audiodatei gespeichert.');
     renderFileTable();
+    saveCurrentProject();
 }
 // =========================== DOWNLOADDE END =================================
 // =========================== REDOWNLOADDUBBING END ==========================
@@ -9235,6 +9239,7 @@ function showLevelCustomization(levelName, ev) {
             file.dubReady = true;
             file.waitingForManual = false;
             renderFileTable();
+            saveCurrentProject();
         }
 
         window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, setActiveDubItem };
