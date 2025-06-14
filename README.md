@@ -596,6 +596,7 @@ Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
 Ab Version 1.40.15 öffnet die Desktop-Version die DevTools automatisch und zeigt im Preload `[PRELOAD] start` an.
 Ab Version 1.40.16 prüft der Renderer die Electron-Umgebung nur noch über `window.electronAPI` und speichert das Ergebnis in `isElectron`.
 Ab Version 1.40.17 nutzt die Desktop-Version das Preload-Skript `preload.cjs`, damit `__filename` und `require` verfügbar sind.
+Ab Version 1.40.18 prüft der Renderer nur noch `window.electronAPI` und `main.js` deaktiviert vorsorglich den Sandbox-Modus.
 
 ## ▶️ E2E-Test
 

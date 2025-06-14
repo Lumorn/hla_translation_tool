@@ -75,6 +75,9 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.cjs'),
       // Explizit aktivieren, damit die Brücke sicher funktioniert
       contextIsolation: true,
+      // Sandbox vorsorglich deaktivieren, damit der Preload-Prozess nicht
+      // in einen gesonderten Sandbox-Modus verschoben wird
+      sandbox: false,
       nodeIntegration: false,
     },
   });
