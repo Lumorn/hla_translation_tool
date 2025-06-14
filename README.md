@@ -64,6 +64,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
+* **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
 
 ### 🔍 Suche & Import

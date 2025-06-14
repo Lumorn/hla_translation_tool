@@ -3472,6 +3472,10 @@ function playAudio(fileId) {
             currentlyPlaying = null;
         };
     }).catch(err => {
+        if (err && err.name === 'AbortError') {
+            // Unterbrochene Wiedergabe ist kein echter Fehler
+            return;
+        }
         console.error('[PLAYAUDIO] Playback failed:', err);
         debugLog('[PLAYAUDIO] Playback failed:', err);
         updateStatus(`Fehler beim Abspielen: ${file.filename}`);
@@ -3556,6 +3560,10 @@ async function playDeAudio(fileId, onEnded = null) {
             if (previousEnded) previousEnded();
         };
     }).catch(err => {
+        if (err && err.name === 'AbortError') {
+            // Wird play() durch pause() unterbrochen, ignorieren wir den Fehler
+            return;
+        }
         console.error('DE-Playback fehlgeschlagen', err);
         updateStatus('Fehler beim Abspielen der DE-Datei');
         if (url) URL.revokeObjectURL(url);
@@ -4848,6 +4856,10 @@ function deleteFolderFromDatabase(folderName) {
                         currentlyPlaying = null;
                     };
                 }).catch(err => {
+                    if (err && err.name === 'AbortError') {
+                        // Fehler ignorieren, wenn play() frühzeitig gestoppt wurde
+                        return;
+                    }
                     console.error('Playback failed:', err);
                     updateStatus(`Fehler beim Abspielen`);
                     if (url) URL.revokeObjectURL(url);
