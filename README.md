@@ -149,6 +149,7 @@ Seit dem neuen Layout werden alle Werte über komfortable Slider eingestellt. Ei
 Die Standardwerte werden über `getDefaultVoiceSettings` geladen und nach dem Speichern dauerhaft im Browser hinterlegt.
 
 Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
+Im Dialog **🔊 ElevenLabs API** gibt es nun einen Bereich, der die aktuell gespeicherten Standardwerte anzeigt.
 Über den Button **Reset** lassen sich diese wieder auf die API-Defaults zurücksetzen.
 
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).

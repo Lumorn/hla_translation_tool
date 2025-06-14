@@ -60,6 +60,29 @@ let availableVoices    = [];
 let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
 let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') || 'null');
+
+// Aktualisiert die Anzeige der gespeicherten Dubbing-Parameter im API-Dialog
+function updateVoiceSettingsDisplay() {
+    const list = document.getElementById('voiceSettingsDisplay');
+    if (!list) return;
+    list.innerHTML = '';
+    if (!storedVoiceSettings) {
+        list.textContent = 'Keine gespeichert';
+        return;
+    }
+    const entries = [
+        ['Stability', storedVoiceSettings.stability],
+        ['Similarity Boost', storedVoiceSettings.similarity_boost],
+        ['Style', storedVoiceSettings.style],
+        ['Speed', storedVoiceSettings.speed],
+        ['Speaker-Boost', storedVoiceSettings.use_speaker_boost]
+    ];
+    entries.forEach(([label, val]) => {
+        const li = document.createElement('li');
+        li.textContent = `${label}: ${val}`;
+        list.appendChild(li);
+    });
+}
 // Bevorzugtes Zeilenende für CSV-Dateien
 let csvLineEnding = localStorage.getItem('hla_lineEnding') || 'LF';
 // Merkt die Datei, für die der Dubbing-Dialog geöffnet wurde
@@ -5435,8 +5458,8 @@ function checkFileAccess() {
                 list.appendChild(details);
             });
 
-            const customList = document.getElementById('customVoicesList');
-            customList.innerHTML = '';
+        const customList = document.getElementById('customVoicesList');
+        customList.innerHTML = '';
             customVoices.forEach(v => {
                 const item = document.createElement('div');
                 item.className = 'custom-voice-item';
@@ -5465,6 +5488,8 @@ function checkFileAccess() {
                 item.appendChild(delBtn);
                 customList.appendChild(item);
             });
+
+            updateVoiceSettingsDisplay();
 
             document.getElementById('apiKeyInput').focus();
         }
@@ -6710,6 +6735,7 @@ async function confirmDubbingSettings(fileId) {
     // Gewählte Einstellungen persistent speichern
     localStorage.setItem('hla_voiceSettings', JSON.stringify(settings));
     storedVoiceSettings = settings;
+    updateVoiceSettingsDisplay();
     await startDubbing(fileId, settings, 'de', currentDubMode);
     closeDubbingSettings();
 }
@@ -6718,6 +6744,7 @@ async function confirmDubbingSettings(fileId) {
 function resetStoredVoiceSettings() {
     localStorage.removeItem('hla_voiceSettings');
     storedVoiceSettings = null;
+    updateVoiceSettingsDisplay();
     closeDubbingSettings();
     if (currentDubbingFileId !== null) {
         showDubbingSettings(currentDubbingFileId);
