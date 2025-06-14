@@ -19,6 +19,8 @@
 * Der fertige Dubbing-Status wird jetzt dauerhaft im Projekt gespeichert.
 ## 🛠️ Patch in 1.40.8
 * Verschieben heruntergeladener Dateien klappt nun auch über Laufwerksgrenzen hinweg.
+## 🛠️ Patch in 1.40.9
+* Level-Dialog zeigt die letzten fünf gewählten Farben zur schnellen Auswahl.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

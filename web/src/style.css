@@ -1479,6 +1479,20 @@ th:nth-child(6) {
             color: #e0e0e0;
             font-size: 14px;
         }
+        .color-history {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
 
         .api-key-field {
             display: flex;

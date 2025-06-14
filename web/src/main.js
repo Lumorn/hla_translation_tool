@@ -3,6 +3,7 @@ let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let levelIcons             = {}; // ⬅️ NEU: Icon je Level
+let levelColorHistory     = JSON.parse(localStorage.getItem('hla_levelColorHistory') || '[]'); // ➡️ Merkt letzte 5 Farben
 let currentProject         = null;
 let files                  = [];
 let textDatabase           = {};
@@ -440,6 +441,23 @@ function saveLevelIcons() {
     }
 }
 // =========================== SAVELEVELICONS END =============================
+/* =========================== LEVEL-COLOR-HISTORY START ===================== */
+function updateLevelColorHistory(color) {
+    const idx = levelColorHistory.indexOf(color);
+    if (idx !== -1) levelColorHistory.splice(idx, 1);
+    levelColorHistory.unshift(color);
+    if (levelColorHistory.length > 5) levelColorHistory.pop();
+    saveLevelColorHistory();
+}
+
+function saveLevelColorHistory() {
+    try {
+        localStorage.setItem('hla_levelColorHistory', JSON.stringify(levelColorHistory));
+    } catch (e) {
+        console.error('[saveLevelColorHistory] Speichern fehlgeschlagen:', e);
+    }
+}
+/* =========================== LEVEL-COLOR-HISTORY END ======================= */
 
 
 
@@ -8930,6 +8948,7 @@ function showLevelCustomization(levelName, ev) {
       <div class="customize-field">
         <label>Farbe:</label>
         <input type="color" id="lvlColor" value="${color}">
+        <div id="lvlHistory" class="color-history"></div>
       </div>
 
       <div class="customize-field">
@@ -8961,6 +8980,17 @@ function showLevelCustomization(levelName, ev) {
             if(iconSelect.value) iconInput.value = iconSelect.value;
         };
     }
+    const colorInput = pop.querySelector('#lvlColor');
+    const histDiv = pop.querySelector('#lvlHistory');
+    if(histDiv && colorInput){
+        levelColorHistory.forEach(col => {
+            const btn = document.createElement('button');
+            btn.className = 'color-swatch';
+            btn.style.background = col;
+            btn.onclick = () => { colorInput.value = col; };
+            histDiv.appendChild(btn);
+        });
+    }
 
     pop.querySelector('#lvlCancel').onclick = () => document.body.removeChild(ov);
 
@@ -8991,6 +9021,7 @@ function showLevelCustomization(levelName, ev) {
         if (levelIcons[levelName]  && levelName !== newName) delete levelIcons[levelName];
 
         levelColors[newName] = newColor;
+        updateLevelColorHistory(newColor);
         levelIcons[newName]  = newIcon;
         // Reihenfolge immer speichern
         setLevelOrder(newName, newOrder);
