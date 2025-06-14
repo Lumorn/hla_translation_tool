@@ -31,6 +31,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
+* **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
@@ -195,6 +196,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 * Klicken Sie auf **„+ Neues Projekt"**
 * Vergeben Sie einen Namen
 * Optional: Level‑Name und Teil‑Nummer angeben
+* Optional: Kapitel auswählen oder neu anlegen
 * Icon und Farbe werden automatisch zugewiesen
 
 ### 3. 📄 Dateien hinzufügen

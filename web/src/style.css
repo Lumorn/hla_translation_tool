@@ -75,6 +75,9 @@ th:nth-child(6) {
     position: relative;
     user-select: none;
     min-height: 60px; /* Mehr Platz für Statistiken */
+    display: flex;                /* Knöpfe bleiben rechts */
+    justify-content: space-between;
+    gap: 8px;
 }
 
         .project-item:hover {
@@ -1816,6 +1819,12 @@ th:nth-child(6) {
     display:flex;
     align-items:center;
     gap:2px;
+}
+
+.project-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 /* =========================== PROJECT PERCENT STYLE END ============================= */
 
