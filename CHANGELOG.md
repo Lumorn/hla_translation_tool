@@ -21,6 +21,10 @@
 * Verschieben heruntergeladener Dateien klappt nun auch über Laufwerksgrenzen hinweg.
 ## 🛠️ Patch in 1.40.9
 * Level-Dialog zeigt die letzten fünf gewählten Farben zur schnellen Auswahl.
+## 🛠️ Patch in 1.40.10
+* Kapitel-Liste sortiert sich in der Projekt-Ansicht sofort korrekt.
+## 🛠️ Patch in 1.40.11
+* Kapitel-Auswahllisten sind jetzt nach der Kapitelnummer sortiert.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

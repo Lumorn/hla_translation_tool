@@ -8900,7 +8900,9 @@ function showProjectCustomization(id, ev, tempProject) {
     const isNew = !!tempProject;
 
     const knownLevels   = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
-    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))];
+    // Kapitel nach ihrer Nummer sortieren
+    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))]
+        .sort((a, b) => getChapterOrder(a) - getChapterOrder(b));
     const currentChapter = getLevelChapter(prj.levelName);
 
     const ov = document.createElement('div');
@@ -9088,7 +9090,9 @@ function showLevelCustomization(levelName, ev) {
     const color = getLevelColor(levelName);
     const icon  = getLevelIcon(levelName);
     const currentChapter = getLevelChapter(levelName);
-    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))];
+    // Kapitel sortiert nach ihrer Nummer anzeigen
+    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))]
+        .sort((a, b) => getChapterOrder(a) - getChapterOrder(b));
 
     const ov = document.createElement('div');
     ov.className = 'customize-popup-overlay';
