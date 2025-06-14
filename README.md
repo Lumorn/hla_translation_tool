@@ -579,6 +579,7 @@ Ab Version 1.40.6 stürzt das Debug-Fenster im Browser nicht mehr ab, wenn kein 
 Ab Version 1.40.7 kann `reset_repo.py` das Repository komplett aktualisieren, alle Abhängigkeiten installieren und anschließend die Desktop-App starten.
 Ab Version 1.40.8 nutzt das Preload-Skript `node:path`, damit Electron-Pakete fehlerfrei starten.
 Ab Version 1.40.9 meldet `findAudioInFilePathCache` beim Suchen den kompletten Pfad in der Debug-Konsole.
+Ab Version 1.40.10 pr\u00fcft das Preload-Skript, ob `require` vorhanden ist und bricht andernfalls mit einer Warnung ab.
 
 ## ▶️ E2E-Test
 
