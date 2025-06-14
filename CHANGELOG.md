@@ -11,6 +11,8 @@
 ## 🛠️ Patch in 1.40.4
 * Preload-Skript fängt nun unbehandelte Fehler ab und meldet "erfolgreich geladen".
 * Renderer prüft die Verfügbarkeit der Electron-API über `window.electronAPI`.
+## 🛠️ Patch in 1.40.5
+* Manuell heruntergeladene Dateien werden nun auch nach einem Neustart automatisch erkannt und importiert.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
