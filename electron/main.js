@@ -10,7 +10,7 @@ const { chooseExisting } = require('../pathUtils');
 // Backups koennen ebenfalls groß oder klein geschrieben sein.
 const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
-const { watchDownloadFolder } = require('../watcher.js');
+const { watchDownloadFolder, clearDownloadFolder } = require('../watcher.js');
 const { isDubReady } = require('../elevenlabs.js');
 const pendingDubs = [];
 let mainWindow;
@@ -372,6 +372,8 @@ app.whenReady().then(() => {
 
   // Merkt gestartete Dubbing-Jobs
   ipcMain.on('dub-start', (event, info) => {
+    // Vor jedem neuen Dubbing den Download-Ordner leeren
+    clearDownloadFolder(DL_WATCH_PATH);
     pendingDubs.push({
       id: info.id,
       fileId: info.fileId,
