@@ -165,6 +165,7 @@ Seit Patch 1.40.7 merkt sich das Tool außerdem den fertigen Status dauerhaft. A
 Seit Patch 1.40.8 werden Dateien auch dann korrekt verschoben, wenn sich Download- und Projektordner auf unterschiedlichen Laufwerken befinden.
 Seit Patch 1.40.9 merkt sich der Level-Dialog die zuletzt genutzten fünf Farben und bietet eine Schnellwahl unter dem Farbpicker.
 Seit Patch 1.40.10 sortiert sich die Kapitel-Liste in der Projekt-Ansicht sofort korrekt.
+Seit Patch 1.40.11 sind die Kapitel-Auswahllisten in den Projekt- und Level-Dialogen ebenfalls nach der Nummer sortiert.
 
 
 Beispiel einer gültigen CSV:
