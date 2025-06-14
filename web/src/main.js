@@ -2851,7 +2851,8 @@ async function updateDubStatusForFiles() {
 
 // Prüft nur Dateien mit gelbem Icon erneut
 async function updatePendingDubStatuses() {
-    const pending = files.filter(f => f.dubbingId && f.dubReady === false);
+    // Nur Jobs abfragen, die nicht auf manuellen Import warten
+    const pending = files.filter(f => f.dubbingId && f.dubReady === false && !f.waitingForManual);
     for (const f of pending) {
         try {
             f.dubReady = await isDubReady(f.dubbingId);
