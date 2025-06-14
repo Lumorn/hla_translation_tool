@@ -29,15 +29,16 @@ function watchDownloadFolder(callback, opts = {}) {
     const onDone = opts.onDone || (() => {});
     const onError = opts.onError || (() => {});
     const log = opts.log || (() => {});
+    const watchPath = opts.path || DL_WATCH_PATH;
 
-    if (!fs.existsSync(DL_WATCH_PATH)) {
-        fs.mkdirSync(DL_WATCH_PATH, { recursive: true });
-        log('Download-Ordner angelegt: ' + DL_WATCH_PATH);
+    if (!fs.existsSync(watchPath)) {
+        fs.mkdirSync(watchPath, { recursive: true });
+        log('Download-Ordner angelegt: ' + watchPath);
     } else {
-        log('Beobachte Download-Ordner: ' + DL_WATCH_PATH);
+        log('Beobachte Download-Ordner: ' + watchPath);
     }
 
-    chokidar.watch(DL_WATCH_PATH, { ignoreInitial: true })
+    chokidar.watch(watchPath, { ignoreInitial: true })
         .on('add', async file => {
             if (callback) callback(file);
             if (!pending.length) return;
