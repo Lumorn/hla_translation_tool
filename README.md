@@ -144,59 +144,6 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 
-Ab Version 1.27.0 gibt es zusätzlich in der Dateitabelle einen Button **Download DE**.
-Ist das Dubbing fertig, lässt sich damit die deutsche Audiodatei direkt speichern.
-Ab Version 1.28.0 zeigt jede Zeile einen farbigen Punkt für den Dubbing‑Status (grau/gelb/grün).
-Ab Version 1.29.0 gibt es ein erweitertes Protokoll aller API-Aufrufe.
-Ab Version 1.30.0 werden Fehler beim Starten des Dubbings als roter Toast angezeigt und der Status wird alle 60 Sekunden automatisch aktualisiert.
-Ab Version 1.31.0 speichert das Tool manuell heruntergeladene Audios im neuen Ordner `Download`.
-Ab Version 1.32.0 versucht das Tool automatisch, die gerenderte Datei über die Resource-API herunterzuladen.
-Ab Version 1.33.0 überwacht das Tool den Download-Ordner und importiert Dateien automatisch.
-Ab Version 1.34.1 verwendet das Tool `path.resolve` für alle Pfade und meldet "Spur manuell generieren oder Beta freischalten" bei fehlendem Download.
-Ab Version 1.34.2 behebt die Desktop-Version ein fehlendes `chokidar`-Modul.
-Ab Version 1.34.3 installieren die Start-Skripte automatisch die Haupt-Abhängigkeiten.
-Ab Version 1.34.4 öffnet der Button "Ordner öffnen" den Backup-Ordner auch im Browser.
-Ab Version 1.34.5 erkennt das Tool auch Backups im alten Ordner `backups`.
-Ab Version 1.35.0 lassen sich Backups im Browser hochladen und wiederherstellen.
-Seit Version 1.35.2 öffnet der Dev-Button zusätzlich die eingebaute Debug-Konsole.
-Ab Version 1.35.3 wird der Ordner `sounds` automatisch erkannt.
-Ab Version 1.35.4 zeigt der Dev-Button nun JavaScript-Fehler in der Debug-Konsole an.
-Ab Version 1.35.5 wurden überflüssige TypeScript-Dateien entfernt.
-
-Ab Version 1.36.0 liegen alle Web-Dateien im Ordner `web/`.
-Ab Version 1.36.1 werden die lokalen Ordner `web/sounds`, `web/backups` und `web/Download` ignoriert.
-Ab Version 1.36.2 verwerfen die Start-Skripte beim Zurücksetzen auch keine Backups mehr.
-Ab Version 1.36.3 erkennt die Desktop-Version auch Ordner mit großem Anfangsbuchstaben.
-Ab Version 1.36.4 entfernen die Start-Skripte automatisch überflüssige Dateien (ohne `web/sounds` und `web/backups`).
-Ab Version 1.36.6 erscheint beim Debug-Button ein Hinweis, wenn die Electron-API fehlt.
-Ab Version 1.36.7 zeigt das Debug-Fenster einen Kopierknopf für alle Informationen.
-Ab Version 1.36.8 startet Electron immer mit aktivierter Context Isolation.
-Ab Version 1.36.9 zeigt das Debug-Fenster zusätzliche Browser- und Prozessinformationen.
-Ab Version 1.36.10 hält das Python-Startskript das Fenster nach Abschluss offen.
-Ab Version 1.36.11 gibt das Python-Startskript bei einem Fehler von `npm start` eine verständliche Meldung aus und schreibt sie in `setup.log`.
-Ab Version 1.36.12 protokollieren die Start-Skripte die UID und ob Electron mit oder ohne Sandbox startet.
-Ab Version 1.37.0 zeigt das Debug-Fenster weitere Systeminformationen wie Fenstergröße und Sandbox-Status an.
-Ab Version 1.37.1 kann `start_tool.py` sowohl im Repository-Ordner als auch davor gestartet werden.
-Ab Version 1.37.2 pruefen `start_tool.py` und `start_tool.js`, ob Node 18–21 installiert ist.
-Die Meldung "Electron-API nicht verfügbar" weist darauf hin, dass das Tool im Browser ausgeführt wird. Pfad-Informationen sind nur in der Desktop-Version sichtbar.
-Für diesen Zweck gibt es das Node-Skript `cliRedownload.js`.
-Es wird so aufgerufen:
-
-```bash
-node cliRedownload.js <API-Key> <Dubbing-ID> <Ausgabedatei> [Sprache]
-```
-
-Intern nutzt es `downloadDubbingAudio()` aus `elevenlabs.js`.
-
-Über das **API-Menü** lässt sich zudem pro Ordner eine feste ElevenLabs-Stimme wählen. Ist eine Voice-ID hinterlegt, wird sie beim Dubbing automatisch genutzt und Voice Cloning abgeschaltet. Ohne Voice-ID bleibt Voice Cloning aktiv.
-
-Ab Version 1.10.3 wird beim Dubbing der selbst eingetragene deutsche Text genutzt. Das Tool erzeugt dazu eine CSV-Datei mit dem Format `speaker,start_time,end_time,transcription,translation`. Die Felder `start_time` und `end_time` enthalten seit Version 1.18.6 Sekundenwerte mit drei Nachkommastellen und leiten sich aus `trimStartMs` bzw. `trimEndMs` ab. Diese CSV wird zusammen mit `mode=manual` und `dubbing_studio=true` an die API übermittelt.
-
-Bis Version 1.19.1 nutzte das Tool den Studio-Workflow über `resource/dub` und `resource/render`. Ab Version 1.19.2 erfolgt das Dubbing ausschließlich über die Standard-Endpunkte: Nach `POST /v1/dubbing` wird regelmäßig `GET /v1/dubbing/<ID>` aufgerufen und das Ergebnis anschließend via `GET /v1/dubbing/<ID>/audio/<sprache>` heruntergeladen.
-
-Ab Version 1.20.3 wertet `waitForDubbing` nur noch `status` aus. Angaben in `progress.langs` oder `state` werden ignoriert.
-
-Ab Version 1.24.0 entfällt `renderLanguage`. Erzeugte Projekte werden im Studio manuell gerendert. `isDubReady(id)` prüft dabei, ob die deutsche Spur bereitsteht.
 
 Beispiel einer gültigen CSV:
 
@@ -210,7 +157,6 @@ speaker,start_time,end_time,transcription,translation
 
 Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
 Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeugten CSV angezeigt. So lässt sich schnell prüfen, ob die Daten korrekt formatiert sind.
-Ab Version 1.20.2 protokolliert das Fenster zudem `detail.message` und `error` aus der Server-Antwort.
 
 ### Version aktualisieren
 
@@ -456,113 +402,6 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-© 2025 Half‑Life: Alyx Translation Tool – Alle Rechte vorbehalten.
-
-**Version 1.27.0 - Download-Button**
-Neue Spalte mit "Download DE" ermöglicht schnellen Zugriff auf fertige Dubbings.
-
-**Version 1.28.0 - Dubbing-Status**
-Jede Dateizeile enthält nun einen farbigen Punkt für den aktuellen Dubbing-Status.
-
-**Version 1.29.0 - Protokoll-Menü**
-Neues Protokoll-Menü zeigt alle API-Aufrufe mit Statuscode an.
-
-**Version 1.30.0 - Fehler- und UX-Feinschliff**
-Dubbing-Fehler erscheinen sofort in einem roten Toast. Gelbe Status-Icons werden alle 60 Sekunden automatisch geprüft.
-
-**Version 1.31.0 - Doppel-Workflow**
-Neuer Ordner `Download` für manuelle Audios, der beim Start erstellt wird.
-**Version 1.32.0 - Beta-Auto-Download**
-Automatisches Herunterladen über die Resource-API, sofern freigeschaltet.
-**Version 1.33.0 - Ordnerüberwachung**
-Automatisches Erkennen und Importieren manuell gespeicherter Audios.
-**Version 1.34.0 - Neuer Dub-Status**
-Status-Spalte zeigt nun graue, gelbe oder grüne Punkte. Ein Klick auf Gelb öffnet das Studio erneut.
-**Version 1.34.1 - Pfad-Fixes & Clean-Up**
-Alle Pfade nutzen nun `path.resolve`. Bei fehlenden Dubbings erscheint die Meldung „Spur manuell generieren oder Beta freischalten“. Nach dem Import wird die Quelldatei entfernt.
-**Version 1.34.2 - Chokidar-Fix**
-Behebt ein fehlendes `chokidar`-Modul in der Desktop-Version.
-**Version 1.34.3 - Auto-Install**
-Start-Skripte führen nun `npm ci` im Hauptordner aus.
-**Version 1.34.4 - Backup-Fallback**
-Der Backup-Button öffnet nun auch im Browser den `backups`-Ordner.
-**Version 1.34.5 - Backup-Kompatibilität**
-Backups aus dem alten Ordner `backups` werden wieder erkannt.
-**Version 1.35.2 - Dev-Button zeigt Debug-Konsole**
-Der Dev-Button öffnet nun die eingebaute Debug-Konsole und in der Desktop-Version zusätzlich die DevTools.
-**Version 1.35.3 - Fester Sounds-Pfad**
-Die Browser-Version nutzt nun automatisch den Ordner `web/sounds` neben der HTML-Datei.
-**Version 1.35.4 - Besseres Debugging**
-Der Dev-Button öffnet die Debug-Konsole jetzt automatisch und zeigt JavaScript-Fehler an.
-**Version 1.35.5 - Aufräumarbeiten**
-Nicht benötigte TypeScript-Dateien wurden entfernt.
-**Version 1.36.1 - Gitignore-Anpassung**
-Ignoriert jetzt die lokalen Ordner `web/sounds`, `web/backups` und `web/Download`.
-**Version 1.36.2 - Sicheres Reset**
-Die Start-Skripte lassen beim Zurücksetzen auch den Ordner `web/backups` unverändert.
-**Version 1.36.3 - Groß-/Kleinschreibung**
-Die Desktop-Version erkennt nun auch `web/Sounds` und `web/Backups`.
-**Version 1.36.4 - Automatische Bereinigung**
-Die Start-Skripte entfernen nicht mehr benötigte Dateien. `web/sounds` und `web/backups` bleiben dabei erhalten.
-**Version 1.36.5 - Neues Debug-Fenster**
-Der Debug-Button zeigt nun eine Übersicht der erwarteten Pfade.
-**Version 1.36.6 - Browser-Hinweis**
-Fehlt die Electron-API, erscheint nun ein erklärender Hinweis.
-**Version 1.36.7 - Kopierknopf**
-Das Debug-Fenster bietet nun einen Button zum Kopieren aller Informationen.
-**Version 1.36.8 - Context Isolation**
-Electron startet jetzt immer mit aktiver Context Isolation.
-**Version 1.36.9 - Mehr Debug-Daten**
-Das Debug-Fenster zeigt nun zusätzliche Browser- und Prozessinformationen an.
-
-**Version 1.36.12 - Mehr Debug-Infos**
-Die Start-Skripte protokollieren jetzt die UID und melden, ob Electron mit oder ohne Sandbox startet.
-**Version 1.37.0 - Extremes Debug-Fenster**
-Das Debug-Fenster liefert nun zusätzliche Informationen wie Fenstergröße, Bildschirmauflösung und den Sandbox-Status.
-**Version 1.37.1 - Flexibler Start**
-`start_tool.py` erkennt nun automatisch, ob es im Repository oder im darüberliegenden Ordner ausgeführt wird.
-**Version 1.37.2 - Node-Pruefung**
-`start_tool.py` und `start_tool.js` stellen sicher, dass Node 18–21 verwendet wird.
-**Version 1.37.3 - Aktualisiertes Node-Fenster**
-`package.json` erwartet jetzt Node 18–21.
-**Version 1.37.4 - Node 22-Unterstützung**
-`start_tool.py` und `start_tool.js` akzeptieren nun Node 22.
-**Version 1.37.6 - Verbesserte Installation**
-Start-Skripte nutzen nun `npm ci` statt `npm install`.
-**Version 1.37.5 - Electron-Fallback**
-Fehlt nach `npm ci` das Electron-Modul, wird es automatisch nachinstalliert.
-**Version 1.38.0 - Check Environment**
-Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und testet Electron.
-**Version 1.38.1 - Einfacherer Reset**
-`git reset --hard HEAD` entfernt lokale Änderungen, ohne `web/sounds` und `web/backups` anzutasten.
-**Version 1.38.4 - Zuverlaessiger Environment-Check**
-`check_environment.js` stellt nach `npm ci` sicher, dass das Electron-Modul vorhanden ist und installiert es sonst nach.
-**Version 1.38.5 - Python-App-Test**
-`check_environment.js` kann jetzt mit `--tool-check` einen kurzen Start der Desktop-App per `python start_tool.py --check` ausfuehren.
-**Version 1.38.6 - Erweiterte Debug-Infos**
-Das Debug-Fenster zeigt nun ausführliche System- und Pfadinformationen sowie die letzten Zeilen aus `setup.log`.
-**Version 1.38.7 - Admin-Erkennung**
-Das Debug-Fenster informiert nun, ob das Programm mit Administratorrechten läuft.
-**Version 1.38.8 - Programmversionen**
-Das Debug-Fenster listet jetzt App-, Node-, Electron- und Chrome-Version auf.
-**Version 1.38.3 - Node-Check in start_tool.bat**
-Die Batch-Datei prueft nun die installierte Node-Version und verlangt Node 18 bis 22.
-**Version 1.38.2 - Zuverlaessiges Electron-Modul**
-Nach `npm ci` pruefen die Start-Skripte, ob `electron/node_modules/electron` fehlt und installieren das Modul bei Bedarf nach. Schlaegt dies erneut fehl, bricht das Skript mit einer Fehlermeldung ab.
-**Version 1.36.11 - Bessere Fehleranzeige**
-Beim Starten der Anwendung erscheint nun eine verständliche Meldung, falls `npm start` fehlschlägt. Der Fehler wird zusätzlich in `setup.log` protokolliert.
-
-**Version 1.36.10 - Stopp bei Fehlermeldungen**
-Das Python-Startskript hält das Fenster nach Abschluss offen, sodass man Fehler besser erkennen kann.
-
-**Version 1.35.0 - Backup-Upload**
-Backups können im Browser hochgeladen und sofort wiederhergestellt werden.
-**Version 1.26.0 - Studio-Workflow**
-Öffnet nach jedem Dubbing automatisch das ElevenLabs Studio und zeigt einen Hinweis mit OK-Button an.
-
-
-**Version 1.25.0 - API-Bereinigung
-🎮 Speziell entwickelt für Half‑Life: Alyx Übersetzungsprojekte
 
 ## 🧪 Tests
 
@@ -576,29 +415,7 @@ Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Req
    npm test
    ```
 
-Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen unter
-anderem die Funktion `calculateProjectStats`. Neu sind Tests für die
-ElevenLabs‑Anbindung (z. B. `getDubbingStatus`) und `manualDub.test.js`, der `csv_file` und `voice_id` überprüft. Zudem prüft ein Test `showDubbingSettings`, ob der Dialog im DOM erscheint. Ebenfalls neu ist `watcher.test.js`, der das Anlegen einer Datei im Download‑Ordner simuliert und den entsprechenden Callback testet.
-Ab Version 1.40.3 nutzt `manualDub.test.js` einen kleinen Polyfill, damit der `File`-Konstruktor auch in Node-Umgebungen verfügbar ist.
-Ab Version 1.40.3 lädt die Desktop-Version `config.js` auch im gepackten Zustand zuverlässig.
-Ab Version 1.40.4 funktioniert der Dev-Button wieder in jeder Version, weil seine Funktion global bereitsteht.
-Ab Version 1.40.5 führt das `pretest`-Skript nun `npm ci` statt `npm install` aus.
-Ab Version 1.40.6 stürzt das Debug-Fenster im Browser nicht mehr ab, wenn kein Node-Prozess vorhanden ist.
-Ab Version 1.40.7 kann `reset_repo.py` das Repository komplett aktualisieren, alle Abhängigkeiten installieren und anschließend die Desktop-App starten.
-Ab Version 1.40.8 nutzt das Preload-Skript `node:path`, damit Electron-Pakete fehlerfrei starten.
-Ab Version 1.40.9 meldet `findAudioInFilePathCache` beim Suchen den kompletten Pfad in der Debug-Konsole.
-Ab Version 1.40.10 pr\u00fcft das Preload-Skript, ob `require` vorhanden ist und bricht andernfalls mit einer Warnung ab.
-Ab Version 1.40.11 gibt `watcher.js` beim Start den überwachten Pfad aus und meldet fehlende Download-Ordner. Zudem liefert `config.js` den absoluten Pfad `SOUNDS_BASE_PATH`.
-Ab Version 1.40.12 lädt `main.js` die HTML-Datei über einen absoluten Pfad, damit die Desktop-App immer korrekt startet.
-
-Ab Version 1.40.13 protokolliert das Preload-Skript Fehler und meldet "erfolgreich geladen". Die Renderer-Logik prüft jetzt `window.electronAPI`.
-Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
-Ab Version 1.40.15 öffnet die Desktop-Version die DevTools automatisch und zeigt im Preload `[PRELOAD] start` an.
-Ab Version 1.40.16 prüft der Renderer die Electron-Umgebung nur noch über `window.electronAPI` und speichert das Ergebnis in `isElectron`.
-Ab Version 1.40.17 nutzt die Desktop-Version das Preload-Skript `preload.cjs`, damit `__filename` und `require` verfügbar sind.
-Ab Version 1.40.18 prüft der Renderer nur noch `window.electronAPI` und `main.js` deaktiviert vorsorglich den Sandbox-Modus.
-
-## ▶️ E2E-Test
+Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus.
 
 1. **Entwicklungsserver starten**
    ```bash
