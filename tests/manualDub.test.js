@@ -156,6 +156,11 @@ describe('Manual Dub', () => {
         expect(text).toContain('"Hallo ""Bob"""');
     });
 
+    test('validateCsv akzeptiert Zeilenumbrüche in Übersetzungen', () => {
+        const csv = 'speaker,start_time,end_time,transcription,translation\n0,0.000,1.000,"Hello","Hallo\nWelt"\n';
+        expect(validateCsv(csv)).toBe(true);
+    });
+
     test('validateCsv lehnt fehlerhafte CSV ab', () => {
         const csv = 'speaker,start_time,end_time,transcription,translation\n0,0.000,1.000';
         expect(validateCsv(csv)).toBe(false);

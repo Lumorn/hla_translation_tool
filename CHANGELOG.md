@@ -13,6 +13,8 @@
 * Renderer prüft die Verfügbarkeit der Electron-API über `window.electronAPI`.
 ## 🛠️ Patch in 1.40.5
 * Manuell heruntergeladene Dateien werden nun auch nach einem Neustart automatisch erkannt und importiert.
+## 🛠️ Patch in 1.40.6
+* `validateCsv` kommt jetzt mit Zeilenumbrüchen in Übersetzungen zurecht.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
