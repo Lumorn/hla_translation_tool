@@ -128,7 +128,13 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
 }
 ```
 
-Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Dort lassen sich folgende Parameter anpassen:
+Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Danach fragt das Tool,
+ob die **Beta-API** genutzt oder der **halbautomatische Modus** verwendet werden soll.
+Im halbautomatischen Modus werden Audiodatei und Texte lediglich an ElevenLabs gesendet.
+Anschließend erscheint ein Hinweis, die fertig gerenderte Datei in den Download-Ordner zu legen.
+Sobald dort eine passende Datei auftaucht, zeigt das Tool „Datei gefunden" mit Namen an und
+wartet auf eine Bestätigung.
+Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 
 * **Stability** – Ausgeglichenheit vs. Lebendigkeit
 * **Similarity-Boost** – Nähe zum Original
@@ -144,7 +150,7 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 
-Ein Watcher überwacht jetzt automatisch den systemweiten **Download**-Ordner. Taucht dort eine fertig gerenderte Datei auf, wird sie in `web/sounds/DE` verschoben und der Status der entsprechenden Zeile springt auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs.
+Ein Watcher überwacht automatisch den systemweiten **Download**-Ordner. Taucht dort eine fertig gerenderte Datei auf, meldet das Tool „Datei gefunden“ und verschiebt sie nach `web/sounds/DE`. Der Status springt anschließend auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs.
 
 
 Beispiel einer gültigen CSV:

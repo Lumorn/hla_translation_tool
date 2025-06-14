@@ -64,6 +64,8 @@ let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') |
 let csvLineEnding = localStorage.getItem('hla_lineEnding') || 'LF';
 // Merkt die Datei, für die der Dubbing-Dialog geöffnet wurde
 let currentDubbingFileId = null;
+// Gewählter Modus für Dubbing: 'beta' oder 'manual'
+let currentDubMode = 'beta';
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -237,7 +239,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 current.dubReady = true;
                 current.waitingForManual = false;
                 renderFileTable();
-                showToast(`${dest.split('/').pop()} importiert.`);
+                const name = dest.split('/').pop();
+                showToast(`${name} importiert.`);
+                updateDownloadWaitDialog(name);
             });
         }
 
@@ -6484,7 +6488,7 @@ function initiateDubbing(fileId) {
         document.body.insertAdjacentHTML('beforeend', html);
         document.getElementById('dubbingActionDialog').style.display = 'flex';
     } else {
-        showDubbingSettings(fileId);
+        chooseDubbingMode(fileId);
     }
 }
 
@@ -6495,6 +6499,35 @@ function closeDubbingAction() {
 
 function proceedNewDubbing(fileId) {
     closeDubbingAction();
+    chooseDubbingMode(fileId);
+}
+
+// Fragt den Benutzer nach dem gewünschten Dubbing-Modus
+function chooseDubbingMode(fileId) {
+    const html = `
+        <div class="dialog-overlay" id="dubModeDialog">
+            <div class="dialog">
+                <h3>Dubbing-Modus wählen</h3>
+                <p>Beta-API nutzen oder halbautomatischen Modus starten?</p>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="closeDubMode()">Abbrechen</button>
+                    <button class="btn btn-info" onclick="selectDubMode('manual', ${fileId})">Halbautomatisch</button>
+                    <button class="btn btn-success" onclick="selectDubMode('beta', ${fileId})">Beta-API</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('dubModeDialog').style.display = 'flex';
+}
+
+function closeDubMode() {
+    const dlg = document.getElementById('dubModeDialog');
+    if (dlg) dlg.remove();
+}
+
+function selectDubMode(mode, fileId) {
+    currentDubMode = mode;
+    closeDubMode();
     showDubbingSettings(fileId);
 }
 // =========================== INITIATEDUBBING END ============================
@@ -6508,8 +6541,9 @@ async function getDefaultVoiceSettings(apiKey) {
     return await res.json();
 }
 
-async function showDubbingSettings(fileId) {
+async function showDubbingSettings(fileId, mode = currentDubMode) {
     currentDubbingFileId = fileId;
+    currentDubMode = mode;
     const file = files.find(f => f.id === fileId) || {};
     const voiceId = folderCustomizations[file.folder]?.voiceId || '';
     let voiceName = voiceId;
@@ -6587,7 +6621,7 @@ function confirmDubbingSettings(fileId) {
     localStorage.setItem('hla_voiceSettings', JSON.stringify(settings));
     storedVoiceSettings = settings;
     closeDubbingSettings();
-    startDubbing(fileId, settings);
+    startDubbing(fileId, settings, 'de', currentDubMode);
 }
 
 // Entfernt gespeicherte Voice-Settings und lädt den Dialog neu
@@ -6622,6 +6656,47 @@ function showStudioOverlay() {
 function closeStudioOverlay() {
     const ov = document.getElementById('studioNoticeDialog');
     if (ov) ov.remove();
+}
+
+// Zeigt ein Dialogfenster, das auf die manuelle Datei wartet
+let waitDialogFileId = null;
+async function showDownloadWaitDialog(fileId) {
+    waitDialogFileId = fileId;
+    let dlPath = 'Download';
+    if (window.electronAPI && window.electronAPI.getDownloadPath) {
+        dlPath = await window.electronAPI.getDownloadPath();
+    }
+    const html = `
+        <div class="dialog-overlay" id="downloadWaitDialog">
+            <div class="dialog">
+                <h3>Alles gesendet</h3>
+                <p>Bitte lege die fertige Datei in <code>${dlPath}</code>.</p>
+                <p id="downloadFound" style="display:none;"></p>
+                <div class="dialog-buttons" id="downloadWaitButtons">
+                    <button class="btn btn-secondary" onclick="closeDownloadWaitDialog()">Abbrechen</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('downloadWaitDialog').style.display = 'flex';
+}
+
+function updateDownloadWaitDialog(name) {
+    const info = document.getElementById('downloadFound');
+    if (info) {
+        info.textContent = 'Datei gefunden: ' + name;
+        info.style.display = 'block';
+    }
+    const btn = document.getElementById('downloadWaitButtons');
+    if (btn) {
+        btn.innerHTML = '<button class="btn btn-success" onclick="closeDownloadWaitDialog()">OK</button>';
+    }
+}
+
+function closeDownloadWaitDialog() {
+    const dlg = document.getElementById('downloadWaitDialog');
+    if (dlg) dlg.remove();
+    waitDialogFileId = null;
 }
 
 // Öffnet das Studio und zeigt einen Hinweis mit Download-Pfad an
@@ -6715,7 +6790,7 @@ function validateCsv(csvText) {
 
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
-async function startDubbing(fileId, settings = {}, targetLang = 'de') {
+async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'beta') {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     // Ordnerspezifische Voice-ID ermitteln
@@ -6854,6 +6929,16 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     // Hauptprozess über neuen Job informieren
     if (window.electronAPI && window.electronAPI.sendDubStart) {
         window.electronAPI.sendDubStart({ id, fileId: file.id, relPath: getFullPath(file) });
+    }
+
+    if (mode === 'manual') {
+        showToast('Alles gesendet. Bitte Datei in Download legen.');
+        const currentItem = file;
+        currentItem.waitingForManual = true;
+        ui.setActiveDubItem(currentItem);
+        renderFileTable();
+        await showDownloadWaitDialog(file.id);
+        return;
     }
 
     try {
