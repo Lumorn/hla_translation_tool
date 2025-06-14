@@ -191,9 +191,10 @@ app.whenReady().then(() => {
     return true;
   });
 
-  // Pfad des systemweiten Download-Ordners liefern
+  // Pfad des projektinternen Download-Ordners liefern
   ipcMain.handle('get-download-path', () => {
-    return app.getPath('downloads');
+    // Der Download-Ordner liegt im Web-Verzeichnis des Projekts
+    return DL_WATCH_PATH;
   });
 
   // =========================== DEBUG-INFO START =============================
@@ -396,7 +397,7 @@ app.whenReady().then(() => {
         if (mainWindow) mainWindow.webContents.send('dub-error', info);
       },
       log: msg => console.log('[Watcher]', msg),
-      path: app.getPath('downloads')
+      // Ohne Pfad-Option nutzt der Watcher automatisch DL_WATCH_PATH
     }
   );
 
