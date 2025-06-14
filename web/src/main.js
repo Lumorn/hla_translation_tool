@@ -6481,7 +6481,7 @@ function initiateDubbing(fileId) {
                     <div class="dialog-buttons">
                         <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
                         <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
-                        <button class="btn btn-success" onclick="redownloadDubbing(${fileId})">Erneut herunterladen</button>
+                        <button class="btn btn-success" onclick="proceedRedownload(${fileId})">Erneut herunterladen</button>
                     </div>
                 </div>
             </div>`;
@@ -6500,6 +6500,40 @@ function closeDubbingAction() {
 function proceedNewDubbing(fileId) {
     closeDubbingAction();
     chooseDubbingMode(fileId);
+}
+
+// Startet den Auswahl-Dialog für erneutes Herunterladen
+function proceedRedownload(fileId) {
+    closeDubbingAction();
+    chooseRedownloadMode(fileId);
+}
+
+// Zeigt die Auswahl zwischen Beta und Halbautomatik an
+function chooseRedownloadMode(fileId) {
+    const html = `
+        <div class="dialog-overlay" id="redlModeDialog">
+            <div class="dialog">
+                <h3>Download-Modus wählen</h3>
+                <p>Beta-API nutzen oder halbautomatisch herunterladen?</p>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="closeRedownloadMode()">Abbrechen</button>
+                    <button class="btn btn-info" onclick="selectRedownloadMode('manual', ${fileId})">Halbautomatisch</button>
+                    <button class="btn btn-success" onclick="selectRedownloadMode('beta', ${fileId})">Beta-API</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('redlModeDialog').style.display = 'flex';
+}
+
+function closeRedownloadMode() {
+    const dlg = document.getElementById('redlModeDialog');
+    if (dlg) dlg.remove();
+}
+
+function selectRedownloadMode(mode, fileId) {
+    closeRedownloadMode();
+    redownloadDubbing(fileId, mode);
 }
 
 // Fragt den Benutzer nach dem gewünschten Dubbing-Modus
@@ -6985,7 +7019,7 @@ async function isDubReady(id, lang = 'de') {
 
 // =========================== REDOWNLOADDUBBING START ========================
 // Lädt bereits erzeugtes Dubbing mithilfe der gespeicherten ID erneut herunter
-async function redownloadDubbing(fileId) {
+async function redownloadDubbing(fileId, mode = 'beta') {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.dubbingId) return;
     // Log zu Beginn leeren
@@ -6994,6 +7028,13 @@ async function redownloadDubbing(fileId) {
     if (logPre) logPre.textContent = '';
     openDubbingLog();
     addDubbingLog(`Lade Dubbing ${file.dubbingId} erneut`);
+    if (mode === 'manual') {
+        showToast('Bitte Spur manuell generieren und in den Download-Ordner legen.');
+        await openStudioAndWait(file.dubbingId);
+        await showDownloadWaitDialog(file.id);
+        return;
+    }
+
     if (!elevenLabsApiKey) {
         updateStatus('API-Key fehlt');
         addDubbingLog('API-Key fehlt');
