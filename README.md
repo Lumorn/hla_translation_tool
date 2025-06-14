@@ -63,7 +63,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tab/Shift+Tab Navigation** zwischen Textfeldern und Zeilen
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
-* **Projekt-Playback:** ▶/⏸/⏹ spielt alle Dateien nacheinander ab
+* **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
 
 ### 🔍 Suche & Import
@@ -248,7 +248,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 |  Aktion                    |  Bedienung |
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
-| **Projekt-Playback**      | ▶/⏸/⏹ rechts im Projekt |
+| **Projekt-Playback**      | ▶/⏸/⏹ spielt nur vorhandene DE-Dateien |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |

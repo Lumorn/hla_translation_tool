@@ -3583,8 +3583,18 @@ function clearProjectRowHighlight() {
 function playCurrentProjectFile() {
     if (projectPlayIndex >= files.length) { stopProjectPlayback(); return; }
     const file = files[projectPlayIndex];
+    // Wenn keine DE-Datei existiert, überspringen wir diese Datei
+    if (!getDeFilePath(file)) {
+        projectPlayIndex++;
+        if (projectPlayState === 'playing') {
+            playCurrentProjectFile();
+        }
+        return;
+    }
+
     highlightProjectRow(file.id);
-    playAudio(file.id);
+    // Deutsche Version abspielen
+    playDeAudio(file.id);
     const audio = document.getElementById('audioPlayer');
     const oldEnded = audio.onended;
     audio.onended = () => {
