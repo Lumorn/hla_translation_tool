@@ -410,7 +410,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * **🔍 Debug‑Spalte:** Zeigt aufgelöste Pfade und Status
 * **📊 Datenquellen‑Analyse:** Console‑Logs für Entwickler
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
-* **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen Sie mit `npm start -- --debug` die DevTools in einem separaten Fenster oder per `Ctrl+Shift+I`.
+* **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen sich die DevTools jetzt automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 
 ### Performance‑Tipps
@@ -585,6 +585,7 @@ Ab Version 1.40.12 lädt `main.js` die HTML-Datei über einen absoluten Pfad, da
 
 Ab Version 1.40.13 protokolliert das Preload-Skript Fehler und meldet "erfolgreich geladen". Die Renderer-Logik prüft jetzt `window.electronAPI`.
 Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
+Ab Version 1.40.15 öffnet die Desktop-Version die DevTools automatisch und zeigt im Preload `[PRELOAD] start` an.
 
 ## ▶️ E2E-Test
 
