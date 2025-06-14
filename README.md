@@ -156,6 +156,7 @@ So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 Beim erneuten Download fragt das Tool nun ebenfalls, ob die Beta-API oder der halbautomatische Modus genutzt werden soll.
 
 Ein Watcher überwacht automatisch den Ordner `web/Download` im Projekt. Taucht dort eine fertig gerenderte Datei auf, meldet das Tool „Datei gefunden“ und verschiebt sie nach `web/sounds/DE`. Seit Version 1.40.5 klappt das auch nach einem Neustart: Legen Sie die Datei einfach in den Ordner, sie wird anhand der Dubbing‑ID automatisch der richtigen Zeile zugeordnet. Der Status springt anschließend auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs, allerdings nur im Beta-Modus. Beta-Jobs werden nun automatisch aus dieser Liste entfernt, sobald sie fertig sind. Der halbautomatische Modus verzichtet auf diese Abfrage. Der Download-Ordner wird zu Beginn jedes neuen Dubbings und nach dem Import automatisch geleert.
+Seit Patch 1.40.7 merkt sich das Tool außerdem den fertigen Status dauerhaft. Auch nach einem erneuten Download bleibt der grüne Haken erhalten.
 
 
 Beispiel einer gültigen CSV:
