@@ -55,6 +55,7 @@ let chapterColors         = {}; // Farbe pro Kapitel
 // Status für Projekt-Wiedergabe
 let projectPlayState       = 'stopped'; // 'playing', 'paused'
 let projectPlayIndex       = 0;        // Aktuelle Datei im Projekt
+let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiedergabe
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -3593,10 +3594,15 @@ function clearProjectRowHighlight() {
     document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
 }
 
+// Liefert alle Dateien mit vorhandener DE-Version in aktueller Reihenfolge
+function getProjectPlaybackList() {
+    return files.filter(f => getDeFilePath(f));
+}
+
 // Spielt die aktuelle Datei im Projekt ab
 function playCurrentProjectFile() {
-    if (projectPlayIndex >= files.length) { stopProjectPlayback(); return; }
-    const file = files[projectPlayIndex];
+    if (projectPlayIndex >= playbackFiles.length) { stopProjectPlayback(); return; }
+    const file = playbackFiles[projectPlayIndex];
     // Wenn keine DE-Datei existiert, überspringen wir diese Datei
     if (!getDeFilePath(file)) {
         projectPlayIndex++;
@@ -3618,6 +3624,7 @@ function playCurrentProjectFile() {
 }
 
 function startProjectPlayback() {
+    playbackFiles = getProjectPlaybackList();
     projectPlayIndex = 0;
     projectPlayState = 'playing';
     updateProjectPlaybackButtons();
@@ -3641,6 +3648,7 @@ function resumeProjectPlayback() {
 function stopProjectPlayback() {
     projectPlayState = 'stopped';
     projectPlayIndex = 0;
+    playbackFiles = [];
     clearProjectRowHighlight();
     stopCurrentPlayback();
     updateProjectPlaybackButtons();
@@ -9885,6 +9893,9 @@ if (typeof module !== "undefined" && module.exports) {
         redownloadDubbing,
         initiateDubbing,
         downloadDe,
-        updateDubStatusForFiles
+        updateDubStatusForFiles,
+        getProjectPlaybackList,
+        __setFiles: f => { files = f; },
+        __setDeAudioCache: c => { deAudioCache = c; }
     };
 }
