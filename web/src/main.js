@@ -73,7 +73,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.3';
+const APP_VERSION = '1.40.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -229,15 +229,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Meldung bei neuen Dateien aus dem Download-Ordner
         if (window.electronAPI.onManualFile) {
             window.electronAPI.onManualFile(async file => {
-                const current = getActiveDubItem();
-                if (!current) return;
-                const rel = getFullPath(current).replace(/\.(mp3|wav|ogg)$/i, '');
+                // Zuerst nach aktivem Dubbing-Item suchen
+                let ziel = getActiveDubItem();
+
+                if (!ziel) {
+                    // Kein aktives Item -> per Dateinamen oder Dubbing-ID suchen
+                    const basis = file.substring(file.lastIndexOf('/') + 1)
+                                      .replace(/\.(mp3|wav|ogg)$/i, '');
+                    ziel = files.find(f => f.dubbingId === basis ||
+                        f.filename.replace(/\.(mp3|wav|ogg)$/i, '') === basis);
+                }
+
+                if (!ziel) return; // Keine Zuordnung möglich
+
+                const rel = getFullPath(ziel).replace(/\.(mp3|wav|ogg)$/i, '');
                 const ext = file.substring(file.lastIndexOf('.'));
                 const dest = `sounds/DE/${rel}${ext}`;
                 await window.electronAPI.moveFile(file, dest);
                 deAudioCache[`${rel}${ext}`] = dest;
-                current.dubReady = true;
-                current.waitingForManual = false;
+                ziel.dubReady = true;
+                ziel.waitingForManual = false;
                 renderFileTable();
                 const name = dest.split('/').pop();
                 showToast(`${name} importiert.`);
