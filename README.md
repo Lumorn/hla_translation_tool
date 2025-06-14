@@ -405,6 +405,14 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
 * ▶ **Intelligente Bereinigung:** Behält beste Versionen automatisch
 
+#### Häufige Crash-Stellen
+
+| Typischer Fehler | Ursache | Kurzlösung |
+| --- | --- | --- |
+| `ReferenceError: require is not defined` | `sandbox:true` verbogen oder `contextIsolation` unsauber verdreht | `main.js`: `webPreferences:{ contextIsolation:true, sandbox:false, nodeIntegration:false, preload:path.join(__dirname,'preload.js') }` |
+| `Cannot find module 'fs'` o. Ä. | Preload als ESM geschrieben (import …) statt CommonJS | Komplett auf `require()` umstellen oder `filename.mjs` + "type":"module" vermeiden. |
+| Zugriff auf `window`/`document` | DOM im Preload nicht verfügbar | Alles DOM-abhängige in ein Renderer-Script verschieben. |
+
 ### Debug‑Tools
 
 * **🔍 Debug‑Spalte:** Zeigt aufgelöste Pfade und Status
