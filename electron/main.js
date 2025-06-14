@@ -84,9 +84,9 @@ function createWindow() {
   // HTML-Datei immer über einen absoluten Pfad laden
   win.loadFile(path.join(__dirname, '../web/hla_translation_tool.html'));
 
-  // DevTools optional öffnen, wenn das Flag gesetzt ist
+  // DevTools optional in separatem Fenster öffnen, wenn das Flag gesetzt ist
   if (isDebug) {
-    win.webContents.openDevTools();
+    win.webContents.openDevTools({ mode: 'detach' });
   }
 
   // Shortcut zum Ein- und Ausblenden der DevTools
