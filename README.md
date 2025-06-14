@@ -30,6 +30,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
+* **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
@@ -220,6 +221,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 | **Projekt löschen**       | × auf Projekt‑Kachel                              |
 | **Projekt umbenennen**    | Doppelklick auf Projekt‑Name                      |
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
+| **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
 
 ### Datei‑Management
@@ -404,7 +406,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 * **📋 Level‑Namen verwenden:** Strukturieren Sie Projekte nach Spiel‑Leveln
 * **🔢 Teil‑Nummern vergeben:** Für große Level mehrere Teile erstellen
 * **🎨 Farb‑Coding:** Ähnliche Level mit gleichen Farben markieren
-* **📂 Kapitel:** Mehrere Level zu Kapiteln gruppieren und zusammenklappen
+* **📂 Kapitel:** Mehrere Level zu Kapiteln gruppieren, bearbeiten und zusammenklappen
 
 ### Übersetzungs‑Workflow
 
