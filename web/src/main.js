@@ -50,6 +50,7 @@ let expandedLevel          = null; // aktuell geöffneter Level
 let levelChapters         = {}; // Zuordnung Level → Kapitel
 let chapterOrders         = {}; // Reihenfolge der Kapitel
 let expandedChapter       = null; // aktuell geöffnetes Kapitel
+let chapterColors         = {}; // Farbe pro Kapitel
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -335,6 +336,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         chapterOrders = JSON.parse(savedChapterOrders);
     }
 
+    const savedChapterColors = localStorage.getItem('hla_chapterColors');
+    if (savedChapterColors) {
+        chapterColors = JSON.parse(savedChapterColors);
+    }
+
     initializeEventListeners();
 
     // 📁 Ordner-Anpassungen laden
@@ -442,6 +448,15 @@ function setChapterOrder(chapterName, order) {
     chapterOrders[chapterName] = order;
     saveChapterOrders();
 }
+
+function getChapterColor(chapterName) {
+    return chapterColors[chapterName] || '#222';
+}
+
+function setChapterColor(chapterName, color) {
+    chapterColors[chapterName] = color || '#222';
+    saveChapterColors();
+}
 /* =========================== KAPITEL-HILFSFUNKTIONEN ENDE ================== */
 
 // =========================== SAVELEVELCOLORS START ===========================
@@ -493,6 +508,15 @@ function saveChapterOrders() {
         console.error('[saveChapterOrders] Speichern fehlgeschlagen:', e);
     }
 }
+// =========================== SAVECHAPTERCOLORS START ========================
+function saveChapterColors() {
+    try {
+        localStorage.setItem('hla_chapterColors', JSON.stringify(chapterColors));
+    } catch (e) {
+        console.error('[saveChapterColors] Speichern fehlgeschlagen:', e);
+    }
+}
+// =========================== SAVECHAPTERCOLORS END ==========================
 // =========================== SAVECHAPTERORDERS END ==========================
 /* =========================== LEVEL-COLOR-HISTORY START ===================== */
 function updateLevelColorHistory(color) {
@@ -728,8 +752,13 @@ function renderProjects() {
 
         const chHeader = document.createElement('div');
         chHeader.className = 'chapter-header';
-        chHeader.textContent = `${getChapterOrder(chp)}.${chp}`;
-        chHeader.onclick = () => {
+        chHeader.style.background = getChapterColor(chp);
+        chHeader.innerHTML = `
+            <span class="chapter-title">${getChapterOrder(chp)}.${chp}</span>
+            <button class="chapter-edit-btn" data-chapter="${chp}" onclick="showChapterCustomization(this.dataset.chapter, event)">⚙️</button>
+        `;
+        chHeader.onclick = (e) => {
+            if (e.target.classList.contains('chapter-edit-btn')) return;
             expandedChapter = expandedChapter === chp ? null : chp;
             renderProjects();
         };
@@ -9163,6 +9192,111 @@ function showLevelCustomization(levelName, ev) {
 }
 /* =========================== SHOW LEVEL CUSTOMIZATION END ========================== */
 
+/* =========================== SHOW CHAPTER CUSTOMIZATION START ====================== */
+function showChapterCustomization(chapterName, ev) {
+    ev?.stopPropagation();
+    const order = getChapterOrder(chapterName) || 1;
+    const color = getChapterColor(chapterName);
+
+    const ov = document.createElement('div');
+    ov.className = 'customize-popup-overlay';
+    ov.onclick   = () => document.body.removeChild(ov);
+
+    const pop = document.createElement('div');
+    pop.className = 'folder-customize-popup';
+    pop.onclick   = e => e.stopPropagation();
+
+    pop.innerHTML = `
+      <h4>⚙️ Kapitel-Einstellungen</h4>
+
+      <div class="customize-field">
+        <label>Name:</label>
+        <input id="chName" value="${chapterName}">
+      </div>
+
+      <div class="customize-field">
+        <label>Reihenfolge:</label>
+        <input type="number" id="chOrder" min="1" max="9999" value="${order}">
+      </div>
+
+      <div class="customize-field">
+        <label>Farbe:</label>
+        <input type="color" id="chColor" value="${color}">
+        <div id="chHistory" class="color-history"></div>
+      </div>
+
+      <div class="customize-buttons">
+        <button class="btn btn-danger" id="chDelete">Löschen</button>
+        <button class="btn btn-secondary" id="chCancel">Abbrechen</button>
+        <button class="btn btn-success"   id="chSave">Speichern</button>
+      </div>
+    `;
+
+    ov.appendChild(pop);
+    document.body.appendChild(ov);
+
+    const colorInput = pop.querySelector('#chColor');
+    const histDiv = pop.querySelector('#chHistory');
+    if(histDiv && colorInput){
+        levelColorHistory.forEach(col => {
+            const btn = document.createElement('button');
+            btn.className = 'color-swatch';
+            btn.style.background = col;
+            btn.onclick = () => { colorInput.value = col; };
+            histDiv.appendChild(btn);
+        });
+    }
+
+    pop.querySelector('#chCancel').onclick = () => document.body.removeChild(ov);
+
+    pop.querySelector('#chDelete').onclick = () => {
+        if (!confirm('Kapitel wirklich löschen?')) return;
+        Object.keys(levelChapters).forEach(lvl => {
+            if (levelChapters[lvl] === chapterName) delete levelChapters[lvl];
+        });
+        delete chapterOrders[chapterName];
+        delete chapterColors[chapterName];
+        if (expandedChapter === chapterName) expandedChapter = null;
+        saveLevelChapters();
+        saveChapterOrders();
+        saveChapterColors();
+        renderProjects();
+        document.body.removeChild(ov);
+    };
+
+    pop.querySelector('#chSave').onclick = () => {
+        const newName  = pop.querySelector('#chName').value.trim() || chapterName;
+        const newOrder = Math.max(1, parseInt(pop.querySelector('#chOrder').value) || order);
+        const newColor = pop.querySelector('#chColor').value;
+
+        if (newName !== chapterName) {
+            Object.keys(levelChapters).forEach(lvl => {
+                if (levelChapters[lvl] === chapterName) {
+                    levelChapters[lvl] = newName;
+                }
+            });
+            if (chapterOrders[chapterName]) {
+                chapterOrders[newName] = chapterOrders[chapterName];
+                delete chapterOrders[chapterName];
+            }
+            if (chapterColors[chapterName]) {
+                chapterColors[newName] = chapterColors[chapterName];
+                delete chapterColors[chapterName];
+            }
+            if (expandedChapter === chapterName) expandedChapter = newName;
+        }
+
+        setChapterOrder(newName, newOrder);
+        setChapterColor(newName, newColor);
+
+        saveLevelChapters();
+        saveChapterOrders();
+        saveChapterColors();
+        renderProjects();
+        document.body.removeChild(ov);
+    };
+}
+/* =========================== SHOW CHAPTER CUSTOMIZATION END ======================== */
 
 
 
