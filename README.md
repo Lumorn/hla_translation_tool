@@ -149,6 +149,7 @@ Beim Öffnen des Dubbing-Dialogs werden gespeicherte Werte automatisch geladen.
 
 Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID** in der jeweiligen Datei (`dubbingId`).
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
+Beim erneuten Download fragt das Tool nun ebenfalls, ob die Beta-API oder der halbautomatische Modus genutzt werden soll.
 
 Ein Watcher überwacht automatisch den systemweiten **Download**-Ordner. Taucht dort eine fertig gerenderte Datei auf, meldet das Tool „Datei gefunden“ und verschiebt sie nach `web/sounds/DE`. Der Status springt anschließend auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs.
 
