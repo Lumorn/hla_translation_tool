@@ -582,7 +582,9 @@ Ab Version 1.40.9 meldet `findAudioInFilePathCache` beim Suchen den kompletten P
 Ab Version 1.40.10 pr\u00fcft das Preload-Skript, ob `require` vorhanden ist und bricht andernfalls mit einer Warnung ab.
 Ab Version 1.40.11 gibt `watcher.js` beim Start den überwachten Pfad aus und meldet fehlende Download-Ordner. Zudem liefert `config.js` den absoluten Pfad `SOUNDS_BASE_PATH`.
 Ab Version 1.40.12 lädt `main.js` die HTML-Datei über einen absoluten Pfad, damit die Desktop-App immer korrekt startet.
+
 Ab Version 1.40.13 protokolliert das Preload-Skript Fehler und meldet "erfolgreich geladen". Die Renderer-Logik prüft jetzt `window.electronAPI`.
+Ab Version 1.40.14 protokolliert das Preload-Skript jetzt seinen Startzeitpunkt.
 
 ## ▶️ E2E-Test
 
