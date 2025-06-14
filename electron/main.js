@@ -81,7 +81,8 @@ function createWindow() {
     },
   });
 
-  win.loadFile(path.join(__dirname, '..', 'web', 'hla_translation_tool.html'));
+  // HTML-Datei immer über einen absoluten Pfad laden
+  win.loadFile(path.join(__dirname, '../web/hla_translation_tool.html'));
 
   // DevTools optional öffnen, wenn das Flag gesetzt ist
   if (isDebug) {
