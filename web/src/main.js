@@ -767,6 +767,8 @@ function renderProjects() {
         };
         chGroup.appendChild(chHeader);
 
+        let chapterDone = true; // Flag, ob alle Level und Projekte fertig sind
+
         const levelWrap = document.createElement('div');
         levelWrap.className = 'chapter-levels';
 
@@ -782,7 +784,7 @@ function renderProjects() {
         header.className = 'level-header';
         header.style.background = getLevelColor(lvl);
 
-        let levelDone = true; // Flag, ob alle Projekte fertig sind
+            let levelDone = true; // Flag, ob alle Projekte fertig sind
 
         const icon = getLevelIcon(lvl);
         header.innerHTML = `
@@ -880,11 +882,22 @@ function renderProjects() {
             mark.className = 'level-done-marker';
             mark.textContent = '✅';
             header.querySelector('.level-header-left').appendChild(mark);
+        } else {
+            chapterDone = false; // Ein Level ist unvollständig
         }
 
             group.appendChild(wrap);
             levelWrap.appendChild(group);
         });
+
+        // Haken am Kapitel-Header anzeigen, wenn alles fertig ist
+        if (chapterDone) {
+            const mark = document.createElement('span');
+            mark.className = 'chapter-done-marker';
+            mark.textContent = '✅';
+            const title = chHeader.querySelector('.chapter-title');
+            if (title) title.insertAdjacentElement('afterend', mark);
+        }
 
         chGroup.appendChild(levelWrap);
         list.appendChild(chGroup);

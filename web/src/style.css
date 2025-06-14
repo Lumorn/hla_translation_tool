@@ -2048,6 +2048,11 @@ th:nth-child(6) {
     font-size: 16px;
     color: #4caf50;
 }
+.chapter-done-marker {
+    margin-left: 6px;
+    font-size: 16px;
+    color: #4caf50;
+}
 
 /* =========================== CHAPTER-GROUP STYLES START ==================== */
 .chapter-group { margin-bottom: 14px; }
