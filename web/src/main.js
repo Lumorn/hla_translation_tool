@@ -236,7 +236,6 @@ function stopCurrentPlayback() {
 
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
-    loadProjects();
     // DevTools-Knopf wird immer eingeblendet
 
 
@@ -340,6 +339,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (savedChapterColors) {
         chapterColors = JSON.parse(savedChapterColors);
     }
+
+    // Wichtig: Kapitel-Daten müssen vor dem Laden der Projekte vorhanden sein,
+    // sonst sortiert sich die Liste beim ersten Start falsch
+    loadProjects();
 
     initializeEventListeners();
 
