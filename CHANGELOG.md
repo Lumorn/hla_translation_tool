@@ -8,6 +8,9 @@
 * `updateVersion.js` aktualisiert jetzt zusätzlich `electron/package.json`.
 ## 🛠️ Patch in 1.40.3
 * Pfad zur Konfiguration wird in der Desktop-Version nun dynamisch ermittelt.
+## 🛠️ Patch in 1.40.4
+* Preload-Skript fängt nun unbehandelte Fehler ab und meldet "erfolgreich geladen".
+* Renderer prüft die Verfügbarkeit der Electron-API über `window.electronAPI`.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

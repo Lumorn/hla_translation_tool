@@ -126,6 +126,15 @@ app.whenReady().then(() => {
     };
   });
 
+  // Ordnerauswahl-Dialog öffnen und gewählten Pfad zurückgeben
+  ipcMain.handle('open-folder-dialog', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    });
+    if (result.canceled || result.filePaths.length === 0) return null;
+    return result.filePaths[0];
+  });
+
   // Speichert eine Datei über einen Dialog auf der Festplatte
   ipcMain.handle('save-file', async (event, { data, defaultPath }) => {
     const { canceled, filePath } = await dialog.showSaveDialog({
