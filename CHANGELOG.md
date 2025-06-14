@@ -25,6 +25,8 @@
 * Kapitel-Liste sortiert sich in der Projekt-Ansicht sofort korrekt.
 ## 🛠️ Patch in 1.40.11
 * Kapitel-Auswahllisten sind jetzt nach der Kapitelnummer sortiert.
+## 🛠️ Patch in 1.40.12
+* Level-Auswahlliste in den Projekt-Einstellungen folgt nun der Level-Nummer.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

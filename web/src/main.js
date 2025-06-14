@@ -8899,7 +8899,9 @@ function showProjectCustomization(id, ev, tempProject) {
     if (!prj) return;
     const isNew = !!tempProject;
 
-    const knownLevels   = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
+    // Levelnamen nach ihrer gespeicherten Nummer sortieren
+    const knownLevels   = [...new Set(projects.map(p => p.levelName).filter(Boolean))]
+        .sort((a, b) => getLevelOrder(a) - getLevelOrder(b));
     // Kapitel nach ihrer Nummer sortieren
     const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))]
         .sort((a, b) => getChapterOrder(a) - getChapterOrder(b));
