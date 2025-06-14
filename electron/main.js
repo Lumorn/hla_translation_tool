@@ -410,6 +410,8 @@ app.whenReady().then(() => {
   setInterval(async () => {
     for (let i = pendingDubs.length - 1; i >= 0; i--) {
       const job = pendingDubs[i];
+      // Halbautomatische Jobs werden hier nicht abgefragt
+      if (job.mode === 'manual') continue;
       try {
         const ready = await isDubReady(job.id, 'de', apiKey);
         if (mainWindow) {
