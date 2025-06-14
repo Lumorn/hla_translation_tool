@@ -70,7 +70,17 @@ function watchDownloadFolder(callback, opts = {}) {
                 const zielRel = path.posix.join('sounds', 'DE', job.relPath.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
                 const ziel = path.join(projectRoot, zielRel);
                 fs.mkdirSync(path.dirname(ziel), { recursive: true });
-                fs.renameSync(file, ziel);
+                try {
+                    fs.renameSync(file, ziel);
+                } catch (err) {
+                    // Bei unterschiedlichen Laufwerken schlägt renameSync fehl
+                    if (err.code === 'EXDEV') {
+                        fs.copyFileSync(file, ziel);
+                        fs.unlinkSync(file);
+                    } else {
+                        throw err;
+                    }
+                }
                 pending.splice(idx, 1);
                 onDone({ id: job.id, fileId: job.fileId, dest: zielRel });
                 // Nach erfolgreichem Verschieben den Download-Ordner leeren
