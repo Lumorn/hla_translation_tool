@@ -3,6 +3,19 @@ const fs = require('fs');
 const path = require('path');
 const { DL_WATCH_PATH, projectRoot } = require('./web/src/config.js');
 
+// Loescht alle Dateien und Unterordner eines Ordners
+function leereOrdner(ordner) {
+    if (!fs.existsSync(ordner)) return;
+    for (const eintrag of fs.readdirSync(ordner)) {
+        const p = path.join(ordner, eintrag);
+        if (fs.statSync(p).isDirectory()) {
+            fs.rmSync(p, { recursive: true, force: true });
+        } else {
+            fs.unlinkSync(p);
+        }
+    }
+}
+
 // Wartet, bis die Dateigroesse stabil bleibt
 function warteBisFertig(datei) {
     return new Promise((resolve, reject) => {
@@ -37,6 +50,8 @@ function watchDownloadFolder(callback, opts = {}) {
     } else {
         log('Beobachte Download-Ordner: ' + watchPath);
     }
+    // Ordner zu Beginn leeren
+    leereOrdner(watchPath);
 
     chokidar.watch(watchPath, { ignoreInitial: true })
         .on('add', async file => {
@@ -58,6 +73,8 @@ function watchDownloadFolder(callback, opts = {}) {
                 fs.renameSync(file, ziel);
                 pending.splice(idx, 1);
                 onDone({ id: job.id, fileId: job.fileId, dest: zielRel });
+                // Nach erfolgreichem Verschieben den Download-Ordner leeren
+                leereOrdner(watchPath);
             } catch (e) {
                 pending.splice(idx, 1);
                 onError({ id: job.id, fileId: job.fileId, error: e.message });
@@ -65,4 +82,4 @@ function watchDownloadFolder(callback, opts = {}) {
         });
 }
 
-module.exports = { watchDownloadFolder };
+module.exports = { watchDownloadFolder, clearDownloadFolder: leereOrdner };
