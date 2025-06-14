@@ -13,6 +13,12 @@ let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 
+// Verfügbarkeit der Electron-API einmalig prüfen
+const hasElectron = !!window.electronAPI;
+if (!hasElectron) {
+    console.warn('🚫 Electron-API nicht verfügbar – Fallback auf Browser-Modus');
+}
+
 let projektOrdnerHandle    = null; // Gewählter Projektordner
 let deOrdnerHandle         = null; // Handle für den DE-Ordner
 let enOrdnerHandle         = null; // Handle für den EN-Ordner
@@ -6066,7 +6072,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
                     URL: location.href,
                     Plattform: navigator.platform,
                     Sprache: navigator.language,
-                    'Electron-API vorhanden': typeof window.electronAPI !== 'undefined',
+                    'Electron-API vorhanden': hasElectron,
                     'Im Browser gestartet': true
                 };
 
@@ -6101,7 +6107,6 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             info['Benutzeragent'] = navigator.userAgent;
             info['Verwendete Sprache'] = navigator.language;
             info.URL = location.href;
-            const hasElectron = typeof window.electronAPI !== 'undefined';
             info['Electron-API vorhanden'] = hasElectron;
             info['Im Browser gestartet'] = !hasElectron;
 

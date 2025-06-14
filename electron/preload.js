@@ -3,11 +3,23 @@ if (typeof require !== 'function') {
   console.warn('Preload-Skript: "require" ist nicht verf\u00fcgbar. Das Skript wird beendet.');
 } else {
   const { contextBridge, ipcRenderer } = require('electron');
+  const fs = require('fs');
   // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
   const path = require('node:path');
   // Konfiguration dynamisch laden, damit der Pfad auch nach dem Packen stimmt
   const { DL_WATCH_PATH } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
+
+  // Unerwartete Fehler sichtbar machen
+  process.on('uncaughtException', err => {
+    console.error('[Preload] uncaughtException', err);
+  });
+  process.on('unhandledRejection', err => {
+    console.error('[Preload] unhandledRejection', err);
+  });
+
   contextBridge.exposeInMainWorld('electronAPI', {
+    versions: process.versions,
+    openFolder: () => ipcRenderer.invoke('open-folder-dialog'),
     scanFolders: () => ipcRenderer.invoke('scan-folders'),
     // Befehl an Hauptprozess senden, um DevTools umzuschalten
     toggleDevTools: () => ipcRenderer.send('toggle-devtools'),
@@ -31,5 +43,9 @@ if (typeof require !== 'function') {
     getDownloadPath: () => DL_WATCH_PATH,
     // Liefert Pfad-Informationen für das Debug-Fenster
     getDebugInfo: () => ipcRenderer.invoke('get-debug-info'),
+    fsReadFile: p => fs.readFileSync(p),
+    fsExists: p => fs.existsSync(p),
+    join: (...segments) => path.join(...segments),
   });
+  console.log('[Preload] erfolgreich geladen');
 }
