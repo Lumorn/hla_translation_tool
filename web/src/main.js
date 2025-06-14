@@ -52,6 +52,10 @@ let chapterOrders         = {}; // Reihenfolge der Kapitel
 let expandedChapter       = null; // aktuell geöffnetes Kapitel
 let chapterColors         = {}; // Farbe pro Kapitel
 
+// Status für Projekt-Wiedergabe
+let projectPlayState       = 'stopped'; // 'playing', 'paused'
+let projectPlayIndex       = 0;        // Aktuelle Datei im Projekt
+
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
 let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
@@ -236,6 +240,7 @@ function stopCurrentPlayback() {
 
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
+    updateProjectPlaybackButtons();
     // DevTools-Knopf wird immer eingeblendet
 
 
@@ -1043,6 +1048,7 @@ function addProject() {
 
 // =========================== SELECT PROJECT START ===========================
 function selectProject(id){
+    stopProjectPlayback();
     saveCurrentProject();
 
     currentProject = projects.find(p => p.id === id);
@@ -3549,8 +3555,87 @@ async function playDeAudio(fileId) {
         updateStatus('Fehler beim Abspielen der DE-Datei');
         if (url) URL.revokeObjectURL(url);
     });
+
 }
 // =========================== PLAYDEAUDIO END ========================
+
+// =========================== PROJEKT-WIEDERGABE START ========================
+function updateProjectPlaybackButtons() {
+    const playPauseBtn = document.getElementById('projectPlayPauseBtn');
+    if (!playPauseBtn) return;
+    if (projectPlayState === 'playing') {
+        playPauseBtn.textContent = '⏸';
+    } else {
+        playPauseBtn.textContent = '▶';
+    }
+}
+
+function highlightProjectRow(fileId) {
+    document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
+    const row = document.querySelector(`tr[data-id="${fileId}"]`);
+    if (row) row.classList.add('current-project-row');
+}
+
+function clearProjectRowHighlight() {
+    document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
+}
+
+function playCurrentProjectFile() {
+    if (projectPlayIndex >= files.length) { stopProjectPlayback(); return; }
+    const file = files[projectPlayIndex];
+    highlightProjectRow(file.id);
+    playAudio(file.id);
+    const audio = document.getElementById('audioPlayer');
+    const oldEnded = audio.onended;
+    audio.onended = () => {
+        if (oldEnded) oldEnded();
+        clearProjectRowHighlight();
+        projectPlayIndex++;
+        if (projectPlayState === 'playing') {
+            playCurrentProjectFile();
+        }
+    };
+}
+
+function startProjectPlayback() {
+    projectPlayIndex = 0;
+    projectPlayState = 'playing';
+    updateProjectPlaybackButtons();
+    playCurrentProjectFile();
+}
+
+function pauseProjectPlayback() {
+    const audio = document.getElementById('audioPlayer');
+    audio.pause();
+    projectPlayState = 'paused';
+    updateProjectPlaybackButtons();
+}
+
+function resumeProjectPlayback() {
+    const audio = document.getElementById('audioPlayer');
+    audio.play();
+    projectPlayState = 'playing';
+    updateProjectPlaybackButtons();
+}
+
+function stopProjectPlayback() {
+    projectPlayState = 'stopped';
+    projectPlayIndex = 0;
+    clearProjectRowHighlight();
+    stopCurrentPlayback();
+    updateProjectPlaybackButtons();
+}
+
+function toggleProjectPlayback() {
+    if (projectPlayState === 'playing') {
+        pauseProjectPlayback();
+    } else if (projectPlayState === 'paused') {
+        resumeProjectPlayback();
+    } else {
+        startProjectPlayback();
+    }
+}
+// =========================== PROJEKT-WIEDERGABE END ==========================
 
 // Bereinigung: Entferne fullPath aus allen Projekten
 function updateAllFilePaths() {

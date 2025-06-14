@@ -306,6 +306,28 @@ th:nth-child(6) {
             font-size: 13px;
         }
 
+        .project-playback {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .project-playback button {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 4px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .project-playback button:hover {
+            background: #ff6b1a;
+            color: white;
+        }
+
         .progress-stat {
             padding: 4px 8px;
             background: #1a1a1a;
@@ -466,6 +488,10 @@ th:nth-child(6) {
         tr.selected-row {
             background: rgba(255, 107, 26, 0.1) !important;
             border: 1px solid rgba(255, 107, 26, 0.3);
+        }
+
+        tr.current-project-row {
+            background: rgba(255, 107, 26, 0.2) !important;
         }
 
         .draggable {
