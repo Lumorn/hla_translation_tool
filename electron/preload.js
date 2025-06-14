@@ -1,3 +1,6 @@
+// Startzeitpunkt protokollieren
+console.log('[PRELOAD] gestartet', __filename);
+
 // Vorab pruefen, ob 'require' verfuegbar ist
 if (typeof require !== 'function') {
   console.warn('Preload-Skript: "require" ist nicht verf\u00fcgbar. Das Skript wird beendet.');
