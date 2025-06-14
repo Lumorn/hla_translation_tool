@@ -1,3 +1,6 @@
+console.log('[PRELOAD] start', __filename);
+process.on('uncaughtException',  e => console.error('[PRELOAD] uncaught', e));
+process.on('unhandledRejection', e => console.error('[PRELOAD] rejected', e));
 // Startzeitpunkt protokollieren
 console.log('[PRELOAD] gestartet', __filename);
 
@@ -12,13 +15,7 @@ if (typeof require !== 'function') {
   // Konfiguration dynamisch laden, damit der Pfad auch nach dem Packen stimmt
   const { DL_WATCH_PATH } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 
-  // Unerwartete Fehler sichtbar machen
-  process.on('uncaughtException', err => {
-    console.error('[Preload] uncaughtException', err);
-  });
-  process.on('unhandledRejection', err => {
-    console.error('[Preload] unhandledRejection', err);
-  });
+  // Unerwartete Fehler werden bereits oben abgefangen
 
   contextBridge.exposeInMainWorld('electronAPI', {
     versions: process.versions,

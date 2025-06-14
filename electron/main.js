@@ -33,8 +33,6 @@ fs.mkdirSync(sessionDataPath, { recursive: true });
 app.setPath('sessionData', sessionDataPath);
 // =========================== USER-DATA-PFAD END =============================
 
-// Flag, ob die DevTools beim Start geöffnet werden sollen
-const isDebug = process.argv.includes('--debug');
 
 // Pfade zu EN und DE relativ zur HTML-Datei
 
@@ -84,10 +82,8 @@ function createWindow() {
   // HTML-Datei immer über einen absoluten Pfad laden
   win.loadFile(path.join(__dirname, '../web/hla_translation_tool.html'));
 
-  // DevTools optional in separatem Fenster öffnen, wenn das Flag gesetzt ist
-  if (isDebug) {
-    win.webContents.openDevTools({ mode: 'detach' });
-  }
+  // DevTools immer in einem abgekoppelten Fenster öffnen
+  win.webContents.openDevTools({ mode: 'detach' });
 
   // Shortcut zum Ein- und Ausblenden der DevTools
   globalShortcut.register('CommandOrControl+Shift+I', () => {
