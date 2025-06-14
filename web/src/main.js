@@ -827,7 +827,7 @@ function renderProjects() {
                 </div>`;
             card.innerHTML = `
                 ${badge}
-                <div style="display:flex;gap:8px;align-items:flex-start;">
+                <div class="project-main" style="display:flex;gap:8px;align-items:flex-start;flex:1;min-width:0;">
                     ${iconWrapper}
                     <div style="flex:1;min-width:0;">
                         <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
@@ -844,7 +844,7 @@ function renderProjects() {
                         </div>
                     </div>
                 </div>
-                <div style="display:flex;gap:5px;">
+                <div class="project-buttons" style="display:flex;gap:5px;">
                     <button class="project-customize-btn" onclick="showProjectCustomization(${p.id}, event)">⚙️</button>
                     <button class="delete-btn" onclick="deleteProject(${p.id}, event)">×</button>
                 </div>
@@ -8899,7 +8899,9 @@ function showProjectCustomization(id, ev, tempProject) {
     if (!prj) return;
     const isNew = !!tempProject;
 
-    const knownLevels = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
+    const knownLevels   = [...new Set(projects.map(p => p.levelName).filter(Boolean))];
+    const knownChapters = [...new Set(Object.values(levelChapters).filter(Boolean))];
+    const currentChapter = getLevelChapter(prj.levelName);
 
     const ov = document.createElement('div');
     ov.className = 'customize-popup-overlay';
@@ -8935,6 +8937,16 @@ function showProjectCustomization(id, ev, tempProject) {
       </div>
 
       <div class="customize-field">
+        <label>Kapitel:</label>
+        <select id="cChapter">
+          <option value="">– neu –</option>
+          ${knownChapters.map(c => `<option ${c===currentChapter?'selected':''} value="${c}">${getChapterOrder(c)}.${c}</option>`).join('')}
+        </select>
+        <input id="cChapterNew" placeholder="Neues Kapitel" style="margin-top:8px;display:${currentChapter && currentChapter !== '–' ? 'none' : 'block'};">
+        <input type="number" id="cChapterOrder" min="1" max="9999" placeholder="Kapitel-Nr" style="margin-top:8px;display:${currentChapter && currentChapter !== '–' ? 'none' : 'block'};">
+      </div>
+
+      <div class="customize-field">
         <label>Teil-Nummer:</label>
         <input type="number" id="cPart" min="1" max="9999" value="${prj.levelPart}">
       </div>
@@ -8957,6 +8969,9 @@ function showProjectCustomization(id, ev, tempProject) {
     const sel    = pop.querySelector('#cLevel');
     const inp    = pop.querySelector('#cLevelNew');
     const ordInp = pop.querySelector('#cLevelOrder');
+    const chSel  = pop.querySelector('#cChapter');
+    const chInp  = pop.querySelector('#cChapterNew');
+    const chOrd  = pop.querySelector('#cChapterOrder');
 
     // Fokus direkt aufs richtige Feld setzen
     if (!sel.value) {
@@ -8965,6 +8980,11 @@ function showProjectCustomization(id, ev, tempProject) {
         inp.focus();
     } else {
         pop.querySelector('#cName').focus();
+    }
+
+    if (chSel && !chSel.value && chInp) {
+        chInp.style.display = 'block';
+        chOrd.style.display = 'block';
     }
 
     /* Eingabedynamik */
@@ -8978,7 +8998,23 @@ function showProjectCustomization(id, ev, tempProject) {
             // Beim Wechsel auf einen bestehenden Level dessen Farbe übernehmen
             pop.querySelector('#cColor').value = getLevelColor(sel.value);
         }
+        if (chSel) {
+            const ch = getLevelChapter(sel.value);
+            chSel.value = ch === '–' ? '' : ch;
+            const sh = !chSel.value;
+            if (chInp) chInp.style.display = sh ? 'block' : 'none';
+            if (chOrd) chOrd.style.display = sh ? 'block' : 'none';
+        }
     };
+
+    if (chSel) {
+        chSel.onchange = () => {
+            const showCh = !chSel.value;
+            if (chInp) chInp.style.display = showCh ? 'block' : 'none';
+            if (chOrd) chOrd.style.display = showCh ? 'block' : 'none';
+            if (showCh && chInp) chInp.focus();
+        };
+    }
 
     pop.querySelector('#cCancel').onclick = () => document.body.removeChild(ov);
 
@@ -8987,6 +9023,9 @@ function showProjectCustomization(id, ev, tempProject) {
         const selectedLevel = sel.value;
         const newLevel = inp.value.trim();
         const orderVal = parseInt(ordInp.value);
+        const selectedChapter = chSel ? chSel.value : '';
+        const newChapter     = chInp ? chInp.value.trim() : '';
+        const chOrderVal     = parseInt(chOrd?.value);
 
         // Eingaben prüfen
         if (!selectedLevel && !newLevel) {
@@ -8999,6 +9038,10 @@ function showProjectCustomization(id, ev, tempProject) {
         }
         if (!prj.name) {
             alert('Bitte einen Projektnamen eingeben.');
+            return;
+        }
+        if (!selectedChapter && newChapter && !chOrd?.value) {
+            alert('Bitte auch eine Kapitel-Nummer angeben.');
             return;
         }
 
@@ -9014,6 +9057,16 @@ function showProjectCustomization(id, ev, tempProject) {
             const order = Math.max(1, orderVal || 1);
             setLevelOrder(prj.levelName, order);
         }
+
+        const chapterName = selectedChapter || newChapter || getLevelChapter(prj.levelName);
+        setLevelChapter(prj.levelName, chapterName);
+        if (!selectedChapter && newChapter) {
+            const ord = Math.max(1, chOrderVal || 1);
+            setChapterOrder(chapterName, ord);
+        }
+
+        saveLevelChapters();
+        saveChapterOrders();
 
         // Neues Projekt erst jetzt speichern
         if (isNew) {
