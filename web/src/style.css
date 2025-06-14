@@ -1540,6 +1540,17 @@ th:nth-child(6) {
             width: 100%;
         }
 
+        .voice-defaults-list {
+            margin-top: 15px;
+            list-style: none;
+            padding-left: 0;
+            font-size: 14px;
+        }
+
+        .voice-defaults-list li {
+            margin-bottom: 4px;
+        }
+
         .customize-buttons {
             display: flex;
             gap: 10px;
