@@ -240,6 +240,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast(`${dest.split('/').pop()} importiert.`);
             });
         }
+
+        // Automatischer Import abgeschlossen
+        if (window.electronAPI.onDubDone) {
+            window.electronAPI.onDubDone(info => {
+                markDubAsReady(info.fileId, info.dest);
+                showToast(`Dubbing fertig: ${info.dest.split('/').pop()}`);
+            });
+        }
+        // Fehler beim Import
+        if (window.electronAPI.onDubError) {
+            window.electronAPI.onDubError(info => {
+                showToast(`Dubbing-Fehler: ${info.error}`, 'error');
+            });
+        }
+        // Fortschritt-Updates
+        if (window.electronAPI.onDubStatus) {
+            window.electronAPI.onDubStatus(info => {
+                const f = files.find(fl => fl.id === info.fileId);
+                if (f) {
+                    f.dubReady = info.ready;
+                    updateDubStatusIcon(f);
+                }
+            });
+        }
     }
 
     // 🟩 NEU: Level-Farben laden
@@ -6826,6 +6850,11 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de') {
     file.dubReady = false; // Status auf "in Arbeit" setzen
     saveCurrentProject();
     renderFileTable();
+
+    // Hauptprozess über neuen Job informieren
+    if (window.electronAPI && window.electronAPI.sendDubStart) {
+        window.electronAPI.sendDubStart({ id, fileId: file.id, relPath: getFullPath(file) });
+    }
 
     try {
         await renderLanguage(id);

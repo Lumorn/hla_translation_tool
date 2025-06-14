@@ -21,7 +21,7 @@ describe('watchDownloadFolder', () => {
       }))
     }));
 
-    const { watchDownloadFolder } = require('../web/src/watcher.js');
+    const { watchDownloadFolder } = require('../watcher.js');
 
     const callback = jest.fn();
     watchDownloadFolder(callback);

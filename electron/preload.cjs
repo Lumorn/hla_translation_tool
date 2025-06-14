@@ -40,6 +40,10 @@ if (typeof require !== 'function') {
     openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
     moveFile: (src, dest) => ipcRenderer.invoke('move-file', { src, dest }),
     onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
+    onDubDone: cb => ipcRenderer.on('dub-done', (e, info) => cb(info)),
+    onDubError: cb => ipcRenderer.on('dub-error', (e, info) => cb(info)),
+    onDubStatus: cb => ipcRenderer.on('dub-status', (e, info) => cb(info)),
+    sendDubStart: info => ipcRenderer.send('dub-start', info),
     getDownloadPath: () => DL_WATCH_PATH,
     // Liefert Pfad-Informationen für das Debug-Fenster
     getDebugInfo: () => ipcRenderer.invoke('get-debug-info'),
