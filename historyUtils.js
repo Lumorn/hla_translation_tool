@@ -23,6 +23,27 @@ function saveVersion(historyRoot, relPath, sourceFile, limit = 10) {
     return target;
 }
 
+// Speichert direkt einen Buffer als History-Version
+function saveBufferVersion(historyRoot, relPath, buffer, limit = 10) {
+    const ext = path.extname(relPath);
+    const historyDir = path.join(historyRoot, relPath);
+    fs.mkdirSync(historyDir, { recursive: true });
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    let target = path.join(historyDir, `${timestamp}${ext}`);
+    let counter = 1;
+    while (fs.existsSync(target)) {
+        target = path.join(historyDir, `${timestamp}-${counter}${ext}`);
+        counter++;
+    }
+    fs.writeFileSync(target, buffer);
+    let files = fs.readdirSync(historyDir).filter(f => f.endsWith(ext)).sort();
+    while (files.length > limit) {
+        const remove = files.shift();
+        fs.unlinkSync(path.join(historyDir, remove));
+    }
+    return target;
+}
+
 // Gibt die vorhandenen Versionen eines Pfades zurück
 function listVersions(historyRoot, relPath) {
     const historyDir = path.join(historyRoot, relPath);
@@ -54,4 +75,4 @@ function switchVersion(historyRoot, relPath, name, targetRoot, limit = 10) {
     return target;
 }
 
-module.exports = { saveVersion, listVersions, restoreVersion, switchVersion };
+module.exports = { saveVersion, listVersions, restoreVersion, switchVersion, saveBufferVersion };

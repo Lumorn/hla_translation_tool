@@ -59,6 +59,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tab/Shift+Tab Navigation** zwischen Textfeldern und Zeilen
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
+* **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
 
 ### 🔍 Suche & Import
 
@@ -453,4 +454,5 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
 * **`backup-de-file(relPath)`** – kopiert eine vorhandene deutsche Audiodatei nach `DE-Backup`, sofern dort noch keine Sicherung existiert.
 * **`delete-de-backup-file(relPath)`** – löscht eine Sicherung aus `DE-Backup` und entfernt leere Unterordner.
 * **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
+* **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
