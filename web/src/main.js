@@ -3482,7 +3482,9 @@ function playAudio(fileId) {
 
 // =========================== PLAYDEAUDIO START ======================
 // Spiele die vorhandene DE-Datei ab
-async function playDeAudio(fileId) {
+// Spielt die vorhandene DE-Datei ab und erlaubt einen optionalen Callback
+// der nach dem Ende ausgeführt wird (z.B. für Projekt-Wiedergabe)
+async function playDeAudio(fileId, onEnded = null) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -3545,10 +3547,13 @@ async function playDeAudio(fileId) {
     audio.play().then(() => {
         if (playBtn) { playBtn.classList.add('playing'); playBtn.textContent = '⏸'; }
         currentlyPlaying = `de-${fileId}`;
+        const previousEnded = audio.onended;
         audio.onended = () => {
             if (url) URL.revokeObjectURL(url);
             if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
             currentlyPlaying = null;
+            if (onEnded) onEnded();
+            if (previousEnded) previousEnded();
         };
     }).catch(err => {
         console.error('DE-Playback fehlgeschlagen', err);
@@ -3580,6 +3585,7 @@ function clearProjectRowHighlight() {
     document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
 }
 
+// Spielt die aktuelle Datei im Projekt ab
 function playCurrentProjectFile() {
     if (projectPlayIndex >= files.length) { stopProjectPlayback(); return; }
     const file = files[projectPlayIndex];
@@ -3593,18 +3599,14 @@ function playCurrentProjectFile() {
     }
 
     highlightProjectRow(file.id);
-    // Deutsche Version abspielen
-    playDeAudio(file.id);
-    const audio = document.getElementById('audioPlayer');
-    const oldEnded = audio.onended;
-    audio.onended = () => {
-        if (oldEnded) oldEnded();
+    // Deutsche Version abspielen und danach ggf. naechste Datei starten
+    playDeAudio(file.id, () => {
         clearProjectRowHighlight();
         projectPlayIndex++;
         if (projectPlayState === 'playing') {
             playCurrentProjectFile();
         }
-    };
+    });
 }
 
 function startProjectPlayback() {
