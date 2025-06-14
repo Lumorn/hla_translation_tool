@@ -6815,9 +6815,37 @@ function createDubbingCSV(file, durationMs, lang = 'de') {
 }
 
 // Prüft den Aufbau einer CSV-Datei für Manual Dub
+// Zerlegt einen CSV-Text in Zeilen, wobei Zeilenumbrüche in Anführungszeichen
+// ignoriert werden
+function splitCsvLines(text) {
+    const lines = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (c === '"') {
+            if (inQuotes && text[i + 1] === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if ((c === '\n' || c === '\r') && !inQuotes) {
+            if (c === '\r' && text[i + 1] === '\n') i++;
+            lines.push(current);
+            current = '';
+        } else {
+            current += c;
+        }
+    }
+    if (current.length > 0) lines.push(current);
+    return lines.filter(l => l.length > 0);
+}
+
+// Prüft den Aufbau einer CSV-Datei für Manual Dub
 function validateCsv(csvText) {
     // Zeilen aufteilen (Leerzeilen ignorieren)
-    const lines = csvText.trim().split(/\r?\n/).filter(l => l.length > 0);
+    const lines = splitCsvLines(csvText.trim());
     if (lines.length < 2) return false;
     // Kopfzeile muss exakt passen
     if (lines[0].trim() !== 'speaker,start_time,end_time,transcription,translation') {

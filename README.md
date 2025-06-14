@@ -160,7 +160,7 @@ Beispiel einer gültigen CSV:
 speaker,start_time,end_time,transcription,translation
 0,0.000,1.000,"Hello","Hallo"
 ```
-*Hinweis:* Die Datei schließt mit CRLF (`\r\n`). Vor dem Upload prüft das Tool, dass ein Zeilenumbruch vorhanden ist und alle Felder korrekt in Anführungszeichen stehen.
+*Hinweis:* Die Datei schließt mit CRLF (`\r\n`). Vor dem Upload prüft das Tool, dass ein Zeilenumbruch vorhanden ist und alle Felder korrekt in Anführungszeichen stehen. Seit Version 1.40.6 werden auch Zeilenumbrüche innerhalb der Übersetzung unterstützt.
 
 ### Dubbing-Protokoll
 
