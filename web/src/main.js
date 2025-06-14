@@ -2558,8 +2558,10 @@ function normalizeFolderPath(folderPath) {
 }
 // =========================== NORMALIZEFOLDERPATH END ===========================
 // =========================== FINDAUDIOINFILEPATHCACHE START ===========================
-// Helper function to find audio file in cache with flexible matching
+// Hilfsfunktion: Sucht Audiodatei im Cache mit flexiblem Abgleich
 function findAudioInFilePathCache(filename, folder) {
+    const wantedPath = `sounds/EN/${folder}/${filename}`;
+    debugLog(`[FINDAUDIO] Gesuchter Pfad: ${wantedPath}`);
     debugLog(`[FINDAUDIO] Searching for: ${filename} in folder: ${folder}`);
     
     // 1. Versuche direkte Übereinstimmungen in filePathDatabase
@@ -2692,6 +2694,7 @@ function findAudioInFilePathCache(filename, folder) {
         };
     }
     
+    debugLog(`[FINDAUDIO] Gesuchter Pfad: ${wantedPath}`);
     debugLog(`[FINDAUDIO] No audio found for ${filename} in ${folder}`);
     return null;
 }
