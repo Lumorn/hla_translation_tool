@@ -34,7 +34,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
-* **Projektweite Wiedergabe** aller Dateien mit Play/Pause/Stop
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 
@@ -223,14 +222,13 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 |  Aktion                    |  Bedienung                                          |
 | -------------------------- | --------------------------------------------------- |
 | **Projekt erstellen**     | `+ Neues Projekt` Button                          |
-| **Projekt auswählen**     | Klick auf Projekt‑Kachel |
-| **Projekt anpassen**      | ⚙️ auf Projekt‑Kachel → Icon, Farbe, Level |
-| **Projekt löschen**       | × auf Projekt‑Kachel |
-| **Projekt umbenennen**    | Doppelklick auf Projekt‑Name |
-| **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln |
-| **Projekt abspielen**     | ▶/⏸ und ■ auf Projekt‑Kachel |
+| **Projekt auswählen**     | Klick auf Projekt‑Kachel                          |
+| **Projekt anpassen**      | ⚙️ auf Projekt‑Kachel → Icon, Farbe, Level        |
+| **Projekt löschen**       | × auf Projekt‑Kachel                              |
+| **Projekt umbenennen**    | Doppelklick auf Projekt‑Name                      |
+| **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
 | **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
-| **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste |
+| **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
 
 ### Datei‑Management
 

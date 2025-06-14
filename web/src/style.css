@@ -1826,28 +1826,6 @@ th:nth-child(6) {
     flex-direction:column;
     gap:4px;
 }
-.project-play-btn, .project-stop-btn{
-    background:#444;
-    border:none;
-    color:#e0e0e0;
-    padding:4px 6px;
-    border-radius:3px;
-    cursor:pointer;
-    font-size:12px;
-    transition:background 0.2s;
-}
-.project-play-btn:hover{
-    background:#ff6b1a;
-    color:#fff;
-}
-.project-play-btn.playing{
-    background:#ff6b1a;
-    color:#fff;
-}
-.project-stop-btn:hover{
-    background:#b71c1c;
-    color:#fff;
-}
 /* =========================== PROJECT PERCENT STYLE END ============================= */
 
 /* File Exchange Dialog Styling */
