@@ -29,6 +29,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
+* **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
@@ -403,6 +404,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 * **📋 Level‑Namen verwenden:** Strukturieren Sie Projekte nach Spiel‑Leveln
 * **🔢 Teil‑Nummern vergeben:** Für große Level mehrere Teile erstellen
 * **🎨 Farb‑Coding:** Ähnliche Level mit gleichen Farben markieren
+* **📂 Kapitel:** Mehrere Level zu Kapiteln gruppieren und zusammenklappen
 
 ### Übersetzungs‑Workflow
 
