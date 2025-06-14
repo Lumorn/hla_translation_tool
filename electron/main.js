@@ -4,11 +4,10 @@ const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
 const { execSync } = require('child_process');
 // Lade Konfiguration relativ zum aktuellen Verzeichnis
-const { DL_WATCH_PATH, projectRoot } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
+const { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 const { chooseExisting } = require('../pathUtils');
 // Nach dem Laden der Projektwurzel pruefen wir auf Gross-/Kleinschreibung.
-// Ist ein Ordner nur mit großem Anfangsbuchstaben vorhanden, wird dieser verwendet.
-const soundsDirName = chooseExisting(projectRoot, ['Sounds', 'sounds']);
+// Backups koennen ebenfalls groß oder klein geschrieben sein.
 const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
 const { watchDownloadFolder } = require('../web/src/watcher.js');
@@ -109,7 +108,7 @@ app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 
 app.whenReady().then(() => {
   // Basis- und Sprachordner relativ zur Projektwurzel bestimmen
-  const projectBase = path.resolve(projectRoot, soundsDirName);
+  const projectBase = SOUNDS_BASE_PATH;
   const enPath = path.resolve(projectBase, 'EN');
   const dePath = path.resolve(projectBase, 'DE');
   const deBackupPath = path.resolve(projectBase, 'DE-Backup');
@@ -184,7 +183,7 @@ app.whenReady().then(() => {
   // =========================== DEBUG-INFO START =============================
   // Liefert Pfad-Informationen für das Debug-Fenster
   ipcMain.handle('get-debug-info', () => {
-    const soundsPath = path.resolve(projectRoot, soundsDirName);
+    const soundsPath = SOUNDS_BASE_PATH;
     const backupsPath = path.resolve(projectRoot, backupsDirName);
 
     // Helper zum Pruefen, ob das Programm mit Adminrechten laeuft
