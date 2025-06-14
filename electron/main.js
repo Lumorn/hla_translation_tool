@@ -10,7 +10,9 @@ const { chooseExisting } = require('../pathUtils');
 // Backups koennen ebenfalls groß oder klein geschrieben sein.
 const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
-const { watchDownloadFolder } = require('../web/src/watcher.js');
+const { watchDownloadFolder } = require('../watcher.js');
+const { isDubReady } = require('../elevenlabs.js');
+const pendingDubs = [];
 let mainWindow;
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
@@ -362,14 +364,52 @@ app.whenReady().then(() => {
     }
   });
 
+  // Merkt gestartete Dubbing-Jobs
+  ipcMain.on('dub-start', (event, info) => {
+    pendingDubs.push({
+      id: info.id,
+      fileId: info.fileId,
+      relPath: info.relPath,
+    });
+  });
+
   mainWindow = createWindow();
 
-  // Download-Ordner überwachen und Renderer informieren
-  watchDownloadFolder(file => {
-    if (mainWindow) {
-      mainWindow.webContents.send('manual-file', file);
+  // Download-Ordner überwachen (automatischer Import)
+  watchDownloadFolder(
+    file => {
+      if (mainWindow) {
+        mainWindow.webContents.send('manual-file', file);
+      }
+    },
+    {
+      pending: pendingDubs,
+      onDone: info => {
+        if (mainWindow) mainWindow.webContents.send('dub-done', info);
+      },
+      onError: info => {
+        if (mainWindow) mainWindow.webContents.send('dub-error', info);
+      },
+      log: msg => console.log('[Watcher]', msg)
     }
-  });
+  );
+
+  // Regelmäßige Status-Abfrage aller offenen Dubbings
+  const apiKey = process.env.ELEVEN_API_KEY || '';
+  setInterval(async () => {
+    for (const job of pendingDubs) {
+      try {
+        const ready = await isDubReady(job.id, 'de', apiKey);
+        if (mainWindow) {
+          mainWindow.webContents.send('dub-status', { fileId: job.fileId, ready });
+        }
+      } catch (e) {
+        if (mainWindow) {
+          mainWindow.webContents.send('dub-error', { fileId: job.fileId, error: e.message });
+        }
+      }
+    }
+  }, 15000);
 
   // Beim Beenden alle Shortcuts wieder freigeben
   app.on('will-quit', () => {
