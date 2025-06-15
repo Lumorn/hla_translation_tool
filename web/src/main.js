@@ -304,8 +304,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Automatischer Import abgeschlossen
         if (window.electronAPI.onDubDone) {
             window.electronAPI.onDubDone(info => {
-                if (info.source) addDubbingLog('Gefunden: ' + info.source);
-                if (info.dest) addDubbingLog('Kopiert nach: ' + info.dest);
+                // Pfade der Original- und Zieldatei im Log ausgeben
+                if (info.sourcePath) addDubbingLog('Originalpfad: ' + info.sourcePath);
+                if (info.destPath)   addDubbingLog('Zielpfad: ' + info.destPath);
                 if (info.srcValid !== undefined) {
                     addDubbingLog('Prüfung Download-Datei: ' + (info.srcValid ? 'OK' : 'FEHLER'));
                 }

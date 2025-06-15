@@ -134,7 +134,10 @@ function watchDownloadFolder(callback, opts = {}) {
                     dest: zielRel,
                     source: path.relative(watchPath, file),
                     srcValid,
-                    destValid
+                    destValid,
+                    // Neuer Eintrag: absolute Pfade fuer detailliertes Logging
+                    sourcePath: file,
+                    destPath: ziel
                 });
                 // Nach erfolgreichem Verschieben den Download-Ordner leeren
                 leereOrdner(watchPath);
