@@ -304,6 +304,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Automatischer Import abgeschlossen
         if (window.electronAPI.onDubDone) {
             window.electronAPI.onDubDone(info => {
+                if (info.source) addDubbingLog('Gefunden: ' + info.source);
+                if (info.dest) addDubbingLog('Kopiert nach: ' + info.dest);
+                if (info.srcValid !== undefined) {
+                    addDubbingLog('Prüfung Download-Datei: ' + (info.srcValid ? 'OK' : 'FEHLER'));
+                }
+                if (info.destValid !== undefined) {
+                    addDubbingLog('Prüfung Ziel-Datei: ' + (info.destValid ? 'OK' : 'FEHLER'));
+                }
                 markDubAsReady(info.fileId, info.dest);
                 showToast(`Dubbing fertig: ${info.dest.split('/').pop()}`);
             });
@@ -322,6 +330,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     f.dubReady = info.ready;
                     updateDubStatusIcon(f);
                 }
+            });
+        }
+        if (window.electronAPI.onDubLog) {
+            window.electronAPI.onDubLog(msg => {
+                addDubbingLog(msg);
             });
         }
     }

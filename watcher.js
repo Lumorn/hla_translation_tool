@@ -78,6 +78,7 @@ function watchDownloadFolder(callback, opts = {}) {
             if (callback) callback(file);
             if (!pending.length) return;
             if (!/\.(wav|mp3|ogg)$/i.test(file)) return;
+            log('Datei gefunden: ' + file);
             const basis = path.basename(file).replace(/\.(mp3|wav|ogg)$/i, '');
             // Grosszuegiges Matching fuer Dateinamen und IDs
             const idx = pending.findIndex(job => {
@@ -99,7 +100,9 @@ function watchDownloadFolder(callback, opts = {}) {
             const job = pending[idx];
             try {
                 await warteBisFertig(file);
-                if (job.mode === 'manual' && !pruefeAudiodatei(file)) {
+                const srcValid = pruefeAudiodatei(file);
+                log('Prüfung Download-Datei: ' + (srcValid ? 'OK' : 'FEHLER'));
+                if (job.mode === 'manual' && !srcValid) {
                     throw new Error('Ungültige Audiodatei');
                 }
                 // Pfad bereinigen und korrekt aufbauen
@@ -121,8 +124,18 @@ function watchDownloadFolder(callback, opts = {}) {
                         throw err;
                     }
                 }
+                log('Verschoben nach: ' + ziel);
+                const destValid = pruefeAudiodatei(ziel);
+                log('Prüfung Ziel-Datei: ' + (destValid ? 'OK' : 'FEHLER'));
                 pending.splice(idx, 1);
-                onDone({ id: job.id, fileId: job.fileId, dest: zielRel });
+                onDone({
+                    id: job.id,
+                    fileId: job.fileId,
+                    dest: zielRel,
+                    source: path.relative(watchPath, file),
+                    srcValid,
+                    destValid
+                });
                 // Nach erfolgreichem Verschieben den Download-Ordner leeren
                 leereOrdner(watchPath);
             } catch (e) {

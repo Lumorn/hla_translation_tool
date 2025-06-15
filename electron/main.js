@@ -429,7 +429,10 @@ app.whenReady().then(() => {
       onError: info => {
         if (mainWindow) mainWindow.webContents.send('dub-error', info);
       },
-      log: msg => console.log('[Watcher]', msg),
+      log: msg => {
+        console.log('[Watcher]', msg);
+        if (mainWindow) mainWindow.webContents.send('dub-log', msg);
+      },
       // Ohne Pfad-Option nutzt der Watcher automatisch DL_WATCH_PATH
     }
   );
