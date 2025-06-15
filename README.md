@@ -109,8 +109,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 2. In das Verzeichnis `electron/` wechseln und `npm ci` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
 3. Mit `npm start` startet die Desktop-App ohne Browserdialog
 4. Alternativ kann `start_tool.bat` (Windows), `start_tool.js` (plattformunabhängig) oder `start_tool.py` (Python-Version) aus jedem Verzeichnis ausgeführt werden. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
-5. Beim Start werden die Ordner `web/sounds/EN/sounds` und `web/sounds/DE/sounds` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
-6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN/sounds` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE/sounds` ab
+5. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
+6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
 7. Während des Setups erzeugen alle Skripte (`start_tool.bat`, `start_tool.js` und `start_tool.py`) die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Die Logdatei wird vom Repository ausgeschlossen (`.gitignore`).
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
@@ -129,7 +129,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 const { createDubbing, isDubReady } = require('./elevenlabs.js');
 const apiKey = process.env.ELEVEN_API_KEY;
 const job = await createDubbing({
-    audioFile: 'web/sounds/EN/sounds/beispiel.wav',
+    audioFile: 'web/sounds/EN/beispiel.wav',
     csvContent: csvData,
     voiceId: '',
     apiKey
@@ -170,7 +170,7 @@ Nach erfolgreichem Download merkt sich das Projekt die zugehörige **Dubbing-ID*
 So können Sie das Ergebnis später erneut herunterladen oder neu generieren.
 Beim erneuten Download fragt das Tool nun ebenfalls, ob die Beta-API oder der halbautomatische Modus genutzt werden soll.
 
-Ein Watcher überwacht automatisch den Ordner `web/Download` bzw. `web/Downloads` im Projekt. Taucht dort eine fertig gerenderte Datei auf, meldet das Tool „Datei gefunden“ und verschiebt sie nach `web/sounds/DE/sounds`. Seit Version 1.40.5 klappt das auch nach einem Neustart: Legen Sie die Datei einfach in den Ordner, sie wird anhand der Dubbing‑ID automatisch der richtigen Zeile zugeordnet. Der Status springt anschließend auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs, allerdings nur im Beta-Modus. Beta-Jobs werden nun automatisch aus dieser Liste entfernt, sobald sie fertig sind. Der halbautomatische Modus verzichtet auf diese Abfrage. Der Download-Ordner wird zu Beginn jedes neuen Dubbings und nach dem Import automatisch geleert. Seit Version 1.40.17 findet der Watcher auch Dateien mit leicht verändertem Namen und warnt bei fehlender Zuordnung im Terminal.
+Ein Watcher überwacht automatisch den Ordner `web/Download` bzw. `web/Downloads` im Projekt. Taucht dort eine fertig gerenderte Datei auf, meldet das Tool „Datei gefunden“ und verschiebt sie nach `web/sounds/DE`. Seit Version 1.40.5 klappt das auch nach einem Neustart: Legen Sie die Datei einfach in den Ordner, sie wird anhand der Dubbing‑ID automatisch der richtigen Zeile zugeordnet. Der Status springt anschließend auf *fertig*. Alle 15 Sekunden erfolgt zusätzlich eine Status-Abfrage der offenen Jobs, allerdings nur im Beta-Modus. Beta-Jobs werden nun automatisch aus dieser Liste entfernt, sobald sie fertig sind. Der halbautomatische Modus verzichtet auf diese Abfrage. Der Download-Ordner wird zu Beginn jedes neuen Dubbings und nach dem Import automatisch geleert. Seit Version 1.40.17 findet der Watcher auch Dateien mit leicht verändertem Namen und warnt bei fehlender Zuordnung im Terminal.
 Seit Patch 1.40.7 merkt sich das Tool außerdem den fertigen Status dauerhaft. Auch nach einem erneuten Download bleibt der grüne Haken erhalten.
 Seit Patch 1.40.8 werden Dateien auch dann korrekt verschoben, wenn sich Download- und Projektordner auf unterschiedlichen Laufwerken befinden.
 Seit Patch 1.40.9 merkt sich der Level-Dialog die zuletzt genutzten fünf Farben und bietet eine Schnellwahl unter dem Farbpicker.
@@ -178,7 +178,7 @@ Seit Patch 1.40.10 sortiert sich die Kapitel-Liste in der Projekt-Ansicht sofort
 Seit Patch 1.40.11 sind die Kapitel-Auswahllisten in den Projekt- und Level-Dialogen ebenfalls nach der Nummer sortiert.
 Seit Patch 1.40.12 ist auch die Level-Auswahl im Projekt-Dialog nach der Level-Nummer sortiert.
 Seit Patch 1.40.13 springt die Projekt-Wiedergabe nach einer Datei automatisch zur nächsten.
-Seit Patch 1.40.14 werden halbautomatisch importierte Dateien korrekt nach `web/sounds/DE/sounds` verschoben, auch wenn der gespeicherte Pfad mit `sounds` beginnt.
+Seit Patch 1.40.14 werden halbautomatisch importierte Dateien korrekt nach `web/sounds/DE` verschoben, auch wenn der gespeicherte Pfad mit `sounds` beginnt.
 Seit Patch 1.40.15 werden diese Dateien zusätzlich wie ein manueller Upload behandelt: Ein History-Eintrag entsteht und der Status springt sofort auf *fertig*.
 Seit Patch 1.40.16 validiert das Tool CSV-Dateien auch dann korrekt, wenn die Übersetzung Kommata enthält.
 Seit Patch 1.40.17 verknüpft der Dateiwächter heruntergeladene Dubbing-Dateien auch bei kleinen Namensabweichungen korrekt und meldet fehlende Zuordnungen im Terminal.
@@ -218,7 +218,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 ## 🏁 Erste Schritte
 
 ### 1. 📁 Programm starten
-* Beim Start liest die App automatisch alle Audio‑Dateien aus `web/sounds/EN/sounds` und vorhandene Übersetzungen aus `web/sounds/DE/sounds` ein
+* Beim Start liest die App automatisch alle Audio‑Dateien aus `web/sounds/EN` und vorhandene Übersetzungen aus `web/sounds/DE` ein
 
 ### 2. 📂 Neues Projekt erstellen
 * Klicken Sie auf **„+ Neues Projekt"**

@@ -257,8 +257,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             verarbeiteGescannteDateien(data.enFiles);
             // DE-Dateien als Pfade merken
             data.deFiles.forEach(file => {
-                // Pfad der deutschen Audiodatei inklusive Unterordner "sounds"
-                deAudioCache[file.fullPath] = `sounds/DE/sounds/${file.fullPath}`;
+                deAudioCache[file.fullPath] = `sounds/DE/${file.fullPath}`;
             });
             // Nach dem Einlesen Projekte und Zugriffsstatus aktualisieren
             updateAllProjectsAfterScan();
@@ -287,8 +286,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let cleanedRel = rel.replace(/^sounds[\\/]/i, '');
                 cleanedRel = cleanedRel.replace(/^(?:EN|DE)[\\/]/i, '');
                 const destRel = `${cleanedRel}${ext}`;
-                // Zieldatei im Unterordner "sounds" innerhalb des DE-Ordners
-                const dest = `sounds/DE/sounds/${destRel}`;
+                const dest = `sounds/DE/${destRel}`;
 
                 await window.electronAPI.moveFile(file, dest);
                 deAudioCache[destRel] = dest;
@@ -2059,7 +2057,7 @@ return `
                 <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>
                 <span class="path-btn ${dePath ? 'exists' : 'missing'}" title="Pfad der DE-Datei">DE</span>
             </div>
-            <span class="path-detail">EN: sounds/EN/sounds/${relPath}<br>DE: ${dePath ? `sounds/DE/sounds/${dePath}` : 'fehlend'}</span>
+            <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
@@ -2818,7 +2816,7 @@ function normalizeFolderPath(folderPath) {
 // =========================== FINDAUDIOINFILEPATHCACHE START ===========================
 // Hilfsfunktion: Sucht Audiodatei im Cache mit flexiblem Abgleich
 function findAudioInFilePathCache(filename, folder) {
-    const wantedPath = `sounds/EN/sounds/${folder}/${filename}`;
+    const wantedPath = `sounds/EN/${folder}/${filename}`;
     debugLog(`[FINDAUDIO] Gesuchter Pfad: ${wantedPath}`);
     debugLog(`[FINDAUDIO] Searching for: ${filename} in folder: ${folder}`);
     
@@ -3581,8 +3579,7 @@ async function playDeAudio(fileId, onEnded = null) {
 
     if (!deAudioCache[relPath]) {
         if (window.electronAPI) {
-            // Direkt auf die Datei im Unterordner "sounds" zugreifen
-            deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
         } else {
             try {
                 let handle = deOrdnerHandle;
@@ -6117,8 +6114,7 @@ function checkFileAccess() {
 
         function playCurrentSample(relPath) {
             const audio = document.getElementById('audioPlayer');
-            // Aktuelle Datei aus dem Unterordner "sounds" abspielen
-            audio.src = `sounds/DE/sounds/${relPath}`;
+            audio.src = `sounds/DE/${relPath}`;
             audio.play();
         }
 
@@ -6128,8 +6124,7 @@ function checkFileAccess() {
                 return;
             }
             await window.electronAPI.restoreDeHistory(relPath, name);
-            // Cache nach Wiederherstellung aktualisieren
-            deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
             await updateHistoryCache(relPath);
             renderFileTable();
             loadHistoryList(relPath);
@@ -6831,7 +6826,7 @@ function verarbeiteGescannteDateien(dateien) {
 
         // In Electron besitzen wir nur Pfade, im Browser File-Objekte
         if (window.electronAPI) {
-            audioFileCache[relPath] = `sounds/EN/sounds/${relPath}`;
+            audioFileCache[relPath] = `sounds/EN/${relPath}`;
         } else {
             audioFileCache[relPath] = file;
         }
@@ -6887,8 +6882,7 @@ async function handleDeUpload(input) {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await datei.arrayBuffer();
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
-        // Pfad der neuen DE-Datei im Unterordner "sounds"
-        deAudioCache[aktuellerUploadPfad] = `sounds/DE/sounds/${aktuellerUploadPfad}`;
+        deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
         await updateHistoryCache(aktuellerUploadPfad);
     } else {
         await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
@@ -7572,8 +7566,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         if (window.electronAPI && window.electronAPI.saveDeFile) {
             const buffer = await dubbedBlob.arrayBuffer();
             await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-            // Gespeicherte Datei im Unterordner "sounds" merken
-            deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
             await updateHistoryCache(relPath);
         } else {
             await speichereUebersetzungsDatei(dubbedBlob, relPath);
@@ -7656,8 +7649,7 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await dubbedBlob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        // Audiodatei im Unterordner "sounds" ablegen
-        deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
         addDubbingLog('Datei in Desktop-Version gespeichert');
     } else {
@@ -7688,8 +7680,7 @@ async function downloadDe(fileId) {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        // Download im Unterordner "sounds" speichern
-        deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
@@ -7876,7 +7867,7 @@ async function openDeEdit(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     currentEditFile = file;
-    const enSrc = `sounds/EN/sounds/${getFullPath(file)}`;
+    const enSrc = `sounds/EN/${getFullPath(file)}`;
     const rel = getDeFilePath(file) || getFullPath(file);
     let deSrc = deAudioCache[rel];
     if (!deSrc) return;
@@ -8167,7 +8158,7 @@ async function resetDeEdit() {
         if (window.electronAPI && window.electronAPI.restoreDeFile) {
             await window.electronAPI.restoreDeFile(relPath);
             await window.electronAPI.deleteDeBackupFile(relPath);
-            deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
             originalEditBuffer = await loadAudioBuffer(deAudioCache[relPath]);
         } else if (deOrdnerHandle) {
             const teile = relPath.split('/');
@@ -8231,7 +8222,7 @@ async function applyDeEdit() {
         const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
-        deAudioCache[relPath] = `sounds/DE/sounds/${relPath}`;
+        deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
     } else {
         // Backup in Browser-Version
@@ -9833,7 +9824,7 @@ function showChapterCustomization(chapterName, ev) {
             if (window.electronAPI && window.electronAPI.saveDeFile) {
                 const buffer = await datei.arrayBuffer();
                 await window.electronAPI.saveDeFile(zielPfad, new Uint8Array(buffer));
-                deAudioCache[zielPfad] = `sounds/DE/sounds/${zielPfad}`;
+                deAudioCache[zielPfad] = `sounds/DE/${zielPfad}`;
                 await updateHistoryCache(zielPfad);
             } else {
                 await speichereUebersetzungsDatei(datei, zielPfad);
