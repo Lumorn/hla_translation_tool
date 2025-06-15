@@ -68,6 +68,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
+* **Automatische Übersetzungsvorschau:** Unter jedem DE-Feld erscheint eine kleine Live-Übersetzung des EN-Textes
 
 ### 🔍 Suche & Import
 
