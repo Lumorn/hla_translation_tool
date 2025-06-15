@@ -27,6 +27,8 @@
 * Kapitel-Auswahllisten sind jetzt nach der Kapitelnummer sortiert.
 ## 🛠️ Patch in 1.40.12
 * Level-Auswahlliste in den Projekt-Einstellungen folgt nun der Level-Nummer.
+## 🛠️ Patch in 1.40.13
+* Offline-Übersetzung erkennt installierte Sprachpakete jetzt korrekt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
