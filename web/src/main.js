@@ -266,33 +266,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Meldung bei neuen Dateien aus dem Download-Ordner
         if (window.electronAPI.onManualFile) {
-            window.electronAPI.onManualFile(async file => {
-                // Zuerst nach aktivem Dubbing-Item suchen
-                let ziel = getActiveDubItem();
-
-                if (!ziel) {
-                    // Kein aktives Item -> per Dateinamen oder Dubbing-ID suchen
-                    const basis = file.substring(file.lastIndexOf('/') + 1)
-                                      .replace(/\.(mp3|wav|ogg)$/i, '');
-                    ziel = files.find(f => f.dubbingId === basis ||
-                        f.filename.replace(/\.(mp3|wav|ogg)$/i, '') === basis);
-                }
-
-                if (!ziel) return; // Keine Zuordnung möglich
-
-                const rel = getFullPath(ziel).replace(/\.(mp3|wav|ogg)$/i, '');
-                const ext = file.substring(file.lastIndexOf('.'));
-                // Pfad bereinigen, falls er bereits mit "sounds" beginnt
-                const cleanedRel = rel.replace(/^sounds[\/]/i, '');
-                const dest = `sounds/DE/${cleanedRel}${ext}`;
-                await window.electronAPI.moveFile(file, dest);
-                deAudioCache[`${cleanedRel}${ext}`] = dest;
-                ziel.dubReady = true;
-                ziel.waitingForManual = false;
-                renderFileTable();
-                saveCurrentProject();
-                const name = dest.split('/').pop();
-                showToast(`${name} importiert.`);
+            window.electronAPI.onManualFile(file => {
+                const name = file.substring(file.lastIndexOf('/') + 1);
+                showToast(`${name} erkannt.`);
                 updateDownloadWaitDialog(name);
             });
         }
