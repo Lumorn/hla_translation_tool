@@ -7342,9 +7342,10 @@ function splitCsvLines(text) {
         const c = text[i];
         if (c === '"') {
             if (inQuotes && text[i + 1] === '"') {
-                current += '"';
+                current += '""';
                 i++;
             } else {
+                current += '"';
                 inQuotes = !inQuotes;
             }
         } else if ((c === '\n' || c === '\r') && !inQuotes) {

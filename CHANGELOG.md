@@ -29,6 +29,12 @@
 * Level-Auswahlliste in den Projekt-Einstellungen folgt nun der Level-Nummer.
 ## 🛠️ Patch in 1.40.13
 * Offline-Übersetzung erkennt installierte Sprachpakete jetzt korrekt.
+## 🛠️ Patch in 1.40.14
+* Halbautomatisch importierte Dateien werden korrekt nach `web/sounds/DE` verschoben.
+## 🛠️ Patch in 1.40.15
+* Importierte Dateien erzeugen sofort einen History-Eintrag und gelten als fertig.
+## 🛠️ Patch in 1.40.16
+* `validateCsv` erhält nun Anführungszeichen, sodass Kommata in Übersetzungen keinen Fehler mehr auslösen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
