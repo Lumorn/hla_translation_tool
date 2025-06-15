@@ -7206,9 +7206,14 @@ function closeStudioOverlay() {
 }
 
 // Zeigt ein Dialogfenster, das auf die manuelle Datei wartet
+// und blendet dabei Ordnername sowie EN- und DE-Text ein
 let waitDialogFileId = null;
 async function showDownloadWaitDialog(fileId) {
     waitDialogFileId = fileId;
+    const file = files.find(f => f.id === fileId) || {};
+    const folder = escapeHtml(file.folder || '');
+    const enText = escapeHtml(file.enText || '');
+    const deText = escapeHtml(file.deText || '');
     let dlPath = 'Download';
     if (window.electronAPI && window.electronAPI.getDownloadPath) {
         dlPath = await window.electronAPI.getDownloadPath();
@@ -7218,6 +7223,11 @@ async function showDownloadWaitDialog(fileId) {
             <div class="dialog">
                 <h3>Alles gesendet</h3>
                 <p>Bitte lege die fertige Datei in <code>${dlPath}</code>.</p>
+                <div style="margin-bottom:10px;">
+                    <p><strong>Ordner:</strong> ${folder}</p>
+                    <p><strong>EN:</strong> ${enText}</p>
+                    <p><strong>DE:</strong> ${deText}</p>
+                </div>
                 <p id="downloadFound" style="display:none;"></p>
                 <div class="dialog-buttons" id="downloadWaitButtons">
                     <button class="btn btn-secondary" onclick="closeDownloadWaitDialog()">Abbrechen</button>
