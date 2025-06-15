@@ -830,14 +830,6 @@ th:nth-child(6) {
     gap: 3px;
 }
 
-/* Kleiner Übersetzungs-Text unter dem DE-Feld */
-.auto-translation {
-    font-size: 12px;
-    color: #999;
-    margin-left: 4px;
-    pointer-events: none;
-}
-
 /* Symbole für Pfad-Verfügbarkeit */
 .path-btn {
     background: #444;
