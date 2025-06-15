@@ -401,9 +401,25 @@
                 <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
                 <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
             </div>
-            <div style="margin-bottom:15px;">
-                <label>Funk-Effekt: <span id="radioStrengthDisplay"></span></label>
-                <input type="range" id="radioStrength" min="0" max="1" step="0.1">
+            <div style="margin-bottom:15px; display:flex; flex-wrap:wrap; gap:10px;">
+                <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
+                    <input type="range" id="radioStrength" min="0" max="1" step="0.05">
+                </label>
+                <label title="Hochpassfrequenz">Highpass (Hz):
+                    <input type="number" id="radioHighpass" min="0" max="1000" step="50">
+                </label>
+                <label title="Tiefpassfrequenz">Lowpass (Hz):
+                    <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
+                </label>
+                <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
+                    <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
+                </label>
+                <label title="Rauschpegel in dBFS">Rauschen (dB):
+                    <input type="number" id="radioNoise" min="-60" max="0" step="1">
+                </label>
+                <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
+                    <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
+                </label>
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="resetDeEdit()">Zurücksetzen</button>

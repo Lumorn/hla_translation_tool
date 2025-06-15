@@ -105,8 +105,14 @@ let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
 let currentDubMode = 'beta';
 
-// Letzte Stärke des Funk-Effekts (0-1)
-let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '1');
+// Letzte Einstellungen des Funk-Effekts
+// Wet bestimmt das Mischverhältnis zwischen Original und Effekt
+let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '0.85');
+let radioHighpass      = parseFloat(localStorage.getItem('hla_radioHighpass') || '300');
+let radioLowpass       = parseFloat(localStorage.getItem('hla_radioLowpass') || '3200');
+let radioSaturation    = parseFloat(localStorage.getItem('hla_radioSaturation') || '0.2');
+let radioNoise         = parseFloat(localStorage.getItem('hla_radioNoise') || '-26');
+let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || '0.1');
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -7843,34 +7849,116 @@ function bufferRms(buffer) {
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
 // =========================== RADIOFILTER START ==============================
-// Erzeugt einen Funkgeräteklang; Stärke wird über einen Parameter geregelt
-async function applyRadioFilter(buffer, strength = 1) {
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
+// Erzeugt einen Funkgeräteklang. Die Parameter werden über ein Objekt gesteuert
+// und dauerhaft in localStorage gespeichert.
+async function applyRadioFilter(buffer, opts = {}) {
+    const {
+        hp = radioHighpass,
+        lp = radioLowpass,
+        saturation = radioSaturation,
+        noiseDb = radioNoise,
+        crackle = radioCrackle,
+        wet = radioEffectStrength
+    } = opts;
 
-    const high = ctx.createBiquadFilter();
+    // Erster Verarbeitungsschritt: Bandpass und Sättigung
+    const ctx1 = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source1 = ctx1.createBufferSource();
+    source1.buffer = buffer;
+
+    const high = ctx1.createBiquadFilter();
     high.type = 'highpass';
-    high.frequency.value = 300;
+    high.frequency.value = hp;
 
-    const low = ctx.createBiquadFilter();
+    const low = ctx1.createBiquadFilter();
     low.type = 'lowpass';
-    low.frequency.value = 3400;
+    low.frequency.value = lp;
 
-    const dry = ctx.createGain();
-    dry.gain.value = 1 - strength;
-    const wet = ctx.createGain();
-    wet.gain.value = strength;
+    const shaper = ctx1.createWaveShaper();
+    const curve = new Float32Array(44100);
+    const k = saturation * 100;
+    for (let i = 0; i < curve.length; i++) {
+        const x = i * 2 / curve.length - 1;
+        curve[i] = (1 + k) * x / (1 + k * Math.abs(x));
+    }
+    shaper.curve = curve;
+    shaper.oversample = '4x';
 
-    source.connect(dry);
-    dry.connect(ctx.destination);
-    source.connect(high);
+    source1.connect(high);
     high.connect(low);
-    low.connect(wet);
-    wet.connect(ctx.destination);
+    low.connect(shaper);
+    shaper.connect(ctx1.destination);
+    source1.start();
+    let processed = await ctx1.startRendering();
 
-    source.start();
-    return await ctx.startRendering();
+    // Zweiter Schritt: Downsampling auf 8 kHz mit 8 Bit
+    const targetRate = 8000;
+    const ctx2 = new OfflineAudioContext(processed.numberOfChannels, Math.ceil(processed.length * targetRate / processed.sampleRate), targetRate);
+    const source2 = ctx2.createBufferSource();
+    source2.buffer = processed;
+    source2.connect(ctx2.destination);
+    source2.start();
+    processed = await ctx2.startRendering();
+    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
+        const data = processed.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = Math.round(data[i] * 127) / 127; // 8 Bit
+        }
+    }
+
+    // Dritter Schritt: Rauschen und Knackser hinzufügen
+    const amp = Math.pow(10, noiseDb / 20);
+    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
+        const data = processed.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            const rnd = (Math.random() * 2 - 1) * amp;
+            data[i] += rnd;
+            if (Math.random() < crackle / 1000) {
+                data[i] += (Math.random() * 2 - 1) * 0.5;
+            }
+        }
+    }
+
+    // Push-to-Talk-Rauschen am Anfang und Ende
+    const fadeSamples = Math.round(0.05 * processed.sampleRate);
+    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
+        const data = processed.getChannelData(ch);
+        for (let i = 0; i < fadeSamples; i++) {
+            const gain = i / fadeSamples;
+            data[i] += (Math.random() * 2 - 1) * amp * (1 - gain);
+            const j = data.length - 1 - i;
+            data[j] += (Math.random() * 2 - 1) * amp * (1 - gain);
+        }
+    }
+
+    // Pegel auf -16 dBFS normalisieren
+    const rms = bufferRms(processed);
+    const target = Math.pow(10, -16 / 20);
+    const gain = target / (rms || 1);
+    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
+        const data = processed.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            data[i] = Math.max(-1, Math.min(1, data[i] * gain));
+        }
+    }
+
+    // Mischung mit Original
+    const outCtx = new OfflineAudioContext(buffer.numberOfChannels, processed.length, processed.sampleRate);
+    const dry = outCtx.createBufferSource();
+    dry.buffer = buffer;
+    const wetGain = outCtx.createGain();
+    wetGain.gain.value = wet;
+    const dryGain = outCtx.createGain();
+    dryGain.gain.value = 1 - wet;
+    const wetSource = outCtx.createBufferSource();
+    wetSource.buffer = processed;
+    dry.connect(dryGain);
+    wetSource.connect(wetGain);
+    dryGain.connect(outCtx.destination);
+    wetGain.connect(outCtx.destination);
+    dry.start();
+    wetSource.start();
+    return await outCtx.startRendering();
 }
 // =========================== RADIOFILTER END ================================
 // =========================== TRIMANDBUFFER END ==============================
@@ -7980,15 +8068,66 @@ async function openDeEdit(fileId) {
     document.getElementById('deEditDialog').style.display = 'flex';
 
     // Regler für Funk-Effekt initialisieren
-    const slider = document.getElementById('radioStrength');
-    const display = document.getElementById('radioStrengthDisplay');
-    if (slider && display) {
-        slider.value = radioEffectStrength;
-        display.textContent = Math.round(radioEffectStrength * 100) + '%';
-        slider.oninput = e => {
+    const rStrength = document.getElementById('radioStrength');
+    const rStrengthDisp = document.getElementById('radioStrengthDisplay');
+    if (rStrength && rStrengthDisp) {
+        rStrength.value = radioEffectStrength;
+        rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+        rStrength.oninput = e => {
             radioEffectStrength = parseFloat(e.target.value);
             localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
-            display.textContent = Math.round(radioEffectStrength * 100) + '%';
+            rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    const rHigh = document.getElementById('radioHighpass');
+    if (rHigh) {
+        rHigh.value = radioHighpass;
+        rHigh.oninput = e => {
+            radioHighpass = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioHighpass', radioHighpass);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    const rLow = document.getElementById('radioLowpass');
+    if (rLow) {
+        rLow.value = radioLowpass;
+        rLow.oninput = e => {
+            radioLowpass = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioLowpass', radioLowpass);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    const rSat = document.getElementById('radioSaturation');
+    const rSatDisp = document.getElementById('radioSaturationDisplay');
+    if (rSat && rSatDisp) {
+        rSat.value = radioSaturation;
+        rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+        rSat.oninput = e => {
+            radioSaturation = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioSaturation', radioSaturation);
+            rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    const rNoise = document.getElementById('radioNoise');
+    if (rNoise) {
+        rNoise.value = radioNoise;
+        rNoise.oninput = e => {
+            radioNoise = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioNoise', radioNoise);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    const rCrackle = document.getElementById('radioCrackle');
+    const rCrackleDisp = document.getElementById('radioCrackleDisplay');
+    if (rCrackle && rCrackleDisp) {
+        rCrackle.value = radioCrackle;
+        rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
+        rCrackle.oninput = e => {
+            radioCrackle = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioCrackle', radioCrackle);
+            rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
             if (isRadioEffect) recomputeEditBuffer();
         };
     }
@@ -8076,7 +8215,7 @@ async function recomputeEditBuffer() {
         buf = volumeMatchedBuffer;
     }
     if (isRadioEffect) {
-        buf = await applyRadioFilter(buf, radioEffectStrength);
+        buf = await applyRadioFilter(buf);
     }
     originalEditBuffer = buf;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -8329,7 +8468,7 @@ async function applyDeEdit() {
         volumeMatchedBuffer = null;
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer, radioEffectStrength);
+            baseBuffer = await applyRadioFilter(baseBuffer);
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
@@ -8365,7 +8504,7 @@ async function applyDeEdit() {
         originalEditBuffer = savedOriginalBuffer;
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer, radioEffectStrength);
+            baseBuffer = await applyRadioFilter(baseBuffer);
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
