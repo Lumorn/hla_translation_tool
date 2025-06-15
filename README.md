@@ -65,6 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
 * **Automatische Übersetzungsvorschau** unter jedem DE-Feld via *Argos Translate*
+* **Umlaute korrekt anzeigen:** Die automatischen Übersetzungen nutzen nun immer UTF‑8
 * **Gespeicherte Übersetzungen:** einmal erzeugte Vorschläge werden im Projekt abgelegt und nur bei Änderungen neu berechnet
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab

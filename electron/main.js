@@ -370,12 +370,16 @@ app.whenReady().then(() => {
       const result = spawnSync(
         'python',
         [path.join(__dirname, '..', 'translate_text.py')],
-        { input: text }
+        {
+          input: text,
+          encoding: 'utf8',
+          env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
+        }
       );
       if (result.status === 0) {
-        return result.stdout.toString().trim();
+        return result.stdout.trim();
       }
-      console.error('[Translate]', result.stderr.toString());
+      console.error('[Translate]', result.stderr);
     } catch (e) {
       console.error('[Translate]', e);
     }
