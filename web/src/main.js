@@ -13,6 +13,7 @@ let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
+let aktiveOrdnerDateien    = []; // Aktuelle Dateiliste im Ordner-Browser
 
 // Verfügbarkeit der Electron-API einmalig prüfen
 const isElectron = !!window.electronAPI;
@@ -4607,27 +4608,32 @@ function showFolderFiles(folderName) {
     title.innerHTML = `${folderIcon} ${lastFolderName} <button class="folder-customize-btn" onclick="showFolderCustomization('${folderName}')">⚙️</button>`;
     description.innerHTML = `✅ ${completed} übersetzt – 🚫 ${ignored} ignoriert – ⏳ ${total - completed - ignored} offen`;
 
-    // --- Rendern mit Pfad-Anzeige ---
-    folderFilesView.innerHTML = folderFiles.map(file => {
+    aktiveOrdnerDateien = folderFiles;
+    renderFolderFilesList(folderFiles);
+
+    const searchInput = document.getElementById('folderFileSearchInput');
+    searchInput.value = '';
+    searchInput.addEventListener('input', handleFolderFileSearch);
+}
+// =========================== SHOWFOLDERFILES END ===========================
+
+// =========================== FOLDER FILE SEARCH START =======================
+function renderFolderFilesList(list, query = '') {
+    const folderFilesView = document.getElementById('folderFilesView');
+    const items = list.map(file => {
         const inProject = files.find(f => f.filename === file.filename && f.folder === file.folder);
-        
-        // Debug-Pfad-Information generieren
         const debugPathInfo = getBrowserDebugPathInfo(file);
-        
         return `
             <div class="folder-file-item ${file.isCompleted ? 'completed' : ''} ${file.isIgnored ? 'ignored' : ''}">
                 <div class="folder-file-info">
                     <div class="folder-file-name">
                         ${file.filename}
                         ${file.isCompleted ? `<span class="folder-file-badge done"  title="Übersetzt">✅ Übersetzt</span>` : ''}
-                        ${file.isIgnored   ? `<span class="folder-file-badge skip">🚫 Ignoriert</span>`           : ''}
+                        ${file.isIgnored ? `<span class="folder-file-badge skip">🚫 Ignoriert</span>` : ''}
                     </div>
-                    
-                    <!-- Debug-Pfad-Anzeige -->
                     <div style="font-size: 10px; color: #666; margin: 4px 0; padding: 4px 8px; background: #1a1a1a; border-radius: 3px; border-left: 3px solid #333;">
                         <strong>🔍 Pfad:</strong> ${debugPathInfo}
                     </div>
-                    
                     <div class="folder-file-texts">
                         <div class="folder-file-text">
                             <div class="folder-file-text-label">EN</div>
@@ -4643,10 +4649,9 @@ function showFolderFiles(folderName) {
                         </div>
                     </div>
                 </div>
-
                 <div class="folder-file-actions">
                     <button class="folder-file-play" onclick="playFolderBrowserAudio('${file.fullPath}', this)">▶</button>
-                    <button class="folder-file-add" ${inProject ? 'disabled' : ''} 
+                    <button class="folder-file-add" ${inProject ? 'disabled' : ''}
                             onclick="addFileFromFolderBrowser('${file.filename}', '${file.folder}', '${file.fullPath}')">
                         ${inProject ? '✓ Bereits hinzugefügt' : '+ Hinzufügen'}
                     </button>
@@ -4657,8 +4662,22 @@ function showFolderFiles(folderName) {
                 </div>
             </div>`;
     }).join('');
+
+    folderFilesView.innerHTML = `
+        <div class="folder-search-container">
+            <input type="text" class="folder-search-input" id="folderFileSearchInput" placeholder="Text im Ordner suchen..." value="${escapeHtml(query)}">
+        </div>
+        <div id="folderFilesList">${items}</div>`;
 }
-// =========================== SHOWFOLDERFILES END ===========================
+
+function handleFolderFileSearch(e) {
+    const q = e.target.value.toLowerCase().trim();
+    const filtered = aktiveOrdnerDateien.filter(f =>
+        f.enText.toLowerCase().includes(q) || f.deText.toLowerCase().includes(q)
+    );
+    renderFolderFilesList(filtered, q);
+}
+// =========================== FOLDER FILE SEARCH END =========================
 
 // =========================== REFRESHGLOBAL START ===========================
 function refreshGlobalStatsAndGrids() {

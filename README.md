@@ -310,6 +310,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 * **🎨 Ordner‑Anpassung:** Icons und Farben individuell einstellbar
 * **🔍 Pfad‑Anzeige:** Status und aufgelöster Pfad für jede Datei
 * **✅ Completion‑Status:** Visuelle Markierung übersetzter Dateien
+* **🔍 Ordner-Textsuche:** Filtert Dateien nach EN- oder DE-Texten
 
 ### Ordner‑Aktionen
 
