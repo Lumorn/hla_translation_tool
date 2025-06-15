@@ -1,6 +1,7 @@
 const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
+const { copyDubbedFile } = require('./pathUtils');
 // Benötigt für dynamische Pfaderkennung
 const { DL_WATCH_PATH, SOUNDS_BASE_PATH, soundsDirName } = require('./web/src/config.js');
 
@@ -127,25 +128,18 @@ function watchDownloadFolder(callback, opts = {}) {
                     log('Umbenannt in: ' + richtigerName);
                     file = richtigerName;
                 }
-                // Pfad bereinigen und korrekt aufbauen
+                // Pfad des Originals ermitteln und Datei an den DE-Ort kopieren
                 let rel = job.relPath.replace(/^[\/]+/, '');
                 rel = rel.replace(/^web[\/]/i, '');
                 rel = rel.replace(/^sounds[\/](?=en[\/])/i, '');
                 rel = rel.replace(/^(?:en|de)[\/]/i, '');
-                const zielRel = path.posix.join(soundsDirName, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
-                const ziel = path.join(SOUNDS_BASE_PATH, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
-                fs.mkdirSync(path.dirname(ziel), { recursive: true });
-                try {
-                    fs.renameSync(file, ziel);
-                } catch (err) {
-                    // Bei unterschiedlichen Laufwerken schlägt renameSync fehl
-                    if (err.code === 'EXDEV') {
-                        fs.copyFileSync(file, ziel);
-                        fs.unlinkSync(file);
-                    } else {
-                        throw err;
-                    }
-                }
+                const original = path.join(SOUNDS_BASE_PATH, 'EN', rel);
+                const ziel = await copyDubbedFile(original, file);
+                const zielRel = path.posix.join(
+                    soundsDirName,
+                    path.relative(SOUNDS_BASE_PATH, ziel).split(path.sep).join('/')
+                );
+
                 log('Verschoben nach: ' + ziel);
                 const destValid = pruefeAudiodatei(ziel);
                 log('Prüfung Ziel-Datei: ' + (destValid ? 'OK' : 'FEHLER'));
