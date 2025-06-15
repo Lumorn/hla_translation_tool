@@ -111,6 +111,11 @@ const APP_VERSION = '1.40.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
+// Basis-URL für automatische Übersetzungen
+const TRANSLATE_API = 'https://api.mymemory.translated.net/get';
+// Merkt Timer pro Datei für verzögerte Übersetzung
+let translationTimers = {};
+
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 if (typeof module !== 'undefined' && module.exports) {
@@ -2009,14 +2014,17 @@ return `
                 <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
             </div>
         </div></td>
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="text-input"
-                 onchange="updateText(${file.id}, 'de', this.value)"
-                 oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
-            <div class="btn-column">
-                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
-                ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+        <td><div style="display:flex;flex-direction:column;align-items:flex-start;gap:2px;">
+            <div style="display:flex;align-items:flex-start;gap:5px;">
+                <textarea class="text-input"
+                     onchange="updateText(${file.id}, 'de', this.value)"
+                     oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
+                <div class="btn-column">
+                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
+                    ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+                </div>
             </div>
+            <div class="auto-translation" id="auto-trans-${file.id}"></div>
         </div></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             <div class="btn-column">
@@ -2051,6 +2059,7 @@ return `
     // Auto-resize all text inputs after rendering
     setTimeout(() => {
         autoResizeAllInputs();
+        initializeAutoTranslations(sortedFiles);
     }, 50);
 }
 // =========================== RENDER FILE TABLE WITH ORDER END ===========================
@@ -3070,6 +3079,8 @@ function updateText(fileId, lang, value, skipUndo) {
 
     if (lang === 'en') {
         file.enText = value;
+        // Nach EN-Änderungen automatische Übersetzung anstoßen
+        scheduleAutoTranslation(fileId);
     } else {
         file.deText = value;
     }
@@ -3271,6 +3282,35 @@ function toggleFileCompletion(fileId) {
                     deInput.style.height = maxHeight + 'px';
                 }
             });
+        }
+
+        // Übersetzt den gegebenen EN-Text ins Deutsche
+        async function translateEnToDe(text) {
+            try {
+                const res = await fetch(`${TRANSLATE_API}?q=${encodeURIComponent(text)}&langpair=en|de`);
+                const data = await res.json();
+                return data?.responseData?.translatedText || '';
+            } catch (e) {
+                console.error('Übersetzungsfehler:', e);
+                return '';
+            }
+        }
+
+        // Startet verzögert eine Übersetzung für eine Datei
+        function scheduleAutoTranslation(fileId) {
+            clearTimeout(translationTimers[fileId]);
+            translationTimers[fileId] = setTimeout(async () => {
+                const file = files.find(f => f.id === fileId);
+                if (!file) return;
+                const trans = await translateEnToDe(file.enText);
+                const el = document.getElementById(`auto-trans-${fileId}`);
+                if (el) el.textContent = trans;
+            }, 500);
+        }
+
+        // Setzt alle Übersetzungen neu nach dem Rendern
+        function initializeAutoTranslations(list) {
+            list.forEach(file => scheduleAutoTranslation(file.id));
         }
 		
 // Completion Toggle All - für den orangen Haken
