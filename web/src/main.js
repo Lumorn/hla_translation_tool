@@ -1111,6 +1111,7 @@ function selectProject(id){
     files.forEach(f=>{
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
+        if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
     });
@@ -1317,7 +1318,8 @@ function addFiles() {
                 selected: true,
                 trimStartMs: 0,
                 trimEndMs: 0,
-                volumeMatched: false
+                volumeMatched: false,
+                radioEffect: false
             };
             
             files.push(newFile);
@@ -2084,6 +2086,7 @@ return `
             <div class="edit-column">
                 ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
                 ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
+                ${file.radioEffect ? '<span class="edit-status-icon">📻</span>' : ''}
             </div>
         </div></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
@@ -5044,7 +5047,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
-        volumeMatched: false
+        volumeMatched: false,
+        radioEffect: false
     };
     
     files.push(newFile);
@@ -7834,6 +7838,26 @@ function bufferRms(buffer) {
     return Math.sqrt(sum / len);
 }
 // =========================== LAUTSTAERKEANGLEICH END =======================
+
+// =========================== RADIOFILTER START ==============================
+// Erzeugt einen Funkgeräteklang durch Hoch- und Tiefpassfilter
+async function applyRadioFilter(buffer) {
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    const high = ctx.createBiquadFilter();
+    high.type = 'highpass';
+    high.frequency.value = 300;
+    const low = ctx.createBiquadFilter();
+    low.type = 'lowpass';
+    low.frequency.value = 3400;
+    source.connect(high);
+    high.connect(low);
+    low.connect(ctx.destination);
+    source.start();
+    return await ctx.startRendering();
+}
+// =========================== RADIOFILTER END ================================
 // =========================== TRIMANDBUFFER END ==============================
 
 // =========================== BUFFERTOWAV START ==============================
@@ -7875,6 +7899,8 @@ let originalEditBuffer = null;
 let savedOriginalBuffer = null; // Unverändertes DE-Audio
 let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
 let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
+let radioEffectBuffer = null;  // Buffer mit Funkgeräteffekt
+let isRadioEffect = false;     // Merkt, ob der Funkgeräteffekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -7897,6 +7923,8 @@ async function openDeEdit(fileId) {
     savedOriginalBuffer = originalEditBuffer;
     volumeMatchedBuffer = null;
     isVolumeMatched = false;
+    radioEffectBuffer = null;
+    isRadioEffect = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -8003,12 +8031,44 @@ async function applyVolumeMatch() {
             await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
             await updateHistoryCache(relPath);
         }
-        originalEditBuffer = volumeMatchedBuffer;
         isVolumeMatched = true;
-        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-        updateDeEditWaveforms();
+        await recomputeEditBuffer();
     }
 }
+
+// =========================== RECOMPUTEEDITBUFFER START =====================
+// Wendet aktuelle Effekte auf das Original an und aktualisiert den Buffer
+async function recomputeEditBuffer() {
+    let buf = savedOriginalBuffer;
+    if (isVolumeMatched) {
+        if (!volumeMatchedBuffer) {
+            volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
+        }
+        buf = volumeMatchedBuffer;
+    }
+    if (isRadioEffect) {
+        buf = await applyRadioFilter(buf);
+    }
+    originalEditBuffer = buf;
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    updateDeEditWaveforms();
+}
+// =========================== RECOMPUTEEDITBUFFER END =======================
+
+// =========================== APPLYRADIOEFFECT START ========================
+// Wendet den Funkgeräteffekt an und legt bei Erstbenutzung eine History an
+async function applyRadioEffect() {
+    if (!isRadioEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isRadioEffect = true;
+    await recomputeEditBuffer();
+}
+// =========================== APPLYRADIOEFFECT END ==========================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
@@ -8158,6 +8218,8 @@ function closeDeEdit() {
     savedOriginalBuffer = null;
     volumeMatchedBuffer = null;
     isVolumeMatched = false;
+    radioEffectBuffer = null;
+    isRadioEffect = false;
     editEnBuffer = null;
     window.onmousemove = null;
     window.onmouseup = null;
@@ -8203,6 +8265,11 @@ async function resetDeEdit() {
         currentEditFile.trimStartMs = 0;
         currentEditFile.trimEndMs = 0;
         currentEditFile.volumeMatched = false;
+        currentEditFile.radioEffect = false;
+        volumeMatchedBuffer = null;
+        isVolumeMatched = false;
+        radioEffectBuffer = null;
+        isRadioEffect = false;
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -8231,7 +8298,10 @@ async function applyDeEdit() {
         // Bereits geladene Originaldatei weiterverwenden
         originalEditBuffer = savedOriginalBuffer;
         volumeMatchedBuffer = null;
-        const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        if (isRadioEffect) {
+            baseBuffer = await applyRadioFilter(baseBuffer);
+        }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
@@ -8264,7 +8334,10 @@ async function applyDeEdit() {
             } catch {}
         }
         originalEditBuffer = savedOriginalBuffer;
-        const baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+        if (isRadioEffect) {
+            baseBuffer = await applyRadioFilter(baseBuffer);
+        }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
@@ -8275,6 +8348,7 @@ async function applyDeEdit() {
     currentEditFile.trimStartMs = editStartTrim;
     currentEditFile.trimEndMs = editEndTrim;
     currentEditFile.volumeMatched = isVolumeMatched;
+    currentEditFile.radioEffect = isRadioEffect;
     // Änderungen sichern
     isDirty = true;
     renderFileTable();
@@ -9044,7 +9118,8 @@ function addFileToProject(filename, folder, originalResult) {
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
-        volumeMatched: false
+        volumeMatched: false,
+        radioEffect: false
     };
     
     files.push(newFile);
