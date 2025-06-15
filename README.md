@@ -55,7 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ordner‑Löschfunktion:** Sichere Entfernung ganzer Ordner aus der DB
 * **Live‑Filter:** *„Übersetzt / Ignoriert / Offen"*
 * **Ordner‑Anpassung:** Icons und Farben pro Ordner
-* **Live‑Suche im Ordner** analog zur globalen Suche (Cursor bleibt beim Tippen an der richtigen Position)
+* **Live‑Suche im Ordner** analog zur globalen Suche (Cursor bleibt beim Tippen an der richtigen Position) – unterstützt jetzt mehrere Suchbegriffe mit Leerzeichen
 
 ### 🖋️ Texteingabe & Navigation
 
@@ -209,7 +209,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 ### 3. 📄 Dateien hinzufügen
 * **Über Suche:** Live‑Suche nach Dateinamen oder Textinhalten
-* **Über Browser:** „📁 Ordner durchsuchen" für visuelles Browsen mit Live-Suche im aktuellen Ordner
+* **Über Browser:** „📁 Ordner durchsuchen" für visuelles Browsen mit Live-Suche im aktuellen Ordner – unterstützt jetzt Suchbegriffe mit Leerzeichen
 * **Direct‑Input:** Dateinamen direkt ins Eingabefeld
 
 ### 4. ✏️ Übersetzen
