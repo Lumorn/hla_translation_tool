@@ -353,7 +353,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 * **🔄 Universeller Auto‑Scan:** Alle Funktionen lösen bei Bedarf automatisch Ordner‑Scan aus
 * **⚡ Berechtigung‑Erkennung:** Browser‑Berechtigungen werden automatisch geprüft
-* **🤖 Automatische Berechtigungs-Erneuerung:** Fehlende Ordnerzugriffe werden ohne Rückfrage nachgeholt
+* **🤖 Automatische Berechtigungs-Erneuerung:** Fehlende Ordnerzugriffe können nach Bestätigung erneut abgefragt werden
 * **🎯 Intelligente Pfad‑Auflösung:** Dynamisches Matching zwischen Projekten und Datenbank
 
 ### Erweiterte Suche

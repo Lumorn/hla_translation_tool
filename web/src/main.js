@@ -4009,10 +4009,20 @@ function calculateFolderCompletionStats() {
                 console.log(`Auto-Scan ausgeloest von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
 
                 if (!projektOrdnerHandle) {
-                    // Kein Ordner gewaehlt → automatisch Auswahl öffnen
-                    updateStatus('Projektordner wird geoeffnet...');
-                    waehleProjektOrdner();
-                    return true; // Scan gestartet
+                    // Kein Ordner gewaehlt → Benutzer fragen
+                    const choose = confirm(
+                        `📁 ${functionName}\n\n` +
+                        'Die Audio-Dateien sind nicht zugänglich.\n' +
+                        'Möchten Sie den Projektordner auswählen?'
+                    );
+
+                    if (choose) {
+                        updateStatus('Projektordner wird geöffnet...');
+                        waehleProjektOrdner();
+                        return true; // Scan gestartet
+                    }
+
+                    return false; // Nutzer hat abgelehnt
                 }
 
                 // Ordner wurde bereits gewaehlt → automatisch scannen
