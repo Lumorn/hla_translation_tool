@@ -4672,17 +4672,28 @@ function renderFolderFilesList(list, query = '') {
 }
 
 function handleFolderFileSearch(e) {
+    // Cursor-Position vor dem Neuzeichnen merken
+    const cursorPos = e.target.selectionStart;
     const q = e.target.value.toLowerCase().trim();
+
+    // Liste nach Dateinamen oder Text filtern
     const filtered = aktiveOrdnerDateien.filter(f =>
         f.filename.toLowerCase().includes(q) ||
         f.enText.toLowerCase().includes(q) ||
         f.deText.toLowerCase().includes(q)
     );
+
+    // Neue Trefferliste zeichnen
     renderFolderFilesList(filtered, q);
+
     // Event-Listener nach dem Neuzeichnen erneut binden
     const input = document.getElementById('folderFileSearchInput');
     input.addEventListener('input', handleFolderFileSearch);
+
+    // Fokus und Cursor-Position wiederherstellen
     input.focus();
+    const pos = Math.min(cursorPos, input.value.length);
+    input.setSelectionRange(pos, pos);
 }
 // =========================== FOLDER FILE SEARCH END =========================
 
