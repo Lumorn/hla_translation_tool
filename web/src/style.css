@@ -1201,6 +1201,25 @@ th:nth-child(6) {
             color: #999;
         }
 
+        /* Übersetzungs-Fortschritt */
+        .translate-progress {
+            display: none;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            margin: 20px;
+        }
+
+        .translate-progress.active {
+            display: block;
+        }
+
+        .translate-status {
+            font-size: 14px;
+            color: #999;
+        }
+
 
 /* =========================== DIALOG CLOSE BTN STYLE START =========================== */
 .folder-browser-dialog .dialog { position:relative; }
