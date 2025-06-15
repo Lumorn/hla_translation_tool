@@ -72,7 +72,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
-* **Funkgeräte-Effekt:** Stärke per Regler wählbar; jetzt mit Kompression, Bit- und Sample-Reduktion sowie leichtem Rauschen
+* **Funkgeräte-Effekt:** Stärke per Regler wählbar; DE-Audio klingt wie per Funk und bleibt dank History wiederherstellbar
 
 ### 🔍 Suche & Import
 
@@ -497,5 +497,3 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
-* **`resampleBuffer(buffer, newRate)`** – wandelt einen AudioBuffer auf eine andere Samplerate um.
-* **`bitcrushAndNoise(buffer, bits, noise)`** – reduziert die Bit-Tiefe und mischt optional Rauschen hinzu.
