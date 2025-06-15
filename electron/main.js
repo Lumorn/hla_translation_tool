@@ -343,7 +343,18 @@ app.whenReady().then(() => {
     // Zielpfad absolut bestimmen
     const target = path.resolve(projectRoot, dest);
     fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.renameSync(src, target);
+    try {
+      // Direkt verschieben
+      fs.renameSync(src, target);
+    } catch (err) {
+      // Bei unterschiedlichen Laufwerken schlagen rename-Operationen fehl
+      if (err.code === 'EXDEV') {
+        fs.copyFileSync(src, target);
+        fs.unlinkSync(src);
+      } else {
+        throw err;
+      }
+    }
     // Sicherheitshalber alten Pfad löschen
     if (fs.existsSync(src)) fs.unlinkSync(src);
     return target;

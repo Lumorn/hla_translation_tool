@@ -35,6 +35,8 @@
 * Importierte Dateien erzeugen sofort einen History-Eintrag und gelten als fertig.
 ## 🛠️ Patch in 1.40.16
 * `validateCsv` erhält nun Anführungszeichen, sodass Kommata in Übersetzungen keinen Fehler mehr auslösen.
+## 🛠️ Patch in 1.40.17
+* `move-file` verschiebt Dateien nun auch über Laufwerksgrenzen hinweg.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
