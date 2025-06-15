@@ -282,8 +282,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const rel = getFullPath(ziel).replace(/\.(mp3|wav|ogg)$/i, '');
                 const ext = file.substring(file.lastIndexOf('.'));
-                // Führendes "sounds" entfernen
-                const cleanedRel = rel.replace(/^sounds[\/]/i, '');
+                // Führende Unterordner wie "sounds", "EN" oder "DE" entfernen
+                let cleanedRel = rel.replace(/^sounds[\\/]/i, '');
+                cleanedRel = cleanedRel.replace(/^(?:EN|DE)[\\/]/i, '');
                 const destRel = `${cleanedRel}${ext}`;
                 const dest = `sounds/DE/${destRel}`;
 
