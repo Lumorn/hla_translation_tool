@@ -181,7 +181,6 @@ Seit Patch 1.40.13 springt die Projekt-Wiedergabe nach einer Datei automatisch z
 Seit Patch 1.40.14 werden halbautomatisch importierte Dateien korrekt nach `web/sounds/DE` verschoben, auch wenn der gespeicherte Pfad mit `sounds` beginnt.
 Seit Patch 1.40.15 werden diese Dateien zusätzlich wie ein manueller Upload behandelt: Ein History-Eintrag entsteht und der Status springt sofort auf *fertig*.
 Seit Patch 1.40.16 validiert das Tool CSV-Dateien auch dann korrekt, wenn die Übersetzung Kommata enthält.
-Seit Patch 1.40.17 verschiebt der halbautomatische Import Dateien auch über Laufwerksgrenzen hinweg.
 
 
 Beispiel einer gültigen CSV:
