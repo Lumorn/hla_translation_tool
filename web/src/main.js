@@ -105,7 +105,7 @@ let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
 let currentDubMode = 'beta';
 
-// Letzte Stärke des Funk-Effekts (0-1)
+// Letzte Stärke des Funk-Effekts (0-2)
 let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '1');
 
 // === Stacks für Undo/Redo ===
