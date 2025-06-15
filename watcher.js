@@ -80,10 +80,11 @@ function watchDownloadFolder(callback, opts = {}) {
             const job = pending[idx];
             try {
                 await warteBisFertig(file);
-                // Pfad bereinigen: führendes "sounds" entfernen
-                let rel = job.relPath.replace(/^[/\\]+/, '');
-                rel = rel.replace(/^sounds[\/]/i, '');
-                // Ziel relativ zum erkannten Sounds-Ordner aufbauen
+                // Pfad bereinigen und korrekt aufbauen
+                let rel = job.relPath.replace(/^[\/]+/, '');
+                rel = rel.replace(/^web[\/]/i, '');
+                rel = rel.replace(/^sounds[\/](?=en[\/])/i, '');
+                rel = rel.replace(/^(?:en|de)[\/]/i, '');
                 const zielRel = path.posix.join(soundsDirName, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
                 const ziel = path.join(SOUNDS_BASE_PATH, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
                 fs.mkdirSync(path.dirname(ziel), { recursive: true });
