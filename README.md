@@ -113,6 +113,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
 10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
 11. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
+12. Für das Python-Skript `translate_text.py` muss `argostranslate` installiert sein. Dies erledigt `pip install -r requirements.txt`.
 
 ### ElevenLabs-Dubbing
 
@@ -188,6 +189,10 @@ speaker,start_time,end_time,transcription,translation
 
 Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
 Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeugten CSV angezeigt. So lässt sich schnell prüfen, ob die Daten korrekt formatiert sind.
+
+### Python-Übersetzungsskript
+
+`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Installiere zuvor die Abhängigkeiten mit `pip install -r requirements.txt`. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 
 ### Version aktualisieren
 

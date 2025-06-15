@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 import sys
-from argostranslate import package, translate
+
+try:
+    from argostranslate import package, translate
+except ModuleNotFoundError as exc:
+    sys.stderr.write(
+        "Das Paket 'argostranslate' fehlt. Bitte mit 'pip install -r requirements.txt' installieren.\n"
+    )
+    raise exc
 
 FROM_CODE = "en"
 TO_CODE = "de"
