@@ -63,6 +63,10 @@ let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')
 let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
 let autoBackupTimer    = null;
 
+// Warteschlange für automatische Übersetzungen
+let translateQueue     = [];
+let translateRunning   = false;
+
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 // Liste der verfügbaren Stimmen der API
@@ -1072,10 +1076,12 @@ function selectProject(id){
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
+        if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
     });
     if(migrated) isDirty=true;
 
-    files.forEach(f => updateAutoTranslation(f));
+    const needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
+    runTranslationQueue(needTrans);
 
     renderFileTable();
     updateDubStatusForFiles();
@@ -1271,6 +1277,7 @@ function addFiles() {
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
                 autoTranslation: '',
+                autoSource: '',
                 selected: true,
                 trimStartMs: 0,
                 trimEndMs: 0,
@@ -1278,6 +1285,7 @@ function addFiles() {
             };
             
             files.push(newFile);
+            updateAutoTranslation(newFile, true);
             added++;
         }
     });
@@ -3076,7 +3084,7 @@ function updateText(fileId, lang, value, skipUndo) {
 
     if (lang === 'en') {
         file.enText = value;
-        updateAutoTranslation(file);
+        updateAutoTranslation(file, true);
     } else {
         file.deText = value;
     }
@@ -3093,11 +3101,15 @@ function updateText(fileId, lang, value, skipUndo) {
     renderProjects(); // HINZUFÜGEN für live Update
 }
 
-async function updateAutoTranslation(file) {
+async function updateAutoTranslation(file, force = false) {
     if (!window.electronAPI || !window.electronAPI.translateText) return;
+    if (!file.enText) return;
+    if (!force && file.autoSource === file.enText && file.autoTranslation) return;
     try {
         const translated = await window.electronAPI.translateText(file.enText);
         file.autoTranslation = translated;
+        file.autoSource = file.enText;
+        isDirty = true;
         updateTranslationDisplay(file.id);
     } catch (e) {
         console.error('Automatische Übersetzung fehlgeschlagen', e);
@@ -3110,6 +3122,24 @@ function updateTranslationDisplay(fileId) {
     if (div && file) {
         div.textContent = file.autoTranslation || '';
     }
+}
+
+async function runTranslationQueue(queue) {
+    if (translateRunning || !queue || queue.length === 0) return;
+    translateRunning = true;
+    const progress = document.getElementById('translateProgress');
+    const status   = document.getElementById('translateStatus');
+    const fill     = document.getElementById('translateFill');
+    progress.classList.add('active');
+    for (let i = 0; i < queue.length; i++) {
+        status.textContent = `Übersetze ${i + 1}/${queue.length}...`;
+        await updateAutoTranslation(queue[i], true);
+        fill.style.width = `${Math.round(((i + 1) / queue.length) * 100)}%`;
+    }
+    progress.classList.remove('active');
+    fill.style.width = '0%';
+    translateRunning = false;
+    saveCurrentProject();
 }
 
 // Stellt den letzten Textzustand wieder her
@@ -4964,6 +4994,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         autoTranslation: '',
+        autoSource: '',
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
@@ -4971,6 +5002,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
     };
     
     files.push(newFile);
+    updateAutoTranslation(newFile, true);
+    updateAutoTranslation(newFile, true);
     
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
@@ -8949,6 +8982,8 @@ function addFileToProject(filename, folder, originalResult) {
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
+        autoTranslation: '',
+        autoSource: '',
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
