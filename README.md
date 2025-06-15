@@ -192,7 +192,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 ### Python-Übersetzungsskript
 
-`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Installiere zuvor die Abhängigkeiten mit `pip install -r requirements.txt`. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
+`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, versucht das Skript automatisch, die Abhängigkeiten per `pip` zu installieren. Sollte das nicht klappen, einfach selbst `pip install -r requirements.txt` ausführen. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 
 ### Version aktualisieren
 
