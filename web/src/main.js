@@ -4611,6 +4611,7 @@ function showFolderFiles(folderName) {
     aktiveOrdnerDateien = folderFiles;
     renderFolderFilesList(folderFiles);
 
+    // Suche nach jedem Tastendruck im Ordner aktivieren
     const searchInput = document.getElementById('folderFileSearchInput');
     searchInput.value = '';
     searchInput.addEventListener('input', handleFolderFileSearch);
@@ -4627,7 +4628,7 @@ function renderFolderFilesList(list, query = '') {
             <div class="folder-file-item ${file.isCompleted ? 'completed' : ''} ${file.isIgnored ? 'ignored' : ''}">
                 <div class="folder-file-info">
                     <div class="folder-file-name">
-                        ${file.filename}
+                        ${query ? highlightText(file.filename, query) : file.filename}
                         ${file.isCompleted ? `<span class="folder-file-badge done"  title="Übersetzt">✅ Übersetzt</span>` : ''}
                         ${file.isIgnored ? `<span class="folder-file-badge skip">🚫 Ignoriert</span>` : ''}
                     </div>
@@ -4638,13 +4639,13 @@ function renderFolderFilesList(list, query = '') {
                         <div class="folder-file-text">
                             <div class="folder-file-text-label">EN</div>
                             <div class="folder-file-text-content" title="${escapeHtml(file.enText)}">
-                                ${file.enText || '(kein Text)'}
+                                ${query ? highlightText(file.enText || '(kein Text)', query) : (file.enText || '(kein Text)')}
                             </div>
                         </div>
                         <div class="folder-file-text">
                             <div class="folder-file-text-label">DE</div>
                             <div class="folder-file-text-content" title="${escapeHtml(file.deText)}">
-                                ${file.deText || '(kein Text)'}
+                                ${query ? highlightText(file.deText || '(kein Text)', query) : (file.deText || '(kein Text)')}
                             </div>
                         </div>
                     </div>
@@ -4673,9 +4674,15 @@ function renderFolderFilesList(list, query = '') {
 function handleFolderFileSearch(e) {
     const q = e.target.value.toLowerCase().trim();
     const filtered = aktiveOrdnerDateien.filter(f =>
-        f.enText.toLowerCase().includes(q) || f.deText.toLowerCase().includes(q)
+        f.filename.toLowerCase().includes(q) ||
+        f.enText.toLowerCase().includes(q) ||
+        f.deText.toLowerCase().includes(q)
     );
     renderFolderFilesList(filtered, q);
+    // Event-Listener nach dem Neuzeichnen erneut binden
+    const input = document.getElementById('folderFileSearchInput');
+    input.addEventListener('input', handleFolderFileSearch);
+    input.focus();
 }
 // =========================== FOLDER FILE SEARCH END =========================
 
