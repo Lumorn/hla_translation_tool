@@ -147,7 +147,7 @@ ob die **Beta-API** genutzt oder der **halbautomatische Modus** verwendet werden
 Im halbautomatischen Modus werden Audiodatei und Texte lediglich an ElevenLabs gesendet.
 Anschließend erscheint ein Hinweis, die fertig gerenderte Datei in den projektspezifischen Ordner `web/Download` (oder `web/Downloads`) zu legen.
 Sobald dort eine passende Datei auftaucht, zeigt das Tool „Datei gefunden" mit Namen an und
-wartet auf eine Bestätigung.
+wartet auf eine Bestätigung. Das Fenster zeigt nun zusätzlich Ordnername sowie englischen und deutschen Text der aktuellen Zeile an, damit klar ist, für welche Übersetzung die Datei erwartet wird.
 Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 
 * **Stability** – Ausgeglichenheit vs. Lebendigkeit
