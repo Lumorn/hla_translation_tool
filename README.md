@@ -188,6 +188,7 @@ Seit Patch 1.40.20 prüft der Dateiwächter im halbautomatischen Modus die Audio
 Seit Patch 1.40.21 zeigt das Dubbing-Protokoll beim halbautomatischen Import, welche Datei gefunden wurde, wohin sie kopiert wurde und ob die Prüfung vor und nach dem Kopieren erfolgreich war.
 Seit Patch 1.40.22 protokolliert das Tool zusätzlich den vollständigen Original- und Zielpfad der Datei.
 Seit Patch 1.40.23 benennt der Dateiwächter gefundene Dateien zunächst korrekt um und verschiebt sie erst danach.
+Seit Patch 1.40.24 entfernt der halbautomatische Import auch vorgestellte "EN"- oder "DE"-Ordnernamen, sodass keine unnötigen Unterordner mehr entstehen.
 
 
 Beispiel einer gültigen CSV:
