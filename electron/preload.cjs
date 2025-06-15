@@ -51,6 +51,7 @@ if (typeof require !== 'function') {
     fsReadFile: p => fs.readFileSync(p),
     fsExists: p => fs.existsSync(p),
     join: (...segments) => path.join(...segments),
+    translateText: text => ipcRenderer.invoke('translate-text', text),
   });
   console.log('[Preload] erfolgreich geladen');
 }

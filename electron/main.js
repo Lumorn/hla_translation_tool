@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
-const { execSync } = require('child_process');
+const { execSync, spawnSync } = require('child_process');
 // Lade Konfiguration relativ zum aktuellen Verzeichnis
 const { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 const { chooseExisting } = require('../pathUtils');
@@ -362,6 +362,24 @@ app.whenReady().then(() => {
   // Speichert einen übergebenen Buffer als neue History-Version
   ipcMain.handle('save-de-history-buffer', async (event, { relPath, data }) => {
     return historyUtils.saveBufferVersion(deHistoryPath, relPath, Buffer.from(data));
+  });
+
+  // Uebersetzt EN-Text nach DE ueber ein Python-Skript
+  ipcMain.handle('translate-text', async (event, text) => {
+    try {
+      const result = spawnSync(
+        'python',
+        [path.join(__dirname, '..', 'translate_text.py')],
+        { input: text }
+      );
+      if (result.status === 0) {
+        return result.stdout.toString().trim();
+      }
+      console.error('[Translate]', result.stderr.toString());
+    } catch (e) {
+      console.error('[Translate]', e);
+    }
+    return '';
   });
   // =========================== SAVE-DE-FILE END =============================
 
