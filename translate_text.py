@@ -6,27 +6,11 @@ import os
 try:
     from argostranslate import package, translate
 except ModuleNotFoundError:
-    # Fehlendes Paket automatisch installieren (requirements.txt liegt neben dem Skript)
+    # Abhängigkeit nicht vorhanden -> Hinweis ausgeben und abbrechen
     sys.stderr.write(
-        "Das Paket 'argostranslate' fehlt. Versuche automatische Installation...\n"
+        "Das Paket 'argostranslate' fehlt. Bitte vorher 'pip install -r requirements.txt' ausfuehren.\n"
     )
-    try:
-        req_file = os.path.join(os.path.dirname(__file__), "requirements.txt")
-        subprocess.check_call([
-            sys.executable,
-            "-m",
-            "pip",
-            "install",
-            "-r",
-            req_file,
-        ])
-        # erneuter Import nach erfolgreicher Installation
-        from argostranslate import package, translate
-    except Exception as exc:
-        raise SystemExit(
-            "Automatische Installation von 'argostranslate' fehlgeschlagen. "
-            "Bitte 'pip install -r requirements.txt' manuell ausfuehren."
-        ) from exc
+    sys.exit(1)
 
 FROM_CODE = "en"
 TO_CODE = "de"
