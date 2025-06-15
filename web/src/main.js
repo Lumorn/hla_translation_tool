@@ -105,6 +105,9 @@ let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
 let currentDubMode = 'beta';
 
+// Letzte Stärke des Funk-Effekts (0-1)
+let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '1');
+
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
@@ -7840,20 +7843,32 @@ function bufferRms(buffer) {
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
 // =========================== RADIOFILTER START ==============================
-// Erzeugt einen Funkgeräteklang durch Hoch- und Tiefpassfilter
-async function applyRadioFilter(buffer) {
+// Erzeugt einen Funkgeräteklang; Stärke wird über einen Parameter geregelt
+async function applyRadioFilter(buffer, strength = 1) {
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
+
     const high = ctx.createBiquadFilter();
     high.type = 'highpass';
     high.frequency.value = 300;
+
     const low = ctx.createBiquadFilter();
     low.type = 'lowpass';
     low.frequency.value = 3400;
+
+    const dry = ctx.createGain();
+    dry.gain.value = 1 - strength;
+    const wet = ctx.createGain();
+    wet.gain.value = strength;
+
+    source.connect(dry);
+    dry.connect(ctx.destination);
     source.connect(high);
     high.connect(low);
-    low.connect(ctx.destination);
+    low.connect(wet);
+    wet.connect(ctx.destination);
+
     source.start();
     return await ctx.startRendering();
 }
@@ -7964,6 +7979,20 @@ async function openDeEdit(fileId) {
     updateDeEditWaveforms();
     document.getElementById('deEditDialog').style.display = 'flex';
 
+    // Regler für Funk-Effekt initialisieren
+    const slider = document.getElementById('radioStrength');
+    const display = document.getElementById('radioStrengthDisplay');
+    if (slider && display) {
+        slider.value = radioEffectStrength;
+        display.textContent = Math.round(radioEffectStrength * 100) + '%';
+        slider.oninput = e => {
+            radioEffectStrength = parseFloat(e.target.value);
+            localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
+            display.textContent = Math.round(radioEffectStrength * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
     // Klick auf das Original-Wellenbild setzt den EN-Cursor
     origCanvas.onmousedown = e => {
         const rect = origCanvas.getBoundingClientRect();
@@ -8047,7 +8076,7 @@ async function recomputeEditBuffer() {
         buf = volumeMatchedBuffer;
     }
     if (isRadioEffect) {
-        buf = await applyRadioFilter(buf);
+        buf = await applyRadioFilter(buf, radioEffectStrength);
     }
     originalEditBuffer = buf;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -8300,7 +8329,7 @@ async function applyDeEdit() {
         volumeMatchedBuffer = null;
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer);
+            baseBuffer = await applyRadioFilter(baseBuffer, radioEffectStrength);
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
@@ -8336,7 +8365,7 @@ async function applyDeEdit() {
         originalEditBuffer = savedOriginalBuffer;
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer);
+            baseBuffer = await applyRadioFilter(baseBuffer, radioEffectStrength);
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
