@@ -132,6 +132,19 @@ if (typeof module !== 'undefined' && module.exports) {
 
 // =========================== GLOBAL STATE END ===========================
 
+// Entfernt versehentlich falsch gespeicherte Einträge aus dem DE-Cache
+function cleanupDubCache() {
+    for (const key of Object.keys(deAudioCache)) {
+        if (key.match(/^sounds\/DE\//i)) {
+            const neu = key.replace(/^sounds\/DE\//i, '');
+            if (!deAudioCache[neu]) {
+                deAudioCache[neu] = deAudioCache[key];
+            }
+            delete deAudioCache[key];
+        }
+    }
+}
+
 
 // =========================== DEBUG LOG START ===========================
 // Schreibt Meldungen in die Browser-Konsole und die Debug-Anzeige
@@ -247,6 +260,8 @@ function stopCurrentPlayback() {
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
     updateProjectPlaybackButtons();
+    // Beim Start alte, falsch gespeicherte Cache-Einträge entfernen
+    cleanupDubCache();
     // DevTools-Knopf wird immer eingeblendet
 
 
@@ -9896,10 +9911,12 @@ function showChapterCustomization(chapterName, ev) {
         }
 
         // Markiert eine Datei als bereit und aktualisiert die Anzeige
+        // Markiert eine Datei als bereit und aktualisiert die Anzeige
+        // Das Präfix "sounds/DE/" wird nun Groß-/Kleinschreibungs-unabhängig entfernt
         function markDubAsReady(id, dest) {
             const file = files.find(f => f.id === id);
             if (!file) return;
-            const rel = dest.replace(/^sounds\/DE\//, '');
+            const rel = dest.replace(/^sounds\/DE\//i, '');
             deAudioCache[rel] = dest;
             file.dubReady = true;
             file.waitingForManual = false;
@@ -10043,8 +10060,12 @@ if (typeof module !== "undefined" && module.exports) {
         initiateDubbing,
         downloadDe,
         updateDubStatusForFiles,
+        markDubAsReady,
+        cleanupDubCache,
         getProjectPlaybackList,
         __setFiles: f => { files = f; },
-        __setDeAudioCache: c => { deAudioCache = c; }
+        __setDeAudioCache: c => { deAudioCache = c; },
+        __setRenderFileTable: fn => { renderFileTable = fn; },
+        __setSaveCurrentProject: fn => { saveCurrentProject = fn; }
     };
 }
