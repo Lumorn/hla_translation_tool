@@ -1,7 +1,8 @@
 const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
-const { DL_WATCH_PATH, projectRoot } = require('./web/src/config.js');
+// Benötigt für dynamische Pfaderkennung
+const { DL_WATCH_PATH, SOUNDS_BASE_PATH, soundsDirName } = require('./web/src/config.js');
 
 // Loescht alle Dateien und Unterordner eines Ordners
 function leereOrdner(ordner) {
@@ -82,8 +83,9 @@ function watchDownloadFolder(callback, opts = {}) {
                 // Pfad bereinigen: führendes "sounds" entfernen
                 let rel = job.relPath.replace(/^[/\\]+/, '');
                 rel = rel.replace(/^sounds[\/]/i, '');
-                const zielRel = path.posix.join('sounds', 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
-                const ziel = path.join(projectRoot, zielRel);
+                // Ziel relativ zum erkannten Sounds-Ordner aufbauen
+                const zielRel = path.posix.join(soundsDirName, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
+                const ziel = path.join(SOUNDS_BASE_PATH, 'DE', rel.replace(/\.(mp3|wav|ogg)$/i, '.wav'));
                 fs.mkdirSync(path.dirname(ziel), { recursive: true });
                 try {
                     fs.renameSync(file, ziel);
