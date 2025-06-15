@@ -46,4 +46,30 @@ describe('watchDownloadFolder', () => {
     const remaining = fs.readdirSync(tmpDir);
     expect(remaining.length).toBe(0);
   });
+
+  test('pruefeAudiodatei erkennt gueltige WAV', () => {
+    const tmp = path.join(os.tmpdir(), 'valid.wav');
+    const buf = Buffer.alloc(44);
+    buf.write('RIFF', 0, 4, 'ascii');
+    buf.writeUInt32LE(36, 4);
+    buf.write('WAVE', 8, 4, 'ascii');
+    fs.writeFileSync(tmp, buf);
+
+    jest.resetModules();
+    const { pruefeAudiodatei } = require('../watcher.js');
+
+    expect(pruefeAudiodatei(tmp)).toBe(true);
+    fs.unlinkSync(tmp);
+  });
+
+  test('pruefeAudiodatei erkennt falsche Datei', () => {
+    const tmp = path.join(os.tmpdir(), 'invalid.bin');
+    fs.writeFileSync(tmp, 'abc');
+
+    jest.resetModules();
+    const { pruefeAudiodatei } = require('../watcher.js');
+
+    expect(pruefeAudiodatei(tmp)).toBe(false);
+    fs.unlinkSync(tmp);
+  });
 });

@@ -184,6 +184,7 @@ Seit Patch 1.40.16 validiert das Tool CSV-Dateien auch dann korrekt, wenn die Ü
 Seit Patch 1.40.17 verknüpft der Dateiwächter heruntergeladene Dubbing-Dateien auch bei kleinen Namensabweichungen korrekt und meldet fehlende Zuordnungen im Terminal.
 Seit Patch 1.40.18 verschiebt der Dateiwächter halbautomatisch heruntergeladene Dateien nun in den dynamisch erkannten Sounds-Ordner.
 Seit Patch 1.40.19 korrigiert er zudem die Ordnerstruktur beim halbautomatischen Import, sodass der "sounds"-Unterordner erhalten bleibt.
+Seit Patch 1.40.20 prüft der Dateiwächter im halbautomatischen Modus die Audiodatei vor dem Verschieben auf Gültigkeit.
 
 
 Beispiel einer gültigen CSV:

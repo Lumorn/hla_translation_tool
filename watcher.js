@@ -37,6 +37,25 @@ function warteBisFertig(datei) {
     });
 }
 
+// Prüft durch einen schnellen Header-Vergleich, ob die Audiodatei gültig ist
+function pruefeAudiodatei(datei) {
+    try {
+        const fd = fs.openSync(datei, 'r');
+        const buf = Buffer.alloc(12);
+        const gelesen = fs.readSync(fd, buf, 0, 12, 0);
+        fs.closeSync(fd);
+        if (gelesen < 4) return false;
+        const h4 = buf.toString('ascii', 0, 4);
+        if (h4 === 'RIFF' && buf.toString('ascii', 8, 12) === 'WAVE') return true;
+        if (h4 === 'OggS') return true;
+        if (h4 === 'ID3') return true;
+        if (buf[0] === 0xff && (buf[1] & 0xe0) === 0xe0) return true;
+        return false;
+    } catch (e) {
+        return false;
+    }
+}
+
 // Ueberwacht den Download-Ordner und verarbeitet neue Dateien
 function watchDownloadFolder(callback, opts = {}) {
     const pending = opts.pending || [];
@@ -80,6 +99,9 @@ function watchDownloadFolder(callback, opts = {}) {
             const job = pending[idx];
             try {
                 await warteBisFertig(file);
+                if (job.mode === 'manual' && !pruefeAudiodatei(file)) {
+                    throw new Error('Ungültige Audiodatei');
+                }
                 // Pfad bereinigen und korrekt aufbauen
                 let rel = job.relPath.replace(/^[\/]+/, '');
                 rel = rel.replace(/^web[\/]/i, '');
@@ -110,4 +132,8 @@ function watchDownloadFolder(callback, opts = {}) {
         });
 }
 
-module.exports = { watchDownloadFolder, clearDownloadFolder: leereOrdner };
+module.exports = {
+    watchDownloadFolder,
+    clearDownloadFolder: leereOrdner,
+    pruefeAudiodatei
+};
