@@ -187,6 +187,7 @@ Seit Patch 1.40.19 korrigiert er zudem die Ordnerstruktur beim halbautomatischen
 Seit Patch 1.40.20 prüft der Dateiwächter im halbautomatischen Modus die Audiodatei vor dem Verschieben auf Gültigkeit.
 Seit Patch 1.40.21 zeigt das Dubbing-Protokoll beim halbautomatischen Import, welche Datei gefunden wurde, wohin sie kopiert wurde und ob die Prüfung vor und nach dem Kopieren erfolgreich war.
 Seit Patch 1.40.22 protokolliert das Tool zusätzlich den vollständigen Original- und Zielpfad der Datei.
+Seit Patch 1.40.23 benennt der Dateiwächter gefundene Dateien zunächst korrekt um und verschiebt sie erst danach.
 
 
 Beispiel einer gültigen CSV:
