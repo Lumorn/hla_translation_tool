@@ -44,6 +44,7 @@ if (typeof require !== 'function') {
     onDubDone: cb => ipcRenderer.on('dub-done', (e, info) => cb(info)),
     onDubError: cb => ipcRenderer.on('dub-error', (e, info) => cb(info)),
     onDubStatus: cb => ipcRenderer.on('dub-status', (e, info) => cb(info)),
+    onDubLog: cb => ipcRenderer.on('dub-log', (e, msg) => cb(msg)),
     sendDubStart: info => ipcRenderer.send('dub-start', info),
     getDownloadPath: () => ipcRenderer.invoke('get-download-path'),
     // Liefert Pfad-Informationen für das Debug-Fenster
