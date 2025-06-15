@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 import sys
 import subprocess
+import os
 
 try:
     from argostranslate import package, translate
 except ModuleNotFoundError:
-    # Fehlendes Paket automatisch installieren
+    # Fehlendes Paket automatisch installieren (requirements.txt liegt neben dem Skript)
     sys.stderr.write(
         "Das Paket 'argostranslate' fehlt. Versuche automatische Installation...\n"
     )
     try:
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]
-        )
+        req_file = os.path.join(os.path.dirname(__file__), "requirements.txt")
+        subprocess.check_call([
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "-r",
+            req_file,
+        ])
         # erneuter Import nach erfolgreicher Installation
         from argostranslate import package, translate
     except Exception as exc:
