@@ -37,6 +37,8 @@
 * `validateCsv` erhält nun Anführungszeichen, sodass Kommata in Übersetzungen keinen Fehler mehr auslösen.
 ## 🛠️ Patch in 1.40.17
 * Dateiwächter findet nun auch Dateien mit leicht verändertem Namen und gibt bei fehlender Zuordnung eine Warnung aus.
+## 🛠️ Patch in 1.40.18
+* Halbautomatisch heruntergeladene Dateien wandern jetzt in den dynamisch erkannten Sounds-Ordner.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

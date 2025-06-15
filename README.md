@@ -182,6 +182,7 @@ Seit Patch 1.40.14 werden halbautomatisch importierte Dateien korrekt nach `web/
 Seit Patch 1.40.15 werden diese Dateien zusätzlich wie ein manueller Upload behandelt: Ein History-Eintrag entsteht und der Status springt sofort auf *fertig*.
 Seit Patch 1.40.16 validiert das Tool CSV-Dateien auch dann korrekt, wenn die Übersetzung Kommata enthält.
 Seit Patch 1.40.17 verknüpft der Dateiwächter heruntergeladene Dubbing-Dateien auch bei kleinen Namensabweichungen korrekt und meldet fehlende Zuordnungen im Terminal.
+Seit Patch 1.40.18 verschiebt der Dateiwächter halbautomatisch heruntergeladene Dateien nun in den dynamisch erkannten Sounds-Ordner.
 
 
 Beispiel einer gültigen CSV:
