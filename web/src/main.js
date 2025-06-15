@@ -105,8 +105,11 @@ let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
 let currentDubMode = 'beta';
 
-// Letzte Stärke des Funk-Effekts (0-1)
+// Letzte Stärke des Funk-Effekts (0-2)
 let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '1');
+// Wert in erlaubtem Bereich halten
+if (radioEffectStrength < 0) radioEffectStrength = 0;
+if (radioEffectStrength > 2) radioEffectStrength = 2;
 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
@@ -7845,6 +7848,9 @@ function bufferRms(buffer) {
 // =========================== RADIOFILTER START ==============================
 // Erzeugt einen Funkgeräteklang; Stärke wird über einen Parameter geregelt
 async function applyRadioFilter(buffer, strength = 1) {
+    // Staerke begrenzen (0-2)
+    strength = Math.max(0, Math.min(2, strength));
+
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -7858,9 +7864,16 @@ async function applyRadioFilter(buffer, strength = 1) {
     low.frequency.value = 3400;
 
     const dry = ctx.createGain();
-    dry.gain.value = 1 - strength;
     const wet = ctx.createGain();
-    wet.gain.value = strength;
+    if (strength <= 1) {
+        // Normaler Uebergang
+        dry.gain.value = 1 - strength;
+        wet.gain.value = strength;
+    } else {
+        // Ab 100% nur noch gefiltertes Signal und zusaetzliche Verstaerkung
+        dry.gain.value = 0;
+        wet.gain.value = 1 + (strength - 1);
+    }
 
     source.connect(dry);
     dry.connect(ctx.destination);
