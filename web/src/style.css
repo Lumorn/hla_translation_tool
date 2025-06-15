@@ -1302,6 +1302,25 @@ th:nth-child(6) {
             border-radius: 6px;
         }
 
+        .folder-search-container {
+            margin-bottom: 10px;
+        }
+
+        .folder-search-input {
+            width: 100%;
+            padding: 8px 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .folder-search-input:focus {
+            outline: none;
+            border-color: #ff6b1a;
+        }
+
         .folder-file-item {
             padding: 12px 15px;
             border-bottom: 1px solid #333;
