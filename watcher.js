@@ -59,11 +59,23 @@ function watchDownloadFolder(callback, opts = {}) {
             if (!pending.length) return;
             if (!/\.(wav|mp3|ogg)$/i.test(file)) return;
             const basis = path.basename(file).replace(/\.(mp3|wav|ogg)$/i, '');
-            const idx = pending.findIndex(job =>
-                job.id === basis ||
-                path.basename(job.relPath, path.extname(job.relPath)) === basis
-            );
-            if (idx === -1) return;
+            // Grosszuegiges Matching fuer Dateinamen und IDs
+            const idx = pending.findIndex(job => {
+                const relBase = path.basename(job.relPath, path.extname(job.relPath));
+                const expect = job.expectBase || relBase;
+                return (
+                    basis === job.id ||
+                    basis.startsWith(job.id + '_') ||
+                    basis.startsWith(expect + '_') ||
+                    basis === expect
+                );
+            });
+            if (idx === -1) {
+                // Zur Fehlersuche fehlende Zuordnung im Terminal ausgeben
+                console.warn('[watcher] Keine Job-Zuordnung für', basis,
+                    '— offene Jobs:', pending.map(j => j.id));
+                return;
+            }
             const job = pending[idx];
             try {
                 await warteBisFertig(file);

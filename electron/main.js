@@ -406,6 +406,8 @@ app.whenReady().then(() => {
       id: info.id,
       fileId: info.fileId,
       relPath: info.relPath,
+      // Erwarteter Dateibasisname fuer den automatischen Import
+      expectBase: path.parse(info.relPath).name,
       mode: info.mode || 'beta',
     });
   });
