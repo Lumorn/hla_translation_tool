@@ -190,6 +190,7 @@ Seit Patch 1.40.22 protokolliert das Tool zusätzlich den vollständigen Origina
 Seit Patch 1.40.23 benennt der Dateiwächter gefundene Dateien zunächst korrekt um und verschiebt sie erst danach.
 Seit Patch 1.40.24 entfernt der halbautomatische Import auch vorgestellte "EN"- oder "DE"-Ordnernamen, sodass keine unnötigen Unterordner mehr entstehen.
 Seit Patch 1.40.25 bereinigt das Tool beim Start fehlerhafte Einträge im DE-Cache und erkennt Zielpfade von Dubbings nun unabhängig von der Großschreibung.
+Seit Patch 1.40.26 wiederholt der manuelle Import das Verschieben mehrmals und wartet kurze Zeit, falls die Datei noch gesperrt ist. Dadurch verschwinden Fehler wie "resource busy or locked".
 
 
 Beispiel einer gültigen CSV:

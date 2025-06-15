@@ -343,8 +343,34 @@ app.whenReady().then(() => {
     // Zielpfad absolut bestimmen
     const target = path.resolve(projectRoot, dest);
     fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.renameSync(src, target);
-    // Sicherheitshalber alten Pfad löschen
+
+    // Versuche mehrmals, die Datei zu verschieben
+    for (let i = 0; i < 5; i++) {
+      try {
+        fs.renameSync(src, target);
+        return target;
+      } catch (err) {
+        // Bei EXDEV (unterschiedliche Laufwerke) kopieren wir
+        if (err.code === 'EXDEV') {
+          fs.copyFileSync(src, target);
+          if (fs.existsSync(src)) fs.unlinkSync(src);
+          return target;
+        }
+        // Bei gesperrten Dateien kurz warten und erneut versuchen
+        if (err.code === 'EBUSY' || err.code === 'EPERM') {
+          await new Promise(r => setTimeout(r, 200));
+          continue;
+        }
+        // Wenn die Quelldatei fehlt, aber das Ziel existiert, nichts tun
+        if (err.code === 'ENOENT' && fs.existsSync(target)) {
+          return target;
+        }
+        throw err;
+      }
+    }
+
+    // Fallback: kopieren und Quelle löschen
+    fs.copyFileSync(src, target);
     if (fs.existsSync(src)) fs.unlinkSync(src);
     return target;
   });
