@@ -7842,10 +7842,47 @@ function bufferRms(buffer) {
 }
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
+// =========================== RESAMPLE START ===============================
+// Resampelt einen Buffer auf die angegebene Samplerate
+async function resampleBuffer(buffer, newRate) {
+    const duration = buffer.length / buffer.sampleRate;
+    const newLength = Math.ceil(duration * newRate);
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, newLength, newRate);
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+    src.connect(ctx.destination);
+    src.start();
+    return await ctx.startRendering();
+}
+// =========================== RESAMPLE END =================================
+
+// =========================== BITCRUSH START ===============================
+// Reduziert die Bit-Tiefe und fügt leichtes Rauschen hinzu
+function bitcrushAndNoise(buffer, bits = 8, noise = 0.005) {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const out = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const step = Math.pow(2, bits);
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const inData = buffer.getChannelData(ch);
+        const outData = out.getChannelData(ch);
+        for (let i = 0; i < inData.length; i++) {
+            let sample = Math.tanh(inData[i] * 2); // Sanft clippen
+            sample = Math.round(sample * step) / step; // Quantisierung
+            sample += (Math.random() * 2 - 1) * noise; // Rauschen
+            outData[i] = Math.max(-1, Math.min(1, sample));
+        }
+    }
+    return out;
+}
+// =========================== BITCRUSH END =================================
+
 // =========================== RADIOFILTER START ==============================
-// Erzeugt einen Funkgeräteklang; Stärke wird über einen Parameter geregelt
+// Erzeugt einen authentischen Funkgeräteklang
 async function applyRadioFilter(buffer, strength = 1) {
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const origRate = buffer.sampleRate;
+
+    // Bandbegrenzung und Kompression vorbereiten
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, origRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
 
@@ -7855,22 +7892,44 @@ async function applyRadioFilter(buffer, strength = 1) {
 
     const low = ctx.createBiquadFilter();
     low.type = 'lowpass';
-    low.frequency.value = 3400;
+    low.frequency.value = 3000;
 
-    const dry = ctx.createGain();
-    dry.gain.value = 1 - strength;
-    const wet = ctx.createGain();
-    wet.gain.value = strength;
+    const comp = ctx.createDynamicsCompressor();
+    comp.attack.value = 0.003;   // schneller Attack
+    comp.release.value = 0.15;   // mittleres Release
+    comp.ratio.value = 8;
+    comp.threshold.value = -15;
 
-    source.connect(dry);
-    dry.connect(ctx.destination);
     source.connect(high);
     high.connect(low);
-    low.connect(wet);
-    wet.connect(ctx.destination);
+    low.connect(comp);
+    comp.connect(ctx.destination);
 
     source.start();
-    return await ctx.startRendering();
+    let processed = await ctx.startRendering();
+
+    // Auf 8 kHz heruntersampeln
+    processed = await resampleBuffer(processed, 8000);
+    // Bitcrush und Rauschen anwenden
+    processed = bitcrushAndNoise(processed, 8, 0.01 * strength);
+    // Wieder auf Originalrate bringen
+    processed = await resampleBuffer(processed, origRate);
+
+    // Dry/Wet-Mix erstellen
+    const mix = new OfflineAudioContext(processed.numberOfChannels, processed.length, origRate);
+    const dry = mix.createBufferSource();
+    dry.buffer = buffer;
+    const wet = mix.createBufferSource();
+    wet.buffer = processed;
+    const dryGain = mix.createGain();
+    dryGain.gain.value = 1 - strength;
+    const wetGain = mix.createGain();
+    wetGain.gain.value = strength;
+    dry.connect(dryGain).connect(mix.destination);
+    wet.connect(wetGain).connect(mix.destination);
+    dry.start();
+    wet.start();
+    return await mix.startRendering();
 }
 // =========================== RADIOFILTER END ================================
 // =========================== TRIMANDBUFFER END ==============================
