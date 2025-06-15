@@ -176,6 +176,21 @@ except subprocess.CalledProcessError:
     log("git clean fehlgeschlagen")
     log(str(sys.exc_info()[1]))
 
+# ----------------------- Python-Abhängigkeiten installieren -----------------
+log("Installiere Python-Abhaengigkeiten")
+req_file = os.path.join(repo_path, "requirements.txt")
+if os.path.exists(req_file):
+    try:
+        run(f"{sys.executable} -m pip install -r \"{req_file}\"")
+        log("pip install erfolgreich")
+    except subprocess.CalledProcessError as e:
+        print("pip install fehlgeschlagen. Weitere Details siehe setup.log")
+        log("pip install fehlgeschlagen")
+        log(str(e))
+        sys.exit(1)
+else:
+    log("requirements.txt nicht gefunden")
+
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
 log("npm ci (root) starten")
 print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
