@@ -55,7 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ordner‑Löschfunktion:** Sichere Entfernung ganzer Ordner aus der DB
 * **Live‑Filter:** *„Übersetzt / Ignoriert / Offen"*
 * **Ordner‑Anpassung:** Icons und Farben pro Ordner
-* **Live‑Suche im Ordner** analog zur globalen Suche
+* **Live‑Suche im Ordner** analog zur globalen Suche (Cursor bleibt beim Tippen an der richtigen Position)
 
 ### 🖋️ Texteingabe & Navigation
 
