@@ -91,19 +91,41 @@ function watchDownloadFolder(callback, opts = {}) {
                     basis === expect
                 );
             });
-            if (idx === -1) {
+            // Wenn keine eindeutige Zuordnung gefunden wird, aber nur ein Job
+            // offen ist, diesen verwenden
+            let jobIdx = idx;
+            if (jobIdx === -1 && pending.length === 1) jobIdx = 0;
+            if (jobIdx === -1) {
                 // Zur Fehlersuche fehlende Zuordnung im Terminal ausgeben
                 console.warn('[watcher] Keine Job-Zuordnung für', basis,
                     '— offene Jobs:', pending.map(j => j.id));
                 return;
             }
-            const job = pending[idx];
+            const job = pending[jobIdx];
             try {
                 await warteBisFertig(file);
                 const srcValid = pruefeAudiodatei(file);
                 log('Prüfung Download-Datei: ' + (srcValid ? 'OK' : 'FEHLER'));
                 if (job.mode === 'manual' && !srcValid) {
                     throw new Error('Ungültige Audiodatei');
+                }
+                // Datei im Download-Ordner zuerst korrekt benennen
+                const endung = path.extname(file);
+                const richtigerName = path.join(path.dirname(file), job.id + endung);
+                if (file !== richtigerName) {
+                    try {
+                        fs.renameSync(file, richtigerName);
+                    } catch (err) {
+                        // Bei unterschiedlichen Laufwerken schlägt renameSync fehl
+                        if (err.code === 'EXDEV') {
+                            fs.copyFileSync(file, richtigerName);
+                            fs.unlinkSync(file);
+                        } else {
+                            throw err;
+                        }
+                    }
+                    log('Umbenannt in: ' + richtigerName);
+                    file = richtigerName;
                 }
                 // Pfad bereinigen und korrekt aufbauen
                 let rel = job.relPath.replace(/^[\/]+/, '');
@@ -127,7 +149,7 @@ function watchDownloadFolder(callback, opts = {}) {
                 log('Verschoben nach: ' + ziel);
                 const destValid = pruefeAudiodatei(ziel);
                 log('Prüfung Ziel-Datei: ' + (destValid ? 'OK' : 'FEHLER'));
-                pending.splice(idx, 1);
+                pending.splice(jobIdx, 1);
                 onDone({
                     id: job.id,
                     fileId: job.fileId,
@@ -142,7 +164,7 @@ function watchDownloadFolder(callback, opts = {}) {
                 // Nach erfolgreichem Verschieben den Download-Ordner leeren
                 leereOrdner(watchPath);
             } catch (e) {
-                pending.splice(idx, 1);
+                pending.splice(jobIdx, 1);
                 onError({ id: job.id, fileId: job.fileId, error: e.message });
             }
         });
