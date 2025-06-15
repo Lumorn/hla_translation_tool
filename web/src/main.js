@@ -282,9 +282,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 const rel = getFullPath(ziel).replace(/\.(mp3|wav|ogg)$/i, '');
                 const ext = file.substring(file.lastIndexOf('.'));
-                const dest = `sounds/DE/${rel}${ext}`;
+                // Pfad bereinigen, falls er bereits mit "sounds" beginnt
+                const cleanedRel = rel.replace(/^sounds[\/]/i, '');
+                const dest = `sounds/DE/${cleanedRel}${ext}`;
                 await window.electronAPI.moveFile(file, dest);
-                deAudioCache[`${rel}${ext}`] = dest;
+                deAudioCache[`${cleanedRel}${ext}`] = dest;
                 ziel.dubReady = true;
                 ziel.waitingForManual = false;
                 renderFileTable();
