@@ -19,8 +19,13 @@ TO_CODE = "de"
 def ensure_package(from_code: str, to_code: str) -> None:
     """Stellt sicher, dass das benoetigte Sprachpaket installiert ist."""
     installed = translate.load_installed_languages()
+    # pruefen, ob das gewuenschte Uebersetzungspaar bereits vorhanden ist
     have_translation = any(
-        lang.code == from_code and any(t.to_code == to_code for t in lang.translations)
+        lang.code == from_code
+        and any(
+            t.to_code == to_code
+            for t in getattr(lang, "translations_from", [])
+        )
         for lang in installed
     )
     if have_translation:
