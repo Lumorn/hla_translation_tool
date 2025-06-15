@@ -7843,141 +7843,34 @@ function bufferRms(buffer) {
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
 // =========================== RADIOFILTER START ==============================
-// Erzeugt einen erweiterten Funkgeräteklang
-// Bandpass 300–3200 Hz, Sättigung, 8 Bit, Rauschen, Knackser und PTT-Ein-/Ausblende
-// strength bestimmt den Wet-Anteil (0–1)
-async function applyRadioFilter(buffer, strength = 0.85) {
+// Erzeugt einen Funkgeräteklang; Stärke wird über einen Parameter geregelt
+async function applyRadioFilter(buffer, strength = 1) {
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
 
-    // Hochpass bei 300 Hz
     const high = ctx.createBiquadFilter();
     high.type = 'highpass';
     high.frequency.value = 300;
 
-    // Tiefpass bei 3200 Hz
     const low = ctx.createBiquadFilter();
     low.type = 'lowpass';
-    low.frequency.value = 3200;
+    low.frequency.value = 3400;
 
-    // Sanfte Sättigung über Waveshaper
-    const shaper = ctx.createWaveShaper();
-    shaper.curve = createSaturationCurve();
-    shaper.oversample = '4x';
-
-    // Wet/Dry-Anteile
     const dry = ctx.createGain();
     dry.gain.value = 1 - strength;
     const wet = ctx.createGain();
     wet.gain.value = strength;
 
-    // Leichtes Bandrauschen erzeugen (-26 dBFS)
-    const noise = createNoiseSource(ctx, buffer.length, Math.pow(10, -26 / 20));
-
     source.connect(dry);
     dry.connect(ctx.destination);
-
     source.connect(high);
     high.connect(low);
-    low.connect(shaper);
-    shaper.connect(wet);
-    noise.connect(wet);
+    low.connect(wet);
     wet.connect(ctx.destination);
 
-    noise.start();
     source.start();
-    let rendered = await ctx.startRendering();
-
-    rendered = quantizeBuffer(rendered, 8);      // 8‑Bit-Quantisierung
-    addPops(rendered);                           // gelegentliche Knackser
-    applyPttFade(rendered);                      // Push-to-Talk-Rauschen
-    rendered = normalizeToLufs(rendered, -16);   // Zielpegel -16 LUFS
-
-    return rendered;
-}
-
-// Erzeugt eine Sättigungskurve für den Waveshaper
-function createSaturationCurve() {
-    const len = 65536;
-    const curve = new Float32Array(len);
-    for (let i = 0; i < len; i++) {
-        const x = i * 2 / len - 1;
-        curve[i] = Math.tanh(2 * x);
-    }
-    return curve;
-}
-
-// Erstellt eine Rauschquelle mit gegebener Amplitude
-function createNoiseSource(ctx, length, amp) {
-    const buf = ctx.createBuffer(1, length, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < data.length; i++) {
-        data[i] = (Math.random() * 2 - 1) * amp;
-    }
-    const src = ctx.createBufferSource();
-    src.buffer = buf;
-    src.loop = true;
-    return src;
-}
-
-// Quantisiert einen Buffer auf die angegebene Bit-Tiefe
-function quantizeBuffer(buffer, bits) {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const out = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const step = 1 / Math.pow(2, bits - 1);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const inData = buffer.getChannelData(ch);
-        const outData = out.getChannelData(ch);
-        for (let i = 0; i < inData.length; i++) {
-            outData[i] = Math.round(inData[i] / step) * step;
-        }
-    }
-    return out;
-}
-
-// Fügt zufällige Knackser ein
-function addPops(buffer) {
-    const prob = 0.0005;
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            if (Math.random() < prob) {
-                data[i] = Math.max(-1, Math.min(1, data[i] + (Math.random() * 2 - 1) * 0.5));
-            }
-        }
-    }
-}
-
-// Blendet zu Beginn und Ende leichtes Rauschen ein bzw. aus
-function applyPttFade(buffer) {
-    const fadeSamples = Math.floor(buffer.sampleRate * 0.03);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch);
-        for (let i = 0; i < fadeSamples; i++) {
-            const ratio = i / fadeSamples;
-            data[i] *= ratio;
-            data[data.length - 1 - i] *= ratio;
-        }
-    }
-}
-
-// Normalisiert einen Buffer auf den gewünschten LUFS-Wert
-function normalizeToLufs(buffer, lufs) {
-    const targetAmp = Math.pow(10, lufs / 20);
-    const rms = bufferRms(buffer);
-    if (rms === 0) return buffer;
-    const gain = targetAmp / rms;
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const out = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const inData = buffer.getChannelData(ch);
-        const outData = out.getChannelData(ch);
-        for (let i = 0; i < inData.length; i++) {
-            outData[i] = Math.max(-1, Math.min(1, inData[i] * gain));
-        }
-    }
-    return out;
+    return await ctx.startRendering();
 }
 // =========================== RADIOFILTER END ================================
 // =========================== TRIMANDBUFFER END ==============================
