@@ -8239,6 +8239,56 @@ async function applyRadioEffect() {
 // =========================== APPLYRADIOEFFECT END ==========================
 // =========================== APPLYVOLUMEMATCH END =========================
 
+// =========================== RESETRADIOSETTINGS START =====================
+// Setzt alle Funk-Effektwerte auf Standard zurück
+function resetRadioSettings() {
+    // Globale Standardwerte setzen
+    radioEffectStrength = 0.85;
+    radioHighpass = 300;
+    radioLowpass = 3200;
+    radioSaturation = 0.2;
+    radioNoise = -26;
+    radioCrackle = 0.1;
+
+    // Werte im LocalStorage aktualisieren
+    localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
+    localStorage.setItem('hla_radioHighpass', radioHighpass);
+    localStorage.setItem('hla_radioLowpass', radioLowpass);
+    localStorage.setItem('hla_radioSaturation', radioSaturation);
+    localStorage.setItem('hla_radioNoise', radioNoise);
+    localStorage.setItem('hla_radioCrackle', radioCrackle);
+
+    // Regler im Dialog zurücksetzen
+    const rStrength = document.getElementById('radioStrength');
+    const rStrengthDisp = document.getElementById('radioStrengthDisplay');
+    if (rStrength && rStrengthDisp) {
+        rStrength.value = radioEffectStrength;
+        rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+    }
+    const rHigh = document.getElementById('radioHighpass');
+    if (rHigh) rHigh.value = radioHighpass;
+    const rLow = document.getElementById('radioLowpass');
+    if (rLow) rLow.value = radioLowpass;
+    const rSat = document.getElementById('radioSaturation');
+    const rSatDisp = document.getElementById('radioSaturationDisplay');
+    if (rSat && rSatDisp) {
+        rSat.value = radioSaturation;
+        rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+    }
+    const rNoise = document.getElementById('radioNoise');
+    if (rNoise) rNoise.value = radioNoise;
+    const rCrackle = document.getElementById('radioCrackle');
+    const rCrackleDisp = document.getElementById('radioCrackleDisplay');
+    if (rCrackle && rCrackleDisp) {
+        rCrackle.value = radioCrackle;
+        rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
+    }
+
+    // Effekte neu berechnen, falls aktiv
+    if (isRadioEffect) recomputeEditBuffer();
+}
+// =========================== RESETRADIOSETTINGS END =======================
+
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     // Cursor aktualisieren, falls neue Positionen mitgegeben werden
