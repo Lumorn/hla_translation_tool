@@ -23,7 +23,7 @@ def ensure_package(from_code: str, to_code: str) -> None:
     have_translation = any(
         lang.code == from_code
         and any(
-            t.to_code == to_code
+            t.to_lang.code == to_code
             for t in getattr(lang, "translations_from", [])
         )
         for lang in installed
