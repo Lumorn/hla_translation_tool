@@ -113,7 +113,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
 10. Alle Start-Skripte kontrollieren nun die installierte Node-Version und brechen bei Abweichungen ab.
 11. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
-12. Für das Python-Skript `translate_text.py` muss `argostranslate` installiert sein. Dies erledigt `pip install -r requirements.txt`.
+12. Für das Python-Skript `translate_text.py` muss `argostranslate` installiert sein. Das Skript sucht nun selbst im eigenen Verzeichnis nach `requirements.txt` und führt bei Bedarf `pip install -r <Pfad>` aus.
 
 ### ElevenLabs-Dubbing
 
@@ -192,7 +192,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 ### Python-Übersetzungsskript
 
-`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, versucht das Skript automatisch, die Abhängigkeiten per `pip` zu installieren. Sollte das nicht klappen, einfach selbst `pip install -r requirements.txt` ausführen. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
+`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, sucht das Skript im selben Ordner nach `requirements.txt` und führt `pip install -r <Pfad>` aus. Sollte das nicht klappen, einfach selbst `pip install -r requirements.txt` ausführen. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 
 ### Version aktualisieren
 
