@@ -72,7 +72,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
-* **Funkgeräte-Effekt:** Bandpass 300–3200 Hz, sanfte Sättigung, 8-Bit/8 kHz, Rauschen & Knackser, Push-to-Talk-Blende, -16 LUFS, Stärke per Regler einstellbar
+* **Funkgeräte-Effekt:** Stärke per Regler wählbar; DE-Audio klingt wie per Funk und bleibt dank History wiederherstellbar
 
 ### 🔍 Suche & Import
 
