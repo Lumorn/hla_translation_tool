@@ -1071,8 +1071,11 @@ function selectProject(id){
     files.forEach(f=>{
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
+        if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
     });
     if(migrated) isDirty=true;
+
+    files.forEach(f => updateAutoTranslation(f));
 
     renderFileTable();
     updateDubStatusForFiles();
@@ -1267,6 +1270,7 @@ function addFiles() {
                 fullPath: fullPath,
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
+                autoTranslation: '',
                 selected: true,
                 trimStartMs: 0,
                 trimEndMs: 0,
@@ -2017,7 +2021,8 @@ return `
                 <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
                 ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
             </div>
-        </div></td>
+        </div>
+        <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             <div class="btn-column">
                 <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>
@@ -2051,6 +2056,7 @@ return `
     // Auto-resize all text inputs after rendering
     setTimeout(() => {
         autoResizeAllInputs();
+        sortedFiles.forEach(f => updateTranslationDisplay(f.id));
     }, 50);
 }
 // =========================== RENDER FILE TABLE WITH ORDER END ===========================
@@ -3070,6 +3076,7 @@ function updateText(fileId, lang, value, skipUndo) {
 
     if (lang === 'en') {
         file.enText = value;
+        updateAutoTranslation(file);
     } else {
         file.deText = value;
     }
@@ -3084,6 +3091,25 @@ function updateText(fileId, lang, value, skipUndo) {
     isDirty = true;
     updateProgressStats();
     renderProjects(); // HINZUFÜGEN für live Update
+}
+
+async function updateAutoTranslation(file) {
+    if (!window.electronAPI || !window.electronAPI.translateText) return;
+    try {
+        const translated = await window.electronAPI.translateText(file.enText);
+        file.autoTranslation = translated;
+        updateTranslationDisplay(file.id);
+    } catch (e) {
+        console.error('Automatische Übersetzung fehlgeschlagen', e);
+    }
+}
+
+function updateTranslationDisplay(fileId) {
+    const div = document.querySelector(`.auto-trans[data-file-id="${fileId}"]`);
+    const file = files.find(f => f.id === fileId);
+    if (div && file) {
+        div.textContent = file.autoTranslation || '';
+    }
 }
 
 // Stellt den letzten Textzustand wieder her
@@ -4937,6 +4963,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
+        autoTranslation: '',
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,

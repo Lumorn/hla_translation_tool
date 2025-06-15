@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+import sys
+from argostranslate import package, translate
+
+FROM_CODE = "en"
+TO_CODE = "de"
+
+
+def ensure_package(from_code: str, to_code: str) -> None:
+    """Stellt sicher, dass das benoetigte Sprachpaket installiert ist."""
+    installed = translate.load_installed_languages()
+    have_translation = any(
+        lang.code == from_code and any(t.to_code == to_code for t in lang.translations)
+        for lang in installed
+    )
+    if have_translation:
+        return
+    package.update_package_index()
+    available = package.get_available_packages()
+    pkg = next(p for p in available if p.from_code == from_code and p.to_code == to_code)
+    package.install_from_path(pkg.download())
+
+
+def main() -> None:
+    text = sys.stdin.read()
+    if not text:
+        return
+    ensure_package(FROM_CODE, TO_CODE)
+    translated = translate.translate(text, FROM_CODE, TO_CODE)
+    print(translated)
+
+
+if __name__ == "__main__":
+    main()
