@@ -1341,7 +1341,9 @@ function addFiles() {
         // Search functionality with highlighting and similarity
         function highlightText(text, query) {
             if (!text || !query) return text;
-            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            // Mehrere Suchbegriffe unterstützen
+            const words = query.split(/\s+/).filter(Boolean).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            const regex = new RegExp(`(${words.join('|')})`, 'gi');
             return text.replace(regex, '<span class="search-result-match">$1</span>');
         }
 
@@ -4672,19 +4674,25 @@ function renderFolderFilesList(list, query = '') {
 }
 
 function handleFolderFileSearch(e) {
-    // Cursor-Position vor dem Neuzeichnen merken
+    // Cursor-Position merken, damit sie nach dem Neuzeichnen erhalten bleibt
     const cursorPos = e.target.selectionStart;
-    const q = e.target.value.toLowerCase().trim();
 
-    // Liste nach Dateinamen oder Text filtern
+    // Original eingegebener Text für die Anzeige
+    const originalQuery = e.target.value;
+    // Suchbegriffe für den Vergleich vorbereiten
+    const words = originalQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
+
+    // Dateien filtern: jeder Begriff muss irgendwo vorkommen
     const filtered = aktiveOrdnerDateien.filter(f =>
-        f.filename.toLowerCase().includes(q) ||
-        f.enText.toLowerCase().includes(q) ||
-        f.deText.toLowerCase().includes(q)
+        words.every(w =>
+            f.filename.toLowerCase().includes(w) ||
+            f.enText.toLowerCase().includes(w) ||
+            f.deText.toLowerCase().includes(w)
+        )
     );
 
-    // Neue Trefferliste zeichnen
-    renderFolderFilesList(filtered, q);
+    // Trefferliste neu zeichnen
+    renderFolderFilesList(filtered, originalQuery);
 
     // Event-Listener nach dem Neuzeichnen erneut binden
     const input = document.getElementById('folderFileSearchInput');
