@@ -94,7 +94,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Keyboard‑Navigation:** Pfeiltasten, Tab, Leertaste für Audio, Enter für Texteingabe
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
 * **Drag & Drop:** Projekte und Dateien sortieren
-* **Doppelklick:** Zeilennummer ändern, Projekt umbenennen
+* **Klick auf Zeilennummer:** Position anpassen
+* **Doppelklick:** Projekt umbenennen
 
 ---
 
@@ -280,7 +281,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Dateien hinzufügen**    | Direct‑Input, Suchresultat‑Klick, Browser         |
 | **Datei als fertig**      | ✓ Completion‑Checkbox                             |
 | **Datei ignorieren**      | 🚫 Ignorieren‑Button (im Ordner‑Browser)          |
-| **Position ändern**       | Doppelklick auf Zeilennummer (#)                  |
+| **Position ändern**       | Klick auf Zeilennummer (#)                  |
 | **Sortierung ändern**     | Klick auf Spalten‑Header                          |
 | **Datei löschen**         | × am Zeilenende oder Context‑Menu                 |
 
