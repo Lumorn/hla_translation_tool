@@ -849,9 +849,6 @@ th:nth-child(6) {
 
 /* Kleiner Button für Standardwerte rechts oben */
 .btn-reset-settings {
-    position: absolute;
-    top: 0;
-    right: 0;
     background: #333;
     border: 1px solid #555;
     color: #ccc;
