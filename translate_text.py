@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import sys
-import subprocess
-import os
 
 try:
     from argostranslate import package, translate
