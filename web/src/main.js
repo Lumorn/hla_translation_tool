@@ -8710,7 +8710,9 @@ async function applyDeEdit() {
                 delete deAudioCache[d.relPath];
             }
         }
-        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
+        // Pfad bereinigen, falls "sounds/DE/" bereits vorangestellt ist
+        let cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+        await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
         URL.revokeObjectURL(url);
