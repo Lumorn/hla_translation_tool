@@ -364,7 +364,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 * **🧹 Ordnernamen bereinigen:** Korrigiert falsche Pfade automatisch
 * **🧹 Duplikate bereinigen:** Intelligente Zusammenführung ähnlicher Einträge
 * **🎵 Audio-Duplikate prüfen:** Gleiche Dateinamen mit unterschiedlichem Format zusammenführen
-* **🔄 Projekte bereinigen:** Entfernt veraltete Pfad‑Referenzen
+* **🔄 Projekte bereinigen:** Entfernt veraltete Pfad‑Referenzen und passt Dateiendungen automatisch an
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.

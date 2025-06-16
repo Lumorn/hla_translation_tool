@@ -3832,8 +3832,15 @@ function updateAllFilePaths() {
             console.log(`📁 Projekt "${project.name}": ${projectUpdated} Dateien bereinigt`);
         }
     });
-    
-    if (totalUpdated > 0) {
+
+    // Dateiendungen anpassen, falls MP3/WAV gewechselt wurde
+    let extUpdates = 0;
+    if (repairFileExtensions) {
+        extUpdates = repairFileExtensions(projects, filePathDatabase, textDatabase);
+        if (extUpdates > 0) console.log('Dateiendungen aktualisiert:', extUpdates);
+    }
+
+    if (totalUpdated > 0 || extUpdates > 0) {
         // Speichere alle bereinigten Projekte
         saveProjects();
         console.log(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten bereinigt`);
@@ -3848,16 +3855,17 @@ function updateAllFilePaths() {
             }
         }
         
-        updateStatus(`📁 Projekt-Bereinigung: ${totalUpdated} fullPath Einträge entfernt`);
-        
+        updateStatus(`📁 Projekt-Bereinigung: ${totalUpdated} fullPath Einträge entfernt, ${extUpdates} Dateiendungen angepasst`);
+
         alert(`✅ Projekt-Bereinigung erfolgreich!\n\n` +
               `📊 Statistik:\n` +
               `• ${totalUpdated} veraltete Pfade entfernt\n` +
+              `• ${extUpdates} Dateiendungen angepasst\n` +
               `• ${totalProjects} Projekte bereinigt\n` +
               `• Pfade werden jetzt dynamisch geladen\n\n` +
               `🎯 Alle Audio-Funktionen sollten wieder funktionieren!`);
     } else {
-        alert('✅ Alle Projekte sind bereits bereinigt!\n\nKeine veralteten Pfade gefunden.');
+        alert('✅ Alle Projekte sind bereits bereinigt!\n\nKeine veralteten Pfade oder falschen Dateiendungen gefunden.');
     }
     
     console.log('=== Projekt-Bereinigung abgeschlossen ===');
@@ -10652,12 +10660,17 @@ if (typeof module !== "undefined" && module.exports) {
         getProjectPlaybackList,
         applyDeEdit,
         speichereUebersetzungsDatei,
+        // 🔄 Projektbereinigung & Dateiendungs-Reparatur
+        updateAllFilePaths,
         bufferToMp3,
         bufferToWav,
         repairFileExtensions,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
-        __setSaveCurrentProject: fn => { saveCurrentProject = fn; }
+        __setSaveCurrentProject: fn => { saveCurrentProject = fn; },
+        __setProjects: p => { projects = p; },
+        __setFilePathDatabase: db => { filePathDatabase = db; },
+        __setTextDatabase: db => { textDatabase = db; }
     };
 }
