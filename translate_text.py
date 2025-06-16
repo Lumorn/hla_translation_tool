@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import sys
+import argparse
 
 try:
     from argostranslate import package, translate
@@ -14,10 +15,10 @@ FROM_CODE = "en"
 TO_CODE = "de"
 
 
-def ensure_package(from_code: str, to_code: str) -> None:
+def ensure_package(from_code: str, to_code: str, allow_download: bool = True) -> None:
     """Stellt sicher, dass das benoetigte Sprachpaket installiert ist."""
     installed = translate.load_installed_languages()
-    # pruefen, ob das gewuenschte Uebersetzungspaar bereits vorhanden ist
+    # prüfen, ob das gewünschte Übersetzungspaket bereits installiert ist
     have_translation = any(
         lang.code == from_code
         and any(
@@ -28,17 +29,35 @@ def ensure_package(from_code: str, to_code: str) -> None:
     )
     if have_translation:
         return
+    if not allow_download:
+        sys.stderr.write(
+            "Sprachpaket fehlt und Download ist deaktiviert (--no-download).\n"
+            "Bitte zuvor per 'argos-translate-cli' installieren.\n"
+        )
+        sys.exit(1)
+    # Paket nur herunterladen, wenn es nicht vorhanden ist
     package.update_package_index()
     available = package.get_available_packages()
-    pkg = next(p for p in available if p.from_code == from_code and p.to_code == to_code)
+    pkg = next(
+        p for p in available if p.from_code == from_code and p.to_code == to_code
+    )
     package.install_from_path(pkg.download())
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Text offline übersetzen")
+    parser.add_argument(
+        "--no-download",
+        action="store_true",
+        help="Fehlende Sprachpakete nicht automatisch herunterladen",
+    )
+    args = parser.parse_args()
+
     text = sys.stdin.read()
     if not text:
         return
-    ensure_package(FROM_CODE, TO_CODE)
+    # Nur falls nötig Pakete installieren
+    ensure_package(FROM_CODE, TO_CODE, allow_download=not args.no_download)
     translated = translate.translate(text, FROM_CODE, TO_CODE)
     print(translated)
 
