@@ -149,6 +149,7 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
     // blob speichern ...
 }
 ```
+Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `getDubbingStatus`, `downloadDubbingAudio`, `getDefaultVoiceSettings`, `waitForDubbing`, `isDubReady`, `renderLanguage` und `pollRender`. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Danach fragt das Tool,
 ob die **Beta-API** genutzt oder der **halbautomatische Modus** verwendet werden soll.
