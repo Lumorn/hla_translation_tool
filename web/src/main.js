@@ -2080,7 +2080,7 @@ return `
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" ondblclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Doppelklick um Position zu ändern">${originalIndex + 1}</td>
-        <td>${file.filename}</td>
+        <td class="filename-cell clickable" onclick="checkFilename(${file.id})">${file.filename}</td>
         <td>
             <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"
@@ -3541,6 +3541,70 @@ function deleteFile(fileId) {
                 }
             }, 100);
         }
+
+// =========================== CHECKFILENAME START ===========================
+// Prüft beim Klick auf den Dateinamen, ob die Datei existiert und bietet
+// alternative Endungen zur Auswahl an
+function checkFilename(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+
+    // Existiert die Datei mit identischer Endung im aktuellen Ordner?
+    let found = false;
+    if (filePathDatabase[file.filename]) {
+        const match = filePathDatabase[file.filename].find(p => p.folder === file.folder);
+        if (match) found = true;
+    }
+
+    if (found) {
+        alert(`✅ Datei vorhanden: ${file.filename}`);
+        return;
+    }
+
+    // Suche nach gleichem Namen mit anderer Endung
+    const basis = file.filename.replace(/\.(mp3|wav|ogg)$/i, '');
+    const endungen = ['.mp3', '.wav', '.ogg'];
+    const kandidaten = [];
+    for (const ext of endungen) {
+        const name = basis + ext;
+        if (name === file.filename) continue;
+        if (!filePathDatabase[name]) continue;
+        const p = filePathDatabase[name].find(pi => pi.folder === file.folder);
+        if (p) kandidaten.push({ filename: name, pathInfo: p });
+    }
+
+    if (kandidaten.length === 0) {
+        alert('❌ Datei nicht gefunden und keine passende Alternative vorhanden.');
+        return;
+    }
+
+    let auswahl;
+    if (kandidaten.length === 1) {
+        if (!confirm(`Datei ${file.filename} fehlt.\n` +
+                     `Gefundene Datei: ${kandidaten[0].filename}\n` +
+                     `Eintrag auf diese Datei ändern?`)) {
+            return;
+        }
+        auswahl = kandidaten[0];
+    } else {
+        const liste = kandidaten.map((k, i) => `${i + 1}: ${k.filename}`).join('\n');
+        const eingabe = prompt(`Datei ${file.filename} fehlt.\n` +
+                               `Mehrere Alternativen gefunden:\n${liste}\n` +
+                               `Nummer eingeben:`);
+        const idx = parseInt(eingabe, 10) - 1;
+        if (isNaN(idx) || idx < 0 || idx >= kandidaten.length) return;
+        auswahl = kandidaten[idx];
+    }
+
+    // Aktualisiere den Eintrag auf die gewählte Datei
+    file.filename = auswahl.filename;
+    file.fullPath = auswahl.pathInfo.fullPath;
+    isDirty = true;
+    saveCurrentProject();
+    renderFileTable();
+    updateStatus(`Dateiname geändert: ${auswahl.filename}`);
+}
+// =========================== CHECKFILENAME END =============================
 
 // =========================== PLAYAUDIO START ===========================
 // Audio playback with dynamic path resolution from database
