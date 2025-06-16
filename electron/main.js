@@ -21,6 +21,9 @@ const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
 const { watchDownloadFolder, clearDownloadFolder, pruefeAudiodatei } = require('../watcher.js');
 const { isDubReady } = require('../elevenlabs.js');
+// Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
+const ProgressBar = require('progress');
+const ffmpeg = require('ffmpeg-static');
 const pendingDubs = [];
 let mainWindow;
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
@@ -37,6 +40,9 @@ const backupPath = path.join(userDataPath, 'Backups');
 fs.mkdirSync(backupPath, { recursive: true });
 // Alter Backup-Pfad im Projektordner (Kompatibilitätsmodus)
 const oldBackupPath = path.join(projectRoot, backupsDirName);
+// Zusätzlicher Ordner für gesicherte MP3-Dateien
+const audioBackupPath = path.join(backupPath, 'mp3');
+fs.mkdirSync(audioBackupPath, { recursive: true });
 // Zusätzlichen Ordner für Session-Daten anlegen und verwenden,
 // um Cache-Fehler wie "Unable to move the cache" zu vermeiden
 const sessionDataPath = path.join(userDataPath, 'SessionData');
@@ -75,6 +81,40 @@ function readAudioFiles(dir) {
   return result;
 }
 // =========================== READAUDIOFILES END =============================
+
+// =========================== MP3-TO-WAV START ==============================
+// Konvertiert alle MP3-Dateien eines Ordners rekursiv nach WAV
+function convertMp3Dir(base) {
+  const mp3Files = [];
+  (function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.mp3$/i.test(entry.name)) mp3Files.push(full);
+    }
+  })(base);
+
+  if (!mp3Files.length) return;
+  const bar = new ProgressBar('MP3 -> WAV [:bar] :current/:total', { total: mp3Files.length });
+  for (const file of mp3Files) {
+    const rel = path.relative(base, file);
+    const backup = path.join(audioBackupPath, rel);
+    fs.mkdirSync(path.dirname(backup), { recursive: true });
+    try {
+      fs.renameSync(file, backup);
+      const wav = file.replace(/\.mp3$/i, '.wav');
+      const res = spawnSync(ffmpeg, ['-y', '-i', backup, wav], { stdio: 'ignore' });
+      if (res.status !== 0 || !fs.existsSync(wav)) {
+        fs.renameSync(backup, file);
+        console.error('[Konvertierung] Fehler bei', file);
+      }
+    } catch (e) {
+      console.error('[Konvertierung]', e.message);
+    }
+    bar.tick();
+  }
+}
+// =========================== MP3-TO-WAV END ================================
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -128,6 +168,9 @@ app.whenReady().then(() => {
   fs.mkdirSync(dePath, { recursive: true }); // DE-Ordner anlegen
   fs.mkdirSync(deBackupPath, { recursive: true }); // DE-Backup-Ordner anlegen
   fs.mkdirSync(deHistoryPath, { recursive: true }); // History-Ordner anlegen
+  // MP3-Dateien zu WAV konvertieren
+  convertMp3Dir(enPath);
+  convertMp3Dir(dePath);
 
   ipcMain.handle('scan-folders', () => {
     return {
