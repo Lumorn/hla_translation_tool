@@ -11,7 +11,7 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
-const { execSync, spawnSync } = require('child_process');
+const { execSync, spawnSync, spawn } = require('child_process');
 // Lade Konfiguration relativ zum aktuellen Verzeichnis
 const { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 const { chooseExisting } = require('../pathUtils');
@@ -495,25 +495,25 @@ app.whenReady().then(() => {
   // =========================== DUPLICATE-HELPER END ==========================
 
   // Uebersetzt EN-Text nach DE ueber ein Python-Skript
-  ipcMain.handle('translate-text', async (event, text) => {
+  ipcMain.on('translate-text', (event, { id, text }) => {
     try {
-      const result = spawnSync(
+      const proc = spawn(
         'python',
         [path.join(__dirname, '..', 'translate_text.py')],
-        {
-          input: text,
-          encoding: 'utf8',
-          env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
-        }
+        { env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }
       );
-      if (result.status === 0) {
-        return result.stdout.trim();
-      }
-      console.error('[Translate]', result.stderr);
+      let out = '';
+      proc.stdout.on('data', d => { out += d.toString(); });
+      proc.on('close', code => {
+        const result = code === 0 ? out.trim() : '';
+        event.sender.send('translate-finished', { id, text: result });
+      });
+      proc.stdin.write(text);
+      proc.stdin.end();
     } catch (e) {
       console.error('[Translate]', e);
+      event.sender.send('translate-finished', { id, text: '' });
     }
-    return '';
   });
   // =========================== SAVE-DE-FILE END =============================
 

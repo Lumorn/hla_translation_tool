@@ -45,6 +45,7 @@ export type IpcChannels =
   | 'get-de-duplicates'
   | 'delete-de-file'
   | 'translate-text'
+  | 'translate-finished'
   | 'toggle-devtools'
   | 'dub-start'
   | 'manual-file'

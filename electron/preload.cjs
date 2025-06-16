@@ -64,7 +64,8 @@ if (typeof require !== 'function') {
     deleteDeFile: rel => ipcRenderer.invoke('delete-de-file', rel),
     onSaveError: cb => ipcRenderer.on('save-error', (e, msg) => cb(msg)),
     join: (...segments) => path.join(...segments),
-    translateText: text => ipcRenderer.invoke('translate-text', text),
+    translateText: (id, text) => ipcRenderer.send('translate-text', { id, text }),
+    onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => cb(data)),
   });
   console.log('[Preload] erfolgreich geladen');
 }

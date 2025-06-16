@@ -67,6 +67,8 @@ let autoBackupTimer    = null;
 // Warteschlange für automatische Übersetzungen
 let translateQueue     = [];
 let translateRunning   = false;
+let translateCounter   = 0;
+const pendingTranslations = new Map();
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
@@ -394,6 +396,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (window.electronAPI.onSaveError) {
             window.electronAPI.onSaveError(msg =>
                 showToast('Fehler beim Speichern: ' + msg, 'error'));
+        }
+        if (window.electronAPI.onTranslateFinished) {
+            window.electronAPI.onTranslateFinished(({ id, text }) => {
+                const entry = pendingTranslations.get(id);
+                if (!entry) return;
+                pendingTranslations.delete(id);
+                const { file, resolve } = entry;
+                file.autoTranslation = text;
+                file.autoSource = file.enText;
+                isDirty = true;
+                updateTranslationDisplay(file.id);
+                resolve(text);
+            });
         }
     }
 
@@ -3183,19 +3198,19 @@ function updateText(fileId, lang, value, skipUndo) {
     renderProjects(); // HINZUFÜGEN für live Update
 }
 
-async function updateAutoTranslation(file, force = false) {
-    if (!window.electronAPI || !window.electronAPI.translateText) return;
-    if (!file.enText) return;
-    if (!force && file.autoSource === file.enText && file.autoTranslation) return;
-    try {
-        const translated = await window.electronAPI.translateText(file.enText);
-        file.autoTranslation = translated;
-        file.autoSource = file.enText;
-        isDirty = true;
-        updateTranslationDisplay(file.id);
-    } catch (e) {
-        console.error('Automatische Übersetzung fehlgeschlagen', e);
-    }
+function updateAutoTranslation(file, force = false) {
+    return new Promise(resolve => {
+        if (!window.electronAPI || !window.electronAPI.translateText) { resolve(); return; }
+        if (!file.enText) { resolve(); return; }
+        if (!force && file.autoSource === file.enText && file.autoTranslation) { resolve(); return; }
+
+        const div = document.querySelector(`.auto-trans[data-file-id="${file.id}"]`);
+        if (div) div.innerHTML = '<span class="loading-spinner"></span>';
+
+        const id = ++translateCounter;
+        pendingTranslations.set(id, { file, resolve });
+        window.electronAPI.translateText(id, file.enText);
+    });
 }
 
 function updateTranslationDisplay(fileId) {
@@ -10733,6 +10748,7 @@ if (typeof module !== "undefined" && module.exports) {
         bufferToMp3,
         bufferToWav,
         repairFileExtensions,
+        updateAutoTranslation,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
