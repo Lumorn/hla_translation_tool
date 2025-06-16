@@ -132,9 +132,11 @@ const DEBUG_MODE = localStorage.getItem('hla_debug_mode') === 'true';
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
+let calculateProjectStats;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     ({ repairFileExtensions } = require('../../extensionUtils'));
+    calculateProjectStats = require('../../calculateProjectStats');
     lamejs = require('lamejs');
 } else {
     import('./elevenlabs.js').then(mod => {
@@ -146,6 +148,7 @@ if (typeof module !== 'undefined' && module.exports) {
         pollRender = mod.pollRender;
     });
     import('../../extensionUtils.js').then(mod => { repairFileExtensions = mod.repairFileExtensions; });
+    import('../../calculateProjectStats.js').then(mod => { calculateProjectStats = mod.default || mod; });
     // Versucht lamejs als ESM zu laden. Scheitert dies, wird ein Skript vom CDN nachgeladen
     import('lamejs').then(mod => { lamejs = mod; }).catch(() => {
         console.warn('lamejs konnte nicht per import geladen werden, lade von CDN');
@@ -629,34 +632,6 @@ function saveLevelColorHistory() {
 
 
 
-// Berechne Projekt-Statistiken
-function calculateProjectStats(project) {
-    const files = project.files || [];
-    const totalFiles = files.length;
-    
-    if (totalFiles === 0) {
-        return {
-            enPercent: 0,
-            dePercent: 0,
-            deAudioPercent: 0,
-            completedPercent: 0,
-            totalFiles: 0
-        };
-    }
-    
-    const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
-    const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
-    const filesCompleted = files.filter(isFileCompleted).length;
-    const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
-    
-    return {
-        enPercent: Math.round((filesWithEN / totalFiles) * 100),
-        dePercent: Math.round((filesWithDE / totalFiles) * 100),
-        deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
-        completedPercent: Math.round((filesCompleted / totalFiles) * 100),
-        totalFiles: totalFiles
-    };
-}
 
 // Handle Access Status Click - für den Button unten rechts
 function handleAccessStatusClick() {
