@@ -1,3 +1,12 @@
+// @ts-check
+/**
+ * Typdefinitionen für die IPC-Kommunikation importieren
+ * @typedef {import('./ipcContracts').SaveDeFileArgs} SaveDeFileArgs
+ * @typedef {import('./ipcContracts').SaveFileArgs} SaveFileArgs
+ * @typedef {import('./ipcContracts').MoveFileArgs} MoveFileArgs
+ * @typedef {import('./ipcContracts').RestoreDeHistoryArgs} RestoreDeHistoryArgs
+ * @typedef {import('./ipcContracts').SaveDeHistoryBufferArgs} SaveDeHistoryBufferArgs
+ */
 console.log('[PRELOAD] start', __filename);
 process.on('uncaughtException',  e => console.error('[PRELOAD] uncaught', e));
 process.on('unhandledRejection', e => console.error('[PRELOAD] rejected', e));
@@ -24,22 +33,22 @@ if (typeof require !== 'function') {
     // Befehl an Hauptprozess senden, um DevTools umzuschalten
     toggleDevTools: () => ipcRenderer.send('toggle-devtools'),
     // Datei speichern (z.B. Backup)
-    saveFile: (data, defaultPath) => ipcRenderer.invoke('save-file', { data, defaultPath }),
+    saveFile: (data, defaultPath) => ipcRenderer.invoke('save-file', /** @type {SaveFileArgs} */({ data, defaultPath })),
     // DE-Datei im Projektordner speichern
-    saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', { relPath, data }),
+    saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', /** @type {SaveDeFileArgs} */({ relPath, data })),
     backupDeFile: (relPath) => ipcRenderer.invoke('backup-de-file', relPath),
     restoreDeFile: (relPath) => ipcRenderer.invoke('restore-de-file', relPath),
     deleteDeBackupFile: (relPath) => ipcRenderer.invoke('delete-de-backup-file', relPath),
     listDeHistory: (relPath) => ipcRenderer.invoke('list-de-history', relPath),
-    restoreDeHistory: (relPath, name) => ipcRenderer.invoke('restore-de-history', { relPath, name }),
-    saveDeHistoryBuffer: (relPath, data) => ipcRenderer.invoke('save-de-history-buffer', { relPath, data }),
+    restoreDeHistory: (relPath, name) => ipcRenderer.invoke('restore-de-history', /** @type {RestoreDeHistoryArgs} */({ relPath, name })),
+    saveDeHistoryBuffer: (relPath, data) => ipcRenderer.invoke('save-de-history-buffer', /** @type {SaveDeHistoryBufferArgs} */({ relPath, data })),
     // Backup-Funktionen
     listBackups: () => ipcRenderer.invoke('list-backups'),
     saveBackup: (data) => ipcRenderer.invoke('save-backup', data),
     readBackup: (name) => ipcRenderer.invoke('read-backup', name),
     deleteBackup: (name) => ipcRenderer.invoke('delete-backup', name),
     openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
-    moveFile: (src, dest) => ipcRenderer.invoke('move-file', { src, dest }),
+    moveFile: (src, dest) => ipcRenderer.invoke('move-file', /** @type {MoveFileArgs} */({ src, dest })),
     onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
     onDubDone: cb => ipcRenderer.on('dub-done', (e, info) => cb(info)),
     onDubError: cb => ipcRenderer.on('dub-error', (e, info) => cb(info)),
