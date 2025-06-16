@@ -8756,10 +8756,19 @@ async function applyDeEdit() {
         // Sofort speichern, damit die Bearbeitung gesichert ist
         saveCurrentProject();
     } catch (err) {
-        console.error('Fehler beim Speichern', err);
-        updateStatus('Fehler beim Speichern');
+        // 🟦 Fehlermeldung ausgeben und näher erläutern
+        console.error('Fehler beim Speichern', err, err.message);
+        let hinweis = '';
+        if (err.code === 'EACCES' || err.name === 'NotAllowedError') {
+            hinweis = 'Kein Schreibzugriff auf den Ordner. Bitte Berechtigungen prüfen.';
+        } else if (err.code === 'ENOENT') {
+            hinweis = 'Dateipfad nicht gefunden. Wurde der Ordner verschoben?';
+        }
+        updateStatus('Fehler beim Speichern: ' + err.message);
         if (typeof showToast === 'function') {
-            showToast('Fehler beim Speichern des DE-Audios', 'error');
+            const msg = hinweis ? `Fehler beim Speichern des DE-Audios: ${hinweis}`
+                                : 'Fehler beim Speichern des DE-Audios';
+            showToast(msg, 'error');
         }
     }
 }
