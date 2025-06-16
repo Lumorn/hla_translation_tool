@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """start_tool.py
 Python-Version des Start-Skripts fuer das HLA Translation Tool.
@@ -33,6 +34,11 @@ def run(cmd: str) -> None:
 
 log("Setup gestartet")
 log(f"Python-Version: {sys.version.split()[0]} auf {sys.platform}")
+if sys.version_info < (3, 9):
+    # Python-Version ist zu alt
+    print("[Fehler] Python 3.9 oder neuer wird benoetigt.")
+    log("Python-Version zu alt")
+    sys.exit(1)
 print("=== Starte HLA Translation Tool Setup ===")
 
 # "--check" startet nur einen kurzen Testlauf der Desktop-App

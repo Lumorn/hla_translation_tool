@@ -47,6 +47,8 @@
 * Typdefinitionen für die IPC-Kommunikation ergänzen `ipcContracts.ts`.
 ## 🛠️ Patch in 1.40.22
 * Entfernt die ungenutzte Datei `web/src/watcher.js`.
+## 🛠️ Patch in 1.40.23
+* Entfernt die Startskripte `start_tool.js` und `start_tool.bat`. `start_tool.py` bleibt als einzige Einstiegsmöglichkeit erhalten.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
