@@ -1042,6 +1042,7 @@ function calculateGlobalProjectProgress() {
 
 function updateGlobalProjectProgress() {
     const box = document.getElementById('globalProjectProgress');
+    const bar = document.getElementById('globalProjectFill');
     if (!box) return;
 
     const { percent, done, total } = calculateGlobalProjectProgress();
@@ -1050,6 +1051,7 @@ function updateGlobalProjectProgress() {
     box.className = 'progress-stat';
     if (percent >= 80)      box.classList.add('good');
     else if (percent >= 40) box.classList.add('warning');
+    if (bar) bar.style.width = percent + '%';
 }
 /* =========================== GLOBAL PROJECT PROGRESS END ============================== */
 
