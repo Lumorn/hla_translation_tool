@@ -521,6 +521,6 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
 * **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
-* **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Die Implementierung liegt in `calculateProjectStats.js` und wird in `web/src/main.js` nur importiert. Diese Funktion wird auch in den Tests ausführlich geprüft.
+* **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
 * **`ipcContracts.ts`** – definiert Typen für die IPC-Kommunikation zwischen Preload und Hauptprozess.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
