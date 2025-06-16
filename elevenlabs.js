@@ -234,52 +234,6 @@ async function pollRender(id, lang = 'de', apiKey, logger = () => {}) {
 }
 // =========================== RENDERLANGUAGE END ============================
 
-// =========================== DUBSEGMENTS START ============================
-// Vertont alle Segmente eines Projekts im Studio-Workflow
-// async function dubSegments(apiKey, resourceId, languages = ['de']) {
-//     const infoRes = await fetch(`${API}/dubbing/resource/${resourceId}`, {
-//         headers: { 'xi-api-key': apiKey }
-//     });
-//     if (!infoRes.ok) {
-//         throw new Error('Segmente konnten nicht geladen werden: ' + await infoRes.text());
-//     }
-//     const info = await infoRes.json();
-//     const segIds = Object.keys(info.speaker_segments || {});
-
-//     const res = await fetch(`${API}/dubbing/resource/${resourceId}/dub`, {
-//         method: 'POST',
-//         headers: {
-//             'xi-api-key': apiKey,
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({ segments: segIds, languages })
-//     });
-//     if (!res.ok) {
-//         throw new Error('Dub-Auftrag fehlgeschlagen: ' + await res.text());
-//     }
-//     return await res.json();
-// }
-// =========================== DUBSEGMENTS END ==============================
-
-// =========================== RENDERRESOURCE START ========================
-// Rendert die komplette Audiodatei fuer eine Sprache
-// async function renderDubbingResource(apiKey, resourceId, lang = 'de', type = 'mp3') {
-//     return {};
-// }
-// =========================== RENDERRESOURCE END ==========================
-
-// =========================== GETRESOURCE START ===========================
-// Liefert den aktuellen Status eines Dubbing-Resources
-// async function getDubbingResource(apiKey, resourceId) {
-//     const res = await fetch(`${API}/dubbing/resource/${resourceId}`, {
-//         headers: { 'xi-api-key': apiKey }
-//     });
-//     if (!res.ok) {
-//         throw new Error('Abfrage fehlgeschlagen: ' + await res.text());
-//     }
-//     return await res.json();
-// }
-// =========================== GETRESOURCE END =============================
 
 // =========================== DOWNLOADFROMURL START =======================
 // Hilfsfunktion zum Speichern eines Response-Streams
