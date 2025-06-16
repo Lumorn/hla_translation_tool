@@ -51,6 +51,8 @@ if (typeof require !== 'function') {
     getDebugInfo: () => ipcRenderer.invoke('get-debug-info'),
     fsReadFile: p => fs.readFileSync(p),
     fsExists: p => fs.existsSync(p),
+    getDeDuplicates: rel => ipcRenderer.invoke('get-de-duplicates', rel),
+    deleteDeFile: rel => ipcRenderer.invoke('delete-de-file', rel),
     join: (...segments) => path.join(...segments),
     translateText: text => ipcRenderer.invoke('translate-text', text),
   });

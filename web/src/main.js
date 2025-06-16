@@ -14,6 +14,7 @@ let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 let aktiveOrdnerDateien    = []; // Aktuelle Dateiliste im Ordner-Browser
+let debugInfo              = {}; // Pfadinformationen von Electron
 
 // Verfügbarkeit der Electron-API einmalig prüfen
 const isElectron = !!window.electronAPI;
@@ -271,6 +272,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateProjectPlaybackButtons();
     // Beim Start alte, falsch gespeicherte Cache-Einträge entfernen
     cleanupDubCache();
+    if (window.electronAPI && window.electronAPI.getDebugInfo) {
+        debugInfo = await window.electronAPI.getDebugInfo();
+    }
     // DevTools-Knopf wird immer eingeblendet
 
 
@@ -328,7 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Automatischer Import abgeschlossen
         if (window.electronAPI.onDubDone) {
-            window.electronAPI.onDubDone(info => {
+            window.electronAPI.onDubDone(async info => {
                 // Pfade der Original- und Zieldatei im Log ausgeben
                 if (info.sourcePath) addDubbingLog('Originalpfad: ' + info.sourcePath);
                 if (info.destPath)   addDubbingLog('Zielpfad: ' + info.destPath);
@@ -339,6 +343,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     addDubbingLog('Prüfung Ziel-Datei: ' + (info.destValid ? 'OK' : 'FEHLER'));
                 }
                 markDubAsReady(info.fileId, info.dest);
+                await resolveDuplicateAfterCopy(info.dest.replace(/^sounds\/DE\//, ''));
                 showToast(`Dubbing fertig: ${info.dest.split('/').pop()}`);
             });
         }
@@ -6339,7 +6344,7 @@ function findDuplicates() {
             return score;
         }
 
-        function cleanupDuplicates() {
+function cleanupDuplicates() {
             const duplicates = findDuplicates();
             
             if (duplicates.size === 0) {
@@ -6513,6 +6518,51 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         // Refresh main table
         renderFileTable();
     }, 100);
+}
+
+// Durchsucht den DE-Ordner nach gleichnamigen Dateien mit unterschiedlicher Endung
+async function scanAudioDuplicates() {
+    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) {
+        alert('Nur in der Desktop-Version verfügbar');
+        return;
+    }
+    const groups = {};
+    Object.keys(deAudioCache).forEach(rel => {
+        const base = rel.replace(/\.(mp3|wav|ogg)$/i, '');
+        if (!groups[base]) groups[base] = [];
+        groups[base].push(rel);
+    });
+    for (const base of Object.keys(groups)) {
+        const files = groups[base];
+        if (files.length < 2) continue;
+        const pref = localStorage.getItem('dupPref_' + base);
+        const info = await window.electronAPI.getDeDuplicates(files[0]);
+        const oldInfo = info.find(i => i.relPath === files[1]);
+        const newInfo = info.find(i => i.relPath === files[0]);
+        if (!oldInfo || !newInfo) continue;
+        if (pref === 'new') {
+            await window.electronAPI.deleteDeFile(oldInfo.relPath);
+            delete deAudioCache[oldInfo.relPath];
+            continue;
+        }
+        if (pref === 'old') {
+            await window.electronAPI.deleteDeFile(newInfo.relPath);
+            delete deAudioCache[newInfo.relPath];
+            continue;
+        }
+        const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
+        const res = await showDupeDialog(oldInfo, url);
+        if (res.remember) localStorage.setItem('dupPref_' + base, res.choice);
+        if (res.choice === 'new') {
+            await window.electronAPI.deleteDeFile(oldInfo.relPath);
+            delete deAudioCache[oldInfo.relPath];
+        } else {
+            await window.electronAPI.deleteDeFile(newInfo.relPath);
+            delete deAudioCache[newInfo.relPath];
+        }
+    }
+    renderFileTable();
+    updateStatus('Duplikat-Prüfung abgeschlossen');
 }
 
         function resetFileDatabase() {
@@ -6901,6 +6951,106 @@ function initiateDeUpload(fileId) {
 }
 // =========================== INITIATEDEUPLOAD END ============================
 
+// =========================== DUPLICATE-CHECK START ==========================
+async function pruefeAudioPuffer(buf) {
+    if (buf.byteLength < 4) return false;
+    const b = new Uint8Array(buf);
+    const str4 = String.fromCharCode(b[0], b[1], b[2], b[3]);
+    if (str4 === 'RIFF' && String.fromCharCode(b[8], b[9], b[10], b[11]) === 'WAVE') return true;
+    if (str4 === 'OggS') return true;
+    if (str4 === 'ID3') return true;
+    if (b[0] === 0xff && (b[1] & 0xe0) === 0xe0) return true;
+    return false;
+}
+
+async function showDupeDialog(oldInfo, newUrl) {
+    return new Promise(resolve => {
+        const ov = document.createElement('div');
+        ov.className = 'dialog-overlay';
+        ov.style.display = 'flex';
+        const html = `
+            <div class="dialog" style="max-width:600px;">
+                <h3>Doppelte Audiodatei</h3>
+                <p>Es existiert bereits <code>${oldInfo.relPath}</code>.</p>
+                <div style="display:flex;gap:10px;margin:10px 0;">
+                    <div style="flex:1;text-align:center;">
+                        <audio controls src="${deAudioCache[oldInfo.relPath] || 'sounds/DE/' + oldInfo.relPath}"></audio>
+                        <div style="font-size:12px;">Alt (${(oldInfo.size/1024).toFixed(1)} KB)</div>
+                    </div>
+                    <div style="flex:1;text-align:center;">
+                        <audio controls src="${newUrl}"></audio>
+                        <div style="font-size:12px;">Neu</div>
+                    </div>
+                </div>
+                <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <input type="checkbox" id="dupeRemember"> Entscheidung merken
+                </label>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" id="dupeKeepOld">Alte behalten</button>
+                    <button class="btn btn-success" id="dupeKeepNew">Neue verwenden</button>
+                </div>
+            </div>`;
+        ov.innerHTML = html;
+        document.body.appendChild(ov);
+        document.getElementById('dupeKeepOld').onclick = () => {
+            const rem = document.getElementById('dupeRemember').checked;
+            ov.remove();
+            resolve({ choice:'old', remember:rem });
+        };
+        document.getElementById('dupeKeepNew').onclick = () => {
+            const rem = document.getElementById('dupeRemember').checked;
+            ov.remove();
+            resolve({ choice:'new', remember:rem });
+        };
+    });
+}
+
+async function handleDuplicateBeforeSave(relPath, buffer, previewUrl) {
+    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) return 'new';
+    const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
+    const duplicates = await window.electronAPI.getDeDuplicates(relPath);
+    const others = duplicates.filter(d => d.relPath !== relPath);
+    if (!others.length) return 'new';
+    const pref = localStorage.getItem('dupPref_' + base);
+    if (pref) return pref;
+    if (others.some(o => !o.valid)) return 'new';
+    const result = await showDupeDialog(others[0], previewUrl);
+    if (result.remember) localStorage.setItem('dupPref_' + base, result.choice);
+    return result.choice;
+}
+
+async function resolveDuplicateAfterCopy(relPath) {
+    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) return;
+    const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
+    const info = await window.electronAPI.getDeDuplicates(relPath);
+    if (info.length < 2) return;
+    const pref = localStorage.getItem('dupPref_' + base);
+    const newInfo = info.find(i => i.relPath === relPath);
+    const oldInfo = info.find(i => i.relPath !== relPath);
+    if (!oldInfo || !newInfo) return;
+    if (pref === 'new') {
+        await window.electronAPI.deleteDeFile(oldInfo.relPath);
+        delete deAudioCache[oldInfo.relPath];
+        return;
+    }
+    if (pref === 'old') {
+        await window.electronAPI.deleteDeFile(newInfo.relPath);
+        delete deAudioCache[newInfo.relPath];
+        return;
+    }
+    const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
+    const res = await showDupeDialog(oldInfo, url);
+    if (res.remember) localStorage.setItem('dupPref_' + base, res.choice);
+    if (res.choice === 'new') {
+        await window.electronAPI.deleteDeFile(oldInfo.relPath);
+        delete deAudioCache[oldInfo.relPath];
+    } else {
+        await window.electronAPI.deleteDeFile(newInfo.relPath);
+        delete deAudioCache[newInfo.relPath];
+    }
+}
+// =========================== DUPLICATE-CHECK END ============================
+
 // =========================== HANDLEDEUPLOAD START ============================
 async function handleDeUpload(input) {
     const datei = input.files[0];
@@ -6909,6 +7059,20 @@ async function handleDeUpload(input) {
     }
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await datei.arrayBuffer();
+        const url = URL.createObjectURL(datei);
+        const choice = await handleDuplicateBeforeSave(aktuellerUploadPfad, buffer, url);
+        if (choice === 'old') {
+            aktuellerUploadPfad = null;
+            input.value = '';
+            return;
+        }
+        const dups = await window.electronAPI.getDeDuplicates(aktuellerUploadPfad);
+        for (const d of dups) {
+            if (d.relPath !== aktuellerUploadPfad) {
+                await window.electronAPI.deleteDeFile(d.relPath);
+                delete deAudioCache[d.relPath];
+            }
+        }
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
         deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
         await updateHistoryCache(aktuellerUploadPfad);
@@ -8524,9 +8688,23 @@ async function applyDeEdit() {
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
+        const url = URL.createObjectURL(blob);
+        const choice = await handleDuplicateBeforeSave(relPath, buf, url);
+        if (choice === 'old') {
+            URL.revokeObjectURL(url);
+            return;
+        }
+        const dups = await window.electronAPI.getDeDuplicates(relPath);
+        for (const d of dups) {
+            if (d.relPath !== relPath) {
+                await window.electronAPI.deleteDeFile(d.relPath);
+                delete deAudioCache[d.relPath];
+            }
+        }
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
+        URL.revokeObjectURL(url);
     } else {
         // Backup in Browser-Version
         if (deOrdnerHandle) {
