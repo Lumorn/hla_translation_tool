@@ -200,6 +200,7 @@ Seit Patch 1.40.26 wiederholt der manuelle Import das Verschieben mehrmals und w
 Seit Patch 1.40.27 werden Änderungen am DE-Audio nach dem Bearbeiten sofort im Projekt gespeichert.
 Seit Patch 1.40.28 speichert applyDeEdit DE-Audios im Cache über den bereinigten Pfad und aktualisiert so konsistent die History.
 Seit Patch 1.40.29 lädt das Tool das MP3-Modul lamejs automatisch von einem CDN, falls es nicht lokal verfügbar ist.
+Seit Patch 1.40.30 nutzt das Tool cdnjs anstelle von jsDelivr, da dies durch die Content Security Policy erlaubt ist.
 
 
 Beispiel einer gültigen CSV:
