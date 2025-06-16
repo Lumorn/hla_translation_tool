@@ -2106,6 +2106,15 @@ th:nth-child(6) {
     filter: brightness(1.2);
 }
 
+.filename-cell.clickable {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.filename-cell.clickable:hover {
+    color: #ff6b1a;
+}
+
 /* Details für Pfadangaben über Rechtsklick anzeigen */
 .path-cell .path-detail {
     display: none;

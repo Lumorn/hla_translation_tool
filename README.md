@@ -393,6 +393,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * **📏 Auto‑Height Textboxen:** EN/DE Felder bleiben höhengleich
 * **🎨 Theme‑System:** Automatische Icon‑ und Farb‑Zuweisungen
 * **💡 Context‑Awareness:** Funktionen passen sich dem aktuellen Kontext an
+* **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen bietet passende Endungen an
 
 ---
 
