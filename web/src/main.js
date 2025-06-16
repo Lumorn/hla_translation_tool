@@ -8712,7 +8712,15 @@ async function applyDeEdit() {
         }
         // Pfad bereinigen, falls "sounds/DE/" bereits vorangestellt ist
         let cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
-        await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
+        try {
+            await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
+        } catch (err) {
+            // Speichern fehlgeschlagen -> Toast anzeigen
+            if (typeof showToast === 'function') {
+                showToast('Fehler beim Speichern der DE-Datei', 'error');
+            }
+            throw err;
+        }
         deAudioCache[relPath] = `sounds/DE/${relPath}`;
         await updateHistoryCache(relPath);
         URL.revokeObjectURL(url);

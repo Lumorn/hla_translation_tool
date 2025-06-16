@@ -327,15 +327,21 @@ app.whenReady().then(() => {
   // =========================== SAVE-DE-FILE START ===========================
   // Speichert eine hochgeladene DE-Datei im richtigen Unterordner
   ipcMain.handle('save-de-file', async (event, { relPath, data }) => {
-    // Absoluten Zielpfad aufbauen
-    const target = path.resolve(dePath, relPath);
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    // Vor dem Überschreiben alte Version in den History-Ordner kopieren
-    if (fs.existsSync(target)) {
-      historyUtils.saveVersion(deHistoryPath, relPath, target);
+    try {
+      // Absoluten Zielpfad aufbauen
+      const target = path.resolve(dePath, relPath);
+      fs.mkdirSync(path.dirname(target), { recursive: true });
+      // Vor dem Überschreiben alte Version in den History-Ordner kopieren
+      if (fs.existsSync(target)) {
+        historyUtils.saveVersion(deHistoryPath, relPath, target);
+      }
+      fs.writeFileSync(target, Buffer.from(data));
+      return target;
+    } catch (err) {
+      // Fehler an den Renderer melden
+      event.sender.send('save-error', err.message);
+      throw err;
     }
-    fs.writeFileSync(target, Buffer.from(data));
-    return target;
   });
 
   // Verschiebt eine Datei innerhalb des Projekts

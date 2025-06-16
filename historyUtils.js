@@ -3,24 +3,30 @@ const path = require('path');
 
 // Speichert eine alte Version im History-Ordner und behält nur eine begrenzte Anzahl
 function saveVersion(historyRoot, relPath, sourceFile, limit = 10) {
-    if (!fs.existsSync(sourceFile)) return;
-    const ext = path.extname(relPath);
-    const historyDir = path.join(historyRoot, relPath);
-    fs.mkdirSync(historyDir, { recursive: true });
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    let target = path.join(historyDir, `${timestamp}${ext}`);
-    let counter = 1;
-    while (fs.existsSync(target)) {
-        target = path.join(historyDir, `${timestamp}-${counter}${ext}`);
-        counter++;
+    try {
+        if (!fs.existsSync(sourceFile)) return;
+        const ext = path.extname(relPath);
+        const historyDir = path.join(historyRoot, relPath);
+        fs.mkdirSync(historyDir, { recursive: true });
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        let target = path.join(historyDir, `${timestamp}${ext}`);
+        let counter = 1;
+        while (fs.existsSync(target)) {
+            target = path.join(historyDir, `${timestamp}-${counter}${ext}`);
+            counter++;
+        }
+        fs.copyFileSync(sourceFile, target);
+        let files = fs.readdirSync(historyDir).filter(f => f.endsWith(ext)).sort();
+        while (files.length > limit) {
+            const remove = files.shift();
+            fs.unlinkSync(path.join(historyDir, remove));
+        }
+        return target;
+    } catch (err) {
+        // Beim Schreiben in die History ist ein Fehler aufgetreten
+        console.error('Fehler beim Anlegen der History-Version', err);
+        throw err;
     }
-    fs.copyFileSync(sourceFile, target);
-    let files = fs.readdirSync(historyDir).filter(f => f.endsWith(ext)).sort();
-    while (files.length > limit) {
-        const remove = files.shift();
-        fs.unlinkSync(path.join(historyDir, remove));
-    }
-    return target;
 }
 
 // Speichert direkt einen Buffer als History-Version
