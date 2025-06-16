@@ -1230,6 +1230,11 @@ th:nth-child(6) {
             transition: width 0.3s;
         }
 
+        /* Fortschrittsbalken über alle Projekte */
+        #globalProjectBar {
+            margin: 4px 0;
+        }
+
         .scan-status {
             font-size: 14px;
             color: #999;
