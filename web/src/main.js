@@ -8674,9 +8674,10 @@ async function resetDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
-    // Aktuellen Status des Lautstärkeabgleichs nutzen
-    const relPath = getFullPath(currentEditFile);
-    if (window.electronAPI && window.electronAPI.backupDeFile) {
+    const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
+    try {
+        // Aktuellen Status des Lautstärkeabgleichs nutzen
+        if (window.electronAPI && window.electronAPI.backupDeFile) {
         // Sicherstellen, dass ein Backup existiert
         await window.electronAPI.backupDeFile(relPath);
         // Bereits geladene Originaldatei weiterverwenden
@@ -8743,15 +8744,22 @@ async function applyDeEdit() {
         deAudioCache[relPath] = blob;
         await updateHistoryCache(relPath);
     }
-    currentEditFile.trimStartMs = editStartTrim;
-    currentEditFile.trimEndMs = editEndTrim;
-    currentEditFile.volumeMatched = isVolumeMatched;
-    currentEditFile.radioEffect = isRadioEffect;
-    // Änderungen sichern
-    isDirty = true;
-    renderFileTable();
-    closeDeEdit();
-    updateStatus('DE-Audio bearbeitet und gespeichert');
+        currentEditFile.trimStartMs = editStartTrim;
+        currentEditFile.trimEndMs = editEndTrim;
+        currentEditFile.volumeMatched = isVolumeMatched;
+        currentEditFile.radioEffect = isRadioEffect;
+        // Änderungen sichern
+        isDirty = true;
+        renderFileTable();
+        closeDeEdit();
+        updateStatus('DE-Audio bearbeitet und gespeichert');
+    } catch (err) {
+        console.error('Fehler beim Speichern', err);
+        updateStatus('Fehler beim Speichern');
+        if (typeof showToast === 'function') {
+            showToast('Fehler beim Speichern des DE-Audios', 'error');
+        }
+    }
 }
 // =========================== APPLYDEEDIT END ===============================
 
