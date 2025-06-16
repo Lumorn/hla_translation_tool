@@ -53,6 +53,7 @@ if (typeof require !== 'function') {
     fsExists: p => fs.existsSync(p),
     getDeDuplicates: rel => ipcRenderer.invoke('get-de-duplicates', rel),
     deleteDeFile: rel => ipcRenderer.invoke('delete-de-file', rel),
+    onSaveError: cb => ipcRenderer.on('save-error', (e, msg) => cb(msg)),
     join: (...segments) => path.join(...segments),
     translateText: text => ipcRenderer.invoke('translate-text', text),
   });
