@@ -122,7 +122,7 @@ let lamejs; // fuer MP3-Encoding
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '__VERSION__';
+const APP_VERSION = '1.40.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
