@@ -368,6 +368,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 addDubbingLog(msg);
             });
         }
+        // Speicherfehler per Toast melden, falls API vorhanden
+        if (window.electronAPI.onSaveError) {
+            window.electronAPI.onSaveError(msg =>
+                showToast('Fehler beim Speichern: ' + msg, 'error'));
+        }
     }
 
     // 🟩 NEU: Level-Farben laden
