@@ -7841,8 +7841,9 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await dubbedBlob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        deAudioCache[relPath] = `sounds/DE/${relPath}`;
-        await updateHistoryCache(relPath);
+        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(cleanPath);
         addDubbingLog('Datei in Desktop-Version gespeichert');
     } else {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
@@ -7872,8 +7873,9 @@ async function downloadDe(fileId) {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        deAudioCache[relPath] = `sounds/DE/${relPath}`;
-        await updateHistoryCache(relPath);
+        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(cleanPath);
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
     }
@@ -8681,6 +8683,8 @@ async function applyDeEdit() {
         return;
     }
     const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
+    // Pfad bereinigen, falls "sounds/DE/" bereits enthalten ist
+    const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
     try {
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
@@ -8710,8 +8714,7 @@ async function applyDeEdit() {
                 delete deAudioCache[d.relPath];
             }
         }
-        // Pfad bereinigen, falls "sounds/DE/" bereits vorangestellt ist
-        let cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+        // Pfadbereinigung, da manche Pfade bereits "sounds/DE/" enthalten
         try {
             await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
         } catch (err) {
@@ -8721,8 +8724,9 @@ async function applyDeEdit() {
             }
             throw err;
         }
-        deAudioCache[relPath] = `sounds/DE/${relPath}`;
-        await updateHistoryCache(relPath);
+        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(cleanPath);
         URL.revokeObjectURL(url);
     } else {
         // Backup in Browser-Version
@@ -8757,8 +8761,9 @@ async function applyDeEdit() {
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
-        deAudioCache[relPath] = blob;
-        await updateHistoryCache(relPath);
+        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+        deAudioCache[cleanPath] = blob;
+        await updateHistoryCache(cleanPath);
     }
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
