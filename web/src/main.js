@@ -140,7 +140,14 @@ if (typeof module !== 'undefined' && module.exports) {
         renderLanguage = mod.renderLanguage;
         pollRender = mod.pollRender;
     });
-    import('lamejs').then(mod => { lamejs = mod; });
+    // Versucht lamejs als ESM zu laden. Scheitert dies, wird ein Skript vom CDN nachgeladen
+    import('lamejs').then(mod => { lamejs = mod; }).catch(() => {
+        console.warn('lamejs konnte nicht per import geladen werden, lade von CDN');
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js';
+        script.onload = () => { lamejs = window.lamejs; };
+        document.head.appendChild(script);
+    });
 }
 
 // =========================== GLOBAL STATE END ===========================
