@@ -412,6 +412,9 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
 * ▶ **Intelligente Bereinigung:** Behält beste Versionen automatisch
 
+**💾 Fehler beim Speichern des DE-Audios**
+* ▶ **Hinweis:** Ordnerzugriff erneut erlauben oder Pfad prüfen. Das Tool zeigt die genaue Ursache im Toast an.
+
 #### Häufige Crash-Stellen
 
 | Typischer Fehler | Ursache | Kurzlösung |
