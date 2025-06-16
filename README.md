@@ -34,6 +34,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
+* **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 
@@ -423,6 +424,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Pfad prüfen:** Beim Speichern wird `sounds/DE/` nun automatisch entfernt, falls der Pfad doppelt vorkommt.
 * ▶ **Neu:** Jede Fehlermeldung beim Speichern wird nun als Toast eingeblendet.
 * ▶ **Update:** MP3-Dateien werden jetzt korrekt gespeichert.
+* ▶ **Neu:** Beim Programmstart werden vorhandene MP3-Dateien automatisch in WAV umgewandelt und im Ordner `Backups/mp3` gesichert.
 
 #### Häufige Crash-Stellen
 
