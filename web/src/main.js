@@ -8674,6 +8674,12 @@ async function resetDeEdit() {
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
 async function applyDeEdit() {
     if (!currentEditFile || !originalEditBuffer) return;
+    // Restlänge berechnen und ungültigen Schnitt verhindern
+    const restlaenge = editDurationMs - editStartTrim - editEndTrim;
+    if (restlaenge <= 0) {
+        showToast('Ungültiger Schnittbereich – Datei wurde nicht gespeichert', 'error');
+        return;
+    }
     const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
     try {
         // Aktuellen Status des Lautstärkeabgleichs nutzen

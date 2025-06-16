@@ -284,6 +284,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
 | **Auto-Resize aktiviert** | Textfelder passen sich automatisch an |
+* Beim Speichern eines DE-Audios verhindert das Tool nun ungültige Schnittbereiche und zeigt einen Fehler an.
 ---
 
 ## ⌨️ Keyboard Shortcuts
