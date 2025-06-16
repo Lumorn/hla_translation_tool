@@ -43,6 +43,20 @@ const oldBackupPath = path.join(projectRoot, backupsDirName);
 // Zusätzlicher Ordner für gesicherte MP3-Dateien
 const audioBackupPath = path.join(backupPath, 'mp3');
 fs.mkdirSync(audioBackupPath, { recursive: true });
+// Hilfsfunktion: sicheres Verschieben ueber Dateisystemgrenzen hinweg
+function safeMove(src, dest) {
+  try {
+    fs.renameSync(src, dest); // Standardfall: einfache Umbenennung
+  } catch (err) {
+    if (err.code === 'EXDEV') {
+      // Fallback fuer unterschiedliche Laufwerke: Datei kopieren und Quelle loeschen
+      fs.copyFileSync(src, dest);
+      fs.unlinkSync(src);
+    } else {
+      throw err; // anderen Fehler weiterreichen
+    }
+  }
+}
 // Zusätzlichen Ordner für Session-Daten anlegen und verwenden,
 // um Cache-Fehler wie "Unable to move the cache" zu vermeiden
 const sessionDataPath = path.join(userDataPath, 'SessionData');
@@ -101,11 +115,14 @@ function convertMp3Dir(base) {
     const backup = path.join(audioBackupPath, rel);
     fs.mkdirSync(path.dirname(backup), { recursive: true });
     try {
-      fs.renameSync(file, backup);
+      // Verschieben der MP3-Datei ins Backup. Bei Fehler (z.B. anderes Laufwerk)
+      // wird automatisch auf Kopieren mit anschliessendem Loeschen umgestellt.
+      safeMove(file, backup);
       const wav = file.replace(/\.mp3$/i, '.wav');
       const res = spawnSync(ffmpeg, ['-y', '-i', backup, wav], { stdio: 'ignore' });
       if (res.status !== 0 || !fs.existsSync(wav)) {
-        fs.renameSync(backup, file);
+        // Rueckabwicklung bei fehlgeschlagener Konvertierung
+        safeMove(backup, file);
         console.error('[Konvertierung] Fehler bei', file);
       }
     } catch (e) {
