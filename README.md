@@ -94,7 +94,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Keyboard‑Navigation:** Pfeiltasten, Tab, Leertaste für Audio, Enter für Texteingabe
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
 * **Drag & Drop:** Projekte und Dateien sortieren
-* **Klick auf Zeilennummer:** Position anpassen
+* **Klick auf Zeilennummer:** Position über Dialog anpassen
 * **Doppelklick:** Projekt umbenennen
 
 ---
@@ -397,7 +397,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * **📏 Auto‑Height Textboxen:** EN/DE Felder bleiben höhengleich
 * **🎨 Theme‑System:** Automatische Icon‑ und Farb‑Zuweisungen
 * **💡 Context‑Awareness:** Funktionen passen sich dem aktuellen Kontext an
-* **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen bietet passende Endungen an
+* **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen öffnet einen Dialog mit passenden Endungen
 
 ---
 

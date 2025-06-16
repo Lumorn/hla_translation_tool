@@ -3499,20 +3499,20 @@ function deleteFile(fileId) {
 
         // Aufgerufen durch Klick auf die Zeilennummer, 
         // ermöglicht das direkte Ändern der Position
-        function changeRowNumber(fileId, currentPosition) {
+        async function changeRowNumber(fileId, currentPosition) {
             const file = files.find(f => f.id === fileId);
             if (!file) return;
-            
+
             const maxPosition = files.length;
-            const newPositionStr = prompt(
+            const newPositionStr = await showInputDialog(
                 `Position ändern für: ${file.filename}\n\n` +
                 `Aktuelle Position: ${currentPosition}\n` +
                 `Verfügbare Positionen: 1 bis ${maxPosition}\n\n` +
                 `Neue Position eingeben:`,
                 currentPosition.toString()
             );
-            
-            if (!newPositionStr) return; // User cancelled
+
+            if (newPositionStr === null) return; // Abbruch
             
             const newPosition = parseInt(newPositionStr);
             
@@ -3565,7 +3565,7 @@ function deleteFile(fileId) {
 // =========================== CHECKFILENAME START ===========================
 // Prüft beim Klick auf den Dateinamen, ob die Datei existiert und bietet
 // alternative Endungen zur Auswahl an
-function checkFilename(fileId) {
+async function checkFilename(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -3608,9 +3608,12 @@ function checkFilename(fileId) {
         auswahl = kandidaten[0];
     } else {
         const liste = kandidaten.map((k, i) => `${i + 1}: ${k.filename}`).join('\n');
-        const eingabe = prompt(`Datei ${file.filename} fehlt.\n` +
-                               `Mehrere Alternativen gefunden:\n${liste}\n` +
-                               `Nummer eingeben:`);
+        const eingabe = await showInputDialog(
+            `Datei ${file.filename} fehlt.\n` +
+            `Mehrere Alternativen gefunden:\n${liste}\n` +
+            `Nummer eingeben:`
+        );
+        if (eingabe === null) return;
         const idx = parseInt(eingabe, 10) - 1;
         if (isNaN(idx) || idx < 0 || idx >= kandidaten.length) return;
         auswahl = kandidaten[idx];
@@ -10578,6 +10581,35 @@ function showChapterCustomization(chapterName, ev) {
             document.body.appendChild(ov);
         }
 
+        // Einfache Eingabeaufforderung als Ersatz für prompt()
+        function showInputDialog(message, value = '') {
+            return new Promise(resolve => {
+                const ov = document.createElement('div');
+                ov.className = 'dialog-overlay';
+                ov.style.display = 'flex';
+                ov.innerHTML = `<div class="dialog">
+                    <p>${escapeHtml(message)}</p>
+                    <input id="dlgInput" type="text" value="${escapeHtml(value)}" style="width:100%;padding:8px;margin-top:10px;background:#1a1a1a;border:1px solid #444;border-radius:4px;color:#e0e0e0;">
+                    <div class="dialog-buttons">
+                        <button class="btn btn-secondary" id="dlgCancel">Abbrechen</button>
+                        <button class="btn btn-success" id="dlgOk">OK</button>
+                    </div>
+                </div>`;
+
+                const cleanup = result => {
+                    document.body.removeChild(ov);
+                    resolve(result);
+                };
+                ov.addEventListener('click', e => { if (e.target === ov) cleanup(null); });
+                const dlg = ov.querySelector('.dialog');
+                dlg.addEventListener('click', e => e.stopPropagation());
+                dlg.querySelector('#dlgCancel').onclick = () => cleanup(null);
+                dlg.querySelector('#dlgOk').onclick = () => cleanup(dlg.querySelector('#dlgInput').value.trim());
+                document.body.appendChild(ov);
+                dlg.querySelector('#dlgInput').focus();
+            });
+        }
+
         // Merkt das aktuelle Dubbing-Item für den Ordner-Watcher
         function setActiveDubItem(item) {
             files.forEach(f => delete f.waitingForManual);
@@ -10603,7 +10635,7 @@ function showChapterCustomization(chapterName, ev) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, setActiveDubItem };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
