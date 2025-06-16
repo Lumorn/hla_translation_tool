@@ -118,6 +118,7 @@ let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
+let lamejs; // fuer MP3-Encoding
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
@@ -129,6 +130,7 @@ const API = 'https://api.elevenlabs.io/v1';
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
+    lamejs = require('lamejs');
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -138,6 +140,7 @@ if (typeof module !== 'undefined' && module.exports) {
         renderLanguage = mod.renderLanguage;
         pollRender = mod.pollRender;
     });
+    import('lamejs').then(mod => { lamejs = mod; });
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -6929,6 +6932,12 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
         return;
     }
 
+    const ext = relativerPfad.slice(-4).toLowerCase();
+    let blob = datei;
+    if (typeof AudioBuffer !== 'undefined' && datei instanceof AudioBuffer) {
+        blob = ext === '.mp3' ? bufferToMp3(datei) : bufferToWav(datei);
+    }
+
     const teile = relativerPfad.split('/');
     const dateiname = teile.pop();
     let zielOrdner = deOrdnerHandle;
@@ -6939,11 +6948,11 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
 
     const fileHandle = await zielOrdner.getFileHandle(dateiname, { create: true });
     const writable = await fileHandle.createWritable();
-    await writable.write(datei);
+    await writable.write(blob);
     await writable.close();
 
     // DE-Audio im Cache aktualisieren
-    deAudioCache[relativerPfad] = datei;
+    deAudioCache[relativerPfad] = blob;
 }
 // =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
 
@@ -8168,6 +8177,36 @@ function bufferToWav(buffer) {
 }
 // =========================== BUFFERTOWAV END ================================
 
+// =========================== BUFFERTOMP3 START ===============================
+// Wandelt einen AudioBuffer in einen MP3-Blob um
+function bufferToMp3(buffer) {
+    if (!lamejs) throw new Error('lamejs nicht geladen');
+    const numChannels = buffer.numberOfChannels;
+    const sampleRate = buffer.sampleRate;
+    const mp3enc = new lamejs.Mp3Encoder(numChannels, sampleRate, 128);
+    const blockSize = 1152;
+    const mp3Data = [];
+    const channels = [];
+    for (let c = 0; c < numChannels; c++) {
+        channels.push(buffer.getChannelData(c));
+    }
+    let pos = 0;
+    while (pos < buffer.length) {
+        const left = new Int16Array(blockSize);
+        const right = numChannels > 1 ? new Int16Array(blockSize) : null;
+        for (let i = 0; i < blockSize && pos < buffer.length; i++, pos++) {
+            left[i] = Math.max(-1, Math.min(1, channels[0][pos])) * 32767;
+            if (right) right[i] = Math.max(-1, Math.min(1, channels[1][pos])) * 32767;
+        }
+        const mp3buf = mp3enc.encodeBuffer(left, right);
+        if (mp3buf.length) mp3Data.push(new Uint8Array(mp3buf));
+    }
+    const end = mp3enc.flush();
+    if (end.length) mp3Data.push(new Uint8Array(end));
+    return new Blob(mp3Data, { type: 'audio/mp3' });
+}
+// =========================== BUFFERTOMP3 END ================================
+
 let currentEditFile = null;
 let originalEditBuffer = null;
 let savedOriginalBuffer = null; // Unverändertes DE-Audio
@@ -8690,6 +8729,7 @@ async function applyDeEdit() {
     const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
     // Pfad bereinigen, falls "sounds/DE/" bereits enthalten ist
     const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+    const ext = relPath.slice(-4).toLowerCase();
     try {
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
@@ -8704,7 +8744,7 @@ async function applyDeEdit() {
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = bufferToWav(newBuffer);
+        const blob = ext === '.mp3' ? bufferToMp3(newBuffer) : bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
         const url = URL.createObjectURL(blob);
         const choice = await handleDuplicateBeforeSave(relPath, buf, url);
@@ -8764,7 +8804,7 @@ async function applyDeEdit() {
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = bufferToWav(newBuffer);
+        const blob = ext === '.mp3' ? bufferToMp3(newBuffer) : bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
         // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
         deAudioCache[cleanPath] = blob;
@@ -10581,6 +10621,10 @@ if (typeof module !== "undefined" && module.exports) {
         markDubAsReady,
         cleanupDubCache,
         getProjectPlaybackList,
+        applyDeEdit,
+        speichereUebersetzungsDatei,
+        bufferToMp3,
+        bufferToWav,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
