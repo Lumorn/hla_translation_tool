@@ -446,6 +446,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
 * **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen sich die DevTools jetzt automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
+* **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 
 ### Performance‑Tipps
 

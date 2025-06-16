@@ -126,6 +126,9 @@ const APP_VERSION = '1.40.5';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
+// Debug-Schalter: true zeigt Konsolenlogs und Debug-Anzeige
+const DEBUG_MODE = localStorage.getItem('hla_debug_mode') === 'true';
+
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
@@ -173,6 +176,7 @@ function cleanupDubCache() {
 // =========================== DEBUG LOG START ===========================
 // Schreibt Meldungen in die Browser-Konsole und die Debug-Anzeige
 function debugLog(...args) {
+    if (!DEBUG_MODE) return;
     console.log(...args);
     const div = document.getElementById('debugConsole');
     if (div) {
@@ -305,7 +309,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateAllProjectsAfterScan();
             if (repairFileExtensions) {
                 const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-                if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+                if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
             }
             updateFileAccessStatus();
         });
@@ -1020,13 +1024,13 @@ function updateGlobalTextStats() {
     }
     
     if (!box) {
-        console.log('[GLOBAL STATS] Element nicht gefunden');
+        debugLog('[GLOBAL STATS] Element nicht gefunden');
         return;
     }
 
     const { en, de, both, total } = calculateGlobalTextStats();
     
-    console.log(`[GLOBAL STATS] EN: ${en}, DE: ${de}, Both: ${both}, Total: ${total}`);
+    debugLog(`[GLOBAL STATS] EN: ${en}, DE: ${de}, Both: ${both}, Total: ${total}`);
     box.textContent = `${en} / ${de} / ${both} / ${total}`;
     
     // Auch die Farbe entsprechend setzen
@@ -1075,10 +1079,10 @@ function showFolderBrowser() {
     document.getElementById('folderBrowserDialog').style.display = 'flex';
     
     // Debug info
-    console.log('Ordner-Browser geöffnet');
-    console.log('filePathDatabase Einträge:', Object.keys(filePathDatabase).length);
-    console.log('Aktuelle Projektdateien:', files.length);
-    console.log('textDatabase Einträge:', Object.keys(textDatabase).length);
+    debugLog('Ordner-Browser geöffnet');
+    debugLog('filePathDatabase Einträge:', Object.keys(filePathDatabase).length);
+    debugLog('Aktuelle Projektdateien:', files.length);
+    debugLog('textDatabase Einträge:', Object.keys(textDatabase).length);
     
     // 🔥 KORREKTUR: Erst die Statistiken aktualisieren, dann Grid anzeigen
     renderLevelStats();
@@ -1197,7 +1201,7 @@ function updateProjectMetaBar(){
 function renderLevelStats() {
     const panel = document.getElementById('levelStatsContent');
     if (!panel) {
-        console.log('[LEVEL STATS] Panel nicht gefunden');
+        debugLog('[LEVEL STATS] Panel nicht gefunden');
         return;
     }
 
@@ -1273,7 +1277,7 @@ function renderLevelStats() {
     html += '</table>';
     panel.innerHTML = html;
     
-    console.log('[LEVEL STATS] Statistiken aktualisiert:', rows.length, 'Level');
+    debugLog('[LEVEL STATS] Statistiken aktualisiert:', rows.length, 'Level');
 }
 /* =========================== LEVEL STATS FUNCTIONS END =========================== */
 
@@ -1770,18 +1774,18 @@ function addFiles() {
 
         // Copy button functionality
         async function copyTextToClipboard(fileId, language) {
-            console.log('Copy button clicked - FileID:', fileId, 'Language:', language);
+            debugLog('Copy button clicked - FileID:', fileId, 'Language:', language);
             
             // Find file more safely
             const file = files.find(f => f && f.id && f.id == fileId);
             if (!file) {
                 console.error('File not found for copy operation. FileID:', fileId);
-                console.log('Available files:', files.map(f => ({id: f?.id, filename: f?.filename})));
+                debugLog('Available files:', files.map(f => ({id: f?.id, filename: f?.filename})));
                 updateStatus(`Fehler: Datei nicht gefunden (ID: ${fileId})`);
                 return;
             }
             
-            console.log('Found file for copy:', file.filename, 'ID:', file.id);
+            debugLog('Found file for copy:', file.filename, 'ID:', file.id);
             
             const text = language === 'en' ? (file.enText || '') : (file.deText || '');
             const langLabel = language === 'en' ? 'EN' : 'DE';
@@ -1794,7 +1798,7 @@ function addFiles() {
             try {
                 await navigator.clipboard.writeText(text);
                 updateStatus(`${langLabel} Text kopiert: ${file.filename}`);
-                console.log('Copy successful:', langLabel, 'from', file.filename);
+                debugLog('Copy successful:', langLabel, 'from', file.filename);
                 
                 // Visual feedback - briefly highlight the copy button
                 const button = event.target;
@@ -1840,18 +1844,18 @@ function addFiles() {
             const fileIdStr = row.dataset.id;
             const fileId = parseFloat(fileIdStr);
             
-            console.log('Context menu - Row data-id:', fileIdStr, 'Parsed as:', fileId);
+            debugLog('Context menu - Row data-id:', fileIdStr, 'Parsed as:', fileId);
             
             // Find file more safely
             contextMenuFile = files.find(f => f && f.id && f.id == fileId);
             
             if (!contextMenuFile) {
                 console.error('Context menu file not found for ID:', fileId);
-                console.log('Available files:', files.map(f => ({id: f?.id, filename: f?.filename})));
+                debugLog('Available files:', files.map(f => ({id: f?.id, filename: f?.filename})));
                 return;
             }
             
-            console.log('Context menu opened for file:', contextMenuFile.filename, 'ID:', contextMenuFile.id);
+            debugLog('Context menu opened for file:', contextMenuFile.filename, 'ID:', contextMenuFile.id);
             
             const contextMenu = document.getElementById('contextMenu');
             contextMenu.style.display = 'block';
@@ -1880,7 +1884,7 @@ function addFiles() {
                 return;
             }
             
-            console.log('Context menu action:', action, 'for file:', contextMenuFile.filename);
+            debugLog('Context menu action:', action, 'for file:', contextMenuFile.filename);
             hideContextMenu();
             
             try {
@@ -2169,8 +2173,8 @@ function showFileExchangeOptions(fileId) {
         return;
     }
     
-    console.log(`[FILE EXCHANGE] Suche ähnliche Einträge für: ${file.filename}`);
-    console.log(`[FILE EXCHANGE] EN-Text: ${file.enText.substring(0, 50)}...`);
+    debugLog(`[FILE EXCHANGE] Suche ähnliche Einträge für: ${file.filename}`);
+    debugLog(`[FILE EXCHANGE] EN-Text: ${file.enText.substring(0, 50)}...`);
     
     // Suche ähnliche Einträge in der Datenbank
     const similarEntries = searchSimilarEntriesInDatabase(file);
@@ -2180,7 +2184,7 @@ function showFileExchangeOptions(fileId) {
         return;
     }
     
-    console.log(`[FILE EXCHANGE] Gefunden: ${similarEntries.length} ähnliche Einträge`);
+    debugLog(`[FILE EXCHANGE] Gefunden: ${similarEntries.length} ähnliche Einträge`);
     
     // Zeige Dialog mit Optionen
     displayFileExchangeDialog(file, similarEntries);
@@ -2404,7 +2408,7 @@ function selectExchangeEntry(index) {
     // Aktiviere Austausch-Button
     document.getElementById('executeExchangeBtn').disabled = false;
     
-    console.log(`[FILE EXCHANGE] Ausgewählt: ${fileExchangeData.selectedEntry.filename} (${fileExchangeData.selectedEntry.similarityPercent}% Ähnlichkeit)`);
+    debugLog(`[FILE EXCHANGE] Ausgewählt: ${fileExchangeData.selectedEntry.filename} (${fileExchangeData.selectedEntry.similarityPercent}% Ähnlichkeit)`);
 }
 // =========================== SELECT EXCHANGE ENTRY END ===========================
 
@@ -2466,7 +2470,7 @@ function executeFileExchange() {
     }
     
     // Führe Austausch durch
-    console.log(`[FILE EXCHANGE] Tausche aus: ${current.filename} → ${selected.filename}`);
+    debugLog(`[FILE EXCHANGE] Tausche aus: ${current.filename} → ${selected.filename}`);
     
     // 1. Aktualisiere die Datei im aktuellen Projekt
     current.filename = selected.filename;
@@ -2515,7 +2519,7 @@ function executeFileExchange() {
         alert(successMessage);
     }, 500);
     
-    console.log(`[FILE EXCHANGE] Erfolgreich: ${current.filename} in ${current.folder}`);
+    debugLog(`[FILE EXCHANGE] Erfolgreich: ${current.filename} in ${current.folder}`);
 }
 // =========================== EXECUTE FILE EXCHANGE END ===========================
 
@@ -2584,7 +2588,7 @@ function repairProjectFolders() {
     let totalProjects = 0;
     const updateLog = [];
     
-    console.log('=== Repariere Projekt-Ordnernamen ===');
+    debugLog('=== Repariere Projekt-Ordnernamen ===');
     
     projects.forEach(project => {
         if (!project.files || project.files.length === 0) return;
@@ -2594,7 +2598,7 @@ function repairProjectFolders() {
         
         project.files.forEach(file => {
             if (!filePathDatabase[file.filename]) {
-                console.log(`❌ ${file.filename} nicht in Database gefunden`);
+                debugLog(`❌ ${file.filename} nicht in Database gefunden`);
                 return;
             }
             
@@ -2643,19 +2647,19 @@ function repairProjectFolders() {
                 totalUpdated++;
                 
                 updateLog.push(`${project.name}: ${file.filename} | ${oldFolder} → ${bestMatch.folder}`);
-                console.log(`✅ ${project.name}: ${file.filename} | ${oldFolder} → ${bestMatch.folder}`);
+                debugLog(`✅ ${project.name}: ${file.filename} | ${oldFolder} → ${bestMatch.folder}`);
             }
         });
         
         if (projectUpdated > 0) {
-            console.log(`📁 Projekt "${project.name}": ${projectUpdated} Ordner aktualisiert`);
+            debugLog(`📁 Projekt "${project.name}": ${projectUpdated} Ordner aktualisiert`);
         }
     });
     
     if (totalUpdated > 0) {
         // Speichere alle aktualisierten Projekte
         saveProjects();
-        console.log(`🎯 Gesamt: ${totalUpdated} Ordnernamen in ${totalProjects} Projekten aktualisiert`);
+        debugLog(`🎯 Gesamt: ${totalUpdated} Ordnernamen in ${totalProjects} Projekten aktualisiert`);
         
         // Aktualisiere das aktuelle Projekt
         if (currentProject) {
@@ -2684,7 +2688,7 @@ function repairProjectFolders() {
         alert('✅ Alle Ordnernamen sind bereits korrekt!\n\nKeine Aktualisierungen nötig.');
     }
     
-    console.log('=== Ordner-Reparatur abgeschlossen ===');
+    debugLog('=== Ordner-Reparatur abgeschlossen ===');
 }
 
 
@@ -2804,7 +2808,7 @@ function openHistory(fileId) {
 function normalizeFolderPath(folderPath) {
     if (!folderPath) return 'unknown';
     
-    console.log(`[NORMALIZE] Input: ${folderPath}`);
+    debugLog(`[NORMALIZE] Input: ${folderPath}`);
     
     // Convert to lowercase for comparison
     let normalized = folderPath.toLowerCase();
@@ -2828,7 +2832,7 @@ function normalizeFolderPath(folderPath) {
         const before = normalized;
         normalized = normalized.replace(regex, '');
         if (before !== normalized) {
-            console.log(`[NORMALIZE] Removed prefix: ${before} -> ${normalized}`);
+            debugLog(`[NORMALIZE] Removed prefix: ${before} -> ${normalized}`);
             break; // Nur ersten Match anwenden
         }
     }
@@ -2837,7 +2841,7 @@ function normalizeFolderPath(folderPath) {
     if (normalized === '' || normalized === '/') {
         const parts = originalNormalized.split('/');
         normalized = parts[parts.length - 1] || parts[parts.length - 2] || 'unknown';
-        console.log(`[NORMALIZE] Empty after prefix removal, using last part: ${normalized}`);
+        debugLog(`[NORMALIZE] Empty after prefix removal, using last part: ${normalized}`);
     }
     
     // Entferne führende/trailing slashes
@@ -2854,19 +2858,19 @@ function normalizeFolderPath(folderPath) {
     
     if (characterNames.includes(normalized)) {
         normalized = `vo/${normalized}`;
-        console.log(`[NORMALIZE] Added vo/ prefix to character: ${normalized}`);
+        debugLog(`[NORMALIZE] Added vo/ prefix to character: ${normalized}`);
     }
     
     // Finale Normalisierung: Stelle sicher dass bekannte Charaktere immer als "vo/character" erscheinen
     for (const character of characterNames) {
         if (normalized.endsWith(`/${character}`) || normalized === character) {
             normalized = `vo/${character}`;
-            console.log(`[NORMALIZE] Final normalization to: ${normalized}`);
+            debugLog(`[NORMALIZE] Final normalization to: ${normalized}`);
             break;
         }
     }
     
-    console.log(`[NORMALIZE] Output: ${normalized}`);
+    debugLog(`[NORMALIZE] Output: ${normalized}`);
     return normalized;
 }
 // =========================== NORMALIZEFOLDERPATH END ===========================
@@ -3875,7 +3879,7 @@ function updateAllFilePaths() {
     let totalUpdated = 0;
     let totalProjects = 0;
     
-    console.log('=== Projekt-Bereinigung: Entferne fullPath ===');
+    debugLog('=== Projekt-Bereinigung: Entferne fullPath ===');
     
     projects.forEach(project => {
         if (!project.files || project.files.length === 0) return;
@@ -3885,7 +3889,7 @@ function updateAllFilePaths() {
         
         project.files.forEach(file => {
             if (file.fullPath) {
-                console.log(`Bereinige ${project.name}: ${file.filename} - entferne fullPath`);
+                debugLog(`Bereinige ${project.name}: ${file.filename} - entferne fullPath`);
                 delete file.fullPath;
                 projectUpdated++;
                 totalUpdated++;
@@ -3893,7 +3897,7 @@ function updateAllFilePaths() {
         });
         
         if (projectUpdated > 0) {
-            console.log(`📁 Projekt "${project.name}": ${projectUpdated} Dateien bereinigt`);
+            debugLog(`📁 Projekt "${project.name}": ${projectUpdated} Dateien bereinigt`);
         }
     });
 
@@ -3901,13 +3905,13 @@ function updateAllFilePaths() {
     let extUpdates = 0;
     if (repairFileExtensions) {
         extUpdates = repairFileExtensions(projects, filePathDatabase, textDatabase);
-        if (extUpdates > 0) console.log('Dateiendungen aktualisiert:', extUpdates);
+        if (extUpdates > 0) debugLog('Dateiendungen aktualisiert:', extUpdates);
     }
 
     if (totalUpdated > 0 || extUpdates > 0) {
         // Speichere alle bereinigten Projekte
         saveProjects();
-        console.log(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten bereinigt`);
+        debugLog(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten bereinigt`);
         
         // Aktualisiere das aktuelle Projekt
         if (currentProject) {
@@ -3932,7 +3936,7 @@ function updateAllFilePaths() {
         alert('✅ Alle Projekte sind bereits bereinigt!\n\nKeine veralteten Pfade oder falschen Dateiendungen gefunden.');
     }
     
-    console.log('=== Projekt-Bereinigung abgeschlossen ===');
+    debugLog('=== Projekt-Bereinigung abgeschlossen ===');
 }
 
 // Automatische Aktualisierung aller Projekte nach einem Ordner-Scan
@@ -3941,7 +3945,7 @@ function updateAllProjectsAfterScan() {
     let totalCompleted = 0; // Neu als fertig markierte Dateien
     let totalProjects  = 0;
     
-    console.log('=== Automatische Projekt-Aktualisierung nach Scan ===');
+    debugLog('=== Automatische Projekt-Aktualisierung nach Scan ===');
     
     projects.forEach(project => {
         if (!project.files || project.files.length === 0) return;
@@ -4016,9 +4020,9 @@ function updateAllProjectsAfterScan() {
                 projectUpdated++;
                 totalUpdated++;
                 
-                console.log(`✅ ${project.name}: ${file.filename}`);
-                console.log(`   Ordner: ${oldFolder} -> ${bestPath.folder}`);
-                console.log(`   Pfad: ${oldPath} -> ${bestPath.fullPath}`);
+                debugLog(`✅ ${project.name}: ${file.filename}`);
+                debugLog(`   Ordner: ${oldFolder} -> ${bestPath.folder}`);
+                debugLog(`   Pfad: ${oldPath} -> ${bestPath.fullPath}`);
             }
 
             // Wenn eine passende DE-Datei existiert, zählen
@@ -4029,14 +4033,14 @@ function updateAllProjectsAfterScan() {
         });
         
         if (projectUpdated > 0) {
-            console.log(`📁 Projekt "${project.name}": ${projectUpdated} Dateien aktualisiert`);
+            debugLog(`📁 Projekt "${project.name}": ${projectUpdated} Dateien aktualisiert`);
         }
     });
     
     if (totalUpdated > 0 || totalCompleted > 0) {
         // Speichere alle aktualisierten Projekte
         saveProjects();
-        console.log(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten aktualisiert, ${totalCompleted} abgeschlossen`);
+        debugLog(`🎯 Gesamt: ${totalUpdated} Dateien in ${totalProjects} Projekten aktualisiert, ${totalCompleted} abgeschlossen`);
         
         // Aktualisiere das aktuelle Projekt falls betroffen
         if (currentProject) {
@@ -4052,10 +4056,10 @@ function updateAllProjectsAfterScan() {
             updateStatus(`📁 Projekt-Sync: ${totalUpdated} Pfade, ${totalCompleted} abgeschlossen`);
         }, 1000);
     } else {
-        console.log('✅ Alle Projekt-Pfade sind bereits aktuell');
+        debugLog('✅ Alle Projekt-Pfade sind bereits aktuell');
     }
     
-    console.log('=== Projekt-Aktualisierung abgeschlossen ===');
+    debugLog('=== Projekt-Aktualisierung abgeschlossen ===');
 }
 
 
@@ -4150,7 +4154,7 @@ function calculateFolderCompletionStats() {
             }
 
             if (missingFiles.length > 0) {
-                console.log(`Auto-Scan ausgeloest von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
+                debugLog(`Auto-Scan ausgeloest von ${functionName}: ${missingFiles.length} Dateien ohne Berechtigung`);
 
                 if (!projektOrdnerHandle) {
                     // Kein Ordner gewaehlt → Benutzer fragen
@@ -4293,7 +4297,7 @@ function showFolderGrid() {
     
     // FALLBACK: If filePathDatabase is empty, use current project files and textDatabase
     if (uniqueFolders.size === 0) {
-        console.log('filePathDatabase leer, verwende Fallback mit aktuellen Projektdateien und textDatabase');
+        debugLog('filePathDatabase leer, verwende Fallback mit aktuellen Projektdateien und textDatabase');
         
         // Check current project files
         files.forEach(file => {
@@ -4340,7 +4344,7 @@ function showFolderGrid() {
     // Check if we still have no folders and trigger auto-scan
     if (uniqueFolders.size === 0) {
         // Auto-scan for empty folder browser
-        console.log('Ordner-Browser leer, starte automatischen Scan...');
+        debugLog('Ordner-Browser leer, starte automatischen Scan...');
         setTimeout(() => {
             closeFolderBrowser();
             updateStatus('Ordner-Browser: Starte automatischen Ordner-Scan...');
@@ -4437,10 +4441,10 @@ function showFolderGrid() {
     }).join('');
     
     // Add debug info for development
-    console.log(`Ordner-Browser: ${sortedFolders.length} Ordner gefunden`);
-    console.log('Completion Stats:', Object.fromEntries(folderStats));
-    console.log('Gefundene Ordner:', sortedFolders.map(f => f.name));
-    console.log(`[GLOBAL STATS] EN: ${globalEN}, DE: ${globalDE}, Both: ${globalBoth}, Total: ${globalTotal}`);
+    debugLog(`Ordner-Browser: ${sortedFolders.length} Ordner gefunden`);
+    debugLog('Completion Stats:', Object.fromEntries(folderStats));
+    debugLog('Gefundene Ordner:', sortedFolders.map(f => f.name));
+    debugLog(`[GLOBAL STATS] EN: ${globalEN}, DE: ${globalDE}, Both: ${globalBoth}, Total: ${globalTotal}`);
 }
 // =========================== SHOWFOLDERGRID WITH DELETE END ===========================
 
@@ -4454,7 +4458,7 @@ function cleanupIncorrectFolderNames() {
     let totalCorrected = 0;
     let totalRemoved = 0;
     
-    console.log('=== Bereinigung falscher Ordnernamen ===');
+    debugLog('=== Bereinigung falscher Ordnernamen ===');
     
     // Sammle alle gescannten Pfade für Vergleich
     const realPaths = new Set();
@@ -4464,7 +4468,7 @@ function cleanupIncorrectFolderNames() {
         }
     });
     
-    console.log(`Gefundene echte Pfade: ${realPaths.size}`);
+    debugLog(`Gefundene echte Pfade: ${realPaths.size}`);
     
     // Prüfe jeden Datenbank-Eintrag
     Object.entries(filePathDatabase).forEach(([filename, paths]) => {
@@ -4479,7 +4483,7 @@ function cleanupIncorrectFolderNames() {
             if (realPathExists) {
                 // Pfad ist korrekt - behalten
                 correctPaths.push(pathInfo);
-                console.log(`✅ Korrekt: ${filename} in ${pathInfo.folder}`);
+                debugLog(`✅ Korrekt: ${filename} in ${pathInfo.folder}`);
             } else {
                 // Pfad existiert nicht - versuche korrekten Pfad zu finden
                 let foundCorrectPath = false;
@@ -4506,7 +4510,7 @@ function cleanupIncorrectFolderNames() {
                                     fileObject: correctFileObj
                                 });
                                 
-                                console.log(`🔧 Korrigiert: ${filename} von "${pathInfo.folder}" zu "${correctFolder}"`);
+                                debugLog(`🔧 Korrigiert: ${filename} von "${pathInfo.folder}" zu "${correctFolder}"`);
                                 totalCorrected++;
                                 foundCorrectPath = true;
                                 break;
@@ -4516,7 +4520,7 @@ function cleanupIncorrectFolderNames() {
                 }
                 
                 if (!foundCorrectPath) {
-                    console.log(`❌ Entfernt: ${filename} in "${pathInfo.folder}" (Pfad existiert nicht: ${pathInfo.fullPath})`);
+                    debugLog(`❌ Entfernt: ${filename} in "${pathInfo.folder}" (Pfad existiert nicht: ${pathInfo.fullPath})`);
                     totalRemoved++;
                     
                     // Entferne aus Audio-Cache falls vorhanden
@@ -4533,7 +4537,7 @@ function cleanupIncorrectFolderNames() {
         } else {
             // Keine korrekten Pfade gefunden - entferne Datei komplett
             delete filePathDatabase[filename];
-            console.log(`🗑️ Datei komplett entfernt: ${filename} (keine gültigen Pfade)`);
+            debugLog(`🗑️ Datei komplett entfernt: ${filename} (keine gültigen Pfade)`);
         }
     });
     
@@ -4544,7 +4548,7 @@ function cleanupIncorrectFolderNames() {
     updateAllProjectsAfterScan();
     if (repairFileExtensions) {
         const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-        if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+        if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
     }
     
     const results = `✅ Ordnernamen-Bereinigung abgeschlossen!\n\n` +
@@ -4564,7 +4568,7 @@ function cleanupIncorrectFolderNames() {
     }
     
     alert(results);
-    console.log('=== Bereinigung abgeschlossen ===');
+    debugLog('=== Bereinigung abgeschlossen ===');
 }
 // =========================== CLEANUPINCORRECTFOLDERNAMES END ===========================
 
@@ -4717,7 +4721,7 @@ function cleanupOrphanCustomizations() {
     });
     if (removed > 0) {
         saveFolderCustomizations();
-        console.log(`[CLEANUP] ${removed} verwaiste Ordner-Anpassungen entfernt`);
+        debugLog(`[CLEANUP] ${removed} verwaiste Ordner-Anpassungen entfernt`);
     }
 }
 // =========================== CLEANUPORPHANCUSTOMIZATIONS END ===============
@@ -5078,7 +5082,7 @@ function deleteFolderFromDatabase(folderName) {
     // Zurück zur Ordner-Übersicht
     showFolderGrid();
     
-    console.log(`[DELETE FOLDER] ${lastFolderName} erfolgreich gelöscht - ${deletedFiles} Dateien, ${deletedTexts} Texte, ${removedFromProjects} Projektdateien entfernt`);
+    debugLog(`[DELETE FOLDER] ${lastFolderName} erfolgreich gelöscht - ${deletedFiles} Dateien, ${deletedTexts} Texte, ${removedFromProjects} Projektdateien entfernt`);
 }
 // =========================== DELETEFOLDERFROMBROWSER END ===========================
 
@@ -5744,7 +5748,7 @@ function checkFileAccess() {
         inaccessibleFiles: inaccessibleFiles
     };
     
-    console.log('File Access Stats:', stats);
+    debugLog('File Access Stats:', stats);
     return stats;
 }
 
@@ -6338,7 +6342,7 @@ function checkFileAccess() {
                 }
             });
             if (migrationNeeded) {
-                console.log('Wiederhergestellte Projekte migriert: Icons und Farben hinzugefügt');
+                debugLog('Wiederhergestellte Projekte migriert: Icons und Farben hinzugefügt');
             }
 
             saveProjects();
@@ -6399,13 +6403,13 @@ function findDuplicates() {
                 if (group.length > 1) {
                     const duplicateKey = `duplicate_${folderName}/${filename}`;
                     allDuplicates.set(duplicateKey, group);
-                    console.log(`Duplikat gefunden: ${filename} in ${folderName} (${group.length} Einträge)`);
+                    debugLog(`Duplikat gefunden: ${filename} in ${folderName} (${group.length} Einträge)`);
                 }
             });
         }
     });
     
-    console.log(`Gefunden: ${allDuplicates.size} echte Duplikate`);
+    debugLog(`Gefunden: ${allDuplicates.size} echte Duplikate`);
     return allDuplicates;
 }
 // =========================== FINDDUPLICATES END ===========================
@@ -6517,7 +6521,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         const filename = plan.keep.filename;
         
         if (!filePathDatabase[filename]) {
-            console.log(`Warning: ${filename} not found in database during cleanup`);
+            debugLog(`Warning: ${filename} not found in database during cleanup`);
             return;
         }
         
@@ -6538,7 +6542,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
             }
         });
         
-        console.log(`Cleaning up ${filename}: keeping ${bestItem.pathInfo.folder} (score: ${bestScore})`);
+        debugLog(`Cleaning up ${filename}: keeping ${bestItem.pathInfo.folder} (score: ${bestScore})`);
         
         // Create new paths array with only the best item
         const newPaths = [{
@@ -6573,14 +6577,14 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         deletedCount += removedCount;
         mergedCount++;
         
-        console.log(`Merged ${originalCount} variants of ${filename} into 1 (removed ${removedCount})`);
+        debugLog(`Merged ${originalCount} variants of ${filename} into 1 (removed ${removedCount})`);
     });
     
     // Clean up completely empty entries (shouldn't happen but just in case)
     Object.keys(filePathDatabase).forEach(filename => {
         if (filePathDatabase[filename].length === 0) {
             delete filePathDatabase[filename];
-            console.log(`Removed empty entry: ${filename}`);
+            debugLog(`Removed empty entry: ${filename}`);
         }
     });
     
@@ -6903,7 +6907,7 @@ async function waehleProjektOrdner() {
         updateAllProjectsAfterScan();
         if (repairFileExtensions) {
             const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-            if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+            if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
         }
         updateFileAccessStatus();
 
@@ -6957,7 +6961,7 @@ async function scanEnOrdner() {
     updateAllProjectsAfterScan();
     if (repairFileExtensions) {
         const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-        if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+        if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
     }
     updateFileAccessStatus();
 }
@@ -9304,7 +9308,7 @@ function showFolderSelectionDialog(ambiguousFiles) {
         // Global functions for the dialog
         window.selectFolder = (fileIndex, pathIndex) => {
             selections[fileIndex].selectedIndex = pathIndex;
-            console.log(`Selected folder ${pathIndex} for file ${fileIndex}`);
+            debugLog(`Selected folder ${pathIndex} for file ${fileIndex}`);
             
             // Visuelles Feedback
             const fileItem = document.getElementById(`fileItem_${fileIndex}`);
@@ -9465,7 +9469,7 @@ function updateTextDatabase(filename, pathInfo, englishText, germanText) {
         textDatabase[fileKey].de = germanText;
     }
     
-    console.log(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, DE=${!!germanText}`);
+    debugLog(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, DE=${!!germanText}`);
 }
 // =========================== IMPROVED IMPORT PROCESS END ===========================
 
@@ -9482,7 +9486,7 @@ async function addFromSearch(result) {
     
     // Prüfe ob es mehrere Ordner für diese Datei gibt
     if (filePathDatabase[result.filename] && filePathDatabase[result.filename].length > 1) {
-        console.log(`[SEARCH] Multiple folders found for ${result.filename}, showing selection dialog`);
+        debugLog(`[SEARCH] Multiple folders found for ${result.filename}, showing selection dialog`);
         
         const paths = filePathDatabase[result.filename];
         const selection = await showSingleFileSelectionDialog(result.filename, paths, result);
@@ -9751,10 +9755,10 @@ function toggleSkipFile(folder, filename) {
 
     if (ignoredFiles[fileKey]) {
         delete ignoredFiles[fileKey];
-        console.log(`[IGNORED] Aufgehoben: ${fileKey}`);
+        debugLog(`[IGNORED] Aufgehoben: ${fileKey}`);
     } else {
         ignoredFiles[fileKey] = true;
-        console.log(`[IGNORED] Markiert: ${fileKey}`);
+        debugLog(`[IGNORED] Markiert: ${fileKey}`);
     }
 
     saveIgnoredFiles();
@@ -10672,40 +10676,40 @@ function showChapterCustomization(chapterName, ev) {
         });
 
         // Initialize app
-        console.log('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
-        console.log(`Version ${APP_VERSION} - Streaming-Fix`);
-        console.log('✨ NEUE FEATURES:');
-        console.log('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
-        console.log('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
-        console.log('• ✅ Datei-Markierungen: Einzelne Dateien zeigen Übersetzungsstatus');
-        console.log('• ✅ Level-Haken: Level-Reiter zeigen Vollständigkeit an');
-        console.log('• 📈 Fortschritts-Prozentsätze: Detaillierte Statistiken pro Ordner');
-        console.log('• 🎯 Smart-Sortierung: Übersetzte Dateien werden gruppiert angezeigt');
-        console.log('• 📋 Projekt-Integration: Zeigt in welchen Projekten Dateien übersetzt sind');
-        console.log('✅ ERWEITERTE FEATURES:');
-        console.log('• 🔍 Erweiterte Suche: Ähnlichkeitssuche mit Normalisierung (ignoriert Groß-/Kleinschreibung, Punkte, Kommas)');
-        console.log('• ⌨️ Keyboard-Navigation: Tab/Shift+Tab zwischen Textfeldern, Pfeiltasten für Zeilen, Leertaste für Audio');
-        console.log('• 🖱️ Context-Menu: Rechtsklick für Audio, Text kopieren/einfügen, Ordner öffnen, Löschen');
-        console.log('• 📋 Copy-Buttons: Direkte Kopierfunktion neben Textfeldern mit visuellem Feedback');
-        console.log('• 📊 Fortschritts-Tracking: Completion-Status pro Datei, Statistiken pro Ordner');
-        console.log('• 📋 Spalten-Sortierung: Nach Position, Name, Ordner, Completion - behält Export-Reihenfolge');
-        console.log('• 📥 Erweiterte Import-Funktion: Intelligente Spalten-Erkennung mit Datenbank-Vergleich');
-        console.log('✅ BESTEHENDE FEATURES:');
-        console.log('• 🗂️ Projektverwaltung mit Auto-Save, Icons und Farben');
-        console.log('• 🎨 Projekt & Ordner-Anpassung: Icons und Farben');
-        console.log('• 📝 Drag & Drop Sortierung für Projekte und Dateien');
-        console.log('• 🔢 Zeilennummer-Anpassung: Doppelklick auf # um Position zu ändern');
-        console.log('• 📁 Intelligenter Ordner-Scan: Erkennt Struktur auf allen Ebenen');
-        console.log('• 🧠 Smart Folder Detection: Findet Charaktere/Ordner automatisch');
-        console.log('• 🔄 Universelles Auto-Scan für ALLE Funktionen');
-        console.log('• ⚡ Intelligente Berechtigung-Erkennung mit sofortigem Scan');
-        console.log('• 📏 Auto-Height Textboxen - EN/DE gleich breit, Höhe synchronisiert');
-        console.log('• 📐 Responsive Spaltenbreite für alle Fenstergrößen');
-        console.log('• ▶ Audio-Wiedergabe mit Auto-Scan direkt im Browser');
-        console.log('• 💾 Backup/Restore mit Projekt-Migration');
-        console.log('• 🛠️ Debug-Tools für Datenquellen-Analyse');
-        console.log('• 🎯 Highlighting von Suchbegriffen');
-        console.log('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
+        debugLog('%c🎮 Half-Life: Alyx Translation Tool geladen!', 'color: #ff6b1a; font-size: 16px; font-weight: bold;');
+        debugLog(`Version ${APP_VERSION} - Streaming-Fix`);
+        debugLog('✨ NEUE FEATURES:');
+        debugLog('• 📊 Globale Übersetzungsstatistiken: Projekt-übergreifendes Completion-Tracking');
+        debugLog('• 🟢 Ordner-Completion-Status: Grüne Rahmen für vollständig übersetzte Ordner');
+        debugLog('• ✅ Datei-Markierungen: Einzelne Dateien zeigen Übersetzungsstatus');
+        debugLog('• ✅ Level-Haken: Level-Reiter zeigen Vollständigkeit an');
+        debugLog('• 📈 Fortschritts-Prozentsätze: Detaillierte Statistiken pro Ordner');
+        debugLog('• 🎯 Smart-Sortierung: Übersetzte Dateien werden gruppiert angezeigt');
+        debugLog('• 📋 Projekt-Integration: Zeigt in welchen Projekten Dateien übersetzt sind');
+        debugLog('✅ ERWEITERTE FEATURES:');
+        debugLog('• 🔍 Erweiterte Suche: Ähnlichkeitssuche mit Normalisierung (ignoriert Groß-/Kleinschreibung, Punkte, Kommas)');
+        debugLog('• ⌨️ Keyboard-Navigation: Tab/Shift+Tab zwischen Textfeldern, Pfeiltasten für Zeilen, Leertaste für Audio');
+        debugLog('• 🖱️ Context-Menu: Rechtsklick für Audio, Text kopieren/einfügen, Ordner öffnen, Löschen');
+        debugLog('• 📋 Copy-Buttons: Direkte Kopierfunktion neben Textfeldern mit visuellem Feedback');
+        debugLog('• 📊 Fortschritts-Tracking: Completion-Status pro Datei, Statistiken pro Ordner');
+        debugLog('• 📋 Spalten-Sortierung: Nach Position, Name, Ordner, Completion - behält Export-Reihenfolge');
+        debugLog('• 📥 Erweiterte Import-Funktion: Intelligente Spalten-Erkennung mit Datenbank-Vergleich');
+        debugLog('✅ BESTEHENDE FEATURES:');
+        debugLog('• 🗂️ Projektverwaltung mit Auto-Save, Icons und Farben');
+        debugLog('• 🎨 Projekt & Ordner-Anpassung: Icons und Farben');
+        debugLog('• 📝 Drag & Drop Sortierung für Projekte und Dateien');
+        debugLog('• 🔢 Zeilennummer-Anpassung: Doppelklick auf # um Position zu ändern');
+        debugLog('• 📁 Intelligenter Ordner-Scan: Erkennt Struktur auf allen Ebenen');
+        debugLog('• 🧠 Smart Folder Detection: Findet Charaktere/Ordner automatisch');
+        debugLog('• 🔄 Universelles Auto-Scan für ALLE Funktionen');
+        debugLog('• ⚡ Intelligente Berechtigung-Erkennung mit sofortigem Scan');
+        debugLog('• 📏 Auto-Height Textboxen - EN/DE gleich breit, Höhe synchronisiert');
+        debugLog('• 📐 Responsive Spaltenbreite für alle Fenstergrößen');
+        debugLog('• ▶ Audio-Wiedergabe mit Auto-Scan direkt im Browser');
+        debugLog('• 💾 Backup/Restore mit Projekt-Migration');
+        debugLog('• 🛠️ Debug-Tools für Datenquellen-Analyse');
+        debugLog('• 🎯 Highlighting von Suchbegriffen');
+        debugLog('🚀 REVOLUTIONÄR: Projekt-übergreifende Verfolgung des Übersetzungsfortschritts mit visuellen Indikatoren!');
 
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
