@@ -425,6 +425,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Neu:** Jede Fehlermeldung beim Speichern wird nun als Toast eingeblendet.
 * ▶ **Update:** MP3-Dateien werden jetzt korrekt gespeichert.
 * ▶ **Neu:** Beim Programmstart werden vorhandene MP3-Dateien automatisch in WAV umgewandelt und im Ordner `Backups/mp3` gesichert.
+* ▶ **Fix:** Das Backup funktioniert jetzt auch über Laufwerksgrenzen hinweg, da beim Verschieben auf Kopieren mit anschließendem Löschen umgestellt wird.
 
 #### Häufige Crash-Stellen
 
