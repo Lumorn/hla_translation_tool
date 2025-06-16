@@ -419,6 +419,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Hinweis:** Ordnerzugriff erneut erlauben oder Pfad prüfen. Das Tool zeigt die genaue Ursache im Toast an.
 * ▶ **Pfad prüfen:** Beim Speichern wird `sounds/DE/` nun automatisch entfernt, falls der Pfad doppelt vorkommt.
 * ▶ **Neu:** Jede Fehlermeldung beim Speichern wird nun als Toast eingeblendet.
+* ▶ **Update:** MP3-Dateien werden jetzt korrekt gespeichert.
 
 #### Häufige Crash-Stellen
 

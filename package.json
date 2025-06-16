@@ -17,6 +17,7 @@
     "update-version": "node updateVersion.js"
   },
   "dependencies": {
-    "chokidar": "^4.0.3"
+    "chokidar": "^4.0.3",
+    "lamejs": "^1.2.1"
   }
 }
