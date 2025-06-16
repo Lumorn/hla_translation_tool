@@ -8181,7 +8181,9 @@ async function openDeEdit(fileId) {
     if (!deSrc) return;
     // Zuerst versuchen wir, die aktuelle DE-Datei zu laden
     try {
-        originalEditBuffer = await loadAudioBuffer(deSrc);
+        // Cache-Buster anhängen, damit nach Änderungen die aktuelle Datei geladen wird
+        const src = typeof deSrc === 'string' ? `${deSrc}?v=${Date.now()}` : deSrc;
+        originalEditBuffer = await loadAudioBuffer(src);
     } catch {
         // Falls das fehlschlägt, greifen wir auf das Backup zurück
         const backupSrc = `sounds/DE-Backup/${rel}`;
