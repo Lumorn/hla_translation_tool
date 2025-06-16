@@ -128,8 +128,10 @@ const API = 'https://api.elevenlabs.io/v1';
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
+let repairFileExtensions;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
+    ({ repairFileExtensions } = require('../../extensionUtils'));
     lamejs = require('lamejs');
 } else {
     import('./elevenlabs.js').then(mod => {
@@ -140,6 +142,7 @@ if (typeof module !== 'undefined' && module.exports) {
         renderLanguage = mod.renderLanguage;
         pollRender = mod.pollRender;
     });
+    import('../../extensionUtils.js').then(mod => { repairFileExtensions = mod.repairFileExtensions; });
     // Versucht lamejs als ESM zu laden. Scheitert dies, wird ein Skript vom CDN nachgeladen
     import('lamejs').then(mod => { lamejs = mod; }).catch(() => {
         console.warn('lamejs konnte nicht per import geladen werden, lade von CDN');
@@ -300,6 +303,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             // Nach dem Einlesen Projekte und Zugriffsstatus aktualisieren
             updateAllProjectsAfterScan();
+            if (repairFileExtensions) {
+                const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
+                if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+            }
             updateFileAccessStatus();
         });
 
@@ -4463,6 +4470,10 @@ function cleanupIncorrectFolderNames() {
     
     // Aktualisiere Projekte
     updateAllProjectsAfterScan();
+    if (repairFileExtensions) {
+        const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
+        if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+    }
     
     const results = `✅ Ordnernamen-Bereinigung abgeschlossen!\n\n` +
         `📊 Statistik:\n` +
@@ -6818,6 +6829,10 @@ async function waehleProjektOrdner() {
         await scanEnOrdner();
         // Projekte und Zugriffsstatus nach dem Scan aktualisieren
         updateAllProjectsAfterScan();
+        if (repairFileExtensions) {
+            const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
+            if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+        }
         updateFileAccessStatus();
 
         updateStatus('Projektordner eingelesen und gescannt');
@@ -6868,6 +6883,10 @@ async function scanEnOrdner() {
 
     // 🟧 Danach Projekt-Statistiken aktualisieren
     updateAllProjectsAfterScan();
+    if (repairFileExtensions) {
+        const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
+        if (count > 0) console.log('Dateiendungen aktualisiert:', count);
+    }
     updateFileAccessStatus();
 }
 // =========================== SCANENORDNER END ===============================
@@ -10635,6 +10654,7 @@ if (typeof module !== "undefined" && module.exports) {
         speichereUebersetzungsDatei,
         bufferToMp3,
         bufferToWav,
+        repairFileExtensions,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },

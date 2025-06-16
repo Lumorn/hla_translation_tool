@@ -35,6 +35,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
+* **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 
@@ -426,6 +427,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Update:** MP3-Dateien werden jetzt korrekt gespeichert.
 * ▶ **Neu:** Beim Programmstart werden vorhandene MP3-Dateien automatisch in WAV umgewandelt und im Ordner `Backups/mp3` gesichert.
 * ▶ **Fix:** Das Backup funktioniert jetzt auch über Laufwerksgrenzen hinweg, da beim Verschieben auf Kopieren mit anschließendem Löschen umgestellt wird.
+* ▶ **Neu:** Geänderte Dateiendungen werden erkannt und automatisch korrigiert.
 
 #### Häufige Crash-Stellen
 
