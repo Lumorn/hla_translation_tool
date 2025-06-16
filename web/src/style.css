@@ -757,7 +757,7 @@ th:nth-child(6) {
             color: white;
         }
 
-        .edit-audio-btn {
+.edit-audio-btn {
             background: #444;
             border: none;
             color: #e0e0e0;
@@ -766,9 +766,9 @@ th:nth-child(6) {
             cursor: pointer;
             transition: all 0.2s;
             font-size: 16px;
-        }
+}
 
-        .edit-audio-btn:hover {
+.edit-audio-btn:hover {
             background: #ff6b1a;
             color: white;
         }
@@ -828,6 +828,43 @@ th:nth-child(6) {
     display: flex;
     flex-direction: column;
     gap: 3px;
+}
+
+/* Buttons für Effekte im Audio-Editor */
+.effect-btn {
+    background: #444;
+    border: none;
+    color: #e0e0e0;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 16px;
+}
+
+.effect-btn:hover {
+    background: #ff6b1a;
+    color: white;
+}
+
+/* Kleiner Button für Standardwerte rechts oben */
+.btn-reset-settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #333;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reset-settings:hover {
+    background: #555;
+    color: white;
 }
 
 /* Symbole für Pfad-Verfügbarkeit */
@@ -968,7 +1005,7 @@ th:nth-child(6) {
             z-index: 2000;
         }
 
-        .dialog {
+.dialog {
             background: #2a2a2a;
             border-radius: 8px;
             padding: 30px;
@@ -1235,6 +1272,11 @@ th:nth-child(6) {
     line-height:1;
     cursor:pointer;
     transition:color .2s, transform .2s;
+}
+
+/* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
+#deEditDialog .dialog {
+    max-width: 900px;
 }
 .dialog-close-btn:hover{
     color:#ff6b1a;
