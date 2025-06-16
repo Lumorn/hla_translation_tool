@@ -10,7 +10,7 @@ const { chooseExisting } = require('../pathUtils');
 // Backups koennen ebenfalls groß oder klein geschrieben sein.
 const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
-const { watchDownloadFolder, clearDownloadFolder } = require('../watcher.js');
+const { watchDownloadFolder, clearDownloadFolder, pruefeAudiodatei } = require('../watcher.js');
 const { isDubReady } = require('../elevenlabs.js');
 const pendingDubs = [];
 let mainWindow;
@@ -389,6 +389,35 @@ app.whenReady().then(() => {
   ipcMain.handle('save-de-history-buffer', async (event, { relPath, data }) => {
     return historyUtils.saveBufferVersion(deHistoryPath, relPath, Buffer.from(data));
   });
+
+  // =========================== DUPLICATE-HELPER START ========================
+  // Liefert vorhandene Dateien mit gleicher Basis aber anderer Endung
+  ipcMain.handle('get-de-duplicates', async (event, relPath) => {
+    const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
+    const result = [];
+    for (const ext of ['.mp3', '.wav', '.ogg']) {
+      const p = path.join(dePath, base + ext);
+      if (fs.existsSync(p)) {
+        const stat = fs.statSync(p);
+        const valid = pruefeAudiodatei(p);
+        result.push({
+          relPath: path.posix.join(base + ext),
+          size: stat.size,
+          mtime: stat.mtimeMs,
+          valid,
+        });
+      }
+    }
+    return result;
+  });
+
+  // Loescht eine DE-Datei
+  ipcMain.handle('delete-de-file', async (event, relPath) => {
+    const target = path.join(dePath, relPath);
+    if (fs.existsSync(target)) fs.unlinkSync(target);
+    return true;
+  });
+  // =========================== DUPLICATE-HELPER END ==========================
 
   // Uebersetzt EN-Text nach DE ueber ein Python-Skript
   ipcMain.handle('translate-text', async (event, text) => {
