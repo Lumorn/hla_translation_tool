@@ -2098,7 +2098,7 @@ async function renderFileTableWithOrder(sortedFiles) {
 return `
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
-        <td class="row-number" data-file-id="${file.id}" ondblclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Doppelklick um Position zu ändern">${originalIndex + 1}</td>
+        <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Klick um Position zu ändern">${originalIndex + 1}</td>
         <td class="filename-cell clickable" onclick="checkFilename(${file.id})">${file.filename}</td>
         <td>
             <span class="folder-badge clickable"
@@ -3497,7 +3497,8 @@ function deleteFile(fileId) {
     updateProgressStats();
 }
 
-        // Row number manipulation
+        // Aufgerufen durch Klick auf die Zeilennummer, 
+        // ermöglicht das direkte Ändern der Position
         function changeRowNumber(fileId, currentPosition) {
             const file = files.find(f => f.id === fileId);
             if (!file) return;
