@@ -43,6 +43,8 @@
 * Korrigiert die Ordnerstruktur beim halbautomatischen Import: Der "sounds"-Unterordner wird nun korrekt angelegt.
 ## 🛠️ Patch in 1.40.20
 * Neuer Button setzt die Funk-Effektparameter auf Standardwerte zurück.
+## 🛠️ Patch in 1.40.21
+* Typdefinitionen für die IPC-Kommunikation ergänzen `ipcContracts.ts`.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

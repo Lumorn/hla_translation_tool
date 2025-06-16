@@ -1,3 +1,12 @@
+// @ts-check
+/**
+ * Typdefinitionen für die IPC-Kommunikation importieren
+ * @typedef {import('./ipcContracts').SaveDeFileArgs} SaveDeFileArgs
+ * @typedef {import('./ipcContracts').SaveFileArgs} SaveFileArgs
+ * @typedef {import('./ipcContracts').MoveFileArgs} MoveFileArgs
+ * @typedef {import('./ipcContracts').RestoreDeHistoryArgs} RestoreDeHistoryArgs
+ * @typedef {import('./ipcContracts').SaveDeHistoryBufferArgs} SaveDeHistoryBufferArgs
+ */
 const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
@@ -137,7 +146,7 @@ app.whenReady().then(() => {
   });
 
   // Speichert eine Datei über einen Dialog auf der Festplatte
-  ipcMain.handle('save-file', async (event, { data, defaultPath }) => {
+  ipcMain.handle('save-file', async (event, /** @type {SaveFileArgs} */{ data, defaultPath }) => {
     const { canceled, filePath } = await dialog.showSaveDialog({
       defaultPath,
     });
@@ -326,7 +335,7 @@ app.whenReady().then(() => {
 
   // =========================== SAVE-DE-FILE START ===========================
   // Speichert eine hochgeladene DE-Datei im richtigen Unterordner
-  ipcMain.handle('save-de-file', async (event, { relPath, data }) => {
+  ipcMain.handle('save-de-file', async (event, /** @type {SaveDeFileArgs} */{ relPath, data }) => {
     try {
       // Absoluten Zielpfad aufbauen
       const target = path.resolve(dePath, relPath);
@@ -345,7 +354,7 @@ app.whenReady().then(() => {
   });
 
   // Verschiebt eine Datei innerhalb des Projekts
-  ipcMain.handle('move-file', async (event, { src, dest }) => {
+  ipcMain.handle('move-file', async (event, /** @type {MoveFileArgs} */{ src, dest }) => {
     // Zielpfad absolut bestimmen
     const target = path.resolve(projectRoot, dest);
     fs.mkdirSync(path.dirname(target), { recursive: true });
@@ -387,12 +396,12 @@ app.whenReady().then(() => {
   });
 
   // Stellt eine gewählte History-Version wieder her und tauscht sie mit der aktuellen
-  ipcMain.handle('restore-de-history', async (event, { relPath, name }) => {
+  ipcMain.handle('restore-de-history', async (event, /** @type {RestoreDeHistoryArgs} */{ relPath, name }) => {
     return historyUtils.switchVersion(deHistoryPath, relPath, name, dePath);
   });
 
   // Speichert einen übergebenen Buffer als neue History-Version
-  ipcMain.handle('save-de-history-buffer', async (event, { relPath, data }) => {
+  ipcMain.handle('save-de-history-buffer', async (event, /** @type {SaveDeHistoryBufferArgs} */{ relPath, data }) => {
     return historyUtils.saveBufferVersion(deHistoryPath, relPath, Buffer.from(data));
   });
 
