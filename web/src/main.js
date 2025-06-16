@@ -8753,6 +8753,8 @@ async function applyDeEdit() {
         renderFileTable();
         closeDeEdit();
         updateStatus('DE-Audio bearbeitet und gespeichert');
+        // Sofort speichern, damit die Bearbeitung gesichert ist
+        saveCurrentProject();
     } catch (err) {
         console.error('Fehler beim Speichern', err);
         updateStatus('Fehler beim Speichern');
