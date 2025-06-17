@@ -166,6 +166,23 @@ th:nth-child(6) {
             overflow: hidden;
         }
 
+        .topbar,
+        .start-bar,
+        .filter-bar {
+            background: #2a2a2a;
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .topbar {
+            justify-content: space-between;
+        }
+
+        /* Alte Toolbar-Klasse bleibt für Kompatibilität */
         .toolbar {
             background: #2a2a2a;
             padding: 15px 20px;
@@ -262,8 +279,8 @@ th:nth-child(6) {
             float: right;
         }
 
-        /* Table Controls */
-        .table-controls {
+        /* Filter-Leiste */
+        .filter-bar {
             background: #242424;
             padding: 10px 20px;
             border-bottom: 1px solid #333;
@@ -326,6 +343,13 @@ th:nth-child(6) {
         .project-playback button:hover {
             background: #ff6b1a;
             color: white;
+        }
+
+        .project-actions,
+        .system-tools {
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
         .progress-stat {

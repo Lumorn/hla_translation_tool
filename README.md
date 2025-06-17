@@ -39,13 +39,14 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
+* **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
 * **Projekt‑übergreifende Fortschrittsanzeige:** Dateien und Dashboard zeigen Status über alle Projekte
-* **Visuelle Gesamtbalken** im Toolbar zeigen den Fortschritt aller Projekte
+* **Visuelle Gesamtbalken** in der Filter-Leiste zeigen den Fortschritt aller Projekte
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
 * **Grüne Haken** für abgeschlossene Kapitel
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen
