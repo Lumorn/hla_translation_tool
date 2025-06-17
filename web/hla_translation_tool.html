@@ -22,34 +22,36 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Toolbar -->
-            <div class="toolbar">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
-                    <div class="search-results" id="searchResults"></div>
-                </div>
-                
-                <div class="add-files-container">
-                    <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
-                    <button class="btn" onclick="addFiles()">Hinzufügen</button>
-                </div>
-
-                <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
-                <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
-                <div class="settings-container">
-                    <button id="settingsButton" class="btn btn-secondary" onclick="toggleSettingsMenu()">⚙️ Einstellungen</button>
-                    <div class="settings-menu" id="settingsMenu">
-                        <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
-                        <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
-                        <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
-                        <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
-                        <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
-                        <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
-                        <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+            <!-- Projekt-Steuerung & Tools -->
+            <div class="topbar">
+                <div class="project-actions">
+                    <div class="add-files-container">
+                        <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
+                        <button class="btn" onclick="addFiles()">Hinzufügen</button>
                     </div>
+                    <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
+                    <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
                 </div>
-                <button id="devToolsButton" class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
-                <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                <div class="system-tools">
+                    <div class="settings-container">
+                        <button id="settingsButton" class="btn btn-secondary" onclick="toggleSettingsMenu()">⚙️ Einstellungen</button>
+                        <div class="settings-menu" id="settingsMenu">
+                            <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
+                            <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
+                            <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
+                            <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
+                            <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
+                            <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
+                            <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+                        </div>
+                    </div>
+                    <button id="devToolsButton" class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
+                    <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                </div>
+            </div>
+
+            <!-- Spielstart-Leiste -->
+            <div class="start-bar">
                 <div class="hla-launch">
                     <select id="modusSelect">
                         <option value="normal">Spiel</option>
@@ -80,8 +82,12 @@
 
 
 
-            <!-- Table Controls -->
-            <div class="table-controls">
+            <!-- Filter-Leiste -->
+            <div class="filter-bar">
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
                 <div class="sort-controls">
                     <span style="color: #999;">Sortierung:</span>
                     <button class="sort-btn active" onclick="sortTable('position', event)">Position</button>
