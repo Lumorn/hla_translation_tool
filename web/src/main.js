@@ -1170,10 +1170,8 @@ function selectProject(id){
 
     renderFileTable();
 
-    // Nach dem Laden des Projekts alle Textfelder dynamisch anpassen
-    setTimeout(() => {
-        autoResizeAllInputs();
-    }, 100);
+    // Nach dem Laden des Projekts Textfelder korrekt anpassen
+    resizeTextFields();
     updateDubStatusForFiles();
     updateStatus();
     updateFileAccessStatus();
@@ -2160,9 +2158,9 @@ return `
     updateCounts();
     updateDubButtons();
 
-    // Auto-resize all text inputs after rendering
+    // Nach dem Rendern Textfelder und Übersetzungsanzeige anpassen
     setTimeout(() => {
-        autoResizeAllInputs();
+        resizeTextFields();
         sortedFiles.forEach(f => updateTranslationDisplay(f.id));
     }, 50);
 }
@@ -3410,7 +3408,7 @@ function toggleFileCompletion(fileId) {
         }
 
         // Auto-resize all text inputs in table
-        function autoResizeAllInputs() {
+function autoResizeAllInputs() {
             // Process all rows to sync heights
             document.querySelectorAll('#fileTableBody tr').forEach(row => {
                 const enInput = row.querySelector('td:nth-child(7) .text-input');
@@ -3471,6 +3469,16 @@ function toggleCompletionAll() {
     const count = Array.from(completionCheckboxes).filter(cb => cb.checked).length;
     updateStatus(`Status für ${count} Dateien aktualisiert`);
 }
+
+        // Textfelder nach dem Laden und nach fertigem Font anpassen
+        function resizeTextFields() {
+            setTimeout(() => {
+                autoResizeAllInputs();
+                if (document.fonts && document.fonts.ready) {
+                    document.fonts.ready.then(() => autoResizeAllInputs());
+                }
+            }, 100);
+        }
 
         // Selection
         function toggleFileSelection(fileId) {
@@ -10717,9 +10725,7 @@ function showChapterCustomization(chapterName, ev) {
 
         // Window resize handling for text inputs
         window.addEventListener('resize', () => {
-            setTimeout(() => {
-                autoResizeAllInputs();
-            }, 100);
+            resizeTextFields();
         });
 
         // Initialize app
