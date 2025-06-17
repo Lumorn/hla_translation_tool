@@ -1210,6 +1210,10 @@ function updateProjectMetaBar(){
     document.getElementById('metaLevelName').textContent  =currentProject.levelName||'–';
     document.getElementById('metaPartNumber').textContent =currentProject.levelPart ||1;
     bar.style.display='flex';
+
+    // Level-Name auch im Map-Feld anzeigen
+    const mapSel=document.getElementById('mapSelect');
+    if(mapSel) mapSel.value=currentProject.levelName||'';
 }
 
 /* =========================== LEVEL STATS FUNCTIONS START =========================== */
@@ -6719,9 +6723,19 @@ async function scanAudioDuplicates() {
         window.toggleDevTools = toggleDevTools;
 
         // Startet Half-Life: Alyx über die Desktop-Version
-        function startHla(mode = 'normal', lang = 'english') {
+        async function startHla() {
+            const modeSel = document.getElementById('modusSelect');
+            const langSel = document.getElementById('spracheSelect');
+            const mapCb   = document.getElementById('mapCheckbox');
+            const mapSel  = document.getElementById('mapSelect');
+
+            const mode = modeSel ? modeSel.value : 'normal';
+            const lang = langSel ? langSel.value : 'english';
+            const map  = mapCb && mapCb.checked && mapSel ? mapSel.value.trim() : '';
+
             if (window.electronAPI && window.electronAPI.startHla) {
-                window.electronAPI.startHla(mode, lang);
+                const ok = await window.electronAPI.startHla(mode, lang, map);
+                if (!ok) showToast('Start fehlgeschlagen', 'error');
             } else {
                 alert('Nur in der Desktop-Version verfügbar');
             }
