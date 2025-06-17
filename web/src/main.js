@@ -1256,7 +1256,9 @@ function renderLevelStats() {
         });
     });
 
-    const rows = Object.entries(map);
+    const rows = Object.entries(map)
+        // Nach Level-Nummer sortieren
+        .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]));
     if (!rows.length) {
         panel.innerHTML = '<em style="color:#666;">Noch keine Level eingetragen.</em>';
         return;
