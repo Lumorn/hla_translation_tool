@@ -145,7 +145,8 @@ if (typeof module !== 'undefined' && module.exports) {
         renderLanguage = mod.renderLanguage;
         pollRender = mod.pollRender;
     });
-    import('../../extensionUtils.js').then(mod => { repairFileExtensions = mod.repairFileExtensions; });
+    // Funktionen aus extensionUtils.js stehen jetzt direkt unter window bereit
+    repairFileExtensions = window.repairFileExtensions;
 }
 
 // =========================== GLOBAL STATE END ===========================
