@@ -53,4 +53,5 @@ export type IpcChannels =
   | 'dub-error'
   | 'dub-status'
   | 'dub-log'
-  | 'save-error';
+  | 'save-error'
+  | 'start-hla';

@@ -66,6 +66,8 @@ if (typeof require !== 'function') {
     join: (...segments) => path.join(...segments),
     translateText: (id, text) => ipcRenderer.send('translate-text', { id, text }),
     onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => cb(data)),
+    // Half-Life: Alyx starten (Modus: 'normal' oder 'tools', Sprache optional)
+    startHla: (mode, lang) => ipcRenderer.invoke('start-hla', { mode, lang }),
   });
   console.log('[Preload] erfolgreich geladen');
 }
