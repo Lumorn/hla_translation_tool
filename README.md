@@ -38,7 +38,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
-* **Direkter Spielstart:** Half-Life: Alyx lässt sich aus der Toolbar starten (Normal oder Workshop, Deutsch/Englisch)
+* **Direkter Spielstart:** Half-Life: Alyx lässt sich über das Steam-URL-Protokoll starten (Normal oder Workshop, Deutsch/Englisch)
 
 ### 📊 Fortschritts‑Tracking
 
