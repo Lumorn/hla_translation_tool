@@ -3088,11 +3088,14 @@ function addPathCellContextMenus() {
 async function updateDubButtons() {
     const header = document.getElementById('dubDownloadHeader');
     const buttons = document.querySelectorAll('.download-de-btn');
+    const cells   = document.querySelectorAll('.download-cell');
     if (buttons.length === 0) {
-        if (header) header.style.display = 'none';
+        if (header) header.classList.add('hidden');
+        cells.forEach(c => c.style.display = 'none');
         return;
     }
-    if (header) header.style.display = 'table-cell';
+    if (header) header.classList.remove('hidden');
+    cells.forEach(c => c.style.display = 'table-cell');
     for (const btn of buttons) {
         const id = parseInt(btn.dataset.fileId, 10);
         const file = files.find(f => f.id === id);
