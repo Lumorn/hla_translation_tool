@@ -205,8 +205,8 @@ Seit Patch 1.40.25 bereinigt das Tool beim Start fehlerhafte Einträge im DE-Cac
 Seit Patch 1.40.26 wiederholt der manuelle Import das Verschieben mehrmals und wartet kurze Zeit, falls die Datei noch gesperrt ist. Dadurch verschwinden Fehler wie "resource busy or locked".
 Seit Patch 1.40.27 werden Änderungen am DE-Audio nach dem Bearbeiten sofort im Projekt gespeichert.
 Seit Patch 1.40.28 speichert applyDeEdit DE-Audios im Cache über den bereinigten Pfad und aktualisiert so konsistent die History.
-Seit Patch 1.40.29 lädt das Tool das MP3-Modul lamejs automatisch von einem CDN, falls es nicht lokal verfügbar ist.
 Seit Patch 1.40.30 nutzt das Tool cdnjs anstelle von jsDelivr, da dies durch die Content Security Policy erlaubt ist.
+Seit Patch 1.40.31 wurde das MP3-Encoding entfernt, lamejs ist nicht mehr erforderlich.
 
 
 Beispiel einer gültigen CSV:
@@ -431,7 +431,7 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 * ▶ **Hinweis:** Ordnerzugriff erneut erlauben oder Pfad prüfen. Das Tool zeigt die genaue Ursache im Toast an.
 * ▶ **Pfad prüfen:** Beim Speichern wird `sounds/DE/` nun automatisch entfernt, falls der Pfad doppelt vorkommt.
 * ▶ **Neu:** Jede Fehlermeldung beim Speichern wird nun als Toast eingeblendet.
-* ▶ **Update:** MP3-Dateien werden jetzt korrekt gespeichert.
+* ▶ **Entfernt:** MP3-Encoding ist nicht länger möglich, alle Dateien werden als WAV gespeichert.
 * ▶ **Neu:** Beim Programmstart werden vorhandene MP3-Dateien automatisch in WAV umgewandelt und im Ordner `Backups/mp3` gesichert.
 * ▶ **Fix:** Das Backup funktioniert jetzt auch über Laufwerksgrenzen hinweg, da beim Verschieben auf Kopieren mit anschließendem Löschen umgestellt wird.
 * ▶ **Neu:** Geänderte Dateiendungen werden erkannt und automatisch korrigiert.
