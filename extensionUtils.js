@@ -118,4 +118,12 @@ function syncProjectData(projects, filePathDatabase, textDatabase) {
     return updated;
 }
 
-module.exports = { repairFileExtensions, syncProjectData };
+// Export abhängig von der Umgebung
+if (typeof module !== 'undefined' && module.exports) {
+    // Node.js / Electron nutzt CommonJS
+    module.exports = { repairFileExtensions, syncProjectData };
+} else {
+    // Im Browser stehen die Funktionen global unter window zur Verfügung
+    window.repairFileExtensions = repairFileExtensions;
+    window.syncProjectData = syncProjectData;
+}
