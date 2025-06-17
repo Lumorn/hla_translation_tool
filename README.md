@@ -300,7 +300,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
-| **Auto-Resize verbessert** | Textfelder passen sich sauber an und schneiden keine Zeilen mehr ab |
+| **Auto-Resize verbessert** | Textfelder passen sich sauber an und schneiden keine Zeilen mehr ab; beim Projektstart wird die korrekte Höhe jetzt sofort gesetzt |
 * Beim Speichern eines DE-Audios verhindert das Tool nun ungültige Schnittbereiche und zeigt einen Fehler an.
 ---
 
