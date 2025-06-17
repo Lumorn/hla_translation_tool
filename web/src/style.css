@@ -394,6 +394,12 @@ th:nth-child(6) {
             background: #f44336;
         }
 
+        /* Buttons zum Starten von Half-Life: Alyx */
+        .hla-launch {
+            display: flex;
+            gap: 5px;
+        }
+
         .btn-success {
             background: #4caf50;
         }

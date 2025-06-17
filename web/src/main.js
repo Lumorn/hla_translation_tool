@@ -6718,6 +6718,16 @@ async function scanAudioDuplicates() {
         // Funktion global verfügbar machen, damit der Button im HTML immer wirkt
         window.toggleDevTools = toggleDevTools;
 
+        // Startet Half-Life: Alyx über die Desktop-Version
+        function startHla(mode = 'normal', lang = 'english') {
+            if (window.electronAPI && window.electronAPI.startHla) {
+                window.electronAPI.startHla(mode, lang);
+            } else {
+                alert('Nur in der Desktop-Version verfügbar');
+            }
+        }
+        window.startHla = startHla;
+
         // Öffnet ein Fenster mit detaillierten Debug-Informationen
         async function openDebugInfo() {
             // Zu sammelnde Informationen

@@ -24,6 +24,8 @@ const { isDubReady } = require('../elevenlabs.js');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
+// Standardpfad zur Steam-Installation (nur Windows)
+const steamPath = 'C:\\Program Files (x86)\\Steam\\steam.exe';
 const pendingDubs = [];
 let mainWindow;
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
@@ -526,6 +528,22 @@ app.whenReady().then(() => {
       win.webContents.openDevTools();
     }
   });
+
+  // =========================== START-HLA START ==============================
+  // Startet Half-Life: Alyx mit optionalen Parametern
+  ipcMain.handle('start-hla', async (event, { mode, lang }) => {
+    const args = ['-applaunch', '546560'];
+    if (mode === 'tools') args.push('-tools');
+    if (lang) args.push('-language', lang);
+    try {
+      spawn(steamPath, args, { detached: true, stdio: 'ignore' }).unref();
+      return true;
+    } catch (e) {
+      console.error('HL-Alyx Start fehlgeschlagen', e);
+      return false;
+    }
+  });
+  // =========================== START-HLA END ================================
 
   // Merkt gestartete Dubbing-Jobs
   ipcMain.on('dub-start', (event, info) => {

@@ -38,6 +38,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
+* **Direkter Spielstart:** Half-Life: Alyx lässt sich aus der Toolbar starten (Normal oder Workshop, Deutsch/Englisch)
 
 ### 📊 Fortschritts‑Tracking
 
@@ -272,6 +273,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
 | **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
+| **Half-Life: Alyx starten** | Buttons "HLA DE/EN" und "Tools DE/EN" in der Toolbar |
 
 ### Datei‑Management
 
