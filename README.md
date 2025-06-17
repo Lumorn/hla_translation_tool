@@ -273,7 +273,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
 | **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
-| **Half-Life: Alyx starten** | Buttons "HLA DE/EN" und "Tools DE/EN" in der Toolbar (starten per Steam-URL) |
+| **Half-Life: Alyx starten** | Buttons "HLA DE/EN" und "Workshop DE/EN" in der Toolbar (starten per Steam-URL) |
 
 ### Datei‑Management
 

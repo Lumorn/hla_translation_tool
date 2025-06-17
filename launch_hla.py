@@ -3,19 +3,19 @@ from urllib.parse import quote
 
 
 def start_hla(mode: str = "normal", lang: str = "english") -> None:
-    """Starte Half-Life: Alyx über das Steam-URL-Protokoll.
+    """Startet Half-Life: Alyx über das Steam-Protokoll.
 
     Args:
-        mode: "normal" oder "tools". Bei "tools" wird -tools angehängt.
-        lang: Sprache wie "german" oder "english". Wird als -language Parameter verwendet.
+        mode: "normal" oder "workshop". Bei "workshop" wird -hlvr_workshop angehängt.
+        lang: "german" oder "english". Wird als -language Parameter verwendet.
     """
-    # Basis-URL mit der App-ID von Half-Life: Alyx
+    # Basis-URL mit der App-ID des Spiels
     base_url = "steam://rungameid/546560"
     args = []
 
-    # Optionalen Modus anfügen
-    if mode == "tools":
-        args.append("-tools")
+    # Workshop-Modus aktivieren
+    if mode == "workshop":
+        args.append("-hlvr_workshop")
 
     # Sprachparameter immer anfügen
     if lang:

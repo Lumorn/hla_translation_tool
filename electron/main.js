@@ -533,7 +533,7 @@ app.whenReady().then(() => {
   ipcMain.handle('start-hla', async (event, { mode, lang }) => {
     // Steam-URL mit allen Parametern aufbauen
     const params = [];
-    if (mode === 'tools') params.push('-tools');
+    if (mode === 'workshop') params.push('-hlvr_workshop');
     if (lang) params.push('-language', lang);
     const encoded = encodeURIComponent(params.join(' '));
     const url = params.length
