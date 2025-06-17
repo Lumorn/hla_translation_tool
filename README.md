@@ -210,6 +210,7 @@ Seit Patch 1.40.27 werden Änderungen am DE-Audio nach dem Bearbeiten sofort im 
 Seit Patch 1.40.28 speichert applyDeEdit DE-Audios im Cache über den bereinigten Pfad und aktualisiert so konsistent die History.
 Seit Patch 1.40.30 nutzt das Tool cdnjs anstelle von jsDelivr, da dies durch die Content Security Policy erlaubt ist.
 Seit Patch 1.40.31 wurde das MP3-Encoding entfernt, lamejs ist nicht mehr erforderlich.
+Seit Patch 1.40.32 sortiert das Level-Statistik-Panel die Einträge nach der Levelnummer.
 
 
 Beispiel einer gültigen CSV:
