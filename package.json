@@ -19,7 +19,6 @@
   "dependencies": {
     "chokidar": "^4.0.3",
     "ffmpeg-static": "^5.2.0",
-    "lamejs": "^1.2.1",
     "progress": "^2.0.3"
   }
 }

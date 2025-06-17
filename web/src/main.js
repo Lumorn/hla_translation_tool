@@ -120,7 +120,6 @@ let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || 
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
-let lamejs; // fuer MP3-Encoding
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
@@ -137,7 +136,6 @@ let repairFileExtensions;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     ({ repairFileExtensions } = require('../../extensionUtils'));
-    lamejs = require('lamejs');
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -148,15 +146,6 @@ if (typeof module !== 'undefined' && module.exports) {
         pollRender = mod.pollRender;
     });
     import('../../extensionUtils.js').then(mod => { repairFileExtensions = mod.repairFileExtensions; });
-    // Versucht lamejs als ESM zu laden. Scheitert dies, wird ein Skript vom CDN nachgeladen
-    import('lamejs').then(mod => { lamejs = mod; }).catch(() => {
-        console.warn('lamejs konnte nicht per import geladen werden, lade von CDN');
-        const script = document.createElement('script');
-        // Lade lamejs von cdnjs, da dieser Host durch die CSP erlaubt ist
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js';
-        script.onload = () => { lamejs = window.lamejs; };
-        document.head.appendChild(script);
-    });
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -7083,7 +7072,7 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     const ext = relativerPfad.slice(-4).toLowerCase();
     let blob = datei;
     if (typeof AudioBuffer !== 'undefined' && datei instanceof AudioBuffer) {
-        blob = ext === '.mp3' ? bufferToMp3(datei) : bufferToWav(datei);
+        blob = bufferToWav(datei);
     }
 
     const teile = relativerPfad.split('/');
@@ -8325,35 +8314,6 @@ function bufferToWav(buffer) {
 }
 // =========================== BUFFERTOWAV END ================================
 
-// =========================== BUFFERTOMP3 START ===============================
-// Wandelt einen AudioBuffer in einen MP3-Blob um
-function bufferToMp3(buffer) {
-    if (!lamejs) throw new Error('lamejs nicht geladen');
-    const numChannels = buffer.numberOfChannels;
-    const sampleRate = buffer.sampleRate;
-    const mp3enc = new lamejs.Mp3Encoder(numChannels, sampleRate, 128);
-    const blockSize = 1152;
-    const mp3Data = [];
-    const channels = [];
-    for (let c = 0; c < numChannels; c++) {
-        channels.push(buffer.getChannelData(c));
-    }
-    let pos = 0;
-    while (pos < buffer.length) {
-        const left = new Int16Array(blockSize);
-        const right = numChannels > 1 ? new Int16Array(blockSize) : null;
-        for (let i = 0; i < blockSize && pos < buffer.length; i++, pos++) {
-            left[i] = Math.max(-1, Math.min(1, channels[0][pos])) * 32767;
-            if (right) right[i] = Math.max(-1, Math.min(1, channels[1][pos])) * 32767;
-        }
-        const mp3buf = mp3enc.encodeBuffer(left, right);
-        if (mp3buf.length) mp3Data.push(new Uint8Array(mp3buf));
-    }
-    const end = mp3enc.flush();
-    if (end.length) mp3Data.push(new Uint8Array(end));
-    return new Blob(mp3Data, { type: 'audio/mp3' });
-}
-// =========================== BUFFERTOMP3 END ================================
 
 let currentEditFile = null;
 let originalEditBuffer = null;
@@ -8892,7 +8852,7 @@ async function applyDeEdit() {
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = ext === '.mp3' ? bufferToMp3(newBuffer) : bufferToWav(newBuffer);
+        const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
         const url = URL.createObjectURL(blob);
         const choice = await handleDuplicateBeforeSave(relPath, buf, url);
@@ -8952,7 +8912,7 @@ async function applyDeEdit() {
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = ext === '.mp3' ? bufferToMp3(newBuffer) : bufferToWav(newBuffer);
+        const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
         // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
         deAudioCache[cleanPath] = blob;
@@ -10802,7 +10762,6 @@ if (typeof module !== "undefined" && module.exports) {
         speichereUebersetzungsDatei,
         // 🔄 Projektbereinigung & Dateiendungs-Reparatur
         updateAllFilePaths,
-        bufferToMp3,
         bufferToWav,
         repairFileExtensions,
         updateAutoTranslation,
