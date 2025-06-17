@@ -65,6 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🖋️ Texteingabe & Navigation
 
 * **Auto‑Resize‑Textfelder** (EN & DE bleiben höhengleich)
+* **Automatische Anpassung beim Laden** der Textfelder beim Projektstart
 * **Sofort‑Speicherung** nach 1 s Inaktivität
 * **Tab/Shift+Tab Navigation** zwischen Textfeldern und Zeilen
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld

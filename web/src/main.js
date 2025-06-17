@@ -1169,6 +1169,11 @@ function selectProject(id){
     runTranslationQueue(needTrans);
 
     renderFileTable();
+
+    // Nach dem Laden des Projekts alle Textfelder dynamisch anpassen
+    setTimeout(() => {
+        autoResizeAllInputs();
+    }, 100);
     updateDubStatusForFiles();
     updateStatus();
     updateFileAccessStatus();
