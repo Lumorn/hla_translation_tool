@@ -1613,7 +1613,8 @@ function addFiles() {
             const fileInput = document.getElementById('fileInput');
             fileInput.addEventListener('input', function() {
                 this.style.height = 'auto';
-                this.style.height = this.scrollHeight + 'px';
+                const fudge = 2; // kleiner Puffer gegen abschneiden
+                this.style.height = (this.scrollHeight + fudge) + 'px';
             });
             
             // Keyboard navigation
@@ -3363,21 +3364,22 @@ function toggleFileCompletion(fileId) {
             updateGlobalProjectProgress();
         }
 
-        // Auto-resize text inputs based on content (HEIGHT not width)
+        // Automatisches Anpassen der Höhe von Texteingaben (nur vertikal)
         function autoResizeInput(input) {
             if (!input) return;
-            
-            // Reset height to auto to get the correct scroll height
+
+            // Höhe zur Ermittlung korrekt zurücksetzen
             input.style.height = 'auto';
-            
-            // Calculate needed height
-            const minHeight = 36; // Minimum height in pixels
-            const newHeight = Math.max(minHeight, input.scrollHeight);
-            
-            // Set the new height
+
+            // Benötigte Höhe berechnen
+            const minHeight = 36; // Mindesthöhe in Pixel
+            const fudge = 2;      // kleiner Puffer gegen abgeschnittene Zeilen
+            const newHeight = Math.max(minHeight, input.scrollHeight + fudge);
+
+            // Neue Höhe setzen
             input.style.height = newHeight + 'px';
-            
-            // Sync height with partner input in the same row
+
+            // Partnerfeld in der gleichen Zeile angleichen
             syncRowHeights(input);
         }
 
@@ -3395,8 +3397,9 @@ function toggleFileCompletion(fileId) {
             enInput.style.height = 'auto';
             deInput.style.height = 'auto';
             
-            const enHeight = Math.max(36, enInput.scrollHeight);
-            const deHeight = Math.max(36, deInput.scrollHeight);
+            const fudge = 2; // Puffer gegen abgeschnittene Zeilen
+            const enHeight = Math.max(36, enInput.scrollHeight + fudge);
+            const deHeight = Math.max(36, deInput.scrollHeight + fudge);
             const maxHeight = Math.max(enHeight, deHeight);
             
             // Set both inputs to the same height
@@ -3417,8 +3420,9 @@ function toggleFileCompletion(fileId) {
                     deInput.style.height = 'auto';
                     
                     // Calculate max height needed
-                    const enHeight = Math.max(36, enInput.scrollHeight);
-                    const deHeight = Math.max(36, deInput.scrollHeight);
+                    const fudge = 2; // Puffer gegen abgeschnittene Zeilen
+                    const enHeight = Math.max(36, enInput.scrollHeight + fudge);
+                    const deHeight = Math.max(36, deInput.scrollHeight + fudge);
                     const maxHeight = Math.max(enHeight, deHeight);
                     
                     // Set both to same height

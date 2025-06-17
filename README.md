@@ -64,7 +64,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 🖋️ Texteingabe & Navigation
 
-* **Auto‑Resize‑Textfelder** (EN & DE bleiben höhengleich)
+* **Verbessertes Auto‑Resize** – Textfelder schneiden keine Zeilen mehr ab und bleiben zwischen EN & DE höhengleich
 * **Automatische Anpassung beim Laden** der Textfelder beim Projektstart
 * **Sofort‑Speicherung** nach 1 s Inaktivität
 * **Tab/Shift+Tab Navigation** zwischen Textfeldern und Zeilen
@@ -299,7 +299,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
-| **Auto-Resize aktiviert** | Textfelder passen sich automatisch an |
+| **Auto-Resize verbessert** | Textfelder passen sich sauber an und schneiden keine Zeilen mehr ab |
 * Beim Speichern eines DE-Audios verhindert das Tool nun ungültige Schnittbereiche und zeigt einen Fehler an.
 ---
 
