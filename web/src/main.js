@@ -2266,7 +2266,12 @@ function searchSimilarEntriesInDatabase(currentFile) {
 // =========================== SUBTITLE SEARCH START ===========================
 // Entfernt Untertitel-Tags wie "<clr:255,190,255>" oder "<HEADSET>"
 function stripColorCodes(text) {
-    return text.replace(/<[^>]+>/gi, '');
+    return text
+        .replace(/<(?:sb|cr|br)>/gi, ' ')
+        .replace(/<[^>]+>/gi, '')
+        .replace(/\s+/g, ' ')
+        .replace(/([.!?])([A-ZÄÖÜ])/g, '$1 $2')
+        .trim();
 }
 
 async function openSubtitleSearch(fileId) {
@@ -10989,6 +10994,7 @@ if (typeof module !== "undefined" && module.exports) {
         repairFileExtensions,
         updateAutoTranslation,
         importClosecaptions,
+        stripColorCodes,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
