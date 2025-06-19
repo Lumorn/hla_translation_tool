@@ -151,8 +151,10 @@ if (typeof module !== 'undefined' && module.exports) {
     });
     // Funktionen aus extensionUtils.js stehen jetzt direkt unter window bereit
     repairFileExtensions = window.repairFileExtensions;
+    // closecaptionParser als ES-Modul laden und Fallback auf window verwenden
     import('../../closecaptionParser.js').then(mod => {
-        loadClosecaptions = mod.loadClosecaptions;
+        // Bei fehlendem Export wird die Funktion trotzdem unter window angelegt
+        loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
     });
 }
 
@@ -2269,8 +2271,9 @@ async function openSubtitleSearch(fileId) {
     // Lade das Modul bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
     if (typeof loadClosecaptions !== 'function') {
         try {
+            // Parser bei Bedarf dynamisch laden, auch wenn kein Export vorhanden ist
             const mod = await import('../../closecaptionParser.js');
-            loadClosecaptions = mod.loadClosecaptions;
+            loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
         } catch (e) {
             console.error('closecaptionParser konnte nicht geladen werden', e);
             alert('❌ Untertitel konnten nicht geladen werden.');
