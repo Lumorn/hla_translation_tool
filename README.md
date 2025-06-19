@@ -345,7 +345,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
   * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
-  * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text
+  * **Untertitel-Suche:** neuer 🔍-Button zwischen DE-Text und Pfad sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text
 
 ---
 
