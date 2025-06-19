@@ -216,6 +216,7 @@ Seit Patch 1.40.34 lädt die Untertitel-Suche fehlende Untertitel automatisch na
 Seit Patch 1.40.35 korrigiert ein Fallback das Nachladen des Untertitel-Parsers, sodass die Suche zuverlässig funktioniert.
 Seit Patch 1.40.36 blendet die Untertitel-Suche Farbcodes wie `<clr:255,190,255>` aus, berücksichtigt sie nicht bei der Ähnlichkeitsberechnung und zeigt den gesuchten EN-Text im Dialog an.
 Seit Patch 1.40.37 entfernt die Untertitel-Suche zusätzlich Tags wie `<HEADSET>` oder `<cr>` automatisch aus den übernommenen Texten.
+Seit Patch 1.40.38 berechnet die Untertitel-Suche die Ähnlichkeit präziser und ignoriert kurze Wortfragmente.
 
 
 Beispiel einer gültigen CSV:
