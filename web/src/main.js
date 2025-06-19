@@ -9520,37 +9520,39 @@ function updateTextDatabase(filename, pathInfo, englishText, germanText) {
     debugLog(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, DE=${!!germanText}`);
 }
 
-function parseClosecaptionFile(content) {
-    const map = new Map();
-    const lines = content.split(/\r?\n/);
-    for (const line of lines) {
-        const m = line.trim().match(/^"(\d+)"\s+"(.+)"$/);
-        if (m) map.set(m[1], m[2]);
-    }
-    return map;
-}
-
 async function importClosecaptions() {
+    // Hilfsfunktion zum Einlesen der Untertitel-Dateien
+    async function parseClosecaptionFile(path) {
+        let content = '';
+        try {
+            if (isElectron) {
+                content = new TextDecoder().decode(window.electronAPI.fsReadFile(path));
+            } else {
+                const resp = await fetch(path);
+                content = await resp.text();
+            }
+        } catch (err) {
+            return null;
+        }
+        const map = new Map();
+        const lines = content.split(/\r?\n/);
+        for (const line of lines) {
+            const m = line.trim().match(/^"(\d+)"\s+"(.+)"$/);
+            if (m) map.set(m[1], m[2]);
+        }
+        return map;
+    }
+
     const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
     const enPath = isElectron ? window.electronAPI.join(base, 'closecaption_english.txt') : `${base}/closecaption_english.txt`;
     const dePath = isElectron ? window.electronAPI.join(base, 'closecaption_german.txt') : `${base}/closecaption_german.txt`;
 
-    let enData = '', deData = '';
-    try {
-        if (isElectron) {
-            enData = new TextDecoder().decode(window.electronAPI.fsReadFile(enPath));
-            deData = new TextDecoder().decode(window.electronAPI.fsReadFile(dePath));
-        } else {
-            enData = await (await fetch(enPath)).text();
-            deData = await (await fetch(dePath)).text();
-        }
-    } catch (e) {
+    const enMap = await parseClosecaptionFile(enPath);
+    const deMap = await parseClosecaptionFile(dePath);
+    if (!enMap || !deMap) {
         alert('❌ Untertitel-Dateien konnten nicht gelesen werden.');
         return;
     }
-
-    const enMap = parseClosecaptionFile(enData);
-    const deMap = parseClosecaptionFile(deData);
 
     const ambiguous = [];
     let imported = 0;
@@ -10896,7 +10898,6 @@ if (typeof module !== "undefined" && module.exports) {
         repairFileExtensions,
         updateAutoTranslation,
         importClosecaptions,
-        parseClosecaptionFile,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
