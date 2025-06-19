@@ -76,6 +76,8 @@ let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
 let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
+// Zwischenspeicher für eingelesene Untertitel
+let subtitleData       = null;
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
 let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') || 'null');
 
@@ -133,9 +135,11 @@ const DEBUG_MODE = localStorage.getItem('hla_debug_mode') === 'true';
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
+let loadClosecaptions;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     ({ repairFileExtensions } = require('../../extensionUtils'));
+    ({ loadClosecaptions } = require('../../closecaptionParser'));
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -147,6 +151,9 @@ if (typeof module !== 'undefined' && module.exports) {
     });
     // Funktionen aus extensionUtils.js stehen jetzt direkt unter window bereit
     repairFileExtensions = window.repairFileExtensions;
+    import('../../closecaptionParser.js').then(mod => {
+        loadClosecaptions = mod.loadClosecaptions;
+    });
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -2252,6 +2259,78 @@ function searchSimilarEntriesInDatabase(currentFile) {
 }
 // =========================== SEARCH SIMILAR ENTRIES END ===========================
 
+// =========================== SUBTITLE SEARCH START ===========================
+async function openSubtitleSearch(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.enText) return;
+
+    if (!subtitleData) {
+        const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
+        subtitleData = await loadClosecaptions(base);
+        if (!subtitleData) {
+            alert('❌ Untertitel konnten nicht geladen werden.');
+            return;
+        }
+    }
+
+    const current = file.enText.trim().toLowerCase();
+    const hits = [];
+    subtitleData.forEach(entry => {
+        const similarity = calculateTextSimilarity(current, entry.enText.trim().toLowerCase());
+        if (similarity >= 0.3) hits.push({ ...entry, similarity });
+    });
+
+    hits.sort((a, b) => b.similarity - a.similarity);
+    showSubtitleResults(fileId, hits);
+}
+
+function showSubtitleResults(fileId, results) {
+    const overlay = document.createElement('div');
+    overlay.className = 'dialog-overlay';
+    overlay.style.display = 'flex';
+
+    const dialog = document.createElement('div');
+    dialog.className = 'dialog';
+    dialog.style.maxWidth = '700px';
+
+    dialog.innerHTML = `
+        <h3>🔍 Untertitel-Suche</h3>
+        <p style="margin-bottom:15px;color:#999;">Treffer auswählen, um den DE-Text zu übernehmen</p>
+        <div style="max-height:300px;overflow-y:auto;">
+            ${results.map((r, i) => `
+                <div class="subtitle-result" onclick="chooseSubtitleResult(${i})" style="padding:10px;margin:5px 0;border:1px solid #444;border-radius:6px;cursor:pointer;">
+                    <div style="font-weight:bold;color:#ff6b1a;">${Math.round(r.similarity * 100)}%</div>
+                    <div style="font-style:italic;margin:4px 0;">${escapeHtml(r.enText)}</div>
+                    <div>${escapeHtml(r.deText)}</div>
+                </div>`).join('')}
+        </div>
+        <div class="dialog-buttons">
+            <button class="btn btn-secondary" onclick="closeSubtitleDialog()">Schließen</button>
+        </div>
+    `;
+
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    window.chooseSubtitleResult = (index) => {
+        const hit = results[index];
+        const f = files.find(f => f.id === fileId);
+        if (!f) return;
+        f.deText = hit.deText;
+        isDirty = true;
+        renderFileTable();
+        closeSubtitleDialog();
+    };
+
+    window.closeSubtitleDialog = () => {
+        document.body.removeChild(overlay);
+    };
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) window.closeSubtitleDialog();
+    });
+}
+// =========================== SUBTITLE SEARCH END =============================
 // =========================== CALCULATE TEXT SIMILARITY START ===========================
 function calculateTextSimilarity(text1, text2) {
     // Normalisiere beide Texte
@@ -9525,35 +9604,9 @@ function updateTextDatabase(filename, pathInfo, englishText, germanText) {
 }
 
 async function importClosecaptions() {
-    // Hilfsfunktion zum Einlesen der Untertitel-Dateien
-    async function parseClosecaptionFile(path) {
-        let content = '';
-        try {
-            if (isElectron) {
-                content = new TextDecoder().decode(window.electronAPI.fsReadFile(path));
-            } else {
-                const resp = await fetch(path);
-                content = await resp.text();
-            }
-        } catch (err) {
-            return null;
-        }
-        const map = new Map();
-        const lines = content.split(/\r?\n/);
-        for (const line of lines) {
-            const m = line.trim().match(/^"(\d+)"\s+"(.+)"$/);
-            if (m) map.set(m[1], m[2]);
-        }
-        return map;
-    }
-
     const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
-    const enPath = isElectron ? window.electronAPI.join(base, 'closecaption_english.txt') : `${base}/closecaption_english.txt`;
-    const dePath = isElectron ? window.electronAPI.join(base, 'closecaption_german.txt') : `${base}/closecaption_german.txt`;
-
-    const enMap = await parseClosecaptionFile(enPath);
-    const deMap = await parseClosecaptionFile(dePath);
-    if (!enMap || !deMap) {
+    const subtitles = await loadClosecaptions(base);
+    if (!subtitles) {
         alert('❌ Untertitel-Dateien konnten nicht gelesen werden.');
         return;
     }
@@ -9561,8 +9614,7 @@ async function importClosecaptions() {
     const ambiguous = [];
     let imported = 0;
 
-    for (const [id, enText] of enMap.entries()) {
-        const deText = deMap.get(id);
+    for (const { id, enText, deText } of subtitles) {
         if (!deText) continue;
         const matches = Object.keys(textDatabase).filter(key => textDatabase[key].en && textDatabase[key].en.trim() === enText.trim());
         if (matches.length === 1) {
