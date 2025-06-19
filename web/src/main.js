@@ -2134,6 +2134,8 @@ return `
             </div>
         </div>
         <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div></td>
+        <!-- Untertitel-Suche Knopf -->
+        <td><button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="Ähnlichen Untertitel suchen">🔍</button></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             <div class="btn-column">
                 <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>

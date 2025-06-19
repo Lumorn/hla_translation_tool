@@ -211,6 +211,7 @@ Seit Patch 1.40.28 speichert applyDeEdit DE-Audios im Cache über den bereinigte
 Seit Patch 1.40.30 nutzt das Tool cdnjs anstelle von jsDelivr, da dies durch die Content Security Policy erlaubt ist.
 Seit Patch 1.40.31 wurde das MP3-Encoding entfernt, lamejs ist nicht mehr erforderlich.
 Seit Patch 1.40.32 sortiert das Level-Statistik-Panel die Einträge nach der Levelnummer.
+Seit Patch 1.40.33 erscheint der 🔍-Button zur Untertitel-Suche wieder korrekt in der Dateitabelle.
 
 
 Beispiel einer gültigen CSV:
