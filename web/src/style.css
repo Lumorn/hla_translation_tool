@@ -435,6 +435,13 @@ th:nth-child(6) {
             align-items: center;
         }
 
+        .video-launch {
+            margin-left: auto;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
         .hla-launch select,
         .hla-launch input[type="text"] {
             padding: 4px 6px;

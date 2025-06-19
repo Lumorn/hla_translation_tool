@@ -119,6 +119,9 @@ let radioSaturation    = parseFloat(localStorage.getItem('hla_radioSaturation') 
 let radioNoise         = parseFloat(localStorage.getItem('hla_radioNoise') || '-26');
 let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || '0.1');
 
+// Gespeicherte URL für das Dubbing-Video
+let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
+
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
@@ -447,6 +450,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadProjects();
 
     initializeEventListeners();
+
+    const urlInput = document.getElementById('videoUrlInput');
+    if (urlInput) {
+        urlInput.value = savedVideoUrl;
+        urlInput.addEventListener('change', saveVideoUrl);
+    }
 
     // 📁 Ordner-Anpassungen laden
     const savedCustomizations = localStorage.getItem('hla_folderCustomizations');
@@ -6885,6 +6894,28 @@ async function scanAudioDuplicates() {
             }
         }
         window.startHla = startHla;
+
+        // Speichert die URL des Videos dauerhaft
+        function saveVideoUrl() {
+            const inp = document.getElementById('videoUrlInput');
+            if (inp) {
+                const url = inp.value.trim();
+                localStorage.setItem('hla_videoUrl', url);
+                savedVideoUrl = url;
+            }
+        }
+
+        // Öffnet die gespeicherte URL in einem neuen Fenster
+        async function openVideoUrl() {
+            const url = (document.getElementById('videoUrlInput')?.value || '').trim();
+            if (!url) return;
+            if (window.electronAPI && window.electronAPI.openExternal) {
+                await window.electronAPI.openExternal(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+        window.openVideoUrl = openVideoUrl;
 
         // Öffnet ein Fenster mit detaillierten Debug-Informationen
         async function openDebugInfo() {

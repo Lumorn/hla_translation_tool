@@ -68,6 +68,7 @@ if (typeof require !== 'function') {
     onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => cb(data)),
     // Half-Life: Alyx starten (Modus und Sprache wählbar, optional Map)
     startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
+    openExternal: (url) => ipcRenderer.invoke('open-external', url),
   });
   console.log('[Preload] erfolgreich geladen');
 }
