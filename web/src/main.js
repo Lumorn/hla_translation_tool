@@ -2266,6 +2266,18 @@ async function openSubtitleSearch(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.enText) return;
 
+    // Lade das Modul bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
+    if (typeof loadClosecaptions !== 'function') {
+        try {
+            const mod = await import('../../closecaptionParser.js');
+            loadClosecaptions = mod.loadClosecaptions;
+        } catch (e) {
+            console.error('closecaptionParser konnte nicht geladen werden', e);
+            alert('❌ Untertitel konnten nicht geladen werden.');
+            return;
+        }
+    }
+
     if (!subtitleData) {
         const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
         subtitleData = await loadClosecaptions(base);

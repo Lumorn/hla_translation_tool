@@ -212,6 +212,7 @@ Seit Patch 1.40.30 nutzt das Tool cdnjs anstelle von jsDelivr, da dies durch die
 Seit Patch 1.40.31 wurde das MP3-Encoding entfernt, lamejs ist nicht mehr erforderlich.
 Seit Patch 1.40.32 sortiert das Level-Statistik-Panel die Einträge nach der Levelnummer.
 Seit Patch 1.40.33 erscheint der 🔍-Button zur Untertitel-Suche wieder korrekt in der Dateitabelle.
+Seit Patch 1.40.34 lädt die Untertitel-Suche fehlende Untertitel automatisch nach und verhindert so Fehlermeldungen beim Klick.
 
 
 Beispiel einer gültigen CSV:
