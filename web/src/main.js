@@ -2264,9 +2264,9 @@ function searchSimilarEntriesInDatabase(currentFile) {
 // =========================== SEARCH SIMILAR ENTRIES END ===========================
 
 // =========================== SUBTITLE SEARCH START ===========================
-// Entfernt Farbcodes wie "<clr:255,190,255>" aus einem Untertitel-Text
+// Entfernt Untertitel-Tags wie "<clr:255,190,255>" oder "<HEADSET>"
 function stripColorCodes(text) {
-    return text.replace(/<clr:[^>]+>/gi, '');
+    return text.replace(/<[^>]+>/gi, '');
 }
 
 async function openSubtitleSearch(fileId) {
