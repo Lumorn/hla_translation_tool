@@ -9316,14 +9316,18 @@ function showFolderSelectionDialog(ambiguousFiles) {
                         ${item.foundPaths.map((path, pathIndex) => {
                             const folderName = path.folder.split('/').pop() || path.folder;
                             const hasAudio = !!audioFileCache[path.fullPath];
+                            const dbEn = path.dbEnText || '';
+                            const dbDe = path.dbDeText || '';
                             return `
-                                <label id="folderOption_${index}_${pathIndex}" style="display: block; padding: 8px; margin: 5px 0; background: #2a2a2a; border-radius: 4px; cursor: pointer; border: 1px solid #333;" 
+                                <label id="folderOption_${index}_${pathIndex}" style="display: block; padding: 8px; margin: 5px 0; background: #2a2a2a; border-radius: 4px; cursor: pointer; border: 1px solid #333;"
                                        onclick="selectFolder(${index}, ${pathIndex})">
                                     <input type="radio" name="folder_${index}" value="${pathIndex}" style="margin-right: 10px;">
                                     <span style="color: #4caf50;">${hasAudio ? '🎵' : '❓'}</span>
                                     <strong>${folderName}</strong>
                                     <br>
                                     <small style="color: #666; margin-left: 25px;">${path.folder}</small>
+                                    ${dbEn ? `<br><small style="color: #999; margin-left: 25px;">DB EN: ${dbEn.length > 60 ? dbEn.substring(0,60) + '...' : dbEn}</small>` : ''}
+                                    ${dbDe ? `<br><small style="color: #999; margin-left: 25px;">DB DE: ${dbDe.length > 60 ? dbDe.substring(0,60) + '...' : dbDe}</small>` : ''}
                                     ${!hasAudio ? '<br><small style="color: #f44336; margin-left: 25px;">⚠️ Audio nicht im Cache</small>' : ''}
                                 </label>
                             `;
@@ -9571,13 +9575,22 @@ async function importClosecaptions() {
             updateTextDatabase(filename, info, enText, deText);
             imported++;
         } else if (matches.length > 1) {
+            // Sammle alle möglichen Datenbank-Einträge inklusive vorhandener Texte
             const foundPaths = matches.map(k => {
                 const p = k.split('/');
                 const fn = p.pop();
                 const fo = p.join('/');
                 const infs = filePathDatabase[fn] || [];
                 const pi = infs.find(pi => pi.folder === fo) || { folder: fo, fullPath: '' };
-                return { filename: fn, folder: fo, fullPath: pi.fullPath, pathInfo: pi };
+                const dbEntry = textDatabase[`${fo}/${fn}`] || {};
+                return {
+                    filename: fn,
+                    folder: fo,
+                    fullPath: pi.fullPath,
+                    pathInfo: pi,
+                    dbEnText: dbEntry.en || '',
+                    dbDeText: dbEntry.de || ''
+                };
             });
             ambiguous.push({ originalFilename: id, englishText: enText, germanText: deText, foundPaths, rowIndex: 0 });
         }

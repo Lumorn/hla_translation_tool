@@ -344,13 +344,14 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
   * **Intelligente Zuordnung:** Dateinamen‑Spalte wird automatisch erkannt
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
-  * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab
+  * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
 
 ---
 
 ### Untertitel-Import
 
 Mit diesem Import liest das Tool die Dateien `closecaption_english.txt` und `closecaption_german.txt` aus dem Ordner `closecaption/` ein. Eine interne Funktion `parseClosecaptionFile(path)` verarbeitet jede Zeile im Format `"ID"    "Text"`. Die Zeilen beider Dateien werden danach über ihre ID zusammengeführt und mit der Datenbank abgeglichen. Bei eindeutiger Übereinstimmung wird der deutsche Text automatisch zugeordnet. Sind mehrere Dateien möglich, erscheint eine Auswahl, um den passenden Ordner festzulegen oder den Eintrag zu überspringen.
+Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des jeweiligen Ordners an, um die Zuordnung zu erleichtern.
 
 ## 📁 Ordner‑Management
 
