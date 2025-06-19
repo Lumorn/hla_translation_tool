@@ -261,6 +261,12 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Beliebige URL im Standardbrowser öffnen
+  ipcMain.handle('open-external', async (event, url) => {
+    shell.openExternal(url);
+    return true;
+  });
+
   // Pfad des projektinternen Download-Ordners liefern
   ipcMain.handle('get-download-path', () => {
     // Der Download-Ordner liegt im Web-Verzeichnis des Projekts
