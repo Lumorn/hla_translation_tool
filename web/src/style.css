@@ -863,6 +863,32 @@ th:nth-child(6) {
             justify-content: center;
         }
 
+        .subtitle-search-btn {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 4px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .subtitle-search-btn:hover {
+            background: #ff6b1a;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .subtitle-search-btn:active {
+            transform: scale(0.95);
+        }
+
         .copy-btn:hover {
             background: #ff6b1a;
             color: white;
