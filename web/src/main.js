@@ -2388,9 +2388,9 @@ function calculateTextSimilarity(text1, text2) {
     const allWords = new Set([...words1, ...words2]);
     
     words1.forEach(word1 => {
-        if (words2.some(word2 => 
-            word1.includes(word2) || 
-            word2.includes(word1) || 
+        if (words2.some(word2 =>
+            // Exakte oder nahezu exakte Wortuebereinstimmung pruefen
+            word1 === word2 ||
             levenshteinDistance(word1, word2) <= Math.max(1, Math.min(word1.length, word2.length) * 0.3)
         )) {
             commonWords++;

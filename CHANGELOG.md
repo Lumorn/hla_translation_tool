@@ -51,6 +51,8 @@
 * Entfernt die Startskripte `start_tool.js` und `start_tool.bat`. `start_tool.py` bleibt als einzige Einstiegsmöglichkeit erhalten.
 ## 🛠️ Patch in 1.40.24
 * MP3-Encoding entfernt: `bufferToMp3` und die Abhängigkeit `lamejs` wurden gestrichen.
+## 🛠️ Patch in 1.40.25
+* Die Untertitel-Suche bewertet nur noch ganze Wörter, wodurch keine falschen 100-%-Treffer mehr erscheinen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
