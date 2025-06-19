@@ -214,6 +214,7 @@ Seit Patch 1.40.32 sortiert das Level-Statistik-Panel die Einträge nach der Lev
 Seit Patch 1.40.33 erscheint der 🔍-Button zur Untertitel-Suche wieder korrekt in der Dateitabelle.
 Seit Patch 1.40.34 lädt die Untertitel-Suche fehlende Untertitel automatisch nach und verhindert so Fehlermeldungen beim Klick.
 Seit Patch 1.40.35 korrigiert ein Fallback das Nachladen des Untertitel-Parsers, sodass die Suche zuverlässig funktioniert.
+Seit Patch 1.40.36 blendet die Untertitel-Suche Farbcodes wie `<clr:255,190,255>` aus, berücksichtigt sie nicht bei der Ähnlichkeitsberechnung und zeigt den gesuchten EN-Text im Dialog an.
 
 
 Beispiel einer gültigen CSV:
@@ -348,7 +349,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
   * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
-  * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text
+  * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text; zeigt dabei den gesuchten EN-Text an und ignoriert `<clr:...>`-Farbcodes
 
 ---
 
