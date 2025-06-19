@@ -5414,6 +5414,28 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
             field.focus();
         }
 
+        async function showCcImportDialog() {
+            const enPath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_english.txt') : '../closecaption/closecaption_english.txt';
+            const dePath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_german.txt') : '../closecaption/closecaption_german.txt';
+
+            let enOk = false, deOk = false;
+            if (isElectron) {
+                enOk = window.electronAPI.fsExists(enPath);
+                deOk = window.electronAPI.fsExists(dePath);
+            } else {
+                try { enOk = (await fetch(enPath, { method: 'HEAD' })).ok; } catch (e) { enOk = false; }
+                try { deOk = (await fetch(dePath, { method: 'HEAD' })).ok; } catch (e) { deOk = false; }
+            }
+
+            document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
+            document.getElementById('ccStatusDe').textContent = deOk ? '✅ vorhanden' : '❌ fehlt';
+            document.getElementById('ccImportDialog').style.display = 'flex';
+        }
+
+        function closeCcImportDialog() {
+            document.getElementById('ccImportDialog').style.display = 'none';
+        }
+
         function closeImportDialog() {
             document.getElementById('importDialog').style.display = 'none';
             document.getElementById('importData').value = '';
@@ -9497,9 +9519,96 @@ function updateTextDatabase(filename, pathInfo, englishText, germanText) {
     
     debugLog(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, DE=${!!germanText}`);
 }
-// =========================== IMPROVED IMPORT PROCESS END ===========================
 
+function parseClosecaptionFile(content) {
+    const map = new Map();
+    const lines = content.split(/\r?\n/);
+    for (const line of lines) {
+        const m = line.trim().match(/^"(\d+)"\s+"(.+)"$/);
+        if (m) map.set(m[1], m[2]);
+    }
+    return map;
+}
 
+async function importClosecaptions() {
+    const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
+    const enPath = isElectron ? window.electronAPI.join(base, 'closecaption_english.txt') : `${base}/closecaption_english.txt`;
+    const dePath = isElectron ? window.electronAPI.join(base, 'closecaption_german.txt') : `${base}/closecaption_german.txt`;
+
+    let enData = '', deData = '';
+    try {
+        if (isElectron) {
+            enData = new TextDecoder().decode(window.electronAPI.fsReadFile(enPath));
+            deData = new TextDecoder().decode(window.electronAPI.fsReadFile(dePath));
+        } else {
+            enData = await (await fetch(enPath)).text();
+            deData = await (await fetch(dePath)).text();
+        }
+    } catch (e) {
+        alert('❌ Untertitel-Dateien konnten nicht gelesen werden.');
+        return;
+    }
+
+    const enMap = parseClosecaptionFile(enData);
+    const deMap = parseClosecaptionFile(deData);
+
+    const ambiguous = [];
+    let imported = 0;
+
+    for (const [id, enText] of enMap.entries()) {
+        const deText = deMap.get(id);
+        if (!deText) continue;
+        const matches = Object.keys(textDatabase).filter(key => textDatabase[key].en && textDatabase[key].en.trim() === enText.trim());
+        if (matches.length === 1) {
+            const fileKey = matches[0];
+            const parts = fileKey.split('/');
+            const filename = parts.pop();
+            const folder = parts.join('/');
+            const infos = filePathDatabase[filename] || [];
+            const info = infos.find(p => p.folder === folder) || { folder, fullPath: '' };
+            updateTextDatabase(filename, info, enText, deText);
+            imported++;
+        } else if (matches.length > 1) {
+            const foundPaths = matches.map(k => {
+                const p = k.split('/');
+                const fn = p.pop();
+                const fo = p.join('/');
+                const infs = filePathDatabase[fn] || [];
+                const pi = infs.find(pi => pi.folder === fo) || { folder: fo, fullPath: '' };
+                return { filename: fn, folder: fo, fullPath: pi.fullPath, pathInfo: pi };
+            });
+            ambiguous.push({ originalFilename: id, englishText: enText, germanText: deText, foundPaths, rowIndex: 0 });
+        }
+    }
+
+    if (ambiguous.length > 0) {
+        const selections = await showFolderSelectionDialog(ambiguous);
+        if (selections !== null) {
+            selections.forEach((sel, idx) => {
+                if (sel.selectedIndex >= 0) {
+                    const amb = ambiguous[idx];
+                    const chosen = amb.foundPaths[sel.selectedIndex];
+                    updateTextDatabase(chosen.filename, chosen.pathInfo, amb.englishText, amb.germanText);
+                    imported++;
+                }
+            });
+        }
+    }
+
+    if (imported > 0) {
+        isDirty = true;
+        saveTextDatabase();
+        renderFileTable();
+        updateProgressStats();
+        alert(`✅ ${imported} Untertitel importiert`);
+    } else {
+        alert('❌ Keine passenden Einträge gefunden.');
+    }
+
+    closeCcImportDialog();
+}
+
+// =========================== IMPROVED IMPORT PROCESS END =====================
 
 // =========================== IMPROVED SEARCH FUNCTION START ===========================
 async function addFromSearch(result) {
@@ -10786,6 +10895,8 @@ if (typeof module !== "undefined" && module.exports) {
         bufferToWav,
         repairFileExtensions,
         updateAutoTranslation,
+        importClosecaptions,
+        parseClosecaptionFile,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },

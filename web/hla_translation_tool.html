@@ -30,6 +30,7 @@
                         <button class="btn" onclick="addFiles()">Hinzufügen</button>
                     </div>
                     <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
+                    <button class="btn btn-secondary" onclick="showCcImportDialog()">📥 Untertitel importieren</button>
                     <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
                 </div>
                 <div class="system-tools">
@@ -273,6 +274,18 @@
         </div>
     </div>
 
+    <!-- Closecaption Import Dialog -->
+    <div class="dialog-overlay" id="ccImportDialog">
+        <div class="dialog">
+            <h3>📥 Untertitel importieren</h3>
+            <p>closecaption_english.txt: <span id="ccStatusEn"></span></p>
+            <p>closecaption_german.txt: <span id="ccStatusDe"></span></p>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeCcImportDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="importClosecaptions()">Import starten</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Folder Browser Dialog -->
     <div class="dialog-overlay folder-browser-dialog" id="folderBrowserDialog">
