@@ -72,4 +72,14 @@ describe('watchDownloadFolder', () => {
     expect(pruefeAudiodatei(tmp)).toBe(false);
     fs.unlinkSync(tmp);
   });
+
+  test('matchPendingJob entfernt Namenszusätze korrekt', () => {
+    jest.resetModules();
+    const { matchPendingJob } = require('../watcher.js');
+    const pending = [{ id: 'abc', relPath: 'x/abc.wav' }];
+
+    const result = matchPendingJob('abc-Max', pending);
+
+    expect(result.idx).toBe(0);
+  });
 });

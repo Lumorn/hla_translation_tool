@@ -57,6 +57,35 @@ function pruefeAudiodatei(datei) {
     }
 }
 
+// Ermittelt den passenden Job-Index und das bereinigte Basis-Stueck
+function matchPendingJob(basisFull, pending) {
+    let basis = basisFull;
+    const suff = basisFull.match(/[_-][A-Za-z]+$/);
+    if (suff) {
+        const ohne = basisFull.slice(0, -suff[0].length);
+        if (pending.some(job => {
+            const relBase = path.basename(job.relPath, path.extname(job.relPath));
+            const expect = job.expectBase || relBase;
+            return ohne === job.id || ohne === expect;
+        })) {
+            basis = ohne;
+        }
+    }
+    const idx = pending.findIndex(job => {
+        const relBase = path.basename(job.relPath, path.extname(job.relPath));
+        const expect = job.expectBase || relBase;
+        return (
+            basis === job.id ||
+            basis.startsWith(job.id + '_') ||
+            basis.startsWith(job.id + '-') ||
+            basis.startsWith(expect + '_') ||
+            basis.startsWith(expect + '-') ||
+            basis === expect
+        );
+    });
+    return { idx, basis };
+}
+
 // Ueberwacht den Download-Ordner und verarbeitet neue Dateien
 function watchDownloadFolder(callback, opts = {}) {
     const pending = opts.pending || [];
@@ -80,18 +109,8 @@ function watchDownloadFolder(callback, opts = {}) {
             if (!pending.length) return;
             if (!/\.(wav|mp3|ogg)$/i.test(file)) return;
             log('Datei gefunden: ' + file);
-            const basis = path.basename(file).replace(/\.(mp3|wav|ogg)$/i, '');
-            // Grosszuegiges Matching fuer Dateinamen und IDs
-            const idx = pending.findIndex(job => {
-                const relBase = path.basename(job.relPath, path.extname(job.relPath));
-                const expect = job.expectBase || relBase;
-                return (
-                    basis === job.id ||
-                    basis.startsWith(job.id + '_') ||
-                    basis.startsWith(expect + '_') ||
-                    basis === expect
-                );
-            });
+            const fullBase = path.basename(file).replace(/\.(mp3|wav|ogg)$/i, '');
+            const { idx, basis } = matchPendingJob(fullBase, pending);
             // Wenn keine eindeutige Zuordnung gefunden wird, aber nur ein Job
             // offen ist, diesen verwenden
             let jobIdx = idx;
@@ -167,5 +186,6 @@ function watchDownloadFolder(callback, opts = {}) {
 module.exports = {
     watchDownloadFolder,
     clearDownloadFolder: leereOrdner,
-    pruefeAudiodatei
+    pruefeAudiodatei,
+    matchPendingJob
 };
