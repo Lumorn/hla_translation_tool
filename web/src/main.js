@@ -2264,6 +2264,11 @@ function searchSimilarEntriesInDatabase(currentFile) {
 // =========================== SEARCH SIMILAR ENTRIES END ===========================
 
 // =========================== SUBTITLE SEARCH START ===========================
+// Entfernt Farbcodes wie "<clr:255,190,255>" aus einem Untertitel-Text
+function stripColorCodes(text) {
+    return text.replace(/<clr:[^>]+>/gi, '');
+}
+
 async function openSubtitleSearch(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.enText) return;
@@ -2290,18 +2295,21 @@ async function openSubtitleSearch(fileId) {
         }
     }
 
-    const current = file.enText.trim().toLowerCase();
+    // Farbcodes entfernen und Text normalisieren
+    const current = stripColorCodes(file.enText).trim().toLowerCase();
     const hits = [];
     subtitleData.forEach(entry => {
-        const similarity = calculateTextSimilarity(current, entry.enText.trim().toLowerCase());
-        if (similarity >= 0.3) hits.push({ ...entry, similarity });
+        const enClean = stripColorCodes(entry.enText).trim();
+        const deClean = stripColorCodes(entry.deText).trim();
+        const similarity = calculateTextSimilarity(current, enClean.toLowerCase());
+        if (similarity >= 0.3) hits.push({ ...entry, enText: enClean, deText: deClean, similarity });
     });
 
     hits.sort((a, b) => b.similarity - a.similarity);
-    showSubtitleResults(fileId, hits);
+    showSubtitleResults(fileId, hits, stripColorCodes(file.enText));
 }
 
-function showSubtitleResults(fileId, results) {
+function showSubtitleResults(fileId, results, searchText) {
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
     overlay.style.display = 'flex';
@@ -2312,6 +2320,7 @@ function showSubtitleResults(fileId, results) {
 
     dialog.innerHTML = `
         <h3>🔍 Untertitel-Suche</h3>
+        <div style="margin:5px 0 10px;font-style:italic;color:#ccc;">${escapeHtml(searchText)}</div>
         <p style="margin-bottom:15px;color:#999;">Treffer auswählen, um den DE-Text zu übernehmen</p>
         <div style="max-height:300px;overflow-y:auto;">
             ${results.map((r, i) => `
