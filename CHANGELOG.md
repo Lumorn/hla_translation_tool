@@ -53,6 +53,8 @@
 * MP3-Encoding entfernt: `bufferToMp3` und die Abhängigkeit `lamejs` wurden gestrichen.
 ## 🛠️ Patch in 1.40.25
 * Die Untertitel-Suche bewertet nur noch ganze Wörter, wodurch keine falschen 100-%-Treffer mehr erscheinen.
+## 🛠️ Patch in 1.40.26
+* Die Content Security Policy lässt nun Bilder von `i.ytimg.com` zu, damit der YouTube-Player ohne Fehlermeldung startet.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
