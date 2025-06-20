@@ -67,9 +67,11 @@ export function openVideoDialog(bookmark, index) {
         const m=Math.floor(sec/60); const s=Math.floor(sec%60); return m+':'+('0'+s).slice(-2);
     }
 
+    // hält die aktuelle Abspielzeit für das spätere Speichern fest
     let currentTime = bookmark.time;
 
-    const interval = setInterval(async () => {
+    // Aktualisiert die UI jede Sekunde
+    const uiInterval = setInterval(async () => {
         if (window.currentYT) {
             const d = window.currentYT.getDuration();
             const t = window.currentYT.getCurrentTime();
@@ -77,11 +79,16 @@ export function openVideoDialog(bookmark, index) {
             slider.value = t;
             cur.textContent = formatTime(t);
             dur.textContent = formatTime(d);
-            if (window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
-                currentTime = t;
-            }
         }
     }, 1000);
+
+    // eigenes Intervall wie im einfachen Player
+    const interval = setInterval(async () => {
+        if (window.currentYT &&
+            window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
+            currentTime = window.currentYT.getCurrentTime();
+        }
+    }, 2000);
 
     slider.oninput = () => {
         if (window.currentYT && window.currentYT.seekTo) {
@@ -125,14 +132,30 @@ export function openVideoDialog(bookmark, index) {
     };
     document.addEventListener('keydown', dlg.__playerKey);
 
-    window.__ytPlayerState = { bookmark, index, interval, get time() { return currentTime; } };
+    // speichert auch bei nativen Dialog-Schließen
+    dlg.addEventListener('close', () => {
+        if (!dlg.__closing) {
+            closeVideoDialog();
+        }
+    });
+
+    // globaler Zugriff für das Schließen
+    window.__ytPlayerState = {
+        bookmark,
+        index,
+        interval,
+        uiInterval,
+        get time() { return currentTime; }
+    };
 }
 
 // schließt den Video-Dialog und speichert die Zeit
 export async function closeVideoDialog() {
     const dlg = document.getElementById('videoPlayerDialog');
     if (!dlg) return;
-    dlg.close();
+    if (dlg.__closing) return;
+    dlg.__closing = true;
+    if (dlg.open) dlg.close();
     if (dlg.__playerKey) { document.removeEventListener('keydown', dlg.__playerKey); dlg.__playerKey = null; }
     document.getElementById('videoPlayerFrame').src = '';
 
@@ -145,6 +168,7 @@ export async function closeVideoDialog() {
 
     if (window.__ytPlayerState) {
         clearInterval(window.__ytPlayerState.interval);
+        if (window.__ytPlayerState.uiInterval) clearInterval(window.__ytPlayerState.uiInterval);
         const { bookmark, index, time } = window.__ytPlayerState;
         bookmark.time = (typeof exactTime === 'number') ? exactTime : time;
         const list = await window.videoApi.loadBookmarks();
@@ -154,6 +178,7 @@ export async function closeVideoDialog() {
         }
         window.__ytPlayerState = null;
     }
+    dlg.__closing = false;
 }
 
 // blendet den Player wieder aus
@@ -180,6 +205,7 @@ export async function closePlayer() {
 
     if (window.__ytPlayerState) {
         clearInterval(window.__ytPlayerState.interval);
+        if (window.__ytPlayerState.uiInterval) clearInterval(window.__ytPlayerState.uiInterval);
         const { bookmark, index, time } = window.__ytPlayerState;
         // falls vorhanden, verwende die exakte Zeit des Players
         bookmark.time = (typeof exactTime === 'number') ? exactTime : time;
