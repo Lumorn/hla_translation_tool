@@ -14,6 +14,30 @@ import('./ytPlayer.js').then(m => {
     closePlayer = m.closePlayer;
 });
 
+// Fallback auf LocalStorage, falls die Electron-API fehlt
+if (!window.videoApi) {
+    console.log('Video-API fehlt, verwende LocalStorage');
+    window.videoApi = {
+        loadBookmarks: async () => {
+            const data = localStorage.getItem('hla_videoBookmarks');
+            try {
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.warn('Lese LocalStorage fehlgeschlagen', e);
+                return [];
+            }
+        },
+        saveBookmarks: async list => {
+            try {
+                localStorage.setItem('hla_videoBookmarks', JSON.stringify(list ?? []));
+            } catch (e) {
+                console.error('Speichern im LocalStorage fehlgeschlagen', e);
+            }
+            return true;
+        }
+    };
+}
+
 // Dialog-Unterstützung sicherstellen
 function ensureDialogSupport(d) {
     if (typeof d.showModal !== 'function') {
