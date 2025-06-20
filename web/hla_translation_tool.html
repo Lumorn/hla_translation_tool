@@ -71,11 +71,6 @@
                     <input type="text" id="mapSelect" placeholder="Level" style="width:140px">
                     <button id="startButton" class="btn btn-secondary" onclick="startHla()">Starten</button>
                 </div>
-                <div class="video-launch">
-                    <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
-                    <button id="addVideoBtn" class="btn btn-secondary">Hinzufügen</button>
-                    <button class="btn btn-secondary" onclick="openVideoUrl()">Öffnen</button>
-                </div>
             </div>
 			
             <div id="ytPlayerBox" style="width:100%;height:360px;display:none"></div>
@@ -536,6 +531,12 @@
     <dialog id="videoMgrDialog" class="video-dialog">
         <h2>Gespeicherte Videos</h2>
         <input id="videoFilter" placeholder="Suche …" />
+        <!-- Leiste zum Hinzufügen neuer Videos -->
+        <div class="video-launch">
+            <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
+            <button id="addVideoBtn" class="btn btn-secondary">Hinzufügen</button>
+            <button class="btn btn-secondary" onclick="openVideoUrl()">Öffnen</button>
+        </div>
         <table id="videoTable">
             <thead>
                 <tr>
