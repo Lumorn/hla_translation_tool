@@ -26,7 +26,7 @@ const videoApi = {
 describe('YouTube-Player Zeituebernahme', () => {
     beforeEach(() => {
         localStorage.clear();
-        document.body.innerHTML = '<div id="ytPlayerBox"></div>';
+        document.body.innerHTML = '<dialog id="videoPlayerDialog"><iframe id="videoPlayerFrame"></iframe></dialog>';
         window.videoApi = videoApi;
     });
 
@@ -38,7 +38,7 @@ describe('YouTube-Player Zeituebernahme', () => {
             .replace(/export\s+(async\s+)?function/g, '$1function');
         const sandbox = { module: { exports: {} }, window, document, setInterval, clearInterval };
         vm.runInNewContext(code, sandbox);
-        const { closePlayer } = sandbox.module.exports;
+        const { closeVideoDialog } = sandbox.module.exports;
         await videoApi.saveBookmarks([{ url: 'u', title: 't', time: 0 }]);
 
         const bookmark = { url: 'u', title: 't', time: 0 };
@@ -49,7 +49,7 @@ describe('YouTube-Player Zeituebernahme', () => {
         };
         window.__ytPlayerState = { bookmark, index: 0, interval, get time() { return 33; } };
 
-        await closePlayer();
+        await closeVideoDialog();
 
         const list = await videoApi.loadBookmarks();
         expect(list[0].time).toBe(77);
@@ -63,7 +63,7 @@ describe('YouTube-Player Zeituebernahme', () => {
             .replace(/export\s+(async\s+)?function/g, '$1function');
         const sandbox = { module: { exports: {} }, window, document, setInterval, clearInterval };
         vm.runInNewContext(code, sandbox);
-        const { closePlayer } = sandbox.module.exports;
+        const { closeVideoDialog } = sandbox.module.exports;
         await videoApi.saveBookmarks([{ url: 'u', title: 't', time: 0 }]);
 
         const bookmark = { url: 'u', title: 't', time: 0 };
@@ -74,7 +74,7 @@ describe('YouTube-Player Zeituebernahme', () => {
         };
         window.__ytPlayerState = { bookmark, index: 0, interval, get time() { return 44; } };
 
-        await closePlayer();
+        await closeVideoDialog();
 
         const list = await videoApi.loadBookmarks();
         expect(list[0].time).toBe(44);
@@ -88,7 +88,7 @@ describe('YouTube-Player Zeituebernahme', () => {
             .replace(/export\s+(async\s+)?function/g, '$1function');
         const sandbox = { module: { exports: {} }, window, document, setInterval, clearInterval, confirm: () => true };
         vm.runInNewContext(code, sandbox);
-        const { deleteCurrentVideo, closePlayer } = sandbox.module.exports;
+        const { deleteCurrentVideo, closeVideoDialog } = sandbox.module.exports;
         await videoApi.saveBookmarks([
             { url: 'a', title: 'Alpha', time: 0 },
             { url: 'b', title: 'Beta', time: 0 }
@@ -101,7 +101,7 @@ describe('YouTube-Player Zeituebernahme', () => {
 
         await deleteCurrentVideo();
 
-        await closePlayer();
+        await closeVideoDialog();
 
         const list = await videoApi.loadBookmarks();
         expect(list).toEqual([{ url: 'b', title: 'Beta', time: 0 }]);
