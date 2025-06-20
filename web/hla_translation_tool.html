@@ -550,6 +550,23 @@
         <button id="closeVideoDlg" class="primary">Schließen</button>
     </dialog>
 
+    <!-- Player-Dialog -->
+    <dialog id="videoPlayerDialog">
+        <div class="player-header"><span id="playerDialogTitle"></span></div>
+        <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
+        <div class="player-controls">
+            <span id="videoCurrent">0:00</span>
+            <input type="range" id="videoSlider" value="0" min="0" step="1">
+            <span id="videoDuration">0:00</span>
+            <button id="videoBack">⏮️</button>
+            <button id="videoPlay">▶️</button>
+            <button id="videoForward">⏭️</button>
+            <button id="videoReload">🔄</button>
+            <button id="videoDelete">🗑️</button>
+            <button id="videoClose">❌</button>
+        </div>
+    </dialog>
+
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
     <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.5</a>

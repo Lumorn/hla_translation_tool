@@ -6972,9 +6972,9 @@ async function scanAudioDuplicates() {
 
             const yt = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i.test(url) ||
                        /^https?:\/\/youtu\.be\//i.test(url);
-            if (yt && typeof window.openPlayer === 'function') {
+            if (yt && typeof window.openVideoDialog === 'function') {
                 const bm = list[index] || { url, title: url, time: 0 };
-                window.openPlayer(bm, index);
+                window.openVideoDialog(bm, index);
             } else if (window.electronAPI && window.electronAPI.openExternal) {
                 await window.electronAPI.openExternal(url);
             } else {
