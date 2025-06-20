@@ -43,6 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Schnellstart im Player:** YouTube-Links aus der URL-Eingabe starten direkt im eingebetteten Player; andere Links werden extern geöffnet. Beim Öffnen wird automatisch ein Bookmark angelegt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
+* **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich nun über einen zusätzlichen IPC-Kanal entfernen.
 * **Tests für Video-Bookmarks:** Überprüfen Laden, Sortierung sowie Hinzufügen und Entfernen von Einträgen.
 * **Tests für den YouTube-Player:** Prüfen Speicherung über das Intervall, Löschfunktion sowie Dialog und Slider.
 * **Prüfung von Video-Links:** Eingaben müssen mit `https://` beginnen und dürfen keine Leerzeichen enthalten.

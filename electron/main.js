@@ -332,6 +332,16 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // einzelnen Bookmark anhand des Index entfernen
+  ipcMain.handle('delete-bookmark', (event, idx) => {
+    const list = readBookmarks();
+    if (typeof idx === 'number' && idx >= 0 && idx < list.length) {
+      list.splice(idx, 1);
+      saveBookmarks(list);
+    }
+    return true;
+  });
+
   // Pfad des projektinternen Download-Ordners liefern
   ipcMain.handle('get-download-path', () => {
     // Der Download-Ordner liegt im Web-Verzeichnis des Projekts
