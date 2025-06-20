@@ -6,7 +6,7 @@
     <title>Half-Life: Alyx Translation Tool</title>
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
     <!-- CSP angepasst: erlaubt nun Inline-Skripte -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; connect-src 'self' https://api.elevenlabs.io; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; media-src 'self' blob:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; connect-src 'self' https://api.elevenlabs.io; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; media-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;">
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
@@ -76,6 +76,7 @@
                 </div>
             </div>
 			
+            <div id="ytPlayerBox" style="width:100%;height:360px;display:none"></div>
 <!-- =========================== PROJECT META BAR START =========================== -->
 <div class="project-meta-bar" id="projectMetaBar" style="display:none;">
     <span class="meta-project" id="metaProjectName"></span>
@@ -544,6 +545,7 @@
             <tbody id="videoTableBody"></tbody>
         </table>
         <div style="text-align:right;margin-top:10px;">
+            <button id="closePlayerBtn" class="btn btn-secondary">Schließen</button>
             <button id="closeVideoMgr" class="btn btn-secondary">Schließen</button>
         </div>
     </dialog>
@@ -552,6 +554,8 @@
     <!-- Verlinkung zur aktuellen Version -->
     <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.5</a>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script type="module" src="ytPlayer.js"></script>
     <script src="src/main.js"></script>
     <script src="renderer.js"></script>
 </body>

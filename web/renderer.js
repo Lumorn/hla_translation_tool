@@ -5,6 +5,15 @@ const videoMgrBtn    = document.getElementById('openVideoManager');
 const videoDialog    = document.getElementById('videoMgrDialog');
 const videoTableBody = document.getElementById('videoTableBody');
 const closeVideoMgr  = document.getElementById('closeVideoMgr');
+const closePlayerBtn = document.getElementById('closePlayerBtn');
+
+let openPlayer, closePlayer;
+import('./ytPlayer.js').then(mod => {
+    openPlayer = mod.openPlayer;
+    closePlayer = mod.closePlayer;
+});
+
+let list = [];
 
 // Dialog-Unterstützung prüfen und ggf. Polyfill laden
 function ensureDialogSupport(dlg) {
@@ -26,10 +35,15 @@ videoMgrBtn.addEventListener('click', () => {
     videoDialog.showModal();
 });
 closeVideoMgr.addEventListener('click', () => videoDialog.close());
+closePlayerBtn.addEventListener('click', () => closePlayer());
+videoDialog.addEventListener('keydown', e => { if (e.key === 'Escape') closePlayer(); });
+document.addEventListener('video-start', ({detail}) => {
+    if (openPlayer) openPlayer(list[detail]);
+});
 
 // Tabelle neu aufbauen
 async function refreshTable() {
-    const list = await window.videoApi.loadBookmarks();
+    list = await window.videoApi.loadBookmarks();
     videoTableBody.innerHTML = '';
     list.forEach((b, i) => {
         const tr = document.createElement('tr');
@@ -74,7 +88,7 @@ urlInput.addEventListener('input', updateAddBtn);
 addBtn.addEventListener('click', async () => {
     const url = urlInput.value.trim();
     if (!url) return;
-    const list = await window.videoApi.loadBookmarks();
+    list = await window.videoApi.loadBookmarks();
     if (list.some(b => b.url === url)) { alert('Schon vorhanden'); return; }
     list.push({url, time:0});
     await window.videoApi.saveBookmarks(list);

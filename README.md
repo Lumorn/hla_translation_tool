@@ -43,6 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über die Start-Leiste lassen sich mehrere URLs speichern und per Knopfdruck öffnen.
 * **Video-Bookmarks:** Speichert pro Nutzer die zuletzt gesehene Position einzelner Videos.
 * **Video-Manager:** Verwaltet alle gespeicherten Links in einem eigenen Dialog.
+* **YouTube-Player:** Startet Videos direkt im Tool und lässt sich im Dialog schliessen.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
 ### 📊 Fortschritts‑Tracking
