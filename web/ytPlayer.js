@@ -113,14 +113,8 @@ export function openVideoDialog(bookmark, index) {
     reloadBtn.onclick = () => {
         if (window.currentYT) window.currentYT.seekTo(0, true);
     };
-    deleteBtn.onclick = async () => {
-        if (!confirm('Wirklich löschen?')) return;
-        const list = await window.videoApi.loadBookmarks();
-        list.splice(index,1);
-        await window.videoApi.saveBookmarks(list);
-        closeVideoDialog();
-        if (window.refreshTable) window.refreshTable();
-    };
+    // Lösch-Button ruft nun die neue Funktion auf
+    deleteBtn.onclick = deleteCurrentVideo;
     closeBtn.onclick = closeVideoDialog;
 
     dlg.__playerKey = function(e){
@@ -181,6 +175,20 @@ export async function closeVideoDialog() {
     dlg.__closing = false;
 }
 
+// löscht das aktuell geöffnete Video aus der Bookmark-Liste
+export async function deleteCurrentVideo() {
+    if (!window.__ytPlayerState) return;
+    if (!confirm('Wirklich löschen?')) return;
+    const { index } = window.__ytPlayerState;
+    const list = await window.videoApi.loadBookmarks();
+    list.splice(index, 1);
+    await window.videoApi.saveBookmarks(list);
+    // verhindert erneutes Speichern des gelöschten Eintrags
+    window.__ytPlayerState.index = -1;
+    closeVideoDialog();
+    if (window.refreshTable) window.refreshTable();
+}
+
 // blendet den Player wieder aus
 // blendet den Player wieder aus und speichert die letzte Position
 export async function closePlayer() {
@@ -223,6 +231,7 @@ if (typeof module !== 'undefined' && module.exports) {
         closePlayer,
         extractYoutubeId,
         openVideoDialog,
-        closeVideoDialog
+        closeVideoDialog,
+        deleteCurrentVideo
     };
 }
