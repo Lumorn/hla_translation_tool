@@ -2399,6 +2399,13 @@ th:nth-child(6) {
     padding: 1rem;
 }
 
+/* YouTube-Player Box im festen 16:9-Format */
+#ytPlayerBox {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    position: relative;
+}
+
 #videoTable {
     width: 100%;
     border-collapse: collapse;
