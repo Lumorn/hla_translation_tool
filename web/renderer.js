@@ -12,6 +12,10 @@ let openPlayer, closePlayer;
 import('./ytPlayer.js').then(m => {
     openPlayer = m.openPlayer;
     closePlayer = m.closePlayer;
+    document.addEventListener('video-start', async ({detail:index}) => {
+        const list = await window.videoApi.loadBookmarks();
+        openPlayer(list[index]);
+    });
 });
 
 // Fallback auf LocalStorage, falls die Electron-API fehlt
@@ -58,6 +62,14 @@ closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
     if (typeof closePlayer === 'function') closePlayer();
 };
+videoMgrDialog.addEventListener('cancel', () => {
+    if (typeof closePlayer === 'function') closePlayer();
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && videoMgrDialog.open) {
+        if (typeof closePlayer === 'function') closePlayer();
+    }
+});
 
 let asc = true;
 async function refreshTable(sortKey='title', dir=true) {
@@ -91,8 +103,7 @@ videoTableBody.onclick = async e => {
     const bm = list[idx];
     switch(btn.className){
         case 'start':
-            if (typeof closePlayer === 'function') await closePlayer();
-            openPlayer(bm);
+            document.dispatchEvent(new CustomEvent('video-start', {detail: idx}));
             break;
         case 'rename':
             const t = prompt('Neuer Titel', bm.title);
