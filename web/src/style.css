@@ -2406,6 +2406,55 @@ th:nth-child(6) {
     position: relative;
 }
 
+/* Modal-Player */
+#videoPlayerDialog {
+    width: 80vw;
+    max-width: 1000px;
+    border: none;
+    border-radius: 6px;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    padding: 0;
+}
+#videoPlayerDialog::backdrop {
+    background: rgba(0,0,0,0.6);
+}
+#videoPlayerDialog .player-header {
+    padding: 0.5rem 1rem;
+    background: #242424;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+#videoPlayerDialog iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    display: block;
+}
+#videoPlayerDialog .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    background: #242424;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.5);
+}
+#videoPlayerDialog .player-controls input[type=range] {
+    flex: 1;
+}
+#videoPlayerDialog .player-controls button {
+    background: #333;
+    border: none;
+    color: #e0e0e0;
+    padding: 4px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#videoPlayerDialog .player-controls button:hover {
+    background: #444;
+}
+
 #videoTable {
     width: 100%;
     border-collapse: collapse;

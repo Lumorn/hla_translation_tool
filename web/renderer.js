@@ -8,13 +8,16 @@ const videoTableBody   = document.querySelector('#videoTable tbody');
 const videoFilter      = document.getElementById('videoFilter');
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
 
-let openPlayer, closePlayer, extractYoutubeId;
+let openPlayer, closePlayer, extractYoutubeId, openVideoDialog, closeVideoDialog;
 import('./ytPlayer.js').then(m => {
     openPlayer       = m.openPlayer;
     closePlayer      = m.closePlayer;
     extractYoutubeId = m.extractYoutubeId;
+    openVideoDialog  = m.openVideoDialog;
+    closeVideoDialog = m.closeVideoDialog;
     // im Fenster verfügbar machen, damit openVideoUrl darauf zugreifen kann
     window.openPlayer = openPlayer;
+    window.openVideoDialog = openVideoDialog;
 });
 
 // Fallback auf LocalStorage, falls die Electron-API fehlt
@@ -65,14 +68,14 @@ ensureDialogSupport(videoMgrDialog);
 openVideoManager.onclick = async () => { await refreshTable(); videoMgrDialog.showModal(); };
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
-    if (typeof closePlayer === 'function') closePlayer();
+    if (typeof closeVideoDialog === 'function') closeVideoDialog();
 };
 videoMgrDialog.addEventListener('cancel', () => {
-    if (typeof closePlayer === 'function') closePlayer();
+    if (typeof closeVideoDialog === 'function') closeVideoDialog();
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {
-        if (typeof closePlayer === 'function') closePlayer();
+        if (typeof closeVideoDialog === 'function') closeVideoDialog();
     }
 });
 
@@ -119,7 +122,7 @@ videoTableBody.onclick = async e => {
     const bm = list[origIdx];
     switch(btn.className){
         case 'start':
-            openPlayer(bm, origIdx);
+            openVideoDialog(bm, origIdx);
             break;
         case 'rename':
             const t = prompt('Neuer Titel', bm.title);
