@@ -13,6 +13,8 @@ import('./ytPlayer.js').then(m => {
     openPlayer       = m.openPlayer;
     closePlayer      = m.closePlayer;
     extractYoutubeId = m.extractYoutubeId;
+    // im Fenster verfügbar machen, damit openVideoUrl darauf zugreifen kann
+    window.openPlayer = openPlayer;
 });
 
 // Fallback auf LocalStorage, falls die Electron-API fehlt

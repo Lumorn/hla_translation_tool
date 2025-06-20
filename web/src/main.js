@@ -6944,17 +6944,38 @@ async function scanAudioDuplicates() {
             }
         }
 
-        // Öffnet die gespeicherte URL in einem neuen Fenster
+        // Öffnet die gespeicherte URL
+        // YouTube-Links werden im eingebetteten Player gestartet und gleichzeitig als Bookmark gespeichert
         async function openVideoUrl() {
             const url = (document.getElementById('videoUrlInput')?.value || '').trim();
             if (!url) return;
-            // URL auf Mindestformat https:// und ohne Leerzeichen prüfen
+            // Mindestformat https:// und ohne Leerzeichen prüfen
             if (!/^https:\/\/\S+$/.test(url)) {
-                // Fehlermeldung anzeigen und nicht öffnen
                 showToast('Ungültige URL – muss mit https:// beginnen und darf keine Leerzeichen enthalten.', 'error');
                 return;
             }
-            if (window.electronAPI && window.electronAPI.openExternal) {
+
+            let list = [];
+            let index = -1;
+            if (window.videoApi && window.videoApi.loadBookmarks) {
+                list = await window.videoApi.loadBookmarks();
+                index = list.findIndex(b => b.url === url);
+                if (index === -1) {
+                    // neuen Bookmark anlegen
+                    list.push({ url, title: url, time: 0 });
+                    // alphabetisch sortieren
+                    list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
+                    index = list.findIndex(b => b.url === url);
+                    await window.videoApi.saveBookmarks(list);
+                }
+            }
+
+            const yt = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i.test(url) ||
+                       /^https?:\/\/youtu\.be\//i.test(url);
+            if (yt && typeof window.openPlayer === 'function') {
+                const bm = list[index] || { url, title: url, time: 0 };
+                window.openPlayer(bm, index);
+            } else if (window.electronAPI && window.electronAPI.openExternal) {
                 await window.electronAPI.openExternal(url);
             } else {
                 window.open(url, '_blank');
