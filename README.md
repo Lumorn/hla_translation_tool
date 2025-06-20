@@ -50,7 +50,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Video-Manager:** Modaler Dialog mit Suchfeld, sortierbaren Spalten (Zeit wird numerisch sortiert, "#" folgt der Originalreihenfolge), Start‑, Umbenennen‑ und Lösch‑Buttons sowie einer Leiste zum Hinzufügen neuer Links.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **YouTube-Player:** Wird jetzt dynamisch über `renderer.js` geladen und spielt Videos direkt im Tool; beim Schließen bleibt die exakte Position per `getCurrentTime()` erhalten.
-* **Video-Dialog:** Neuer Player-Dialog mit Zeitleiste, ±10 s-Steuerung, Reload und Löschfunktion sowie Tastaturkürzeln. Die aktuelle Position wird nun alle zwei Sekunden gespeichert und auch beim nativen Schließen übernommen. Der 🗑️-Button entfernt das aktuell geöffnete Video direkt aus den Bookmarks.
+* **Video-Dialog:** Neuer Player-Dialog mit Zeitleiste, ±10 s-Steuerung, Reload und Löschfunktion. Per **Escape** wird er geschlossen, **Leertaste** startet oder pausiert die Wiedergabe und die **Pfeiltasten** springen jeweils 10 s. Die aktuelle Position wird nun alle zwei Sekunden gespeichert und auch beim nativen Schließen übernommen. Der 🗑️-Button entfernt das aktuell geöffnete Video direkt aus den Bookmarks.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
@@ -360,6 +360,13 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **`Ctrl + Leertaste`**    | Audio abspielen (im Textfeld)                     |
 | **`Tab`**                 | Nächstes Textfeld                                 |
 | **`Shift + Tab`**         | Vorheriges Textfeld                               |
+### Video-Dialog
+
+|  Taste             |  Funktion |
+| ------------------ | ----------------------------- |
+| **`Escape`**       | Player schließen |
+| **`Leertaste`**    | Wiedergabe starten/pausieren |
+| **`←` / `→`**      | 10 s zurück/vor |
 
 ---
 
