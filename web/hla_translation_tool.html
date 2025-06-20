@@ -335,6 +335,8 @@
 <button class="dialog-close-btn" onclick="closeBackupDialog()">×</button>
             <h3>💾 Backups</h3>
             <div id="backupList" style="margin-bottom:15px;"></div>
+            <h4>Sound-ZIP-Backups</h4>
+            <div id="soundBackupList" style="margin-bottom:15px;"></div>
             <div style="margin-bottom:15px;">
                 <label>Intervall (Minuten):
                     <input type="number" id="backupInterval" min="1" style="width:60px;">
@@ -351,6 +353,7 @@
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="createSoundBackup()">Sound-Backup erstellen</button>
                 <button class="btn btn-secondary" onclick="initiateBackupUpload()">Backup hochladen</button>
                 <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
                 <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
