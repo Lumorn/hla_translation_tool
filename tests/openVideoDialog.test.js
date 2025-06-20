@@ -19,21 +19,23 @@ describe('openVideoDialog und Slider', () => {
     beforeEach(() => {
         jest.useFakeTimers();
         document.body.innerHTML = `
-            <dialog id="videoPlayerDialog">
-                <span id="playerDialogTitle"></span>
-                <iframe id="videoPlayerFrame"></iframe>
-                <input type="range" id="videoSlider" />
-                <span id="videoCurrent"></span>
-                <span id="videoDuration"></span>
-                <button id="videoPlay"></button>
-                <button id="videoBack"></button>
-                <button id="videoForward"></button>
-                <button id="videoReload"></button>
-                <button id="videoDelete"></button>
-                <button id="videoClose"></button>
+            <dialog id="videoMgrDialog">
+                <div id="videoPlayerSection" class="video-player-section">
+                    <span id="playerDialogTitle"></span>
+                    <iframe id="videoPlayerFrame"></iframe>
+                    <input type="range" id="videoSlider" />
+                    <span id="videoCurrent"></span>
+                    <span id="videoDuration"></span>
+                    <button id="videoPlay"></button>
+                    <button id="videoBack"></button>
+                    <button id="videoForward"></button>
+                    <button id="videoReload"></button>
+                    <button id="videoDelete"></button>
+                    <button id="videoClose"></button>
+                </div>
             </dialog>`;
         window.videoApi = { loadBookmarks: async () => [], saveBookmarks: async () => true };
-        const dlg = document.getElementById('videoPlayerDialog');
+        const dlg = document.getElementById('videoMgrDialog');
         dlg.showModal = jest.fn();
         window.dialogPolyfill = null;
         window.YT = {
@@ -51,9 +53,10 @@ describe('openVideoDialog und Slider', () => {
         const { openVideoDialog } = loadModule();
         const bookmark = { url: 'https://www.youtube.com/watch?v=abc', title: 't', time: 5 };
         openVideoDialog(bookmark, 1);
-        const dlg = document.getElementById('videoPlayerDialog');
+        const dlg = document.getElementById('videoMgrDialog');
+        const player = document.getElementById('videoPlayerSection');
         const iframe = document.getElementById('videoPlayerFrame');
-        expect(dlg.dataset.index).toBe('1');
+        expect(player.dataset.index).toBe('1');
         expect(iframe.src).toContain('https://www.youtube.com/embed/abc?start=5');
         expect(window.__ytPlayerState).not.toBeNull();
     });

@@ -526,44 +526,46 @@
     <!-- Toast-Meldungen -->
     <div id="toastContainer"></div>
 
-    <!-- Video-Manager Dialog -->
+    <!-- Video-Manager mit integriertem Player -->
     <dialog id="videoMgrDialog" class="video-dialog">
-        <h2>Gespeicherte Videos</h2>
-        <input id="videoFilter" placeholder="Suche …" />
-        <!-- Leiste zum Hinzufügen neuer Videos -->
-        <div class="video-launch">
-            <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
-            <button id="addVideoBtn" class="btn btn-secondary">Hinzufügen</button>
-            <button class="btn btn-secondary" onclick="openVideoUrl()">Öffnen</button>
-        </div>
-        <table id="videoTable">
-            <thead>
-                <tr>
-                    <th data-asc="true">#</th>
-                    <th>Titel</th>
-                    <th>Letzte Zeit</th>
-                    <th>•</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button id="closeVideoDlg" class="primary">Schließen</button>
-    </dialog>
-
-    <!-- Player-Dialog -->
-    <dialog id="videoPlayerDialog">
-        <div class="player-header"><span id="playerDialogTitle"></span></div>
-        <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
-        <div class="player-controls">
-            <span id="videoCurrent">0:00</span>
-            <input type="range" id="videoSlider" value="0" min="0" step="1">
-            <span id="videoDuration">0:00</span>
-            <button id="videoBack">⏮️</button>
-            <button id="videoPlay">▶️</button>
-            <button id="videoForward">⏭️</button>
-            <button id="videoReload">🔄</button>
-            <button id="videoDelete">🗑️</button>
-            <button id="videoClose">❌</button>
+        <div class="video-layout">
+            <div class="video-list-section">
+                <h2>Gespeicherte Videos</h2>
+                <input id="videoFilter" placeholder="Suche …" />
+                <!-- Leiste zum Hinzufügen neuer Videos -->
+                <div class="video-launch">
+                    <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
+                    <button id="addVideoBtn" class="btn btn-secondary">Hinzufügen</button>
+                    <button class="btn btn-secondary" onclick="openVideoUrl()">Öffnen</button>
+                </div>
+                <table id="videoTable">
+                    <thead>
+                        <tr>
+                            <th data-asc="true">#</th>
+                            <th>Titel</th>
+                            <th>Letzte Zeit</th>
+                            <th>•</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button id="closeVideoDlg" class="primary">Schließen</button>
+            </div>
+            <div id="videoPlayerSection" class="video-player-section hidden">
+                <div class="player-header"><span id="playerDialogTitle"></span></div>
+                <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
+                <div class="player-controls">
+                    <span id="videoCurrent">0:00</span>
+                    <input type="range" id="videoSlider" value="0" min="0" step="1">
+                    <span id="videoDuration">0:00</span>
+                    <button id="videoBack">⏮️</button>
+                    <button id="videoPlay">▶️</button>
+                    <button id="videoForward">⏭️</button>
+                    <button id="videoReload">🔄</button>
+                    <button id="videoDelete">🗑️</button>
+                    <button id="videoClose">❌</button>
+                </div>
+            </div>
         </div>
     </dialog>
 
