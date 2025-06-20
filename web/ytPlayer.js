@@ -7,7 +7,6 @@ export function extractYoutubeId(url) {
 }
 
 // öffnet den Player für ein Bookmark
-// öffnet den Player für ein Bookmark
 export function openPlayer(bookmark, index) {
     const div = document.getElementById('ytPlayerBox');
     if (!div) return;
