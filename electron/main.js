@@ -208,6 +208,15 @@ app.commandLine.appendSwitch('disable-gpu-compositing');
 app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
 
 app.whenReady().then(() => {
+  // Problematischen Permissions-Policy-Header entfernen
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    const headers = details.responseHeaders;
+    const key = Object.keys(headers).find(h => h.toLowerCase() === 'permissions-policy');
+    if (key) {
+      delete headers[key]; // entfernt ch-ua-form-factors und andere unbekannte Einträge
+    }
+    callback({ responseHeaders: headers });
+  });
   // Basis- und Sprachordner relativ zur Projektwurzel bestimmen
   const projectBase = SOUNDS_BASE_PATH;
   const enPath = path.resolve(projectBase, 'EN');
