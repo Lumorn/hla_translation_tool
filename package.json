@@ -17,6 +17,7 @@
     "update-version": "node updateVersion.js"
   },
   "dependencies": {
+    "archiver": "^6.0.2",
     "chokidar": "^4.0.3",
     "ffmpeg-static": "^5.2.0",
     "progress": "^2.0.3"

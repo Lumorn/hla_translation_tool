@@ -21,6 +21,7 @@ const backupsDirName = chooseExisting(projectRoot, ['Backups', 'backups']);
 const historyUtils = require('../historyUtils');
 const { watchDownloadFolder, clearDownloadFolder, pruefeAudiodatei } = require('../watcher.js');
 const { isDubReady } = require('../elevenlabs.js');
+const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../soundBackupUtils');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
@@ -44,6 +45,9 @@ const oldBackupPath = path.join(projectRoot, backupsDirName);
 // Zusätzlicher Ordner für gesicherte MP3-Dateien
 const audioBackupPath = path.join(backupPath, 'mp3');
 fs.mkdirSync(audioBackupPath, { recursive: true });
+// Ordner für ZIP-Sicherungen der Sounds anlegen
+const soundZipBackupPath = path.join(backupPath, 'sounds');
+fs.mkdirSync(soundZipBackupPath, { recursive: true });
 // Hilfsfunktion: sicheres Verschieben ueber Dateisystemgrenzen hinweg
 function safeMove(src, dest) {
   try {
@@ -253,6 +257,21 @@ app.whenReady().then(() => {
     }
     if (fs.existsSync(file)) fs.unlinkSync(file);
     return true;
+  });
+
+  // Liste der vorhandenen Sound-ZIP-Backups
+  ipcMain.handle('list-sound-backups', async () => {
+    return listSoundBackups(soundZipBackupPath);
+  });
+
+  // Neues Sound-ZIP-Backup erstellen
+  ipcMain.handle('create-sound-backup', async () => {
+    return await createSoundBackup(soundZipBackupPath, dePath, deBackupPath, deHistoryPath, 5);
+  });
+
+  // Sound-ZIP-Backup löschen
+  ipcMain.handle('delete-sound-backup', async (event, name) => {
+    return deleteSoundBackup(soundZipBackupPath, name);
   });
 
   // Backup-Ordner im Dateimanager öffnen

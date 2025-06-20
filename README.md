@@ -20,6 +20,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [⌨️ Keyboard Shortcuts](#-keyboard-shortcuts)
 * [📥 Import](#-import)
 * [📁 Ordner-Management](#-ordner-management)
+* [💾 Backup](#-backup)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
 ---
@@ -398,6 +399,12 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 
 ---
 
+## 💾 Backup
+
+Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups.
+
+---
+
 ## 🔧 Erweiterte Funktionen
 
 ### Auto‑Scan‑System
@@ -545,6 +552,9 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
 * **`backup-de-file(relPath)`** – kopiert eine vorhandene deutsche Audiodatei nach `DE-Backup`, sofern dort noch keine Sicherung existiert.
 * **`delete-de-backup-file(relPath)`** – löscht eine Sicherung aus `DE-Backup` und entfernt leere Unterordner.
 * **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
+* **`create-sound-backup()`** – packt `Sounds/DE`, `DE-Backup` und `DE-History` als ZIP in `Backups/sounds`.
+* **`list-sound-backups()`** – listet vorhandene ZIP-Sicherungen auf.
+* **`delete-sound-backup(name)`** – entfernt ein ZIP-Backup.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.

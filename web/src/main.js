@@ -63,6 +63,8 @@ let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiederga
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
 let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
 let autoBackupTimer    = null;
+// Maximale Anzahl an Sound-ZIP-Backups
+let soundBackupLimit   = 5;
 
 // Warteschlange für automatische Übersetzungen
 let translateQueue     = [];
@@ -6005,6 +6007,42 @@ function checkFileAccess() {
         }
 // =========================== ENFORCEBACKUPLIMIT END =======================
 
+// =========================== SOUNDBACKUP START ============================
+        async function createSoundBackup() {
+            if (!window.electronAPI || !window.electronAPI.createSoundBackup) return;
+            await window.electronAPI.createSoundBackup();
+            loadSoundBackupList();
+            updateStatus('Sound-Backup erstellt');
+        }
+
+        async function loadSoundBackupList() {
+            const listDiv = document.getElementById('soundBackupList');
+            if (!listDiv) return;
+            listDiv.innerHTML = '';
+            if (!window.electronAPI || !window.electronAPI.listSoundBackups) return;
+            const files = await window.electronAPI.listSoundBackups();
+            files.forEach(name => {
+                const item = document.createElement('div');
+                item.className = 'backup-item';
+                const label = document.createElement('span');
+                label.textContent = name;
+                const del = document.createElement('button');
+                del.textContent = 'Löschen';
+                del.onclick = () => { deleteSoundBackup(name); };
+                item.appendChild(label);
+                item.appendChild(del);
+                listDiv.appendChild(item);
+            });
+        }
+
+        async function deleteSoundBackup(name) {
+            if (window.electronAPI && window.electronAPI.deleteSoundBackup) {
+                await window.electronAPI.deleteSoundBackup(name);
+                loadSoundBackupList();
+            }
+        }
+// =========================== SOUNDBACKUP END ==============================
+
 // =========================== LOADBACKUPLIST START ========================
         async function loadBackupList() {
             const listDiv = document.getElementById('backupList');
@@ -6040,6 +6078,7 @@ function checkFileAccess() {
         function showBackupDialog() {
             document.getElementById('backupDialog').style.display = 'flex';
             loadBackupList();
+            loadSoundBackupList();
             document.getElementById('backupInterval').focus();
             document.getElementById('backupInterval').onchange = () => {
                 autoBackupInterval = parseInt(document.getElementById('backupInterval').value) || 1;
