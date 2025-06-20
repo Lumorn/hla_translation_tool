@@ -117,14 +117,7 @@ export function openVideoDialog(bookmark, index) {
     deleteBtn.onclick = deleteCurrentVideo;
     closeBtn.onclick = closeVideoDialog;
 
-    dlg.__playerKey = function(e){
-        if (!dlg.open) return;
-        if (e.key === 'Escape') { e.preventDefault(); closeVideoDialog(); }
-        if (e.key === ' ') { e.preventDefault(); playBtn.click(); }
-        if (e.key === 'ArrowLeft') { e.preventDefault(); backBtn.click(); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); fwdBtn.click(); }
-    };
-    document.addEventListener('keydown', dlg.__playerKey);
+
 
     // speichert auch bei nativen Dialog-Schließen
     dlg.addEventListener('close', () => {
@@ -150,7 +143,6 @@ export async function closeVideoDialog() {
     if (dlg.__closing) return;
     dlg.__closing = true;
     if (dlg.open) dlg.close();
-    if (dlg.__playerKey) { document.removeEventListener('keydown', dlg.__playerKey); dlg.__playerKey = null; }
     document.getElementById('videoPlayerFrame').src = '';
 
     let exactTime;
@@ -223,6 +215,31 @@ export async function closePlayer() {
         window.__ytPlayerState = null;
     }
 }
+
+// globaler Keydown-Listener für den Video-Dialog
+document.addEventListener('keydown', e => {
+    const dlg = document.getElementById('videoPlayerDialog');
+    if (!dlg || !dlg.open) return;
+    const playBtn = document.getElementById('videoPlay');
+    const backBtn = document.getElementById('videoBack');
+    const fwdBtn  = document.getElementById('videoForward');
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        closeVideoDialog();
+    }
+    if (e.key === ' ') {
+        e.preventDefault();
+        if (playBtn) playBtn.click();
+    }
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (backBtn) backBtn.click();
+    }
+    if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (fwdBtn) fwdBtn.click();
+    }
+});
 
 // Node-kompatibler Export für Tests
 if (typeof module !== 'undefined' && module.exports) {
