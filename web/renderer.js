@@ -78,7 +78,15 @@ async function refreshTable(sortKey='title', dir=true) {
     let list = await getBookmarks();
     const q = videoFilter.value.toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
-    list.sort((a,b)=> dir ? (''+a[sortKey]).localeCompare(b[sortKey],'de') : (''+b[sortKey]).localeCompare(a[sortKey],'de'));
+    // Zeit numerisch sortieren, sonst localeCompare nutzen
+    list.sort((a,b)=> {
+        if(sortKey === 'time'){
+            return dir ? a.time - b.time : b.time - a.time;
+        }
+        return dir
+            ? (''+a[sortKey]).localeCompare(b[sortKey],'de')
+            : (''+b[sortKey]).localeCompare(a[sortKey],'de');
+    });
     videoTableBody.innerHTML = '';
     list.forEach((b,i) => {
         const tr = document.createElement('tr');
