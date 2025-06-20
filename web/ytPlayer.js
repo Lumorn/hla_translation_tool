@@ -137,6 +137,15 @@ export async function closeVideoDialog() {
     if (window.currentYT && window.currentYT.destroy) { window.currentYT.destroy(); }
     window.currentYT = null;
 
+    // Wenn das IFrame durch destroy() entfernt wurde, neu anlegen
+    if (!document.getElementById('videoPlayerFrame')) {
+        const controls = dlg.querySelector('.player-controls');
+        const nf = document.createElement('iframe');
+        nf.id = 'videoPlayerFrame';
+        nf.setAttribute('allow', 'autoplay; fullscreen');
+        dlg.insertBefore(nf, controls);
+    }
+
     if (window.__ytPlayerState) {
         clearInterval(window.__ytPlayerState.interval);
         if (window.__ytPlayerState.uiInterval) clearInterval(window.__ytPlayerState.uiInterval);

@@ -55,6 +55,8 @@
 * Die Untertitel-Suche bewertet nur noch ganze Wörter, wodurch keine falschen 100-%-Treffer mehr erscheinen.
 ## 🛠️ Patch in 1.40.26
 * Die Content Security Policy lässt nun Bilder von `i.ytimg.com` zu, damit der YouTube-Player ohne Fehlermeldung startet.
+## 🛠️ Patch in 1.40.27
+* Problem behoben, bei dem der YouTube-Player nach erneutem Öffnen den `videoPlayerFrame` nicht fand.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
