@@ -2390,6 +2390,13 @@ th:nth-child(6) {
     margin-top: 10px;
 }
 
+.video-dialog { width: 80vw; max-height: 80vh; padding:1rem; }
+#videoTable  { width:100%; border-collapse:collapse; }
+#videoTable thead th { cursor:pointer; border-bottom:1px solid #555; }
+#videoTable tbody tr:hover { background:#222; }
+#videoTable td, #videoTable th { padding:0.3rem 0.6rem; }
+.video-actions button { margin:0 2px; }
+
 .accordion-content {
     display: none;
     margin-top: 10px;
