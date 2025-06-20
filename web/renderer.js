@@ -182,8 +182,9 @@ addBtn.onclick = async () => {
         if (!res.ok) throw new Error('oEmbed fehlgeschlagen');
         ({ title } = await res.json());
     } catch(err) {
-        alert('Titel konnte nicht geladen werden');
-        return;
+        // Falls oEmbed fehlschlägt, URL als Titel verwenden und nur Hinweis zeigen
+        alert('Titel konnte nicht geladen werden – verwende URL als Titel');
+        title = raw;
     }
 
     list.push({ url: raw, title, time: 0 });

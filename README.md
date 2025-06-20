@@ -43,7 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
-* **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch.
+* **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
 * **Video-Manager:** Modaler Dialog mit Suchfeld, sortierbaren Spalten (Zeit wird numerisch sortiert, "#" folgt der Originalreihenfolge), Start‑, Umbenennen‑ und Lösch‑Buttons sowie einer Leiste zum Hinzufügen neuer Links.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **YouTube-Player:** Spielt YouTube-Videos direkt im Tool; Schließen blendet den Player aus und merkt sich die aktuelle Position.
