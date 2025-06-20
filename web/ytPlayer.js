@@ -8,6 +8,7 @@ function extractId(url) {
 
 // merkt sich die aktuelle Player-Instanz
 let ytPlayer = null;
+let currentBookmark = null;
 
 // öffnet den Player mit den Angaben aus dem Bookmark
 export function openPlayer(bookmark) {
@@ -19,16 +20,32 @@ export function openPlayer(bookmark) {
     if (ytPlayer) ytPlayer.destroy();
     ytPlayer = new YT.Player('ytIframe');
     window.currentYT = ytPlayer;
+    currentBookmark = bookmark;
 }
 
 // schließt den Player wieder
-export function closePlayer() {
+export async function closePlayer() {
     const div = document.getElementById('ytPlayerBox');
     div.style.display = 'none';
     div.innerHTML = '';
     if (ytPlayer) {
+        const pos = ytPlayer.getCurrentTime ? ytPlayer.getCurrentTime() : 0;
+        if (currentBookmark) {
+            currentBookmark.time = pos;
+            try {
+                let list = await window.videoApi.loadBookmarks();
+                const idx = list.findIndex(b => b.url === currentBookmark.url);
+                if (idx >= 0) {
+                    list[idx] = currentBookmark;
+                    await window.videoApi.saveBookmarks(list);
+                }
+            } catch (e) {
+                console.error('Bookmark konnte nicht gespeichert werden', e);
+            }
+        }
         ytPlayer.destroy();
         ytPlayer = null;
     }
     window.currentYT = null;
+    currentBookmark = null;
 }

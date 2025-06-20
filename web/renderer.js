@@ -1,14 +1,18 @@
 // Elemente holen
-const urlInput = document.getElementById('videoUrlInput');
-const addBtn   = document.getElementById('addVideoBtn');
+const videoUrlInput = document.getElementById('videoUrlInput');
+const addVideoBtn   = document.getElementById('addVideoBtn');
 
-const openBtn   = document.getElementById('openVideoManager');
-const dlg       = document.getElementById('videoMgrDialog');
-const tbody     = document.querySelector('#videoTable tbody');
-const filterInp = document.getElementById('videoFilter');
+const openVideoManager = document.getElementById('openVideoManager');
+const videoMgrDialog   = document.getElementById('videoMgrDialog');
+const videoTableBody   = document.querySelector('#videoTable tbody');
+const videoFilter      = document.getElementById('videoFilter');
+const closeVideoDlg    = document.getElementById('closeVideoDlg');
 
-let openPlayer;
-import('./ytPlayer.js').then(m => { openPlayer = m.openPlayer; });
+let openPlayer, closePlayer;
+import('./ytPlayer.js').then(m => {
+    openPlayer = m.openPlayer;
+    closePlayer = m.closePlayer;
+});
 
 // Dialog-Unterstützung sicherstellen
 function ensureDialogSupport(d) {
@@ -23,18 +27,21 @@ function ensureDialogSupport(d) {
         document.head.appendChild(s);
     }
 }
-ensureDialogSupport(dlg);
+ensureDialogSupport(videoMgrDialog);
 
-openBtn.onclick = async () => { await refreshTable(); dlg.showModal(); };
-document.getElementById('closeVideoDlg').onclick = () => dlg.close();
+openVideoManager.onclick = async () => { await refreshTable(); videoMgrDialog.showModal(); };
+closeVideoDlg.onclick = () => {
+    videoMgrDialog.close();
+    if (typeof closePlayer === 'function') closePlayer();
+};
 
 let asc = true;
 async function refreshTable(sortKey='title', dir=true) {
     let list = await window.videoApi.loadBookmarks();
-    const q = filterInp.value.toLowerCase();
+    const q = videoFilter.value.toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
     list.sort((a,b)=> dir ? (''+a[sortKey]).localeCompare(b[sortKey],'de') : (''+b[sortKey]).localeCompare(a[sortKey],'de'));
-    tbody.innerHTML = '';
+    videoTableBody.innerHTML = '';
     list.forEach((b,i) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -47,12 +54,12 @@ async function refreshTable(sortKey='title', dir=true) {
                 <button class="rename" data-idx="${i}">✎</button>
                 <button class="delete" data-idx="${i}">🗑</button>
             </td>`;
-        tbody.appendChild(tr);
+        videoTableBody.appendChild(tr);
     });
 }
 
 // Delegierte Button-Events
-tbody.onclick = async e => {
+videoTableBody.onclick = async e => {
     const btn = e.target.closest('button');
     if (!btn) return;
     const idx = Number(btn.dataset.idx);
@@ -60,6 +67,7 @@ tbody.onclick = async e => {
     const bm = list[idx];
     switch(btn.className){
         case 'start':
+            if (typeof closePlayer === 'function') await closePlayer();
             openPlayer(bm);
             break;
         case 'rename':
@@ -83,7 +91,7 @@ document.querySelectorAll('#videoTable thead th').forEach(th => {
     };
 });
 
-filterInp.oninput = () => refreshTable();
+videoFilter.oninput = () => refreshTable();
 
 function formatTime(sec){
     const m=Math.floor(sec/60);
@@ -91,17 +99,49 @@ function formatTime(sec){
     return m+':'+('0'+s).slice(-2);
 }
 
+// extrahiert die Video-ID aus einer YouTube-URL
+function getYoutubeId(u){
+    const m = u.match(/[?&]v=([^&]+)/) || u.match(/youtu\.be\/([^?]+)/);
+    return m ? m[1] : '';
+}
+
 // Add-Button Status
-function updateAddBtn(){ addBtn.disabled = urlInput.value.trim() === ''; }
+function updateAddBtn(){ addVideoBtn.disabled = videoUrlInput.value.trim() === ''; }
 updateAddBtn();
-urlInput.addEventListener('input', updateAddBtn);
-addBtn.addEventListener('click', async () => {
-    const url = urlInput.value.trim();
-    if (!url) return;
+videoUrlInput.addEventListener('input', updateAddBtn);
+addVideoBtn.addEventListener('click', async () => {
+    const url = videoUrlInput.value.trim();
+    if (!url || !url.startsWith('https://')) {
+        alert('Ungültige URL');
+        return;
+    }
+    if (!getYoutubeId(url)) {
+        alert('Keine gültige YouTube-URL');
+        return;
+    }
+
     let list = await window.videoApi.loadBookmarks();
-    if (list.some(b => b.url === url)) { alert('Schon vorhanden'); return; }
-    list.push({title:url, url, time:0});
+    if (list.some(b => b.url === url)) {
+        alert('Schon vorhanden');
+        return;
+    }
+
+    let title = url;
+    try {
+        const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
+        if (res.ok) {
+            const data = await res.json();
+            title = data.title;
+        }
+    } catch (err) {
+        console.warn('Titel konnte nicht geladen werden', err);
+    }
+
+    list.push({ url, title, time: 0 });
+    list.sort((a, b) => a.title.localeCompare(b.title, 'de'));
     await window.videoApi.saveBookmarks(list);
-    refreshTable();
-    alert('Gespeichert');
+    videoUrlInput.value = '';
+    updateAddBtn();
+    if (videoMgrDialog.open) refreshTable();
+    if (typeof showToast === 'function') showToast('Video gespeichert');
 });
