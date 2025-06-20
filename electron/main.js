@@ -7,7 +7,7 @@
  * @typedef {import('./ipcContracts').RestoreDeHistoryArgs} RestoreDeHistoryArgs
  * @typedef {import('./ipcContracts').SaveDeHistoryBufferArgs} SaveDeHistoryBufferArgs
  */
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell, session } = require('electron'); // session wird für Header-Manipulation benötigt
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
