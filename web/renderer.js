@@ -38,6 +38,12 @@ if (!window.videoApi) {
     };
 }
 
+// Hilfsfunktion: fügt jedem Bookmark seinen ursprünglichen Index hinzu
+async function getBookmarks() {
+    const list = await window.videoApi.loadBookmarks();
+    return list.map((b, i) => ({ ...b, origIndex: i }));
+}
+
 // Dialog-Unterstützung sicherstellen
 function ensureDialogSupport(d) {
     if (typeof d.showModal !== 'function') {
@@ -69,7 +75,7 @@ document.addEventListener('keydown', e => {
 
 let asc = true;
 async function refreshTable(sortKey='title', dir=true) {
-    let list = await window.videoApi.loadBookmarks();
+    let list = await getBookmarks();
     const q = videoFilter.value.toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
     list.sort((a,b)=> dir ? (''+a[sortKey]).localeCompare(b[sortKey],'de') : (''+b[sortKey]).localeCompare(a[sortKey],'de'));
@@ -81,9 +87,9 @@ async function refreshTable(sortKey='title', dir=true) {
             <td title="${b.url}">${b.title.slice(0,40)}</td>
             <td>${formatTime(b.time)}</td>
             <td class="video-actions">
-                <button class="start" data-idx="${i}">▶</button>
-                <button class="rename" data-idx="${i}">✎</button>
-                <button class="delete" data-idx="${i}">🗑</button>
+                <button class="start" data-idx="${b.origIndex}">▶</button>
+                <button class="rename" data-idx="${b.origIndex}">✎</button>
+                <button class="delete" data-idx="${b.origIndex}">🗑</button>
             </td>`;
         videoTableBody.appendChild(tr);
     });
@@ -93,12 +99,12 @@ async function refreshTable(sortKey='title', dir=true) {
 videoTableBody.onclick = async e => {
     const btn = e.target.closest('button');
     if (!btn) return;
-    const idx = Number(btn.dataset.idx);
+    const origIdx = Number(btn.dataset.idx);
     let list = await window.videoApi.loadBookmarks();
-    const bm = list[idx];
+    const bm = list[origIdx];
     switch(btn.className){
         case 'start':
-            openPlayer(bm, idx);
+            openPlayer(bm, origIdx);
             break;
         case 'rename':
             const t = prompt('Neuer Titel', bm.title);
@@ -110,7 +116,7 @@ videoTableBody.onclick = async e => {
             break;
         case 'delete':
             if (confirm('Wirklich löschen?')) {
-                list.splice(idx,1);
+                list.splice(origIdx,1);
                 await window.videoApi.saveBookmarks(list);
                 refreshTable();
             }
