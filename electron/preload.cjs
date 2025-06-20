@@ -73,5 +73,11 @@ if (typeof require !== 'function') {
     startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
   });
+
+  // API für Video-Bookmarks bereitstellen
+  contextBridge.exposeInMainWorld('videoApi', {
+    loadBookmarks: () => ipcRenderer.invoke('load-bookmarks'),
+    saveBookmarks: list => ipcRenderer.invoke('save-bookmarks', list),
+  });
   console.log('[Preload] erfolgreich geladen');
 }

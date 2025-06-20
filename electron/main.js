@@ -69,6 +69,33 @@ fs.mkdirSync(sessionDataPath, { recursive: true });
 app.setPath('sessionData', sessionDataPath);
 // =========================== USER-DATA-PFAD END =============================
 
+// =========================== VIDEO-BOOKMARKS START ==========================
+// Pfad zur Datei mit den gespeicherten Video-Bookmarks
+const dataPath = app.getPath('userData');
+const bookmarkFile = path.join(dataPath, 'videoBookmarks.json');
+
+// Liest vorhandene Bookmarks aus der JSON-Datei
+function readBookmarks() {
+  try {
+    if (fs.existsSync(bookmarkFile)) {
+      return JSON.parse(fs.readFileSync(bookmarkFile, 'utf8'));
+    }
+  } catch (err) {
+    console.error('Bookmarks konnten nicht geladen werden', err);
+  }
+  return [];
+}
+
+// Speichert eine Liste von Bookmarks in der JSON-Datei
+function saveBookmarks(list) {
+  try {
+    fs.writeFileSync(bookmarkFile, JSON.stringify(list ?? []));
+  } catch (err) {
+    console.error('Bookmarks konnten nicht gespeichert werden', err);
+  }
+}
+// =========================== VIDEO-BOOKMARKS END ============================
+
 
 // Pfade zu EN und DE relativ zur HTML-Datei
 
@@ -283,6 +310,15 @@ app.whenReady().then(() => {
   // Beliebige URL im Standardbrowser öffnen
   ipcMain.handle('open-external', async (event, url) => {
     shell.openExternal(url);
+    return true;
+  });
+
+  // Bookmarks aus dem userData-Ordner laden
+  ipcMain.handle('load-bookmarks', () => readBookmarks());
+
+  // Bookmarks im userData-Ordner speichern
+  ipcMain.handle('save-bookmarks', (event, list) => {
+    saveBookmarks(list);
     return true;
   });
 
