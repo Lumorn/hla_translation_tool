@@ -41,9 +41,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
-* **Video-Bookmarks:** Merkt pro Link die zuletzt gesehene Zeit und setzt sie beim nächsten Start fort.
+* **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Video-Manager:** Modaler Dialog mit Suchfeld, sortierbaren Spalten, Start‑, Umbenennen‑ und Lösch‑Buttons sowie einer Leiste zum Hinzufügen neuer Links.
-* **YouTube-Player:** Startet Videos direkt im Tool und speichert beim Schließen die aktuelle Position.
+* **YouTube-Player:** Spielt YouTube-Videos direkt im Tool; Schließen blendet den Player aus.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
 ### 📊 Fortschritts‑Tracking
