@@ -1,7 +1,7 @@
 // Steuert den eingebetteten YouTube-Player
 
 // extrahiert die Video-ID aus einer YouTube-URL
-function extractId(url) {
+export function extractYoutubeId(url) {
     const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
     return m ? m[1] : '';
 }
@@ -13,7 +13,7 @@ export function openPlayer(bookmark, index) {
     if (!div) return;
     div.style.display = 'block';
     div.innerHTML = `<iframe id="ytIframe" width="100%" height="100%"
-        src="https://www.youtube.com/embed/${extractId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1"
+        src="https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1"
         allow="autoplay; fullscreen" frameborder="0"></iframe>`;
     if (window.currentYT && window.currentYT.destroy) {
         window.currentYT.destroy();
@@ -54,4 +54,9 @@ export async function closePlayer() {
         await window.videoApi.saveBookmarks(list);
         window.__ytPlayerState = null;
     }
+}
+
+// Node-kompatibler Export für Tests
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { openPlayer, closePlayer, extractYoutubeId };
 }
