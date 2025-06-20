@@ -25,6 +25,10 @@ export function openVideoDialog(bookmark, index) {
     dlg.querySelector('#playerDialogTitle').textContent = bookmark.title;
 
     const iframe = document.getElementById('videoPlayerFrame');
+    if (!iframe) {
+        console.warn('videoPlayerFrame nicht gefunden');
+        return;
+    }
     iframe.id = 'videoPlayerFrame';
     iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
 
@@ -123,7 +127,8 @@ export async function closeVideoDialog() {
     if (dlg.__closing) return;
     dlg.__closing = true;
     if (dlg.open) dlg.close();
-    document.getElementById('videoPlayerFrame').src = '';
+    const frame = document.getElementById('videoPlayerFrame');
+    if (frame) frame.src = '';
 
     let exactTime;
     if (window.currentYT && typeof window.currentYT.getCurrentTime === 'function') {
