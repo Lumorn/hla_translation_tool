@@ -14,7 +14,7 @@ import('./ytPlayer.js').then(m => {
     closePlayer = m.closePlayer;
     document.addEventListener('video-start', async ({detail:index}) => {
         const list = await window.videoApi.loadBookmarks();
-        openPlayer(list[index]);
+        openPlayer(list[index], index);
     });
 });
 
