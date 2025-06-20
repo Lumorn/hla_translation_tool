@@ -238,6 +238,7 @@ Seit Patch 1.40.37 entfernt die Untertitel-Suche zusätzlich Tags wie `<HEADSET>
 Seit Patch 1.40.38 berechnet die Untertitel-Suche die Ähnlichkeit präziser und ignoriert kurze Wortfragmente.
 Seit Patch 1.40.39 ersetzt sie `<sb>`- und `<br>`-Tags automatisch durch Leerzeichen und fügt fehlende Leerzeichen nach Satzzeichen ein.
 Seit Patch 1.40.40 entfernt der Dateiwächter beim automatischen Import persönliche Namensendungen wie `_Alex` oder `-Bob`.
+Seit Patch 1.40.41 startet die Desktop-App ohne Fehlermeldung, da `session` in `electron/main.js` korrekt eingebunden ist.
 
 
 Beispiel einer gültigen CSV:
