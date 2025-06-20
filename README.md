@@ -42,6 +42,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
+* **Tests für Video-Bookmarks:** Überprüfen Laden, Sortierung sowie Hinzufügen und Entfernen von Einträgen.
 * **Prüfung von Video-Links:** Eingaben müssen mit `https://` beginnen und dürfen keine Leerzeichen enthalten.
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
 * **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
