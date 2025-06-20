@@ -58,4 +58,6 @@ export type IpcChannels =
   | 'dub-log'
   | 'save-error'
   | 'start-hla'
+  | 'load-bookmarks'
+  | 'save-bookmarks'
   | 'open-external';
