@@ -8,10 +8,11 @@ const videoTableBody   = document.querySelector('#videoTable tbody');
 const videoFilter      = document.getElementById('videoFilter');
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
 
-let openPlayer, closePlayer;
+let openPlayer, closePlayer, extractYoutubeId;
 import('./ytPlayer.js').then(m => {
-    openPlayer  = m.openPlayer;
-    closePlayer = m.closePlayer;
+    openPlayer       = m.openPlayer;
+    closePlayer      = m.closePlayer;
+    extractYoutubeId = m.extractYoutubeId;
 });
 
 // Fallback auf LocalStorage, falls die Electron-API fehlt
@@ -156,11 +157,6 @@ function formatTime(sec){
     return m+':'+('0'+s).slice(-2);
 }
 
-// extrahiert die Video-ID aus einer YouTube-URL
-function getYoutubeId(u){
-    const m = u.match(/[?&]v=([^&]+)/) || u.match(/youtu\.be\/([^?]+)/);
-    return m ? m[1] : '';
-}
 
 // Add-Button Status
 function updateAddBtn(){ addBtn.disabled = urlInput.value.trim() === ''; }
