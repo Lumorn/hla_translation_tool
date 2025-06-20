@@ -42,7 +42,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über die Start-Leiste lassen sich mehrere URLs speichern und per Knopfdruck öffnen.
 * **Video-Bookmarks:** Speichert pro Nutzer die zuletzt gesehene Position einzelner Videos.
-* **Video-Manager:** Verwaltet alle gespeicherten Links in einem eigenen Dialog.
+* **Video-Manager:** Sortierbare Tabelle mit Suchfeld zum Verwalten aller gespeicherten Links.
 * **YouTube-Player:** Startet Videos direkt im Tool und lässt sich im Dialog schliessen.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 

@@ -1,96 +1,106 @@
 // Elemente holen
-const urlInput       = document.getElementById('videoUrlInput');
-const addBtn         = document.getElementById('addVideoBtn');
-const videoMgrBtn    = document.getElementById('openVideoManager');
-const videoDialog    = document.getElementById('videoMgrDialog');
-const videoTableBody = document.getElementById('videoTableBody');
-const closeVideoMgr  = document.getElementById('closeVideoMgr');
-const closePlayerBtn = document.getElementById('closePlayerBtn');
+const urlInput = document.getElementById('videoUrlInput');
+const addBtn   = document.getElementById('addVideoBtn');
 
-let openPlayer, closePlayer;
-import('./ytPlayer.js').then(mod => {
-    openPlayer = mod.openPlayer;
-    closePlayer = mod.closePlayer;
-});
+const openBtn   = document.getElementById('openVideoManager');
+const dlg       = document.getElementById('videoMgrDialog');
+const tbody     = document.querySelector('#videoTable tbody');
+const filterInp = document.getElementById('videoFilter');
 
-let list = [];
+let openPlayer;
+import('./ytPlayer.js').then(m => { openPlayer = m.openPlayer; });
 
-// Dialog-Unterstützung prüfen und ggf. Polyfill laden
-function ensureDialogSupport(dlg) {
-    if (typeof dlg.showModal !== 'function') {
+// Dialog-Unterstützung sicherstellen
+function ensureDialogSupport(d) {
+    if (typeof d.showModal !== 'function') {
         const l = document.createElement('link');
         l.rel = 'stylesheet';
         l.href = 'https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.css';
         document.head.appendChild(l);
         const s = document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.js';
-        s.onload = () => window.dialogPolyfill.registerDialog(dlg);
+        s.onload = () => window.dialogPolyfill.registerDialog(d);
         document.head.appendChild(s);
     }
 }
-ensureDialogSupport(videoDialog);
+ensureDialogSupport(dlg);
 
-videoMgrBtn.addEventListener('click', () => {
-    refreshTable();
-    videoDialog.showModal();
-});
-closeVideoMgr.addEventListener('click', () => videoDialog.close());
-closePlayerBtn.addEventListener('click', () => closePlayer());
-videoDialog.addEventListener('keydown', e => { if (e.key === 'Escape') closePlayer(); });
-document.addEventListener('video-start', ({detail}) => {
-    if (openPlayer) openPlayer(list[detail]);
-});
+openBtn.onclick = async () => { await refreshTable(); dlg.showModal(); };
+document.getElementById('closeVideoDlg').onclick = () => dlg.close();
 
-// Tabelle neu aufbauen
-async function refreshTable() {
-    list = await window.videoApi.loadBookmarks();
-    videoTableBody.innerHTML = '';
-    list.forEach((b, i) => {
+let asc = true;
+async function refreshTable(sortKey='title', dir=true) {
+    let list = await window.videoApi.loadBookmarks();
+    const q = filterInp.value.toLowerCase();
+    if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
+    list.sort((a,b)=> dir ? (''+a[sortKey]).localeCompare(b[sortKey],'de') : (''+b[sortKey]).localeCompare(a[sortKey],'de'));
+    tbody.innerHTML = '';
+    list.forEach((b,i) => {
         const tr = document.createElement('tr');
-        const urlCell = document.createElement('td');
-        urlCell.textContent = b.url;
-        const timeCell = document.createElement('td');
-        timeCell.textContent = b.time ?? 0;
-        const startCell = document.createElement('td');
-        const startBtn = document.createElement('button');
-        startBtn.textContent = 'Start';
-        startBtn.addEventListener('click', () => {
-            videoDialog.dispatchEvent(new CustomEvent('video-start', { detail: i }));
-            console.log('Starte Video', i);
-        });
-        startCell.appendChild(startBtn);
-        const delCell = document.createElement('td');
-        const delBtn = document.createElement('button');
-        delBtn.textContent = 'Löschen';
-        delBtn.addEventListener('click', async () => {
-            list.splice(i, 1);
-            await window.videoApi.saveBookmarks(list);
-            refreshTable();
-        });
-        delCell.appendChild(delBtn);
-        tr.append(urlCell, timeCell, startCell, delCell);
-        videoTableBody.appendChild(tr);
+        tr.innerHTML = `
+            <td>${i+1}</td>
+            <td title="${b.title}">${b.title.slice(0,40)}</td>
+            <td title="${b.url}">${b.url.slice(0,30)}…</td>
+            <td>${formatTime(b.time)}</td>
+            <td class="video-actions">
+                <button class="start" data-idx="${i}">▶</button>
+                <button class="rename" data-idx="${i}">✎</button>
+                <button class="delete" data-idx="${i}">🗑</button>
+            </td>`;
+        tbody.appendChild(tr);
     });
 }
 
-// Button-Status je nach Eingabe anpassen
-function updateAddBtn() {
-    addBtn.disabled = urlInput.value.trim() === '';
+// Delegierte Button-Events
+tbody.onclick = async e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const idx = Number(btn.dataset.idx);
+    let list = await window.videoApi.loadBookmarks();
+    const bm = list[idx];
+    switch(btn.className){
+        case 'start':
+            openPlayer(bm);
+            break;
+        case 'rename':
+            const t = prompt('Neuer Titel', bm.title);
+            if (t) { bm.title = t; await window.videoApi.saveBookmarks(list); refreshTable(); }
+            break;
+        case 'delete':
+            if (confirm('Löschen?')) { list.splice(idx,1); await window.videoApi.saveBookmarks(list); refreshTable(); }
+            break;
+    }
+};
+
+// Sortierbare Header
+document.querySelectorAll('#videoTable thead th').forEach(th => {
+    th.onclick = () => {
+        const keyMap = {0:'index',1:'title',2:'url',3:'time'};
+        const key = keyMap[Array.from(th.parentNode.children).indexOf(th)];
+        asc = th.dataset.asc !== 'false';
+        th.dataset.asc = !asc;
+        refreshTable(key, asc);
+    };
+});
+
+filterInp.oninput = () => refreshTable();
+
+function formatTime(sec){
+    const m=Math.floor(sec/60);
+    const s=Math.floor(sec%60);
+    return m+':'+('0'+s).slice(-2);
 }
 
-// Initial deaktivieren, falls kein Text
+// Add-Button Status
+function updateAddBtn(){ addBtn.disabled = urlInput.value.trim() === ''; }
 updateAddBtn();
-
-// Eingaben überwachen
 urlInput.addEventListener('input', updateAddBtn);
-
-// Klick auf "Hinzufügen"
 addBtn.addEventListener('click', async () => {
     const url = urlInput.value.trim();
     if (!url) return;
-    list = await window.videoApi.loadBookmarks();
+    let list = await window.videoApi.loadBookmarks();
     if (list.some(b => b.url === url)) { alert('Schon vorhanden'); return; }
-    list.push({url, time:0});
+    list.push({title:url, url, time:0});
     await window.videoApi.saveBookmarks(list);
     refreshTable();
     alert('Gespeichert');
