@@ -55,6 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Video-Dialog:** Neuer Player-Dialog mit Zeitleiste, ±10 s-Steuerung, Reload und Löschfunktion. Per **Escape** wird er geschlossen, **Leertaste** startet oder pausiert die Wiedergabe und die **Pfeiltasten** springen jeweils 10 s. Die aktuelle Position wird nun alle zwei Sekunden gespeichert und auch beim nativen Schließen übernommen. Der 🗑️-Button entfernt das aktuell geöffnete Video direkt aus den Bookmarks.
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9.
+* **Fehlerbehebung:** Der Player-Dialog lässt sich nun mehrfach öffnen, ohne dass der `videoPlayerFrame` fehlt.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
