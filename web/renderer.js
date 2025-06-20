@@ -78,14 +78,18 @@ async function refreshTable(sortKey='title', dir=true) {
     let list = await getBookmarks();
     const q = videoFilter.value.toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
-    // Zeit numerisch sortieren, sonst localeCompare nutzen
+    // Bei "index" die ursprüngliche Reihenfolge nutzen
+    // Zeit numerisch sortieren, sonst localeCompare verwenden
     list.sort((a,b)=> {
-        if(sortKey === 'time'){
+        if (sortKey === 'index') {
+            return dir ? a.origIndex - b.origIndex : b.origIndex - a.origIndex;
+        }
+        if (sortKey === 'time') {
             return dir ? a.time - b.time : b.time - a.time;
         }
         return dir
-            ? (''+a[sortKey]).localeCompare(b[sortKey],'de')
-            : (''+b[sortKey]).localeCompare(a[sortKey],'de');
+            ? (''+a[sortKey]).localeCompare(b[sortKey], 'de')
+            : (''+b[sortKey]).localeCompare(a[sortKey], 'de');
     });
     videoTableBody.innerHTML = '';
     list.forEach((b,i) => {
