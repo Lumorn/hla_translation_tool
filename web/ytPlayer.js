@@ -7,7 +7,8 @@ function extractId(url) {
 }
 
 // öffnet den Player für ein Bookmark
-export function openPlayer(bookmark) {
+// öffnet den Player für ein Bookmark
+export function openPlayer(bookmark, index) {
     const div = document.getElementById('ytPlayerBox');
     if (!div) return;
     div.style.display = 'block';
@@ -18,10 +19,23 @@ export function openPlayer(bookmark) {
         window.currentYT.destroy();
     }
     window.currentYT = new YT.Player('ytIframe');
+
+    // lokale Speicherung der Abspielposition alle 2 Sekunden
+    let currentTime = bookmark.time;
+    const interval = setInterval(async () => {
+        if (window.currentYT &&
+            window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
+            currentTime = window.currentYT.getCurrentTime();
+        }
+    }, 2000);
+
+    // stellt sicher, dass Zeit und Interval auch beim Schließen verfügbar sind
+    window.__ytPlayerState = { bookmark, index, interval, get time() { return currentTime; } };
 }
 
 // blendet den Player wieder aus
-export function closePlayer() {
+// blendet den Player wieder aus und speichert die letzte Position
+export async function closePlayer() {
     const div = document.getElementById('ytPlayerBox');
     if (!div) return;
     div.style.display = 'none';
@@ -30,4 +44,14 @@ export function closePlayer() {
         window.currentYT.destroy();
     }
     window.currentYT = null;
+
+    if (window.__ytPlayerState) {
+        clearInterval(window.__ytPlayerState.interval);
+        const { bookmark, index, time } = window.__ytPlayerState;
+        bookmark.time = time;
+        const list = await window.videoApi.loadBookmarks();
+        list[index] = bookmark;
+        await window.videoApi.saveBookmarks(list);
+        window.__ytPlayerState = null;
+    }
 }
