@@ -40,7 +40,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
-* **Eigener Video-Link:** Neben dem Spielstart kann eine beliebige URL gespeichert und per Knopfdruck geöffnet werden.
+* **Eigene Video-Links:** Über die Start-Leiste lassen sich mehrere URLs speichern und per Knopfdruck öffnen.
 * **Video-Bookmarks:** Speichert pro Nutzer die zuletzt gesehene Position einzelner Videos.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
