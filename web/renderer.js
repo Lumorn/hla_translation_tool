@@ -82,8 +82,7 @@ async function refreshTable(sortKey='title', dir=true) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${i+1}</td>
-            <td title="${b.title}">${b.title.slice(0,40)}</td>
-            <td title="${b.url}">${b.url.slice(0,30)}…</td>
+            <td title="${b.url}">${b.title.slice(0,40)}</td>
             <td>${formatTime(b.time)}</td>
             <td class="video-actions">
                 <button class="start" data-idx="${i}">▶</button>
@@ -118,8 +117,9 @@ videoTableBody.onclick = async e => {
 // Sortierbare Header
 document.querySelectorAll('#videoTable thead th').forEach(th => {
     th.onclick = () => {
-        const keyMap = {0:'index',1:'title',2:'url',3:'time'};
+        const keyMap = {0:'index',1:'title',2:'time'};
         const key = keyMap[Array.from(th.parentNode.children).indexOf(th)];
+        if (!key) return; // Aktionen-Spalte ignorieren
         asc = th.dataset.asc !== 'false';
         th.dataset.asc = !asc;
         refreshTable(key, asc);
