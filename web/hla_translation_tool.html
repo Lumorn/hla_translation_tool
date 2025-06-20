@@ -7,6 +7,7 @@
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
     <!-- CSP angepasst: erlaubt nun Inline-Skripte -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; connect-src 'self' https://api.elevenlabs.io; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; media-src 'self' blob:; frame-src https://www.youtube.com https://www.youtube-nocookie.com;">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
@@ -538,7 +539,11 @@
         <table id="videoTable">
             <thead>
                 <tr>
-                    <th>#</th><th>Titel</th><th>URL</th><th>Letzte Zeit</th><th>•</th>
+                    <th data-asc="true">#</th>
+                    <th>Titel</th>
+                    <th>URL</th>
+                    <th>Letzte Zeit</th>
+                    <th>•</th>
                 </tr>
             </thead>
             <tbody></tbody>

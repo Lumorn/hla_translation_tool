@@ -2390,12 +2390,38 @@ th:nth-child(6) {
     margin-top: 10px;
 }
 
-.video-dialog { width: 80vw; max-height: 80vh; padding:1rem; }
-#videoTable  { width:100%; border-collapse:collapse; }
-#videoTable thead th { cursor:pointer; border-bottom:1px solid #555; }
-#videoTable tbody tr:hover { background:#222; }
-#videoTable td, #videoTable th { padding:0.3rem 0.6rem; }
-.video-actions button { margin:0 2px; }
+.video-dialog {
+    /* Großer dunkler Dialog für den Video-Manager */
+    width: 80vw;
+    max-height: 80vh;
+    background: #1a1a1a;
+    color: #e0e0e0;
+    padding: 1rem;
+}
+
+#videoTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+#videoTable thead th {
+    cursor: pointer;
+    border-bottom: 1px solid #555;
+}
+#videoTable thead th[data-asc="true"]::after { content: ' ▲'; }
+#videoTable thead th[data-asc="false"]::after { content: ' ▼'; }
+#videoTable tbody {
+    display: block;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+#videoTable tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+#videoTable tbody tr:hover { background: #222; }
+#videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }
+.video-actions button { margin: 0 2px; }
 
 .accordion-content {
     display: none;
