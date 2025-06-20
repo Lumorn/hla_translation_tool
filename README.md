@@ -466,6 +466,9 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 **❓ target_lang nicht gesetzt?**
 * ▶ **Hinweis:** Diese Meldung erscheint, wenn `waitForDubbing` im Fortschritt keine Zielsprache findet.
 
+**⚙️ Fehlerhafter Permissions-Policy-Header**
+* ▶ **Lösung:** Das Desktop-Tool entfernt nun automatisch den Header-Eintrag `ch-ua-form-factors`.
+
 
 **🔄 Duplikate in Datenbank**
 * ▶ **Lösung:** „🧹 Duplikate bereinigen" verwenden
