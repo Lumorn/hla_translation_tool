@@ -6948,6 +6948,12 @@ async function scanAudioDuplicates() {
         async function openVideoUrl() {
             const url = (document.getElementById('videoUrlInput')?.value || '').trim();
             if (!url) return;
+            // URL auf Mindestformat https:// und ohne Leerzeichen prüfen
+            if (!/^https:\/\/\S+$/.test(url)) {
+                // Fehlermeldung anzeigen und nicht öffnen
+                showToast('Ungültige URL – muss mit https:// beginnen und darf keine Leerzeichen enthalten.', 'error');
+                return;
+            }
             if (window.electronAPI && window.electronAPI.openExternal) {
                 await window.electronAPI.openExternal(url);
             } else {
