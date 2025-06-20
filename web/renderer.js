@@ -1,6 +1,6 @@
-// Elemente holen
-const videoUrlInput = document.getElementById('videoUrlInput');
-const addVideoBtn   = document.getElementById('addVideoBtn');
+// Elemente abrufen
+const urlInput  = document.getElementById('videoUrlInput');
+const addBtn    = document.getElementById('addVideoBtn');
 
 const openVideoManager = document.getElementById('openVideoManager');
 const videoMgrDialog   = document.getElementById('videoMgrDialog');
@@ -10,12 +10,8 @@ const closeVideoDlg    = document.getElementById('closeVideoDlg');
 
 let openPlayer, closePlayer;
 import('./ytPlayer.js').then(m => {
-    openPlayer = m.openPlayer;
+    openPlayer  = m.openPlayer;
     closePlayer = m.closePlayer;
-    document.addEventListener('video-start', async ({detail:index}) => {
-        const list = await window.videoApi.loadBookmarks();
-        openPlayer(list[index], index);
-    });
 });
 
 // Fallback auf LocalStorage, falls die Electron-API fehlt
@@ -102,14 +98,22 @@ videoTableBody.onclick = async e => {
     const bm = list[idx];
     switch(btn.className){
         case 'start':
-            document.dispatchEvent(new CustomEvent('video-start', {detail: idx}));
+            openPlayer(bm, idx);
             break;
         case 'rename':
             const t = prompt('Neuer Titel', bm.title);
-            if (t) { bm.title = t; await window.videoApi.saveBookmarks(list); refreshTable(); }
+            if (t && t.trim()) {
+                bm.title = t.trim();
+                await window.videoApi.saveBookmarks(list);
+                refreshTable();
+            }
             break;
         case 'delete':
-            if (confirm('Löschen?')) { list.splice(idx,1); await window.videoApi.saveBookmarks(list); refreshTable(); }
+            if (confirm('Wirklich löschen?')) {
+                list.splice(idx,1);
+                await window.videoApi.saveBookmarks(list);
+                refreshTable();
+            }
             break;
     }
 };
@@ -141,42 +145,33 @@ function getYoutubeId(u){
 }
 
 // Add-Button Status
-function updateAddBtn(){ addVideoBtn.disabled = videoUrlInput.value.trim() === ''; }
+function updateAddBtn(){ addBtn.disabled = urlInput.value.trim() === ''; }
 updateAddBtn();
-videoUrlInput.addEventListener('input', updateAddBtn);
-addVideoBtn.addEventListener('click', async () => {
-    const url = videoUrlInput.value.trim();
-    if (!url || !url.startsWith('https://')) {
-        alert('Ungültige URL');
-        return;
-    }
-    if (!getYoutubeId(url)) {
-        alert('Keine gültige YouTube-URL');
-        return;
-    }
+urlInput.addEventListener('input', updateAddBtn);
+addBtn.onclick = async () => {
+    const raw = urlInput.value.trim();
+    if (!raw) { alert('URL fehlt'); return; }
+    const ytre = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i;
+    const yb = /^https?:\/\/youtu\.be\//i;
+    if (!ytre.test(raw) && !yb.test(raw)) { alert('Keine g\u00fcltige YouTube-Adresse'); return; }
 
     let list = await window.videoApi.loadBookmarks();
-    if (list.some(b => b.url === url)) {
-        alert('Schon vorhanden');
+    if (list.some(b => b.url === raw)) return;
+
+    let title;
+    try {
+        const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
+        if (!res.ok) throw new Error('oEmbed fehlgeschlagen');
+        ({ title } = await res.json());
+    } catch(err) {
+        alert('Titel konnte nicht geladen werden');
         return;
     }
 
-    let title = url;
-    try {
-        const res = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(url)}&format=json`);
-        if (res.ok) {
-            const data = await res.json();
-            title = data.title;
-        }
-    } catch (err) {
-        console.warn('Titel konnte nicht geladen werden', err);
-    }
-
-    list.push({ url, title, time: 0 });
-    list.sort((a, b) => a.title.localeCompare(b.title, 'de'));
+    list.push({ url: raw, title, time: 0 });
+    list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
     await window.videoApi.saveBookmarks(list);
-    videoUrlInput.value = '';
+    refreshTable();
+    urlInput.value = '';
     updateAddBtn();
-    if (videoMgrDialog.open) refreshTable();
-    if (typeof showToast === 'function') showToast('Video gespeichert');
-});
+};

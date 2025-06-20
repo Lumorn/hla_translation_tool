@@ -2422,6 +2422,7 @@ th:nth-child(6) {
 #videoTable tbody tr:hover { background: #222; }
 #videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }
 .video-actions button { margin: 0 2px; }
+.video-actions button:hover { background:#444; }
 
 .accordion-content {
     display: none;

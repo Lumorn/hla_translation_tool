@@ -78,7 +78,8 @@ const bookmarkFile = path.join(dataPath, 'videoBookmarks.json');
 function readBookmarks() {
   try {
     if (fs.existsSync(bookmarkFile)) {
-      return JSON.parse(fs.readFileSync(bookmarkFile, 'utf8'));
+      const txt = fs.readFileSync(bookmarkFile, 'utf8');
+      if (txt.trim()) return JSON.parse(txt);
     }
   } catch (err) {
     console.error('Bookmarks konnten nicht geladen werden', err);
@@ -89,7 +90,7 @@ function readBookmarks() {
 // Speichert eine Liste von Bookmarks in der JSON-Datei
 function saveBookmarks(list) {
   try {
-    fs.writeFileSync(bookmarkFile, JSON.stringify(list ?? []));
+    fs.writeFileSync(bookmarkFile, JSON.stringify(list ?? [], null, 2));
   } catch (err) {
     console.error('Bookmarks konnten nicht gespeichert werden', err);
   }
