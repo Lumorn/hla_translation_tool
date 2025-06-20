@@ -48,6 +48,7 @@
                     </div>
                     <button id="devToolsButton" class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
                     <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                    <button id="openVideoManager" class="btn btn-secondary">Videos</button>
                 </div>
             </div>
 
@@ -527,6 +528,25 @@
 
     <!-- Toast-Meldungen -->
     <div id="toastContainer"></div>
+
+    <!-- Video-Manager Dialog -->
+    <dialog id="videoMgrDialog">
+        <h3>Gespeicherte Videos</h3>
+        <table style="width:100%">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Letzte Zeit</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="videoTableBody"></tbody>
+        </table>
+        <div style="text-align:right;margin-top:10px;">
+            <button id="closeVideoMgr" class="btn btn-secondary">Schließen</button>
+        </div>
+    </dialog>
 
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
