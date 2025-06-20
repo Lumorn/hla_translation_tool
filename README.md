@@ -49,13 +49,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Prüfung von Video-Links:** Eingaben müssen mit `https://` beginnen und dürfen keine Leerzeichen enthalten.
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
 * **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
-* **Video-Manager:** Modaler Dialog mit Suchfeld, sortierbaren Spalten (Zeit wird numerisch sortiert, "#" folgt der Originalreihenfolge), Start‑, Umbenennen‑ und Lösch‑Buttons sowie einer Leiste zum Hinzufügen neuer Links.
+* **Video-Manager mit integriertem Player:** Ein einziges Fenster zeigt links die gespeicherten Links und rechts den YouTube‑Player. Suchfeld, sortierbare Spalten sowie Hinzufügen‑, Umbenennen‑ und Lösch‑Buttons bleiben erhalten.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
-* **YouTube-Player:** Wird jetzt dynamisch über `renderer.js` geladen und spielt Videos direkt im Tool; beim Schließen bleibt die exakte Position per `getCurrentTime()` erhalten.
-* **Video-Dialog:** Neuer Player-Dialog mit Zeitleiste, ±10 s-Steuerung, Reload und Löschfunktion. Per **Escape** wird er geschlossen, **Leertaste** startet oder pausiert die Wiedergabe und die **Pfeiltasten** springen jeweils 10 s. Die aktuelle Position wird nun alle zwei Sekunden gespeichert und auch beim nativen Schließen übernommen. Der 🗑️-Button entfernt das aktuell geöffnete Video direkt aus den Bookmarks.
+* **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 10 s.
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9.
-* **Fehlerbehebung:** Der Player-Dialog lässt sich nun mehrfach öffnen, ohne dass der `videoPlayerFrame` fehlt.
+* **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 
@@ -365,7 +364,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **`Ctrl + Leertaste`**    | Audio abspielen (im Textfeld)                     |
 | **`Tab`**                 | Nächstes Textfeld                                 |
 | **`Shift + Tab`**         | Vorheriges Textfeld                               |
-### Video-Dialog
+### Player im Video-Manager
 
 |  Taste             |  Funktion |
 | ------------------ | ----------------------------- |

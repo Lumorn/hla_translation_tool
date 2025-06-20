@@ -26,7 +26,7 @@ const videoApi = {
 describe('YouTube-Player Zeituebernahme', () => {
     beforeEach(() => {
         localStorage.clear();
-        document.body.innerHTML = '<dialog id="videoPlayerDialog"><iframe id="videoPlayerFrame"></iframe></dialog>';
+        document.body.innerHTML = '<dialog id="videoMgrDialog"><div id="videoPlayerSection"><iframe id="videoPlayerFrame"></iframe></div></dialog>';
         window.videoApi = videoApi;
     });
 

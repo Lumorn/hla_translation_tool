@@ -14,15 +14,14 @@ export function openPlayer(bookmark, index) {
 
 // öffnet einen modalen Dialog mit YouTube-Player
 export function openVideoDialog(bookmark, index) {
-    const dlg = document.getElementById('videoPlayerDialog');
-    if (!dlg) return;
-    if (typeof dlg.showModal !== 'function' && window.dialogPolyfill) {
-        window.dialogPolyfill.registerDialog(dlg);
-    }
-    dlg.showModal();
+    const dlg    = document.getElementById('videoMgrDialog');
+    const player = document.getElementById('videoPlayerSection');
+    if (!dlg || !player) return;
+    if (!dlg.open) dlg.showModal();
 
-    dlg.dataset.index = index;
-    dlg.querySelector('#playerDialogTitle').textContent = bookmark.title;
+    player.classList.remove('hidden');
+    player.dataset.index = index;
+    player.querySelector('#playerDialogTitle').textContent = bookmark.title;
 
     const iframe = document.getElementById('videoPlayerFrame');
     if (!iframe) {
@@ -122,11 +121,12 @@ export function openVideoDialog(bookmark, index) {
 
 // schließt den Video-Dialog und speichert die Zeit
 export async function closeVideoDialog() {
-    const dlg = document.getElementById('videoPlayerDialog');
-    if (!dlg) return;
+    const dlg    = document.getElementById('videoMgrDialog');
+    const player = document.getElementById('videoPlayerSection');
+    if (!dlg || !player) return;
     if (dlg.__closing) return;
     dlg.__closing = true;
-    if (dlg.open) dlg.close();
+    player.classList.add('hidden');
     const frame = document.getElementById('videoPlayerFrame');
     if (frame) frame.src = '';
 
@@ -139,11 +139,11 @@ export async function closeVideoDialog() {
 
     // Wenn das IFrame durch destroy() entfernt wurde, neu anlegen
     if (!document.getElementById('videoPlayerFrame')) {
-        const controls = dlg.querySelector('.player-controls');
+        const controls = player.querySelector('.player-controls');
         const nf = document.createElement('iframe');
         nf.id = 'videoPlayerFrame';
         nf.setAttribute('allow', 'autoplay; fullscreen');
-        dlg.insertBefore(nf, controls);
+        player.insertBefore(nf, controls);
     }
 
     if (window.__ytPlayerState) {
@@ -184,8 +184,9 @@ export async function closePlayer() {
 
 // globaler Keydown-Listener für den Video-Dialog
 document.addEventListener('keydown', e => {
-    const dlg = document.getElementById('videoPlayerDialog');
-    if (!dlg || !dlg.open) return;
+    const dlg    = document.getElementById('videoMgrDialog');
+    const player = document.getElementById('videoPlayerSection');
+    if (!dlg || !dlg.open || !player || player.classList.contains('hidden')) return;
     const playBtn = document.getElementById('videoPlay');
     const backBtn = document.getElementById('videoBack');
     const fwdBtn  = document.getElementById('videoForward');
