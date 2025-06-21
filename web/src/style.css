@@ -2507,13 +2507,6 @@ th:nth-child(6) {
 }
 .video-player-section.hidden { display: none; }
 
-/* YouTube-Player Box im festen 16:9-Format */
-#ytPlayerBox {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    position: relative;
-}
-
 /* Bereich für den eingebetteten Player */
 .video-player-section .player-header {
     padding: 0.5rem 1rem;
