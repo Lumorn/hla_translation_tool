@@ -11,6 +11,7 @@ export function extractYoutubeId(url) {
 let ocrWorker = null;        // wird bei Bedarf angelegt
 let autoLoop = null;         // Intervall für Auto-OCR
 let ocrActive = false;       // aktueller Status
+let ocrWindow = null;        // separates Fenster für erkannte Texte
 
 // Overlay an die Größe des IFrames anpassen
 function positionOverlay() {
@@ -148,11 +149,26 @@ function appendText(t) {
     area.scrollTop = area.scrollHeight;
 }
 
+// Öffnet ein neues Fenster und zeigt den erkannten Text an
+function showOcrWindow(text) {
+    // bereits geöffnetes Fenster wiederverwenden
+    if (!ocrWindow || ocrWindow.closed) {
+        ocrWindow = window.open('', '_blank', 'width=600,height=400');
+        if (!ocrWindow) return;
+        ocrWindow.document.title = 'OCR-Ergebnis';
+    }
+    ocrWindow.document.body.innerHTML = '';
+    const pre = ocrWindow.document.createElement('pre');
+    pre.textContent = text;
+    ocrWindow.document.body.appendChild(pre);
+}
+
 // Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
 async function runOcr() {
     const text = await captureAndOcr();
     if (!text) return;
     appendText(text);
+    showOcrWindow(text);
     // Treffer markieren und Benutzer informieren
     const btn = document.getElementById('ocrToggle');
     if (btn) {
