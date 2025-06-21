@@ -323,6 +323,13 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Screenshot des aktuellen Fensters erstellen
+  ipcMain.handle('capture-frame', async (event, bounds) => {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    const img = await win.capturePage(bounds);
+    return img.toPNG();
+  });
+
   // Bookmarks aus dem userData-Ordner laden
   ipcMain.handle('load-bookmarks', () => readBookmarks());
 
