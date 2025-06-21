@@ -302,6 +302,7 @@ Seit Patch 1.40.50 fügt die Richtlinie `'unsafe-eval'` erneut hinzu, damit der 
 Seit Patch 1.40.51 wurde die CSS-Klasse `.video-player-section` bereinigt. Jetzt gilt ein eindeutiger Block mit `overflow-x:hidden`, `overflow-y:auto` und `min-height:0`, damit die Steuerelement-Leiste nicht mehr abgeschnitten wird.
 Seit Patch 1.40.52 entfernt die Content Security Policy `'unsafe-eval'` erneut und erlaubt `worker-src 'self'`. Dadurch verschwindet die Electron-Sicherheitswarnung, ohne die App-Funktionalität einzuschränken.
 Seit Patch 1.40.53 nutzt die Content Security Policy eine minimale Konfiguration. Sie erlaubt Blob‑Worker für Tesseract, ohne `'unsafe-eval'` zu verwenden.
+Seit Patch 1.40.54 erlaubt die Richtlinie Skripte und Frames von `youtube.com` und `youtube-nocookie.com`. Vorschaubilder von `i.ytimg.com` bleiben erlaubt.
 
 Beispiel einer gültigen CSV:
 
