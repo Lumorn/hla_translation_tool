@@ -97,7 +97,8 @@ async function refreshTable(sortKey='title', dir=true) {
     videoTableBody.innerHTML = '';
     list.forEach((b,i) => {
         const tr = document.createElement('tr');
-        const thumbUrl = `https://img.youtube.com/vi/${extractYoutubeId(b.url)}/default.jpg`;
+        tr.dataset.idx = b.origIndex;
+        const thumbUrl = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/default.jpg`;
         tr.innerHTML = `
             <td><img src="${thumbUrl}" data-idx="${b.origIndex}" class="video-thumb"></td>
             <td class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</td>
@@ -112,8 +113,8 @@ async function refreshTable(sortKey='title', dir=true) {
 
 // Delegierte Button-Events
 videoTableBody.onclick = async e => {
-    const btn = e.target.closest('button');
-    const thumb = e.target.closest('.video-thumb, .video-title');
+    const btn  = e.target.closest('button');
+    const row  = e.target.closest('tr');
     if (btn) {
         const origIdx = Number(btn.dataset.idx);
         let list = await window.videoApi.loadBookmarks();
@@ -135,8 +136,8 @@ videoTableBody.onclick = async e => {
                 }
                 break;
         }
-    } else if (thumb) {
-        const origIdx = Number(thumb.dataset.idx);
+    } else if (row) {
+        const origIdx = Number(row.dataset.idx);
         let list = await window.videoApi.loadBookmarks();
         const bm = list[origIdx];
         openVideoDialog(bm, origIdx);
