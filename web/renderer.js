@@ -62,10 +62,16 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoMgrDialog);
 
-// Beobachter passt Groesse bei jeder Dialog-Aenderung an
-// Beobachter ruft nur die zentrale Anpassungsfunktion auf
+// Beobachter passt Größe bei jeder Dialog-Änderung an
+// Vermeidet eine Endlosschleife durch Throttling über requestAnimationFrame
+let resizeScheduled = false;
 const resizeObserver = new ResizeObserver(() => {
-    adjustVideoDialogHeight();
+    if (resizeScheduled) return;
+    resizeScheduled = true;
+    window.requestAnimationFrame(() => {
+        adjustVideoDialogHeight();
+        resizeScheduled = false;
+    });
 });
 resizeObserver.observe(videoMgrDialog);
 
