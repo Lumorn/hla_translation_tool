@@ -112,7 +112,8 @@ async function captureAndOcr() {
         } catch(e) {}
 
         if (!fromFrame) {
-            if (window.desktopCapturer) {
+            // Nur nutzen, wenn der Desktop-Capturer samt Methode vorhanden ist
+            if (window.desktopCapturer && typeof window.desktopCapturer.getSources === 'function') {
                 const src = (await window.desktopCapturer.getSources({ types: ['screen'] }))[0];
                 const stream = await navigator.mediaDevices.getUserMedia({
                     audio: false,

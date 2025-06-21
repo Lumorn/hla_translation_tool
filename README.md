@@ -98,6 +98,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
 * **Canvas-Fallback bei der OCR:** Falls `ImageCapture` versagt, wird der Screenshot über einen Canvas erstellt.
 * **Desktop-Capturer in Electron:** Die OCR nutzt nun `desktopCapturer` für zuverlässige Bildschirmaufnahmen.
+* **Prüfung auf fehlende `getSources`-Methode:** Fehlt diese Funktion, greift die OCR automatisch auf `getDisplayMedia` zurück.
 
 ### 📊 Fortschritts‑Tracking
 
