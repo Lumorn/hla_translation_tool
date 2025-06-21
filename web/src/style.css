@@ -2673,3 +2673,31 @@ th:nth-child(6) {
     to { transform: rotate(360deg); }
 }
 
+/* ===== OCR-Funktionen ===== */
+#ocrOverlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 20%;
+    background: rgba(0,128,255,.25);
+    border: 2px dashed #fff;
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+}
+#videoPlayerSection.ocr-active #ocrOverlay {
+    display: block;
+}
+
+#ocrResultPanel {
+    flex: 0 0 160px;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+}
+#ocrResultPanel textarea {
+    width: 100%;
+    flex: 1 1 auto;
+}
+

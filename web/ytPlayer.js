@@ -1,9 +1,94 @@
 // Steuert den eingebetteten YouTube-Player
+// OCR-Unterstützung wird dynamisch nachgeladen
 
 // extrahiert die Video-ID aus einer YouTube-URL
 export function extractYoutubeId(url) {
     const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
     return m ? m[1] : '';
+}
+
+// ===== Globale OCR-Variablen =====
+let ocrWorker = null;        // wird bei Bedarf angelegt
+let ocrInterval = null;      // Intervall für Auto-OCR
+
+// OCR-Worker initialisieren
+async function initOcrWorker() {
+    if (ocrWorker) return;
+    const t = await import('tesseract.js');
+    ocrWorker = t.createWorker();
+    await ocrWorker.load();
+    await ocrWorker.loadLanguage('eng');
+    await ocrWorker.initialize('eng');
+}
+
+// beendet Worker und Intervall
+function terminateOcr() {
+    if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
+    if (ocrWorker) { ocrWorker.terminate(); ocrWorker = null; }
+}
+
+// Screenshot des Overlays erstellen und per OCR auswerten
+async function captureAndOcr() {
+    try {
+        await initOcrWorker();
+        let bitmap;
+        if (window.desktopCapturer) {
+            const src = (await window.desktopCapturer.getSources({ types: ['screen'] }))[0];
+            const stream = await navigator.mediaDevices.getUserMedia({
+                audio: false,
+                video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
+            });
+            const track = stream.getVideoTracks()[0];
+            const capture = new ImageCapture(track);
+            bitmap = await capture.grabFrame();
+            track.stop();
+        } else if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            const track = stream.getVideoTracks()[0];
+            const capture = new ImageCapture(track);
+            bitmap = await capture.grabFrame();
+            track.stop();
+        } else {
+            return false;
+        }
+
+        const h = Math.floor(bitmap.height * 0.2);
+        const canvas = document.createElement('canvas');
+        canvas.width = bitmap.width;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(bitmap, 0, bitmap.height - h, canvas.width, h, 0, 0, canvas.width, h);
+        const { data: { text } } = await ocrWorker.recognize(canvas);
+        const txt = text.trim();
+        if (txt) {
+            const area = document.getElementById('ocrText');
+            if (area) {
+                area.value += (area.value ? '\n' : '') + txt;
+                area.scrollTop = area.scrollHeight;
+                area.style.background = 'yellow';
+                setTimeout(() => { area.style.background = ''; }, 500);
+            }
+            if (window.currentYT && window.currentYT.getPlayerState && window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
+                window.currentYT.pauseVideo();
+            }
+            return true;
+        }
+    } catch (e) {
+        console.error('OCR-Fehler', e);
+    }
+    return false;
+}
+
+function startAutoOcr() {
+    if (ocrInterval) return;
+    ocrInterval = setInterval(async () => {
+        const hit = await captureAndOcr();
+        if (hit) stopAutoOcr();
+    }, 1500);
+}
+
+function stopAutoOcr() {
+    if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
 }
 
 // veraltete Funktion – ruft intern den neuen Dialog auf
@@ -54,6 +139,8 @@ export function openVideoDialog(bookmark, index) {
     const backBtn = document.getElementById('videoBack');
     const fwdBtn = document.getElementById('videoForward');
     const reloadBtn = document.getElementById('videoReload');
+    const ocrBtn = document.getElementById('ocrToggle');
+    const ocrOverlay = document.getElementById('ocrOverlay');
     const deleteBtn = document.getElementById('videoDelete');
     const closeBtn = document.getElementById('videoClose');
 
@@ -94,8 +181,10 @@ export function openVideoDialog(bookmark, index) {
         const st = window.currentYT.getPlayerState();
         if (st === YT.PlayerState.PAUSED || st === YT.PlayerState.CUED) {
             window.currentYT.playVideo();
+            if (ocrBtn && ocrBtn.classList.contains('active')) startAutoOcr();
         } else {
             window.currentYT.pauseVideo();
+            stopAutoOcr();
         }
     };
     backBtn.onclick = () => {
@@ -107,6 +196,17 @@ export function openVideoDialog(bookmark, index) {
     reloadBtn.onclick = () => {
         if (window.currentYT) window.currentYT.seekTo(0, true);
     };
+    if (ocrBtn) {
+        ocrBtn.onclick = () => {
+            ocrBtn.classList.toggle('active');
+            player.classList.toggle('ocr-active', ocrBtn.classList.contains('active'));
+            if (ocrBtn.classList.contains('active')) {
+                startAutoOcr();
+            } else {
+                stopAutoOcr();
+            }
+        };
+    }
     // Lösch-Button ruft nun die neue Funktion auf
     deleteBtn.onclick = deleteCurrentVideo;
     closeBtn.onclick = closeVideoDialog;
@@ -156,6 +256,10 @@ export async function closeVideoDialog() {
     player.classList.add('hidden');
     const frame = document.getElementById('videoPlayerFrame');
     if (frame) frame.src = '';
+    const ocrBtn = document.getElementById('ocrToggle');
+    if (ocrBtn) ocrBtn.classList.remove('active');
+    player.classList.remove('ocr-active');
+    terminateOcr();
 
     let exactTime;
     if (window.currentYT && typeof window.currentYT.getCurrentTime === 'function') {
@@ -240,6 +344,10 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight') {
         e.preventDefault();
         if (fwdBtn) fwdBtn.click();
+    }
+    if (e.key === 'F9') {
+        e.preventDefault();
+        captureAndOcr();
     }
 });
 
