@@ -244,12 +244,18 @@ export function openVideoDialog(bookmark, index) {
     const reloadBtn = document.getElementById('videoReload');
     const ocrBtn = document.getElementById('ocrToggle');
     const ocrOverlay = document.getElementById('ocrOverlay');
+    const ocrPanel = document.getElementById('ocrResultPanel');
     const deleteBtn = document.getElementById('videoDelete');
     const closeBtn = document.getElementById('videoClose');
 
     if (ocrBtn) {
+        // Standardzustand ohne aktive OCR
         ocrBtn.title = 'OCR aktivieren (F9)';
+        ocrBtn.classList.remove('active');
     }
+    player.classList.remove('ocr-active');
+    if (ocrOverlay) ocrOverlay.classList.add('hidden');
+    if (ocrPanel) ocrPanel.classList.add('hidden');
 
     function formatTime(sec){
         const m=Math.floor(sec/60); const s=Math.floor(sec%60); return m+':'+('0'+s).slice(-2);
@@ -309,8 +315,15 @@ export function openVideoDialog(bookmark, index) {
     if (ocrBtn) {
         ocrBtn.onclick = () => {
             ocrBtn.classList.toggle('active');
-            player.classList.toggle('ocr-active', ocrBtn.classList.contains('active'));
-            if (ocrBtn.classList.contains('active')) {
+            const active = ocrBtn.classList.contains('active');
+            player.classList.toggle('ocr-active', active);
+            if (ocrOverlay) {
+                ocrOverlay.classList.toggle('hidden', !active);
+            }
+            if (ocrPanel) {
+                ocrPanel.classList.toggle('hidden', !active);
+            }
+            if (active) {
                 ocrBtn.title = 'OCR an/aus (F9)';
                 startAutoLoop();
             } else {
@@ -382,7 +395,11 @@ export async function closeVideoDialog() {
     const frame = document.getElementById('videoPlayerFrame');
     if (frame) frame.src = '';
     const ocrBtn = document.getElementById('ocrToggle');
+    const ocrOverlay = document.getElementById('ocrOverlay');
+    const ocrPanel = document.getElementById('ocrResultPanel');
     if (ocrBtn) ocrBtn.classList.remove('active');
+    if (ocrOverlay) ocrOverlay.classList.add('hidden');
+    if (ocrPanel) ocrPanel.classList.add('hidden');
     player.classList.remove('ocr-active');
     terminateOcr();
 
