@@ -172,8 +172,8 @@ async function positionOverlay() {
     const slider = controls?.querySelector('#videoSlider');
     const sliderTop = slider ? slider.getBoundingClientRect().top : iframeRect.bottom - ctrlH;
     const oH = iframeRect.height * 0.12;
-    // Oberkante liegt 2px ueber dem Slider
-    const top = sliderTop - 2 - oH - sectionRect.top;
+    // Oberkante minimal absenken, damit das YouTube-Overlay frei bleibt
+    const top = sliderTop + 1 - oH - sectionRect.top;
     overlay.style.top    = top + 'px';
     overlay.style.left   = (iframeRect.left - sectionRect.left) + 'px';
     overlay.style.width  = iframeRect.width + 'px';
@@ -270,7 +270,8 @@ async function refineBlob(pngBlob) {
     ctx.drawImage(bmp, 0, 0, W, H);
     // Kontrast und Helligkeit erhoehen
     ctx.globalCompositeOperation = 'source-over';
-    ctx.filter = 'brightness(140%) contrast(180%)';
+    // etwas aggressivere Aufhellung fuer bessere Erkennung
+    ctx.filter = 'brightness(160%) contrast(220%)';
     ctx.drawImage(off, 0, 0);
     // entsaetten -> Graustufen
     const imgData = ctx.getImageData(0, 0, W, H);
@@ -278,7 +279,8 @@ async function refineBlob(pngBlob) {
     for (let i = 0; i < d.length; i += 4) {
         const y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
         // harter Schwellwert zur Binarisierung
-        const bw = y > 128 ? 255 : 0;
+        // 55 % Luminanz als Schwelle
+        const bw = y > 140 ? 255 : 0;
         d[i] = d[i + 1] = d[i + 2] = bw;
     }
     ctx.putImageData(imgData, 0, 0);
@@ -358,22 +360,10 @@ function appendText(t) {
 }
 
 // Öffnet ein neues Fenster und zeigt den erkannten Text an
-function showOcrWindow(imgUrl, text) {
-    // bereits geöffnetes Fenster wiederverwenden
-    if (!ocrWindow || ocrWindow.closed) {
-        ocrWindow = window.open('', '_blank', 'width=600,height=400');
-        if (!ocrWindow) return;
-        ocrWindow.document.title = 'OCR-Ergebnis';
-    }
-    ocrWindow.document.body.innerHTML = '';
-    if (imgUrl) {
-        const img = ocrWindow.document.createElement('img');
-        img.src = imgUrl;
-        ocrWindow.document.body.appendChild(img);
-    }
-    const pre = ocrWindow.document.createElement('pre');
-    pre.textContent = text;
-    ocrWindow.document.body.appendChild(pre);
+// sendet Daten per postMessage an das Debug-Fenster
+function sendDebugData(imgUrl, text) {
+    if (!ocrWindow || ocrWindow.closed) return;
+    ocrWindow.postMessage({ imgUrl, text }, '*');
 }
 
 // Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
@@ -391,7 +381,7 @@ async function runOcr() {
         return;
     }
     appendText(text);
-    if (ocrDebug) showOcrWindow(img, text);
+    if (ocrDebug) sendDebugData(img, text);
     // Treffer markieren und Benutzer informieren
     const btn = document.getElementById('ocrToggle');
     if (btn) {
@@ -605,14 +595,20 @@ export function openVideoDialog(bookmark, index) {
             if (ocrDebug) {
                 // Fenster sofort öffnen, falls noch nicht vorhanden
                 if (!ocrWindow || ocrWindow.closed) {
-                    ocrWindow = window.open('', '_blank', 'width=600,height=400');
-                    if (ocrWindow) {
-                        ocrWindow.document.title = 'OCR-Debug';
+                    ocrWindow = window.open('ocr_debug.html', '_blank', 'width=600,height=400');
+                    if (ocrWindow && typeof ocrWindow.addEventListener === 'function') {
+                        ocrWindow.addEventListener('beforeunload', () => {
+                            ocrWindow = null;
+                            ocrDebug = false;
+                            debugBtn.classList.remove('active');
+                            stopAutoLoop();
+                        });
                     }
                 }
             } else if (ocrWindow && !ocrWindow.closed) {
                 // Bei Deaktivierung das Fenster schließen
                 ocrWindow.close();
+                stopAutoLoop();
             }
         };
     }

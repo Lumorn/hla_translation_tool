@@ -104,7 +104,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
 * **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
-* **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet sofort ein Vorschau‑Fenster, das den aktuell verarbeiteten Screenshot und den Rohtext zeigt; ein weiterer Klick schließt das Fenster wieder.
+* **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet ein separates Fenster. Bei jedem Durchlauf empfängt es per `postMessage` den Screenshot und den Rohtext und sammelt beides in einer kleinen Galerie; ein erneuter Klick schließt das Fenster und beendet den Stream.
 * **Tesseract.js nun lokal eingebunden:** Die OCR-Engine wird direkt aus `src/lib` geladen und funktioniert damit auch ohne Internetzugang.
 * **Stabilere OCR-Initialisierung:** Das Tesseract-Modul wird nun korrekt importiert und die Worker starten zuverlässig.
 * **Lokaler Worker-Pfad festgelegt:** Die OCR lädt den Worker jetzt direkt aus `src/lib/tesseract-worker.min.js` und benötigt daher keine externen Skripte.
@@ -118,12 +118,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern.
 * **Desktop-Capturer entfernt:** Die API `desktopCapturer.getSources` steht nicht mehr zur Verfügung.
 * **Neuer Frame-Grab-Workflow im Renderer:** Für jeden OCR-Durchlauf wird das IFrame direkt fotografiert und das PNG ohne zusätzliche Berechtigungen verarbeitet.
-* **Bildverarbeitung für exakteres OCR:** Der Screenshot wird vor der Erkennung kontrastreich nachgeschärft.
+* **Bildverarbeitung für exakteres OCR:** Der Screenshot wird stärker aufgehellt, kontrastreich nachgeschärft und hart binarisiert.
 * **Optimierte OCR-Parameter für bessere Trefferquote**
-* **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird um 2 % nach oben oder unten verschoben, falls zu wenig helle Pixel vorhanden sind.
+* **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird geringfügig nach unten verschoben, wenn zu wenig helle Pixel vorhanden sind.
 * **Stabilere Helligkeitsprüfung:** Überprüft zuerst die Abmessungen des Overlay-Bereichs und vermeidet so Fehlermeldungen.
 * **OffscreenCanvas mit Graustufen-Verarbeitung:** Screenshots werden doppelt skaliert, kontrastverstärkt und in Graustufen umgewandelt.
-* **Präzisere Texterkennung:** Das Overlay endet 2 px über dem Slider und nutzt nur 14 % der Bildhöhe.
+* **Präzisere Texterkennung:** Das Overlay endet jetzt 1 px über dem Slider und nutzt nur 14 % der Bildhöhe.
 * **Schnellerer Auto‑OCR‑Loop:** Läuft alle 750 ms und pausiert das Video ab vier erkannten Zeichen.
 ### 📊 Fortschritts‑Tracking
 
