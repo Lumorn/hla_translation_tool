@@ -2550,7 +2550,8 @@ th:nth-child(6) {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
+    right: 0;
+    z-index: 5;
 }
 .video-player-section .player-controls input[type=range] {
     /* Slider darf schrumpfen, bleibt aber mindestens 140px breit */
@@ -2701,6 +2702,7 @@ th:nth-child(6) {
     right: 0;
     top: 0;
     height: 100%;
+    z-index: 4;
     min-width: 180px;
     background: #181818;
     color: #e0e0e0;

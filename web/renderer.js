@@ -136,46 +136,58 @@ function adjustVideoPlayerSize(force = false) {
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');
 
-    // verfügbare Breite heranziehen
-    const breite = section.clientWidth;
-    let   hoehe  = breite * 9 / 16;
+    const panel  = document.getElementById('ocrResultPanel');
+    const dlg    = document.getElementById('videoMgrDialog');
+    const dlgW   = dlg ? dlg.clientWidth : section.clientWidth;
+    let panelW   = 0;
+    if (panel) {
+        if (dlgW < 700) {
+            panel.classList.add('hidden');
+            const toggle = document.getElementById('ocrToggle');
+            if (toggle) toggle.classList.remove('active');
+            stopAutoOcr();
+            terminateOcr();
+        } else {
+            panel.classList.remove('hidden');
+            panelW = Math.min(260, Math.max(160, section.clientWidth * 0.18));
+            panel.style.width = panelW + 'px';
+        }
+    }
+
+    let freieBreite = section.clientWidth - panelW;
+    let hoehe = freieBreite * 9 / 16;
 
     // maximale Höhe: 90 % des Fensters abzüglich Header und Steuerleiste
     const maxH = window.innerHeight * 0.9
         - (header ? header.offsetHeight : 0)
         - (controls ? controls.offsetHeight : 0);
 
-    // Bereich unter dem Video fuer die Steuerleiste reservieren
-    if (controls) {
-        section.style.paddingBottom = controls.offsetHeight + 'px';
-    }
+
 
     if (hoehe > maxH) {
         hoehe = maxH;
+        freieBreite = hoehe * 16 / 9;
     }
 
-    // Breite des OCR-Panels beruecksichtigen
-    const panel   = document.getElementById('ocrResultPanel');
-    const dlg     = document.getElementById('videoMgrDialog');
-    const dlgW    = dlg ? dlg.clientWidth : section.clientWidth;
-    let panelW    = 0;
+    // IFrame anpassen
+    frame.style.width = freieBreite + 'px';
+    frame.style.height = hoehe + 'px';
+
+    if (controls) {
+        controls.style.position = 'absolute';
+        controls.style.left = '0';
+        controls.style.right = panelW + 'px';
+        controls.style.zIndex = 5;
+        section.style.paddingBottom = controls.offsetHeight + 'px';
+    }
+
     if (panel) {
-        if (dlgW < 700) {
-            panel.style.display = 'none';
-            const toggle = document.getElementById('ocrToggle');
-            if (toggle) toggle.classList.remove('active');
-            stopAutoOcr();
-            terminateOcr();
-        } else {
-            panel.style.display = 'flex';
-            panelW = Math.min(260, Math.max(160, section.clientWidth * 0.18));
-            panel.style.width = panelW + 'px';
-        }
+        panel.style.right = '0';
+        panel.style.top = '0';
+        panel.style.height = '100%';
+        panel.style.zIndex = 4;
     }
 
-    // IFrame anpassen und maximale Hoehe setzen
-    frame.style.width = `calc(100% - ${panelW}px)`;
-    frame.style.maxHeight = hoehe + 'px';
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }
