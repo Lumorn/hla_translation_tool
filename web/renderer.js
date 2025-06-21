@@ -176,8 +176,8 @@ function adjustVideoPlayerSize(force = false) {
     // IFrame anpassen und maximale Hoehe setzen
     frame.style.width = `calc(100% - ${panelW}px)`;
     frame.style.maxHeight = hoehe + 'px';
-    if (typeof window.updateOcrOverlay === 'function') {
-        window.updateOcrOverlay();
+    if (typeof window.positionOverlay === 'function') {
+        window.positionOverlay();
     }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
@@ -187,8 +187,8 @@ window.addEventListener('resize', () => {
     adjustVideoDialogHeight();
     // Player auch im verborgenen Zustand neu skalieren
     adjustVideoPlayerSize(true);
-    if (typeof window.updateOcrOverlay === 'function') {
-        window.updateOcrOverlay();
+    if (typeof window.positionOverlay === 'function') {
+        window.positionOverlay();
     }
 });
 
