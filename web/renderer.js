@@ -62,13 +62,32 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoMgrDialog);
 
-openVideoManager.onclick = async () => { await refreshTable(); videoMgrDialog.showModal(); };
+// passt die Höhe des Video-Managers dynamisch an
+function adjustVideoDialogHeight() {
+    const max = window.innerHeight * 0.9;
+    videoMgrDialog.style.height = 'auto';
+    const benötigt = videoMgrDialog.scrollHeight;
+    videoMgrDialog.style.height = Math.min(benötigt, max) + 'px';
+}
+// Funktion global verfügbar machen
+window.adjustVideoDialogHeight = adjustVideoDialogHeight;
+
+// auch bei Fenstergröße aktualisieren
+window.addEventListener('resize', adjustVideoDialogHeight);
+
+openVideoManager.onclick = async () => {
+    await refreshTable();
+    videoMgrDialog.showModal();
+    adjustVideoDialogHeight();
+};
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
+    adjustVideoDialogHeight();
 };
 videoMgrDialog.addEventListener('cancel', () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
+    adjustVideoDialogHeight();
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {
@@ -126,6 +145,7 @@ videoTableBody.onclick = async e => {
                     bm.title = t.trim();
                     await window.videoApi.saveBookmarks(list);
                     refreshTable();
+                    adjustVideoDialogHeight();
                 }
                 break;
             case 'delete':
@@ -133,6 +153,7 @@ videoTableBody.onclick = async e => {
                     list.splice(origIdx,1);
                     await window.videoApi.saveBookmarks(list);
                     refreshTable();
+                    adjustVideoDialogHeight();
                 }
                 break;
         }
@@ -156,7 +177,10 @@ document.querySelectorAll('#videoTable thead th').forEach(th => {
     };
 });
 
-videoFilter.oninput = () => refreshTable();
+videoFilter.oninput = () => {
+    refreshTable();
+    adjustVideoDialogHeight();
+};
 
 function formatTime(sec){
     const m=Math.floor(sec/60);
@@ -194,6 +218,7 @@ addBtn.onclick = async () => {
     list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
     await window.videoApi.saveBookmarks(list);
     refreshTable();
+    adjustVideoDialogHeight();
     urlInput.value = '';
     updateAddBtn();
 };

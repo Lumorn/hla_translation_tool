@@ -124,6 +124,10 @@ export function openVideoDialog(bookmark, index) {
         uiInterval,
         get time() { return currentTime; }
     };
+
+    if (typeof window.adjustVideoDialogHeight === 'function') {
+        window.adjustVideoDialogHeight();
+    }
 }
 
 // schließt den Video-Dialog und speichert die Zeit
@@ -166,6 +170,10 @@ export async function closeVideoDialog() {
         window.__ytPlayerState = null;
     }
     dlg.__closing = false;
+
+    if (typeof window.adjustVideoDialogHeight === 'function') {
+        window.adjustVideoDialogHeight();
+    }
 }
 
 // löscht das aktuell geöffnete Video aus der Bookmark-Liste
