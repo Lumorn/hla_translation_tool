@@ -130,6 +130,9 @@ let layoutData = {};
 
 // ermittelt Breite und Höhe des verfügbaren Bereichs
 function calcUsableWidthHeight() {
+    const MIN_H = 180; // minimale Höhe für den Player
+    const MIN_W = 320; // minimale Breite für den Player
+
     const dlg      = document.getElementById('videoMgrDialog');
     const list     = document.querySelector('.video-list-section');
     const panel    = document.getElementById('ocrResultPanel');
@@ -155,6 +158,16 @@ function calcUsableWidthHeight() {
         width = height * 16 / 9;
     }
 
+    // Mindestgroesse erzwingen
+    if (width < MIN_W) {
+        width  = MIN_W;
+        height = width * 9 / 16;
+    }
+    if (height < MIN_H) {
+        height = MIN_H;
+        width  = height * 16 / 9;
+    }
+
     layoutData = { width, height, leftListWidth, panelWidth, pad, controlsH };
 }
 
@@ -162,10 +175,9 @@ function calcUsableWidthHeight() {
 function positionIframe() {
     const frame = document.getElementById('videoPlayerFrame');
     if (!frame) return;
-    // Breite und Höhe regelt jetzt komplett das CSS
-    const rect = frame.getBoundingClientRect();
-    layoutData.width  = rect.width;
-    layoutData.height = rect.height;
+    // Groesse laut Berechnung setzen
+    frame.style.width  = layoutData.width + 'px';
+    frame.style.height = layoutData.height + 'px';
 }
 
 // platziert die Steuerleiste direkt unter dem IFrame
