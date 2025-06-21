@@ -46,6 +46,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich nun über einen zusätzlichen IPC-Kanal entfernen.
 * **Tests für Video-Bookmarks:** Überprüfen Laden, Sortierung sowie Hinzufügen und Entfernen von Einträgen.
 * **Tests für den YouTube-Player:** Prüfen Speicherung über das Intervall, Löschfunktion sowie Dialog und Slider.
+* **Test für OCR-Overlay-Sichtbarkeit:** Stellt sicher, dass Overlay und Ergebnis-Panel korrekt ein- und ausgeblendet werden.
 * **Prüfung von Video-Links:** Eingaben müssen mit `https://` beginnen und dürfen keine Leerzeichen enthalten.
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
 * **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
