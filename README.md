@@ -248,6 +248,7 @@ Seit Patch 1.40.39 ersetzt sie `<sb>`- und `<br>`-Tags automatisch durch Leerzei
 Seit Patch 1.40.40 entfernt der Dateiwächter beim automatischen Import persönliche Namensendungen wie `_Alex` oder `-Bob`.
 Seit Patch 1.40.41 startet die Desktop-App ohne Fehlermeldung, da `session` in `electron/main.js` korrekt eingebunden ist.
 Seit Patch 1.40.42 erlaubt die Content Security Policy nun Bilder von `i.ytimg.com`, wodurch der YouTube-Player keine CSP-Fehler mehr verursacht.
+Seit Patch 1.40.43 verschwindet der YouTube-Player nicht mehr, wenn man dasselbe Video erneut anklickt.
 
 
 Beispiel einer gültigen CSV:
