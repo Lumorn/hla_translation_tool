@@ -17,7 +17,7 @@ console.log('[PRELOAD] gestartet', __filename);
 if (typeof require !== 'function') {
   console.warn('Preload-Skript: "require" ist nicht verf\u00fcgbar. Das Skript wird beendet.');
 } else {
-  const { contextBridge, ipcRenderer } = require('electron');
+  const { contextBridge, ipcRenderer, desktopCapturer } = require('electron');
   const fs = require('fs');
   // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
   const path = require('node:path');
@@ -72,6 +72,11 @@ if (typeof require !== 'function') {
     // Half-Life: Alyx starten (Modus und Sprache wählbar, optional Map)
     startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
+  });
+
+  // Desktop-Capturer für Bildschirmaufnahmen bereitstellen
+  contextBridge.exposeInMainWorld('desktopCapturer', {
+    getSources: opts => desktopCapturer.getSources(opts),
   });
 
   // API für Video-Bookmarks bereitstellen
