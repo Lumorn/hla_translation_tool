@@ -83,7 +83,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte OCR-Pipeline:** Overlay und Panel passen sich dynamisch an, starten nur nach Aktivierung und zeigen den erkannten Text gut lesbar im neuen Ergebnis‑Panel.
 * **Nahtloser Player mit OCR-Panel:** Die Breite des IFrames berücksichtigt die Panelbreite, die Steuerleiste reicht bis an den Rand und der blaue OCR‑Rahmen sitzt exakt auf dem Videobild.
 * **Feinschliff am OCR‑Panel:** Breite clamped, Panel überlappt keine Buttons mehr, Text scrollt automatisch und der 🔍‑Button blinkt kurz bei einem Treffer.
-* **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus.
+* **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
 
 ### 📊 Fortschritts‑Tracking
 
