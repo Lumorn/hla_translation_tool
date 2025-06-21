@@ -145,6 +145,11 @@ function adjustVideoPlayerSize(force = false) {
         - (header ? header.offsetHeight : 0)
         - (controls ? controls.offsetHeight : 0);
 
+    // Bereich unter dem Video fuer die Steuerleiste reservieren
+    if (controls) {
+        section.style.paddingBottom = controls.offsetHeight + 'px';
+    }
+
     if (hoehe > maxH) {
         hoehe = maxH;
     }
