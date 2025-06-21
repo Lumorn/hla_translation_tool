@@ -111,10 +111,13 @@ function adjustVideoDialogHeight() {
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
 
 // passt den Videoplayer dynamisch an das 16:9-Format an
-function adjustVideoPlayerSize() {
+// passt den Videoplayer dynamisch an das 16:9-Format an
+// "force" erzwingt die Berechnung auch im versteckten Zustand
+function adjustVideoPlayerSize(force = false) {
     const section = document.getElementById('videoPlayerSection');
     const frame   = document.getElementById('videoPlayerFrame');
-    if (!section || !frame || section.classList.contains('hidden')) return;
+    if (!section || !frame) return;
+    if (section.classList.contains('hidden') && !force) return;
 
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');
@@ -134,6 +137,8 @@ window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 // auch bei Fenstergröße aktualisieren
 window.addEventListener('resize', () => {
     adjustVideoDialogHeight();
+    // Player auch im verborgenen Zustand neu skalieren
+    adjustVideoPlayerSize(true);
 });
 
 openVideoManager.onclick = async () => {
