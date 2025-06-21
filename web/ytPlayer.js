@@ -34,7 +34,8 @@ function positionOverlay() {
 async function initOcrWorker() {
     if (ocrWorker) return true;
     try {
-        const t = await import('tesseract.js');
+        // tesseract.js wird lokal geladen, damit die OCR auch ohne Internet funktioniert
+        const t = await import('./src/lib/tesseract.esm.min.js');
         ocrWorker = t.createWorker();
         await ocrWorker.load();
         await ocrWorker.loadLanguage('eng');
