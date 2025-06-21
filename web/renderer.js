@@ -62,6 +62,13 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoMgrDialog);
 
+// Beobachter passt Groesse bei jeder Dialog-Aenderung an
+const resizeObserver = new ResizeObserver(() => {
+    adjustVideoDialogHeight();
+    adjustVideoPlayerSize();
+});
+resizeObserver.observe(videoMgrDialog);
+
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
     // Maximale Höhe: 90 % des Fensters
