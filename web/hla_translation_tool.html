@@ -534,9 +534,11 @@
                 <div class="video-toolbar">
                     <input id="videoFilter" placeholder="Suche …" />
                     <div class="video-launch">
-                        <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
-                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
-                        <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
+                        <div class="video-launch-buttons">
+                            <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
+                            <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
+                        </div>
+                        <input type="text" id="videoUrlInput" placeholder="Video-URL...">
                     </div>
                 </div>
                 <div id="videoTableWrapper">
@@ -546,7 +548,7 @@
                                 <th data-asc="true">Bild</th>
                                 <th>Titel</th>
                                 <th>Letzte Zeit</th>
-                                <th>•</th>
+                                <th>Aktionen</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
