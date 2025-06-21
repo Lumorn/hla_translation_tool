@@ -20,6 +20,10 @@ export function openVideoDialog(bookmark, index) {
     if (!dlg.open) dlg.showModal();
 
     player.classList.remove('hidden');
+    // gleich nach dem Einblenden neu skalieren
+    if (typeof window.adjustVideoPlayerSize === 'function') {
+        window.adjustVideoPlayerSize(true);
+    }
     player.dataset.index = index;
     player.querySelector('#playerDialogTitle').textContent = bookmark.title;
 
