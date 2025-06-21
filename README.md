@@ -50,6 +50,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
 * **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
 * **Video-Manager mit integriertem Player:** Ein einziges Fenster zeigt links die gespeicherten Links und rechts den YouTube‑Player. Suchfeld, sortierbare Spalten sowie Hinzufügen‑, Umbenennen‑ und Lösch‑Buttons bleiben erhalten.
+* **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente, Suchfeld und deutlichere Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 10 s.
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.

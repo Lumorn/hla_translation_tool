@@ -416,9 +416,18 @@ th:nth-child(6) {
             background: #444;
         }
 
-        .btn-secondary:hover {
-            background: #555;
-        }
+.btn-secondary:hover {
+    background: #555;
+}
+
+/* Blaue Schaltfläche für sekundäre Aktionen */
+.btn-blue {
+    background: #2962ff;
+}
+
+.btn-blue:hover {
+    background: #448aff;
+}
 
         .btn-danger {
             background: #d32f2f;
@@ -2399,6 +2408,21 @@ th:nth-child(6) {
     padding: 1rem;
 }
 
+/* Werkzeugleiste mit Suchfeld und Buttons */
+.video-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+.video-toolbar input[type="text"] {
+    padding: 4px 6px;
+    background: #333;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    border-radius: 4px;
+}
+
 /* Flex-Layout für Liste und Player */
 .video-layout { display: flex; gap: 1rem; }
 .video-list-section { width: 35%; max-height: 70vh; overflow-y: auto; }
@@ -2467,6 +2491,7 @@ th:nth-child(6) {
     display: table;
     width: 100%;
     table-layout: fixed;
+    border-bottom: 1px solid #444;
 }
 #videoTable tbody tr:hover { background: #222; }
 #videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }

@@ -530,13 +530,14 @@
     <dialog id="videoMgrDialog" class="video-dialog">
         <div class="video-layout">
             <div class="video-list-section">
-                <h2>Gespeicherte Videos</h2>
-                <input id="videoFilter" placeholder="Suche …" />
-                <!-- Leiste zum Hinzufügen neuer Videos -->
-                <div class="video-launch">
-                    <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
-                    <button id="addVideoBtn" class="btn btn-secondary">Hinzufügen</button>
-                    <button class="btn btn-secondary" onclick="openVideoUrl()">Öffnen</button>
+                <h2>📼 Gespeicherte Videos</h2>
+                <div class="video-toolbar">
+                    <input id="videoFilter" placeholder="Suche …" />
+                    <div class="video-launch">
+                        <input type="text" id="videoUrlInput" placeholder="Video-URL..." style="width:200px">
+                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
+                        <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
+                    </div>
                 </div>
                 <table id="videoTable">
                     <thead>
@@ -549,7 +550,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
-                <button id="closeVideoDlg" class="primary">Schließen</button>
+                <button id="closeVideoDlg" class="btn btn-danger">❌ Schließen</button>
             </div>
             <div id="videoPlayerSection" class="video-player-section hidden">
                 <div class="player-header"><span id="playerDialogTitle"></span></div>
