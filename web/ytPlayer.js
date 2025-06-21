@@ -75,106 +75,43 @@ function terminateOcr() {
 }
 window.positionOverlay = positionOverlay;
 
-// Helferfunktion: Einen Frame aus einem Video-Track extrahieren
-async function grabFrame(track) {
-    try {
-        const capture = new ImageCapture(track);
-        return await capture.grabFrame();
-    } catch (err) {
-        console.warn('ImageCapture fehlgeschlagen, weiche auf Canvas aus', err);
-        const video = document.createElement('video');
-        video.srcObject = new MediaStream([track]);
-        await new Promise(res => (video.onloadedmetadata = res));
-        video.play();
-        const c = document.createElement('canvas');
-        c.width = video.videoWidth;
-        c.height = video.videoHeight;
-        c.getContext('2d').drawImage(video, 0, 0, c.width, c.height);
-        video.pause();
-        return c;
-    }
-}
-
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
         const ok = await initOcrWorker();
         if (!ok) return '';
         const iframe = document.getElementById('videoPlayerFrame');
-        if (!iframe) return false;
-        let bitmap;
-        let fromFrame = false;
+        if (!iframe) return '';
 
-        try {
-            const stream = iframe.contentWindow.document.documentElement.captureStream();
-            const track = stream.getVideoTracks()[0];
-            bitmap = await grabFrame(track);
-            track.stop();
-            fromFrame = true;
-        } catch(e) {}
+        const dpr = window.devicePixelRatio || 1;
+        const rect = iframe.getBoundingClientRect();
+        const bounds = {
+            x: Math.round(rect.left * dpr),
+            y: Math.round(rect.top * dpr),
+            width: Math.round(rect.width * dpr),
+            height: Math.round(rect.height * dpr)
+        };
 
-        if (!fromFrame) {
-            // Nur nutzen, wenn der Desktop-Capturer samt Methode vorhanden ist
-            const getSources = window.desktopCapturer?.getSources;
-            if (typeof getSources === 'function') {
-                try {
-                    const src = (await getSources({ types: ['screen'] }))[0];
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        audio: false,
-                        video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
-                    });
-                    const track = stream.getVideoTracks()[0];
-                    bitmap = await grabFrame(track);
-                    track.stop();
-                } catch(err) {
-                    console.warn('Desktop-Capture fehlgeschlagen, weiche auf getDisplayMedia aus', err);
-                }
-            }
-            if (!bitmap && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
-                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-                const track = stream.getVideoTracks()[0];
-                bitmap = await grabFrame(track);
-                track.stop();
-            } else {
-                try {
-                    const vid = iframe.contentWindow.document.querySelector('video');
-                    if (vid) {
-                        const c = document.createElement('canvas');
-                        const dpr = window.devicePixelRatio || 1;
-                        c.width  = vid.videoWidth * dpr;
-                        c.height = vid.videoHeight * dpr;
-                        c.getContext('2d').drawImage(vid, 0, 0, c.width, c.height);
-                        bitmap = c;
-                    } else {
-                        return false;
-                    }
-                } catch(err) {
-                    return false;
-                }
-            }
-        }
+        // Screenshot des IFrames vom Hauptfenster anfordern
+        const png = await window.api.captureFrame(bounds);
+        if (!png) return '';
+        const blob = new Blob([png], { type: 'image/png' });
+        const bitmap = await createImageBitmap(blob);
 
         const overlay = document.getElementById('ocrOverlay');
-        const rect = iframe.getBoundingClientRect();
         const orect = overlay ? overlay.getBoundingClientRect() : rect;
-        const dpr = window.devicePixelRatio || 1;
 
-        // Skalierung zwischen Screenshot und sichtbarem Bereich berechnen
-        const scaleX = bitmap.width / (fromFrame ? rect.width * dpr : window.innerWidth * dpr);
-        const scaleY = bitmap.height / (fromFrame ? rect.height * dpr : window.innerHeight * dpr);
-
-        const baseX = fromFrame ? (orect.left - rect.left) : orect.left;
-        const baseY = fromFrame ? (orect.top  - rect.top ) : orect.top;
-        const cropX = baseX * dpr * scaleX;
-        const cropY = baseY * dpr * scaleY;
-        const cropW = orect.width  * dpr * scaleX;
-        const cropH = orect.height * dpr * scaleY;
+        const cropX = (orect.left - rect.left) * dpr;
+        const cropY = (orect.top  - rect.top ) * dpr;
+        const cropW = orect.width  * dpr;
+        const cropH = orect.height * dpr;
 
         const canvas = document.createElement('canvas');
         canvas.width = cropW;
         canvas.height = cropH;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
+
         const { data: { text } } = await ocrWorker.recognize(canvas);
         console.log('OCR-Text:', text);
         return text.trim();

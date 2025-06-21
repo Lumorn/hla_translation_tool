@@ -98,13 +98,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
 * **Vollbreite ohne OCR:** Das Ergebnis-Panel bleibt standardmäßig verborgen und erscheint nur bei aktivierter Erkennung.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
-* **Canvas-Fallback bei der OCR:** Falls `ImageCapture` versagt, wird der Screenshot über einen Canvas erstellt.
-* **Desktop-Capturer in Electron:** Die OCR nutzt nun `desktopCapturer` für zuverlässige Bildschirmaufnahmen.
-* **Prüfung auf fehlende `getSources`-Methode:** Fehlt diese Funktion, greift die OCR automatisch auf `getDisplayMedia` zurück.
-* **Fallback bei Capture-Fehlern:** Schlägt die Aufnahme über `desktopCapturer` fehl, wird ebenfalls `getDisplayMedia` verwendet.
-* **Screenshot per IPC:** Der neue Kanal `capture-frame` erstellt einen sofortigen Screenshot des Hauptfensters ohne Desktop-Capturer.
-* **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern, weitere Node-APIs bleiben ausgeblendet.
-
+* **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
+* **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern.
+* **Neuer Frame-Grab-Workflow im Renderer:** Für jeden OCR-Durchlauf wird das IFrame direkt fotografiert und das PNG ohne zusätzliche Berechtigungen verarbeitet.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
