@@ -2505,6 +2505,13 @@ th:nth-child(6) {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.video-thumb {
+    width: 80px;
+    height: 45px;
+    object-fit: cover;
+    cursor: pointer;
+}
+.video-title { cursor: pointer; }
 .video-actions button { margin: 0 2px; }
 .video-actions button:hover { background:#444; }
 

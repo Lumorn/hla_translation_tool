@@ -97,12 +97,12 @@ async function refreshTable(sortKey='title', dir=true) {
     videoTableBody.innerHTML = '';
     list.forEach((b,i) => {
         const tr = document.createElement('tr');
+        const thumbUrl = `https://img.youtube.com/vi/${extractYoutubeId(b.url)}/default.jpg`;
         tr.innerHTML = `
-            <td>${i+1}</td>
-            <td title="${b.title}">${b.title}</td>
+            <td><img src="${thumbUrl}" data-idx="${b.origIndex}" class="video-thumb"></td>
+            <td class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</td>
             <td>${formatTime(b.time)}</td>
             <td class="video-actions">
-                <button class="start" data-idx="${b.origIndex}" title="Video starten">▶️</button>
                 <button class="delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>
                 <button class="rename" data-idx="${b.origIndex}" title="Titel bearbeiten">✏️</button>
             </td>`;
@@ -113,29 +113,33 @@ async function refreshTable(sortKey='title', dir=true) {
 // Delegierte Button-Events
 videoTableBody.onclick = async e => {
     const btn = e.target.closest('button');
-    if (!btn) return;
-    const origIdx = Number(btn.dataset.idx);
-    let list = await window.videoApi.loadBookmarks();
-    const bm = list[origIdx];
-    switch(btn.className){
-        case 'start':
-            openVideoDialog(bm, origIdx);
-            break;
-        case 'rename':
-            const t = prompt('Neuer Titel', bm.title);
-            if (t && t.trim()) {
-                bm.title = t.trim();
-                await window.videoApi.saveBookmarks(list);
-                refreshTable();
-            }
-            break;
-        case 'delete':
-            if (confirm('Wirklich löschen?')) {
-                list.splice(origIdx,1);
-                await window.videoApi.saveBookmarks(list);
-                refreshTable();
-            }
-            break;
+    const thumb = e.target.closest('.video-thumb, .video-title');
+    if (btn) {
+        const origIdx = Number(btn.dataset.idx);
+        let list = await window.videoApi.loadBookmarks();
+        const bm = list[origIdx];
+        switch(btn.className){
+            case 'rename':
+                const t = prompt('Neuer Titel', bm.title);
+                if (t && t.trim()) {
+                    bm.title = t.trim();
+                    await window.videoApi.saveBookmarks(list);
+                    refreshTable();
+                }
+                break;
+            case 'delete':
+                if (confirm('Wirklich löschen?')) {
+                    list.splice(origIdx,1);
+                    await window.videoApi.saveBookmarks(list);
+                    refreshTable();
+                }
+                break;
+        }
+    } else if (thumb) {
+        const origIdx = Number(thumb.dataset.idx);
+        let list = await window.videoApi.loadBookmarks();
+        const bm = list[origIdx];
+        openVideoDialog(bm, origIdx);
     }
 };
 
