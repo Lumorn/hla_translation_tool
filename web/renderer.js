@@ -191,8 +191,8 @@ function adjustVideoPlayerSize(force = false) {
     frame.style.height = h + 'px';
     if (controls) controls.style.width = w + 'px';
     if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-        // Schnell-Fix: Panel-Höhe an die Video-Höhe koppeln
-        ocrPanel.style.height = frame.style.height;
+        // Schnell-Fix: Panel-Höhe an die tatsächliche Video-Höhe anpassen
+        ocrPanel.style.height = frame.clientHeight + 'px';
     }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
