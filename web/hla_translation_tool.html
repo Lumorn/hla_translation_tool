@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Half-Life: Alyx Translation Tool</title>
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
-    <!-- Angepasste CSP: Blob-Worker für Tesseract ohne 'unsafe-eval' zulassen -->
+    <!-- Aktualisierte CSP: Erlaubt YouTube und Blob-Worker -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
-                   script-src 'self';
-                   style-src 'self' 'unsafe-inline';
-                   img-src 'self' data:;
-                   worker-src 'self' blob:;">
+                   script-src  'self' https://www.youtube.com https://www.youtube-nocookie.com;
+                   worker-src  'self' blob:;
+                   img-src     'self' data: https://i.ytimg.com;
+                   frame-src   'self' https://www.youtube.com https://www.youtube-nocookie.com;
+                   style-src   'self' 'unsafe-inline';">
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
