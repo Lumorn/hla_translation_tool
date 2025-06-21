@@ -2697,16 +2697,16 @@ th:nth-child(6) {
     animation: pulse 1s infinite;
 }
 
-#ocrResultPanel {
-    /* Ergebnis-Panel klebt fest rechts neben dem Video */
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
+#ocrResultPanel{
+    /* Panel bleibt fest rechts neben dem Video */
+    position:absolute;
+    top:0;
+    right:0;
+    height:100%;
     width: clamp(200px, 20%, 260px);
-    overflow: auto;
-    background: #1a1a1a;
-    padding: 8px;
+    overflow:auto;
+    background:#1a1a1a;
+    padding:8px;
 }
 #ocrResultPanel pre {
     margin: 0;

@@ -168,13 +168,14 @@ function adjustVideoPlayerSize(force = false) {
     const pad       = parseFloat(getComputedStyle(dialog).paddingLeft) || 0;
     const listW     = list ? list.offsetWidth : 0;
     const panelW    = (ocrPanel && !ocrPanel.classList.contains('hidden'))
-        ? ocrPanel.offsetWidth : 0;
+        ? ocrPanel.offsetWidth : 0; // Breite des Ergebnis-Panels
 
     // verfügbare Fläche im Dialog
     const dialogW   = dialog.clientWidth;
     const dialogH   = dialog.clientHeight;
     let freeW       = dialogW - listW - 2 * pad;
-    freeW          -= panelW; // Platz für das Ergebnis-Panel abziehen
+    // Panelbreite abziehen, damit das Video nicht verdeckt wird
+    freeW          -= panelW;
     const headerH   = header ? header.offsetHeight : 0;
     const controlsH = controls ? controls.offsetHeight : 0;
     const freeH     = dialogH - headerH - controlsH - 2 * pad;
