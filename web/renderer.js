@@ -173,7 +173,8 @@ function adjustVideoPlayerSize(force = false) {
     // verfügbare Fläche im Dialog
     const dialogW   = dialog.clientWidth;
     const dialogH   = dialog.clientHeight;
-    const freeW     = dialogW - listW - panelW - 2 * pad;
+    let freeW       = dialogW - listW - 2 * pad;
+    freeW          -= panelW; // Platz für das Ergebnis-Panel abziehen
     const headerH   = header ? header.offsetHeight : 0;
     const controlsH = controls ? controls.offsetHeight : 0;
     const freeH     = dialogH - headerH - controlsH - 2 * pad;
@@ -188,6 +189,10 @@ function adjustVideoPlayerSize(force = false) {
     frame.style.width  = w + 'px';
     frame.style.height = h + 'px';
     if (controls) controls.style.width = w + 'px';
+    if (panel && !panel.classList.contains('hidden')) {
+        // Panel-Höhe an die Video-Höhe anpassen
+        panel.style.height = frame.clientHeight + 'px';
+    }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 

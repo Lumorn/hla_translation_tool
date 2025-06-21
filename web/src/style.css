@@ -2698,15 +2698,18 @@ th:nth-child(6) {
 }
 
 #ocrResultPanel {
+    /* Panel klebt rechts neben dem Video */
     position: absolute;
-    /* genaue Position und Höhe werden per JS gesetzt */
-    z-index: 4;
-    width: clamp(200px, 18%, 260px);
-    background: #181818;
-    color: #e0e0e0;
-    overflow: hidden;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: clamp(200px, 20%, 260px);
+    overflow: auto;
+    background: #1a1a1a;
     padding: 8px;
+    z-index: 4;
     font-family: monospace;
+    color: #e0e0e0;
 }
 #ocrResultPanel pre {
     margin: 0;
