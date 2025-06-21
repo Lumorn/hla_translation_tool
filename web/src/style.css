@@ -2708,6 +2708,11 @@ th:nth-child(6) {
     animation: pulse 1s infinite;
 }
 
+#ocrDebug.active {
+    background: #ff9933;
+    color: #fff;
+}
+
 #ocrResultPanel{
     /* Schnell-Fix: Panel sitzt fest rechts neben dem Video */
     position:absolute;
