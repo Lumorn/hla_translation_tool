@@ -11,6 +11,20 @@ export function extractYoutubeId(url) {
 let ocrWorker = null;        // wird bei Bedarf angelegt
 let ocrInterval = null;      // Intervall für Auto-OCR
 
+// Overlay an die Groesse des IFrames anpassen
+function updateOcrOverlay() {
+    const section = document.getElementById('videoPlayerSection');
+    const iframe  = document.getElementById('videoPlayerFrame');
+    const overlay = document.getElementById('ocrOverlay');
+    if (!section || !iframe || !overlay) return;
+    const rect = iframe.getBoundingClientRect();
+    const prect = section.getBoundingClientRect();
+    overlay.style.left   = (rect.left - prect.left) + 'px';
+    overlay.style.top    = (rect.top  - prect.top  + rect.height * 0.8) + 'px';
+    overlay.style.width  = rect.width + 'px';
+    overlay.style.height = (rect.height * 0.2) + 'px';
+}
+
 // OCR-Worker initialisieren
 async function initOcrWorker() {
     if (ocrWorker) return;
@@ -26,38 +40,61 @@ function terminateOcr() {
     if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
     if (ocrWorker) { ocrWorker.terminate(); ocrWorker = null; }
 }
+window.updateOcrOverlay = updateOcrOverlay;
 
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
         await initOcrWorker();
+        const iframe = document.getElementById('videoPlayerFrame');
+        if (!iframe) return false;
         let bitmap;
-        if (window.desktopCapturer) {
-            const src = (await window.desktopCapturer.getSources({ types: ['screen'] }))[0];
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: false,
-                video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
-            });
+        let fromFrame = false;
+
+        try {
+            const stream = iframe.contentWindow.document.documentElement.captureStream();
             const track = stream.getVideoTracks()[0];
             const capture = new ImageCapture(track);
             bitmap = await capture.grabFrame();
             track.stop();
-        } else if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
-            const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-            const track = stream.getVideoTracks()[0];
-            const capture = new ImageCapture(track);
-            bitmap = await capture.grabFrame();
-            track.stop();
-        } else {
-            return false;
+            fromFrame = true;
+        } catch(e) {}
+
+        if (!fromFrame) {
+            if (window.desktopCapturer) {
+                const src = (await window.desktopCapturer.getSources({ types: ['screen'] }))[0];
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: false,
+                    video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
+                });
+                const track = stream.getVideoTracks()[0];
+                const capture = new ImageCapture(track);
+                bitmap = await capture.grabFrame();
+                track.stop();
+            } else if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+                const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+                const track = stream.getVideoTracks()[0];
+                const capture = new ImageCapture(track);
+                bitmap = await capture.grabFrame();
+                track.stop();
+            } else {
+                return false;
+            }
         }
 
-        const h = Math.floor(bitmap.height * 0.2);
+        const rect = iframe.getBoundingClientRect();
+        const scaleX = bitmap.width / (fromFrame ? rect.width : window.innerWidth);
+        const scaleY = bitmap.height / (fromFrame ? rect.height : window.innerHeight);
+        const cropX = fromFrame ? 0 : rect.left * scaleX;
+        const cropY = fromFrame ? rect.height * 0.8 : (rect.top * scaleY + rect.height * scaleY * 0.8);
+        const cropW = rect.width * scaleX;
+        const cropH = rect.height * scaleY * 0.2;
+
         const canvas = document.createElement('canvas');
-        canvas.width = bitmap.width;
-        canvas.height = h;
+        canvas.width = cropW;
+        canvas.height = cropH;
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(bitmap, 0, bitmap.height - h, canvas.width, h, 0, 0, canvas.width, h);
+        ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
         const { data: { text } } = await ocrWorker.recognize(canvas);
         const txt = text.trim();
         if (txt) {
@@ -71,6 +108,7 @@ async function captureAndOcr() {
             if (window.currentYT && window.currentYT.getPlayerState && window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
                 window.currentYT.pauseVideo();
             }
+            stopAutoOcr();
             return true;
         }
     } catch (e) {
@@ -81,6 +119,9 @@ async function captureAndOcr() {
 
 function startAutoOcr() {
     if (ocrInterval) return;
+    if (typeof window.updateOcrOverlay === 'function') {
+        window.updateOcrOverlay();
+    }
     ocrInterval = setInterval(async () => {
         const hit = await captureAndOcr();
         if (hit) stopAutoOcr();
@@ -108,6 +149,9 @@ export function openVideoDialog(bookmark, index) {
     // gleich nach dem Einblenden neu skalieren
     if (typeof window.adjustVideoPlayerSize === 'function') {
         window.adjustVideoPlayerSize(true);
+    }
+    if (typeof window.updateOcrOverlay === 'function') {
+        window.updateOcrOverlay();
     }
     player.dataset.index = index;
     player.querySelector('#playerDialogTitle').textContent = bookmark.title;
@@ -235,12 +279,18 @@ export function openVideoDialog(bookmark, index) {
     if (typeof window.adjustVideoPlayerSize === 'function') {
         // beim Öffnen sofort skalieren
         window.adjustVideoPlayerSize(true);
+        if (typeof window.updateOcrOverlay === 'function') {
+            window.updateOcrOverlay();
+        }
     }
     // zwei Layout-Ticks warten und erneut anpassen
     window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
             if (typeof window.adjustVideoPlayerSize === 'function') {
                 window.adjustVideoPlayerSize(true);
+                if (typeof window.updateOcrOverlay === 'function') {
+                    window.updateOcrOverlay();
+                }
             }
         });
     });
