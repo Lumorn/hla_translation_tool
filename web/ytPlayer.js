@@ -132,12 +132,13 @@ export function openVideoDialog(bookmark, index) {
         // beim Öffnen sofort skalieren
         window.adjustVideoPlayerSize(true);
     }
-    // nach dem Einblenden einen Tick warten und dann erneut skalieren
+    // zwei Layout-Ticks warten und erneut anpassen
     window.requestAnimationFrame(() => {
-        if (typeof window.adjustVideoPlayerSize === 'function') {
-            // nach dem Layout-Refresh erneut skalieren
-            window.adjustVideoPlayerSize(true);
-        }
+        window.requestAnimationFrame(() => {
+            if (typeof window.adjustVideoPlayerSize === 'function') {
+                window.adjustVideoPlayerSize(true);
+            }
+        });
     });
 }
 
