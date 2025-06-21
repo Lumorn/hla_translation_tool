@@ -124,13 +124,9 @@ function adjustVideoPlayerSize(force = false) {
     const frei = section.clientHeight
         - (header ? header.offsetHeight : 0)
         - (controls ? controls.offsetHeight : 0);
-    const maxBreite = frei * 16 / 9;
-    const bereichBreite = section.clientWidth;
-    const nutzBreite = Math.min(bereichBreite, maxBreite);
-    const nutzHoehe = nutzBreite * 9 / 16;
 
-    frame.style.width  = nutzBreite + 'px';
-    frame.style.height = nutzHoehe + 'px';
+    // Breite wird per CSS auf 100 % gesetzt, hier nur die maximale Höhe anpassen
+    frame.style.maxHeight = frei + 'px';
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
