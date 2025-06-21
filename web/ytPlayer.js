@@ -73,6 +73,26 @@ function terminateOcr() {
 }
 window.positionOverlay = positionOverlay;
 
+// Helferfunktion: Einen Frame aus einem Video-Track extrahieren
+async function grabFrame(track) {
+    try {
+        const capture = new ImageCapture(track);
+        return await capture.grabFrame();
+    } catch (err) {
+        console.warn('ImageCapture fehlgeschlagen, weiche auf Canvas aus', err);
+        const video = document.createElement('video');
+        video.srcObject = new MediaStream([track]);
+        await new Promise(res => (video.onloadedmetadata = res));
+        video.play();
+        const c = document.createElement('canvas');
+        c.width = video.videoWidth;
+        c.height = video.videoHeight;
+        c.getContext('2d').drawImage(video, 0, 0, c.width, c.height);
+        video.pause();
+        return c;
+    }
+}
+
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
@@ -86,8 +106,7 @@ async function captureAndOcr() {
         try {
             const stream = iframe.contentWindow.document.documentElement.captureStream();
             const track = stream.getVideoTracks()[0];
-            const capture = new ImageCapture(track);
-            bitmap = await capture.grabFrame();
+            bitmap = await grabFrame(track);
             track.stop();
             fromFrame = true;
         } catch(e) {}
@@ -100,14 +119,12 @@ async function captureAndOcr() {
                     video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
                 });
                 const track = stream.getVideoTracks()[0];
-                const capture = new ImageCapture(track);
-                bitmap = await capture.grabFrame();
+                bitmap = await grabFrame(track);
                 track.stop();
             } else if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
                 const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
                 const track = stream.getVideoTracks()[0];
-                const capture = new ImageCapture(track);
-                bitmap = await capture.grabFrame();
+                bitmap = await grabFrame(track);
                 track.stop();
             } else {
                 try {
