@@ -156,6 +156,9 @@ function adjustVideoPlayerSize(force = false) {
 
     // Breite bleibt flexibel, nur die maximale Höhe wird gesetzt
     frame.style.maxHeight = hoehe + 'px';
+    if (typeof window.updateOcrOverlay === 'function') {
+        window.updateOcrOverlay();
+    }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
@@ -164,6 +167,9 @@ window.addEventListener('resize', () => {
     adjustVideoDialogHeight();
     // Player auch im verborgenen Zustand neu skalieren
     adjustVideoPlayerSize(true);
+    if (typeof window.updateOcrOverlay === 'function') {
+        window.updateOcrOverlay();
+    }
 });
 
 openVideoManager.onclick = async () => {

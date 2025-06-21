@@ -2485,6 +2485,7 @@ th:nth-child(6) {
     display: flex;
     gap: 8px;
     overflow: hidden;
+    position: relative; /* erlaubt absolut positionierte OCR-Spalte */
 }
 .video-list-section {
     /* Linke Tabellenansicht mit flexibler Höhe und variabler Breite */
@@ -2503,6 +2504,7 @@ th:nth-child(6) {
     overflow: hidden;
     position: relative; /* Steuerleiste am unteren Rand fixieren */
     padding-bottom: 56px; /* Platz für die Steuerleiste */
+    margin-right: 16%; /* Platz fuer das OCR-Panel */
 }
 .video-player-section.hidden { display: none; }
 
@@ -2676,10 +2678,6 @@ th:nth-child(6) {
 /* ===== OCR-Funktionen ===== */
 #ocrOverlay {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 20%;
     background: rgba(0,128,255,.25);
     border: 2px dashed #fff;
     pointer-events: none;
@@ -2691,13 +2689,20 @@ th:nth-child(6) {
 }
 
 #ocrResultPanel {
-    flex: 0 0 160px;
-    min-width: 160px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 16%;
+    min-width: 140px;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 #ocrResultPanel textarea {
     width: 100%;
     flex: 1 1 auto;
+    overflow: auto;
+    white-space: pre-wrap;
 }
 
