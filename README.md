@@ -115,6 +115,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Neuer Frame-Grab-Workflow im Renderer:** Für jeden OCR-Durchlauf wird das IFrame direkt fotografiert und das PNG ohne zusätzliche Berechtigungen verarbeitet.
 * **Bildverarbeitung für exakteres OCR:** Der Screenshot wird vor der Erkennung kontrastreich nachgeschärft.
 * **Optimierte OCR-Parameter für bessere Trefferquote**
+* **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird um 2 % nach oben oder unten verschoben, falls zu wenig helle Pixel vorhanden sind.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
