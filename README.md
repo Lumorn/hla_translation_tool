@@ -298,6 +298,7 @@ Seit Patch 1.40.49 entfernt die Content Security Policy `'unsafe-eval'` wieder, 
 Seit Patch 1.40.50 fügt die Richtlinie `'unsafe-eval'` erneut hinzu, damit der Tesseract-Worker ohne Fehler startet.
 Seit Patch 1.40.51 wurde die CSS-Klasse `.video-player-section` bereinigt. Jetzt gilt ein eindeutiger Block mit `overflow-x:hidden`, `overflow-y:auto` und `min-height:0`, damit die Steuerelement-Leiste nicht mehr abgeschnitten wird.
 Seit Patch 1.40.52 entfernt die Content Security Policy `'unsafe-eval'` erneut und erlaubt `worker-src 'self'`. Dadurch verschwindet die Electron-Sicherheitswarnung, ohne die App-Funktionalität einzuschränken.
+Seit Patch 1.40.53 nutzt die Content Security Policy eine minimale Konfiguration. Sie erlaubt Blob‑Worker für Tesseract, ohne `'unsafe-eval'` zu verwenden.
 
 Beispiel einer gültigen CSV:
 
