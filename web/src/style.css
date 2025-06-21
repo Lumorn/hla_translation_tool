@@ -2424,7 +2424,9 @@ th:nth-child(6) {
     height: auto;
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 1rem;
+    /* fester Innenabstand und Abstand zum Fenster */
+    padding: 24px;
+    margin: 24px auto;
     display: flex;
     flex-direction: column;
 }
@@ -2432,7 +2434,8 @@ th:nth-child(6) {
 /* Werkzeugleiste mit Suchfeld und Buttons */
 .video-toolbar {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
     gap: 8px;
     margin-bottom: 8px;
 }
@@ -2442,6 +2445,37 @@ th:nth-child(6) {
     border: 1px solid #555;
     color: #e0e0e0;
     border-radius: 4px;
+}
+
+.video-search {
+    /* Suchfeld und Add/Open als flexibler Wrapper */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1 1 100%;
+}
+.video-search input { flex: 1 1 150px; }
+.video-search button { min-width: 90px; }
+
+.video-url {
+    /* URL-Eingabe unterhalb der Suchzeile */
+    display: flex;
+    gap: 8px;
+    flex: 1 1 100%;
+}
+.video-url input { flex: 1 1 auto; }
+
+.close-icon {
+    /* kleines Schließen-Icon für mobile Ansicht */
+    display: none;
+}
+
+@media (max-width: 600px) {
+    /* mobile Ansicht: kleines Icon und kleinere Zeitangabe */
+    #closeVideoDlg { display: none; }
+    .close-icon { display: inline-flex; }
+    .close-icon.btn { padding: 4px 6px; }
+    .player-controls span { font-size: 0.9rem; }
 }
 
 /* Flex-Layout für Liste und Player,
@@ -2516,6 +2550,9 @@ th:nth-child(6) {
 .video-player-section .player-controls button:hover {
     background: #444;
 }
+.video-player-section .player-controls span {
+    font-size: 1rem;
+}
 
 #videoTableWrapper {
     /* Container für die Tabelle: wächst bei Bedarf, sonst passt er sich an */
@@ -2548,10 +2585,10 @@ th:nth-child(6) {
     table-layout: fixed;
     border-bottom: 1px solid #444;
 }
-#videoTable tbody tr:hover { background: #222; }
-#videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }
+#videoTable tbody tr:hover { background: #2e2e2e; }
+#videoTable td, #videoTable th { padding: 6px; }
 #videoTable th:first-child, #videoTable td:first-child {
-    width: 100px;
+    width: 64px;
 }
 #videoTable td {
     overflow: hidden;
@@ -2560,9 +2597,11 @@ th:nth-child(6) {
 }
 .video-thumb {
     width: clamp(60px, 8vw, 120px);
+    max-width: 64px;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     cursor: pointer;
+    border-radius: 4px;
 }
 .video-title {
     cursor: pointer;

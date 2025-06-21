@@ -532,14 +532,15 @@
             <div class="video-list-section">
                 <h2>📼 Gespeicherte Videos</h2>
                 <div class="video-toolbar">
-                    <input id="videoFilter" placeholder="Suche …" />
-                    <div class="video-launch">
-                        <div class="video-launch-buttons">
-                            <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
-                            <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
-                            <button id="exportVideoBtn" class="btn">⭳ Export</button>
-                        </div>
+                    <div class="video-search">
+                        <input id="videoFilter" placeholder="Suche …" />
+                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
+                        <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
+                        <button id="closeVideoDlgSmall" class="btn btn-danger close-icon">❌</button>
+                    </div>
+                    <div class="video-url">
                         <input type="text" id="videoUrlInput" placeholder="Video-URL...">
+                        <button id="exportVideoBtn" class="btn">⭳ Export</button>
                     </div>
                 </div>
                 <div id="videoTableWrapper">

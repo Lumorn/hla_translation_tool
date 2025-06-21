@@ -7,6 +7,8 @@ const videoMgrDialog   = document.getElementById('videoMgrDialog');
 const videoTableBody   = document.querySelector('#videoTable tbody');
 const videoFilter      = document.getElementById('videoFilter');
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
+// schmale Variante des Schließen-Knopfs
+const closeVideoDlgSmall = document.getElementById('closeVideoDlgSmall');
 const exportVideoBtn   = document.getElementById('exportVideoBtn');
 
 // gespeicherten Suchbegriff wiederherstellen
@@ -169,6 +171,14 @@ closeVideoDlg.onclick = () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
 };
+if (closeVideoDlgSmall) {
+    // kompakte Variante fuer schmale Fenster
+    closeVideoDlgSmall.onclick = () => {
+        videoMgrDialog.close();
+        if (typeof closeVideoDialog === 'function') closeVideoDialog();
+        adjustVideoDialogHeight();
+    };
+}
 videoMgrDialog.addEventListener('cancel', () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
