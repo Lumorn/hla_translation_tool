@@ -102,9 +102,9 @@ async function refreshTable(sortKey='title', dir=true) {
             <td title="${b.url}">${b.title.slice(0,40)}</td>
             <td>${formatTime(b.time)}</td>
             <td class="video-actions">
-                <button class="start" data-idx="${b.origIndex}">▶</button>
-                <button class="rename" data-idx="${b.origIndex}">✎</button>
-                <button class="delete" data-idx="${b.origIndex}">🗑</button>
+                <button class="start" data-idx="${b.origIndex}" title="Video starten">▶️</button>
+                <button class="delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>
+                <button class="rename" data-idx="${b.origIndex}" title="Titel bearbeiten">✏️</button>
             </td>`;
         videoTableBody.appendChild(tr);
     });
