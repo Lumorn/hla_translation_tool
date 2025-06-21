@@ -15,7 +15,45 @@ let ocrPaused = false;       // wurde nach einem Treffer pausiert?
 let ocrWindow = null;        // separates Fenster für erkannte Texte
 
 // Overlay an die Größe des IFrames anpassen
-function positionOverlay() {
+// prueft die Helligkeit des potenziellen Textbereichs
+async function pruefeHelligkeit(bitmap, roi, frameH) {
+    const canvas = document.createElement('canvas');
+    const tmpW = 32;                              // kleines Hilfs-Canvas fuer schnelle Analyse
+    const tmpH = Math.max(1, Math.round(tmpW * roi.height / roi.width));
+    canvas.width = tmpW;
+    canvas.height = tmpH;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bitmap, roi.x, roi.y, roi.width, roi.height, 0, 0, tmpW, tmpH);
+    const data = ctx.getImageData(0, 0, tmpW, tmpH).data;
+    let bright = 0;
+    for (let i = 0; i < data.length; i += 4) {
+        if (data[i] + data[i + 1] + data[i + 2] > 600) bright++;
+    }
+    // Wird der Schwellenwert nicht erreicht, pruefen wir 2 % hoeher bzw. tiefer
+    if (bright < 20) {
+        const off = Math.round(frameH * 0.02);
+        ctx.clearRect(0, 0, tmpW, tmpH);
+        ctx.drawImage(bitmap, roi.x, roi.y - off, roi.width, roi.height, 0, 0, tmpW, tmpH);
+        const upData = ctx.getImageData(0, 0, tmpW, tmpH).data;
+        let upBright = 0;
+        for (let i = 0; i < upData.length; i += 4) {
+            if (upData[i] + upData[i + 1] + upData[i + 2] > 600) upBright++;
+        }
+        ctx.clearRect(0, 0, tmpW, tmpH);
+        ctx.drawImage(bitmap, roi.x, roi.y + off, roi.width, roi.height, 0, 0, tmpW, tmpH);
+        const downData = ctx.getImageData(0, 0, tmpW, tmpH).data;
+        let downBright = 0;
+        for (let i = 0; i < downData.length; i += 4) {
+            if (downData[i] + downData[i + 1] + downData[i + 2] > 600) downBright++;
+        }
+        if (upBright > bright && upBright >= downBright) return -off;
+        if (downBright > bright) return off;
+    }
+    return 0;
+}
+
+// Overlay an die Größe des IFrames anpassen und Helligkeit pruefen
+async function positionOverlay() {
     const section  = document.getElementById('videoPlayerSection');
     const iframe   = document.getElementById('videoPlayerFrame');
     const overlay  = document.getElementById('ocrOverlay');
@@ -31,6 +69,32 @@ function positionOverlay() {
     overlay.style.left   = (iframeRect.left - sectionRect.left) + 'px';
     overlay.style.width  = iframeRect.width + 'px';
     overlay.style.height = oH + 'px';
+
+    try {
+        const dpr = window.devicePixelRatio || 1;
+        const bounds = {
+            x: Math.round(iframeRect.left * dpr),
+            y: Math.round(iframeRect.top * dpr),
+            width: Math.round(iframeRect.width * dpr),
+            height: Math.round(iframeRect.height * dpr)
+        };
+        const png = await window.api.captureFrame(bounds);
+        if (png) {
+            const blob = new Blob([png], { type: 'image/png' });
+            const bmp = await createImageBitmap(blob);
+            const oRect = overlay.getBoundingClientRect();
+            const roi = {
+                x: (oRect.left - iframeRect.left) * dpr,
+                y: (oRect.top - iframeRect.top) * dpr,
+                width: oRect.width * dpr,
+                height: oRect.height * dpr
+            };
+            const diff = await pruefeHelligkeit(bmp, roi, iframeRect.height * dpr);
+            if (diff) {
+                overlay.style.top = (parseFloat(overlay.style.top) + diff / dpr) + 'px';
+            }
+        }
+    } catch(e) { console.error('Helligkeitspruefung fehlgeschlagen', e); }
 }
 
 // OCR-Worker initialisieren
@@ -136,10 +200,19 @@ async function captureAndOcr() {
         const overlay = document.getElementById('ocrOverlay');
         const orect = overlay ? overlay.getBoundingClientRect() : rect;
 
-        const cropX = (orect.left - rect.left) * dpr;
-        const cropY = (orect.top  - rect.top ) * dpr;
+        let cropX = (orect.left - rect.left) * dpr;
+        let cropY = (orect.top  - rect.top ) * dpr;
         const cropW = orect.width  * dpr;
         const cropH = orect.height * dpr;
+
+        // Helligkeit pruefen und ROI ggf. leicht verschieben
+        const diff = await pruefeHelligkeit(bitmap, { x: cropX, y: cropY, width: cropW, height: cropH }, rect.height * dpr);
+        if (diff) {
+            cropY += diff;
+            if (overlay) {
+                overlay.style.top = (parseFloat(overlay.style.top) + diff / dpr) + 'px';
+            }
+        }
 
         const canvas = document.createElement('canvas');
         canvas.width = cropW;
