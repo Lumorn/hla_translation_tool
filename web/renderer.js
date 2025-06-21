@@ -5,7 +5,15 @@ const addBtn    = document.getElementById('addVideoBtn');
 const openVideoManager = document.getElementById('openVideoManager');
 const videoMgrDialog   = document.getElementById('videoMgrDialog');
 const videoTableBody   = document.querySelector('#videoTable tbody');
+const videoTableWrapper = document.getElementById('videoTableWrapper');
 const videoFilter      = document.getElementById('videoFilter');
+// Passiver Scroll-Handler für ruckelfreie Videolisten
+if (videoTableWrapper) {
+    videoTableWrapper.addEventListener('wheel', () => {
+        // Höhe dynamisch anpassen, ohne das Scrollen zu blockieren
+        adjustVideoDialogHeight();
+    }, { passive: true });
+}
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
 // schmale Variante des Schließen-Knopfs
 const closeVideoDlgSmall = document.getElementById('closeVideoDlgSmall');
