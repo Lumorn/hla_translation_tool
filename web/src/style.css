@@ -2532,19 +2532,15 @@ th:nth-child(6) {
     margin: 0 auto;
 }
 .video-player-section .player-controls {
-    /* Flexible Leiste, rutscht bei Platzmangel in die naechste Zeile */
+    /* Flexible Leiste unterhalb des Videos, rutscht bei Platzmangel in die nächste Zeile */
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     padding: 0.5rem 1rem;
     background: #242424;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.5);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 5;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    margin-top: 8px; /* sorgt dafür, dass die Leiste nicht mehr über dem Video liegt */
 }
 .video-player-section .player-controls input[type=range] {
     /* Slider darf schrumpfen, bleibt aber mindestens 140px breit */
