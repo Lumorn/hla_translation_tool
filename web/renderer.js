@@ -125,113 +125,19 @@ function adjustVideoDialogHeight() {
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
 
-// ===== Neuer Algorithmus für die Player-Anpassung =====
-let layoutData = {};
-
-// ermittelt Breite und Höhe des verfügbaren Bereichs
-function calcUsableWidthHeight() {
-    const MIN_H = 180; // minimale Höhe für den Player
-    const MIN_W = 320; // minimale Breite für den Player
-
-    const dlg      = document.getElementById('videoMgrDialog');
-    const list     = document.querySelector('.video-list-section');
-    const panel    = document.getElementById('ocrResultPanel');
-    const controls = document.querySelector('.player-controls');
-    if (!dlg) return;
-
-    const pad = parseInt(getComputedStyle(dlg).paddingLeft) || 0;
-    const leftListWidth = list ? list.offsetWidth : 0;
-    const panelWidth = panel && !panel.classList.contains('hidden')
-        ? panel.offsetWidth : 0;
-    const controlsH = controls ? controls.offsetHeight : 0;
-
-    let usableWidth = dlg.clientWidth - leftListWidth - panelWidth - 2 * pad;
-    if (usableWidth < 0) usableWidth = 0;
-
-    let width  = usableWidth;
-    let height = width * 9 / 16;
-
-    const maxH = dlg.clientHeight - pad;
-    if (height + controlsH > maxH) {
-        height = maxH - controlsH;
-        if (height < 0) height = 0;
-        width = height * 16 / 9;
-    }
-
-    // Mindestgroesse erzwingen
-    if (width < MIN_W) {
-        width  = MIN_W;
-        height = width * 9 / 16;
-    }
-    if (height < MIN_H) {
-        height = MIN_H;
-        width  = height * 16 / 9;
-    }
-
-    layoutData = { width, height, leftListWidth, panelWidth, pad, controlsH };
-}
-
-// setzt Breite und Höhe des IFrames
-function positionIframe() {
-    const frame = document.getElementById('videoPlayerFrame');
-    if (!frame) return;
-    // Groesse laut Berechnung setzen
-    frame.style.width  = layoutData.width + 'px';
-    frame.style.height = layoutData.height + 'px';
-}
-
-// platziert die Steuerleiste direkt unter dem IFrame
-function positionControls() {
-    const controls = document.querySelector('.player-controls');
-    const frame    = document.getElementById('videoPlayerFrame');
-    const dlg      = document.getElementById('videoMgrDialog');
-    if (!controls || !frame || !dlg) return;
-    const fRect  = frame.getBoundingClientRect();
-    const dRect  = dlg.getBoundingClientRect();
-    controls.style.position = 'absolute';
-    controls.style.left     = (layoutData.leftListWidth + layoutData.pad) + 'px';
-    controls.style.top      = (fRect.bottom - dRect.top + 4) + 'px';
-    controls.style.width    = layoutData.width + 'px';
-    controls.style.zIndex   = 10;
-}
-
-// positioniert das OCR-Overlay im unteren Videobereich
-function positionOverlay() {
-    const overlay  = document.getElementById('ocrOverlay');
-    const frame    = document.getElementById('videoPlayerFrame');
-    const controls = document.querySelector('.player-controls');
-    const dlg      = document.getElementById('videoMgrDialog');
-    if (!overlay || !frame || !controls || !dlg) return;
-    const fRect  = frame.getBoundingClientRect();
-    const dRect  = dlg.getBoundingClientRect();
-    const oHeight = layoutData.height * 0.18;
-    const oTop = fRect.bottom - oHeight - layoutData.controlsH - 4;
-    overlay.style.left   = (layoutData.leftListWidth + layoutData.pad) + 'px';
-    overlay.style.top    = (oTop - dRect.top) + 'px';
-    overlay.style.width  = layoutData.width + 'px';
-    overlay.style.height = oHeight + 'px';
-}
-
-// richtet das OCR-Ergebnis-Panel aus
-function positionOcrPanel() {
-    const panel = document.getElementById('ocrResultPanel');
-    if (!panel) return;
-    panel.style.position = 'absolute';
-    panel.style.right    = layoutData.pad + 'px';
-    panel.style.top      = layoutData.pad + 'px';
-    panel.style.height   = layoutData.height + 'px';
-}
-
-// kompatible Schnittstelle zu früheren Aufrufen
+// ===== Einfache Player-Anpassung =====
 function adjustVideoPlayerSize(force = false) {
     const section = document.getElementById('videoPlayerSection');
     if (!section) return;
     if (!force && section.classList.contains('hidden')) return;
-    calcUsableWidthHeight();
-    positionIframe();
-    positionControls();
-    positionOverlay();
-    positionOcrPanel();
+    const header   = section.querySelector('.player-header');
+    const controls = section.querySelector('.player-controls');
+    const frame    = section.querySelector('iframe');
+    if (!frame) return;
+    const h = section.clientHeight
+        - (header ? header.offsetHeight : 0)
+        - (controls ? controls.offsetHeight : 0);
+    frame.style.maxHeight = h > 0 ? h + 'px' : '0';
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
@@ -249,6 +155,7 @@ openVideoManager.onclick = async () => {
     await refreshTable();
     videoMgrDialog.showModal();
     adjustVideoDialogHeight();
+    adjustVideoPlayerSize(true);
 };
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();

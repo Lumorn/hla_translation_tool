@@ -80,6 +80,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 * **Flexible Player-Steuerleiste:** Bei schmalen Fenstern rutscht der Slider in eine zweite Zeile. Icons und Zeitangaben verkleinern sich automatisch.
 * **Fixierte Steuerleiste im Player:** Die Bedienelemente sitzen nun klar unter dem Video, bleiben am unteren Rand verankert und sind immer erreichbar. Die Liste nutzt variabel 22 % Breite (min. 260 px, max. 320 px).
+* **Scrollbarer Videobereich:** Wird das Video höher als der Dialog, lässt sich der Player innerhalb des Fensters scrollen und die Buttons bleiben sichtbar.
 * **OCR-Funktion im Player:** Ein präzises Overlay deckt nur die Untertitel ab. F9 oder der Auto-Modus schneiden den Screenshot exakt zu, pausieren bei einem Treffer das Video und sammeln den Text im rechten Panel. Nach erneutem Abspielen läuft die Erkennung automatisch weiter. Ein neuer 🔍‑Button schaltet die Funktion bequem ein und aus.
 * **Verbesserte OCR-Pipeline:** Overlay und Panel passen sich dynamisch an, starten nur nach Aktivierung und zeigen den erkannten Text gut lesbar im neuen Ergebnis‑Panel.
 * **Nahtloser Player mit OCR-Panel:** Die Breite des IFrames berücksichtigt die Panelbreite, die Steuerleiste reicht bis an den Rand und der blaue OCR‑Rahmen sitzt exakt auf dem Videobild.
