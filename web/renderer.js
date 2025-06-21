@@ -80,6 +80,16 @@ const resizeObserver = new ResizeObserver(() => {
 });
 resizeObserver.observe(videoMgrDialog);
 
+function delayedPlayerResize() {
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+            if (typeof adjustVideoPlayerSize === 'function') {
+                adjustVideoPlayerSize(true);
+            }
+        });
+    });
+}
+
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
     // Maximale Höhe auf 90 % des Fensters begrenzen
@@ -106,6 +116,9 @@ function adjustVideoDialogHeight() {
     if (typeof adjustVideoPlayerSize === 'function') {
         adjustVideoPlayerSize();
     }
+
+    // nach dem Layout zwei Frames warten und erneut anpassen
+    delayedPlayerResize();
 }
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
@@ -117,16 +130,25 @@ function adjustVideoPlayerSize(force = false) {
     const section = document.getElementById('videoPlayerSection');
     const frame   = document.getElementById('videoPlayerFrame');
     if (!section || !frame) return;
-    if (section.classList.contains('hidden') && !force) return;
 
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');
-    const frei = section.clientHeight
+
+    // verfügbare Breite heranziehen
+    const breite = section.clientWidth;
+    let   hoehe  = breite * 9 / 16;
+
+    // maximale Höhe: 90 % des Fensters abzüglich Header und Steuerleiste
+    const maxH = window.innerHeight * 0.9
         - (header ? header.offsetHeight : 0)
         - (controls ? controls.offsetHeight : 0);
 
-    // Breite wird per CSS auf 100 % gesetzt, hier nur die maximale Höhe anpassen
-    frame.style.maxHeight = frei + 'px';
+    if (hoehe > maxH) {
+        hoehe = maxH;
+    }
+
+    // Breite bleibt flexibel, nur die maximale Höhe wird gesetzt
+    frame.style.maxHeight = hoehe + 'px';
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
