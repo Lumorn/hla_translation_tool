@@ -2528,7 +2528,9 @@ th:nth-child(6) {
     margin: 0 auto;
 }
 .video-player-section .player-controls {
+    /* Flexible Leiste, rutscht bei Platzmangel in die naechste Zeile */
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     padding: 0.5rem 1rem;
@@ -2536,9 +2538,13 @@ th:nth-child(6) {
     box-shadow: 0 -2px 4px rgba(0,0,0,0.5);
 }
 .video-player-section .player-controls input[type=range] {
-    flex: 1;
+    /* Slider darf schrumpfen, bleibt aber mindestens 150px breit */
+    flex: 1 1 150px;
+    min-width: 150px;
 }
 .video-player-section .player-controls button {
+    /* Buttons behalten feste Breite und rutschen einfach um */
+    flex: 0 0 auto;
     background: #333;
     border: none;
     color: #e0e0e0;
@@ -2552,6 +2558,19 @@ th:nth-child(6) {
 }
 .video-player-section .player-controls span {
     font-size: 1rem;
+}
+
+/* Kleinere Dialoge: Icons und Zeitangaben verkleinern */
+@media (max-width: 500px) {
+    .video-player-section .player-controls button {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+        padding: 2px;
+    }
+    .video-player-section .player-controls span {
+        font-size: 0.8rem;
+    }
 }
 
 #videoTableWrapper {
