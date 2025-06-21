@@ -131,6 +131,12 @@ export function openVideoDialog(bookmark, index) {
     if (typeof window.adjustVideoPlayerSize === 'function') {
         window.adjustVideoPlayerSize();
     }
+    // nach dem Einblenden einen Tick warten und dann erneut skalieren
+    window.requestAnimationFrame(() => {
+        if (typeof window.adjustVideoPlayerSize === 'function') {
+            window.adjustVideoPlayerSize();
+        }
+    });
 }
 
 // schließt den Video-Dialog und speichert die Zeit
