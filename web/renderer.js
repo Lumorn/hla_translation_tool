@@ -145,12 +145,12 @@ function adjustVideoPlayerSize(force = false) {
             panel.classList.add('hidden');
             const toggle = document.getElementById('ocrToggle');
             if (toggle) toggle.classList.remove('active');
-            stopAutoOcr();
+            stopAutoLoop();
             terminateOcr();
         } else {
             panel.classList.remove('hidden');
-            panelW = Math.min(260, Math.max(160, section.clientWidth * 0.18));
-            panel.style.width = panelW + 'px';
+            // Breite wird ueber CSS gesteuert
+            panelW = panel.offsetWidth;
         }
     }
 
@@ -183,8 +183,6 @@ function adjustVideoPlayerSize(force = false) {
 
     if (panel) {
         panel.style.right = '0';
-        panel.style.top = '0';
-        panel.style.height = '100%';
         panel.style.zIndex = 4;
     }
 

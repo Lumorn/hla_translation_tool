@@ -2701,12 +2701,12 @@ th:nth-child(6) {
     position: absolute;
     right: 0;
     top: 0;
-    height: 100%;
+    bottom: 52px; /* ragt nicht in die Steuerleiste */
     z-index: 4;
-    min-width: 180px;
+    width: clamp(200px, 18%, 260px);
     background: #181818;
     color: #e0e0e0;
-    overflow-y: auto;
+    overflow: hidden;
     padding: 8px;
     font-family: monospace;
 }
@@ -2715,6 +2715,8 @@ th:nth-child(6) {
     white-space: pre-wrap;
     color: #fff;
     font-family: monospace;
+    overflow: auto; /* Text bleibt scrollbar */
+    max-height: 100%;
 }
 .highlight {
     background: yellow;
