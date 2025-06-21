@@ -124,6 +124,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabilere Helligkeitsprüfung:** Überprüft zuerst die Abmessungen des Overlay-Bereichs und vermeidet so Fehlermeldungen.
 * **OffscreenCanvas mit Graustufen-Verarbeitung:** Screenshots werden doppelt skaliert, kontrastverstärkt und in Graustufen umgewandelt.
 * **willReadFrequently gesetzt:** Canvas-Kontexte nutzen das Attribut für schnellere Mehrfachzugriffe ohne Warnungen.
+* **Anpassbare OCR-Einstellungen:** Ein neuer ⚙️‑Button öffnet einen Dialog, in dem Helligkeit, Kontrast und Farb-Invertierung eingestellt werden können. Eine Vorschau zeigt sofort Bild und Erkennungsresultat.
 * **Präzisere Texterkennung:** Das Overlay endet jetzt 3 px über dem Slider und nutzt nur 14 % der Bildhöhe.
 * **Schnellerer Auto‑OCR‑Loop:** Läuft alle 750 ms und pausiert das Video ab vier erkannten Zeichen.
 ### 📊 Fortschritts‑Tracking
