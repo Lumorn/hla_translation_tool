@@ -297,6 +297,7 @@ Seit Patch 1.40.48 akzeptiert die Richtlinie auch `tessdata.projectnaptha.com`, 
 Seit Patch 1.40.49 entfernt die Content Security Policy `'unsafe-eval'` wieder, da alle eingebundenen Bibliotheken ohne diese Option auskommen. Dadurch entfallen die Sicherheitshinweise beim Start.
 Seit Patch 1.40.50 fügt die Richtlinie `'unsafe-eval'` erneut hinzu, damit der Tesseract-Worker ohne Fehler startet.
 Seit Patch 1.40.51 wurde die CSS-Klasse `.video-player-section` bereinigt. Jetzt gilt ein eindeutiger Block mit `overflow-x:hidden`, `overflow-y:auto` und `min-height:0`, damit die Steuerelement-Leiste nicht mehr abgeschnitten wird.
+Seit Patch 1.40.52 entfernt die Content Security Policy `'unsafe-eval'` erneut und erlaubt `worker-src 'self'`. Dadurch verschwindet die Electron-Sicherheitswarnung, ohne die App-Funktionalität einzuschränken.
 
 Beispiel einer gültigen CSV:
 
