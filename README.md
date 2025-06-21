@@ -52,6 +52,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Video-Manager mit integriertem Player:** Ein einziges Fenster zeigt links die gespeicherten Links und rechts den YouTube‑Player. Suchfeld, sortierbare Spalten sowie Hinzufügen‑, Umbenennen‑ und Lösch‑Buttons bleiben erhalten.
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente, Suchfeld und deutlichere Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
+* **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder statt Nummern. Ein Klick auf Bild oder Titel startet sofort das Video – der separate Play-Button entfällt.
 * **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 10 s.
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9.
