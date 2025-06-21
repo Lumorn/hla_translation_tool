@@ -283,6 +283,7 @@ Seit Patch 1.40.42 erlaubt die Content Security Policy nun Bilder von `i.ytimg.c
 Seit Patch 1.40.43 verschwindet der YouTube-Player nicht mehr, wenn man dasselbe Video erneut anklickt.
 Seit Patch 1.40.44 entfällt das separate Element `ytPlayerBox`; der Player wird nun direkt im Dialog erzeugt.
 Seit Patch 1.40.45 erlaubt die Content Security Policy nun Web Worker aus `blob:`-URLs. Dadurch funktioniert die OCR wieder fehlerfrei.
+Seit Patch 1.40.46 darf die Content Security Policy auch Skripte von `cdn.jsdelivr.net` laden. Damit startet der Tesseract-Worker ohne Fehlermeldung.
 
 Beispiel einer gültigen CSV:
 
