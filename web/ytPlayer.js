@@ -38,7 +38,10 @@ async function initOcrWorker() {
         // Modul laden und createWorker extrahieren (Default- oder Named-Export)
         const mod = await import('./src/lib/tesseract.esm.min.js');
         const { createWorker } = mod.default || mod;
-        ocrWorker = createWorker();
+        // Worker-Pfad explizit setzen, damit kein externer Download noetig ist
+        ocrWorker = createWorker({
+            workerPath: './src/lib/tesseract-worker.min.js'
+        });
         await ocrWorker.load();
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
