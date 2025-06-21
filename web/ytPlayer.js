@@ -61,6 +61,12 @@ async function initOcrWorker() {
         }
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
+        // Spezielle Parameter sorgen für präzisere Erkennung
+        await ocrWorker.setParameters({
+            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!\'"- ',
+            tessedit_pageseg_mode: '7',
+            preserve_interword_spaces: '1'
+        });
         return true;
     } catch (e) {
         console.error('Worker-Init fehlgeschlagen', e);
