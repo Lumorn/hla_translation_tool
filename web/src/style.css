@@ -2417,9 +2417,10 @@ th:nth-child(6) {
 
 .video-dialog {
     /* Großer dunkler Dialog für den Video-Manager
-       füllt dynamisch 90% des Fensters */
+       nutzt maximal 90 % der Fensterhöhe */
     width: 90vw;
-    height: 90vh;
+    max-height: 90vh;
+    height: auto;
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 1rem;
