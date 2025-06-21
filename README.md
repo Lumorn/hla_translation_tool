@@ -59,6 +59,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
 * **Korrekte Spaltenbreite im Video-Manager:** Kopfzeile und Tabelle sind jetzt bündig, komplette Videotitel erscheinen als Tooltip.
 * **Dynamische Größenanpassung:** Dialog, Player und Buttons passen sich automatisch an die Fenstergröße an.
+* **Behobenes Resize-Problem:** Wird das Programmfenster wieder vergrößert, wächst der Videoplayer jetzt ebenfalls mit.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Schlankerer Video-Manager:** URL-Eingabefeld unter den Buttons und eine klar beschriftete Aktions-Spalte. Der Player behält auf allen Monitoren sein 16:9-Format, ohne seitlichen Beschnitt, und die Steuerleiste bleibt sichtbar.
