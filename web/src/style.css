@@ -2429,6 +2429,7 @@ th:nth-child(6) {
     margin: 24px auto;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 }
 
 /* Werkzeugleiste mit Suchfeld und Buttons */
@@ -2501,7 +2502,9 @@ th:nth-child(6) {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto; /* bei wenig Platz wird gescrollt */
+    min-height: 0;
     position: relative; /* Steuerleiste wird dynamisch positioniert */
     padding-bottom: 0; /* kein fixer Platz mehr notwendig */
 }
@@ -2526,6 +2529,7 @@ th:nth-child(6) {
     align-self: center;
     width: 100%;
     height: auto;
+    max-height: 60vh;
     aspect-ratio: 16 / 9;
     border: none;
     display: block;
@@ -2541,6 +2545,9 @@ th:nth-child(6) {
     background: #242424;
     box-shadow: 0 0 4px rgba(0,0,0,0.5);
     margin-top: 8px; /* sorgt dafür, dass die Leiste nicht mehr über dem Video liegt */
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
 }
 .video-player-section .player-controls input[type=range] {
     /* Slider darf schrumpfen, bleibt aber mindestens 140px breit */
@@ -2672,6 +2679,7 @@ th:nth-child(6) {
     pointer-events: none;
     display: none;
     z-index: 10;
+    bottom: 48px; /* Platz für die Steuerleiste */
 }
 #videoPlayerSection.ocr-active #ocrOverlay {
     display: block;
