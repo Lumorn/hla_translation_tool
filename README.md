@@ -92,6 +92,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Lokaler Worker-Pfad festgelegt:** Die OCR lädt den Worker jetzt direkt aus `src/lib/tesseract-worker.min.js` und benötigt daher keine externen Skripte.
 * **Absolute Worker-URL:** Der Pfad wird jetzt relativ zum Fenster berechnet und verhindert CSP-Fehler.
 * **Robustere Fehlerbehandlung bei der OCR-Initialisierung:** Das Skript erkennt fehlerhafte Worker-Objekte und wartet auf asynchrone Erstellung.
+* **Entfall des `load()`-Schrittes:** Aktuelle Tesseract-Worker sind sofort einsatzbereit, der veraltete Aufruf wurde entfernt.
 * **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
 * **Vollbreite ohne OCR:** Das Ergebnis-Panel bleibt standardmäßig verborgen und erscheint nur bei aktivierter Erkennung.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
