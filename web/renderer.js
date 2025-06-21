@@ -384,8 +384,8 @@ function calcLayout() {
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
         if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-            // Höhe des Panels an Video anpassen
-            ocrPanel.style.height = iframe.style.height;
+            // Panel-Höhe dem Video anpassen
+            ocrPanel.style.height = iframe.clientHeight + 'px';
         }
     }
 }
