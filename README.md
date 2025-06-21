@@ -100,6 +100,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
  * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
  * **CPU-schonendere OCR:** Nach jedem Durchlauf wird das Intervall angehalten und erst mit einem erneuten Play-Befehl wieder gestartet.
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
+* **Verschieb- und skalierbares OCR-Overlay:** Der Rahmen lässt sich per Maus anpassen und merkt sich die letzte Position.
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
 * **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.

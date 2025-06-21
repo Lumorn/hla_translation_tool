@@ -71,6 +71,85 @@ function roiHasText(bitmap, roi) {
     return bright >= 20;
 }
 
+// merkt sich die letzte Position des Overlays (in Prozent)
+const OVERLAY_KEY = 'hla_ocrOverlayRect';
+
+function ladeOverlaySettings() {
+    try {
+        return JSON.parse(localStorage.getItem(OVERLAY_KEY));
+    } catch {
+        return null;
+    }
+}
+
+function speichereOverlaySettings(rect) {
+    try { localStorage.setItem(OVERLAY_KEY, JSON.stringify(rect)); } catch {}
+}
+
+// erlaubt Verschieben und Skalieren des Overlays mit der Maus
+function initOverlayDrag() {
+    const overlay = document.getElementById('ocrOverlay');
+    if (!overlay || overlay.__dragInit) return;
+    overlay.__dragInit = true;
+
+    let mode = null;
+    let startX = 0, startY = 0;
+    let startRect = null;
+
+    overlay.addEventListener('pointerdown', e => {
+        const rect = overlay.getBoundingClientRect();
+        const edge = 8;
+        startX = e.clientX;
+        startY = e.clientY;
+        startRect = {
+            left: parseFloat(overlay.style.left) || 0,
+            top: parseFloat(overlay.style.top) || 0,
+            width: parseFloat(overlay.style.width) || rect.width,
+            height: parseFloat(overlay.style.height) || rect.height
+        };
+        const offX = e.clientX - rect.left;
+        const offY = e.clientY - rect.top;
+        mode = (offX > rect.width - edge && offY > rect.height - edge) ? 'resize' : 'move';
+        overlay.classList.toggle('resizing', mode === 'resize');
+        overlay.setPointerCapture(e.pointerId);
+    });
+
+    overlay.addEventListener('pointermove', e => {
+        if (!mode) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (mode === 'move') {
+            overlay.style.left = startRect.left + dx + 'px';
+            overlay.style.top  = startRect.top  + dy + 'px';
+        } else {
+            overlay.style.width  = Math.max(30, startRect.width  + dx) + 'px';
+            overlay.style.height = Math.max(20, startRect.height + dy) + 'px';
+        }
+    });
+
+    function finish(e) {
+        if (!mode) return;
+        overlay.releasePointerCapture(e.pointerId);
+        overlay.classList.remove('resizing');
+        mode = null;
+        const iframe = document.getElementById('videoPlayerFrame');
+        if (!iframe) return;
+        const iframeRect = iframe.getBoundingClientRect();
+        const oRect = overlay.getBoundingClientRect();
+        if (iframeRect.width > 0 && iframeRect.height > 0) {
+            const saved = {
+                left: (oRect.left - iframeRect.left) / iframeRect.width,
+                top:  (oRect.top  - iframeRect.top ) / iframeRect.height,
+                width:  oRect.width  / iframeRect.width,
+                height: oRect.height / iframeRect.height
+            };
+            speichereOverlaySettings(saved);
+        }
+    }
+    overlay.addEventListener('pointerup', finish);
+    overlay.addEventListener('pointercancel', finish);
+}
+
 // Overlay an die Größe des IFrames anpassen und Helligkeit pruefen
 async function positionOverlay() {
     const section  = document.getElementById('videoPlayerSection');
@@ -80,6 +159,14 @@ async function positionOverlay() {
     if (!section || !iframe || !overlay) return;
     const iframeRect = iframe.getBoundingClientRect();
     const sectionRect = section.getBoundingClientRect();
+    const saved = ladeOverlaySettings();
+    if (saved) {
+        overlay.style.left   = (iframeRect.left - sectionRect.left + saved.left * iframeRect.width) + 'px';
+        overlay.style.top    = (iframeRect.top  - sectionRect.top  + saved.top  * iframeRect.height) + 'px';
+        overlay.style.width  = (saved.width  * iframeRect.width) + 'px';
+        overlay.style.height = (saved.height * iframeRect.height) + 'px';
+        return;
+    }
     const ctrlH = controls ? controls.offsetHeight : 0;
     const slider = controls?.querySelector('#videoSlider');
     const sliderTop = slider ? slider.getBoundingClientRect().top : iframeRect.bottom - ctrlH;
@@ -169,6 +256,7 @@ function terminateOcr() {
     if (ocrWorker) { ocrWorker.terminate(); ocrWorker = null; }
 }
 window.positionOverlay = positionOverlay;
+window.initOverlayDrag = initOverlayDrag;
 
 // bereitet den Screenshot im OffscreenCanvas fuer die OCR auf
 async function refineBlob(pngBlob) {
@@ -393,6 +481,9 @@ export function openVideoDialog(bookmark, index) {
     const ocrPanel = document.getElementById('ocrResultPanel');
     const deleteBtn = document.getElementById('videoDelete');
     const closeBtn = document.getElementById('videoClose');
+    if (ocrOverlay) {
+        initOverlayDrag();
+    }
 
     if (ocrBtn) {
         // Standardzustand ohne aktive OCR
