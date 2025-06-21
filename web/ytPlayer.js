@@ -15,18 +15,20 @@ let ocrWindow = null;        // separates Fenster für erkannte Texte
 
 // Overlay an die Größe des IFrames anpassen
 function positionOverlay() {
-    const section = document.getElementById('videoPlayerSection');
-    const iframe  = document.getElementById('videoPlayerFrame');
-    const overlay = document.getElementById('ocrOverlay');
+    const section  = document.getElementById('videoPlayerSection');
+    const iframe   = document.getElementById('videoPlayerFrame');
+    const overlay  = document.getElementById('ocrOverlay');
+    const controls = section?.querySelector('.player-controls');
     if (!section || !iframe || !overlay) return;
-    // Ergebnis-Panel beeinflusst die Position nicht mehr
-    const rect  = iframe.getBoundingClientRect();
-    const prect = section.getBoundingClientRect();
-    const oH = rect.height * 0.20;
-    overlay.style.top    = (rect.bottom - oH - prect.top) + 'px';
-    overlay.style.left   = (rect.left - prect.left) + 'px';
-    // Breite direkt vom IFrame, damit der OCR-Rahmen exakt aufs Video passt
-    overlay.style.width  = rect.width + 'px';
+    const iframeRect = iframe.getBoundingClientRect();
+    const sectionRect = section.getBoundingClientRect();
+    const ctrlH = controls ? controls.offsetHeight : 0;
+    const oH = iframeRect.height * 0.18;
+    // Top relativ zum Player-Abschnitt berechnen
+    const top = iframeRect.bottom - oH - ctrlH - sectionRect.top;
+    overlay.style.top    = top + 'px';
+    overlay.style.left   = (iframeRect.left - sectionRect.left) + 'px';
+    overlay.style.width  = iframeRect.width + 'px';
     overlay.style.height = oH + 'px';
 }
 

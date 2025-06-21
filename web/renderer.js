@@ -333,6 +333,13 @@ function calcLayout() {
     iframe.style.height = height + 'px';
     controls.style.width = width + 'px';
 
+    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
+        // Panel am Dialog-Padding ausrichten
+        ocrPanel.style.top = pad + 'px';
+        ocrPanel.style.right = pad + 'px';
+        ocrPanel.style.height = height + 'px';
+    }
+
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }

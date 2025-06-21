@@ -2684,7 +2684,7 @@ th:nth-child(6) {
     pointer-events: none;
     display: none;
     z-index: 10;
-    bottom: 48px; /* Platz für die Steuerleiste */
+    /* genaue Position wird per JS gesetzt */
 }
 #videoPlayerSection.ocr-active #ocrOverlay {
     display: block;
@@ -2701,9 +2701,7 @@ th:nth-child(6) {
 
 #ocrResultPanel {
     position: absolute;
-    right: 0;
-    top: 0;
-    /* Höhe und Abstand werden per JS gesetzt */
+    /* genaue Position und Höhe werden per JS gesetzt */
     z-index: 4;
     width: clamp(200px, 18%, 260px);
     background: #181818;
