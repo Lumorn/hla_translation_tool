@@ -128,6 +128,9 @@ export function openVideoDialog(bookmark, index) {
     if (typeof window.adjustVideoDialogHeight === 'function') {
         window.adjustVideoDialogHeight();
     }
+    if (typeof window.adjustVideoPlayerSize === 'function') {
+        window.adjustVideoPlayerSize();
+    }
 }
 
 // schließt den Video-Dialog und speichert die Zeit
@@ -173,6 +176,9 @@ export async function closeVideoDialog() {
 
     if (typeof window.adjustVideoDialogHeight === 'function') {
         window.adjustVideoDialogHeight();
+    }
+    if (typeof window.adjustVideoPlayerSize === 'function') {
+        window.adjustVideoPlayerSize();
     }
 }
 
