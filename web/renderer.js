@@ -62,12 +62,20 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoMgrDialog);
 
-// passt die Höhe des Video-Managers dynamisch an
+// passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
-    const max = window.innerHeight * 0.9;
+    // Maximale Höhe: 90 % des Fensters
+    const maxH = window.innerHeight * 0.9;
     videoMgrDialog.style.height = 'auto';
-    const benoetigt = videoMgrDialog.scrollHeight;
-    videoMgrDialog.style.height = Math.min(benoetigt, max) + 'px';
+    const benoetigtH = videoMgrDialog.scrollHeight;
+    videoMgrDialog.style.height = Math.min(benoetigtH, maxH) + 'px';
+
+    // Breite orientiert sich an Inhalt bzw. max. 90 % des Fensters
+    const maxW = window.innerWidth * 0.9;
+    videoMgrDialog.style.width = 'auto';
+    const benoetigtW = videoMgrDialog.scrollWidth;
+    videoMgrDialog.style.width = Math.min(benoetigtW, maxW) + 'px';
+
     // danach den Player anpassen
     if (typeof adjustVideoPlayerSize === 'function') {
         adjustVideoPlayerSize();

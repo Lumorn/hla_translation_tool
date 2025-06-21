@@ -64,6 +64,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Schlankerer Video-Manager:** URL-Eingabefeld unter den Buttons und eine klar beschriftete Aktions-Spalte. Der Player behält auf allen Monitoren sein 16:9-Format, ohne seitlichen Beschnitt, und die Steuerleiste bleibt sichtbar.
 * **Maximierte Listenbreite:** Die gespeicherten Videos beanspruchen nun maximal 480 px Breite. Titelspalte und Vorschaubild bleiben schlank und das Thumbnail hält stets das Seitenverhältnis 16:9.
 * **Verbesserte dynamische Dialoghöhe:** Der Video-Manager schrumpft nun auch bei kleinen Fenstern und entfernt überflüssigen Leerraum.
+* **Automatische Dialogbreite:** Ohne geöffneten Player richtet sich die Breite des Video-Managers nach der Liste.
 * **Flexibles Fenster für gespeicherte Videos:** Höhe passt sich jetzt automatisch an Videoplayer und Liste an.
 * **Breitenbegrenzter Player:** Die Breite richtet sich nach der verfügbaren Höhe und überschreitet nie das Format 16:9.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
