@@ -129,12 +129,14 @@ export function openVideoDialog(bookmark, index) {
         window.adjustVideoDialogHeight();
     }
     if (typeof window.adjustVideoPlayerSize === 'function') {
-        window.adjustVideoPlayerSize();
+        // beim Öffnen sofort skalieren
+        window.adjustVideoPlayerSize(true);
     }
     // nach dem Einblenden einen Tick warten und dann erneut skalieren
     window.requestAnimationFrame(() => {
         if (typeof window.adjustVideoPlayerSize === 'function') {
-            window.adjustVideoPlayerSize();
+            // nach dem Layout-Refresh erneut skalieren
+            window.adjustVideoPlayerSize(true);
         }
     });
 }
@@ -184,7 +186,8 @@ export async function closeVideoDialog() {
         window.adjustVideoDialogHeight();
     }
     if (typeof window.adjustVideoPlayerSize === 'function') {
-        window.adjustVideoPlayerSize();
+        // auch im geschlossenen Zustand Größe neu berechnen
+        window.adjustVideoPlayerSize(true);
     }
 }
 
