@@ -7,6 +7,11 @@ const videoMgrDialog   = document.getElementById('videoMgrDialog');
 const videoTableBody   = document.querySelector('#videoTable tbody');
 const videoFilter      = document.getElementById('videoFilter');
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
+const exportVideoBtn   = document.getElementById('exportVideoBtn');
+
+// gespeicherten Suchbegriff wiederherstellen
+const gespeicherterFilter = localStorage.getItem('hla_videoFilter') || '';
+if (gespeicherterFilter) videoFilter.value = gespeicherterFilter;
 
 let extractYoutubeId, openVideoDialog, closeVideoDialog;
 import('./ytPlayer.js').then(m => {
@@ -226,6 +231,7 @@ document.querySelectorAll('#videoTable thead th').forEach(th => {
 });
 
 videoFilter.oninput = () => {
+    localStorage.setItem('hla_videoFilter', videoFilter.value);
     refreshTable();
     adjustVideoDialogHeight();
 };
@@ -269,4 +275,16 @@ addBtn.onclick = async () => {
     adjustVideoDialogHeight();
     urlInput.value = '';
     updateAddBtn();
+};
+
+// Exportiert die gespeicherten Bookmarks als JSON-Datei
+exportVideoBtn.onclick = async () => {
+    const list = await window.videoApi.loadBookmarks();
+    const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'videoBookmarks.json';
+    a.click();
+    URL.revokeObjectURL(url);
 };
