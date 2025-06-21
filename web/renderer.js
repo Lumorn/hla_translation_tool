@@ -154,7 +154,13 @@ function adjustVideoPlayerSize(force = false) {
         hoehe = maxH;
     }
 
-    // Breite bleibt flexibel, nur die maximale Höhe wird gesetzt
+    // Breite des OCR-Panels beruecksichtigen
+    const panel = document.getElementById('ocrResultPanel');
+    const panelW = panel ? Math.max(160, section.clientWidth * 0.22) : 0;
+    if (panel) panel.style.width = panelW + 'px';
+
+    // IFrame anpassen und maximale Hoehe setzen
+    frame.style.width = `calc(100% - ${panelW}px)`;
     frame.style.maxHeight = hoehe + 'px';
     if (typeof window.updateOcrOverlay === 'function') {
         window.updateOcrOverlay();

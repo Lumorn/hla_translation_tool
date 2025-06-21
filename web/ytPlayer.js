@@ -17,12 +17,17 @@ function updateOcrOverlay() {
     const iframe  = document.getElementById('videoPlayerFrame');
     const overlay = document.getElementById('ocrOverlay');
     if (!section || !iframe || !overlay) return;
-    const rect = iframe.getBoundingClientRect();
+    const rect  = iframe.getBoundingClientRect();
     const prect = section.getBoundingClientRect();
+
+    // Groesse und Position direkt am sichtbaren IFrame ausrichten
+    const oH = rect.height * 0.20;
+    const oTop = rect.bottom - oH;
+
     overlay.style.left   = (rect.left - prect.left) + 'px';
-    overlay.style.top    = (rect.top  - prect.top  + rect.height * 0.8) + 'px';
+    overlay.style.top    = (oTop  - prect.top) + 'px';
     overlay.style.width  = rect.width + 'px';
-    overlay.style.height = (rect.height * 0.2) + 'px';
+    overlay.style.height = oH + 'px';
 }
 
 // OCR-Worker initialisieren
@@ -82,13 +87,18 @@ async function captureAndOcr() {
             }
         }
 
+        const overlay = document.getElementById('ocrOverlay');
         const rect = iframe.getBoundingClientRect();
+        const orect = overlay ? overlay.getBoundingClientRect() : rect;
+
+        // Skalierung zwischen Screenshot und sichtbarem Bereich berechnen
         const scaleX = bitmap.width / (fromFrame ? rect.width : window.innerWidth);
         const scaleY = bitmap.height / (fromFrame ? rect.height : window.innerHeight);
-        const cropX = fromFrame ? 0 : rect.left * scaleX;
-        const cropY = fromFrame ? rect.height * 0.8 : (rect.top * scaleY + rect.height * scaleY * 0.8);
-        const cropW = rect.width * scaleX;
-        const cropH = rect.height * scaleY * 0.2;
+
+        const cropX = fromFrame ? (orect.left - rect.left) * scaleX : orect.left * scaleX;
+        const cropY = fromFrame ? (orect.top  - rect.top ) * scaleY : orect.top  * scaleY;
+        const cropW = orect.width  * scaleX;
+        const cropH = orect.height * scaleY;
 
         const canvas = document.createElement('canvas');
         canvas.width = cropW;
@@ -119,17 +129,31 @@ async function captureAndOcr() {
 
 function startAutoOcr() {
     if (ocrInterval) return;
+    const dlg  = document.getElementById('videoMgrDialog');
+    const btn  = document.getElementById('ocrToggle');
+    if (!dlg || !dlg.open || !btn || !btn.classList.contains('active')) return;
     if (typeof window.updateOcrOverlay === 'function') {
         window.updateOcrOverlay();
     }
     ocrInterval = setInterval(async () => {
         const hit = await captureAndOcr();
-        if (hit) stopAutoOcr();
+        if (hit) {
+            btn.classList.add('blink');
+            btn.title = 'Treffer erkannt – Video pausiert';
+            stopAutoOcr();
+        }
     }, 1500);
 }
 
 function stopAutoOcr() {
     if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
+    const btn = document.getElementById('ocrToggle');
+    if (btn) {
+        btn.classList.remove('blink');
+        btn.title = btn.classList.contains('active')
+            ? 'OCR aktiv (F9), erneut klicken zum Deaktivieren'
+            : 'OCR aktivieren (F9)';
+    }
 }
 
 // veraltete Funktion – ruft intern den neuen Dialog auf
@@ -188,6 +212,10 @@ export function openVideoDialog(bookmark, index) {
     const deleteBtn = document.getElementById('videoDelete');
     const closeBtn = document.getElementById('videoClose');
 
+    if (ocrBtn) {
+        ocrBtn.title = 'OCR aktivieren (F9)';
+    }
+
     function formatTime(sec){
         const m=Math.floor(sec/60); const s=Math.floor(sec%60); return m+':'+('0'+s).slice(-2);
     }
@@ -225,7 +253,10 @@ export function openVideoDialog(bookmark, index) {
         const st = window.currentYT.getPlayerState();
         if (st === YT.PlayerState.PAUSED || st === YT.PlayerState.CUED) {
             window.currentYT.playVideo();
-            if (ocrBtn && ocrBtn.classList.contains('active')) startAutoOcr();
+            if (ocrBtn && ocrBtn.classList.contains('active')) {
+                stopAutoOcr(); // eventuell laufenden Blink beenden
+                startAutoOcr();
+            }
         } else {
             window.currentYT.pauseVideo();
             stopAutoOcr();
@@ -245,9 +276,11 @@ export function openVideoDialog(bookmark, index) {
             ocrBtn.classList.toggle('active');
             player.classList.toggle('ocr-active', ocrBtn.classList.contains('active'));
             if (ocrBtn.classList.contains('active')) {
+                ocrBtn.title = 'OCR aktiv (F9), erneut klicken zum Deaktivieren';
                 startAutoOcr();
             } else {
                 stopAutoOcr();
+                ocrBtn.title = 'OCR aktivieren (F9)';
             }
         };
     }

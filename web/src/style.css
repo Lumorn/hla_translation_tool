@@ -2504,7 +2504,6 @@ th:nth-child(6) {
     overflow: hidden;
     position: relative; /* Steuerleiste am unteren Rand fixieren */
     padding-bottom: 56px; /* Platz für die Steuerleiste */
-    margin-right: 16%; /* Platz fuer das OCR-Panel */
 }
 .video-player-section.hidden { display: none; }
 
@@ -2688,21 +2687,36 @@ th:nth-child(6) {
     display: block;
 }
 
+#ocrToggle.active {
+    background: #3399ff;
+    color: #fff;
+}
+
+#ocrToggle.blink {
+    animation: pulse 1s infinite;
+}
+
 #ocrResultPanel {
     position: absolute;
     right: 0;
     top: 0;
-    width: 16%;
-    min-width: 140px;
     height: 100%;
+    min-width: 160px;
+    max-width: 22%;
+    background: #111;
+    color: #e0e0e0;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-y: auto;
 }
 #ocrResultPanel textarea {
     width: 100%;
     flex: 1 1 auto;
-    overflow: auto;
+    overflow-y: auto;
     white-space: pre-wrap;
+    background: #111;
+    color: #e0e0e0;
+    border: none;
+    resize: none;
 }
 
