@@ -151,18 +151,43 @@ function adjustVideoDialogHeight() {
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
 
 // ===== Einfache Player-Anpassung =====
+// nutzt das gleiche Schema wie calcLayout()
 function adjustVideoPlayerSize(force = false) {
     const section = document.getElementById('videoPlayerSection');
     if (!section) return;
     if (!force && section.classList.contains('hidden')) return;
+
+    const dialog   = document.getElementById('videoMgrDialog');
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');
     const frame    = section.querySelector('iframe');
-    if (!frame) return;
-    const h = section.clientHeight
-        - (header ? header.offsetHeight : 0)
-        - (controls ? controls.offsetHeight : 0);
-    frame.style.maxHeight = h > 0 ? h + 'px' : '0';
+    const list     = dialog?.querySelector('.video-list-section');
+    const panel    = document.getElementById('ocrResultPanel');
+    if (!frame || !dialog) return;
+
+    const pad       = parseFloat(getComputedStyle(dialog).paddingLeft) || 0;
+    const listW     = list ? list.offsetWidth : 0;
+    const panelW    = (panel && !panel.classList.contains('hidden'))
+        ? panel.offsetWidth : 0;
+
+    // verfügbare Fläche im Dialog
+    const dialogW   = dialog.clientWidth;
+    const dialogH   = dialog.clientHeight;
+    const freeW     = dialogW - listW - panelW - 2 * pad;
+    const headerH   = header ? header.offsetHeight : 0;
+    const controlsH = controls ? controls.offsetHeight : 0;
+    const freeH     = dialogH - headerH - controlsH - 2 * pad;
+
+    let h = freeW * 9 / 16;
+    let w = freeW;
+    if (h > freeH) {
+        h = freeH;
+        w = h * 16 / 9;
+    }
+
+    frame.style.width  = w + 'px';
+    frame.style.height = h + 'px';
+    if (controls) controls.style.width = w + 'px';
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
