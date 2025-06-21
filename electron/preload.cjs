@@ -75,6 +75,12 @@ if (typeof require !== 'function') {
     captureFrame: bounds => ipcRenderer.invoke('capture-frame', bounds),
   });
 
+  // Vereinfachtes API nur für Bildschirmaufnahmen
+  // So bleibt der Renderer klar von Node-Funktionen getrennt
+  contextBridge.exposeInMainWorld('api', {
+    captureFrame: b => ipcRenderer.invoke('capture-frame', b),
+  });
+
   // Desktop-Capturer für Bildschirmaufnahmen bereitstellen
   contextBridge.exposeInMainWorld('desktopCapturer', {
     getSources: opts => desktopCapturer.getSources(opts),

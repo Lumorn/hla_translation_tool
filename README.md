@@ -101,6 +101,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Prüfung auf fehlende `getSources`-Methode:** Fehlt diese Funktion, greift die OCR automatisch auf `getDisplayMedia` zurück.
 * **Fallback bei Capture-Fehlern:** Schlägt die Aufnahme über `desktopCapturer` fehl, wird ebenfalls `getDisplayMedia` verwendet.
 * **Screenshot per IPC:** Der neue Kanal `capture-frame` erstellt einen sofortigen Screenshot des Hauptfensters ohne Desktop-Capturer.
+* **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern, weitere Node-APIs bleiben ausgeblendet.
 
 ### 📊 Fortschritts‑Tracking
 
