@@ -50,12 +50,7 @@ async function initOcrWorker() {
         if (typeof ocrWorker.then === 'function') {
             ocrWorker = await ocrWorker;
         }
-        // bis Version 4.0 war hier ein expliziter Ladevorgang notwendig
-        // moderne Builds bringen den Worker bereits fertig geladen mit
-        if (typeof ocrWorker.load === 'function') {
-            // zur Rückwärtskompatibilität trotzdem aufrufen
-            await ocrWorker.load();
-        }
+        // aktuelle Worker sind direkt einsatzbereit, der Ladeschritt entfällt
         if (typeof ocrWorker.loadLanguage !== 'function' || typeof ocrWorker.initialize !== 'function') {
             throw new Error('Ungültiges Worker-Objekt');
         }
