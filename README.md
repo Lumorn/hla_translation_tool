@@ -287,6 +287,7 @@ Seit Patch 1.40.44 entfällt das separate Element `ytPlayerBox`; der Player wird
 Seit Patch 1.40.45 erlaubt die Content Security Policy nun Web Worker aus `blob:`-URLs. Dadurch funktioniert die OCR wieder fehlerfrei.
 Seit Patch 1.40.46 darf die Content Security Policy auch Skripte von `cdn.jsdelivr.net` laden. Damit startet der Tesseract-Worker ohne Fehlermeldung.
 Seit Patch 1.40.47 erlaubt die Content Security Policy nun zusätzlich `'unsafe-eval'` und `'data:'` in den passenden Direktiven. Dadurch läuft die OCR ohne CSP-Fehler.
+Seit Patch 1.40.48 akzeptiert die Richtlinie auch `tessdata.projectnaptha.com`, damit Tesseract seine Sprachdaten herunterladen kann.
 
 Beispiel einer gültigen CSV:
 
