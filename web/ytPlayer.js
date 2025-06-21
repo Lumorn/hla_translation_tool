@@ -113,16 +113,22 @@ async function captureAndOcr() {
 
         if (!fromFrame) {
             // Nur nutzen, wenn der Desktop-Capturer samt Methode vorhanden ist
-            if (window.desktopCapturer && typeof window.desktopCapturer.getSources === 'function') {
-                const src = (await window.desktopCapturer.getSources({ types: ['screen'] }))[0];
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    audio: false,
-                    video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
-                });
-                const track = stream.getVideoTracks()[0];
-                bitmap = await grabFrame(track);
-                track.stop();
-            } else if (navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
+            const getSources = window.desktopCapturer?.getSources;
+            if (typeof getSources === 'function') {
+                try {
+                    const src = (await getSources({ types: ['screen'] }))[0];
+                    const stream = await navigator.mediaDevices.getUserMedia({
+                        audio: false,
+                        video: { mandatory: { chromeMediaSource: 'desktop', chromeMediaSourceId: src.id } }
+                    });
+                    const track = stream.getVideoTracks()[0];
+                    bitmap = await grabFrame(track);
+                    track.stop();
+                } catch(err) {
+                    console.warn('Desktop-Capture fehlgeschlagen, weiche auf getDisplayMedia aus', err);
+                }
+            }
+            if (!bitmap && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
                 const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
                 const track = stream.getVideoTracks()[0];
                 bitmap = await grabFrame(track);
