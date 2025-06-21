@@ -63,14 +63,19 @@ function ensureDialogSupport(d) {
 ensureDialogSupport(videoMgrDialog);
 
 // Beobachter passt Groesse bei jeder Dialog-Aenderung an
+// Beobachter ruft nur die zentrale Anpassungsfunktion auf
 const resizeObserver = new ResizeObserver(() => {
     adjustVideoDialogHeight();
-    adjustVideoPlayerSize();
 });
 resizeObserver.observe(videoMgrDialog);
 
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
+    // Zuerst den Player aktualisieren, damit scrollWidth korrekt berechnet wird
+    if (typeof adjustVideoPlayerSize === 'function') {
+        adjustVideoPlayerSize();
+    }
+
     // Maximale Höhe: 90 % des Fensters
     const maxH = window.innerHeight * 0.9;
     videoMgrDialog.style.height = 'auto';
@@ -82,11 +87,6 @@ function adjustVideoDialogHeight() {
     videoMgrDialog.style.width = 'auto';
     const benoetigtW = videoMgrDialog.scrollWidth;
     videoMgrDialog.style.width = Math.min(benoetigtW, maxW) + 'px';
-
-    // danach den Player anpassen
-    if (typeof adjustVideoPlayerSize === 'function') {
-        adjustVideoPlayerSize();
-    }
 }
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
@@ -115,25 +115,21 @@ window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 // auch bei Fenstergröße aktualisieren
 window.addEventListener('resize', () => {
     adjustVideoDialogHeight();
-    adjustVideoPlayerSize();
 });
 
 openVideoManager.onclick = async () => {
     await refreshTable();
     videoMgrDialog.showModal();
     adjustVideoDialogHeight();
-    adjustVideoPlayerSize();
 };
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
-    adjustVideoPlayerSize();
 };
 videoMgrDialog.addEventListener('cancel', () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
-    adjustVideoPlayerSize();
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {
