@@ -74,6 +74,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
 * **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
+* **Bildschirmabhängige Fenstergröße:** Das Hauptfenster öffnet jetzt mit 90 % der Bildschirmfläche (mindestens 1300×800).
 
 ### 📊 Fortschritts‑Tracking
 

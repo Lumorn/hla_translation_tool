@@ -7,7 +7,7 @@
  * @typedef {import('./ipcContracts').RestoreDeHistoryArgs} RestoreDeHistoryArgs
  * @typedef {import('./ipcContracts').SaveDeHistoryBufferArgs} SaveDeHistoryBufferArgs
  */
-const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell, session } = require('electron'); // session wird für Header-Manipulation benötigt
+const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell, session, screen } = require('electron'); // session und screen werden für Header-Manipulation und Dynamik benötigt
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
@@ -167,10 +167,15 @@ function convertMp3Dir(base) {
 // =========================== MP3-TO-WAV END ================================
 
 function createWindow() {
+  // Größe des Hauptfensters proportional zum Bildschirm wählen (mind. 1300x800)
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+  const w = Math.max(1300, Math.round(sw * 0.9));
+  const h = Math.max(800, Math.round(sh * 0.9));
   const win = new BrowserWindow({
-    // Fensterbreite etwas vergrößern, damit Play- und Stop-Knopf Platz haben
-    width: 1300,
-    height: 800,
+    width: w,
+    height: h,
+    minWidth: 1300,
+    minHeight: 800,
     webPreferences: {
       // Preload-Skript bindet die Electron-API im Renderer ein
       preload: path.join(__dirname, 'preload.cjs'),
