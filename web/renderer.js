@@ -162,13 +162,13 @@ function adjustVideoPlayerSize(force = false) {
     const controls = section.querySelector('.player-controls');
     const frame    = section.querySelector('iframe');
     const list     = dialog?.querySelector('.video-list-section');
-    const panel    = document.getElementById('ocrResultPanel');
+    const ocrPanel = document.getElementById('ocrResultPanel');
     if (!frame || !dialog) return;
 
     const pad       = parseFloat(getComputedStyle(dialog).paddingLeft) || 0;
     const listW     = list ? list.offsetWidth : 0;
-    const panelW    = (panel && !panel.classList.contains('hidden'))
-        ? panel.offsetWidth : 0;
+    const panelW    = (ocrPanel && !ocrPanel.classList.contains('hidden'))
+        ? ocrPanel.offsetWidth : 0;
 
     // verfügbare Fläche im Dialog
     const dialogW   = dialog.clientWidth;
@@ -189,9 +189,9 @@ function adjustVideoPlayerSize(force = false) {
     frame.style.width  = w + 'px';
     frame.style.height = h + 'px';
     if (controls) controls.style.width = w + 'px';
-    if (panel && !panel.classList.contains('hidden')) {
+    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
         // Panel-Höhe an die Video-Höhe anpassen
-        panel.style.height = frame.clientHeight + 'px';
+        ocrPanel.style.height = frame.clientHeight + 'px';
     }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;

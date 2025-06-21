@@ -2707,9 +2707,6 @@ th:nth-child(6) {
     overflow: auto;
     background: #1a1a1a;
     padding: 8px;
-    z-index: 4;
-    font-family: monospace;
-    color: #e0e0e0;
 }
 #ocrResultPanel pre {
     margin: 0;
