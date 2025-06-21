@@ -2500,6 +2500,9 @@ th:nth-child(6) {
 }
 #videoTable tbody tr:hover { background: #222; }
 #videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }
+#videoTable th:first-child, #videoTable td:first-child {
+    width: 100px;
+}
 #videoTable td {
     overflow: hidden;
     text-overflow: ellipsis;
