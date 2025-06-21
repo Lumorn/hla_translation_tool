@@ -50,10 +50,15 @@ async function initOcrWorker() {
         if (typeof ocrWorker.then === 'function') {
             ocrWorker = await ocrWorker;
         }
-        if (typeof ocrWorker.load !== 'function') {
+        // bis Version 4.0 war hier ein expliziter Ladevorgang notwendig
+        // moderne Builds bringen den Worker bereits fertig geladen mit
+        if (typeof ocrWorker.load === 'function') {
+            // zur Rückwärtskompatibilität trotzdem aufrufen
+            await ocrWorker.load();
+        }
+        if (typeof ocrWorker.loadLanguage !== 'function' || typeof ocrWorker.initialize !== 'function') {
             throw new Error('Ungültiges Worker-Objekt');
         }
-        await ocrWorker.load();
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
         return true;
