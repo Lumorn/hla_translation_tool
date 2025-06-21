@@ -13,6 +13,7 @@ let autoLoop = null;         // Intervall für Auto-OCR
 let ocrActive = false;       // Toggle-Status
 let ocrPaused = false;       // wurde nach einem Treffer pausiert?
 let ocrWindow = null;        // separates Fenster für erkannte Texte
+let ocrDebug  = false;       // zeigt das Debug-Fenster mit Screenshot
 
 // Overlay an die Größe des IFrames anpassen
 // prueft die Helligkeit des potenziellen Textbereichs
@@ -170,7 +171,7 @@ async function positionOverlay() {
     const ctrlH = controls ? controls.offsetHeight : 0;
     const slider = controls?.querySelector('#videoSlider');
     const sliderTop = slider ? slider.getBoundingClientRect().top : iframeRect.bottom - ctrlH;
-    const oH = iframeRect.height * 0.14;
+    const oH = iframeRect.height * 0.12;
     // Oberkante liegt 2px ueber dem Slider
     const top = sliderTop - 2 - oH - sectionRect.top;
     overlay.style.top    = top + 'px';
@@ -276,7 +277,9 @@ async function refineBlob(pngBlob) {
     const d = imgData.data;
     for (let i = 0; i < d.length; i += 4) {
         const y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
-        d[i] = d[i + 1] = d[i + 2] = y;
+        // harter Schwellwert zur Binarisierung
+        const bw = y > 128 ? 255 : 0;
+        d[i] = d[i + 1] = d[i + 2] = bw;
     }
     ctx.putImageData(imgData, 0, 0);
 
@@ -302,7 +305,7 @@ async function captureAndOcr() {
 
         // Screenshot des IFrames vom Hauptfenster anfordern
         const png = await window.api.captureFrame(bounds);
-        if (!png) return '';
+        if (!png) return { text: '', img: null };
         const rawBlob = new Blob([png], { type: 'image/png' });
         // Screenshot verfeinern, um die Texterkennung zu verbessern
         const refinedBlob = await refineBlob(rawBlob);
@@ -326,7 +329,7 @@ async function captureAndOcr() {
         }
         // falls der Bereich zu dunkel ist, Durchlauf abbrechen
         if (!roiHasText(bitmap, { x: cropX, y: cropY, width: cropW, height: cropH })) {
-            return '';
+            return { text: '', img: null };
         }
 
         const canvas = document.createElement('canvas');
@@ -335,13 +338,15 @@ async function captureAndOcr() {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
+        const imgUrl = ocrDebug ? canvas.toDataURL('image/png') : null;
+
         const { data: { text } } = await ocrWorker.recognize(canvas);
         console.log('OCR-Text:', text);
-        return text.trim();
+        return { text: text.trim(), img: imgUrl };
     } catch (e) {
         console.error('OCR-Fehler', e);
     }
-    return '';
+    return { text: '', img: null };
 }
 
 // Haengt Text im Ergebnis-Panel an
@@ -353,7 +358,7 @@ function appendText(t) {
 }
 
 // Öffnet ein neues Fenster und zeigt den erkannten Text an
-function showOcrWindow(text) {
+function showOcrWindow(imgUrl, text) {
     // bereits geöffnetes Fenster wiederverwenden
     if (!ocrWindow || ocrWindow.closed) {
         ocrWindow = window.open('', '_blank', 'width=600,height=400');
@@ -361,6 +366,11 @@ function showOcrWindow(text) {
         ocrWindow.document.title = 'OCR-Ergebnis';
     }
     ocrWindow.document.body.innerHTML = '';
+    if (imgUrl) {
+        const img = ocrWindow.document.createElement('img');
+        img.src = imgUrl;
+        ocrWindow.document.body.appendChild(img);
+    }
     const pre = ocrWindow.document.createElement('pre');
     pre.textContent = text;
     ocrWindow.document.body.appendChild(pre);
@@ -369,7 +379,9 @@ function showOcrWindow(text) {
 // Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
 async function runOcr() {
     if (!ocrActive) return; // nur wenn Toggle aktiv ist
-    const text = await captureAndOcr();
+    const result = await captureAndOcr();
+    const text = result.text;
+    const img  = result.img;
     // bei keinem Treffer das Intervall anhalten, CPU sparen
     if (!text) {
         stopAutoLoop();
@@ -379,7 +391,7 @@ async function runOcr() {
         return;
     }
     appendText(text);
-    showOcrWindow(text);
+    if (ocrDebug) showOcrWindow(img, text);
     // Treffer markieren und Benutzer informieren
     const btn = document.getElementById('ocrToggle');
     if (btn) {
@@ -412,7 +424,7 @@ function startAutoLoop() {
     }
     // visuelles Feedback fuer laufende Erkennung
     btn.title = 'Auto-OCR aktiv';
-    autoLoop = setInterval(runOcr, 750);
+    autoLoop = setInterval(runOcr, 1000); // maximal ein Durchlauf pro Sekunde
 }
 
 function stopAutoLoop(keepBlink = false) {
@@ -477,6 +489,7 @@ export function openVideoDialog(bookmark, index) {
     const fwdBtn = document.getElementById('videoForward');
     const reloadBtn = document.getElementById('videoReload');
     const ocrBtn = document.getElementById('ocrToggle');
+    const debugBtn = document.getElementById('ocrDebug');
     const ocrOverlay = document.getElementById('ocrOverlay');
     const ocrPanel = document.getElementById('ocrResultPanel');
     const deleteBtn = document.getElementById('videoDelete');
@@ -495,6 +508,9 @@ export function openVideoDialog(bookmark, index) {
     player.classList.remove('ocr-active');
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
     if (ocrPanel) ocrPanel.classList.add('hidden');
+    if (debugBtn) {
+        debugBtn.classList.remove('active');
+    }
 
     function formatTime(sec){
         const m=Math.floor(sec/60); const s=Math.floor(sec%60); return m+':'+('0'+s).slice(-2);
@@ -578,6 +594,15 @@ export function openVideoDialog(bookmark, index) {
             }
             if (typeof window.positionOverlay === 'function') {
                 window.positionOverlay();
+            }
+        };
+    }
+    if (debugBtn) {
+        debugBtn.onclick = () => {
+            debugBtn.classList.toggle('active');
+            ocrDebug = debugBtn.classList.contains('active');
+            if (!ocrDebug && ocrWindow && !ocrWindow.closed) {
+                ocrWindow.close();
             }
         };
     }

@@ -104,6 +104,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
 * **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
+* **Debug-Fenster für die OCR:** Ein 🐞‑Button blendet ein Vorschau‑Fenster ein, das den verarbeiteten Screenshot und den Rohtext anzeigt.
 * **Tesseract.js nun lokal eingebunden:** Die OCR-Engine wird direkt aus `src/lib` geladen und funktioniert damit auch ohne Internetzugang.
 * **Stabilere OCR-Initialisierung:** Das Tesseract-Modul wird nun korrekt importiert und die Worker starten zuverlässig.
 * **Lokaler Worker-Pfad festgelegt:** Die OCR lädt den Worker jetzt direkt aus `src/lib/tesseract-worker.min.js` und benötigt daher keine externen Skripte.
