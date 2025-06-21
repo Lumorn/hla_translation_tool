@@ -82,22 +82,30 @@ resizeObserver.observe(videoMgrDialog);
 
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
-    // Zuerst den Player aktualisieren, damit scrollWidth korrekt berechnet wird
-    if (typeof adjustVideoPlayerSize === 'function') {
-        adjustVideoPlayerSize();
-    }
-
-    // Maximale Höhe: 90 % des Fensters
+    // Maximale Höhe auf 90 % des Fensters begrenzen
     const maxH = window.innerHeight * 0.9;
     videoMgrDialog.style.height = 'auto';
     const benoetigtH = videoMgrDialog.scrollHeight;
     videoMgrDialog.style.height = Math.min(benoetigtH, maxH) + 'px';
 
-    // Breite orientiert sich an Inhalt bzw. max. 90 % des Fensters
+    // Dialog vorübergehend auf Maximalbreite setzen
     const maxW = window.innerWidth * 0.9;
+    videoMgrDialog.style.width = maxW + 'px';
+
+    // Player anhand dieser Breite skalieren
+    if (typeof adjustVideoPlayerSize === 'function') {
+        adjustVideoPlayerSize();
+    }
+
+    // Benötigte Breite ermitteln und endgültig setzen
     videoMgrDialog.style.width = 'auto';
     const benoetigtW = videoMgrDialog.scrollWidth;
     videoMgrDialog.style.width = Math.min(benoetigtW, maxW) + 'px';
+
+    // Player erneut anpassen, falls sich die Breite geändert hat
+    if (typeof adjustVideoPlayerSize === 'function') {
+        adjustVideoPlayerSize();
+    }
 }
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
