@@ -23,17 +23,24 @@ export function openVideoDialog(bookmark, index) {
     player.dataset.index = index;
     player.querySelector('#playerDialogTitle').textContent = bookmark.title;
 
-    const iframe = document.getElementById('videoPlayerFrame');
-    if (!iframe) {
-        console.warn('videoPlayerFrame nicht gefunden');
-        return;
-    }
-    iframe.id = 'videoPlayerFrame';
-    iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
-
+    // alten Player sauber entfernen, damit das IFrame neu erstellt werden kann
     if (window.currentYT && window.currentYT.destroy) {
         window.currentYT.destroy();
     }
+
+    // IFrame ggf. neu anlegen, falls es durch destroy() verschwunden ist
+    let iframe = document.getElementById('videoPlayerFrame');
+    if (!iframe || iframe.tagName !== 'IFRAME') {
+        if (iframe) iframe.remove();
+        const controls = player.querySelector('.player-controls');
+        iframe = document.createElement('iframe');
+        iframe.id = 'videoPlayerFrame';
+        iframe.setAttribute('allow', 'autoplay; fullscreen');
+        player.insertBefore(iframe, controls);
+    }
+
+    // neue URL setzen und Player initialisieren
+    iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
     window.currentYT = new YT.Player('videoPlayerFrame');
 
     const slider = document.getElementById('videoSlider');
