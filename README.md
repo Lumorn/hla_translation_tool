@@ -293,6 +293,7 @@ Seit Patch 1.40.45 erlaubt die Content Security Policy nun Web Worker aus `blob:
 Seit Patch 1.40.46 darf die Content Security Policy auch Skripte von `cdn.jsdelivr.net` laden. Damit startet der Tesseract-Worker ohne Fehlermeldung.
 Seit Patch 1.40.47 erlaubt die Content Security Policy nun zusätzlich `'unsafe-eval'` und `'data:'` in den passenden Direktiven. Dadurch läuft die OCR ohne CSP-Fehler.
 Seit Patch 1.40.48 akzeptiert die Richtlinie auch `tessdata.projectnaptha.com`, damit Tesseract seine Sprachdaten herunterladen kann.
+Seit Patch 1.40.49 entfernt die Content Security Policy `'unsafe-eval'` wieder, da alle eingebundenen Bibliotheken ohne diese Option auskommen. Dadurch entfallen die Sicherheitshinweise beim Start.
 
 Beispiel einer gültigen CSV:
 
