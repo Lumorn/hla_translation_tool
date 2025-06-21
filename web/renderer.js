@@ -313,6 +313,7 @@ function calcLayout() {
 
     const iframe   = player.querySelector('iframe');
     const controls = player.querySelector('.player-controls');
+    const header   = player.querySelector('.player-header');
     const list     = dlg.querySelector('.video-list-section');
     const ocrPanel = document.getElementById('ocrResultPanel');
 
@@ -323,14 +324,19 @@ function calcLayout() {
     const ocrPanelW = (ocrPanel && !ocrPanel.classList.contains('hidden'))
         ? ocrPanel.offsetWidth : 0;
 
-    let width  = dlg.clientWidth - leftListW - ocrPanelW - 2 * pad;
+    // verfügbare Breite und Höhe im Dialog ermitteln
+    const dialogW = dlg.clientWidth;
+    const dialogH = dlg.clientHeight;
+    const freeW = dialogW - leftListW - ocrPanelW - 2 * pad;
+    const headerH = header ? header.offsetHeight : 0;
+    const controlsH = controls.offsetHeight;
+    const freeH = dialogH - headerH - controlsH - 2 * pad;
+    let width  = freeW;
     if (width <= 0) return;
     let height = width * 9 / 16;
-
-    const dlgH = dlg.clientHeight - 2 * pad;
-    const ctrlH = controls.offsetHeight;
-    if (height + ctrlH > dlgH) {
-        height = dlgH - ctrlH;
+    // passt Höhe an freie Fläche an und korrigiert Breite bei Bedarf
+    if (height > freeH) {
+        height = freeH;
         width  = height * 16 / 9;
     }
 
@@ -347,6 +353,10 @@ function calcLayout() {
 
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
+        if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
+            // Höhe des Panels an Video anpassen
+            ocrPanel.style.height = iframe.style.height;
+        }
     }
 }
 

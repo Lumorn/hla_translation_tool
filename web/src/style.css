@@ -2498,16 +2498,12 @@ th:nth-child(6) {
     overflow: hidden;
 }
 .video-player-section {
-    /* Rechter Bereich mit Player, passt sich der Dialoghöhe an */
-    flex: 1 1 auto;
+    /* Rechter Bereich mit Player, schrumpft auf Video- und Steuerleiste */
     display: flex;
     flex-direction: column;
-    /*
-        Doppelte Definitionen wurden bereinigt, damit die Steuerleiste
-        nicht mehr abgeschnitten wird. Diese overflow-Werte gelten einzig.
-    */
-    overflow-x: hidden;
-    overflow-y: auto; /* bei wenig Platz wird gescrollt */
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
     min-height: 0;
     position: relative; /* Steuerleiste wird dynamisch positioniert */
     padding-bottom: 0; /* kein fixer Platz mehr notwendig */
@@ -2552,6 +2548,7 @@ th:nth-child(6) {
     position: sticky; /* Buttons haften am unteren Rand */
     bottom: 0;
     width: 100%;
+    align-self: stretch; /* gleiche Breite wie das Video */
     z-index: 5; /* liegt über dem Ergebnis-Panel, Overlay liegt darunter */
 }
 .video-player-section .player-controls input[type=range] {
