@@ -25,7 +25,7 @@ async function pruefeHelligkeit(bitmap, roi, frameH) {
     const tmpH = Math.max(1, Math.round(tmpW * roi.height / Math.max(1, roi.width)));
     canvas.width = tmpW;
     canvas.height = tmpH;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     ctx.drawImage(bitmap, roi.x, roi.y, roi.width, roi.height, 0, 0, tmpW, tmpH);
     const data = ctx.getImageData(0, 0, tmpW, tmpH).data;
     let bright = 0;
@@ -172,8 +172,9 @@ async function positionOverlay() {
     const slider = controls?.querySelector('#videoSlider');
     const sliderTop = slider ? slider.getBoundingClientRect().top : iframeRect.bottom - ctrlH;
     const oH = iframeRect.height * 0.12;
-    // Oberkante minimal absenken, damit das YouTube-Overlay frei bleibt
-    const top = sliderTop + 1 - oH - sectionRect.top;
+    // Oberkante leicht absenken, damit das YouTube-Overlay frei bleibt
+    // zwei Pixel zusaetzlich, damit "Weitere Videos" nicht ueberdeckt wird
+    const top = sliderTop + 3 - oH - sectionRect.top;
     overlay.style.top    = top + 'px';
     overlay.style.left   = (iframeRect.left - sectionRect.left) + 'px';
     overlay.style.width  = iframeRect.width + 'px';
@@ -270,8 +271,8 @@ async function refineBlob(pngBlob) {
     ctx.drawImage(bmp, 0, 0, W, H);
     // Kontrast und Helligkeit erhoehen
     ctx.globalCompositeOperation = 'source-over';
-    // etwas aggressivere Aufhellung fuer bessere Erkennung
-    ctx.filter = 'brightness(160%) contrast(220%)';
+    // noch staerkere Aufhellung und mehr Kontrast fuer schwierige Szenen
+    ctx.filter = 'brightness(180%) contrast(240%)';
     ctx.drawImage(off, 0, 0);
     // entsaetten -> Graustufen
     const imgData = ctx.getImageData(0, 0, W, H);
@@ -337,7 +338,7 @@ async function captureAndOcr() {
         const canvas = document.createElement('canvas');
         canvas.width = cropW;
         canvas.height = cropH;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
         const imgUrl = ocrDebug ? canvas.toDataURL('image/png') : null;
@@ -372,6 +373,8 @@ async function runOcr() {
     const result = await captureAndOcr();
     const text = result.text;
     const img  = result.img;
+    // Debug-Daten sofort uebermitteln
+    if (ocrDebug) sendDebugData(img, text);
     // bei keinem Treffer das Intervall anhalten, CPU sparen
     if (!text) {
         stopAutoLoop();
@@ -381,7 +384,6 @@ async function runOcr() {
         return;
     }
     appendText(text);
-    if (ocrDebug) sendDebugData(img, text);
     // Treffer markieren und Benutzer informieren
     const btn = document.getElementById('ocrToggle');
     if (btn) {
