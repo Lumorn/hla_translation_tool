@@ -2400,12 +2400,15 @@ th:nth-child(6) {
 }
 
 .video-dialog {
-    /* Großer dunkler Dialog für den Video-Manager */
-    width: 80vw;
-    max-height: 80vh;
+    /* Großer dunkler Dialog für den Video-Manager
+       füllt dynamisch 90% des Fensters */
+    width: 90vw;
+    height: 90vh;
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Werkzeugleiste mit Suchfeld und Buttons */
@@ -2423,10 +2426,23 @@ th:nth-child(6) {
     border-radius: 4px;
 }
 
-/* Flex-Layout für Liste und Player */
-.video-layout { display: flex; gap: 1rem; }
-.video-list-section { width: 35%; max-height: 70vh; overflow-y: auto; }
-.video-player-section { flex: 1; display: flex; flex-direction: column; }
+/* Flex-Layout für Liste und Player,
+   verteilt den verfügbaren Platz dynamisch */
+.video-layout { display: flex; gap: 1rem; flex: 1; overflow: hidden; }
+.video-list-section {
+    /* Linke Tabellenansicht mit flexibler Höhe */
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.video-player-section {
+    /* Rechter Bereich mit Player, passt sich der Dialoghöhe an */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
 .video-player-section.hidden { display: none; }
 
 /* YouTube-Player Box im festen 16:9-Format */
@@ -2467,9 +2483,16 @@ th:nth-child(6) {
     padding: 4px 6px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: clamp(16px, 2.5vh, 24px);
 }
 .video-player-section .player-controls button:hover {
     background: #444;
+}
+
+#videoTableWrapper {
+    /* Container für die Tabelle mit dynamischer Höhe */
+    flex: 1;
+    overflow-y: auto;
 }
 
 #videoTable {
@@ -2489,7 +2512,7 @@ th:nth-child(6) {
 #videoTable thead th[data-asc="false"]::after { content: ' ▼'; }
 #videoTable tbody {
     display: block;
-    max-height: 60vh;
+    height: 100%;
     overflow-y: auto;
 }
 #videoTable tbody tr {
@@ -2509,13 +2532,16 @@ th:nth-child(6) {
     white-space: nowrap;
 }
 .video-thumb {
-    width: 80px;
-    height: 45px;
+    width: clamp(60px, 8vw, 120px);
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     cursor: pointer;
 }
 .video-title { cursor: pointer; }
-.video-actions button { margin: 0 2px; }
+.video-actions button {
+    margin: 0 2px;
+    font-size: clamp(14px, 2.2vh, 20px);
+}
 .video-actions button:hover { background:#444; }
 
 .accordion-content {
