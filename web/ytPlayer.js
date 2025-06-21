@@ -132,6 +132,7 @@ async function captureAndOcr() {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
         const { data: { text } } = await ocrWorker.recognize(canvas);
+        console.log('OCR-Text:', text);
         return text.trim();
     } catch (e) {
         console.error('OCR-Fehler', e);
@@ -142,15 +143,9 @@ async function captureAndOcr() {
 // Haengt Text im Ergebnis-Panel an
 function appendText(t) {
     const area = document.getElementById('ocrText');
-    const panel = document.getElementById('ocrResultPanel');
-    if (!area || !panel) return;
-    const span = document.createElement('span');
-    span.className = 'highlight';
-    span.textContent = t;
-    area.appendChild(span);
-    area.appendChild(document.createTextNode('\n'));
-    panel.scrollTop = panel.scrollHeight;
-    setTimeout(() => span.classList.remove('highlight'), 500);
+    if (!area) return;
+    area.textContent += (area.textContent ? '\n' : '') + t;
+    area.scrollTop = area.scrollHeight;
 }
 
 // Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
@@ -158,10 +153,17 @@ async function runOcr() {
     const text = await captureAndOcr();
     if (!text) return;
     appendText(text);
+    // Treffer markieren und Benutzer informieren
+    const btn = document.getElementById('ocrToggle');
+    if (btn) {
+        btn.title = 'Treffer erkannt – Video pausiert';
+        btn.classList.add('blink');
+        setTimeout(() => btn.classList.remove('blink'), 1000);
+    }
     if (window.currentYT && window.currentYT.pauseVideo) {
         window.currentYT.pauseVideo();
     }
-    stopAutoLoop();
+    stopAutoLoop(true);
 }
 
 
@@ -174,14 +176,17 @@ function startAutoLoop() {
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }
+    // visuelles Feedback fuer laufende Erkennung
+    btn.title = 'Auto-OCR aktiv';
     autoLoop = setInterval(runOcr, 1500);
 }
 
-function stopAutoLoop() {
+function stopAutoLoop(keepBlink = false) {
     if (autoLoop) { clearInterval(autoLoop); autoLoop = null; }
     const btn = document.getElementById('ocrToggle');
     if (btn) {
-        btn.classList.remove('blink');
+        // Blink-Effekt optional beibehalten
+        if (!keepBlink) btn.classList.remove('blink');
         btn.title = 'OCR an/aus (F9)';
     }
 }
@@ -312,6 +317,12 @@ export function openVideoDialog(bookmark, index) {
                 stopAutoLoop();
                 terminateOcr();
                 ocrBtn.title = 'OCR an/aus (F9)';
+            }
+            if (typeof window.adjustVideoPlayerSize === 'function') {
+                window.adjustVideoPlayerSize(true);
+            }
+            if (typeof window.positionOverlay === 'function') {
+                window.positionOverlay();
             }
         };
     }
