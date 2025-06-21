@@ -2698,7 +2698,7 @@ th:nth-child(6) {
 }
 
 #ocrResultPanel{
-    /* Schnell-Fix: Panel bleibt fest rechts neben dem Video */
+    /* Schnell-Fix: Panel sitzt fest rechts neben dem Video */
     position:absolute;
     top:0;
     right:0;
