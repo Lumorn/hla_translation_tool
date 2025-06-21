@@ -2448,6 +2448,7 @@ th:nth-child(6) {
 .video-list-section {
     /* Linke Tabellenansicht mit flexibler Höhe */
     width: 35%;
+    max-width: 480px; /* damit die Liste bei großen Fenstern nicht zu breit wird */
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -2559,7 +2560,10 @@ th:nth-child(6) {
     object-fit: cover;
     cursor: pointer;
 }
-.video-title { cursor: pointer; }
+.video-title {
+    cursor: pointer;
+    max-width: 26ch; /* reduziert die Breite der Titelspalte */
+}
 .video-actions button {
     margin: 0 2px;
     font-size: clamp(14px, 2.2vh, 20px);
