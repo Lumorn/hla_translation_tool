@@ -120,6 +120,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Optimierte OCR-Parameter für bessere Trefferquote**
 * **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird um 2 % nach oben oder unten verschoben, falls zu wenig helle Pixel vorhanden sind.
 * **Stabilere Helligkeitsprüfung:** Überprüft zuerst die Abmessungen des Overlay-Bereichs und vermeidet so Fehlermeldungen.
+* **OffscreenCanvas mit Graustufen-Verarbeitung:** Screenshots werden doppelt skaliert, kontrastverstärkt und in Graustufen umgewandelt.
+* **Präzisere Texterkennung:** Das Overlay endet 2 px über dem Slider und nutzt nur 14 % der Bildhöhe.
+* **Schnellerer Auto‑OCR‑Loop:** Läuft alle 750 ms und pausiert das Video ab vier erkannten Zeichen.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**

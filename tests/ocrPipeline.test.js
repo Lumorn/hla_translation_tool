@@ -31,15 +31,15 @@ describe('OCR-Pipeline', () => {
         window.positionOverlay = jest.fn();
     });
 
-    test('captureAndOcr nutzt refineImage', async () => {
+    test('captureAndOcr nutzt refineBlob', async () => {
         const sandbox = loadModule();
         sandbox.initOcrWorker = jest.fn(async () => true);
         sandbox.pruefeHelligkeit = jest.fn(async () => 0);
-        jest.spyOn(sandbox, 'refineImage').mockResolvedValue(new Blob(['x'], { type: 'image/png' }));
+        jest.spyOn(sandbox, 'refineBlob').mockResolvedValue(new Blob(['x'], { type: 'image/png' }));
 
         await sandbox.captureAndOcr();
 
-        expect(sandbox.refineImage).toHaveBeenCalled();
+        expect(sandbox.refineBlob).toHaveBeenCalled();
     });
 
     test('startAutoLoop startet nur bei PLAYING', () => {
