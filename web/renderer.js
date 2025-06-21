@@ -162,8 +162,10 @@ function calcUsableWidthHeight() {
 function positionIframe() {
     const frame = document.getElementById('videoPlayerFrame');
     if (!frame) return;
-    frame.style.width  = layoutData.width + 'px';
-    frame.style.height = layoutData.height + 'px';
+    // Breite und Höhe regelt jetzt komplett das CSS
+    const rect = frame.getBoundingClientRect();
+    layoutData.width  = rect.width;
+    layoutData.height = rect.height;
 }
 
 // platziert die Steuerleiste direkt unter dem IFrame
