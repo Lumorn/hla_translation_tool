@@ -2684,11 +2684,16 @@ th:nth-child(6) {
     position: absolute;
     background: rgba(0,128,255,.25);
     border: 2px dashed #fff;
-    pointer-events: none; /* Overlay ignoriert Mausereignisse */
+    /* Mausinteraktion erlaubt nun Verschieben und Skalieren */
     display: none;
     bottom: 48px;         /* Abstand zur Steuerleiste */
     z-index: 4;           /* liegt unter den Bedienelementen */
+    cursor: move;         /* zeigt Verschiebbarkeit an */
+    touch-action: none;   /* verhindert Scrollen beim Ziehen */
     /* genaue Position wird per JS gesetzt */
+}
+#ocrOverlay.resizing {
+    cursor: se-resize;
 }
 #videoPlayerSection.ocr-active #ocrOverlay {
     display: block;
