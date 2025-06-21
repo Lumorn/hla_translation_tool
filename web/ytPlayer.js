@@ -37,13 +37,22 @@ async function initOcrWorker() {
         // tesseract.js wird lokal geladen, damit die OCR auch ohne Internet funktioniert
         // Modul laden und createWorker extrahieren (Default- oder Named-Export)
         const mod = await import('./src/lib/tesseract.esm.min.js');
-        const { createWorker } = mod.default || mod;
+        // createWorker kann je nach Build an unterschiedlichen Stellen liegen
+        const createWorker = mod.createWorker || mod.default?.createWorker;
+        if (typeof createWorker !== 'function') {
+            throw new Error('createWorker nicht gefunden');
+        }
         // Worker-Pfad absolut aufloesen, damit er auch in Electron korrekt
         // gefunden wird und keine externen Skripte benoetigt werden
         const workerUrl = new URL('./src/lib/tesseract-worker.min.js', window.location.href).href;
-        ocrWorker = createWorker({
-            workerPath: workerUrl
-        });
+        ocrWorker = await createWorker({ workerPath: workerUrl });
+        // einige Builds liefern ein Promise zurück
+        if (typeof ocrWorker.then === 'function') {
+            ocrWorker = await ocrWorker;
+        }
+        if (typeof ocrWorker.load !== 'function') {
+            throw new Error('Ungültiges Worker-Objekt');
+        }
         await ocrWorker.load();
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
