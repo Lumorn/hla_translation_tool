@@ -70,6 +70,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische Dialogbreite:** Ohne geöffneten Player richtet sich die Breite des Video-Managers nach der Liste.
 * **Flexibles Fenster für gespeicherte Videos:** Höhe passt sich jetzt automatisch an Videoplayer und Liste an.
 * **Breitenbegrenzter Player:** Die Breite richtet sich nach der verfügbaren Höhe und überschreitet nie das Format 16:9.
+* **Fehlerfreies Skalieren nach Schließen:** Ändert man die Fenstergröße bei geschlossenem Dialog, berechnet das IFrame seine Breite beim nächsten Öffnen korrekt neu.
 * **Stabilerer ResizeObserver:** Die Dialog-Anpassung nutzt `requestAnimationFrame` und verhindert so die Fehlermeldung "ResizeObserver loop limit exceeded".
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
 * **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
