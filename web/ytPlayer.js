@@ -78,6 +78,29 @@ function terminateOcr() {
 }
 window.positionOverlay = positionOverlay;
 
+// verfeinert einen Screenshot fuer bessere OCR-Ergebnisse
+async function refineImage(bitmap) {
+    // temporaeres Canvas mit doppelter Aufloesung anlegen
+    const tmpCanvas = document.createElement('canvas');
+    const w2 = bitmap.width * 2;
+    const h2 = bitmap.height * 2;
+    tmpCanvas.width = w2;
+    tmpCanvas.height = h2;
+    const tctx = tmpCanvas.getContext('2d');
+    // mehr Kontrast und Helligkeit fuer die erste Zeichnung
+    tctx.filter = 'contrast(160%) brightness(130%)';
+    tctx.drawImage(bitmap, 0, 0, w2, h2);
+
+    // zweiter Durchgang: auf Originalgroesse zurueckskalieren
+    const canvas = document.createElement('canvas');
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(tmpCanvas, 0, 0, w2, h2, 0, 0, canvas.width, canvas.height);
+
+    return await new Promise(resolve => canvas.toBlob(b => resolve(b), 'image/png'));
+}
+
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
@@ -98,8 +121,11 @@ async function captureAndOcr() {
         // Screenshot des IFrames vom Hauptfenster anfordern
         const png = await window.api.captureFrame(bounds);
         if (!png) return '';
-        const blob = new Blob([png], { type: 'image/png' });
-        const bitmap = await createImageBitmap(blob);
+        const rawBlob = new Blob([png], { type: 'image/png' });
+        const rawBitmap = await createImageBitmap(rawBlob);
+        // Bild nachbearbeiten, um die Texterkennung zu verbessern
+        const refinedBlob = await refineImage(rawBitmap);
+        const bitmap = await createImageBitmap(refinedBlob);
 
         const overlay = document.getElementById('ocrOverlay');
         const orect = overlay ? overlay.getBoundingClientRect() : rect;
