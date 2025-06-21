@@ -10,7 +10,8 @@ export function extractYoutubeId(url) {
 // ===== Globale OCR-Variablen =====
 let ocrWorker = null;        // wird bei Bedarf angelegt
 let autoLoop = null;         // Intervall für Auto-OCR
-let ocrActive = false;       // aktueller Status
+let ocrActive = false;       // Toggle-Status
+let ocrPaused = false;       // wurde nach einem Treffer pausiert?
 let ocrWindow = null;        // separates Fenster für erkannte Texte
 
 // Overlay an die Größe des IFrames anpassen
@@ -145,6 +146,7 @@ function showOcrWindow(text) {
 
 // Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
 async function runOcr() {
+    if (!ocrActive) return; // nur wenn Toggle aktiv ist
     const text = await captureAndOcr();
     if (!text) return;
     appendText(text);
@@ -159,6 +161,7 @@ async function runOcr() {
     if (window.currentYT && window.currentYT.pauseVideo) {
         window.currentYT.pauseVideo();
     }
+    ocrPaused = true;
     stopAutoLoop(true);
 }
 
@@ -169,6 +172,7 @@ function startAutoLoop() {
     const btn  = document.getElementById('ocrToggle');
     const area = document.getElementById('ocrText');
     if (!dlg || !dlg.open || !btn || !area || !btn.classList.contains('active')) return;
+    ocrPaused = false;
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }
@@ -249,6 +253,8 @@ export function openVideoDialog(bookmark, index) {
         ocrBtn.title = 'OCR aktivieren (F9)';
         ocrBtn.classList.remove('active');
     }
+    ocrActive = false;
+    ocrPaused = false;
     player.classList.remove('ocr-active');
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
     if (ocrPanel) ocrPanel.classList.add('hidden');
@@ -294,6 +300,7 @@ export function openVideoDialog(bookmark, index) {
                 stopAutoLoop(); // eventuell laufenden Blink beenden
                 startAutoLoop();
             }
+            ocrPaused = false;
         } else {
             window.currentYT.pauseVideo();
             stopAutoLoop();
@@ -312,6 +319,8 @@ export function openVideoDialog(bookmark, index) {
         ocrBtn.onclick = () => {
             ocrBtn.classList.toggle('active');
             const active = ocrBtn.classList.contains('active');
+            ocrActive = active;
+            ocrPaused = false;
             player.classList.toggle('ocr-active', active);
             if (ocrOverlay) {
                 ocrOverlay.classList.toggle('hidden', !active);
@@ -397,6 +406,8 @@ export async function closeVideoDialog() {
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
     if (ocrPanel) ocrPanel.classList.add('hidden');
     player.classList.remove('ocr-active');
+    ocrActive = false;
+    ocrPaused = false;
     terminateOcr();
 
     let exactTime;

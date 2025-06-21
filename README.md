@@ -86,6 +86,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte OCR-Pipeline:** Overlay und Panel passen sich dynamisch an, starten nur nach Aktivierung und zeigen den erkannten Text gut lesbar im neuen Ergebnis‑Panel.
 * **Nahtloser Player mit OCR-Panel:** Die Breite des IFrames berücksichtigt die Panelbreite, die Steuerleiste reicht bis an den Rand und der blaue OCR‑Rahmen sitzt exakt auf dem Videobild.
 * **Feinschliff am OCR‑Panel:** Breite clamped, Panel überlappt keine Buttons mehr, Text scrollt automatisch und der 🔍‑Button blinkt kurz bei einem Treffer.
+* **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
