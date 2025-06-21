@@ -255,7 +255,11 @@ function showOcrWindow(text) {
 async function runOcr() {
     if (!ocrActive) return; // nur wenn Toggle aktiv ist
     const text = await captureAndOcr();
-    if (!text) return;
+    // bei keinem Treffer das Intervall anhalten, CPU sparen
+    if (!text) {
+        stopAutoLoop();
+        return;
+    }
     appendText(text);
     showOcrWindow(text);
     // Treffer markieren und Benutzer informieren
@@ -279,6 +283,11 @@ function startAutoLoop() {
     const btn  = document.getElementById('ocrToggle');
     const area = document.getElementById('ocrText');
     if (!dlg || !dlg.open || !btn || !area || !btn.classList.contains('active')) return;
+    // nur starten, wenn das Video tatsaechlich laeuft
+    if (!window.currentYT ||
+        window.currentYT.getPlayerState() !== YT.PlayerState.PLAYING) {
+        return;
+    }
     ocrPaused = false;
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
