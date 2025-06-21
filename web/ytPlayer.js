@@ -599,9 +599,19 @@ export function openVideoDialog(bookmark, index) {
     }
     if (debugBtn) {
         debugBtn.onclick = () => {
+            // Schalterzustand wechseln
             debugBtn.classList.toggle('active');
             ocrDebug = debugBtn.classList.contains('active');
-            if (!ocrDebug && ocrWindow && !ocrWindow.closed) {
+            if (ocrDebug) {
+                // Fenster sofort öffnen, falls noch nicht vorhanden
+                if (!ocrWindow || ocrWindow.closed) {
+                    ocrWindow = window.open('', '_blank', 'width=600,height=400');
+                    if (ocrWindow) {
+                        ocrWindow.document.title = 'OCR-Debug';
+                    }
+                }
+            } else if (ocrWindow && !ocrWindow.closed) {
+                // Bei Deaktivierung das Fenster schließen
                 ocrWindow.close();
             }
         };
