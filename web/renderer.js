@@ -167,8 +167,14 @@ function adjustVideoPlayerSize(force = false) {
 
     const pad       = parseFloat(getComputedStyle(dialog).paddingLeft) || 0;
     const listW     = list ? list.offsetWidth : 0;
-    const panelW    = (ocrPanel && !ocrPanel.classList.contains('hidden'))
-        ? ocrPanel.offsetWidth : 0; // Breite des Ergebnis-Panels
+    let panelW = 0;
+    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
+        const style = getComputedStyle(ocrPanel);
+        // Breite nur abziehen, wenn das Panel neben dem Video steht
+        if (style.position !== 'static') {
+            panelW = ocrPanel.offsetWidth;
+        }
+    }
 
     // verfügbare Fläche im Dialog
     const dialogW   = dialog.clientWidth;
@@ -191,8 +197,13 @@ function adjustVideoPlayerSize(force = false) {
     frame.style.height = h + 'px';
     if (controls) controls.style.width = w + 'px';
     if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-        // Schnell-Fix: Panel-Höhe an die tatsächliche Video-Höhe anpassen
-        ocrPanel.style.height = frame.clientHeight + 'px';
+        const style = getComputedStyle(ocrPanel);
+        // Höhe nur setzen, wenn das Panel neben dem Video liegt
+        if (style.position !== 'static') {
+            ocrPanel.style.height = frame.clientHeight + 'px';
+        } else {
+            ocrPanel.style.height = 'auto';
+        }
     }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;

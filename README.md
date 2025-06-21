@@ -94,6 +94,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aufräumarbeiten am Panel-Layout:** Überflüssige CSS-Regeln entfernt und Höhe dynamisch gesetzt.
 * **Panelgröße korrekt berechnet:** Die Player-Anpassung zieht nun die Breite des Ergebnis-Panels ab und setzt dessen Höhe direkt nach dem Video.
 * **Schnell-Fix:** Das Ergebnis-Panel überdeckt das Video nicht mehr und passt seine Höhe exakt an die IFrame-Größe an.
+* **Responsive OCR-Anzeige:** Bei schmalen Dialogen rutscht das Ergebnis-Panel automatisch unter das Video.
 * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
