@@ -539,17 +539,19 @@
                         <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
                     </div>
                 </div>
-                <table id="videoTable">
-                    <thead>
-                        <tr>
-                            <th data-asc="true">Bild</th>
-                            <th>Titel</th>
-                            <th>Letzte Zeit</th>
-                            <th>•</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+                <div id="videoTableWrapper">
+                    <table id="videoTable">
+                        <thead>
+                            <tr>
+                                <th data-asc="true">Bild</th>
+                                <th>Titel</th>
+                                <th>Letzte Zeit</th>
+                                <th>•</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
                 <button id="closeVideoDlg" class="btn btn-danger">❌ Schließen</button>
             </div>
             <div id="videoPlayerSection" class="video-player-section hidden">
