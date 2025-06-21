@@ -2713,6 +2713,11 @@ th:nth-child(6) {
     color: #fff;
 }
 
+#ocrSettings.active {
+    background: #6699cc;
+    color: #fff;
+}
+
 #ocrResultPanel{
     /* Schnell-Fix: Panel sitzt fest rechts neben dem Video */
     position:absolute;

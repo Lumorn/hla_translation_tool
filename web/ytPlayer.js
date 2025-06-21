@@ -14,6 +14,8 @@ let ocrActive = false;       // Toggle-Status
 let ocrPaused = false;       // wurde nach einem Treffer pausiert?
 let ocrWindow = null;        // separates Fenster für erkannte Texte
 let ocrDebug  = false;       // zeigt das Debug-Fenster mit Screenshot
+// Einstellungen zur Bildaufbereitung
+let ocrSettings = loadOcrSettings();
 
 // Overlay an die Größe des IFrames anpassen
 // prueft die Helligkeit des potenziellen Textbereichs
@@ -85,6 +87,19 @@ function ladeOverlaySettings() {
 
 function speichereOverlaySettings(rect) {
     try { localStorage.setItem(OVERLAY_KEY, JSON.stringify(rect)); } catch {}
+}
+
+// speichert die Einstellungen zur Bildverarbeitung
+const SETTINGS_KEY = 'hla_ocrImageSettings';
+function loadOcrSettings() {
+    try {
+        return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { invert: false, brightness: 180, contrast: 240 };
+    } catch {
+        return { invert: false, brightness: 180, contrast: 240 };
+    }
+}
+function saveOcrSettings(cfg) {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(cfg)); } catch {}
 }
 
 // erlaubt Verschieben und Skalieren des Overlays mit der Maus
@@ -260,8 +275,55 @@ function terminateOcr() {
 window.positionOverlay = positionOverlay;
 window.initOverlayDrag = initOverlayDrag;
 
+// zeigt einen Dialog mit OCR-Einstellungen und Vorschau
+async function openOcrSettings() {
+    const dlg = document.createElement('div');
+    dlg.className = 'dialog-overlay';
+    dlg.style.display = 'flex';
+    dlg.id = 'ocrSettingsDlg';
+    dlg.innerHTML = `<div class="dialog">
+        <h3>OCR Einstellungen</h3>
+        <label><input type="checkbox" id="setInvert"> Farben umkehren</label><br>
+        <label>Helligkeit: <input type="range" id="setBright" min="100" max="300"></label><br>
+        <label>Kontrast: <input type="range" id="setContrast" min="100" max="300"></label>
+        <img id="setPreview" style="max-width:100%;margin-top:10px;display:block">
+        <pre id="setText"></pre>
+        <div class="dialog-buttons"><button class="btn btn-success" id="setClose">OK</button></div>
+    </div>`;
+    const div = dlg.querySelector('.dialog');
+    div.addEventListener('click', e => e.stopPropagation());
+    dlg.addEventListener('click', () => dlg.remove());
+    document.body.appendChild(dlg);
+
+    const invert = dlg.querySelector('#setInvert');
+    const bright = dlg.querySelector('#setBright');
+    const contrast = dlg.querySelector('#setContrast');
+    const img = dlg.querySelector('#setPreview');
+    const txt = dlg.querySelector('#setText');
+    invert.checked = ocrSettings.invert;
+    bright.value = ocrSettings.brightness;
+    contrast.value = ocrSettings.contrast;
+
+    async function update() {
+        saveOcrSettings(ocrSettings);
+        const res = await captureAndOcr();
+        if (res.img) img.src = res.img; else img.removeAttribute('src');
+        txt.textContent = res.text || '';
+    }
+
+    invert.onchange = () => { ocrSettings.invert = invert.checked; update(); };
+    bright.oninput = () => { ocrSettings.brightness = Number(bright.value); update(); };
+    contrast.oninput = () => { ocrSettings.contrast = Number(contrast.value); update(); };
+    dlg.querySelector('#setClose').onclick = () => dlg.remove();
+
+    update();
+}
+
+window.openOcrSettings = openOcrSettings;
+
 // bereitet den Screenshot im OffscreenCanvas fuer die OCR auf
-async function refineBlob(pngBlob) {
+// bereitet das Bild anhand der aktuellen Einstellungen auf
+async function refineBlob(pngBlob, settings = ocrSettings) {
     const bmp = await createImageBitmap(pngBlob);
     const W = bmp.width * 2;
     const H = bmp.height * 2;
@@ -269,11 +331,21 @@ async function refineBlob(pngBlob) {
     const ctx = off.getContext('2d', { willReadFrequently: true });
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(bmp, 0, 0, W, H);
-    // Kontrast und Helligkeit erhoehen
+    // Kontrast und Helligkeit nach Nutzerwunsch anpassen
     ctx.globalCompositeOperation = 'source-over';
-    // noch staerkere Aufhellung und mehr Kontrast fuer schwierige Szenen
-    ctx.filter = 'brightness(180%) contrast(240%)';
+    ctx.filter = `brightness(${settings.brightness}%) contrast(${settings.contrast}%)`;
     ctx.drawImage(off, 0, 0);
+    // Farben optional invertieren
+    if (settings.invert) {
+        const invData = ctx.getImageData(0, 0, W, H);
+        const inv = invData.data;
+        for (let i = 0; i < inv.length; i += 4) {
+            inv[i] = 255 - inv[i];
+            inv[i + 1] = 255 - inv[i + 1];
+            inv[i + 2] = 255 - inv[i + 2];
+        }
+        ctx.putImageData(invData, 0, 0);
+    }
     // entsaetten -> Graustufen
     const imgData = ctx.getImageData(0, 0, W, H);
     const d = imgData.data;
@@ -311,7 +383,7 @@ async function captureAndOcr() {
         if (!png) return { text: '', img: null };
         const rawBlob = new Blob([png], { type: 'image/png' });
         // Screenshot verfeinern, um die Texterkennung zu verbessern
-        const refinedBlob = await refineBlob(rawBlob);
+        const refinedBlob = await refineBlob(rawBlob, ocrSettings);
         const bitmap = await createImageBitmap(refinedBlob);
 
         const overlay = document.getElementById('ocrOverlay');
@@ -482,6 +554,7 @@ export function openVideoDialog(bookmark, index) {
     const reloadBtn = document.getElementById('videoReload');
     const ocrBtn = document.getElementById('ocrToggle');
     const debugBtn = document.getElementById('ocrDebug');
+    const settingsBtn = document.getElementById('ocrSettings');
     const ocrOverlay = document.getElementById('ocrOverlay');
     const ocrPanel = document.getElementById('ocrResultPanel');
     const deleteBtn = document.getElementById('videoDelete');
@@ -613,6 +686,9 @@ export function openVideoDialog(bookmark, index) {
                 stopAutoLoop();
             }
         };
+    }
+    if (settingsBtn) {
+        settingsBtn.onclick = openOcrSettings;
     }
     // Lösch-Button ruft nun die neue Funktion auf
     deleteBtn.onclick = deleteCurrentVideo;
@@ -781,6 +857,7 @@ if (typeof module !== 'undefined' && module.exports) {
         extractYoutubeId,
         openVideoDialog,
         closeVideoDialog,
-        deleteCurrentVideo
+        deleteCurrentVideo,
+        openOcrSettings
     };
 }

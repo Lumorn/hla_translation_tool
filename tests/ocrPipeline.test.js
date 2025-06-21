@@ -39,7 +39,7 @@ describe('OCR-Pipeline', () => {
 
         await sandbox.captureAndOcr();
 
-        expect(sandbox.refineBlob).toHaveBeenCalled();
+        expect(sandbox.refineBlob).toHaveBeenCalledWith(expect.any(Blob), expect.any(Object));
     });
 
     test('startAutoLoop startet nur bei PLAYING', () => {
