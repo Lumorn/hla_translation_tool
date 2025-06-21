@@ -35,8 +35,10 @@ async function initOcrWorker() {
     if (ocrWorker) return true;
     try {
         // tesseract.js wird lokal geladen, damit die OCR auch ohne Internet funktioniert
-        const t = await import('./src/lib/tesseract.esm.min.js');
-        ocrWorker = t.createWorker();
+        // Modul laden und createWorker extrahieren (Default- oder Named-Export)
+        const mod = await import('./src/lib/tesseract.esm.min.js');
+        const { createWorker } = mod.default || mod;
+        ocrWorker = createWorker();
         await ocrWorker.load();
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
