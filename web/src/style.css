@@ -2477,13 +2477,15 @@ th:nth-child(6) {
     box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 .video-player-section iframe {
+    /* Video skaliert flexibel, behält stets 16:9 und wird nie abgeschnitten */
     align-self: center;
-    width: auto;
-    height: calc(100% - 6rem);
+    width: 100%;
+    height: auto;
     max-height: calc(100% - 6rem);
     aspect-ratio: 16 / 9;
     border: none;
     display: block;
+    margin: 0 auto;
 }
 .video-player-section .player-controls {
     display: flex;
