@@ -48,7 +48,9 @@ async function initOcrWorker() {
         // Worker-Pfad absolut aufloesen, damit er auch in Electron korrekt
         // gefunden wird und keine externen Skripte benoetigt werden
         const workerUrl = new URL('./src/lib/tesseract-worker.min.js', window.location.href).href;
-        ocrWorker = await createWorker({ workerPath: workerUrl });
+        const coreUrl   = new URL('./src/lib/tesseract-core-simd.wasm.js', window.location.href).href;
+        // Worker mit lokalem corePath starten, damit keine externen Ressourcen geladen werden
+        ocrWorker = await createWorker({ workerPath: workerUrl, corePath: coreUrl });
         // einige Builds liefern ein Promise zurück
         if (typeof ocrWorker.then === 'function') {
             ocrWorker = await ocrWorker;

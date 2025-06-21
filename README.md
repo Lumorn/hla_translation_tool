@@ -311,6 +311,7 @@ Seit Patch 1.40.51 wurde die CSS-Klasse `.video-player-section` bereinigt. Jetzt
 Seit Patch 1.40.52 entfernt die Content Security Policy `'unsafe-eval'` erneut und erlaubt `worker-src 'self'`. Dadurch verschwindet die Electron-Sicherheitswarnung, ohne die App-Funktionalität einzuschränken.
 Seit Patch 1.40.53 nutzt die Content Security Policy eine minimale Konfiguration. Sie erlaubt Blob‑Worker für Tesseract, ohne `'unsafe-eval'` zu verwenden.
 Seit Patch 1.40.54 erlaubt die Richtlinie Skripte und Frames von `youtube.com` und `youtube-nocookie.com`. Vorschaubilder von `i.ytimg.com` bleiben erlaubt.
+Seit Patch 1.40.55 wird die Datei `tesseract-core-simd.wasm.js` lokal eingebunden und über `corePath` geladen. Dadurch benötigt die OCR keine externen Skripte mehr.
 
 Beispiel einer gültigen CSV:
 
