@@ -2507,6 +2507,12 @@ th:nth-child(6) {
     min-height: 0;
     position: relative; /* Steuerleiste wird dynamisch positioniert */
     padding-bottom: 0; /* kein fixer Platz mehr notwendig */
+    padding-right: 0; /* Platz für OCR-Panel wird dynamisch ergänzt */
+}
+
+/* Bei aktivem OCR-Panel Platz neben dem Video schaffen */
+.video-player-section.ocr-active {
+    padding-right: clamp(200px, 20%, 260px);
 }
 .video-player-section.hidden { display: none; }
 
@@ -2707,6 +2713,19 @@ th:nth-child(6) {
     overflow:auto;
     background:#1a1a1a;
     padding:8px;
+}
+
+@media (max-width: 600px) {
+    /* Panel rutscht unter das Video, wenn nicht genug Breite vorhanden ist */
+    .video-player-section.ocr-active {
+        padding-right: 0;
+    }
+    #ocrResultPanel {
+        position:static;
+        width:100%;
+        height:auto;
+        margin-top:8px;
+    }
 }
 #ocrResultPanel pre {
     margin: 0;
