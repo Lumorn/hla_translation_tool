@@ -2445,7 +2445,12 @@ th:nth-child(6) {
 
 /* Flex-Layout für Liste und Player,
    verteilt den verfügbaren Platz dynamisch */
-.video-layout { display: flex; gap: 1rem; flex: 1; overflow: hidden; }
+.video-layout {
+    /* Liste und Player nebeneinander ohne feste Höhe */
+    display: flex;
+    gap: 1rem;
+    overflow: hidden;
+}
 .video-list-section {
     /* Linke Tabellenansicht mit flexibler Höhe */
     width: 35%;
@@ -2456,10 +2461,9 @@ th:nth-child(6) {
 }
 .video-player-section {
     /* Rechter Bereich mit Player, passt sich der Dialoghöhe an */
-    flex: 1;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    height: 100%;
     overflow: hidden;
 }
 .video-player-section.hidden { display: none; }
@@ -2514,9 +2518,9 @@ th:nth-child(6) {
 }
 
 #videoTableWrapper {
-    /* Container für die Tabelle mit dynamischer Höhe */
-    flex: 1;
+    /* Container für die Tabelle: wächst bei Bedarf, sonst passt er sich an */
     overflow-y: auto;
+    max-height: 60vh;
 }
 
 #videoTable {
@@ -2536,7 +2540,6 @@ th:nth-child(6) {
 #videoTable thead th[data-asc="false"]::after { content: ' ▼'; }
 #videoTable tbody {
     display: block;
-    height: 100%;
     overflow-y: auto;
 }
 #videoTable tbody tr {
