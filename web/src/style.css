@@ -2722,3 +2722,13 @@ th:nth-child(6) {
     background: yellow;
 }
 
+/* Panel standardmäßig ausgeblendet */
+#ocrResultPanel {
+    display: none;
+}
+
+/* Erst sichtbar, wenn OCR aktiv ist */
+#videoPlayerSection.ocr-active #ocrResultPanel {
+    display: block;
+}
+
