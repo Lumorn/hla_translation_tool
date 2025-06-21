@@ -56,6 +56,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9.
 * **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
+* **Korrekte Spaltenbreite im Video-Manager:** Kopfzeile und Tabelle sind jetzt bündig, komplette Videotitel erscheinen als Tooltip.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 

@@ -99,7 +99,7 @@ async function refreshTable(sortKey='title', dir=true) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${i+1}</td>
-            <td title="${b.url}">${b.title.slice(0,40)}</td>
+            <td title="${b.title}">${b.title}</td>
             <td>${formatTime(b.time)}</td>
             <td class="video-actions">
                 <button class="start" data-idx="${b.origIndex}" title="Video starten">▶️</button>

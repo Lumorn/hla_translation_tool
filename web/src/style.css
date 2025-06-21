@@ -2476,6 +2476,11 @@ th:nth-child(6) {
     width: 100%;
     border-collapse: collapse;
 }
+#videoTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
 #videoTable thead th {
     cursor: pointer;
     border-bottom: 1px solid #555;
@@ -2495,6 +2500,11 @@ th:nth-child(6) {
 }
 #videoTable tbody tr:hover { background: #222; }
 #videoTable td, #videoTable th { padding: 0.3rem 0.6rem; }
+#videoTable td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .video-actions button { margin: 0 2px; }
 .video-actions button:hover { background:#444; }
 
