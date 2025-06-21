@@ -119,6 +119,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bildverarbeitung für exakteres OCR:** Der Screenshot wird vor der Erkennung kontrastreich nachgeschärft.
 * **Optimierte OCR-Parameter für bessere Trefferquote**
 * **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird um 2 % nach oben oder unten verschoben, falls zu wenig helle Pixel vorhanden sind.
+* **Stabilere Helligkeitsprüfung:** Überprüft zuerst die Abmessungen des Overlay-Bereichs und vermeidet so Fehlermeldungen.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**

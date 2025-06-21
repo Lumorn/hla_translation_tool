@@ -18,8 +18,10 @@ let ocrWindow = null;        // separates Fenster für erkannte Texte
 // prueft die Helligkeit des potenziellen Textbereichs
 async function pruefeHelligkeit(bitmap, roi, frameH) {
     const canvas = document.createElement('canvas');
+    // fruehzeitig abbrechen, falls der Bereich keine gueltige Groesse besitzt
+    if (roi.width <= 0 || roi.height <= 0) return 0;
     const tmpW = 32;                              // kleines Hilfs-Canvas fuer schnelle Analyse
-    const tmpH = Math.max(1, Math.round(tmpW * roi.height / roi.width));
+    const tmpH = Math.max(1, Math.round(tmpW * roi.height / Math.max(1, roi.width)));
     canvas.width = tmpW;
     canvas.height = tmpH;
     const ctx = canvas.getContext('2d');
