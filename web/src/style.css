@@ -2548,10 +2548,11 @@ th:nth-child(6) {
     padding: 0.5rem 1rem;
     background: #242424;
     box-shadow: 0 0 4px rgba(0,0,0,0.5);
-    margin-top: 8px; /* sorgt dafür, dass die Leiste nicht mehr über dem Video liegt */
-    position: sticky;
+    margin-top: 0; /* Abstand unter dem Video vermeiden */
+    position: sticky; /* Buttons haften am unteren Rand */
     bottom: 0;
-    z-index: 3;
+    width: 100%;
+    z-index: 5; /* liegt über Panel, aber unter dem Overlay */
 }
 .video-player-section .player-controls input[type=range] {
     /* Slider darf schrumpfen, bleibt aber mindestens 140px breit */
