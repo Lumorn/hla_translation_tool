@@ -54,6 +54,23 @@ async function pruefeHelligkeit(bitmap, roi, frameH) {
     return 0;
 }
 
+// prueft, ob im angegebenen Bereich ausreichend helle Pixel vorhanden sind
+function roiHasText(bitmap, roi) {
+    const c = document.createElement('canvas');
+    const tmpW = 32;
+    const tmpH = Math.max(1, Math.round(tmpW * roi.height / Math.max(1, roi.width)));
+    c.width = tmpW;
+    c.height = tmpH;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(bitmap, roi.x, roi.y, roi.width, roi.height, 0, 0, tmpW, tmpH);
+    const data = ctx.getImageData(0, 0, tmpW, tmpH).data;
+    let bright = 0;
+    for (let i = 0; i < data.length; i += 4) {
+        if (data[i] + data[i + 1] + data[i + 2] > 600) bright++;
+    }
+    return bright >= 20;
+}
+
 // Overlay an die Größe des IFrames anpassen und Helligkeit pruefen
 async function positionOverlay() {
     const section  = document.getElementById('videoPlayerSection');
@@ -64,9 +81,11 @@ async function positionOverlay() {
     const iframeRect = iframe.getBoundingClientRect();
     const sectionRect = section.getBoundingClientRect();
     const ctrlH = controls ? controls.offsetHeight : 0;
-    const oH = iframeRect.height * 0.18;
-    // Top relativ zum Player-Abschnitt berechnen
-    const top = iframeRect.bottom - oH - ctrlH - sectionRect.top;
+    const slider = controls?.querySelector('#videoSlider');
+    const sliderTop = slider ? slider.getBoundingClientRect().top : iframeRect.bottom - ctrlH;
+    const oH = iframeRect.height * 0.14;
+    // Oberkante liegt 2px ueber dem Slider
+    const top = sliderTop - 2 - oH - sectionRect.top;
     overlay.style.top    = top + 'px';
     overlay.style.left   = (iframeRect.left - sectionRect.left) + 'px';
     overlay.style.width  = iframeRect.width + 'px';
@@ -131,7 +150,8 @@ async function initOcrWorker() {
         await ocrWorker.setParameters({
             tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!\'"- ',
             tessedit_pageseg_mode: '7',
-            preserve_interword_spaces: '1'
+            preserve_interword_spaces: '1',
+            user_defined_dpi: '200'
         });
         return true;
     } catch (e) {
@@ -150,27 +170,29 @@ function terminateOcr() {
 }
 window.positionOverlay = positionOverlay;
 
-// verfeinert einen Screenshot fuer bessere OCR-Ergebnisse
-async function refineImage(bitmap) {
-    // temporaeres Canvas mit doppelter Aufloesung anlegen
-    const tmpCanvas = document.createElement('canvas');
-    const w2 = bitmap.width * 2;
-    const h2 = bitmap.height * 2;
-    tmpCanvas.width = w2;
-    tmpCanvas.height = h2;
-    const tctx = tmpCanvas.getContext('2d');
-    // mehr Kontrast und Helligkeit fuer die erste Zeichnung
-    tctx.filter = 'contrast(160%) brightness(130%)';
-    tctx.drawImage(bitmap, 0, 0, w2, h2);
+// bereitet den Screenshot im OffscreenCanvas fuer die OCR auf
+async function refineBlob(pngBlob) {
+    const bmp = await createImageBitmap(pngBlob);
+    const W = bmp.width * 2;
+    const H = bmp.height * 2;
+    const off = new OffscreenCanvas(W, H);
+    const ctx = off.getContext('2d', { willReadFrequently: true });
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(bmp, 0, 0, W, H);
+    // Kontrast und Helligkeit erhoehen
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.filter = 'brightness(140%) contrast(180%)';
+    ctx.drawImage(off, 0, 0);
+    // entsaetten -> Graustufen
+    const imgData = ctx.getImageData(0, 0, W, H);
+    const d = imgData.data;
+    for (let i = 0; i < d.length; i += 4) {
+        const y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+        d[i] = d[i + 1] = d[i + 2] = y;
+    }
+    ctx.putImageData(imgData, 0, 0);
 
-    // zweiter Durchgang: auf Originalgroesse zurueckskalieren
-    const canvas = document.createElement('canvas');
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(tmpCanvas, 0, 0, w2, h2, 0, 0, canvas.width, canvas.height);
-
-    return await new Promise(resolve => canvas.toBlob(b => resolve(b), 'image/png'));
+    return off.convertToBlob({ type: 'image/png' });
 }
 
 // Screenshot des Overlays erstellen und per OCR auswerten
@@ -194,9 +216,8 @@ async function captureAndOcr() {
         const png = await window.api.captureFrame(bounds);
         if (!png) return '';
         const rawBlob = new Blob([png], { type: 'image/png' });
-        const rawBitmap = await createImageBitmap(rawBlob);
-        // Bild nachbearbeiten, um die Texterkennung zu verbessern
-        const refinedBlob = await refineImage(rawBitmap);
+        // Screenshot verfeinern, um die Texterkennung zu verbessern
+        const refinedBlob = await refineBlob(rawBlob);
         const bitmap = await createImageBitmap(refinedBlob);
 
         const overlay = document.getElementById('ocrOverlay');
@@ -214,6 +235,10 @@ async function captureAndOcr() {
             if (overlay) {
                 overlay.style.top = (parseFloat(overlay.style.top) + diff / dpr) + 'px';
             }
+        }
+        // falls der Bereich zu dunkel ist, Durchlauf abbrechen
+        if (!roiHasText(bitmap, { x: cropX, y: cropY, width: cropW, height: cropH })) {
+            return '';
         }
 
         const canvas = document.createElement('canvas');
@@ -262,6 +287,9 @@ async function runOcr() {
         stopAutoLoop();
         return;
     }
+    if (text.length <= 3) {
+        return;
+    }
     appendText(text);
     showOcrWindow(text);
     // Treffer markieren und Benutzer informieren
@@ -296,7 +324,7 @@ function startAutoLoop() {
     }
     // visuelles Feedback fuer laufende Erkennung
     btn.title = 'Auto-OCR aktiv';
-    autoLoop = setInterval(runOcr, 1500);
+    autoLoop = setInterval(runOcr, 750);
 }
 
 function stopAutoLoop(keepBlink = false) {
