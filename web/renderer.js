@@ -66,28 +66,59 @@ ensureDialogSupport(videoMgrDialog);
 function adjustVideoDialogHeight() {
     const max = window.innerHeight * 0.9;
     videoMgrDialog.style.height = 'auto';
-    const benötigt = videoMgrDialog.scrollHeight;
-    videoMgrDialog.style.height = Math.min(benötigt, max) + 'px';
+    const benoetigt = videoMgrDialog.scrollHeight;
+    videoMgrDialog.style.height = Math.min(benoetigt, max) + 'px';
+    // danach den Player anpassen
+    if (typeof adjustVideoPlayerSize === 'function') {
+        adjustVideoPlayerSize();
+    }
 }
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
 
+// passt den Videoplayer dynamisch an das 16:9-Format an
+function adjustVideoPlayerSize() {
+    const section = document.getElementById('videoPlayerSection');
+    const frame   = document.getElementById('videoPlayerFrame');
+    if (!section || !frame || section.classList.contains('hidden')) return;
+
+    const header   = section.querySelector('.player-header');
+    const controls = section.querySelector('.player-controls');
+    const frei = section.clientHeight
+        - (header ? header.offsetHeight : 0)
+        - (controls ? controls.offsetHeight : 0);
+    const maxBreite = frei * 16 / 9;
+    const bereichBreite = section.clientWidth;
+    const nutzBreite = Math.min(bereichBreite, maxBreite);
+    const nutzHoehe = nutzBreite * 9 / 16;
+
+    frame.style.width  = nutzBreite + 'px';
+    frame.style.height = nutzHoehe + 'px';
+}
+window.adjustVideoPlayerSize = adjustVideoPlayerSize;
+
 // auch bei Fenstergröße aktualisieren
-window.addEventListener('resize', adjustVideoDialogHeight);
+window.addEventListener('resize', () => {
+    adjustVideoDialogHeight();
+    adjustVideoPlayerSize();
+});
 
 openVideoManager.onclick = async () => {
     await refreshTable();
     videoMgrDialog.showModal();
     adjustVideoDialogHeight();
+    adjustVideoPlayerSize();
 };
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
+    adjustVideoPlayerSize();
 };
 videoMgrDialog.addEventListener('cancel', () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
+    adjustVideoPlayerSize();
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {
