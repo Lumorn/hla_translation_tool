@@ -19,25 +19,36 @@ function updateOcrOverlay() {
     if (!section || !iframe || !overlay) return;
     const rect  = iframe.getBoundingClientRect();
     const prect = section.getBoundingClientRect();
+    const controls = section.querySelector('.player-controls');
 
-    // Groesse und Position direkt am sichtbaren IFrame ausrichten
+    // Unterer Rand des Overlays soll nicht in die Buttons ragen
+    const bottom = controls ? controls.offsetTop : rect.height;
     const oH = rect.height * 0.20;
-    const oTop = rect.bottom - oH;
+    const oTop = bottom - oH;
 
     overlay.style.left   = (rect.left - prect.left) + 'px';
-    overlay.style.top    = (oTop  - prect.top) + 'px';
+    overlay.style.top    = (oTop - prect.top) + 'px';
     overlay.style.width  = rect.width + 'px';
     overlay.style.height = oH + 'px';
 }
 
 // OCR-Worker initialisieren
 async function initOcrWorker() {
-    if (ocrWorker) return;
-    const t = await import('tesseract.js');
-    ocrWorker = t.createWorker();
-    await ocrWorker.load();
-    await ocrWorker.loadLanguage('eng');
-    await ocrWorker.initialize('eng');
+    if (ocrWorker) return true;
+    try {
+        const t = await import('tesseract.js');
+        ocrWorker = t.createWorker();
+        await ocrWorker.load();
+        await ocrWorker.loadLanguage('eng');
+        await ocrWorker.initialize('eng');
+        return true;
+    } catch (e) {
+        console.error('Worker-Init fehlgeschlagen', e);
+        const btn = document.getElementById('ocrToggle');
+        if (btn) btn.title = 'OCR nicht verfügbar';
+        ocrWorker = null;
+        return false;
+    }
 }
 
 // beendet Worker und Intervall
@@ -50,7 +61,8 @@ window.updateOcrOverlay = updateOcrOverlay;
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
-        await initOcrWorker();
+        const ok = await initOcrWorker();
+        if (!ok) return false;
         const iframe = document.getElementById('videoPlayerFrame');
         if (!iframe) return false;
         let bitmap;
@@ -83,22 +95,39 @@ async function captureAndOcr() {
                 bitmap = await capture.grabFrame();
                 track.stop();
             } else {
-                return false;
+                try {
+                    const vid = iframe.contentWindow.document.querySelector('video');
+                    if (vid) {
+                        const c = document.createElement('canvas');
+                        const dpr = window.devicePixelRatio || 1;
+                        c.width  = vid.videoWidth * dpr;
+                        c.height = vid.videoHeight * dpr;
+                        c.getContext('2d').drawImage(vid, 0, 0, c.width, c.height);
+                        bitmap = c;
+                    } else {
+                        return false;
+                    }
+                } catch(err) {
+                    return false;
+                }
             }
         }
 
         const overlay = document.getElementById('ocrOverlay');
         const rect = iframe.getBoundingClientRect();
         const orect = overlay ? overlay.getBoundingClientRect() : rect;
+        const dpr = window.devicePixelRatio || 1;
 
         // Skalierung zwischen Screenshot und sichtbarem Bereich berechnen
-        const scaleX = bitmap.width / (fromFrame ? rect.width : window.innerWidth);
-        const scaleY = bitmap.height / (fromFrame ? rect.height : window.innerHeight);
+        const scaleX = bitmap.width / (fromFrame ? rect.width * dpr : window.innerWidth * dpr);
+        const scaleY = bitmap.height / (fromFrame ? rect.height * dpr : window.innerHeight * dpr);
 
-        const cropX = fromFrame ? (orect.left - rect.left) * scaleX : orect.left * scaleX;
-        const cropY = fromFrame ? (orect.top  - rect.top ) * scaleY : orect.top  * scaleY;
-        const cropW = orect.width  * scaleX;
-        const cropH = orect.height * scaleY;
+        const baseX = fromFrame ? (orect.left - rect.left) : orect.left;
+        const baseY = fromFrame ? (orect.top  - rect.top ) : orect.top;
+        const cropX = baseX * dpr * scaleX;
+        const cropY = baseY * dpr * scaleY;
+        const cropW = orect.width  * dpr * scaleX;
+        const cropH = orect.height * dpr * scaleY;
 
         const canvas = document.createElement('canvas');
         canvas.width = cropW;
@@ -106,6 +135,7 @@ async function captureAndOcr() {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
         const { data: { text } } = await ocrWorker.recognize(canvas);
+        console.log(text);
         const txt = text.trim();
         if (txt) {
             const area = document.getElementById('ocrText');
@@ -131,7 +161,8 @@ function startAutoOcr() {
     if (ocrInterval) return;
     const dlg  = document.getElementById('videoMgrDialog');
     const btn  = document.getElementById('ocrToggle');
-    if (!dlg || !dlg.open || !btn || !btn.classList.contains('active')) return;
+    const area = document.getElementById('ocrText');
+    if (!dlg || !dlg.open || !btn || !area || !btn.classList.contains('active')) return;
     if (typeof window.updateOcrOverlay === 'function') {
         window.updateOcrOverlay();
     }
@@ -280,6 +311,7 @@ export function openVideoDialog(bookmark, index) {
                 startAutoOcr();
             } else {
                 stopAutoOcr();
+                terminateOcr();
                 ocrBtn.title = 'OCR aktivieren (F9)';
             }
         };
@@ -430,7 +462,10 @@ document.addEventListener('keydown', e => {
     }
     if (e.key === 'F9') {
         e.preventDefault();
-        captureAndOcr();
+        const btn = document.getElementById('ocrToggle');
+        if (btn) {
+            btn.click();
+        }
     }
 });
 
