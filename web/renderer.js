@@ -82,11 +82,25 @@ const resizeObserver = new ResizeObserver(() => {
 });
 resizeObserver.observe(videoMgrDialog);
 
+// Beobachtet Dialog- und OCR-Panelgroesse fuer dynamische Layout-Anpassung
+const layoutObserver = new ResizeObserver(() => {
+    if (typeof calcLayout === 'function') {
+        calcLayout();
+    }
+});
+layoutObserver.observe(videoMgrDialog);
+const obsPanel = document.getElementById('ocrResultPanel');
+if (obsPanel) layoutObserver.observe(obsPanel);
+
 function delayedPlayerResize() {
     window.requestAnimationFrame(() => {
         window.requestAnimationFrame(() => {
             if (typeof adjustVideoPlayerSize === 'function') {
                 adjustVideoPlayerSize(true);
+                // nach der Höhe auch die Breite neu berechnen
+                if (typeof calcLayout === 'function') {
+                    calcLayout();
+                }
             }
         });
     });
@@ -107,6 +121,9 @@ function adjustVideoDialogHeight() {
     // Player anhand dieser Breite skalieren
     if (typeof adjustVideoPlayerSize === 'function') {
         adjustVideoPlayerSize();
+        if (typeof calcLayout === 'function') {
+            calcLayout();
+        }
     }
 
     // Benötigte Breite ermitteln und endgültig setzen
@@ -117,6 +134,9 @@ function adjustVideoDialogHeight() {
     // Player erneut anpassen, falls sich die Breite geändert hat
     if (typeof adjustVideoPlayerSize === 'function') {
         adjustVideoPlayerSize();
+        if (typeof calcLayout === 'function') {
+            calcLayout();
+        }
     }
 
     // nach dem Layout zwei Frames warten und erneut anpassen
@@ -146,6 +166,9 @@ window.addEventListener('resize', () => {
     adjustVideoDialogHeight();
     // Player auch im verborgenen Zustand neu skalieren
     adjustVideoPlayerSize(true);
+    if (typeof calcLayout === 'function') {
+        calcLayout();
+    }
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }
@@ -156,6 +179,9 @@ openVideoManager.onclick = async () => {
     videoMgrDialog.showModal();
     adjustVideoDialogHeight();
     adjustVideoPlayerSize(true);
+    if (typeof calcLayout === 'function') {
+        calcLayout();
+    }
 };
 closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
@@ -272,6 +298,44 @@ function formatTime(sec){
     const m=Math.floor(sec/60);
     const s=Math.floor(sec%60);
     return m+':'+('0'+s).slice(-2);
+}
+
+// berechnet Breite und Hoehe des Players dynamisch
+function calcLayout() {
+    const dlg = document.getElementById('videoMgrDialog');
+    const player = document.getElementById('videoPlayerSection');
+    if (!dlg || !player) return;
+
+    const iframe   = player.querySelector('iframe');
+    const controls = player.querySelector('.player-controls');
+    const list     = dlg.querySelector('.video-list-section');
+    const ocrPanel = document.getElementById('ocrResultPanel');
+
+    if (!iframe || !controls) return;
+
+    const pad = parseFloat(getComputedStyle(dlg).paddingLeft) || 0;
+    const leftListW = list ? list.offsetWidth : 0;
+    const ocrPanelW = (ocrPanel && !ocrPanel.classList.contains('hidden'))
+        ? ocrPanel.offsetWidth : 0;
+
+    let width  = dlg.clientWidth - leftListW - ocrPanelW - 2 * pad;
+    if (width <= 0) return;
+    let height = width * 9 / 16;
+
+    const dlgH = dlg.clientHeight - 2 * pad;
+    const ctrlH = controls.offsetHeight;
+    if (height + ctrlH > dlgH) {
+        height = dlgH - ctrlH;
+        width  = height * 16 / 9;
+    }
+
+    iframe.style.width  = width + 'px';
+    iframe.style.height = height + 'px';
+    controls.style.width = width + 'px';
+
+    if (typeof window.positionOverlay === 'function') {
+        window.positionOverlay();
+    }
 }
 
 
