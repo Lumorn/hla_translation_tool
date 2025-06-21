@@ -2591,9 +2591,9 @@ th:nth-child(6) {
 }
 
 #videoTableWrapper {
-    /* Container für die Tabelle: wächst bei Bedarf, sonst passt er sich an */
+    /* Container für die Tabelle: füllt den verfügbaren Platz komplett aus */
     overflow-y: auto;
-    max-height: 60vh;
+    flex: 1 1 auto;
 }
 
 #videoTable {
