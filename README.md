@@ -281,7 +281,7 @@ Seit Patch 1.40.41 startet die Desktop-App ohne Fehlermeldung, da `session` in `
 Seit Patch 1.40.42 erlaubt die Content Security Policy nun Bilder von `i.ytimg.com`, wodurch der YouTube-Player keine CSP-Fehler mehr verursacht.
 Seit Patch 1.40.43 verschwindet der YouTube-Player nicht mehr, wenn man dasselbe Video erneut anklickt.
 Seit Patch 1.40.44 entfällt das separate Element `ytPlayerBox`; der Player wird nun direkt im Dialog erzeugt.
-
+Seit Patch 1.40.45 erlaubt die Content Security Policy nun Web Worker aus `blob:`-URLs. Dadurch funktioniert die OCR wieder fehlerfrei.
 
 Beispiel einer gültigen CSV:
 
