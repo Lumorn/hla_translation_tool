@@ -70,13 +70,18 @@ function ensureDialogSupport(d) {
 ensureDialogSupport(videoMgrDialog);
 
 // Beobachter passt Größe bei jeder Dialog-Änderung an
-// Vermeidet eine Endlosschleife durch Throttling über requestAnimationFrame
+// Vermeidet eine Endlosschleife durch Throttling per requestAnimationFrame
 let resizeScheduled = false;
 const resizeObserver = new ResizeObserver(() => {
     if (resizeScheduled) return;
     resizeScheduled = true;
     window.requestAnimationFrame(() => {
-        adjustVideoDialogHeight();
+        if (typeof adjustVideoPlayerSize === 'function') {
+            adjustVideoPlayerSize();
+        }
+        if (typeof window.positionOverlay === 'function') {
+            window.positionOverlay();
+        }
         resizeScheduled = false;
     });
 });

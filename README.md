@@ -74,6 +74,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte Player-Anpassung:** Die Höhe des IFrames ergibt sich jetzt aus der Dialogbreite und wird auf 90 % der Fensterhöhe begrenzt. Zwei `requestAnimationFrame`-Aufrufe sorgen nach jedem Öffnen oder Resize für korrekte Maße.
 * **Fehlerfreies Skalieren nach Schließen:** Ändert man die Fenstergröße bei geschlossenem Dialog, berechnet das IFrame seine Breite beim nächsten Öffnen korrekt neu.
 * **Stabilerer ResizeObserver:** Die Dialog-Anpassung nutzt `requestAnimationFrame` und verhindert so die Fehlermeldung "ResizeObserver loop limit exceeded".
+* **Gethrottleter Video-ResizeObserver:** `adjustVideoPlayerSize` und `positionOverlay` werden pro Frame gebündelt ausgeführt und umgehen so Endlos-Schleifen.
 * **Dynamische Größenberechnung:** `calcLayout()` ermittelt Breite und Höhe des Players aus Dialog- und Panelgröße und wird per `ResizeObserver` automatisch aufgerufen.
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
 * **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
@@ -89,6 +90,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
+* **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
 * **Tesseract.js nun lokal eingebunden:** Die OCR-Engine wird direkt aus `src/lib` geladen und funktioniert damit auch ohne Internetzugang.
 * **Stabilere OCR-Initialisierung:** Das Tesseract-Modul wird nun korrekt importiert und die Worker starten zuverlässig.
@@ -101,6 +103,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
 * **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
 * **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern.
+* **Desktop-Capturer entfernt:** Die API `desktopCapturer.getSources` steht nicht mehr zur Verfügung.
 * **Neuer Frame-Grab-Workflow im Renderer:** Für jeden OCR-Durchlauf wird das IFrame direkt fotografiert und das PNG ohne zusätzliche Berechtigungen verarbeitet.
 ### 📊 Fortschritts‑Tracking
 

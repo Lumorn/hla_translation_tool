@@ -17,7 +17,8 @@ console.log('[PRELOAD] gestartet', __filename);
 if (typeof require !== 'function') {
   console.warn('Preload-Skript: "require" ist nicht verf\u00fcgbar. Das Skript wird beendet.');
 } else {
-  const { contextBridge, ipcRenderer, desktopCapturer } = require('electron');
+  // Desktop-Capturer wird nicht mehr benötigt
+  const { contextBridge, ipcRenderer } = require('electron');
   const fs = require('fs');
   // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
   const path = require('node:path');
@@ -79,11 +80,6 @@ if (typeof require !== 'function') {
   // So bleibt der Renderer klar von Node-Funktionen getrennt
   contextBridge.exposeInMainWorld('api', {
     captureFrame: b => ipcRenderer.invoke('capture-frame', b),
-  });
-
-  // Desktop-Capturer für Bildschirmaufnahmen bereitstellen
-  contextBridge.exposeInMainWorld('desktopCapturer', {
-    getSources: opts => desktopCapturer.getSources(opts),
   });
 
   // API für Video-Bookmarks bereitstellen
