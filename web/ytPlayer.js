@@ -18,12 +18,14 @@ function positionOverlay() {
     const iframe  = document.getElementById('videoPlayerFrame');
     const overlay = document.getElementById('ocrOverlay');
     if (!section || !iframe || !overlay) return;
+    const panel   = document.getElementById('ocrResultPanel');
+    const panelW  = panel && !panel.classList.contains('hidden') ? panel.offsetWidth : 0;
     const rect  = iframe.getBoundingClientRect();
     const prect = section.getBoundingClientRect();
     const oH = rect.height * 0.20;
     overlay.style.top    = (rect.bottom - oH - prect.top) + 'px';
     overlay.style.left   = (rect.left - prect.left) + 'px';
-    overlay.style.width  = rect.width + 'px';
+    overlay.style.width  = (section.clientWidth - panelW) + 'px';
     overlay.style.height = oH + 'px';
 }
 
