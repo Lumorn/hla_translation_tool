@@ -72,6 +72,7 @@ if (typeof require !== 'function') {
     // Half-Life: Alyx starten (Modus und Sprache wählbar, optional Map)
     startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
+    captureFrame: bounds => ipcRenderer.invoke('capture-frame', bounds),
   });
 
   // Desktop-Capturer für Bildschirmaufnahmen bereitstellen
