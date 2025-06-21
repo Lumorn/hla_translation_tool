@@ -9,25 +9,20 @@ export function extractYoutubeId(url) {
 
 // ===== Globale OCR-Variablen =====
 let ocrWorker = null;        // wird bei Bedarf angelegt
-let ocrInterval = null;      // Intervall für Auto-OCR
+let autoLoop = null;         // Intervall für Auto-OCR
+let ocrActive = false;       // aktueller Status
 
-// Overlay an die Groesse des IFrames anpassen
-function updateOcrOverlay() {
+// Overlay an die Größe des IFrames anpassen
+function positionOverlay() {
     const section = document.getElementById('videoPlayerSection');
     const iframe  = document.getElementById('videoPlayerFrame');
     const overlay = document.getElementById('ocrOverlay');
     if (!section || !iframe || !overlay) return;
     const rect  = iframe.getBoundingClientRect();
     const prect = section.getBoundingClientRect();
-    const controls = section.querySelector('.player-controls');
-
-    // Unterer Rand des Overlays soll nicht in die Buttons ragen
-    const bottom = controls ? controls.offsetTop : rect.height;
     const oH = rect.height * 0.20;
-    const oTop = bottom - oH;
-
+    overlay.style.top    = (rect.bottom - oH - prect.top) + 'px';
     overlay.style.left   = (rect.left - prect.left) + 'px';
-    overlay.style.top    = (oTop - prect.top) + 'px';
     overlay.style.width  = rect.width + 'px';
     overlay.style.height = oH + 'px';
 }
@@ -53,16 +48,16 @@ async function initOcrWorker() {
 
 // beendet Worker und Intervall
 function terminateOcr() {
-    if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
+    if (autoLoop) { clearInterval(autoLoop); autoLoop = null; }
     if (ocrWorker) { ocrWorker.terminate(); ocrWorker = null; }
 }
-window.updateOcrOverlay = updateOcrOverlay;
+window.positionOverlay = positionOverlay;
 
 // Screenshot des Overlays erstellen und per OCR auswerten
 async function captureAndOcr() {
     try {
         const ok = await initOcrWorker();
-        if (!ok) return false;
+        if (!ok) return '';
         const iframe = document.getElementById('videoPlayerFrame');
         if (!iframe) return false;
         let bitmap;
@@ -135,55 +130,57 @@ async function captureAndOcr() {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
         const { data: { text } } = await ocrWorker.recognize(canvas);
-        console.log(text);
-        const txt = text.trim();
-        if (txt) {
-            const area = document.getElementById('ocrText');
-            if (area) {
-                area.value += (area.value ? '\n' : '') + txt;
-                area.scrollTop = area.scrollHeight;
-                area.style.background = 'yellow';
-                setTimeout(() => { area.style.background = ''; }, 500);
-            }
-            if (window.currentYT && window.currentYT.getPlayerState && window.currentYT.getPlayerState() === YT.PlayerState.PLAYING) {
-                window.currentYT.pauseVideo();
-            }
-            stopAutoOcr();
-            return true;
-        }
+        return text.trim();
     } catch (e) {
         console.error('OCR-Fehler', e);
     }
-    return false;
+    return '';
 }
 
-function startAutoOcr() {
-    if (ocrInterval) return;
+// Haengt Text im Ergebnis-Panel an
+function appendText(t) {
+    const area = document.getElementById('ocrText');
+    const panel = document.getElementById('ocrResultPanel');
+    if (!area || !panel) return;
+    const span = document.createElement('span');
+    span.className = 'highlight';
+    span.textContent = t;
+    area.appendChild(span);
+    area.appendChild(document.createTextNode('\n'));
+    panel.scrollTop = panel.scrollHeight;
+    setTimeout(() => span.classList.remove('highlight'), 500);
+}
+
+// Fuehrt einen OCR-Durchlauf aus und verarbeitet das Ergebnis
+async function runOcr() {
+    const text = await captureAndOcr();
+    if (!text) return;
+    appendText(text);
+    if (window.currentYT && window.currentYT.pauseVideo) {
+        window.currentYT.pauseVideo();
+    }
+    stopAutoLoop();
+}
+
+
+function startAutoLoop() {
+    if (autoLoop) return;
     const dlg  = document.getElementById('videoMgrDialog');
     const btn  = document.getElementById('ocrToggle');
     const area = document.getElementById('ocrText');
     if (!dlg || !dlg.open || !btn || !area || !btn.classList.contains('active')) return;
-    if (typeof window.updateOcrOverlay === 'function') {
-        window.updateOcrOverlay();
+    if (typeof window.positionOverlay === 'function') {
+        window.positionOverlay();
     }
-    ocrInterval = setInterval(async () => {
-        const hit = await captureAndOcr();
-        if (hit) {
-            btn.classList.add('blink');
-            btn.title = 'Treffer erkannt – Video pausiert';
-            stopAutoOcr();
-        }
-    }, 1500);
+    autoLoop = setInterval(runOcr, 1500);
 }
 
-function stopAutoOcr() {
-    if (ocrInterval) { clearInterval(ocrInterval); ocrInterval = null; }
+function stopAutoLoop() {
+    if (autoLoop) { clearInterval(autoLoop); autoLoop = null; }
     const btn = document.getElementById('ocrToggle');
     if (btn) {
         btn.classList.remove('blink');
-        btn.title = btn.classList.contains('active')
-            ? 'OCR aktiv (F9), erneut klicken zum Deaktivieren'
-            : 'OCR aktivieren (F9)';
+        btn.title = 'OCR an/aus (F9)';
     }
 }
 
@@ -205,8 +202,8 @@ export function openVideoDialog(bookmark, index) {
     if (typeof window.adjustVideoPlayerSize === 'function') {
         window.adjustVideoPlayerSize(true);
     }
-    if (typeof window.updateOcrOverlay === 'function') {
-        window.updateOcrOverlay();
+    if (typeof window.positionOverlay === 'function') {
+        window.positionOverlay();
     }
     player.dataset.index = index;
     player.querySelector('#playerDialogTitle').textContent = bookmark.title;
@@ -285,12 +282,12 @@ export function openVideoDialog(bookmark, index) {
         if (st === YT.PlayerState.PAUSED || st === YT.PlayerState.CUED) {
             window.currentYT.playVideo();
             if (ocrBtn && ocrBtn.classList.contains('active')) {
-                stopAutoOcr(); // eventuell laufenden Blink beenden
-                startAutoOcr();
+                stopAutoLoop(); // eventuell laufenden Blink beenden
+                startAutoLoop();
             }
         } else {
             window.currentYT.pauseVideo();
-            stopAutoOcr();
+            stopAutoLoop();
         }
     };
     backBtn.onclick = () => {
@@ -307,12 +304,12 @@ export function openVideoDialog(bookmark, index) {
             ocrBtn.classList.toggle('active');
             player.classList.toggle('ocr-active', ocrBtn.classList.contains('active'));
             if (ocrBtn.classList.contains('active')) {
-                ocrBtn.title = 'OCR aktiv (F9), erneut klicken zum Deaktivieren';
-                startAutoOcr();
+                ocrBtn.title = 'OCR an/aus (F9)';
+                startAutoLoop();
             } else {
-                stopAutoOcr();
+                stopAutoLoop();
                 terminateOcr();
-                ocrBtn.title = 'OCR aktivieren (F9)';
+                ocrBtn.title = 'OCR an/aus (F9)';
             }
         };
     }
@@ -344,8 +341,8 @@ export function openVideoDialog(bookmark, index) {
     if (typeof window.adjustVideoPlayerSize === 'function') {
         // beim Öffnen sofort skalieren
         window.adjustVideoPlayerSize(true);
-        if (typeof window.updateOcrOverlay === 'function') {
-            window.updateOcrOverlay();
+        if (typeof window.positionOverlay === 'function') {
+            window.positionOverlay();
         }
     }
     // zwei Layout-Ticks warten und erneut anpassen
@@ -353,8 +350,8 @@ export function openVideoDialog(bookmark, index) {
         window.requestAnimationFrame(() => {
             if (typeof window.adjustVideoPlayerSize === 'function') {
                 window.adjustVideoPlayerSize(true);
-                if (typeof window.updateOcrOverlay === 'function') {
-                    window.updateOcrOverlay();
+                if (typeof window.positionOverlay === 'function') {
+                    window.positionOverlay();
                 }
             }
         });
