@@ -2416,6 +2416,8 @@ th:nth-child(6) {
 }
 
 .video-dialog {
+    /* Ohne open-Attribut verstecken */
+    display: none;
     /* Platz auf großen Bildschirmen optimal ausnutzen */
     width: 80vw;
     max-width: 1080px;
@@ -2428,7 +2430,6 @@ th:nth-child(6) {
     color: #e0e0e0;
     padding: 24px;
     margin: 24px auto;
-    display: flex;
     flex-direction: column;
     overflow: auto;
     resize: both;            /* einfache Größenänderung per Maus */
@@ -2436,6 +2437,11 @@ th:nth-child(6) {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+}
+
+/* Dialog erst anzeigen, wenn geöffnet */
+.video-dialog[open] {
+    display: flex;
 }
 
 /* Abdunklung hinter dem Dialog */
