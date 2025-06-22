@@ -209,7 +209,12 @@ req_file = os.path.join(repo_path, "requirements.txt")
 if os.path.exists(req_file):
     try:
         with open(req_file, "r", encoding="utf-8") as f:
-            packages = [ln.strip() for ln in f if ln.strip() and not ln.startswith("#")]
+            packages = []
+            for ln in f:
+                # Kommentare am Zeilenende entfernen, damit pip keine Fehlermeldung wirft
+                clean = ln.split("#", 1)[0].strip()
+                if clean:
+                    packages.append(clean)
         missing = []
         for pkg in packages:
             if pkg.startswith("torch") or pkg.startswith("easyocr"):
