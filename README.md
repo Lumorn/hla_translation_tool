@@ -652,6 +652,8 @@ Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Request automatisch `npm ci` und `npm test` mit Node 18 bis 22 aus.
 
 `npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten per `npm ci`.
+Ab Node.js 22 werden unbehandelte Promises standardmäßig als Fehler gewertet und würden die Tests abbrechen.
+Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, sodass solche Fälle nur eine Warnung auslösen.
 
 1. Tests starten
    ```bash
