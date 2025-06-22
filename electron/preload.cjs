@@ -82,6 +82,11 @@ if (typeof require !== 'function') {
     captureFrame: b => ipcRenderer.invoke('capture-frame', b),
   });
 
+  // OCR-API
+  contextBridge.exposeInMainWorld('ocrApi', {
+    recognize: buf => ipcRenderer.invoke('run-easyocr', Buffer.from(buf)),
+  });
+
   // API für Video-Bookmarks bereitstellen
   contextBridge.exposeInMainWorld('videoApi', {
     loadBookmarks: () => ipcRenderer.invoke('load-bookmarks'),

@@ -90,6 +90,7 @@ const resizeObserver = new ResizeObserver(() => {
         if (typeof window.positionOverlay === 'function') {
             window.positionOverlay();
         }
+        if (resizeObserver.reset) resizeObserver.reset();
         resizeScheduled = false;
     });
 });

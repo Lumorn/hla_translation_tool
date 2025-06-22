@@ -2497,22 +2497,18 @@ th:nth-child(6) {
     flex-direction: column;
     overflow: hidden;
 }
+/* Neues Flex-Layout: Video links, OCR rechts */
 .video-player-section {
-    /* Rechter Bereich mit Player, schrumpft auf Video- und Steuerleiste */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
+    flex-direction: row;
+    height: 100%;
+    position: relative;
     overflow: hidden;
-    min-height: 0;
-    position: relative; /* Steuerleiste wird dynamisch positioniert */
-    padding-bottom: 0; /* kein fixer Platz mehr notwendig */
-    padding-right: 0; /* Platz für OCR-Panel wird dynamisch ergänzt */
 }
 
 /* Bei aktivem OCR-Panel Platz neben dem Video schaffen */
 .video-player-section.ocr-active {
-    padding-right: clamp(200px, 20%, 260px);
+    /* keine zusaetzliche Polsterung mehr erforderlich */
 }
 .video-player-section.hidden { display: none; }
 
@@ -2532,7 +2528,7 @@ th:nth-child(6) {
 }
 .video-player-section iframe {
     /* Video skaliert flexibel und behält 16:9 ohne feste Höhe */
-    align-self: center;
+    flex-grow: 1;
     width: 100%;
     height: auto;
     max-height: 60vh;
@@ -2550,7 +2546,7 @@ th:nth-child(6) {
     padding: 0.5rem 1rem;
     background: #242424;
     box-shadow: 0 0 4px rgba(0,0,0,0.5);
-    margin-top: 0; /* Abstand unter dem Video vermeiden */
+    margin-top: auto; /* nutzt verbleibenden Platz */
     position: sticky; /* Buttons haften am unteren Rand */
     bottom: 0;
     width: 100%;
@@ -2719,12 +2715,9 @@ th:nth-child(6) {
 }
 
 #ocrResultPanel{
-    /* Schnell-Fix: Panel sitzt fest rechts neben dem Video */
-    position:absolute;
-    top:0;
-    right:0;
+    position:relative;
     height:100%;
-    width: clamp(200px, 20%, 260px);
+    width:320px;
     overflow:auto;
     background:#1a1a1a;
     padding:8px;
