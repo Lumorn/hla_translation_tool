@@ -134,13 +134,18 @@ def check_python_packages(retry: bool = False) -> bool:
                 continue
 
             optional = "# optional" in zeile
-            mod = zeile.split("#")[0].split("==")[0].split(">=")[0].strip()
+            pip_pkg = zeile.split("#")[0].split("==")[0].split(">=")[0].strip()
+            # Einige Paketnamen weichen vom eigentlichen Importnamen ab
+            mod = {
+                "pillow": "PIL",
+                "opencv-python-headless": "cv2",
+            }.get(pip_pkg.lower(), pip_pkg)
 
             if importlib.util.find_spec(mod) is None:
                 if optional:
-                    fehlend_optional.append(mod)
+                    fehlend_optional.append(pip_pkg)
                 else:
-                    fehlend.append(mod)
+                    fehlend.append(pip_pkg)
 
     if fehlend or fehlend_optional:
         if FIX_MODE and not retry:

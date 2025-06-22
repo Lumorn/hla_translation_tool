@@ -251,6 +251,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 20. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
 21. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
 22. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
+23. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
 
 ### ElevenLabs-Dubbing
 
