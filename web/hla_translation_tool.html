@@ -584,10 +584,6 @@
                     <div class="handle sw"></div>
                     <div class="handle se"></div>
                 </div>
-                <div id="ocrResultPanel">
-                    <canvas id="roiPreview"></canvas>
-                    <div id="ocrText"></div>
-                </div>
                 <div id="ocrSettingsDrawer" class="hidden">
                     <canvas id="ocrPreview"></canvas>
                     <label><input type="checkbox" id="setInvert"> Farben invertieren</label><br>
@@ -609,6 +605,10 @@
                 <button id="videoDelete" class="action-btn danger" title="Löschen (Entf)">🗑️</button>
                 <button id="videoClose" class="action-btn danger" title="Schließen (Esc)">❌</button>
             </div>
+        </div>
+        <div id="ocrResultPanel" class="hidden">
+            <canvas id="roiPreview"></canvas>
+            <div id="ocrText"></div>
         </div>
         <div id="dlgResizeHandle" class="dialog-resize"></div>
     </dialog>

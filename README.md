@@ -64,6 +64,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Behobenes Resize-Problem:** Nach einer Verkleinerung wächst der Videoplayer jetzt korrekt mit, sobald das Fenster wieder größer wird.
 * **Korrektes Skalieren nach erneutem Öffnen:** Der Player passt sich nach dem Wiedereinblenden automatisch an die aktuelle Fenstergröße an.
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
+* **Video & OCR Workbench:** Liste und Player teilen sich die obere Zeile, das OCR-Ergebnis belegt den gesamten Bereich darunter.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
 * **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
