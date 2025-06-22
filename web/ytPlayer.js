@@ -590,6 +590,16 @@ export function openVideoDialog(bookmark, index) {
 
     // neue URL setzen und Player initialisieren
     iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
+
+    // Fehlerhinweis, falls die YouTube-API fehlt
+    if (typeof YT === 'undefined' || !YT.Player) {
+        const warn = document.createElement('div');
+        warn.textContent = 'YouTube-Player konnte nicht geladen werden – Verbindung prüfen.';
+        warn.className = 'yt-error';
+        iframe.replaceWith(warn);
+        return;
+    }
+
     window.currentYT = new YT.Player('videoPlayerFrame');
 
     const slider = document.getElementById('videoSlider');

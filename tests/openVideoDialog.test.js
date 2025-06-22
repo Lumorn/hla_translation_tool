@@ -71,4 +71,13 @@ describe('openVideoDialog und Slider', () => {
         slider.oninput();
         expect(window.currentYT.seekTo).toHaveBeenCalledWith(42, true);
     });
+
+    test('zeigt Meldung bei fehlender YT-API', () => {
+        window.YT = undefined;
+        const { openVideoDialog } = loadModule();
+        const bookmark = { url: 'https://youtu.be/xyz', title: 't', time: 0 };
+        openVideoDialog(bookmark, 0);
+        const err = document.querySelector('.yt-error');
+        expect(err).not.toBeNull();
+    });
 });

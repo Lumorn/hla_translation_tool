@@ -2811,3 +2811,10 @@ th:nth-child(6) {
 #ocrSettingsDrawer .result-preview.yellow{ background:#664; }
 #ocrSettingsDrawer .result-preview.red   { background:#600; }
 
+/* Meldung, falls der YouTube-Player nicht geladen werden konnte */
+.yt-error {
+    padding: 1rem;
+    text-align: center;
+    color: #ff8080;
+}
+
