@@ -3,7 +3,8 @@ const urlInput  = document.getElementById('videoUrlInput');
 const addBtn    = document.getElementById('addVideoBtn');
 
 const openVideoManager = document.getElementById('openVideoManager');
-const videoMgrDialog   = document.getElementById('videoMgrDialog');
+// schneller Zugriff auf den Video-Dialog
+const videoDlg = document.getElementById('videoMgrDialog');
 const videoTableBody   = document.querySelector('#videoTable tbody');
 const videoTableWrapper = document.getElementById('videoTableWrapper');
 const videoFilter      = document.getElementById('videoFilter');
@@ -75,7 +76,7 @@ function ensureDialogSupport(d) {
         document.head.appendChild(s);
     }
 }
-ensureDialogSupport(videoMgrDialog);
+ensureDialogSupport(videoDlg);
 
 // Neuer ResizeObserver verhindert Endlosschleifen
 const ro = new ResizeObserver(() => {
@@ -86,7 +87,7 @@ const ro = new ResizeObserver(() => {
         });
     }
 });
-ro.observe(videoMgrDialog);
+ro.observe(videoDlg);
 // Beobachter global ablegen, damit andere Skripte ihn abmelden koennen
 window.videoDialogObserver = ro;
 
@@ -96,7 +97,7 @@ const layoutObserver = new ResizeObserver(() => {
         calcLayout();
     }
 });
-layoutObserver.observe(videoMgrDialog);
+layoutObserver.observe(videoDlg);
 const obsPanel = document.getElementById('ocrResultPanel');
 if (obsPanel) layoutObserver.observe(obsPanel);
 
@@ -116,7 +117,7 @@ function delayedPlayerResize() {
 
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
-    const dlg = videoMgrDialog;
+    const dlg = videoDlg;
     const maxH = Math.floor(window.innerHeight * 0.9);
     const needH = dlg.scrollHeight;
     const newH  = Math.min(maxH, needH);
@@ -212,18 +213,16 @@ window.addEventListener('resize', () => {
 
 // Dialog oeffnen; verwendet addEventListener und bietet Fallback fuer alte Electron-Versionen
 openVideoManager.addEventListener('click', async () => {
+    // schon offen? – dann einfach ignorieren
+    if (videoDlg.open) return;
+
+    // Dialoggröße an Fenster anpassen
+    videoDlg.style.width  = Math.min(window.innerWidth  * 0.9, 1100) + 'px';
+    videoDlg.style.height = Math.min(window.innerHeight * 0.9,  750) + 'px';
+
+    videoDlg.showModal();
+    if (window.videoDialogObserver) window.videoDialogObserver.observe(videoDlg);
     await refreshTable();
-    // Bereits geoeffnet? Dann nur in den Vordergrund holen
-    if (videoMgrDialog.open) {
-        videoMgrDialog.focus();
-        return;
-    }
-    if (window.videoDialogObserver) window.videoDialogObserver.observe(videoMgrDialog);
-    if (typeof videoMgrDialog.showModal === 'function') {
-        videoMgrDialog.showModal();
-    } else {
-        videoMgrDialog.setAttribute('open', '');
-    }
     adjustVideoDialogHeight();
     adjustVideoPlayerSize(true);
     if (typeof calcLayout === 'function') {
@@ -233,14 +232,14 @@ openVideoManager.addEventListener('click', async () => {
 
 // Gemeinsame Funktion zum Schliessen des Dialogs
 function hideVideoDialog() {
-    if (typeof videoMgrDialog.close === 'function') {
-        videoMgrDialog.close();
+    if (typeof videoDlg.close === 'function') {
+        videoDlg.close();
     } else {
-        videoMgrDialog.removeAttribute('open');
+        videoDlg.removeAttribute('open');
     }
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
-    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
+    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoDlg);
 }
 
 // "Schließen"-Button mit addEventListener verbinden
@@ -249,9 +248,9 @@ if (closeVideoDlgSmall) {
     // kompakte Variante fuer schmale Fenster
     closeVideoDlgSmall.addEventListener('click', hideVideoDialog);
 }
-videoMgrDialog.addEventListener('cancel', hideVideoDialog);
+videoDlg.addEventListener('cancel', hideVideoDialog);
 document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && videoMgrDialog.open) {
+    if (e.key === 'Escape' && videoDlg.open) {
         if (typeof closeVideoDialog === 'function') closeVideoDialog();
     }
 });

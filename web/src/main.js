@@ -11107,20 +11107,23 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const videoBtn = document.getElementById("openVideoManager");
     const videoDlg = document.getElementById("videoMgrDialog");
     if (videoBtn && videoDlg) {
-        // Klick öffnet den Dialog, ältere Electron-Versionen erhalten einen Fallback
+        // Klick öffnet den Dialog nur einmal und passt ihn an die Fenstergröße an
         videoBtn.addEventListener("click", async () => {
-            // schon geöffnet? Dann nur den Fokus setzen
-            if (videoDlg.open) {
-                videoDlg.focus();
-                return;
-            }
-            // moderner Dialog oder Fallback nutzen
+            // schon offen? – dann einfach ignorieren
+            if (videoDlg.open) return;
+
+            // Breite und Höhe an das aktuelle Fenster anpassen
+            videoDlg.style.width  = Math.min(window.innerWidth  * 0.9, 1100) + "px";
+            videoDlg.style.height = Math.min(window.innerHeight * 0.9,  750) + "px";
+
             if (typeof videoDlg.showModal === "function") {
                 videoDlg.showModal();
             } else {
                 videoDlg.setAttribute("open", "");
             }
-            if (typeof refreshTable === "function") await refreshTable();
+
+            await refreshTable();
+
             videoDlg
                 .querySelector(".video-list-section")
                 ?.classList.remove("hidden");
