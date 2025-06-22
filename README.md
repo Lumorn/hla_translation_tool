@@ -96,6 +96,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Reaktivierter Klick-Listener:** Der "Videos"-Button öffnet den Manager nun zuverlässig.
 * **Sicheres Öffnen des Video-Managers:** `showModal()` wird nur noch aufgerufen, wenn der Dialog geschlossen ist.
 * **Fehlerfreies Mehrfach-Öffnen:** Beide Klick-Handler prüfen jetzt das `open`-Attribut und vermeiden so eine DOMException.
+* **Player zeigt sich zuverlässig:** Beim Anklicken eines gespeicherten Videos wird der Player sichtbar und das Dialogfenster nur bei Bedarf neu geöffnet.
 * **Schnellerer Dialog-Aufruf:** Die `open`-Prüfung passiert vor dem Neuladen der Tabelle und spart so unnötige Arbeit.
 * **Startet geschlossen:** Beim Laden der Anwendung bleibt der Video-Manager nun verborgen und öffnet sich erst nach Klick auf den "Videos"-Button.
 * **Mindestgröße für den Video-Dialog:** Beim Öffnen passt sich der Dialog an die Fenstergröße an, bleibt aber mindestens 600×400 px groß. Alle ❌-Buttons rufen jetzt sicher `videoDlg.close()` auf.
