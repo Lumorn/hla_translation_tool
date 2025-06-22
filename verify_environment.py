@@ -9,6 +9,8 @@ import subprocess
 import sys
 import importlib.util
 
+FAIL: list[str] = []  # gescheiterte Paket-Installationen sammeln
+
 FIX_MODE = "--check-only" not in sys.argv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +30,18 @@ def report(name: str, ok: bool, detail: str = "") -> None:
 def run(cmd: str, cwd: str | None = BASE_DIR) -> str:
     """Führt ein Kommando im angegebenen Verzeichnis aus und gibt die Ausgabe zurück."""
     return subprocess.check_output(cmd, shell=True, cwd=cwd, text=True).strip()
+
+
+def ensure_package(pkg: str) -> None:
+    """Installiert fehlende Python-Pakete bei Bedarf."""
+    try:
+        import importlib.util, subprocess, sys
+        if importlib.util.find_spec(pkg) is None:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
+        import importlib  # nach der Installation erneut laden
+        __import__(pkg)
+    except Exception as e:
+        FAIL.append(f"Python-Pakete: {pkg} ({e})")
 
 
 def check_git_installed() -> bool:
@@ -100,6 +114,8 @@ def check_electron_folder() -> bool:
 
 def check_python_packages(retry: bool = False) -> bool:
     """Prüft, ob alle in requirements.txt aufgeführten Pakete installiert sind."""
+    global FAIL
+    FAIL = []
     req = os.path.join(BASE_DIR, "requirements.txt")
     if not os.path.exists(req):
         report("requirements.txt", False, "nicht gefunden")
@@ -125,10 +141,10 @@ def check_python_packages(retry: bool = False) -> bool:
 
     if fehlend or fehlend_optional:
         if FIX_MODE and not retry:
-            try:
-                run(f"{sys.executable} -m pip install -r \"{req}\"")
-            except Exception as e:
-                report("Python-Pakete", False, f"Installation fehlgeschlagen: {e}")
+            for pkg in fehlend + fehlend_optional:
+                ensure_package(pkg)
+            if FAIL:
+                report("Python-Pakete", False, ", ".join(FAIL))
                 return False
             return check_python_packages(True)
 
