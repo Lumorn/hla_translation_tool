@@ -337,6 +337,7 @@ Seit Patch 1.40.54 erlaubt die Richtlinie Skripte und Frames von `youtube.com` u
 Seit Patch 1.40.55 wird die Datei `tesseract-core-simd.wasm.js` lokal eingebunden und über `corePath` geladen. Dadurch benötigt die OCR keine externen Skripte mehr.
 Seit Patch 1.40.56 erlaubt die Content Security Policy zusätzlich `wasm-unsafe-eval` und `connect-src data:`, damit Tesseract im Browser ohne Fehlermeldungen startet.
 Seit Patch 1.40.57 akzeptiert die Richtlinie auch `'unsafe-inline'` in `style-src`. Damit funktionieren eingebettete Style-Attribute wieder ohne CSP-Warnung.
+Seit Patch 1.40.58 wird `style-src` aufgeteilt: `style-src-elem 'self'` und `style-src-attr 'self' 'unsafe-inline'`. Inline-Styles bleiben erlaubt, externe Styles müssen aber weiterhin lokal geladen werden.
 
 Beispiel einer gültigen CSV:
 
