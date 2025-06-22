@@ -546,7 +546,6 @@
                     </div>
                     <div class="video-url">
                         <input type="text" id="videoUrlInput" placeholder="Video-URL...">
-                        <button id="exportVideoBtn" class="btn">⭳ Export</button>
                     </div>
                 </div>
                 <div id="videoTableWrapper">
@@ -575,12 +574,9 @@
                     <input type="range" id="videoSlider" value="0" min="0" step="1">
                     <span id="videoDuration">0:00</span>
                     <button id="videoReload">🔄</button>
-                    <button id="ocrToggle" title="OCR an/aus (F9)">🔍</button>
                     <button id="ocrCopy" title="OCR kopieren">📋</button>
                     <button id="ocrDebug" title="Debug-Fenster">🐞</button>
                     <button id="ocrSettings" title="OCR-Einstellungen">⚙️</button>
-                    <button id="videoDelete">🗑️</button>
-                    <button id="videoClose">❌</button>
                 </div>
                 <div id="ocrOverlay"></div>
                 <div id="ocrResultPanel">
@@ -599,6 +595,14 @@
                     <div id="ocrResultPreview" class="result-preview"></div>
                     <button id="ocrReset" class="btn btn-danger">Reset</button>
                 </div>
+            </div>
+            <div class="video-action-panel">
+                <button id="exportVideoBtn" class="action-btn" title="Export (E)">⭳</button>
+                <button id="screenshotBtn" class="action-btn" title="Screenshot (S)">📸</button>
+                <button id="ocrToggle" class="action-btn" title="OCR an/aus (F9)">🔍</button>
+                <div class="action-spacer"></div>
+                <button id="videoDelete" class="action-btn danger" title="Löschen (Entf)">🗑️</button>
+                <button id="videoClose" class="action-btn danger" title="Schließen (Esc)">❌</button>
             </div>
         </div>
         <div id="dlgResizeHandle" class="dialog-resize"></div>
