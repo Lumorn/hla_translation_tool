@@ -20,6 +20,16 @@ const closeVideoDlg    = document.getElementById('closeVideoDlg');
 const closeVideoDlgSmall = document.getElementById('closeVideoDlgSmall');
 const exportVideoBtn   = document.getElementById('exportVideoBtn');
 const screenshotBtn    = document.getElementById('screenshotBtn');
+const playerControls   = document.getElementById('playerControls');
+
+// Aktions-Buttons direkt unter die Player-Steuerung hängen
+if (playerControls) {
+    ['exportVideoBtn','screenshotBtn','ocrToggle','videoDelete','videoClose']
+        .forEach(id => {
+            const el = document.getElementById(id);
+            if (el) playerControls.append(el);
+        });
+}
 
 // gespeicherten Suchbegriff wiederherstellen
 const gespeicherterFilter = localStorage.getItem('hla_videoFilter') || '';
