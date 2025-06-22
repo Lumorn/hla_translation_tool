@@ -8,7 +8,6 @@ export function extractYoutubeId(url) {
 }
 
 // ===== Globale OCR-Variablen =====
-let ocrWorker = null;        // wird bei Bedarf angelegt
 let autoLoop = null;         // Intervall für Auto-OCR
 let ocrActive = false;       // Toggle-Status
 let ocrPaused = false;       // wurde nach einem Treffer pausiert?
@@ -244,52 +243,14 @@ async function positionOverlay() {
     } catch(e) { console.error('Helligkeitspruefung fehlgeschlagen', e); }
 }
 
-// OCR-Worker initialisieren
+// Kein Tesseract-Fallback mehr nötig
 async function initOcrWorker() {
-    if (ocrWorker) return true;
-    try {
-        // tesseract.js wird lokal geladen, damit die OCR auch ohne Internet funktioniert
-        // Modul laden und createWorker extrahieren (Default- oder Named-Export)
-        const mod = await import('./src/lib/tesseract.esm.min.js');
-        // createWorker kann je nach Build an unterschiedlichen Stellen liegen
-        const createWorker = mod.createWorker || mod.default?.createWorker;
-        if (typeof createWorker !== 'function') {
-            throw new Error('createWorker nicht gefunden');
-        }
-        // Worker-Pfad absolut aufloesen, damit er auch in Electron korrekt
-        // gefunden wird und keine externen Skripte benoetigt werden
-        const workerUrl = new URL('./src/lib/tesseract-worker.min.js', window.location.href).href;
-        const coreUrl   = new URL('./src/lib/tesseract-core-simd.wasm.js', window.location.href).href;
-        // Worker mit lokalem corePath starten, damit keine externen Ressourcen geladen werden
-        ocrWorker = await createWorker({ workerPath: workerUrl, corePath: coreUrl });
-        // einige Builds liefern ein Promise zurück
-        if (typeof ocrWorker.then === 'function') {
-            ocrWorker = await ocrWorker;
-        }
-        // aktuelle Worker sind direkt einsatzbereit, der Ladeschritt entfällt
-        if (typeof ocrWorker.loadLanguage !== 'function' || typeof ocrWorker.initialize !== 'function') {
-            throw new Error('Ungültiges Worker-Objekt');
-        }
-        await ocrWorker.loadLanguage('eng');
-        await ocrWorker.initialize('eng');
-        await ocrWorker.setParameters({
-            preserve_interword_spaces: '1',
-            user_defined_dpi: '200'
-        });
-        return true;
-    } catch (e) {
-        console.error('Worker-Init fehlgeschlagen', e);
-        const btn = document.getElementById('ocrToggle');
-        if (btn) btn.title = 'OCR nicht verfügbar';
-        ocrWorker = null;
-        return false;
-    }
+    return true;
 }
 
 // beendet Worker und Intervall
 function terminateOcr() {
     if (autoLoop) { clearInterval(autoLoop); autoLoop = null; }
-    if (ocrWorker) { ocrWorker.terminate(); ocrWorker = null; }
 }
 window.positionOverlay = positionOverlay;
 window.initOverlayDrag = initOverlayDrag;
@@ -485,17 +446,6 @@ async function captureAndOcr(settings = ocrSettings) {
         if (window.ocrApi && window.ocrApi.recognize) {
             const buf = await canvas.convertToBlob({ type: 'image/png' }).then(b => b.arrayBuffer());
             text = await window.ocrApi.recognize(buf);
-            confidence = 0;
-        } else {
-            await ocrWorker.setParameters({
-                tessedit_char_whitelist: settings.whitelist || '',
-                tessedit_pageseg_mode: settings.psm || '3',
-                preserve_interword_spaces: '1',
-                user_defined_dpi: '200'
-            });
-            const { data: { text: t, confidence: c } } = await ocrWorker.recognize(canvas);
-            text = t;
-            confidence = c;
         }
         console.log('OCR-Text:', text);
         return { text: text.trim(), img: imgUrl, confidence };

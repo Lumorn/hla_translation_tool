@@ -21,7 +21,6 @@
     "chokidar": "^4.0.3",
     "ffmpeg-static": "^5.2.0",
     "progress": "^2.0.3",
-    "tesseract.js": "^4.0.2",
     "node-easyocr": "^1.0.9"
   }
 }

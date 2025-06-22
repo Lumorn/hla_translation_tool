@@ -109,12 +109,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
 * **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet ein separates Fenster. Jetzt wird nach jedem Durchlauf der Screenshot samt Rohtext per `postMessage` übertragen und in einer kleinen Galerie gesammelt; ein erneuter Klick schließt das Fenster und stoppt den Stream.
-* **Tesseract.js weiterhin lokal eingebunden:** Die Engine dient als CPU-Fallback und wird direkt aus `src/lib` geladen, sodass sie auch ohne Internetzugang funktioniert.
-* **Stabilere OCR-Initialisierung (Fallback):** Das Tesseract-Modul wird korrekt importiert und seine Worker starten zuverlässig.
-* **Lokaler Worker-Pfad (Fallback):** Der Tesseract-Worker wird direkt aus `src/lib/tesseract-worker.min.js` geladen und benötigt daher keine externen Skripte.
-* **Absolute Worker-URL:** Der Pfad wird jetzt relativ zum Fenster berechnet und verhindert CSP-Fehler.
-* **Robustere Fehlerbehandlung (Fallback):** Das Skript erkennt fehlerhafte Tesseract-Worker und wartet auf asynchrone Erstellung.
-* **Entfall des `load()`-Schrittes (Fallback):** Aktuelle Tesseract-Worker sind sofort einsatzbereit, der veraltete Aufruf entfällt.
+* **OCR nur noch per EasyOCR-Worker:** Die aufwändigen Tesseract-Fallbacks wurden entfernt. Die Erkennung läuft komplett über den lokalen Python-Worker.
 * **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
 * **Vollbreite ohne OCR:** Das Ergebnis-Panel bleibt standardmäßig verborgen und erscheint nur bei aktivierter Erkennung.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
@@ -338,6 +333,7 @@ Seit Patch 1.40.55 wird die Datei `tesseract-core-simd.wasm.js` lokal eingebunde
 Seit Patch 1.40.56 erlaubt die Content Security Policy zusätzlich `wasm-unsafe-eval` und `connect-src data:`, damit Tesseract im Browser ohne Fehlermeldungen startet.
 Seit Patch 1.40.57 akzeptiert die Richtlinie auch `'unsafe-inline'` in `style-src`. Damit funktionieren eingebettete Style-Attribute wieder ohne CSP-Warnung.
 Seit Patch 1.40.58 wird `style-src` aufgeteilt: `style-src-elem 'self'` und `style-src-attr 'self' 'unsafe-inline'`. Inline-Styles bleiben erlaubt, externe Styles müssen aber weiterhin lokal geladen werden.
+Seit Patch 1.40.59 entfernt die Web-App alle Tesseract-Dateien. Die OCR läuft jetzt ausschließlich über EasyOCR und benötigt keine zusätzlichen CSP-Ausnahmen.
 
 Beispiel einer gültigen CSV:
 
