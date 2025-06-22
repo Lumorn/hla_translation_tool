@@ -91,6 +91,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kompatibles Öffnen des Video-Managers:** Erkennt fehlendes `showModal()` und zeigt den Dialog trotzdem an.
 * **Reaktivierter Klick-Listener:** Der "Videos"-Button öffnet den Manager nun zuverlässig.
 * **Sicheres Öffnen des Video-Managers:** `showModal()` wird nur noch aufgerufen, wenn der Dialog geschlossen ist.
+* **Fehlerfreies Mehrfach-Öffnen:** Beide Klick-Handler prüfen jetzt das `open`-Attribut und vermeiden so eine DOMException.
 * **Optimal genutzter Player-Bereich:** Breite und Höhe orientieren sich jetzt an der größeren freien Dimension. Die Player-Sektion schrumpft exakt auf die IFrame-Höhe und vermeidet so schwarze Balken.
 * **Einheitliche Größenberechnung:** Auch `adjustVideoPlayerSize()` prüft nun freie Breite und Höhe und wählt automatisch das größere Maß.
 * **OCR-Funktion im Player:** Ein präzises Overlay deckt nur die Untertitel ab. Der Auto-Modus pausiert bei einem Treffer das Video und sammelt den Text im rechten Panel. F9 erstellt jetzt einen einzelnen OCR‑Screenshot. Ein neuer 🔍‑Button aktiviert den Dauerlauf.

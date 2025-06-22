@@ -11109,13 +11109,21 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     if (videoBtn && videoDlg) {
         // Klick öffnet den Dialog, ältere Electron-Versionen erhalten einen Fallback
         videoBtn.addEventListener("click", async () => {
+            // schon geöffnet? Dann nur den Fokus setzen
+            if (videoDlg.open) {
+                videoDlg.focus();
+                return;
+            }
+            // moderner Dialog oder Fallback nutzen
             if (typeof videoDlg.showModal === "function") {
                 videoDlg.showModal();
             } else {
                 videoDlg.setAttribute("open", "");
             }
             if (typeof refreshTable === "function") await refreshTable();
-            videoDlg.querySelector(".video-list-section")?.classList.remove("hidden");
+            videoDlg
+                .querySelector(".video-list-section")
+                ?.classList.remove("hidden");
         });
 
         const closeBtns = [
