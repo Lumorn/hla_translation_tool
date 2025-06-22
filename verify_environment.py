@@ -10,6 +10,17 @@ import sys
 import importlib.util
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REPORTS: list[tuple[str, bool, str]] = []
+
+
+def report(name: str, ok: bool, detail: str = "") -> None:
+    """Gibt das Ergebnis einer Prüfung mit Häkchen aus."""
+    symbol = "✓" if ok else "✗"
+    text = f"{symbol} {name}"
+    if detail:
+        text += f": {detail}"
+    print(text)
+    REPORTS.append((name, ok, detail))
 
 
 def run(cmd: str) -> str:
@@ -19,64 +30,59 @@ def run(cmd: str) -> str:
 
 def check_python() -> bool:
     """Prüft die installierte Python-Version."""
-    print("Prüfe Python-Version...")
     if sys.version_info < (3, 9):
-        print("[Fehler] Python 3.9 oder neuer wird benötigt.")
+        report("Python-Version", False, f"{sys.version.split()[0]} (<3.9)")
         return False
-    print(f"Python-Version: {sys.version.split()[0]}")
+    report("Python-Version", True, sys.version.split()[0])
     return True
 
 
 def check_node() -> bool:
     """Prüft, ob eine unterstützte Node-Version installiert ist."""
-    print("Prüfe Node-Version...")
     try:
         version = run("node --version")
     except Exception:
-        print("[Fehler] Node wurde nicht gefunden.")
+        report("Node-Version", False, "nicht gefunden")
         return False
-    print(f"Gefundene Node-Version: {version}")
     try:
         major = int(version.lstrip("v").split(".")[0])
     except ValueError:
-        print("[Fehler] Node-Version konnte nicht bestimmt werden.")
+        report("Node-Version", False, "unbekannt")
         return False
     if major < 18 or major >= 23:
-        print("[Fehler] Node-Version nicht unterstützt (18–22 erwartet).")
+        report("Node-Version", False, version)
         return False
+    report("Node-Version", True, version)
     return True
 
 
 def check_npm() -> bool:
     """Prüft, ob npm verfügbar ist."""
-    print("Prüfe npm...")
     try:
         version = run("npm --version")
-        print(f"npm-Version: {version}")
-        return True
     except Exception:
-        print("[Fehler] npm wurde nicht gefunden.")
+        report("npm", False, "nicht gefunden")
         return False
+    report("npm", True, version)
+    return True
 
 
 def check_electron_folder() -> bool:
     """Kontrolliert, ob der Ordner 'electron' existiert."""
-    print("Prüfe Electron-Ordner...")
     path = os.path.join(BASE_DIR, "electron")
     if os.path.isdir(path):
-        print("Electron-Ordner vorhanden.")
+        report("Electron-Ordner", True)
         return True
-    print("[Fehler] Electron-Ordner fehlt.")
+    report("Electron-Ordner", False, "fehlt")
     return False
 
 
 def check_python_packages() -> bool:
     """Prüft, ob alle in requirements.txt aufgeführten Pakete installiert sind."""
-    print("Prüfe Python-Abhängigkeiten...")
     req = os.path.join(BASE_DIR, "requirements.txt")
     if not os.path.exists(req):
-        print("requirements.txt nicht gefunden.")
-        return True
+        report("requirements.txt", False, "nicht gefunden")
+        return False
     missing: list[str] = []
     with open(req, "r", encoding="utf-8") as f:
         for line in f:
@@ -87,10 +93,38 @@ def check_python_packages() -> bool:
             if importlib.util.find_spec(mod) is None:
                 missing.append(mod)
     if missing:
-        print("[Fehler] Fehlende Pakete: " + ", ".join(missing))
+        report("Python-Pakete", False, ", ".join(missing))
         return False
-    print("Alle Pakete vorhanden.")
+    report("Python-Pakete", True, "alle vorhanden")
     return True
+
+
+def check_repo_clean() -> bool:
+    """Prüft, ob das Git-Repository saubere Arbeitsverzeichnisse hat."""
+    try:
+        output = run("git status --porcelain")
+    except Exception:
+        report("Git", False, "nicht gefunden")
+        return False
+    if output:
+        report("Git-Status", False, "Lokale Änderungen")
+        return False
+    report("Git-Status", True, "sauber")
+    return True
+
+
+def check_files() -> bool:
+    """Kontrolliert, ob wichtige Dateien vorhanden sind."""
+    files = ["README.md", "package.json", "requirements.txt", "start_tool.py"]
+    ok = True
+    for name in files:
+        path = os.path.join(BASE_DIR, name)
+        if os.path.exists(path):
+            report(name, True)
+        else:
+            report(name, False, "fehlt")
+            ok = False
+    return ok
 
 
 def main() -> None:
@@ -105,6 +139,18 @@ def main() -> None:
         ok = False
     if not check_python_packages():
         ok = False
+    if not check_repo_clean():
+        ok = False
+    if not check_files():
+        ok = False
+
+    print("\nZusammenfassung:")
+    for name, state, detail in REPORTS:
+        symbol = "✓" if state else "✗"
+        text = f"{symbol} {name}"
+        if detail:
+            text += f": {detail}"
+        print(text)
 
     if ok:
         print("Umgebung OK. Tool kann gestartet werden.")
