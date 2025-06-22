@@ -755,7 +755,15 @@ export function openVideoDialog(bookmark, index) {
     }
     // Lösch-Button ruft nun die neue Funktion auf
     deleteBtn.onclick = deleteCurrentVideo;
-    closeBtn.onclick = closeVideoDialog;
+    // Schließt Player und Dialog komplett
+    closeBtn.onclick = () => {
+        closeVideoDialog();
+        if (typeof dlg.close === 'function') {
+            dlg.close();
+        } else {
+            dlg.removeAttribute('open');
+        }
+    };
 
 
 

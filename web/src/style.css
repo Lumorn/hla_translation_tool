@@ -2422,6 +2422,9 @@ th:nth-child(6) {
     max-width: 90vw;
     max-height: 90vh;
     height: auto;
+    /* niemals kleiner als dieses Mindestmaß */
+    min-width: 600px;
+    min-height: 400px;
     background: #1a1a1a;
     color: #e0e0e0;
     /* fester Innenabstand und Abstand zum Fenster */
