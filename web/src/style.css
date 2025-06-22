@@ -2418,13 +2418,15 @@ th:nth-child(6) {
 .video-dialog {
     /* Ohne open-Attribut verstecken */
     display: none;
-    /* Platz auf großen Bildschirmen optimal ausnutzen */
-    width: 80vw;
-    max-width: 1080px;
-    height: 70vh;
-    max-height: 90vh;
+    /* Breite reagiert flexibel auf das Fenster
+       und bleibt zwischen 520 und 900px */
+    width: clamp(520px, 60vw, 900px);
+    max-width: 900px;
+    /* Höhe an Fenstergröße anpassen */
+    max-height: 85vh;
+    height: clamp(400px, 70vh, 85vh);
     /* Mindestgröße bleibt erhalten */
-    min-width: 600px;
+    min-width: 520px;
     min-height: 400px;
     background: #1a1a1a;
     color: #e0e0e0;
