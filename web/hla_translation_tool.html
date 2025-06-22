@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Half-Life: Alyx Translation Tool</title>
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
-    <!-- Aktualisierte CSP: Erlaubt YouTube und Blob-Worker -->
+    <!-- Aktualisierte CSP: Erlaubt YouTube, Blob-Worker und Inline-Styles -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
                    script-src 'self' https://www.youtube.com 'unsafe-inline';
+                   style-src 'self' 'unsafe-inline';
                    frame-src https://www.youtube.com blob:;
                    img-src 'self' data: https://i.ytimg.com;
                    worker-src 'self' blob:;">
