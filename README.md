@@ -99,6 +99,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Responsive OCR-Anzeige:** Bei schmalen Dialogen rutscht das Ergebnis-Panel automatisch unter das Video.
  * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
  * **CPU-schonendere OCR:** Nach jedem Durchlauf wird das Intervall angehalten und erst mit einem erneuten Play-Befehl wieder gestartet.
+* **GPU-beschleunigte EasyOCR-Engine:** Erkennt Texte deutlich schneller und liefert stabilere Ergebnisse als Tesseract.
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
 * **Verschieb- und skalierbares OCR-Overlay:** Der Rahmen lässt sich per Maus anpassen und merkt sich die letzte Position.
 * **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
@@ -223,6 +224,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 10. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 11. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 12. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
+13. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
 
 ### ElevenLabs-Dubbing
 

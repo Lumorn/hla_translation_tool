@@ -479,13 +479,23 @@ async function captureAndOcr(settings = ocrSettings) {
 
         const imgUrl = ocrDebug ? canvas.toDataURL('image/png') : null;
 
-        await ocrWorker.setParameters({
-            tessedit_char_whitelist: settings.whitelist || '',
-            tessedit_pageseg_mode: settings.psm || '3',
-            preserve_interword_spaces: '1',
-            user_defined_dpi: '200'
-        });
-        const { data: { text, confidence } } = await ocrWorker.recognize(canvas);
+        let text = '';
+        let confidence = 0;
+        if (window.ocrApi && window.ocrApi.recognize) {
+            const buf = await canvas.convertToBlob({ type: 'image/png' }).then(b => b.arrayBuffer());
+            text = await window.ocrApi.recognize(buf);
+            confidence = 0;
+        } else {
+            await ocrWorker.setParameters({
+                tessedit_char_whitelist: settings.whitelist || '',
+                tessedit_pageseg_mode: settings.psm || '3',
+                preserve_interword_spaces: '1',
+                user_defined_dpi: '200'
+            });
+            const { data: { text: t, confidence: c } } = await ocrWorker.recognize(canvas);
+            text = t;
+            confidence = c;
+        }
         console.log('OCR-Text:', text);
         return { text: text.trim(), img: imgUrl, confidence };
     } catch (e) {

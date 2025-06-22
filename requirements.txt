@@ -1,1 +1,3 @@
 argostranslate
+torch>=2.3
+easyocr>=1.7

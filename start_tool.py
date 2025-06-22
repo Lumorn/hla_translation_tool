@@ -197,6 +197,28 @@ if os.path.exists(req_file):
 else:
     log("requirements.txt nicht gefunden")
 
+# --- GPU-Unterstützung und EasyOCR installieren ---
+log("Pruefe EasyOCR-Umgebung")
+import importlib.util
+import shutil
+
+def has_module(name: str) -> bool:
+    return importlib.util.find_spec(name) is not None
+
+cuda_available = shutil.which("nvidia-smi") is not None
+
+if not has_module("torch"):
+    log("Installiere PyTorch")
+    if cuda_available:
+        run(f"{sys.executable} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
+    else:
+        run(f"{sys.executable} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu")
+
+if not has_module("easyocr"):
+    log("Installiere EasyOCR")
+    run(f"{sys.executable} -m pip install easyocr opencv-python-headless Pillow")
+
+
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
 log("npm ci (root) starten")
 print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
