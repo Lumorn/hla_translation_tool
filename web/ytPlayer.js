@@ -556,9 +556,11 @@ export function openVideoDialog(bookmark, index) {
     const dlg    = document.getElementById('videoMgrDialog');
     const player = document.getElementById('videoPlayerSection');
     if (!dlg || !player) return;
-    if (dlg.open) return; // erneutes Öffnen verhindern
-    if (window.videoDialogObserver) window.videoDialogObserver.observe(dlg);
-    dlg.showModal();
+    // Dialog nur oeffnen, wenn er noch nicht sichtbar ist
+    if (!dlg.open) {
+        if (window.videoDialogObserver) window.videoDialogObserver.observe(dlg);
+        dlg.showModal();
+    }
 
     player.classList.remove('hidden');
     // gleich nach dem Einblenden neu skalieren
