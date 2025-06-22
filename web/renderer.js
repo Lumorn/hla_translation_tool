@@ -210,8 +210,8 @@ window.addEventListener('resize', () => {
     }
 });
 
-// Dialog oeffnen mit Fallback fuer alte Electron-Versionen
-openVideoManager.onclick = async () => {
+// Dialog oeffnen; verwendet addEventListener und bietet Fallback fuer alte Electron-Versionen
+openVideoManager.addEventListener('click', async () => {
     await refreshTable();
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoMgrDialog);
     if (typeof videoMgrDialog.showModal === 'function') {
@@ -224,7 +224,7 @@ openVideoManager.onclick = async () => {
     if (typeof calcLayout === 'function') {
         calcLayout();
     }
-};
+});
 
 // Gemeinsame Funktion zum Schliessen des Dialogs
 function hideVideoDialog() {
@@ -238,10 +238,11 @@ function hideVideoDialog() {
     if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
 }
 
-closeVideoDlg.onclick = hideVideoDialog;
+// "Schließen"-Button mit addEventListener verbinden
+closeVideoDlg.addEventListener('click', hideVideoDialog);
 if (closeVideoDlgSmall) {
     // kompakte Variante fuer schmale Fenster
-    closeVideoDlgSmall.onclick = hideVideoDialog;
+    closeVideoDlgSmall.addEventListener('click', hideVideoDialog);
 }
 videoMgrDialog.addEventListener('cancel', hideVideoDialog);
 document.addEventListener('keydown', e => {
