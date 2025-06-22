@@ -213,6 +213,11 @@ window.addEventListener('resize', () => {
 // Dialog oeffnen; verwendet addEventListener und bietet Fallback fuer alte Electron-Versionen
 openVideoManager.addEventListener('click', async () => {
     await refreshTable();
+    // Bereits geoeffnet? Dann nur in den Vordergrund holen
+    if (videoMgrDialog.open) {
+        videoMgrDialog.focus();
+        return;
+    }
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoMgrDialog);
     if (typeof videoMgrDialog.showModal === 'function') {
         videoMgrDialog.showModal();
