@@ -210,38 +210,40 @@ window.addEventListener('resize', () => {
     }
 });
 
+// Dialog oeffnen mit Fallback fuer alte Electron-Versionen
 openVideoManager.onclick = async () => {
     await refreshTable();
-    // ResizeObserver erneut aktivieren
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoMgrDialog);
-    videoMgrDialog.showModal();
+    if (typeof videoMgrDialog.showModal === 'function') {
+        videoMgrDialog.showModal();
+    } else {
+        videoMgrDialog.setAttribute('open', '');
+    }
     adjustVideoDialogHeight();
     adjustVideoPlayerSize(true);
     if (typeof calcLayout === 'function') {
         calcLayout();
     }
 };
-closeVideoDlg.onclick = () => {
-    videoMgrDialog.close();
+
+// Gemeinsame Funktion zum Schliessen des Dialogs
+function hideVideoDialog() {
+    if (typeof videoMgrDialog.close === 'function') {
+        videoMgrDialog.close();
+    } else {
+        videoMgrDialog.removeAttribute('open');
+    }
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
-    // Beobachtung stoppen, um Schleifen zu vermeiden
     if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
-};
+}
+
+closeVideoDlg.onclick = hideVideoDialog;
 if (closeVideoDlgSmall) {
     // kompakte Variante fuer schmale Fenster
-    closeVideoDlgSmall.onclick = () => {
-        videoMgrDialog.close();
-        if (typeof closeVideoDialog === 'function') closeVideoDialog();
-        adjustVideoDialogHeight();
-        if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
-    };
+    closeVideoDlgSmall.onclick = hideVideoDialog;
 }
-videoMgrDialog.addEventListener('cancel', () => {
-    if (typeof closeVideoDialog === 'function') closeVideoDialog();
-    adjustVideoDialogHeight();
-    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
-});
+videoMgrDialog.addEventListener('cancel', hideVideoDialog);
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {
         if (typeof closeVideoDialog === 'function') closeVideoDialog();
