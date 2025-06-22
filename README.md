@@ -237,6 +237,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 17. Für die Bildvorverarbeitung installiert das Skript zusätzlich `opencv-python-headless` und `Pillow`.
 18. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
 19. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
+20. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
 
 ### ElevenLabs-Dubbing
 
