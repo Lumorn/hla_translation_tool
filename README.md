@@ -108,12 +108,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
 * **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
 * **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet ein separates Fenster. Jetzt wird nach jedem Durchlauf der Screenshot samt Rohtext per `postMessage` übertragen und in einer kleinen Galerie gesammelt; ein erneuter Klick schließt das Fenster und stoppt den Stream.
-* **Tesseract.js nun lokal eingebunden:** Die OCR-Engine wird direkt aus `src/lib` geladen und funktioniert damit auch ohne Internetzugang.
-* **Stabilere OCR-Initialisierung:** Das Tesseract-Modul wird nun korrekt importiert und die Worker starten zuverlässig.
-* **Lokaler Worker-Pfad festgelegt:** Die OCR lädt den Worker jetzt direkt aus `src/lib/tesseract-worker.min.js` und benötigt daher keine externen Skripte.
+* **Tesseract.js weiterhin lokal eingebunden:** Die Engine dient als CPU-Fallback und wird direkt aus `src/lib` geladen, sodass sie auch ohne Internetzugang funktioniert.
+* **Stabilere OCR-Initialisierung (Fallback):** Das Tesseract-Modul wird korrekt importiert und seine Worker starten zuverlässig.
+* **Lokaler Worker-Pfad (Fallback):** Der Tesseract-Worker wird direkt aus `src/lib/tesseract-worker.min.js` geladen und benötigt daher keine externen Skripte.
 * **Absolute Worker-URL:** Der Pfad wird jetzt relativ zum Fenster berechnet und verhindert CSP-Fehler.
-* **Robustere Fehlerbehandlung bei der OCR-Initialisierung:** Das Skript erkennt fehlerhafte Worker-Objekte und wartet auf asynchrone Erstellung.
-* **Entfall des `load()`-Schrittes:** Aktuelle Tesseract-Worker sind sofort einsatzbereit, der veraltete Aufruf wurde entfernt.
+* **Robustere Fehlerbehandlung (Fallback):** Das Skript erkennt fehlerhafte Tesseract-Worker und wartet auf asynchrone Erstellung.
+* **Entfall des `load()`-Schrittes (Fallback):** Aktuelle Tesseract-Worker sind sofort einsatzbereit, der veraltete Aufruf entfällt.
 * **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
 * **Vollbreite ohne OCR:** Das Ergebnis-Panel bleibt standardmäßig verborgen und erscheint nur bei aktivierter Erkennung.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
