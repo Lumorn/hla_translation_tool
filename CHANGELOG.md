@@ -59,6 +59,8 @@
 * Problem behoben, bei dem der YouTube-Player nach erneutem Öffnen den `videoPlayerFrame` nicht fand.
 ## 🛠️ Patch in 1.40.28
 * Der YouTube-Player bleibt sichtbar, wenn man dasselbe Video erneut auswählt.
+## 🛠️ Patch in 1.40.29
+* Neues Skript `verify_environment.py` prüft Python-, Node- und npm-Version und meldet fehlende Pakete.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
