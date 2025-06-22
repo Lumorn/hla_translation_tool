@@ -216,54 +216,22 @@ function adjustVideoPlayerSize(force = false) {
     if (!section) return;
     if (!force && section.classList.contains('hidden')) return;
 
-    const dialog   = document.getElementById('videoMgrDialog');
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');
     const frame    = section.querySelector('iframe');
-    const list     = dialog?.querySelector('.video-list-section');
-    const ocrPanel = document.getElementById('ocrResultPanel');
-    if (!frame || !dialog) return;
+    if (!frame) return;
 
-    const pad       = parseFloat(getComputedStyle(dialog).paddingLeft) || 0;
-    const listW     = list ? list.offsetWidth : 0;
-    let panelW = 0;
-    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-        const style = getComputedStyle(ocrPanel);
-        // Breite nur abziehen, wenn das Panel neben dem Video steht
-        if (style.position !== 'static') {
-            panelW = ocrPanel.offsetWidth;
-        }
-    }
-
-    // verfügbare Fläche im Dialog
-    const dialogW   = dialog.clientWidth;
-    const dialogH   = dialog.clientHeight;
-    let freeW       = dialogW - listW - 2 * pad;
-    // Panelbreite abziehen, damit das Video nicht verdeckt wird
-    freeW          -= panelW;
-    const headerH   = header ? header.offsetHeight : 0;
-    const controlsH = controls ? controls.offsetHeight : 0;
-    const freeH     = dialogH - headerH - controlsH - 2 * pad;
-
-    let h = freeW * 9 / 16;
-    let w = freeW;
-    if (h > freeH) {
-        h = freeH;
+    const availableH = section.clientHeight - (header ? header.offsetHeight : 0) - (controls ? controls.offsetHeight : 0);
+    let w = section.clientWidth;
+    let h = w * 9 / 16;
+    if (h > availableH) {
+        h = availableH;
         w = h * 16 / 9;
     }
 
     frame.style.width  = w + 'px';
     frame.style.height = h + 'px';
     if (controls) controls.style.width = w + 'px';
-    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-        const style = getComputedStyle(ocrPanel);
-        // Höhe nur setzen, wenn das Panel neben dem Video liegt
-        if (style.position !== 'static') {
-            ocrPanel.style.height = frame.clientHeight + 'px';
-        } else {
-            ocrPanel.style.height = 'auto';
-        }
-    }
 }
 window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
@@ -429,56 +397,8 @@ function formatTime(sec){
 
 // berechnet Breite und Hoehe des Players dynamisch
 function calcLayout() {
-    const dlg = document.getElementById('videoMgrDialog');
-    const player = document.getElementById('videoPlayerSection');
-    if (!dlg || !player) return;
-
-    const iframe   = player.querySelector('iframe');
-    const controls = player.querySelector('.player-controls');
-    const header   = player.querySelector('.player-header');
-    const list     = dlg.querySelector('.video-list-section');
-    const ocrPanel = document.getElementById('ocrResultPanel');
-
-    if (!iframe || !controls) return;
-
-    const pad = parseFloat(getComputedStyle(dlg).paddingLeft) || 0;
-    const leftListW = list ? list.offsetWidth : 0;
-    const ocrPanelW = (ocrPanel && !ocrPanel.classList.contains('hidden'))
-        ? ocrPanel.offsetWidth : 0;
-
-    // verfügbare Breite und Höhe im Dialog ermitteln
-    const dialogW = dlg.clientWidth;
-    const dialogH = dlg.clientHeight;
-    const freeW = dialogW - leftListW - ocrPanelW - 2 * pad;
-    const headerH = header ? header.offsetHeight : 0;
-    const controlsH = controls.offsetHeight;
-    const freeH = dialogH - headerH - controlsH - 2 * pad;
-    let width  = freeW;
-    if (width <= 0) return;
-    let height = width * 9 / 16;
-    // passt Höhe an freie Fläche an und korrigiert Breite bei Bedarf
-    if (height > freeH) {
-        height = freeH;
-        width  = height * 16 / 9;
-    }
-
-    iframe.style.width  = width + 'px';
-    iframe.style.height = height + 'px';
-    controls.style.width = width + 'px';
-
-    if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-        // Panel am Dialog-Padding ausrichten
-        ocrPanel.style.top = pad + 'px';
-        ocrPanel.style.right = pad + 'px';
-        ocrPanel.style.height = height + 'px';
-    }
-
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
-        if (ocrPanel && !ocrPanel.classList.contains('hidden')) {
-            // Panel-Höhe dem Video anpassen
-            ocrPanel.style.height = iframe.clientHeight + 'px';
-        }
     }
 }
 

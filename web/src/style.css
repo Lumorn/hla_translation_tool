@@ -2418,20 +2418,16 @@ th:nth-child(6) {
 .video-dialog {
     /* Ohne open-Attribut verstecken */
     display: none;
-    /* neue Minimalbreite fuer Drei-Zonen-Layout */
     width: clamp(600px, 70vw, 920px);
     max-width: 900px;
-    /* Höhe an Fenstergröße anpassen */
     max-height: 85vh;
     height: clamp(400px, 70vh, 85vh);
-    /* Mindestgröße bleibt erhalten */
     min-width: 520px;
     min-height: 400px;
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 24px;
     margin: 24px auto;
-    flex-direction: column;
     overflow: auto;
     resize: both;            /* einfache Größenänderung per Maus */
     position: fixed;         /* frei verschiebbares Fenster */
@@ -2442,7 +2438,8 @@ th:nth-child(6) {
 
 /* Dialog erst anzeigen, wenn geöffnet */
 .video-dialog[open] {
-    display: flex;
+    display: grid;
+    grid-template-rows: 320px 1fr 48px;
 }
 
 /* Abdunklung hinter dem Dialog */
@@ -2510,8 +2507,9 @@ th:nth-child(6) {
 /* Flex-Layout für Liste und Player,
    verteilt den verfügbaren Platz dynamisch */
 .video-layout {
-    /* Liste und Player nebeneinander ohne feste Höhe */
-    display: flex;
+    /* Liste und Player nebeneinander in fester Zeile */
+    display: grid;
+    grid-template-columns: 260px 1fr 40px;
     gap: 8px;
     overflow: hidden;
     position: relative; /* erlaubt absolut positionierte OCR-Spalte */
@@ -2524,6 +2522,7 @@ th:nth-child(6) {
     align-items: center;
     gap: 8px;
     background: #1a1a1a;
+    border: 2px solid #fff;
 }
 .video-action-panel .action-spacer {
     flex-grow: 1;
@@ -2542,26 +2541,27 @@ th:nth-child(6) {
 }
 .video-action-panel .action-btn:hover { background:#444; }
 .video-list-section {
-    /* Linke Tabellenansicht mit flexibler Höhe und variabler Breite */
-    flex: 0 0 22%;
-    min-width: 260px;
-    max-width: 320px;
+    /* Linke Tabellenansicht mit Scrollbar */
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    max-height: 100%;
+    overflow-y: auto;
+    border: 2px solid #fff;
 }
 /* Neues Flex-Layout: Video links, OCR rechts */
 .video-player-section {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100%;
     position: relative;
     overflow: hidden;
+    border: 2px solid #fff;
 }
 
 /* Bei aktivem OCR-Panel Platz neben dem Video schaffen */
 .video-player-section.ocr-active {
-    /* keine zusaetzliche Polsterung mehr erforderlich */
+    /* keine spezielle Behandlung mehr nötig */
 }
 .video-player-section.hidden { display: none; }
 
@@ -2769,18 +2769,18 @@ th:nth-child(6) {
 
 #ocrResultPanel{
     position:relative;
+    width:100%;
     height:100%;
-    width:320px;
     overflow:auto;
     background:#1a1a1a;
     padding:8px;
+    display:flex;
+    flex-direction:column;
+    border:2px solid #fff;
 }
 
 @media (max-width: 600px) {
     /* Panel rutscht unter das Video, wenn nicht genug Breite vorhanden ist */
-    .video-player-section.ocr-active {
-        padding-right: 0;
-    }
     #ocrResultPanel {
         position:static;
         width:100%;
@@ -2806,14 +2806,9 @@ th:nth-child(6) {
     background: yellow;
 }
 
-/* Panel standardmäßig ausgeblendet */
+/* Panel standardmäßig ausgeblendet; wird per JS ein-/ausgeblendet */
 #ocrResultPanel {
     display: none;
-}
-
-/* Erst sichtbar, wenn OCR aktiv ist */
-#videoPlayerSection.ocr-active #ocrResultPanel {
-    display: block;
 }
 
 /* damit das Panel nicht unter die Steuerleiste reicht */
