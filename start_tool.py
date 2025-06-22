@@ -17,6 +17,11 @@ import importlib.util
 import shutil
 import hashlib
 
+# Helfer, um Pfade mit Leerzeichen korrekt zu quoten
+def quote_path(path: str) -> str:
+    """Gibt den Pfad in Anführungszeichen zurück, falls nötig."""
+    return f'"{path}"' if " " in path else path
+
 # Pfad dieses Skripts und Log-Datei festlegen
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGFILE = os.path.join(BASE_DIR, "setup.log")
@@ -223,7 +228,8 @@ if os.path.exists(req_file):
             if not has_module(mod):
                 missing.append(pkg)
         if missing:
-            run(f"{sys.executable} -m pip install --disable-pip-version-check -q " + " ".join(missing))
+            cmd = f"{quote_path(sys.executable)} -m pip install --disable-pip-version-check -q " + " ".join(missing)
+            run(cmd)
         log("pip install erfolgreich")
     except subprocess.CalledProcessError as e:
         print("pip install fehlgeschlagen. Weitere Details siehe setup.log")
@@ -241,13 +247,13 @@ cuda_available = shutil.which("nvidia-smi") is not None
 if not has_module("torch"):
     log("Installiere PyTorch")
     if cuda_available:
-        run(f"{sys.executable} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
+        run(f"{quote_path(sys.executable)} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
     else:
-        run(f"{sys.executable} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu")
+        run(f"{quote_path(sys.executable)} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu")
 
 if not has_module("easyocr"):
     log("Installiere EasyOCR")
-    run(f"{sys.executable} -m pip install easyocr opencv-python-headless Pillow")
+    run(f"{quote_path(sys.executable)} -m pip install easyocr opencv-python-headless Pillow")
 
 
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
