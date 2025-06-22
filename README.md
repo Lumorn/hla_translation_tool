@@ -88,7 +88,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
 * **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
 * **Responsiver Video-Manager:** Fester Dialog-Abstand, flexible Toolbar mit Min-Buttons und kompaktem ❌-Icon bei schmaler Breite. Tabellenzeilen besitzen gleichmäßiges Padding und einen Hover-Effekt.
-* **Dreispaltiges Video-Dashboard:** Links Bibliothek mit Suche (Ctrl+F), in der Mitte ein 16:9‑Player mit schwebender Steuerleiste und rechts eine vertikale Aktionsleiste für Export, Screenshot und OCR. Die zuletzt gewählte Zeile wird beim erneuten Öffnen hervorgehoben.
+* **Zweispaltiges Video-Dashboard:** Links steht die Videoliste, rechts der 16:9‑Player mit schwebender Leiste. Das OCR‑Panel füllt darunter die komplette Breite und die Aktions-Icons befinden sich direkt unter dem Player.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 * **Flexible Player-Steuerleiste:** Bei schmalen Fenstern rutscht der Slider in eine zweite Zeile. Icons und Zeitangaben verkleinern sich automatisch.
 * **Fixierte Steuerleiste im Player:** Die Bedienelemente haften nun dank `position: sticky` direkt unter dem Video, besitzen volle Breite und liegen mit höherem `z-index` stets über dem Ergebnis-Panel. Die Liste nutzt variabel 22 % Breite (min. 260 px, max. 320 px).

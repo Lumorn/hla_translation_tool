@@ -2898,3 +2898,26 @@ th:nth-child(6) {
     color: #ff8080;
 }
 
+/* ===== Neues Grid-Layout für Video-Manager ===== */
+.video-dialog{width:960px;height:600px}
+.wb-grid{
+    --gap:12px;
+    display:grid;
+    grid-template-columns:260px 1fr;
+    grid-template-rows:320px 1fr;
+    grid-template-areas:
+        "list player"
+        "ocr  ocr";
+    gap:var(--gap);
+    height:100%;
+    box-sizing:border-box;
+}
+.video-list-section{grid-area:list;border:1px solid #fff;padding:8px;overflow:auto;}
+.video-player-section{grid-area:player;border:1px solid #fff;padding:8px;position:relative;}
+.ocr-panel{grid-area:ocr;border:1px solid #fff;padding:8px;overflow:auto;}
+.player-controls .action-btn{margin-left:4px;}
+.video-action-panel{display:none;}
+@media(max-width:900px){
+  .wb-grid{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;
+           grid-template-areas:"list" "player" "ocr";}
+}

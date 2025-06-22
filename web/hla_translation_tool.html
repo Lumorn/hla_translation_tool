@@ -534,8 +534,8 @@
 
     <!-- Video-Manager mit integriertem Player -->
     <dialog id="videoMgrDialog" class="video-dialog">
-        <div class="video-layout">
-            <div class="video-list-section">
+        <div class="wb-grid">
+            <section class="video-list-section">
                 <h2>📼 Gespeicherte Videos</h2>
                 <div class="video-toolbar">
                     <div class="video-search">
@@ -562,11 +562,11 @@
                     </table>
                 </div>
                 <button id="closeVideoDlg" class="btn btn-danger">❌ Schließen</button>
-            </div>
-            <div id="videoPlayerSection" class="video-player-section hidden">
+            </section>
+            <section id="videoPlayerSection" class="video-player-section hidden">
                 <div class="player-header"><span id="playerDialogTitle"></span></div>
                 <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
-                <div class="player-controls">
+                <div id="playerControls" class="player-controls">
                     <button id="videoPlay">▶️</button>
                     <button id="videoBack">⏮️</button>
                     <button id="videoForward">⏭️</button>
@@ -577,6 +577,11 @@
                     <button id="ocrCopy" title="OCR kopieren">📋</button>
                     <button id="ocrDebug" title="Debug-Fenster">🐞</button>
                     <button id="ocrSettings" title="OCR-Einstellungen">⚙️</button>
+                    <button id="exportVideoBtn" class="action-btn" title="Export (E)">⭳</button>
+                    <button id="screenshotBtn" class="action-btn" title="Screenshot (S)">📸</button>
+                    <button id="ocrToggle" class="action-btn" title="OCR an/aus (F9)">🔍</button>
+                    <button id="videoDelete" class="action-btn danger" title="Löschen (Entf)">🗑️</button>
+                    <button id="videoClose" class="action-btn danger" title="Schließen (Esc)">❌</button>
                 </div>
                 <div id="ocrOverlay">
                     <div class="handle nw"></div>
@@ -596,29 +601,19 @@
                     <div id="ocrResultPreview" class="result-preview"></div>
                     <button id="ocrReset" class="btn btn-danger">Reset</button>
                 </div>
-            </div>
-            <div class="video-action-panel">
-                <button id="exportVideoBtn" class="action-btn" title="Export (E)">⭳</button>
-                <button id="screenshotBtn" class="action-btn" title="Screenshot (S)">📸</button>
-                <button id="ocrToggle" class="action-btn" title="OCR an/aus (F9)">🔍</button>
-                <div class="action-spacer"></div>
-                <button id="videoDelete" class="action-btn danger" title="Löschen (Entf)">🗑️</button>
-                <button id="videoClose" class="action-btn danger" title="Schließen (Esc)">❌</button>
-            </div>
-        </div>
-        <div id="ocrResultPanel" class="hidden">
-            <canvas id="roiPreview"></canvas>
-            <div id="ocrText"></div>
+            </section>
+            <section id="ocrResultPanel" class="ocr-panel hidden">
+                <canvas id="roiPreview"></canvas>
+                <div id="ocrText"></div>
+                <div class="ocr-controls">
+                    <span id="gpuInfo">GPU: unbekannt</span>
+                    <button id="ocrStart">Start OCR</button>
+                    <button id="ocrStop">Stop</button>
+                </div>
+            </section>
         </div>
         <div id="dlgResizeHandle" class="dialog-resize"></div>
     </dialog>
-    <footer id="ocrFooter">
-        <span id="gpuInfo">GPU: unbekannt</span>
-        <div class="footer-buttons">
-            <button id="ocrStart">Start OCR</button>
-            <button id="ocrStop">Stop</button>
-        </div>
-    </footer>
 
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
