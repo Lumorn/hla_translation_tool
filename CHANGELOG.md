@@ -61,6 +61,8 @@
 * Der YouTube-Player bleibt sichtbar, wenn man dasselbe Video erneut auswählt.
 ## 🛠️ Patch in 1.40.29
 * Neues Skript `verify_environment.py` prüft Python-, Node- und npm-Version und meldet fehlende Pakete.
+## 🛠️ Patch in 1.40.30
+* `verify_environment.py` gibt nun alle Prüfungen mit Häkchen aus und warnt bei fehlenden Dateien oder lokalen Änderungen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

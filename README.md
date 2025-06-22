@@ -227,7 +227,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 7. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
 8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
-10. `python verify_environment.py` überprüft Python-, Node- und npm-Version und meldet fehlende Pakete oder Ordner, ohne Änderungen vorzunehmen.
+10. `python verify_environment.py` zeigt jede Prüfung mit einem ✓ an, kontrolliert wichtige Dateien sowie den Git‑Status und nimmt dabei keine Änderungen vor.
 11. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 12. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 13. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
