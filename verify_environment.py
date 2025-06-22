@@ -94,19 +94,35 @@ def check_python_packages() -> bool:
     if not os.path.exists(req):
         report("requirements.txt", False, "nicht gefunden")
         return False
-    missing: list[str] = []
+
+    fehlend: list[str] = []          # Pflicht-Pakete, die fehlen
+    fehlend_optional: list[str] = []  # Optionale Pakete, die fehlen
+
     with open(req, "r", encoding="utf-8") as f:
         for line in f:
-            line = line.strip()
-            if not line or line.startswith("#"):
+            zeile = line.strip()
+            if not zeile or zeile.startswith("#"):
                 continue
-            mod = line.split("==")[0].split(">=")[0]
+
+            optional = "# optional" in zeile
+            mod = zeile.split("#")[0].split("==")[0].split(">=")[0].strip()
+
             if importlib.util.find_spec(mod) is None:
-                missing.append(mod)
-    if missing:
-        report("Python-Pakete", False, ", ".join(missing))
+                if optional:
+                    fehlend_optional.append(mod)
+                else:
+                    fehlend.append(mod)
+
+    if fehlend:
+        report("Python-Pakete", False, ", ".join(fehlend))
         return False
-    report("Python-Pakete", True, "alle vorhanden")
+
+    if fehlend_optional:
+        detail = "fehlend: " + ", ".join(fehlend_optional)
+        report("Optionale Pakete", True, detail)
+    else:
+        report("Python-Pakete", True, "alle vorhanden")
+
     return True
 
 
