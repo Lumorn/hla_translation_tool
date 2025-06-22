@@ -13,7 +13,7 @@
   },
   "scripts": {
     "pretest": "npm ci",
-    "test": "jest",
+    "test": "node --unhandled-rejections=warn node_modules/jest/bin/jest.js",
     "update-version": "node updateVersion.js"
   },
   "dependencies": {
