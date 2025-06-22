@@ -11101,3 +11101,33 @@ if (typeof module !== "undefined" && module.exports) {
         __setTextDatabase: db => { textDatabase = db; }
     };
 }
+
+// -- Video-Manager initialisieren --
+if (typeof document !== "undefined" && typeof document.getElementById === "function") {
+    const videoBtn = document.getElementById("openVideoManager");
+    const videoDlg = document.getElementById("videoMgrDialog");
+    if (videoBtn && videoDlg) {
+        // Klick öffnet den Dialog, ältere Electron-Versionen erhalten einen Fallback
+        videoBtn.addEventListener("click", async () => {
+            if (typeof videoDlg.showModal === "function") {
+                videoDlg.showModal();
+            } else {
+                videoDlg.setAttribute("open", "");
+            }
+            if (typeof refreshTable === "function") await refreshTable();
+            videoDlg.querySelector(".video-list-section")?.classList.remove("hidden");
+        });
+
+        const closeBtns = [
+            document.getElementById("closeVideoDlg"),
+            document.getElementById("closeVideoDlgSmall")
+        ];
+        closeBtns.forEach(btn => btn && btn.addEventListener("click", () => {
+            if (typeof videoDlg.close === "function") {
+                videoDlg.close();
+            } else {
+                videoDlg.removeAttribute("open");
+            }
+        }));
+    }
+}
