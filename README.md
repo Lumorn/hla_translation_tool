@@ -101,6 +101,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
  * **CPU-schonendere OCR:** Nach jedem Durchlauf wird das Intervall angehalten und erst mit einem erneuten Play-Befehl wieder gestartet.
 * **GPU-beschleunigte EasyOCR-Engine:** Erkennt Texte deutlich schneller und liefert stabilere Ergebnisse als Tesseract.
 * **Neuer 📋-Button:** Kopiert den letzten OCR-Treffer direkt in die Zwischenablage.
+* **ROI-Vorschau im Panel:** Das geschnittene Bild wird live im rechten Bereich angezeigt.
 * **F9 führt einen einzelnen OCR-Durchlauf aus und zeigt eine Bildvorschau.**
 * **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
 * **Verschieb- und skalierbares OCR-Overlay:** Der Rahmen lässt sich per Maus anpassen und merkt sich die letzte Position.
@@ -229,6 +230,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 13. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
 14. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 15. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
+16. Für die Bildvorverarbeitung installiert das Skript zusätzlich `opencv-python-headless` und `Pillow`.
 
 ### ElevenLabs-Dubbing
 
