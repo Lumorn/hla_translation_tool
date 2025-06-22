@@ -585,6 +585,18 @@
                 <div id="ocrResultPanel">
                     <pre id="ocrText"></pre>
                 </div>
+                <div id="ocrSettingsDrawer" class="hidden">
+                    <canvas id="ocrPreview"></canvas>
+                    <label><input type="checkbox" id="setInvert"> Farben invertieren</label><br>
+                    <label><input type="checkbox" id="setSharpen"> Schärfen</label><br>
+                    <label>Helligkeit: <input type="range" id="setBright" min="80" max="180"></label><br>
+                    <label>Kontrast: <input type="range" id="setContrast" min="100" max="300"></label><br>
+                    <label>Schwelle: <input type="range" id="setThreshold" min="100" max="200"></label><br>
+                    <label>PSM-Modus: <select id="setPsm"><option value="7">Einzelzeile</option><option value="8">Einzelwort</option><option value="3">Autom.</option></select></label><br>
+                    <label>Whitelist: <input type="text" id="setWhitelist"></label>
+                    <div id="ocrResultPreview" class="result-preview"></div>
+                    <button id="ocrReset" class="btn btn-danger">Reset</button>
+                </div>
             </div>
         </div>
     </dialog>

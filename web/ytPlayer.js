@@ -17,6 +17,11 @@ let ocrDebug  = false;       // zeigt das Debug-Fenster mit Screenshot
 // Einstellungen zur Bildaufbereitung
 let ocrSettings = loadOcrSettings();
 
+// kleine Hilfsfunktion zum Entprellen von Events
+function debounce(fn, ms) {
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
 // Overlay an die Größe des IFrames anpassen
 // prueft die Helligkeit des potenziellen Textbereichs
 async function pruefeHelligkeit(bitmap, roi, frameH) {
@@ -93,9 +98,25 @@ function speichereOverlaySettings(rect) {
 const SETTINGS_KEY = 'hla_ocrImageSettings';
 function loadOcrSettings() {
     try {
-        return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || { invert: false, brightness: 180, contrast: 240 };
+        return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {
+            invert: false,
+            brightness: 100,
+            contrast: 150,
+            sharpen: false,
+            threshold: 140,
+            psm: '3',
+            whitelist: ''
+        };
     } catch {
-        return { invert: false, brightness: 180, contrast: 240 };
+        return {
+            invert: false,
+            brightness: 100,
+            contrast: 150,
+            sharpen: false,
+            threshold: 140,
+            psm: '3',
+            whitelist: ''
+        };
     }
 }
 function saveOcrSettings(cfg) {
@@ -250,10 +271,7 @@ async function initOcrWorker() {
         }
         await ocrWorker.loadLanguage('eng');
         await ocrWorker.initialize('eng');
-        // Spezielle Parameter sorgen für präzisere Erkennung
         await ocrWorker.setParameters({
-            tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,?!\'"- ',
-            tessedit_pageseg_mode: '7',
             preserve_interword_spaces: '1',
             user_defined_dpi: '200'
         });
@@ -275,54 +293,89 @@ function terminateOcr() {
 window.positionOverlay = positionOverlay;
 window.initOverlayDrag = initOverlayDrag;
 
-// zeigt einen Dialog mit OCR-Einstellungen und Vorschau
+// oeffnet oder schliesst den Einstell-Drawer fuer das OCR-Tuning
 async function openOcrSettings() {
-    const dlg = document.createElement('div');
-    dlg.className = 'dialog-overlay';
-    dlg.style.display = 'flex';
-    dlg.id = 'ocrSettingsDlg';
-    dlg.innerHTML = `<div class="dialog">
-        <h3>OCR Einstellungen</h3>
-        <label><input type="checkbox" id="setInvert"> Farben umkehren</label><br>
-        <label>Helligkeit: <input type="range" id="setBright" min="100" max="300"></label><br>
-        <label>Kontrast: <input type="range" id="setContrast" min="100" max="300"></label>
-        <img id="setPreview" style="max-width:100%;margin-top:10px;display:block">
-        <pre id="setText"></pre>
-        <div class="dialog-buttons"><button class="btn btn-success" id="setClose">OK</button></div>
-    </div>`;
-    const div = dlg.querySelector('.dialog');
-    div.addEventListener('click', e => e.stopPropagation());
-    dlg.addEventListener('click', () => dlg.remove());
-    document.body.appendChild(dlg);
+    const drawer = document.getElementById('ocrSettingsDrawer');
+    if (!drawer) return;
+    const open = drawer.classList.toggle('open');
+    drawer.classList.toggle('hidden', !open);
+    if (!open) return;
 
-    const invert = dlg.querySelector('#setInvert');
-    const bright = dlg.querySelector('#setBright');
-    const contrast = dlg.querySelector('#setContrast');
-    const img = dlg.querySelector('#setPreview');
-    const txt = dlg.querySelector('#setText');
-    invert.checked = ocrSettings.invert;
-    bright.value = ocrSettings.brightness;
-    contrast.value = ocrSettings.contrast;
+    const preview  = drawer.querySelector('#ocrPreview');
+    const ctx      = preview.getContext('2d');
+    const invert   = drawer.querySelector('#setInvert');
+    const sharpen  = drawer.querySelector('#setSharpen');
+    const bright   = drawer.querySelector('#setBright');
+    const contrast = drawer.querySelector('#setContrast');
+    const thresh   = drawer.querySelector('#setThreshold');
+    const psm      = drawer.querySelector('#setPsm');
+    const wlist    = drawer.querySelector('#setWhitelist');
+    const result   = drawer.querySelector('#ocrResultPreview');
+    const resetBtn = drawer.querySelector('#ocrReset');
 
-    async function update() {
+    invert.checked   = ocrSettings.invert;
+    sharpen.checked  = ocrSettings.sharpen;
+    bright.value     = ocrSettings.brightness;
+    contrast.value   = ocrSettings.contrast;
+    thresh.value     = ocrSettings.threshold;
+    psm.value        = ocrSettings.psm;
+    wlist.value      = ocrSettings.whitelist;
+
+    const debounced = debounce(async () => {
         saveOcrSettings(ocrSettings);
-        const res = await captureAndOcr();
-        if (res.img) img.src = res.img; else img.removeAttribute('src');
-        txt.textContent = res.text || '';
+        const res = await captureAndOcr(ocrSettings);
+        if (res.img) {
+            const img = new Image();
+            img.onload = () => { ctx.clearRect(0,0,preview.width,preview.height); ctx.drawImage(img,0,0,preview.width,preview.height); };
+            img.src = res.img;
+        }
+        result.textContent = res.text || '';
+        result.classList.remove('green','yellow','red');
+        if (res.confidence < 40) result.classList.add('red');
+        else if (res.confidence < 70) result.classList.add('yellow');
+        else result.classList.add('green');
+    }, 250);
+
+    function updateSettings() {
+        ocrSettings.invert    = invert.checked;
+        ocrSettings.sharpen   = sharpen.checked;
+        ocrSettings.brightness= Number(bright.value);
+        ocrSettings.contrast  = Number(contrast.value);
+        ocrSettings.threshold = Number(thresh.value);
+        ocrSettings.psm       = psm.value;
+        ocrSettings.whitelist = wlist.value;
+        debounced();
     }
 
-    invert.onchange = () => { ocrSettings.invert = invert.checked; update(); };
-    bright.oninput = () => { ocrSettings.brightness = Number(bright.value); update(); };
-    contrast.oninput = () => { ocrSettings.contrast = Number(contrast.value); update(); };
-    dlg.querySelector('#setClose').onclick = () => dlg.remove();
+    invert.onchange = updateSettings;
+    sharpen.onchange = updateSettings;
+    bright.oninput = updateSettings;
+    contrast.oninput = updateSettings;
+    thresh.oninput = updateSettings;
+    psm.onchange = updateSettings;
+    wlist.oninput = updateSettings;
+    resetBtn.onclick = () => {
+        ocrSettings = {
+            invert: false,
+            brightness: 100,
+            contrast: 150,
+            sharpen: false,
+            threshold: 140,
+            psm: '3',
+            whitelist: ''
+        };
+        openOcrSettings();
+        openOcrSettings();
+    };
 
-    update();
+    updateSettings();
 }
 
 window.openOcrSettings = openOcrSettings;
 
 // bereitet den Screenshot im OffscreenCanvas fuer die OCR auf
 // bereitet das Bild anhand der aktuellen Einstellungen auf
+// bereitet das Bild fuer die Texterkennung auf
 async function refineBlob(pngBlob, settings = ocrSettings) {
     const bmp = await createImageBitmap(pngBlob);
     const W = bmp.width * 2;
@@ -346,14 +399,24 @@ async function refineBlob(pngBlob, settings = ocrSettings) {
         }
         ctx.putImageData(invData, 0, 0);
     }
+    // optional leicht schaerfen
+    if (settings.sharpen) {
+        const tmp = new OffscreenCanvas(W, H);
+        const tctx = tmp.getContext('2d');
+        tctx.drawImage(off, 0, 0);
+        tctx.filter = 'blur(1px)';
+        tctx.drawImage(off, 0, 0);
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.drawImage(tmp, 0, 0);
+        ctx.globalCompositeOperation = 'source-over';
+    }
     // entsaetten -> Graustufen
     const imgData = ctx.getImageData(0, 0, W, H);
     const d = imgData.data;
     for (let i = 0; i < d.length; i += 4) {
         const y = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
         // harter Schwellwert zur Binarisierung
-        // 55 % Luminanz als Schwelle
-        const bw = y > 140 ? 255 : 0;
+        const bw = y > settings.threshold ? 255 : 0;
         d[i] = d[i + 1] = d[i + 2] = bw;
     }
     ctx.putImageData(imgData, 0, 0);
@@ -362,7 +425,8 @@ async function refineBlob(pngBlob, settings = ocrSettings) {
 }
 
 // Screenshot des Overlays erstellen und per OCR auswerten
-async function captureAndOcr() {
+// erstellt einen Screenshot und führt die Texterkennung aus
+async function captureAndOcr(settings = ocrSettings) {
     try {
         const ok = await initOcrWorker();
         if (!ok) return '';
@@ -383,7 +447,7 @@ async function captureAndOcr() {
         if (!png) return { text: '', img: null };
         const rawBlob = new Blob([png], { type: 'image/png' });
         // Screenshot verfeinern, um die Texterkennung zu verbessern
-        const refinedBlob = await refineBlob(rawBlob, ocrSettings);
+        const refinedBlob = await refineBlob(rawBlob, settings);
         const bitmap = await createImageBitmap(refinedBlob);
 
         const overlay = document.getElementById('ocrOverlay');
@@ -415,9 +479,15 @@ async function captureAndOcr() {
 
         const imgUrl = ocrDebug ? canvas.toDataURL('image/png') : null;
 
-        const { data: { text } } = await ocrWorker.recognize(canvas);
+        await ocrWorker.setParameters({
+            tessedit_char_whitelist: settings.whitelist || '',
+            tessedit_pageseg_mode: settings.psm || '3',
+            preserve_interword_spaces: '1',
+            user_defined_dpi: '200'
+        });
+        const { data: { text, confidence } } = await ocrWorker.recognize(canvas);
         console.log('OCR-Text:', text);
-        return { text: text.trim(), img: imgUrl };
+        return { text: text.trim(), img: imgUrl, confidence };
     } catch (e) {
         console.error('OCR-Fehler', e);
     }
@@ -445,6 +515,7 @@ async function runOcr() {
     const result = await captureAndOcr();
     const text = result.text;
     const img  = result.img;
+    const conf = result.confidence || 0;
     // Debug-Daten sofort uebermitteln
     if (ocrDebug) sendDebugData(img, text);
     // bei keinem Treffer das Intervall anhalten, CPU sparen
@@ -845,6 +916,17 @@ document.addEventListener('keydown', e => {
         const btn = document.getElementById('ocrToggle');
         if (btn) {
             btn.click();
+        }
+    }
+    if (e.key.toLowerCase() === 'o' && e.ctrlKey && e.shiftKey) {
+        e.preventDefault();
+        openOcrSettings();
+    }
+    if (e.key.toLowerCase() === 'r') {
+        const drawer = document.getElementById('ocrSettingsDrawer');
+        if (drawer && drawer.classList.contains('open')) {
+            e.preventDefault();
+            drawer.querySelector('#ocrReset')?.click();
         }
     }
 });
