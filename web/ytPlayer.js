@@ -895,7 +895,14 @@ document.addEventListener('keydown', e => {
     const playBtn = document.getElementById('videoPlay');
     const backBtn = document.getElementById('videoBack');
     const fwdBtn  = document.getElementById('videoForward');
+    const drawer  = document.getElementById('ocrSettingsDrawer');
     if (e.key === 'Escape') {
+        if (drawer && drawer.classList.contains('open')) {
+            // Bei Escape zuerst nur den Einstell-Drawer schließen
+            e.preventDefault();
+            openOcrSettings();
+            return;
+        }
         e.preventDefault();
         closeVideoDialog();
     }
