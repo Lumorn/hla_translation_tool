@@ -185,22 +185,15 @@ function delayedPlayerResize() {
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
     const dlg = videoDlg;
-    const maxH = Math.floor(window.innerHeight * 0.9);
+    const maxH = Math.floor(window.innerHeight * 0.85);
     const needH = dlg.scrollHeight;
     const newH  = Math.min(maxH, needH);
-    // Nur Werte setzen, wenn sie sich geaendert haben
+    // Nur setzen, wenn sich der Wert geändert hat
     if (dlg.__lastH !== newH) {
         dlg.style.height = newH + 'px';
         dlg.__lastH = newH;
     }
-
-    const maxW = Math.floor(window.innerWidth * 0.9);
-    const needW = dlg.scrollWidth;
-    const newW  = Math.min(maxW, needW);
-    if (dlg.__lastW !== newW) {
-        dlg.style.width = newW + 'px';
-        dlg.__lastW = newW;
-    }
+    // Breite wird durch CSS geregelt
 
     if (typeof adjustVideoPlayerSize === 'function') adjustVideoPlayerSize();
 }
@@ -283,9 +276,9 @@ openVideoManager.addEventListener('click', async () => {
     // schon offen? – dann einfach ignorieren
     if (videoDlg.open) return;
 
-    // Dialoggröße an Fenster anpassen
-    videoDlg.style.width  = Math.min(window.innerWidth  * 0.9, 1100) + 'px';
-    videoDlg.style.height = Math.min(window.innerHeight * 0.9,  750) + 'px';
+    // Größe wird überwiegend durch CSS geregelt
+    videoDlg.style.width  = '';
+    videoDlg.style.height = '';
 
     videoDlg.showModal();
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoDlg);

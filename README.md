@@ -75,6 +75,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Maximierte Listenbreite:** Die gespeicherten Videos beanspruchen nun maximal 480 px Breite. Titelspalte und Vorschaubild bleiben schlank und das Thumbnail hält stets das Seitenverhältnis 16:9.
 * **Verbesserte dynamische Dialoghöhe:** Der Video-Manager schrumpft nun auch bei kleinen Fenstern und entfernt überflüssigen Leerraum.
 * **Automatische Dialogbreite:** Ohne geöffneten Player richtet sich die Breite des Video-Managers nach der Liste.
+* **Konstante Dialoggröße:** Dank `clamp()` bleibt das Fenster jetzt auch ohne geladenes Video angenehm breit und bietet Platz für künftige Erweiterungen.
 * **Flexibles Fenster für gespeicherte Videos:** Höhe passt sich jetzt automatisch an Videoplayer und Liste an.
 * **Voll ausgenutzte Video-Liste:** Das Tabellenfeld wächst bis zum unteren Rand des Dialogs und lässt keinen Leerraum unter dem Schließen-Button.
 * **Breitenbegrenzter Player:** Die Breite richtet sich nach der verfügbaren Höhe und überschreitet nie das Format 16:9.
