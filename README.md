@@ -66,6 +66,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
+* **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
 * **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.
 * **Strg+Umschalt+V** liest eine YouTube-URL aus der Zwischenablage und fügt sie automatisch ein.
 * **Dialog frei verschieb- und skalierbar:** Der Video-Manager lässt sich per Maus verschieben und in der Größe anpassen.

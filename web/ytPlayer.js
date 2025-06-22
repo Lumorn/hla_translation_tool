@@ -590,12 +590,19 @@ export function openVideoDialog(bookmark, index) {
     // neue URL setzen und Player initialisieren
     iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
 
-    // Fehlerhinweis, falls die YouTube-API fehlt
+    // Fehlerhinweis und Fallback, falls die YouTube-API fehlt
     if (typeof YT === 'undefined' || !YT.Player) {
         const warn = document.createElement('div');
         warn.textContent = 'YouTube-Player konnte nicht geladen werden – Verbindung prüfen.';
         warn.className = 'yt-error';
         iframe.replaceWith(warn);
+
+        // Link ersatzweise extern öffnen
+        if (window.electronAPI && window.electronAPI.openExternal) {
+            window.electronAPI.openExternal(bookmark.url);
+        } else {
+            window.open(bookmark.url, '_blank');
+        }
         return;
     }
 
