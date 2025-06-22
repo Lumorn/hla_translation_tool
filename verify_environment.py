@@ -56,9 +56,12 @@ def check_git_installed() -> bool:
 
 
 def check_python() -> bool:
-    """Prüft die installierte Python-Version."""
+    """Prüft Version **und Architektur** von Python."""
     if sys.version_info < (3, 9):
         report("Python-Version", False, f"{sys.version.split()[0]} (<3.9)")
+        return False
+    if sys.maxsize <= 2**32:
+        report("Python-Architektur", False, "32-Bit nicht unterst\u00fctzt")
         return False
     report("Python-Version", True, sys.version.split()[0])
     return True
