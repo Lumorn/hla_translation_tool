@@ -237,7 +237,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 14. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
 15. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 16. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
-17. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.0`. `opencv-python-headless>=4.9.0` ist nun als optionales Paket gekennzeichnet.
+17. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
 18. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
 19. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
 20. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
