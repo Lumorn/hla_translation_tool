@@ -19,6 +19,7 @@ const closeVideoDlg    = document.getElementById('closeVideoDlg');
 // schmale Variante des Schließen-Knopfs
 const closeVideoDlgSmall = document.getElementById('closeVideoDlgSmall');
 const exportVideoBtn   = document.getElementById('exportVideoBtn');
+const screenshotBtn    = document.getElementById('screenshotBtn');
 
 // gespeicherten Suchbegriff wiederherstellen
 const gespeicherterFilter = localStorage.getItem('hla_videoFilter') || '';
@@ -144,6 +145,14 @@ function initVideoDialogDrag() {
     }
 }
 initVideoDialogDrag();
+
+// Erlaubt das Ablegen von YouTube-Links im Dialog
+videoDlg.addEventListener('dragover', e => { e.preventDefault(); });
+videoDlg.addEventListener('drop', e => {
+    e.preventDefault();
+    const url = e.dataTransfer.getData('text/plain');
+    if (url) addVideoFromUrl(url.trim());
+});
 
 // Neuer ResizeObserver verhindert Endlosschleifen
 const ro = new ResizeObserver(() => {
@@ -313,6 +322,10 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoDlg.open) {
         if (typeof closeVideoDialog === 'function') closeVideoDialog();
     }
+    if (e.ctrlKey && e.key.toLowerCase() === 'f' && videoDlg.open) {
+        e.preventDefault();
+        videoFilter.focus();
+    }
 });
 
 let asc = true;
@@ -334,9 +347,11 @@ async function refreshTable(sortKey='title', dir=true) {
             : (''+b[sortKey]).localeCompare(a[sortKey], 'de');
     });
     videoTableBody.innerHTML = '';
+    const sel = Number(localStorage.getItem('videoSelectedIndex') || '-1');
     list.forEach((b,i) => {
         const tr = document.createElement('tr');
         tr.dataset.idx = b.origIndex;
+        if (b.origIndex === sel) tr.classList.add('selected-row');
         const thumbUrl = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/default.jpg`;
         tr.innerHTML = `
             <td><img src="${thumbUrl}" data-idx="${b.origIndex}" class="video-thumb"></td>
@@ -348,6 +363,8 @@ async function refreshTable(sortKey='title', dir=true) {
             </td>`;
         videoTableBody.appendChild(tr);
     });
+    const selRow = videoTableBody.querySelector('tr.selected-row');
+    if (selRow) selRow.scrollIntoView({ block: 'nearest' });
 }
 
 // Delegierte Button-Events
@@ -381,6 +398,7 @@ videoTableBody.onclick = async e => {
         const origIdx = Number(row.dataset.idx);
         let list = await window.videoApi.loadBookmarks();
         const bm = list[origIdx];
+        localStorage.setItem('videoSelectedIndex', origIdx);
         openVideoDialog(bm, origIdx);
     }
 };
@@ -469,12 +487,17 @@ function calcLayout() {
 function updateAddBtn(){ addBtn.disabled = urlInput.value.trim() === ''; }
 updateAddBtn();
 urlInput.addEventListener('input', updateAddBtn);
-addBtn.onclick = async () => {
+addBtn.onclick = () => {
     const raw = urlInput.value.trim();
     if (!raw) { alert('URL fehlt'); return; }
+    addVideoFromUrl(raw);
+};
+
+// fügt ein Video anhand einer URL hinzu
+async function addVideoFromUrl(raw){
     const ytre = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i;
     const yb = /^https?:\/\/youtu\.be\//i;
-    if (!ytre.test(raw) && !yb.test(raw)) { alert('Keine g\u00fcltige YouTube-Adresse'); return; }
+    if (!ytre.test(raw) && !yb.test(raw)) { alert('Keine gültige YouTube-Adresse'); return; }
 
     let list = await window.videoApi.loadBookmarks();
     if (list.some(b => b.url === raw)) return;
@@ -510,3 +533,10 @@ exportVideoBtn.onclick = async () => {
     a.click();
     URL.revokeObjectURL(url);
 };
+
+// Löst einen Screenshot des Players aus
+if (screenshotBtn) {
+    screenshotBtn.onclick = () => {
+        if (window.screenshotFrame) window.screenshotFrame();
+    };
+}

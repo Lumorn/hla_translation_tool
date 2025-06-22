@@ -898,6 +898,28 @@ export async function deleteCurrentVideo() {
     if (window.refreshTable) window.refreshTable();
 }
 
+// erstellt einen Screenshot des aktuellen Frames
+export async function screenshotFrame() {
+    const iframe = document.getElementById('videoPlayerFrame');
+    if (!iframe || !window.api || !window.api.captureFrame) return;
+    const rect = iframe.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const bounds = {
+        x: Math.round(rect.left * dpr),
+        y: Math.round(rect.top  * dpr),
+        width:  Math.round(rect.width  * dpr),
+        height: Math.round(rect.height * dpr)
+    };
+    const png = await window.api.captureFrame(bounds);
+    if (!png) return;
+    const url = URL.createObjectURL(new Blob([png], { type: 'image/png' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'frame.png';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
 // veraltete Funktion – ruft intern den neuen Dialog zu
 // und gibt weiterhin ein Promise zurück
 export async function closePlayer() {
@@ -974,6 +996,7 @@ if (typeof module !== 'undefined' && module.exports) {
         openVideoDialog,
         closeVideoDialog,
         deleteCurrentVideo,
-        openOcrSettings
+        openOcrSettings,
+        screenshotFrame
     };
 }
