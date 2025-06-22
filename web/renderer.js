@@ -77,24 +77,16 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoMgrDialog);
 
-// Beobachter passt Größe bei jeder Dialog-Änderung an
-// Vermeidet eine Endlosschleife durch Throttling per requestAnimationFrame
-let resizeScheduled = false;
-const resizeObserver = new ResizeObserver(() => {
-    if (resizeScheduled) return;
-    resizeScheduled = true;
-    window.requestAnimationFrame(() => {
-        if (typeof adjustVideoPlayerSize === 'function') {
-            adjustVideoPlayerSize();
-        }
-        if (typeof window.positionOverlay === 'function') {
-            window.positionOverlay();
-        }
-        if (resizeObserver.reset) resizeObserver.reset();
-        resizeScheduled = false;
+// Neuer ResizeObserver verhindert Endlosschleifen
+const ro = new ResizeObserver(() => {
+    if (window.__resizePending) return;
+    window.__resizePending = true;
+    requestAnimationFrame(() => {
+        adjustVideoDialogHeight();
+        window.__resizePending = false;
     });
 });
-resizeObserver.observe(videoMgrDialog);
+ro.observe(videoMgrDialog);
 
 // Beobachtet Dialog- und OCR-Panelgroesse fuer dynamische Layout-Anpassung
 const layoutObserver = new ResizeObserver(() => {
