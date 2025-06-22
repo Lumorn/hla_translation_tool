@@ -2864,6 +2864,38 @@ th:nth-child(6) {
 #ocrSettingsDrawer .result-preview.yellow{ background:#664; }
 #ocrSettingsDrawer .result-preview.red   { background:#600; }
 
+/* Footer mit GPU-Info und Start/Stop-Buttons */
+#ocrFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+    padding: 0 8px;
+    background: #242424;
+    color: #e0e0e0;
+}
+#ocrFooter button {
+    background: #333;
+    border: none;
+    color: #e0e0e0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#ocrFooter button:hover { background: #444; }
+
+#ocrOverlay .handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #FFD54F;
+    border: 2px solid #fff;
+}
+#ocrOverlay .nw { top: -6px; left: -6px; cursor: nwse-resize; }
+#ocrOverlay .ne { top: -6px; right: -6px; cursor: nesw-resize; }
+#ocrOverlay .sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+#ocrOverlay .se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+
 /* Meldung, falls der YouTube-Player nicht geladen werden konnte */
 .yt-error {
     padding: 1rem;

@@ -143,6 +143,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Escape schließt den Einstell-Drawer:** Mit der Escape-Taste verschwindet nur der Drawer, der Player bleibt sichtbar.
 * **Präzisere Texterkennung:** Das Overlay endet jetzt 3 px über dem Slider und nutzt nur 14 % der Bildhöhe.
 * **Schnellerer Auto‑OCR‑Loop:** Läuft alle 750 ms und pausiert das Video ab vier erkannten Zeichen.
+* **Statusleiste mit GPU-Anzeige und Start-/Stop-Buttons** erleichtert die Kontrolle der Erkennung.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
