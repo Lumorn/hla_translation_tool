@@ -79,14 +79,16 @@ ensureDialogSupport(videoMgrDialog);
 
 // Neuer ResizeObserver verhindert Endlosschleifen
 const ro = new ResizeObserver(() => {
-    if (window.__resizePending) return;
-    window.__resizePending = true;
-    requestAnimationFrame(() => {
-        adjustVideoDialogHeight();
-        window.__resizePending = false;
-    });
+    if (!window.__dlgRAF) {
+        window.__dlgRAF = requestAnimationFrame(() => {
+            window.__dlgRAF = null;
+            adjustVideoDialogHeight();
+        });
+    }
 });
 ro.observe(videoMgrDialog);
+// Beobachter global ablegen, damit andere Skripte ihn abmelden koennen
+window.videoDialogObserver = ro;
 
 // Beobachtet Dialog- und OCR-Panelgroesse fuer dynamische Layout-Anpassung
 const layoutObserver = new ResizeObserver(() => {
@@ -114,39 +116,25 @@ function delayedPlayerResize() {
 
 // passt Höhe und Breite des Video-Managers dynamisch an
 function adjustVideoDialogHeight() {
-    // Maximale Höhe auf 90 % des Fensters begrenzen
-    const maxH = window.innerHeight * 0.9;
-    videoMgrDialog.style.height = 'auto';
-    const benoetigtH = videoMgrDialog.scrollHeight;
-    videoMgrDialog.style.height = Math.min(benoetigtH, maxH) + 'px';
-
-    // Dialog vorübergehend auf Maximalbreite setzen
-    const maxW = window.innerWidth * 0.9;
-    videoMgrDialog.style.width = maxW + 'px';
-
-    // Player anhand dieser Breite skalieren
-    if (typeof adjustVideoPlayerSize === 'function') {
-        adjustVideoPlayerSize();
-        if (typeof calcLayout === 'function') {
-            calcLayout();
-        }
+    const dlg = videoMgrDialog;
+    const maxH = Math.floor(window.innerHeight * 0.9);
+    const needH = dlg.scrollHeight;
+    const newH  = Math.min(maxH, needH);
+    // Nur Werte setzen, wenn sie sich geaendert haben
+    if (dlg.__lastH !== newH) {
+        dlg.style.height = newH + 'px';
+        dlg.__lastH = newH;
     }
 
-    // Benötigte Breite ermitteln und endgültig setzen
-    videoMgrDialog.style.width = 'auto';
-    const benoetigtW = videoMgrDialog.scrollWidth;
-    videoMgrDialog.style.width = Math.min(benoetigtW, maxW) + 'px';
-
-    // Player erneut anpassen, falls sich die Breite geändert hat
-    if (typeof adjustVideoPlayerSize === 'function') {
-        adjustVideoPlayerSize();
-        if (typeof calcLayout === 'function') {
-            calcLayout();
-        }
+    const maxW = Math.floor(window.innerWidth * 0.9);
+    const needW = dlg.scrollWidth;
+    const newW  = Math.min(maxW, needW);
+    if (dlg.__lastW !== newW) {
+        dlg.style.width = newW + 'px';
+        dlg.__lastW = newW;
     }
 
-    // nach dem Layout zwei Frames warten und erneut anpassen
-    delayedPlayerResize();
+    if (typeof adjustVideoPlayerSize === 'function') adjustVideoPlayerSize();
 }
 // Funktion global verfügbar machen
 window.adjustVideoDialogHeight = adjustVideoDialogHeight;
@@ -224,6 +212,8 @@ window.addEventListener('resize', () => {
 
 openVideoManager.onclick = async () => {
     await refreshTable();
+    // ResizeObserver erneut aktivieren
+    if (window.videoDialogObserver) window.videoDialogObserver.observe(videoMgrDialog);
     videoMgrDialog.showModal();
     adjustVideoDialogHeight();
     adjustVideoPlayerSize(true);
@@ -235,6 +225,8 @@ closeVideoDlg.onclick = () => {
     videoMgrDialog.close();
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
+    // Beobachtung stoppen, um Schleifen zu vermeiden
+    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
 };
 if (closeVideoDlgSmall) {
     // kompakte Variante fuer schmale Fenster
@@ -242,11 +234,13 @@ if (closeVideoDlgSmall) {
         videoMgrDialog.close();
         if (typeof closeVideoDialog === 'function') closeVideoDialog();
         adjustVideoDialogHeight();
+        if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
     };
 }
 videoMgrDialog.addEventListener('cancel', () => {
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
     adjustVideoDialogHeight();
+    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoMgrDialog);
 });
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && videoMgrDialog.open) {

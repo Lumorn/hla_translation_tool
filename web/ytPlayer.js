@@ -556,7 +556,10 @@ export function openVideoDialog(bookmark, index) {
     const dlg    = document.getElementById('videoMgrDialog');
     const player = document.getElementById('videoPlayerSection');
     if (!dlg || !player) return;
-    if (!dlg.open) dlg.showModal();
+    if (!dlg.open) {
+        if (window.videoDialogObserver) window.videoDialogObserver.observe(dlg);
+        dlg.showModal();
+    }
 
     player.classList.remove('hidden');
     // gleich nach dem Einblenden neu skalieren
@@ -793,6 +796,7 @@ export async function closeVideoDialog() {
     if (dlg.__closing) return;
     dlg.__closing = true;
     player.classList.add('hidden');
+    if (window.videoDialogObserver) window.videoDialogObserver.unobserve(dlg);
     const frame = document.getElementById('videoPlayerFrame');
     if (frame) frame.src = '';
     const ocrBtn = document.getElementById('ocrToggle');
