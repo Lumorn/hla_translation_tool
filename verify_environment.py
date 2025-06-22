@@ -25,9 +25,9 @@ def report(name: str, ok: bool, detail: str = "") -> None:
     REPORTS.append((name, ok, detail))
 
 
-def run(cmd: str) -> str:
-    """Führt ein Kommando aus und gibt die Ausgabe zurück."""
-    return subprocess.check_output(cmd, shell=True, text=True).strip()
+def run(cmd: str, cwd: str | None = BASE_DIR) -> str:
+    """Führt ein Kommando im angegebenen Verzeichnis aus und gibt die Ausgabe zurück."""
+    return subprocess.check_output(cmd, shell=True, cwd=cwd, text=True).strip()
 
 
 def check_git_installed() -> bool:
