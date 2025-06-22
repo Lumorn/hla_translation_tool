@@ -71,6 +71,10 @@ if sys.version_info < (3, 9):
     print("[Fehler] Python 3.9 oder neuer wird benoetigt.")
     log("Python-Version zu alt")
     sys.exit(1)
+if sys.maxsize <= 2**32:
+    print("[Fehler] 32-Bit-Python wird nicht unterstuetzt.")
+    log("Python-Architektur 32-Bit")
+    sys.exit(1)
 print("=== Starte HLA Translation Tool Setup ===")
 
 # "--check" startet nur einen kurzen Testlauf der Desktop-App
