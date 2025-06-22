@@ -6983,6 +6983,24 @@ async function scanAudioDuplicates() {
         }
         window.openVideoUrl = openVideoUrl;
 
+        // Strg+Umschalt+V fügt URL aus der Zwischenablage ein und öffnet sie
+        document.addEventListener('keydown', async e => {
+            if (e.key.toLowerCase() === 'v' && e.ctrlKey && e.shiftKey) {
+                e.preventDefault();
+                try {
+                    const txt = (await navigator.clipboard.readText()).trim();
+                    if (txt) {
+                        const inp = document.getElementById('videoUrlInput');
+                        if (inp) inp.value = txt;
+                        saveVideoUrl();
+                        openVideoUrl();
+                    }
+                } catch {
+                    showToast('Zwischenablage konnte nicht gelesen werden', 'error');
+                }
+            }
+        });
+
         // Öffnet ein Fenster mit detaillierten Debug-Informationen
         async function openDebugInfo() {
             // Zu sammelnde Informationen

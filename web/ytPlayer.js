@@ -556,10 +556,9 @@ export function openVideoDialog(bookmark, index) {
     const dlg    = document.getElementById('videoMgrDialog');
     const player = document.getElementById('videoPlayerSection');
     if (!dlg || !player) return;
-    if (!dlg.open) {
-        if (window.videoDialogObserver) window.videoDialogObserver.observe(dlg);
-        dlg.showModal();
-    }
+    if (dlg.open) return; // erneutes Öffnen verhindern
+    if (window.videoDialogObserver) window.videoDialogObserver.observe(dlg);
+    dlg.showModal();
 
     player.classList.remove('hidden');
     // gleich nach dem Einblenden neu skalieren
@@ -600,7 +599,16 @@ export function openVideoDialog(bookmark, index) {
         return;
     }
 
-    window.currentYT = new YT.Player('videoPlayerFrame');
+    // Player erstellen und Fehler abfangen
+    window.currentYT = new YT.Player('videoPlayerFrame', {
+        events: {
+            onError: () => {
+                if (typeof showToast === 'function') {
+                    showToast('Video kann nicht geladen werden – evtl. Proxy nötig', 'error');
+                }
+            }
+        }
+    });
 
     const slider = document.getElementById('videoSlider');
     const cur = document.getElementById('videoCurrent');
@@ -683,10 +691,10 @@ export function openVideoDialog(bookmark, index) {
         }
     };
     backBtn.onclick = () => {
-        if (window.currentYT) window.currentYT.seekTo(Math.max(0, window.currentYT.getCurrentTime() - 10), true);
+        if (window.currentYT) window.currentYT.seekTo(Math.max(0, window.currentYT.getCurrentTime() - 5), true);
     };
     fwdBtn.onclick = () => {
-        if (window.currentYT) window.currentYT.seekTo(window.currentYT.getCurrentTime() + 10, true);
+        if (window.currentYT) window.currentYT.seekTo(window.currentYT.getCurrentTime() + 5, true);
     };
     reloadBtn.onclick = () => {
         if (window.currentYT) window.currentYT.seekTo(0, true);

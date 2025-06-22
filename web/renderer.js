@@ -78,6 +78,73 @@ function ensureDialogSupport(d) {
 }
 ensureDialogSupport(videoDlg);
 
+// Macht den Dialog verschieb- und skalierbar
+function initVideoDialogDrag() {
+    if (videoDlg.__dragInit) return;
+    videoDlg.__dragInit = true;
+
+    const handle = videoDlg.querySelector('.player-header') || videoDlg;
+    let startX = 0, startY = 0, startLeft = 0, startTop = 0;
+
+    handle.addEventListener('pointerdown', e => {
+        if (e.button !== 0) return;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = videoDlg.getBoundingClientRect();
+        startLeft = rect.left;
+        startTop  = rect.top;
+        document.addEventListener('pointermove', move);
+        document.addEventListener('pointerup', stop);
+        handle.setPointerCapture(e.pointerId);
+    });
+
+    function move(e) {
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        videoDlg.style.left = startLeft + dx + 'px';
+        videoDlg.style.top  = startTop  + dy + 'px';
+    }
+
+    function stop(e) {
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointerup', stop);
+        handle.releasePointerCapture(e.pointerId);
+    }
+
+    const resize = document.getElementById('dlgResizeHandle');
+    if (resize) {
+        let sW = 0, sH = 0;
+        resize.addEventListener('pointerdown', e => {
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = videoDlg.getBoundingClientRect();
+            sW = rect.width;
+            sH = rect.height;
+            document.addEventListener('pointermove', doResize);
+            document.addEventListener('pointerup', stopResize);
+            resize.setPointerCapture(e.pointerId);
+            e.preventDefault();
+        });
+
+        function doResize(e) {
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            videoDlg.style.width  = Math.max(400, sW + dx) + 'px';
+            videoDlg.style.height = Math.max(300, sH + dy) + 'px';
+            if (typeof adjustVideoPlayerSize === 'function') {
+                adjustVideoPlayerSize(true);
+            }
+        }
+
+        function stopResize(e) {
+            document.removeEventListener('pointermove', doResize);
+            document.removeEventListener('pointerup', stopResize);
+            resize.releasePointerCapture(e.pointerId);
+        }
+    }
+}
+initVideoDialogDrag();
+
 // Neuer ResizeObserver verhindert Endlosschleifen
 const ro = new ResizeObserver(() => {
     if (!window.__dlgRAF) {
