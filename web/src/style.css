@@ -2504,42 +2504,6 @@ th:nth-child(6) {
     .player-controls span { font-size: 0.8rem; }
 }
 
-/* Flex-Layout für Liste und Player,
-   verteilt den verfügbaren Platz dynamisch */
-.video-layout {
-    /* Liste und Player nebeneinander in fester Zeile */
-    display: grid;
-    grid-template-columns: 260px 1fr 40px;
-    gap: 8px;
-    overflow: hidden;
-    position: relative; /* erlaubt absolut positionierte OCR-Spalte */
-}
-.video-action-panel {
-    /* Rechte Funktionsleiste mit vertikalen Icons */
-    width: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    background: #1a1a1a;
-    border: 2px solid #fff;
-}
-.video-action-panel .action-spacer {
-    flex-grow: 1;
-}
-.video-action-panel .action-btn {
-    width: 32px;
-    height: 32px;
-    background: #333;
-    border: none;
-    color: #e0e0e0;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.video-action-panel .action-btn.danger {
-    background: #552222;
-}
-.video-action-panel .action-btn:hover { background:#444; }
 .video-list-section {
     /* Linke Tabellenansicht mit Scrollbar */
     display: flex;
@@ -2859,25 +2823,6 @@ th:nth-child(6) {
 #ocrSettingsDrawer .result-preview.yellow{ background:#664; }
 #ocrSettingsDrawer .result-preview.red   { background:#600; }
 
-/* Footer mit GPU-Info und Start/Stop-Buttons */
-#ocrFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 48px;
-    padding: 0 8px;
-    background: #242424;
-    color: #e0e0e0;
-}
-#ocrFooter button {
-    background: #333;
-    border: none;
-    color: #e0e0e0;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-#ocrFooter button:hover { background: #444; }
 
 #ocrOverlay .handle {
     position: absolute;
