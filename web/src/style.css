@@ -2771,3 +2771,44 @@ th:nth-child(6) {
     z-index: 5;
 }
 
+/* Ausklappbarer Einstell-Drawer fuer das OCR-Tuning */
+#ocrSettingsDrawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100%;
+    background: #222;
+    color: #fff;
+    padding: 8px;
+    overflow: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 6;
+}
+
+#ocrSettingsDrawer.open {
+    transform: translateX(0);
+}
+
+#ocrSettingsDrawer canvas {
+    width: 100%;
+    height: 45%;
+    background: #000;
+    margin-bottom: 8px;
+}
+
+#ocrSettingsDrawer .result-preview {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 4px;
+    margin-top: 8px;
+    min-height: 80px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+#ocrSettingsDrawer .result-preview.green { background:#084; }
+#ocrSettingsDrawer .result-preview.yellow{ background:#664; }
+#ocrSettingsDrawer .result-preview.red   { background:#600; }
+
