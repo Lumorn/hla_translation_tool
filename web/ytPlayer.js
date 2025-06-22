@@ -28,7 +28,7 @@ async function pruefeHelligkeit(bitmap, roi, frameH) {
     const canvas = document.createElement('canvas');
     // fruehzeitig abbrechen, falls der Bereich keine gueltige Groesse besitzt
     if (roi.width <= 0 || roi.height <= 0) return 0;
-    const tmpW = 32;                              // kleines Hilfs-Canvas fuer schnelle Analyse
+    const tmpW = 32;                              // kleines Hilfs-Canvas für schnelle Analyse
     const tmpH = Math.max(1, Math.round(tmpW * roi.height / Math.max(1, roi.width)));
     canvas.width = tmpW;
     canvas.height = tmpH;
@@ -293,7 +293,7 @@ function terminateOcr() {
 window.positionOverlay = positionOverlay;
 window.initOverlayDrag = initOverlayDrag;
 
-// oeffnet oder schliesst den Einstell-Drawer fuer das OCR-Tuning
+// öffnet oder schließt den Einstell-Drawer für das OCR-Tuning
 async function openOcrSettings() {
     const drawer = document.getElementById('ocrSettingsDrawer');
     if (!drawer) return;
@@ -373,9 +373,9 @@ async function openOcrSettings() {
 
 window.openOcrSettings = openOcrSettings;
 
-// bereitet den Screenshot im OffscreenCanvas fuer die OCR auf
-// bereitet das Bild anhand der aktuellen Einstellungen auf
-// bereitet das Bild fuer die Texterkennung auf
+// bereitet den Screenshot im OffscreenCanvas für die OCR auf
+// verarbeitet das Bild mit den aktuellen Einstellungen
+// bereitet das Ergebnis für die Texterkennung vor
 async function refineBlob(pngBlob, settings = ocrSettings) {
     const bmp = await createImageBitmap(pngBlob);
     const W = bmp.width * 2;
@@ -557,7 +557,7 @@ function startAutoLoop() {
     if (typeof window.positionOverlay === 'function') {
         window.positionOverlay();
     }
-    // visuelles Feedback fuer laufende Erkennung
+    // visuelles Feedback für laufende Erkennung
     btn.title = 'Auto-OCR aktiv';
     autoLoop = setInterval(runOcr, 1000); // maximal ein Durchlauf pro Sekunde
 }
