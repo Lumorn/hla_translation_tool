@@ -15,6 +15,7 @@ import sys
 from datetime import datetime
 import importlib.util
 import shutil
+import hashlib
 
 # Pfad dieses Skripts und Log-Datei festlegen
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +38,25 @@ def run(cmd: str) -> None:
 def has_module(name: str) -> bool:
     """Prueft, ob ein Python-Modul bereits installiert ist."""
     return importlib.util.find_spec(name) is not None
+
+
+def needs_npm_ci(lockfile: str, modules_dir: str) -> bool:
+    """Prüft, ob npm ci erforderlich ist."""
+    if not os.path.isdir(modules_dir):
+        return True
+    stamp = os.path.join(modules_dir, ".modules_hash")
+    h = hashlib.sha1(open(lockfile, "rb").read()).hexdigest()
+    if not os.path.exists(stamp):
+        return True
+    return open(stamp, "r", encoding="utf-8").read().strip() != h
+
+
+def write_npm_hash(lockfile: str, modules_dir: str) -> None:
+    """Speichert den Hash des Lockfiles in node_modules."""
+    os.makedirs(modules_dir, exist_ok=True)
+    h = hashlib.sha1(open(lockfile, "rb").read()).hexdigest()
+    with open(os.path.join(modules_dir, ".modules_hash"), "w", encoding="utf-8") as f:
+        f.write(h)
 
 
 log("Setup gestartet")
@@ -156,38 +176,32 @@ else:
 
 os.chdir(repo_path)
 
-# ----------------------- Lokale Änderungen verwerfen --------------------
-log("Verwerfe lokale Änderungen")
-try:
-    # Kompletter Reset, Sounds- und Backup-Ordner bleiben unberührt
-    run("git reset --hard HEAD")
-    log("Lokale Änderungen verworfen")
-except subprocess.CalledProcessError:
-    print("git reset fehlgeschlagen. Weitere Details siehe setup.log")
-    log("git reset fehlgeschlagen")
-    log(str(sys.exc_info()[1]))
 
-# ----------------------- git pull --------------------------
-log("git pull starten")
-print("Neueste Aenderungen werden geholt...")
-try:
-    run("git pull")
-    log("git pull erfolgreich")
-except subprocess.CalledProcessError:
-    print("git pull fehlgeschlagen. Weitere Details siehe setup.log")
-    log("git pull fehlgeschlagen")
-    log(str(sys.exc_info()[1]))
+# ----------------------- Repository aktualisieren ----------------------
+HEAD_FILE = os.path.join(repo_path, ".last_head")
+current_head = subprocess.check_output("git rev-parse HEAD", shell=True, text=True).strip()
+last_head = None
+if os.path.exists(HEAD_FILE):
+    with open(HEAD_FILE, "r", encoding="utf-8") as f:
+        last_head = f.read().strip()
 
-# ----------------------- Nicht mehr benötigte Dateien entfernen -----------------
-log("Bereinige verwaiste Dateien")
-try:
-    # Sounds- und Backups-Ordner niemals löschen
-    run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
-    log("Verwaiste Dateien bereinigt")
-except subprocess.CalledProcessError:
-    print("git clean fehlgeschlagen. Weitere Details siehe setup.log")
-    log("git clean fehlgeschlagen")
-    log(str(sys.exc_info()[1]))
+if current_head == last_head:
+    log("Repository unver\u00e4ndert - \u00fcberspringe Reset und Pull")
+else:
+    log("Setze Repository zur\u00fcck und hole Updates")
+    try:
+        run("git fetch --depth=1")
+        run("git reset --hard origin/main")
+        run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
+        current_head = subprocess.check_output("git rev-parse HEAD", shell=True, text=True).strip()
+        with open(HEAD_FILE, "w", encoding="utf-8") as f:
+            f.write(current_head)
+        log("Repository aktualisiert")
+    except subprocess.CalledProcessError as e:
+        print("git-Update fehlgeschlagen. Weitere Details siehe setup.log")
+        log("git-Update fehlgeschlagen")
+        log(str(e))
+
 
 # ----------------------- Python-Abhängigkeiten installieren -----------------
 log("Installiere Python-Abhaengigkeiten")
@@ -196,12 +210,15 @@ if os.path.exists(req_file):
     try:
         with open(req_file, "r", encoding="utf-8") as f:
             packages = [ln.strip() for ln in f if ln.strip() and not ln.startswith("#")]
+        missing = []
         for pkg in packages:
             if pkg.startswith("torch") or pkg.startswith("easyocr"):
                 continue  # werden separat behandelt
             mod = pkg.split("==")[0].split(">=")[0]
             if not has_module(mod):
-                run(f"{sys.executable} -m pip install {pkg}")
+                missing.append(pkg)
+        if missing:
+            run(f"{sys.executable} -m pip install --disable-pip-version-check -q " + " ".join(missing))
         log("pip install erfolgreich")
     except subprocess.CalledProcessError as e:
         print("pip install fehlgeschlagen. Weitere Details siehe setup.log")
@@ -230,15 +247,19 @@ if not has_module("easyocr"):
 
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
 log("npm ci (root) starten")
-print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
-try:
-    run("npm ci")
-    log("npm ci (root) erfolgreich")
-except subprocess.CalledProcessError as e:
-    print("npm ci im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log")
-    log("npm ci (root) fehlgeschlagen")
-    log(str(e))
-    sys.exit(1)
+if needs_npm_ci("package-lock.json", "node_modules"):
+    print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
+    try:
+        run("npm ci --prefer-offline --no-audit --progress=false")
+        log("npm ci (root) erfolgreich")
+        write_npm_hash("package-lock.json", "node_modules")
+    except subprocess.CalledProcessError as e:
+        print("npm ci im Hauptverzeichnis fehlgeschlagen. Weitere Details siehe setup.log")
+        log("npm ci (root) fehlgeschlagen")
+        log(str(e))
+        sys.exit(1)
+else:
+    log("node_modules sind aktuell - npm ci wird uebersprungen")
 
 # Sicherstellen, dass der Electron-Ordner existiert
 if not os.path.isdir("electron"):
@@ -256,15 +277,19 @@ if not os.path.isdir("electron"):
 # ----------------------- Electron-Setup --------------------
 os.chdir("electron")
 log("npm ci starten")
-print("Abhaengigkeiten werden installiert...")
-try:
-    run("npm ci")
-    log("npm ci erfolgreich")
-except subprocess.CalledProcessError:
-    print("npm ci fehlgeschlagen. Weitere Details siehe setup.log")
-    log("npm ci fehlgeschlagen")
-    log(str(sys.exc_info()[1]))
-    sys.exit(1)
+if needs_npm_ci("package-lock.json", "node_modules"):
+    print("Abhaengigkeiten werden installiert...")
+    try:
+        run("npm ci --prefer-offline --no-audit --progress=false")
+        log("npm ci erfolgreich")
+        write_npm_hash("package-lock.json", "node_modules")
+    except subprocess.CalledProcessError:
+        print("npm ci fehlgeschlagen. Weitere Details siehe setup.log")
+        log("npm ci fehlgeschlagen")
+        log(str(sys.exc_info()[1]))
+        sys.exit(1)
+else:
+    log("node_modules sind aktuell - npm ci wird uebersprungen")
 
 # Nach der Installation pruefen, ob das Electron-Modul existiert
 if not os.path.isdir(os.path.join("node_modules", "electron")):

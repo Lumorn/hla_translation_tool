@@ -8,3 +8,5 @@ web/backups/
 web/Download/
 
 setup.log
+.last_head
+**/.modules_hash
