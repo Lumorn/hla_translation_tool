@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """verify_environment.py
-Prüft die installierten Versionen von Python, Node und npm sowie die wichtigsten Ordner.
-Das Skript nimmt keine Änderungen vor und meldet, ob die Umgebung korrekt eingerichtet ist.
-"""
+Prüft die installierten Versionen von Python, Node und npm sowie die wichtigsten
+Ordner. Fehlen Abhängigkeiten oder Ordner, versucht das Skript diese automatisch
+nachzuladen. Mit ``--check-only`` lassen sich die Reparaturversuche abschalten."""
 
 import os
 import subprocess
 import sys
 import importlib.util
+
+FIX_MODE = "--check-only" not in sys.argv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORTS: list[tuple[str, bool, str]] = []
@@ -84,11 +86,19 @@ def check_electron_folder() -> bool:
     if os.path.isdir(path):
         report("Electron-Ordner", True)
         return True
+    if FIX_MODE:
+        try:
+            run("git checkout -- electron")
+        except Exception:
+            pass
+        if os.path.isdir(path):
+            report("Electron-Ordner", True, "wiederhergestellt")
+            return True
     report("Electron-Ordner", False, "fehlt")
     return False
 
 
-def check_python_packages() -> bool:
+def check_python_packages(retry: bool = False) -> bool:
     """Prüft, ob alle in requirements.txt aufgeführten Pakete installiert sind."""
     req = os.path.join(BASE_DIR, "requirements.txt")
     if not os.path.exists(req):
@@ -112,6 +122,15 @@ def check_python_packages() -> bool:
                     fehlend_optional.append(mod)
                 else:
                     fehlend.append(mod)
+
+    if fehlend or fehlend_optional:
+        if FIX_MODE and not retry:
+            try:
+                run(f"{sys.executable} -m pip install -r \"{req}\"")
+            except Exception as e:
+                report("Python-Pakete", False, f"Installation fehlgeschlagen: {e}")
+                return False
+            return check_python_packages(True)
 
     if fehlend:
         report("Python-Pakete", False, ", ".join(fehlend))
@@ -142,8 +161,27 @@ def check_repo_clean() -> bool:
         report("Git", False, "Fehler bei 'git status'")
         return False
     if output:
-        report("Git-Status", False, "Lokale Änderungen")
-        return False
+        if FIX_MODE:
+            try:
+                run("git reset --hard")
+                run("git clean -fd")
+                output = run("git status --porcelain")
+            except Exception as e:
+                report("Git-Status", False, str(e))
+                return False
+            if output:
+                report("Git-Status", False, "Lokale Änderungen")
+                return False
+        else:
+            report("Git-Status", False, "Lokale Änderungen")
+            return False
+    if FIX_MODE:
+        try:
+            run("git fetch --depth=1")
+            run("git reset --hard origin/main")
+            run("git clean -fd")
+        except Exception as e:
+            report("Git-Update", False, str(e))
     report("Git-Status", True, "sauber")
     return True
 
@@ -157,13 +195,25 @@ def check_files() -> bool:
         if os.path.exists(path):
             report(name, True)
         else:
-            report(name, False, "fehlt")
-            ok = False
+            if FIX_MODE:
+                try:
+                    run(f"git checkout -- {name}")
+                except Exception:
+                    pass
+            if os.path.exists(path):
+                report(name, True, "wiederhergestellt")
+            else:
+                report(name, False, "fehlt")
+                ok = False
     return ok
 
 
 def main() -> None:
     ok = True
+    if FIX_MODE:
+        print("Automatische Reparatur aktiv")
+    else:
+        print("Nur Überprüfung ohne Änderungen")
     if not check_python():
         ok = False
     if not check_node():
