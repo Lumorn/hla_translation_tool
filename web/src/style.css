@@ -2416,23 +2416,41 @@ th:nth-child(6) {
 }
 
 .video-dialog {
-    /* Großer dunkler Dialog für den Video-Manager
-       die Breite wird dynamisch gesetzt */
-    width: auto;
-    max-width: 90vw;
+    /* Platz auf großen Bildschirmen optimal ausnutzen */
+    width: 80vw;
+    max-width: 1080px;
+    height: 70vh;
     max-height: 90vh;
-    height: auto;
-    /* niemals kleiner als dieses Mindestmaß */
+    /* Mindestgröße bleibt erhalten */
     min-width: 600px;
     min-height: 400px;
     background: #1a1a1a;
     color: #e0e0e0;
-    /* fester Innenabstand und Abstand zum Fenster */
     padding: 24px;
     margin: 24px auto;
     display: flex;
     flex-direction: column;
     overflow: auto;
+    resize: both;            /* einfache Größenänderung per Maus */
+    position: fixed;         /* frei verschiebbares Fenster */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Abdunklung hinter dem Dialog */
+.video-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Griff in der Ecke zum Skalieren */
+.dialog-resize {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    right: 2px;
+    bottom: 2px;
+    cursor: se-resize;
 }
 
 /* Werkzeugleiste mit Suchfeld und Buttons */

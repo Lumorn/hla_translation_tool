@@ -55,7 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente, Suchfeld und deutlichere Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder statt Nummern. Ein Klick auf Bild oder Titel startet sofort das Video – der separate Play-Button entfällt.
-* **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 10 s.
+* **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 5 s.
 * **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9 und passt sich jeder Fenstergröße an.
 * **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
@@ -66,6 +66,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
+* **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.
+* **Strg+Umschalt+V** liest eine YouTube-URL aus der Zwischenablage und fügt sie automatisch ein.
+* **Dialog frei verschieb- und skalierbar:** Der Video-Manager lässt sich per Maus verschieben und in der Größe anpassen.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Schlankerer Video-Manager:** URL-Eingabefeld unter den Buttons und eine klar beschriftete Aktions-Spalte. Der Player behält auf allen Monitoren sein 16:9-Format, ohne seitlichen Beschnitt, und die Steuerleiste bleibt sichtbar.
 * **Maximierte Listenbreite:** Die gespeicherten Videos beanspruchen nun maximal 480 px Breite. Titelspalte und Vorschaubild bleiben schlank und das Thumbnail hält stets das Seitenverhältnis 16:9.
