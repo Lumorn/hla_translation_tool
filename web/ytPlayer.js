@@ -555,6 +555,7 @@ export function openPlayer(bookmark, index) {
 export function openVideoDialog(bookmark, index) {
     const dlg    = document.getElementById('videoMgrDialog');
     const player = document.getElementById('videoPlayerSection');
+    const gpu    = document.getElementById('gpuInfo');
     if (!dlg || !player) return;
     // Dialog nur oeffnen, wenn er noch nicht sichtbar ist
     if (!dlg.open) {
@@ -563,6 +564,7 @@ export function openVideoDialog(bookmark, index) {
     }
 
     player.classList.remove('hidden');
+    if (gpu) gpu.textContent = 'GPU: EasyOCR';
     // gleich nach dem Einblenden neu skalieren
     if (typeof window.adjustVideoPlayerSize === 'function') {
         window.adjustVideoPlayerSize(true);
@@ -632,6 +634,8 @@ export function openVideoDialog(bookmark, index) {
     const settingsBtn = document.getElementById('ocrSettings');
     const ocrOverlay = document.getElementById('ocrOverlay');
     const ocrPanel = document.getElementById('ocrResultPanel');
+    const startBtn = document.getElementById('ocrStart');
+    const stopBtn  = document.getElementById('ocrStop');
     const deleteBtn = document.getElementById('videoDelete');
     const closeBtn = document.getElementById('videoClose');
     if (ocrOverlay) {
@@ -769,6 +773,26 @@ export function openVideoDialog(bookmark, index) {
     }
     if (settingsBtn) {
         settingsBtn.onclick = openOcrSettings;
+    }
+    if (startBtn) {
+        // Startet die automatische OCR
+        startBtn.onclick = () => {
+            ocrActive = true;
+            player.classList.add('ocr-active');
+            ocrOverlay?.classList.remove('hidden');
+            ocrPanel?.classList.remove('hidden');
+            startAutoLoop();
+        };
+    }
+    if (stopBtn) {
+        // Stoppt die automatische OCR
+        stopBtn.onclick = () => {
+            stopAutoLoop();
+            ocrActive = false;
+            player.classList.remove('ocr-active');
+            ocrOverlay?.classList.add('hidden');
+            ocrPanel?.classList.add('hidden');
+        };
     }
     // Lösch-Button ruft nun die neue Funktion auf
     deleteBtn.onclick = deleteCurrentVideo;

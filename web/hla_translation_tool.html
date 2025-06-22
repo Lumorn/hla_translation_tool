@@ -578,7 +578,12 @@
                     <button id="ocrDebug" title="Debug-Fenster">🐞</button>
                     <button id="ocrSettings" title="OCR-Einstellungen">⚙️</button>
                 </div>
-                <div id="ocrOverlay"></div>
+                <div id="ocrOverlay">
+                    <div class="handle nw"></div>
+                    <div class="handle ne"></div>
+                    <div class="handle sw"></div>
+                    <div class="handle se"></div>
+                </div>
                 <div id="ocrResultPanel">
                     <canvas id="roiPreview"></canvas>
                     <div id="ocrText"></div>
@@ -607,6 +612,13 @@
         </div>
         <div id="dlgResizeHandle" class="dialog-resize"></div>
     </dialog>
+    <footer id="ocrFooter">
+        <span id="gpuInfo">GPU: unbekannt</span>
+        <div class="footer-buttons">
+            <button id="ocrStart">Start OCR</button>
+            <button id="ocrStop">Stop</button>
+        </div>
+    </footer>
 
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
