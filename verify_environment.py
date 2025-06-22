@@ -28,6 +28,17 @@ def run(cmd: str) -> str:
     return subprocess.check_output(cmd, shell=True, text=True).strip()
 
 
+def check_git_installed() -> bool:
+    """Prüft, ob Git verfügbar ist."""
+    try:
+        version = run("git --version")
+    except Exception:
+        report("Git", False, "nicht gefunden")
+        return False
+    report("Git", True, version.split()[2])
+    return True
+
+
 def check_python() -> bool:
     """Prüft die installierte Python-Version."""
     if sys.version_info < (3, 9):
@@ -100,11 +111,19 @@ def check_python_packages() -> bool:
 
 
 def check_repo_clean() -> bool:
-    """Prüft, ob das Git-Repository saubere Arbeitsverzeichnisse hat."""
+    """Prüft, ob ein Git-Repository vorhanden und sauber ist."""
+    try:
+        inside = run("git rev-parse --is-inside-work-tree")
+    except Exception:
+        report("Git-Repository", False, "nicht gefunden")
+        return False
+    if inside.strip() != "true":
+        report("Git-Repository", False, "nicht gefunden")
+        return False
     try:
         output = run("git status --porcelain")
     except Exception:
-        report("Git", False, "nicht gefunden")
+        report("Git", False, "Fehler bei 'git status'")
         return False
     if output:
         report("Git-Status", False, "Lokale Änderungen")
@@ -134,6 +153,8 @@ def main() -> None:
     if not check_node():
         ok = False
     if not check_npm():
+        ok = False
+    if not check_git_installed():
         ok = False
     if not check_electron_folder():
         ok = False
