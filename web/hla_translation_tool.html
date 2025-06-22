@@ -574,6 +574,7 @@
                     <span id="videoDuration">0:00</span>
                     <button id="videoReload">🔄</button>
                     <button id="ocrToggle" title="OCR an/aus (F9)">🔍</button>
+                    <button id="ocrCopy" title="OCR kopieren">📋</button>
                     <button id="ocrDebug" title="Debug-Fenster">🐞</button>
                     <button id="ocrSettings" title="OCR-Einstellungen">⚙️</button>
                     <button id="videoDelete">🗑️</button>
@@ -581,7 +582,8 @@
                 </div>
                 <div id="ocrOverlay"></div>
                 <div id="ocrResultPanel">
-                    <pre id="ocrText"></pre>
+                    <canvas id="roiPreview"></canvas>
+                    <div id="ocrText"></div>
                 </div>
                 <div id="ocrSettingsDrawer" class="hidden">
                     <canvas id="ocrPreview"></canvas>
