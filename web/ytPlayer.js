@@ -16,6 +16,7 @@ let ocrWindow = null;        // separates Fenster für erkannte Texte
 let ocrDebug  = false;       // zeigt das Debug-Fenster mit Screenshot
 // Einstellungen zur Bildaufbereitung
 let ocrSettings = loadOcrSettings();
+let lastOcrText = '';
 
 // kleine Hilfsfunktion zum Entprellen von Events
 function debounce(fn, ms) {
@@ -477,7 +478,7 @@ async function captureAndOcr(settings = ocrSettings) {
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
         ctx.drawImage(bitmap, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
 
-        const imgUrl = ocrDebug ? canvas.toDataURL('image/png') : null;
+        const imgUrl = canvas.toDataURL('image/png');
 
         let text = '';
         let confidence = 0;
@@ -505,11 +506,15 @@ async function captureAndOcr(settings = ocrSettings) {
 }
 
 // Haengt Text im Ergebnis-Panel an
-function appendText(t) {
+function appendText(t, highlight = false) {
     const area = document.getElementById('ocrText');
     if (!area) return;
-    area.textContent += (area.textContent ? '\n' : '') + t;
+    const div = document.createElement('div');
+    div.textContent = t;
+    if (highlight) div.classList.add('highlight');
+    area.appendChild(div);
     area.scrollTop = area.scrollHeight;
+    if (highlight) setTimeout(() => div.classList.remove('highlight'), 1000);
 }
 
 // Öffnet ein neues Fenster und zeigt den erkannten Text an
@@ -536,7 +541,15 @@ async function runOcr() {
     if (text.length <= 3) {
         return;
     }
-    appendText(text);
+    lastOcrText = text;
+    appendText(text, true);
+    const prev = document.getElementById('roiPreview');
+    if (prev && img) {
+        const ctx = prev.getContext('2d');
+        const im = new Image();
+        im.onload = () => { prev.width = im.width; prev.height = im.height; ctx.drawImage(im,0,0); };
+        im.src = img;
+    }
     // Treffer markieren und Benutzer informieren
     const btn = document.getElementById('ocrToggle');
     if (btn) {
@@ -634,6 +647,7 @@ export function openVideoDialog(bookmark, index) {
     const fwdBtn = document.getElementById('videoForward');
     const reloadBtn = document.getElementById('videoReload');
     const ocrBtn = document.getElementById('ocrToggle');
+    const copyBtn = document.getElementById('ocrCopy');
     const debugBtn = document.getElementById('ocrDebug');
     const settingsBtn = document.getElementById('ocrSettings');
     const ocrOverlay = document.getElementById('ocrOverlay');
@@ -741,6 +755,11 @@ export function openVideoDialog(bookmark, index) {
             if (typeof window.positionOverlay === 'function') {
                 window.positionOverlay();
             }
+        };
+    }
+    if (copyBtn) {
+        copyBtn.onclick = () => {
+            if (lastOcrText) navigator.clipboard.writeText(lastOcrText);
         };
     }
     if (debugBtn) {
@@ -930,10 +949,19 @@ document.addEventListener('keydown', e => {
     }
     if (e.key === 'F9') {
         e.preventDefault();
-        const btn = document.getElementById('ocrToggle');
-        if (btn) {
-            btn.click();
-        }
+        captureAndOcr().then(res => {
+            if (res.text) {
+                lastOcrText = res.text;
+                appendText(res.text, true);
+                const prev = document.getElementById('roiPreview');
+                if (prev && res.img) {
+                    const ctx = prev.getContext('2d');
+                    const im = new Image();
+                    im.onload = () => { prev.width = im.width; prev.height = im.height; ctx.drawImage(im,0,0); };
+                    im.src = res.img;
+                }
+            }
+        });
     }
     if (e.key.toLowerCase() === 'o' && e.ctrlKey && e.shiftKey) {
         e.preventDefault();

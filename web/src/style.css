@@ -2735,13 +2735,19 @@ th:nth-child(6) {
         margin-top:8px;
     }
 }
-#ocrResultPanel pre {
+#ocrText {
     margin: 0;
     white-space: pre-wrap;
     color: #fff;
     font-family: monospace;
     overflow: auto; /* Text bleibt scrollbar */
     max-height: 100%;
+}
+#roiPreview {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+    background: #000;
 }
 .highlight {
     background: yellow;
