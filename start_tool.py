@@ -13,6 +13,8 @@ import os
 import subprocess
 import sys
 from datetime import datetime
+import importlib.util
+import shutil
 
 # Pfad dieses Skripts und Log-Datei festlegen
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -30,6 +32,11 @@ def run(cmd: str) -> None:
     """Kommando ausfuehren und Ausgabe direkt weitergeben."""
     log(f"Fuehre aus: {cmd}")
     subprocess.check_call(cmd, shell=True)
+
+
+def has_module(name: str) -> bool:
+    """Prueft, ob ein Python-Modul bereits installiert ist."""
+    return importlib.util.find_spec(name) is not None
 
 
 log("Setup gestartet")
@@ -187,7 +194,14 @@ log("Installiere Python-Abhaengigkeiten")
 req_file = os.path.join(repo_path, "requirements.txt")
 if os.path.exists(req_file):
     try:
-        run(f"{sys.executable} -m pip install -r \"{req_file}\"")
+        with open(req_file, "r", encoding="utf-8") as f:
+            packages = [ln.strip() for ln in f if ln.strip() and not ln.startswith("#")]
+        for pkg in packages:
+            if pkg.startswith("torch") or pkg.startswith("easyocr"):
+                continue  # werden separat behandelt
+            mod = pkg.split("==")[0].split(">=")[0]
+            if not has_module(mod):
+                run(f"{sys.executable} -m pip install {pkg}")
         log("pip install erfolgreich")
     except subprocess.CalledProcessError as e:
         print("pip install fehlgeschlagen. Weitere Details siehe setup.log")
@@ -199,11 +213,6 @@ else:
 
 # --- GPU-Unterstützung und EasyOCR installieren ---
 log("Pruefe EasyOCR-Umgebung")
-import importlib.util
-import shutil
-
-def has_module(name: str) -> bool:
-    return importlib.util.find_spec(name) is not None
 
 cuda_available = shutil.which("nvidia-smi") is not None
 

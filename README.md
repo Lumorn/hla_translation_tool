@@ -227,6 +227,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 11. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 12. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
 13. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
+14. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 
 ### ElevenLabs-Dubbing
 
