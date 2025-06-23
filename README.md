@@ -60,7 +60,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9 und passt sich jeder Fenstergröße an.
 * **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
 * **Korrekte Spaltenbreite im Video-Manager:** Kopfzeile und Tabelle sind jetzt bündig, komplette Videotitel erscheinen als Tooltip.
-* **Dynamische Größenanpassung:** Dialog, Player und Buttons passen sich automatisch an die Fenstergröße an.
+* **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
 * **Behobenes Resize-Problem:** Nach einer Verkleinerung wächst der Videoplayer jetzt korrekt mit, sobald das Fenster wieder größer wird.
 * **Korrektes Skalieren nach erneutem Öffnen:** Der Player passt sich nach dem Wiedereinblenden automatisch an die aktuelle Fenstergröße an.
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
@@ -70,11 +70,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
 * **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.
 * **Strg+Umschalt+V** liest eine YouTube-URL aus der Zwischenablage und fügt sie automatisch ein.
-* **Dialog frei verschieb- und skalierbar:** Der Video-Manager lässt sich per Maus verschieben und in der Größe anpassen.
 * **Hilfsfunktion `extractYoutubeId`:** Einheitliche Erkennung der Video-ID aus YouTube-Links.
 * **Schlankerer Video-Manager:** URL-Eingabefeld unter den Buttons und eine klar beschriftete Aktions-Spalte. Der Player behält auf allen Monitoren sein 16:9-Format, ohne seitlichen Beschnitt, und die Steuerleiste bleibt sichtbar.
 * **Maximierte Listenbreite:** Die gespeicherten Videos beanspruchen nun maximal 480 px Breite. Titelspalte und Vorschaubild bleiben schlank und das Thumbnail hält stets das Seitenverhältnis 16:9.
-* **Verbesserte dynamische Dialoghöhe:** Der Video-Manager schrumpft nun auch bei kleinen Fenstern und entfernt überflüssigen Leerraum.
 * **Automatische Dialogbreite:** Ohne geöffneten Player richtet sich die Breite des Video-Managers nach der Liste.
 * **Konstante Dialoggröße:** Dank `clamp()` bleibt das Fenster jetzt auch ohne geladenes Video angenehm breit und bietet Platz für künftige Erweiterungen.
 * **Flexibles Fenster für gespeicherte Videos:** Höhe passt sich jetzt automatisch an Videoplayer und Liste an.
