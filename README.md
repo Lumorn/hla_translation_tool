@@ -366,6 +366,7 @@ Seit Patch 1.40.58 wird `style-src` aufgeteilt: `style-src-elem 'self'` und `sty
 Seit Patch 1.40.59 entfernt die Web-App alle Tesseract-Dateien. Die OCR läuft jetzt ausschließlich über EasyOCR und benötigt keine zusätzlichen CSP-Ausnahmen.
 Seit Patch 1.40.60 ignoriert `start_tool.py` Kommentare in `requirements.txt`, damit `pip install` unter Windows nicht mehr scheitert.
 Seit Patch 1.40.61 setzt `start_tool.py` den Pfad zum Python-Interpreter in Anführungszeichen, wodurch `pip install` auch bei Leerzeichen im Pfad funktioniert.
+Seit Patch 1.40.62 greift die Gestaltung des Video-Dialogs erst mit dem `open`-Attribut und das Öffnen erfolgt ohne Animation.
 
 Beispiel einer gültigen CSV:
 
