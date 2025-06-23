@@ -785,12 +785,21 @@ th:nth-child(6) {
         }
 
         /* Anzeige der Längen-Differenz */
-        .length-diff {
-            font-size: 18px;
-            display: inline-block;
-            width: 24px;
-            text-align: center;
-        }
+.length-diff {
+    font-size: 18px;
+    display: inline-block;
+    width: 24px;
+    text-align: center;
+}
+.length-diff.good {
+    color: #4caf50;
+}
+.length-diff.bad {
+    color: #f44336;
+}
+.length-diff.neutral {
+    color: #ffc107;
+}
 
         /* Vertikale Anordnung der Bearbeitungs-Symbole */
         .edit-column {
