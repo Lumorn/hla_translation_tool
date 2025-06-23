@@ -1104,7 +1104,7 @@ th:nth-child(6) {
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.7);
-            display: none;
+            display: flex; /* Immer sichtbar, wird per .hidden ausgeblendet */
             align-items: center;
             justify-content: center;
             z-index: 2000;
@@ -2850,11 +2850,24 @@ th:nth-child(6) {
     color: #ff8080;
 }
 
-/* ===== Flex-Layout für den Video-Manager ===== */
-.wb-grid {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+/* ===== Grid-Layout für den Video-Manager ===== */
+.wb-grid{
+    display:grid;
+    grid-template-columns:260px 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:"list player"
+                       "ocr  ocr";
+    gap:12px;
+    height:100%;
+}
+@media (max-width:900px){
+    .wb-grid{
+        grid-template-columns:1fr;
+        grid-template-rows:auto auto 1fr;
+        grid-template-areas:"list"
+                            "player"
+                            "ocr";
+    }
 }
 
 

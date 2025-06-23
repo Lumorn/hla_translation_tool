@@ -243,11 +243,11 @@ function openDubbingLog() {
         logPre.scrollTop = logPre.scrollHeight;
     }
     renderProtocolList();
-    document.getElementById('dubbingLogDialog').style.display = 'flex';
+    document.getElementById('dubbingLogDialog').classList.remove('hidden');
 }
 
 function closeDubbingLog() {
-    document.getElementById('dubbingLogDialog').style.display = 'none';
+    document.getElementById('dubbingLogDialog').classList.add('hidden');
 }
 
 function copyDubbingLog() {
@@ -1101,7 +1101,7 @@ function updateGlobalProjectProgress() {
 
 // =========================== SHOWFOLDERBROWSER START ===========================
 function showFolderBrowser() {
-    document.getElementById('folderBrowserDialog').style.display = 'flex';
+    document.getElementById('folderBrowserDialog').classList.remove('hidden');
     
     // Debug info
     debugLog('Ordner-Browser geöffnet');
@@ -1747,7 +1747,7 @@ function addFiles() {
                     break;
                 case 'Escape':
                     document.querySelectorAll('.dialog-overlay').forEach(d => {
-                        d.style.display = 'none';
+                        d.classList.add('hidden');
                     });
                     hideContextMenu();
                     break;
@@ -2327,8 +2327,7 @@ async function openSubtitleSearch(fileId) {
 
 function showSubtitleResults(fileId, results, searchText) {
     const overlay = document.createElement('div');
-    overlay.className = 'dialog-overlay';
-    overlay.style.display = 'flex';
+    overlay.className = 'dialog-overlay hidden';
 
     const dialog = document.createElement('div');
     dialog.className = 'dialog';
@@ -2353,6 +2352,7 @@ function showSubtitleResults(fileId, results, searchText) {
 
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
+    overlay.classList.remove('hidden');
 
     window.chooseSubtitleResult = (index) => {
         const hit = results[index];
@@ -2455,7 +2455,7 @@ function displayFileExchangeDialog(currentFile, similarEntries) {
     
     // Erstelle Dialog-HTML
     const dialogHTML = `
-        <div class="file-exchange-dialog" id="fileExchangeDialog">
+        <div class="file-exchange-dialog hidden" id="fileExchangeDialog">
             <div class="file-exchange-content">
                 <h3>🔄 Datei-Austausch: ${currentFile.filename}</h3>
                 
@@ -2517,9 +2517,9 @@ function displayFileExchangeDialog(currentFile, similarEntries) {
     
     // Füge Dialog zum DOM hinzu
     document.body.insertAdjacentHTML('beforeend', dialogHTML);
-    
+
     // Zeige Dialog
-    document.getElementById('fileExchangeDialog').style.display = 'flex';
+    document.getElementById('fileExchangeDialog').classList.remove('hidden');
     
     updateStatus(`Datei-Austausch geöffnet: ${similarEntries.length} ähnliche Einträge gefunden`);
 }
@@ -3415,7 +3415,7 @@ function toggleFileCompletion(fileId) {
     updateStatus('Fertig-Status wird automatisch berechnet');
 
     // Update folder browser if it's open
-    const folderBrowserOpen = document.getElementById('folderBrowserDialog').style.display === 'flex';
+    const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
     if (folderBrowserOpen) {
         // Check if we're in folder grid or file view
         const folderFilesView = document.getElementById('folderFilesView');
@@ -4357,7 +4357,7 @@ function calculateFolderCompletionStats() {
         }
 
         function closeFolderBrowser() {
-            document.getElementById('folderBrowserDialog').style.display = 'none';
+            document.getElementById('folderBrowserDialog').classList.add('hidden');
         }
 
 
@@ -4718,7 +4718,7 @@ function cleanupIncorrectFolderNames() {
     updateStatus(`Ordnernamen bereinigt: ${totalCorrected} korrigiert, ${totalRemoved} entfernt`);
     
     // Aktualisiere aktuelle Ansicht falls Ordner-Browser offen
-    const folderBrowserOpen = document.getElementById('folderBrowserDialog').style.display === 'flex';
+    const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
     if (folderBrowserOpen) {
         showFolderGrid();
     }
@@ -4855,11 +4855,11 @@ function showMissingFoldersDialog() {
         dbDiv.appendChild(dbUl);
     }
 
-    dialog.style.display = 'flex';
+    dialog.classList.remove('hidden');
 }
 
 function closeMissingFoldersDialog() {
-    document.getElementById('missingFoldersDialog').style.display = 'none';
+    document.getElementById('missingFoldersDialog').classList.add('hidden');
 }
 // =========================== CLEANUPORPHANCUSTOMIZATIONS START =============
 // Entfernt gespeicherte Ordner-Anpassungen, die keinen Datenbankeintrag mehr besitzen
@@ -5526,7 +5526,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
 
         // Import/Export functions
         function showImportDialog() {
-            document.getElementById('importDialog').style.display = 'flex';
+            document.getElementById('importDialog').classList.remove('hidden');
             document.getElementById('columnSelection').style.display = 'none';
             document.getElementById('analyzeDataBtn').style.display = 'block';
             document.getElementById('startImportBtn').style.display = 'none';
@@ -5550,15 +5550,15 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
 
             document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
             document.getElementById('ccStatusDe').textContent = deOk ? '✅ vorhanden' : '❌ fehlt';
-            document.getElementById('ccImportDialog').style.display = 'flex';
+            document.getElementById('ccImportDialog').classList.remove('hidden');
         }
 
         function closeCcImportDialog() {
-            document.getElementById('ccImportDialog').style.display = 'none';
+            document.getElementById('ccImportDialog').classList.add('hidden');
         }
 
         function closeImportDialog() {
-            document.getElementById('importDialog').style.display = 'none';
+            document.getElementById('importDialog').classList.add('hidden');
             document.getElementById('importData').value = '';
             document.getElementById('columnSelection').style.display = 'none';
             document.getElementById('analyzeDataBtn').style.display = 'block';
@@ -6076,7 +6076,7 @@ function checkFileAccess() {
 
 // =========================== SHOWBACKUPDIALOG START ======================
         function showBackupDialog() {
-            document.getElementById('backupDialog').style.display = 'flex';
+            document.getElementById('backupDialog').classList.remove('hidden');
             loadBackupList();
             loadSoundBackupList();
             document.getElementById('backupInterval').focus();
@@ -6100,7 +6100,7 @@ function checkFileAccess() {
         }
 
         function closeBackupDialog() {
-            document.getElementById('backupDialog').style.display = 'none';
+            document.getElementById('backupDialog').classList.add('hidden');
         }
 
         function openBackupFolder() {
@@ -6134,7 +6134,7 @@ function checkFileAccess() {
 
         // =========================== SHOWAPIDIALOG START ======================
         async function showApiDialog() {
-            document.getElementById('apiDialog').style.display = 'flex';
+            document.getElementById('apiDialog').classList.remove('hidden');
             document.getElementById('apiKeyInput').value = elevenLabsApiKey;
 
             await validateApiKey();
@@ -6273,7 +6273,7 @@ function checkFileAccess() {
         }
 
         function closeApiDialog() {
-            document.getElementById('apiDialog').style.display = 'none';
+            document.getElementById('apiDialog').classList.add('hidden');
         }
         // =========================== SHOWAPIDIALOG END ========================
         // Prueft den eingegebenen API-Key und laedt die verfuegbaren Stimmen
@@ -6348,12 +6348,12 @@ function checkFileAccess() {
         function addCustomVoice() {
             document.getElementById('newVoiceId').value = '';
             document.getElementById('newVoiceName').value = '';
-            document.getElementById('addVoiceDialog').style.display = 'flex';
+            document.getElementById('addVoiceDialog').classList.remove('hidden');
             document.getElementById('newVoiceId').focus();
         }
 
         function closeAddVoiceDialog() {
-            document.getElementById('addVoiceDialog').style.display = 'none';
+            document.getElementById('addVoiceDialog').classList.add('hidden');
         }
 
         async function fetchNewVoiceName() {
@@ -6412,12 +6412,12 @@ function checkFileAccess() {
 
         function showHistoryDialog(file) {
             currentHistoryPath = getFullPath(file);
-            document.getElementById('historyDialog').style.display = 'flex';
+            document.getElementById('historyDialog').classList.remove('hidden');
             loadHistoryList(currentHistoryPath);
         }
 
         function closeHistoryDialog() {
-            document.getElementById('historyDialog').style.display = 'none';
+            document.getElementById('historyDialog').classList.add('hidden');
             currentHistoryPath = null;
         }
 
@@ -6830,7 +6830,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
         alert(resultsMessage);
         
         // Refresh folder browser if open
-        const folderBrowserOpen = document.getElementById('folderBrowserDialog').style.display === 'flex';
+        const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
         if (folderBrowserOpen) {
             showFolderGrid();
         }
@@ -7387,8 +7387,7 @@ async function pruefeAudioPuffer(buf) {
 async function showDupeDialog(oldInfo, newUrl) {
     return new Promise(resolve => {
         const ov = document.createElement('div');
-        ov.className = 'dialog-overlay';
-        ov.style.display = 'flex';
+        ov.className = 'dialog-overlay hidden';
         const html = `
             <div class="dialog" style="max-width:600px;">
                 <h3>Doppelte Audiodatei</h3>
@@ -7413,6 +7412,7 @@ async function showDupeDialog(oldInfo, newUrl) {
             </div>`;
         ov.innerHTML = html;
         document.body.appendChild(ov);
+        ov.classList.remove('hidden');
         document.getElementById('dupeKeepOld').onclick = () => {
             const rem = document.getElementById('dupeRemember').checked;
             ov.remove();
@@ -7520,7 +7520,7 @@ function initiateDubbing(fileId) {
     if (!file) return;
     if (file.dubbingId) {
         const html = `
-            <div class="dialog-overlay" id="dubbingActionDialog">
+            <div class="dialog-overlay hidden" id="dubbingActionDialog">
                 <div class="dialog">
                     <h3>Vorhandenes Dubbing</h3>
                     <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file.dubbingId}</p>
@@ -7532,7 +7532,7 @@ function initiateDubbing(fileId) {
                 </div>
             </div>`;
         document.body.insertAdjacentHTML('beforeend', html);
-        document.getElementById('dubbingActionDialog').style.display = 'flex';
+        document.getElementById('dubbingActionDialog').classList.remove('hidden');
     } else {
         chooseDubbingMode(fileId);
     }
@@ -7557,7 +7557,7 @@ function proceedRedownload(fileId) {
 // Zeigt die Auswahl zwischen Beta und Halbautomatik an
 function chooseRedownloadMode(fileId) {
     const html = `
-        <div class="dialog-overlay" id="redlModeDialog">
+        <div class="dialog-overlay hidden" id="redlModeDialog">
             <div class="dialog">
                 <h3>Download-Modus wählen</h3>
                 <p>Beta-API nutzen oder halbautomatisch herunterladen?</p>
@@ -7569,7 +7569,7 @@ function chooseRedownloadMode(fileId) {
             </div>
         </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('redlModeDialog').style.display = 'flex';
+    document.getElementById('redlModeDialog').classList.remove('hidden');
 }
 
 function closeRedownloadMode() {
@@ -7585,7 +7585,7 @@ function selectRedownloadMode(mode, fileId) {
 // Fragt den Benutzer nach dem gewünschten Dubbing-Modus
 function chooseDubbingMode(fileId) {
     const html = `
-        <div class="dialog-overlay" id="dubModeDialog">
+        <div class="dialog-overlay hidden" id="dubModeDialog">
             <div class="dialog">
                 <h3>Dubbing-Modus wählen</h3>
                 <p>Beta-API nutzen oder halbautomatischen Modus starten?</p>
@@ -7597,7 +7597,7 @@ function chooseDubbingMode(fileId) {
             </div>
         </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('dubModeDialog').style.display = 'flex';
+    document.getElementById('dubModeDialog').classList.remove('hidden');
 }
 
 function closeDubMode() {
@@ -7651,7 +7651,7 @@ async function showDubbingSettings(fileId, mode = currentDubMode) {
     }
 
     const html = `
-        <div class="dialog-overlay" id="dubbingSettingsDialog">
+        <div class="dialog-overlay hidden" id="dubbingSettingsDialog">
             <div class="dialog dubbing-dialog">
                 <button class="dialog-close-btn" onclick="closeDubbingSettings()">×</button>
                 <h3>🎤 Dubbing-Einstellungen</h3>
@@ -7694,7 +7694,7 @@ async function showDubbingSettings(fileId, mode = currentDubMode) {
         </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
     // Dialog sofort anzeigen
-    document.getElementById('dubbingSettingsDialog').style.display = 'flex';
+    document.getElementById('dubbingSettingsDialog').classList.remove('hidden');
     bindDubSettingListeners();
 }
 
@@ -7826,9 +7826,8 @@ async function playDubPreview() {
 // Zeigt einen Hinweis an, dass das Studio geöffnet wurde
 function showStudioOverlay() {
     const ov = document.createElement('div');
-    ov.className = 'dialog-overlay';
+    ov.className = 'dialog-overlay hidden';
     ov.id = 'studioNoticeDialog';
-    ov.style.display = 'flex';
     ov.innerHTML = `
         <div class="dialog">
             <h3>🎧 ElevenLabs Studio</h3>
@@ -7839,6 +7838,7 @@ function showStudioOverlay() {
             </div>
         </div>`;
     document.body.appendChild(ov);
+    ov.classList.remove('hidden');
 }
 
 // Schließt den Studio-Hinweis
@@ -7861,7 +7861,7 @@ async function showDownloadWaitDialog(fileId) {
         dlPath = await window.electronAPI.getDownloadPath();
     }
     const html = `
-        <div class="dialog-overlay" id="downloadWaitDialog">
+        <div class="dialog-overlay hidden" id="downloadWaitDialog">
             <div class="dialog">
                 <h3>Alles gesendet</h3>
                 <p>Bitte lege die fertige Datei in <code>${dlPath}</code>.</p>
@@ -7877,7 +7877,7 @@ async function showDownloadWaitDialog(fileId) {
             </div>
         </div>`;
     document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('downloadWaitDialog').style.display = 'flex';
+    document.getElementById('downloadWaitDialog').classList.remove('hidden');
 }
 
 function updateDownloadWaitDialog(name) {
@@ -8655,7 +8655,7 @@ async function openDeEdit(fileId) {
     document.getElementById('waveLabelEdited').textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
 
     updateDeEditWaveforms();
-    document.getElementById('deEditDialog').style.display = 'flex';
+    document.getElementById('deEditDialog').classList.remove('hidden');
 
     // Regler für Funk-Effekt initialisieren
     const rStrength = document.getElementById('radioStrength');
@@ -9019,7 +9019,7 @@ function playDePreview() {
 
 // =========================== CLOSEDEEDIT START =============================
 function closeDeEdit() {
-    document.getElementById('deEditDialog').style.display = 'none';
+    document.getElementById('deEditDialog').classList.add('hidden');
     stopEditPlayback();
     currentEditFile = null;
     originalEditBuffer = null;
@@ -9492,8 +9492,7 @@ async function startImportProcess() {
 function showFolderSelectionDialog(ambiguousFiles) {
     return new Promise((resolve) => {
         const overlay = document.createElement('div');
-        overlay.className = 'dialog-overlay';
-        overlay.style.display = 'flex';
+        overlay.className = 'dialog-overlay hidden';
         
         const dialog = document.createElement('div');
         dialog.className = 'dialog';
@@ -9722,6 +9721,8 @@ function showFolderSelectionDialog(ambiguousFiles) {
         
         overlay.appendChild(dialog);
         document.body.appendChild(overlay);
+        overlay.classList.remove('hidden');
+        overlay.classList.remove('hidden');
         
         // Cleanup functions when dialog closes
         overlay.addEventListener('click', (e) => {
@@ -9864,8 +9865,7 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
         }
         
         const overlay = document.createElement('div');
-        overlay.className = 'dialog-overlay';
-        overlay.style.display = 'flex';
+        overlay.className = 'dialog-overlay hidden';
         
         const dialog = document.createElement('div');
         dialog.className = 'dialog';
@@ -10903,19 +10903,18 @@ function showChapterCustomization(chapterName, ev) {
         // Zeigt ein modales Dialogfenster mit HTML-Inhalt an
         function showModal(html) {
             const ov = document.createElement('div');
-            ov.className = 'dialog-overlay';
-            ov.style.display = 'flex';
+            ov.className = 'dialog-overlay hidden';
             ov.innerHTML = `<div class="dialog">${html}</div>`;
             ov.addEventListener('click', () => ov.remove());
             document.body.appendChild(ov);
+            ov.classList.remove('hidden');
         }
 
         // Einfache Eingabeaufforderung als Ersatz für prompt()
         function showInputDialog(message, value = '') {
             return new Promise(resolve => {
                 const ov = document.createElement('div');
-                ov.className = 'dialog-overlay';
-                ov.style.display = 'flex';
+                ov.className = 'dialog-overlay hidden';
                 ov.innerHTML = `<div class="dialog">
                     <p>${escapeHtml(message)}</p>
                     <input id="dlgInput" type="text" value="${escapeHtml(value)}" style="width:100%;padding:8px;margin-top:10px;background:#1a1a1a;border:1px solid #444;border-radius:4px;color:#e0e0e0;">
@@ -10935,6 +10934,7 @@ function showChapterCustomization(chapterName, ev) {
                 dlg.querySelector('#dlgCancel').onclick = () => cleanup(null);
                 dlg.querySelector('#dlgOk').onclick = () => cleanup(dlg.querySelector('#dlgInput').value.trim());
                 document.body.appendChild(ov);
+                ov.classList.remove('hidden');
                 dlg.querySelector('#dlgInput').focus();
             });
         }
@@ -11125,20 +11125,17 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const videoBtn = document.getElementById("openVideoManager");
     const videoDlg = document.getElementById("videoMgrDialog");
     if (videoBtn && videoDlg) {
-        // Klick öffnet den Dialog nur einmal und passt ihn an die Fenstergröße an
+        // Klick öffnet den Dialog nur einmal
         videoBtn.addEventListener("click", async () => {
-            // schon offen? – dann einfach ignorieren
-            if (videoDlg.open) return;
-
-            // Breite und Höhe an das aktuelle Fenster anpassen
-            videoDlg.style.width  = Math.min(window.innerWidth  * 0.9, 1100) + "px";
-            videoDlg.style.height = Math.min(window.innerHeight * 0.9,  750) + "px";
+            if (!videoDlg.classList.contains('hidden')) return;
 
             if (typeof videoDlg.showModal === "function") {
                 videoDlg.showModal();
             } else {
                 videoDlg.setAttribute("open", "");
             }
+
+            videoDlg.classList.remove("hidden");
 
             await refreshTable();
 
@@ -11152,6 +11149,7 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
             document.getElementById("closeVideoDlgSmall")
         ];
         closeBtns.forEach(btn => btn && btn.addEventListener("click", () => {
+            videoDlg.classList.add("hidden");
             if (typeof videoDlg.close === "function") {
                 videoDlg.close();
             } else {

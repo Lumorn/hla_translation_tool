@@ -91,6 +91,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zweispaltiges Video-Dashboard:** Links steht die Videoliste, rechts der 16:9‑Player mit schwebender Leiste. Das OCR‑Panel füllt darunter die komplette Breite und die Aktions-Icons befinden sich direkt unter dem Player.
 * **Flexibles Dashboard-Layout:** Das Dashboard basiert jetzt auf einem vertikalen Flex-Layout. Liste, Player und OCR-Bereich ordnen sich untereinander an und passen sich dynamisch der Fensterhöhe an.
 * **Robuster Video-Dialog:** Das Flex-Layout verhindert Überlappungen und lässt jede Sektion dynamisch wachsen.
+* **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
 * **Bereinigte CSS-Regeln:** Doppelte Definitionen entfernt und das OCR-Panel passt sich flexibler an.
 * **Aussagekräftige IDs:** Die drei Bereiche heißen nun `videoListSection`, `videoPlayerSection` und `ocrOutputSection`.
 * **Verbesserter Schließen-Button:** Das kleine ❌ sitzt fest oben rechts im Dialog.
