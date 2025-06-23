@@ -93,6 +93,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robuster Video-Dialog:** Das Flex-Layout verhindert Überlappungen und lässt jede Sektion dynamisch wachsen.
 * **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
 * **Bereinigte CSS-Regeln:** Doppelte Definitionen entfernt und das OCR-Panel passt sich flexibler an.
+* **Vereinfachtes Dialoglayout:** Grundwerte und geöffnete Variante wurden zu einem Grid-Block zusammengeführt.
 * **Aussagekräftige IDs:** Die drei Bereiche heißen nun `videoListSection`, `videoPlayerSection` und `ocrOutputSection`.
 * **Verbesserter Schließen-Button:** Das kleine ❌ sitzt fest oben rechts im Dialog.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
@@ -372,6 +373,7 @@ Seit Patch 1.40.59 entfernt die Web-App alle Tesseract-Dateien. Die OCR läuft j
 Seit Patch 1.40.60 ignoriert `start_tool.py` Kommentare in `requirements.txt`, damit `pip install` unter Windows nicht mehr scheitert.
 Seit Patch 1.40.61 setzt `start_tool.py` den Pfad zum Python-Interpreter in Anführungszeichen, wodurch `pip install` auch bei Leerzeichen im Pfad funktioniert.
 Seit Patch 1.40.62 greift die Gestaltung des Video-Dialogs erst mit dem `open`-Attribut und das Öffnen erfolgt ohne Animation.
+Seit Patch 1.40.63 vereinfacht ein gemeinsamer Grid-Block die Video-Dialog-Definition.
 
 Beispiel einer gültigen CSV:
 

@@ -2416,14 +2416,9 @@ th:nth-child(6) {
 }
 
 .video-dialog {
-    /* Ohne open-Attribut verstecken */
-    display: none;
-}
-
-/* Dialog erst anzeigen, wenn geöffnet */
-.video-dialog[open] {
-    /* Wird erst sichtbar, wenn das open-Attribut gesetzt ist */
-    display: block;
+    /* Grundwerte und offene Variante vereint */
+    display: grid;
+    grid-template-rows: 320px 1fr 48px;
     width: clamp(700px, 80vw, 1200px);
     height: clamp(500px, 80vh, 800px);
     background: #1a1a1a;
@@ -2437,6 +2432,11 @@ th:nth-child(6) {
     top: 50%;
     transform: translate(-50%, -50%);
     transition: none;        /* keine Animation beim Öffnen */
+}
+
+/* Dialog nur anzeigen, wenn geöffnet */
+.video-dialog:not([open]) {
+    display: none;
 }
 
 /* Abdunklung hinter dem Dialog */
