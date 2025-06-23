@@ -72,7 +72,7 @@ if sys.version_info < (3, 9):
     log("Python-Version zu alt")
     sys.exit(1)
 if sys.maxsize <= 2**32:
-    print("[Fehler] 32-Bit-Python wird nicht unterstuetzt.")
+    print("[Fehler] 32-Bit-Python wird nicht unterstuetzt. Bitte 64-Bit installieren.")
     log("Python-Architektur 32-Bit")
     sys.exit(1)
 print("=== Starte HLA Translation Tool Setup ===")
