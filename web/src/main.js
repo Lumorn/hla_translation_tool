@@ -2079,16 +2079,25 @@ async function renderFileTableWithOrder(sortedFiles) {
         const dePath = getDeFilePath(file);
         const hasDeAudio = !!dePath;
         const hasHistory = await checkHistoryAvailable(file);
+        // Symbol und Farbe für den Längenvergleich vorbereiten
         let lengthIndicator = '';
+        let lengthClass = '';
         if (hasDeAudio) {
             const enUrl = audioFileCache[relPath] || `sounds/EN/${relPath}`;
             const deUrl = deAudioCache[dePath] || `sounds/DE/${dePath}`;
             const enDur = await getAudioDuration(enUrl);
             const deDur = await getAudioDuration(deUrl);
             if (enDur != null && deDur != null) {
-                if (deDur < enDur) lengthIndicator = '⬇️';
-                else if (deDur > enDur) lengthIndicator = '⬆️';
-                else lengthIndicator = '↔️';
+                if (deDur < enDur) {
+                    lengthIndicator = '⬇️';
+                    lengthClass = 'good'; // kürzer = positiv
+                } else if (deDur > enDur) {
+                    lengthIndicator = '⬆️';
+                    lengthClass = 'bad'; // länger = potentiell negativ
+                } else {
+                    lengthIndicator = '↔️';
+                    lengthClass = 'neutral';
+                }
             }
         }
         // Find original index for display
@@ -2172,7 +2181,7 @@ return `
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
         <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick="dubStatusClicked(${file.id})"`}>●</span></td>
-        <td><span class="length-diff">${lengthIndicator}</span></td>
+        <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
         <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
