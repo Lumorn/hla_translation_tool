@@ -593,6 +593,11 @@ export function openVideoDialog(bookmark, index) {
 
     // neue URL setzen und Player initialisieren
     iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
+    // Nach dem Laden des IFrames erneut die Dialoggröße setzen
+    iframe.addEventListener('DOMContentLoaded', () => {
+        dlg.style.width  = '80vw';
+        dlg.style.height = '80vh';
+    }, { once: true });
 
     // Fehlerhinweis und Fallback, falls die YouTube-API fehlt
     if (typeof YT === 'undefined' || !YT.Player) {

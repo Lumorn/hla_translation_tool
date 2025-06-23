@@ -106,6 +106,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Schnellerer Dialog-Aufruf:** Die `open`-Prüfung passiert vor dem Neuladen der Tabelle und spart so unnötige Arbeit.
 * **Startet geschlossen:** Beim Laden der Anwendung bleibt der Video-Manager nun verborgen und öffnet sich erst nach Klick auf den "Videos"-Button.
 * **Mindestgröße für den Video-Dialog:** Beim Öffnen passt sich der Dialog an die Fenstergröße an, bleibt aber mindestens 600×400 px groß. Alle ❌-Buttons rufen jetzt sicher `videoDlg.close()` auf.
+* **Dialog startet bei 80 % Fenstergröße:** Direkt nach `showModal()` setzt das Skript Breite und Höhe auf 80 % des Browserfensters. Ein `DOMContentLoaded`-Listener im IFrame stellt diese Werte nach dem Laden von YouTube erneut ein.
 * **Optimal genutzter Player-Bereich:** Breite und Höhe orientieren sich jetzt an der größeren freien Dimension. Die Player-Sektion schrumpft exakt auf die IFrame-Höhe und vermeidet so schwarze Balken.
 * **Einheitliche Größenberechnung:** Auch `adjustVideoPlayerSize()` prüft nun freie Breite und Höhe und wählt automatisch das größere Maß.
 * **OCR-Funktion im Player:** Ein präzises Overlay deckt nur die Untertitel ab. Der Auto-Modus pausiert bei einem Treffer das Video und sammelt den Text im rechten Panel. F9 erstellt jetzt einen einzelnen OCR‑Screenshot. Ein neuer 🔍‑Button aktiviert den Dauerlauf.
