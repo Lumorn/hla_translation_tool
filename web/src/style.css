@@ -2415,29 +2415,6 @@ th:nth-child(6) {
     margin-top: 10px;
 }
 
-/* ===== video-dialog ===== */
-.video-dialog {
-    position: fixed;                  /* immer relativ zum App-Fenster */
-    inset: 10vh 10vw;                 /* oben/unten 10 vh, rechts/links 10 vw */
-    display: grid;
-    grid-template-rows: auto 1fr auto;/* Kopf – Inhalt – Controls */
-    background: #1a1a1a;
-    color: #e0e0e0;
-    border: 2px solid #ffffff33;      /* dünne, weiße Linie */
-    box-shadow: 0 0 8px #000a;
-    overflow: hidden;                 /* kein Scrollen des Rahmens */
-    z-index: 2000;                    /* über sonstiger UI */
-}
-
-/* Dialog nur anzeigen, wenn geöffnet */
-.video-dialog:not([open]) {
-    display: none;
-}
-
-/* Abdunklung hinter dem Dialog */
-.video-dialog::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-}
 
 /* Griff in der Ecke zum Skalieren (entfernt) */
 
@@ -2840,4 +2817,22 @@ th:nth-child(6) {
 }
 
 
+
+
+/* ===== video-dialog – finale Version ===== */
+.video-dialog{
+    position:fixed;            /* orientiert sich am App-Fenster */
+    inset:10vh 10vw;           /* überall 10 % Rand */
+    display:grid;
+    grid-template-rows:auto 1fr auto; /* Kopf | Inhalt | Controls */
+    background:#1a1a1a;
+    color:#e0e0e0;
+    border:2px solid #ffffff33;
+    box-shadow:0 0 8px #000a;
+    overflow:hidden;
+    z-index:2000;              /* sicher vor allen anderen Dialogen */
+}
+/* nur sichtbar, wenn wirklich geöffnet */
+.video-dialog:not([open]){display:none;}
+.video-dialog::backdrop{background:rgba(0,0,0,.6);}
 
