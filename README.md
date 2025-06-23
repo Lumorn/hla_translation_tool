@@ -91,6 +91,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zweispaltiges Video-Dashboard:** Links steht die Videoliste, rechts der 16:9‑Player mit schwebender Leiste. Das OCR‑Panel füllt darunter die komplette Breite und die Aktions-Icons befinden sich direkt unter dem Player.
 * **Strukturiertes Grid-Layout:** Das Dashboard nutzt nun ein zweispaltiges CSS‑Grid (`260px 1fr`) mit weißen Rahmen. Bei weniger als 900 px Breite stapeln sich Liste, Player und OCR‑Panel automatisch.
 * **Robuster Video-Dialog:** Das Grid innerhalb des Dialogs steuert nun allein das Layout. Jede Sektion besitzt flexible Höhe und verhindert Überlappungen.
+* **Bereinigte CSS-Regeln:** Doppelte Definitionen entfernt und das OCR-Panel passt sich flexibler an.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 * **Flexible Player-Steuerleiste:** Bei schmalen Fenstern rutscht der Slider in eine zweite Zeile. Icons und Zeitangaben verkleinern sich automatisch.
 * **Steuerleiste unter dem Video:** Die Buttons sitzen jetzt statisch unter dem Player, nutzen die volle Breite und bleiben in einer Zeile.
