@@ -2471,383 +2471,57 @@ th:nth-child(6) {
     .video-controls span { font-size: 0.8rem; }
 }
 
-.video-list-section {
-    /* Linke Tabellenansicht mit Scrollbar */
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;      /* lange Listen scrollen */
-    border: 2px solid #fff;
-    min-height: 0;         /* verhindert Überlaufen */
-    grid-area: list;
-}
-/* Neues Flex-Layout: Video links, OCR rechts */
-.video-player-section {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 60%; /* nimmt 60% der Höhe ein */
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid #fff;
-    min-height: 0;    /* verhindert Überlaufen */
-    grid-area: player;
+
+/* ===== video-dialog – fester Rahmen ===== */
+.video-dialog{
+    position:fixed !important;
+    inset:10vh 10vw !important;      /* überall 10 % Abstand */
+    background:#1a1a1a;
+    border:2px solid #ffffff33;
+    box-shadow:0 0 8px #000a;
+    padding:0;
+    overflow:hidden;
+    color:#e0e0e0;
+    z-index:2000;
 }
 
-.ocr-panel {
-    display: flex;
-    flex-direction: column;
-    flex: 0 0 35%; /* feste Höhe für OCR-Ausgabe */
-    min-height: 50px;    /* Mindesthöhe entfernt, damit Panel schrumpfen kann */
-    overflow: auto;        /* erkannter Text scrollt */
-    border: 2px solid #fff;
-    grid-area: ocr;
-}
-
-/* Bei aktivem OCR-Panel Platz neben dem Video schaffen */
-.video-player-section.ocr-active {
-    /* keine spezielle Behandlung mehr nötig */
-}
-.video-player-section.hidden { display: none; }
-
-/* Bereich für den eingebetteten Player */
-.video-player-section .player-header {
-    padding: 0.5rem 1rem;
-    background: #242424;
-    font-weight: bold;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    overflow: hidden; /* Titel kann abgeschnitten werden */
-}
-.video-player-section .player-header span {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.video-player-section iframe {
-    /* Video skaliert flexibel und behält 16:9 ohne feste Höhe */
-    flex-grow: 1;
-    width: 100%;
-    height: auto;
-    max-height: 60vh;
-    aspect-ratio: 16 / 9;
-    border: none;
-    display: block;
-    margin: 0 auto;
-}
-/* === Controls unter dem Player === */
-.video-controls {
-    grid-area: controls;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-block: 4px;
-    background: #111;
-}
-.video-controls button,
-.video-controls input[type="range"] {
-    flex: 0 0 auto;         /* kein Stauchen */
-}
-.video-controls input[type="range"] {
-    flex: 1 1 auto;         /* Slider nimmt Restbreite */
-}
-
-/* Kleinere Dialoge: Icons und Zeitangaben verkleinern */
-@media (max-width: 600px) {
-    .video-controls button {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
-        padding: 2px;
-    }
-    .video-controls span {
-        font-size: 0.8rem;
-    }
-}
-
-#videoTableWrapper {
-    /* Container für die Tabelle: füllt den verfügbaren Platz komplett aus */
-    overflow-y: auto;
-    flex: 1 1 auto;
-}
-
-#videoTable {
-    width: 100%;
-    border-collapse: collapse;
-}
-#videoTable thead {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-#videoTable thead th {
-    cursor: pointer;
-    border-bottom: 1px solid #555;
-}
-#videoTable thead th[data-asc="true"]::after { content: ' ▲'; }
-#videoTable thead th[data-asc="false"]::after { content: ' ▼'; }
-#videoTable tbody {
-    display: block;
-    overflow-y: auto;
-}
-#videoTable tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-    border-bottom: 1px solid #444;
-}
-#videoTable tbody tr:hover { background: #2e2e2e; }
-#videoTable td, #videoTable th { padding: 6px; }
-#videoTable th:first-child, #videoTable td:first-child {
-    width: 64px;
-}
-#videoTable td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-.video-thumb {
-    width: clamp(60px, 8vw, 120px);
-    max-width: 64px;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    cursor: pointer;
-    border-radius: 4px;
-}
-.video-title {
-    cursor: pointer;
-    max-width: 26ch; /* reduziert die Breite der Titelspalte */
-}
-.video-actions button {
-    margin: 0 2px;
-    font-size: clamp(14px, 2.2vh, 20px);
-}
-.video-actions button:hover { background:#444; }
-
-.accordion-content {
-    display: none;
-    margin-top: 10px;
-}
-
-.loading-spinner {
-    border: 3px solid #2a2a2a;
-    border-top: 3px solid #ff6b1a;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    animation: spin 1s linear infinite;
-    display: inline-block;
-}
-
-.auto-trans {
-    font-size: 11px;
-    color: #999;
-    margin-top: 2px;
-    white-space: pre-wrap;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* ===== OCR-Funktionen ===== */
-#ocrOverlay {
-    position: absolute;
-    background: rgba(0,128,255,.25);
-    border: 2px dashed #fff;
-    /* Mausinteraktion erlaubt nun Verschieben und Skalieren */
-    display: none;
-    bottom: 48px;         /* Abstand zur Steuerleiste */
-    z-index: 4;           /* liegt unter den Bedienelementen */
-    cursor: move;         /* zeigt Verschiebbarkeit an */
-    touch-action: none;   /* verhindert Scrollen beim Ziehen */
-    /* genaue Position wird per JS gesetzt */
-}
-#ocrOverlay.resizing {
-    cursor: se-resize;
-}
-#videoPlayerSection.ocr-active #ocrOverlay {
-    display: block;
-}
-
-#ocrToggle.active {
-    background: #3399ff;
-    color: #fff;
-}
-
-#ocrToggle.blink {
-    animation: pulse 1s infinite;
-}
-
-#ocrDebug.active {
-    background: #ff9933;
-    color: #fff;
-}
-
-#ocrSettings.active {
-    background: #6699cc;
-    color: #fff;
-}
-
-/* Ergebnis-Panel fuer die OCR-Ausgabe */
-#ocrOutputSection {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 0; /* verhindert Zusammenziehen im Grid */
-    overflow: auto;
-    background: #1a1a1a;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    border: 2px solid #fff;
-}
-
-@media (max-width: 600px) {
-    /* Panel rutscht unter das Video, wenn nicht genug Breite vorhanden ist */
-    #ocrOutputSection {
-        position:static;
-        width:100%;
-        height:auto;
-        margin-top:8px;
-    }
-}
-#ocrText {
-    margin: 0;
-    white-space: pre-wrap;
-    color: #fff;
-    font-family: monospace;
-    flex: 1 1 auto;
-    overflow: auto; /* Text bleibt scrollbar */
-}
-#roiPreview {
-    width: 100%;
-    height: auto;
-    margin-bottom: 8px;
-    background: #000;
-}
-.highlight {
-    background: yellow;
-}
-
-/* Steuerleiste bleibt unter dem Video */
-
-/* Ausklappbarer Einstell-Drawer fuer das OCR-Tuning */
-#ocrSettingsDrawer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 320px;
-    height: 100%;
-    background: #222;
-    color: #fff;
-    padding: 8px;
-    overflow: auto;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 6;
-}
-
-#ocrSettingsDrawer.open {
-    transform: translateX(0);
-}
-
-#ocrSettingsDrawer canvas {
-    width: 100%;
-    height: 45%;
-    background: #000;
-    margin-bottom: 8px;
-}
-
-#ocrSettingsDrawer .result-preview {
-    background: #1a1a1a;
-    color: #fff;
-    padding: 4px;
-    margin-top: 8px;
-    min-height: 80px;
-    white-space: pre-wrap;
-    font-family: monospace;
-}
-
-#ocrSettingsDrawer .result-preview.green { background:#084; }
-#ocrSettingsDrawer .result-preview.yellow{ background:#664; }
-#ocrSettingsDrawer .result-preview.red   { background:#600; }
-
-
-#ocrOverlay .handle {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #FFD54F;
-    border: 2px solid #fff;
-}
-#ocrOverlay .nw { top: -6px; left: -6px; cursor: nwse-resize; }
-#ocrOverlay .ne { top: -6px; right: -6px; cursor: nesw-resize; }
-#ocrOverlay .sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
-#ocrOverlay .se { bottom: -6px; right: -6px; cursor: nwse-resize; }
-
-/* Meldung, falls der YouTube-Player nicht geladen werden konnte */
-.yt-error {
-    padding: 1rem;
-    text-align: center;
-    color: #ff8080;
-}
-
-/* ===== Grid im Video-Manager ===== */
-.wb-grid {
-    display: grid;
-    grid-template-columns: minmax(200px, 28%) 1fr;  /* Liste min 200 px, max 28 % */
-    grid-template-rows: 1fr auto;                  /* Player-Fläche + Controls */
+/* ===== Haupt-Grid ===== */
+.video-grid{
+    display:grid;
+    height:100%;
+    width:100%;
+    grid-template-columns:minmax(220px,26%) 1fr 24%;   /* Liste | Player | OCR */
+    grid-template-rows:1fr auto;                       /* Inhalt | Controls */
     grid-template-areas:
-        "list player"
-        "list controls";
-    gap: 12px;
-    height: 100%;            /* füllt den Dialog-Mittelbereich komplett aus */
+        "list  player  ocr"
+        "list  controls ocr";
+    gap:12px;
+    padding:18px;
 }
 
-@media (max-width: 900px) {
-    .wb-grid {
-        grid-template-columns: 1fr;                /* alles untereinander */
-        grid-template-rows: auto 1fr auto;
+/* ===== Teilbereiche ===== */
+.video-bookmarks{ grid-area:list;    overflow:auto; }
+.video-player   { grid-area:player;  display:flex; flex-direction:column; align-items:center; }
+.video-player iframe{ flex:1 1 auto; width:100%; border:none; }
+.video-controls{
+    grid-area:controls;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#111;
+    padding:6px 10px;
+}
+.ocr-panel{ grid-area:ocr; overflow:auto; background:#0002; }
+
+/* ===== Mobil-Fallback ===== */
+@media (max-width:900px){
+    .video-grid{
+        grid-template-columns:1fr;
+        grid-template-rows:auto auto auto auto;
         grid-template-areas:
             "list"
             "player"
-            "controls";
+            "controls"
+            "ocr";
     }
-}
-
-
-
-
-/* ===== video-dialog – finale Version ===== */
-/* Alte, konkurrierende Blöcke wurden entfernt. */
-.video-dialog{
-    position:fixed;            /* orientiert sich am App-Fenster */
-    inset:10vh 10vw;           /* überall 10 % Rand */
-    display:grid;
-    grid-template-rows:auto 1fr auto; /* Kopf | Inhalt | Controls */
-    background:#1a1a1a;
-    color:#e0e0e0;
-    border:2px solid #ffffff33;
-    box-shadow:0 0 8px #000a;
-    overflow:hidden;
-    z-index:2000;              /* sicher vor allen anderen Dialogen */
-}
-/* nur sichtbar, wenn wirklich geöffnet */
-.video-dialog:not([open]){display:none;}
-.video-dialog::backdrop{background:rgba(0,0,0,.6);}
-
-
-/* ===== FINAL OVERRIDES ===== */
-/* Setzen alle Reste außer Kraft */
-.video-dialog{
-    position:fixed !important;
-    inset:10vh 10vw !important;
-    grid-template-rows:auto 1fr auto !important;
-    margin:0 !important;
-    transform:none !important;
-}
-
-.wb-grid{
-    grid-template-columns:minmax(200px, 28%) 1fr !important;
 }

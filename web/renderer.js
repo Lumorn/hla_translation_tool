@@ -173,10 +173,6 @@ openVideoManager.addEventListener('click', async () => {
     // schon offen? – dann einfach ignorieren
     if (videoDlg.open) return;
 
-    // Größe wird jetzt vollständig durch CSS geregelt
-    videoDlg.style.width  = '';
-    videoDlg.style.height = '';
-
     videoDlg.showModal();
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoDlg);
     await refreshTable();

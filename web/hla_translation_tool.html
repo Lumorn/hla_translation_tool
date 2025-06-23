@@ -534,8 +534,8 @@
 
     <!-- Video-Manager mit integriertem Player -->
     <dialog id="videoMgrDialog" class="video-dialog">
-        <div class="wb-grid">
-            <section id="videoListSection" class="video-list-section">
+        <div class="video-grid">
+            <aside id="videoListSection" class="video-bookmarks">
                 <h2>📼 Gespeicherte Videos</h2>
                 <div class="video-toolbar">
                     <div class="video-search">
@@ -561,9 +561,8 @@
                         <tbody></tbody>
                     </table>
                 </div>
-                <button id="closeVideoDlg" class="btn btn-danger">❌ Schließen</button>
-            </section>
-            <section id="videoPlayerSection" class="video-player-section hidden">
+            </aside>
+            <section id="videoPlayerSection" class="video-player hidden">
                 <div class="player-header"><span id="playerDialogTitle"></span></div>
                 <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
                 <div id="playerControls" class="video-controls">
@@ -612,6 +611,7 @@
                 </div>
             </section>
         </div>
+        <button id="closeVideoDlg" class="dialog-close-btn">×</button>
     </dialog>
 
     <!-- Versionsanzeige -->
