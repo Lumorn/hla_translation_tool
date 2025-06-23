@@ -2415,23 +2415,21 @@ th:nth-child(6) {
     margin-top: 10px;
 }
 
-.video-dialog {
-    /* Grundwerte und geöffnete Variante vereint */
-    display: grid;
-    grid-template-rows: auto 1fr auto;    /* Kopf, Inhalt und Steuerleiste passen sich dynamisch an */
-    width: clamp(700px, 80vw, 1200px);
-    height: clamp(500px, 80vh, 800px);
-    background: #1a1a1a;
-    color: #e0e0e0;
-    padding: 24px;
-    margin: 24px auto;
-    overflow: hidden;       /* keine Scrollbalken des Dialograhmens */
-    resize: both;            /* einfache Größenänderung per Maus */
-    position: fixed;         /* frei verschiebbares Fenster */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: none;        /* keine Animation beim Öffnen */
+/* ===== video-dialog ===== */
+.video-dialog{
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    width:clamp(700px,80vw,1200px);
+    height:clamp(500px,80vh,800px);
+    background:#1a1a1a;
+    color:#e0e0e0;
+    padding:24px;
+    margin:24px auto;
+    overflow:hidden;
+    resize:both;
+    position:fixed;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
 }
 
 /* Dialog nur anzeigen, wenn geöffnet */
@@ -2850,23 +2848,26 @@ th:nth-child(6) {
     color: #ff8080;
 }
 
-/* ===== Grid-Layout für den Video-Manager ===== */
+/* ===== Grid im Video-Manager ===== */
 .wb-grid{
     display:grid;
-    grid-template-columns:minmax(180px,30%) 1fr; /* linke Spalte schrumpft bis auf 30 %, bleibt aber mind. 180 px breit */
-    grid-template-rows:auto 1fr;                /* Zeilen dynamisch */
-    grid-template-areas:"list   player"
-                       "ocr    ocr";
+    grid-template-columns:minmax(180px,30%) 1fr;
+    grid-template-rows:auto 1fr;
+    grid-template-areas:
+        "list   player"
+        "ocr    ocr";
     gap:12px;
     height:100%;
 }
+
 @media (max-width:900px){
     .wb-grid{
         grid-template-columns:1fr;
         grid-template-rows:auto auto 1fr;
-        grid-template-areas:"list"
-                            "player"
-                            "ocr";
+        grid-template-areas:
+            "list"
+            "player"
+            "ocr";
     }
 }
 
