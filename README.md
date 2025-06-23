@@ -383,6 +383,8 @@ Seit Patch 1.40.62 greift die Gestaltung des Video-Dialogs erst mit dem `open`-A
 Seit Patch 1.40.63 vereinfacht ein gemeinsamer Grid-Block die Video-Dialog-Definition.
 Seit Patch 1.40.64 erlaubt die Content Security Policy nun Verbindungen zu `api.elevenlabs.io`,
 damit die Status-Abfragen beim Dubbing nicht mehr blockiert werden.
+Seit Patch 1.40.65 akzeptiert die Richtlinie auch `blob:` in `media-src`.
+Damit funktionieren die Audio-Vorschauen wieder ohne CSP-Fehler.
 
 Beispiel einer gültigen CSV:
 
