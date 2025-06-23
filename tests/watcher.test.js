@@ -30,6 +30,9 @@ describe('watchDownloadFolder', () => {
     onAddCallbacks.forEach(cb => cb(file));
 
     expect(callback).toHaveBeenCalledWith(file);
+
+    // Aufräumen des temporären Verzeichnisses
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
   test('clearDownloadFolder leert den Ordner', () => {
@@ -45,6 +48,9 @@ describe('watchDownloadFolder', () => {
 
     const remaining = fs.readdirSync(tmpDir);
     expect(remaining.length).toBe(0);
+
+    // Aufräumen des temporären Verzeichnisses
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
   test('pruefeAudiodatei erkennt gueltige WAV', () => {
