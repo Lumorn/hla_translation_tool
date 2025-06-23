@@ -268,6 +268,9 @@ openVideoManager.addEventListener('click', async () => {
     videoDlg.style.height = '';
 
     videoDlg.showModal();
+    // Dialog direkt auf 80 % der Fenstergröße setzen
+    videoDlg.style.width  = '80vw';
+    videoDlg.style.height = '80vh';
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoDlg);
     await refreshTable();
     adjustVideoDialogHeight();
