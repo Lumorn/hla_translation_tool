@@ -84,7 +84,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Breitenbegrenzter Player:** Die Breite richtet sich nach der verfügbaren Höhe und überschreitet nie das Format 16:9.
 * **Verbesserte Player-Anpassung:** Die Höhe des IFrames ergibt sich jetzt aus der Dialogbreite und wird auf 90 % der Fensterhöhe begrenzt. Zwei `requestAnimationFrame`-Aufrufe sorgen nach jedem Öffnen oder Resize für korrekte Maße.
 * **Fehlerfreies Skalieren nach Schließen:** Ändert man die Fenstergröße bei geschlossenem Dialog, berechnet das IFrame seine Breite beim nächsten Öffnen korrekt neu.
-* **Stabilerer ResizeObserver:** Die Dialog-Anpassung nutzt `requestAnimationFrame` und verhindert so die Fehlermeldung "ResizeObserver loop limit exceeded".
+* **Stabilerer ResizeObserver:** Die Dialog-Anpassung läuft jetzt nur noch einmal pro Frame und vermeidet die Fehlermeldung "ResizeObserver loop limit exceeded".
 * **Gethrottleter Video-ResizeObserver:** `adjustVideoPlayerSize` und `positionOverlay` werden pro Frame gebündelt ausgeführt und umgehen so Endlos-Schleifen.
 * **Dynamische Größenberechnung:** `calcLayout()` ermittelt Breite und Höhe des Players aus Dialog- und Panelgröße und wird per `ResizeObserver` automatisch aufgerufen.
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.

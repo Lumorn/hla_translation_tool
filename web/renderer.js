@@ -104,10 +104,18 @@ ro.observe(videoDlg);
 window.videoDialogObserver = ro;
 
 // Beobachtet Dialog- und OCR-Panelgroesse fuer dynamische Layout-Anpassung
+// Layout-Berechnung wird per requestAnimationFrame auf maximal einen Durchlauf
+// pro Frame begrenzt, um Endlosschleifen zu vermeiden
+let layoutPending = false;
 const layoutObserver = new ResizeObserver(() => {
-    if (typeof calcLayout === 'function') {
-        calcLayout();
-    }
+    if (layoutPending) return;
+    layoutPending = true;
+    window.requestAnimationFrame(() => {
+        layoutPending = false;
+        if (typeof calcLayout === 'function') {
+            calcLayout();
+        }
+    });
 });
 layoutObserver.observe(videoDlg);
 const obsPanel = document.getElementById('ocrOutputSection');
