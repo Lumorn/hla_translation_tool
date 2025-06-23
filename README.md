@@ -94,6 +94,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
 * **Bereinigte CSS-Regeln:** Doppelte Definitionen entfernt und das OCR-Panel passt sich flexibler an.
 * **Vereinfachtes Dialoglayout:** Grundwerte und geöffnete Variante wurden zu einem Grid-Block zusammengeführt.
+* **Dynamische Spaltenbreite im Video-Manager:** Die Liste schrumpft bis auf 30 % der Dialogbreite und bleibt mindestens 180 px breit. Gleichzeitig entfallen starre Zeilenhöhen, sodass Player und OCR-Bereich flexibel wachsen.
+* **Entschlacktes Video-Dialog-Raster:** Kopf, Inhalt und Steuerleiste passen sich automatisch an und der Rahmen zeigt keine Scrollbalken mehr.
 * **Aussagekräftige IDs:** Die drei Bereiche heißen nun `videoListSection`, `videoPlayerSection` und `ocrOutputSection`.
 * **Verbesserter Schließen-Button:** Das kleine ❌ sitzt fest oben rechts im Dialog.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
