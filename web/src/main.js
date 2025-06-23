@@ -2092,7 +2092,7 @@ async function renderFileTableWithOrder(sortedFiles) {
                     lengthIndicator = '⬇️';
                     lengthClass = 'good'; // kürzer = positiv
                 } else if (deDur > enDur) {
-                    lengthIndicator = '⬆️';
+                    lengthIndicator = '‼️';
                     lengthClass = 'bad'; // länger = potentiell negativ
                 } else {
                     lengthIndicator = '↔️';
