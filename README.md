@@ -122,6 +122,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Panelgröße korrekt berechnet:** Die Player-Anpassung zieht nun die Breite des Ergebnis-Panels ab und setzt dessen Höhe direkt nach dem Video.
 * **Schnell-Fix:** Das Ergebnis-Panel überdeckt das Video nicht mehr und passt seine Höhe exakt an die IFrame-Größe an.
 * **Responsive OCR-Anzeige:** Bei schmalen Dialogen rutscht das Ergebnis-Panel automatisch unter das Video.
+* **Dynamisch mitskalierender OCR-Bereich:** Overlay und Panel wachsen oder schrumpfen nun mit dem Dialog.
  * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
  * **CPU-schonendere OCR:** Nach jedem Durchlauf wird das Intervall angehalten und erst mit einem erneuten Play-Befehl wieder gestartet.
 * **GPU-beschleunigte EasyOCR-Engine:** Erkennt Texte deutlich schneller und liefert stabilere Ergebnisse als Tesseract.
