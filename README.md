@@ -380,6 +380,8 @@ Seit Patch 1.40.60 ignoriert `start_tool.py` Kommentare in `requirements.txt`, d
 Seit Patch 1.40.61 setzt `start_tool.py` den Pfad zum Python-Interpreter in Anführungszeichen, wodurch `pip install` auch bei Leerzeichen im Pfad funktioniert.
 Seit Patch 1.40.62 greift die Gestaltung des Video-Dialogs erst mit dem `open`-Attribut und das Öffnen erfolgt ohne Animation.
 Seit Patch 1.40.63 vereinfacht ein gemeinsamer Grid-Block die Video-Dialog-Definition.
+Seit Patch 1.40.64 erlaubt die Content Security Policy nun Verbindungen zu `api.elevenlabs.io`,
+damit die Status-Abfragen beim Dubbing nicht mehr blockiert werden.
 
 Beispiel einer gültigen CSV:
 
