@@ -2820,6 +2820,7 @@ th:nth-child(6) {
 
 
 /* ===== video-dialog – finale Version ===== */
+/* Alte, konkurrierende Blöcke wurden entfernt. */
 .video-dialog{
     position:fixed;            /* orientiert sich am App-Fenster */
     inset:10vh 10vw;           /* überall 10 % Rand */
@@ -2836,3 +2837,17 @@ th:nth-child(6) {
 .video-dialog:not([open]){display:none;}
 .video-dialog::backdrop{background:rgba(0,0,0,.6);}
 
+
+/* ===== FINAL OVERRIDES ===== */
+/* Setzen alle Reste außer Kraft */
+.video-dialog{
+    position:fixed !important;
+    inset:10vh 10vw !important;
+    grid-template-rows:auto 1fr auto !important;
+    margin:0 !important;
+    transform:none !important;
+}
+
+.wb-grid{
+    grid-template-columns:minmax(200px, 28%) 1fr !important;
+}

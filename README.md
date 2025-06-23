@@ -63,6 +63,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
 * **Behobenes Resize-Problem:** Nach einer Verkleinerung wächst der Videoplayer jetzt korrekt mit, sobald das Fenster wieder größer wird.
 * **Stabiler Startzustand:** CSS-Duplikate entfernt; `video-dialog` startet immer mit 10 % Abstand.
+* **Bereinigtes Stylesheet:** `style.css` enthält `video-dialog` und `wb-grid` nur noch einmal am Dateiende.
+* **Finale Stylesheet-Overrides:** Am Dateiende erzwingen `!important`-Angaben die korrekte Größe des Video-Managers.
 * **Korrektes Skalieren nach erneutem Öffnen:** Der Player passt sich nach dem Wiedereinblenden automatisch an die aktuelle Fenstergröße an.
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
 * **Video & OCR Workbench:** Liste und Player teilen sich die obere Zeile, das OCR-Ergebnis belegt den gesamten Bereich darunter.
