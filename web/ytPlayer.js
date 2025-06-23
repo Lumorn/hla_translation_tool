@@ -563,7 +563,8 @@ export function openVideoDialog(bookmark, index) {
         dlg.showModal();
     }
 
-    player.classList.remove('hidden');
+    // Abschnitt im Grid sichtbar schalten
+    player.classList.remove('collapsed');
     if (gpu) gpu.textContent = 'GPU: EasyOCR';
     // gleich nach dem Einblenden neu skalieren
     if (typeof window.adjustVideoPlayerSize === 'function') {
@@ -851,7 +852,8 @@ export async function closeVideoDialog() {
     if (!dlg || !player) return;
     if (dlg.__closing) return;
     dlg.__closing = true;
-    player.classList.add('hidden');
+    // Abschnitt im Grid ausblenden
+    player.classList.add('collapsed');
     if (window.videoDialogObserver) window.videoDialogObserver.unobserve(dlg);
     const frame = document.getElementById('videoPlayerFrame');
     if (frame) frame.src = '';
@@ -951,7 +953,7 @@ export async function closePlayer() {
 document.addEventListener('keydown', e => {
     const dlg    = document.getElementById('videoMgrDialog');
     const player = document.getElementById('videoPlayerSection');
-    if (!dlg || !dlg.open || !player || player.classList.contains('hidden')) return;
+    if (!dlg || !dlg.open || !player || player.classList.contains('collapsed')) return;
     const playBtn = document.getElementById('videoPlay');
     const backBtn = document.getElementById('videoBack');
     const fwdBtn  = document.getElementById('videoForward');
