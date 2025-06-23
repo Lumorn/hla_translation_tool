@@ -2533,7 +2533,7 @@ th:nth-child(6) {
     display: flex;
     flex-direction: column;
     flex: 0 0 35%; /* feste Höhe für OCR-Ausgabe */
-    min-height: 0;    /* Mindesthöhe entfernt, damit Panel schrumpfen kann */
+    min-height: 50;    /* Mindesthöhe entfernt, damit Panel schrumpfen kann */
     overflow: auto;        /* erkannter Text scrollt */
     border: 2px solid #fff;
     grid-area: ocr;
