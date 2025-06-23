@@ -224,7 +224,7 @@ window.adjustVideoDialogHeight = adjustVideoDialogHeight;
 function adjustVideoPlayerSize(force = false) {
     const section = document.getElementById('videoPlayerSection');
     if (!section) return;
-    if (!force && section.classList.contains('collapsed')) return;
+    if (!force && section.classList.contains('hidden')) return;
 
     const header   = section.querySelector('.player-header');
     const controls = section.querySelector('.player-controls');

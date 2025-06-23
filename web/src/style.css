@@ -9,13 +9,6 @@
             display: none !important;
         }
 
-        /* Bereich im Grid ausblenden, Layout bleibt stabil */
-        .collapsed {
-            visibility: hidden;
-            pointer-events: none;
-            grid-area: none;
-        }
-
         /* Download-Spalte standardmäßig ausgeblendet */
         .download-cell {
             display: none;
@@ -2541,6 +2534,7 @@ th:nth-child(6) {
 .video-player-section.ocr-active {
     /* keine spezielle Behandlung mehr nötig */
 }
+.video-player-section.hidden { display: none; }
 
 /* Bereich für den eingebetteten Player */
 .video-player-section .player-header {
@@ -2854,7 +2848,7 @@ th:nth-child(6) {
 .wb-grid {
     --gap: 12px;
     display: grid;
-    grid-template-columns: 280px 1fr;    /* Liste links, Player rechts */
+    grid-template-columns: 260px 1fr;    /* links Liste, rechts Player */
     grid-template-rows: auto 1fr;        /* oberes Band wächst flexibel */
     grid-template-areas:
         "list player"
