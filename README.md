@@ -92,7 +92,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Flexibles Dashboard-Layout:** Das Dashboard basiert jetzt auf einem vertikalen Flex-Layout. Liste, Player und OCR-Bereich ordnen sich untereinander an und passen sich dynamisch der Fensterhöhe an.
 * **Robuster Video-Dialog:** Das Flex-Layout verhindert Überlappungen und lässt jede Sektion dynamisch wachsen.
 * **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
-* **Bereinigte CSS-Regeln:** Doppelte Definitionen entfernt und das OCR-Panel passt sich flexibler an.
+* **Bereinigte CSS-Regeln:** Alte, starre Blöcke gelöscht; `video-dialog` und `wb-grid` stehen jetzt einmalig am Ende.
 * **Vereinfachtes Dialoglayout:** Grundwerte und geöffnete Variante wurden zu einem Grid-Block zusammengeführt.
 * **Dynamische Spaltenbreite im Video-Manager:** Die Liste schrumpft bis auf 30 % der Dialogbreite und bleibt mindestens 180 px breit. Gleichzeitig entfallen starre Zeilenhöhen, sodass Player und OCR-Bereich flexibel wachsen.
 * **Entschlacktes Video-Dialog-Raster:** Kopf, Inhalt und Steuerleiste passen sich automatisch an und der Rahmen zeigt keine Scrollbalken mehr.

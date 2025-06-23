@@ -2416,20 +2416,21 @@ th:nth-child(6) {
 }
 
 /* ===== video-dialog ===== */
-.video-dialog{
-    display:grid;
-    grid-template-rows:auto 1fr auto;
-    width:clamp(700px,80vw,1200px);
-    height:clamp(500px,80vh,800px);
-    background:#1a1a1a;
-    color:#e0e0e0;
-    padding:24px;
-    margin:24px auto;
-    overflow:hidden;
-    resize:both;
-    position:fixed;
-    left:50%; top:50%;
-    transform:translate(-50%,-50%);
+.video-dialog {
+    display: grid;
+    grid-template-rows: auto 1fr auto;          /* Kopf – Inhalt – Controls */
+    width: clamp(700px, 80vw, 1200px);
+    height: clamp(500px, 80vh, 800px);
+    background: #1a1a1a;
+    color: #e0e0e0;
+    padding: 24px;
+    margin: 24px auto;
+    overflow: hidden;          /* keine Scrollbars am Dialograhmen */
+    resize: both;              /* per Maus skalierbar */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Dialog nur anzeigen, wenn geöffnet */
@@ -2849,21 +2850,21 @@ th:nth-child(6) {
 }
 
 /* ===== Grid im Video-Manager ===== */
-.wb-grid{
-    display:grid;
-    grid-template-columns:minmax(180px,30%) 1fr;
-    grid-template-rows:auto 1fr;
+.wb-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 30%) 1fr;  /* Liste min 180 px, max 30 % */
+    grid-template-rows: auto 1fr;
     grid-template-areas:
         "list   player"
         "ocr    ocr";
-    gap:12px;
-    height:100%;
+    gap: 12px;
+    height: 100%;
 }
 
-@media (max-width:900px){
-    .wb-grid{
-        grid-template-columns:1fr;
-        grid-template-rows:auto auto 1fr;
+@media (max-width: 900px) {
+    .wb-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
         grid-template-areas:
             "list"
             "player"
