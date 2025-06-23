@@ -708,6 +708,14 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
 3. **Logs prüfen** – in der Konsole erscheinen Meldungen zu Upload und Dubbing.
 4. **Audio anhören** – nach Abschluss wird die generierte Sprachausgabe abgespielt.
 
+### Tests ausführen
+
+Für die automatischen Tests sind neben Node auch einige Python‑Pakete notwendig,
+die in `requirements.txt` aufgeführt sind. Bei fehlender Internetverbindung
+schlagen `npm ci` und `pip install` daher meist fehl. Als Workaround können die
+benötigten Wheels vorab lokal zwischengespeichert und `npm ci --ignore-scripts`
+verwendet werden, um optionale Downloads zu überspringen.
+
 **Erfolgskriterien**
 
 * Ausgabe erfolgt auf Deutsch.
