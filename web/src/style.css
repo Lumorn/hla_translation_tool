@@ -784,6 +784,14 @@ th:nth-child(6) {
             color: #4caf50;
         }
 
+        /* Anzeige der Längen-Differenz */
+        .length-diff {
+            font-size: 18px;
+            display: inline-block;
+            width: 24px;
+            text-align: center;
+        }
+
         /* Vertikale Anordnung der Bearbeitungs-Symbole */
         .edit-column {
             display: flex;
