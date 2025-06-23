@@ -23,7 +23,7 @@ describe('OCR-Pipeline', () => {
                 </div>
                 <button id="ocrToggle" class="active"></button>
                 <div id="ocrOverlay" style="top:0"></div>
-                <div id="ocrResultPanel"><pre id="ocrText"></pre></div>
+                <div id="ocrOutputSection"><pre id="ocrText"></pre></div>
             </dialog>`;
         window.api = { captureFrame: jest.fn().mockResolvedValue(new Uint8Array([0])) };
         global.createImageBitmap = jest.fn(async () => ({ width: 10, height: 5 }));

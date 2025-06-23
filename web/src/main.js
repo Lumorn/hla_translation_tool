@@ -11143,7 +11143,7 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
             await refreshTable();
 
             videoDlg
-                .querySelector(".video-list-section")
+                .querySelector("#videoListSection")
                 ?.classList.remove("hidden");
         });
 

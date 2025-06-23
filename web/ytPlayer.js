@@ -638,7 +638,7 @@ export function openVideoDialog(bookmark, index) {
     const debugBtn = document.getElementById('ocrDebug');
     const settingsBtn = document.getElementById('ocrSettings');
     const ocrOverlay = document.getElementById('ocrOverlay');
-    const ocrPanel = document.getElementById('ocrResultPanel');
+    const ocrPanel = document.getElementById('ocrOutputSection');
     const startBtn = document.getElementById('ocrStart');
     const stopBtn  = document.getElementById('ocrStop');
     const deleteBtn = document.getElementById('videoDelete');
@@ -862,7 +862,7 @@ export async function closeVideoDialog() {
     if (frame) frame.src = '';
     const ocrBtn = document.getElementById('ocrToggle');
     const ocrOverlay = document.getElementById('ocrOverlay');
-    const ocrPanel = document.getElementById('ocrResultPanel');
+    const ocrPanel = document.getElementById('ocrOutputSection');
     if (ocrBtn) ocrBtn.classList.remove('active');
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
     player.classList.remove('ocr-active');

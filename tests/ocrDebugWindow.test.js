@@ -49,7 +49,7 @@ describe('OCR-Debug-Fenster', () => {
                     <button id="videoDelete"></button>
                     <button id="videoClose"></button>
                     <div id="ocrOverlay"></div>
-                    <div id="ocrResultPanel"><pre id="ocrText"></pre></div>
+                    <div id="ocrOutputSection"><pre id="ocrText"></pre></div>
                 </div>
             </dialog>`;
         window.dialogPolyfill = null;
