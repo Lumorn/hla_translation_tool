@@ -592,6 +592,7 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 
 * **🧠 Smart Folder Detection:** Erkennt Half‑Life Charaktere automatisch
 * **📏 Auto‑Height Textboxen:** EN/DE Felder bleiben höhengleich
+* **📐 Längen-Vergleich:** Zeigt per Symbol an, ob die deutsche Audiodatei kürzer oder länger als das englische Original ist
 * **🎨 Theme‑System:** Automatische Icon‑ und Farb‑Zuweisungen
 * **💡 Context‑Awareness:** Funktionen passen sich dem aktuellen Kontext an
 * **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen öffnet einen Dialog mit passenden Endungen
