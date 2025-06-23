@@ -10,10 +10,7 @@ const videoTableWrapper = document.getElementById('videoTableWrapper');
 const videoFilter      = document.getElementById('videoFilter');
 // Passiver Scroll-Handler für ruckelfreie Videolisten
 if (videoTableWrapper) {
-    videoTableWrapper.addEventListener('wheel', () => {
-        // Höhe dynamisch anpassen, ohne das Scrollen zu blockieren
-        adjustVideoDialogHeight();
-    }, { passive: true });
+    videoTableWrapper.addEventListener('wheel', () => {}, { passive: true });
 }
 const closeVideoDlg    = document.getElementById('closeVideoDlg');
 // schmale Variante des Schließen-Knopfs
@@ -90,71 +87,7 @@ function ensureDialogSupport(d) {
 ensureDialogSupport(videoDlg);
 
 // Macht den Dialog verschieb- und skalierbar
-function initVideoDialogDrag() {
-    if (videoDlg.__dragInit) return;
-    videoDlg.__dragInit = true;
-
-    const handle = videoDlg.querySelector('.player-header') || videoDlg;
-    let startX = 0, startY = 0, startLeft = 0, startTop = 0;
-
-    handle.addEventListener('pointerdown', e => {
-        if (e.button !== 0) return;
-        startX = e.clientX;
-        startY = e.clientY;
-        const rect = videoDlg.getBoundingClientRect();
-        startLeft = rect.left;
-        startTop  = rect.top;
-        document.addEventListener('pointermove', move);
-        document.addEventListener('pointerup', stop);
-        handle.setPointerCapture(e.pointerId);
-    });
-
-    function move(e) {
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        videoDlg.style.left = startLeft + dx + 'px';
-        videoDlg.style.top  = startTop  + dy + 'px';
-    }
-
-    function stop(e) {
-        document.removeEventListener('pointermove', move);
-        document.removeEventListener('pointerup', stop);
-        handle.releasePointerCapture(e.pointerId);
-    }
-
-    const resize = document.getElementById('dlgResizeHandle');
-    if (resize) {
-        let sW = 0, sH = 0;
-        resize.addEventListener('pointerdown', e => {
-            startX = e.clientX;
-            startY = e.clientY;
-            const rect = videoDlg.getBoundingClientRect();
-            sW = rect.width;
-            sH = rect.height;
-            document.addEventListener('pointermove', doResize);
-            document.addEventListener('pointerup', stopResize);
-            resize.setPointerCapture(e.pointerId);
-            e.preventDefault();
-        });
-
-        function doResize(e) {
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            videoDlg.style.width  = Math.max(400, sW + dx) + 'px';
-            videoDlg.style.height = Math.max(300, sH + dy) + 'px';
-            if (typeof adjustVideoPlayerSize === 'function') {
-                adjustVideoPlayerSize(true);
-            }
-        }
-
-        function stopResize(e) {
-            document.removeEventListener('pointermove', doResize);
-            document.removeEventListener('pointerup', stopResize);
-            resize.releasePointerCapture(e.pointerId);
-        }
-    }
-}
-initVideoDialogDrag();
+// Drag- und Resize-Funktion entfallen beim festen Dialog
 
 // Erlaubt das Ablegen von YouTube-Links im Dialog
 videoDlg.addEventListener('dragover', e => { e.preventDefault(); });
@@ -164,15 +97,8 @@ videoDlg.addEventListener('drop', e => {
     if (url) addVideoFromUrl(url.trim());
 });
 
-// Neuer ResizeObserver verhindert Endlosschleifen
-const ro = new ResizeObserver(() => {
-    if (!window.__dlgRAF) {
-        window.__dlgRAF = requestAnimationFrame(() => {
-            window.__dlgRAF = null;
-            adjustVideoDialogHeight();
-        });
-    }
-});
+// ResizeObserver bleibt erhalten, ruft aber keine Höhenberechnung mehr auf
+const ro = new ResizeObserver(() => {});
 ro.observe(videoDlg);
 // Beobachter global ablegen, damit andere Skripte ihn abmelden koennen
 window.videoDialogObserver = ro;
@@ -202,22 +128,7 @@ function delayedPlayerResize() {
 }
 
 // passt Höhe und Breite des Video-Managers dynamisch an
-function adjustVideoDialogHeight() {
-    const dlg = videoDlg;
-    const maxH = Math.floor(window.innerHeight * 0.85);
-    const needH = dlg.scrollHeight;
-    const newH  = Math.min(maxH, needH);
-    // Nur setzen, wenn sich der Wert geändert hat
-    if (dlg.__lastH !== newH) {
-        dlg.style.height = newH + 'px';
-        dlg.__lastH = newH;
-    }
-    // Breite wird durch CSS geregelt
-
-    if (typeof adjustVideoPlayerSize === 'function') adjustVideoPlayerSize();
-}
-// Funktion global verfügbar machen
-window.adjustVideoDialogHeight = adjustVideoDialogHeight;
+// Funktion zur Höheneinstellung entfällt durch feste Inset-Werte
 
 // ===== Einfache Player-Anpassung =====
 // nutzt das gleiche Schema wie calcLayout()
@@ -227,7 +138,7 @@ function adjustVideoPlayerSize(force = false) {
     if (!force && section.classList.contains('hidden')) return;
 
     const header   = section.querySelector('.player-header');
-    const controls = section.querySelector('.player-controls');
+    const controls = section.querySelector('.video-controls');
     const frame    = section.querySelector('iframe');
     if (!frame) return;
 
@@ -247,7 +158,6 @@ window.adjustVideoPlayerSize = adjustVideoPlayerSize;
 
 // auch bei Fenstergröße aktualisieren
 window.addEventListener('resize', () => {
-    adjustVideoDialogHeight();
     // Player auch im verborgenen Zustand neu skalieren
     adjustVideoPlayerSize(true);
     if (typeof calcLayout === 'function') {
@@ -263,17 +173,13 @@ openVideoManager.addEventListener('click', async () => {
     // schon offen? – dann einfach ignorieren
     if (videoDlg.open) return;
 
-    // Größe wird überwiegend durch CSS geregelt
+    // Größe wird jetzt vollständig durch CSS geregelt
     videoDlg.style.width  = '';
     videoDlg.style.height = '';
 
     videoDlg.showModal();
-    // Dialog direkt auf 80 % der Fenstergröße setzen
-    videoDlg.style.width  = '80vw';
-    videoDlg.style.height = '80vh';
     if (window.videoDialogObserver) window.videoDialogObserver.observe(videoDlg);
     await refreshTable();
-    adjustVideoDialogHeight();
     adjustVideoPlayerSize(true);
     if (typeof calcLayout === 'function') {
         calcLayout();
@@ -288,7 +194,6 @@ function hideVideoDialog() {
         videoDlg.removeAttribute('open');
     }
     if (typeof closeVideoDialog === 'function') closeVideoDialog();
-    adjustVideoDialogHeight();
     if (window.videoDialogObserver) window.videoDialogObserver.unobserve(videoDlg);
 }
 
@@ -363,7 +268,6 @@ videoTableBody.onclick = async e => {
                     bm.title = t.trim();
                     await window.videoApi.saveBookmarks(list);
                     refreshTable();
-                    adjustVideoDialogHeight();
                 }
                 break;
             case 'delete':
@@ -371,7 +275,6 @@ videoTableBody.onclick = async e => {
                     list.splice(origIdx,1);
                     await window.videoApi.saveBookmarks(list);
                     refreshTable();
-                    adjustVideoDialogHeight();
                 }
                 break;
         }
@@ -399,7 +302,6 @@ document.querySelectorAll('#videoTable thead th').forEach(th => {
 videoFilter.oninput = () => {
     localStorage.setItem('hla_videoFilter', videoFilter.value);
     refreshTable();
-    adjustVideoDialogHeight();
 };
 
 function formatTime(sec){
@@ -450,7 +352,6 @@ async function addVideoFromUrl(raw){
     list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
     await window.videoApi.saveBookmarks(list);
     refreshTable();
-    adjustVideoDialogHeight();
     urlInput.value = '';
     updateAddBtn();
 };

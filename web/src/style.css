@@ -2417,20 +2417,16 @@ th:nth-child(6) {
 
 /* ===== video-dialog ===== */
 .video-dialog {
+    position: fixed;                  /* immer relativ zum App-Fenster */
+    inset: 10vh 10vw;                 /* oben/unten 10 vh, rechts/links 10 vw */
     display: grid;
-    grid-template-rows: auto 1fr auto;          /* Kopf – Inhalt – Controls */
-    width: clamp(700px, 80vw, 1200px);
-    height: clamp(500px, 80vh, 800px);
+    grid-template-rows: auto 1fr auto;/* Kopf – Inhalt – Controls */
     background: #1a1a1a;
     color: #e0e0e0;
-    padding: 24px;
-    margin: 24px auto;
-    overflow: hidden;          /* keine Scrollbars am Dialograhmen */
-    resize: both;              /* per Maus skalierbar */
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    border: 2px solid #ffffff33;      /* dünne, weiße Linie */
+    box-shadow: 0 0 8px #000a;
+    overflow: hidden;                 /* kein Scrollen des Rahmens */
+    z-index: 2000;                    /* über sonstiger UI */
 }
 
 /* Dialog nur anzeigen, wenn geöffnet */
@@ -2443,15 +2439,7 @@ th:nth-child(6) {
     background: rgba(0, 0, 0, 0.6);
 }
 
-/* Griff in der Ecke zum Skalieren */
-.dialog-resize {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    right: 2px;
-    bottom: 2px;
-    cursor: se-resize;
-}
+/* Griff in der Ecke zum Skalieren (entfernt) */
 
 /* Werkzeugleiste mit Suchfeld und Buttons */
 .video-toolbar {
@@ -2503,7 +2491,7 @@ th:nth-child(6) {
     #closeVideoDlg { display: none; }
     .close-icon { display: inline-flex; }
     .close-icon.btn { padding: 4px 6px; }
-    .player-controls span { font-size: 0.8rem; }
+    .video-controls span { font-size: 0.8rem; }
 }
 
 .video-list-section {
@@ -2569,53 +2557,32 @@ th:nth-child(6) {
     display: block;
     margin: 0 auto;
 }
-.video-player-section .player-controls {
-    /* Steuerelemente stehen unter dem Video und brechen nicht um */
+/* === Controls unter dem Player === */
+.video-controls {
+    grid-area: controls;
     display: flex;
-    flex-wrap: nowrap;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    padding: 4px 6px;
-    background: #242424;
-    box-shadow: none;
-    position: static;
-    width: 100%;
-    margin-top: 8px;
+    padding-block: 4px;
+    background: #111;
 }
-.video-player-section .player-controls input[type=range] {
-    /* Slider darf schrumpfen, bleibt aber mindestens 140px breit */
-    flex: 1 1 140px;
-    min-width: 140px;
+.video-controls button,
+.video-controls input[type="range"] {
+    flex: 0 0 auto;         /* kein Stauchen */
 }
-.video-player-section .player-controls button {
-    /* Buttons behalten feste Breite und rutschen einfach um */
-    flex: 0 0 auto;
-    background: #333;
-    border: none;
-    color: #e0e0e0;
-    padding: 4px 6px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: clamp(16px, 2.5vh, 24px);
-}
-.video-player-section .player-controls .action-btn { margin-left: 4px; }
-.video-player-section .player-controls button:hover {
-    background: #444;
-}
-.video-player-section .player-controls span {
-    font-size: 1rem;
+.video-controls input[type="range"] {
+    flex: 1 1 auto;         /* Slider nimmt Restbreite */
 }
 
 /* Kleinere Dialoge: Icons und Zeitangaben verkleinern */
 @media (max-width: 600px) {
-    .video-player-section .player-controls button {
+    .video-controls button {
         font-size: 24px;
         width: 24px;
         height: 24px;
         padding: 2px;
     }
-    .video-player-section .player-controls span {
+    .video-controls span {
         font-size: 0.8rem;
     }
 }
@@ -2852,23 +2819,23 @@ th:nth-child(6) {
 /* ===== Grid im Video-Manager ===== */
 .wb-grid {
     display: grid;
-    grid-template-columns: minmax(180px, 30%) 1fr;  /* Liste min 180 px, max 30 % */
-    grid-template-rows: auto 1fr;
+    grid-template-columns: minmax(200px, 28%) 1fr;  /* Liste min 200 px, max 28 % */
+    grid-template-rows: 1fr auto;                  /* Player-Fläche + Controls */
     grid-template-areas:
-        "list   player"
-        "ocr    ocr";
+        "list player"
+        "list controls";
     gap: 12px;
-    height: 100%;
+    height: 100%;            /* füllt den Dialog-Mittelbereich komplett aus */
 }
 
 @media (max-width: 900px) {
     .wb-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
+        grid-template-columns: 1fr;                /* alles untereinander */
+        grid-template-rows: auto 1fr auto;
         grid-template-areas:
             "list"
             "player"
-            "ocr";
+            "controls";
     }
 }
 

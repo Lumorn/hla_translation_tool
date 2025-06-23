@@ -192,7 +192,7 @@ async function positionOverlay() {
     const section  = document.getElementById('videoPlayerSection');
     const iframe   = document.getElementById('videoPlayerFrame');
     const overlay  = document.getElementById('ocrOverlay');
-    const controls = section?.querySelector('.player-controls');
+    const controls = section?.querySelector('.video-controls');
     if (!section || !iframe || !overlay) return;
     const iframeRect = iframe.getBoundingClientRect();
     const sectionRect = section.getBoundingClientRect();
@@ -584,7 +584,7 @@ export function openVideoDialog(bookmark, index) {
     let iframe = document.getElementById('videoPlayerFrame');
     if (!iframe || iframe.tagName !== 'IFRAME') {
         if (iframe) iframe.remove();
-        const controls = player.querySelector('.player-controls');
+        const controls = player.querySelector('.video-controls');
         iframe = document.createElement('iframe');
         iframe.id = 'videoPlayerFrame';
         iframe.setAttribute('allow', 'autoplay; fullscreen');
@@ -595,8 +595,7 @@ export function openVideoDialog(bookmark, index) {
     iframe.src = `https://www.youtube.com/embed/${extractYoutubeId(bookmark.url)}?start=${Math.floor(bookmark.time)}&enablejsapi=1`;
     // Nach dem Laden des IFrames erneut die Dialoggröße setzen
     iframe.addEventListener('DOMContentLoaded', () => {
-        dlg.style.width  = '80vw';
-        dlg.style.height = '80vh';
+        /* Größe wird per CSS festgelegt */
     }, { once: true });
 
     // Fehlerhinweis und Fallback, falls die YouTube-API fehlt
@@ -826,9 +825,6 @@ export function openVideoDialog(bookmark, index) {
         get time() { return currentTime; }
     };
 
-    if (typeof window.adjustVideoDialogHeight === 'function') {
-        window.adjustVideoDialogHeight();
-    }
     if (typeof window.adjustVideoPlayerSize === 'function') {
         // beim Öffnen sofort skalieren
         window.adjustVideoPlayerSize(true);
@@ -879,7 +875,7 @@ export async function closeVideoDialog() {
 
     // Wenn das IFrame durch destroy() entfernt wurde, neu anlegen
     if (!document.getElementById('videoPlayerFrame')) {
-        const controls = player.querySelector('.player-controls');
+        const controls = player.querySelector('.video-controls');
         const nf = document.createElement('iframe');
         nf.id = 'videoPlayerFrame';
         nf.setAttribute('allow', 'autoplay; fullscreen');
@@ -900,9 +896,6 @@ export async function closeVideoDialog() {
     }
     dlg.__closing = false;
 
-    if (typeof window.adjustVideoDialogHeight === 'function') {
-        window.adjustVideoDialogHeight();
-    }
     if (typeof window.adjustVideoPlayerSize === 'function') {
         // auch im geschlossenen Zustand Größe neu berechnen
         window.adjustVideoPlayerSize(true);
