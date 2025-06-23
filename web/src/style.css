@@ -2514,6 +2514,7 @@ th:nth-child(6) {
 .video-player-section {
     display: flex;
     flex-direction: column;
+    flex: 1 1 60%; /* nimmt 60% der Höhe ein */
     height: 100%;
     position: relative;
     overflow: hidden;
@@ -2525,9 +2526,10 @@ th:nth-child(6) {
 .ocr-panel {
     display: flex;
     flex-direction: column;
+    flex: 0 0 35%; /* feste Höhe für OCR-Ausgabe */
+    min-height: 120px;    /* Mindesthöhe */
     overflow: auto;        /* erkannter Text scrollt */
     border: 2px solid #fff;
-    min-height: 0;         /* verhindert Überlaufen */
     grid-area: ocr;
 }
 
@@ -2842,28 +2844,12 @@ th:nth-child(6) {
     color: #ff8080;
 }
 
-/* ===== Neues Grid-Layout für Video-Manager ===== */
+/* ===== Flex-Layout für den Video-Manager ===== */
 .wb-grid {
-    --gap: 12px;
-    display: grid;
-    grid-template-columns: 260px 1fr;    /* links Liste, rechts Player */
-    grid-template-rows: auto 1fr;        /* oberes Band wächst flexibel */
-    grid-template-areas:
-        "list player"
-        "ocr  ocr";
-    gap: var(--gap);
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
 
 
-@media (max-width: 900px) {
-    .wb-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
-        grid-template-areas:
-            "list"
-            "player"
-            "ocr";
-    }
-}
