@@ -12,7 +12,7 @@
     "node": ">=18 <23"
   },
   "scripts": {
-    "pretest": "npm ci",
+    "pretest": "npm ci --ignore-scripts",
     "test": "node --unhandled-rejections=warn node_modules/jest/bin/jest.js",
     "update-version": "node updateVersion.js"
   },

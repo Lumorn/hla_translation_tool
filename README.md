@@ -231,9 +231,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **64‑Bit Python 3.9+** erforderlich; 32‑Bit wird nicht unterstützt
 
 ### Desktop-Version (Electron)
-1. Im Hauptverzeichnis `npm ci` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
-2. In das Verzeichnis `electron/` wechseln und `npm ci` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
-3. Im Ordner `electron/` `npm start` ausführen, um die Desktop-App ohne Browserdialog zu starten
+1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
+2. In das Verzeichnis `electron/` wechseln und ebenfalls `npm ci --ignore-scripts` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
+3. Für ein vollständiges Setup ohne ausgelassene Skripte in beiden Ordnern `npm ci` ausführen
+4. Im Ordner `electron/` `npm start` ausführen, um die Desktop-App ohne Browserdialog zu starten
 
    ```bash
    cd electron
@@ -684,7 +685,8 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
 Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Request automatisch `npm ci` und `npm test` mit Node 18 bis 22 aus.
 
-`npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten per `npm ci`.
+`npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten per `npm ci --ignore-scripts`.
+Wer alle optionalen Skripte ausführen möchte, startet vorher manuell `npm ci`.
 Ab Node.js 22 werden unbehandelte Promises standardmäßig als Fehler gewertet und würden die Tests abbrechen.
 Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, sodass solche Fälle nur eine Warnung auslösen.
 
