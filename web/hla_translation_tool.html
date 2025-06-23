@@ -6,6 +6,7 @@
     <title>Half-Life: Alyx Translation Tool</title>
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
     <!-- Aktualisierte CSP: Inline-Styles sind über style-src-attr erlaubt -->
+    <!-- Medien-Blobs werden über media-src zugelassen -->
     <meta http-equiv="Content-Security-Policy"
           content="default-src 'self';
                    script-src 'self' https://www.youtube.com 'unsafe-inline';
@@ -14,7 +15,8 @@
                    connect-src 'self' https://api.elevenlabs.io;
                    frame-src https://www.youtube.com blob:;
                    img-src 'self' data: https://i.ytimg.com;
-                   worker-src 'self' blob:;">
+                   worker-src 'self' blob:;
+                   media-src 'self' blob:;">
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
