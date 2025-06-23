@@ -8994,6 +8994,7 @@ function playOriginalPreview() {
     editBlobUrl = URL.createObjectURL(blob);
     audio.src = editBlobUrl;
     audio.currentTime = editOrigCursor / 1000;
+    audio.load();
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
@@ -9003,6 +9004,12 @@ function playOriginalPreview() {
             updateDeEditWaveforms(audio.currentTime * 1000, null);
         }, 50);
         audio.onended = () => { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; stopEditPlayback(); };
+    }).catch(err => {
+        // Wiedergabe schlug fehl – Nutzer informieren
+        console.error('Fehler bei Original-Vorschau', err);
+        if (typeof updateStatus === 'function') {
+            updateStatus('Fehler beim Abspielen der Originaldatei');
+        }
     });
 }
 // =========================== PLAYORIGINALPREVIEW END ======================
@@ -9041,6 +9048,7 @@ function playDePreview() {
     editBlobUrl = URL.createObjectURL(blob);
     audio.src = editBlobUrl;
     audio.currentTime = Math.max(editDeCursor - editStartTrim, 0) / 1000;
+    audio.load();
     audio.play().then(() => {
         btn.classList.add('playing');
         btn.textContent = '⏸';
@@ -9050,6 +9058,12 @@ function playDePreview() {
             updateDeEditWaveforms(null, audio.currentTime * 1000);
         }, 50);
         audio.onended = () => { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; stopEditPlayback(); };
+    }).catch(err => {
+        // Wiedergabe schlug fehl – Nutzer informieren
+        console.error('Fehler bei DE-Vorschau', err);
+        if (typeof updateStatus === 'function') {
+            updateStatus('Fehler beim Abspielen der DE-Datei');
+        }
     });
 }
 // =========================== PLAYDEPREVIEW END ============================
