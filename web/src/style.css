@@ -2418,12 +2418,8 @@ th:nth-child(6) {
 .video-dialog {
     /* Ohne open-Attribut verstecken */
     display: none;
-    width: clamp(600px, 70vw, 920px);
-    max-width: 900px;
-    max-height: 85vh;
-    height: clamp(400px, 70vh, 85vh);
-    min-width: 520px;
-    min-height: 400px;
+    width: clamp(700px, 80vw, 1200px);
+    height: clamp(500px, 80vh, 800px);
     background: #1a1a1a;
     color: #e0e0e0;
     padding: 24px;
@@ -2438,8 +2434,8 @@ th:nth-child(6) {
 
 /* Dialog erst anzeigen, wenn geöffnet */
 .video-dialog[open] {
-    display: grid;
-    grid-template-rows: 320px 1fr 48px;
+    /* Wird erst sichtbar, wenn das open-Attribut gesetzt ist */
+    display: block;
 }
 
 /* Abdunklung hinter dem Dialog */
@@ -2508,20 +2504,30 @@ th:nth-child(6) {
     /* Linke Tabellenansicht mit Scrollbar */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    max-height: 320px;
-    overflow-y: auto;
+    overflow-y: auto;      /* lange Listen scrollen */
     border: 2px solid #fff;
+    min-height: 0;         /* verhindert Überlaufen */
+    grid-area: list;
 }
 /* Neues Flex-Layout: Video links, OCR rechts */
 .video-player-section {
     display: flex;
     flex-direction: column;
     height: 100%;
-    min-height: 320px;
     position: relative;
     overflow: hidden;
     border: 2px solid #fff;
+    min-height: 0;    /* verhindert Überlaufen */
+    grid-area: player;
+}
+
+.ocr-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;        /* erkannter Text scrollt */
+    border: 2px solid #fff;
+    min-height: 0;         /* verhindert Überlaufen */
+    grid-area: ocr;
 }
 
 /* Bei aktivem OCR-Panel Platz neben dem Video schaffen */
@@ -2585,6 +2591,7 @@ th:nth-child(6) {
     cursor: pointer;
     font-size: clamp(16px, 2.5vh, 24px);
 }
+.video-player-section .player-controls .action-btn { margin-left: 4px; }
 .video-player-section .player-controls button:hover {
     background: #444;
 }
@@ -2756,8 +2763,8 @@ th:nth-child(6) {
     white-space: pre-wrap;
     color: #fff;
     font-family: monospace;
+    flex: 1 1 auto;
     overflow: auto; /* Text bleibt scrollbar */
-    max-height: 100%;
 }
 #roiPreview {
     width: 100%;
@@ -2774,10 +2781,7 @@ th:nth-child(6) {
     display: flex;
 }
 
-/* damit das Panel nicht unter die Steuerleiste reicht */
-.player-controls {
-    position: static;
-}
+/* Steuerleiste bleibt unter dem Video */
 
 /* Ausklappbarer Einstell-Drawer fuer das OCR-Tuning */
 #ocrSettingsDrawer {
@@ -2841,25 +2845,27 @@ th:nth-child(6) {
 }
 
 /* ===== Neues Grid-Layout für Video-Manager ===== */
-.video-dialog{width:clamp(600px,80vw,1200px);height:clamp(400px,60vh,800px)}
-.wb-grid{
-    --gap:12px;
-    display:grid;
-    grid-template-columns:280px 1fr;
-    grid-template-rows:auto 1fr;
+.wb-grid {
+    --gap: 12px;
+    display: grid;
+    grid-template-columns: 260px 1fr;    /* links Liste, rechts Player */
+    grid-template-rows: auto 1fr;        /* oberes Band wächst flexibel */
     grid-template-areas:
         "list player"
         "ocr  ocr";
-    gap:var(--gap);
-    height:100%;
-    box-sizing:border-box;
+    gap: var(--gap);
+    height: 100%;
 }
-.video-list-section{grid-area:list;border:1px solid #fff;padding:8px;overflow:auto;}
-.video-player-section{grid-area:player;border:1px solid #fff;padding:8px;position:relative;}
-.ocr-panel{grid-area:ocr;border:1px solid #fff;padding:8px;overflow:auto;display:flex;flex-direction:column;min-height:140px;}
-.player-controls .action-btn{margin-left:4px;}
-.video-action-panel{display:none;}
-@media(max-width:900px){
-  .wb-grid{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;
-           grid-template-areas:"list" "player" "ocr";}
+
+
+
+@media (max-width: 900px) {
+    .wb-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto 1fr;
+        grid-template-areas:
+            "list"
+            "player"
+            "ocr";
+    }
 }
