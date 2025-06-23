@@ -61,7 +61,9 @@ def check_python() -> bool:
         report("Python-Version", False, f"{sys.version.split()[0]} (<3.9)")
         return False
     if sys.maxsize <= 2**32:
-        report("Python-Architektur", False, "32-Bit nicht unterst\u00fctzt")
+        # Hinweis fuer 32-Bit-Umgebungen
+        detail = "32-Bit nicht unterst\u00fctzt (64-Bit Python installieren)"
+        report("Python-Architektur", False, detail)
         return False
     report("Python-Version", True, sys.version.split()[0])
     return True

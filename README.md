@@ -222,6 +222,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Lokaler Dateizugriff** für Audio‑Wiedergabe
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
+* **64‑Bit Python 3.9+** erforderlich; 32‑Bit wird nicht unterstützt
 
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm ci` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind
