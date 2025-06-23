@@ -651,7 +651,6 @@ export function openVideoDialog(bookmark, index) {
     ocrPaused = false;
     player.classList.remove('ocr-active');
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
-    if (ocrPanel) ocrPanel.classList.add('hidden');
     if (debugBtn) {
         debugBtn.classList.remove('active');
     }
@@ -723,7 +722,7 @@ export function openVideoDialog(bookmark, index) {
                 ocrOverlay.classList.toggle('hidden', !active);
             }
             if (ocrPanel) {
-                ocrPanel.classList.toggle('hidden', !active);
+                // Panel bleibt sichtbar
             }
             if (active) {
                 ocrBtn.title = 'OCR an/aus (F9)';
@@ -780,7 +779,6 @@ export function openVideoDialog(bookmark, index) {
             ocrActive = true;
             player.classList.add('ocr-active');
             ocrOverlay?.classList.remove('hidden');
-            ocrPanel?.classList.remove('hidden');
             startAutoLoop();
         };
     }
@@ -791,7 +789,6 @@ export function openVideoDialog(bookmark, index) {
             ocrActive = false;
             player.classList.remove('ocr-active');
             ocrOverlay?.classList.add('hidden');
-            ocrPanel?.classList.add('hidden');
         };
     }
     // Lösch-Button ruft nun die neue Funktion auf
@@ -863,7 +860,6 @@ export async function closeVideoDialog() {
     const ocrPanel = document.getElementById('ocrResultPanel');
     if (ocrBtn) ocrBtn.classList.remove('active');
     if (ocrOverlay) ocrOverlay.classList.add('hidden');
-    if (ocrPanel) ocrPanel.classList.add('hidden');
     player.classList.remove('ocr-active');
     ocrActive = false;
     ocrPaused = false;

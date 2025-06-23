@@ -92,7 +92,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Strukturiertes Grid-Layout:** Das Dashboard nutzt nun ein zweispaltiges CSS‑Grid (`260px 1fr`) mit weißen Rahmen. Bei weniger als 900 px Breite stapeln sich Liste, Player und OCR‑Panel automatisch.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 * **Flexible Player-Steuerleiste:** Bei schmalen Fenstern rutscht der Slider in eine zweite Zeile. Icons und Zeitangaben verkleinern sich automatisch.
-* **Fixierte Steuerleiste im Player:** Die Bedienelemente haften nun dank `position: sticky` direkt unter dem Video, besitzen volle Breite und liegen mit höherem `z-index` stets über dem Ergebnis-Panel. Die Liste nutzt variabel 22 % Breite (min. 260 px, max. 320 px).
+* **Steuerleiste unter dem Video:** Die Buttons sitzen jetzt statisch unter dem Player, nutzen die volle Breite und bleiben in einer Zeile.
 * **Scrollbarer Videobereich:** Wird das Video höher als der Dialog, lässt sich der Player innerhalb des Fensters scrollen und die Buttons bleiben sichtbar.
 * **Verbesserte Scroll-Performance:** Der Wheel-Handler ist nun passiv und reagiert flüssiger auf Mausbewegungen.
 * **Beobachter pausieren beim Schließen:** Der ResizeObserver meldet sich ab, sobald der Dialog verborgen wird, und startet erst beim erneuten Öffnen. Dank zusätzlicher Prüfungen entstehen keine Endlos-Schleifen mehr.
@@ -129,7 +129,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet ein separates Fenster. Jetzt wird nach jedem Durchlauf der Screenshot samt Rohtext per `postMessage` übertragen und in einer kleinen Galerie gesammelt; ein erneuter Klick schließt das Fenster und stoppt den Stream.
 * **OCR nur noch per EasyOCR-Worker:** Die aufwändigen Tesseract-Fallbacks wurden entfernt. Die Erkennung läuft komplett über den lokalen Python-Worker.
 * **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
-* **Vollbreite ohne OCR:** Das Ergebnis-Panel bleibt standardmäßig verborgen und erscheint nur bei aktivierter Erkennung.
+* **OCR-Panel immer sichtbar:** Ein Platzhalter weist nun darauf hin, wenn noch kein Text erkannt wurde.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
 * **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
 * **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern.
