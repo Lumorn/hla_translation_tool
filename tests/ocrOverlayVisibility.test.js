@@ -34,7 +34,7 @@ describe('OCR-Overlay sichtbar schalten', () => {
                     <button id="videoDelete"></button>
                     <button id="videoClose"></button>
                     <div id="ocrOverlay" class="hidden"></div>
-                    <div id="ocrResultPanel"><pre id="ocrText"></pre></div>
+                    <div id="ocrOutputSection"><pre id="ocrText"></pre></div>
                 </div>
             </dialog>`;
         window.videoApi = { loadBookmarks: async () => [], saveBookmarks: async () => true };
@@ -60,7 +60,7 @@ describe('OCR-Overlay sichtbar schalten', () => {
         openVideoDialog(bookmark, 0);
         const ocrBtn = document.getElementById('ocrToggle');
         const overlay = document.getElementById('ocrOverlay');
-        const panel = document.getElementById('ocrResultPanel');
+        const panel = document.getElementById('ocrOutputSection');
 
         // nach dem Öffnen bleibt das Panel sichtbar
         expect(overlay.classList.contains('hidden')).toBe(true);

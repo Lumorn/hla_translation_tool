@@ -184,7 +184,7 @@ const layoutObserver = new ResizeObserver(() => {
     }
 });
 layoutObserver.observe(videoDlg);
-const obsPanel = document.getElementById('ocrResultPanel');
+const obsPanel = document.getElementById('ocrOutputSection');
 if (obsPanel) layoutObserver.observe(obsPanel);
 
 function delayedPlayerResize() {
