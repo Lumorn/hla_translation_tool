@@ -14,9 +14,10 @@ beforeAll(() => {
 
 let showDubbingSettings;
 
-test('Dialog wird mit display flex erstellt', async () => {
+test('Dialog wird sichtbar angezeigt', async () => {
     await showDubbingSettings(1);
     const dlg = document.getElementById('dubbingSettingsDialog');
     expect(dlg).not.toBeNull();
-    expect(dlg.style.display).toBe('flex');
+    // Der Dialog sollte nicht mehr die Klasse "hidden" besitzen
+    expect(dlg.classList.contains('hidden')).toBe(false);
 });
