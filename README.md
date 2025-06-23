@@ -253,6 +253,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 21. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
 22. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
 23. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
+24. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
 
 ### ElevenLabs-Dubbing
 

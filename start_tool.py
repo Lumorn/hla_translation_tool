@@ -16,6 +16,16 @@ from datetime import datetime
 import importlib.util
 import shutil
 import hashlib
+import shlex
+
+# Pruefen, ob ein Git-Remote existiert
+def has_remote() -> bool:
+    """Gibt True zurueck, wenn ein Git-Remote konfiguriert ist."""
+    try:
+        output = subprocess.check_output("git remote", shell=True, text=True).strip()
+        return bool(output)
+    except subprocess.CalledProcessError:
+        return False
 
 # Helfer, um Pfade mit Leerzeichen korrekt zu quoten
 def quote_path(path: str) -> str:
@@ -199,8 +209,12 @@ if current_head == last_head:
 else:
     log("Setze Repository zur\u00fcck und hole Updates")
     try:
-        run("git fetch --depth=1")
-        run("git reset --hard origin/main")
+        if has_remote():
+            run("git fetch --depth=1")
+            run("git reset --hard origin/main")
+        else:
+            log("Kein Remote gefunden - setze lokal zurueck")
+            run("git reset --hard HEAD")
         run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
         current_head = subprocess.check_output("git rev-parse HEAD", shell=True, text=True).strip()
         with open(HEAD_FILE, "w", encoding="utf-8") as f:
@@ -232,7 +246,8 @@ if os.path.exists(req_file):
             if not has_module(mod):
                 missing.append(pkg)
         if missing:
-            cmd = f"{quote_path(sys.executable)} -m pip install --disable-pip-version-check -q " + " ".join(missing)
+            quoted = " ".join(shlex.quote(pkg) for pkg in missing)
+            cmd = f"{quote_path(sys.executable)} -m pip install --disable-pip-version-check -q {quoted}"
             run(cmd)
         log("pip install erfolgreich")
     except subprocess.CalledProcessError as e:
