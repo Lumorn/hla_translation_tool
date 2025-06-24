@@ -1941,67 +1941,22 @@ function addFiles() {
                 num = parseInt(input, 10);
                 if (isNaN(num) || num <= 0) return;
             }
-            versionMenuFile.version = num;
-            isDirty = true;
-            renderFileTable();
-            saveProjects();
-        }
-
-        function openVersionFolderDialog() {
-            const select = document.getElementById('versionFolderSelect');
-            select.innerHTML = '';
-            const folders = Array.from(new Set(files.map(f => f.folder))).sort();
-            folders.forEach(f => {
-                const opt = document.createElement('option');
-                const last = f.split('/').pop() || f;
-                opt.value = f;
-                opt.textContent = last;
-                select.appendChild(opt);
-            });
-
-            document.getElementById('versionFolderVersionSelect').value = '1';
-            document.getElementById('versionFolderCustomInput').value = '';
-            document.getElementById('versionFolderCustomInput').style.display = 'none';
-
-            document.getElementById('versionFolderDialog').classList.remove('hidden');
-        }
-
-        function closeVersionFolderDialog() {
-            document.getElementById('versionFolderDialog').classList.add('hidden');
-        }
-
-        if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
-            const verSel = document.getElementById('versionFolderVersionSelect');
-            if (verSel) {
-                verSel.addEventListener('change', () => {
-                    const custom = document.getElementById('versionFolderCustomInput');
-                    custom.style.display = verSel.value === 'custom' ? 'inline-block' : 'none';
+            // Nachfragen, ob die Nummer auf den gesamten Ordner angewendet werden soll
+            const applyFolder = confirm('Version auf kompletten Ordner anwenden?');
+            if (applyFolder) {
+                files.forEach(f => {
+                    if (f.folder === versionMenuFile.folder && getDeFilePath(f)) {
+                        f.version = num;
+                    }
                 });
-            }
-        }
-
-        function applyVersionToFolder() {
-            const folder = document.getElementById('versionFolderSelect').value;
-            let ver = document.getElementById('versionFolderVersionSelect').value;
-            if (ver === 'custom') {
-                ver = parseInt(document.getElementById('versionFolderCustomInput').value, 10);
-                if (isNaN(ver) || ver <= 0) {
-                    alert('Ungültige Versionsnummer');
-                    return;
-                }
             } else {
-                ver = parseInt(ver, 10);
+                versionMenuFile.version = num;
             }
-            files.forEach(f => {
-                if (f.folder === folder && getDeFilePath(f)) {
-                    f.version = ver;
-                }
-            });
             isDirty = true;
             renderFileTable();
             saveProjects();
-            closeVersionFolderDialog();
         }
+
 
         async function contextMenuAction(action) {
             if (!contextMenuFile) {
@@ -2241,7 +2196,7 @@ return `
             </span>
         </td>
         <td>
-            ${hasDeAudio ? `<span class="version-badge" oncontextmenu="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
+            ${hasDeAudio ? `<span class="version-badge" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
