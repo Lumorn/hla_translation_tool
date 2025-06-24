@@ -1934,20 +1934,25 @@ function addFiles() {
             versionMenuFile = null;
         }
 
-        function selectVersion(v) {
+        // Setzt die Versionsnummer der gewählten Datei
+        // Bei "Benutzerdefiniert..." fragt ein Dialog nach der Nummer
+        async function selectVersion(v) {
             if (!versionMenuFile) return;
-            const file = versionMenuFile; // Ausgewählte Datei merken
+            const file = versionMenuFile; // gemerkte Auswahl
             hideVersionMenu();
+
             let num = v;
             if (v === 'custom') {
-                const input = prompt('Versionsnummer eingeben', file.version || 1);
+                // Ersatz für prompt(): Eingabe der Versionsnummer
+                const input = await showInputDialog('Versionsnummer eingeben', file.version || 1);
                 if (!input) return;
                 num = parseInt(input, 10);
                 if (isNaN(num) || num <= 0) return;
-                // Nur bei benutzerdefinierter Nummer nach dem Anwendungsbereich fragen
+
+                // Nur bei eigener Nummer nach dem Anwendungsbereich fragen
                 const applyAll = confirm('F\u00fcr alle Dateien mit gleichem Namen im Projekt anwenden?');
                 if (applyAll) {
-                    // Version f\u00fcr alle gleichnamigen Dateien setzen
+                    // Version für alle gleichnamigen Dateien setzen
                     files.forEach(f => {
                         if (f.filename === file.filename) {
                             f.version = num;
@@ -1957,9 +1962,10 @@ function addFiles() {
                     file.version = num;
                 }
             } else {
-                // Voreingestellte Nummern 1-10 nur auf die aktuelle Datei anwenden
+                // Schnellwahl 1–10 nur auf aktuelle Datei anwenden
                 file.version = num;
             }
+
             isDirty = true;
             renderFileTable();
             saveProjects();
