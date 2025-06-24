@@ -8296,6 +8296,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         currentItem.waitingForManual = true;
         ui.setActiveDubItem(currentItem);
         renderFileTable();
+        // Seite zum erzeugten Dubbing automatisch im Browser öffnen
+        await openStudioAndWait(id);
         await showDownloadWaitDialog(file.id);
         return;
     }

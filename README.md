@@ -303,6 +303,7 @@ Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubb
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Danach fragt das Tool,
 ob die **Beta-API** genutzt oder der **halbautomatische Modus** verwendet werden soll.
 Im halbautomatischen Modus werden Audiodatei und Texte lediglich an ElevenLabs gesendet.
+Dabei öffnet sich automatisch die entsprechende Dubbing-Seite im Browser, sodass Sie die Spur direkt erzeugen können.
 Anschließend erscheint ein Hinweis, die fertig gerenderte Datei in den projektspezifischen Ordner `web/Download` (oder `web/Downloads`) zu legen.
 Sobald dort eine passende Datei auftaucht, zeigt das Tool „Datei gefunden" mit Namen an und
 wartet auf eine Bestätigung. Das Fenster zeigt nun zusätzlich Ordnername sowie englischen und deutschen Text der aktuellen Zeile an, damit klar ist, für welche Übersetzung die Datei erwartet wird.
@@ -405,6 +406,7 @@ Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn berei
 Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt nur noch um eins.
 Seit Patch 1.40.75 zeigt der blaue Download-Pfeil beim Überfahren mit der Maus die gespeicherte Dubbing-ID an.
 Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende V1-Dubbing-Seite bei ElevenLabs.
+Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende Dubbing-Seite im Browser.
 
 Beispiel einer gültigen CSV:
 
