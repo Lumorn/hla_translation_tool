@@ -406,7 +406,7 @@ Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn berei
 Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt nur noch um eins.
 Seit Patch 1.40.75 zeigt der blaue Download-Pfeil beim Überfahren mit der Maus die gespeicherte Dubbing-ID an.
 Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende V1-Dubbing-Seite bei ElevenLabs.
-Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende Dubbing-Seite im Browser.
+Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende Dubbing-Seite im externen Browser, nicht mehr im Electron-Fenster.
 Seit Patch 1.40.78 zeigt das "Alles gesendet"-Fenster die Dubbing-ID an und bietet Buttons
 zum Öffnen der ElevenLabs-Seite sowie der gerade importierten Datei.
 Seit Patch 1.40.79 wird beim Dubben ebenfalls die Versionsnummer erhöht, wenn bereits eine deutsche Datei vorhanden ist.

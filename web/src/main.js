@@ -8039,7 +8039,13 @@ function closeDownloadWaitDialog() {
 // Öffnet die neue Dubbing-Seite und zeigt einen Hinweis mit Download-Pfad an
 async function openStudioAndWait(dubId) {
     const url = `https://elevenlabs.io/v1/dubbing/${dubId}`;
-    window.open(url, '_blank');
+    // Wenn moeglich, externen Browser nutzen, um kein neues Electron-Fenster
+    // zu oeffnen
+    if (window.electronAPI && window.electronAPI.openExternal) {
+        await window.electronAPI.openExternal(url);
+    } else {
+        window.open(url, '_blank');
+    }
 
     // Pfad aus Electron abrufen, falls verfügbar
     let dlPath = 'Download';
