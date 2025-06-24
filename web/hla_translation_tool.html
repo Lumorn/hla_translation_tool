@@ -44,6 +44,7 @@
                     <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
                 </div>
                 <div class="system-tools">
+                    <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
                     <div class="settings-container">
                         <button id="settingsButton" class="btn btn-secondary" onclick="toggleSettingsMenu()">⚙️ Einstellungen</button>
                         <div class="settings-menu" id="settingsMenu">
@@ -535,6 +536,28 @@
         </div>
     </div>
 
+    <!-- Word List Dialog -->
+    <div class="dialog-overlay hidden" id="wordListDialog">
+        <div class="dialog">
+            <button class="dialog-close-btn" onclick="closeWordList()">×</button>
+            <h3>📚 Wörterbuch</h3>
+            <table id="wordListTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
+                <thead>
+                    <tr>
+                        <th>Englisches Wort</th>
+                        <th>Phonetische Aussprache</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="addWordRow()">+ Zeile</button>
+                <button class="btn btn-secondary" onclick="closeWordList()">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveWordList()">Speichern</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>

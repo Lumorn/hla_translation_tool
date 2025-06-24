@@ -126,6 +126,9 @@ let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || 
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
+// Liste für eigene Wörter samt phonetischer Aussprache
+let wordList = JSON.parse(localStorage.getItem('hla_wordList') || '[]');
+
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
@@ -265,6 +268,60 @@ function clearDubbingLog() {
     updateStatus('Dubbing-Log gelöscht');
 }
 // =========================== DUBBING-LOG END ===========================
+
+// Öffnet das Wörterbuch-Fenster und baut die Tabelle auf
+function openWordList() {
+    renderWordList();
+    document.getElementById('wordListDialog').classList.remove('hidden');
+}
+
+// Schließt das Wörterbuch-Fenster
+function closeWordList() {
+    document.getElementById('wordListDialog').classList.add('hidden');
+}
+
+// Zeigt alle gespeicherten Wörter an
+function renderWordList() {
+    const tbody = document.querySelector('#wordListTable tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    wordList.forEach(entry => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><input type="text" class="text-input word-input" value="${entry.word}"></td>`+
+                       `<td><input type="text" class="text-input phon-input" value="${entry.phonetic}"></td>`+
+                       `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// Fügt eine neue Zeile im Wörterbuch ein
+function addWordRow() {
+    const tbody = document.querySelector('#wordListTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" class="text-input word-input"></td>`+
+                   `<td><input type="text" class="text-input phon-input"></td>`+
+                   `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
+    tbody.appendChild(tr);
+}
+
+// Entfernt eine Zeile aus dem Wörterbuch
+function deleteWordRow(btn) {
+    btn.closest('tr').remove();
+}
+
+// Speichert die aktuellen Wörter in den LocalStorage
+function saveWordList() {
+    const rows = document.querySelectorAll('#wordListTable tbody tr');
+    wordList = Array.from(rows).map(row => {
+        return {
+            word: row.querySelector('.word-input').value.trim(),
+            phonetic: row.querySelector('.phon-input').value.trim()
+        };
+    }).filter(e => e.word || e.phonetic);
+    localStorage.setItem('hla_wordList', JSON.stringify(wordList));
+    closeWordList();
+}
+
 // Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
 function stopCurrentPlayback() {
     const audio = document.getElementById('audioPlayer');

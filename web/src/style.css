@@ -2561,6 +2561,14 @@ th:nth-child(7) {
 }
 .ocr-panel{ grid-area:ocr; overflow:auto; background:#0002; }
 
+/* === Tabelle für das Wörterbuch === */
+.word-list-table td{
+    padding: 4px;
+}
+.word-list-table input{
+    width: 100%;
+}
+
 /* ===== Mobil-Fallback ===== */
 @media (max-width:900px){
     .video-grid{
