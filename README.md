@@ -394,6 +394,7 @@ Seit Patch 1.40.69 ändert die Schnellwahl (Version 1–10) nur noch die angekli
 Beim Punkt "Benutzerdefiniert..." können Sie eine beliebige Nummer eingeben und entscheiden,
 ob alle Dateien mit demselben Namen im Projekt angepasst werden sollen.
 Seit Patch 1.40.70 wird die ausgewählte Datei beim Eintragen einer benutzerdefinierten Versionsnummer korrekt übernommen.
+Seit Patch 1.40.71 ersetzt ein Dialog die veraltete Funktion `prompt()` und verhindert damit Fehler im Browser.
 
 Beispiel einer gültigen CSV:
 
