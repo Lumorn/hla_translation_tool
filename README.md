@@ -204,7 +204,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zurücksetzen nach Upload:** Beim Hochladen einer neuen deutschen Audiodatei werden Lautstärkeangleichung und Funkgerät‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
-* **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben.
+* **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben. Der blaue Download-Pfeil zeigt nun beim Überfahren mit der Maus die Dubbing-ID an.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
 * **Automatische Versionsanpassung:** Beim manuellen Upload oder Drag & Drop erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
@@ -402,6 +402,7 @@ Seit Patch 1.40.72 bietet dieser Dialog zusätzlich die Schaltfläche **Für all
 die alle Dateien im selben Ordner ohne Nachfrage aktualisiert.
 Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn bereits eine deutsche Datei existiert.
 Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt nur noch um eins.
+Seit Patch 1.40.75 zeigt der blaue Download-Pfeil beim Überfahren mit der Maus die gespeicherte Dubbing-ID an.
 
 Beispiel einer gültigen CSV:
 

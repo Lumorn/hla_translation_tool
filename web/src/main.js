@@ -2259,7 +2259,7 @@ return `
         <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
         <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick="dubStatusClicked(${file.id})"`}>●</span></td>
         <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
-        <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
+        <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="downloadDe(${file.id})" disabled>⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
