@@ -2215,7 +2215,7 @@ return `
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Klick um Position zu ändern">${originalIndex + 1}</td>
-        <td class="filename-cell clickable" onclick="checkFilename(${file.id})">${file.filename}</td>
+        <td class="filename-cell clickable" onclick="checkFilename(${file.id}, event)">${file.filename}</td>
         <td>
             <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"
@@ -3802,9 +3802,22 @@ function deleteFile(fileId) {
 // =========================== CHECKFILENAME START ===========================
 // Prüft beim Klick auf den Dateinamen, ob die Datei existiert und bietet
 // alternative Endungen zur Auswahl an
-async function checkFilename(fileId) {
+async function checkFilename(fileId, event) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
+
+    // Bei gedrückter Strg-Taste nur den Dateinamen ohne Endung kopieren
+    if (event && event.ctrlKey) {
+        const nameOhneEndung = file.filename.replace(/\.[^/.]+$/, '');
+        try {
+            await navigator.clipboard.writeText(nameOhneEndung);
+            updateStatus(`Dateiname kopiert: ${nameOhneEndung}`);
+        } catch (err) {
+            console.error('Kopieren fehlgeschlagen:', err);
+            updateStatus('Kopieren nicht möglich');
+        }
+        return;
+    }
 
     // Existiert die Datei mit identischer Endung im aktuellen Ordner?
     let found = false;

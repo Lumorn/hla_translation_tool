@@ -618,6 +618,7 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 * **🎨 Theme‑System:** Automatische Icon‑ und Farb‑Zuweisungen
 * **💡 Context‑Awareness:** Funktionen passen sich dem aktuellen Kontext an
 * **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen öffnet einen Dialog mit passenden Endungen
+* **📋 Strg+Klick auf Dateiname:** kopiert den Namen ohne Endung in die Zwischenablage
 
 ---
 
