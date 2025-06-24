@@ -326,6 +326,22 @@ th:nth-child(6) {
             color: white;
         }
 
+        .version-folder-btn {
+            padding: 6px 12px;
+            background: #444;
+            border: none;
+            border-radius: 4px;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+            margin-left: 10px;
+        }
+
+        .version-folder-btn:hover {
+            background: #555;
+        }
+
         .progress-info {
             display: flex;
             gap: 15px;
@@ -1037,7 +1053,7 @@ th:nth-child(6) {
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .folder-badge:hover {
+.folder-badge:hover {
             transform: scale(1.05);
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             filter: brightness(1.1);
@@ -1400,6 +1416,22 @@ th:nth-child(6) {
     cursor:pointer;
     transition:color .2s, transform .2s;
 }
+
+        .version-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            background: #555;
+            color: #fff;
+            user-select: none;
+        }
+
+        .version-badge:hover {
+            background: #666;
+        }
 
 /* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
 #deEditDialog .dialog {
