@@ -1935,7 +1935,7 @@ function addFiles() {
         }
 
         // Setzt die Versionsnummer der gewählten Datei
-        // Bei "Benutzerdefiniert..." fragt ein Dialog nach der Nummer
+        // Bei "Benutzerdefiniert..." erscheint ein Dialog mit drei Schaltflächen
         async function selectVersion(v) {
             if (!versionMenuFile) return;
             const file = versionMenuFile; // gemerkte Auswahl
@@ -1943,18 +1943,16 @@ function addFiles() {
 
             let num = v;
             if (v === 'custom') {
-                // Ersatz für prompt(): Eingabe der Versionsnummer
-                const input = await showInputDialog('Versionsnummer eingeben', file.version || 1);
-                if (!input) return;
-                num = parseInt(input, 10);
+                // Dialog mit eigener Versionsnummer und Auswahl des Anwendungsbereichs
+                const res = await showVersionDialog('Versionsnummer eingeben', file.version || 1);
+                if (!res) return;
+                num = parseInt(res.value, 10);
                 if (isNaN(num) || num <= 0) return;
 
-                // Nur bei eigener Nummer nach dem Anwendungsbereich fragen
-                const applyAll = confirm('F\u00fcr alle Dateien mit gleichem Namen im Projekt anwenden?');
-                if (applyAll) {
-                    // Version für alle gleichnamigen Dateien setzen
+                if (res.applyAll) {
+                    // Version für alle Dateien im selben Ordner setzen
                     files.forEach(f => {
-                        if (f.filename === file.filename) {
+                        if (f.folder === file.folder) {
                             f.version = num;
                         }
                     });
@@ -11051,6 +11049,40 @@ function showChapterCustomization(chapterName, ev) {
                 document.body.appendChild(ov);
                 ov.classList.remove('hidden');
                 dlg.querySelector('#dlgInput').focus();
+            });
+        }
+
+        // Spezieller Dialog für die Versionsnummer
+        // Liefert ein Objekt mit der eingegebenen Zahl und einem Flag, ob alle
+        // Dateien im selben Ordner angepasst werden sollen
+        function showVersionDialog(message, value = '') {
+            return new Promise(resolve => {
+                const ov = document.createElement('div');
+                ov.className = 'dialog-overlay hidden';
+                ov.innerHTML = `<div class="dialog">
+                    <p>${escapeHtml(message)}</p>
+                    <input id="dlgVersion" type="text" value="${escapeHtml(value)}" style="width:100%;padding:8px;margin-top:10px;background:#1a1a1a;border:1px solid #444;border-radius:4px;color:#e0e0e0;">
+                    <div class="dialog-buttons">
+                        <button class="btn btn-secondary" id="dlgCancel">Abbrechen</button>
+                        <button class="btn btn-success" id="dlgOk">\u00dcbernehmen</button>
+                        <button class="btn btn-primary" id="dlgAll">F\u00fcr alle \u00fcbernehmen</button>
+                    </div>
+                </div>`;
+
+                const cleanup = result => {
+                    document.body.removeChild(ov);
+                    resolve(result);
+                };
+                ov.addEventListener('click', e => { if (e.target === ov) cleanup(null); });
+                const dlg = ov.querySelector('.dialog');
+                dlg.addEventListener('click', e => e.stopPropagation());
+                const inp = dlg.querySelector('#dlgVersion');
+                dlg.querySelector('#dlgCancel').onclick = () => cleanup(null);
+                dlg.querySelector('#dlgOk').onclick = () => cleanup({ value: inp.value.trim(), applyAll: false });
+                dlg.querySelector('#dlgAll').onclick = () => cleanup({ value: inp.value.trim(), applyAll: true });
+                document.body.appendChild(ov);
+                ov.classList.remove('hidden');
+                inp.focus();
             });
         }
 
