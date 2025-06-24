@@ -7612,6 +7612,11 @@ async function handleDeUpload(input) {
         if (bestehendeDatei) {
             file.version = (file.version || 1) + 1;
         }
+        // Bearbeitungs-Flags zurücksetzen, da die hochgeladene Datei neu ist
+        file.trimStartMs = 0;
+        file.trimEndMs = 0;
+        file.volumeMatched = false;
+        file.radioEffect = false;
         // Fertig-Status ergibt sich nun automatisch
     }
 
@@ -11005,6 +11010,11 @@ function showChapterCustomization(chapterName, ev) {
                 if (vorhandene) {
                     f.version = (f.version || 1) + 1;
                 }
+                // Bearbeitungs-Flags zurücksetzen, da es sich um eine neue Datei handelt
+                f.trimStartMs = 0;
+                f.trimEndMs = 0;
+                f.volumeMatched = false;
+                f.radioEffect = false;
                 // Fertig-Status ergibt sich nun automatisch
             }
             isDirty = true;
