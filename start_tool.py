@@ -80,6 +80,15 @@ if sys.version_info < (3, 9):
     print("[Fehler] Python 3.9 oder neuer wird benoetigt.")
     log("Python-Version zu alt")
     sys.exit(1)
+if sys.version_info >= (3, 13):
+    # Warnung fuer noch nicht unterstuetzte Python-Version
+    print("[Warnung] Python 3.13 oder neuer erkannt. Diese Version wird moeglicherweise nicht unterstuetzt.")
+    log("Python-Version zu neu")
+    antwort = input("Fortsetzen? [j/N] ")
+    if antwort.lower() not in ("j", "ja"):
+        print("Abbruch.")
+        sys.exit(1)
+
 if sys.maxsize <= 2**32:
     print("[Fehler] 32-Bit-Python wird nicht unterstuetzt. Bitte 64-Bit installieren.")
     log("Python-Architektur 32-Bit")

@@ -236,7 +236,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Lokaler Dateizugriff** für Audio‑Wiedergabe
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
-* **64‑Bit Python 3.9+** erforderlich; 32‑Bit wird nicht unterstützt
+* **64‑Bit Python 3.9–3.12** erforderlich; 3.13+ wird moeglicherweise nicht unterstuetzt (Warnhinweis). 32‑Bit wird nicht unterstuetzt
 
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
@@ -387,6 +387,7 @@ Seit Patch 1.40.65 akzeptiert die Richtlinie auch `blob:` in `media-src`.
 Damit funktionieren die Audio-Vorschauen wieder ohne CSP-Fehler.
 Seit Patch 1.40.66 nutzt `start_tool.py` `subprocess.check_call` mit Argumentlisten,
 damit `pip install` ohne aufwendiges Quoting auch unter Windows funktioniert.
+Seit Patch 1.40.67 warnt `start_tool.py` vor Python 3.13 oder neuer und ermoeglicht einen Abbruch.
 
 Beispiel einer gültigen CSV:
 
