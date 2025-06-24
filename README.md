@@ -204,7 +204,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben.
-* **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Optional kann die Nummer sofort auf alle Dateien des gleichen Ordners angewendet werden.
+* **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 
 ### 🔍 Suche & Import
 
@@ -395,6 +395,8 @@ Beim Punkt "Benutzerdefiniert..." können Sie eine beliebige Nummer eingeben und
 ob alle Dateien mit demselben Namen im Projekt angepasst werden sollen.
 Seit Patch 1.40.70 wird die ausgewählte Datei beim Eintragen einer benutzerdefinierten Versionsnummer korrekt übernommen.
 Seit Patch 1.40.71 ersetzt ein Dialog die veraltete Funktion `prompt()` und verhindert damit Fehler im Browser.
+Seit Patch 1.40.72 bietet dieser Dialog zusätzlich die Schaltfläche **Für alle übernehmen**,
+die alle Dateien im selben Ordner ohne Nachfrage aktualisiert.
 
 Beispiel einer gültigen CSV:
 
