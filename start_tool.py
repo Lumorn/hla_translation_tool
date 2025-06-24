@@ -16,7 +16,6 @@ from datetime import datetime
 import importlib.util
 import shutil
 import hashlib
-import shlex
 
 # Pruefen, ob ein Git-Remote existiert
 def has_remote() -> bool:
@@ -246,9 +245,10 @@ if os.path.exists(req_file):
             if not has_module(mod):
                 missing.append(pkg)
         if missing:
-            quoted = " ".join(shlex.quote(pkg) for pkg in missing)
-            cmd = f"{quote_path(sys.executable)} -m pip install --disable-pip-version-check -q {quoted}"
-            run(cmd)
+            # Pakete ohne Shell-Pufferung installieren
+            cmd = [sys.executable, "-m", "pip", "install", "--disable-pip-version-check", "-q", *missing]
+            log("Fuehre aus: " + " ".join(cmd))
+            subprocess.check_call(cmd)
         log("pip install erfolgreich")
     except subprocess.CalledProcessError as e:
         print("pip install fehlgeschlagen. Weitere Details siehe setup.log")
