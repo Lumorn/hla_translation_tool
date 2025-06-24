@@ -208,7 +208,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
-* **Automatische Versionsanpassung:** Beim manuellen Upload oder Drag & Drop erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
+* **Automatische Versionsanpassung:** Beim manuellen Upload, Drag & Drop oder Dubben erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
 
 ### 🔍 Suche & Import
 
@@ -409,6 +409,7 @@ Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende V1-Dubbi
 Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende Dubbing-Seite im Browser.
 Seit Patch 1.40.78 zeigt das "Alles gesendet"-Fenster die Dubbing-ID an und bietet Buttons
 zum Öffnen der ElevenLabs-Seite sowie der gerade importierten Datei.
+Seit Patch 1.40.79 wird beim Dubben ebenfalls die Versionsnummer erhöht, wenn bereits eine deutsche Datei vorhanden ist.
 
 Beispiel einer gültigen CSV:
 
