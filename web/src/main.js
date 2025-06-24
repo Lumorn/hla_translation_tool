@@ -2307,7 +2307,10 @@ return `
         </div>
         <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div></td>
         <!-- Untertitel-Suche Knopf -->
-        <td><button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="Ähnlichen Untertitel suchen">🔍</button></td>
+        <td><div class="btn-column">
+            <button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="Ähnlichen Untertitel suchen">🔍</button>
+            ${textContainsWord(file.deText) ? `<button class="word-indicator" onclick="openWordList()" title="Wörterbuch öffnen">📖</button>` : ''}
+        </div></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             <div class="btn-column">
                 <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>
@@ -11343,6 +11346,22 @@ function showChapterCustomization(chapterName, ev) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // Hilfsfunktion für RegExp-Erstellung
+        function escapeRegExp(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Prüft, ob ein Wort aus dem Wörterbuch im angegebenen Text vorkommt
+        function textContainsWord(text) {
+            const lower = (text || '').toLowerCase();
+            return wordList.some(e => {
+                const w = (e.word || '').trim().toLowerCase();
+                if (!w) return false;
+                const re = new RegExp('\\b' + escapeRegExp(w) + '\\b');
+                return re.test(lower);
+            });
         }
 
         // Auto-save on input changes with debouncing
