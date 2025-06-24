@@ -323,6 +323,12 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Beliebige Datei im Standardprogramm öffnen
+  ipcMain.handle('open-path', async (event, p) => {
+    shell.openPath(p);
+    return true;
+  });
+
   // Screenshot des aktuellen Fensters erstellen
   ipcMain.handle('capture-frame', async (event, bounds) => {
     const win = BrowserWindow.fromWebContents(event.sender);
