@@ -8316,6 +8316,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         const url = await pollRender(id);
         const dubbedBlob = await fetch(url).then(r => r.blob());
         const relPath = getFullPath(file);
+        // Vor dem Speichern prüfen, ob bereits eine DE-Datei existiert
+        const vorhandene = getDeFilePath(file);
         if (window.electronAPI && window.electronAPI.saveDeFile) {
             const buffer = await dubbedBlob.arrayBuffer();
             await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
@@ -8323,6 +8325,10 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
             await updateHistoryCache(relPath);
         } else {
             await speichereUebersetzungsDatei(dubbedBlob, relPath);
+        }
+        // Versionsnummer erhöhen, falls eine Datei ersetzt wurde
+        if (vorhandene) {
+            file.version = (file.version || 1) + 1;
         }
         file.dubReady = true;
         // Bearbeitungs-Status zurücksetzen, da es sich um eine neue Datei handelt
@@ -8404,6 +8410,8 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     }
     const dubbedBlob = await audioRes.blob();
     const relPath = getFullPath(file);
+    // Prüfen, ob bereits eine Datei vorhanden ist
+    const vorhandene = getDeFilePath(file);
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await dubbedBlob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
@@ -8414,6 +8422,10 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     } else {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
         addDubbingLog('Datei im Browser gespeichert');
+    }
+    // Versionsnummer erhöhen, falls die alte Datei ersetzt wurde
+    if (vorhandene) {
+        file.version = (file.version || 1) + 1;
     }
     file.dubReady = true; // Nach erneutem Download fertig
     // Bearbeitungs-Status zurücksetzen, da eine frische Datei geladen wurde
@@ -8468,6 +8480,8 @@ async function downloadDe(fileId) {
     }
     const blob = await downloadDubbingAudio(elevenLabsApiKey, file.dubbingId, 'de');
     const relPath = getFullPath(file);
+    // Existiert bereits eine DE-Datei, soll die Version steigen
+    const vorhandene = getDeFilePath(file);
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
@@ -8476,6 +8490,9 @@ async function downloadDe(fileId) {
         await updateHistoryCache(cleanPath);
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
+    }
+    if (vorhandene) {
+        file.version = (file.version || 1) + 1;
     }
     file.dubReady = true; // Status auf fertig setzen
     // Bearbeitungs-Status zurücksetzen, da eine neue Datei gespeichert wurde
@@ -11217,8 +11234,13 @@ function showChapterCustomization(chapterName, ev) {
             const file = files.find(f => f.id === id);
             if (!file) return;
             const rel = dest.replace(/^sounds\/DE\//i, '');
+            // Vorhandene Datei vor Überschreiben prüfen
+            const vorhandene = getDeFilePath(file);
             deAudioCache[rel] = dest;
             file.dubReady = true;
+            if (vorhandene) {
+                file.version = (file.version || 1) + 1;
+            }
             file.waitingForManual = false;
             // Bearbeitungs-Status zurücksetzen, da jetzt eine neue Datei vorliegt
             file.trimStartMs = 0;
