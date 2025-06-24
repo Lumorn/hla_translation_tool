@@ -390,6 +390,9 @@ Seit Patch 1.40.66 nutzt `start_tool.py` `subprocess.check_call` mit Argumentlis
 damit `pip install` ohne aufwendiges Quoting auch unter Windows funktioniert.
 Seit Patch 1.40.67 warnt `start_tool.py` vor Python 3.13 oder neuer und ermoeglicht einen Abbruch.
 Seit Patch 1.40.68 öffnet sich das Versionsmenü beim Klick auf die Nummer wieder korrekt.
+Seit Patch 1.40.69 ändert die Schnellwahl (Version 1–10) nur noch die angeklickte Datei.
+Beim Punkt "Benutzerdefiniert..." können Sie eine beliebige Nummer eingeben und entscheiden,
+ob alle Dateien mit demselben Namen im Projekt angepasst werden sollen.
 
 Beispiel einer gültigen CSV:
 

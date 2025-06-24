@@ -1943,16 +1943,20 @@ function addFiles() {
                 if (!input) return;
                 num = parseInt(input, 10);
                 if (isNaN(num) || num <= 0) return;
-            }
-            // Nachfragen, ob die Nummer auf den gesamten Ordner angewendet werden soll
-            const applyFolder = confirm('Version auf kompletten Ordner anwenden?');
-            if (applyFolder) {
-                files.forEach(f => {
-                    if (f.folder === versionMenuFile.folder && getDeFilePath(f)) {
-                        f.version = num;
-                    }
-                });
+                // Nur bei benutzerdefinierter Nummer nach dem Anwendungsbereich fragen
+                const applyAll = confirm('F\u00fcr alle Dateien mit gleichem Namen im Projekt anwenden?');
+                if (applyAll) {
+                    // Version f\u00fcr alle gleichnamigen Dateien setzen
+                    files.forEach(f => {
+                        if (f.filename === versionMenuFile.filename) {
+                            f.version = num;
+                        }
+                    });
+                } else {
+                    versionMenuFile.version = num;
+                }
             } else {
+                // Voreingestellte Nummern 1-10 nur auf die aktuelle Datei anwenden
                 versionMenuFile.version = num;
             }
             isDirty = true;
