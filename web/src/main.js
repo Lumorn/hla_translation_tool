@@ -548,6 +548,23 @@ function setLevelIcon(levelName, icon) {
 }
 /* =========================== LEVEL-ICON-HILFSFUNKTIONEN ENDE =============== */
 
+/* =========================== VERSION-FARBEN START ========================== */
+// Liefert abhängig von der Versionsnummer einen Grünton.
+// Grau für Version 1, immer satteres Grün bis Version 10,
+// darüber hinaus sehr dunkles Schwarzgrün.
+function getVersionColor(v) {
+    if (!v || v <= 1) return '#555';
+    if (v > 10) return '#002200';
+    const ratio = (v - 1) / 9; // Wertebereich 0..1
+    const start = { r: 85, g: 85, b: 85 }; // Grau
+    const end = { r: 0, g: 68, b: 0 };     // Dunkelgrün
+    const r = Math.round(start.r + (end.r - start.r) * ratio);
+    const g = Math.round(start.g + (end.g - start.g) * ratio);
+    const b = Math.round(start.b + (end.b - start.b) * ratio);
+    return `rgb(${r},${g},${b})`;
+}
+/* =========================== VERSION-FARBEN ENDE =========================== */
+
 /* =========================== KAPITEL-HILFSFUNKTIONEN START ================= */
 function getLevelChapter(levelName) {
     return levelChapters[levelName] || '–';
@@ -2208,7 +2225,7 @@ return `
             </span>
         </td>
         <td>
-            ${hasDeAudio ? `<span class="version-badge" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
+            ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"

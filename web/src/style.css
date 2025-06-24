@@ -1424,13 +1424,12 @@ th:nth-child(7) {
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
-            background: #555;
             color: #fff;
             user-select: none;
         }
 
         .version-badge:hover {
-            background: #666;
+            filter: brightness(1.1);
         }
 
 /* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
