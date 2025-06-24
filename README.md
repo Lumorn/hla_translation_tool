@@ -205,7 +205,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben. Der blaue Download-Pfeil zeigt nun beim Überfahren mit der Maus die Dubbing-ID an und öffnet beim Anklicken die ElevenLabs-Seite des entsprechenden Jobs.
-* **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte Studio-Seite.
+* **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
 * **Automatische Versionsanpassung:** Beim manuellen Upload oder Drag & Drop erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
@@ -291,8 +291,8 @@ const job = await createDubbing({
     voiceId: '',
     apiKey
 });
-const url = `https://elevenlabs.io/studio/dubbing/${job.dubbing_id}`;
-console.log('Im Studio öffnen:', url);
+const url = `https://elevenlabs.io/v1/dubbing/${job.dubbing_id}`;
+console.log('Dubbing-Seite öffnen:', url);
 if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
     const blob = await fetch(`${API}/dubbing/${job.dubbing_id}/audio/de`, { headers: { 'xi-api-key': apiKey } }).then(r => r.blob());
     // blob speichern ...
@@ -404,7 +404,7 @@ die alle Dateien im selben Ordner ohne Nachfrage aktualisiert.
 Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn bereits eine deutsche Datei existiert.
 Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt nur noch um eins.
 Seit Patch 1.40.75 zeigt der blaue Download-Pfeil beim Überfahren mit der Maus die gespeicherte Dubbing-ID an.
-Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende Seite bei ElevenLabs.
+Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende V1-Dubbing-Seite bei ElevenLabs.
 
 Beispiel einer gültigen CSV:
 

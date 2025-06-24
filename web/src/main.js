@@ -8027,9 +8027,9 @@ function closeDownloadWaitDialog() {
     waitDialogFileId = null;
 }
 
-// Öffnet das Studio und zeigt einen Hinweis mit Download-Pfad an
+// Öffnet die neue Dubbing-Seite und zeigt einen Hinweis mit Download-Pfad an
 async function openStudioAndWait(dubId) {
-    const url = `https://elevenlabs.io/studio/dubbing/${dubId}`;
+    const url = `https://elevenlabs.io/v1/dubbing/${dubId}`;
     window.open(url, '_blank');
 
     // Pfad aus Electron abrufen, falls verfügbar
@@ -8406,12 +8406,12 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     saveCurrentProject();
 }
 // =========================== OPENDUBBINGPAGE START ==========================
-// Öffnet die ElevenLabs-Seite für die gespeicherte Dubbing-ID
+// Öffnet die Dubbing-Seite von ElevenLabs für die gespeicherte ID
 function openDubbingPage(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.dubbingId) return;
-    // Öffnet die Studio-Seite statt des API-Endpunkts
-    const url = `https://elevenlabs.io/studio/dubbing/${file.dubbingId}`;
+    // Direkt zum API-Endpunkt der V1-Dubbing-Seite springen
+    const url = `https://elevenlabs.io/v1/dubbing/${file.dubbingId}`;
     if (window.electronAPI && window.electronAPI.openExternal) {
         window.electronAPI.openExternal(url);
     } else {
