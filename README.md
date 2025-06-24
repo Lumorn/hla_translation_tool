@@ -389,6 +389,7 @@ Damit funktionieren die Audio-Vorschauen wieder ohne CSP-Fehler.
 Seit Patch 1.40.66 nutzt `start_tool.py` `subprocess.check_call` mit Argumentlisten,
 damit `pip install` ohne aufwendiges Quoting auch unter Windows funktioniert.
 Seit Patch 1.40.67 warnt `start_tool.py` vor Python 3.13 oder neuer und ermoeglicht einen Abbruch.
+Seit Patch 1.40.68 öffnet sich das Versionsmenü beim Klick auf die Nummer wieder korrekt.
 
 Beispiel einer gültigen CSV:
 
