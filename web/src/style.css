@@ -950,6 +950,33 @@ th:nth-child(7) {
             transform: scale(1.1);
         }
 
+        /* Kleines Symbol für vorhandene Wörterbuch-Einträge */
+        .word-indicator {
+            background: #444;
+            border: none;
+            color: #e0e0e0;
+            padding: 4px 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+            min-width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .word-indicator:hover {
+            background: #5e92f3;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .word-indicator:active {
+            transform: scale(0.95);
+        }
+
         .subtitle-search-btn:active {
             transform: scale(0.95);
         }

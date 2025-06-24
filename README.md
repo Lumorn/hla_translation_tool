@@ -42,6 +42,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
+* **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **Schnellstart im Player:** YouTube-Links aus der URL-Eingabe starten direkt im eingebetteten Player; andere Links werden extern geöffnet. Beim Öffnen wird automatisch ein Bookmark angelegt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich nun über einen zusätzlichen IPC-Kanal entfernen.
