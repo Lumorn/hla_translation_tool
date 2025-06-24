@@ -8325,6 +8325,11 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
             await speichereUebersetzungsDatei(dubbedBlob, relPath);
         }
         file.dubReady = true;
+        // Bearbeitungs-Status zurücksetzen, da es sich um eine neue Datei handelt
+        file.trimStartMs = 0;
+        file.trimEndMs = 0;
+        file.volumeMatched = false;
+        file.radioEffect = false;
         updateStatus('Download abgeschlossen');
         showToast('Auto-Download erfolgreich.');
         addDubbingLog('Auto-Download erfolgreich');
@@ -8411,6 +8416,11 @@ async function redownloadDubbing(fileId, mode = 'beta') {
         addDubbingLog('Datei im Browser gespeichert');
     }
     file.dubReady = true; // Nach erneutem Download fertig
+    // Bearbeitungs-Status zurücksetzen, da eine frische Datei geladen wurde
+    file.trimStartMs = 0;
+    file.trimEndMs = 0;
+    file.volumeMatched = false;
+    file.radioEffect = false;
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
@@ -8468,6 +8478,11 @@ async function downloadDe(fileId) {
         await speichereUebersetzungsDatei(blob, relPath);
     }
     file.dubReady = true; // Status auf fertig setzen
+    // Bearbeitungs-Status zurücksetzen, da eine neue Datei gespeichert wurde
+    file.trimStartMs = 0;
+    file.trimEndMs = 0;
+    file.volumeMatched = false;
+    file.radioEffect = false;
     updateStatus('Deutsche Audiodatei gespeichert.');
     renderFileTable();
     saveCurrentProject();
@@ -11205,6 +11220,11 @@ function showChapterCustomization(chapterName, ev) {
             deAudioCache[rel] = dest;
             file.dubReady = true;
             file.waitingForManual = false;
+            // Bearbeitungs-Status zurücksetzen, da jetzt eine neue Datei vorliegt
+            file.trimStartMs = 0;
+            file.trimEndMs = 0;
+            file.volumeMatched = false;
+            file.radioEffect = false;
             renderFileTable();
             saveCurrentProject();
         }
