@@ -206,6 +206,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
+* **Automatische Versionsanpassung:** Beim manuellen Upload oder Drag & Drop erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
 
 ### 🔍 Suche & Import
 
@@ -398,6 +399,7 @@ Seit Patch 1.40.70 wird die ausgewählte Datei beim Eintragen einer benutzerdefi
 Seit Patch 1.40.71 ersetzt ein Dialog die veraltete Funktion `prompt()` und verhindert damit Fehler im Browser.
 Seit Patch 1.40.72 bietet dieser Dialog zusätzlich die Schaltfläche **Für alle übernehmen**,
 die alle Dateien im selben Ordner ohne Nachfrage aktualisiert.
+Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn bereits eine deutsche Datei existiert.
 
 Beispiel einer gültigen CSV:
 

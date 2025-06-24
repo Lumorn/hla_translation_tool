@@ -7579,6 +7579,9 @@ async function handleDeUpload(input) {
     if (!datei || !aktuellerUploadPfad) {
         return;
     }
+    // Prüfen, ob bereits eine DE-Datei existiert
+    const f = files.find(fl => getFullPath(fl) === aktuellerUploadPfad);
+    const bestehendeDatei = f ? getDeFilePath(f) : null;
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buffer = await datei.arrayBuffer();
         const url = URL.createObjectURL(datei);
@@ -7603,15 +7606,22 @@ async function handleDeUpload(input) {
     }
 
     // Zugehörige Datei als fertig markieren
-    const file = files.find(f => getFullPath(f) === aktuellerUploadPfad);
+    const file = f;
     if (file) {
+        // Versionsnummer erhöhen, falls bereits eine Datei vorhanden war
+        if (bestehendeDatei) {
+            file.version = (file.version || 1) + 1;
+        }
         // Fertig-Status ergibt sich nun automatisch
     }
+
+    isDirty = true;
+    saveCurrentProject();
 
     aktuellerUploadPfad = null;
     input.value = '';
     renderFileTable();
-updateStatus('DE-Datei gespeichert');
+    updateStatus('DE-Datei gespeichert');
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
@@ -10977,6 +10987,8 @@ function showChapterCustomization(chapterName, ev) {
 
         async function uploadDeFile(datei, zielPfad) {
             if (!datei || !zielPfad) return;
+            const f = files.find(fl => getFullPath(fl) === zielPfad);
+            const vorhandene = f ? getDeFilePath(f) : null;
             if (window.electronAPI && window.electronAPI.saveDeFile) {
                 const buffer = await datei.arrayBuffer();
                 await window.electronAPI.saveDeFile(zielPfad, new Uint8Array(buffer));
@@ -10985,10 +10997,15 @@ function showChapterCustomization(chapterName, ev) {
             } else {
                 await speichereUebersetzungsDatei(datei, zielPfad);
             }
-            const f = files.find(fl => getFullPath(fl) === zielPfad);
             if (f) {
+                // Versionsnummer automatisch erhöhen, falls bereits Datei vorhanden
+                if (vorhandene) {
+                    f.version = (f.version || 1) + 1;
+                }
                 // Fertig-Status ergibt sich nun automatisch
             }
+            isDirty = true;
+            saveCurrentProject();
             renderFileTable();
             updateStatus('DE-Datei gespeichert');
         }
