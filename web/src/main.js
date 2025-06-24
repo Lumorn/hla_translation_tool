@@ -1936,10 +1936,11 @@ function addFiles() {
 
         function selectVersion(v) {
             if (!versionMenuFile) return;
+            const file = versionMenuFile; // Ausgewählte Datei merken
             hideVersionMenu();
             let num = v;
             if (v === 'custom') {
-                const input = prompt('Versionsnummer eingeben', versionMenuFile.version || 1);
+                const input = prompt('Versionsnummer eingeben', file.version || 1);
                 if (!input) return;
                 num = parseInt(input, 10);
                 if (isNaN(num) || num <= 0) return;
@@ -1948,16 +1949,16 @@ function addFiles() {
                 if (applyAll) {
                     // Version f\u00fcr alle gleichnamigen Dateien setzen
                     files.forEach(f => {
-                        if (f.filename === versionMenuFile.filename) {
+                        if (f.filename === file.filename) {
                             f.version = num;
                         }
                     });
                 } else {
-                    versionMenuFile.version = num;
+                    file.version = num;
                 }
             } else {
                 // Voreingestellte Nummern 1-10 nur auf die aktuelle Datei anwenden
-                versionMenuFile.version = num;
+                file.version = num;
             }
             isDirty = true;
             renderFileTable();

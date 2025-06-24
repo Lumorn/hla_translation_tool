@@ -393,6 +393,7 @@ Seit Patch 1.40.68 öffnet sich das Versionsmenü beim Klick auf die Nummer wied
 Seit Patch 1.40.69 ändert die Schnellwahl (Version 1–10) nur noch die angeklickte Datei.
 Beim Punkt "Benutzerdefiniert..." können Sie eine beliebige Nummer eingeben und entscheiden,
 ob alle Dateien mit demselben Namen im Projekt angepasst werden sollen.
+Seit Patch 1.40.70 wird die ausgewählte Datei beim Eintragen einer benutzerdefinierten Versionsnummer korrekt übernommen.
 
 Beispiel einer gültigen CSV:
 
