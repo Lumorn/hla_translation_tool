@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const name = dest.split('/').pop();
                 showToast(`${name} importiert.`);
                 updateStatus('DE-Datei gespeichert');
-                updateDownloadWaitDialog(name);
+                updateDownloadWaitDialog(name, dest);
             });
         }
 
@@ -375,6 +375,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 markDubAsReady(info.fileId, info.dest);
                 await resolveDuplicateAfterCopy(info.dest.replace(/^sounds\/DE\//, ''));
                 showToast(`Dubbing fertig: ${info.dest.split('/').pop()}`);
+                if (info.fileId === waitDialogFileId) {
+                    updateDownloadWaitDialog(info.dest.split('/').pop(), info.dest);
+                }
             });
         }
         // Fehler beim Import
@@ -7979,7 +7982,7 @@ function closeStudioOverlay() {
 // Zeigt ein Dialogfenster, das auf die manuelle Datei wartet
 // und blendet dabei Ordnername sowie EN- und DE-Text ein
 let waitDialogFileId = null;
-async function showDownloadWaitDialog(fileId) {
+async function showDownloadWaitDialog(fileId, dubId) {
     waitDialogFileId = fileId;
     const file = files.find(f => f.id === fileId) || {};
     const folder = escapeHtml(file.folder || '');
@@ -7998,9 +8001,11 @@ async function showDownloadWaitDialog(fileId) {
                     <p><strong>Ordner:</strong> ${folder}</p>
                     <p><strong>EN:</strong> ${enText}</p>
                     <p><strong>DE:</strong> ${deText}</p>
+                    ${dubId ? `<p><strong>ID:</strong> ${dubId}</p>` : ''}
                 </div>
                 <p id="downloadFound" style="display:none;"></p>
                 <div class="dialog-buttons" id="downloadWaitButtons">
+                    ${dubId ? `<button class="btn btn-primary" onclick="openDubbingPage(${fileId})">Seite öffnen</button>` : ''}
                     <button class="btn btn-secondary" onclick="closeDownloadWaitDialog()">Abbrechen</button>
                 </div>
             </div>
@@ -8009,7 +8014,7 @@ async function showDownloadWaitDialog(fileId) {
     document.getElementById('downloadWaitDialog').classList.remove('hidden');
 }
 
-function updateDownloadWaitDialog(name) {
+function updateDownloadWaitDialog(name, destRel) {
     const info = document.getElementById('downloadFound');
     if (info) {
         info.textContent = 'Datei gefunden: ' + name;
@@ -8017,7 +8022,11 @@ function updateDownloadWaitDialog(name) {
     }
     const btn = document.getElementById('downloadWaitButtons');
     if (btn) {
-        btn.innerHTML = '<button class="btn btn-success" onclick="closeDownloadWaitDialog()">OK</button>';
+        let openBtn = '';
+        if (destRel && window.electronAPI && window.electronAPI.openPath && debugInfo.projectRoot) {
+            openBtn = `<button class="btn btn-primary" onclick="openLocalFile('${destRel.replace(/'/g, "\'")}')">Datei öffnen</button>`;
+        }
+        btn.innerHTML = openBtn + '<button class="btn btn-success" onclick="closeDownloadWaitDialog()">OK</button>';
     }
 }
 
@@ -8298,7 +8307,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         renderFileTable();
         // Seite zum erzeugten Dubbing automatisch im Browser öffnen
         await openStudioAndWait(id);
-        await showDownloadWaitDialog(file.id);
+        await showDownloadWaitDialog(file.id, id);
         return;
     }
 
@@ -8358,7 +8367,7 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     if (mode === 'manual') {
         showToast('Bitte Spur manuell generieren und in den Download-Ordner legen.');
         await openStudioAndWait(file.dubbingId);
-        await showDownloadWaitDialog(file.id);
+        await showDownloadWaitDialog(file.id, file.dubbingId);
         return;
     }
 
@@ -8418,6 +8427,18 @@ function openDubbingPage(fileId) {
         window.electronAPI.openExternal(url);
     } else {
         window.open(url, '_blank');
+    }
+}
+// Öffnet eine lokale Datei über den IPC-Kanal
+function openLocalFile(rel) {
+    if (!debugInfo.projectRoot) return;
+    const abs = window.electronAPI.join(debugInfo.projectRoot, rel);
+    if (window.electronAPI && window.electronAPI.openPath) {
+        window.electronAPI.openPath(abs);
+    } else if (window.electronAPI && window.electronAPI.openExternal) {
+        window.electronAPI.openExternal('file://' + abs);
+    } else {
+        window.open('file://' + abs, '_blank');
     }
 }
 // =========================== OPENDUBBINGPAGE END ============================
@@ -11321,6 +11342,7 @@ if (typeof module !== "undefined" && module.exports) {
         redownloadDubbing,
         initiateDubbing,
         openDubbingPage,
+        openLocalFile,
         downloadDe,
         updateDubStatusForFiles,
         markDubAsReady,

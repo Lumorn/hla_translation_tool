@@ -61,4 +61,5 @@ export type IpcChannels =
   | 'load-bookmarks'
   | 'save-bookmarks'
   | 'delete-bookmark'
-  | 'open-external';
+  | 'open-external'
+  | 'open-path';

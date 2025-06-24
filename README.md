@@ -407,6 +407,8 @@ Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt n
 Seit Patch 1.40.75 zeigt der blaue Download-Pfeil beim Überfahren mit der Maus die gespeicherte Dubbing-ID an.
 Seit Patch 1.40.76 öffnet ein Klick auf diesen Pfeil die entsprechende V1-Dubbing-Seite bei ElevenLabs.
 Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende Dubbing-Seite im Browser.
+Seit Patch 1.40.78 zeigt das "Alles gesendet"-Fenster die Dubbing-ID an und bietet Buttons
+zum Öffnen der ElevenLabs-Seite sowie der gerade importierten Datei.
 
 Beispiel einer gültigen CSV:
 
