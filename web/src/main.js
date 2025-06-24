@@ -1916,8 +1916,11 @@ function addFiles() {
             contextMenuFile = null;
         }
 
-        function openVersionMenu(e, fileId) {
+       function openVersionMenu(e, fileId) {
+            // Standardverhalten verhindern und Aufpropagieren stoppen,
+            // damit das globale Klick-Event das Menü nicht sofort schließt
             e.preventDefault();
+            e.stopPropagation();
             versionMenuFile = files.find(f => f.id === fileId);
             if (!versionMenuFile) return;
             const menu = document.getElementById('versionMenu');
