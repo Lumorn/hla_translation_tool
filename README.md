@@ -385,6 +385,8 @@ Seit Patch 1.40.64 erlaubt die Content Security Policy nun Verbindungen zu `api.
 damit die Status-Abfragen beim Dubbing nicht mehr blockiert werden.
 Seit Patch 1.40.65 akzeptiert die Richtlinie auch `blob:` in `media-src`.
 Damit funktionieren die Audio-Vorschauen wieder ohne CSP-Fehler.
+Seit Patch 1.40.66 nutzt `start_tool.py` `subprocess.check_call` mit Argumentlisten,
+damit `pip install` ohne aufwendiges Quoting auch unter Windows funktioniert.
 
 Beispiel einer gültigen CSV:
 
