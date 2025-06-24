@@ -400,6 +400,7 @@ Seit Patch 1.40.71 ersetzt ein Dialog die veraltete Funktion `prompt()` und verh
 Seit Patch 1.40.72 bietet dieser Dialog zusätzlich die Schaltfläche **Für alle übernehmen**,
 die alle Dateien im selben Ordner ohne Nachfrage aktualisiert.
 Seit Patch 1.40.73 erhöht ein Upload die Versionsnummer automatisch, wenn bereits eine deutsche Datei existiert.
+Seit Patch 1.40.74 funktioniert Drag & Drop korrekt: Die Versionsnummer steigt nur noch um eins.
 
 Beispiel einer gültigen CSV:
 

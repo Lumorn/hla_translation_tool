@@ -10966,9 +10966,12 @@ function showChapterCustomization(chapterName, ev) {
             }
         }
 
-        async function handleRowDrop(e) {
-            if (Array.from(e.dataTransfer.types).includes('Files')) {
+       async function handleRowDrop(e) {
+           if (Array.from(e.dataTransfer.types).includes('Files')) {
+                // Standardverhalten verhindern und Aufpropagieren stoppen,
+                // damit der Upload nur einmal erfolgt
                 e.preventDefault();
+                e.stopPropagation();
                 const row = e.currentTarget.closest('tr');
                 const fileId = parseFloat(row.dataset.id);
                 const fileObj = files.find(f => f.id === fileId);
