@@ -107,6 +107,7 @@
                     <button class="sort-btn" onclick="sortTable('filename', event)">Dateiname</button>
                     <button class="sort-btn" onclick="sortTable('folder', event)">Ordner</button>
                     <button class="sort-btn" onclick="sortTable('completion', event)">Fertig</button>
+                    <button class="version-folder-btn" onclick="openVersionFolderDialog()">Ordner-Versionen</button>
                 </div>
                 <div class="progress-info">
                     <div class="progress-stat" id="totalProgress">0% vollständig</div>
@@ -158,6 +159,7 @@
         <th width="50" title="Doppelklick auf Nummer um Position zu ändern">#</th>
         <th class="sortable">Dateiname</th>
         <th class="sortable">Ordner</th>
+        <th>Version</th>
         <th>EN Text</th>
         <th>DE Text</th>
         <th width="40">UT-Suche</th>
@@ -192,6 +194,21 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Version Menu -->
+    <div class="context-menu" id="versionMenu">
+        <div class="context-menu-item" onclick="selectVersion(1)">Version 1</div>
+        <div class="context-menu-item" onclick="selectVersion(2)">Version 2</div>
+        <div class="context-menu-item" onclick="selectVersion(3)">Version 3</div>
+        <div class="context-menu-item" onclick="selectVersion(4)">Version 4</div>
+        <div class="context-menu-item" onclick="selectVersion(5)">Version 5</div>
+        <div class="context-menu-item" onclick="selectVersion(6)">Version 6</div>
+        <div class="context-menu-item" onclick="selectVersion(7)">Version 7</div>
+        <div class="context-menu-item" onclick="selectVersion(8)">Version 8</div>
+        <div class="context-menu-item" onclick="selectVersion(9)">Version 9</div>
+        <div class="context-menu-item" onclick="selectVersion(10)">Version 10</div>
+        <div class="context-menu-item" onclick="selectVersion('custom')">Benutzerdefiniert...</div>
     </div>
 
     <!-- Context Menu -->
@@ -515,6 +532,41 @@
             <div class="dialog-buttons">
                 <button class="btn btn-danger" id="deleteAllMissingBtn">Alle löschen</button>
                 <button class="btn btn-secondary" onclick="closeMissingFoldersDialog()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version für Ordner Dialog -->
+    <div class="dialog-overlay hidden" id="versionFolderDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeVersionFolderDialog()">×</button>
+            <h3>🔢 Version für Ordner</h3>
+            <div style="margin-bottom:10px;">
+                <label>Ordner:
+                    <select id="versionFolderSelect"></select>
+                </label>
+            </div>
+            <div style="margin-bottom:10px;">
+                <label>Version:
+                    <select id="versionFolderVersionSelect">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="custom">Benutzerdefiniert ...</option>
+                    </select>
+                    <input type="number" id="versionFolderCustomInput" min="1" style="width:60px; display:none;">
+                </label>
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeVersionFolderDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="applyVersionToFolder()">Übernehmen</button>
             </div>
         </div>
     </div>

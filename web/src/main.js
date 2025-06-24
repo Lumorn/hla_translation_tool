@@ -47,6 +47,7 @@ let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
+let versionMenuFile        = null; // Menü für Versionsauswahl
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
 let expandedLevel          = null; // aktuell geöffneter Level
@@ -1183,6 +1184,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
+        if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) isDirty=true;
 
@@ -1397,7 +1399,8 @@ function addFiles() {
                 trimStartMs: 0,
                 trimEndMs: 0,
                 volumeMatched: false,
-                radioEffect: false
+                radioEffect: false,
+                version: 1
             };
             
             files.push(newFile);
@@ -1643,7 +1646,7 @@ function addFiles() {
             
             // Context menu
             document.addEventListener('contextmenu', handleContextMenu);
-            document.addEventListener('click', hideContextMenu);
+            document.addEventListener('click', () => { hideContextMenu(); hideVersionMenu(); });
         }
 
         // Keyboard Navigation
@@ -1913,6 +1916,93 @@ function addFiles() {
             contextMenuFile = null;
         }
 
+        function openVersionMenu(e, fileId) {
+            e.preventDefault();
+            versionMenuFile = files.find(f => f.id === fileId);
+            if (!versionMenuFile) return;
+            const menu = document.getElementById('versionMenu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+        }
+
+        function hideVersionMenu() {
+            document.getElementById('versionMenu').style.display = 'none';
+            versionMenuFile = null;
+        }
+
+        function selectVersion(v) {
+            if (!versionMenuFile) return;
+            hideVersionMenu();
+            let num = v;
+            if (v === 'custom') {
+                const input = prompt('Versionsnummer eingeben', versionMenuFile.version || 1);
+                if (!input) return;
+                num = parseInt(input, 10);
+                if (isNaN(num) || num <= 0) return;
+            }
+            versionMenuFile.version = num;
+            isDirty = true;
+            renderFileTable();
+            saveProjects();
+        }
+
+        function openVersionFolderDialog() {
+            const select = document.getElementById('versionFolderSelect');
+            select.innerHTML = '';
+            const folders = Array.from(new Set(files.map(f => f.folder))).sort();
+            folders.forEach(f => {
+                const opt = document.createElement('option');
+                const last = f.split('/').pop() || f;
+                opt.value = f;
+                opt.textContent = last;
+                select.appendChild(opt);
+            });
+
+            document.getElementById('versionFolderVersionSelect').value = '1';
+            document.getElementById('versionFolderCustomInput').value = '';
+            document.getElementById('versionFolderCustomInput').style.display = 'none';
+
+            document.getElementById('versionFolderDialog').classList.remove('hidden');
+        }
+
+        function closeVersionFolderDialog() {
+            document.getElementById('versionFolderDialog').classList.add('hidden');
+        }
+
+        if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
+            const verSel = document.getElementById('versionFolderVersionSelect');
+            if (verSel) {
+                verSel.addEventListener('change', () => {
+                    const custom = document.getElementById('versionFolderCustomInput');
+                    custom.style.display = verSel.value === 'custom' ? 'inline-block' : 'none';
+                });
+            }
+        }
+
+        function applyVersionToFolder() {
+            const folder = document.getElementById('versionFolderSelect').value;
+            let ver = document.getElementById('versionFolderVersionSelect').value;
+            if (ver === 'custom') {
+                ver = parseInt(document.getElementById('versionFolderCustomInput').value, 10);
+                if (isNaN(ver) || ver <= 0) {
+                    alert('Ungültige Versionsnummer');
+                    return;
+                }
+            } else {
+                ver = parseInt(ver, 10);
+            }
+            files.forEach(f => {
+                if (f.folder === folder && getDeFilePath(f)) {
+                    f.version = ver;
+                }
+            });
+            isDirty = true;
+            renderFileTable();
+            saveProjects();
+            closeVersionFolderDialog();
+        }
+
         async function contextMenuAction(action) {
             if (!contextMenuFile) {
                 console.error('No context menu file available for action:', action);
@@ -2149,6 +2239,9 @@ return `
                   onclick="showFileExchangeOptions(${file.id})">
                 ${folderIcon} ${lastFolder}
             </span>
+        </td>
+        <td>
+            ${hasDeAudio ? `<span class="version-badge" oncontextmenu="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
@@ -3532,8 +3625,8 @@ function toggleFileCompletion(fileId) {
             const row = changedInput.closest('tr');
             if (!row) return;
             
-            const enInput = row.querySelector('td:nth-child(7) .text-input');
-            const deInput = row.querySelector('td:nth-child(8) .text-input');
+            const enInput = row.querySelector('td:nth-child(8) .text-input');
+            const deInput = row.querySelector('td:nth-child(9) .text-input');
             
             if (!enInput || !deInput) return;
             
@@ -3555,8 +3648,8 @@ function toggleFileCompletion(fileId) {
 function autoResizeAllInputs() {
             // Process all rows to sync heights
             document.querySelectorAll('#fileTableBody tr').forEach(row => {
-                const enInput = row.querySelector('td:nth-child(7) .text-input');
-                const deInput = row.querySelector('td:nth-child(8) .text-input');
+                const enInput = row.querySelector('td:nth-child(8) .text-input');
+                const deInput = row.querySelector('td:nth-child(9) .text-input');
                 
                 if (enInput && deInput) {
                     // Reset heights
@@ -5346,7 +5439,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false,
-        radioEffect: false
+        radioEffect: false,
+        version: 1
     };
     
     files.push(newFile);
@@ -10106,7 +10200,8 @@ function addFileToProject(filename, folder, originalResult) {
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false,
-        radioEffect: false
+        radioEffect: false,
+        version: 1
     };
     
     files.push(newFile);
