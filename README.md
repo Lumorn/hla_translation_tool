@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.6-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.7-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -412,6 +412,8 @@ Seit Patch 1.40.77 startet der halbautomatische Modus automatisch die passende D
 Seit Patch 1.40.78 zeigt das "Alles gesendet"-Fenster die Dubbing-ID an und bietet Buttons
 zum Öffnen der ElevenLabs-Seite sowie der gerade importierten Datei.
 Seit Patch 1.40.79 wird beim Dubben ebenfalls die Versionsnummer erhöht, wenn bereits eine deutsche Datei vorhanden ist.
+Seit Patch 1.40.80 speichert ein neuer 📓-Knopf englische Wörter zusammen mit deutscher Lautschrift.
+Seit Patch 1.40.81 erscheint unter der Lupe ein kleines 📝, wenn der DE-Text ein Wort aus diesem Wörterbuch enthält.
 
 Beispiel einer gültigen CSV:
 
