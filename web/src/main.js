@@ -1547,12 +1547,16 @@ function addFiles() {
         }
 
         // Search functionality with highlighting and similarity
+        // Hebt alle Vorkommen des Suchbegriffs hervor und maskiert HTML
         function highlightText(text, query) {
-            if (!text || !query) return text;
-            // Mehrere Suchbegriffe unterstützen
-            const words = query.split(/\s+/).filter(Boolean).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+            if (!text || !query) return escapeHtml(text);
+            // Mehrere Suchbegriffe unterstuetzen
+            const words = query.split(/\s+/)
+                .filter(Boolean)
+                .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
             const regex = new RegExp(`(${words.join('|')})`, 'gi');
-            return text.replace(regex, '<span class="search-result-match">$1</span>');
+            const escaped = escapeHtml(text);
+            return escaped.replace(regex, '<span class="search-result-match">$1</span>');
         }
 
         function initializeEventListeners() {
@@ -1689,11 +1693,11 @@ function addFiles() {
                     searchResults.innerHTML = allResults.slice(0, 20).map(r => `
                         <div class="search-result-item" onclick='addFromSearch(${JSON.stringify(r).replace(/'/g, "&#39;")})'>
                             <div class="search-result-filename">
-                                ${r.filename}
+                                ${escapeHtml(r.filename)}
                                 ${r.similarity < 1.0 ? `<span class="search-result-similarity">${Math.round(r.similarity * 100)}% ähnlich</span>` : ''}
                             </div>
-                            <div class="search-result-path">${r.folder} • ${r.matchType}</div>
-                            <div class="search-result-text">${r.matchPreview}</div>
+                            <div class="search-result-path">${escapeHtml(r.folder)} • ${escapeHtml(r.matchType)}</div>
+                            <div class="search-result-text">${escapeHtml(r.matchPreview)}</div>
                         </div>
                     `).join('');
                     searchResults.style.display = 'block';
