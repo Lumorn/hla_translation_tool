@@ -415,6 +415,7 @@ zum Öffnen der ElevenLabs-Seite sowie der gerade importierten Datei.
 Seit Patch 1.40.79 wird beim Dubben ebenfalls die Versionsnummer erhöht, wenn bereits eine deutsche Datei vorhanden ist.
 Seit Patch 1.40.80 speichert ein neuer 📓-Knopf englische Wörter zusammen mit deutscher Lautschrift.
 Seit Patch 1.40.81 erscheint unter der Lupe ein kleines 📝, wenn der DE-Text ein Wort aus diesem Wörterbuch enthält.
+Seit Patch 1.40.82 bewertet die Untertitel-Suche kurze Wörter strenger und vermeidet so falsche 100%-Treffer.
 
 Beispiel einer gültigen CSV:
 

@@ -2571,11 +2571,12 @@ function calculateTextSimilarity(text1, text2) {
     const allWords = new Set([...words1, ...words2]);
     
     words1.forEach(word1 => {
-        if (words2.some(word2 =>
-            // Exakte oder nahezu exakte Wortuebereinstimmung pruefen
-            word1 === word2 ||
-            levenshteinDistance(word1, word2) <= Math.max(1, Math.min(word1.length, word2.length) * 0.3)
-        )) {
+        if (words2.some(word2 => {
+            // Bei kurzen Wörtern nur genaue Treffer zulassen
+            const len = Math.min(word1.length, word2.length);
+            const schwelle = len < 5 ? 0 : Math.max(1, Math.floor(len * 0.3));
+            return word1 === word2 || levenshteinDistance(word1, word2) <= schwelle;
+        })) {
             commonWords++;
         }
     });
@@ -11485,6 +11486,7 @@ if (typeof module !== "undefined" && module.exports) {
         updateAutoTranslation,
         importClosecaptions,
         stripColorCodes,
+        calculateTextSimilarity,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
