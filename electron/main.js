@@ -338,19 +338,24 @@ app.whenReady().then(() => {
     // Erweiterungen vorgesehen.
     const { chromium } = require('playwright');
     // Browser ohne Headless-Modus starten
+    // Fortschritt im Terminal ausgeben
+    console.log('[auto-dub] Starte Browser für ID', id);
     const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage();
     await page.setViewportSize({ width: 1200, height: 900 });
     await page.goto(`https://elevenlabs.io/v1/dubbing/${id}`);
+    console.log('[auto-dub] Seite geöffnet');
     // Abfolge wichtiger Buttons nacheinander klicken
     const selectors = [
       'text=Generate',
       'text=Continue',
       'text=Download'
     ];
+    // Buttons der Reihe nach anklicken
     for (const sel of selectors) {
       try {
         await page.waitForSelector(sel, { timeout: 10000 });
+        console.log('[auto-dub] Klicke', sel);
         await page.click(sel);
       } catch (err) {
         console.log('[auto-dub] Knopf fehlt:', sel);
@@ -358,6 +363,7 @@ app.whenReady().then(() => {
       await page.waitForTimeout(1000);
     }
     // Browser schließen, sobald alles durchgelaufen ist
+    console.log('[auto-dub] Vorgang abgeschlossen, schließe Browser');
     await browser.close();
     return true;
   });
