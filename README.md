@@ -249,33 +249,34 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
 2. In das Verzeichnis `electron/` wechseln und ebenfalls `npm ci --ignore-scripts` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
 3. Für ein vollständiges Setup ohne ausgelassene Skripte in beiden Ordnern `npm ci` ausführen
-4. Im Ordner `electron/` `npm start` ausführen, um die Desktop-App ohne Browserdialog zu starten
+4. **Eigenes App-Icon:** Legen Sie Ihr Icon unter `electron/assets/app-icon.png` ab
+5. Im Ordner `electron/` `npm start` ausführen, um die Desktop-App ohne Browserdialog zu starten
 
    ```bash
    cd electron
    npm start
    ```
-4. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
-5. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
-6. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
-7. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
-8. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
-9. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
-10. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben.
-11. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
-12. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
-13. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
-14. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
-15. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
-16. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
-17. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
-18. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
-19. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
-20. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
-21. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
-22. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
-23. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
-24. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
+6. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
+7. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
+8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
+9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
+10. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
+11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
+12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben.
+13. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
+14. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
+15. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
+16. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
+17. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
+18. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
+19. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
+20. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
+21. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
+22. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
+23. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
+24. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
+25. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
+26. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
 
 ### ElevenLabs-Dubbing
 

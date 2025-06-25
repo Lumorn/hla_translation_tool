@@ -25,6 +25,8 @@ const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../s
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
+// Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
+const iconPath = path.join(__dirname, 'assets', 'app-icon.png');
 // Workshop-Start erfolgt über ein Python-Skript mit hlvrcfg.exe
 const pendingDubs = [];
 let mainWindow;
@@ -171,6 +173,7 @@ function createWindow() {
     // Fensterbreite etwas vergrößern, damit Play- und Stop-Knopf Platz haben
     width: 1300,
     height: 800,
+    icon: iconPath,
     webPreferences: {
       // Preload-Skript bindet die Electron-API im Renderer ein
       preload: path.join(__dirname, 'preload.cjs'),
