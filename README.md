@@ -313,6 +313,7 @@ Anschließend erscheint ein Hinweis, die fertig gerenderte Datei in den projekts
 Sobald dort eine passende Datei auftaucht, zeigt das Tool „Datei gefunden" mit Namen an und
 wartet auf eine Bestätigung. Das Fenster zeigt nun zusätzlich Ordnername sowie englischen und deutschen Text der aktuellen Zeile an, damit klar ist, für welche Übersetzung die Datei erwartet wird.
 Ab Version 1.40.83 kann hier auch **Automatik** gewählt werden. Dann öffnet die Desktop-App ein eingebettetes Browserfenster und klickt alle Schritte selbstständig durch. Dazu installiert die Electron-Version automatisch Playwright.
+Seit Patch 1.40.84 gibt der Automatik-Modus im Terminal aus, wann der Browser startet, welche Buttons geklickt werden und wann der Vorgang beendet ist.
 Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 
 * **Stability** – Ausgeglichenheit vs. Lebendigkeit
@@ -420,6 +421,7 @@ Seit Patch 1.40.80 speichert ein neuer 📓-Knopf englische Wörter zusammen mit
 Seit Patch 1.40.81 erscheint unter der Lupe ein kleines 📝, wenn der DE-Text ein Wort aus diesem Wörterbuch enthält.
 Seit Patch 1.40.82 bewertet die Untertitel-Suche kurze Wörter strenger und vermeidet so falsche 100%-Treffer.
 Seit Patch 1.40.83 führt der neue Button **Automatik** das halbautomatische Dubbing selbstständig aus. Die Desktop-Version nutzt dafür Playwright.
+Seit Patch 1.40.84 zeigt der Automatik-Modus im Terminal die ausgeführten Schritte an.
 
 Beispiel einer gültigen CSV:
 
