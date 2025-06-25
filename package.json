@@ -20,7 +20,8 @@
     "archiver": "^6.0.2",
     "chokidar": "^4.0.3",
     "ffmpeg-static": "^5.2.0",
-    "progress": "^2.0.3",
-    "node-easyocr": "^1.0.9"
+    "node-easyocr": "^1.0.9",
+    "playwright": "^1.42.1",
+    "progress": "^2.0.3"
   }
 }
