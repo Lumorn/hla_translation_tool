@@ -332,6 +332,36 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Startet die automatische Browser-Steuerung über Playwright
+  ipcMain.handle('auto-dub', async (event, { id, folder }) => {
+    // Aktuell wird nur die ID verwendet. Der Ordnerparameter ist für künftige
+    // Erweiterungen vorgesehen.
+    const { chromium } = require('playwright');
+    // Browser ohne Headless-Modus starten
+    const browser = await chromium.launch({ headless: false });
+    const page = await browser.newPage();
+    await page.setViewportSize({ width: 1200, height: 900 });
+    await page.goto(`https://elevenlabs.io/v1/dubbing/${id}`);
+    // Abfolge wichtiger Buttons nacheinander klicken
+    const selectors = [
+      'text=Generate',
+      'text=Continue',
+      'text=Download'
+    ];
+    for (const sel of selectors) {
+      try {
+        await page.waitForSelector(sel, { timeout: 10000 });
+        await page.click(sel);
+      } catch (err) {
+        console.log('[auto-dub] Knopf fehlt:', sel);
+      }
+      await page.waitForTimeout(1000);
+    }
+    // Browser schließen, sobald alles durchgelaufen ist
+    await browser.close();
+    return true;
+  });
+
   // Screenshot des aktuellen Fensters erstellen
   ipcMain.handle('capture-frame', async (event, bounds) => {
     const win = BrowserWindow.fromWebContents(event.sender);

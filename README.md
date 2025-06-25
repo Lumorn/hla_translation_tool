@@ -208,6 +208,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben. Der blaue Download-Pfeil zeigt nun beim Überfahren mit der Maus die Dubbing-ID an und öffnet beim Anklicken die ElevenLabs-Seite des entsprechenden Jobs.
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
+* **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
 * **Automatische Versionsanpassung:** Beim manuellen Upload, Drag & Drop oder Dubben erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
@@ -243,6 +244,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Lokaler Dateizugriff** für Audio‑Wiedergabe
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
+* **Playwright** als zusätzliche Abhängigkeit für die Schritt-für-Schritt-Automatik
 * **64‑Bit Python 3.9–3.12** erforderlich; 3.13+ wird moeglicherweise nicht unterstuetzt (Warnhinweis). 32‑Bit wird nicht unterstuetzt
 
 ### Desktop-Version (Electron)
@@ -310,6 +312,7 @@ Dabei öffnet sich automatisch die entsprechende Dubbing-Seite im Browser, sodas
 Anschließend erscheint ein Hinweis, die fertig gerenderte Datei in den projektspezifischen Ordner `web/Download` (oder `web/Downloads`) zu legen.
 Sobald dort eine passende Datei auftaucht, zeigt das Tool „Datei gefunden" mit Namen an und
 wartet auf eine Bestätigung. Das Fenster zeigt nun zusätzlich Ordnername sowie englischen und deutschen Text der aktuellen Zeile an, damit klar ist, für welche Übersetzung die Datei erwartet wird.
+Ab Version 1.40.83 kann hier auch **Automatik** gewählt werden. Dann öffnet die Desktop-App ein eingebettetes Browserfenster und klickt alle Schritte selbstständig durch. Dazu installiert die Electron-Version automatisch Playwright.
 Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 
 * **Stability** – Ausgeglichenheit vs. Lebendigkeit
@@ -416,6 +419,7 @@ Seit Patch 1.40.79 wird beim Dubben ebenfalls die Versionsnummer erhöht, wenn b
 Seit Patch 1.40.80 speichert ein neuer 📓-Knopf englische Wörter zusammen mit deutscher Lautschrift.
 Seit Patch 1.40.81 erscheint unter der Lupe ein kleines 📝, wenn der DE-Text ein Wort aus diesem Wörterbuch enthält.
 Seit Patch 1.40.82 bewertet die Untertitel-Suche kurze Wörter strenger und vermeidet so falsche 100%-Treffer.
+Seit Patch 1.40.83 führt der neue Button **Automatik** das halbautomatische Dubbing selbstständig aus. Die Desktop-Version nutzt dafür Playwright.
 
 Beispiel einer gültigen CSV:
 

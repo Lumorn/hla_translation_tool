@@ -8071,6 +8071,7 @@ async function showDownloadWaitDialog(fileId, dubId) {
                 <p id="downloadFound" style="display:none;"></p>
                 <div class="dialog-buttons" id="downloadWaitButtons">
                     ${dubId ? `<button class="btn btn-primary" onclick="openDubbingPage(${fileId})">Seite öffnen</button>` : ''}
+                    ${dubId ? `<button class="btn btn-primary" onclick="startDubAutomation(${fileId})">Automatik</button>` : ''}
                     <button class="btn btn-secondary" onclick="closeDownloadWaitDialog()">Abbrechen</button>
                 </div>
             </div>
@@ -8533,6 +8534,14 @@ function openLocalFile(rel) {
     } else {
         window.open('file://' + abs, '_blank');
     }
+}
+
+// Startet den Playwright-Ablauf im Hauptprozess
+function startDubAutomation(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.dubbingId || !window.electronAPI || !window.electronAPI.autoDub) return;
+    const folder = file.folder || '';
+    window.electronAPI.autoDub({ id: file.dubbingId, folder });
 }
 // =========================== OPENDUBBINGPAGE END ============================
 
@@ -11472,6 +11481,7 @@ if (typeof module !== "undefined" && module.exports) {
         initiateDubbing,
         openDubbingPage,
         openLocalFile,
+        startDubAutomation,
         downloadDe,
         updateDubStatusForFiles,
         markDubAsReady,
