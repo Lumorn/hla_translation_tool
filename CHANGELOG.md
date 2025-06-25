@@ -65,6 +65,10 @@
 * `verify_environment.py` gibt nun alle Prüfungen mit Häkchen aus und warnt bei fehlenden Dateien oder lokalen Änderungen.
 ## 🛠️ Patch in 1.40.31
 * ResizeObserver im Video-Manager reagiert nur noch einmal pro Frame und vermeidet so "loop limit exceeded"-Fehler.
+## 🛠️ Patch in 1.40.32
+* Neues Wörterbuch speichert englische Begriffe mit deutscher Lautschrift.
+## 🛠️ Patch in 1.40.33
+* Ein kleines 📝 zeigt in der Tabelle an, wenn der DE-Text einen Eintrag aus dem Wörterbuch enthält.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
