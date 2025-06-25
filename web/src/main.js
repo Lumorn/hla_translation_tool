@@ -1697,7 +1697,7 @@ function addFiles() {
                                 ${r.similarity < 1.0 ? `<span class="search-result-similarity">${Math.round(r.similarity * 100)}% ähnlich</span>` : ''}
                             </div>
                             <div class="search-result-path">${escapeHtml(r.folder)} • ${escapeHtml(r.matchType)}</div>
-                            <div class="search-result-text">${escapeHtml(r.matchPreview)}</div>
+                            <div class="search-result-text">${r.matchPreview}</div>
                         </div>
                     `).join('');
                     searchResults.style.display = 'block';

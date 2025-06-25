@@ -623,6 +623,7 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 * **🎯 Multi‑Kriterien:** Dateiname, EN‑Text, DE‑Text werden durchsucht
 * **📋 Live‑Highlighting:** Suchbegriffe werden in Ergebnissen hervorgehoben
 * **🛡️ HTML-Schutz:** Suchbegriffe werden vor Ausfuehrung von Code gesichert
+* **Bugfix:** Das Live-Suchfeld zeigt Hervorhebungen jetzt korrekt an und blendet HTML-Tags nicht mehr ein
 
 ### Intelligente Features
 
