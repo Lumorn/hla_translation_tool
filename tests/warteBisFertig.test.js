@@ -22,3 +22,16 @@ test('warteBisFertig ignoriert temporaeres Entfernen', async () => {
 
   fs.rmSync(tmpDir, { recursive: true, force: true });
 });
+
+// Testet, ob ein Timeout korrekt ausgeloest wird
+test('warteBisFertig bricht nach Ablauf des Timeouts ab', async () => {
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'wait-'));
+  const file = path.join(tmpDir, 'missing.wav');
+
+  jest.resetModules();
+  const { __test: { warteBisFertig } } = require('../watcher.js');
+
+  await expect(warteBisFertig(file, 300)).rejects.toThrow('Timeout');
+
+  fs.rmSync(tmpDir, { recursive: true, force: true });
+});
