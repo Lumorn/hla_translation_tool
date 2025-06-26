@@ -129,6 +129,9 @@ let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 // Liste für eigene Wörter samt phonetischer Aussprache
 let wordList = JSON.parse(localStorage.getItem('hla_wordList') || '[]');
 
+// Merkt das aktuell angezeigte Studio-Fenster
+let studioModal = null;
+
 // === Stacks für Undo/Redo ===
 let undoStack          = [];
 let redoStack          = [];
@@ -8125,10 +8128,16 @@ function updateDownloadWaitDialog(name, destRel) {
     if (btn) {
         let openBtn = '';
         if (destRel && window.electronAPI && window.electronAPI.openPath && debugInfo.projectRoot) {
-            openBtn = `<button class="btn btn-primary" onclick="openLocalFile('${destRel.replace(/'/g, "\'")}')">Datei öffnen</button>`;
+            openBtn = `<button class="btn btn-primary" onclick="openLocalFile('${destRel.replace(/'/g, "\\'")}')">Datei öffnen</button>`;
         }
         btn.innerHTML = openBtn + '<button class="btn btn-success" onclick="closeDownloadWaitDialog()">OK</button>';
     }
+    // Kurz anzeigen und danach automatisch schließen
+    setTimeout(() => {
+        closeDownloadWaitDialog();
+        closeStudioModal();
+        closeDubbingLog();
+    }, 1500);
 }
 
 function closeDownloadWaitDialog() {
@@ -8178,7 +8187,7 @@ async function openStudioAndWait(dubId) {
         dlPath = await window.electronAPI.getDownloadPath();
     }
 
-    ui.showModal(`
+    studioModal = ui.showModal(`
         <h3>Studio geöffnet</h3>
         <p>Generiere die deutsche Spur,
         lade die WAV herunter und lege sie in
@@ -8192,6 +8201,14 @@ async function openStudioAndWait(dubId) {
         ui.setActiveDubItem(currentItem);
         renderFileTable();
         saveCurrentProject();
+    }
+}
+
+// Schließt das Studio-Hinweisfenster, falls vorhanden
+function closeStudioModal() {
+    if (studioModal) {
+        studioModal.remove();
+        studioModal = null;
     }
 }
 
@@ -11296,6 +11313,7 @@ function showChapterCustomization(chapterName, ev) {
             ov.addEventListener('click', () => ov.remove());
             document.body.appendChild(ov);
             ov.classList.remove('hidden');
+            return ov;
         }
 
         // Einfache Eingabeaufforderung als Ersatz für prompt()
