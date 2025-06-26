@@ -71,6 +71,8 @@
 * Ein kleines 📝 zeigt in der Tabelle an, wenn der DE-Text einen Eintrag aus dem Wörterbuch enthält.
 ## 🛠️ Patch in 1.40.34
 * Dateiwächter wartet auf stabile Dateigröße und löscht nur noch die importierte Datei.
+## 🛠️ Patch in 1.40.35
+* Der Dateiwächter importiert Dateien jetzt nur automatisch, wenn eine passende Dubbing-ID vorhanden ist. Unbekannte Dateien öffnen stattdessen den manuellen Import-Dialog.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
