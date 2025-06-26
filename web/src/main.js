@@ -8135,6 +8135,10 @@ function closeDownloadWaitDialog() {
     const dlg = document.getElementById('downloadWaitDialog');
     if (dlg) dlg.remove();
     waitDialogFileId = null;
+    // Nach dem Schließen zur Sicherheit den Dubbing-Status aller Dateien prüfen
+    // So werden neu importierte Dateien auch dann erkannt, wenn das Watcher-Event
+    // vor dem Öffnen des Dialogs ausgelöst wurde
+    updateDubStatusForFiles();
 }
 
 // Kopiert einen Ordnernamen in die Zwischenablage (nur letzter Pfadteil)
