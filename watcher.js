@@ -19,22 +19,26 @@ function leereOrdner(ordner) {
 }
 
 // Wartet, bis die Dateigroesse mindestens zwei Intervalle lang stabil bleibt
-function warteBisFertig(datei) {
+// Wartet optional nur eine bestimmte Zeit auf eine stabile Dateigroesse
+function warteBisFertig(datei, timeout = 10000) {
     return new Promise((resolve, reject) => {
         let letzteGroesse = -1;
         let stabilZaehler = 0;
+        let timeoutId = null;
         const timer = setInterval(() => {
             fs.stat(datei, (err, stat) => {
                 if (err) {
                     // ENOENT => Datei existiert noch nicht oder wurde kurz entfernt
                     if (err.code === 'ENOENT') return;
                     clearInterval(timer);
+                    if (timeoutId) clearTimeout(timeoutId);
                     return reject(err);
                 }
                 if (stat.size === letzteGroesse) {
                     stabilZaehler++;
                     if (stabilZaehler >= 2) {
                         clearInterval(timer);
+                        if (timeoutId) clearTimeout(timeoutId);
                         return resolve();
                     }
                 } else {
@@ -43,6 +47,12 @@ function warteBisFertig(datei) {
                 }
             });
         }, 500);
+        if (timeout > 0) {
+            timeoutId = setTimeout(() => {
+                clearInterval(timer);
+                reject(new Error('Timeout beim Warten auf Datei'));
+            }, timeout);
+        }
     });
 }
 
@@ -101,6 +111,7 @@ function watchDownloadFolder(callback, opts = {}) {
     const onError = opts.onError || (() => {});
     const log = opts.log || (() => {});
     const watchPath = opts.path || DL_WATCH_PATH;
+    const waitTimeout = opts.waitTimeout || 10000;
 
     if (!fs.existsSync(watchPath)) {
         fs.mkdirSync(watchPath, { recursive: true });
@@ -138,7 +149,7 @@ function watchDownloadFolder(callback, opts = {}) {
             }
             const job = pending[jobIdx];
             try {
-                await warteBisFertig(file);
+                await warteBisFertig(file, waitTimeout);
                 const srcValid = pruefeAudiodatei(file);
                 log('Prüfung Download-Datei: ' + (srcValid ? 'OK' : 'FEHLER'));
                 if (job.mode === 'manual' && !srcValid) {

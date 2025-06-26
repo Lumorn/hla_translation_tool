@@ -433,6 +433,7 @@ Seit Patch 1.40.88 wartet der Dateiwächter auf eine stabile Dateigröße und l�
 Seit Patch 1.40.89 verhindert der Dateiwchter einen Abbruch, wenn die Datei kurzzeitig fehlt.
 Seit Patch 1.40.90 prüft das Tool nach dem Schließen des "Alles gesendet"-Fensters automatisch, ob neue Dub-Dateien erkannt wurden. So erscheint der grüne Haken auch dann, wenn der Dateiwächter bereits vorher reagiert hat.
 Seit Patch 1.40.91 löst der Dateiwächter den manuellen Import nur noch aus, wenn keine Zuordnung zu offenen Jobs möglich ist.
+Seit Patch 1.40.92 bricht der Dateiwächter nach 10 s ohne stabile Datei mit einer Fehlermeldung ab.
 
 Beispiel einer gültigen CSV:
 
