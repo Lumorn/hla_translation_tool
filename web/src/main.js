@@ -135,7 +135,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.7';
+const APP_VERSION = '1.40.8';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -8113,17 +8113,23 @@ function closeDownloadWaitDialog() {
     waitDialogFileId = null;
 }
 
+// Kopiert einen Ordnernamen in die Zwischenablage (nur letzter Pfadteil)
+async function copyFolderName(folder) {
+    if (!folder) return;
+    try {
+        const base = folder.split(/[\\/]/).pop();
+        await navigator.clipboard.writeText(base);
+        updateStatus('Ordner kopiert: ' + base);
+    } catch (err) {
+        console.error('Kopieren fehlgeschlagen:', err);
+    }
+}
+
 // Kopiert den Ordnernamen erneut in die Zwischenablage
 async function copyDownloadFolder() {
     const file = files.find(f => f.id === waitDialogFileId);
     if (!file || !file.folder) return;
-    try {
-        const baseFolder = file.folder.split(/[\\/]/).pop();
-        await navigator.clipboard.writeText(baseFolder);
-        updateStatus('Ordner kopiert: ' + baseFolder);
-    } catch (err) {
-        console.error('Kopieren fehlgeschlagen:', err);
-    }
+    await copyFolderName(file.folder);
 }
 
 // Öffnet die neue Dubbing-Seite und zeigt einen Hinweis mit Download-Pfad an
@@ -8256,6 +8262,9 @@ function validateCsv(csvText) {
 async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'beta') {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
+    if (mode === 'manual') {
+        await copyFolderName(file.folder);
+    }
     // Ordnerspezifische Voice-ID ermitteln
     const folderVoiceId = folderCustomizations[file.folder]?.voiceId;
     // Log zu Beginn leeren
@@ -8465,6 +8474,9 @@ async function isDubReady(id, lang = 'de') {
 async function redownloadDubbing(fileId, mode = 'beta') {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.dubbingId) return;
+    if (mode === 'manual') {
+        await copyFolderName(file.folder);
+    }
     // Log zu Beginn leeren
     dubbingLogMessages = [];
     const logPre = document.getElementById('dubbingLog');
@@ -11522,6 +11534,7 @@ if (typeof module !== "undefined" && module.exports) {
         importClosecaptions,
         stripColorCodes,
         calculateTextSimilarity,
+        copyFolderName,
         copyDownloadFolder,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
