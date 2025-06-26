@@ -8051,11 +8051,12 @@ async function showDownloadWaitDialog(fileId, dubId) {
     waitDialogFileId = fileId;
     const file = files.find(f => f.id === fileId) || {};
     const folder = escapeHtml(file.folder || '');
-    // Ordnername in die Zwischenablage kopieren
+    // Ordnername in die Zwischenablage kopieren (nur letzter Teil)
     if (file.folder) {
         try {
-            await navigator.clipboard.writeText(file.folder);
-            updateStatus('Ordner kopiert: ' + file.folder);
+            const baseFolder = file.folder.split(/[\\/]/).pop();
+            await navigator.clipboard.writeText(baseFolder);
+            updateStatus('Ordner kopiert: ' + baseFolder);
         } catch (err) {
             console.error('Kopieren fehlgeschlagen:', err);
         }
@@ -8117,8 +8118,9 @@ async function copyDownloadFolder() {
     const file = files.find(f => f.id === waitDialogFileId);
     if (!file || !file.folder) return;
     try {
-        await navigator.clipboard.writeText(file.folder);
-        updateStatus('Ordner kopiert: ' + file.folder);
+        const baseFolder = file.folder.split(/[\\/]/).pop();
+        await navigator.clipboard.writeText(baseFolder);
+        updateStatus('Ordner kopiert: ' + baseFolder);
     } catch (err) {
         console.error('Kopieren fehlgeschlagen:', err);
     }
