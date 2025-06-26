@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.7-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.8-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -210,6 +210,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Ordnername in Zwischenablage:** Beim halbautomatischen Dubbing kopiert das Tool nur noch den reinen Ordnernamen in die Zwischenablage, sobald auf die fertige Datei gewartet wird.
+* **Bugfix:** Der Ordnername wird jetzt bereits beim Start des Halbautomatik-Dubbings automatisch kopiert.
 * **Zusätzlicher 📋-Button:** Im Fenster "Alles gesendet" kopiert ein Knopf den Ordnernamen erneut in die Zwischenablage.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
@@ -426,6 +427,7 @@ Seit Patch 1.40.83 führt der neue Button **Automatik** das halbautomatische Dub
 Seit Patch 1.40.84 zeigt der Automatik-Modus im Terminal die ausgeführten Schritte an.
 Seit Patch 1.40.85 bietet das "Alles gesendet"-Fenster einen 📋-Button, um den Ordnernamen erneut zu kopieren.
 Seit Patch 1.40.86 wird beim Kopieren des Ordnernamens nur noch der letzte Pfadteil übernommen.
+Seit Patch 1.40.87 kopiert das Tool den Ordnernamen direkt beim Start des Halbautomatik-Dubbings.
 
 Beispiel einer gültigen CSV:
 
