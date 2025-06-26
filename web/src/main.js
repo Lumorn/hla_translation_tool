@@ -207,6 +207,26 @@ console.error = function(...args) {
     origConsoleError.apply(console, args);
     debugLog('FEHLER:', ...args);
 };
+// =========================== ZWISCHENABLAGE HELFER ==========================
+// Versucht zuerst das Browser-Clipboard und nutzt bei Fehlern Electron
+async function safeCopy(text) {
+    if (!text) return false;
+    try {
+        await navigator.clipboard.writeText(text);
+        return true;
+    } catch (err) {
+        console.error('Kopieren fehlgeschlagen:', err);
+        if (window.electronAPI && window.electronAPI.writeClipboard) {
+            try {
+                window.electronAPI.writeClipboard(text);
+                return true;
+            } catch (e) {
+                console.error('Electron-Clipboard fehlgeschlagen:', e);
+            }
+        }
+    }
+    return false;
+}
 // =========================== ERROR-HANDLING END =============================
 
 // =========================== DUBBING-LOG START ===========================
@@ -256,8 +276,9 @@ function closeDubbingLog() {
 }
 
 function copyDubbingLog() {
-    navigator.clipboard.writeText(dubbingLogMessages.join('\n'));
-    updateStatus('Dubbing-Log kopiert');
+    safeCopy(dubbingLogMessages.join('\n')).then(ok => {
+        if (ok) updateStatus('Dubbing-Log kopiert');
+    });
 }
 
 function clearDubbingLog() {
@@ -1414,8 +1435,8 @@ function handleTextChange(file, field, value) {
 
 function copyLevelName(){
     if(!currentProject||!currentProject.levelName) return;
-    navigator.clipboard.writeText(currentProject.levelName)
-        .then(()=>updateStatus('Level-Name kopiert'))
+    safeCopy(currentProject.levelName)
+        .then(ok=>{ if(ok) updateStatus('Level-Name kopiert'); })
         .catch(()=>alert('Kopieren fehlgeschlagen'));
 }
 // =========================== PROJECT META FUNCTIONS END ===========================
@@ -1916,8 +1937,8 @@ function addFiles() {
             }
             
             try {
-                await navigator.clipboard.writeText(text);
-                updateStatus(`${langLabel} Text kopiert: ${file.filename}`);
+                const ok = await safeCopy(text);
+                if (ok) updateStatus(`${langLabel} Text kopiert: ${file.filename}`);
                 debugLog('Copy successful:', langLabel, 'from', file.filename);
                 
                 // Visual feedback - briefly highlight the copy button
@@ -2071,16 +2092,18 @@ function addFiles() {
                             updateStatus(`EN Text ist leer für ${contextMenuFile.filename}`);
                             return;
                         }
-                        await navigator.clipboard.writeText(contextMenuFile.enText);
-                        updateStatus(`EN Text kopiert: ${contextMenuFile.filename}`);
+                        if (await safeCopy(contextMenuFile.enText)) {
+                            updateStatus(`EN Text kopiert: ${contextMenuFile.filename}`);
+                        }
                         break;
                     case 'copyDE':
                         if (!contextMenuFile.deText) {
                             updateStatus(`DE Text ist leer für ${contextMenuFile.filename}`);
                             return;
                         }
-                        await navigator.clipboard.writeText(contextMenuFile.deText);
-                        updateStatus(`DE Text kopiert: ${contextMenuFile.filename}`);
+                        if (await safeCopy(contextMenuFile.deText)) {
+                            updateStatus(`DE Text kopiert: ${contextMenuFile.filename}`);
+                        }
                         break;
                     case 'pasteEN':
                         const enText = await navigator.clipboard.readText();
@@ -3878,8 +3901,8 @@ async function checkFilename(fileId, event) {
     if (event && event.ctrlKey) {
         const nameOhneEndung = file.filename.replace(/\.[^/.]+$/, '');
         try {
-            await navigator.clipboard.writeText(nameOhneEndung);
-            updateStatus(`Dateiname kopiert: ${nameOhneEndung}`);
+            const ok = await safeCopy(nameOhneEndung);
+            if (ok) updateStatus(`Dateiname kopiert: ${nameOhneEndung}`);
         } catch (err) {
             console.error('Kopieren fehlgeschlagen:', err);
             updateStatus('Kopieren nicht möglich');
@@ -7293,8 +7316,8 @@ async function scanAudioDuplicates() {
                     const text = Object.entries(allData)
                         .map(([k, v]) => `${k}: ${v}`)
                         .join('\n');
-                    navigator.clipboard.writeText(text)
-                        .then(() => ui.notify('Debug-Daten kopiert'))
+                    safeCopy(text)
+                        .then(ok => { if(ok) ui.notify('Debug-Daten kopiert'); })
                         .catch(err => ui.notify('Kopieren fehlgeschlagen: ' + err, 'error'));
                 });
             }
@@ -8055,8 +8078,9 @@ async function showDownloadWaitDialog(fileId, dubId) {
     if (file.folder) {
         try {
             const baseFolder = file.folder.split(/[\\/]/).pop();
-            await navigator.clipboard.writeText(baseFolder);
-            updateStatus('Ordner kopiert: ' + baseFolder);
+            if (await safeCopy(baseFolder)) {
+                updateStatus('Ordner kopiert: ' + baseFolder);
+            }
         } catch (err) {
             console.error('Kopieren fehlgeschlagen:', err);
         }
@@ -8118,8 +8142,9 @@ async function copyFolderName(folder) {
     if (!folder) return;
     try {
         const base = folder.split(/[\\/]/).pop();
-        await navigator.clipboard.writeText(base);
-        updateStatus('Ordner kopiert: ' + base);
+        if (await safeCopy(base)) {
+            updateStatus('Ordner kopiert: ' + base);
+        }
     } catch (err) {
         console.error('Kopieren fehlgeschlagen:', err);
     }

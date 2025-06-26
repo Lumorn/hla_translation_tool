@@ -212,6 +212,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ordnername in Zwischenablage:** Beim halbautomatischen Dubbing kopiert das Tool nur noch den reinen Ordnernamen in die Zwischenablage, sobald auf die fertige Datei gewartet wird.
 * **Bugfix:** Der Ordnername wird jetzt bereits beim Start des Halbautomatik-Dubbings automatisch kopiert.
 * **Zusätzlicher 📋-Button:** Im Fenster "Alles gesendet" kopiert ein Knopf den Ordnernamen erneut in die Zwischenablage.
+* **Robuster Zwischenablage-Zugriff:** Falls das Kopieren im Browser scheitert, verwendet das Tool automatisch die Electron-Clipboard-API.
 * **Versionierung pro Datei:** Eine neue Spalte zwischen Ordner und EN‑Text zeigt die Version nur an, wenn eine deutsche Audiodatei existiert. Linksklick öffnet ein Menü mit Version 1–10 oder einer frei wählbaren Zahl. Der Dialog besitzt jetzt die Schaltflächen **Abbrechen**, **Übernehmen** und **Für alle übernehmen**. Letztere setzt die Nummer ohne Rückfrage für alle Dateien im selben Ordner.
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
 * **Automatische Versionsanpassung:** Beim manuellen Upload, Drag & Drop oder Dubben erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
@@ -796,3 +797,4 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
 * **`repairFileExtensions(projects, filePathDatabase, textDatabase)`** – aktualisiert veraltete Dateiendungen in Projekten und verschiebt vorhandene Texte.
   Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
+* **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.

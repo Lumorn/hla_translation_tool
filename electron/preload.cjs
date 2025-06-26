@@ -18,7 +18,7 @@ if (typeof require !== 'function') {
   console.warn('Preload-Skript: "require" ist nicht verf\u00fcgbar. Das Skript wird beendet.');
 } else {
   // Desktop-Capturer wird nicht mehr benötigt
-  const { contextBridge, ipcRenderer } = require('electron');
+  const { contextBridge, ipcRenderer, clipboard } = require('electron');
   const fs = require('fs');
   // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
   const path = require('node:path');
@@ -77,6 +77,8 @@ if (typeof require !== 'function') {
     // Automatische Steuerung der Dubbing-Seite
     autoDub: data => ipcRenderer.invoke('auto-dub', data),
     captureFrame: bounds => ipcRenderer.invoke('capture-frame', bounds),
+    // Text direkt über Electron in die Zwischenablage schreiben
+    writeClipboard: text => clipboard.writeText(text),
   });
 
   // Vereinfachtes API nur für Bildschirmaufnahmen
