@@ -430,6 +430,7 @@ Seit Patch 1.40.85 bietet das "Alles gesendet"-Fenster einen 📋-Button, um den
 Seit Patch 1.40.86 wird beim Kopieren des Ordnernamens nur noch der letzte Pfadteil übernommen.
 Seit Patch 1.40.87 kopiert das Tool den Ordnernamen direkt beim Start des Halbautomatik-Dubbings.
 Seit Patch 1.40.88 wartet der Dateiwächter auf eine stabile Dateigröße und löscht nach dem Import nur noch die verarbeitete Datei.
+Seit Patch 1.40.89 verhindert der Dateiwchter einen Abbruch, wenn die Datei kurzzeitig fehlt.
 
 Beispiel einer gültigen CSV:
 

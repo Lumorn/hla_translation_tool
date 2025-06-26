@@ -26,6 +26,8 @@ function warteBisFertig(datei) {
         const timer = setInterval(() => {
             fs.stat(datei, (err, stat) => {
                 if (err) {
+                    // ENOENT => Datei existiert noch nicht oder wurde kurz entfernt
+                    if (err.code === 'ENOENT') return;
                     clearInterval(timer);
                     return reject(err);
                 }
@@ -197,5 +199,7 @@ module.exports = {
     watchDownloadFolder,
     clearDownloadFolder: leereOrdner,
     pruefeAudiodatei,
-    matchPendingJob
+    matchPendingJob,
+    // Zusätzlicher Export für Tests
+    __test: { warteBisFertig }
 };
