@@ -18,10 +18,11 @@ function leereOrdner(ordner) {
     }
 }
 
-// Wartet, bis die Dateigroesse stabil bleibt
+// Wartet, bis die Dateigroesse mindestens zwei Intervalle lang stabil bleibt
 function warteBisFertig(datei) {
     return new Promise((resolve, reject) => {
         let letzteGroesse = -1;
+        let stabilZaehler = 0;
         const timer = setInterval(() => {
             fs.stat(datei, (err, stat) => {
                 if (err) {
@@ -29,10 +30,15 @@ function warteBisFertig(datei) {
                     return reject(err);
                 }
                 if (stat.size === letzteGroesse) {
-                    clearInterval(timer);
-                    return resolve();
+                    stabilZaehler++;
+                    if (stabilZaehler >= 2) {
+                        clearInterval(timer);
+                        return resolve();
+                    }
+                } else {
+                    stabilZaehler = 0;
+                    letzteGroesse = stat.size;
                 }
-                letzteGroesse = stat.size;
             });
         }, 500);
     });
@@ -103,7 +109,13 @@ function watchDownloadFolder(callback, opts = {}) {
     // Ordner zu Beginn leeren
     leereOrdner(watchPath);
 
-    chokidar.watch(watchPath, { ignoreInitial: true })
+    chokidar.watch(watchPath, {
+        ignoreInitial: true,
+        awaitWriteFinish: {
+            stabilityThreshold: 2000,
+            pollInterval: 200
+        }
+    })
         .on('add', async file => {
             if (callback) callback(file);
             if (!pending.length) return;
@@ -174,8 +186,6 @@ function watchDownloadFolder(callback, opts = {}) {
                     sourcePath: file,
                     destPath: ziel
                 });
-                // Nach erfolgreichem Verschieben den Download-Ordner leeren
-                leereOrdner(watchPath);
             } catch (e) {
                 pending.splice(jobIdx, 1);
                 onError({ id: job.id, fileId: job.fileId, error: e.message });

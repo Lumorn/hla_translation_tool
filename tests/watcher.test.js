@@ -13,18 +13,24 @@ describe('watchDownloadFolder', () => {
     // Module-Cache leeren und Abhängigkeiten mocken
     jest.resetModules();
     jest.doMock('../web/src/config.js', () => ({ DL_WATCH_PATH: tmpDir }), { virtual: false });
-    jest.doMock('chokidar', () => ({
-      watch: jest.fn(() => ({
-        on: jest.fn((event, cb) => {
-          if (event === 'add') onAddCallbacks.push(cb);
-        })
-      }))
+    const watchMock = jest.fn(() => ({
+      on: jest.fn((event, cb) => {
+        if (event === 'add') onAddCallbacks.push(cb);
+      })
     }));
+    jest.doMock('chokidar', () => ({ watch: watchMock }));
 
     const { watchDownloadFolder } = require('../watcher.js');
 
     const callback = jest.fn();
     watchDownloadFolder(callback);
+    expect(watchMock).toHaveBeenCalledWith(
+      tmpDir,
+      expect.objectContaining({
+        ignoreInitial: true,
+        awaitWriteFinish: expect.any(Object)
+      })
+    );
 
     const file = path.join(tmpDir, 'neu.txt');
     onAddCallbacks.forEach(cb => cb(file));
