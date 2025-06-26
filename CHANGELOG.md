@@ -69,6 +69,8 @@
 * Neues Wörterbuch speichert englische Begriffe mit deutscher Lautschrift.
 ## 🛠️ Patch in 1.40.33
 * Ein kleines 📝 zeigt in der Tabelle an, wenn der DE-Text einen Eintrag aus dem Wörterbuch enthält.
+## 🛠️ Patch in 1.40.34
+* Dateiwächter wartet auf stabile Dateigröße und löscht nur noch die importierte Datei.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
