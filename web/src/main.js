@@ -8081,6 +8081,7 @@ async function showDownloadWaitDialog(fileId, dubId) {
                 <div class="dialog-buttons" id="downloadWaitButtons">
                     ${dubId ? `<button class="btn btn-primary" onclick="openDubbingPage(${fileId})">Seite öffnen</button>` : ''}
                     ${dubId ? `<button class="btn btn-primary" onclick="startDubAutomation(${fileId})">Automatik</button>` : ''}
+                    <button class="btn btn-secondary" id="copyFolderBtn" onclick="copyDownloadFolder()">Ordner kopieren</button>
                     <button class="btn btn-secondary" onclick="closeDownloadWaitDialog()">Abbrechen</button>
                 </div>
             </div>
@@ -8109,6 +8110,18 @@ function closeDownloadWaitDialog() {
     const dlg = document.getElementById('downloadWaitDialog');
     if (dlg) dlg.remove();
     waitDialogFileId = null;
+}
+
+// Kopiert den Ordnernamen erneut in die Zwischenablage
+async function copyDownloadFolder() {
+    const file = files.find(f => f.id === waitDialogFileId);
+    if (!file || !file.folder) return;
+    try {
+        await navigator.clipboard.writeText(file.folder);
+        updateStatus('Ordner kopiert: ' + file.folder);
+    } catch (err) {
+        console.error('Kopieren fehlgeschlagen:', err);
+    }
 }
 
 // Öffnet die neue Dubbing-Seite und zeigt einen Hinweis mit Download-Pfad an
@@ -11491,6 +11504,7 @@ if (typeof module !== "undefined" && module.exports) {
         openDubbingPage,
         openLocalFile,
         startDubAutomation,
+        showDownloadWaitDialog,
         downloadDe,
         updateDubStatusForFiles,
         markDubAsReady,
@@ -11506,6 +11520,7 @@ if (typeof module !== "undefined" && module.exports) {
         importClosecaptions,
         stripColorCodes,
         calculateTextSimilarity,
+        copyDownloadFolder,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
