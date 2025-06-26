@@ -2,10 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-// Testet, ob watchDownloadFolder den Callback bei einer neuen Datei auslöst
+// Testet, ob watchDownloadFolder den Callback nur bei unbekannten Dateien auslöst
 
 describe('watchDownloadFolder', () => {
-  test('reagiert auf angelegte Datei', () => {
+  test('loest Callback bei unbekannter Datei aus', () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'watch-'));
 
     const onAddCallbacks = [];
@@ -23,7 +23,11 @@ describe('watchDownloadFolder', () => {
     const { watchDownloadFolder } = require('../watcher.js');
 
     const callback = jest.fn();
-    watchDownloadFolder(callback);
+    const pending = [
+      { id: 'job1', relPath: 'x/job1.wav' },
+      { id: 'job2', relPath: 'x/job2.wav' }
+    ];
+    watchDownloadFolder(callback, { pending });
     expect(watchMock).toHaveBeenCalledWith(
       tmpDir,
       expect.objectContaining({
@@ -32,12 +36,40 @@ describe('watchDownloadFolder', () => {
       })
     );
 
-    const file = path.join(tmpDir, 'neu.txt');
+    const file = path.join(tmpDir, 'neu.wav');
     onAddCallbacks.forEach(cb => cb(file));
 
     expect(callback).toHaveBeenCalledWith(file);
 
     // Aufräumen des temporären Verzeichnisses
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  });
+
+  test('ruft Callback bei bekanntem Job nicht auf', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'watch-'));
+
+    const onAddCallbacks = [];
+
+    jest.resetModules();
+    jest.doMock('../web/src/config.js', () => ({ DL_WATCH_PATH: tmpDir }), { virtual: false });
+    const watchMock = jest.fn(() => ({
+      on: jest.fn((event, cb) => {
+        if (event === 'add') onAddCallbacks.push(cb);
+      })
+    }));
+    jest.doMock('chokidar', () => ({ watch: watchMock }));
+
+    const { watchDownloadFolder } = require('../watcher.js');
+
+    const callback = jest.fn();
+    const pending = [{ id: 'job1', relPath: 'x/job1.wav' }];
+    watchDownloadFolder(callback, { pending });
+
+    const file = path.join(tmpDir, 'job1.wav');
+    onAddCallbacks.forEach(cb => cb(file));
+
+    expect(callback).not.toHaveBeenCalled();
+
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
