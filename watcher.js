@@ -119,7 +119,6 @@ function watchDownloadFolder(callback, opts = {}) {
         }
     })
         .on('add', async file => {
-            if (callback) callback(file);
             if (!pending.length) return;
             if (!/\.(wav|mp3|ogg)$/i.test(file)) return;
             log('Datei gefunden: ' + file);
@@ -133,6 +132,8 @@ function watchDownloadFolder(callback, opts = {}) {
                 // Zur Fehlersuche fehlende Zuordnung im Terminal ausgeben
                 console.warn('[watcher] Keine Job-Zuordnung für', basis,
                     '— offene Jobs:', pending.map(j => j.id));
+                // Nur unbekannte Dateien lösen den manuellen Import aus
+                if (callback) callback(file);
                 return;
             }
             const job = pending[jobIdx];
