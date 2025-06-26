@@ -8051,6 +8051,15 @@ async function showDownloadWaitDialog(fileId, dubId) {
     waitDialogFileId = fileId;
     const file = files.find(f => f.id === fileId) || {};
     const folder = escapeHtml(file.folder || '');
+    // Ordnername in die Zwischenablage kopieren
+    if (file.folder) {
+        try {
+            await navigator.clipboard.writeText(file.folder);
+            updateStatus('Ordner kopiert: ' + file.folder);
+        } catch (err) {
+            console.error('Kopieren fehlgeschlagen:', err);
+        }
+    }
     const enText = escapeHtml(file.enText || '');
     const deText = escapeHtml(file.deText || '');
     let dlPath = 'Download';
