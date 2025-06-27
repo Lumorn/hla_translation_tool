@@ -208,25 +208,7 @@ if (typeof module !== 'undefined' && module.exports) {
         levenshteinDistance = mod.levenshteinDistance;
         moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.fileUtils = { loaded: false, source: 'Ausgelagert' }; });
-    import('./dubbing.js').then(mod => {
-        showDubbingSettings = mod.showDubbingSettings;
-        createDubbingCSV = mod.createDubbingCSV;
-        validateCsv = mod.validateCsv;
-        msToSeconds = mod.msToSeconds;
-        isDubReady = mod.isDubReady;
-        startDubbing = mod.startDubbing;
-        redownloadDubbing = mod.redownloadDubbing;
-        openDubbingPage = mod.openDubbingPage;
-        openLocalFile = mod.openLocalFile;
-        startDubAutomation = mod.startDubAutomation;
-        showDownloadWaitDialog = mod.showDownloadWaitDialog;
-        copyFolderName = mod.copyFolderName;
-        copyDownloadFolder = mod.copyDownloadFolder;
-        openStudioAndWait = mod.openStudioAndWait;
-        dubStatusClicked = mod.dubStatusClicked;
-        downloadDe = mod.downloadDe;
-        moduleStatus.dubbing = { loaded: true, source: 'Ausgelagert' };
-    }).catch(() => { moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' }; });
+    moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -434,6 +416,32 @@ function stopCurrentPlayback() {
 
 // =========================== DOM READY INITIALISIERUNG ===========================
 document.addEventListener('DOMContentLoaded', async () => {
+    // Dubbing-Modul nachladen, bevor Funktionen verwendet werden
+    if (!moduleStatus.dubbing.loaded) {
+        try {
+            const dub = await import('./dubbing.js');
+            showDubbingSettings = dub.showDubbingSettings;
+            createDubbingCSV = dub.createDubbingCSV;
+            validateCsv = dub.validateCsv;
+            msToSeconds = dub.msToSeconds;
+            isDubReady = dub.isDubReady;
+            startDubbing = dub.startDubbing;
+            redownloadDubbing = dub.redownloadDubbing;
+            openDubbingPage = dub.openDubbingPage;
+            openLocalFile = dub.openLocalFile;
+            startDubAutomation = dub.startDubAutomation;
+            showDownloadWaitDialog = dub.showDownloadWaitDialog;
+            copyFolderName = dub.copyFolderName;
+            copyDownloadFolder = dub.copyDownloadFolder;
+            openStudioAndWait = dub.openStudioAndWait;
+            dubStatusClicked = dub.dubStatusClicked;
+            downloadDe = dub.downloadDe;
+            moduleStatus.dubbing = { loaded: true, source: 'Ausgelagert' };
+        } catch (e) {
+            console.error('Dubbing-Modul konnte nicht geladen werden', e);
+            moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
+        }
+    }
     updateProjectPlaybackButtons();
     // Beim Start alte, falsch gespeicherte Cache-Einträge entfernen
     cleanupDubCache();

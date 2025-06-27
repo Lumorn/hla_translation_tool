@@ -836,6 +836,7 @@ async function downloadDe(fileId) {
 // =========================== REDOWNLOADDUBBING END ==========================
 
 if (typeof module !== 'undefined' && module.exports) {
+    // Exporte für Node-Umgebung (z.B. Tests)
     module.exports = {
         getDefaultVoiceSettings,
         showDubbingSettings,
@@ -869,7 +870,9 @@ if (typeof module !== 'undefined' && module.exports) {
         startDubAutomation,
         downloadDe
     };
-} else {
+}
+// Funktionen auch im Browser global verfügbar machen
+if (typeof window !== 'undefined') {
     window.getDefaultVoiceSettings = getDefaultVoiceSettings;
     window.showDubbingSettings = showDubbingSettings;
     window.closeDubbingSettings = closeDubbingSettings;
