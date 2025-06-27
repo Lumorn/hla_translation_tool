@@ -154,7 +154,8 @@ const moduleStatus = {
     elevenlabsLib:    { loaded: false, source: '' },
     extensionUtils:   { loaded: false, source: '' },
     closecaptionParser:{ loaded: false, source: '' },
-    fileUtils:        { loaded: false, source: '' }
+    fileUtils:        { loaded: false, source: '' },
+    pathUtils:        { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -162,6 +163,7 @@ let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
 let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
+let extractRelevantFolder;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -185,6 +187,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
     ({ calculateTextSimilarity, levenshteinDistance } = require('./fileUtils.js'));
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
+    ({ extractRelevantFolder } = require('./pathUtils.js'));
+    moduleStatus.pathUtils = { loaded: true, source: 'Main' };
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -210,6 +214,10 @@ if (typeof module !== 'undefined' && module.exports) {
         levenshteinDistance = mod.levenshteinDistance;
         moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.fileUtils = { loaded: false, source: 'Ausgelagert' }; });
+    import('./pathUtils.mjs').then(mod => {
+        extractRelevantFolder = mod.extractRelevantFolder;
+        moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.pathUtils = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
 }
 
@@ -3047,27 +3055,6 @@ function repairProjectFolders() {
 
 
 
-// =========================== EXTRACTRELEVANTFOLDER START ===========================
-function extractRelevantFolder(folderParts, fullPath) {
-    // Gibt den relevanten Ordnerpfad einer Datei zurück.
-    // Enthält der Pfad einen "vo"-Ordner, liefern wir alles ab diesem Punkt
-    // (inklusive "vo") zurück, um die komplette Struktur zu bewahren.
-
-    if (folderParts.length === 0) return 'root';
-
-    const lowerParts = folderParts.map(p => p.toLowerCase());
-    const voIndex    = lowerParts.lastIndexOf('vo');
-
-    if (voIndex !== -1 && voIndex < folderParts.length) {
-        // Beispiel: ["sounds","vo","combine","grunt1"] => "vo/combine/grunt1"
-        return folderParts.slice(voIndex).join('/');
-    }
-
-    // Entferne führendes "sounds" falls vorhanden
-    const startIndex = lowerParts[0] === 'sounds' ? 1 : 0;
-    return folderParts.slice(startIndex).join('/');
-}
-// =========================== EXTRACTRELEVANTFOLDER END ===========================
 
 // =========================== GETFULLPATH START ===========================
 // Liefert den vollständigen relativen Pfad einer Datei anhand der Datenbank
