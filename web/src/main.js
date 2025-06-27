@@ -145,6 +145,15 @@ const API = 'https://api.elevenlabs.io/v1';
 // Debug-Schalter: true zeigt Konsolenlogs und Debug-Anzeige
 const DEBUG_MODE = localStorage.getItem('hla_debug_mode') === 'true';
 
+// Statusinformationen der geladenen Module für das Debug-Fenster
+const moduleStatus = {
+    elevenlabs:       { loaded: false, source: '' },
+    elevenlabsLib:    { loaded: false, source: '' },
+    extensionUtils:   { loaded: false, source: '' },
+    closecaptionParser:{ loaded: false, source: '' },
+    fileUtils:        { loaded: false, source: '' }
+};
+
 // Gemeinsame Funktionen aus elevenlabs.js laden
 let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
@@ -152,29 +161,41 @@ let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
+    moduleStatus.elevenlabs = { loaded: true, source: 'Main' };
+
     ({ repairFileExtensions } = require('../../extensionUtils'));
+    moduleStatus.extensionUtils = { loaded: true, source: 'Main' };
+
     ({ loadClosecaptions } = require('../../closecaptionParser'));
+    moduleStatus.closecaptionParser = { loaded: true, source: 'Main' };
+
     ({ calculateTextSimilarity, levenshteinDistance } = require('./fileUtils.js'));
+    moduleStatus.fileUtils = { loaded: true, source: 'Main' };
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
         downloadDubbingAudio = mod.downloadDubbingAudio;
-    });
+        moduleStatus.elevenlabs = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.elevenlabs = { loaded: false, source: 'Ausgelagert' }; });
     import('./lib/elevenlabs.js').then(mod => {
         renderLanguage = mod.renderLanguage;
         pollRender = mod.pollRender;
-    });
+        moduleStatus.elevenlabsLib = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.elevenlabsLib = { loaded: false, source: 'Ausgelagert' }; });
     // Funktionen aus extensionUtils.js stehen jetzt direkt unter window bereit
     repairFileExtensions = window.repairFileExtensions;
+    moduleStatus.extensionUtils = { loaded: typeof repairFileExtensions === 'function', source: 'Ausgelagert' };
     // closecaptionParser als ES-Modul laden und Fallback auf window verwenden
     import('../../closecaptionParser.js').then(mod => {
         // Bei fehlendem Export wird die Funktion trotzdem unter window angelegt
         loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
-    });
+        moduleStatus.closecaptionParser = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.closecaptionParser = { loaded: false, source: 'Ausgelagert' }; });
     import('./fileUtils.mjs').then(mod => {
         calculateTextSimilarity = mod.calculateTextSimilarity;
         levenshteinDistance = mod.levenshteinDistance;
-    });
+        moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.fileUtils = { loaded: false, source: 'Ausgelagert' }; });
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -2405,6 +2426,7 @@ async function showFileExchangeOptions(fileId) {
             const mod = await import('./fileUtils.mjs');
             calculateTextSimilarity = mod.calculateTextSimilarity;
             levenshteinDistance = mod.levenshteinDistance;
+            moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
         } catch (err) {
             // Fallback auf globale Funktion, falls das Modul nicht geladen werden konnte
             if (typeof window !== 'undefined' && typeof window.calculateTextSimilarity === 'function') {
@@ -2519,6 +2541,7 @@ async function openSubtitleSearch(fileId) {
             // Parser bei Bedarf dynamisch laden, auch wenn kein Export vorhanden ist
             const mod = await import('../../closecaptionParser.js');
             loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
+            moduleStatus.closecaptionParser = { loaded: true, source: 'Ausgelagert' };
         } catch (e) {
             console.error('closecaptionParser konnte nicht geladen werden', e);
             alert('❌ Untertitel konnten nicht geladen werden.');
@@ -7282,7 +7305,7 @@ async function scanAudioDuplicates() {
                         'Download-Pfad': info.downloadWatchPath
                     }
                 },
-                {
+                { 
                     title: 'Ausführungspfade & Scripts',
                     data: {
                         'Arbeitsverzeichnis': info.cwd,
@@ -7293,6 +7316,17 @@ async function scanAudioDuplicates() {
                         'Node Modules Pfad': info.nodeModulesPath,
                         'package.json Pfad': info.packageJsonPath
                     }
+                },
+                {
+                    title: 'Module',
+                    data: (function(){
+                        const modInfo = {};
+                        for (const [name, stat] of Object.entries(moduleStatus)) {
+                            const state = (stat.loaded ? '✔️' : '✖️') + ' (' + (stat.source || 'n/a') + ')';
+                            modInfo[name] = state;
+                        }
+                        return modInfo;
+                    })()
                 },
                 {
                     title: 'Startparameter & Einstellungen',
