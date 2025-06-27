@@ -309,6 +309,8 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
 }
 ```
 Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `getDubbingStatus`, `downloadDubbingAudio`, `getDefaultVoiceSettings`, `waitForDubbing`, `isDubReady`, `renderLanguage` und `pollRender`. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
+Das komplette Workflow-Skript für den Upload, die Statusabfrage und das erneute Herunterladen befindet sich nun in `web/src/dubbing.js`.
+Im Desktop-Modus wird dieses Modul beim Start dynamisch geladen und stellt seine Funktionen sowohl für Node-Tests als auch im Browser global bereit. Fehlen im Importobjekt die Funktionsreferenzen, greift `main.js` auf die globalen `window`-Varianten zurück.
 
 Ein Klick auf **Dubbing** öffnet zunächst ein Einstellungsfenster. Danach fragt das Tool,
 ob die **Beta-API** genutzt oder der **halbautomatische Modus** verwendet werden soll.
