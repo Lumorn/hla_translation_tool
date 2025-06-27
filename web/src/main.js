@@ -2396,7 +2396,7 @@ let fileExchangeData = {
 };
 
 // =========================== SHOW FILE EXCHANGE OPTIONS START ===========================
-function showFileExchangeOptions(fileId) {
+async function showFileExchangeOptions(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) {
         console.error('Datei nicht gefunden:', fileId);
@@ -2412,6 +2412,13 @@ function showFileExchangeOptions(fileId) {
     debugLog(`[FILE EXCHANGE] Suche ähnliche Einträge für: ${file.filename}`);
     debugLog(`[FILE EXCHANGE] EN-Text: ${file.enText.substring(0, 50)}...`);
     
+    // Text-Utilities bei Bedarf nachladen
+    if (typeof calculateTextSimilarity !== 'function') {
+        const mod = await import('./fileUtils.mjs');
+        calculateTextSimilarity = mod.calculateTextSimilarity;
+        levenshteinDistance = mod.levenshteinDistance;
+    }
+
     // Suche ähnliche Einträge in der Datenbank
     const similarEntries = searchSimilarEntriesInDatabase(file);
     
@@ -2489,6 +2496,13 @@ async function openSubtitleSearch(fileId) {
     if (!file || !file.enText) return;
 
     // Lade das Modul bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
+    if (typeof calculateTextSimilarity !== 'function') {
+        const mod = await import('./fileUtils.mjs');
+        calculateTextSimilarity = mod.calculateTextSimilarity;
+        levenshteinDistance = mod.levenshteinDistance;
+    }
+
+    // Lade den Parser bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
     if (typeof loadClosecaptions !== 'function') {
         try {
             // Parser bei Bedarf dynamisch laden, auch wenn kein Export vorhanden ist
