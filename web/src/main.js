@@ -2414,9 +2414,15 @@ async function showFileExchangeOptions(fileId) {
     
     // Text-Utilities bei Bedarf nachladen
     if (typeof calculateTextSimilarity !== 'function') {
-        const mod = await import('./fileUtils.mjs');
-        calculateTextSimilarity = mod.calculateTextSimilarity;
-        levenshteinDistance = mod.levenshteinDistance;
+        try {
+            const mod = await import('./fileUtils.mjs');
+            calculateTextSimilarity = mod.calculateTextSimilarity;
+            levenshteinDistance = mod.levenshteinDistance;
+        } catch (err) {
+            console.error('Text-Utilities konnten nicht geladen werden', err);
+            alert('❌ Text-Utilities konnten nicht geladen werden.');
+            return;
+        }
     }
 
     // Suche ähnliche Einträge in der Datenbank
@@ -2497,9 +2503,15 @@ async function openSubtitleSearch(fileId) {
 
     // Lade das Modul bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
     if (typeof calculateTextSimilarity !== 'function') {
-        const mod = await import('./fileUtils.mjs');
-        calculateTextSimilarity = mod.calculateTextSimilarity;
-        levenshteinDistance = mod.levenshteinDistance;
+        try {
+            const mod = await import('./fileUtils.mjs');
+            calculateTextSimilarity = mod.calculateTextSimilarity;
+            levenshteinDistance = mod.levenshteinDistance;
+        } catch (err) {
+            console.error('Text-Utilities konnten nicht geladen werden', err);
+            alert('❌ Text-Utilities konnten nicht geladen werden.');
+            return;
+        }
     }
 
     // Lade den Parser bei Bedarf dynamisch nach, wenn die Funktion noch fehlt
