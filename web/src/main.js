@@ -151,7 +151,8 @@ const moduleStatus = {
     elevenlabsLib:    { loaded: false, source: '' },
     extensionUtils:   { loaded: false, source: '' },
     closecaptionParser:{ loaded: false, source: '' },
-    fileUtils:        { loaded: false, source: '' }
+    fileUtils:        { loaded: false, source: '' },
+    textUtils:        { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -159,6 +160,7 @@ let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
 let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
+let escapeHtml, highlightText;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     moduleStatus.elevenlabs = { loaded: true, source: 'Main' };
@@ -171,6 +173,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
     ({ calculateTextSimilarity, levenshteinDistance } = require('./fileUtils.js'));
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
+    ({ escapeHtml, highlightText } = require('./textUtils.js'));
+    moduleStatus.textUtils = { loaded: true, source: 'Main' };
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -196,6 +200,11 @@ if (typeof module !== 'undefined' && module.exports) {
         levenshteinDistance = mod.levenshteinDistance;
         moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.fileUtils = { loaded: false, source: 'Ausgelagert' }; });
+    import('./textUtils.js').then(mod => {
+        escapeHtml = mod.escapeHtml;
+        highlightText = mod.highlightText;
+        moduleStatus.textUtils = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.textUtils = { loaded: false, source: 'Ausgelagert' }; });
 }
 
 // =========================== GLOBAL STATE END ===========================
@@ -1585,17 +1594,7 @@ function addFiles() {
         }
 
         // Search functionality with highlighting and similarity
-        // Hebt alle Vorkommen des Suchbegriffs hervor und maskiert HTML
-        function highlightText(text, query) {
-            if (!text || !query) return escapeHtml(text);
-            // Mehrere Suchbegriffe unterstuetzen
-            const words = query.split(/\s+/)
-                .filter(Boolean)
-                .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-            const regex = new RegExp(`(${words.join('|')})`, 'gi');
-            const escaped = escapeHtml(text);
-            return escaped.replace(regex, '<span class="search-result-match">$1</span>');
-        }
+        // highlightText kommt nun aus textUtils.js
 
         function initializeEventListeners() {
             const searchInput = document.getElementById('searchInput');
@@ -11492,12 +11491,7 @@ function showChapterCustomization(chapterName, ev) {
             }
         }
 
-        // Utility functions
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        // escapeHtml wird jetzt in textUtils.js definiert
 
         // Hilfsfunktion für RegExp-Erstellung
         function escapeRegExp(str) {
