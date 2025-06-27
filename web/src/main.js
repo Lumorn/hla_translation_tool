@@ -4945,6 +4945,47 @@ function showFolderDebug() {
 }
 // =========================== SHOWFOLDERDEBUG END =============================
 
+// =========================== SHOWMODULEDEBUG START ===========================
+// Listet alle geladenen Module und markiert fehlende
+function showModuleDebug() {
+    const wrapper = document.getElementById('debugConsoleWrapper');
+    wrapper.open = true;
+
+    const listDiv = document.getElementById('moduleDebug');
+    if (!listDiv) return;
+    listDiv.innerHTML = '';
+
+    // Zu prüfende Module
+    const modules = {
+        createDubbing,
+        downloadDubbingAudio,
+        renderLanguage,
+        pollRender,
+        repairFileExtensions,
+        loadClosecaptions,
+        calculateTextSimilarity,
+        levenshteinDistance
+    };
+
+    const ul = document.createElement('ul');
+    ul.style.listStyle = 'none';
+    ul.style.padding = '0';
+
+    for (const [name, fn] of Object.entries(modules)) {
+        const li = document.createElement('li');
+        li.style.marginBottom = '4px';
+        const ok = typeof fn !== 'undefined';
+        const status = document.createElement('span');
+        status.textContent = ok ? '✅' : '❌';
+        li.appendChild(status);
+        li.append(' ' + name);
+        ul.appendChild(li);
+    }
+
+    listDiv.appendChild(ul);
+}
+// =========================== SHOWMODULEDEBUG END =============================
+
 // =========================== SHOWMISSINGFOLDERSDIALOG START =================
 // Öffnet ein Dialogfenster mit allen Ordnern, die keine vorhandenen Dateien mehr besitzen
 function showMissingFoldersDialog() {
