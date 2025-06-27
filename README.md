@@ -441,6 +441,7 @@ Seit Patch 1.40.93 schließen sich nach erfolgreichem Import das Fenster „Alle
 Seit Patch 1.40.94 funktioniert die Untertitel-Suche über die Lupe wieder korrekt.
 Seit Patch 1.40.95 lädt die OT-Suche fehlende Text-Utilities automatisch nach.
 Seit Patch 1.40.96 meldet die Untertitel-Suche nun fehlende Text-Utilities.
+Seit Patch 1.40.97 greift ein Fallback auf die globale Funktion, falls die Text-Utilities nicht geladen werden können.
 
 Beispiel einer gültigen CSV:
 
