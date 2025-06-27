@@ -10,20 +10,14 @@ function loadMain() {
     global.navigator.clipboard = { writeText: jest.fn().mockResolvedValue() };
     global.updateStatus = jest.fn();
     global.window.electronAPI = {};
-    global.files = [];
-    global.escapeHtml = t => t;
-    global.safeCopy = async text => { await navigator.clipboard.writeText(text); return true; };
-    ({ copyDownloadFolder, showDownloadWaitDialog } = require('../web/src/dubbing.js'));
-    ({ __setFiles } = require('../web/src/main.js'));
+    ({ copyDownloadFolder, showDownloadWaitDialog, __setFiles } = require('../web/src/main.js'));
 }
 
 describe('copyDownloadFolder', () => {
     beforeEach(loadMain);
 
     test('kopiert den Ordner erneut', async () => {
-        const arr = [{ id: 1, folder: 'TestOrdner', enText: '', deText: '' }];
-        __setFiles(arr);
-        global.files = arr;
+        __setFiles([{ id: 1, folder: 'TestOrdner', enText: '', deText: '' }]);
         document.body.innerHTML = '';
         await showDownloadWaitDialog(1);
         navigator.clipboard.writeText.mockClear();
@@ -32,9 +26,7 @@ describe('copyDownloadFolder', () => {
     });
 
     test('Button im Dialog vorhanden', async () => {
-        const arr2 = [{ id: 2, folder: 'OrdnerB', enText: '', deText: '' }];
-        __setFiles(arr2);
-        global.files = arr2;
+        __setFiles([{ id: 2, folder: 'OrdnerB', enText: '', deText: '' }]);
         document.body.innerHTML = '';
         await showDownloadWaitDialog(2);
         const btn = document.getElementById('copyFolderBtn');
