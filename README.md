@@ -638,6 +638,7 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **web/src/main.js** – Initialisierung der App
 * **web/src/fileUtils.js** – Text-Funktionen wie `calculateTextSimilarity`
+* **web/src/textUtils.js** – Enthält `escapeHtml` und `highlightText`
 * **web/src/colorUtils.js** – Farb-Hilfsfunktionen wie `getVersionColor`
 * **web/src/fileUtils.mjs** – Wrapper, der die Textfunktionen sowohl im Browser als auch unter Node bereitstellt
 
