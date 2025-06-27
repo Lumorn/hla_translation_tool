@@ -1201,12 +1201,35 @@ th:nth-child(7) {
             resize: vertical;
         }
 
-        .dialog-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-            margin-top: 20px;
-        }
+.dialog-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Listen im Debug-Fenster */
+.debug-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.debug-info-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 4px;
+}
+
+.debug-info-list li:nth-child(odd) {
+    background: #333;
+}
+
+.debug-info-list .undefined {
+    color: red;
+}
 
         /* Status Bar */
         .status-bar {

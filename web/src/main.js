@@ -7249,22 +7249,83 @@ async function scanAudioDuplicates() {
             delete info.electronVersion; delete info['Electron-Version'];
             delete info.chromeVersion; delete info['Chrome-Version'];
 
+            // Hilfsfunktion für die Anzeige von Werten
+            function formatVal(v) {
+                if (v === true) return '✔️';
+                if (v === false) return '✖️';
+                if (v === undefined || v === null || v === '') return '<span class="undefined">Nicht definiert</span>';
+                return escapeHtml(String(v));
+            }
+
+            // Kategorien für eine bessere Struktur
+            const categories = [
+                { title: 'Programmversionen', data: versionInfo },
+                {
+                    title: 'System & Plattform',
+                    data: {
+                        'Betriebssystem': info.processPlatform,
+                        'CPU-Architektur': info.cpuArch,
+                        'Prozess-Typ': info.processType,
+                        'Kontext-Isolation': info.contextIsolation,
+                        'Sandbox aktiviert': info.sandbox,
+                        'Adminrechte': info.admin
+                    }
+                },
+                {
+                    title: 'Pfade & Ordner',
+                    data: {
+                        'Projekt-Root': info.projectRoot,
+                        'Sounds': `${info.soundsPath} (existiert: ${info.existsSoundsPath ? '✔️' : '✖️'})`,
+                        'Backups': `${info.backupsPath} (existiert: ${info.existsBackupsPath ? '✔️' : '✖️'})`,
+                        'UserData-Pfad': info.userDataPath,
+                        'Backup-Pfad (User)': info.backupPath,
+                        'Download-Pfad': info.downloadWatchPath
+                    }
+                },
+                {
+                    title: 'Ausführungspfade & Scripts',
+                    data: {
+                        'Arbeitsverzeichnis': info.cwd,
+                        'Main Script': info.scriptPath,
+                        'Electron Executable': info.electronExecPath,
+                        'Python Executable': info.pythonExecPath,
+                        'Node Executable': info.nodeExecPath,
+                        'Node Modules Pfad': info.nodeModulesPath,
+                        'package.json Pfad': info.packageJsonPath
+                    }
+                },
+                {
+                    title: 'Startparameter & Einstellungen',
+                    data: {
+                        'Seitenzustand': info['Seitenzustand'],
+                        'Protokoll': info['Protokoll'],
+                        'URL': info.URL,
+                        'Startargumente': info.startArgs
+                    }
+                },
+                {
+                    title: 'Anzeige- und Browserinformationen',
+                    data: {
+                        'Fenstergröße': info['Fenstergröße'],
+                        'Bildschirmauflösung': info['Bildschirmauflösung'],
+                        'Sicherer Kontext': info['Sicherer Kontext'],
+                        'Sprache': info['Verwendete Sprache'],
+                        'Benutzeragent': info['Benutzeragent'],
+                        'Electron-API vorhanden': info['Electron-API vorhanden'],
+                        'Im Browser gestartet': info['Im Browser gestartet']
+                    }
+                }
+            ];
+
             // HTML für die Anzeige aufbauen
             let html = '<h3>Debug-Informationen</h3>';
-            html += '<h4>Programmversionen</h4><ul id="debugVersionList">';
-            for (const [key, value] of Object.entries(versionInfo)) {
-                html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(String(value))}</code></li>`;
-            }
-            html += '</ul><ul id="debugInfoList">';
-            for (const [key, value] of Object.entries(info)) {
-                const val = String(value);
-                if (val.includes('\n')) {
-                    html += `<li><strong>${escapeHtml(key)}</strong>:<pre>${escapeHtml(val)}</pre></li>`;
-                } else {
-                    html += `<li><strong>${escapeHtml(key)}</strong>: <code>${escapeHtml(val)}</code></li>`;
+            categories.forEach(cat => {
+                html += `<h4>${cat.title}</h4><ul class="debug-info-list">`;
+                for (const [key, value] of Object.entries(cat.data)) {
+                    html += `<li><span><strong>${escapeHtml(key)}</strong></span><code>${formatVal(value)}</code></li>`;
                 }
-            }
-            html += '</ul>';
+                html += '</ul>';
+            });
             html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
             ui.showModal(html);
 
@@ -7273,12 +7334,13 @@ async function scanAudioDuplicates() {
             if (copyBtn) {
                 copyBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    const allData = { ...versionInfo, ...info };
+                    const allData = {};
+                    categories.forEach(cat => Object.assign(allData, cat.data));
                     const text = Object.entries(allData)
                         .map(([k, v]) => `${k}: ${v}`)
                         .join('\n');
                     safeCopy(text)
-                        .then(ok => { if(ok) ui.notify('Debug-Daten kopiert'); })
+                        .then(ok => { if (ok) ui.notify('Debug-Daten kopiert'); })
                         .catch(err => ui.notify('Kopieren fehlgeschlagen: ' + err, 'error'));
                 });
             }
