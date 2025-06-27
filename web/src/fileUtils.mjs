@@ -8,8 +8,11 @@ if (typeof window === 'undefined') {
     const require = createRequire(import.meta.url);
     ({ calculateTextSimilarity, levenshteinDistance } = require('./fileUtils.js'));
 } else {
-    // Browser: als ES-Modul importieren
-    ({ calculateTextSimilarity, levenshteinDistance } = await import('./fileUtils.js'));
+    // Browser: Modul nur der Nebenwirkungen wegen laden
+    await import('./fileUtils.js');
+    // Funktionen aus dem globalen Fenster holen
+    calculateTextSimilarity = window.calculateTextSimilarity;
+    levenshteinDistance = window.levenshteinDistance;
 }
 
 export { calculateTextSimilarity, levenshteinDistance };
