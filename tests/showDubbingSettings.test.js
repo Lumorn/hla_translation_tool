@@ -9,7 +9,14 @@ beforeAll(() => {
     localStorage.removeItem('hla_elevenLabsApiKey');
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'warn').mockImplementation(() => {});
-    ({ showDubbingSettings } = require('../web/src/main.js'));
+    global.currentDubMode = 'beta';
+    global.files = [{ id: 1, folder: '', filename: 'a.wav', enText: '', deText: '' }];
+    global.folderCustomizations = {};
+    global.availableVoices = [];
+    global.storedVoiceSettings = null;
+    global.elevenLabsApiKey = null;
+    global.updateVoiceSettingsDisplay = jest.fn();
+    ({ showDubbingSettings } = require('../web/src/dubbing.js'));
 });
 
 let showDubbingSettings;
