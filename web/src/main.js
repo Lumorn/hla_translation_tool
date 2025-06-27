@@ -2419,9 +2419,15 @@ async function showFileExchangeOptions(fileId) {
             calculateTextSimilarity = mod.calculateTextSimilarity;
             levenshteinDistance = mod.levenshteinDistance;
         } catch (err) {
-            console.error('Text-Utilities konnten nicht geladen werden', err);
-            alert('❌ Text-Utilities konnten nicht geladen werden.');
-            return;
+            // Fallback auf globale Funktion, falls das Modul nicht geladen werden konnte
+            if (typeof window !== 'undefined' && typeof window.calculateTextSimilarity === 'function') {
+                calculateTextSimilarity = window.calculateTextSimilarity;
+                levenshteinDistance = window.levenshteinDistance;
+            } else {
+                console.error('Text-Utilities konnten nicht geladen werden', err);
+                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                return;
+            }
         }
     }
 
@@ -2508,9 +2514,15 @@ async function openSubtitleSearch(fileId) {
             calculateTextSimilarity = mod.calculateTextSimilarity;
             levenshteinDistance = mod.levenshteinDistance;
         } catch (err) {
-            console.error('Text-Utilities konnten nicht geladen werden', err);
-            alert('❌ Text-Utilities konnten nicht geladen werden.');
-            return;
+            // Fallback auf die globale Funktion, falls das Modul fehlschlägt
+            if (typeof window !== 'undefined' && typeof window.calculateTextSimilarity === 'function') {
+                calculateTextSimilarity = window.calculateTextSimilarity;
+                levenshteinDistance = window.levenshteinDistance;
+            } else {
+                console.error('Text-Utilities konnten nicht geladen werden', err);
+                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                return;
+            }
         }
     }
 
