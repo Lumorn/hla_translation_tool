@@ -469,31 +469,51 @@
                     </div>
                 </div>
             </div>
-            <div style="margin-bottom:15px; display:flex; gap:10px;">
+            <div class="edit-range">
                 <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
                 <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
             </div>
-            <div class="radio-settings" style="margin-bottom:15px; display:flex; flex-wrap:wrap; gap:10px; position:relative;">
-                <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
-                    <input type="range" id="radioStrength" min="0" max="1" step="0.05">
-                </label>
-                <label title="Hochpassfrequenz">Highpass (Hz):
-                    <input type="number" id="radioHighpass" min="0" max="1000" step="50">
-                </label>
-                <label title="Tiefpassfrequenz">Lowpass (Hz):
-                    <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
-                </label>
-                <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
-                    <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
-                </label>
-                <label title="Rauschpegel in dBFS">Rauschen (dB):
-                    <input type="number" id="radioNoise" min="-60" max="0" step="1">
-                </label>
-                <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
-                    <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
-                </label>
-            </div>
-            <div class="effect-buttons" style="margin-bottom:15px; display:flex; gap:10px;">
+            <hr class="effect-separator">
+            <fieldset class="effect-group">
+                <legend>📡 Funkgerät-Effekt</legend>
+                <div class="radio-settings">
+                    <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
+                        <input type="range" id="radioStrength" min="0" max="1" step="0.05">
+                    </label>
+                    <label title="Hochpassfrequenz">Highpass (Hz):
+                        <input type="number" id="radioHighpass" min="0" max="1000" step="50">
+                    </label>
+                    <label title="Tiefpassfrequenz">Lowpass (Hz):
+                        <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
+                    </label>
+                    <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
+                        <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
+                    </label>
+                    <label title="Rauschpegel in dBFS">Rauschen (dB):
+                        <input type="number" id="radioNoise" min="-60" max="0" step="1">
+                    </label>
+                    <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
+                        <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
+                    </label>
+                </div>
+            </fieldset>
+            <fieldset class="effect-group">
+                <legend>🎚️ Hall-Effekt</legend>
+                <label id="hallToggleLabel" class="effect-toggle"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
+                <div class="hall-settings">
+                    <label title="Raumgröße">Room:
+                        <input type="range" id="hallRoom" min="0" max="1" step="0.05">
+                    </label>
+                    <label title="Mischverhältnis">Wet: <span id="hallAmountDisplay"></span>
+                        <input type="range" id="hallAmount" min="0" max="1" step="0.05">
+                    </label>
+                    <label title="Vorlaufzeit">Delay (ms):
+                        <input type="number" id="hallDelay" min="0" max="500" step="10">
+                    </label>
+                </div>
+                <button class="btn-reset-settings" onclick="resetHallSettings()">⟳ Hall-Standardwerte</button>
+            </fieldset>
+            <div class="effect-buttons">
                 <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()">🔊 Lautstärke angleichen</button>
                 <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()">📻 Funkgerät-Effekt</button>
                 <button class="btn-reset-settings" onclick="resetRadioSettings()">⟳ Standardwerte</button>

@@ -8,6 +8,7 @@ function uploadFileMock(file) {
     file.trimEndMs = 0;
     file.volumeMatched = false;
     file.radioEffect = false;
+    file.hallEffect = false;
 }
 
 test('Upload setzt Bearbeitungs-Flags zurück', () => {
@@ -15,11 +16,13 @@ test('Upload setzt Bearbeitungs-Flags zurück', () => {
         trimStartMs: 12,
         trimEndMs: 34,
         volumeMatched: true,
-        radioEffect: true
+        radioEffect: true,
+        hallEffect: true
     };
     uploadFileMock(file);
     expect(file.trimStartMs).toBe(0);
     expect(file.trimEndMs).toBe(0);
     expect(file.volumeMatched).toBe(false);
     expect(file.radioEffect).toBe(false);
+    expect(file.hallEffect).toBe(false);
 });
