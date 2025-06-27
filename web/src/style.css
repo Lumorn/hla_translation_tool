@@ -1000,9 +1000,9 @@ th:nth-child(7) {
 
 /* Buttons für Effekte im Audio-Editor */
 .effect-btn {
-    background: #444;
+    background: #ff6b1a; /* Grundfarbe der Effekt-Buttons */
     border: none;
-    color: #e0e0e0;
+    color: white;
     padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
@@ -1011,8 +1011,49 @@ th:nth-child(7) {
 }
 
 .effect-btn:hover {
-    background: #ff6b1a;
+    background: #ff9440;
     color: white;
+}
+
+/* Hervorhebung, wenn ein Effekt aktiv ist */
+.effect-btn.active {
+    background: #0066cc; /* deutliche Farbe bei aktivem Effekt */
+    color: #fff;
+}
+
+/* Gruppen für Effekt-Einstellungen */
+.edit-range,
+.effect-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.radio-settings,
+.hall-settings {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.effect-group {
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.effect-separator {
+    border: 0;
+    border-top: 1px solid #555;
+    margin: 15px 0;
+}
+
+/* Aktiver Zustand des Hall-Toggles */
+.effect-toggle.active {
+    color: #ff6b1a;
+    font-weight: bold;
 }
 
 /* Kleiner Button für Standardwerte rechts oben */

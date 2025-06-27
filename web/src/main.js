@@ -123,6 +123,11 @@ let radioSaturation    = parseFloat(localStorage.getItem('hla_radioSaturation') 
 let radioNoise         = parseFloat(localStorage.getItem('hla_radioNoise') || '-26');
 let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || '0.1');
 
+// Letzte Einstellungen des Hall-Effekts
+let hallRoom   = parseFloat(localStorage.getItem('hla_hallRoom') || '0.5');
+let hallAmount = parseFloat(localStorage.getItem('hla_hallAmount') || '0.5');
+let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
+
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
@@ -1353,6 +1358,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
         if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
@@ -1571,6 +1577,7 @@ function addFiles() {
                 trimEndMs: 0,
                 volumeMatched: false,
                 radioEffect: false,
+                hallEffect: false,
                 version: 1
             };
             
@@ -2430,6 +2437,7 @@ return `
                 ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
                 ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
                 ${file.radioEffect ? '<span class="edit-status-icon">📻</span>' : ''}
+                ${file.hallEffect ? '<span class="edit-status-icon">🏛️</span>' : ''}
             </div>
         </div></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
@@ -5547,6 +5555,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         trimEndMs: 0,
         volumeMatched: false,
         radioEffect: false,
+        hallEffect: false,
         version: 1
     };
     
@@ -7827,6 +7836,7 @@ async function handleDeUpload(input) {
         file.trimEndMs = 0;
         file.volumeMatched = false;
         file.radioEffect = false;
+        file.hallEffect = false;
         // Fertig-Status ergibt sich nun automatisch
     }
 
@@ -8193,6 +8203,42 @@ async function applyRadioFilter(buffer, opts = {}) {
     return await outCtx.startRendering();
 }
 // =========================== RADIOFILTER END ================================
+// =========================== REVERB START ===================================
+// Einfacher Hall-Effekt mittels Delay-Schleife
+async function applyReverbEffect(buffer, opts = {}) {
+    const {
+        room = hallRoom,
+        wet = hallAmount,
+        delay = hallDelay
+    } = opts;
+
+    const extra = Math.round(buffer.sampleRate * delay / 1000 * 2);
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels,
+        buffer.length + extra, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const delayNode = ctx.createDelay();
+    delayNode.delayTime.value = delay / 1000;
+    const feedback = ctx.createGain();
+    feedback.gain.value = room;
+    const wetGain = ctx.createGain();
+    wetGain.gain.value = wet;
+    const dryGain = ctx.createGain();
+    dryGain.gain.value = 1 - wet;
+
+    source.connect(delayNode);
+    source.connect(dryGain);
+    delayNode.connect(feedback);
+    feedback.connect(delayNode);
+    delayNode.connect(wetGain);
+
+    dryGain.connect(ctx.destination);
+    wetGain.connect(ctx.destination);
+    source.start();
+    return await ctx.startRendering();
+}
+// =========================== REVERB END =====================================
 // =========================== TRIMANDBUFFER END ==============================
 
 // =========================== BUFFERTOWAV START ==============================
@@ -8237,6 +8283,8 @@ let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
 let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
 let radioEffectBuffer = null;  // Buffer mit Funkgeräteffekt
 let isRadioEffect = false;     // Merkt, ob der Funkgeräteffekt angewendet wurde
+let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
+let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -8263,6 +8311,8 @@ async function openDeEdit(fileId) {
     isVolumeMatched = false;
     radioEffectBuffer = null;
     isRadioEffect = false;
+    hallEffectBuffer = null;
+    isHallEffect = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -8367,6 +8417,44 @@ async function openDeEdit(fileId) {
         };
     }
 
+    // Regler für Hall-Effekt initialisieren
+    const hRoom = document.getElementById('hallRoom');
+    if (hRoom) {
+        hRoom.value = hallRoom;
+        hRoom.oninput = e => {
+            hallRoom = parseFloat(e.target.value);
+            localStorage.setItem('hla_hallRoom', hallRoom);
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+    const hAmount = document.getElementById('hallAmount');
+    const hAmountDisp = document.getElementById('hallAmountDisplay');
+    if (hAmount && hAmountDisp) {
+        hAmount.value = hallAmount;
+        hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
+        hAmount.oninput = e => {
+            hallAmount = parseFloat(e.target.value);
+            localStorage.setItem('hla_hallAmount', hallAmount);
+            hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+    const hDelay = document.getElementById('hallDelay');
+    if (hDelay) {
+        hDelay.value = hallDelay;
+        hDelay.oninput = e => {
+            hallDelay = parseFloat(e.target.value);
+            localStorage.setItem('hla_hallDelay', hallDelay);
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+
+    const hToggle = document.getElementById('hallToggle');
+    if (hToggle) {
+        hToggle.checked = isHallEffect;
+        hToggle.onchange = e => toggleHallEffect(e.target.checked);
+    }
+
     // Klick auf das Original-Wellenbild setzt den EN-Cursor
     origCanvas.onmousedown = e => {
         const rect = origCanvas.getBoundingClientRect();
@@ -8416,8 +8504,22 @@ async function openDeEdit(fileId) {
         updateDeEditWaveforms();
     };
 window.onmouseup = () => { editDragging = null; };
+    updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
+
+// Aktualisiert die Aktiv-Markierung der Effekt-Buttons
+function updateEffectButtons() {
+    const radioBtn = document.getElementById('radioEffectBtn');
+    if (radioBtn) {
+        // Je nach Status den aktiven Stil setzen oder entfernen
+        radioBtn.classList.toggle('active', isRadioEffect);
+    }
+    const hallLabel = document.getElementById('hallToggleLabel');
+    if (hallLabel) {
+        hallLabel.classList.toggle('active', isHallEffect);
+    }
+}
 
 // =========================== APPLYVOLUMEMATCH START =======================
 // Führt den Lautstärkeabgleich einmalig aus
@@ -8436,6 +8538,7 @@ async function applyVolumeMatch() {
         }
         isVolumeMatched = true;
         await recomputeEditBuffer();
+        updateEffectButtons();
     }
 }
 
@@ -8451,6 +8554,9 @@ async function recomputeEditBuffer() {
     }
     if (isRadioEffect) {
         buf = await applyRadioFilter(buf);
+    }
+    if (isHallEffect) {
+        buf = await applyReverbEffect(buf);
     }
     originalEditBuffer = buf;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -8470,8 +8576,34 @@ async function applyRadioEffect() {
     }
     isRadioEffect = true;
     await recomputeEditBuffer();
+    updateEffectButtons();
 }
 // =========================== APPLYRADIOEFFECT END ==========================
+
+// =========================== APPLYHALLEFFECT START ==========================
+// Aktiviert den Hall-Effekt und legt bei Erstnutzung eine History an
+async function applyHallEffect() {
+    if (!isHallEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isHallEffect = true;
+    await recomputeEditBuffer();
+}
+// Schaltet den Hall-Effekt abhängig vom Kontrollkästchen ein oder aus
+function toggleHallEffect(active) {
+    if (active) {
+        applyHallEffect();
+    } else {
+        isHallEffect = false;
+        recomputeEditBuffer();
+    }
+    updateEffectButtons();
+}
+// =========================== APPLYHALLEFFECT END ============================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== RESETRADIOSETTINGS START =====================
@@ -8523,6 +8655,36 @@ function resetRadioSettings() {
     if (isRadioEffect) recomputeEditBuffer();
 }
 // =========================== RESETRADIOSETTINGS END =======================
+
+// =========================== RESETHALLSETTINGS START =====================
+// Setzt alle Hall-Parameter auf Standardwerte
+function resetHallSettings() {
+    // Globale Vorgaben
+    hallRoom   = 0.5;
+    hallAmount = 0.5;
+    hallDelay  = 80;
+
+    // Speicherung im LocalStorage
+    localStorage.setItem('hla_hallRoom', hallRoom);
+    localStorage.setItem('hla_hallAmount', hallAmount);
+    localStorage.setItem('hla_hallDelay', hallDelay);
+
+    // Regler im Dialog zurücksetzen
+    const hRoom = document.getElementById('hallRoom');
+    if (hRoom) hRoom.value = hallRoom;
+    const hAmount = document.getElementById('hallAmount');
+    const hAmountDisp = document.getElementById('hallAmountDisplay');
+    if (hAmount && hAmountDisp) {
+        hAmount.value = hallAmount;
+        hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
+    }
+    const hDelay = document.getElementById('hallDelay');
+    if (hDelay) hDelay.value = hallDelay;
+
+    // Effekt neu berechnen, falls aktiv
+    if (isHallEffect) recomputeEditBuffer();
+}
+// =========================== RESETHALLSETTINGS END =======================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
@@ -8687,9 +8849,12 @@ function closeDeEdit() {
     isVolumeMatched = false;
     radioEffectBuffer = null;
     isRadioEffect = false;
+    hallEffectBuffer = null;
+    isHallEffect = false;
     editEnBuffer = null;
     window.onmousemove = null;
     window.onmouseup = null;
+    updateEffectButtons();
 }
 // =========================== CLOSEDEEDIT END ===============================
 
@@ -8733,10 +8898,14 @@ async function resetDeEdit() {
         currentEditFile.trimEndMs = 0;
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
+        currentEditFile.hallEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
         isRadioEffect = false;
+        hallEffectBuffer = null;
+        isHallEffect = false;
+        updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -8778,6 +8947,9 @@ async function applyDeEdit() {
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
             baseBuffer = await applyRadioFilter(baseBuffer);
+        }
+        if (isHallEffect) {
+            baseBuffer = await applyReverbEffect(baseBuffer);
         }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
@@ -8839,6 +9011,9 @@ async function applyDeEdit() {
         if (isRadioEffect) {
             baseBuffer = await applyRadioFilter(baseBuffer);
         }
+        if (isHallEffect) {
+            baseBuffer = await applyReverbEffect(baseBuffer);
+        }
         const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
@@ -8851,6 +9026,7 @@ async function applyDeEdit() {
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
+        currentEditFile.hallEffect = isHallEffect;
         // Änderungen sichern
         isDirty = true;
         renderFileTable();
@@ -9715,6 +9891,7 @@ function addFileToProject(filename, folder, originalResult) {
         trimEndMs: 0,
         volumeMatched: false,
         radioEffect: false,
+        hallEffect: false,
         version: 1
     };
     
@@ -10530,6 +10707,7 @@ function showChapterCustomization(chapterName, ev) {
                 f.trimEndMs = 0;
                 f.volumeMatched = false;
                 f.radioEffect = false;
+                f.hallEffect = false;
                 // Fertig-Status ergibt sich nun automatisch
             }
             isDirty = true;
@@ -10680,6 +10858,7 @@ function showChapterCustomization(chapterName, ev) {
             file.trimEndMs = 0;
             file.volumeMatched = false;
             file.radioEffect = false;
+            file.hallEffect = false;
             renderFileTable();
             saveCurrentProject();
         }

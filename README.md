@@ -202,9 +202,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerhinweis bei der Bearbeitungs-Vorschau:** Schlägt das Abspielen fehl, erscheint jetzt eine Meldung
 * **Automatischer History-Eintrag:** Beim Lautstärkeabgleich wird das Original gespeichert
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
+* **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
+* **Getrennte Effektbereiche:** Funkgerät- und Hall-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
+* **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
 * **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – ⚡ und Funkgerät-Effekt – 📻 besitzen nun eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
+* **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
-* **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung und Funkgerät‑Effekt automatisch deaktiviert.
+* **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben. Der blaue Download-Pfeil zeigt nun beim Überfahren mit der Maus die Dubbing-ID an und öffnet beim Anklicken die ElevenLabs-Seite des entsprechenden Jobs.
