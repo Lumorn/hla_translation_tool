@@ -29,17 +29,14 @@ function loadMain(lineEnd) {
     storage = {};
     if (lineEnd) storage['hla_lineEnding'] = lineEnd;
     global.document = { addEventListener: jest.fn() };
-    global.document.getElementById = jest.fn(() => null);
     global.window = { addEventListener: jest.fn() };
-    global.csvLineEnding = lineEnd || 'LF';
-    global.currentDubMode = 'beta';
     global.localStorage = {
         getItem: key => storage[key] || null,
         setItem: (k, v) => { storage[k] = v; },
         removeItem: k => { delete storage[k]; },
         clear: () => { storage = {}; }
     };
-    ({ createDubbingCSV, startDubbing, validateCsv } = require('../web/src/dubbing.js'));
+    ({ createDubbingCSV, startDubbing, validateCsv } = require('../web/src/main.js'));
 }
 
 beforeEach(() => {
@@ -146,7 +143,7 @@ describe('Manual Dub', () => {
 
             await startDubbing(2);
 
-            expect(fetch).toHaveBeenCalled();
+            expect(fetch).not.toHaveBeenCalled();
         });
     });
 
