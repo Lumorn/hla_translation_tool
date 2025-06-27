@@ -10,7 +10,7 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
-    ({ calculateTextSimilarity } = require('../web/src/main.js'));
+    ({ calculateTextSimilarity } = require('../web/src/fileUtils.js'));
 }
 
 beforeEach(loadMain);

@@ -21,6 +21,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📥 Import](#-import)
 * [📁 Ordner-Management](#-ordner-management)
 * [💾 Backup](#-backup)
+* [🗂️ Projektstruktur](#-projektstruktur)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
 ---
@@ -626,6 +627,13 @@ Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellunge
 ## 💾 Backup
 
 Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups.
+
+
+## 🗂️ Projektstruktur
+
+Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
+* **web/src/main.js** – Initialisierung der App
+* **web/src/fileUtils.js** – Text-Funktionen wie `calculateTextSimilarity`
 
 ---
 
