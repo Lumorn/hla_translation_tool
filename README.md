@@ -819,6 +819,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`delete-sound-backup(name)`** – entfernt ein ZIP-Backup.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
+* **`extractRelevantFolder(parts)`** – gibt den relevanten Abschnitt eines Dateipfades ab "vo" oder ohne führendes "sounds" zurück (siehe `web/src/pathUtils.js`).
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
 * **`ipcContracts.ts`** – definiert Typen für die IPC-Kommunikation zwischen Preload und Hauptprozess.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
