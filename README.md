@@ -723,6 +723,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **📊 Datenquellen‑Analyse:** Console‑Logs für Entwickler
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
 * **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen sich die DevTools jetzt automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
+* **📦 Modul-Check:** Neuer Button listet alle geladenen Module und zeigt, ob sie funktionieren.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 
