@@ -439,6 +439,7 @@ Seit Patch 1.40.91 löst der Dateiwächter den manuellen Import nur noch aus, we
 Seit Patch 1.40.92 bricht der Dateiwächter nach 10 s ohne stabile Datei mit einer Fehlermeldung ab.
 Seit Patch 1.40.93 schließen sich nach erfolgreichem Import das Fenster „Alles gesendet“, der Studio-Hinweis und das Dubbing-Protokoll automatisch.
 Seit Patch 1.40.94 funktioniert die Untertitel-Suche über die Lupe wieder korrekt.
+Seit Patch 1.40.95 lädt die OT-Suche fehlende Text-Utilities automatisch nach.
 
 Beispiel einer gültigen CSV:
 
