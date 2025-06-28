@@ -1994,7 +1994,7 @@ function addFiles() {
         }
 
         // Copy button functionality
-        async function copyTextToClipboard(fileId, language) {
+        async function copyTextToClipboard(fileId, language, ev) {
             debugLog('Copy button clicked - FileID:', fileId, 'Language:', language);
             
             // Find file more safely
@@ -2022,7 +2022,7 @@ function addFiles() {
                 debugLog('Copy successful:', langLabel, 'from', file.filename);
                 
                 // Visual feedback - briefly highlight the copy button
-                const button = event.target;
+                const button = ev?.target;
                 if (button) {
                     const originalBg = button.style.background;
                     const originalText = button.textContent;
@@ -2040,7 +2040,7 @@ function addFiles() {
                 updateStatus(`${langLabel} Kopieren fehlgeschlagen: ${file.filename}`);
                 
                 // Error feedback
-                const button = event.target;
+                const button = ev?.target;
                 if (button) {
                     const originalBg = button.style.background;
                     const originalText = button.textContent;
@@ -2399,7 +2399,7 @@ return `
                  onchange="updateText(${file.id}, 'en', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
             <div class="btn-column">
-                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en')" title="EN Text kopieren">📋</button>
+                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en', event)" title="EN Text kopieren">📋</button>
                 <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
             </div>
         </div></td>
@@ -2408,7 +2408,7 @@ return `
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
             <div class="btn-column">
-                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de')" title="DE Text kopieren">📋</button>
+                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de', event)" title="DE Text kopieren">📋</button>
                 ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
             </div>
         </div>
@@ -11079,7 +11079,11 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
 
             videoDlg.classList.remove("hidden");
 
-            await refreshTable();
+            if (typeof refreshTable === 'function') {
+                await refreshTable();
+            } else if (typeof renderFileTable === 'function') {
+                await renderFileTable();
+            }
 
             videoDlg
                 .querySelector("#videoListSection")

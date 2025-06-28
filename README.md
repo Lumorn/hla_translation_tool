@@ -723,6 +723,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * ▶ **Neu:** Beim Programmstart werden vorhandene MP3-Dateien automatisch in WAV umgewandelt und im Ordner `Backups/mp3` gesichert.
 * ▶ **Fix:** Das Backup funktioniert jetzt auch über Laufwerksgrenzen hinweg, da beim Verschieben auf Kopieren mit anschließendem Löschen umgestellt wird.
 * ▶ **Neu:** Geänderte Dateiendungen werden erkannt und automatisch korrigiert.
+* ▶ **Fix:** Der 📋-Button kopiert den Text nun zuverlässig; das zugehörige Event wird korrekt verarbeitet.
 
 #### Häufige Crash-Stellen
 
