@@ -44,25 +44,16 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **Schnellstart im Player:** YouTube-Links aus der URL-Eingabe starten direkt im eingebetteten Player; andere Links werden extern geöffnet. Beim Öffnen wird automatisch ein Bookmark angelegt.
+* **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
-* **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich nun über einen zusätzlichen IPC-Kanal entfernen.
+* **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
 * **Tests für Video-Bookmarks:** Überprüfen Laden, Sortierung sowie Hinzufügen und Entfernen von Einträgen.
-* **Tests für den YouTube-Player:** Prüfen Speicherung über das Intervall, Löschfunktion sowie Dialog und Slider.
-* **Test für OCR-Overlay-Sichtbarkeit:** Stellt sicher, dass Overlay und Ergebnis-Panel korrekt ein- und ausgeblendet werden.
-* **Neue Tests für die OCR-Pipeline:** Prüfen die Bildverarbeitung und den Auto-OCR-Start.
 * **Prüfung von Video-Links:** Eingaben müssen mit `https://` beginnen und dürfen keine Leerzeichen enthalten.
 * **Duplikat-Prüfung & dauerhafte Speicherung im Nutzerordner**
 * **Automatische YouTube-Titel:** Beim Hinzufügen lädt das Tool den Videotitel per oEmbed und sortiert die Liste alphabetisch. Schlägt dies fehl, wird die eingegebene URL als Titel gespeichert.
-* **Video-Manager mit integriertem Player:** Ein einziges Fenster zeigt links die gespeicherten Links und rechts den YouTube‑Player. Suchfeld, sortierbare Spalten sowie Hinzufügen‑, Umbenennen‑ und Lösch‑Buttons bleiben erhalten.
-* **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente, Suchfeld und deutlichere Aktions-Icons erleichtern die Bedienung.
+* **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
-* **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder statt Nummern. Ein Klick auf Bild oder Titel startet sofort das Video – der separate Play-Button entfällt.
-* **YouTube-Player:** Läuft innerhalb des Managers. Beim Schließen des Players bleibt die exakte Position per `getCurrentTime()` erhalten. **Escape** schließt den Player, **Leertaste** startet oder pausiert und die **Pfeiltasten** springen 5 s.
-* **`openPlayer`/`closePlayer` veraltet:** Diese Funktionen leiten jetzt intern auf `openVideoDialog` bzw. `closeVideoDialog` um.
-* **16:9-Playerfenster:** Das eingebettete Video behält stets ein Seitenverhältnis von 16:9 und passt sich jeder Fenstergröße an.
-* **Fehlerbehebung:** Der integrierte Player lässt sich mehrfach starten, ohne dass der `videoPlayerFrame` fehlt.
-* **Korrekte Spaltenbreite im Video-Manager:** Kopfzeile und Tabelle sind jetzt bündig, komplette Videotitel erscheinen als Tooltip.
+* **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
 * **Behobenes Resize-Problem:** Nach einer Verkleinerung wächst der Videoplayer jetzt korrekt mit, sobald das Fenster wieder größer wird.
 * **Stabiler Startzustand:** CSS-Duplikate entfernt; `video-dialog` startet immer mit 10 % Abstand.

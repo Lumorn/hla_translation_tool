@@ -2627,31 +2627,15 @@ th:nth-child(7) {
 
 /* ===== Haupt-Grid ===== */
 .video-grid{
-    display:grid;
-    height:100%;
-    width:100%;
-    grid-template-columns:minmax(220px,26%) 1fr 24%;   /* Liste | Player | OCR */
-    grid-template-rows:1fr auto;                       /* Inhalt | Controls */
-    grid-template-areas:
-        "list  player  ocr"
-        "list  controls ocr";
+    display:flex;
+    flex-direction:column;
     gap:12px;
+    height:100%;
     padding:18px;
 }
 
 /* ===== Teilbereiche ===== */
-.video-bookmarks{ grid-area:list;    overflow:auto; }
-.video-player   { grid-area:player;  display:flex; flex-direction:column; align-items:center; }
-.video-player iframe{ flex:1 1 auto; width:100%; border:none; }
-.video-controls{
-    grid-area:controls;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:#111;
-    padding:6px 10px;
-}
-.ocr-panel{ grid-area:ocr; overflow:auto; background:#0002; }
+.video-bookmarks{ overflow:auto; }
 
 /* === Tabelle für das Wörterbuch === */
 .word-list-table td{
@@ -2663,13 +2647,5 @@ th:nth-child(7) {
 
 /* ===== Mobil-Fallback ===== */
 @media (max-width:900px){
-    .video-grid{
-        grid-template-columns:1fr;
-        grid-template-rows:auto auto auto auto;
-        grid-template-areas:
-            "list"
-            "player"
-            "controls"
-            "ocr";
-    }
+    .video-grid{ flex-direction:column; }
 }
