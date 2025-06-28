@@ -35,6 +35,9 @@ async function captureFrame(url, sec, outPath) {
             input = fmt.url;
         } catch (e) {
             console.error('[captureFrame] YouTube-Info fehlgeschlagen', e.message);
+            if (/connect|tunnel|ENOTFOUND/i.test(e.message)) {
+                console.error('[captureFrame] Netzwerkfehler – Zugriff eventuell blockiert');
+            }
             // Zusätzlicher Hinweis, falls YouTube-Struktur geändert wurde
             if (e.message && e.message.includes('Could not extract')) {
                 console.error('[captureFrame] Vermutlich ist ytdl-core veraltet – bitte per "npm update ytdl-core" aktualisieren');
@@ -46,6 +49,9 @@ async function captureFrame(url, sec, outPath) {
                 input = stream.url;
             } catch (e2) {
                 console.error('[captureFrame] Auch play-dl konnte die Video-URL nicht ermitteln', e2.message);
+                if (/connect|tunnel|ENOTFOUND/i.test(e2.message)) {
+                    console.error('[captureFrame] Netzwerkfehler – Zugriff eventuell blockiert');
+                }
             }
         }
     }

@@ -292,6 +292,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 26. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
 27. `node dev_info.js` gibt alle relevanten Systemdaten sowie die Versionen von `ffmpeg`, `ytdl-core` und `play-dl` aus.
 28. Das Debug-Fenster zeigt jetzt zusätzlich den Pfad zum VideoFrame-Ordner und die installierten Versionen der Video-Abhängigkeiten.
+29. Ein neuer Netztest im Debug-Fenster prüft die Erreichbarkeit von YouTube.
 
 ### ElevenLabs-Dubbing
 
