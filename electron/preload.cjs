@@ -74,6 +74,8 @@ if (typeof require !== 'function') {
     startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
     openPath: (p) => ipcRenderer.invoke('open-path', p),
+    loadOpenaiKey: () => ipcRenderer.invoke('load-openai-key'),
+    saveOpenaiKey: key => ipcRenderer.invoke('save-openai-key', key),
     // Automatische Steuerung der Dubbing-Seite
     autoDub: data => ipcRenderer.invoke('auto-dub', data),
     captureFrame: bounds => ipcRenderer.invoke('capture-frame', bounds),
