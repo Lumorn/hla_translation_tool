@@ -40,13 +40,14 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
-* **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
+* **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt. Der GPT-Knopf sitzt jetzt rechts neben dieser Leiste.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
 * **GPT-Konsole:** Beim Klick auf "Bewerten (GPT)" öffnet sich ein Fenster mit einem Log aller gesendeten Prompts und Antworten
+* **Vorab-Dialog für GPT:** Vor dem Start zeigt ein Fenster, wie viele Zeilen und Sprecher enthalten sind
 * **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
 * **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
 * **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
