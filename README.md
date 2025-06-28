@@ -54,9 +54,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Schnelles Vorschaubild per Storyboard:** Das Tool lädt die passende Kachel aus dem YouTube‑Storyboard. Bleibt das Bild aus, wird das Standard-Thumbnail verwendet.
+* **Schnelles Vorschaubild per Storyboard:** Das Tool versucht nacheinander `storyboard3.json`, `storyboard2.json`, `storyboard1.json`, `storyboard0.json` und `storyboard.json`. Bleibt das Bild aus, wird das Standard-Thumbnail verwendet.
 * **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
-* **Hilfsfunktion `fetchStoryboardFrame()`** liefert die Storyboard-Kachel als Base64-PNG oder `null`.
+* **Hilfsfunktion `fetchStoryboardFrame()`** greift auf die genannten JSON-Dateien zu und liefert die Storyboard-Kachel als Base64-PNG oder `null`.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
