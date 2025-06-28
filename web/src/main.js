@@ -2520,16 +2520,30 @@ return `
     }));
     tbody.innerHTML = rows.join('');
 
-    // Klick auf Score setzt vorgeschlagenen DE-Text
+    // Tooltip-Anzeige und Klick-Verarbeitung fuer Score-Zellen
     tbody.querySelectorAll('.score-cell').forEach(cell => {
         const id = Number(cell.parentElement?.dataset.id);
         const suggestion = cell.dataset.suggestion;
+        const comment = cell.dataset.comment;
+        const tooltipText = [comment, suggestion].filter(Boolean).join(' - ');
+
+        cell.addEventListener('mouseenter', ev => openScoreTooltip(ev, tooltipText));
+        cell.addEventListener('mouseleave', closeScoreTooltip);
+
         if (suggestion) {
             cell.addEventListener('click', () => {
                 const file = files.find(f => f.id === id);
-                if (file) {
-                    file.deText = suggestion;
-                    renderFileTableWithOrder(sortedFiles);
+                if (!file) return;
+                if (!file.suggestion) return;
+                file.deText = file.suggestion;
+                isDirty = true;
+
+                const row = document.querySelector(`tr[data-id='${id}']`);
+                const deCell = row?.querySelectorAll('textarea.text-input')[1];
+                if (deCell) {
+                    deCell.value = file.deText;
+                    deCell.classList.add('blink-blue');
+                    setTimeout(() => deCell.classList.remove('blink-blue'), 600);
                 }
             });
         }
@@ -10973,6 +10987,24 @@ function showChapterCustomization(chapterName, ev) {
                 ov.classList.remove('hidden');
                 dlg.querySelector('#dlgInput').focus();
             });
+        }
+
+        // Tooltip fuer Score-Spalte oeffnen
+        function openScoreTooltip(ev, text) {
+            closeScoreTooltip();
+            if (!text) return;
+            const box = document.createElement('div');
+            box.className = 'info-tooltip';
+            box.id = 'scoreTooltip';
+            box.textContent = text;
+            box.style.left = ev.clientX + 'px';
+            box.style.top = ev.clientY + 'px';
+            document.body.appendChild(box);
+        }
+
+        function closeScoreTooltip() {
+            const box = document.getElementById('scoreTooltip');
+            if (box) box.remove();
         }
 
         // Spezieller Dialog für die Versionsnummer

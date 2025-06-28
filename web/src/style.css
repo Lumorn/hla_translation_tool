@@ -2773,6 +2773,16 @@ th:nth-child(7) {
     background: #3A3;
 }
 
+/* Blauer Blinkeffekt bei übernommener Übersetzung */
+.blink-blue {
+    animation: blinkBlue 0.6s;
+}
+
+@keyframes blinkBlue {
+    from { background-color: #4a80ff; }
+    to   { background-color: transparent; }
+}
+
 /* ===== Mobil-Fallback ===== */
 @media (max-width:900px){
     .video-grid{ flex-direction:column; }
