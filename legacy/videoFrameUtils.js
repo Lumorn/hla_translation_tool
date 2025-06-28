@@ -1,9 +1,29 @@
 const fs = require('fs');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 const ytdl = require('ytdl-core');
 const play = require('play-dl');
 const ffmpeg = require('ffmpeg-static');
+
+// prueft, ob yt-dlp verfuegbar ist
+function hasYtDlp() {
+    const res = spawnSync('yt-dlp', ['--version'], { encoding: 'utf8' });
+    return res.status === 0;
+}
+
+// ruft die direkte Videourl ueber yt-dlp ab
+function getUrlViaYtDlp(videoUrl) {
+    try {
+        const res = spawnSync('yt-dlp', ['-g', videoUrl], { encoding: 'utf8' });
+        if (res.status === 0 && res.stdout) {
+            const line = res.stdout.split(/\r?\n/)[0].trim();
+            if (line.startsWith('http')) return line;
+        }
+    } catch (err) {
+        console.error('[captureFrame] yt-dlp Fehler', err.message);
+    }
+    return null;
+}
 
 // Prüft, ob alle benötigten Bibliotheken vorhanden sind
 function checkVideoDependencies() {
@@ -11,6 +31,7 @@ function checkVideoDependencies() {
     if (!ffmpeg || !fs.existsSync(ffmpeg)) missing.push('ffmpeg-static');
     try { require.resolve('ytdl-core'); } catch { missing.push('ytdl-core'); }
     try { require.resolve('play-dl'); } catch { missing.push('play-dl'); }
+    if (!hasYtDlp()) missing.push('yt-dlp');
     return {
         ok: missing.length === 0,
         missing,
@@ -51,6 +72,13 @@ async function captureFrame(url, sec, outPath) {
                 console.error('[captureFrame] Auch play-dl konnte die Video-URL nicht ermitteln', e2.message);
                 if (/connect|tunnel|ENOTFOUND/i.test(e2.message)) {
                     console.error('[captureFrame] Netzwerkfehler – Zugriff eventuell blockiert');
+                }
+                if (hasYtDlp()) {
+                    const dlUrl = getUrlViaYtDlp(url);
+                    if (dlUrl) {
+                        console.debug('[captureFrame] Nutze yt-dlp als Fallback');
+                        input = dlUrl;
+                    }
                 }
             }
         }

@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Storyboard-Funktionen:** `parseTracks` trennt den Basis-Link ab und `buildTileURL` nutzt den kleinsten `step`, um daraus die endgültige URL zu bilden.
 * **Automatischer 403-Retry:** Bei einem 403-Fehler wird das Token neu geladen; erst danach greift der `getFrame`-Fallback.
 * **Fallback über ffmpeg:** Kann kein Storyboard geladen werden, erzeugt die Desktop-App per `get-video-frame` ein Bild im Ordner `videoFrames`.
+* **Zusätzlicher Fallback über yt-dlp:** Scheitern `ytdl-core` und `play-dl`, ermittelt das Tool die Direkt-URL jetzt über `yt-dlp` (separat installieren).
 * **Hilfsfunktion `previewFor`:** Ermittelt Vorschaubilder bevorzugt über das Storyboard, greift andernfalls auf `get-video-frame` zurück und zeigt bei Fehlern ein Platzhalterbild.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
@@ -286,16 +287,21 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 17. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 18. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
 19. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
-20. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
-21. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
-22. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
-23. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
-24. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
-25. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
-26. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
-27. `node dev_info.js` gibt alle relevanten Systemdaten sowie die Versionen von `ffmpeg`, `ytdl-core` und `play-dl` aus.
-28. Das Debug-Fenster zeigt jetzt zusätzlich den Pfad zum VideoFrame-Ordner und die installierten Versionen der Video-Abhängigkeiten.
-29. Ein neuer Netztest im Debug-Fenster prüft die Erreichbarkeit von YouTube.
+20. Für den neuen Video-Fallback wird `yt-dlp` empfohlen:
+
+    ```bash
+    pip install yt-dlp
+    ```
+21. `start_tool.py` merkt sich den letzten Git-Stand und den Hash der `package-lock.json`. Sind keine Änderungen erkennbar, werden `git reset`, `git fetch` und `npm ci` übersprungen. Fehlende Python-Pakete installiert ein einziger `pip`-Aufruf.
+22. Der Hash wird in `.modules_hash` gespeichert, damit erneute `npm ci`-Aufrufe nur bei Änderungen erfolgen. Diese Datei ist ebenfalls vom Repository ausgeschlossen.
+23. In `requirements.txt` gekennzeichnete Zeilen mit `# optional` werden bei `verify_environment.py` nur informativ geprüft und lassen den Test bestehen.
+24. `verify_environment.py` führt Befehle jetzt direkt im Projektordner aus, wodurch besonders Git-Kommandos zuverlässiger arbeiten.
+25. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
+26. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
+27. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
+28. `node dev_info.js` gibt alle relevanten Systemdaten sowie die Versionen von `ffmpeg`, `ytdl-core`, `play-dl` und `yt-dlp` aus.
+29. Das Debug-Fenster zeigt jetzt zusätzlich den Pfad zum VideoFrame-Ordner und die installierten Versionen der Video-Abhängigkeiten.
+30. Ein neuer Netztest im Debug-Fenster prüft die Erreichbarkeit von YouTube.
 
 ### ElevenLabs-Dubbing
 
