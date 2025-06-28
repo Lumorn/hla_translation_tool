@@ -163,7 +163,8 @@ const moduleStatus = {
     closecaptionParser:{ loaded: false, source: '' },
     fileUtils:        { loaded: false, source: '' },
     pathUtils:        { loaded: false, source: '' },
-    gptService:       { loaded: false, source: '' }
+    gptService:       { loaded: false, source: '' },
+    projectEvaluate:  { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -174,6 +175,7 @@ let calculateTextSimilarity, levenshteinDistance;
 let extractRelevantFolder;
 let pathUtilsPromise;
 let evaluateScene;
+let applyEvaluationResults;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -203,6 +205,10 @@ if (typeof module !== 'undefined' && module.exports) {
         evaluateScene = mod.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Main' }; });
+    import('./projectEvaluate.ts').then(mod => {
+        applyEvaluationResults = mod.applyEvaluationResults;
+        moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
+    }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -236,6 +242,10 @@ if (typeof module !== 'undefined' && module.exports) {
         evaluateScene = mod.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });
+    import('./projectEvaluate.ts').then(mod => {
+        applyEvaluationResults = mod.applyEvaluationResults;
+        moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
 }
 
@@ -285,13 +295,18 @@ async function scoreVisibleLines() {
         const res = await evaluateScene(scene, part, openaiApiKey);
         if (Array.isArray(res)) results = results.concat(res);
     }
-    results.forEach(r => {
-        const f = files.find(f => f.id === r.id);
-        if (f) {
-            f.gptScore = r.score;
-            f.gptSuggestion = r.suggestion;
-        }
-    });
+    if (typeof applyEvaluationResults === 'function') {
+        applyEvaluationResults(results, files);
+    } else {
+        results.forEach(r => {
+            const f = files.find(f => f.id === r.id);
+            if (f) {
+                f.score = r.score;
+                f.comment = r.comment;
+                f.suggestion = r.suggestion;
+            }
+        });
+    }
     await renderFileTableWithOrder(displayOrder.map(d => d.file));
     updateStatus('GPT-Bewertung abgeschlossen');
 }
@@ -2448,7 +2463,11 @@ return `
         <td>
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
-        <td class="score-cell ${file.gptScore>=80?'score-high':file.gptScore>=50?'score-medium':file.gptScore? 'score-low':''}" data-score="${file.gptScore ?? ''}" data-suggestion="${escapeHtml(file.gptSuggestion || '')}">${file.gptScore ?? ''}</td>
+        <td class="score-cell ${file.score>=80?'score-high':file.score>=50?'score-medium':file.score? 'score-low':''}"
+            data-score="${file.score ?? ''}"
+            data-suggestion="${escapeHtml(file.suggestion || '')}"
+            data-comment="${escapeHtml(file.comment || '')}"
+            title="${escapeHtml([file.comment, file.suggestion].filter(Boolean).join(' - '))}">${file.score ?? ''}</td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
@@ -2500,6 +2519,21 @@ return `
 `;
     }));
     tbody.innerHTML = rows.join('');
+
+    // Klick auf Score setzt vorgeschlagenen DE-Text
+    tbody.querySelectorAll('.score-cell').forEach(cell => {
+        const id = Number(cell.parentElement?.dataset.id);
+        const suggestion = cell.dataset.suggestion;
+        if (suggestion) {
+            cell.addEventListener('click', () => {
+                const file = files.find(f => f.id === id);
+                if (file) {
+                    file.deText = suggestion;
+                    renderFileTableWithOrder(sortedFiles);
+                }
+            });
+        }
+    });
     
     addDragAndDropHandlers();
     addPathCellContextMenus();

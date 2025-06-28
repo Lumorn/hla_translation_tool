@@ -44,7 +44,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **GPT-Bewertungen:** Zeilen können jetzt automatisch bewertet werden
+* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten; Kommentar und Vorschlag erscheinen als Tooltip und ein Klick übernimmt den Vorschlag
 * **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.

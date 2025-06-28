@@ -20,6 +20,8 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     promptReady = Promise.resolve();
 }
 
+// Bewertet eine Szene mit GPT und liefert ein Array
+// [{id, score, comment, suggestion}]
 export async function evaluateScene(sceneName, lines, apiKey) {
     await promptReady;
     const results = [];
@@ -41,6 +43,7 @@ export async function evaluateScene(sceneName, lines, apiKey) {
             });
             const data = await res.json();
             const arr = JSON.parse(data.choices[0].message.content);
+            // Erwartet Array von {id, score, comment, suggestion}
             results.push(...arr);
         } catch (e) {
             console.error('GPT Bewertung fehlgeschlagen', e);
