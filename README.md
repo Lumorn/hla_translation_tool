@@ -44,11 +44,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
-* **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
-* **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
-* **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
-* **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.vue` gekapselt
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
@@ -647,7 +642,6 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
-Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert und lässt sich über einen Test-Knopf prüfen. Vor dem Senden wird die geschätzte Tokenzahl angezeigt, ab 75k folgt ein Warnhinweis. Der Prompt für die Bewertung liegt in `prompts/gpt_score.txt`.
 
 ---
 
@@ -663,8 +657,6 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **web/src/fileUtils.js** – Text-Funktionen wie `calculateTextSimilarity`
 * **web/src/colorUtils.js** – Farb-Hilfsfunktionen wie `getVersionColor`
 * **web/src/fileUtils.mjs** – Wrapper, der die Textfunktionen sowohl im Browser als auch unter Node bereitstellt
-* **web/src/gptService.ts** – Anbindung an die ChatGPT-API
-* **web/src/actions/projectEvaluate.ts** – Bewertet sichtbare Zeilen und aktualisiert die Tabelle
 
 ---
 
