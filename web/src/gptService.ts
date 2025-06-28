@@ -22,7 +22,7 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
 
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
-async function evaluateScene(sceneName, lines, apiKey) {
+async function evaluateScene({ scene, lines, key }) {
     await promptReady;
 
     // Kosten grob abschaetzen (3 Tokens je Zeichen)
@@ -53,14 +53,14 @@ async function evaluateScene(sceneName, lines, apiKey) {
         if (ui) updateProgressDialog(ui, i, lines.length);
         const messages = [
             { role: 'system', content: systemPrompt },
-            { role: 'user', content: JSON.stringify({ scene: sceneName, lines: chunk }) }
+            { role: 'user', content: JSON.stringify({ scene, lines: chunk }) }
         ];
         try {
             const res = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + apiKey
+                    'Authorization': 'Bearer ' + key
                 },
                 body: JSON.stringify({ model: 'gpt-3.5-turbo', messages, temperature: 0 })
             });
@@ -101,10 +101,23 @@ function updateProgressDialog(ui, done, total) {
     ui.fill.style.width = `${Math.round((done / total) * 100)}%`;
 }
 
+// Prueft, ob der uebergebene API-Key gueltig ist
+async function testKey(key) {
+    try {
+        const res = await fetch('https://api.openai.com/v1/models', {
+            headers: { 'Authorization': 'Bearer ' + key }
+        });
+        return res.ok;
+    } catch {
+        return false;
+    }
+}
+
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
-    module.exports = { evaluateScene };
+    module.exports = { evaluateScene, testKey };
 }
 if (typeof window !== 'undefined') {
     window.evaluateScene = evaluateScene;
+    window.testGptKey = testKey;
 }

@@ -176,6 +176,8 @@ let extractRelevantFolder;
 let pathUtilsPromise;
 let evaluateScene;
 let applyEvaluationResults;
+let scoreVisibleLines;
+let scoreCellTemplate, attachScoreHandlers;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -205,8 +207,13 @@ if (typeof module !== 'undefined' && module.exports) {
         evaluateScene = window.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Main' }; });
-    import('./projectEvaluate.ts').then(mod => {
+    import('./scoreColumn.vue').then(mod => {
+        scoreCellTemplate = mod.scoreCellTemplate;
+        attachScoreHandlers = mod.attachScoreHandlers;
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+    import('./actions/projectEvaluate.ts').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
+        scoreVisibleLines = mod.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
@@ -242,8 +249,13 @@ if (typeof module !== 'undefined' && module.exports) {
         evaluateScene = window.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });
-    import('./projectEvaluate.ts').then(mod => {
+    import('./scoreColumn.vue').then(mod => {
+        scoreCellTemplate = mod.scoreCellTemplate;
+        attachScoreHandlers = mod.attachScoreHandlers;
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+    import('./actions/projectEvaluate.ts').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
+        scoreVisibleLines = mod.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
@@ -268,49 +280,24 @@ function cleanupDubCache() {
 if (typeof document !== "undefined" && typeof document.getElementById === "function") {
     const gptBtn = document.getElementById("gptScoreButton");
     if (gptBtn) {
-        gptBtn.addEventListener("click", scoreVisibleLines);
+        gptBtn.addEventListener("click", () => {
+            if (typeof scoreVisibleLines === 'function') {
+                scoreVisibleLines({
+                    displayOrder,
+                    files,
+                    currentProject,
+                    apiKey: openaiApiKey,
+                    renderTable: renderFileTableWithOrder,
+                    updateStatus,
+                    showErrorBanner,
+                    showToast
+                });
+            }
+        });
     }
 }
 
 // Bewertet aktuell sichtbare Zeilen über ChatGPT
-async function scoreVisibleLines() {
-    if (!openaiApiKey || typeof evaluateScene !== 'function') {
-        showToast('Kein GPT-Key gespeichert', 'error');
-        return;
-    }
-    const visible = displayOrder.filter(item => {
-        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
-        return row && row.offsetParent !== null;
-    });
-    const lines = visible.map(({ file }) => ({
-        id: file.id,
-        character: file.character || '',
-        en: file.enText || '',
-        de: file.deText || ''
-    }));
-    const scene = currentProject?.levelName || '';
-    let results = [];
-    try {
-        results = await evaluateScene(scene, lines, openaiApiKey);
-    } catch (e) {
-        showErrorBanner(String(e), () => scoreVisibleLines());
-        return;
-    }
-    if (typeof applyEvaluationResults === 'function') {
-        applyEvaluationResults(results, files);
-    } else {
-        results.forEach(r => {
-            const f = files.find(f => f.id === r.id);
-            if (f) {
-                f.score = r.score;
-                f.comment = r.comment;
-                f.suggestion = r.suggestion;
-            }
-        });
-    }
-    await renderFileTableWithOrder(displayOrder.map(d => d.file));
-    updateStatus('GPT-Bewertung abgeschlossen');
-}
 
 
 // =========================== DEBUG LOG START ===========================
@@ -2464,11 +2451,7 @@ return `
         <td>
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
-        <td class="score-cell ${file.score>=80?'score-high':file.score>=50?'score-medium':file.score? 'score-low':''}"
-            data-score="${file.score ?? ''}"
-            data-suggestion="${escapeHtml(file.suggestion || '')}"
-            data-comment="${escapeHtml(file.comment || '')}"
-            title="${escapeHtml([file.comment, file.suggestion].filter(Boolean).join(' - '))}">${file.score ?? ''}</td>
+        ${scoreCellTemplate(file, escapeHtml)}
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
@@ -2521,34 +2504,8 @@ return `
     }));
     tbody.innerHTML = rows.join('');
 
-    // Tooltip-Anzeige und Klick-Verarbeitung fuer Score-Zellen
-    tbody.querySelectorAll('.score-cell').forEach(cell => {
-        const id = Number(cell.parentElement?.dataset.id);
-        const suggestion = cell.dataset.suggestion;
-        const comment = cell.dataset.comment;
-        const tooltipText = [comment, suggestion].filter(Boolean).join(' - ');
-
-        cell.addEventListener('mouseenter', ev => openScoreTooltip(ev, tooltipText));
-        cell.addEventListener('mouseleave', closeScoreTooltip);
-
-        if (suggestion) {
-            cell.addEventListener('click', () => {
-                const file = files.find(f => f.id === id);
-                if (!file) return;
-                if (!file.suggestion) return;
-                file.deText = file.suggestion;
-                isDirty = true;
-
-                const row = document.querySelector(`tr[data-id='${id}']`);
-                const deCell = row?.querySelectorAll('textarea.text-input')[1];
-                if (deCell) {
-                    deCell.value = file.deText;
-                    deCell.classList.add('blink-blue');
-                    setTimeout(() => deCell.classList.remove('blink-blue'), 600);
-                }
-            });
-        }
-    });
+    // Tooltip- und Klicklogik auslagern
+    attachScoreHandlers(tbody, files);
     
     addDragAndDropHandlers();
     addPathCellContextMenus();
@@ -6721,10 +6678,10 @@ function checkFileAccess() {
             btn.disabled = true;
             status.textContent = '⏳';
             try {
-                const res = await fetch('https://api.openai.com/v1/models', {
-                    headers: { 'Authorization': 'Bearer ' + key }
-                });
-                if (res.ok) {
+                const ok = typeof window.testGptKey === 'function'
+                    ? await window.testGptKey(key)
+                    : false;
+                if (ok) {
                     status.textContent = '✔';
                     status.style.color = '#6cc644';
                 } else {
@@ -11009,23 +10966,7 @@ function showChapterCustomization(chapterName, ev) {
             });
         }
 
-        // Tooltip fuer Score-Spalte oeffnen
-        function openScoreTooltip(ev, text) {
-            closeScoreTooltip();
-            if (!text) return;
-            const box = document.createElement('div');
-            box.className = 'info-tooltip';
-            box.id = 'scoreTooltip';
-            box.textContent = text;
-            box.style.left = ev.clientX + 'px';
-            box.style.top = ev.clientY + 'px';
-            document.body.appendChild(box);
-        }
 
-        function closeScoreTooltip() {
-            const box = document.getElementById('scoreTooltip');
-            if (box) box.remove();
-        }
 
         // Spezieller Dialog für die Versionsnummer
         // Liefert ein Objekt mit der eingegebenen Zahl und einem Flag, ob alle
