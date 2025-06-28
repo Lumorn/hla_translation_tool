@@ -518,8 +518,30 @@ app.whenReady().then(() => {
       setupLog,
       admin: isElevated(),
       ffmpegPath: videoDeps.ffmpegPath,
+      ffmpegVersion: (() => {
+        try {
+          return execSync(`"${videoDeps.ffmpegPath}" -version`).toString().split(/\r?\n/)[0];
+        } catch {
+          return '';
+        }
+      })(),
       videoDepsOk: videoDeps.ok,
-      missingVideoDeps: videoDeps.missing.join(', ')
+      missingVideoDeps: videoDeps.missing.join(', '),
+      ytdlVersion: (() => {
+        try {
+          return require('ytdl-core/package.json').version;
+        } catch {
+          return '';
+        }
+      })(),
+      playDlVersion: (() => {
+        try {
+          return require('play-dl/package.json').version;
+        } catch {
+          return '';
+        }
+      })(),
+      framePath
     };
   });
   // =========================== DEBUG-INFO END ===============================
