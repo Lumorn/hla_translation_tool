@@ -11,7 +11,16 @@ const videoGrid = document.getElementById('videoGrid');
 const videoFilter    = document.getElementById('videoFilter');
 
 // Funktionen für YouTube-Storyboards
-import { fetchStoryboardFrame, extractTime } from '../utils/videoFrameUtils.js';
+import { fetchStoryboardFrame, extractTime } from './utils/videoFrameUtils.js';
+
+async function previewFor(b){
+    const png = await fetchStoryboardFrame(b.url, b.time);
+    if (png) return png;
+    if (window.videoApi?.getFrame){
+        return await window.videoApi.getFrame({ url: b.url, time: b.time });
+    }
+    return 'img/fallback.png';
+}
 
 // Fallback wenn keine externe API vorhanden ist
 if (!window.videoApi) {
@@ -72,13 +81,7 @@ async function refreshTable(sortKey='title', dir=true) {
         const overlay = div.querySelector('.thumb-overlay');
         const imgElem = div.querySelector('img.video-thumb');
         overlay.classList.add('active');
-        const preview = await fetchStoryboardFrame(b.url, b.time);
-        if (preview) {
-            imgElem.src = preview;
-        } else {
-            imgElem.src = await window.videoApi.getFrame({ url: b.url,
-                                                         time: b.time });
-        }
+        imgElem.src = await previewFor(b);
         imgElem.referrerPolicy = 'no-referrer';
         imgElem.crossOrigin    = 'anonymous';
         overlay.remove();
@@ -101,13 +104,7 @@ videoGrid.addEventListener('click', async e=>{
         overlay.innerHTML = '<div class="progress-bar"><div class="progress-fill"></div></div>';
         wrapper.appendChild(overlay);
         const imgElem = wrapper.querySelector('img.video-thumb');
-        const preview = await fetchStoryboardFrame(bm.url, bm.time);
-        if (preview) {
-            imgElem.src = preview;
-        } else {
-            imgElem.src = await window.videoApi.getFrame({ url: bm.url,
-                                                         time: bm.time });
-        }
+        imgElem.src = await previewFor(bm);
         imgElem.referrerPolicy = 'no-referrer';
         imgElem.crossOrigin    = 'anonymous';
         overlay.remove();
