@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Hinweis bei YouTube-Fehlern:** Tritt die Meldung "Could not extract functions" auf, erinnert das Tool an ein mögliches Update von `ytdl-core`.
 * **Automatischer Fallback:** Schlägt `ytdl-core` fehl, versucht nun `play-dl` die Video-URL zu ermitteln.
 * **Screenshots nur in der Desktop-Version:** In der Web-Version ohne Electron-API bleibt das YouTube-Thumbnail bestehen.
+* **IPC-Funktion `get-video-frame`:** Über `window.videoApi.getFrame(info)` lädt das Desktop-Tool den letzten angehaltenen Frame.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
