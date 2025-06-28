@@ -9688,10 +9688,18 @@ async function addFromSearch(result) {
 
         // Prüfe, ob alle Pfade hinzugefügt werden sollen
         if (selection.addAll) {
-            // Jeder gefundene Pfad wird einzeln überprüft und hinzugefügt
+            // Basis‑EN‑Text des geklickten Ergebnisses ermitteln
+            const baseEn = (result.text && result.text.en ? result.text.en.trim() : '').trim();
+
+            // Jeder gefundene Pfad wird einzeln überprüft und nur bei identischem EN‑Text hinzugefügt
             paths.forEach(p => {
-                const already = files.find(f => f.filename === result.filename && f.folder === p.folder);
-                if (!already) {
+                const fileKey   = `${p.folder}/${result.filename}`;
+                const pathEntry = textDatabase[fileKey] || {};
+                const pathEn    = (pathEntry.en || '').trim();
+                const already   = files.find(f => f.filename === result.filename && f.folder === p.folder);
+
+                // Nur hinzufügen, wenn Text gleich ist und Datei noch nicht vorhanden
+                if (!already && baseEn && pathEn && pathEn === baseEn) {
                     addFileToProject(result.filename, p.folder, result);
                 }
             });
