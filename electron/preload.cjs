@@ -98,6 +98,8 @@ if (typeof require !== 'function') {
     saveBookmarks: list => ipcRenderer.invoke('save-bookmarks', list),
     // einzelnen Bookmark per Index löschen
     deleteBookmark: idx => ipcRenderer.invoke('delete-bookmark', idx),
+    // Einzelbild über ffmpeg holen
+    getFrame: info => ipcRenderer.invoke('get-video-frame', info)
   });
   console.log('[Preload] erfolgreich geladen');
 }
