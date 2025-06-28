@@ -38,15 +38,10 @@ export async function fetchStoryboardFrame(url, sec) {
         // Bereits geladene Storyboard-Daten wiederverwenden
         let spec = specCache.get(id);
         if (spec === undefined) {
-            // Mehrstufiger Fallback: storyboard3.json ➜ 2 ➜ 1 ➜ 0 ➜ storyboard.json
-            const variants = [3, 2, 1, 0, ''];
-            let text = null;
-            for (const v of variants) {
-                const sb = v === '' ? 'storyboard.json' : `storyboard${v}.json`;
-                const res = await fetch(`https://i.ytimg.com/sb/${id}/${sb}`);
-                if (res.ok) { text = await res.text(); break; }
-            }
-            if (!text) { specCache.set(id, null); return null; }
+            // Versuch, alle nötigen Infos über storyboard_info.json zu laden
+            const res = await fetch(`https://i.ytimg.com/sb/${id}/storyboard_info.json`);
+            if (!res.ok) { specCache.set(id, null); return null; }
+            const text = await res.text();
             const line = text.split('\n')[0].trim();
             const parts = line.split('|');
             if (parts.length < 2) { specCache.set(id, null); return null; }
