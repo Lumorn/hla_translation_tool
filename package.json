@@ -21,6 +21,7 @@
     "chokidar": "^4.0.3",
     "ffmpeg-static": "^5.2.0",
     "node-easyocr": "^1.0.9",
+    "play-dl": "^1.9.7",
     "playwright": "^1.42.1",
     "progress": "^2.0.3",
     "ytdl-core": "^4.11.5"

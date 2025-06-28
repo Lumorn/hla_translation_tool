@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
 const ytdl = require('ytdl-core');
+const play = require('play-dl');
 const ffmpeg = require('ffmpeg-static');
 
 // Prüft, ob alle benötigten Bibliotheken vorhanden sind
@@ -9,6 +10,7 @@ function checkVideoDependencies() {
     const missing = [];
     if (!ffmpeg || !fs.existsSync(ffmpeg)) missing.push('ffmpeg-static');
     try { require.resolve('ytdl-core'); } catch { missing.push('ytdl-core'); }
+    try { require.resolve('play-dl'); } catch { missing.push('play-dl'); }
     return {
         ok: missing.length === 0,
         missing,
@@ -36,6 +38,14 @@ async function captureFrame(url, sec, outPath) {
             // Zusätzlicher Hinweis, falls YouTube-Struktur geändert wurde
             if (e.message && e.message.includes('Could not extract')) {
                 console.error('[captureFrame] Vermutlich ist ytdl-core veraltet – bitte per "npm update ytdl-core" aktualisieren');
+            }
+            try {
+                // Fallback über play-dl
+                const info = await play.video_basic_info(url);
+                const stream = await play.stream_from_info(info);
+                input = stream.url;
+            } catch (e2) {
+                console.error('[captureFrame] Auch play-dl konnte die Video-URL nicht ermitteln', e2.message);
             }
         }
     }
