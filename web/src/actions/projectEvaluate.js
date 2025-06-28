@@ -1,14 +1,20 @@
 // Sammele sichtbare Zeilen, rufe den GPT-Service auf und aktualisiere die Tabelle
 // GPT-Service importieren
-import { evaluateScene } from '../gptService.js';
+let evaluateScene;
+if (typeof module !== 'undefined' && module.exports) {
+    ({ evaluateScene } = require('../gptService.js'));
+} else if (typeof window !== 'undefined') {
+    evaluateScene = window.evaluateScene;
+}
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
-export function applyEvaluationResults(results, files) {
+function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
         const f = files.find(fl => fl.id === r.id);
         if (f) {
-            f.score = r.score;
+            const parsedScore = Number(r.score);
+            f.score = Number.isFinite(parsedScore) ? parsedScore : null;
             f.comment = r.comment;
             // Vorschlag separat speichern
             f.suggestion = r.suggestion;
@@ -16,7 +22,7 @@ export function applyEvaluationResults(results, files) {
     }
 }
 
-export async function scoreVisibleLines(opts) {
+async function scoreVisibleLines(opts) {
     const { displayOrder, files, currentProject, apiKey, gptModel, renderTable,
             updateStatus, showErrorBanner, showToast } = opts;
     if (!apiKey) {
