@@ -29,7 +29,11 @@ export async function fetchStoryboardSpec(videoId) {
         const res = await fetch(`https://www.youtube.com/watch?v=${videoId}&hl=en`);
         if (!res.ok) throw new Error('Antwort war nicht OK');
         const text = await res.text();
-        const m = text.match(/"storyboard_spec":"([^"]+)"/);
+        let m = text.match(/"storyboard_spec":"([^"]+)"/);
+        if (!m) {
+            // Neues Format mit playerStoryboardSpecRenderer abfangen
+            m = text.match(/"playerStoryboardSpecRenderer":\{"spec":"([^"]+)"/);
+        }
         if (!m) throw new Error('Kein storyboard_spec gefunden');
         const spec = m[1].replace(/\\u0026/g, '&');
         specCache.set(videoId, spec);

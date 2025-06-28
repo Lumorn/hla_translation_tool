@@ -57,6 +57,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Schnelles Vorschaubild per Storyboard:** Das Tool liest nun `storyboard_spec` aus der Videoseite und ermittelt daraus die signierte Sprite-URL.
 * **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
 * **Gepufferte Storyboard-Daten:** Fehlt ein Storyboard, merkt sich das Tool die Video-ID und versucht es nicht erneut.
+* **Kompatibel mit `playerStoryboardSpecRenderer`:** Falls das ältere `storyboard_spec` fehlt, erkennt das Tool nun das neue JSON-Format.
 * **Neue Funktionen `fetchStoryboardSpec`, `buildTileURL` und `fetchStoryboardFrame()`** liefern die Storyboard-Kachel direkt als Base64-PNG oder `null`.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
