@@ -9562,7 +9562,7 @@ function showFolderSelectionDialog(ambiguousFiles) {
         
         overlay.appendChild(dialog);
         document.body.appendChild(overlay);
-        overlay.classList.remove('hidden');
+        // Overlay sichtbar machen
         overlay.classList.remove('hidden');
         
         // Cleanup functions when dialog closes
@@ -9840,7 +9840,9 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
         
         overlay.appendChild(dialog);
         document.body.appendChild(overlay);
-        
+        // Overlay sichtbar machen
+        overlay.classList.remove('hidden');
+
         // Klick außerhalb abfangen und abbrechen
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
