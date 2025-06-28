@@ -23,6 +23,7 @@ const historyUtils = require('../historyUtils');
 const { watchDownloadFolder, clearDownloadFolder, pruefeAudiodatei } = require('../watcher.js');
 const { isDubReady } = require('../elevenlabs.js');
 const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../soundBackupUtils');
+const { saveSettings, loadSettings } = require('../settingsStore.ts');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
@@ -53,6 +54,8 @@ fs.mkdirSync(audioBackupPath, { recursive: true });
 // Ordner für ZIP-Sicherungen der Sounds anlegen
 const soundZipBackupPath = path.join(backupPath, 'sounds');
 fs.mkdirSync(soundZipBackupPath, { recursive: true });
+// Gespeicherte ChatGPT-Einstellungen laden
+let { openaiKey: openaiApiKey = '', gptModel: openaiModel = 'gpt-3.5-turbo' } = loadSettings(userDataPath);
 // Hilfsfunktion: sicheres Verschieben ueber Dateisystemgrenzen hinweg
 function safeMove(src, dest) {
   try {
@@ -414,6 +417,15 @@ app.whenReady().then(() => {
       list.splice(idx, 1);
       saveBookmarks(list);
     }
+    return true;
+  });
+
+  // ChatGPT-Einstellungen laden und speichern
+  ipcMain.handle('load-openai-settings', () => ({ key: openaiApiKey, model: openaiModel }));
+  ipcMain.handle('save-openai-settings', (event, data) => {
+    openaiApiKey = data.key || '';
+    openaiModel = data.model || 'gpt-3.5-turbo';
+    saveSettings(userDataPath, { openaiKey: openaiApiKey, gptModel: openaiModel });
     return true;
   });
 
