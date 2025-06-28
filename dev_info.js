@@ -3,8 +3,10 @@
 // Verwendung: node dev_info.js
 
 const os = require('os');
+const path = require('path');
 const { execSync } = require('child_process');
 const { checkVideoDependencies } = require('./videoFrameUtils');
+const ffmpeg = require('ffmpeg-static');
 
 function exec(cmd) {
   try {
@@ -28,6 +30,22 @@ const info = {
   'Gesamt RAM': human(os.totalmem()),
   'Freier RAM': human(os.freemem()),
   'Arbeitsverzeichnis': process.cwd(),
+  'VideoFrame-Ordner': path.join(os.homedir(), '.hla_translation_tool', 'videoFrames'),
+  'ffmpeg-Pfad': ffmpeg || 'n/a',
+  'ffmpeg-Version': (() => {
+    if (!ffmpeg) return 'n/a';
+    try {
+      return exec(`"${ffmpeg}" -version`).split(/\r?\n/)[0];
+    } catch {
+      return 'n/a';
+    }
+  })(),
+  'ytdl-core-Version': (() => {
+    try { return require('ytdl-core/package.json').version; } catch { return 'n/a'; }
+  })(),
+  'play-dl-Version': (() => {
+    try { return require('play-dl/package.json').version; } catch { return 'n/a'; }
+  })(),
 };
 
 const video = checkVideoDependencies();
