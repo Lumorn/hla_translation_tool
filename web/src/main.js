@@ -2394,6 +2394,7 @@ return `
         <td>
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
+        <td class="score-cell" data-score="${file.gptScore ?? ''}" data-suggestion="${escapeHtml(file.gptSuggestion || '')}">${file.gptScore ?? ''}</td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"

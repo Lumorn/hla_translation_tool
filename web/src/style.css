@@ -2760,6 +2760,19 @@ th:nth-child(7) {
     width: 100%;
 }
 
+/* Score-Bewertungen */
+.score-low {
+    background: #A33;
+}
+
+.score-medium {
+    background: #BB8;
+}
+
+.score-high {
+    background: #3A3;
+}
+
 /* ===== Mobil-Fallback ===== */
 @media (max-width:900px){
     .video-grid{ flex-direction:column; }
