@@ -51,14 +51,19 @@ export function buildTileURL(spec, seconds) {
     const parts = spec.split('|');
     const base = parts[0];
     let bestInterval = Infinity;
+    // Intervalle <= 0 ignorieren, um fehlerhafte Berechnungen zu vermeiden
     for (const p of parts.slice(1)) {
         const vals = p.split('#');
         const interval = Number(vals[5]);
-        if (!isNaN(interval) && interval < bestInterval) bestInterval = interval;
+        if (!isNaN(interval) && interval > 0 && interval < bestInterval) {
+            bestInterval = interval;
+        }
     }
+    // Kein gueltiges Intervall gefunden
     if (!isFinite(bestInterval)) return null;
     const cols = 5, rows = 5;
     const frameIdx = Math.floor(seconds * 1000 / bestInterval);
+    if (!isFinite(frameIdx)) return null;
     const sheet = Math.floor(frameIdx / (cols * rows));
     const tile = frameIdx % (cols * rows);
     return base.replace('L$L', `L${sheet}`).replace('$N', `M${tile}`);
@@ -77,12 +82,14 @@ export async function fetchStoryboardFrame(videoUrl, seconds) {
         // Intervall erneut bestimmen, um die Position der Kachel zu berechnen
         const tracks = spec.split('|').slice(1);
         let interval = Infinity;
+        // Ungueltige Intervalle ueberspringen
         for (const t of tracks) {
             const v = Number(t.split('#')[5]);
-            if (!isNaN(v) && v < interval) interval = v;
+            if (!isNaN(v) && v > 0 && v < interval) interval = v;
         }
         const cols = 5, rows = 5;
         const frameIdx = Math.floor(seconds * 1000 / interval);
+        if (!isFinite(frameIdx)) return null;
         const tile = frameIdx % (cols * rows);
         const sx = (tile % cols) * 160;
         const sy = Math.floor(tile / cols) * 90;
@@ -106,4 +113,14 @@ export async function fetchStoryboardFrame(videoUrl, seconds) {
         console.debug('fetchStoryboardFrame fehlgeschlagen', e);
         return null;
     }
+}
+
+// CommonJS-Unterstützung für Node-Tests
+if (typeof module !== 'undefined') {
+    module.exports = {
+        extractTime,
+        fetchStoryboardSpec,
+        buildTileURL,
+        fetchStoryboardFrame
+    };
 }

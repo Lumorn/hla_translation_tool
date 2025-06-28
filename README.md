@@ -59,6 +59,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Gepufferte Storyboard-Daten:** Fehlt ein Storyboard, merkt sich das Tool die Video-ID und versucht es nicht erneut.
 * **Kompatibel mit `playerStoryboardSpecRenderer`:** Falls das ältere `storyboard_spec` fehlt, erkennt das Tool nun das neue JSON-Format.
 * **Neue Funktionen `fetchStoryboardSpec`, `buildTileURL` und `fetchStoryboardFrame()`** liefern die Storyboard-Kachel direkt als Base64-PNG oder `null`.
+* **Robustere Storyboard-Verarbeitung:** Ungültige Intervalle werden ignoriert, fehlgeschlagene Abrufe nutzen automatisch `getFrame`.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
