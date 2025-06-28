@@ -1,5 +1,5 @@
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
-function scoreCellTemplate(file, escapeHtml) {
+export function scoreCellTemplate(file, escapeHtml) {
     const noScore = file.score === undefined || file.score === null;
     const cls = noScore
         ? 'score-none'
@@ -15,7 +15,7 @@ function scoreCellTemplate(file, escapeHtml) {
     return `<td class="score-cell ${cls}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}</td>`;
 }
 
-function attachScoreHandlers(tbody, files) {
+export function attachScoreHandlers(tbody, files) {
     tbody.querySelectorAll('.score-cell').forEach(cell => {
         const id = Number(cell.parentElement?.dataset.id);
         const suggestion = cell.dataset.suggestion;
@@ -30,7 +30,7 @@ function attachScoreHandlers(tbody, files) {
 }
 
 // Tooltip anzeigen
-function openScoreTooltip(ev, text) {
+export function openScoreTooltip(ev, text) {
     closeScoreTooltip();
     if (!text) return;
     const box = document.createElement('div');
@@ -42,18 +42,9 @@ function openScoreTooltip(ev, text) {
     document.body.appendChild(box);
 }
 
-function closeScoreTooltip() {
+export function closeScoreTooltip() {
     const box = document.getElementById('scoreTooltip');
     if (box) box.remove();
-}
-
-// Kompatibilität für CommonJS und Browser
-if (typeof module !== 'undefined') {
-    module.exports = { scoreCellTemplate, attachScoreHandlers, openScoreTooltip, closeScoreTooltip };
-}
-if (typeof window !== 'undefined') {
-    window.scoreCellTemplate = scoreCellTemplate;
-    window.attachScoreHandlers = attachScoreHandlers;
 }
 
 function applySuggestion(id, files) {
