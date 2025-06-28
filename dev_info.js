@@ -45,6 +45,9 @@ const info = {
   'play-dl-Version': (() => {
     try { return require('play-dl/package.json').version; } catch { return 'n/a'; }
   })(),
+  'yt-dlp-Version': (() => {
+    try { return exec('yt-dlp --version'); } catch { return 'n/a'; }
+  })(),
 };
 
 
