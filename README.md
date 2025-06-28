@@ -673,6 +673,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **📋 Live‑Highlighting:** Suchbegriffe werden in Ergebnissen hervorgehoben
 * **🛡️ HTML-Schutz:** Suchbegriffe werden vor Ausfuehrung von Code gesichert
 * **Bugfix:** Das Live-Suchfeld zeigt Hervorhebungen jetzt korrekt an und blendet HTML-Tags nicht mehr ein
+* **Bugfix:** Ordnerauswahl erscheint wieder korrekt, wenn eine Datei in mehreren Ordnern gefunden wird
 
 ### Intelligente Features
 
