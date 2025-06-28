@@ -27,14 +27,22 @@ function loadImage(url) {
     });
 }
 
+// Lädt die passende Vorschau aus dem YouTube‑Storyboard
 export async function fetchStoryboardFrame(url, sec) {
     try {
         const idMatch = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
         if (!idMatch) return null;
         const id = idMatch[1];
-        const res = await fetch(`https://i.ytimg.com/sb/${id}/storyboard3.json`);
-        if (!res.ok) return null;
-        const text = await res.text();
+
+        // Mehrstufiger Fallback: storyboard3.json ➜ 2 ➜ 1 ➜ 0 ➜ storyboard.json
+        const variants = [3, 2, 1, 0, ''];
+        let text = null;
+        for (const v of variants) {
+            const sb = v === '' ? 'storyboard.json' : `storyboard${v}.json`;
+            const res = await fetch(`https://i.ytimg.com/sb/${id}/${sb}`);
+            if (res.ok) { text = await res.text(); break; }
+        }
+        if (!text) return null;
         const line = text.split('\n')[0].trim();
         const parts = line.split('|');
         if (parts.length < 2) return null;
