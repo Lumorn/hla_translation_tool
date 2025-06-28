@@ -76,13 +76,8 @@ async function refreshTable(sortKey='title', dir=true) {
         if (preview) {
             imgElem.src = preview;
         } else {
-            console.debug('Storyboard fehlgeschlagen, verwende getFrame');
-            if (window.videoApi.getFrame) {
-                imgElem.src = await window.videoApi.getFrame({ url: b.url, time: b.time });
-            } else {
-                overlay.classList.add('error');
-                overlay.textContent = '!';
-            }
+            imgElem.src = await window.videoApi.getFrame({ url: b.url,
+                                                         time: b.time });
         }
         imgElem.referrerPolicy = 'no-referrer';
         imgElem.crossOrigin    = 'anonymous';
@@ -110,14 +105,11 @@ videoGrid.addEventListener('click', async e=>{
         if (preview) {
             imgElem.src = preview;
         } else {
-            console.debug('Storyboard fehlgeschlagen, verwende getFrame');
-            if (window.videoApi.getFrame) {
-                imgElem.src = await window.videoApi.getFrame({ url: bm.url, time: bm.time });
-            } else {
-                overlay.classList.add('error');
-                overlay.textContent = '!';
-            }
+            imgElem.src = await window.videoApi.getFrame({ url: bm.url,
+                                                         time: bm.time });
         }
+        imgElem.referrerPolicy = 'no-referrer';
+        imgElem.crossOrigin    = 'anonymous';
         overlay.remove();
     } else if (btn && btn.classList.contains('delete')) {
         const idx = Number(btn.dataset.idx);
