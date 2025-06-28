@@ -2760,67 +2760,6 @@ th:nth-child(7) {
     width: 100%;
 }
 
-/* Score-Bewertungen */
-.score-cell {
-    text-align: center;
-    color: #fff;
-}
-
-.score-none {
-    background: #666;
-    color: #ccc;
-}
-
-.score-low {
-    background: #A33;
-}
-
-.score-medium {
-    background: #BB8;
-}
-
-.score-high {
-    background: #3A3;
-}
-
-/* Blauer Blinkeffekt bei übernommener Übersetzung */
-.blink-blue {
-    animation: blinkBlue 0.6s;
-}
-
-@keyframes blinkBlue {
-    from { background-color: #4a80ff; }
-    to   { background-color: transparent; }
-}
-
-/* Dialog für GPT-Bewertung */
-.gpt-progress {
-    display: none;
-    padding: 20px;
-    background: #1a1a1a;
-    border: 1px solid #444;
-    border-radius: 6px;
-    margin: 20px;
-    z-index: 3000;
-}
-.gpt-progress.active { display: block; }
-.gpt-status { font-size: 14px; color: #999; margin-bottom: 8px; }
-
-/* Fehlerbanner bei API-Problemen */
-.error-banner {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: #e74c3c;
-    color: #fff;
-    text-align: center;
-    padding: 10px;
-    z-index: 4000;
-}
-.error-banner.hidden { display: none; }
-.error-banner button { margin-left: 15px; }
-
 /* ===== Mobil-Fallback ===== */
 @media (max-width:900px){
     .video-grid{ flex-direction:column; }
