@@ -45,17 +45,21 @@ export async function fetchStoryboardSpec(videoId) {
 // Zerlegt eine Spezifikation in einzelne Tracks
 export function parseTracks(spec) {
     if (!spec) return [];
-    return spec.split('|').map(t => {
+    // Der erste Teil enthält den Host. Diesen sichern wir,
+    // damit sich aus den kurzen Track-Angaben wieder eine komplette URL bilden lässt.
+    const [baseUrl, ...tracks] = spec.split('|');
+    return tracks.map(t => {
         const p = t.split('#');
-        if (p.length < 8) return null;
-        const [base, , , total, cols, rows, interval, rest] = p;
+        if (p.length < 6) return null;
+        const [w, h, frames, cols, rows, step] = p;
         return {
-            base,
+            base: baseUrl,
+            width: Number(w),
+            height: Number(h),
+            total: Number(frames),
             cols: Number(cols),
             rows: Number(rows),
-            interval: Number(interval),
-            totalFrames: Number(total),
-            query: rest.startsWith('?') ? rest : `?${rest}`
+            step: Number(step)
         };
     }).filter(Boolean);
 }
@@ -64,7 +68,7 @@ export function parseTracks(spec) {
 export function chooseBestTrack(tracks) {
     return tracks.reduce((best, t) => {
         if (!t) return best;
-        if (!best || t.interval < best.interval) return t;
+        if (!best || t.step < best.step) return t;
         return best;
     }, null);
 }
@@ -74,17 +78,15 @@ export function buildTileURL(spec, seconds) {
     const track = chooseBestTrack(parseTracks(spec));
     if (!track) return null;
 
-    const index = Math.floor(seconds * 1000 / track.interval);
-    const max = track.totalFrames - 1;
-    const clamped = Math.min(index, max);
-    const proSheet = track.cols * track.rows;
-    const sheet = Math.floor(clamped / proSheet);
-    const tile = clamped % proSheet;
+    // Der kleinste Schritt bestimmt die genaue Kachel
+    const index = Math.min(Math.floor(seconds * 1000 / track.step), track.total - 1);
+    const perSheet = track.cols * track.rows;
+    const sheet = Math.floor(index / perSheet);
+    const tile = index % perSheet;
 
     return track.base
         .replace('L$L', `L${sheet}`)
-        .replace('M$M', `M${tile}`) +
-        track.query;
+        .replace('M$M', `M${tile}`);
 }
 
 // Holt ein Vorschaubild aus dem Storyboard
@@ -131,18 +133,16 @@ export async function fetchStoryboardFrame(videoUrl, seconds) {
     }
 
     const track = chooseBestTrack(parseTracks(spec));
-    const index = Math.floor(seconds * 1000 / track.interval);
-    const max = track.totalFrames - 1;
-    const clamped = Math.min(index, max);
-    const tile = clamped % (track.cols * track.rows);
-    const sx = (tile % track.cols) * 160;
-    const sy = Math.floor(tile / track.cols) * 90;
+    const index = Math.min(Math.floor(seconds * 1000 / track.step), track.total - 1);
+    const tile = index % (track.cols * track.rows);
+    const sx = (tile % track.cols) * track.width;
+    const sy = Math.floor(tile / track.cols) * track.height;
 
     const canvas = document.createElement('canvas');
-    canvas.width = 160;
-    canvas.height = 90;
+    canvas.width = track.width;
+    canvas.height = track.height;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(img, sx, sy, 160, 90, 0, 0, 160, 90);
+    ctx.drawImage(img, sx, sy, track.width, track.height, 0, 0, track.width, track.height);
     return canvas.toDataURL('image/png');
 }
 
