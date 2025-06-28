@@ -54,7 +54,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Zeitspezifische Screenshots:** Beim ersten Laden erzeugt `ffmpeg` automatisch ein Bild an der hinterlegten Zeit und speichert es im Nutzerordner.
+* **Schnelles Vorschaubild per Storyboard:** Das Tool wählt zunächst die passende Kachel aus dem YouTube‑Storyboard. Scheitert dies, wird wie bisher ein Bild über `ffmpeg` erzeugt.
+* **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
+* **Hilfsfunktion `fetchStoryboardFrame()`** lädt Storyboard-Kacheln als Base64-PNG und fällt bei Fehlern auf `ffmpeg` zurück.
 * **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
 * **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
 * **Prüft Screenshot-Abhängigkeiten:** Konsole und Debug-Menü melden, ob `ffmpeg` und `ytdl-core` vorhanden sind und warum kein Bild erzeugt werden konnte.
@@ -74,6 +76,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Video & OCR Workbench:** Liste und Player teilen sich die obere Zeile, das OCR-Ergebnis belegt den gesamten Bereich darunter.
 * **Dreispaltiges Dialog-Layout:** Das OCR-Fenster sitzt jetzt rechts oben und die Steuerleiste belegt eine eigene Zeile.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
+* **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com`, damit Storyboards geladen werden können.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
 * **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
 * **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.

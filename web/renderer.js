@@ -10,6 +10,9 @@ const closeDlgSmall = document.getElementById('closeVideoDlgSmall');
 const videoGrid = document.getElementById('videoGrid');
 const videoFilter    = document.getElementById('videoFilter');
 
+// Modul für Storyboard-Vorschauen laden
+const storyboardPromise = import('../utils/videoFrameUtils.js');
+
 // Fallback wenn keine externe API vorhanden ist
 if (!window.videoApi) {
     window.videoApi = {
@@ -28,10 +31,6 @@ function extractYoutubeId(url) {
     return m ? m[1] : '';
 }
 
-function extractTime(url) {
-    const m = url.match(/[?&#]t=(\d+)/) || url.match(/[?&#]start=(\d+)/);
-    return m ? Number(m[1]) : 0;
-}
 
 async function getBookmarks() {
     const list = await window.videoApi.loadBookmarks();
@@ -71,8 +70,13 @@ async function refreshTable(sortKey='title', dir=true) {
 
         const overlay = div.querySelector('.thumb-overlay');
         const imgElem = div.querySelector('img.video-thumb');
-        if (window.videoApi && window.videoApi.getFrame) {
-            // Nur in der Desktop-Version steht eine API bereit, um Screenshots zu laden
+        const { fetchStoryboardFrame } = await storyboardPromise;
+        const preview = await fetchStoryboardFrame(b.url, b.time);
+        if (preview) {
+            imgElem.src = preview;
+            overlay.remove();
+        } else if (window.videoApi && window.videoApi.getFrame) {
+            // Fallback über ffmpeg
             overlay.classList.add('active');
             window.videoApi.getFrame({ url: b.url, time: b.time })
                 .then(data => {
@@ -89,7 +93,6 @@ async function refreshTable(sortKey='title', dir=true) {
                     overlay.classList.add('error');
                 });
         } else {
-            // In der reinen Web-Version gibt es keine Video-API – Ladeanzeige entfernen
             overlay.remove();
         }
     }
@@ -147,6 +150,7 @@ async function addVideoFromUrl(raw){
         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
         if (res.ok) ({ title } = await res.json());
     } catch {}
+    const { extractTime } = await storyboardPromise;
     const time = extractTime(raw);
     const existingIdx = list.findIndex(b=>extractYoutubeId(b.url)===id);
     if (existingIdx>=0) {
@@ -168,6 +172,7 @@ async function updateBookmark(index, raw, list){
         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
         if (res.ok) ({ title } = await res.json());
     } catch {}
+    const { extractTime } = await storyboardPromise;
     const time = extractTime(raw);
     const sameIdx = list.findIndex((b,i)=>i!==index && extractYoutubeId(b.url)===id);
     if (sameIdx>=0) {
