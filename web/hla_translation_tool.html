@@ -12,7 +12,7 @@
                    script-src 'self' https://www.youtube.com 'unsafe-inline';
                    style-src-elem 'self';
                    style-src-attr 'self' 'unsafe-inline';
-                   connect-src 'self' https://api.elevenlabs.io https://www.youtube.com https://i.ytimg.com;
+                   connect-src 'self' https://api.elevenlabs.io https://api.openai.com https://www.youtube.com https://i.ytimg.com;
                    frame-src https://www.youtube.com blob:;
                    img-src 'self' data: https://i.ytimg.com;
                    worker-src 'self' blob:;
@@ -21,6 +21,10 @@
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
+    <div id="errorBanner" class="error-banner hidden">
+        <span id="errorBannerMessage"></span>
+        <button id="errorBannerRetry">Erneut versuchen</button>
+    </div>
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -53,6 +57,7 @@
                             <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
                             <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
                             <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
+                            <div class="settings-item" onclick="showGptApiDialog()">💬 ChatGPT API</div>
                             <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
                             <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
                             <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
@@ -81,6 +86,7 @@
                     </label>
                     <input type="text" id="mapSelect" placeholder="Level" style="width:140px">
                     <button id="startButton" class="btn btn-secondary" onclick="startHla()">Starten</button>
+                    <button id="gptScoreButton">Bewerten (GPT)</button>
                 </div>
             </div>
 			
@@ -161,6 +167,7 @@
         <th class="sortable">Dateiname</th>
         <th class="sortable">Ordner</th>
         <th>Version</th>
+        <th>Score</th>
         <th>EN Text</th>
         <th>DE Text</th>
         <th width="40">UT-Suche</th>
@@ -410,6 +417,30 @@
                 <button class="btn" onclick="addCustomVoice()">Neue Stimme</button>
                 <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ChatGPT API Dialog -->
+    <div class="dialog-overlay hidden" id="gptApiDialog">
+        <div class="dialog">
+            <button class="dialog-close-btn" onclick="closeGptApiDialog()">×</button>
+            <h3>💬 ChatGPT API</h3>
+            <div class="customize-field api-key-field">
+                <label>API-Key:</label>
+                <input type="password" id="openaiKeyInput" style="width:55%;">
+                <button class="btn eye-btn" onclick="toggleOpenaiKey()">👁</button>
+                <button class="btn" id="testOpenaiKeyBtn" onclick="testGptApiKey()">Key testen</button>
+                <span id="openaiKeyStatus" class="status-indicator"></span>
+            </div>
+            <div class="customize-field">
+                <label>GPT-Modell:</label>
+                <select id="gptModelSelect" style="width:55%;" disabled></select>
+                <button class="btn" id="refreshModelsBtn" title="Verfügbare Modelle vom Server laden">↻</button>
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeGptApiDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveGptApiSettings()">Speichern</button>
             </div>
         </div>
     </div>
