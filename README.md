@@ -54,8 +54,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Schnelles Vorschaubild per Storyboard:** Das Tool wählt zunächst die passende Kachel aus dem YouTube‑Storyboard. Scheitert dies, wird wie bisher ein Bild über `ffmpeg` erzeugt.
-* **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
+* **Zeitspezifische Screenshots:** Beim ersten Laden erzeugt `ffmpeg` automatisch ein Bild an der hinterlegten Zeit und speichert es im Nutzerordner.
 * **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
 * **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
 * **Prüft Screenshot-Abhängigkeiten:** Konsole und Debug-Menü melden, ob `ffmpeg` und `ytdl-core` vorhanden sind und warum kein Bild erzeugt werden konnte.
