@@ -57,6 +57,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zeitspezifische Screenshots:** Beim ersten Laden erzeugt `ffmpeg` automatisch ein Bild an der hinterlegten Zeit und speichert es im Nutzerordner.
 * **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
 * **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
+* **Screenshots nur in der Desktop-Version:** In der Web-Version ohne Electron-API bleibt das YouTube-Thumbnail bestehen.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.

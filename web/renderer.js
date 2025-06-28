@@ -69,9 +69,10 @@ async function refreshTable(sortKey='title', dir=true) {
             `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
         videoGrid.appendChild(div);
 
+        const overlay = div.querySelector('.thumb-overlay');
+        const imgElem = div.querySelector('img.video-thumb');
         if (window.videoApi && window.videoApi.getFrame) {
-            const overlay = div.querySelector('.thumb-overlay');
-            const imgElem = div.querySelector('img.video-thumb');
+            // Nur in der Desktop-Version steht eine API bereit, um Screenshots zu laden
             overlay.classList.add('active');
             window.videoApi.getFrame({ url: b.url, time: b.time })
                 .then(data => {
@@ -87,6 +88,9 @@ async function refreshTable(sortKey='title', dir=true) {
                     overlay.classList.remove('active');
                     overlay.classList.add('error');
                 });
+        } else {
+            // In der reinen Web-Version gibt es keine Video-API – Ladeanzeige entfernen
+            overlay.remove();
         }
     }
 }
