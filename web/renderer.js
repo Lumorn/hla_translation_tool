@@ -7,7 +7,7 @@ const openMgr   = document.getElementById('openVideoManager');
 const videoDlg  = document.getElementById('videoMgrDialog');
 const closeDlg  = document.getElementById('closeVideoDlg');
 const closeDlgSmall = document.getElementById('closeVideoDlgSmall');
-const videoGrid = document.getElementById('videoGrid');
+const videoTableBody = document.querySelector('#videoTable tbody');
 const videoFilter    = document.getElementById('videoFilter');
 
 // Fallback wenn keine externe API vorhanden ist
@@ -39,12 +39,9 @@ async function getBookmarks() {
 }
 
 function formatTime(sec) {
-    const h = Math.floor(sec/3600);
-    const m = Math.floor((sec%3600)/60);
+    const m = Math.floor(sec/60);
     const s = Math.floor(sec%60);
-    return h.toString().padStart(2,'0')+':' +
-           m.toString().padStart(2,'0')+':' +
-           s.toString().padStart(2,'0');
+    return m + ':' + ('0'+s).slice(-2);
 }
 
 async function refreshTable(sortKey='title', dir=true) {
@@ -52,37 +49,30 @@ async function refreshTable(sortKey='title', dir=true) {
     const q = videoFilter.value.toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
     list.sort((a,b)=>a[sortKey].localeCompare ? (dir?a[sortKey].localeCompare(b[sortKey],'de'):b[sortKey].localeCompare(a[sortKey],'de')) : (dir?a[sortKey]-b[sortKey]:b[sortKey]-a[sortKey]));
-    videoGrid.innerHTML = '';
+    videoTableBody.innerHTML = '';
     list.forEach(b=>{
-        const div = document.createElement('div');
-        div.className = 'video-item';
-        div.dataset.idx = b.origIndex;
-        const thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/hqdefault.jpg`;
-        div.innerHTML = `<img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">`+
-                       `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
-                       `<div class="video-time">${formatTime(b.time)}</div>`+
-                       `<button class="btn btn-blue update" data-idx="${b.origIndex}">Aktualisieren</button>`+
-                       `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
-        videoGrid.appendChild(div);
+        const tr = document.createElement('tr');
+        tr.dataset.idx = b.origIndex;
+        const thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/default.jpg`;
+        tr.innerHTML = `<td><img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}"></td>`+
+                       `<td class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</td>`+
+                       `<td>${formatTime(b.time)}</td>`+
+                       `<td><button class="delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button></td>`;
+        videoTableBody.appendChild(tr);
     });
 }
 
-videoGrid.addEventListener('click', async e=>{
+videoTableBody.addEventListener('click', async e=>{
     const btn = e.target.closest('button');
-    const item = e.target.closest('.video-item');
+    const row = e.target.closest('tr');
     const list = await window.videoApi.loadBookmarks();
-    if (btn && btn.classList.contains('delete')) {
+    if (btn) {
         const idx = Number(btn.dataset.idx);
         list.splice(idx,1);
         await window.videoApi.saveBookmarks(list);
         refreshTable();
-    } else if (btn && btn.classList.contains('update')) {
-        const idx = Number(btn.dataset.idx);
-        const raw = urlInput.value.trim();
-        if (!/^https:\/\/\S+$/i.test(raw)) { alert('Ungültige URL'); return; }
-        await updateBookmark(idx, raw, list);
-    } else if (item) {
-        const idx = Number(item.dataset.idx);
+    } else if (row) {
+        const idx = Number(row.dataset.idx);
         const bm = list[idx];
         if (!bm) return;
         if (window.electronAPI && window.electronAPI.openExternal) {
@@ -113,45 +103,17 @@ async function addVideoFromUrl(raw){
     const yb = /^https?:\/\/youtu\.be\//i;
     if (!ytre.test(raw) && !yb.test(raw)) { alert('Keine gültige YouTube-Adresse'); return; }
     let list = await window.videoApi.loadBookmarks();
-    const id = extractYoutubeId(raw);
+    if (list.some(b=>b.url===raw)) return;
     let title = raw;
     try {
         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
         if (res.ok) ({ title } = await res.json());
     } catch {}
-    const time = extractTime(raw);
-    const existingIdx = list.findIndex(b=>extractYoutubeId(b.url)===id);
-    if (existingIdx>=0) {
-        list[existingIdx] = { url: raw, title, time };
-    } else {
-        list.push({ url: raw, title, time });
-    }
+    list.push({ url: raw, title, time: extractTime(raw) });
     list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
     await window.videoApi.saveBookmarks(list);
     urlInput.value='';
     updateAddBtn();
-    refreshTable();
-}
-
-async function updateBookmark(index, raw, list){
-    const id = extractYoutubeId(raw);
-    let title = raw;
-    try {
-        const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
-        if (res.ok) ({ title } = await res.json());
-    } catch {}
-    const time = extractTime(raw);
-    const sameIdx = list.findIndex((b,i)=>i!==index && extractYoutubeId(b.url)===id);
-    if (sameIdx>=0) {
-        list[sameIdx].time = time;
-        list.splice(index,1);
-    } else if (extractYoutubeId(list[index].url)===id) {
-        list[index].time = time;
-    } else {
-        list[index] = { url: raw, title, time };
-    }
-    list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
-    await window.videoApi.saveBookmarks(list);
     refreshTable();
 }
 
