@@ -58,7 +58,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
 * **Gepufferte Storyboard-Daten:** Fehlt ein Storyboard, merkt sich das Tool die Video-ID und versucht es nicht erneut.
 * **Kompatibel mit `playerStoryboardSpecRenderer`:** Falls das ältere `storyboard_spec` fehlt, erkennt das Tool nun das neue JSON-Format.
-* **Überarbeitete Storyboard-Funktionen:** `fetchStoryboardSpec`, `parseTracks`, `chooseBestTrack` und `buildTileURL` erzeugen immer signierte URLs.
+* **Überarbeitete Storyboard-Funktionen:** `parseTracks` trennt den Basis-Link ab und `buildTileURL` nutzt den kleinsten `step`, um daraus die endgültige URL zu bilden.
 * **Automatischer 403-Retry:** Bei einem 403-Fehler wird das Token neu geladen; erst danach greift der `getFrame`-Fallback.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
