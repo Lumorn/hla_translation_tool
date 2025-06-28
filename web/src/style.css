@@ -54,7 +54,8 @@
         }
 		
 		/* Debug column styling */
-td:nth-child(7) {
+/* Stil der Pfad-Spalte */
+td:nth-child(10) {
     max-width: 200px;
     font-size: 11px;
     color: #666;
@@ -62,7 +63,7 @@ td:nth-child(7) {
     line-height: 1.2;
 }
 
-th:nth-child(7) {
+th:nth-child(10) {
     max-width: 200px;
     font-size: 12px;
 }
@@ -647,13 +648,14 @@ th:nth-child(7) {
         }
 
         /* Flexible Spaltenbreite für EN und DE */
-        td:nth-child(6), td:nth-child(7) {
+        /* Spaltenbreite für EN- und DE-Text nach neuer Score-Spalte */
+        td:nth-child(7), td:nth-child(8) {
             width: 25%;
             min-width: 200px;
             vertical-align: top;
         }
 
-        th:nth-child(6), th:nth-child(7) {
+        th:nth-child(7), th:nth-child(8) {
             width: 25%;
             min-width: 200px;
         }
@@ -666,30 +668,30 @@ th:nth-child(7) {
 
 /* Make table responsive - aktualisierte Spalten-Nummern */
 @media (max-width: 1200px) {
-    td:nth-child(6), td:nth-child(7) {
+    td:nth-child(7), td:nth-child(8) {
         width: 25%;
         min-width: 180px;
     }
-    th:nth-child(6), th:nth-child(7) {
+    th:nth-child(7), th:nth-child(8) {
         width: 25%;
         min-width: 180px;
     }
-    /* Debug-Spalte bei kleinen Bildschirmen ausblenden */
-    td:nth-child(8), th:nth-child(8) {
+    /* Debug-Spalte (UT-Suche) bei kleinen Bildschirmen ausblenden */
+    td:nth-child(9), th:nth-child(9) {
         display: none;
     }
 }
 
 @media (max-width: 900px) {
-    td:nth-child(6), td:nth-child(7) {
+    td:nth-child(7), td:nth-child(8) {
         width: 30%;
         min-width: 160px;
     }
-    th:nth-child(6), th:nth-child(7) {
+    th:nth-child(7), th:nth-child(8) {
         width: 30%;
         min-width: 160px;
     }
-    td:nth-child(8), th:nth-child(8) {
+    td:nth-child(9), th:nth-child(9) {
         display: none;
     }
 }

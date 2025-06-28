@@ -3788,8 +3788,9 @@ function toggleFileCompletion(fileId) {
             const row = changedInput.closest('tr');
             if (!row) return;
             
-            const enInput = row.querySelector('td:nth-child(8) .text-input');
-            const deInput = row.querySelector('td:nth-child(9) .text-input');
+            // Nach Einfügen der Score-Spalte liegen EN und DE auf 9 und 10
+            const enInput = row.querySelector('td:nth-child(9) .text-input');
+            const deInput = row.querySelector('td:nth-child(10) .text-input');
             
             if (!enInput || !deInput) return;
             
@@ -3811,8 +3812,8 @@ function toggleFileCompletion(fileId) {
 function autoResizeAllInputs() {
             // Process all rows to sync heights
             document.querySelectorAll('#fileTableBody tr').forEach(row => {
-                const enInput = row.querySelector('td:nth-child(8) .text-input');
-                const deInput = row.querySelector('td:nth-child(9) .text-input');
+                const enInput = row.querySelector('td:nth-child(9) .text-input');
+                const deInput = row.querySelector('td:nth-child(10) .text-input');
                 
                 if (enInput && deInput) {
                     // Reset heights

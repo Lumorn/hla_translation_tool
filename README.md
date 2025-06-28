@@ -46,6 +46,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
 * **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
+* **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
 * **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.vue` gekapselt
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
