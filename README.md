@@ -445,6 +445,7 @@ Seit Patch 1.40.95 lädt die OT-Suche fehlende Text-Utilities automatisch nach.
 Seit Patch 1.40.96 meldet die Untertitel-Suche nun fehlende Text-Utilities.
 Seit Patch 1.40.97 greift ein Fallback auf die globale Funktion, falls die Text-Utilities nicht geladen werden können.
 Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu `youtube.com`, damit Videotitel per oEmbed geladen werden können.
+Seit Patch 1.40.99 befindet sich der Hinweis zu oEmbed nicht mehr im Meta-Tag selbst. Dadurch zeigt der Browser keine CSP-Warnung mehr an.
 
 Beispiel einer gültigen CSV:
 
