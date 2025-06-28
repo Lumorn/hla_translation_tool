@@ -76,6 +76,9 @@ const pendingTranslations = new Map();
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
+// Gespeicherter API-Key für ChatGPT (wird verschlüsselt auf der Festplatte gespeichert)
+let openaiApiKey       = '';
+let openaiModel        = '';
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
@@ -160,7 +163,9 @@ const moduleStatus = {
     extensionUtils:   { loaded: false, source: '' },
     closecaptionParser:{ loaded: false, source: '' },
     fileUtils:        { loaded: false, source: '' },
-    pathUtils:        { loaded: false, source: '' }
+    pathUtils:        { loaded: false, source: '' },
+    gptService:       { loaded: false, source: '' },
+    projectEvaluate:  { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -170,6 +175,10 @@ let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
 let extractRelevantFolder;
 let pathUtilsPromise;
+let evaluateScene;
+let applyEvaluationResults;
+let scoreVisibleLines;
+let scoreCellTemplate, attachScoreHandlers;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -195,6 +204,19 @@ if (typeof module !== 'undefined' && module.exports) {
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
+    import('./gptService.js').then(() => {
+        evaluateScene = window.evaluateScene;
+        moduleStatus.gptService = { loaded: true, source: 'Main' };
+    }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Main' }; });
+    import('./scoreColumn.js').then(mod => {
+        scoreCellTemplate = mod.scoreCellTemplate;
+        attachScoreHandlers = mod.attachScoreHandlers;
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+    import('./actions/projectEvaluate.js').then(mod => {
+        applyEvaluationResults = mod.applyEvaluationResults;
+        scoreVisibleLines = mod.scoreVisibleLines;
+        moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
+    }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -224,6 +246,19 @@ if (typeof module !== 'undefined' && module.exports) {
         extractRelevantFolder = mod.extractRelevantFolder;
         moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.pathUtils = { loaded: false, source: 'Ausgelagert' }; });
+    import('./gptService.js').then(() => {
+        evaluateScene = window.evaluateScene;
+        moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });
+    import('./scoreColumn.js').then(mod => {
+        scoreCellTemplate = mod.scoreCellTemplate;
+        attachScoreHandlers = mod.attachScoreHandlers;
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+    import('./actions/projectEvaluate.js').then(mod => {
+        applyEvaluationResults = mod.applyEvaluationResults;
+        scoreVisibleLines = mod.scoreVisibleLines;
+        moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
 }
 
@@ -241,6 +276,30 @@ function cleanupDubCache() {
         }
     }
 }
+
+// -- GPT-Bewertung initialisieren --
+if (typeof document !== "undefined" && typeof document.getElementById === "function") {
+    const gptBtn = document.getElementById("gptScoreButton");
+    if (gptBtn) {
+        gptBtn.addEventListener("click", () => {
+            if (typeof scoreVisibleLines === 'function') {
+                scoreVisibleLines({
+                    displayOrder,
+                    files,
+                    currentProject,
+                    apiKey: openaiApiKey,
+                    gptModel: openaiModel,
+                    renderTable: renderFileTableWithOrder,
+                    updateStatus,
+                    showErrorBanner,
+                    showToast
+                });
+            }
+        });
+    }
+}
+
+// Bewertet aktuell sichtbare Zeilen über ChatGPT
 
 
 // =========================== DEBUG LOG START ===========================
@@ -2394,6 +2453,7 @@ return `
         <td>
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
+        ${scoreCellTemplate(file, escapeHtml)}
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
@@ -2445,6 +2505,9 @@ return `
 `;
     }));
     tbody.innerHTML = rows.join('');
+
+    // Tooltip- und Klicklogik auslagern
+    attachScoreHandlers(tbody, files);
     
     addDragAndDropHandlers();
     addPathCellContextMenus();
@@ -3727,8 +3790,9 @@ function toggleFileCompletion(fileId) {
             const row = changedInput.closest('tr');
             if (!row) return;
             
-            const enInput = row.querySelector('td:nth-child(8) .text-input');
-            const deInput = row.querySelector('td:nth-child(9) .text-input');
+            // Nach Einfügen der Score-Spalte liegen EN und DE auf 9 und 10
+            const enInput = row.querySelector('td:nth-child(9) .text-input');
+            const deInput = row.querySelector('td:nth-child(10) .text-input');
             
             if (!enInput || !deInput) return;
             
@@ -3750,8 +3814,8 @@ function toggleFileCompletion(fileId) {
 function autoResizeAllInputs() {
             // Process all rows to sync heights
             document.querySelectorAll('#fileTableBody tr').forEach(row => {
-                const enInput = row.querySelector('td:nth-child(8) .text-input');
-                const deInput = row.querySelector('td:nth-child(9) .text-input');
+                const enInput = row.querySelector('td:nth-child(9) .text-input');
+                const deInput = row.querySelector('td:nth-child(10) .text-input');
                 
                 if (enInput && deInput) {
                     // Reset heights
@@ -6588,6 +6652,110 @@ function checkFileAccess() {
         function closeAddVoiceDialog() {
             document.getElementById('addVoiceDialog').classList.add('hidden');
         }
+
+        // =========================== GPTAPIDIALOG START ======================
+        async function showGptApiDialog() {
+            if (window.electronAPI?.loadOpenaiSettings) {
+                const data = await window.electronAPI.loadOpenaiSettings();
+                openaiApiKey = data.key || '';
+                openaiModel = data.model || '';
+            }
+            const select = document.getElementById('gptModelSelect');
+            const refreshBtn = document.getElementById('refreshModelsBtn');
+            select.innerHTML = '';
+            if (window.electronAPI?.loadOpenaiModels) {
+                const cache = await window.electronAPI.loadOpenaiModels();
+                if (cache && Array.isArray(cache.data)) fillModelSelect(cache.data);
+            }
+            select.value = openaiModel;
+            const disabled = !openaiApiKey;
+            select.disabled = disabled;
+            refreshBtn.disabled = disabled;
+            refreshBtn.onclick = refreshModelList;
+            document.getElementById('openaiKeyInput').value = openaiApiKey;
+            document.getElementById('openaiKeyStatus').textContent = '';
+            document.getElementById('gptApiDialog').classList.remove('hidden');
+            document.getElementById('openaiKeyInput').focus();
+        }
+
+        function closeGptApiDialog() {
+            document.getElementById('gptApiDialog').classList.add('hidden');
+        }
+
+        function toggleOpenaiKey() {
+            const inp = document.getElementById('openaiKeyInput');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+
+        async function testGptApiKey() {
+            const btn = document.getElementById('testOpenaiKeyBtn');
+            const status = document.getElementById('openaiKeyStatus');
+            const key = document.getElementById('openaiKeyInput').value.trim();
+            btn.textContent = 'Teste...';
+            btn.disabled = true;
+            status.textContent = '⏳';
+            try {
+                const ok = typeof window.testGptKey === 'function'
+                    ? await window.testGptKey(key)
+                    : false;
+                if (ok) {
+                    status.textContent = '✔';
+                    status.style.color = '#6cc644';
+                    const models = typeof window.fetchGptModels === 'function'
+                        ? await window.fetchGptModels(key)
+                        : [];
+                    fillModelSelect(models);
+                    document.getElementById('gptModelSelect').disabled = false;
+                    document.getElementById('refreshModelsBtn').disabled = false;
+                } else {
+                    status.textContent = '✖';
+                    status.style.color = '#e74c3c';
+                }
+            } catch (e) {
+                status.textContent = '✖';
+                status.style.color = '#e74c3c';
+                if (window.showErrorBanner) window.showErrorBanner(String(e));
+            }
+            btn.disabled = false;
+            btn.textContent = 'Key testen';
+        }
+
+        async function refreshModelList() {
+            const key = document.getElementById('openaiKeyInput').value.trim();
+            if (!key) return;
+            try {
+                const models = typeof window.fetchGptModels === 'function'
+                    ? await window.fetchGptModels(key, true)
+                    : [];
+                fillModelSelect(models);
+            } catch (e) {
+                if (window.showErrorBanner) window.showErrorBanner(String(e));
+            }
+        }
+
+        function fillModelSelect(list) {
+            const select = document.getElementById('gptModelSelect');
+            if (!select) return;
+            select.innerHTML = '';
+            (list || []).sort((a, b) => a.id.localeCompare(b.id)).forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = m.id;
+                select.appendChild(opt);
+            });
+            if (openaiModel) select.value = openaiModel;
+        }
+
+        async function saveGptApiSettings() {
+            openaiApiKey = document.getElementById('openaiKeyInput').value.trim();
+            openaiModel = document.getElementById('gptModelSelect').value;
+            if (window.electronAPI?.saveOpenaiSettings) {
+                await window.electronAPI.saveOpenaiSettings({ key: openaiApiKey, model: openaiModel });
+            }
+            closeGptApiDialog();
+            updateStatus('GPT-Einstellungen gespeichert');
+        }
+        // =========================== GPTAPIDIALOG END ========================
 
         async function fetchNewVoiceName() {
             const id = document.getElementById('newVoiceId').value.trim();
@@ -10790,6 +10958,25 @@ function showChapterCustomization(chapterName, ev) {
             setTimeout(() => div.remove(), 4000);
         }
 
+        // Zeigt ein rotes Banner mit Wiederholen-Knopf
+        function showErrorBanner(message, retryFn) {
+            const banner = document.getElementById('errorBanner');
+            const text = document.getElementById('errorBannerMessage');
+            const btn = document.getElementById('errorBannerRetry');
+            if (!banner || !text || !btn) return;
+            text.textContent = message;
+            btn.onclick = () => {
+                banner.classList.add('hidden');
+                if (retryFn) retryFn();
+            };
+            banner.classList.remove('hidden');
+        }
+
+        function hideErrorBanner() {
+            const banner = document.getElementById('errorBanner');
+            if (banner) banner.classList.add('hidden');
+        }
+
         // Zeigt ein modales Dialogfenster mit HTML-Inhalt an
         function showModal(html) {
             const ov = document.createElement('div');
@@ -10829,6 +11016,8 @@ function showChapterCustomization(chapterName, ev) {
                 dlg.querySelector('#dlgInput').focus();
             });
         }
+
+
 
         // Spezieller Dialog für die Versionsnummer
         // Liefert ein Objekt mit der eingegebenen Zahl und einem Flag, ob alle
@@ -10900,7 +11089,7 @@ function showChapterCustomization(chapterName, ev) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
