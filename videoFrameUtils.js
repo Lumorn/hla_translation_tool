@@ -4,9 +4,27 @@ const { spawn } = require('child_process');
 const ytdl = require('ytdl-core');
 const ffmpeg = require('ffmpeg-static');
 
+// Prüft, ob alle benötigten Bibliotheken vorhanden sind
+function checkVideoDependencies() {
+    const missing = [];
+    if (!ffmpeg || !fs.existsSync(ffmpeg)) missing.push('ffmpeg-static');
+    try { require.resolve('ytdl-core'); } catch { missing.push('ytdl-core'); }
+    return {
+        ok: missing.length === 0,
+        missing,
+        ffmpegPath: ffmpeg
+    };
+}
+
 // Erstellt ein Standbild eines Videos
 // Bei YouTube-Links wird zunächst der Direktlink ermittelt
 async function captureFrame(url, sec, outPath) {
+    const dep = checkVideoDependencies();
+    if (!dep.ok) {
+        console.error('[captureFrame] Fehlende Abhängigkeiten:', dep.missing.join(', '));
+        return false;
+    }
+
     let input = url;
     if (ytdl.validateURL(url)) {
         try {
@@ -20,7 +38,10 @@ async function captureFrame(url, sec, outPath) {
     return await new Promise(resolve => {
         const args = ['-ss', String(sec), '-i', input, '-frames:v', '1', '-q:v', '2', '-y', outPath];
         const proc = spawn(ffmpeg, args);
-        proc.on('error', () => resolve(false));
+        proc.on('error', err => {
+            console.error('[captureFrame] ffmpeg-Fehler', err);
+            resolve(false);
+        });
         proc.on('close', code => resolve(code === 0 && fs.existsSync(outPath)));
     });
 }
@@ -31,10 +52,13 @@ async function ensureFrame(url, sec, dir) {
     const file = path.join(dir, `${safe}_${sec}.jpg`);
     if (!fs.existsSync(file)) {
         fs.mkdirSync(dir, { recursive: true });
-        await captureFrame(url, sec, file);
+        const ok = await captureFrame(url, sec, file);
+        if (!ok) {
+            console.error('[ensureFrame] Bild konnte nicht erstellt werden');
+        }
     }
     return fs.existsSync(file) ? file : null;
 }
 
-module.exports = { ensureFrame };
+module.exports = { ensureFrame, checkVideoDependencies };
 

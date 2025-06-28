@@ -25,7 +25,7 @@ const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../s
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
-const { ensureFrame } = require('../videoFrameUtils');
+const { ensureFrame, checkVideoDependencies } = require('../videoFrameUtils');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
 const iconPath = path.join(__dirname, 'assets', 'app-icon.png');
 // Workshop-Start erfolgt über ein Python-Skript mit hlvrcfg.exe
@@ -384,7 +384,12 @@ app.whenReady().then(() => {
     const { url, time } = info || {};
     if (!url) return null;
     const p = await ensureFrame(url, time || 0, framePath);
-    if (!p) return null;
+    if (!p) {
+      const dep = checkVideoDependencies();
+      console.error('[get-video-frame] Screenshot fehlgeschlagen. Abhängigkeiten OK:', dep.ok);
+      if (!dep.ok) console.error('[get-video-frame] Fehlende Abhängigkeiten:', dep.missing.join(', '));
+      return null;
+    }
     try {
       const buf = fs.readFileSync(p);
       return buf.toString('base64');
@@ -465,6 +470,9 @@ app.whenReady().then(() => {
       setupLog = lines.slice(-10).join('\n');
     }
 
+    // Abhängigkeiten für Video-Screenshots prüfen
+    const videoDeps = checkVideoDependencies();
+
     return {
       projectRoot,
       soundsDirName,
@@ -502,6 +510,9 @@ app.whenReady().then(() => {
       startArgs: process.argv.join(' '),
       setupLog,
       admin: isElevated(),
+      ffmpegPath: videoDeps.ffmpegPath,
+      videoDepsOk: videoDeps.ok,
+      missingVideoDeps: videoDeps.missing.join(', ')
     };
   });
   // =========================== DEBUG-INFO END ===============================
