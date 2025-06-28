@@ -444,6 +444,7 @@ Seit Patch 1.40.94 funktioniert die Untertitel-Suche über die Lupe wieder korre
 Seit Patch 1.40.95 lädt die OT-Suche fehlende Text-Utilities automatisch nach.
 Seit Patch 1.40.96 meldet die Untertitel-Suche nun fehlende Text-Utilities.
 Seit Patch 1.40.97 greift ein Fallback auf die globale Funktion, falls die Text-Utilities nicht geladen werden können.
+Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu `youtube.com`, damit Videotitel per oEmbed geladen werden können.
 
 Beispiel einer gültigen CSV:
 
