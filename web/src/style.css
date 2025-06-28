@@ -2691,6 +2691,28 @@ th:nth-child(7) {
     width: 100%;
 }
 
+/* Kleines Aktualisieren-Symbol oben links */
+.refresh-thumb {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: #fff;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.refresh-thumb:hover {
+    background: rgba(0,0,0,0.8);
+}
+
 .thumb-overlay {
     position: absolute;
     inset: 0;

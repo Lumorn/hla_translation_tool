@@ -60,6 +60,7 @@ async function refreshTable(sortKey='title', dir=true) {
         div.innerHTML =
             `<div class="thumb-wrapper">
                 <img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">
+                <button class="refresh-thumb" data-idx="${b.origIndex}" title="Bild neu laden">⟳</button>
                 <div class="thumb-overlay"><div class="progress-bar"><div class="progress-fill"></div></div></div>
              </div>`+
             `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
@@ -90,10 +91,35 @@ async function refreshTable(sortKey='title', dir=true) {
 }
 
 videoGrid.addEventListener('click', async e=>{
+    const refreshBtn = e.target.closest('.refresh-thumb');
     const btn = e.target.closest('button');
     const item = e.target.closest('.video-item');
     const list = await window.videoApi.loadBookmarks();
-    if (btn && btn.classList.contains('delete')) {
+    if (refreshBtn) {
+        const idx = Number(refreshBtn.dataset.idx);
+        const bm  = list[idx];
+        if (!bm) return;
+        const wrapper = refreshBtn.closest('.thumb-wrapper');
+        if (!wrapper) return;
+        const overlay = document.createElement('div');
+        overlay.className = 'thumb-overlay active';
+        overlay.innerHTML = '<div class="progress-bar"><div class="progress-fill"></div></div>';
+        wrapper.appendChild(overlay);
+        const imgElem = wrapper.querySelector('img.video-thumb');
+        const preview = await fetchStoryboardFrame(bm.url, bm.time);
+        if (preview) {
+            imgElem.src = preview;
+        } else {
+            console.debug('Storyboard fehlgeschlagen, verwende getFrame');
+            if (window.videoApi.getFrame) {
+                imgElem.src = await window.videoApi.getFrame({ url: bm.url, time: bm.time });
+            } else {
+                overlay.classList.add('error');
+                overlay.textContent = '!';
+            }
+        }
+        overlay.remove();
+    } else if (btn && btn.classList.contains('delete')) {
         const idx = Number(btn.dataset.idx);
         list.splice(idx,1);
         await window.videoApi.saveBookmarks(list);
