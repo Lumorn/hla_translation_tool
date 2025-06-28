@@ -44,6 +44,13 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
+* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
+* **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
+* **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
+* **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
+* **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
+* **Auswahl des GPT-Modells:** Im ChatGPT-Dialog lässt sich das Modell wählen. Die Liste wird auf Wunsch vom Server geladen und für 24&nbsp;Stunden gespeichert
+* **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
@@ -70,7 +77,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Video & OCR Workbench:** Liste und Player teilen sich die obere Zeile, das OCR-Ergebnis belegt den gesamten Bereich darunter.
 * **Dreispaltiges Dialog-Layout:** Das OCR-Fenster sitzt jetzt rechts oben und die Steuerleiste belegt eine eigene Zeile.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
-* **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com`, damit Storyboards geladen werden können.
+* **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com` und `api.openai.com`, damit Storyboards und die GPT-API funktionieren.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
 * **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
 * **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.
@@ -459,6 +466,7 @@ Seit Patch 1.40.96 meldet die Untertitel-Suche nun fehlende Text-Utilities.
 Seit Patch 1.40.97 greift ein Fallback auf die globale Funktion, falls die Text-Utilities nicht geladen werden können.
 Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu `youtube.com`, damit Videotitel per oEmbed geladen werden können.
 Seit Patch 1.40.99 befindet sich der Hinweis zu oEmbed nicht mehr im Meta-Tag selbst. Dadurch zeigt der Browser keine CSP-Warnung mehr an.
+Seit Patch 1.40.100 erlaubt die Content Security Policy nun Verbindungen zu `api.openai.com`, damit der GPT-Key-Test im Einstellungsdialog funktioniert.
 
 Beispiel einer gültigen CSV:
 
@@ -642,6 +650,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
+Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert und lässt sich über einen Test-Knopf prüfen. Nach erfolgreichem Test kannst du die Liste der verfügbaren Modelle abrufen (↻) und eines auswählen. Die Modell-Liste wird 24&nbsp;Stunden zwischengespeichert. Vor dem Senden wird die geschätzte Tokenzahl angezeigt, ab 75k folgt ein Warnhinweis. Der Prompt für die Bewertung liegt in `prompts/gpt_score.txt`.
 
 ---
 
@@ -657,6 +666,8 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **web/src/fileUtils.js** – Text-Funktionen wie `calculateTextSimilarity`
 * **web/src/colorUtils.js** – Farb-Hilfsfunktionen wie `getVersionColor`
 * **web/src/fileUtils.mjs** – Wrapper, der die Textfunktionen sowohl im Browser als auch unter Node bereitstellt
+* **web/src/gptService.js** – Anbindung an die ChatGPT-API
+* **web/src/actions/projectEvaluate.js** – Bewertet sichtbare Zeilen und aktualisiert die Tabelle
 
 ---
 
