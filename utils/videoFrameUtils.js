@@ -1,3 +1,7 @@
+// Hilfsfunktionen fuer YouTube-Videos
+// Kommentare werden hier immer auf Deutsch geschrieben
+
+// Extrahiert die Startzeit aus einer YouTube-URL
 export function extractTime(url) {
     const m1 = url.match(/[?&#]t=([^&#]+)/);
     if (m1) {
@@ -15,74 +19,87 @@ export function extractTime(url) {
     return m2 ? Number(m2[1]) : 0;
 }
 
-const sheetCache = new Map();
-// Speichert Storyboard-Informationen pro Video-ID
+// Cache fuer geladene Storyboard-Spezifikationen
 const specCache = new Map();
 
-function loadImage(url) {
-    return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error('Bild konnte nicht geladen werden'));
-        img.src = url;
-    });
+// Laedt die Storyboard-Spezifikation eines Videos und speichert sie im Cache
+export async function fetchStoryboardSpec(videoId) {
+    if (specCache.has(videoId)) return specCache.get(videoId);
+    try {
+        const res = await fetch(`https://www.youtube.com/watch?v=${videoId}&hl=en`);
+        if (!res.ok) throw new Error('Antwort war nicht OK');
+        const text = await res.text();
+        const m = text.match(/"storyboard_spec":"([^"]+)"/);
+        if (!m) throw new Error('Kein storyboard_spec gefunden');
+        const spec = m[1].replace(/\\u0026/g, '&');
+        specCache.set(videoId, spec);
+        return spec;
+    } catch (e) {
+        console.debug('fetchStoryboardSpec fehlgeschlagen', e);
+        specCache.set(videoId, null);
+        return null;
+    }
 }
 
-// Lädt die passende Vorschau aus dem YouTube‑Storyboard
-export async function fetchStoryboardFrame(url, sec) {
+// Erstellt aus der Spezifikation die voll signierte URL zu einer Kachel
+export function buildTileURL(spec, seconds) {
+    if (!spec) return null;
+    const parts = spec.split('|');
+    const base = parts[0];
+    let bestInterval = Infinity;
+    for (const p of parts.slice(1)) {
+        const vals = p.split('#');
+        const interval = Number(vals[5]);
+        if (!isNaN(interval) && interval < bestInterval) bestInterval = interval;
+    }
+    if (!isFinite(bestInterval)) return null;
+    const cols = 5, rows = 5;
+    const frameIdx = Math.floor(seconds * 1000 / bestInterval);
+    const sheet = Math.floor(frameIdx / (cols * rows));
+    const tile = frameIdx % (cols * rows);
+    return base.replace('L$L', `L${sheet}`).replace('$N', `M${tile}`);
+}
+
+// Holt das Vorschaubild aus dem Storyboard und gibt es als data:URL zurueck
+export async function fetchStoryboardFrame(videoUrl, seconds) {
     try {
-        const idMatch = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
-        if (!idMatch) return null;
-        const id = idMatch[1];
-        // Bereits geladene Storyboard-Daten wiederverwenden
-        let spec = specCache.get(id);
-        if (spec === undefined) {
-            // Versuch, alle nötigen Infos über storyboard_info.json zu laden
-            const res = await fetch(`https://i.ytimg.com/sb/${id}/storyboard_info.json`);
-            if (!res.ok) { specCache.set(id, null); return null; }
-            const text = await res.text();
-            const line = text.split('\n')[0].trim();
-            const parts = line.split('|');
-            if (parts.length < 2) { specCache.set(id, null); return null; }
-            const tracks = parts.slice(1).map(t => t.split('#'));
-            if (!tracks.length) { specCache.set(id, null); return null; }
-            let best = tracks[0];
-            for (const t of tracks) {
-                if (Number(t[6]) < Number(best[6])) best = t;
-            }
-            spec = {
-                width: Number(best[0]),
-                height: Number(best[1]),
-                cols: Number(best[3]),
-                rows: Number(best[2]),
-                interval: Number(best[6]),
-                base: parts[0],
-                sigh: parts.at(-1)
-            };
-            specCache.set(id, spec);
-        }
+        const idMatch = videoUrl.match(/[?&]v=([^&#]+)/) || videoUrl.match(/youtu\.be\/([^?&#]+)/);
+        if (!idMatch) throw new Error('Keine gueltige Video-ID');
+        const spec = await fetchStoryboardSpec(idMatch[1]);
         if (!spec) return null;
-        const { width, height, cols, rows, interval, base, sigh } = spec;
-        const frameIndex = Math.floor(sec * 1000 / interval);
-        const sheet = Math.floor(frameIndex / (cols * rows));
-        const tile = frameIndex % (cols * rows);
-        const src = base.replace('L$L', `L${sheet}`).replace('$M', `M${tile}`) + '&sigh=' + sigh;
-        const cacheKey = `${id}-${sheet}`;
-        let img = sheetCache.get(cacheKey);
-        if (!img) {
-            img = await loadImage(src);
-            sheetCache.set(cacheKey, img);
+        const tileUrl = buildTileURL(spec, seconds);
+        if (!tileUrl) return null;
+
+        // Intervall erneut bestimmen, um die Position der Kachel zu berechnen
+        const tracks = spec.split('|').slice(1);
+        let interval = Infinity;
+        for (const t of tracks) {
+            const v = Number(t.split('#')[5]);
+            if (!isNaN(v) && v < interval) interval = v;
         }
+        const cols = 5, rows = 5;
+        const frameIdx = Math.floor(seconds * 1000 / interval);
+        const tile = frameIdx % (cols * rows);
+        const sx = (tile % cols) * 160;
+        const sy = Math.floor(tile / cols) * 90;
+
+        const img = await new Promise((resolve, reject) => {
+            const i = new Image();
+            i.crossOrigin = 'anonymous';
+            i.referrerPolicy = 'no-referrer';
+            i.onload = () => resolve(i);
+            i.onerror = () => reject(new Error('Bild konnte nicht geladen werden'));
+            i.src = tileUrl;
+        });
+
         const canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
+        canvas.width = 160;
+        canvas.height = 90;
         const ctx = canvas.getContext('2d');
-        const sx = (tile % cols) * width;
-        const sy = Math.floor(tile / cols) * height;
-        ctx.drawImage(img, sx, sy, width, height, 0, 0, width, height);
+        ctx.drawImage(img, sx, sy, 160, 90, 0, 0, 160, 90);
         return canvas.toDataURL('image/png');
-    } catch {
+    } catch (e) {
+        console.debug('fetchStoryboardFrame fehlgeschlagen', e);
         return null;
     }
 }
