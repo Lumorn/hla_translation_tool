@@ -281,20 +281,42 @@ function cleanupDubCache() {
 if (typeof document !== "undefined" && typeof document.getElementById === "function") {
     const gptBtn = document.getElementById("gptScoreButton");
     if (gptBtn) {
-        gptBtn.addEventListener("click", () => {
-            if (typeof scoreVisibleLines === 'function') {
-                scoreVisibleLines({
-                    displayOrder,
-                    files,
-                    currentProject,
-                    apiKey: openaiApiKey,
-                    gptModel: openaiModel,
-                    renderTable: renderFileTableWithOrder,
-                    updateStatus,
-                    showErrorBanner,
-                    showToast
-                });
-            }
+        gptBtn.addEventListener("click", showGptStartDialog);
+    }
+}
+
+// Öffnet einen Dialog mit Zeilenzahl und Sprechern
+function showGptStartDialog() {
+    const visible = displayOrder.filter(item => {
+        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
+        return row && row.offsetParent !== null;
+    });
+    const info = document.getElementById('gptStartInfo');
+    const list = document.getElementById('gptStartSpeakers');
+    const speakers = [...new Set(visible.map(v => v.file.folder))].sort();
+    if (info) info.textContent = `${visible.length} Zeilen werden gesendet.`;
+    if (list) list.innerHTML = speakers.map(s => `<li>${s}</li>`).join('');
+    document.getElementById('gptStartDialog').classList.remove('hidden');
+}
+
+function closeGptStartDialog() {
+    document.getElementById('gptStartDialog').classList.add('hidden');
+}
+
+// Startet die eigentliche Bewertung nach Bestätigung
+function startGptScoring() {
+    closeGptStartDialog();
+    if (typeof scoreVisibleLines === 'function') {
+        scoreVisibleLines({
+            displayOrder,
+            files,
+            currentProject,
+            apiKey: openaiApiKey,
+            gptModel: openaiModel,
+            renderTable: renderFileTableWithOrder,
+            updateStatus,
+            showErrorBanner,
+            showToast
         });
     }
 }

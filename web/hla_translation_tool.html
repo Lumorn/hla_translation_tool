@@ -445,6 +445,20 @@
         </div>
     </div>
 
+    <!-- GPT Start Dialog -->
+    <div class="dialog-overlay hidden" id="gptStartDialog">
+        <div class="dialog">
+<button class="dialog-close-btn" onclick="closeGptStartDialog()">×</button>
+            <h3>Bewerten (GPT)</h3>
+            <p id="gptStartInfo"></p>
+            <ul id="gptStartSpeakers" class="debug-info-list"></ul>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeGptStartDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="startGptScoring()">Start</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Neue Stimme Dialog -->
     <div class="dialog-overlay hidden" id="addVoiceDialog">
         <div class="dialog">
