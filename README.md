@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Storyboard-Funktionen:** `parseTracks` trennt den Basis-Link ab und `buildTileURL` nutzt den kleinsten `step`, um daraus die endgültige URL zu bilden.
 * **Automatischer 403-Retry:** Bei einem 403-Fehler wird das Token neu geladen; erst danach greift der `getFrame`-Fallback.
 * **Fallback über ffmpeg:** Kann kein Storyboard geladen werden, erzeugt die Desktop-App per `get-video-frame` ein Bild im Ordner `videoFrames`.
+* **Hilfsfunktion `previewFor`:** Ermittelt Vorschaubilder bevorzugt über das Storyboard, greift andernfalls auf `get-video-frame` zurück und zeigt bei Fehlern ein Platzhalterbild.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
