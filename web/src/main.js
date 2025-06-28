@@ -162,7 +162,8 @@ const moduleStatus = {
     extensionUtils:   { loaded: false, source: '' },
     closecaptionParser:{ loaded: false, source: '' },
     fileUtils:        { loaded: false, source: '' },
-    pathUtils:        { loaded: false, source: '' }
+    pathUtils:        { loaded: false, source: '' },
+    gptService:       { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -172,6 +173,7 @@ let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
 let extractRelevantFolder;
 let pathUtilsPromise;
+let evaluateScene;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -197,6 +199,8 @@ if (typeof module !== 'undefined' && module.exports) {
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
+    ({ evaluateScene } = require('./gptService.js'));
+    moduleStatus.gptService = { loaded: true, source: 'Main' };
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -226,6 +230,10 @@ if (typeof module !== 'undefined' && module.exports) {
         extractRelevantFolder = mod.extractRelevantFolder;
         moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.pathUtils = { loaded: false, source: 'Ausgelagert' }; });
+    import('./gptService.js').then(mod => {
+        evaluateScene = mod.evaluateScene;
+        moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
 }
 
@@ -242,6 +250,48 @@ function cleanupDubCache() {
             delete deAudioCache[key];
         }
     }
+}
+
+// -- GPT-Bewertung initialisieren --
+if (typeof document !== "undefined" && typeof document.getElementById === "function") {
+    const gptBtn = document.getElementById("gptScoreButton");
+    if (gptBtn) {
+        gptBtn.addEventListener("click", scoreVisibleLines);
+    }
+}
+
+// Bewertet aktuell sichtbare Zeilen über ChatGPT
+async function scoreVisibleLines() {
+    if (!openaiApiKey || typeof evaluateScene !== 'function') {
+        showToast('Kein GPT-Key gespeichert', 'error');
+        return;
+    }
+    const visible = displayOrder.filter(item => {
+        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
+        return row && row.offsetParent !== null;
+    });
+    const lines = visible.map(({ file }) => ({
+        id: file.id,
+        character: file.character || '',
+        en: file.enText || '',
+        de: file.deText || ''
+    }));
+    const scene = currentProject?.levelName || '';
+    let results = [];
+    for (let i = 0; i < lines.length; i += 250) {
+        const part = lines.slice(i, i + 250);
+        const res = await evaluateScene(scene, part, openaiApiKey);
+        if (Array.isArray(res)) results = results.concat(res);
+    }
+    results.forEach(r => {
+        const f = files.find(f => f.id === r.id);
+        if (f) {
+            f.gptScore = r.score;
+            f.gptSuggestion = r.suggestion;
+        }
+    });
+    await renderFileTableWithOrder(displayOrder.map(d => d.file));
+    updateStatus('GPT-Bewertung abgeschlossen');
 }
 
 
@@ -2396,7 +2446,7 @@ return `
         <td>
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
-        <td class="score-cell" data-score="${file.gptScore ?? ''}" data-suggestion="${escapeHtml(file.gptSuggestion || '')}">${file.gptScore ?? ''}</td>
+        <td class="score-cell ${file.gptScore>=80?'score-high':file.gptScore>=50?'score-medium':file.gptScore? 'score-low':''}" data-score="${file.gptScore ?? ''}" data-suggestion="${escapeHtml(file.gptSuggestion || '')}">${file.gptScore ?? ''}</td>
         <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
