@@ -58,6 +58,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
 * **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
 * **Prüft Screenshot-Abhängigkeiten:** Konsole und Debug-Menü melden, ob `ffmpeg` und `ytdl-core` vorhanden sind und warum kein Bild erzeugt werden konnte.
+* **Hinweis bei YouTube-Fehlern:** Tritt die Meldung "Could not extract functions" auf, erinnert das Tool an ein mögliches Update von `ytdl-core`.
 * **Screenshots nur in der Desktop-Version:** In der Web-Version ohne Electron-API bleibt das YouTube-Thumbnail bestehen.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.

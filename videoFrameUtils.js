@@ -33,6 +33,10 @@ async function captureFrame(url, sec, outPath) {
             input = fmt.url;
         } catch (e) {
             console.error('[captureFrame] YouTube-Info fehlgeschlagen', e.message);
+            // Zusätzlicher Hinweis, falls YouTube-Struktur geändert wurde
+            if (e.message && e.message.includes('Could not extract')) {
+                console.error('[captureFrame] Vermutlich ist ytdl-core veraltet – bitte per "npm update ytdl-core" aktualisieren');
+            }
         }
     }
     return await new Promise(resolve => {
