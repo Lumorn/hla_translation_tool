@@ -10596,6 +10596,9 @@ function showChapterCustomization(chapterName, ev) {
                 if (row) handleFileDragEnter(e);
                 return;
             }
+            // Nur Reihenfolge ändern, wenn ein Element gezogen wird
+            if (!draggedElement) return false;
+
             e.dataTransfer.dropEffect = 'move';
 
             const row = e.currentTarget.closest('tr');

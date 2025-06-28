@@ -817,11 +817,12 @@ th:nth-child(7) {
     color: #ffc107;
 }
 
-        /* Vertikale Anordnung der Bearbeitungs-Symbole */
+        /* Raster-Anordnung der Bearbeitungs-Symbole (maximal zwei pro Zeile) */
         .edit-column {
             display: flex;
-            flex-direction: column;
+            flex-wrap: wrap;
             gap: 3px;
+            width: 54px; /* 2 Symbole à 24px + Zwischenraum */
         }
 
         .upload-btn {
