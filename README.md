@@ -290,6 +290,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 24. Sowohl `verify_environment.py` als auch `start_tool.py` prüfen nun die Python-Architektur und geben bei 32‑Bit-Versionen einen deutlichen Hinweis.
 25. Die Paketprüfung berücksichtigt jetzt abweichende Importnamen (z.B. `Pillow` ↦ `PIL`). Dadurch meldet `verify_environment.py` keine Fehlalarme mehr.
 26. `start_tool.py` funktioniert jetzt auch ohne konfiguriertes Remote und setzt das Repository dann nur lokal zurück.
+27. `node dev_info.js` gibt alle relevanten Systemdaten im Terminal aus.
 
 ### ElevenLabs-Dubbing
 
@@ -736,6 +737,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen sich die DevTools jetzt automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
 * **💡 Neues Debug-Fenster:** Gruppiert System- und Pfadinformationen übersichtlich und bietet eine Kopierfunktion.
 * **📦 Modul-Status:** Neue Spalte im Debug-Fenster zeigt, ob alle Module korrekt geladen wurden und aus welcher Quelle sie stammen.
+* **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 
