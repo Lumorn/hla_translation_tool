@@ -10,6 +10,9 @@ const closeDlgSmall = document.getElementById('closeVideoDlgSmall');
 const videoGrid = document.getElementById('videoGrid');
 const videoFilter    = document.getElementById('videoFilter');
 
+// Modul für Storyboard-Vorschauen laden
+const storyboardPromise = import('../utils/videoFrameUtils.js');
+
 // Fallback wenn keine externe API vorhanden ist
 if (!window.videoApi) {
     window.videoApi = {
@@ -71,8 +74,13 @@ async function refreshTable(sortKey='title', dir=true) {
 
         const overlay = div.querySelector('.thumb-overlay');
         const imgElem = div.querySelector('img.video-thumb');
-        if (window.videoApi && window.videoApi.getFrame) {
-            // Nur in der Desktop-Version steht eine API bereit, um Screenshots zu laden
+        const { fetchStoryboardFrame } = await storyboardPromise;
+        const preview = await fetchStoryboardFrame(b.url, b.time);
+        if (preview) {
+            imgElem.src = preview;
+            overlay.remove();
+        } else if (window.videoApi && window.videoApi.getFrame) {
+            // Fallback über ffmpeg
             overlay.classList.add('active');
             window.videoApi.getFrame({ url: b.url, time: b.time })
                 .then(data => {
@@ -89,7 +97,6 @@ async function refreshTable(sortKey='title', dir=true) {
                     overlay.classList.add('error');
                 });
         } else {
-            // In der reinen Web-Version gibt es keine Video-API – Ladeanzeige entfernen
             overlay.remove();
         }
     }
