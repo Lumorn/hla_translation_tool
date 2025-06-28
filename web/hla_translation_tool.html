@@ -605,11 +605,10 @@
                     <div class="video-search">
                         <input id="videoFilter" placeholder="Suche …" />
                         <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
-                        <button id="openVideoBtn" class="btn btn-blue" onclick="openVideoUrl()">🔗 Öffnen</button>
                         <button id="closeVideoDlgSmall" class="btn btn-danger close-icon">❌</button>
                     </div>
                     <div class="video-url">
-                        <input type="text" id="videoUrlInput" placeholder="Video-URL...">
+                        <input type="text" id="videoUrlInput" placeholder="YouTube-Link mit Startzeit …">
                     </div>
                 </div>
                 <div id="videoTableWrapper">
@@ -618,7 +617,7 @@
                             <tr>
                                 <th data-asc="true">Bild</th>
                                 <th>Titel</th>
-                                <th>Letzte Zeit</th>
+                                <th>Zeit</th>
                                 <th>Aktionen</th>
                             </tr>
                         </thead>
@@ -626,54 +625,6 @@
                     </table>
                 </div>
             </aside>
-            <section id="videoPlayerSection" class="video-player hidden">
-                <div class="player-header"><span id="playerDialogTitle"></span></div>
-                <iframe id="videoPlayerFrame" allow="autoplay; fullscreen"></iframe>
-                <div id="playerControls" class="video-controls">
-                    <button id="videoPlay">▶️</button>
-                    <button id="videoBack">⏮️</button>
-                    <button id="videoForward">⏭️</button>
-                    <span id="videoCurrent">0:00</span>
-                    <input type="range" id="videoSlider" value="0" min="0" step="1">
-                    <span id="videoDuration">0:00</span>
-                    <button id="videoReload">🔄</button>
-                    <button id="ocrCopy" title="OCR kopieren">📋</button>
-                    <button id="ocrDebug" title="Debug-Fenster">🐞</button>
-                    <button id="ocrSettings" title="OCR-Einstellungen">⚙️</button>
-                    <button id="exportVideoBtn" class="action-btn" title="Export (E)">⭳</button>
-                    <button id="screenshotBtn" class="action-btn" title="Screenshot (S)">📸</button>
-                    <button id="ocrToggle" class="action-btn" title="OCR an/aus (F9)">🔍</button>
-                    <button id="videoDelete" class="action-btn danger" title="Löschen (Entf)">🗑️</button>
-                    <button id="videoClose" class="action-btn danger" title="Schließen (Esc)">❌</button>
-                </div>
-                <div id="ocrOverlay">
-                    <div class="handle nw"></div>
-                    <div class="handle ne"></div>
-                    <div class="handle sw"></div>
-                    <div class="handle se"></div>
-                </div>
-                <div id="ocrSettingsDrawer" class="hidden">
-                    <canvas id="ocrPreview"></canvas>
-                    <label><input type="checkbox" id="setInvert"> Farben invertieren</label><br>
-                    <label><input type="checkbox" id="setSharpen"> Schärfen</label><br>
-                    <label>Helligkeit: <input type="range" id="setBright" min="80" max="180"></label><br>
-                    <label>Kontrast: <input type="range" id="setContrast" min="100" max="300"></label><br>
-                    <label>Schwelle: <input type="range" id="setThreshold" min="100" max="200"></label><br>
-                    <label>PSM-Modus: <select id="setPsm"><option value="7">Einzelzeile</option><option value="8">Einzelwort</option><option value="3">Autom.</option></select></label><br>
-                    <label>Whitelist: <input type="text" id="setWhitelist"></label>
-                    <div id="ocrResultPreview" class="result-preview"></div>
-                    <button id="ocrReset" class="btn btn-danger">Reset</button>
-                </div>
-            </section>
-            <section id="ocrOutputSection" class="ocr-panel">
-                <canvas id="roiPreview"></canvas>
-                <div id="ocrText">Noch kein OCR-Ergebnis</div>
-                <div class="ocr-controls">
-                    <span id="gpuInfo">GPU: unbekannt</span>
-                    <button id="ocrStart">Start OCR</button>
-                    <button id="ocrStop">Stop</button>
-                </div>
-            </section>
         </div>
         <button id="closeVideoDlg" class="dialog-close-btn">×</button>
     </dialog>
@@ -682,7 +633,6 @@
     <!-- Verlinkung zur aktuellen Version -->
     <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.8</a>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="src/colorUtils.js"></script>
     <script src="src/main.js"></script>
     <script src="renderer.js"></script>

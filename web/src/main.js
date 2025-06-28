@@ -7177,8 +7177,11 @@ async function scanAudioDuplicates() {
             }
         }
 
-        // Öffnet die gespeicherte URL
-        // YouTube-Links werden im eingebetteten Player gestartet und gleichzeitig als Bookmark gespeichert
+        // Öffnet die gespeicherte URL extern und legt bei Bedarf einen Bookmark an
+        function extractTime(url) {
+            const m = url.match(/[?&#]t=(\d+)/) || url.match(/[?&#]start=(\d+)/);
+            return m ? Number(m[1]) : 0;
+        }
         async function openVideoUrl() {
             const url = (document.getElementById('videoUrlInput')?.value || '').trim();
             if (!url) return;
@@ -7194,21 +7197,18 @@ async function scanAudioDuplicates() {
                 list = await window.videoApi.loadBookmarks();
                 index = list.findIndex(b => b.url === url);
                 if (index === -1) {
-                    // neuen Bookmark anlegen
-                    list.push({ url, title: url, time: 0 });
-                    // alphabetisch sortieren
+                    let title = url;
+                    try {
+                        const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(url)+'&format=json');
+                        if (res.ok) ({ title } = await res.json());
+                    } catch {}
+                    list.push({ url, title, time: extractTime(url) });
                     list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
                     index = list.findIndex(b => b.url === url);
                     await window.videoApi.saveBookmarks(list);
                 }
             }
-
-            const yt = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i.test(url) ||
-                       /^https?:\/\/youtu\.be\//i.test(url);
-            if (yt && typeof window.openVideoDialog === 'function') {
-                const bm = list[index] || { url, title: url, time: 0 };
-                window.openVideoDialog(bm, index);
-            } else if (window.electronAPI && window.electronAPI.openExternal) {
+            if (window.electronAPI && window.electronAPI.openExternal) {
                 await window.electronAPI.openExternal(url);
             } else {
                 window.open(url, '_blank');
