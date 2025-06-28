@@ -674,6 +674,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🛡️ HTML-Schutz:** Suchbegriffe werden vor Ausfuehrung von Code gesichert
 * **Bugfix:** Das Live-Suchfeld zeigt Hervorhebungen jetzt korrekt an und blendet HTML-Tags nicht mehr ein
 * **Bugfix:** Ordnerauswahl erscheint wieder korrekt, wenn eine Datei in mehreren Ordnern gefunden wird
+* **Neu:** Im Auswahlfenster gibt es nun den Button "Alle hinzufügen", der sämtliche gefundenen Pfade auf einmal zum Projekt hinzufügt
 
 ### Intelligente Features
 

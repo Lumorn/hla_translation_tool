@@ -9680,15 +9680,26 @@ async function addFromSearch(result) {
         
         const paths = filePathDatabase[result.filename];
         const selection = await showSingleFileSelectionDialog(result.filename, paths, result);
-        
+
         if (selection === null) {
             updateStatus('Hinzufügen abgebrochen');
             return;
         }
-        
-        // Verwende ausgewählten Pfad
-        const selectedPath = paths[selection.selectedIndex];
-        addFileToProject(result.filename, selectedPath.folder, result);
+
+        // Prüfe, ob alle Pfade hinzugefügt werden sollen
+        if (selection.addAll) {
+            // Jeder gefundene Pfad wird einzeln überprüft und hinzugefügt
+            paths.forEach(p => {
+                const already = files.find(f => f.filename === result.filename && f.folder === p.folder);
+                if (!already) {
+                    addFileToProject(result.filename, p.folder, result);
+                }
+            });
+        } else {
+            // Verwende ausgewählten Pfad
+            const selectedPath = paths[selection.selectedIndex];
+            addFileToProject(result.filename, selectedPath.folder, result);
+        }
     } else {
         // Nur ein Pfad oder bereits spezifischer Pfad aus Suchergebnis
         addFileToProject(result.filename, result.folder, result);
@@ -9793,6 +9804,7 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
             </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="cancelSingleSelection()">Abbrechen</button>
+                <button class="btn btn-blue" onclick="confirmAddAll()">Alle hinzufügen</button>
                 <button class="btn btn-success" onclick="confirmSingleSelection()" ${selectedIndex >= 0 ? '' : 'disabled'}>
                     Hinzufügen
                 </button>
@@ -9836,6 +9848,12 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
                 document.body.removeChild(overlay);
                 resolve({ selectedIndex: selectedIndex });
             }
+        };
+
+        // Fügt alle gefundenen Dateien hinzu
+        window.confirmAddAll = () => {
+            document.body.removeChild(overlay);
+            resolve({ addAll: true });
         };
         
         overlay.appendChild(dialog);
