@@ -56,6 +56,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
 * **Schnelles Vorschaubild per Storyboard:** Das Tool versucht nacheinander `storyboard3.json`, `storyboard2.json`, `storyboard1.json`, `storyboard0.json` und `storyboard.json`. Bleibt das Bild aus, wird das Standard-Thumbnail verwendet.
 * **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
+* **Gepufferte Storyboard-Daten:** Fehlt ein Storyboard, merkt sich das Tool die Video-ID und versucht es nicht erneut.
 * **Hilfsfunktion `fetchStoryboardFrame()`** greift auf die genannten JSON-Dateien zu und liefert die Storyboard-Kachel als Base64-PNG oder `null`.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
