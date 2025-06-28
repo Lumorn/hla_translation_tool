@@ -12,11 +12,12 @@
                    script-src 'self' https://www.youtube.com 'unsafe-inline';
                    style-src-elem 'self';
                    style-src-attr 'self' 'unsafe-inline';
-                   connect-src 'self' https://api.elevenlabs.io https://www.youtube.com; <!-- Für oEmbed-Anfragen an YouTube -->
+                   connect-src 'self' https://api.elevenlabs.io https://www.youtube.com;
                    frame-src https://www.youtube.com blob:;
                    img-src 'self' data: https://i.ytimg.com;
                    worker-src 'self' blob:;
                    media-src 'self' blob:;">
+    <!-- Für oEmbed-Anfragen an YouTube -->
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
