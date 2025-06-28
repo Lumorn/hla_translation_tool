@@ -604,25 +604,15 @@
                 <div class="video-toolbar">
                     <div class="video-search">
                         <input id="videoFilter" placeholder="Suche …" />
-                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
                         <button id="closeVideoDlgSmall" class="btn btn-danger close-icon">❌</button>
                     </div>
                     <div class="video-url">
                         <input type="text" id="videoUrlInput" placeholder="YouTube-Link mit Startzeit …">
+                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
                     </div>
                 </div>
                 <div id="videoTableWrapper">
-                    <table id="videoTable">
-                        <thead>
-                            <tr>
-                                <th data-asc="true">Bild</th>
-                                <th>Titel</th>
-                                <th>Zeit</th>
-                                <th>Aktionen</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div id="videoGrid" class="video-grid-container"></div>
                 </div>
             </aside>
         </div>
