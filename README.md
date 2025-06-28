@@ -45,6 +45,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **GPT-Bewertungen:** Zeilen können jetzt automatisch bewertet werden
+* **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
@@ -643,7 +644,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
-Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert.
+Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert. Der Prompt für die Bewertung liegt in `prompts/gpt_score.txt`.
 
 ---
 

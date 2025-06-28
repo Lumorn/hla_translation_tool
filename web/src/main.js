@@ -199,8 +199,10 @@ if (typeof module !== 'undefined' && module.exports) {
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
-    ({ evaluateScene } = require('./gptService.js'));
-    moduleStatus.gptService = { loaded: true, source: 'Main' };
+    import('./gptService.ts').then(mod => {
+        evaluateScene = mod.evaluateScene;
+        moduleStatus.gptService = { loaded: true, source: 'Main' };
+    }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Main' }; });
 } else {
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
@@ -230,7 +232,7 @@ if (typeof module !== 'undefined' && module.exports) {
         extractRelevantFolder = mod.extractRelevantFolder;
         moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.pathUtils = { loaded: false, source: 'Ausgelagert' }; });
-    import('./gptService.js').then(mod => {
+    import('./gptService.ts').then(mod => {
         evaluateScene = mod.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });

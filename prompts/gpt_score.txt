@@ -1,0 +1,5 @@
+Du bist ein kritischer Lektor. Bewerte die deutsche \
+Übersetzung jeder Zeile aus Half-Life: Alyx auf einer \
+Skala von 0 bis 100. Gib ein JSON-Array zurück, in dem \
+je Eintrag wie folgt aussieht:
+{ "id": <ID>, "score": <0-100>, "suggestion": "<kurzer Vorschlag>" }
