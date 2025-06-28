@@ -26,6 +26,8 @@ const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../s
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
+// Standbild-Erzeugung über ffmpeg
+const { ensureFrame } = require('../legacy/videoFrameUtils.js');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
 const iconPath = path.join(__dirname, 'assets', 'app-icon.png');
 // Workshop-Start erfolgt über ein Python-Skript mit hlvrcfg.exe
@@ -70,6 +72,9 @@ function safeMove(src, dest) {
 const sessionDataPath = path.join(userDataPath, 'SessionData');
 fs.mkdirSync(sessionDataPath, { recursive: true });
 app.setPath('sessionData', sessionDataPath);
+// Ordner für erzeugte Video-Frames anlegen
+const videoFramesPath = path.join(userDataPath, 'videoFrames');
+fs.mkdirSync(videoFramesPath, { recursive: true });
 // =========================== USER-DATA-PFAD END =============================
 
 // =========================== VIDEO-BOOKMARKS START ==========================
@@ -374,6 +379,22 @@ app.whenReady().then(() => {
     const win = BrowserWindow.fromWebContents(event.sender);
     const img = await win.capturePage(bounds);
     return img.toPNG();
+  });
+
+  // Erstellt ein Einzelbild mit ffmpeg
+  ipcMain.handle('get-video-frame', async (event, { url, time }) => {
+    try {
+      const file = await ensureFrame(url, time, videoFramesPath);
+      if (!file) {
+        console.error('[get-video-frame] Bild konnte nicht erzeugt werden');
+        return null;
+      }
+      const data = fs.readFileSync(file);
+      return data.toString('base64');
+    } catch (err) {
+      console.error('[get-video-frame]', err.message);
+      return null;
+    }
   });
 
 
