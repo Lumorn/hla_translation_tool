@@ -16,6 +16,8 @@ export function extractTime(url) {
 }
 
 const sheetCache = new Map();
+// Speichert Storyboard-Informationen pro Video-ID
+const specCache = new Map();
 
 function loadImage(url) {
     return new Promise((resolve, reject) => {
@@ -33,35 +35,44 @@ export async function fetchStoryboardFrame(url, sec) {
         const idMatch = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
         if (!idMatch) return null;
         const id = idMatch[1];
-
-        // Mehrstufiger Fallback: storyboard3.json ➜ 2 ➜ 1 ➜ 0 ➜ storyboard.json
-        const variants = [3, 2, 1, 0, ''];
-        let text = null;
-        for (const v of variants) {
-            const sb = v === '' ? 'storyboard.json' : `storyboard${v}.json`;
-            const res = await fetch(`https://i.ytimg.com/sb/${id}/${sb}`);
-            if (res.ok) { text = await res.text(); break; }
+        // Bereits geladene Storyboard-Daten wiederverwenden
+        let spec = specCache.get(id);
+        if (spec === undefined) {
+            // Mehrstufiger Fallback: storyboard3.json ➜ 2 ➜ 1 ➜ 0 ➜ storyboard.json
+            const variants = [3, 2, 1, 0, ''];
+            let text = null;
+            for (const v of variants) {
+                const sb = v === '' ? 'storyboard.json' : `storyboard${v}.json`;
+                const res = await fetch(`https://i.ytimg.com/sb/${id}/${sb}`);
+                if (res.ok) { text = await res.text(); break; }
+            }
+            if (!text) { specCache.set(id, null); return null; }
+            const line = text.split('\n')[0].trim();
+            const parts = line.split('|');
+            if (parts.length < 2) { specCache.set(id, null); return null; }
+            const tracks = parts.slice(1).map(t => t.split('#'));
+            if (!tracks.length) { specCache.set(id, null); return null; }
+            let best = tracks[0];
+            for (const t of tracks) {
+                if (Number(t[6]) < Number(best[6])) best = t;
+            }
+            spec = {
+                width: Number(best[0]),
+                height: Number(best[1]),
+                cols: Number(best[3]),
+                rows: Number(best[2]),
+                interval: Number(best[6]),
+                base: parts[0],
+                sigh: parts.at(-1)
+            };
+            specCache.set(id, spec);
         }
-        if (!text) return null;
-        const line = text.split('\n')[0].trim();
-        const parts = line.split('|');
-        if (parts.length < 2) return null;
-        const tracks = parts.slice(1).map(t => t.split('#'));
-        if (!tracks.length) return null;
-        let best = tracks[0];
-        for (const t of tracks) {
-            if (Number(t[6]) < Number(best[6])) best = t;
-        }
-        const width = Number(best[0]);
-        const height = Number(best[1]);
-        const cols = Number(best[3]);
-        const rows = Number(best[2]);
-        const interval = Number(best[6]);
+        if (!spec) return null;
+        const { width, height, cols, rows, interval, base, sigh } = spec;
         const frameIndex = Math.floor(sec * 1000 / interval);
         const sheet = Math.floor(frameIndex / (cols * rows));
         const tile = frameIndex % (cols * rows);
-        const base = parts[0];
-        const src = base.replace('L$L', `L${sheet}`).replace('$M', `M${tile}`) + '&sigh=' + parts.at(-1);
+        const src = base.replace('L$L', `L${sheet}`).replace('$M', `M${tile}`) + '&sigh=' + sigh;
         const cacheKey = `${id}-${sheet}`;
         let img = sheetCache.get(cacheKey);
         if (!img) {
