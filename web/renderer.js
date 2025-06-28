@@ -10,8 +10,8 @@ const closeDlgSmall = document.getElementById('closeVideoDlgSmall');
 const videoGrid = document.getElementById('videoGrid');
 const videoFilter    = document.getElementById('videoFilter');
 
-// Modul für Storyboard-Vorschauen laden
-const storyboardPromise = import('../utils/videoFrameUtils.js');
+// Funktionen für YouTube-Storyboards
+import { fetchStoryboardFrame, extractTime } from '../utils/videoFrameUtils.js';
 
 // Fallback wenn keine externe API vorhanden ist
 if (!window.videoApi) {
@@ -70,11 +70,22 @@ async function refreshTable(sortKey='title', dir=true) {
 
         const overlay = div.querySelector('.thumb-overlay');
         const imgElem = div.querySelector('img.video-thumb');
-        const { fetchStoryboardFrame } = await storyboardPromise;
         overlay.classList.add('active');
-        fetchStoryboardFrame(b.url, b.time)
-            .then(src => { if (src) imgElem.src = src; })
-            .finally(() => overlay.remove());
+        const preview = await fetchStoryboardFrame(b.url, b.time);
+        if (preview) {
+            imgElem.src = preview;
+        } else {
+            console.debug('Storyboard fehlgeschlagen, verwende getFrame');
+            if (window.videoApi.getFrame) {
+                imgElem.src = await window.videoApi.getFrame({ url: b.url, time: b.time });
+            } else {
+                overlay.classList.add('error');
+                overlay.textContent = '!';
+            }
+        }
+        imgElem.referrerPolicy = 'no-referrer';
+        imgElem.crossOrigin    = 'anonymous';
+        overlay.remove();
     }
 }
 
@@ -130,7 +141,6 @@ async function addVideoFromUrl(raw){
         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
         if (res.ok) ({ title } = await res.json());
     } catch {}
-    const { extractTime } = await storyboardPromise;
     const time = extractTime(raw);
     const existingIdx = list.findIndex(b=>extractYoutubeId(b.url)===id);
     if (existingIdx>=0) {
@@ -152,7 +162,6 @@ async function updateBookmark(index, raw, list){
         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(raw)+'&format=json');
         if (res.ok) ({ title } = await res.json());
     } catch {}
-    const { extractTime } = await storyboardPromise;
     const time = extractTime(raw);
     const sameIdx = list.findIndex((b,i)=>i!==index && extractYoutubeId(b.url)===id);
     if (sameIdx>=0) {
