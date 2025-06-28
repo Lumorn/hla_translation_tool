@@ -676,6 +676,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **Bugfix:** Das Live-Suchfeld zeigt Hervorhebungen jetzt korrekt an und blendet HTML-Tags nicht mehr ein
 * **Bugfix:** Ordnerauswahl erscheint wieder korrekt, wenn eine Datei in mehreren Ordnern gefunden wird
 * **Neu:** Im Auswahlfenster gibt es nun den Button "Alle hinzufügen", der sämtliche gefundenen Pfade auf einmal zum Projekt hinzufügt
+* **Update:** Beim Klick auf "Alle hinzufügen" werden nur noch Dateien übernommen, deren englischer Text mit dem ausgewählten Ergebnis identisch ist
 
 ### Intelligente Features
 
