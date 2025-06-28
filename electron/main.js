@@ -12,6 +12,7 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell, session } = 
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
 const { execSync, spawnSync, spawn } = require('child_process');
+const os = require("os"); // Systeminformationen
 // Lade Konfiguration relativ zum aktuellen Verzeichnis
 const { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
 const { chooseExisting } = require('../pathUtils');
@@ -491,6 +492,12 @@ app.whenReady().then(() => {
       chromeVersion: process.versions.chrome,
       processPlatform: process.platform,
       cpuArch: process.arch,
+      osType: os.type(),
+      osRelease: os.release(),
+      cpuModel: os.cpus()[0] ? os.cpus()[0].model : "",
+      cpuCount: os.cpus().length,
+      totalMemMB: Math.round(os.totalmem() / 1024 / 1024),
+      freeMemMB: Math.round(os.freemem() / 1024 / 1024),
       processType: 'browser',
       contextIsolation: true,
       sandbox: mainWindow ? mainWindow.webContents.getLastWebPreferences().sandbox : false,

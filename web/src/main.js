@@ -7332,6 +7332,12 @@ async function scanAudioDuplicates() {
                     data: {
                         'Betriebssystem': info.processPlatform,
                         'CPU-Architektur': info.cpuArch,
+                        'OS-Typ': info.osType,
+                        'OS-Release': info.osRelease,
+                        'CPU-Modell': info.cpuModel,
+                        'CPU-Kerne': info.cpuCount,
+                        'Gesamt RAM (MB)': info.totalMemMB,
+                        'Freier RAM (MB)': info.freeMemMB,
                         'Prozess-Typ': info.processType,
                         'Kontext-Isolation': info.contextIsolation,
                         'Sandbox aktiviert': info.sandbox,
