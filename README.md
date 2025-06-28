@@ -54,15 +54,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Schnelles Vorschaubild per Storyboard:** Das Tool liest nun `storyboard_spec` aus der Videoseite und ermittelt daraus die signierte Sprite-URL.
-* **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
-* **Gepufferte Storyboard-Daten:** Fehlt ein Storyboard, merkt sich das Tool die Video-ID und versucht es nicht erneut.
-* **Kompatibel mit `playerStoryboardSpecRenderer`:** Falls das ältere `storyboard_spec` fehlt, erkennt das Tool nun das neue JSON-Format.
-* **Überarbeitete Storyboard-Funktionen:** `parseTracks` trennt den Basis-Link ab und `buildTileURL` nutzt den kleinsten `step`, um daraus die endgültige URL zu bilden.
-* **Automatischer 403-Retry:** Bei einem 403-Fehler wird das Token neu geladen; erst danach greift der `getFrame`-Fallback.
-* **Fallback über ffmpeg:** Kann kein Storyboard geladen werden, erzeugt die Desktop-App per `get-video-frame` ein Bild im Ordner `videoFrames`.
-* **Zusätzlicher Fallback über yt-dlp:** Scheitern `ytdl-core` und `play-dl`, ermittelt das Tool die Direkt-URL jetzt über `yt-dlp` (separat installieren).
-* **Hilfsfunktion `previewFor`:** Ermittelt Vorschaubilder bevorzugt über das Storyboard, greift andernfalls auf `get-video-frame` zurück und zeigt bei Fehlern ein Platzhalterbild.
+* **Vorschaubilder direkt per ffmpeg:** Das Storyboard wird nicht mehr verwendet. Die Desktop-App erstellt das Bild sofort über `get-video-frame` im Ordner `videoFrames`.
+* **Zusätzlicher Fallback über yt-dlp:** Scheitern `ytdl-core` und `play-dl`, ermittelt das Tool die Direkt-URL weiterhin über `yt-dlp` (separat installieren).
+* **Hilfsfunktion `previewFor`:** Ruft direkt `get-video-frame` auf und zeigt bei Fehlern das normale YouTube-Thumbnail.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.

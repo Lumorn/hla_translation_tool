@@ -10,16 +10,13 @@ const closeDlgSmall = document.getElementById('closeVideoDlgSmall');
 const videoGrid = document.getElementById('videoGrid');
 const videoFilter    = document.getElementById('videoFilter');
 
-// Funktionen für YouTube-Storyboards
-import { fetchStoryboardFrame, extractTime } from '../utils/videoFrameUtils.js';
+// Zeitstempel aus einer YouTube-URL extrahieren
+import { extractTime } from '../utils/videoFrameUtils.js';
 
 // Liefert das passende Vorschaubild für einen Bookmark
-// Zunächst wird das Storyboard abgefragt. Scheitert dies,
-// greift die Desktop-App über get-video-frame auf ffmpeg zurück.
-// Schlägt auch das fehl, gibt es ein Standardbild zurück.
+// Das Storyboard wird übersprungen und direkt der ffmpeg-Fallback genutzt.
+// Ist dieser nicht verfügbar, erscheint das reguläre YouTube-Thumbnail.
 async function previewFor(b) {
-    const png = await fetchStoryboardFrame(b.url, b.time);
-    if (png) return png;
     if (window.videoApi?.getFrame) {
         const data = await window.videoApi.getFrame({ url: b.url, time: b.time });
         if (data) return /^data:/.test(data) ? data : `data:image/jpeg;base64,${data}`;
