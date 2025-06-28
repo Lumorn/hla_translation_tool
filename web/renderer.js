@@ -53,24 +53,18 @@ async function refreshTable(sortKey='title', dir=true) {
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
     list.sort((a,b)=>a[sortKey].localeCompare ? (dir?a[sortKey].localeCompare(b[sortKey],'de'):b[sortKey].localeCompare(a[sortKey],'de')) : (dir?a[sortKey]-b[sortKey]:b[sortKey]-a[sortKey]));
     videoGrid.innerHTML = '';
-    for (const b of list) {
+    list.forEach(b=>{
         const div = document.createElement('div');
         div.className = 'video-item';
         div.dataset.idx = b.origIndex;
-        let thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/hqdefault.jpg`;
-        if (window.videoApi && window.videoApi.getFrame) {
-            try {
-                const data = await window.videoApi.getFrame({ url: b.url, time: b.time });
-                if (data) thumb = `data:image/jpeg;base64,${data}`;
-            } catch {}
-        }
+        const thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/hqdefault.jpg`;
         div.innerHTML = `<img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">`+
                        `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
                        `<div class="video-time">${formatTime(b.time)}</div>`+
                        `<button class="btn btn-blue update" data-idx="${b.origIndex}">Aktualisieren</button>`+
                        `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
         videoGrid.appendChild(div);
-    }
+    });
 }
 
 videoGrid.addEventListener('click', async e=>{
