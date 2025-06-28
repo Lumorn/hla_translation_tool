@@ -427,7 +427,7 @@ app.whenReady().then(() => {
 
   // =========================== DEBUG-INFO START =============================
   // Liefert Pfad-Informationen für das Debug-Fenster
-  ipcMain.handle('get-debug-info', () => {
+  ipcMain.handle('get-debug-info', async () => {
     const soundsPath = SOUNDS_BASE_PATH;
     const backupsPath = path.resolve(projectRoot, backupsDirName);
 
@@ -473,6 +473,17 @@ app.whenReady().then(() => {
 
     // Abhängigkeiten für Video-Screenshots prüfen
     const videoDeps = checkVideoDependencies();
+
+    // Kurzer Netztest, um YouTube zu erreichen
+    async function checkConnectivity(url) {
+      try {
+        const res = await fetch(url, { method: 'HEAD' });
+        return `OK (${res.status})`;
+      } catch (err) {
+        return `Fehler: ${err.message}`;
+      }
+    }
+    const youtubeStatus = await checkConnectivity('https://www.youtube.com');
 
     return {
       projectRoot,
@@ -541,7 +552,8 @@ app.whenReady().then(() => {
           return '';
         }
       })(),
-      framePath
+      framePath,
+      youtubeAccess: youtubeStatus
     };
   });
   // =========================== DEBUG-INFO END ===============================
