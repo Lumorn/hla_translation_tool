@@ -53,6 +53,7 @@
                             <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
                             <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
                             <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
+                            <div class="settings-item" onclick="showGptApiDialog()">💬 ChatGPT API</div>
                             <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
                             <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
                             <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
@@ -412,6 +413,25 @@
                 <button class="btn" onclick="addCustomVoice()">Neue Stimme</button>
                 <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ChatGPT API Dialog -->
+    <div class="dialog-overlay hidden" id="gptApiDialog">
+        <div class="dialog">
+            <button class="dialog-close-btn" onclick="closeGptApiDialog()">×</button>
+            <h3>💬 ChatGPT API</h3>
+            <div class="customize-field api-key-field">
+                <label>API-Key:</label>
+                <input type="password" id="openaiKeyInput" style="width:55%;">
+                <button class="btn eye-btn" onclick="toggleOpenaiKey()">👁</button>
+                <button class="btn" id="testOpenaiKeyBtn" onclick="testGptApiKey()">Key testen</button>
+                <span id="openaiKeyStatus" class="status-indicator"></span>
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="closeGptApiDialog()">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveGptApiSettings()">Speichern</button>
             </div>
         </div>
     </div>

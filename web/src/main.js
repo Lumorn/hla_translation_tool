@@ -76,6 +76,8 @@ const pendingTranslations = new Map();
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
+// Gespeicherter API-Key für ChatGPT (wird verschlüsselt auf der Festplatte gelagert)
+let openaiApiKey       = '';
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
@@ -6589,6 +6591,62 @@ function checkFileAccess() {
         function closeAddVoiceDialog() {
             document.getElementById('addVoiceDialog').classList.add('hidden');
         }
+
+        // =========================== GPTAPIDIALOG START ======================
+        async function showGptApiDialog() {
+            if (window.electronAPI?.loadOpenaiKey) {
+                openaiApiKey = await window.electronAPI.loadOpenaiKey();
+            }
+            document.getElementById('openaiKeyInput').value = openaiApiKey;
+            document.getElementById('openaiKeyStatus').textContent = '';
+            document.getElementById('gptApiDialog').classList.remove('hidden');
+            document.getElementById('openaiKeyInput').focus();
+        }
+
+        function closeGptApiDialog() {
+            document.getElementById('gptApiDialog').classList.add('hidden');
+        }
+
+        function toggleOpenaiKey() {
+            const inp = document.getElementById('openaiKeyInput');
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+        }
+
+        async function testGptApiKey() {
+            const btn = document.getElementById('testOpenaiKeyBtn');
+            const status = document.getElementById('openaiKeyStatus');
+            const key = document.getElementById('openaiKeyInput').value.trim();
+            btn.textContent = 'Teste...';
+            btn.disabled = true;
+            status.textContent = '⏳';
+            try {
+                const res = await fetch('https://api.openai.com/v1/models', {
+                    headers: { 'Authorization': 'Bearer ' + key }
+                });
+                if (res.ok) {
+                    status.textContent = '✔';
+                    status.style.color = '#6cc644';
+                } else {
+                    status.textContent = '✖';
+                    status.style.color = '#e74c3c';
+                }
+            } catch {
+                status.textContent = '✖';
+                status.style.color = '#e74c3c';
+            }
+            btn.disabled = false;
+            btn.textContent = 'Key testen';
+        }
+
+        async function saveGptApiSettings() {
+            openaiApiKey = document.getElementById('openaiKeyInput').value.trim();
+            if (window.electronAPI?.saveOpenaiKey) {
+                await window.electronAPI.saveOpenaiKey(openaiApiKey);
+            }
+            closeGptApiDialog();
+            updateStatus('GPT-Einstellungen gespeichert');
+        }
+        // =========================== GPTAPIDIALOG END ========================
 
         async function fetchNewVoiceName() {
             const id = document.getElementById('newVoiceId').value.trim();

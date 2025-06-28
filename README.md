@@ -643,6 +643,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
+Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert.
 
 ---
 
