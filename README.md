@@ -54,16 +54,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Schnelles Vorschaubild per Storyboard:** Das Tool wählt zunächst die passende Kachel aus dem YouTube‑Storyboard. Scheitert dies, wird wie bisher ein Bild über `ffmpeg` erzeugt.
+* **Schnelles Vorschaubild per Storyboard:** Das Tool lädt die passende Kachel aus dem YouTube‑Storyboard. Bleibt das Bild aus, wird das Standard-Thumbnail verwendet.
 * **Gepufferte Sprite-Sheets:** Einmal geladene Storyboard-Bilder bleiben im Cache und verkürzen die Ladezeit.
-* **Hilfsfunktion `fetchStoryboardFrame()`** lädt Storyboard-Kacheln als Base64-PNG und fällt bei Fehlern auf `ffmpeg` zurück.
-* **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
-* **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
-* **Prüft Screenshot-Abhängigkeiten:** Konsole und Debug-Menü melden, ob `ffmpeg` und `ytdl-core` vorhanden sind und warum kein Bild erzeugt werden konnte.
-* **Hinweis bei YouTube-Fehlern:** Tritt die Meldung "Could not extract functions" auf, erinnert das Tool an ein mögliches Update von `ytdl-core`.
-* **Automatischer Fallback:** Schlägt `ytdl-core` fehl, versucht nun `play-dl` die Video-URL zu ermitteln.
-* **Screenshots nur in der Desktop-Version:** In der Web-Version ohne Electron-API bleibt das YouTube-Thumbnail bestehen.
-* **IPC-Funktion `get-video-frame`:** Über `window.videoApi.getFrame(info)` lädt das Desktop-Tool den letzten angehaltenen Frame.
+* **Hilfsfunktion `fetchStoryboardFrame()`** liefert die Storyboard-Kachel als Base64-PNG oder `null`.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.

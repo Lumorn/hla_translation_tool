@@ -5,7 +5,6 @@
 const os = require('os');
 const path = require('path');
 const { execSync } = require('child_process');
-const { checkVideoDependencies } = require('./videoFrameUtils');
 const ffmpeg = require('ffmpeg-static');
 
 function exec(cmd) {
@@ -48,8 +47,6 @@ const info = {
   })(),
 };
 
-const video = checkVideoDependencies();
-info['Video-Abhängigkeiten'] = video.ok ? '✔️' : 'Fehlt: ' + video.missing.join(', ');
 
 for (const [k, v] of Object.entries(info)) {
   console.log(`${k}: ${v}`);

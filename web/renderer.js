@@ -71,30 +71,10 @@ async function refreshTable(sortKey='title', dir=true) {
         const overlay = div.querySelector('.thumb-overlay');
         const imgElem = div.querySelector('img.video-thumb');
         const { fetchStoryboardFrame } = await storyboardPromise;
-        const preview = await fetchStoryboardFrame(b.url, b.time);
-        if (preview) {
-            imgElem.src = preview;
-            overlay.remove();
-        } else if (window.videoApi && window.videoApi.getFrame) {
-            // Fallback über ffmpeg
-            overlay.classList.add('active');
-            window.videoApi.getFrame({ url: b.url, time: b.time })
-                .then(data => {
-                    overlay.classList.remove('active');
-                    if (data) {
-                        imgElem.src = `data:image/jpeg;base64,${data}`;
-                        overlay.remove();
-                    } else {
-                        overlay.classList.add('error');
-                    }
-                })
-                .catch(() => {
-                    overlay.classList.remove('active');
-                    overlay.classList.add('error');
-                });
-        } else {
-            overlay.remove();
-        }
+        overlay.classList.add('active');
+        fetchStoryboardFrame(b.url, b.time)
+            .then(src => { if (src) imgElem.src = src; })
+            .finally(() => overlay.remove());
     }
 }
 
