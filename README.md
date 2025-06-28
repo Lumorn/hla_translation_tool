@@ -60,8 +60,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kompatibel mit `playerStoryboardSpecRenderer`:** Falls das ältere `storyboard_spec` fehlt, erkennt das Tool nun das neue JSON-Format.
 * **Überarbeitete Storyboard-Funktionen:** `fetchStoryboardSpec`, `parseTracks`, `chooseBestTrack` und `buildTileURL` erzeugen immer signierte URLs.
 * **Automatischer 403-Retry:** Bei einem 403-Fehler wird das Token neu geladen; erst danach greift der `getFrame`-Fallback.
-* **Korrekte Storyboard-URLs:** `buildTileURL` fügt den Host-Teil wieder an und vermeidet 403-Fehler.
-* **Wiederhergestellter getFrame-Fallback:** Die Desktop-App liefert erneut ein Einzelbild über IPC.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.

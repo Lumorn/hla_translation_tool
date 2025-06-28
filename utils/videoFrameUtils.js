@@ -2,126 +2,157 @@
 // Alle Kommentare sind auf Deutsch
 
 // Extrahiert die Startzeit aus einer YouTube-URL
-export function extractTime(url){
+export function extractTime(url) {
     const m1 = url.match(/[?&#]t=([^&#]+)/);
-    if(m1){
-        if(/^\d+$/.test(m1[1])) return Number(m1[1]);
-        let sek = 0;
-        m1[1].replace(/(\d+)(h|m|s)/g, (_,n,e)=>{
-            n = Number(n);
-            if(e==='h') sek += n*3600;
-            else if(e==='m') sek += n*60;
-            else if(e==='s') sek += n;
+    if (m1) {
+        if (/^\d+$/.test(m1[1])) return Number(m1[1]);
+        let sekunden = 0;
+        m1[1].replace(/(\d+)(h|m|s)/g, (_, num, einheit) => {
+            num = Number(num);
+            if (einheit === 'h') sekunden += num * 3600;
+            else if (einheit === 'm') sekunden += num * 60;
+            else if (einheit === 's') sekunden += num;
         });
-        return sek;
+        return sekunden;
     }
     const m2 = url.match(/[?&#]start=(\d+)/);
     return m2 ? Number(m2[1]) : 0;
 }
 
-// Cache fuer bereits geladene Spezifikationen
+// Cache fuer geladene Spezifikationen
 const specCache = new Map();
 
-// Laedt den storyboard_spec eines Videos
-export async function fetchStoryboardSpec(videoId){
-    if(specCache.has(videoId)) return specCache.get(videoId);
-    try{
+// Laedt die Storyboard-Spezifikation eines Videos
+export async function fetchStoryboardSpec(videoId) {
+    if (specCache.has(videoId)) return specCache.get(videoId);
+    try {
         const res = await fetch(`https://www.youtube.com/watch?v=${videoId}&hl=en`);
-        if(!res.ok) throw new Error('Antwort war nicht OK');
+        if (!res.ok) throw new Error('Antwort war nicht OK');
         const text = await res.text();
-        const m = text.match(/"storyboard_spec":"([^"]+)"/);
-        if(!m) throw new Error('Kein storyboard_spec gefunden');
-        const spec = m[1].replace(/\\u0026/g,'&');
+        let m = text.match(/"storyboard_spec":"([^"]+)"/);
+        if (!m) m = text.match(/"playerStoryboardSpecRenderer":\{"spec":"([^"]+)"/);
+        if (!m) throw new Error('Kein storyboard_spec gefunden');
+        const spec = m[1].replace(/\\u0026/g, '&');
         specCache.set(videoId, spec);
         return spec;
-    }catch(e){
+    } catch (e) {
         console.debug('fetchStoryboardSpec fehlgeschlagen', e);
         specCache.set(videoId, null);
         return null;
     }
 }
 
-// Zerlegt den spec-String in einzelne Tracks
-export function parseTracks(spec){
-    const [baseUrl, ...tracksRaw] = spec.split('|');
-    return tracksRaw.map(raw=>{
-        const p = raw.split('#');
+// Zerlegt eine Spezifikation in einzelne Tracks
+export function parseTracks(spec) {
+    if (!spec) return [];
+    return spec.split('|').map(t => {
+        const p = t.split('#');
+        if (p.length < 8) return null;
+        const [base, , , total, cols, rows, interval, rest] = p;
         return {
-            base: baseUrl,
-            w:     +p[0],
-            h:     +p[1],
-            total: +p[2],
-            cols:  +p[3],
-            rows:  +p[4],
-            step:  +p[5]
+            base,
+            cols: Number(cols),
+            rows: Number(rows),
+            interval: Number(interval),
+            totalFrames: Number(total),
+            query: rest.startsWith('?') ? rest : `?${rest}`
         };
-    });
+    }).filter(Boolean);
 }
 
-// Berechnet die URL zu einer bestimmten Kachel
-export function buildTileURL(spec, seconds){
-    const best = parseTracks(spec).sort((a,b)=>a.step-b.step)[0];
-    const idx  = Math.min(Math.floor(seconds*1000/best.step), best.total-1);
-    const sheet= Math.floor(idx / (best.cols*best.rows));
-    const tile = idx % (best.cols*best.rows);
-    return best.base
+// Sucht den Track mit dem kleinsten Intervall
+export function chooseBestTrack(tracks) {
+    return tracks.reduce((best, t) => {
+        if (!t) return best;
+        if (!best || t.interval < best.interval) return t;
+        return best;
+    }, null);
+}
+
+// Baut die URL zu einer bestimmten Kachel
+export function buildTileURL(spec, seconds) {
+    const track = chooseBestTrack(parseTracks(spec));
+    if (!track) return null;
+
+    const index = Math.floor(seconds * 1000 / track.interval);
+    const max = track.totalFrames - 1;
+    const clamped = Math.min(index, max);
+    const proSheet = track.cols * track.rows;
+    const sheet = Math.floor(clamped / proSheet);
+    const tile = clamped % proSheet;
+
+    return track.base
         .replace('L$L', `L${sheet}`)
-        .replace('M$M', `M${tile}`);
+        .replace('M$M', `M${tile}`) +
+        track.query;
 }
 
 // Holt ein Vorschaubild aus dem Storyboard
-export async function fetchStoryboardFrame(url, seconds){
-    const m = url.match(/[?&]v=([^&#]+)/) || url.match(/youtu\.be\/([^?&#]+)/);
-    if(!m) return null;
-    let spec = await fetchStoryboardSpec(m[1]);
-    if(!spec) return null;
+export async function fetchStoryboardFrame(videoUrl, seconds) {
+    const idMatch = videoUrl.match(/[?&]v=([^&#]+)/) || videoUrl.match(/youtu\.be\/([^?&#]+)/);
+    if (!idMatch) return null;
+    let spec = await fetchStoryboardSpec(idMatch[1]);
+    if (!spec) return null;
 
-    const load = async () => new Promise((resolve,reject)=>{
-        const tileUrl = buildTileURL(spec, seconds);
-        console.debug('[Storyboard] URL', tileUrl);
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.referrerPolicy = 'no-referrer';
-        img.onload = () => resolve({img,tileUrl});
-        img.onerror = () => reject(tileUrl);
-        img.src = tileUrl;
-    });
+    const tryLoad = async () => {
+        const url = buildTileURL(spec, seconds);
+        if (!url) return null;
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.referrerPolicy = 'no-referrer';
+            img.onload = () => resolve(img);
+            img.onerror = e => {
+                if (e.target.naturalWidth === 0) reject('403');
+                else reject('error');
+            };
+            img.src = url;
+        });
+    };
 
-    let data;
-    try{
-        data = await load();
-    }catch(tileUrl){
-        console.debug('Storyboard 403, starte neuen Token-Fetch');
-        spec = await fetchStoryboardSpec(m[1]);
-        if(!spec) return null;
-        try{
-            data = await load();
-        }catch(url2){
-            console.warn('[Storyboard] endgültig fehlgeschlagen, Fallback ffmpeg', url2);
+    let img;
+    try {
+        img = await tryLoad();
+    } catch (err) {
+        if (err === '403') {
+            console.debug('Storyboard 403, starte neuen Token-Fetch', buildTileURL(spec, seconds));
+            spec = await fetchStoryboardSpec(idMatch[1]);
+            if (!spec) return null;
+            try {
+                img = await tryLoad();
+            } catch {
+                console.warn('Storyboard nicht verfügbar, fallback ffmpeg', buildTileURL(spec, seconds));
+                return null;
+            }
+        } else {
+            console.warn('Storyboard nicht verfügbar, fallback ffmpeg', buildTileURL(spec, seconds));
             return null;
         }
     }
 
-    const best = parseTracks(spec).sort((a,b)=>a.step-b.step)[0];
-    const idx = Math.min(Math.floor(seconds*1000/best.step), best.total-1);
-    const tile = idx % (best.cols*best.rows);
-    const sx = (tile % best.cols) * best.w;
-    const sy = Math.floor(tile / best.cols) * best.h;
+    const track = chooseBestTrack(parseTracks(spec));
+    const index = Math.floor(seconds * 1000 / track.interval);
+    const max = track.totalFrames - 1;
+    const clamped = Math.min(index, max);
+    const tile = clamped % (track.cols * track.rows);
+    const sx = (tile % track.cols) * 160;
+    const sy = Math.floor(tile / track.cols) * 90;
 
     const canvas = document.createElement('canvas');
-    canvas.width = best.w;
-    canvas.height = best.h;
+    canvas.width = 160;
+    canvas.height = 90;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(data.img, sx, sy, best.w, best.h, 0, 0, best.w, best.h);
+    ctx.drawImage(img, sx, sy, 160, 90, 0, 0, 160, 90);
     return canvas.toDataURL('image/png');
 }
 
-// Export fuer Tests
-if(typeof module !== 'undefined'){
+// CommonJS-Export fuer Tests
+if (typeof module !== 'undefined') {
     module.exports = {
         extractTime,
         fetchStoryboardSpec,
         parseTracks,
+        chooseBestTrack,
         buildTileURL,
         fetchStoryboardFrame
     };
