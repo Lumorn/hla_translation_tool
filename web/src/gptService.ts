@@ -22,12 +22,35 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
 
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
-export async function evaluateScene(sceneName, lines, apiKey) {
+async function evaluateScene(sceneName, lines, apiKey) {
     await promptReady;
+
+    // Kosten grob abschaetzen (3 Tokens je Zeichen)
+    const charCount = lines.reduce((s, l) =>
+        s + (l.character || '').length + (l.en || '').length + (l.de || '').length, 0);
+    const estimatedTokens = charCount * 3;
+    if (estimatedTokens > 75000) {
+        if (typeof window !== 'undefined' && window.showToast) {
+            window.showToast(`Warnung: etwa ${estimatedTokens} Tokens`, 'error');
+        } else {
+            console.warn(`Warnung: etwa ${estimatedTokens} Tokens`);
+        }
+    }
+
     const results = [];
     const chunkSize = 250;
-    for (let i = 0; i < lines.length; i += chunkSize) {
+    let canceled = false;
+    let ui = null;
+
+    // Fortschrittsdialog nur im Browser anzeigen
+    if (typeof document !== 'undefined' && lines.length > chunkSize) {
+        ui = createProgressDialog(lines.length);
+        ui.cancelBtn.onclick = () => { canceled = true; ui.overlay.remove(); };
+    }
+
+    for (let i = 0; i < lines.length && !canceled; i += chunkSize) {
         const chunk = lines.slice(i, i + chunkSize);
+        if (ui) updateProgressDialog(ui, i, lines.length);
         const messages = [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: JSON.stringify({ scene: sceneName, lines: chunk }) }
@@ -41,18 +64,47 @@ export async function evaluateScene(sceneName, lines, apiKey) {
                 },
                 body: JSON.stringify({ model: 'gpt-3.5-turbo', messages, temperature: 0 })
             });
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
             const data = await res.json();
             const arr = JSON.parse(data.choices[0].message.content);
-            // Erwartet Array von {id, score, comment, suggestion}
             results.push(...arr);
         } catch (e) {
-            console.error('GPT Bewertung fehlgeschlagen', e);
+            if (ui) ui.overlay.remove();
+            throw new Error('API-Fehler: ' + (e && e.message ? e.message : e));
         }
     }
+
+    if (ui) ui.overlay.remove();
+    if (canceled) throw new Error('Abgebrochen');
     return results;
+}
+
+function createProgressDialog(total) {
+    const overlay = document.createElement('div');
+    overlay.className = 'dialog-overlay';
+    overlay.innerHTML = `<div class="dialog gpt-progress">
+        <div class="gpt-status" id="gptStatus">0 / ${total}</div>
+        <div class="progress-bar"><div class="progress-fill" id="gptFill"></div></div>
+        <button id="gptCancelBtn">Abbrechen</button>
+    </div>`;
+    document.body.appendChild(overlay);
+    const fill = overlay.querySelector('#gptFill');
+    const status = overlay.querySelector('#gptStatus');
+    const cancelBtn = overlay.querySelector('#gptCancelBtn');
+    return { overlay, fill, status, cancelBtn };
+}
+
+function updateProgressDialog(ui, done, total) {
+    ui.status.textContent = `${done} / ${total}`;
+    ui.fill.style.width = `${Math.round((done / total) * 100)}%`;
 }
 
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
     module.exports = { evaluateScene };
+}
+if (typeof window !== 'undefined') {
+    window.evaluateScene = evaluateScene;
 }

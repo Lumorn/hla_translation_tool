@@ -201,8 +201,8 @@ if (typeof module !== 'undefined' && module.exports) {
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
-    import('./gptService.ts').then(mod => {
-        evaluateScene = mod.evaluateScene;
+    import('./gptService.ts').then(() => {
+        evaluateScene = window.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Main' }; });
     import('./projectEvaluate.ts').then(mod => {
@@ -238,8 +238,8 @@ if (typeof module !== 'undefined' && module.exports) {
         extractRelevantFolder = mod.extractRelevantFolder;
         moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.pathUtils = { loaded: false, source: 'Ausgelagert' }; });
-    import('./gptService.ts').then(mod => {
-        evaluateScene = mod.evaluateScene;
+    import('./gptService.ts').then(() => {
+        evaluateScene = window.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.gptService = { loaded: false, source: 'Ausgelagert' }; });
     import('./projectEvaluate.ts').then(mod => {
@@ -290,10 +290,11 @@ async function scoreVisibleLines() {
     }));
     const scene = currentProject?.levelName || '';
     let results = [];
-    for (let i = 0; i < lines.length; i += 250) {
-        const part = lines.slice(i, i + 250);
-        const res = await evaluateScene(scene, part, openaiApiKey);
-        if (Array.isArray(res)) results = results.concat(res);
+    try {
+        results = await evaluateScene(scene, lines, openaiApiKey);
+    } catch (e) {
+        showErrorBanner(String(e), () => scoreVisibleLines());
+        return;
     }
     if (typeof applyEvaluationResults === 'function') {
         applyEvaluationResults(results, files);
@@ -10949,6 +10950,25 @@ function showChapterCustomization(chapterName, ev) {
             setTimeout(() => div.remove(), 4000);
         }
 
+        // Zeigt ein rotes Banner mit Wiederholen-Knopf
+        function showErrorBanner(message, retryFn) {
+            const banner = document.getElementById('errorBanner');
+            const text = document.getElementById('errorBannerMessage');
+            const btn = document.getElementById('errorBannerRetry');
+            if (!banner || !text || !btn) return;
+            text.textContent = message;
+            btn.onclick = () => {
+                banner.classList.add('hidden');
+                if (retryFn) retryFn();
+            };
+            banner.classList.remove('hidden');
+        }
+
+        function hideErrorBanner() {
+            const banner = document.getElementById('errorBanner');
+            if (banner) banner.classList.add('hidden');
+        }
+
         // Zeigt ein modales Dialogfenster mit HTML-Inhalt an
         function showModal(html) {
             const ov = document.createElement('div');
@@ -11077,7 +11097,7 @@ function showChapterCustomization(chapterName, ev) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
