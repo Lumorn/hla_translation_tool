@@ -2685,6 +2685,51 @@ th:nth-child(7) {
     width: 100%;
 }
 
+/* Overlay mit Ladebalken und Fehleranzeige fuer Screenshots */
+.thumb-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.thumb-overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    color: #ff6b1a;
+    font-size: 2rem;
+}
+
+.thumb-overlay.active {
+    display: flex;
+}
+
+.thumb-overlay.error {
+    display: flex;
+}
+
+.thumb-overlay .progress-bar {
+    width: 80%;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.thumb-overlay .progress-fill {
+    height: 100%;
+    width: 50%;
+    background: #ff6b1a;
+    animation: loadingBar 1s linear infinite;
+}
+
+@keyframes loadingBar {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(100%); }
+}
+
 /* === Tabelle für das Wörterbuch === */
 .word-list-table td{
     padding: 4px;

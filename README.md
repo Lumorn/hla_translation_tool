@@ -55,6 +55,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
 * **Zeitspezifische Screenshots:** Beim ersten Laden erzeugt `ffmpeg` automatisch ein Bild an der hinterlegten Zeit und speichert es im Nutzerordner.
+* **Fortschrittsanzeige beim Screenshot:** Solange das Bild erstellt wird, zeigt ein Ladebalken den Vorgang an. Schlägt die Erstellung fehl, erscheint ein rotes Ausrufezeichen.
+* **Direkt geladene Screenshots:** Jedes Video zeigt sofort das Vorschaubild und ersetzt es automatisch durch den aktuellen Frame, sobald dieser verfügbar ist.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.

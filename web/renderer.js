@@ -57,19 +57,37 @@ async function refreshTable(sortKey='title', dir=true) {
         const div = document.createElement('div');
         div.className = 'video-item';
         div.dataset.idx = b.origIndex;
-        let thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/hqdefault.jpg`;
-        if (window.videoApi && window.videoApi.getFrame) {
-            try {
-                const data = await window.videoApi.getFrame({ url: b.url, time: b.time });
-                if (data) thumb = `data:image/jpeg;base64,${data}`;
-            } catch {}
-        }
-        div.innerHTML = `<img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">`+
-                       `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
-                       `<div class="video-time">${formatTime(b.time)}</div>`+
-                       `<button class="btn btn-blue update" data-idx="${b.origIndex}">Aktualisieren</button>`+
-                       `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
+        const thumb = `https://i.ytimg.com/vi/${extractYoutubeId(b.url)}/hqdefault.jpg`;
+        div.innerHTML =
+            `<div class="thumb-wrapper">
+                <img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">
+                <div class="thumb-overlay"><div class="progress-bar"><div class="progress-fill"></div></div></div>
+             </div>`+
+            `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
+            `<div class="video-time">${formatTime(b.time)}</div>`+
+            `<button class="btn btn-blue update" data-idx="${b.origIndex}">Aktualisieren</button>`+
+            `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
         videoGrid.appendChild(div);
+
+        if (window.videoApi && window.videoApi.getFrame) {
+            const overlay = div.querySelector('.thumb-overlay');
+            const imgElem = div.querySelector('img.video-thumb');
+            overlay.classList.add('active');
+            window.videoApi.getFrame({ url: b.url, time: b.time })
+                .then(data => {
+                    overlay.classList.remove('active');
+                    if (data) {
+                        imgElem.src = `data:image/jpeg;base64,${data}`;
+                        overlay.remove();
+                    } else {
+                        overlay.classList.add('error');
+                    }
+                })
+                .catch(() => {
+                    overlay.classList.remove('active');
+                    overlay.classList.add('error');
+                });
+        }
     }
 }
 
