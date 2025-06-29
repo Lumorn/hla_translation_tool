@@ -2772,6 +2772,7 @@ return `
             </div>
         </div></td>
         <td>
+        <div class="comment-box" data-file-id="${file.id}">${escapeHtml(file.comment || '')}</div>
         <div class="suggestion-box ${scoreClass(file.score)}" style="color:${getContrastingTextColor(SCORE_COLORS[scoreClass(file.score)])}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
         <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
@@ -2831,6 +2832,7 @@ return `
         resizeTextFields();
         sortedFiles.forEach(f => {
             updateTranslationDisplay(f.id);
+            updateCommentDisplay(f.id);
             updateSuggestionDisplay(f.id);
         });
         // GPT-Vorschlag per Klick übernehmen
@@ -3998,6 +4000,16 @@ function updateSuggestionDisplay(fileId) {
         box.className = `suggestion-box ${cls}`;
         box.style.color = getContrastingTextColor(SCORE_COLORS[cls] || '#666');
         box.style.display = file.suggestion ? 'block' : 'none';
+    }
+}
+
+// Zeigt den GPT-Kommentar oberhalb des Vorschlags an
+function updateCommentDisplay(fileId) {
+    const box = document.querySelector(`.comment-box[data-file-id="${fileId}"]`);
+    const file = files.find(f => f.id === fileId);
+    if (box && file) {
+        box.textContent = file.comment || '';
+        box.style.display = file.comment ? 'block' : 'none';
     }
 }
 
