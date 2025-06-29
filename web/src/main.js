@@ -2773,9 +2773,6 @@ return `
         </div></td>
         <td>
         <div class="suggestion-box ${scoreClass(file.score)}" style="color:${getContrastingTextColor(SCORE_COLORS[scoreClass(file.score)])}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
-        <div class="suggestion-preview" data-id="${file.id}">
-          ${escapeHtml(file.suggestion || '')}
-        </div>
         <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
@@ -2836,17 +2833,21 @@ return `
             updateTranslationDisplay(f.id);
             updateSuggestionDisplay(f.id);
         });
-        document.querySelectorAll('.suggestion-preview').forEach(div => {
-            const id = Number(div.dataset.id);
+        // GPT-Vorschlag per Klick übernehmen
+        document.querySelectorAll('.suggestion-box').forEach(div => {
+            const id = Number(div.dataset.fileId);
             const file = files.find(f => f.id === id);
             div.textContent = file.suggestion || '';
             div.onclick = () => {
                 file.deText = file.suggestion;
                 window.isDirty = true;
-                const textarea = div.nextElementSibling;
-                textarea.value = file.deText;
-                textarea.classList.add('blink-blue');
-                setTimeout(() => textarea.classList.remove('blink-blue'), 600);
+                const container = div.nextElementSibling;
+                const textarea = container?.querySelector('textarea.text-input');
+                if (textarea) {
+                    textarea.value = file.deText;
+                    textarea.classList.add('blink-blue');
+                    setTimeout(() => textarea.classList.remove('blink-blue'), 600);
+                }
             };
         });
     }, 50);
@@ -3987,9 +3988,9 @@ function updateTranslationDisplay(fileId) {
 }
 
 // Zeigt den GPT-Vorschlag oberhalb des DE-Textes an
+// Aktualisiert die farbige Vorschlagsbox
 function updateSuggestionDisplay(fileId) {
     const box = document.querySelector(`.suggestion-box[data-file-id="${fileId}"]`);
-    const preview = document.querySelector(`.suggestion-preview[data-id="${fileId}"]`);
     const file = files.find(f => f.id === fileId);
     if (box && file) {
         box.textContent = file.suggestion || '';
@@ -3997,10 +3998,6 @@ function updateSuggestionDisplay(fileId) {
         box.className = `suggestion-box ${cls}`;
         box.style.color = getContrastingTextColor(SCORE_COLORS[cls] || '#666');
         box.style.display = file.suggestion ? 'block' : 'none';
-    }
-    if (preview && file) {
-        preview.textContent = file.suggestion || '';
-        preview.style.display = file.suggestion ? 'block' : 'none';
     }
 }
 

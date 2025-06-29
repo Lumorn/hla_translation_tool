@@ -32,10 +32,9 @@ export function scoreCellTemplate(file, escapeHtml) {
     const noScore = file.score === undefined || file.score === null;
     const sug = escapeHtml(file.suggestion || '');
     const com = escapeHtml(file.comment || '');
-    const title = escapeHtml([file.comment, file.suggestion].filter(Boolean).join(' - '));
     // Score immer als Prozentwert anzeigen
     const scoreText = noScore ? '0' : file.score;
-    return `<td class="score-cell ${cls}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}%</td>`;
+    return `<td class="score-cell ${cls}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}%</td>`;
 }
 
 export function attachScoreHandlers(tbody, files) {
