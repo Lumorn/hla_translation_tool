@@ -43,15 +43,13 @@ export function scoreCellTemplate(file, escapeHtml) {
 export function attachScoreHandlers(tbody, files) {
     tbody.querySelectorAll('.score-cell').forEach(cell => {
         const id = Number(cell.parentElement?.dataset.id);
-        const suggestion = cell.dataset.suggestion;
         const comment = cell.dataset.comment;
-        // Beim Überfahren soll nur der Kommentar erscheinen
+        // Beim Überfahren erscheint der Kommentar
         const tooltipText = comment;
         cell.addEventListener('mouseenter', ev => openScoreTooltip(ev, tooltipText));
         cell.addEventListener('mouseleave', closeScoreTooltip);
-        if (suggestion) {
-            cell.addEventListener('click', () => applySuggestion(id, files));
-        }
+        // Klick zeigt nur noch den Kommentar
+        cell.addEventListener('click', ev => openScoreTooltip(ev, tooltipText));
     });
 }
 
