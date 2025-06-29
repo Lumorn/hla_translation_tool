@@ -1,33 +1,22 @@
 // Sammele sichtbare Zeilen, rufe den GPT-Service auf und aktualisiere die Tabelle
-// GPT-Service importieren – je nach Umgebung
-let evaluateScene;
-if (typeof require !== 'undefined') {
-    try {
-        ({ evaluateScene } = require('../gptService.js'));
-    } catch {}
-}
-if (typeof window !== 'undefined' && window.evaluateScene) {
-    evaluateScene = window.evaluateScene;
-}
+// GPT-Service importieren
+import { evaluateScene } from '../gptService.js';
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
-function applyEvaluationResults(results, files) {
+export function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
-        const id = Number(r.id);
-        const f = files.find(fl => fl.id === id);
+        const f = files.find(fl => fl.id === r.id);
         if (f) {
-            // Score in Zahl umwandeln, sonst 0
-            const sc = Number(r.score);
-            f.score = Number.isFinite(sc) ? sc : 0;
-            f.comment = r.comment || '';
+            f.score = r.score;
+            f.comment = r.comment;
             // Vorschlag separat speichern
-            f.suggestion = r.suggestion || '';
+            f.suggestion = r.suggestion;
         }
     }
 }
 
-async function scoreVisibleLines(opts) {
+export async function scoreVisibleLines(opts) {
     const { displayOrder, files, currentProject, apiKey, gptModel, renderTable,
             updateStatus, showErrorBanner, showToast } = opts;
     if (!apiKey) {
@@ -41,8 +30,7 @@ async function scoreVisibleLines(opts) {
     });
     const lines = visible.map(({ file }) => ({
         id: file.id,
-        // Charakter entspricht dem Ordnernamen
-        character: file.character || file.folder || '',
+        character: file.character || '',
         en: file.enText || '',
         de: file.deText || ''
     }));
@@ -64,8 +52,4 @@ async function scoreVisibleLines(opts) {
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
     module.exports = { scoreVisibleLines, applyEvaluationResults };
-}
-if (typeof window !== 'undefined') {
-    window.scoreVisibleLines = scoreVisibleLines;
-    window.applyEvaluationResults = applyEvaluationResults;
 }
