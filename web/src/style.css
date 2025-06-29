@@ -2773,7 +2773,6 @@ th:nth-child(10) {
 /* Score-Bewertungen */
 .score-cell {
     text-align: center;
-    color: #fff;
 }
 
 .score-none {
@@ -2783,14 +2782,17 @@ th:nth-child(10) {
 
 .score-low {
     background: #A33;
+    color: #fff;
 }
 
 .score-medium {
     background: #BB8;
+    color: #000;
 }
 
 .score-high {
     background: #3A3;
+    color: #fff;
 }
 
 /* Anzeige des GPT-Vorschlags oberhalb des DE-Textes */
@@ -2803,6 +2805,11 @@ th:nth-child(10) {
 .suggestion-box.score-low,
 .suggestion-box.score-high {
     color: #fff;
+}
+
+/* Bei heller Scorefarbe dunkle Schrift verwenden */
+.suggestion-box.score-medium {
+    color: #000;
 }
 .suggestion-box.score-high { background: #1e4620; }
 .suggestion-box.score-low  { background: #391212; }

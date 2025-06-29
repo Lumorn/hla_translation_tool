@@ -200,7 +200,7 @@ let pathUtilsPromise;
 let evaluateScene;
 let applyEvaluationResults;
 let scoreVisibleLines;
-let scoreCellTemplate, attachScoreHandlers, scoreClass;
+let scoreCellTemplate, attachScoreHandlers, scoreClass, getContrastingTextColor, SCORE_COLORS;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -234,10 +234,12 @@ if (typeof module !== 'undefined' && module.exports) {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
         scoreClass = mod.scoreClass;
+        getContrastingTextColor = mod.getContrastingTextColor;
+        SCORE_COLORS = mod.SCORE_COLORS;
         if (typeof window !== 'undefined') {
             window.attachScoreHandlers = attachScoreHandlers;
         }
-    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; getContrastingTextColor = () => '#fff'; SCORE_COLORS = {}; });
     import('./actions/projectEvaluate.js').then(mod => {
         // Funktionen entweder aus dem Modul oder von window uebernehmen
         applyEvaluationResults = mod.applyEvaluationResults ||
@@ -285,10 +287,12 @@ if (typeof module !== 'undefined' && module.exports) {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
         scoreClass = mod.scoreClass;
+        getContrastingTextColor = mod.getContrastingTextColor;
+        SCORE_COLORS = mod.SCORE_COLORS;
         if (typeof window !== 'undefined') {
             window.attachScoreHandlers = attachScoreHandlers;
         }
-    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; getContrastingTextColor = () => '#fff'; SCORE_COLORS = {}; });
     import('./actions/projectEvaluate.js').then(mod => {
         // Fallback auf window, falls keine Exporte vorhanden sind
         applyEvaluationResults = mod.applyEvaluationResults ||
@@ -2768,7 +2772,7 @@ return `
             </div>
         </div></td>
         <td>
-        <div class="suggestion-box ${scoreClass(file.score)}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div class="suggestion-box ${scoreClass(file.score)}" style="color:${getContrastingTextColor(SCORE_COLORS[scoreClass(file.score)])}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
         <div class="suggestion-preview" data-id="${file.id}">
           ${escapeHtml(file.suggestion || '')}
         </div>
@@ -3991,6 +3995,7 @@ function updateSuggestionDisplay(fileId) {
         box.textContent = file.suggestion || '';
         const cls = scoreClass(file.score);
         box.className = `suggestion-box ${cls}`;
+        box.style.color = getContrastingTextColor(SCORE_COLORS[cls] || '#666');
         box.style.display = file.suggestion ? 'block' : 'none';
     }
     if (preview && file) {
