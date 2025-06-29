@@ -1485,7 +1485,6 @@ function renderProjects() {
                             <span title="DE-Text">DE: ${stats.dePercent}%</span>
                             <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
                             <span title="Fertig">✓ ${stats.completedPercent}%</span>
-                            <span title="GPT-Score">★ ${stats.scoreAvg}</span>
                         </div>
                         <div style="font-size:9px;color:rgba(255,255,255,0.6);">
                             ${stats.totalFiles} Dateien
