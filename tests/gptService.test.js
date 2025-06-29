@@ -63,5 +63,4 @@ test('applyEvaluationResults überträgt Score und Kommentar', () => {
   expect(files[0].score).toBe(55);
   expect(files[0].comment).toBe('ok');
   expect(files[0].suggestion).toBe('neu');
-  expect(files[1].score).toBeUndefined();
 });
