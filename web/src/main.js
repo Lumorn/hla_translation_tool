@@ -1156,7 +1156,8 @@ function calculateProjectStats(project) {
             dePercent: 0,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 0
+            totalFiles: 0,
+            scoreAvg: 0
         };
     }
     
@@ -1164,13 +1165,21 @@ function calculateProjectStats(project) {
     const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
     const filesCompleted = files.filter(isFileCompleted).length;
     const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
+    // Durchschnittliche GPT-Bewertung ermitteln
+    const validScores = files
+        .map(f => Number(f.score))
+        .filter(n => Number.isFinite(n));
+    const avgScore = validScores.length
+        ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
+        : 0;
     
     return {
         enPercent: Math.round((filesWithEN / totalFiles) * 100),
         dePercent: Math.round((filesWithDE / totalFiles) * 100),
         deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
         completedPercent: Math.round((filesCompleted / totalFiles) * 100),
-        totalFiles: totalFiles
+        totalFiles: totalFiles,
+        scoreAvg: avgScore
     };
 }
 
@@ -1448,6 +1457,7 @@ function renderProjects() {
                             <span title="DE-Text">DE: ${stats.dePercent}%</span>
                             <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
                             <span title="Fertig">✓ ${stats.completedPercent}%</span>
+                            <span title="GPT-Score">★ ${stats.scoreAvg}</span>
                         </div>
                         <div style="font-size:9px;color:rgba(255,255,255,0.6);">
                             ${stats.totalFiles} Dateien
@@ -1466,7 +1476,7 @@ function renderProjects() {
                 `Teil:  ${p.levelPart}\n\n` +
                 `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
                 `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
-                `• Dateien: ${stats.totalFiles}`;
+                `• GPT: ${stats.scoreAvg}  • Dateien: ${stats.totalFiles}`;
 
             card.onclick = e => {
                 if (!e.target.classList.contains('delete-btn') &&

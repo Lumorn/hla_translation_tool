@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robustere Zuordnung:** GPT-Ergebnisse finden jetzt auch dann die richtige Zeile, wenn die ID leicht abweicht
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
+* **Durchschnittlicher GPT-Score pro Projekt:** Die Projektübersicht zeigt nun den Mittelwert aller Bewertungen an
 * **Automatische Übernahme von GPT-Vorschlägen:** Eine neue Option setzt empfohlene Texte sofort in das DE-Feld
 * **Einfüge-Knopf versteht JSON:** Manuell in den GPT-Test kopierte Antworten können direkt übernommen werden
 * **Dritte Spalte im GPT-Test als Tabelle:** Rechts zeigt jetzt eine übersichtliche Tabelle mit ID, Dateiname, Ordner, Bewertung, Vorschlag und Kommentar alle Ergebnisse an
