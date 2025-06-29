@@ -2854,14 +2854,28 @@ th:nth-child(10) {
     margin-bottom: 10px;
 }
 
-/* Einfacher Dialog zum Testen des GPT-Prompts */
+/* Dialog fixiert Buttons, Inhalte scrollen einzeln */
+.gpt-test-dialog {
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+    overflow: hidden;
+}
 .gpt-test-dialog .prompt-result-container {
     display: flex;
     gap: 10px;
+    flex: 1;
+    overflow: hidden;
 }
 .gpt-test-dialog textarea {
     flex: 1;
     min-height: 300px;
+    height: 100%;
+    overflow-y: auto;
+}
+.gpt-test-dialog .summary-table-wrapper {
+    flex: 1;
+    overflow: auto;
 }
 .gpt-tabs {
     display: flex;
