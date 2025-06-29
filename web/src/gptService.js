@@ -1,6 +1,11 @@
 let systemPrompt = '';
 let promptReady;
 
+// Liefert den geladenen System-Prompt
+function getSystemPrompt() {
+    return systemPrompt;
+}
+
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompt per Fetch laden
     const url = '../prompts/gpt_score.txt';
@@ -162,11 +167,13 @@ async function fetchModels(apiKey, ignoreCache = false) {
 }
 
 // Kompatibilität für CommonJS
+// Exporte für Node und Browser bereitstellen
 if (typeof module !== 'undefined') {
-    module.exports = { evaluateScene, testKey, fetchModels };
+    module.exports = { evaluateScene, testKey, fetchModels, getSystemPrompt };
 }
 if (typeof window !== 'undefined') {
     window.evaluateScene = evaluateScene;
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
+    window.getSystemPrompt = getSystemPrompt;
 }
