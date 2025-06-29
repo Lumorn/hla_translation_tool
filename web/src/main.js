@@ -195,7 +195,7 @@ let pathUtilsPromise;
 let evaluateScene;
 let applyEvaluationResults;
 let scoreVisibleLines;
-let scoreCellTemplate, attachScoreHandlers;
+let scoreCellTemplate, attachScoreHandlers, getScoreClass;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -228,6 +228,7 @@ if (typeof module !== 'undefined' && module.exports) {
     import('./scoreColumn.js').then(mod => {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
+        getScoreClass = mod.getScoreClass;
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
     import('./actions/projectEvaluate.js').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
@@ -270,6 +271,7 @@ if (typeof module !== 'undefined' && module.exports) {
     import('./scoreColumn.js').then(mod => {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
+        getScoreClass = mod.getScoreClass;
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
     import('./actions/projectEvaluate.js').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
@@ -2564,7 +2566,8 @@ return `
                 <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
             </div>
         </div></td>
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+        <td><div class="gpt-suggestion ${getScoreClass ? getScoreClass(file.score).replace('score-', 'suggestion-') : ''}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
@@ -2618,7 +2621,10 @@ return `
     // Nach dem Rendern Textfelder und Übersetzungsanzeige anpassen
     setTimeout(() => {
         resizeTextFields();
-        sortedFiles.forEach(f => updateTranslationDisplay(f.id));
+        sortedFiles.forEach(f => {
+            updateTranslationDisplay(f.id);
+            updateSuggestionDisplay(f.id);
+        });
     }, 50);
 }
 // =========================== RENDER FILE TABLE WITH ORDER END ===========================
@@ -3724,6 +3730,16 @@ function updateTranslationDisplay(fileId) {
     const file = files.find(f => f.id === fileId);
     if (div && file) {
         div.textContent = file.autoTranslation || '';
+    }
+}
+
+function updateSuggestionDisplay(fileId) {
+    const div = document.querySelector(`.gpt-suggestion[data-file-id="${fileId}"]`);
+    const file = files.find(f => f.id === fileId);
+    if (div && file && typeof getScoreClass === 'function') {
+        const base = getScoreClass(file.score).replace('score-', 'suggestion-');
+        div.className = `gpt-suggestion ${base}`;
+        div.textContent = file.suggestion || '';
     }
 }
 
