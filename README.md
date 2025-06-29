@@ -45,7 +45,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Aktives Projekt hervorgehoben:** Das aktuell geöffnete Projekt ist in der Seitenleiste deutlich markiert.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip nur noch den Kommentar, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
+* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren oder Anklicken des Scores erscheint nur der Kommentar. Den vorgeschlagenen Text übernimmst du jetzt durch Klick auf die farbige Box über dem DE-Feld
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
 * **GPT-Konsole:** Beim Klick auf "Bewerten (GPT)" öffnet sich ein Fenster mit einem Log aller gesendeten Prompts und Antworten
 * **Prompt-Vorschau:** Vor dem eigentlichen Versand zeigt ein Dialog den kompletten Prompt an. Erst nach Klick auf "Senden" wird die Anfrage gestellt und die Antwort im selben Fenster angezeigt
