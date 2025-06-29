@@ -360,6 +360,7 @@ function showGptPromptDialog() {
     gptEvaluationResults = null;
     const insertBtn = document.getElementById('gptPromptInsert');
     if (insertBtn) insertBtn.disabled = true;
+    renderGptTestTabs();
     document.getElementById('gptPromptDialog').classList.remove('hidden');
 }
 
@@ -386,6 +387,18 @@ async function sendGptPrompt() {
         updateGptSummary(results);
         const insertBtn = document.getElementById('gptPromptInsert');
         if (insertBtn) insertBtn.disabled = false;
+        if (currentProject) {
+            if (!Array.isArray(currentProject.gptTests)) currentProject.gptTests = [];
+            const promptText = document.getElementById('gptPromptArea')?.value || '';
+            currentProject.gptTests.push({
+                prompt: promptText,
+                result: resultArea.value,
+                summary: results
+            });
+            currentProject.gptTabIndex = currentProject.gptTests.length - 1;
+            saveCurrentProject();
+            renderGptTestTabs();
+        }
     } catch (e) {
         resultArea.value = String(e);
     }
@@ -438,6 +451,63 @@ function updateGptSummary(results) {
             <td>${suggestion}</td>
             <td>${comment}</td>`;
         body.appendChild(tr);
+    }
+}
+
+// Zeichnet die Tabs des GPT-Tests neu
+function renderGptTestTabs() {
+    const container = document.getElementById('gptTestTabs');
+    if (!container || !currentProject) return;
+    const list = currentProject.gptTests || [];
+    const active = currentProject.gptTabIndex ?? (list.length - 1);
+    container.innerHTML = '';
+    list.forEach((_, idx) => {
+        const tab = document.createElement('div');
+        tab.className = 'gpt-tab' + (idx === active ? ' active' : '');
+        tab.textContent = `#${idx + 1}`;
+        tab.onclick = () => selectGptTestTab(idx);
+        const x = document.createElement('span');
+        x.textContent = '×';
+        x.className = 'gpt-tab-close';
+        x.onclick = ev => { ev.stopPropagation(); deleteGptTestTab(idx); };
+        tab.appendChild(x);
+        container.appendChild(tab);
+    });
+}
+
+// Aktiviert einen gespeicherten GPT-Test
+function selectGptTestTab(index) {
+    if (!currentProject || !currentProject.gptTests) return;
+    const test = currentProject.gptTests[index];
+    if (!test) return;
+    currentProject.gptTabIndex = index;
+    const area = document.getElementById('gptPromptArea');
+    const res  = document.getElementById('gptResultArea');
+    if (area) area.value = test.prompt || '';
+    if (res)  res.value = test.result || '';
+    gptEvaluationResults = test.summary || null;
+    updateGptSummary(test.summary || []);
+    renderGptTestTabs();
+}
+
+// Entfernt einen gespeicherten GPT-Test
+function deleteGptTestTab(index) {
+    if (!currentProject || !currentProject.gptTests) return;
+    currentProject.gptTests.splice(index, 1);
+    if (currentProject.gptTabIndex >= currentProject.gptTests.length) {
+        currentProject.gptTabIndex = currentProject.gptTests.length - 1;
+    }
+    saveCurrentProject();
+    renderGptTestTabs();
+    if (currentProject.gptTabIndex >= 0) {
+        selectGptTestTab(currentProject.gptTabIndex);
+    } else {
+        const area = document.getElementById('gptPromptArea');
+        const res = document.getElementById('gptResultArea');
+        if (area) area.value = '';
+        if (res) res.value = '';
+        updateGptSummary([]);
+        gptEvaluationResults = null;
     }
 }
 
@@ -1147,6 +1217,8 @@ function loadProjects() {
             if (!p.hasOwnProperty('color')) { p.color = '#333333'; migrated = true; }
             if (!p.hasOwnProperty('levelName')) { p.levelName = ''; migrated = true; }
             if (!p.hasOwnProperty('levelPart')) { p.levelPart = 1;  migrated = true; }
+            if (!p.hasOwnProperty('gptTests')) { p.gptTests = []; migrated = true; }
+            if (!p.hasOwnProperty('gptTabIndex')) { p.gptTabIndex = 0; migrated = true; }
         });
 
         // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
@@ -1165,7 +1237,9 @@ function loadProjects() {
             levelName: '',
             levelPart: 1,
             files: [],
-            color: '#ff6b1a'
+            color: '#ff6b1a',
+            gptTests: [],
+            gptTabIndex: 0
         }];
         saveProjects();
     }

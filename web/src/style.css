@@ -2855,6 +2855,25 @@ th:nth-child(10) {
     flex: 1;
     min-height: 300px;
 }
+.gpt-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.gpt-tab {
+    background: #333;
+    border: 1px solid #444;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+.gpt-tab.active {
+    background: #222;
+}
+.gpt-tab-close {
+    margin-left: 4px;
+    color: #f66;
+    cursor: pointer;
+}
 .summary-table-wrapper {
     flex: 1;
     overflow: auto;
