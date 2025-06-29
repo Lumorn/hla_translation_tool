@@ -461,9 +461,9 @@ th:nth-child(10) {
             align-items: center;
         }
 
-        /* GPT-Knopf neben der Suche */
+        /* GPT-Knopf weiter rechts platzieren */
         #gptScoreButton {
-            margin-left: 10px;
+            margin-left: auto;
         }
 
 .video-launch {
