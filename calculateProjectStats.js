@@ -10,7 +10,8 @@ function calculateProjectStats(project) {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         };
     }
 
@@ -25,6 +26,9 @@ function calculateProjectStats(project) {
     const avgScore = validScores.length
         ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
         : 0;
+    const minScore = validScores.length
+        ? Math.min(...validScores)
+        : 0;
 
     return {
         enPercent: Math.round((filesWithEN / totalFiles) * 100),
@@ -32,7 +36,8 @@ function calculateProjectStats(project) {
         deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
         completedPercent: Math.round((filesCompleted / totalFiles) * 100),
         totalFiles: totalFiles,
-        scoreAvg: avgScore
+        scoreAvg: avgScore,
+        scoreMin: minScore
     };
 }
 

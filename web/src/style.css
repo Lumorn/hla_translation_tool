@@ -2188,6 +2188,14 @@ th:nth-child(10) {
     align-items:center;
     gap:2px;
 }
+.project-score{
+    padding:0 3px;
+    border-radius:3px;
+}
+.project-score.score-high{background:#3A3;color:#fff;}
+.project-score.score-medium{background:#BB8;color:#000;}
+.project-score.score-low{background:#A33;color:#fff;}
+.project-score.score-none{background:#666;color:#ccc;}
 
 .project-buttons{
     display:flex;

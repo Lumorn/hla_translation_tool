@@ -12,7 +12,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -25,7 +26,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -40,7 +42,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 100,
             completedPercent: 100,
             totalFiles: 1,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -59,7 +62,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 3,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -77,7 +81,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 2,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -95,7 +100,8 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 2,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
@@ -113,11 +119,12 @@ describe('calculateProjectStats', () => {
             deAudioPercent: 50,
             completedPercent: 50,
             totalFiles: 2,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         });
     });
 
-    test('average gpt score is calculated', () => {
+    test('average and minimum gpt score are calculated', () => {
         const result = calculateProjectStats({
             files: [
                 { score: 20 },
@@ -126,5 +133,6 @@ describe('calculateProjectStats', () => {
             ]
         });
         expect(result.scoreAvg).toBe(40);
+        expect(result.scoreMin).toBe(20);
     });
 });
