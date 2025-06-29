@@ -2807,6 +2807,14 @@ th:nth-child(10) {
     border-radius: 3px;
     cursor: pointer; /* Box ist jetzt direkt anklickbar */
 }
+.comment-box {
+    font-size: 0.8rem;
+    color: #fff;
+    margin-bottom: 2px;
+}
+.comment-box:empty {
+    display: none;
+}
 .suggestion-box.score-low,
 .suggestion-box.score-high {
     color: #fff;
