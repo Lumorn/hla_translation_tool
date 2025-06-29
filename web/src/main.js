@@ -79,6 +79,8 @@ let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 // Gespeicherter API-Key für ChatGPT (wird verschlüsselt auf der Festplatte gespeichert)
 let openaiApiKey       = '';
 let openaiModel        = '';
+// Merkt Szene und Zeilen für den GPT-Testdialog
+let gptPromptData      = null;
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
@@ -306,19 +308,59 @@ function closeGptStartDialog() {
 // Startet die eigentliche Bewertung nach Bestätigung
 function startGptScoring() {
     closeGptStartDialog();
-    if (typeof scoreVisibleLines === 'function') {
-        scoreVisibleLines({
-            displayOrder,
-            files,
-            currentProject,
-            apiKey: openaiApiKey,
-            gptModel: openaiModel,
-            renderTable: renderFileTableWithOrder,
-            updateStatus,
-            showErrorBanner,
-            showToast
+    const visible = displayOrder.filter(item => {
+        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
+        return row && row.offsetParent !== null;
+    });
+    const lines = visible.map(({ file }) => ({
+        id: file.id,
+        character: file.character || '',
+        en: file.enText || '',
+        de: file.deText || ''
+    }));
+    const scene = currentProject?.levelName || '';
+    gptPromptData = { scene, lines };
+    showGptPromptDialog();
+}
+
+// Zeigt den Testdialog mit dem kompletten Prompt
+function showGptPromptDialog() {
+    const area = document.getElementById('gptPromptArea');
+    if (!area || !gptPromptData) return;
+    const sys = typeof window.getSystemPrompt === 'function'
+        ? window.getSystemPrompt() : '';
+    const promptText = `System:\n${sys}\n\nUser:\n${JSON.stringify(gptPromptData, null, 2)}`;
+    area.value = promptText;
+    const resultArea = document.getElementById('gptResultArea');
+    if (resultArea) resultArea.value = '';
+    document.getElementById('gptPromptDialog').classList.remove('hidden');
+}
+
+function closeGptPromptDialog() {
+    document.getElementById('gptPromptDialog').classList.add('hidden');
+}
+
+// Sendet den Prompt an die API und zeigt die Antwort an
+async function sendGptPrompt() {
+    const btn = document.getElementById('gptPromptSend');
+    const resultArea = document.getElementById('gptResultArea');
+    if (!gptPromptData || !btn || !resultArea) return;
+    btn.disabled = true;
+    resultArea.value = 'Sende...';
+    try {
+        const results = await evaluateScene({
+            scene: gptPromptData.scene,
+            lines: gptPromptData.lines,
+            key: openaiApiKey,
+            model: openaiModel
         });
+        resultArea.value = JSON.stringify(results, null, 2);
+        applyEvaluationResults(results, files);
+        await renderFileTableWithOrder(displayOrder.map(d => d.file));
+    } catch (e) {
+        resultArea.value = String(e);
     }
+    btn.disabled = false;
 }
 
 // Bewertet aktuell sichtbare Zeilen über ChatGPT
