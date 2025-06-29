@@ -45,7 +45,8 @@ export function attachScoreHandlers(tbody, files) {
         const id = Number(cell.parentElement?.dataset.id);
         const suggestion = cell.dataset.suggestion;
         const comment = cell.dataset.comment;
-        const tooltipText = [comment, suggestion].filter(Boolean).join(' - ');
+        // Beim Überfahren soll nur der Kommentar erscheinen
+        const tooltipText = comment;
         cell.addEventListener('mouseenter', ev => openScoreTooltip(ev, tooltipText));
         cell.addEventListener('mouseleave', closeScoreTooltip);
         if (suggestion) {
