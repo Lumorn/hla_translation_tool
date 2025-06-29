@@ -239,8 +239,10 @@ if (typeof module !== 'undefined' && module.exports) {
         }
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
-        applyEvaluationResults = mod.applyEvaluationResults;
-        scoreVisibleLines = mod.scoreVisibleLines;
+        applyEvaluationResults = mod.applyEvaluationResults ||
+                                (mod.default && mod.default.applyEvaluationResults);
+        scoreVisibleLines = mod.scoreVisibleLines ||
+                           (mod.default && mod.default.scoreVisibleLines);
         moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
@@ -285,8 +287,10 @@ if (typeof module !== 'undefined' && module.exports) {
         }
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
-        applyEvaluationResults = mod.applyEvaluationResults;
-        scoreVisibleLines = mod.scoreVisibleLines;
+        applyEvaluationResults = mod.applyEvaluationResults ||
+                                (mod.default && mod.default.applyEvaluationResults);
+        scoreVisibleLines = mod.scoreVisibleLines ||
+                           (mod.default && mod.default.scoreVisibleLines);
         moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
@@ -443,7 +447,8 @@ async function insertGptResults() {
         }
         if (typeof applyEvaluationResults !== 'function') {
             const mod = await import('./actions/projectEvaluate.js');
-            applyEvaluationResults = mod.applyEvaluationResults;
+            applyEvaluationResults = mod.applyEvaluationResults ||
+                                    (mod.default && mod.default.applyEvaluationResults);
         }
     }
     btn.disabled = true;
