@@ -48,3 +48,9 @@ test('fetchModels wirft bei Fehler', async () => {
   jestFetch.mockResolvedValue({ ok: false, text: async () => 'nope' });
   await expect(fetchModels('k', true)).rejects.toThrow('nope');
 });
+
+test('sanitizeJSONResponse entfernt ```json-Blöcke', () => {
+  const { sanitizeJSONResponse } = require('../web/src/gptService.js');
+  const input = '```json\n[{"a":1}]\n```';
+  expect(sanitizeJSONResponse(input)).toBe('[{"a":1}]');
+});
