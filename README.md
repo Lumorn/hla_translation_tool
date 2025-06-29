@@ -81,6 +81,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **GPT-Tabs pro Projekt:** Geöffnete Tests bleiben gespeichert und erscheinen beim nächsten Öffnen wieder.
 * **GPT-Knopf direkt neben der Suche:** Ein Klick öffnet die gespeicherten GPT-Tabs des aktuellen Projekts.
 * **Einfüge-Knopf für gespeicherte Tests:** Beim Wechsel des Tabs wird der Button aktiviert und übernimmt Score und Vorschlag korrekt.
+* **Feste Buttons im GPT-Test:** Das Fenster hat nun eine begrenzte Höhe, Prompt- und Ergebnis-Spalten scrollen separat.
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
