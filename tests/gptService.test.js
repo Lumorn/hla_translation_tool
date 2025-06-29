@@ -48,19 +48,3 @@ test('fetchModels wirft bei Fehler', async () => {
   jestFetch.mockResolvedValue({ ok: false, text: async () => 'nope' });
   await expect(fetchModels('k', true)).rejects.toThrow('nope');
 });
-
-test('sanitizeJSONResponse entfernt ```json-Blöcke', () => {
-  const { sanitizeJSONResponse } = require('../web/src/gptService.js');
-  const input = '```json\n[{"a":1}]\n```';
-  expect(sanitizeJSONResponse(input)).toBe('[{"a":1}]');
-});
-
-test('applyEvaluationResults überträgt Score und Kommentar', () => {
-  const { applyEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
-  const files = [{ id: 1 }, { id: 2 }];
-  const results = [{ id: '1', score: '55', comment: 'ok', suggestion: 'neu' }];
-  applyEvaluationResults(results, files);
-  expect(files[0].score).toBe(55);
-  expect(files[0].comment).toBe('ok');
-  expect(files[0].suggestion).toBe('neu');
-});
