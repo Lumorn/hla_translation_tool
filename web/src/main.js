@@ -1197,7 +1197,8 @@ function calculateProjectStats(project) {
             deAudioPercent: 0,
             completedPercent: 0,
             totalFiles: 0,
-            scoreAvg: 0
+            scoreAvg: 0,
+            scoreMin: 0
         };
     }
     
@@ -1212,6 +1213,9 @@ function calculateProjectStats(project) {
     const avgScore = validScores.length
         ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
         : 0;
+    const minScore = validScores.length
+        ? Math.min(...validScores)
+        : 0;
     
     return {
         enPercent: Math.round((filesWithEN / totalFiles) * 100),
@@ -1219,7 +1223,8 @@ function calculateProjectStats(project) {
         deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
         completedPercent: Math.round((filesCompleted / totalFiles) * 100),
         totalFiles: totalFiles,
-        scoreAvg: avgScore
+        scoreAvg: avgScore,
+        scoreMin: minScore
     };
 }
 
@@ -1497,7 +1502,7 @@ function renderProjects() {
                             <span title="DE-Text">DE: ${stats.dePercent}%</span>
                             <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
                             <span title="Fertig">✓ ${stats.completedPercent}%</span>
-                            <span title="GPT-Score">★ ${stats.scoreAvg}</span>
+                            <span title="GPT-Score" class="project-score ${scoreClass(stats.scoreMin)}">★ ${stats.scoreMin}</span>
                         </div>
                         <div style="font-size:9px;color:rgba(255,255,255,0.6);">
                             ${stats.totalFiles} Dateien
@@ -1516,7 +1521,7 @@ function renderProjects() {
                 `Teil:  ${p.levelPart}\n\n` +
                 `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
                 `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
-                `• GPT: ${stats.scoreAvg}  • Dateien: ${stats.totalFiles}`;
+                `• GPT: ${stats.scoreMin}  • Dateien: ${stats.totalFiles}`;
 
             card.onclick = e => {
                 if (!e.target.classList.contains('delete-btn') &&

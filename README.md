@@ -72,7 +72,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bereinigte Vorschau-Anzeige:** Leere GPT-Vorschläge lassen keinen zusätzlichen Abstand mehr
 * **Kommentar über dem Vorschlag:** Ist ein Kommentar vorhanden, erscheint er in weißer Schrift direkt über der farbigen Box
 * **Einheitliche GPT-Vorschau:** Der farbige Vorschlagsbalken ist nun direkt klickbar und es gibt nur noch einen Tooltip
-* **Durchschnittlicher GPT-Score pro Projekt:** Die Projektübersicht zeigt nun den Mittelwert aller Bewertungen an
+* **Niedrigster GPT-Score pro Projekt:** Die Projektübersicht zeigt nun die schlechteste Bewertung aller Zeilen an
 * **Automatische Übernahme von GPT-Vorschlägen:** Eine neue Option setzt empfohlene Texte sofort in das DE-Feld
 * **Einfüge-Knopf versteht JSON:** Manuell in den GPT-Test kopierte Antworten können direkt übernommen werden
 * **Zuverlässiges Einfügen:** Der Einfüge-Knopf lädt fehlende Module nach, überträgt Score und Vorschlag in die Daten und zeichnet die Tabelle neu
