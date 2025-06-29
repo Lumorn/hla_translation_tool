@@ -354,6 +354,8 @@ function showGptPromptDialog() {
     area.value = promptText;
     const resultArea = document.getElementById('gptResultArea');
     if (resultArea) resultArea.value = '';
+    const summaryArea = document.getElementById('gptSummaryArea');
+    if (summaryArea) summaryArea.value = '';
     // Einfüge-Knopf deaktivieren und alte Ergebnisse löschen
     gptEvaluationResults = null;
     const insertBtn = document.getElementById('gptPromptInsert');
@@ -381,6 +383,7 @@ async function sendGptPrompt() {
         });
         resultArea.value = JSON.stringify(results, null, 2);
         gptEvaluationResults = results;
+        updateGptSummary(results);
         const insertBtn = document.getElementById('gptPromptInsert');
         if (insertBtn) insertBtn.disabled = false;
     } catch (e) {
@@ -409,6 +412,24 @@ async function insertGptResults() {
         saveCurrentProject();
     }
     closeGptPromptDialog();
+}
+
+// Erstellt eine Übersicht der GPT-Ergebnisse
+function updateGptSummary(results) {
+    const area = document.getElementById('gptSummaryArea');
+    if (!area || !Array.isArray(results)) { if (area) area.value = ''; return; }
+    const lines = results.map(r => {
+        const idNum = Number(r.id);
+        let f = files.find(fl => fl.id === idNum);
+        if (!f) f = files.find(fl => String(fl.id) === String(r.id));
+        const name = f?.name || '';
+        const folder = f?.folder || '';
+        const score = r.score ?? '';
+        const suggestion = (r.suggestion || '').replace(/\n/g, ' ');
+        const comment = (r.comment || '').replace(/\n/g, ' ');
+        return `${name}\t${folder}\t${score}\t${suggestion}\t${comment}`;
+    });
+    area.value = lines.join('\n');
 }
 
 // Bewertet aktuell sichtbare Zeilen über ChatGPT
