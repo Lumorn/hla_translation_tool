@@ -2855,8 +2855,25 @@ th:nth-child(10) {
     flex: 1;
     min-height: 300px;
 }
-#gptSummaryArea {
+.summary-table-wrapper {
+    flex: 1;
+    overflow: auto;
+}
+#gptSummaryTable {
+    width: 100%;
+    border-collapse: collapse;
     font-family: monospace;
+}
+#gptSummaryTable th,
+#gptSummaryTable td {
+    border: 1px solid #444;
+    padding: 4px;
+}
+#gptSummaryTable th {
+    background: #2a2a2a;
+    color: #ff6b1a;
+    position: sticky;
+    top: 0;
 }
 
 /* Fehlerbanner bei API-Problemen */
