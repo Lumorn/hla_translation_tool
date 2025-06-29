@@ -1,13 +1,18 @@
 // Sammele sichtbare Zeilen, rufe den GPT-Service auf und aktualisiere die Tabelle
 // GPT-Service importieren – je nach Umgebung
 let evaluateScene;
+let autoApplySuggestion = false;
 if (typeof require !== 'undefined') {
     try {
         ({ evaluateScene } = require('../gptService.js'));
+        ({ autoApplySuggestion } = require('../main.js'));
     } catch {}
 }
 if (typeof window !== 'undefined' && window.evaluateScene) {
     evaluateScene = window.evaluateScene;
+}
+if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
+    autoApplySuggestion = window.autoApplySuggestion;
 }
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
@@ -23,6 +28,9 @@ function applyEvaluationResults(results, files) {
             f.comment = r.comment || '';
             // Vorschlag separat speichern
             f.suggestion = r.suggestion || '';
+            if (autoApplySuggestion) {
+                f.deText = f.suggestion;
+            }
         }
     }
 }
@@ -64,7 +72,7 @@ async function scoreVisibleLines(opts) {
         results = await evaluateScene({ scene, lines, key: apiKey, model: gptModel });
     } catch (e) {
         if (showErrorBanner) {
-            showErrorBanner(String(e), () => scoreVisibleLines(opts));
+            showErrorBanner(String(e), () => scoreVisibleLines({ ...opts, autoApplySuggestion }));
         }
         return;
     }

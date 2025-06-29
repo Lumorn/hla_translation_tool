@@ -2802,6 +2802,17 @@ th:nth-child(10) {
     color: #fff;
 }
 
+/* Vorschau des GPT-Vorschlags oberhalb des Textfelds */
+.suggestion-preview {
+    font-style: italic;
+    color: #999;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+.suggestion-preview:hover {
+    text-decoration: underline;
+}
+
 /* Blauer Blinkeffekt bei übernommener Übersetzung */
 .blink-blue {
     animation: blinkBlue 0.6s;
