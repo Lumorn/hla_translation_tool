@@ -83,6 +83,11 @@ let openaiModel        = '';
 let gptPromptData      = null;
 // Speichert die Ergebnisse der letzten GPT-Bewertung
 let gptEvaluationResults = null;
+// Soll der GPT-Vorschlag sofort übernommen werden?
+let autoApplySuggestion = localStorage.getItem('hla_autoApplySuggestion') === 'true';
+if (typeof window !== 'undefined') {
+    window.autoApplySuggestion = autoApplySuggestion;
+}
 
 // Liest gespeicherte GPT-Einstellungen beim Start ein
 async function ladeGptEinstellungen() {
@@ -605,6 +610,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // Gespeicherte GPT-Einstellungen laden
     await ladeGptEinstellungen();
+    // Checkbox zum automatischen Übernehmen der GPT-Vorschläge anlegen
+    const menu = document.getElementById('settingsMenu');
+    if (menu) {
+        const label = document.createElement('label');
+        label.className = 'settings-item';
+        label.innerHTML = `<input type="checkbox" id="autoApplySuggestionToggle"> GPT-Vorschläge automatisch übernehmen`;
+        menu.appendChild(label);
+        const cb = label.querySelector('input');
+        cb.checked = autoApplySuggestion;
+        cb.onchange = () => {
+            autoApplySuggestion = cb.checked;
+            localStorage.setItem('hla_autoApplySuggestion', autoApplySuggestion);
+            if (typeof window !== 'undefined') {
+                window.autoApplySuggestion = autoApplySuggestion;
+            }
+        };
+    }
     // Dubbing-Modul nachladen, bevor Funktionen verwendet werden
     if (!moduleStatus.dubbing.loaded) {
         try {
@@ -2575,6 +2597,9 @@ return `
         </div></td>
         <td>
         <div class="suggestion-box ${file.score === undefined || file.score === null ? 'score-none' : file.score >= 70 ? 'score-high' : file.score >= 40 ? 'score-medium' : 'score-low'}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div class="suggestion-preview" data-id="${file.id}">
+          ${escapeHtml(file.suggestion || '')}
+        </div>
         <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
@@ -2633,6 +2658,19 @@ return `
         sortedFiles.forEach(f => {
             updateTranslationDisplay(f.id);
             updateSuggestionDisplay(f.id);
+        });
+        document.querySelectorAll('.suggestion-preview').forEach(div => {
+            const id = Number(div.dataset.id);
+            const file = files.find(f => f.id === id);
+            div.textContent = file.suggestion || '';
+            div.onclick = () => {
+                file.deText = file.suggestion;
+                window.isDirty = true;
+                const textarea = div.nextElementSibling;
+                textarea.value = file.deText;
+                textarea.classList.add('blink-blue');
+                setTimeout(() => textarea.classList.remove('blink-blue'), 600);
+            };
         });
     }, 50);
 }
@@ -11394,7 +11432,8 @@ if (typeof module !== "undefined" && module.exports) {
         __setSaveCurrentProject: fn => { saveCurrentProject = fn; },
         __setProjects: p => { projects = p; },
         __setFilePathDatabase: db => { filePathDatabase = db; },
-        __setTextDatabase: db => { textDatabase = db; }
+        __setTextDatabase: db => { textDatabase = db; },
+        autoApplySuggestion
     };
 }
 
