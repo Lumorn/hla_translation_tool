@@ -2790,21 +2790,6 @@ th:nth-child(10) {
     background: #3A3;
 }
 
-/* Vorschläge über dem DE-Text */
-.de-suggestion {
-    font-size: 12px;
-    margin-bottom: 2px;
-    padding: 2px 4px;
-    border-radius: 4px;
-    display: inline-block;
-}
-
-.de-suggestion.empty { display: none; }
-.sug-none { background: #666; color: #ccc; }
-.sug-low { background: #A33; color: #fff; }
-.sug-medium { background: #BB8; color: #000; }
-.sug-high { background: #3A3; color: #fff; }
-
 /* Blauer Blinkeffekt bei übernommener Übersetzung */
 .blink-blue {
     animation: blinkBlue 0.6s;
