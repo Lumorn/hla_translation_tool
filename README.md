@@ -45,7 +45,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Aktives Projekt hervorgehoben:** Das aktuell geöffnete Projekt ist in der Seitenleiste deutlich markiert.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
+* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip nur noch den Kommentar, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
 * **GPT-Konsole:** Beim Klick auf "Bewerten (GPT)" öffnet sich ein Fenster mit einem Log aller gesendeten Prompts und Antworten
 * **Prompt-Vorschau:** Vor dem eigentlichen Versand zeigt ein Dialog den kompletten Prompt an. Erst nach Klick auf "Senden" wird die Anfrage gestellt und die Antwort im selben Fenster angezeigt
@@ -53,7 +53,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Vorab-Dialog für GPT:** Vor dem Start zeigt ein Fenster, wie viele Zeilen und Sprecher enthalten sind
 * **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
 * **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
-* **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`
+* **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`; jede Bewertung liefert nun immer auch einen Verbesserungsvorschlag
 * **Auswahl des GPT-Modells:** Im ChatGPT-Dialog lässt sich das Modell wählen. Die Liste wird auf Wunsch vom Server geladen und für 24&nbsp;Stunden gespeichert
 * **Automatisch geladene GPT-Einstellungen:** Gespeicherter Key und gewähltes Modell stehen nach dem Start sofort zur Verfügung
 * **Robuste GPT-Antworten:** Entfernt ```json-Blöcke``` automatisch und verhindert so Parsefehler

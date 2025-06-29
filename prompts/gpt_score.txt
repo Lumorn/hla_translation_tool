@@ -15,14 +15,13 @@ Du erhältst einen **Block von Dialogzeilen** mit englischem Original, deutscher
      • 95–100 = perfekt/ sehr gut → grün  
      • 85–94  = akzeptabel, kleinere Schwächen → gelb  
      • < 85   = problematisch oder bedeutungsverkürzt → rot  
-   - Formuliere einen **knappen Kommentar** (max. 120 Zeichen), der den Score erklärt.
+   - Formuliere einen **knappen Kommentar** (max. 120 Zeichen), der Score und eventuelle Änderungen begründet.
 
-3. **Stiloptimierung**  
-   - Für alle Zeilen **mit Score < 95**:  
-     • Erstelle eine **alternative, idiomatische Fassung**, die  
-       – **vollständig** alle Originalbedeutungen enthält  
-       – **natürlich** gesprochen klingt  
-       – **charakter- und kontextgerecht** ist  
+3. **Stiloptimierung**
+   - Erstelle **für jede Zeile** eine **alternative, idiomatische Fassung**, die
+       – **vollständig** alle Originalbedeutungen enthält
+       – **natürlich** gesprochen klingt
+       – **charakter- und kontextgerecht** ist
      • Kürze nur, wenn **keine** Information verloren geht.
 
 Antworte **ausschließlich** im folgenden JSON-Array-Format:
