@@ -1,11 +1,6 @@
 let systemPrompt = '';
 let promptReady;
 
-// Liefert den geladenen System-Prompt
-function getSystemPrompt() {
-    return systemPrompt;
-}
-
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompt per Fetch laden
     const url = '../prompts/gpt_score.txt';
@@ -18,10 +13,7 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     const fs = require('fs');
     const path = require('path');
     try {
-        const localPath = path.join(__dirname, '..', 'prompts', 'gpt_score.txt');
-        const rootPath  = path.join(__dirname, '..', '..', 'prompts', 'gpt_score.txt');
-        const filePath  = fs.existsSync(localPath) ? localPath : rootPath;
-        systemPrompt = fs.readFileSync(filePath, 'utf8').trim();
+        systemPrompt = fs.readFileSync(path.join(__dirname, '..', 'prompts', 'gpt_score.txt'), 'utf8').trim();
     } catch (e) {
         console.error('Prompt konnte nicht geladen werden', e);
     }
@@ -170,13 +162,11 @@ async function fetchModels(apiKey, ignoreCache = false) {
 }
 
 // Kompatibilität für CommonJS
-// Exporte für Node und Browser bereitstellen
 if (typeof module !== 'undefined') {
-    module.exports = { evaluateScene, testKey, fetchModels, getSystemPrompt };
+    module.exports = { evaluateScene, testKey, fetchModels };
 }
 if (typeof window !== 'undefined') {
     window.evaluateScene = evaluateScene;
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
-    window.getSystemPrompt = getSystemPrompt;
 }
