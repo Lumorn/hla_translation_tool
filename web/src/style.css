@@ -208,13 +208,10 @@ th:nth-child(10) {
             flex: 1;
             max-width: 400px;
             position: relative;
-            display: flex; /* Input und Knopf nebeneinander */
-            align-items: center;
         }
 
         .search-input {
-            flex: 1;
-            width: auto;
+            width: 100%;
             padding: 10px 15px;
             background: #1a1a1a;
             border: 1px solid #444;
@@ -464,9 +461,9 @@ th:nth-child(10) {
             align-items: center;
         }
 
-        /* GPT-Knopf neben der Suche */
+        /* GPT-Knopf weiter rechts platzieren */
         #gptScoreButton {
-            margin-left: 10px;
+            margin-left: auto;
         }
 
 .video-launch {
