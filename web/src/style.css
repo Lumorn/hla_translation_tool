@@ -2804,6 +2804,10 @@ th:nth-child(10) {
 .suggestion-box.score-high {
     color: #fff;
 }
+.suggestion-box:empty,
+.suggestion-preview:empty {
+    display: none;
+}
 
 /* Vorschau des GPT-Vorschlags oberhalb des Textfelds */
 .suggestion-preview {

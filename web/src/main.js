@@ -3918,16 +3918,22 @@ function updateTranslationDisplay(fileId) {
 
 // Zeigt den GPT-Vorschlag oberhalb des DE-Textes an
 function updateSuggestionDisplay(fileId) {
-    const div = document.querySelector(`.suggestion-box[data-file-id="${fileId}"]`);
+    const box = document.querySelector(`.suggestion-box[data-file-id="${fileId}"]`);
+    const preview = document.querySelector(`.suggestion-preview[data-id="${fileId}"]`);
     const file = files.find(f => f.id === fileId);
-    if (div && file) {
-        div.textContent = file.suggestion || '';
+    if (box && file) {
+        box.textContent = file.suggestion || '';
         const cls = file.score === undefined || file.score === null
             ? 'score-none'
             : file.score >= 70 ? 'score-high'
                 : file.score >= 40 ? 'score-medium'
                     : 'score-low';
-        div.className = `suggestion-box ${cls}`;
+        box.className = `suggestion-box ${cls}`;
+        box.style.display = file.suggestion ? 'block' : 'none';
+    }
+    if (preview && file) {
+        preview.textContent = file.suggestion || '';
+        preview.style.display = file.suggestion ? 'block' : 'none';
     }
 }
 
