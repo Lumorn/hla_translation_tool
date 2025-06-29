@@ -59,8 +59,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Charaktername im GPT-Prompt:** Das Feld `character` nutzt nun den Ordnernamen
 * **Bugfix:** Scores werden korrekt eingefügt, auch wenn ID und Score als Zeichenketten geliefert werden
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
-* **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
-* **Einfüge-Knopf versteht JSON:** Manuell in den GPT-Test kopierte Antworten können direkt übernommen werden
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.

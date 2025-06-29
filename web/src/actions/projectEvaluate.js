@@ -27,18 +27,6 @@ function applyEvaluationResults(results, files) {
     }
 }
 
-// Wandelt den Inhalt des Textfelds in ein Array um
-// Erwartet einen JSON-String und liefert das Array oder null
-function parseEvaluationResults(text) {
-    if (!text) return null;
-    try {
-        const data = JSON.parse(text);
-        return Array.isArray(data) ? data : null;
-    } catch {
-        return null;
-    }
-}
-
 async function scoreVisibleLines(opts) {
     const { displayOrder, files, currentProject, apiKey, gptModel, renderTable,
             updateStatus, showErrorBanner, showToast } = opts;
@@ -75,10 +63,9 @@ async function scoreVisibleLines(opts) {
 
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
-    module.exports = { scoreVisibleLines, applyEvaluationResults, parseEvaluationResults };
+    module.exports = { scoreVisibleLines, applyEvaluationResults };
 }
 if (typeof window !== 'undefined') {
     window.scoreVisibleLines = scoreVisibleLines;
     window.applyEvaluationResults = applyEvaluationResults;
-    window.parseEvaluationResults = parseEvaluationResults;
 }

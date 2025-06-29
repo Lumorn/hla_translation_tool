@@ -2790,18 +2790,6 @@ th:nth-child(10) {
     background: #3A3;
 }
 
-/* Anzeige des GPT-Vorschlags oberhalb des DE-Textes */
-.suggestion-box {
-    font-size: 0.8rem;
-    margin-bottom: 2px;
-    padding: 2px 4px;
-    border-radius: 3px;
-}
-.suggestion-box.score-low,
-.suggestion-box.score-high {
-    color: #fff;
-}
-
 /* Blauer Blinkeffekt bei übernommener Übersetzung */
 .blink-blue {
     animation: blinkBlue 0.6s;
