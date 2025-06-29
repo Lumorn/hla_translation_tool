@@ -239,10 +239,13 @@ if (typeof module !== 'undefined' && module.exports) {
         }
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
+        // Funktionen entweder aus dem Modul oder von window uebernehmen
         applyEvaluationResults = mod.applyEvaluationResults ||
-                                (mod.default && mod.default.applyEvaluationResults);
+                                (mod.default && mod.default.applyEvaluationResults) ||
+                                window.applyEvaluationResults;
         scoreVisibleLines = mod.scoreVisibleLines ||
-                           (mod.default && mod.default.scoreVisibleLines);
+                           (mod.default && mod.default.scoreVisibleLines) ||
+                           window.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
@@ -287,10 +290,13 @@ if (typeof module !== 'undefined' && module.exports) {
         }
     }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
+        // Fallback auf window, falls keine Exporte vorhanden sind
         applyEvaluationResults = mod.applyEvaluationResults ||
-                                (mod.default && mod.default.applyEvaluationResults);
+                                (mod.default && mod.default.applyEvaluationResults) ||
+                                window.applyEvaluationResults;
         scoreVisibleLines = mod.scoreVisibleLines ||
-                           (mod.default && mod.default.scoreVisibleLines);
+                           (mod.default && mod.default.scoreVisibleLines) ||
+                           window.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
@@ -447,8 +453,10 @@ async function insertGptResults() {
         }
         if (typeof applyEvaluationResults !== 'function') {
             const mod = await import('./actions/projectEvaluate.js');
+            // Nach dem Laden auch window pruefen
             applyEvaluationResults = mod.applyEvaluationResults ||
-                                    (mod.default && mod.default.applyEvaluationResults);
+                                    (mod.default && mod.default.applyEvaluationResults) ||
+                                    window.applyEvaluationResults;
         }
     }
     btn.disabled = true;

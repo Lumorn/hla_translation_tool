@@ -73,6 +73,8 @@
 * Dateiwächter wartet auf stabile Dateigröße und löscht nur noch die importierte Datei.
 ## 🛠️ Patch in 1.40.35
 * Der Dateiwächter importiert Dateien jetzt nur automatisch, wenn eine passende Dubbing-ID vorhanden ist. Unbekannte Dateien öffnen stattdessen den manuellen Import-Dialog.
+## 🛠️ Patch in 1.40.36
+* Fehler behoben: Beim Einfügen von GPT-Ergebnissen erschien teilweise "applyEvaluationResults is not a function".
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
