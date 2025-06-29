@@ -303,8 +303,24 @@ function cleanupDubCache() {
 if (typeof document !== "undefined" && typeof document.getElementById === "function") {
     const gptBtn = document.getElementById("gptScoreButton");
     if (gptBtn) {
-        gptBtn.addEventListener("click", showGptStartDialog);
+        gptBtn.addEventListener("click", () => {
+            if (currentProject?.gptTests?.length) {
+                openSavedGptTests();
+            } else {
+                showGptStartDialog();
+            }
+        });
     }
+}
+
+// Öffnet die gespeicherten GPT-Tabs ohne neue Bewertung
+function openSavedGptTests() {
+    renderGptTestTabs();
+    if (currentProject && currentProject.gptTests?.length) {
+        const idx = currentProject.gptTabIndex ?? 0;
+        selectGptTestTab(Math.min(idx, currentProject.gptTests.length - 1));
+    }
+    document.getElementById('gptPromptDialog').classList.remove('hidden');
 }
 
 // Öffnet einen Dialog mit Zeilenzahl und Sprechern
@@ -396,6 +412,7 @@ async function sendGptPrompt() {
                 summary: results
             });
             currentProject.gptTabIndex = currentProject.gptTests.length - 1;
+            isDirty = true; // Änderungen merken, damit Tabs gespeichert werden
             saveCurrentProject();
             renderGptTestTabs();
         }
@@ -481,12 +498,16 @@ function selectGptTestTab(index) {
     const test = currentProject.gptTests[index];
     if (!test) return;
     currentProject.gptTabIndex = index;
+    isDirty = true; // Aktive Tab-Position speichern
+    saveCurrentProject();
     const area = document.getElementById('gptPromptArea');
     const res  = document.getElementById('gptResultArea');
     if (area) area.value = test.prompt || '';
     if (res)  res.value = test.result || '';
     gptEvaluationResults = test.summary || null;
     updateGptSummary(test.summary || []);
+    const insertBtn = document.getElementById('gptPromptInsert');
+    if (insertBtn) insertBtn.disabled = !gptEvaluationResults;
     renderGptTestTabs();
 }
 
@@ -497,6 +518,7 @@ function deleteGptTestTab(index) {
     if (currentProject.gptTabIndex >= currentProject.gptTests.length) {
         currentProject.gptTabIndex = currentProject.gptTests.length - 1;
     }
+    isDirty = true; // Tab-Liste wurde geändert
     saveCurrentProject();
     renderGptTestTabs();
     if (currentProject.gptTabIndex >= 0) {
