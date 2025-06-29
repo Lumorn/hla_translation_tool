@@ -2803,6 +2803,7 @@ th:nth-child(10) {
     margin-bottom: 2px;
     padding: 2px 4px;
     border-radius: 3px;
+    cursor: pointer; /* Box ist jetzt direkt anklickbar */
 }
 .suggestion-box.score-low,
 .suggestion-box.score-high {
@@ -2815,20 +2816,8 @@ th:nth-child(10) {
 }
 .suggestion-box.score-high { background: #1e4620; }
 .suggestion-box.score-low  { background: #391212; }
-.suggestion-box:empty,
-.suggestion-preview:empty {
+.suggestion-box:empty {
     display: none;
-}
-
-/* Vorschau des GPT-Vorschlags oberhalb des Textfelds */
-.suggestion-preview {
-    font-style: italic;
-    color: #999;
-    margin-bottom: 4px;
-    cursor: pointer;
-}
-.suggestion-preview:hover {
-    text-decoration: underline;
 }
 
 /* Blauer Blinkeffekt bei übernommener Übersetzung */
