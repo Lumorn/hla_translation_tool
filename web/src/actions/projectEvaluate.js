@@ -19,8 +19,8 @@ if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
 function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
-        const id = Number(r.id);
-        const f = files.find(fl => fl.id === id);
+        const id = String(r.id);
+        const f = files.find(fl => String(fl.id) === id);
         if (f) {
             // Score in Zahl umwandeln, sonst 0
             const sc = Number(r.score);
