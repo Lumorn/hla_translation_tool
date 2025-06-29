@@ -69,6 +69,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Durchschnittlicher GPT-Score pro Projekt:** Die Projektübersicht zeigt nun den Mittelwert aller Bewertungen an
 * **Automatische Übernahme von GPT-Vorschlägen:** Eine neue Option setzt empfohlene Texte sofort in das DE-Feld
 * **Einfüge-Knopf versteht JSON:** Manuell in den GPT-Test kopierte Antworten können direkt übernommen werden
+* **Zuverlässiges Einfügen:** Der Einfüge-Knopf lädt fehlende Module nach, überträgt Score und Vorschlag in die Daten und zeichnet die Tabelle neu
 * **Dritte Spalte im GPT-Test als Tabelle:** Rechts zeigt jetzt eine übersichtliche Tabelle mit ID, Dateiname, Ordner, Bewertung, Vorschlag und Kommentar alle Ergebnisse an
 * **Speicherfunktion für GPT-Test:** Jeder Versand erzeugt einen neuen Tab mit Prompt, Antwort und Tabelle. Tabs lassen sich wechseln und löschen.
 * **GPT-Tabs pro Projekt:** Geöffnete Tests bleiben gespeichert und erscheinen beim nächsten Öffnen wieder.
