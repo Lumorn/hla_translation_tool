@@ -1,22 +1,21 @@
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
-// Gibt die passende CSS-Klasse anhand des Scores zurück
-function getScoreClass(score) {
-    if (score === undefined || score === null) return 'score-none';
-    if (score >= 70) return 'score-high';
-    if (score >= 40) return 'score-medium';
-    return 'score-low';
-}
-
-function scoreCellTemplate(file, escapeHtml) {
-    const cls = getScoreClass(file.score);
+export function scoreCellTemplate(file, escapeHtml) {
+    const noScore = file.score === undefined || file.score === null;
+    const cls = noScore
+        ? 'score-none'
+        : file.score >= 70
+            ? 'score-high'
+            : file.score >= 40
+                ? 'score-medium'
+                : 'score-low';
     const sug = escapeHtml(file.suggestion || '');
     const com = escapeHtml(file.comment || '');
     const title = escapeHtml([file.comment, file.suggestion].filter(Boolean).join(' - '));
-    const scoreText = file.score === undefined || file.score === null ? '0' : file.score;
+    const scoreText = noScore ? '0' : file.score;
     return `<td class="score-cell ${cls}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}</td>`;
 }
 
-function attachScoreHandlers(tbody, files) {
+export function attachScoreHandlers(tbody, files) {
     tbody.querySelectorAll('.score-cell').forEach(cell => {
         const id = Number(cell.parentElement?.dataset.id);
         const suggestion = cell.dataset.suggestion;
@@ -31,7 +30,7 @@ function attachScoreHandlers(tbody, files) {
 }
 
 // Tooltip anzeigen
-function openScoreTooltip(ev, text) {
+export function openScoreTooltip(ev, text) {
     closeScoreTooltip();
     if (!text) return;
     const box = document.createElement('div');
@@ -43,7 +42,7 @@ function openScoreTooltip(ev, text) {
     document.body.appendChild(box);
 }
 
-function closeScoreTooltip() {
+export function closeScoreTooltip() {
     const box = document.getElementById('scoreTooltip');
     if (box) box.remove();
 }
@@ -52,8 +51,6 @@ function applySuggestion(id, files) {
     const file = files.find(f => f.id === id);
     if (!file || !file.suggestion) return;
     file.deText = file.suggestion;
-    // Vorschlag nach Übernahme entfernen
-    file.suggestion = '';
     window.isDirty = true;
     const row = document.querySelector(`tr[data-id='${id}']`);
     const deCell = row?.querySelectorAll('textarea.text-input')[1];
@@ -62,20 +59,4 @@ function applySuggestion(id, files) {
         deCell.classList.add('blink-blue');
         setTimeout(() => deCell.classList.remove('blink-blue'), 600);
     }
-    const sugDiv = row?.querySelector('.gpt-suggestion');
-    if (sugDiv) sugDiv.textContent = '';
-}
-
-// Kompatibilität für CommonJS und Browser
-if (typeof module !== 'undefined') {
-    module.exports = {
-        scoreCellTemplate,
-        attachScoreHandlers,
-        getScoreClass
-    };
-}
-if (typeof window !== 'undefined') {
-    window.scoreCellTemplate = scoreCellTemplate;
-    window.attachScoreHandlers = attachScoreHandlers;
-    window.getScoreClass = getScoreClass;
 }
