@@ -1,6 +1,25 @@
 let systemPrompt = '';
 let promptReady;
 
+// Entfernt Codeblock-Markierungen und prüft grob auf JSON
+function sanitizeJSONResponse(content) {
+    if (typeof content !== 'string') return content;
+    let text = content.trim();
+    if (text.startsWith('```')) {
+        text = text.replace(/^```[a-zA-Z0-9]*\s*/, '').replace(/```\s*$/, '');
+    }
+    text = text.trim();
+    if (!text.startsWith('[') && !text.startsWith('{')) {
+        console.warn('Unerwartetes Antwortformat', text.slice(0, 30));
+    }
+    return text;
+}
+
+// Liefert den geladenen System-Prompt
+function getSystemPrompt() {
+    return systemPrompt;
+}
+
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompt per Fetch laden
     const url = '../prompts/gpt_score.txt';
@@ -13,7 +32,10 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     const fs = require('fs');
     const path = require('path');
     try {
-        systemPrompt = fs.readFileSync(path.join(__dirname, '..', 'prompts', 'gpt_score.txt'), 'utf8').trim();
+        const localPath = path.join(__dirname, '..', 'prompts', 'gpt_score.txt');
+        const rootPath  = path.join(__dirname, '..', '..', 'prompts', 'gpt_score.txt');
+        const filePath  = fs.existsSync(localPath) ? localPath : rootPath;
+        systemPrompt = fs.readFileSync(filePath, 'utf8').trim();
     } catch (e) {
         console.error('Prompt konnte nicht geladen werden', e);
     }
@@ -74,7 +96,8 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
                 throw new Error(`HTTP ${res.status}`);
             }
             const data = await res.json();
-            const arr = JSON.parse(data.choices[0].message.content);
+            const clean = sanitizeJSONResponse(data.choices[0].message.content);
+            const arr = JSON.parse(clean);
             const resText = JSON.stringify(arr);
             if (typeof window !== 'undefined' && window.debugLog) {
                 window.debugLog('[GPT RESPONSE]', resText);
@@ -162,11 +185,20 @@ async function fetchModels(apiKey, ignoreCache = false) {
 }
 
 // Kompatibilität für CommonJS
+// Exporte für Node und Browser bereitstellen
 if (typeof module !== 'undefined') {
-    module.exports = { evaluateScene, testKey, fetchModels };
+    module.exports = {
+        evaluateScene,
+        testKey,
+        fetchModels,
+        getSystemPrompt,
+        sanitizeJSONResponse
+    };
 }
 if (typeof window !== 'undefined') {
     window.evaluateScene = evaluateScene;
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
+    window.getSystemPrompt = getSystemPrompt;
+    window.sanitizeJSONResponse = sanitizeJSONResponse;
 }
