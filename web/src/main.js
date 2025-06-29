@@ -2564,7 +2564,9 @@ return `
                 <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
             </div>
         </div></td>
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+        <td>
+        <div class="suggestion-box ${file.score === undefined || file.score === null ? 'score-none' : file.score >= 70 ? 'score-high' : file.score >= 40 ? 'score-medium' : 'score-low'}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
@@ -2573,7 +2575,8 @@ return `
                 ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
             </div>
         </div>
-        <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div></td>
+        <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
+        </td>
         <!-- Untertitel-Suche Knopf -->
         <td><div class="btn-column">
             <button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="Ähnlichen Untertitel suchen">🔍</button>
@@ -2618,7 +2621,10 @@ return `
     // Nach dem Rendern Textfelder und Übersetzungsanzeige anpassen
     setTimeout(() => {
         resizeTextFields();
-        sortedFiles.forEach(f => updateTranslationDisplay(f.id));
+        sortedFiles.forEach(f => {
+            updateTranslationDisplay(f.id);
+            updateSuggestionDisplay(f.id);
+        });
     }, 50);
 }
 // =========================== RENDER FILE TABLE WITH ORDER END ===========================
@@ -3724,6 +3730,21 @@ function updateTranslationDisplay(fileId) {
     const file = files.find(f => f.id === fileId);
     if (div && file) {
         div.textContent = file.autoTranslation || '';
+    }
+}
+
+// Zeigt den GPT-Vorschlag oberhalb des DE-Textes an
+function updateSuggestionDisplay(fileId) {
+    const div = document.querySelector(`.suggestion-box[data-file-id="${fileId}"]`);
+    const file = files.find(f => f.id === fileId);
+    if (div && file) {
+        div.textContent = file.suggestion || '';
+        const cls = file.score === undefined || file.score === null
+            ? 'score-none'
+            : file.score >= 70 ? 'score-high'
+                : file.score >= 40 ? 'score-medium'
+                    : 'score-low';
+        div.className = `suggestion-box ${cls}`;
     }
 }
 
@@ -5715,6 +5736,10 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         deText: textDatabase[fileKey]?.de || '',
         autoTranslation: '',
         autoSource: '',
+        // Bewertungsergebnisse von GPT
+        score: null,
+        comment: '',
+        suggestion: '',
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
@@ -10189,6 +10214,10 @@ function addFileToProject(filename, folder, originalResult) {
         deText: textDatabase[fileKey]?.de || '',
         autoTranslation: '',
         autoSource: '',
+        // Bewertungsergebnisse von GPT
+        score: null,
+        comment: '',
+        suggestion: '',
         selected: true,
         trimStartMs: 0,
         trimEndMs: 0,
