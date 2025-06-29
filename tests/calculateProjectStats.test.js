@@ -11,7 +11,8 @@ describe('calculateProjectStats', () => {
             dePercent: 0,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 0
+            totalFiles: 0,
+            scoreAvg: 0
         });
     });
 
@@ -23,7 +24,8 @@ describe('calculateProjectStats', () => {
             dePercent: 0,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 0
+            totalFiles: 0,
+            scoreAvg: 0
         });
     });
 
@@ -37,7 +39,8 @@ describe('calculateProjectStats', () => {
             dePercent: 100,
             deAudioPercent: 100,
             completedPercent: 100,
-            totalFiles: 1
+            totalFiles: 1,
+            scoreAvg: 0
         });
     });
 
@@ -55,7 +58,8 @@ describe('calculateProjectStats', () => {
             dePercent: 0,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 3
+            totalFiles: 3,
+            scoreAvg: 0
         });
     });
 
@@ -72,7 +76,8 @@ describe('calculateProjectStats', () => {
             dePercent: 100,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 2
+            totalFiles: 2,
+            scoreAvg: 0
         });
     });
 
@@ -89,7 +94,8 @@ describe('calculateProjectStats', () => {
             dePercent: 50,
             deAudioPercent: 0,
             completedPercent: 0,
-            totalFiles: 2
+            totalFiles: 2,
+            scoreAvg: 0
         });
     });
 
@@ -106,7 +112,19 @@ describe('calculateProjectStats', () => {
             dePercent: 100,
             deAudioPercent: 50,
             completedPercent: 50,
-            totalFiles: 2
+            totalFiles: 2,
+            scoreAvg: 0
         });
+    });
+
+    test('average gpt score is calculated', () => {
+        const result = calculateProjectStats({
+            files: [
+                { score: 20 },
+                { score: 40 },
+                { score: 60 }
+            ]
+        });
+        expect(result.scoreAvg).toBe(40);
     });
 });
