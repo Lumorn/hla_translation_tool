@@ -30,7 +30,8 @@ export async function scoreVisibleLines(opts) {
     });
     const lines = visible.map(({ file }) => ({
         id: file.id,
-        character: file.character || '',
+        // Charakter entspricht dem Ordnernamen
+        character: file.character || file.folder || '',
         en: file.enText || '',
         de: file.deText || ''
     }));
