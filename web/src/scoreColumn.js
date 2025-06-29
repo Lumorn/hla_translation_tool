@@ -15,8 +15,11 @@ export const SCORE_COLORS = {
     'score-high': '#3A3'
 };
 
-// Ermittelt bei heller Hintergrundfarbe automatisch schwarze Schrift
+// Gibt die zur Score-Farbe passende Schriftfarbe zurück
 export function getContrastingTextColor(hex) {
+    const c = hex.toLowerCase();
+    if (c === '#bb8') return '#000'; // gelb -> schwarze Schrift
+    if (c === '#3a3' || c === '#a33') return '#fff'; // grün/rot -> weiße Schrift
     if (hex.length === 4) hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
     const r = parseInt(hex.substr(1, 2), 16);
     const g = parseInt(hex.substr(3, 2), 16);

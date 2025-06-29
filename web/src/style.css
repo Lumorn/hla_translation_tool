@@ -2285,6 +2285,7 @@ th:nth-child(10) {
 
 .similarity-score.medium {
     background: #ff9800;
+    color: #000;
 }
 
 .similarity-score.low {
