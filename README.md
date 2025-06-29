@@ -58,6 +58,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robuste GPT-Antworten:** Entfernt ```json-Blöcke``` automatisch und verhindert so Parsefehler
 * **Charaktername im GPT-Prompt:** Das Feld `character` nutzt nun den Ordnernamen
 * **Bugfix:** Scores werden korrekt eingefügt, auch wenn ID und Score als Zeichenketten geliefert werden
+* **Bugfix:** GPT-Bewertungen funktionieren jetzt auch bei Dezimal-IDs
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
 * **Automatische Übernahme von GPT-Vorschlägen:** Eine neue Option setzt empfohlene Texte sofort in das DE-Feld
