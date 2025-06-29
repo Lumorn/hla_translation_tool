@@ -396,6 +396,7 @@ async function sendGptPrompt() {
                 summary: results
             });
             currentProject.gptTabIndex = currentProject.gptTests.length - 1;
+            isDirty = true; // Änderungen merken, damit Tabs gespeichert werden
             saveCurrentProject();
             renderGptTestTabs();
         }
@@ -481,6 +482,8 @@ function selectGptTestTab(index) {
     const test = currentProject.gptTests[index];
     if (!test) return;
     currentProject.gptTabIndex = index;
+    isDirty = true; // Aktive Tab-Position speichern
+    saveCurrentProject();
     const area = document.getElementById('gptPromptArea');
     const res  = document.getElementById('gptResultArea');
     if (area) area.value = test.prompt || '';
@@ -497,6 +500,7 @@ function deleteGptTestTab(index) {
     if (currentProject.gptTabIndex >= currentProject.gptTests.length) {
         currentProject.gptTabIndex = currentProject.gptTests.length - 1;
     }
+    isDirty = true; // Tab-Liste wurde geändert
     saveCurrentProject();
     renderGptTestTabs();
     if (currentProject.gptTabIndex >= 0) {
