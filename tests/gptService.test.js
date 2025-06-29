@@ -64,3 +64,11 @@ test('applyEvaluationResults überträgt Score und Kommentar', () => {
   expect(files[0].comment).toBe('ok');
   expect(files[0].suggestion).toBe('neu');
 });
+
+test('parseEvaluationResults liefert Array oder null', () => {
+  const { parseEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
+  const valid = '[{"id":1}]';
+  const invalid = 'foo';
+  expect(parseEvaluationResults(valid)).toEqual([{ id: 1 }]);
+  expect(parseEvaluationResults(invalid)).toBeNull();
+});
