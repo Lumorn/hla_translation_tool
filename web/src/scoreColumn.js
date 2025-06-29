@@ -37,7 +37,8 @@ export function scoreCellTemplate(file, escapeHtml) {
     const com = escapeHtml(file.comment || '');
     // Score immer als Prozentwert anzeigen
     const scoreText = noScore ? '0' : file.score;
-    return `<td class="score-cell ${cls}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}%</td>`;
+    // Tooltip auch per title-Attribut hinterlegen, damit das gesamte Feld reagiert
+    return `<td class="score-cell ${cls}" title="${com}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}%</td>`;
 }
 
 export function attachScoreHandlers(tbody, files) {

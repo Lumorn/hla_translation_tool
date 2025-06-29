@@ -2776,6 +2776,7 @@ th:nth-child(10) {
 /* Score-Bewertungen */
 .score-cell {
     text-align: center;
+    cursor: pointer; /* gesamtes Feld ist anklickbar */
 }
 
 .score-none {
