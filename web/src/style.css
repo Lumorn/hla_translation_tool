@@ -2823,16 +2823,6 @@ th:nth-child(10) {
     margin-bottom: 10px;
 }
 
-/* Einfacher Dialog zum Testen des GPT-Prompts */
-.gpt-test-dialog .prompt-result-container {
-    display: flex;
-    gap: 10px;
-}
-.gpt-test-dialog textarea {
-    width: 50%;
-    min-height: 300px;
-}
-
 /* Fehlerbanner bei API-Problemen */
 .error-banner {
     position: fixed;
