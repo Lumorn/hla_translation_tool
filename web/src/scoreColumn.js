@@ -1,8 +1,9 @@
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
 // Ermittelt die passende CSS-Klasse basierend auf dem Score
+// Liefert die CSS-Klasse abhängig von der prozentualen Bewertung
 export function scoreClass(score) {
     if (score === undefined || score === null) return 'score-none';
-    return score >= 70 ? 'score-high' : score >= 40 ? 'score-medium' : 'score-low';
+    return score >= 95 ? 'score-high' : score >= 85 ? 'score-medium' : 'score-low';
 }
 
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
@@ -61,4 +62,15 @@ function applySuggestion(id, files) {
         deCell.classList.add('blink-blue');
         setTimeout(() => deCell.classList.remove('blink-blue'), 600);
     }
+}
+
+// Export für Node-Tests
+if (typeof module !== 'undefined') {
+    module.exports = {
+        scoreClass,
+        scoreCellTemplate,
+        attachScoreHandlers,
+        openScoreTooltip,
+        closeScoreTooltip
+    };
 }
