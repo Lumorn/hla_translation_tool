@@ -433,8 +433,19 @@ async function sendGptPrompt() {
 // Übernimmt die letzten GPT-Ergebnisse in die Tabelle
 async function insertGptResults() {
     const btn = document.getElementById('gptPromptInsert');
-    // Ohne Button oder Auswertungsfunktion abbrechen
-    if (!btn || !applyEvaluationResults) return;
+    if (!btn) return;
+    // Fehlendes Modul bei Bedarf nachladen
+    if (typeof applyEvaluationResults !== 'function') {
+        if (typeof require !== 'undefined') {
+            try {
+                ({ applyEvaluationResults } = require('./actions/projectEvaluate.js'));
+            } catch {}
+        }
+        if (typeof applyEvaluationResults !== 'function') {
+            const mod = await import('./actions/projectEvaluate.js');
+            applyEvaluationResults = mod.applyEvaluationResults;
+        }
+    }
     btn.disabled = true;
     let results = gptEvaluationResults;
     if (!results) {
@@ -446,6 +457,10 @@ async function insertGptResults() {
     if (!results) { btn.disabled = false; return; }
     applyEvaluationResults(results, files);
     await renderFileTable();
+    const tbody = document.getElementById('fileTableBody');
+    if (tbody && typeof attachScoreHandlers === 'function') {
+        attachScoreHandlers(tbody, files);
+    }
     if (typeof saveCurrentProject === 'function') {
         saveCurrentProject();
     }
@@ -3735,9 +3750,38 @@ function findAudioInFilePathCache(filename, folder) {
 
     // Tabellenanzeige
     async function renderFileTable() {
-        // Reset display order when rendering normally
-        displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
-        await renderFileTableWithOrder(files);
+        if (displayOrder.length !== files.length) {
+            displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
+        }
+
+        let sortedFiles = [...files];
+        switch (currentSort.column) {
+            case 'position':
+                sortedFiles = displayOrder.map(item => item.file);
+                break;
+            case 'filename':
+                sortedFiles.sort((a, b) => {
+                    const result = a.filename.localeCompare(b.filename);
+                    return currentSort.direction === 'asc' ? result : -result;
+                });
+                break;
+            case 'folder':
+                sortedFiles.sort((a, b) => {
+                    const result = a.folder.localeCompare(b.folder);
+                    return currentSort.direction === 'asc' ? result : -result;
+                });
+                break;
+            case 'completion':
+                sortedFiles.sort((a, b) => {
+                    const aCompleted = a.completed ? 1 : 0;
+                    const bCompleted = b.completed ? 1 : 0;
+                    const result = bCompleted - aCompleted;
+                    return currentSort.direction === 'asc' ? -result : result;
+                });
+                break;
+        }
+
+        await renderFileTableWithOrder(sortedFiles);
     }
 
 function addDragAndDropHandlers() {
@@ -11580,7 +11624,8 @@ if (typeof module !== "undefined" && module.exports) {
         __setProjects: p => { projects = p; },
         __setFilePathDatabase: db => { filePathDatabase = db; },
         __setTextDatabase: db => { textDatabase = db; },
-        autoApplySuggestion
+        autoApplySuggestion,
+        insertGptResults
     };
 }
 

@@ -2804,6 +2804,8 @@ th:nth-child(10) {
 .suggestion-box.score-high {
     color: #fff;
 }
+.suggestion-box.score-high { background: #1e4620; }
+.suggestion-box.score-low  { background: #391212; }
 .suggestion-box:empty,
 .suggestion-preview:empty {
     display: none;
