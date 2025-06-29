@@ -354,8 +354,8 @@ function showGptPromptDialog() {
     area.value = promptText;
     const resultArea = document.getElementById('gptResultArea');
     if (resultArea) resultArea.value = '';
-    const summaryArea = document.getElementById('gptSummaryArea');
-    if (summaryArea) summaryArea.value = '';
+    const summaryBody = document.querySelector('#gptSummaryTable tbody');
+    if (summaryBody) summaryBody.innerHTML = '';
     // Einfüge-Knopf deaktivieren und alte Ergebnisse löschen
     gptEvaluationResults = null;
     const insertBtn = document.getElementById('gptPromptInsert');
@@ -416,9 +416,11 @@ async function insertGptResults() {
 
 // Erstellt eine Übersicht der GPT-Ergebnisse
 function updateGptSummary(results) {
-    const area = document.getElementById('gptSummaryArea');
-    if (!area || !Array.isArray(results)) { if (area) area.value = ''; return; }
-    const lines = results.map(r => {
+    const body = document.querySelector('#gptSummaryTable tbody');
+    if (!body || !Array.isArray(results)) { if (body) body.innerHTML = ''; return; }
+    // Tabelle leeren
+    body.innerHTML = '';
+    for (const r of results) {
         const idNum = Number(r.id);
         let f = files.find(fl => fl.id === idNum);
         if (!f) f = files.find(fl => String(fl.id) === String(r.id));
@@ -427,9 +429,16 @@ function updateGptSummary(results) {
         const score = r.score ?? '';
         const suggestion = (r.suggestion || '').replace(/\n/g, ' ');
         const comment = (r.comment || '').replace(/\n/g, ' ');
-        return `${name}\t${folder}\t${score}\t${suggestion}\t${comment}`;
-    });
-    area.value = lines.join('\n');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${name}</td>
+            <td>${folder}</td>
+            <td>${score}</td>
+            <td>${suggestion}</td>
+            <td>${comment}</td>`;
+        body.appendChild(tr);
+    }
 }
 
 // Bewertet aktuell sichtbare Zeilen über ChatGPT
