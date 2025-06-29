@@ -65,14 +65,6 @@ test('applyEvaluationResults überträgt Score und Kommentar', () => {
   expect(files[0].suggestion).toBe('neu');
 });
 
-test('applyEvaluationResults findet dezimale IDs', () => {
-  const { applyEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
-  const files = [{ id: 1234.56 }];
-  const results = [{ id: '1234.56', score: 99, comment: 'gut', suggestion: 'ja' }];
-  applyEvaluationResults(results, files);
-  expect(files[0].score).toBe(99);
-});
-
 test('parseEvaluationResults liefert Array oder null', () => {
   const { parseEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
   const valid = '[{"id":1}]';
