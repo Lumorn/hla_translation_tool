@@ -19,8 +19,13 @@ if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
 function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
-        const id = Number(r.id);
-        const f = files.find(fl => fl.id === id);
+        // ID in Zahl umwandeln, bei Präzisionsproblemen auch String vergleichen
+        const idNum = Number(r.id);
+        let f = files.find(fl => fl.id === idNum);
+        if (!f) {
+            const idStr = String(r.id);
+            f = files.find(fl => String(fl.id) === idStr);
+        }
         if (f) {
             // Score in Zahl umwandeln, sonst 0
             const sc = Number(r.score);
