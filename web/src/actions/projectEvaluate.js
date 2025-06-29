@@ -2,10 +2,12 @@
 // GPT-Service importieren – je nach Umgebung
 let evaluateScene;
 let autoApplySuggestion = false;
+let attachScoreHandlers;
 if (typeof require !== 'undefined') {
     try {
         ({ evaluateScene } = require('../gptService.js'));
         ({ autoApplySuggestion } = require('../main.js'));
+        ({ attachScoreHandlers } = require('../scoreColumn.js'));
     } catch {}
 }
 if (typeof window !== 'undefined' && window.evaluateScene) {
@@ -13,6 +15,9 @@ if (typeof window !== 'undefined' && window.evaluateScene) {
 }
 if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
     autoApplySuggestion = window.autoApplySuggestion;
+}
+if (typeof window !== 'undefined' && window.attachScoreHandlers) {
+    attachScoreHandlers = window.attachScoreHandlers;
 }
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
@@ -82,7 +87,15 @@ async function scoreVisibleLines(opts) {
         return;
     }
     applyEvaluationResults(results, files);
+    // Tabelle mit den aktualisierten Dateien neu aufbauen
     await renderTable(displayOrder.map(d => d.file));
+    if (typeof attachScoreHandlers === 'function' && typeof document !== 'undefined') {
+        const tbody = document.getElementById('fileTableBody');
+        if (tbody) {
+            // Nach dem Aufbau die Score-Klassen erneut binden
+            attachScoreHandlers(tbody, files);
+        }
+    }
     if (updateStatus) updateStatus('GPT-Bewertung abgeschlossen');
 }
 

@@ -1,18 +1,20 @@
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
+// Ermittelt die passende CSS-Klasse basierend auf dem Score
+export function scoreClass(score) {
+    if (score === undefined || score === null) return 'score-none';
+    return score >= 70 ? 'score-high' : score >= 40 ? 'score-medium' : 'score-low';
+}
+
+// Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
 export function scoreCellTemplate(file, escapeHtml) {
+    const cls = scoreClass(file.score);
     const noScore = file.score === undefined || file.score === null;
-    const cls = noScore
-        ? 'score-none'
-        : file.score >= 70
-            ? 'score-high'
-            : file.score >= 40
-                ? 'score-medium'
-                : 'score-low';
     const sug = escapeHtml(file.suggestion || '');
     const com = escapeHtml(file.comment || '');
     const title = escapeHtml([file.comment, file.suggestion].filter(Boolean).join(' - '));
+    // Score immer als Prozentwert anzeigen
     const scoreText = noScore ? '0' : file.score;
-    return `<td class="score-cell ${cls}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}</td>`;
+    return `<td class="score-cell ${cls}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}%</td>`;
 }
 
 export function attachScoreHandlers(tbody, files) {

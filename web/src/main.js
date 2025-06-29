@@ -200,7 +200,7 @@ let pathUtilsPromise;
 let evaluateScene;
 let applyEvaluationResults;
 let scoreVisibleLines;
-let scoreCellTemplate, attachScoreHandlers;
+let scoreCellTemplate, attachScoreHandlers, scoreClass;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
     startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
@@ -233,7 +233,11 @@ if (typeof module !== 'undefined' && module.exports) {
     import('./scoreColumn.js').then(mod => {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
-    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+        scoreClass = mod.scoreClass;
+        if (typeof window !== 'undefined') {
+            window.attachScoreHandlers = attachScoreHandlers;
+        }
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
         scoreVisibleLines = mod.scoreVisibleLines;
@@ -275,7 +279,11 @@ if (typeof module !== 'undefined' && module.exports) {
     import('./scoreColumn.js').then(mod => {
         scoreCellTemplate = mod.scoreCellTemplate;
         attachScoreHandlers = mod.attachScoreHandlers;
-    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; });
+        scoreClass = mod.scoreClass;
+        if (typeof window !== 'undefined') {
+            window.attachScoreHandlers = attachScoreHandlers;
+        }
+    }).catch(() => { scoreCellTemplate = () => ''; attachScoreHandlers = () => {}; scoreClass = () => 'score-none'; });
     import('./actions/projectEvaluate.js').then(mod => {
         applyEvaluationResults = mod.applyEvaluationResults;
         scoreVisibleLines = mod.scoreVisibleLines;
@@ -2732,7 +2740,7 @@ return `
             </div>
         </div></td>
         <td>
-        <div class="suggestion-box ${file.score === undefined || file.score === null ? 'score-none' : file.score >= 70 ? 'score-high' : file.score >= 40 ? 'score-medium' : 'score-low'}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div class="suggestion-box ${scoreClass(file.score)}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
         <div class="suggestion-preview" data-id="${file.id}">
           ${escapeHtml(file.suggestion || '')}
         </div>
@@ -2781,6 +2789,7 @@ return `
     tbody.innerHTML = rows.join('');
 
     // Tooltip- und Klicklogik auslagern
+    // Bindet Tooltip und Klick auf die Score-Zellen und stellt die CSS-Klassen sicher
     attachScoreHandlers(tbody, files);
     
     addDragAndDropHandlers();
@@ -3923,11 +3932,7 @@ function updateSuggestionDisplay(fileId) {
     const file = files.find(f => f.id === fileId);
     if (box && file) {
         box.textContent = file.suggestion || '';
-        const cls = file.score === undefined || file.score === null
-            ? 'score-none'
-            : file.score >= 70 ? 'score-high'
-                : file.score >= 40 ? 'score-medium'
-                    : 'score-low';
+        const cls = scoreClass(file.score);
         box.className = `suggestion-box ${cls}`;
         box.style.display = file.suggestion ? 'block' : 'none';
     }
