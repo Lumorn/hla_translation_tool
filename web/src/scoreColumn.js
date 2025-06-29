@@ -1,5 +1,5 @@
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
-export function scoreCellTemplate(file, escapeHtml) {
+function scoreCellTemplate(file, escapeHtml) {
     const noScore = file.score === undefined || file.score === null;
     const cls = noScore
         ? 'score-none'
@@ -15,7 +15,7 @@ export function scoreCellTemplate(file, escapeHtml) {
     return `<td class="score-cell ${cls}" data-suggestion="${sug}" data-comment="${com}" title="${title}">${scoreText}</td>`;
 }
 
-export function attachScoreHandlers(tbody, files) {
+function attachScoreHandlers(tbody, files) {
     tbody.querySelectorAll('.score-cell').forEach(cell => {
         const id = Number(cell.parentElement?.dataset.id);
         const suggestion = cell.dataset.suggestion;
@@ -30,7 +30,7 @@ export function attachScoreHandlers(tbody, files) {
 }
 
 // Tooltip anzeigen
-export function openScoreTooltip(ev, text) {
+function openScoreTooltip(ev, text) {
     closeScoreTooltip();
     if (!text) return;
     const box = document.createElement('div');
@@ -42,7 +42,7 @@ export function openScoreTooltip(ev, text) {
     document.body.appendChild(box);
 }
 
-export function closeScoreTooltip() {
+function closeScoreTooltip() {
     const box = document.getElementById('scoreTooltip');
     if (box) box.remove();
 }
@@ -51,6 +51,7 @@ function applySuggestion(id, files) {
     const file = files.find(f => f.id === id);
     if (!file || !file.suggestion) return;
     file.deText = file.suggestion;
+    file.suggestion = '';
     window.isDirty = true;
     const row = document.querySelector(`tr[data-id='${id}']`);
     const deCell = row?.querySelectorAll('textarea.text-input')[1];
@@ -59,4 +60,18 @@ function applySuggestion(id, files) {
         deCell.classList.add('blink-blue');
         setTimeout(() => deCell.classList.remove('blink-blue'), 600);
     }
+    const sugBox = row?.querySelector('.de-suggestion');
+    if (sugBox) {
+        sugBox.textContent = '';
+        sugBox.className = 'de-suggestion empty';
+    }
+}
+
+// Exporte für Node und Browser
+if (typeof module !== 'undefined') {
+    module.exports = { scoreCellTemplate, attachScoreHandlers };
+}
+if (typeof window !== 'undefined') {
+    window.scoreCellTemplate = scoreCellTemplate;
+    window.attachScoreHandlers = attachScoreHandlers;
 }

@@ -44,11 +44,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Ein neuer 📚-Knopf speichert englische Wörter zusammen mit deutscher Lautschrift.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
-* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf
+* **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren zeigt ein Tooltip Kommentar und Vorschlag, ein Klick ersetzt den DE-Text und blinkt kurz blau auf. Der Vorschlag steht zusätzlich farbig über dem deutschen Textfeld.
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
 * **GPT-Konsole:** Beim Klick auf "Bewerten (GPT)" öffnet sich ein Fenster mit einem Log aller gesendeten Prompts und Antworten
 * **Prompt-Vorschau:** Vor dem eigentlichen Versand zeigt ein Dialog den kompletten Prompt an. Erst nach Klick auf "Senden" wird die Anfrage gestellt und die Antwort im selben Fenster angezeigt
-* **Bewertung per Einfügen-Knopf:** Nach dem Versand erscheint ein zusätzlicher Knopf, der Score, Kommentar und Vorschlag in die Tabelle übernimmt
+* **Bewertung per Einfügen-Knopf:** Nach dem Versand erscheint ein zusätzlicher Knopf, der Score, Kommentar und Vorschlag in die Tabelle übernimmt und die farbige Vorschlagszeile aktualisiert
 * **Vorab-Dialog für GPT:** Vor dem Start zeigt ein Fenster, wie viele Zeilen und Sprecher enthalten sind
 * **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
 * **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text

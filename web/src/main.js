@@ -2555,7 +2555,9 @@ return `
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
         </td>
         ${scoreCellTemplate(file, escapeHtml)}
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+        <td>
+        <div class="de-suggestion ${getSuggestionClass(file)}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'en', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
@@ -2564,7 +2566,8 @@ return `
                 <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
             </div>
         </div></td>
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+        <td>
+        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="text-input"
                  onchange="updateText(${file.id}, 'de', this.value)"
                  oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
@@ -11224,6 +11227,16 @@ function showChapterCustomization(chapterName, ev) {
         // Hilfsfunktion für RegExp-Erstellung
         function escapeRegExp(str) {
             return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Liefert eine CSS-Klasse für die Vorschlagsfarbe
+        function getSuggestionClass(file) {
+            const sc = Number(file.score);
+            if (!file.suggestion) return 'de-suggestion empty';
+            if (!Number.isFinite(sc)) return 'de-suggestion sug-none';
+            if (sc >= 70) return 'de-suggestion sug-high';
+            if (sc >= 40) return 'de-suggestion sug-medium';
+            return 'de-suggestion sug-low';
         }
 
         // Prüft, ob ein Wort aus dem Wörterbuch im angegebenen Text vorkommt
