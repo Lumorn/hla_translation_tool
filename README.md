@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robustere Zuordnung:** GPT-Ergebnisse finden jetzt auch dann die richtige Zeile, wenn die ID leicht abweicht
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Einheitliche Score-Klassen:** Die Funktion `scoreClass` vergibt überall die gleichen Farbstufen
+* **Feineres Bewertungsschema:** Ab 95 % wird der Score grün, zwischen 85 % und 94 % gelb
 * **Score in Prozent:** Die Bewertung wird in der Tabelle mit Prozentzeichen dargestellt
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
