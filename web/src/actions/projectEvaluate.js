@@ -1,22 +1,33 @@
 // Sammele sichtbare Zeilen, rufe den GPT-Service auf und aktualisiere die Tabelle
-// GPT-Service importieren
-import { evaluateScene } from '../gptService.js';
+// GPT-Service importieren – je nach Umgebung
+let evaluateScene;
+if (typeof require !== 'undefined') {
+    try {
+        ({ evaluateScene } = require('../gptService.js'));
+    } catch {}
+}
+if (typeof window !== 'undefined' && window.evaluateScene) {
+    evaluateScene = window.evaluateScene;
+}
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
-export function applyEvaluationResults(results, files) {
+function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
-        const f = files.find(fl => fl.id === r.id);
+        const id = Number(r.id);
+        const f = files.find(fl => fl.id === id);
         if (f) {
-            f.score = r.score;
-            f.comment = r.comment;
+            // Score in Zahl umwandeln, sonst 0
+            const sc = Number(r.score);
+            f.score = Number.isFinite(sc) ? sc : 0;
+            f.comment = r.comment || '';
             // Vorschlag separat speichern
-            f.suggestion = r.suggestion;
+            f.suggestion = r.suggestion || '';
         }
     }
 }
 
-export async function scoreVisibleLines(opts) {
+async function scoreVisibleLines(opts) {
     const { displayOrder, files, currentProject, apiKey, gptModel, renderTable,
             updateStatus, showErrorBanner, showToast } = opts;
     if (!apiKey) {
@@ -30,7 +41,8 @@ export async function scoreVisibleLines(opts) {
     });
     const lines = visible.map(({ file }) => ({
         id: file.id,
-        character: file.character || '',
+        // Charakter entspricht dem Ordnernamen
+        character: file.character || file.folder || '',
         en: file.enText || '',
         de: file.deText || ''
     }));
@@ -52,4 +64,8 @@ export async function scoreVisibleLines(opts) {
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
     module.exports = { scoreVisibleLines, applyEvaluationResults };
+}
+if (typeof window !== 'undefined') {
+    window.scoreVisibleLines = scoreVisibleLines;
+    window.applyEvaluationResults = applyEvaluationResults;
 }

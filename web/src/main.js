@@ -79,6 +79,23 @@ let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
 // Gespeicherter API-Key für ChatGPT (wird verschlüsselt auf der Festplatte gespeichert)
 let openaiApiKey       = '';
 let openaiModel        = '';
+// Merkt Szene und Zeilen für den GPT-Testdialog
+let gptPromptData      = null;
+// Speichert die Ergebnisse der letzten GPT-Bewertung
+let gptEvaluationResults = null;
+
+// Liest gespeicherte GPT-Einstellungen beim Start ein
+async function ladeGptEinstellungen() {
+    if (window.electronAPI?.loadOpenaiSettings) {
+        try {
+            const data = await window.electronAPI.loadOpenaiSettings();
+            openaiApiKey = data.key || '';
+            openaiModel  = data.model || '';
+        } catch (e) {
+            console.error('GPT-Einstellungen konnten nicht geladen werden', e);
+        }
+    }
+}
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
@@ -306,19 +323,78 @@ function closeGptStartDialog() {
 // Startet die eigentliche Bewertung nach Bestätigung
 function startGptScoring() {
     closeGptStartDialog();
-    if (typeof scoreVisibleLines === 'function') {
-        scoreVisibleLines({
-            displayOrder,
-            files,
-            currentProject,
-            apiKey: openaiApiKey,
-            gptModel: openaiModel,
-            renderTable: renderFileTableWithOrder,
-            updateStatus,
-            showErrorBanner,
-            showToast
+    const visible = displayOrder.filter(item => {
+        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
+        return row && row.offsetParent !== null;
+    });
+    const lines = visible.map(({ file }) => ({
+        id: file.id,
+        // Charakter entspricht dem Ordnernamen
+        character: file.character || file.folder || '',
+        en: file.enText || '',
+        de: file.deText || ''
+    }));
+    const scene = currentProject?.levelName || '';
+    gptPromptData = { scene, lines };
+    showGptPromptDialog();
+}
+
+// Zeigt den Testdialog mit dem kompletten Prompt
+function showGptPromptDialog() {
+    const area = document.getElementById('gptPromptArea');
+    if (!area || !gptPromptData) return;
+    const sys = typeof window.getSystemPrompt === 'function'
+        ? window.getSystemPrompt() : '';
+    const promptText = `System:\n${sys}\n\nUser:\n${JSON.stringify(gptPromptData, null, 2)}`;
+    area.value = promptText;
+    const resultArea = document.getElementById('gptResultArea');
+    if (resultArea) resultArea.value = '';
+    // Einfüge-Knopf deaktivieren und alte Ergebnisse löschen
+    gptEvaluationResults = null;
+    const insertBtn = document.getElementById('gptPromptInsert');
+    if (insertBtn) insertBtn.disabled = true;
+    document.getElementById('gptPromptDialog').classList.remove('hidden');
+}
+
+function closeGptPromptDialog() {
+    document.getElementById('gptPromptDialog').classList.add('hidden');
+}
+
+// Sendet den Prompt an die API und zeigt die Antwort an
+async function sendGptPrompt() {
+    const btn = document.getElementById('gptPromptSend');
+    const resultArea = document.getElementById('gptResultArea');
+    if (!gptPromptData || !btn || !resultArea) return;
+    btn.disabled = true;
+    resultArea.value = 'Sende...';
+    try {
+        const results = await evaluateScene({
+            scene: gptPromptData.scene,
+            lines: gptPromptData.lines,
+            key: openaiApiKey,
+            model: openaiModel
         });
+        resultArea.value = JSON.stringify(results, null, 2);
+        gptEvaluationResults = results;
+        const insertBtn = document.getElementById('gptPromptInsert');
+        if (insertBtn) insertBtn.disabled = false;
+    } catch (e) {
+        resultArea.value = String(e);
     }
+    btn.disabled = false;
+}
+
+// Übernimmt die letzten GPT-Ergebnisse in die Tabelle
+async function insertGptResults() {
+    const btn = document.getElementById('gptPromptInsert');
+    if (!gptEvaluationResults || !applyEvaluationResults || !btn) return;
+    btn.disabled = true;
+    applyEvaluationResults(gptEvaluationResults, files);
+    await renderFileTable();
+    if (typeof saveCurrentProject === 'function') {
+        saveCurrentProject();
+    }
+    closeGptPromptDialog();
 }
 
 // Bewertet aktuell sichtbare Zeilen über ChatGPT
@@ -518,6 +594,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (pathUtilsPromise) {
         await pathUtilsPromise;
     }
+    // Gespeicherte GPT-Einstellungen laden
+    await ladeGptEinstellungen();
     // Dubbing-Modul nachladen, bevor Funktionen verwendet werden
     if (!moduleStatus.dubbing.loaded) {
         try {
