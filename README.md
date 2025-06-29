@@ -67,7 +67,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
-* **Kontrastreicher Score:** Bei hellen Hintergrundfarben wechselt die Schrift automatisch auf schwarz
+* **Feste Schriftfarben:** Gelber Score nutzt schwarze Schrift, rot und gruen weiss
 * **Bereinigte Vorschau-Anzeige:** Leere GPT-Vorschläge lassen keinen zusätzlichen Abstand mehr
 * **Einheitliche GPT-Vorschau:** Der farbige Vorschlagsbalken ist nun direkt klickbar und es gibt nur noch einen Tooltip
 * **Durchschnittlicher GPT-Score pro Projekt:** Die Projektübersicht zeigt nun den Mittelwert aller Bewertungen an
