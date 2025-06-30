@@ -75,6 +75,8 @@
 * Der Dateiwächter importiert Dateien jetzt nur automatisch, wenn eine passende Dubbing-ID vorhanden ist. Unbekannte Dateien öffnen stattdessen den manuellen Import-Dialog.
 ## 🛠️ Patch in 1.40.36
 * Fehler behoben: Beim Einfügen von GPT-Ergebnissen erschien teilweise "applyEvaluationResults is not a function".
+## 🛠️ Patch in 1.40.102
+* Seitenleiste zeigt Projekte jetzt im zweizeiligen Layout mit gleich breiten Fortschritts-Badges und blau hervorgehobenem aktivem Eintrag.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
