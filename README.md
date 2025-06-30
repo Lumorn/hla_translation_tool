@@ -573,8 +573,8 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | -------------------------- | --------------------------------------------------- |
 | **Projekt erstellen**     | `+ Neues Projekt` Button                          |
 | **Projekt auswählen**     | Klick auf Projekt‑Kachel                          |
-| **Projekt anpassen**      | ⚙️ auf Projekt‑Kachel → Icon, Farbe, Level        |
-| **Projekt löschen**       | × auf Projekt‑Kachel                              |
+| **Projekt anpassen**      | Rechtsklick auf Projekt → ⚙️ bearbeiten |
+| **Projekt löschen**       | Rechtsklick auf Projekt → 🗑️ löschen |
 | **Projekt umbenennen**    | Doppelklick auf Projekt‑Name                      |
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
 | **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
