@@ -9,9 +9,11 @@
             display: none !important;
         }
 
-        /* Download-Spalte standardmäßig ausgeblendet */
-        .download-cell {
-            display: none;
+        /* Zentrale Buttons und Status in einer Zelle */
+        .dubbing-cell {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         body {

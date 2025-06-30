@@ -2914,10 +2914,14 @@ return `
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
         <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
-        <td><button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button></td>
-        <td><span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick="dubStatusClicked(${file.id})"`}>●</span></td>
+        <td>
+            <div class="dubbing-cell">
+                <button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button>
+                <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
+                ${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
+            </div>
+        </td>
         <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
-        <td class="download-cell">${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}</td>
         <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
         <td><div style="display:flex;align-items:flex-start;gap:5px;">
             <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
@@ -3973,16 +3977,10 @@ function addPathCellContextMenus() {
 
 // Prüft bei allen Download-Buttons den Status und aktiviert sie ggf.
 async function updateDubButtons() {
-    const header = document.getElementById('dubDownloadHeader');
     const buttons = document.querySelectorAll('.download-de-btn');
-    const cells   = document.querySelectorAll('.download-cell');
     if (buttons.length === 0) {
-        if (header) header.classList.add('hidden');
-        cells.forEach(c => c.style.display = 'none');
         return;
     }
-    if (header) header.classList.remove('hidden');
-    cells.forEach(c => c.style.display = 'table-cell');
     for (const btn of buttons) {
         const id = parseInt(btn.dataset.fileId, 10);
         const file = files.find(f => f.id === id);

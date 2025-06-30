@@ -264,7 +264,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
-* **Dynamische Download-Spalte:** Die Spalte erscheint nur bei Bedarf und blendet sich aus, ohne die Tabellenüberschriften zu verschieben. Der blaue Download-Pfeil zeigt nun beim Überfahren mit der Maus die Dubbing-ID an und öffnet beim Anklicken die ElevenLabs-Seite des entsprechenden Jobs.
+* **Kompaktere Dubbing-Spalte:** Der Statuspunkt und der Download-Pfeil stehen jetzt direkt neben dem Dubbing-Button in einer gemeinsamen Spalte.
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Ordnername in Zwischenablage:** Beim halbautomatischen Dubbing kopiert das Tool nur noch den reinen Ordnernamen in die Zwischenablage, sobald auf die fertige Datei gewartet wird.
