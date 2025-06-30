@@ -13,13 +13,13 @@ describe('scoreClass', () => {
     expect(scoreClass(95)).toBe('score-high');
   });
 
-  test('liefert score-medium zwischen 80 und 94', () => {
+  test('liefert score-medium zwischen 85 und 94', () => {
     expect(scoreClass(94)).toBe('score-medium');
-    expect(scoreClass(80)).toBe('score-medium');
+    expect(scoreClass(85)).toBe('score-medium');
   });
 
-  test('liefert score-low unter 80', () => {
-    expect(scoreClass(79)).toBe('score-low');
+  test('liefert score-low unter 85', () => {
+    expect(scoreClass(84)).toBe('score-low');
     expect(scoreClass(0)).toBe('score-low');
   });
 
