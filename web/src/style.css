@@ -112,9 +112,10 @@ th:nth-child(10) {
 
         /* Aktuelles Projekt hervorheben */
         .project-item.active {
-            background: #ff6b1a !important; /* überschreibt Level-Farbe */
+            background: rgba(33,150,243,0.4) !important; /* leicht blau */
+            border-left: 3px solid #2196f3;
             color: #fff;
-            outline: 2px solid #fff;
+            outline: none;
         }
 
         .project-item .delete-btn {
