@@ -48,6 +48,7 @@ let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let versionMenuFile        = null; // Menü für Versionsauswahl
+let projectContextId       = null; // Rechtsklick-Menü-Projekt
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
 let expandedLevel          = null; // aktuell geöffneter Level
@@ -1620,10 +1621,6 @@ function renderProjects() {
                         <span class="badge-detail audio">🔊 ${stats.deAudioPercent}%</span>
                     </div>
                 </div>
-                <div class="project-buttons" style="display:flex;gap:5px;">
-                    <button class="project-customize-btn" onclick="showProjectCustomization(${p.id}, event)">⚙️</button>
-                    <button class="delete-btn" onclick="deleteProject(${p.id}, event)">×</button>
-                </div>
             `;
 
             card.title =
@@ -1634,12 +1631,10 @@ function renderProjects() {
                 `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
                 `• GPT: ${stats.scoreMin}  • Dateien: ${stats.totalFiles}`;
 
-            card.onclick = e => {
-                if (!e.target.classList.contains('delete-btn') &&
-                    !e.target.classList.contains('project-customize-btn')) {
-                    selectProject(p.id);
-                }
+            card.onclick = () => {
+                selectProject(p.id);
             };
+            card.addEventListener('contextmenu', e => showProjectMenu(e, p.id));
             card.addEventListener('dragstart', handleProjectDragStart);
             card.addEventListener('dragover',  handleProjectDragOver);
             card.addEventListener('drop',      handleProjectDrop);
@@ -2311,7 +2306,11 @@ function addFiles() {
             
             // Context menu
             document.addEventListener('contextmenu', handleContextMenu);
-            document.addEventListener('click', () => { hideContextMenu(); hideVersionMenu(); });
+            document.addEventListener('click', () => {
+                hideContextMenu();
+                hideVersionMenu();
+                hideProjectMenu();
+            });
         }
 
         // Keyboard Navigation
@@ -2713,6 +2712,32 @@ function addFiles() {
             } catch (err) {
                 console.error('Context menu action failed:', action, err);
                 updateStatus(`Aktion fehlgeschlagen: ${action}`);
+            }
+        }
+
+        // Kontextmenü für Projekte
+        function showProjectMenu(e, projectId) {
+            e.preventDefault();
+            e.stopPropagation();
+            projectContextId = projectId;
+            const menu = document.getElementById('projectContextMenu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+        }
+
+        function hideProjectMenu() {
+            document.getElementById('projectContextMenu').style.display = 'none';
+            projectContextId = null;
+        }
+
+        function projectMenuAction(action) {
+            if (!projectContextId) return;
+            hideProjectMenu();
+            if (action === 'edit') {
+                showProjectCustomization(projectContextId);
+            } else if (action === 'delete') {
+                deleteProject(projectContextId, { stopPropagation() {} });
             }
         }
 
@@ -11679,7 +11704,7 @@ function showChapterCustomization(chapterName, ev) {
         // Double-click to edit project name or change row numbers
         document.addEventListener('dblclick', (e) => {
             const projectItem = e.target.closest('.project-item');
-            if (projectItem && !e.target.classList.contains('delete-btn') && !e.target.classList.contains('project-customize-btn')) {
+            if (projectItem) {
                 const projectId = parseInt(projectItem.dataset.projectId);
                 const project = projects.find(p => p.id === projectId);
                 if (project) {
