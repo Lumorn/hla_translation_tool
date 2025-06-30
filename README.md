@@ -45,7 +45,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
 * **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand und nutzt nun die volle Breite. Im geöffneten Level wird der Rand grün. Das aktuell gewählte Projekt hebt sich mit einem blauen Balken, leicht transparentem Hintergrund (rgba(33,150,243,0.2)) und weißer Schrift deutlich ab.
 * **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
-* **Breitere Projektleiste:** Die Sidebar ist jetzt 280 px breit, damit lange Einträge korrekt angezeigt werden.
+* **Breitere Projektleiste:** Die Sidebar ist jetzt 320 px breit, damit lange Einträge korrekt angezeigt werden.
 * **Aktiver Level hervorgehoben:** Geöffnete Level-Gruppen besitzen jetzt einen grünen Rahmen und einen leicht abgedunkelten Hintergrund.
 * **Dezente Level-Gruppen:** Geschlossene Level zeigen einen ganz leichten Hintergrund und nur beim Überfahren einen feinen Rahmen.
 * **Abgesetzte Level-Blöcke:** Zwischen den Levels erscheint ein grauer Trennstrich und die Level-ID wird kleiner in Grau angezeigt.
