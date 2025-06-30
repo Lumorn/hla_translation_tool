@@ -4,8 +4,7 @@
 // Liefert die CSS-Klasse abhängig von der prozentualen Bewertung
 export function scoreClass(score) {
     if (score === undefined || score === null) return 'score-none';
-    // Ab 95 grün, 80–94 gelb, darunter rot
-    return score >= 95 ? 'score-high' : score >= 80 ? 'score-medium' : 'score-low';
+    return score >= 95 ? 'score-high' : score >= 85 ? 'score-medium' : 'score-low';
 }
 
 // Farbwerte passend zu den Score-Klassen
