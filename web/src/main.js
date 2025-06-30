@@ -1445,15 +1445,39 @@ function renderProjects() {
     Object.entries(chapterMap)
         .sort((a,b)=> getChapterOrder(a[0]) - getChapterOrder(b[0]))
         .forEach(([chp, levels]) => {
+        // Kapitel-Statistiken sammeln
+        let chapterProgress = 0;
+        let chapterScoreSum = 0;
+        let chapterScoreCount = 0;
+        const levelStatsMap = {};
+        Object.entries(levels).forEach(([lvl, prjs]) => {
+            let progSum = 0;
+            let scoreSum = 0;
+            let scoreCount = 0;
+            prjs.forEach(pr => {
+                const st = calculateProjectStats(pr);
+                progSum += st.completedPercent;
+                if (st.scoreMin) { scoreSum += st.scoreMin; scoreCount++; }
+            });
+            const avgProg = prjs.length ? Math.round(progSum / prjs.length) : 0;
+            const avgScore = scoreCount ? Math.round(scoreSum / scoreCount) : 0;
+            levelStatsMap[lvl] = { progress: avgProg, score: avgScore };
+            chapterProgress += avgProg;
+            chapterScoreSum += avgScore;
+            chapterScoreCount++;
+        });
+        chapterProgress = chapterScoreCount ? Math.round(chapterProgress / chapterScoreCount) : 0;
+        const chapterScore = chapterScoreCount ? Math.round(chapterScoreSum / chapterScoreCount) : 0;
         const chGroup = document.createElement('div');
-        chGroup.className = 'chapter-group';
+        chGroup.className = 'chapter-container';
         if (expandedChapter && expandedChapter !== chp) chGroup.classList.add('collapsed');
 
         const chHeader = document.createElement('div');
-        chHeader.className = 'chapter-header';
+        chHeader.className = 'chapter';
         chHeader.style.background = getChapterColor(chp);
         chHeader.innerHTML = `
             <span class="chapter-title">${getChapterOrder(chp)}.${chp}</span>
+            <span class="star ${scoreClass(chapterScore)}">★ ${chapterScore}</span>
             <button class="chapter-edit-btn" data-chapter="${chp}" onclick="showChapterCustomization(this.dataset.chapter, event)">⚙️</button>
         `;
         chHeader.onclick = (e) => {
@@ -1462,6 +1486,13 @@ function renderProjects() {
             renderProjects();
         };
         chGroup.appendChild(chHeader);
+        const chBar = document.createElement('div');
+        const chFillClass = chapterProgress >= 90 ? 'progress-green'
+                            : chapterProgress >= 75 ? 'progress-yellow'
+                            : 'progress-red';
+        chBar.className = 'progress-bar';
+        chBar.innerHTML = `<div class="${chFillClass}" style="width:${chapterProgress}%"></div>`;
+        chGroup.appendChild(chBar);
 
         let chapterDone = true; // Flag, ob alle Level und Projekte fertig sind
 
@@ -1472,26 +1503,20 @@ function renderProjects() {
             .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]))
             .forEach(([lvl, prjs]) => {
             const group = document.createElement('div');
-            group.className = 'level-group';
+            group.className = 'level-container';
             if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
         const order  = getLevelOrder(lvl);
+        const levelStat = levelStatsMap[lvl] || { progress: 0, score: 0 };
+        let levelDone = true; // zeigt, ob alle Projekte fertig sind
         const header = document.createElement('div');
-        header.className = 'level-header';
-        header.style.background = getLevelColor(lvl);
-
-            let levelDone = true; // Flag, ob alle Projekte fertig sind
-
-        const icon = getLevelIcon(lvl);
+        header.className = 'level';
         header.innerHTML = `
-            <div class="level-header-left">
-                <span class="level-icon">${icon}</span>
-                <span class="level-title">${order}.${lvl}</span>
-            </div>
-            <button class="level-edit-btn" data-level="${lvl}" onclick="showLevelCustomization(this.dataset.level, event)">⚙️</button>
+            <span>${order}.${lvl}</span>
+            <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
+            <span>${expandedLevel === lvl ? '▼' : '▶'}</span>
         `;
         header.onclick = (e) => {
-            if (e.target.classList.contains('level-edit-btn')) return;
             expandedLevel = expandedLevel === lvl ? null : lvl;
             renderProjects();
         };
@@ -1517,30 +1542,17 @@ function renderProjects() {
             card.draggable = true;
             card.style.background = getLevelColor(p.levelName);
 
-            const badge = `<span class="level-part-badge">${p.levelPart}</span>`;
-            const iconWrapper = `
-                <div class="project-icon-wrapper" style="display:flex;flex-direction:column;align-items:center;">
-                    <span style="font-size:16px;">${getLevelIcon(p.levelName)}</span>
-                    ${done ? '<span class="project-done-marker">✅</span>' : ''}
-                </div>`;
             card.innerHTML = `
-                ${badge}
-                <div class="project-main" style="display:flex;gap:8px;align-items:flex-start;flex:1;min-width:0;">
-                    ${iconWrapper}
-                    <div style="flex:1;min-width:0;">
-                        <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                            ${p.name}
-                        </div>
-                        <div class="project-stats">
-                            <span title="EN-Text">EN: ${stats.enPercent}%</span>
-                            <span title="DE-Text">DE: ${stats.dePercent}%</span>
-                            <span title="DE-Audio">🔊 ${stats.deAudioPercent}%</span>
-                            <span title="Fertig">✓ ${stats.completedPercent}%</span>
-                            <span title="GPT-Score" class="project-score ${scoreClass(stats.scoreMin)}">★ ${stats.scoreMin}</span>
-                        </div>
-                        <div style="font-size:9px;color:rgba(255,255,255,0.6);">
-                            ${stats.totalFiles} Dateien
-                        </div>
+                <div class="project-row">
+                    <div class="top-row">
+                        <span class="project-title">${p.levelPart}. ${p.name}</span>
+                        <span class="badge-summary">Σ ${stats.completedPercent}%</span>
+                        <span class="star ${scoreClass(stats.scoreMin)}">★ ${stats.scoreMin}</span>
+                    </div>
+                    <div class="details">
+                        <span class="badge-detail en">EN ${stats.enPercent}%</span>
+                        <span class="badge-detail de">DE ${stats.dePercent}%</span>
+                        <span class="badge-detail audio">🔊 ${stats.deAudioPercent}%</span>
                     </div>
                 </div>
                 <div class="project-buttons" style="display:flex;gap:5px;">
@@ -1578,7 +1590,7 @@ function renderProjects() {
             const mark = document.createElement('span');
             mark.className = 'level-done-marker';
             mark.textContent = '✅';
-            header.querySelector('.level-header-left').appendChild(mark);
+            header.appendChild(mark);
         } else {
             chapterDone = false; // Ein Level ist unvollständig
         }

@@ -18,7 +18,10 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-    fs.unlinkSync(tempAudio);
+    // Datei nur löschen, wenn sie tatsächlich existiert
+    if (fs.existsSync(tempAudio)) {
+        fs.unlinkSync(tempAudio);
+    }
 });
 
 afterEach(() => {
