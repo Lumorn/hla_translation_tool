@@ -1470,15 +1470,21 @@ function renderProjects() {
         const chapterScore = chapterScoreCount ? Math.round(chapterScoreSum / chapterScoreCount) : 0;
         const chGroup = document.createElement('div');
         chGroup.className = 'chapter-container';
+        if (expandedChapter && expandedChapter !== chp) chGroup.classList.add('collapsed');
 
         const chHeader = document.createElement('div');
-        chHeader.className = 'chapter-header';
+        chHeader.className = 'chapter';
+        chHeader.style.background = getChapterColor(chp);
         chHeader.innerHTML = `
             <span class="chapter-title">${getChapterOrder(chp)}.${chp}</span>
             <span class="star ${scoreClass(chapterScore)}">★ ${chapterScore}</span>
             <button class="chapter-edit-btn" data-chapter="${chp}" onclick="showChapterCustomization(this.dataset.chapter, event)">⚙️</button>
         `;
-        // Kapitel-Header sind reine Überschriften ohne Klick-Funktion
+        chHeader.onclick = (e) => {
+            if (e.target.classList.contains('chapter-edit-btn')) return;
+            expandedChapter = expandedChapter === chp ? null : chp;
+            renderProjects();
+        };
         chGroup.appendChild(chHeader);
         const chBar = document.createElement('div');
         const chFillClass = chapterProgress >= 90 ? 'progress-green'
@@ -1498,8 +1504,6 @@ function renderProjects() {
             .forEach(([lvl, prjs]) => {
             const group = document.createElement('div');
             group.className = 'level-container';
-            // Aktiver Level-Block erhält spezielle Klasse
-            if (expandedLevel === lvl) group.classList.add('active');
             if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
         const order  = getLevelOrder(lvl);
@@ -1507,7 +1511,6 @@ function renderProjects() {
         let levelDone = true; // zeigt, ob alle Projekte fertig sind
         const header = document.createElement('div');
         header.className = 'level';
-        if (expandedLevel === lvl) header.classList.add('active');
         header.innerHTML = `
             <span>${order}.${lvl}</span>
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
