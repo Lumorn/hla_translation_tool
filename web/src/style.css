@@ -29,7 +29,8 @@
 
         /* Sidebar */
         .sidebar {
-            width: 250px;
+            /* Breitere Seitenleiste für längere Projektnamen */
+            width: 280px;
             background: #242424;
             border-right: 1px solid #333;
             display: flex;
@@ -78,7 +79,7 @@ th:nth-child(10) {
 
 .project-item {
     padding: 12px 15px;
-    margin: 5px 0;
+    margin: 8px 0;                                        /* gleichmäßiger Abstand */
     background: #2a2a2a;
     border-radius: 6px;
     cursor: pointer;
@@ -89,6 +90,7 @@ th:nth-child(10) {
     display: flex;                /* Knöpfe bleiben rechts */
     justify-content: space-between;
     gap: 8px;
+    border: 1px solid rgba(255,255,255,0.05);             /* dezenter Rahmen */
 }
 
         .project-item:hover {
@@ -112,9 +114,8 @@ th:nth-child(10) {
 
         /* Aktuelles Projekt hervorheben */
         .project-item.active {
-            background: #ff6b1a !important; /* überschreibt Level-Farbe */
-            color: #fff;
-            outline: 2px solid #fff;
+            background: rgba(0,188,212,0.08);          /* leicht leuchtender Hintergrund */
+            border-left: 4px solid #00bcd4;            /* blauer Streifen links */
         }
 
         .project-item .delete-btn {
@@ -2394,13 +2395,6 @@ th:nth-child(10) {
 }
 
 /* =========================== LEVEL-GROUP STYLES START ======================= */
-.level-container { margin-bottom: 10px; }
-.level {
-    padding: 6px 10px;
-    cursor: pointer;
-    margin-bottom: 4px;
-}
-.level-container.collapsed .level-projects { display: none; }
 .level-done-marker {
     margin-left: 6px;
     font-size: 16px;
@@ -2413,18 +2407,28 @@ th:nth-child(10) {
 }
 
 /* =========================== CHAPTER-GROUP STYLES START ==================== */
-.chapter-container { margin-bottom: 14px; }
-.chapter {
-    padding: 8px 10px;
-    background: #222;
-    color: #fff;
-    font-weight: 700;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 6px;
+.chapter-container {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05); /* leichter Trennstrich */
+}
+.chapter-header {
+    padding: 0;
+    background: transparent;
+    color: #eee;
+    font-weight: bold;
+    margin: 8px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    cursor: default;
+}
+.chapter-header .star {
+    font-size: 0.9em;             /* Stern etwas kleiner */
+    padding: 0 4px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;           /* Vertikal mittig */
 }
 .chapter-edit-btn {
     background: none;
@@ -2437,7 +2441,7 @@ th:nth-child(10) {
     transition: opacity 0.2s;
     font-size: 12px;
 }
-.chapter:hover .chapter-edit-btn { opacity: 1; }
+.chapter-header:hover .chapter-edit-btn { opacity: 1; }
 .chapter-edit-btn:hover { background: rgba(255,255,255,0.2); }
 .chapter-container.collapsed .chapter-levels { display: none; }
 /* =========================== CHAPTER-GROUP STYLES END ====================== */
@@ -2923,23 +2927,6 @@ th:nth-child(10) {
     top: 0;
 }
 
-/* ===== Neue Sidebar-Elemente ===== */
-.chapter-container {
-    margin-bottom: 12px;
-}
-.chapter {
-    display: flex;
-    justify-content: space-between;
-    padding: 4px 8px;
-    background: #222;
-    font-weight: 600;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.chapter .star {
-    padding: 0 4px;
-    border-radius: 3px;
-}
 .progress-bar {
     height: 4px;
     background: #333;
@@ -2950,7 +2937,33 @@ th:nth-child(10) {
 .progress-green { background: #4caf50; }
 .progress-yellow { background: #ff9800; }
 .progress-red { background: #f44336; }
-.level-container { margin-left: 10px; margin-bottom: 8px; }
+.level-container {
+    margin-top: 8px;                        /* Abstand zum vorherigen Level */
+    margin-bottom: 12px;                    /* Unterer Abstand zur nächsten Gruppe */
+    padding: 6px 10px;                      /* Innenabstand laut Vorgabe */
+    background: rgba(255,255,255,0.025);    /* dezenter Hintergrund */
+    border: 1px solid #444;                 /* einheitlicher Rahmen */
+    border-radius: 6px;                     /* leicht abgerundet */
+}
+.level-container:not(.active):hover {
+    /* Leichter Hover-Rahmen zur Orientierung */
+    border-color: rgba(255,255,255,0.3);
+}
+.level-container.active {
+    /* Gruener Rahmen und dunkleres Feld fuer geoeffnete Gruppe */
+    border: 2px solid #66bb6a;
+    border-radius: 6px;
+    padding: 8px 8px;
+    background: rgba(102,187,106,0.08);
+}
+.level-container.active .project-item {
+    border: 1px solid #4caf50;                        /* gruener Rahmen */
+    box-shadow: 0 0 0 1px #4caf50 inset;              /* dezenter Glanz */
+}
+.level-container.active .level {
+    margin-bottom: 6px;
+}
+.level-container.collapsed .projects { display: none; }
 .level {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -2959,14 +2972,57 @@ th:nth-child(10) {
     cursor: pointer;
     font-weight: 500;
 }
+.level-header {
+    font-family: "Courier New", monospace; /* technische IDs in Monospace */
+    font-size: 0.85em;                      /* leicht kleinere Schrift */
+    font-weight: bold;
+    color: #ccc;
+    padding: 4px 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.05); /* dezente Trennlinie */
+    margin-bottom: 6px;
+    text-align: center;                     /* innerhalb der Box zentriert */
+}
+.level-header .level-order { margin-right: 4px; }
+.level-header .level-id {
+    font-size: 0.8em;                      /* Level-ID kleiner und grau */
+    color: #aaa;
+    font-family: "Courier New", monospace;
+}
+.level-header .level-arrow {
+    color: #888;
+    transition: color 0.2s;
+}
+.level-header:hover .level-arrow {
+    color: #aaa;
+}
+.level > span:last-child {
+    font-size: 0.9em; /* Pfeil wirkt nicht zu groß */
+}
 .projects { list-style: none; margin-left: 20px; padding-left: 0; }
-.project { margin-bottom: 6px; }
-.project-row { display: flex; flex-direction: column; gap: 2px; }
+.project { margin-bottom: 6px; width: 100%; }
+.project-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+}
 .top-row {
     display: grid;
     grid-template-columns: 1fr 60px 40px;
     gap: 6px;
     align-items: center;
+}
+.project-title {
+    /* Nummer und Titel bleiben in einer Zeile */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+    /* leichte Verschiebung nach oben für mittige Ausrichtung */
+    position: relative;
+    top: -1px;
 }
 .badge-summary {
     background: #673ab7;
@@ -2975,16 +3031,33 @@ th:nth-child(10) {
     text-align: center;
 }
 .badge-detail {
+    /* Einheitliche Breite und Höhe der Fortschritts-Badges */
+    width: 64px;
+    height: 24px;
     padding: 0 4px;
     border-radius: 3px;
-    width: 60px;
-    text-align: center;
     font-size: 12px;
+    /* Text zentriert */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .badge-detail.en { background: #2196f3; }
 .badge-detail.de { background: #4caf50; }
 .badge-detail.audio { background: #ff9800; }
-.details { display: flex; gap: 4px; }
+.details {
+    /* Flex-Layout mit gleichmäßigem Abstand */
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+.no-projects {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 4px 0;
+}
 
 /* Fehlerbanner bei API-Problemen */
 .error-banner {
