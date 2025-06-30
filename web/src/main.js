@@ -1221,6 +1221,9 @@ function saveLevelColorHistory() {
 
 // Berechne Projekt-Statistiken
 function calculateProjectStats(project) {
+    // Falls feste Werte vorhanden sind, diese bevorzugen
+    if (project.fixedStats) return project.fixedStats;
+
     const files = project.files || [];
     const totalFiles = files.length;
     
@@ -1341,16 +1344,64 @@ function loadProjects() {
 
         if (migrated) saveProjects();
     } else {
-        projects = [{
-            id: Date.now(),
-            name: 'Hauptprojekt',
-            levelName: '',
-            levelPart: 1,
-            files: [],
-            color: '#ff6b1a',
-            gptTests: [],
-            gptTabIndex: 0
-        }];
+        // Beispielprojekte fuer einen frischen Start
+        const now = Date.now();
+        projects = [
+            {
+                id: now,
+                name: 'Entanglement',
+                levelName: '1.a1_intro_world',
+                levelPart: 1,
+                files: [],
+                color: '#ff6b1a',
+                gptTests: [],
+                gptTabIndex: 0,
+                fixedStats: {
+                    enPercent: 100,
+                    dePercent: 100,
+                    deAudioPercent: 100,
+                    completedPercent: 100,
+                    scoreAvg: 100,
+                    scoreMin: 100
+                }
+            },
+            {
+                id: now + 1,
+                name: 'Quarantine Entrance',
+                levelName: '3.a2_quarantine_entrance',
+                levelPart: 1,
+                files: [],
+                color: '#ff6b1a',
+                gptTests: [],
+                gptTabIndex: 0,
+                fixedStats: {
+                    enPercent: 100,
+                    dePercent: 100,
+                    deAudioPercent: 100,
+                    completedPercent: 100,
+                    scoreAvg: 100,
+                    scoreMin: 100
+                }
+            },
+            {
+                id: now + 2,
+                name: 'Security Office',
+                levelName: '3.a2_quarantine_entrance',
+                levelPart: 2,
+                files: [],
+                color: '#ff6b1a',
+                gptTests: [],
+                gptTabIndex: 0,
+                fixedStats: {
+                    enPercent: 95,
+                    dePercent: 85,
+                    deAudioPercent: 90,
+                    completedPercent: 90,
+                    scoreAvg: 92,
+                    scoreMin: 92
+                }
+            }
+        ];
         saveProjects();
     }
 
@@ -1470,21 +1521,15 @@ function renderProjects() {
         const chapterScore = chapterScoreCount ? Math.round(chapterScoreSum / chapterScoreCount) : 0;
         const chGroup = document.createElement('div');
         chGroup.className = 'chapter-container';
-        if (expandedChapter && expandedChapter !== chp) chGroup.classList.add('collapsed');
 
         const chHeader = document.createElement('div');
-        chHeader.className = 'chapter';
-        chHeader.style.background = getChapterColor(chp);
+        chHeader.className = 'chapter-header';
         chHeader.innerHTML = `
             <span class="chapter-title">${getChapterOrder(chp)}.${chp}</span>
             <span class="star ${scoreClass(chapterScore)}">★ ${chapterScore}</span>
             <button class="chapter-edit-btn" data-chapter="${chp}" onclick="showChapterCustomization(this.dataset.chapter, event)">⚙️</button>
         `;
-        chHeader.onclick = (e) => {
-            if (e.target.classList.contains('chapter-edit-btn')) return;
-            expandedChapter = expandedChapter === chp ? null : chp;
-            renderProjects();
-        };
+        // Kapitel-Header sind reine Überschriften ohne Klick-Funktion
         chGroup.appendChild(chHeader);
         const chBar = document.createElement('div');
         const chFillClass = chapterProgress >= 90 ? 'progress-green'
@@ -1504,28 +1549,48 @@ function renderProjects() {
             .forEach(([lvl, prjs]) => {
             const group = document.createElement('div');
             group.className = 'level-container';
+            // Aktiver Level-Block erhält spezielle Klasse
+            if (expandedLevel === lvl) group.classList.add('active');
             if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
         const order  = getLevelOrder(lvl);
         const levelStat = levelStatsMap[lvl] || { progress: 0, score: 0 };
         let levelDone = true; // zeigt, ob alle Projekte fertig sind
         const header = document.createElement('div');
-        header.className = 'level';
+        header.className = 'level level-header';
+        if (expandedLevel === lvl) header.classList.add('active');
         header.innerHTML = `
             <span>${order}.${lvl}</span>
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
-            <span>${expandedLevel === lvl ? '▼' : '▶'}</span>
+            <span class="level-arrow">${expandedLevel === lvl ? '▼' : '▶'}</span>
         `;
         header.onclick = (e) => {
             expandedLevel = expandedLevel === lvl ? null : lvl;
             renderProjects();
         };
+        const arrowEl = header.querySelector('.level-arrow');
+        // Pfeil bei Hover vorübergehend nach unten zeigen
+        header.addEventListener('mouseenter', () => {
+            if (!header.classList.contains('active') && arrowEl) arrowEl.textContent = '▼';
+        });
+        header.addEventListener('mouseleave', () => {
+            if (!header.classList.contains('active') && arrowEl) arrowEl.textContent = '▶';
+        });
         group.appendChild(header);
 
         const wrap = document.createElement('div');
         wrap.className = 'level-projects';
 
         prjs.sort((a,b) => a.levelPart - b.levelPart);
+
+        // Hinweis anzeigen, wenn keine Projekte existieren
+        if (prjs.length === 0) {
+            const info = document.createElement('div');
+            info.className = 'no-projects';
+            info.textContent = '– Keine Projekte vorhanden –';
+            wrap.appendChild(info);
+        }
+
         prjs.forEach(p => {
             const stats = calculateProjectStats(p);
             const done  = stats.enPercent === 100 &&
