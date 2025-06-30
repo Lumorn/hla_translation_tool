@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.102-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.101-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -44,7 +44,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
 * **Aktives Projekt hervorgehoben:** Das aktuell geöffnete Projekt ist in der Seitenleiste deutlich markiert.
-* **Überarbeitete Seitenleiste:** Kapitel, Level und Projekte zeigen Fortschritt, Sternewertung und Status-Badges jetzt in einem zweizeiligen Layout mit einheitlichen Breiten.
+* **Überarbeitete Seitenleiste:** Kapitel, Level und Projekte zeigen Fortschritt, Sternewertung und Status-Badges in zwei Zeilen.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren oder Anklicken des Scores erscheint nur der Kommentar. Den vorgeschlagenen Text übernimmst du jetzt durch Klick auf die farbige Box über dem DE-Feld
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
