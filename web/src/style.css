@@ -31,8 +31,8 @@
 
         /* Sidebar */
         .sidebar {
-            /* Breitere Seitenleiste für längere Projektnamen */
-            width: 280px;
+            /* Etwas breitere Seitenleiste für längere Projektnamen */
+            width: 320px; /* vorher 280px */
             background: #242424;
             border-right: 1px solid #333;
             display: flex;
