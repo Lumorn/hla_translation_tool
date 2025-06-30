@@ -43,8 +43,17 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
-* **Aktives Projekt hervorgehoben:** Das aktuell geöffnete Projekt ist in der Seitenleiste deutlich markiert.
-* **Überarbeitete Seitenleiste:** Kapitel, Level und Projekte zeigen Fortschritt, Sternewertung und Status-Badges in zwei Zeilen.
+* **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand; im geöffneten Level ist er grün. Das aktuell gewählte Projekt leuchtet bläulich und erhält links einen blauen Balken.
+* **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
+* **Breitere Projektleiste:** Die Sidebar ist jetzt 280 px breit, damit lange Einträge korrekt angezeigt werden.
+* **Aktiver Level hervorgehoben:** Geöffnete Level-Gruppen besitzen jetzt einen grünen Rahmen und einen leicht abgedunkelten Hintergrund.
+* **Dezente Level-Gruppen:** Geschlossene Level zeigen einen ganz leichten Hintergrund und nur beim Überfahren einen feinen Rahmen.
+* **Abgesetzte Level-Blöcke:** Zwischen den Levels erscheint ein grauer Trennstrich und die Level-ID wird kleiner in Grau angezeigt.
+* **Technische Level-Zeilen:** Level-Namen erscheinen in Monospace mit dezentem Hintergrund; beim Überfahren ändert sich der Pfeil kurz nach unten.
+* **Schlichte Kapitelüberschriften:** Jeder Abschnitt beginnt mit einer hellen Zeile samt Sternwertung, ohne Hover-Effekt oder Hintergrund.
+* **Optimierte Titelzeile:** Lange Projektnamen werden mit "…" abgeschnitten, Nummer und Titel bleiben in einer Zeile.
+* **Einheitliche Fortschritts-Badges:** EN, DE und Audio sind nun 64×24 px groß und zentriert dargestellt.
+* **Projekte in allen Leveln:** Nur geöffnete Level zeigen ihre Projekte in einer zweizeiligen Liste aus `<li>`‑Elementen. Gibt es keine Einträge, erscheint „– Keine Projekte vorhanden –“.
 * **Hinweis-Symbol bei Übersetzungen:** Unter der Lupe erscheint ein kleines 📝, wenn der DE-Text ein Wort aus dem Wörterbuch enthält.
 * **GPT-Bewertungen:** Zeilen lassen sich per ChatGPT bewerten. Bei großen Szenen erscheint ein Fortschrittsdialog, Fehler zeigt ein rotes Banner mit "Erneut versuchen". Beim Überfahren oder Anklicken des Scores erscheint nur der Kommentar. Den vorgeschlagenen Text übernimmst du jetzt durch Klick auf die farbige Box über dem DE-Feld
 * **Debug-Ausgabe für GPT:** Ist der Debug-Modus aktiv, erscheinen gesendete Daten und Antworten der GPT-API in der Konsole
