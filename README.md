@@ -577,11 +577,13 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Projekt löschen**       | Rechtsklick auf Projekt → 🗑️ löschen |
 | **Projekt umbenennen**    | Doppelklick auf Projekt‑Name                      |
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
-| **Kapitel anpassen**      | ⚙️ neben Kapitel‑Titel → Name, Farbe, Löschen |
+| **Kapitel anpassen**      | Rechtsklick auf Kapitel-Titel → Bearbeiten/Löschen |
+| **Level anpassen**        | Rechtsklick auf Level-Titel → Bearbeiten/Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
 | **Half-Life: Alyx starten** | Zentrale Start-Leiste mit Modus‑ und Sprachauswahl sowie optionalem +map‑Parameter |
 
 Beim Rechtsklick auf eine Projekt‑Kachel erscheint ein kleines Menü zum Bearbeiten (⚙️) oder Löschen (🗑️) des Projekts.
+Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 
 ### Datei‑Management
 
