@@ -2781,6 +2781,15 @@ th:nth-child(10) {
     width: 100%;
 }
 
+/* Zwei Wörterbuch-Spalten nebeneinander */
+.word-list-wrapper{
+    display: flex;
+    gap: 20px;
+}
+.word-list-column{
+    flex: 1;
+}
+
 /* Score-Bewertungen */
 .score-cell {
     text-align: center;

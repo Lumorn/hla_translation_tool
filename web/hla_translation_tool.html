@@ -640,18 +640,37 @@
         <div class="dialog">
             <button class="dialog-close-btn" onclick="closeWordList()">×</button>
             <h3>📚 Wörterbuch</h3>
-            <table id="wordListTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
-                <thead>
-                    <tr>
-                        <th>Englisches Wort</th>
-                        <th>Phonetische Aussprache</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="word-list-wrapper">
+                <div class="word-list-column">
+                    <h4>Übersetzungen</h4>
+                    <table id="translationTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
+                        <thead>
+                            <tr>
+                                <th>Englisch</th>
+                                <th>Deutsch</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addTransRow()">+ Zeile</button>
+                </div>
+                <div class="word-list-column">
+                    <h4>Phonetische Umschrift</h4>
+                    <table id="phoneticTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
+                        <thead>
+                            <tr>
+                                <th>Englisch</th>
+                                <th>Phonetisch</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button class="btn btn-secondary" onclick="addPhonRow()">+ Zeile</button>
+                </div>
+            </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="addWordRow()">+ Zeile</button>
                 <button class="btn btn-secondary" onclick="closeWordList()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveWordList()">Speichern</button>
             </div>
@@ -700,7 +719,7 @@
 
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.100</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.101</a>
 
     <script src="src/colorUtils.js"></script>
     <script src="src/main.js"></script>
