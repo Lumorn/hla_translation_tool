@@ -112,9 +112,10 @@ th:nth-child(10) {
 
         /* Aktuelles Projekt hervorheben */
         .project-item.active {
-            background: #ff6b1a !important; /* überschreibt Level-Farbe */
+            background: rgba(33,150,243,0.4) !important; /* leicht blau */
+            border-left: 3px solid #2196f3;
             color: #fff;
-            outline: 2px solid #fff;
+            outline: none;
         }
 
         .project-item .delete-btn {
@@ -2968,6 +2969,16 @@ th:nth-child(10) {
     gap: 6px;
     align-items: center;
 }
+.project-title {
+    /* Nummer und Titel bleiben in einer Zeile */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+    /* leichte Verschiebung nach oben für mittige Ausrichtung */
+    position: relative;
+    top: -1px;
+}
 .badge-summary {
     background: #673ab7;
     padding: 0 4px;
@@ -2975,16 +2986,27 @@ th:nth-child(10) {
     text-align: center;
 }
 .badge-detail {
+    /* Einheitliche Breite und Höhe der Fortschritts-Badges */
+    width: 64px;
+    height: 24px;
     padding: 0 4px;
     border-radius: 3px;
-    width: 60px;
-    text-align: center;
     font-size: 12px;
+    /* Text zentriert */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 .badge-detail.en { background: #2196f3; }
 .badge-detail.de { background: #4caf50; }
 .badge-detail.audio { background: #ff9800; }
-.details { display: flex; gap: 4px; }
+.details {
+    /* Flex-Layout mit gleichmäßigem Abstand */
+    display: flex;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
 
 /* Fehlerbanner bei API-Problemen */
 .error-banner {
