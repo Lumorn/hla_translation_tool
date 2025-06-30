@@ -49,6 +49,8 @@ let selectedRow            = null; // für Tastatur-Navigation
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let versionMenuFile        = null; // Menü für Versionsauswahl
 let projectContextId       = null; // Rechtsklick-Menü-Projekt
+let levelContextName       = null; // Rechtsklick-Menü-Level
+let chapterContextName     = null; // Rechtsklick-Menü-Kapitel
 let currentSort            = { column: 'position', direction: 'asc' };
 let displayOrder           = []; // Original-Dateireihenfolge
 let expandedLevel          = null; // aktuell geöffneter Level
@@ -1530,6 +1532,7 @@ function renderProjects() {
             <span class="star ${scoreClass(chapterScore)}">★ ${chapterScore}</span>
             <button class="chapter-edit-btn" data-chapter="${chp}" onclick="showChapterCustomization(this.dataset.chapter, event)">⚙️</button>
         `;
+        chHeader.addEventListener('contextmenu', e => showChapterMenu(e, chp));
         // Kapitel-Header sind reine Überschriften ohne Klick-Funktion
         chGroup.appendChild(chHeader);
         const chBar = document.createElement('div');
@@ -1565,6 +1568,7 @@ function renderProjects() {
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
             <span class="level-arrow">${expandedLevel === lvl ? '▼' : '▶'}</span>
         `;
+        header.addEventListener('contextmenu', e => showLevelMenu(e, lvl));
         header.onclick = (e) => {
             expandedLevel = expandedLevel === lvl ? null : lvl;
             renderProjects();
@@ -2310,6 +2314,8 @@ function addFiles() {
                 hideContextMenu();
                 hideVersionMenu();
                 hideProjectMenu();
+                hideLevelMenu();
+                hideChapterMenu();
             });
         }
 
@@ -2736,11 +2742,12 @@ function addFiles() {
         function projectMenuAction(action) {
             // gewählte Aktion ausführen
             if (!projectContextId) return;
+            const id = projectContextId; // ID merken, bevor sie zurückgesetzt wird
             hideProjectMenu();
             if (action === 'edit') {
-                showProjectCustomization(projectContextId);
+                showProjectCustomization(id);
             } else if (action === 'delete') {
-                deleteProject(projectContextId, { stopPropagation() {} });
+                deleteProject(id, { stopPropagation() {} });
             }
         }
 
@@ -2748,6 +2755,66 @@ function addFiles() {
         window.showProjectMenu  = showProjectMenu;
         window.hideProjectMenu  = hideProjectMenu;
         window.projectMenuAction = projectMenuAction;
+
+        function showLevelMenu(e, levelName) {
+            e.preventDefault();
+            e.stopPropagation();
+            levelContextName = levelName;
+            const menu = document.getElementById('levelContextMenu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+        }
+
+        function hideLevelMenu() {
+            document.getElementById('levelContextMenu').style.display = 'none';
+            levelContextName = null;
+        }
+
+        function levelMenuAction(action) {
+            if (!levelContextName) return;
+            const lvl = levelContextName;
+            hideLevelMenu();
+            if (action === 'edit') {
+                showLevelCustomization(lvl);
+            } else if (action === 'delete') {
+                deleteLevel(lvl);
+            }
+        }
+
+        window.showLevelMenu  = showLevelMenu;
+        window.hideLevelMenu  = hideLevelMenu;
+        window.levelMenuAction = levelMenuAction;
+
+        function showChapterMenu(e, chapterName) {
+            e.preventDefault();
+            e.stopPropagation();
+            chapterContextName = chapterName;
+            const menu = document.getElementById('chapterContextMenu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+        }
+
+        function hideChapterMenu() {
+            document.getElementById('chapterContextMenu').style.display = 'none';
+            chapterContextName = null;
+        }
+
+        function chapterMenuAction(action) {
+            if (!chapterContextName) return;
+            const ch = chapterContextName;
+            hideChapterMenu();
+            if (action === 'edit') {
+                showChapterCustomization(ch);
+            } else if (action === 'delete') {
+                deleteChapter(ch);
+            }
+        }
+
+        window.showChapterMenu  = showChapterMenu;
+        window.hideChapterMenu  = hideChapterMenu;
+        window.chapterMenuAction = chapterMenuAction;
 
         // Table Sorting
         function sortTable(column, evt) {
@@ -11245,6 +11312,36 @@ function showChapterCustomization(chapterName, ev) {
     };
 }
 /* =========================== SHOW CHAPTER CUSTOMIZATION END ======================== */
+
+function deleteLevel(levelName) {
+    if (!confirm("Level wirklich löschen? Alle zugehörigen Projekte werden entfernt.")) return;
+    projects = projects.filter(p => p.levelName !== levelName);
+    if (levelColors[levelName]) delete levelColors[levelName];
+    if (levelOrders[levelName]) delete levelOrders[levelName];
+    if (levelIcons[levelName])  delete levelIcons[levelName];
+    if (levelChapters[levelName]) delete levelChapters[levelName];
+    if (expandedLevel === levelName) expandedLevel = null;
+    saveProjects();
+    saveLevelColors();
+    saveLevelOrders();
+    saveLevelIcons();
+    saveLevelChapters();
+    renderProjects();
+}
+
+function deleteChapter(chapterName) {
+    if (!confirm("Kapitel wirklich löschen?")) return;
+    Object.keys(levelChapters).forEach(lvl => {
+        if (levelChapters[lvl] === chapterName) delete levelChapters[lvl];
+    });
+    delete chapterOrders[chapterName];
+    delete chapterColors[chapterName];
+    if (expandedChapter === chapterName) expandedChapter = null;
+    saveLevelChapters();
+    saveChapterOrders();
+    saveChapterColors();
+    renderProjects();
+}
 
 
 
