@@ -1504,6 +1504,8 @@ function renderProjects() {
             .forEach(([lvl, prjs]) => {
             const group = document.createElement('div');
             group.className = 'level-container';
+            // Aktiver Level-Block erhält spezielle Klasse
+            if (expandedLevel === lvl) group.classList.add('active');
             if (expandedLevel && expandedLevel !== lvl) group.classList.add('collapsed');
 
         const order  = getLevelOrder(lvl);
@@ -1511,6 +1513,7 @@ function renderProjects() {
         let levelDone = true; // zeigt, ob alle Projekte fertig sind
         const header = document.createElement('div');
         header.className = 'level';
+        if (expandedLevel === lvl) header.classList.add('active');
         header.innerHTML = `
             <span>${order}.${lvl}</span>
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
