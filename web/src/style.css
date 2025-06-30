@@ -2970,30 +2970,3 @@ th:nth-child(10) {
 @media (max-width:900px){
     .video-grid{ flex-direction:column; }
 }
-
-/* =========================== SIDEBAR PROGRESS STYLES START =================== */
-.chapter-container { margin-bottom: 12px; }
-.chapter { display:flex; justify-content:space-between; font-weight:700; margin-bottom:2px; }
-.progress-bar { height:4px; background:#333; border-radius:2px; overflow:hidden; margin-bottom:6px; }
-.progress-green { background:#4caf50; height:100%; }
-.progress-yellow { background:#f1c40f; height:100%; }
-.progress-red { background:#e74c3c; height:100%; }
-.level-container { margin-left:10px; }
-.level { display:flex; align-items:center; gap:6px; cursor:pointer; }
-.level .progress-bar { flex:1; margin:0 4px; }
-.level.active .projects { display:block; }
-.projects { list-style:none; padding-left:10px; display:none; }
-.project { margin:4px 0; }
-.project-row { }
-.top-row { display:grid; grid-template-columns:1fr auto auto; gap:6px; font-size:13px; }
-.badge-summary { background:#7e57c2; border-radius:3px; padding:0 4px; min-width:60px; text-align:center; }
-.star { border-radius:3px; padding:0 4px; }
-.star-high { background:#3A3; color:#fff; }
-.star-medium { background:#BB8; color:#000; }
-.star-low { background:#A33; color:#fff; }
-.details { display:flex; gap:4px; margin-top:2px; }
-.badge-detail { border-radius:3px; padding:0 4px; min-width:60px; text-align:center; font-size:12px; }
-.badge-detail.en { background:#2196f3; }
-.badge-detail.de { background:#4caf50; }
-.badge-detail.audio { background:#ff9800; }
-/* =========================== SIDEBAR PROGRESS STYLES END ===================== */
