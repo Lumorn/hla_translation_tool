@@ -114,7 +114,7 @@ th:nth-child(10) {
 
         /* Aktuelles Projekt hervorheben */
         .project-item.active {
-            background: rgba(33,150,243,0.4);          /* blauer Hintergrund bei Auswahl */
+            background: rgba(33,150,243,0.2);          /* blauer Hintergrund bei Auswahl */
             border-left: 3px solid #2196f3;            /* schmaler blauer Rand links */
             color: #fff;                               /* weiße Schrift fuer besseren Kontrast */
         }
