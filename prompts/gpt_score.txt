@@ -4,39 +4,54 @@ Du erhältst einen **Block von Dialogzeilen** mit englischem Original, deutscher
 
 Deine Aufgabe besteht aus **drei Schritten**:
 
-1. **Gesprächskontext berücksichtigen**  
-   - Analysiere **jede Zeile im Kontext des gesamten Gesprächsblocks**:  
-     • Was wurde vorher gesagt?  
-     • Wie antwortet die Figur?  
-     • Welche Stimmung, welcher Sprachduktus, welcher Informationsfluss ergibt sich?  
-   - Beziehe dabei auch die **Figur** (z. B. „vo/alyx“) mit ein. Jede Figur hat eine eigene Art zu sprechen:  
-     • Russell: technisch, trocken, oft leicht verschroben  
-     • Alyx: direkt, emotional, jugendlich  
-     • Eli: väterlich, ernst  
-   - Deine **Kommentare und Stilvorschläge** sollen explizit auf den Zusammenhang eingehen, z. B.:  
-     „Passt zur Erwiderung auf Russells technische Erklärung.“  
-     oder  
-     „Tonfall zu hart für Alyx’ üblicher Stil in vorheriger Zeile.“
+---
 
-2. **Bewertung**  
-   - Prüfe jede Übersetzung auf:  
-     • **Inhaltliche Vollständigkeit** – Keine Nuance oder Information darf fehlen  
-     • **Grammatik & Rechtschreibung** – Korrekte Fälle, Satzbau, Zeichensetzung  
-     • **Charakter- & Kontexttreue** – Klingt es natürlich für diese Figur? Passt es zur vorherigen Zeile?  
-   - Vergib einen **Score zwischen 0–100**:  
-     • 95–100 = perfekt/ sehr gut → grün  
-     • 85–94  = kleinere Schwächen → gelb  
-     • < 85   = problematisch, unnatürlich oder bedeutungsverlust → rot  
-   - Schreibe einen **knappen Kommentar** (max. 120 Zeichen), der die Bewertung begründet – unter Bezug auf **Kontext und Charakter**.
+### 1. **Gesprächskontext berücksichtigen**
+- Beurteile **jede einzelne Zeile im Zusammenhang des gesamten Gesprächsblocks**.
+- Achte dabei explizit auf:
+  • Was **vorher** gesagt wurde (inhaltlich, sprachlich, emotional)  
+  • Was **danach** folgt – und wie deine aktuelle Entscheidung diesen Fluss beeinflusst  
+  • Ob Figuren aufeinander reagieren, sich ergänzen oder widersprechen  
+  • Wie sich ein bestimmter Tonfall, Begriff oder Motiv über mehrere Zeilen entwickelt  
+- Beziehe auch die **Sprechrolle (z. B. vo/alyx)** ein – jede Figur hat eigenen Stil:
+  • *Russell*: technisch, trocken, leicht schrullig  
+  • *Alyx*: direkt, emotional, jugendlich  
+  • *Eli*: ruhig, fürsorglich, väterlich
 
-3. **Stiloptimierung**  
-   - Gib eine alternative, idiomatische deutsche Fassung der Zeile an, die:  
-     • **inhaltlich vollständig** ist  
-     • **natürlich gesprochen** klingt  
-     • **zum Charakter und Gesprächsfluss** passt  
-     • auf Wunsch auch leichte stilistische Anpassungen erlaubt (z. B. Umstellungen, Zwischenrufe etc.), solange keine Information verloren geht  
-   - Achte darauf, dass der **Tonfall zur Figur** passt – z. B. keine steifen Sätze für Alyx, keine Slang-Ausdrücke bei Eli.
+---
 
-Antworte **ausschließlich im folgenden JSON-Array-Format**:
+### 2. **Bewertung**
+- Prüfe jede Übersetzung auf:
+  • **Inhaltliche Vollständigkeit** – keine Information oder Nuance darf fehlen  
+  • **Grammatik & Stil** – natürliche Satzstellung, richtige Zeitformen, gute Lesbarkeit  
+  • **Tonfalltreue** – zur jeweiligen Figur und zur Gesprächsstimmung passend  
+- Vergib einen **Score (0–100)**:
+  • 95–100 = sehr gut → grün  
+  • 85–94  = kleinere Schwächen → gelb  
+  • < 85   = problematisch oder unnatürlich → rot
+- **Wichtig für den Kommentar**:  
+  Schreibe **nicht nur eine isolierte Einschätzung**, sondern erkläre **warum** du etwas geändert hast –  
+  und **beziehe dich explizit auf die vorhergehende und/oder folgende Zeile**:  
+  z. B.:
+  • „Anpassung nötig, da vorher technischer Begriff eingeführt wurde.“  
+  • „Wegen des vorherigen lockeren Tons der Figur hier ebenfalls salopp gehalten.“  
+  • „Da ich in der vorherigen Zeile ‚Nicht schlecht‘ durch ‚Klingt gut‘ ersetzt habe, war hier ‚Ich bin soweit‘ die stimmigere Folge.“
 
-{ "id": <ID>, "score": <0-100>, "comment": "<kurzer Kommentar mit Bezug auf Kontext & Figur>", "suggestion": "<idiomatische Fassung>" }
+---
+
+### 3. **Stiloptimierung**
+- Gib eine alternative, idiomatische deutsche Version der Zeile an, die:
+  • **sinngetreu und natürlich gesprochen** ist  
+  • **zum Charakter** und zum **Verlauf des Gesprächs** passt  
+  • ggf. stilistische Anpassungen enthält, aber **ohne Informationsverlust**  
+- Achte auf:
+  • Fluss zwischen den Zeilen  
+  • Wiederkehrende Begriffe oder Motive  
+  • Figurenspezifischen Sprachstil (z. B. keine hochgestochenen Formulierungen bei Alyx)
+
+---
+
+### Format der Antwort:
+Antworten **ausschließlich** im folgenden JSON-Array-Format:
+
+{ "id": <ID>, "score": <0-100>, "comment": "<konkreter Kommentar mit Begründung, inkl. Bezug auf vorher/nachher>", "suggestion": "<idiomatische, stimmige Neuformulierung>" }
