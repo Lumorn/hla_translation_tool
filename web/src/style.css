@@ -2394,41 +2394,13 @@ th:nth-child(10) {
 }
 
 /* =========================== LEVEL-GROUP STYLES START ======================= */
-.level-group { margin-bottom: 10px; }
-.level-header {
+.level-container { margin-bottom: 10px; }
+.level {
     padding: 6px 10px;
-    background: #333;
-    color: #fff;
-    font-weight: 600;
-    border-radius: 4px;
     cursor: pointer;
     margin-bottom: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
-.level-header-left {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-.level-icon {
-    font-size: 16px;
-}
-.level-edit-btn {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    padding: 2px 5px;
-    opacity: 0;
-    border-radius: 3px;
-    transition: opacity 0.2s;
-    font-size: 12px;
-}
-.level-header:hover .level-edit-btn { opacity: 1; }
-.level-edit-btn:hover { background: rgba(255,255,255,0.2); }
-.level-group.collapsed .level-projects { display: none; }
+.level-container.collapsed .level-projects { display: none; }
 .level-done-marker {
     margin-left: 6px;
     font-size: 16px;
@@ -2441,8 +2413,8 @@ th:nth-child(10) {
 }
 
 /* =========================== CHAPTER-GROUP STYLES START ==================== */
-.chapter-group { margin-bottom: 14px; }
-.chapter-header {
+.chapter-container { margin-bottom: 14px; }
+.chapter {
     padding: 8px 10px;
     background: #222;
     color: #fff;
@@ -2465,9 +2437,9 @@ th:nth-child(10) {
     transition: opacity 0.2s;
     font-size: 12px;
 }
-.chapter-header:hover .chapter-edit-btn { opacity: 1; }
+.chapter:hover .chapter-edit-btn { opacity: 1; }
 .chapter-edit-btn:hover { background: rgba(255,255,255,0.2); }
-.chapter-group.collapsed .chapter-levels { display: none; }
+.chapter-container.collapsed .chapter-levels { display: none; }
 /* =========================== CHAPTER-GROUP STYLES END ====================== */
 
 /* =========================== LEVEL-GROUP STYLES END ========================= */
@@ -2950,6 +2922,69 @@ th:nth-child(10) {
     position: sticky;
     top: 0;
 }
+
+/* ===== Neue Sidebar-Elemente ===== */
+.chapter-container {
+    margin-bottom: 12px;
+}
+.chapter {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 8px;
+    background: #222;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.chapter .star {
+    padding: 0 4px;
+    border-radius: 3px;
+}
+.progress-bar {
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.progress-green { background: #4caf50; }
+.progress-yellow { background: #ff9800; }
+.progress-red { background: #f44336; }
+.level-container { margin-left: 10px; margin-bottom: 8px; }
+.level {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+}
+.projects { list-style: none; margin-left: 20px; padding-left: 0; }
+.project { margin-bottom: 6px; }
+.project-row { display: flex; flex-direction: column; gap: 2px; }
+.top-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 40px;
+    gap: 6px;
+    align-items: center;
+}
+.badge-summary {
+    background: #673ab7;
+    padding: 0 4px;
+    border-radius: 3px;
+    text-align: center;
+}
+.badge-detail {
+    padding: 0 4px;
+    border-radius: 3px;
+    width: 60px;
+    text-align: center;
+    font-size: 12px;
+}
+.badge-detail.en { background: #2196f3; }
+.badge-detail.de { background: #4caf50; }
+.badge-detail.audio { background: #ff9800; }
+.details { display: flex; gap: 4px; }
 
 /* Fehlerbanner bei API-Problemen */
 .error-banner {
