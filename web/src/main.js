@@ -156,8 +156,11 @@ let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
-// Liste für eigene Wörter samt phonetischer Aussprache
-let wordList = JSON.parse(localStorage.getItem('hla_wordList') || '[]');
+// Listen für eigene Wörter
+// Phonetische Umschrift
+let phoneticList    = JSON.parse(localStorage.getItem('hla_wordList') || '[]');
+// Englische Übersetzungen ins Deutsche
+let translationList = JSON.parse(localStorage.getItem('hla_translationList') || '[]');
 
 // Merkt das aktuell angezeigte Studio-Fenster
 let studioModal = null;
@@ -170,7 +173,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.100';
+const APP_VERSION = '1.40.101';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -696,24 +699,45 @@ function closeWordList() {
 
 // Zeigt alle gespeicherten Wörter an
 function renderWordList() {
-    const tbody = document.querySelector('#wordListTable tbody');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    wordList.forEach(entry => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td><input type="text" class="text-input word-input" value="${entry.word}"></td>`+
-                       `<td><input type="text" class="text-input phon-input" value="${entry.phonetic}"></td>`+
-                       `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
-        tbody.appendChild(tr);
-    });
+    const phonBody = document.querySelector('#phoneticTable tbody');
+    const transBody = document.querySelector('#translationTable tbody');
+    if (phonBody) {
+        phonBody.innerHTML = '';
+        phoneticList.forEach(entry => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><input type="text" class="text-input word-input" value="${entry.word}"></td>`+
+                           `<td><input type="text" class="text-input phon-input" value="${entry.phonetic}"></td>`+
+                           `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
+            phonBody.appendChild(tr);
+        });
+    }
+    if (transBody) {
+        transBody.innerHTML = '';
+        translationList.forEach(entry => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td><input type="text" class="text-input trans-word-input" value="${entry.word}"></td>`+
+                           `<td><input type="text" class="text-input trans-de-input" value="${entry.translation}"></td>`+
+                           `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
+            transBody.appendChild(tr);
+        });
+    }
 }
 
 // Fügt eine neue Zeile im Wörterbuch ein
-function addWordRow() {
-    const tbody = document.querySelector('#wordListTable tbody');
+function addPhonRow() {
+    const tbody = document.querySelector('#phoneticTable tbody');
     const tr = document.createElement('tr');
     tr.innerHTML = `<td><input type="text" class="text-input word-input"></td>`+
                    `<td><input type="text" class="text-input phon-input"></td>`+
+                   `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
+    tbody.appendChild(tr);
+}
+
+function addTransRow() {
+    const tbody = document.querySelector('#translationTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" class="text-input trans-word-input"></td>`+
+                   `<td><input type="text" class="text-input trans-de-input"></td>`+
                    `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
     tbody.appendChild(tr);
 }
@@ -725,14 +749,24 @@ function deleteWordRow(btn) {
 
 // Speichert die aktuellen Wörter in den LocalStorage
 function saveWordList() {
-    const rows = document.querySelectorAll('#wordListTable tbody tr');
-    wordList = Array.from(rows).map(row => {
+    const rowsPhon = document.querySelectorAll('#phoneticTable tbody tr');
+    phoneticList = Array.from(rowsPhon).map(row => {
         return {
             word: row.querySelector('.word-input').value.trim(),
             phonetic: row.querySelector('.phon-input').value.trim()
         };
     }).filter(e => e.word || e.phonetic);
-    localStorage.setItem('hla_wordList', JSON.stringify(wordList));
+
+    const rowsTrans = document.querySelectorAll('#translationTable tbody tr');
+    translationList = Array.from(rowsTrans).map(row => {
+        return {
+            word: row.querySelector('.trans-word-input').value.trim(),
+            translation: row.querySelector('.trans-de-input').value.trim()
+        };
+    }).filter(e => e.word || e.translation);
+
+    localStorage.setItem('hla_wordList', JSON.stringify(phoneticList));
+    localStorage.setItem('hla_translationList', JSON.stringify(translationList));
     closeWordList();
 }
 
@@ -11528,7 +11562,7 @@ function showChapterCustomization(chapterName, ev) {
         // Prüft, ob ein Wort aus dem Wörterbuch im angegebenen Text vorkommt
         function textContainsWord(text) {
             const lower = (text || '').toLowerCase();
-            return wordList.some(e => {
+            return phoneticList.some(e => {
                 const w = (e.word || '').trim().toLowerCase();
                 if (!w) return false;
                 const re = new RegExp('\\b' + escapeRegExp(w) + '\\b');
