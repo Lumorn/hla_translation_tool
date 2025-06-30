@@ -112,10 +112,9 @@ th:nth-child(10) {
 
         /* Aktuelles Projekt hervorheben */
         .project-item.active {
-            background: rgba(33,150,243,0.4) !important; /* leicht blau */
-            border-left: 3px solid #2196f3;
+            background: #ff6b1a !important; /* überschreibt Level-Farbe */
             color: #fff;
-            outline: none;
+            outline: 2px solid #fff;
         }
 
         .project-item .delete-btn {
@@ -2396,19 +2395,6 @@ th:nth-child(10) {
 
 /* =========================== LEVEL-GROUP STYLES START ======================= */
 .level-container { margin-bottom: 10px; }
-.level-container.active {
-    /* Gruener Rahmen und leichter Hintergrund fuer aktive Level-Gruppe */
-    border: 2px solid #66bb6a;
-    border-radius: 6px;
-    padding: 8px 0;
-    background: rgba(102,187,106,0.08);
-}
-.level-container.active .project-item {
-    margin-bottom: 6px;
-}
-.level-container.active .level {
-    margin-bottom: 6px;
-}
 .level {
     padding: 6px 10px;
     cursor: pointer;
@@ -2965,19 +2951,6 @@ th:nth-child(10) {
 .progress-yellow { background: #ff9800; }
 .progress-red { background: #f44336; }
 .level-container { margin-left: 10px; margin-bottom: 8px; }
-.level-container.active {
-    /* Gruener Rahmen und leichter Hintergrund fuer aktive Level-Gruppe */
-    border: 2px solid #66bb6a;
-    border-radius: 6px;
-    padding: 8px 0;
-    background: rgba(102,187,106,0.08);
-}
-.level-container.active .project-item {
-    margin-bottom: 6px;
-}
-.level-container.active .level {
-    margin-bottom: 6px;
-}
 .level {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -2995,16 +2968,6 @@ th:nth-child(10) {
     gap: 6px;
     align-items: center;
 }
-.project-title {
-    /* Nummer und Titel bleiben in einer Zeile */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 0.9em;
-    /* leichte Verschiebung nach oben für mittige Ausrichtung */
-    position: relative;
-    top: -1px;
-}
 .badge-summary {
     background: #673ab7;
     padding: 0 4px;
@@ -3012,27 +2975,16 @@ th:nth-child(10) {
     text-align: center;
 }
 .badge-detail {
-    /* Einheitliche Breite und Höhe der Fortschritts-Badges */
-    width: 64px;
-    height: 24px;
     padding: 0 4px;
     border-radius: 3px;
-    font-size: 12px;
-    /* Text zentriert */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 60px;
     text-align: center;
+    font-size: 12px;
 }
 .badge-detail.en { background: #2196f3; }
 .badge-detail.de { background: #4caf50; }
 .badge-detail.audio { background: #ff9800; }
-.details {
-    /* Flex-Layout mit gleichmäßigem Abstand */
-    display: flex;
-    gap: 6px;
-    flex-wrap: nowrap;
-}
+.details { display: flex; gap: 4px; }
 
 /* Fehlerbanner bei API-Problemen */
 .error-banner {
