@@ -360,7 +360,14 @@ function showGptStartDialog() {
     const info = document.getElementById('gptStartInfo');
     const list = document.getElementById('gptStartSpeakers');
     const speakers = [...new Set(visible.map(v => v.file.folder))].sort();
-    if (info) info.textContent = `${visible.length} Zeilen werden gesendet.`;
+    const lines = visible.map(v => ({ en: v.file.enText || '', de: v.file.deText || '' }));
+    const unique = new Set(lines.map(l => `${l.en}\u0000${l.de}`)).size;
+    const dup = lines.length - unique;
+    if (info) {
+        info.textContent = dup > 0
+            ? `${lines.length} Zeilen, ${unique} werden übertragen (${dup} doppelt).`
+            : `${lines.length} Zeilen werden übertragen.`;
+    }
     if (list) list.innerHTML = speakers.map(s => `<li>${s}</li>`).join('');
     document.getElementById('gptStartDialog').classList.remove('hidden');
 }

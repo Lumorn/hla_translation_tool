@@ -47,8 +47,23 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
 async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
     await promptReady;
 
+    // Doppelte Zeilen zusammenfassen
+    const uniqueLines = [];
+    const map = new Map(); // key -> index in uniqueLines
+    const link = [];       // Index in uniqueLines je Originalzeile
+    for (const l of lines) {
+        const key = `${l.en}\u0000${l.de}`;
+        if (map.has(key)) {
+            link.push(map.get(key));
+        } else {
+            map.set(key, uniqueLines.length);
+            uniqueLines.push(l);
+            link.push(uniqueLines.length - 1);
+        }
+    }
+
     // Kosten grob abschaetzen (3 Tokens je Zeichen)
-    const charCount = lines.reduce((s, l) =>
+    const charCount = uniqueLines.reduce((s, l) =>
         s + (l.character || '').length + (l.en || '').length + (l.de || '').length, 0);
     const estimatedTokens = charCount * 3;
     if (estimatedTokens > 75000) {
@@ -66,13 +81,13 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 
     // Fortschrittsdialog mit Loganzeige nur im Browser
     if (typeof document !== 'undefined') {
-        ui = createProgressDialog(lines.length);
+        ui = createProgressDialog(uniqueLines.length);
         ui.cancelBtn.onclick = () => { canceled = true; ui.overlay.remove(); };
     }
 
-    for (let i = 0; i < lines.length && !canceled; i += chunkSize) {
-        const chunk = lines.slice(i, i + chunkSize);
-        if (ui) updateProgressDialog(ui, i, lines.length);
+    for (let i = 0; i < uniqueLines.length && !canceled; i += chunkSize) {
+        const chunk = uniqueLines.slice(i, i + chunkSize);
+        if (ui) updateProgressDialog(ui, i, uniqueLines.length);
         const messages = [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: JSON.stringify({ scene, lines: chunk }) }
@@ -113,7 +128,14 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 
     if (ui) ui.overlay.remove();
     if (canceled) throw new Error('Abgebrochen');
-    return results;
+
+    // Ergebnisse auf alle Originalzeilen übertragen
+    const expanded = [];
+    link.forEach((uIdx, i) => {
+        const base = results[uIdx] || {};
+        expanded.push({ ...base, id: lines[i].id });
+    });
+    return expanded;
 }
 
 function createProgressDialog(total) {

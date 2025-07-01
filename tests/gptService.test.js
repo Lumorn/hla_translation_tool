@@ -2,6 +2,7 @@ const jestFetch = jest.fn();
 
 beforeEach(() => {
   jest.resetModules();
+  jestFetch.mockReset();
   global.fetch = jestFetch;
 });
 
@@ -14,7 +15,7 @@ test('teilt lange Anfragen in Blöcke', async () => {
   const lines = Array.from({ length: 300 }, (_, i) => ({ id: i, character: '', en: 'a', de: 'b' }));
   jestFetch.mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: '[]' } }] }) });
   await evaluateScene({ scene: 'scene', lines, key: 'key', model: 'gpt-3.5-turbo' });
-  expect(jestFetch).toHaveBeenCalledTimes(2);
+  expect(jestFetch).toHaveBeenCalledTimes(1);
 });
 
 test('wirft bei API-Fehler', async () => {
@@ -71,4 +72,22 @@ test('parseEvaluationResults liefert Array oder null', () => {
   const invalid = 'foo';
   expect(parseEvaluationResults(valid)).toEqual([{ id: 1 }]);
   expect(parseEvaluationResults(invalid)).toBeNull();
+});
+
+test('fasst doppelte Zeilen zusammen', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  const lines = [
+    { id: 1, character: '', en: 'a', de: 'b' },
+    { id: 2, character: '', en: 'a', de: 'b' }
+  ];
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ choices: [{ message: { content: '[{"id":1,"score":5}]' } }] })
+  });
+  const res = await evaluateScene({ scene: 's', lines, key: 'key', model: 'gpt' });
+  expect(jestFetch).toHaveBeenCalledTimes(1);
+  expect(res).toEqual([
+    { id: 1, score: 5 },
+    { id: 2, score: 5 }
+  ]);
 });
