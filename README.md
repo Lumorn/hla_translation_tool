@@ -286,6 +286,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Keyboard‑Navigation:** Pfeiltasten, Tab, Leertaste für Audio, Enter für Texteingabe
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
+* **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt, Rechtsklick auf Kapitel → Schnell‑Level
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
 * **Doppelklick:** Projekt umbenennen
@@ -546,6 +547,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 * Beim Start liest die App automatisch alle Audio‑Dateien aus `web/sounds/EN` und vorhandene Übersetzungen aus `web/sounds/DE` ein
 
 ### 2. 📂 Neues Projekt erstellen
+| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt |
 * Klicken Sie auf **„+ Neues Projekt"**
 * Vergeben Sie einen Namen
 * Optional: Level‑Name und Teil‑Nummer angeben
@@ -572,12 +574,14 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 |  Aktion                    |  Bedienung                                          |
 | -------------------------- | --------------------------------------------------- |
 | **Projekt erstellen**     | `+ Neues Projekt` Button                          |
+| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt |
 | **Projekt auswählen**     | Klick auf Projekt‑Kachel                          |
 | **Projekt anpassen**      | Rechtsklick auf Projekt → ⚙️ bearbeiten |
 | **Projekt löschen**       | Rechtsklick auf Projekt → 🗑️ löschen |
 | **Projekt umbenennen**    | Doppelklick auf Projekt‑Name                      |
 | **Projekt sortieren**     | Drag & Drop der Projekt‑Kacheln                   |
 | **Kapitel anpassen**      | Rechtsklick auf Kapitel-Titel → Bearbeiten/Löschen |
+| **Schnell-Level**         | Rechtsklick auf Kapitel → Schnell-Level |
 | **Level anpassen**        | Rechtsklick auf Level-Titel → Bearbeiten/Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
 | **Half-Life: Alyx starten** | Zentrale Start-Leiste mit Modus‑ und Sprachauswahl sowie optionalem +map‑Parameter |

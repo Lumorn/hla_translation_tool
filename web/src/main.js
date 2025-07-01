@@ -1796,6 +1796,36 @@ function addProject() {
 }
 /* =========================== ADD PROJECT END =========================== */
 
+/* =========================== QUICK ADD PROJECT START =========================== */
+function quickAddProject(levelName) {
+    // Nächste freie Nummer für ein "Neu"-Projekt bestimmen
+    const existing = projects
+        .filter(p => p.levelName === levelName)
+        .map(p => p.name);
+    let maxNum = 0;
+    existing.forEach(n => {
+        const m = n.match(/^Neu (\d+)$/);
+        if (m) {
+            const num = parseInt(m[1]);
+            if (num > maxNum) maxNum = num;
+        }
+    });
+    const prj = {
+        id: Date.now(),
+        name: `Neu ${maxNum + 1}`,
+        levelName: levelName,
+        levelPart: 1,
+        files: [],
+        icon: '🗂️',
+        color: getLevelColor(levelName)
+    };
+
+    projects.push(prj);
+    saveProjects();
+    renderProjects();
+}
+/* =========================== QUICK ADD PROJECT END =========================== */
+
 
 
         function deleteProject(id, event) {
@@ -2771,7 +2801,7 @@ function addFiles() {
             levelContextName = null;
         }
 
-        function levelMenuAction(action) {
+function levelMenuAction(action) {
             if (!levelContextName) return;
             const lvl = levelContextName;
             hideLevelMenu();
@@ -2779,6 +2809,8 @@ function addFiles() {
                 showLevelCustomization(lvl);
             } else if (action === 'delete') {
                 deleteLevel(lvl);
+            } else if (action === 'quickProject') {
+                quickAddProject(lvl);
             }
         }
 
@@ -2801,7 +2833,7 @@ function addFiles() {
             chapterContextName = null;
         }
 
-        function chapterMenuAction(action) {
+function chapterMenuAction(action) {
             if (!chapterContextName) return;
             const ch = chapterContextName;
             hideChapterMenu();
@@ -2809,6 +2841,8 @@ function addFiles() {
                 showChapterCustomization(ch);
             } else if (action === 'delete') {
                 deleteChapter(ch);
+            } else if (action === 'quickLevel') {
+                quickAddLevel(ch);
             }
         }
 
@@ -11342,6 +11376,36 @@ function deleteChapter(chapterName) {
     saveChapterColors();
     renderProjects();
 }
+
+/* =========================== QUICK ADD LEVEL START =========================== */
+function quickAddLevel(chapterName) {
+    // Nächste freie Nummer für ein "Neu"-Level finden
+    const levelNames = Object.keys(levelOrders);
+    let maxNum = 0;
+    levelNames.forEach(n => {
+        const m = n.match(/^Neu (\d+)$/);
+        if (m) {
+            const num = parseInt(m[1]);
+            if (num > maxNum) maxNum = num;
+        }
+    });
+
+    const orderValues = Object.values(levelOrders);
+    const nextOrder = orderValues.length ? Math.max(...orderValues) + 1 : 1;
+    const name = `Neu ${maxNum + 1}`;
+
+    levelOrders[name] = nextOrder;
+    levelChapters[name] = chapterName;
+    levelColors[name] = '#444444';
+    levelIcons[name] = '📁';
+
+    saveLevelOrders();
+    saveLevelChapters();
+    saveLevelColors();
+    saveLevelIcons();
+    renderProjects();
+}
+/* =========================== QUICK ADD LEVEL END =========================== */
 
 
 
