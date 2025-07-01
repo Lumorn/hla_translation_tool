@@ -6929,6 +6929,19 @@ function checkFileAccess() {
         }
 // =========================== CREATEBACKUP END =============================
 
+        // Hilfsfunktion: Datum aus Dateinamen ermitteln
+        function parseBackupDate(name) {
+            const m = /^backup_(.+)\.json$/.exec(name);
+            if (!m) return new Date(0);
+            let ts = m[1];
+            // Alte Backups ersetzen Doppelpunkte und Punkte durch Bindestriche
+            if (/T\d{2}-\d{2}-\d{2}-\d{3}Z$/.test(ts)) {
+                ts = ts.replace(/T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z/, 'T$1:$2:$3.$4Z');
+            }
+            const d = new Date(ts);
+            return isNaN(d) ? new Date(0) : d;
+        }
+
 // =========================== ENFORCEBACKUPLIMIT START =====================
         async function enforceBackupLimit() {
             if (window.electronAPI && window.electronAPI.listBackups) {
@@ -6989,11 +7002,20 @@ function checkFileAccess() {
             } else {
                 files = (JSON.parse(localStorage.getItem('hla_backups') || '[]')).map(b => b.name);
             }
-            files.slice(0, 10).forEach(name => {
+            // Nach Datum sortieren, neuestes zuerst
+            files.sort((a, b) => parseBackupDate(b) - parseBackupDate(a));
+
+            files.slice(0, 10).forEach((name, idx) => {
                 const item = document.createElement('div');
-                item.className = 'backup-item';
+                item.className = 'backup-item' + (idx === 0 ? ' latest' : '');
                 const label = document.createElement('span');
-                label.textContent = name;
+
+                const date = parseBackupDate(name);
+                if (date.getTime() > 0) {
+                    label.textContent = date.toLocaleString();
+                } else {
+                    label.textContent = name;
+                }
                 const restoreBtn = document.createElement('button');
                 restoreBtn.textContent = 'Wiederherstellen';
                 restoreBtn.onclick = () => restoreFromBackup(name);
