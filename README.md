@@ -106,7 +106,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
 * **Vorschaubilder direkt per ffmpeg:** Das Storyboard wird nicht mehr verwendet. Die Desktop-App erstellt das Bild sofort über `get-video-frame` im Ordner `videoFrames`.
-* **Zusätzlicher Fallback über yt-dlp:** Scheitern `ytdl-core` und `play-dl`, ermittelt das Tool die Direkt-URL weiterhin über `yt-dlp` (separat installieren).
+* **Direkte URL via yt-dlp:** Ist `yt-dlp` installiert, nutzt das Tool diese Methode automatisch. `ytdl-core` und `play-dl` dienen nur noch als Fallback.
 * **Hilfsfunktion `previewFor`:** Ruft direkt `get-video-frame` auf und zeigt bei Fehlern das normale YouTube-Thumbnail.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
@@ -335,7 +335,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 17. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 18. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
 19. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
-20. Für den neuen Video-Fallback wird `yt-dlp` empfohlen:
+20. Die Vorschaubilder nutzen standardmäßig `yt-dlp`:
 
     ```bash
     pip install yt-dlp
