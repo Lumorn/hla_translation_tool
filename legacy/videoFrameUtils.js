@@ -49,7 +49,17 @@ async function captureFrame(url, sec, outPath) {
     }
 
     let input = url;
-    if (ytdl.validateURL(url)) {
+
+    // yt-dlp wird nun bevorzugt, sofern installiert
+    if (hasYtDlp()) {
+        const viaDlp = getUrlViaYtDlp(url);
+        if (viaDlp) {
+            // bevorzugter Weg – ytdl-core und play-dl werden übersprungen
+            input = viaDlp;
+        }
+    }
+
+    if (input === url && ytdl.validateURL(url)) {
         try {
             const info = await ytdl.getInfo(url);
             const fmt = ytdl.chooseFormat(info.formats, { quality: '18', filter: 'audioandvideo' });
@@ -76,6 +86,7 @@ async function captureFrame(url, sec, outPath) {
                 if (hasYtDlp()) {
                     const dlUrl = getUrlViaYtDlp(url);
                     if (dlUrl) {
+                        // letzter Versuch über yt-dlp, falls oben kein Link ermittelt werden konnte
                         console.debug('[captureFrame] Nutze yt-dlp als Fallback');
                         input = dlUrl;
                     }
