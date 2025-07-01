@@ -1736,6 +1736,12 @@ th:nth-child(10) {
             margin-bottom: 8px;
         }
 
+        /* Markiert das neueste Backup */
+        .backup-item.latest {
+            border-color: #888;
+            background: #252525;
+        }
+
         .backup-item button {
             margin-left: 10px;
         }

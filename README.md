@@ -711,7 +711,7 @@ Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal
 
 ## 💾 Backup
 
-Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups.
+Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben.
 
 
 ## 🗂️ Projektstruktur
