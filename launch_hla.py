@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 from urllib.parse import quote
 try:
     import winreg
@@ -69,11 +70,19 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
         encoded = quote(" ".join(args))
         url = f"{base_url}/{encoded}"
 
-    opener = "xdg-open" if os.name == "posix" else "open"
-    try:
-        subprocess.Popen([opener, url])
-    except OSError:
-        return False
+    # Unter Windows nutzen wir os.startfile, da es keinen 'open'-Befehl gibt
+    if os.name == "nt":
+        try:
+            os.startfile(url)
+        except OSError:
+            return False
+    else:
+        # macOS verwendet 'open', Linux 'xdg-open'
+        opener = "open" if sys.platform == "darwin" else "xdg-open"
+        try:
+            subprocess.Popen([opener, url])
+        except OSError:
+            return False
     return True
 
 

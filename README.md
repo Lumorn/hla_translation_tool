@@ -516,6 +516,8 @@ Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu 
 Seit Patch 1.40.99 befindet sich der Hinweis zu oEmbed nicht mehr im Meta-Tag selbst. Dadurch zeigt der Browser keine CSP-Warnung mehr an.
 Seit Patch 1.40.100 erlaubt die Content Security Policy nun Verbindungen zu `api.openai.com`, damit der GPT-Key-Test im Einstellungsdialog funktioniert.
 Seit Patch 1.40.101 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch und Englisch‑Phonetisch.
+Seit Patch 1.40.102 öffnet `launch_hla.py` Steam-URLs unter Windows korrekt mit `os.startfile`,
+damit kein `[WinError 2]` mehr auftritt.
 
 Beispiel einer gültigen CSV:
 
