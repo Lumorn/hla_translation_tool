@@ -602,7 +602,7 @@ th:nth-child(10) {
             z-index: 5;
         }
 
-        .text-input {
+.text-input {
             width: 100%;
             padding: 8px 10px;
             background: #242424;
@@ -657,6 +657,52 @@ th:nth-child(10) {
     td:nth-child(9), th:nth-child(9) {
         display: none;
     }
+}
+
+/* Feld für Emotionen unter dem DE-Text */
+.emotional-text {
+    width: 100%;
+    padding: 8px 10px;
+    background: #2f1d3b;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    min-height: 36px;
+    max-height: 72px;
+    resize: none;
+    overflow: hidden;
+    margin-top: 3px;
+}
+
+/* Buttons zum Generieren und Kopieren des Emotionstexts */
+.generate-emotions-btn,
+.copy-emotional-text {
+    background: #444;
+    border: none;
+    color: #e0e0e0;
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: all 0.2s;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.generate-emotions-btn:hover,
+.copy-emotional-text:hover {
+    background: #aa4dff;
+    color: white;
+    transform: scale(1.1);
+}
+
+.generate-emotions-btn:active,
+.copy-emotional-text:active {
+    transform: scale(0.95);
 }
 
 @media (max-width: 900px) {
