@@ -271,8 +271,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kompaktere Dubbing-Spalte:** Der Statuspunkt und der Download-Pfeil stehen jetzt direkt neben dem Dubbing-Button in einer gemeinsamen Spalte.
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
-* **Neuer Button „Dubbing (Emo)“:** Öffnet ein eigenes Fenster und erzeugt über die Text‑to‑Speech‑API (V3) eine emotionale Spur. Halbautomatik steht hier nicht zur Verfügung.
-* **Eigene Dubbing‑ID für Emotionen:** Das emotionale Dubbing speichert eine separate ID, die über einen zusätzlichen Pfeil erneut geladen werden kann.
+* **Neuer Button „Dubbing (DE)“:** Erzeugt über ElevenLabs V3 eine deutsche Audiodatei aus dem violetten Emotionsfeld.
 * **Neuer Button „Fertig (DE)“:** Markiert die Zeile als fertig vertont im Emotionsmodus.
 * **Ordnername in Zwischenablage:** Beim halbautomatischen Dubbing kopiert das Tool nur noch den reinen Ordnernamen in die Zwischenablage, sobald auf die fertige Datei gewartet wird.
 * **Bugfix:** Der Ordnername wird jetzt bereits beim Start des Halbautomatik-Dubbings automatisch kopiert.
@@ -421,29 +420,6 @@ Ein Watcher überwacht automatisch den Ordner `web/Download` bzw. `web/Downloads
 Der automatische Import greift also nur, wenn eine Dubbing-ID passt.
 Taucht eine unbekannte Datei auf, öffnet sich stattdessen der Import-Dialog.
 Persönliche Zusätze wie `_Alex` oder `-Bob` entfernt er dabei automatisch.
-\n### Emotionales Dubbing (v3)
-\nDie Emotionen nutzen eine eigene Version der ElevenLabs-API. Der neue Button ruft den folgenden Endpunkt auf und speichert die Antwort als WAV-Datei:
-\n```text
-POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream
-xi-api-key: <DEIN_API_KEY>
-Content-Type: application/json
-Accept: audio/mpeg
-
-{
-  "text": "Deutscher Text mit Emotionen z. B. Hallo, [freudig] wie schön, dich zu sehen!",
-  "model_id": "eleven_multilingual_v2",
-  "voice_settings": {
-    "stability": 0.5,
-    "similarity_boost": 0.75,
-    "style": 0.4,
-    "use_speaker_boost": true
-  }
-}
-```
-
-**Hinweis:** Unterstützte Tags sind z.&nbsp;B. `[flüsternd]`, `[besorgt]`, `[verzweifelt]`, `[freudig]`, `[sarkastisch]`, `[wütend]`, `[ironisch]`, `[müde]`. Sie lassen sich kombinieren, etwa `[verwirrt][leise] Das meinst du nicht ernst, oder?`
-
-Die API liefert einen Audio-Stream. Dieser wird wie gewohnt im Projekt gespeichert und die erhaltene ID unter `emoDubbingId` abgelegt.
 Seit Patch 1.40.7 merkt sich das Tool außerdem den fertigen Status dauerhaft. Auch nach einem erneuten Download bleibt der grüne Haken erhalten.
 Seit Patch 1.40.8 werden Dateien auch dann korrekt verschoben, wenn sich Download- und Projektordner auf unterschiedlichen Laufwerken befinden.
 Seit Patch 1.40.9 merkt sich der Level-Dialog die zuletzt genutzten fünf Farben und bietet eine Schnellwahl unter dem Farbpicker.
