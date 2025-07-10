@@ -477,8 +477,6 @@ function validateCsv(csvText) {
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
 async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'beta') {
-    const useEmo = targetLang === 'emo';
-    const apiLang = 'de';
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     if (mode === 'manual') {
@@ -535,8 +533,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     // Zielsprachen sowohl einzeln als auch als Liste übergeben
-    form.append('target_lang', apiLang);
-    form.append('target_languages', JSON.stringify([apiLang]));
+    form.append('target_lang', targetLang);
+    form.append('target_languages', JSON.stringify([targetLang]));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
     const csvBlob = createDubbingCSV(file, durationMs, targetLang);
@@ -612,13 +610,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     addDubbingLog(`Dubbing-ID erhalten: ${id}`);
 
     // Dubbing-ID sofort merken und anzeigen
-    if (useEmo) {
-        file.emoDubbingId = id;
-        file.emoDubReady = false;
-    } else {
-        file.dubbingId = id;
-        file.dubReady = false;
-    }
+    file.dubbingId = id;
+    file.dubReady = false; // Status auf "in Arbeit" setzen
     saveCurrentProject();
     renderFileTable();
 
@@ -659,11 +652,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         if (vorhandene) {
             file.version = (file.version || 1) + 1;
         }
-        if (useEmo) {
-            file.emoDubReady = true;
-        } else {
-            file.dubReady = true;
-        }
+        file.dubReady = true;
         // Bearbeitungs-Status zurücksetzen, da es sich um eine neue Datei handelt
         file.trimStartMs = 0;
         file.trimEndMs = 0;
@@ -699,11 +688,9 @@ async function isDubReady(id, lang = 'de') {
 
 // =========================== REDOWNLOADDUBBING START ========================
 // Lädt bereits erzeugtes Dubbing mithilfe der gespeicherten ID erneut herunter
-async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
+async function redownloadDubbing(fileId, mode = 'beta') {
     const file = files.find(f => f.id === fileId);
-    const useEmo = lang === 'emo';
-    const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
-    if (!file || !dubId) return;
+    if (!file || !file.dubbingId) return;
     if (mode === 'manual') {
         await copyFolderName(file.folder);
     }
@@ -712,11 +699,11 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Lade Dubbing ${dubId} erneut`);
+    addDubbingLog(`Lade Dubbing ${file.dubbingId} erneut`);
     if (mode === 'manual') {
         showToast('Bitte Spur manuell generieren und in den Download-Ordner legen.');
-        await openStudioAndWait(dubId);
-        await showDownloadWaitDialog(file.id, dubId);
+        await openStudioAndWait(file.dubbingId);
+        await showDownloadWaitDialog(file.id, file.dubbingId);
         return;
     }
 
@@ -726,15 +713,15 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
         return;
     }
 
-    if (!(await isDubReady(dubId))) {
+    if (!(await isDubReady(file.dubbingId))) {
         alert('Deutsch noch nicht fertig – erst im Studio generieren!');
         return;
     }
 
-    const audioRes = await fetch(`${API}/dubbing/${dubId}/audio/de`, {
+    const audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
         headers: { 'xi-api-key': elevenLabsApiKey }
     });
-    logApiCall('GET', `${API}/dubbing/${dubId}/audio/de`, audioRes.status);
+    logApiCall('GET', `${API}/dubbing/${file.dubbingId}/audio/de`, audioRes.status);
     if (!audioRes.ok) {
         const errText = await audioRes.text();
         updateStatus('Download fehlgeschlagen');
@@ -765,11 +752,7 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     if (vorhandene) {
         file.version = (file.version || 1) + 1;
     }
-    if (useEmo) {
-        file.emoDubReady = true; // Nach erneutem Download fertig
-    } else {
-        file.dubReady = true; // Nach erneutem Download fertig
-    }
+    file.dubReady = true; // Nach erneutem Download fertig
     // Bearbeitungs-Status zurücksetzen, da eine frische Datei geladen wurde
     file.trimStartMs = 0;
     file.trimEndMs = 0;
@@ -782,12 +765,11 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
 }
 // =========================== OPENDUBBINGPAGE START ==========================
 // Öffnet die Dubbing-Seite von ElevenLabs für die gespeicherte ID
-function openDubbingPage(fileId, lang = 'de') {
+function openDubbingPage(fileId) {
     const file = files.find(f => f.id === fileId);
-    const id = lang === 'emo' ? file.emoDubbingId : file.dubbingId;
-    if (!file || !id) return;
+    if (!file || !file.dubbingId) return;
     // Direkt zum API-Endpunkt der V1-Dubbing-Seite springen
-    const url = `https://elevenlabs.io/v1/dubbing/${id}`;
+    const url = `https://elevenlabs.io/v1/dubbing/${file.dubbingId}`;
     if (window.electronAPI && window.electronAPI.openExternal) {
         window.electronAPI.openExternal(url);
     } else {
@@ -808,31 +790,28 @@ function openLocalFile(rel) {
 }
 
 // Startet den Playwright-Ablauf im Hauptprozess
-function startDubAutomation(fileId, lang = 'de') {
+function startDubAutomation(fileId) {
     const file = files.find(f => f.id === fileId);
-    const id = lang === 'emo' ? file.emoDubbingId : file.dubbingId;
-    if (!file || !id || !window.electronAPI || !window.electronAPI.autoDub) return;
+    if (!file || !file.dubbingId || !window.electronAPI || !window.electronAPI.autoDub) return;
     const folder = file.folder || '';
-    window.electronAPI.autoDub({ id, folder });
+    window.electronAPI.autoDub({ id: file.dubbingId, folder });
 }
 // =========================== OPENDUBBINGPAGE END ============================
 
 // =========================== DOWNLOADDE START ===============================
 // Lädt die fertige DE-Audiodatei ohne Protokoll herunter
-async function downloadDe(fileId, lang = 'de') {
+async function downloadDe(fileId) {
     const file = files.find(f => f.id === fileId);
-    const useEmo = lang === 'emo';
-    const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
-    if (!file || !dubId) return;
+    if (!file || !file.dubbingId) return;
     if (!elevenLabsApiKey) {
         updateStatus('API-Key fehlt');
         return;
     }
-    if (!(await isDubReady(dubId))) {
+    if (!(await isDubReady(file.dubbingId))) {
         alert('Deutsch noch nicht fertig – erst im Studio generieren!');
         return;
     }
-    const blob = await downloadDubbingAudio(elevenLabsApiKey, dubId, 'de');
+    const blob = await downloadDubbingAudio(elevenLabsApiKey, file.dubbingId, 'de');
     const relPath = getFullPath(file);
     // Existiert bereits eine DE-Datei, soll die Version steigen
     const vorhandene = getDeFilePath(file);
@@ -848,11 +827,7 @@ async function downloadDe(fileId, lang = 'de') {
     if (vorhandene) {
         file.version = (file.version || 1) + 1;
     }
-    if (useEmo) {
-        file.emoDubReady = true; // Status auf fertig setzen
-    } else {
-        file.dubReady = true; // Status auf fertig setzen
-    }
+    file.dubReady = true; // Status auf fertig setzen
     // Bearbeitungs-Status zurücksetzen, da eine neue Datei gespeichert wurde
     file.trimStartMs = 0;
     file.trimEndMs = 0;

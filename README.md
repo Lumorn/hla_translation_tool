@@ -272,7 +272,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Neuer Button „Dubbing (DE)“:** Erzeugt über ElevenLabs V3 eine deutsche Audiodatei aus dem violetten Emotionsfeld.
-* **Eigene Dubbing‑ID für Emotionen:** Das emotionale Dubbing speichert eine separate ID und besitzt einen eigenen Download‑Pfeil.
 * **Neuer Button „Fertig (DE)“:** Markiert die Zeile als fertig vertont im Emotionsmodus.
 * **Ordnername in Zwischenablage:** Beim halbautomatischen Dubbing kopiert das Tool nur noch den reinen Ordnernamen in die Zwischenablage, sobald auf die fertige Datei gewartet wird.
 * **Bugfix:** Der Ordnername wird jetzt bereits beim Start des Halbautomatik-Dubbings automatisch kopiert.
