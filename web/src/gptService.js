@@ -151,12 +151,13 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
     return expanded;
 }
 
-// Erzeugt einen emotional getaggten Text für eine Zeile
-async function generateEmotionText({ projektName, kapitel, levelID, teil, sprecher, enText, deText, key, model = 'gpt-4o-mini' }) {
+// Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
+async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini' }) {
     await promptReady;
+    const payload = { ...meta, lines, target_position: targetPosition, instructions: 'Analysiere die Szene und gib den deutschen Text mit Emotionstags zurück.' };
     const messages = [
         { role: 'system', content: emotionPrompt },
-        { role: 'user', content: JSON.stringify({ projektName, kapitel, levelID, teil, sprecher, enText, deText }) }
+        { role: 'user', content: JSON.stringify(payload) }
     ];
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',

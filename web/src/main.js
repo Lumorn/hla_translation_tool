@@ -2612,16 +2612,23 @@ function addFiles() {
             const file = files.find(f => f.id === rowId);
             if (!file) { btn.disabled = false; return; }
             try {
-                const data = {
-                    projektName: currentProject?.name || '',
-                    kapitel: getLevelChapter(currentProject?.levelName || ''),
-                    levelID: currentProject?.levelName || '',
-                    teil: currentProject?.levelPart || 1,
-                    sprecher: file.folder || '',
-                    enText: file.enText || '',
-                    deText: file.deText || ''
+                // Meta-Informationen für den Prompt
+                const meta = {
+                    game: 'Half-Life: Alyx',
+                    project: currentProject?.name || '',
+                    chapter: getLevelChapter(currentProject?.levelName || ''),
+                    level: currentProject?.levelName || '',
+                    scene: currentProject?.name || ''
                 };
-                const text = await generateEmotionText({ ...data, key: openaiApiKey, model: openaiModel });
+                // Kompletten Dialogverlauf sammeln
+                const lines = files.map((f, idx) => ({
+                    position: idx + 1,
+                    speaker: f.folder || '',
+                    text_en: f.enText || '',
+                    text_de: f.deText || ''
+                }));
+                const targetPosition = files.indexOf(file) + 1;
+                const text = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
                 area.value = text;
                 updateText(file.id, 'emo', text, true);
                 updateStatus(`Emotionen generiert: ${file.filename}`);
