@@ -1888,8 +1888,6 @@ function selectProject(id){
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
         if(!f.hasOwnProperty('emoCompleted')){f.emoCompleted=false;}
-        if(!f.hasOwnProperty('emoDubbingId')){f.emoDubbingId='';}
-        if(!f.hasOwnProperty('emoDubReady')){f.emoDubReady=null;}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) isDirty=true;
@@ -2101,8 +2099,6 @@ function addFiles() {
                 deText: textDatabase[fileKey]?.de || '',
                 emotionalText: textDatabase[fileKey]?.emo || '',
                 emoCompleted: false,
-                emoDubbingId: '',
-                emoDubReady: null,
                 autoTranslation: '',
                 autoSource: '',
                 selected: true,
@@ -3163,11 +3159,9 @@ return `
         <td>
             <div class="dubbing-cell">
                 <button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button>
-                ${file.emotionalText && file.emotionalText.trim() ? `<button class="dubbing-btn emo" onclick="initiateEmoDubbing(${file.id})">🟣</button>` : ''}
+                ${file.emotionalText && file.emotionalText.trim() ? `<button class="dubbing-btn emo" onclick="initiateDubbing(${file.id}, 'emo')">🟣</button>` : ''}
                 <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
                 ${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
-                ${file.emotionalText && file.emotionalText.trim() ? `<span class="emo-dub-status ${!file.emoDubbingId ? 'none' : (file.emoDubReady ? 'done' : 'pending')}" title="${!file.emoDubbingId ? 'kein Dubbing' : (file.emoDubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.emoDubbingId || file.emoDubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>` : ''}
-                ${file.emoDubbingId ? `<button class="download-emo-btn" data-file-id="${file.id}" title="Emo-ID: ${file.emoDubbingId}" onclick="openDubbingPage(${file.id}, 'emo')">⬇️</button>` : ''}
             </div>
         </td>
         <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
@@ -4227,7 +4221,7 @@ function addPathCellContextMenus() {
 
 // Prüft bei allen Download-Buttons den Status und aktiviert sie ggf.
 async function updateDubButtons() {
-    const buttons = document.querySelectorAll('.download-de-btn, .download-emo-btn');
+    const buttons = document.querySelectorAll('.download-de-btn');
     if (buttons.length === 0) {
         return;
     }
@@ -4235,19 +4229,16 @@ async function updateDubButtons() {
         const id = parseInt(btn.dataset.fileId, 10);
         const file = files.find(f => f.id === id);
         if (!file) continue;
-        const useEmo = btn.classList.contains('download-emo-btn');
-        const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
-        if (dubId) {
-            const prop = useEmo ? 'emoDubReady' : 'dubReady';
-            if (typeof file[prop] === 'undefined' || file[prop] === null) {
+        if (file.dubbingId) {
+            if (typeof file.dubReady === 'undefined') {
                 try {
-                    file[prop] = await isDubReady(dubId);
+                    file.dubReady = await isDubReady(file.dubbingId);
                 } catch (err) {
                     console.error('isDubReady fehlgeschlagen', err);
-                    file[prop] = false;
+                    file.dubReady = false;
                 }
             }
-            if (file[prop]) btn.disabled = false;
+            if (file.dubReady) btn.disabled = false;
         }
     }
 }
@@ -4265,16 +4256,6 @@ async function updateDubStatusForFiles() {
         } else {
             f.dubReady = null;
         }
-        if (f.emoDubbingId) {
-            try {
-                f.emoDubReady = await isDubReady(f.emoDubbingId);
-            } catch (err) {
-                console.error('isDubReady fehlgeschlagen', err);
-                f.emoDubReady = false;
-            }
-        } else {
-            f.emoDubReady = null;
-        }
         updateDubStatusIcon(f);
     });
     await Promise.all(promises);
@@ -4284,15 +4265,10 @@ async function updateDubStatusForFiles() {
 // Prüft nur Dateien mit gelbem Icon erneut
 async function updatePendingDubStatuses() {
     // Nur Jobs abfragen, die nicht auf manuellen Import warten
-    const pending = files.filter(f => (f.dubbingId && f.dubReady === false) || (f.emoDubbingId && f.emoDubReady === false));
+    const pending = files.filter(f => f.dubbingId && f.dubReady === false && !f.waitingForManual);
     for (const f of pending) {
         try {
-            if (f.dubbingId && f.dubReady === false) {
-                f.dubReady = await isDubReady(f.dubbingId);
-            }
-            if (f.emoDubbingId && f.emoDubReady === false) {
-                f.emoDubReady = await isDubReady(f.emoDubbingId);
-            }
+            f.dubReady = await isDubReady(f.dubbingId);
         } catch {}
         updateDubStatusIcon(f);
     }
@@ -4301,28 +4277,21 @@ async function updatePendingDubStatuses() {
 
 // Setzt das Icon je nach Status
 function updateDubStatusIcon(file) {
-    const normal = document.querySelector(`tr[data-id="${file.id}"] .dub-status`);
-    const emo = document.querySelector(`tr[data-id="${file.id}"] .emo-dub-status`);
-
-    const apply = (el, id, ready) => {
-        if (!el) return;
-        let cls, title;
-        if (!id) {
-            cls = 'none';
-            title = 'kein Dubbing';
-        } else if (ready) {
-            cls = 'done';
-            title = 'fertig';
-        } else {
-            cls = 'pending';
-            title = 'Studio generiert noch';
-        }
-        el.className = el.className.replace(/\bnone|done|pending\b/g, '').trim() + ' ' + cls;
-        el.title = title;
-    };
-
-    apply(normal, file.dubbingId, file.dubReady);
-    apply(emo, file.emoDubbingId, file.emoDubReady);
+    const el = document.querySelector(`tr[data-id="${file.id}"] .dub-status`);
+    if (!el) return;
+    let cls, title;
+    if (!file.dubbingId) {
+        cls = 'none';
+        title = 'kein Dubbing';
+    } else if (file.dubReady) {
+        cls = 'done';
+        title = 'fertig';
+    } else {
+        cls = 'pending';
+        title = 'Studio generiert noch';
+    }
+    el.className = 'dub-status ' + cls;
+    el.title = title;
 }
 
         // Text editing
@@ -8845,20 +8814,15 @@ async function handleDeUpload(input) {
 
 // =========================== INITIATEDUBBING START ==========================
 function initiateDubbing(fileId, lang = 'de') {
-    if (lang === 'emo') {
-        initiateEmoDubbing(fileId);
-        return;
-    }
     currentDubLang = lang;
     const file = files.find(f => f.id === fileId);
     if (!file) return;
-    const idProp = 'dubbingId';
-    if (file[idProp]) {
+    if (file.dubbingId) {
         const html = `
             <div class="dialog-overlay hidden" id="dubbingActionDialog">
                 <div class="dialog">
                     <h3>Vorhandenes Dubbing</h3>
-                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file[idProp]}</p>
+                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file.dubbingId}</p>
                     <div class="dialog-buttons">
                         <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
                         <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
@@ -8880,30 +8844,17 @@ function closeDubbingAction() {
 
 function proceedNewDubbing(fileId) {
     closeDubbingAction();
-    if (currentDubLang === 'emo') {
-        currentDubMode = 'beta';
-        showDubbingSettings(fileId, 'beta');
-    } else {
-        chooseDubbingMode(fileId);
-    }
+    chooseDubbingMode(fileId);
 }
 
 // Startet den Auswahl-Dialog für erneutes Herunterladen
 function proceedRedownload(fileId) {
     closeDubbingAction();
-    if (currentDubLang === 'emo') {
-        redownloadDubbing(fileId, 'beta', 'emo');
-    } else {
-        chooseRedownloadMode(fileId);
-    }
+    chooseRedownloadMode(fileId);
 }
 
 // Zeigt die Auswahl zwischen Beta und Halbautomatik an
 function chooseRedownloadMode(fileId) {
-    if (currentDubLang === 'emo') {
-        redownloadDubbing(fileId, 'beta', 'emo');
-        return;
-    }
     const html = `
         <div class="dialog-overlay hidden" id="redlModeDialog">
             <div class="dialog">
@@ -8927,16 +8878,11 @@ function closeRedownloadMode() {
 
 function selectRedownloadMode(mode, fileId) {
     closeRedownloadMode();
-    redownloadDubbing(fileId, mode, currentDubLang);
+    redownloadDubbing(fileId, mode);
 }
 
 // Fragt den Benutzer nach dem gewünschten Dubbing-Modus
 function chooseDubbingMode(fileId) {
-    if (currentDubLang === 'emo') {
-        currentDubMode = 'beta';
-        showDubbingSettings(fileId, 'beta');
-        return;
-    }
     const html = `
         <div class="dialog-overlay hidden" id="dubModeDialog">
             <div class="dialog">
@@ -8964,34 +8910,6 @@ function selectDubMode(mode, fileId) {
     showDubbingSettings(fileId);
 }
 // =========================== INITIATEDUBBING END ============================
-
-// =========================== INITIATEEMODUBBING START ========================
-// Startet das emotionale Dubbing ohne Halbautomatik
-function initiateEmoDubbing(fileId) {
-    currentDubLang = 'emo';
-    currentDubMode = 'beta';
-    const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    if (file.emoDubbingId) {
-        const html = `
-            <div class="dialog-overlay hidden" id="dubbingActionDialog">
-                <div class="dialog">
-                    <h3>Vorhandenes Emotional-Dubbing</h3>
-                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file.emoDubbingId}</p>
-                    <div class="dialog-buttons">
-                        <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
-                        <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
-                        <button class="btn btn-success" onclick="proceedRedownload(${fileId})">Erneut herunterladen</button>
-                    </div>
-                </div>
-            </div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
-        document.getElementById('dubbingActionDialog').classList.remove('hidden');
-    } else {
-        showDubbingSettings(fileId, 'beta');
-    }
-}
-// =========================== INITIATEEMODUBBING END ==========================
 
 
 // =========================== LOADAUDIOBUFFER START ===========================
@@ -12003,14 +11921,14 @@ function quickAddLevel(chapterName) {
         // Markiert eine Datei als bereit und aktualisiert die Anzeige
         // Markiert eine Datei als bereit und aktualisiert die Anzeige
         // Das Präfix "sounds/DE/" wird nun Groß-/Kleinschreibungs-unabhängig entfernt
-        function markDubAsReady(id, dest, lang = 'de') {
+        function markDubAsReady(id, dest) {
             const file = files.find(f => f.id === id);
             if (!file) return;
             const rel = dest.replace(/^sounds\/DE\//i, '');
             // Vorhandene Datei vor Überschreiben prüfen
             const vorhandene = getDeFilePath(file);
             deAudioCache[rel] = dest;
-            if (lang === 'emo') file.emoDubReady = true; else file.dubReady = true;
+            file.dubReady = true;
             if (vorhandene) {
                 file.version = (file.version || 1) + 1;
             }
@@ -12166,7 +12084,6 @@ function quickAddLevel(chapterName) {
 if (typeof module !== "undefined" && module.exports) {
     module.exports = {
         initiateDubbing,
-        initiateEmoDubbing,
         openDubbingPage,
         openLocalFile,
         startDubAutomation,
