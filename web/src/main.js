@@ -330,6 +330,7 @@ function cleanupDubCache() {
 // -- GPT-Bewertung initialisieren --
 if (typeof document !== "undefined" && typeof document.getElementById === "function") {
     const gptBtn = document.getElementById("gptScoreButton");
+    const emoBtn = document.getElementById("generateEmotionsButton");
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
             if (currentProject?.gptTests?.length) {
@@ -338,6 +339,9 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
                 showGptStartDialog();
             }
         });
+    }
+    if (emoBtn) {
+        emoBtn.addEventListener("click", generateEmotionsForAll);
     }
 }
 
@@ -1880,6 +1884,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
+        if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) isDirty=true;
@@ -2089,6 +2094,7 @@ function addFiles() {
                 fullPath: fullPath,
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
+                emotionalText: textDatabase[fileKey]?.emo || '',
                 autoTranslation: '',
                 autoSource: '',
                 selected: true,
@@ -2593,9 +2599,68 @@ function addFiles() {
             }
         }
 
-        // Platzhalter zum Generieren des emotionalen Textes
-        function generateEmotionalText(rowId) {
-            console.log('Emotional-Text generieren für', rowId);
+        // Generiert den Emotional-Text für eine Zeile
+        async function generateEmotionalText(rowId) {
+            const row = document.querySelector(`tr[data-id='${rowId}']`);
+            const area = row?.querySelector('textarea.emotional-text');
+            const btn  = row?.querySelector('button.generate-emotions-btn');
+            if (!row || !area || !btn) return;
+            if (area.value.trim()) return; // nichts überschreiben
+            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            btn.disabled = true;
+            area.value = '...';
+            const file = files.find(f => f.id === rowId);
+            if (!file) { btn.disabled = false; return; }
+            try {
+                const data = {
+                    projektName: currentProject?.name || '',
+                    kapitel: getLevelChapter(currentProject?.levelName || ''),
+                    levelID: currentProject?.levelName || '',
+                    teil: currentProject?.levelPart || 1,
+                    sprecher: file.folder || '',
+                    enText: file.enText || '',
+                    deText: file.deText || ''
+                };
+                const text = await generateEmotionText({ ...data, key: openaiApiKey, model: openaiModel });
+                area.value = text;
+                updateText(file.id, 'emo', text, true);
+                updateStatus(`Emotionen generiert: ${file.filename}`);
+            } catch (e) {
+                console.error('Emotionen fehlgeschlagen', e);
+                area.value = 'Fehler bei der Generierung';
+            }
+            btn.disabled = false;
+        }
+
+        // Generiert die Emotional-Texte für alle sichtbaren Zeilen
+        async function generateEmotionsForAll() {
+            const btn = document.getElementById('generateEmotionsButton');
+            if (!btn || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            const rows = [...document.querySelectorAll('#fileTableBody tr')].filter(r => r.offsetParent !== null);
+            const ids = rows.map(r => parseInt(r.dataset.id, 10)).filter(id => {
+                const area = document.querySelector(`tr[data-id='${id}'] textarea.emotional-text`);
+                return area && !area.value.trim();
+            });
+            if (ids.length === 0) return;
+            btn.disabled = true;
+            btn.textContent = 'Generiere...';
+            let done = 0;
+            const max = 3;
+            const queue = [...ids];
+            async function worker() {
+                while (queue.length) {
+                    const id = queue.shift();
+                    await generateEmotionalText(id);
+                    done++;
+                    btn.textContent = `Generiere... (${done}/${ids.length})`;
+                }
+            }
+            const workers = [];
+            for (let i = 0; i < Math.min(max, queue.length); i++) workers.push(worker());
+            await Promise.all(workers);
+            btn.textContent = 'Emotionen generieren';
+            btn.disabled = false;
+            updateStatus(`Fertig (${done}/${ids.length})`);
         }
 
         // Context Menu
@@ -3060,7 +3125,7 @@ return `
         </div>
         <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
         <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" oninput="autoResizeInput(this)"></textarea>
+            <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
             <div class="btn-column">
                 <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text generieren</button>
                 <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
@@ -4230,8 +4295,10 @@ function updateText(fileId, lang, value, skipUndo) {
     if (lang === 'en') {
         file.enText = value;
         updateAutoTranslation(file, true);
-    } else {
+    } else if (lang === 'de') {
         file.deText = value;
+    } else if (lang === 'emo') {
+        file.emotionalText = value;
     }
     
     // Update global database
@@ -4239,7 +4306,11 @@ function updateText(fileId, lang, value, skipUndo) {
     if (!textDatabase[fileKey]) {
         textDatabase[fileKey] = {};
     }
-    textDatabase[fileKey][lang] = value;
+    if (lang === 'emo') {
+        textDatabase[fileKey].emo = value;
+    } else {
+        textDatabase[fileKey][lang] = value;
+    }
     
     isDirty = true;
     updateProgressStats();
@@ -6279,6 +6350,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
+        emotionalText: textDatabase[fileKey]?.emo || '',
         autoTranslation: '',
         autoSource: '',
         // Bewertungsergebnisse von GPT
@@ -10779,6 +10851,7 @@ function addFileToProject(filename, folder, originalResult) {
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
+        emotionalText: textDatabase[fileKey]?.emo || '',
         autoTranslation: '',
         autoSource: '',
         // Bewertungsergebnisse von GPT

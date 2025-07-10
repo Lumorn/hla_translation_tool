@@ -1,4 +1,5 @@
 let systemPrompt = '';
+let emotionPrompt = '';
 let promptReady;
 
 // Entfernt Codeblock-Markierungen und prüft grob auf JSON
@@ -20,22 +21,34 @@ function getSystemPrompt() {
     return systemPrompt;
 }
 
+function getEmotionPrompt() {
+    return emotionPrompt;
+}
+
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
-    // Im Browser: Prompt per Fetch laden
-    const url = '../prompts/gpt_score.txt';
-    promptReady = fetch(url)
-        .then(r => r.ok ? r.text() : '')
-        .then(t => { systemPrompt = t.trim(); })
-        .catch(() => { systemPrompt = ''; });
+    // Im Browser: Prompts per Fetch laden
+    const urlScore = '../prompts/gpt_score.txt';
+    const urlEmo   = '../prompts/gpt_emotions.txt';
+    promptReady = Promise.all([
+        fetch(urlScore).then(r => r.ok ? r.text() : ''),
+        fetch(urlEmo).then(r => r.ok ? r.text() : '')
+    ]).then(([score, emo]) => {
+        systemPrompt  = score.trim();
+        emotionPrompt = emo.trim();
+    }).catch(() => { systemPrompt = ''; emotionPrompt = ''; });
 } else {
-    // Unter Node: Prompt direkt von der Festplatte lesen
+    // Unter Node: Prompts direkt von der Festplatte lesen
     const fs = require('fs');
     const path = require('path');
     try {
-        const localPath = path.join(__dirname, '..', 'prompts', 'gpt_score.txt');
-        const rootPath  = path.join(__dirname, '..', '..', 'prompts', 'gpt_score.txt');
-        const filePath  = fs.existsSync(localPath) ? localPath : rootPath;
-        systemPrompt = fs.readFileSync(filePath, 'utf8').trim();
+        const scoreLocal = path.join(__dirname, '..', 'prompts', 'gpt_score.txt');
+        const scoreRoot  = path.join(__dirname, '..', '..', 'prompts', 'gpt_score.txt');
+        const emoLocal   = path.join(__dirname, '..', 'prompts', 'gpt_emotions.txt');
+        const emoRoot    = path.join(__dirname, '..', '..', 'prompts', 'gpt_emotions.txt');
+        const scorePath  = fs.existsSync(scoreLocal) ? scoreLocal : scoreRoot;
+        const emoPath    = fs.existsSync(emoLocal) ? emoLocal : emoRoot;
+        systemPrompt  = fs.readFileSync(scorePath, 'utf8').trim();
+        emotionPrompt = fs.readFileSync(emoPath, 'utf8').trim();
     } catch (e) {
         console.error('Prompt konnte nicht geladen werden', e);
     }
@@ -138,6 +151,26 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
     return expanded;
 }
 
+// Erzeugt einen emotional getaggten Text für eine Zeile
+async function generateEmotionText({ projektName, kapitel, levelID, teil, sprecher, enText, deText, key, model = 'gpt-4o-mini' }) {
+    await promptReady;
+    const messages = [
+        { role: 'system', content: emotionPrompt },
+        { role: 'user', content: JSON.stringify({ projektName, kapitel, levelID, teil, sprecher, enText, deText }) }
+    ];
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({ model, messages, temperature: 0 })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    return data.choices[0].message.content.trim();
+}
+
 function createProgressDialog(total) {
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
@@ -214,6 +247,8 @@ if (typeof module !== 'undefined') {
         testKey,
         fetchModels,
         getSystemPrompt,
+        getEmotionPrompt,
+        generateEmotionText,
         sanitizeJSONResponse
     };
 }
@@ -222,5 +257,7 @@ if (typeof window !== 'undefined') {
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
     window.getSystemPrompt = getSystemPrompt;
+    window.getEmotionPrompt = getEmotionPrompt;
+    window.generateEmotionText = generateEmotionText;
     window.sanitizeJSONResponse = sanitizeJSONResponse;
 }
