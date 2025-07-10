@@ -154,7 +154,12 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 // Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
 async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini' }) {
     await promptReady;
-    const payload = { ...meta, lines, target_position: targetPosition, instructions: 'Analysiere die Szene und gib den deutschen Text mit Emotionstags zurück.' };
+    const payload = {
+        ...meta,
+        lines,
+        target_position: targetPosition,
+        instructions: 'Analysiere die Szene und gib den deutschen Text zurück. Platziere die Emotionstags direkt im Satz an passenden Stellen.'
+    };
     const messages = [
         { role: 'system', content: emotionPrompt },
         { role: 'user', content: JSON.stringify(payload) }

@@ -244,6 +244,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Ein Button "Emotional-Text generieren" füllt es automatisch, ein 📋‑Knopf kopiert den Inhalt.
 * **Emotionen generieren:** Ein zentraler Button oberhalb der Tabelle befüllt alle leeren Emotional-Text-Felder automatisch.
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.
+* **Tags mitten im Satz:** Die erzeugten Emotionstags erscheinen direkt an passenden Stellen im Text und nicht mehr nur am Ende.
 * **Automatische Übersetzungsvorschau** unter jedem DE-Feld via *Argos Translate*
 * **Kompakter Auto-Übersetzungstext:** Vorschläge unter dem DE-Feld werden nun
   mit kleiner Schrift (0.8 rem) angezeigt
