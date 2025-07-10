@@ -823,13 +823,6 @@ th:nth-child(10) {
             text-align: center;
         }
 
-        .emo-dub-status {
-            font-size: 18px;
-            display: inline-block;
-            width: 24px;
-            text-align: center;
-        }
-
         .dub-status.none {
             color: #777;
         }
@@ -839,18 +832,6 @@ th:nth-child(10) {
         }
 
         .dub-status.done {
-            color: #4caf50;
-        }
-
-        .emo-dub-status.none {
-            color: #777;
-        }
-
-        .emo-dub-status.pending {
-            color: #ffc107;
-        }
-
-        .emo-dub-status.done {
             color: #4caf50;
         }
 
