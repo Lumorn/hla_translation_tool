@@ -87,6 +87,92 @@ async function showDubbingSettings(fileId, mode = currentDubMode) {
     bindDubSettingListeners();
 }
 
+// =========================== SHOWEMODUBBINGSETTINGS START ====================
+// Eigenes Einstellungsfenster für emotionales Dubbing
+async function showEmoDubbingSettings(fileId) {
+    currentDubbingFileId = fileId;
+    currentDubMode = 'beta';
+    const file = files.find(f => f.id === fileId) || {};
+    const voiceId = folderCustomizations[file.folder]?.voiceId || '';
+    let voiceName = voiceId;
+    if (voiceId) {
+        const v = availableVoices.find(v => v.voice_id === voiceId);
+        if (v) voiceName = v.name;
+    }
+    let defaults = storedVoiceSettings || {
+        stability: 0.5,
+        similarity_boost: 0.75,
+        style: 0.4,
+        speed: 1.0,
+        use_speaker_boost: true
+    };
+    const html = `
+        <div class="dialog-overlay hidden" id="emoDubbingDialog">
+            <div class="dialog dubbing-dialog">
+                <button class="dialog-close-btn" onclick="closeEmoDubbingSettings()">×</button>
+                <h3>🎭 Emotionales Dubbing V3</h3>
+                <p class="file-name"><strong>${file.filename || ''}</strong></p>
+                <p class="current-voice-line">Aktuelle Stimme: <span class="current-voice">${voiceName || 'Keine'}</span></p>
+                <div class="dub-settings-grid">
+                    <label for="emoSetStability">Stability</label>
+                    <div class="slider-wrapper"><input type="range" id="emoSetStability" min="0" max="1" step="0.01" value="${defaults.stability}"><span class="slider-value" id="emoValStability">${defaults.stability}</span></div>
+
+                    <label for="emoSetSimilarity">Similarity Boost</label>
+                    <div class="slider-wrapper"><input type="range" id="emoSetSimilarity" min="0" max="1" step="0.01" value="${defaults.similarity_boost}"><span class="slider-value" id="emoValSimilarity">${defaults.similarity_boost}</span></div>
+
+                    <label for="emoSetStyle">Style</label>
+                    <div class="slider-wrapper"><input type="range" id="emoSetStyle" min="0" max="1" step="0.01" value="${defaults.style}"><span class="slider-value" id="emoValStyle">${defaults.style}</span></div>
+
+                    <label for="emoSetSpeed">Speed</label>
+                    <div class="slider-wrapper"><input type="range" id="emoSetSpeed" min="0.5" max="2" step="0.05" value="${defaults.speed}"><span class="slider-value" id="emoValSpeed">${defaults.speed}</span></div>
+
+                    <label for="emoSetSpeaker">use_speaker_boost</label>
+                    <div class="slider-wrapper"><input type="checkbox" id="emoSetSpeaker" ${defaults.use_speaker_boost ? 'checked' : ''}></div>
+                </div>
+                <div class="dialog-buttons">
+                    <button class="btn btn-secondary" onclick="closeEmoDubbingSettings()">Abbrechen</button>
+                    <button class="btn btn-success" id="emoStartBtn" onclick="confirmEmoDubbingSettings(${fileId})">Dubben</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    document.getElementById('emoDubbingDialog').classList.remove('hidden');
+    const fields = [
+        ['emoSetStability', 'emoValStability'],
+        ['emoSetSimilarity', 'emoValSimilarity'],
+        ['emoSetStyle', 'emoValStyle'],
+        ['emoSetSpeed', 'emoValSpeed']
+    ];
+    for (const [inp, val] of fields) {
+        const i = document.getElementById(inp);
+        const v = document.getElementById(val);
+        if (i && v) i.oninput = () => { v.textContent = i.value; };
+    }
+}
+
+function closeEmoDubbingSettings() {
+    const dlg = document.getElementById('emoDubbingDialog');
+    if (dlg) dlg.remove();
+}
+
+async function confirmEmoDubbingSettings(fileId) {
+    const btn = document.getElementById('emoStartBtn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span>';
+    }
+    const settings = {
+        stability: parseFloat(document.getElementById('emoSetStability').value),
+        similarity_boost: parseFloat(document.getElementById('emoSetSimilarity').value),
+        style: parseFloat(document.getElementById('emoSetStyle').value),
+        speed: parseFloat(document.getElementById('emoSetSpeed').value),
+        use_speaker_boost: document.getElementById('emoSetSpeaker').checked
+    };
+    await startEmoDubbing(fileId, settings);
+    closeEmoDubbingSettings();
+}
+// =========================== SHOWEMODUBBINGSETTINGS END ======================
+
 function closeDubbingSettings() {
     const dlg = document.getElementById('dubbingSettingsDialog');
     if (dlg) dlg.remove();
@@ -477,6 +563,8 @@ function validateCsv(csvText) {
 // =========================== STARTDUBBING START =============================
 // Startet ElevenLabs-Dubbing für eine Datei und speichert das Ergebnis
 async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'beta') {
+    const useEmo = targetLang === 'emo';
+    const apiLang = 'de';
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     if (mode === 'manual') {
@@ -533,8 +621,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     const form = new FormData();
     form.append('file', audioBlob, file.filename);
     // Zielsprachen sowohl einzeln als auch als Liste übergeben
-    form.append('target_lang', targetLang);
-    form.append('target_languages', JSON.stringify([targetLang]));
+    form.append('target_lang', apiLang);
+    form.append('target_languages', JSON.stringify([apiLang]));
     form.append('mode', 'manual');
     form.append('dubbing_studio', 'true');
     const csvBlob = createDubbingCSV(file, durationMs, targetLang);
@@ -610,8 +698,13 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     addDubbingLog(`Dubbing-ID erhalten: ${id}`);
 
     // Dubbing-ID sofort merken und anzeigen
-    file.dubbingId = id;
-    file.dubReady = false; // Status auf "in Arbeit" setzen
+    if (useEmo) {
+        file.emoDubbingId = id;
+        file.emoDubReady = false;
+    } else {
+        file.dubbingId = id;
+        file.dubReady = false;
+    }
     saveCurrentProject();
     renderFileTable();
 
@@ -652,7 +745,11 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         if (vorhandene) {
             file.version = (file.version || 1) + 1;
         }
-        file.dubReady = true;
+        if (useEmo) {
+            file.emoDubReady = true;
+        } else {
+            file.dubReady = true;
+        }
         // Bearbeitungs-Status zurücksetzen, da es sich um eine neue Datei handelt
         file.trimStartMs = 0;
         file.trimEndMs = 0;
@@ -672,6 +769,85 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         }
     }
 }
+
+// =========================== STARTEMODUBBING START ==========================
+// Erstellt eine emotionale Spur über Text-to-Speech V3
+async function startEmoDubbing(fileId, settings = {}) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    if (!elevenLabsApiKey) {
+        updateStatus('API-Key fehlt');
+        return;
+    }
+    const voiceId = folderCustomizations[file.folder]?.voiceId;
+    const text = (file.emotionalText || '').trim();
+    if (!voiceId || !text) {
+        updateStatus('Voice oder Text fehlt');
+        return;
+    }
+    dubbingLogMessages = [];
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
+    openDubbingLog();
+    addDubbingLog(`Starte Emo-Dubbing für ${file.filename}`);
+
+    const body = {
+        text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: settings
+    };
+
+    addDubbingLog(`POST ${API}/text-to-speech/${voiceId}/stream`);
+    let res;
+    try {
+        res = await fetch(`${API}/text-to-speech/${voiceId}/stream`, {
+            method: 'POST',
+            headers: {
+                'xi-api-key': elevenLabsApiKey,
+                'Content-Type': 'application/json',
+                'Accept': 'audio/mpeg'
+            },
+            body: JSON.stringify(body)
+        });
+        logApiCall('POST', `${API}/text-to-speech/${voiceId}/stream`, res.status);
+    } catch (err) {
+        addDubbingLog('Fehler: ' + err.message);
+        updateStatus('Emo-Dubbing fehlgeschlagen');
+        return;
+    }
+    if (!res.ok) {
+        const txt = await res.text();
+        addDubbingLog(txt);
+        updateStatus('Emo-Dubbing fehlgeschlagen');
+        return;
+    }
+
+    const buffer = await res.arrayBuffer();
+    const id = res.headers.get('x-request-id') || Date.now().toString();
+    const relPath = getFullPath(file);
+    const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+    const vorhandene = getDeFilePath(file);
+
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
+        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(cleanPath);
+    } else {
+        await speichereUebersetzungsDatei(new Blob([buffer]), relPath);
+    }
+    if (vorhandene) file.version = (file.version || 1) + 1;
+    file.emoDubbingId = id;
+    file.emoDubReady = true;
+    file.trimStartMs = 0;
+    file.trimEndMs = 0;
+    file.volumeMatched = false;
+    file.radioEffect = false;
+    updateStatus('Emo-Download abgeschlossen');
+    renderFileTable();
+    saveCurrentProject();
+    addDubbingLog('Fertig.');
+}
+// =========================== STARTEMODUBBING END ============================
 // =========================== STARTDUBBING END ===============================
 
 // =========================== ISDUBREADY START ===============================
@@ -688,9 +864,11 @@ async function isDubReady(id, lang = 'de') {
 
 // =========================== REDOWNLOADDUBBING START ========================
 // Lädt bereits erzeugtes Dubbing mithilfe der gespeicherten ID erneut herunter
-async function redownloadDubbing(fileId, mode = 'beta') {
+async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     const file = files.find(f => f.id === fileId);
-    if (!file || !file.dubbingId) return;
+    const useEmo = lang === 'emo';
+    const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
+    if (!file || !dubId) return;
     if (mode === 'manual') {
         await copyFolderName(file.folder);
     }
@@ -699,11 +877,11 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Lade Dubbing ${file.dubbingId} erneut`);
+    addDubbingLog(`Lade Dubbing ${dubId} erneut`);
     if (mode === 'manual') {
         showToast('Bitte Spur manuell generieren und in den Download-Ordner legen.');
-        await openStudioAndWait(file.dubbingId);
-        await showDownloadWaitDialog(file.id, file.dubbingId);
+        await openStudioAndWait(dubId);
+        await showDownloadWaitDialog(file.id, dubId);
         return;
     }
 
@@ -713,15 +891,15 @@ async function redownloadDubbing(fileId, mode = 'beta') {
         return;
     }
 
-    if (!(await isDubReady(file.dubbingId))) {
+    if (!(await isDubReady(dubId))) {
         alert('Deutsch noch nicht fertig – erst im Studio generieren!');
         return;
     }
 
-    const audioRes = await fetch(`${API}/dubbing/${file.dubbingId}/audio/de`, {
+    const audioRes = await fetch(`${API}/dubbing/${dubId}/audio/de`, {
         headers: { 'xi-api-key': elevenLabsApiKey }
     });
-    logApiCall('GET', `${API}/dubbing/${file.dubbingId}/audio/de`, audioRes.status);
+    logApiCall('GET', `${API}/dubbing/${dubId}/audio/de`, audioRes.status);
     if (!audioRes.ok) {
         const errText = await audioRes.text();
         updateStatus('Download fehlgeschlagen');
@@ -752,7 +930,11 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     if (vorhandene) {
         file.version = (file.version || 1) + 1;
     }
-    file.dubReady = true; // Nach erneutem Download fertig
+    if (useEmo) {
+        file.emoDubReady = true; // Nach erneutem Download fertig
+    } else {
+        file.dubReady = true; // Nach erneutem Download fertig
+    }
     // Bearbeitungs-Status zurücksetzen, da eine frische Datei geladen wurde
     file.trimStartMs = 0;
     file.trimEndMs = 0;
@@ -763,13 +945,65 @@ async function redownloadDubbing(fileId, mode = 'beta') {
     renderFileTable();
     saveCurrentProject();
 }
+
+// =========================== REDOWNLOADEMO START ============================
+// Lädt eine emotionale Audiodatei über die History-ID
+async function redownloadEmo(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file || !file.emoDubbingId) return;
+    if (!elevenLabsApiKey) {
+        updateStatus('API-Key fehlt');
+        return;
+    }
+    dubbingLogMessages = [];
+    const logPre = document.getElementById('dubbingLog');
+    if (logPre) logPre.textContent = '';
+    openDubbingLog();
+    addDubbingLog(`Lade Emo-Dubbing ${file.emoDubbingId} erneut`);
+    const res = await fetch(`${API}/history/${file.emoDubbingId}/audio`, {
+        headers: { 'xi-api-key': elevenLabsApiKey }
+    });
+    logApiCall('GET', `${API}/history/${file.emoDubbingId}/audio`, res.status);
+    if (!res.ok) {
+        const txt = await res.text();
+        addDubbingLog(txt);
+        updateStatus('Download fehlgeschlagen');
+        return;
+    }
+    const blob = await res.blob();
+    const relPath = getFullPath(file);
+    const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+    const vorhandene = getDeFilePath(file);
+    if (window.electronAPI && window.electronAPI.saveDeFile) {
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
+        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        await updateHistoryCache(cleanPath);
+    } else {
+        await speichereUebersetzungsDatei(blob, relPath);
+    }
+    if (vorhandene) file.version = (file.version || 1) + 1;
+    file.emoDubReady = true;
+    file.trimStartMs = 0;
+    file.trimEndMs = 0;
+    file.volumeMatched = false;
+    file.radioEffect = false;
+    updateStatus('Download abgeschlossen');
+    addDubbingLog('Fertig.');
+    renderFileTable();
+    saveCurrentProject();
+}
+// =========================== REDOWNLOADEMO END ==============================
 // =========================== OPENDUBBINGPAGE START ==========================
 // Öffnet die Dubbing-Seite von ElevenLabs für die gespeicherte ID
-function openDubbingPage(fileId) {
+function openDubbingPage(fileId, lang = 'de') {
     const file = files.find(f => f.id === fileId);
-    if (!file || !file.dubbingId) return;
-    // Direkt zum API-Endpunkt der V1-Dubbing-Seite springen
-    const url = `https://elevenlabs.io/v1/dubbing/${file.dubbingId}`;
+    const id = lang === 'emo' ? file.emoDubbingId : file.dubbingId;
+    if (!file || !id) return;
+    // Direkt zum passenden Endpunkt springen
+    const url = lang === 'emo'
+        ? `https://elevenlabs.io/history/${id}`
+        : `https://elevenlabs.io/v1/dubbing/${id}`;
     if (window.electronAPI && window.electronAPI.openExternal) {
         window.electronAPI.openExternal(url);
     } else {
@@ -790,28 +1024,31 @@ function openLocalFile(rel) {
 }
 
 // Startet den Playwright-Ablauf im Hauptprozess
-function startDubAutomation(fileId) {
+function startDubAutomation(fileId, lang = 'de') {
     const file = files.find(f => f.id === fileId);
-    if (!file || !file.dubbingId || !window.electronAPI || !window.electronAPI.autoDub) return;
+    const id = lang === 'emo' ? file.emoDubbingId : file.dubbingId;
+    if (!file || !id || !window.electronAPI || !window.electronAPI.autoDub) return;
     const folder = file.folder || '';
-    window.electronAPI.autoDub({ id: file.dubbingId, folder });
+    window.electronAPI.autoDub({ id, folder });
 }
 // =========================== OPENDUBBINGPAGE END ============================
 
 // =========================== DOWNLOADDE START ===============================
 // Lädt die fertige DE-Audiodatei ohne Protokoll herunter
-async function downloadDe(fileId) {
+async function downloadDe(fileId, lang = 'de') {
     const file = files.find(f => f.id === fileId);
-    if (!file || !file.dubbingId) return;
+    const useEmo = lang === 'emo';
+    const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
+    if (!file || !dubId) return;
     if (!elevenLabsApiKey) {
         updateStatus('API-Key fehlt');
         return;
     }
-    if (!(await isDubReady(file.dubbingId))) {
+    if (!(await isDubReady(dubId))) {
         alert('Deutsch noch nicht fertig – erst im Studio generieren!');
         return;
     }
-    const blob = await downloadDubbingAudio(elevenLabsApiKey, file.dubbingId, 'de');
+    const blob = await downloadDubbingAudio(elevenLabsApiKey, dubId, 'de');
     const relPath = getFullPath(file);
     // Existiert bereits eine DE-Datei, soll die Version steigen
     const vorhandene = getDeFilePath(file);
@@ -827,7 +1064,11 @@ async function downloadDe(fileId) {
     if (vorhandene) {
         file.version = (file.version || 1) + 1;
     }
-    file.dubReady = true; // Status auf fertig setzen
+    if (useEmo) {
+        file.emoDubReady = true; // Status auf fertig setzen
+    } else {
+        file.dubReady = true; // Status auf fertig setzen
+    }
     // Bearbeitungs-Status zurücksetzen, da eine neue Datei gespeichert wurde
     file.trimStartMs = 0;
     file.trimEndMs = 0;
@@ -845,9 +1086,12 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         getDefaultVoiceSettings,
         showDubbingSettings,
+        showEmoDubbingSettings,
         closeDubbingSettings,
+        closeEmoDubbingSettings,
         bindDubSettingListeners,
         confirmDubbingSettings,
+        confirmEmoDubbingSettings,
         resetStoredVoiceSettings,
         toggleDubAdvanced,
         openDubTooltip,
@@ -868,8 +1112,10 @@ if (typeof module !== 'undefined' && module.exports) {
         splitCsvLines,
         validateCsv,
         startDubbing,
+        startEmoDubbing,
         isDubReady,
         redownloadDubbing,
+        redownloadEmo,
         openDubbingPage,
         openLocalFile,
         startDubAutomation,
@@ -881,9 +1127,12 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
     window.getDefaultVoiceSettings = getDefaultVoiceSettings;
     window.showDubbingSettings = showDubbingSettings;
+    window.showEmoDubbingSettings = showEmoDubbingSettings;
     window.closeDubbingSettings = closeDubbingSettings;
+    window.closeEmoDubbingSettings = closeEmoDubbingSettings;
     window.bindDubSettingListeners = bindDubSettingListeners;
     window.confirmDubbingSettings = confirmDubbingSettings;
+    window.confirmEmoDubbingSettings = confirmEmoDubbingSettings;
     window.resetStoredVoiceSettings = resetStoredVoiceSettings;
     window.toggleDubAdvanced = toggleDubAdvanced;
     window.openDubTooltip = openDubTooltip;
@@ -904,8 +1153,10 @@ if (typeof window !== 'undefined') {
     window.splitCsvLines = splitCsvLines;
     window.validateCsv = validateCsv;
     window.startDubbing = startDubbing;
+    window.startEmoDubbing = startEmoDubbing;
     window.isDubReady = isDubReady;
     window.redownloadDubbing = redownloadDubbing;
+    window.redownloadEmo = redownloadEmo;
     window.openDubbingPage = openDubbingPage;
     window.openLocalFile = openLocalFile;
     window.startDubAutomation = startDubAutomation;
