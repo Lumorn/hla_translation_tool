@@ -2580,6 +2580,24 @@ function addFiles() {
             }
         }
 
+        // Kopiert den emotionalen Text einer Zeile in die Zwischenablage
+        async function copyEmotionalText(fileId) {
+            const row = document.querySelector(`tr[data-id='${fileId}']`);
+            const area = row?.querySelector('textarea.emotional-text');
+            if (!area || !area.value) {
+                updateStatus('Emotionaler Text ist leer');
+                return;
+            }
+            if (await safeCopy(area.value)) {
+                updateStatus(`Emotionaler Text kopiert: ${fileId}`);
+            }
+        }
+
+        // Platzhalter zum Generieren des emotionalen Textes
+        function generateEmotionalText(rowId) {
+            console.log('Emotional-Text generieren für', rowId);
+        }
+
         // Context Menu
         function handleContextMenu(e) {
             const row = e.target.closest('tr[data-id]');
@@ -3041,6 +3059,13 @@ return `
             </div>
         </div>
         <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
+        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+            <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" oninput="autoResizeInput(this)"></textarea>
+            <div class="btn-column">
+                <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text generieren</button>
+                <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
+            </div>
+        </div>
         </td>
         <!-- Untertitel-Suche Knopf -->
         <td><div class="btn-column">
