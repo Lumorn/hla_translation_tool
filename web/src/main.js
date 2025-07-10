@@ -141,6 +141,8 @@ let csvLineEnding = localStorage.getItem('hla_lineEnding') || 'LF';
 let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
 let currentDubMode = 'beta';
+// Sprache des Dubbings: 'de' oder 'emo'
+let currentDubLang = 'de';
 
 // Letzte Einstellungen des Funk-Effekts
 // Wet bestimmt das Mischverhältnis zwischen Original und Effekt
@@ -1885,6 +1887,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
+        if(!f.hasOwnProperty('emoCompleted')){f.emoCompleted=false;}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) isDirty=true;
@@ -2095,6 +2098,7 @@ function addFiles() {
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
                 emotionalText: textDatabase[fileKey]?.emo || '',
+                emoCompleted: false,
                 autoTranslation: '',
                 autoSource: '',
                 selected: true,
@@ -3155,6 +3159,7 @@ return `
         <td>
             <div class="dubbing-cell">
                 <button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button>
+                ${file.emotionalText && file.emotionalText.trim() ? `<button class="dubbing-btn emo" onclick="initiateDubbing(${file.id}, 'emo')">🟣</button>` : ''}
                 <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
                 ${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
             </div>
@@ -3169,6 +3174,7 @@ return `
                 ${file.radioEffect ? '<span class="edit-status-icon">📻</span>' : ''}
                 ${file.hallEffect ? '<span class="edit-status-icon">🏛️</span>' : ''}
             </div>
+            ${file.emotionalText && file.emotionalText.trim() ? `<button class="emo-done-btn" onclick="toggleEmoCompletion(${file.id})">Fertig (DE)</button>` : ''}
         </div></td>
         <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
     </tr>
@@ -4453,6 +4459,16 @@ function toggleFileCompletion(fileId) {
             showFolderGrid();
         }
     }
+}
+
+// Markiert die emotionale DE-Version als fertig
+function toggleEmoCompletion(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    file.emoCompleted = !file.emoCompleted;
+    isDirty = true;
+    renderFileTable();
+    saveCurrentProject();
 }
 
         // Progress statistics
@@ -8797,7 +8813,8 @@ async function handleDeUpload(input) {
 // =========================== HANDLEDEUPLOAD END ==============================
 
 // =========================== INITIATEDUBBING START ==========================
-function initiateDubbing(fileId) {
+function initiateDubbing(fileId, lang = 'de') {
+    currentDubLang = lang;
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     if (file.dubbingId) {
@@ -11926,7 +11943,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
@@ -12086,6 +12103,7 @@ if (typeof module !== "undefined" && module.exports) {
         calculateTextSimilarity,
         copyFolderName,
         copyDownloadFolder,
+        toggleEmoCompletion,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },

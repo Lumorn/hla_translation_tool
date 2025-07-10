@@ -133,7 +133,7 @@ async function confirmDubbingSettings(fileId) {
     localStorage.setItem('hla_voiceSettings', JSON.stringify(settings));
     storedVoiceSettings = settings;
     updateVoiceSettingsDisplay();
-    await startDubbing(fileId, settings, 'de', currentDubMode);
+    await startDubbing(fileId, settings, currentDubLang, currentDubMode);
     closeDubbingSettings();
 }
 
@@ -398,7 +398,9 @@ function msToSeconds(ms) {
 // Erstellt eine CSV-Zeile für das Manual Dubbing
 function createDubbingCSV(file, durationMs, lang = 'de') {
     // Prüfen, ob beide Texte vorhanden sind
-    const translation = file[`${lang}Text`] || file.deText;
+    let translation;
+    if (lang === 'emo') translation = file.emotionalText;
+    else translation = file[`${lang}Text`] || file.deText;
     if (!file.enText || !translation) {
         addDubbingLog('Übersetzung fehlt');
         return null;
