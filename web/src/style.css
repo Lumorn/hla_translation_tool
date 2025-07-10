@@ -438,6 +438,16 @@ th:nth-child(10) {
             margin-left: 10px;
         }
 
+        #generateEmotionsButton {
+            margin-left: 5px;
+            background: #355d8e;
+            color: #fff;
+        }
+
+        #generateEmotionsButton:disabled {
+            opacity: 0.6;
+        }
+
 .video-launch {
     margin-left: auto;
     display: flex;
