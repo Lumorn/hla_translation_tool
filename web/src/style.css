@@ -892,6 +892,15 @@ th:nth-child(10) {
             color: white;
         }
 
+        .dubbing-btn.emo {
+            background: #6a1b9a;
+        }
+
+        .dubbing-btn.emo:hover {
+            background: #8e24aa;
+            color: white;
+        }
+
         .history-btn {
             background: #444;
             border: none;
@@ -921,6 +930,22 @@ th:nth-child(10) {
 
 .edit-audio-btn:hover {
             background: #ff6b1a;
+            color: white;
+        }
+
+        .emo-done-btn {
+            background: #6a1b9a;
+            border: none;
+            color: #e0e0e0;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .emo-done-btn:hover {
+            background: #8e24aa;
             color: white;
         }
 

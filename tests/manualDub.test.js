@@ -113,6 +113,13 @@ describe('Manual Dub', () => {
         expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,0.000,1.000,"Hello","Hallo"\n');
     });
 
+    test('createDubbingCSV nutzt emotionalText bei emo', async () => {
+        const file = { enText: 'Hey', emotionalText: 'Hallo <angry>' , trimStartMs: 0, trimEndMs: 0 };
+        const blob = createDubbingCSV(file, 1000, 'emo');
+        const text = await blob.text();
+        expect(text).toBe('speaker,start_time,end_time,transcription,translation\n0,0.000,1.000,"Hey","Hallo <angry>"\n');
+    });
+
     test('createDubbingCSV mit CRLF', async () => {
         loadMain('CRLF');
         const file = { enText: 'Hi', deText: 'Hallo', trimStartMs: 0, trimEndMs: 0 };
