@@ -549,6 +549,7 @@ Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu 
 Seit Patch 1.40.99 befindet sich der Hinweis zu oEmbed nicht mehr im Meta-Tag selbst. Dadurch zeigt der Browser keine CSP-Warnung mehr an.
 Seit Patch 1.40.100 erlaubt die Content Security Policy nun Verbindungen zu `api.openai.com`, damit der GPT-Key-Test im Einstellungsdialog funktioniert.
 Seit Patch 1.40.101 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch und Englisch‑Phonetisch.
+Seit Patch 1.40.102 stehen die Segmentierungsfunktionen global zur Verfügung. Dadurch funktioniert der Upload auch nach dem Auslagern in einzelne Module zuverlässig.
 
 Beispiel einer gültigen CSV:
 
