@@ -54,6 +54,9 @@ fs.mkdirSync(audioBackupPath, { recursive: true });
 // Ordner für ZIP-Sicherungen der Sounds anlegen
 const soundZipBackupPath = path.join(backupPath, 'sounds');
 fs.mkdirSync(soundZipBackupPath, { recursive: true });
+// Ordner für Segment-Audiodateien anlegen
+const segmentFolderPath = path.join(SOUNDS_BASE_PATH, 'Segments');
+fs.mkdirSync(segmentFolderPath, { recursive: true });
 // Gespeicherte ChatGPT-Einstellungen laden
 let { openaiKey: openaiApiKey = '', selectedModel: openaiModel = '', cachedModels: cached = null } = loadSettings(userDataPath);
 let modelCache = cached || { data: [], time: 0 };
@@ -635,6 +638,19 @@ app.whenReady().then(() => {
       return target;
     } catch (err) {
       // Fehler an den Renderer melden
+      event.sender.send('save-error', err.message);
+      throw err;
+    }
+  });
+
+  // Speichert die hochgeladene Segment-Datei projektbezogen
+  ipcMain.handle('save-segment-file', async (event, { projectId, data }) => {
+    try {
+      const name = `${projectId}.wav`;
+      const target = path.join(segmentFolderPath, name);
+      fs.writeFileSync(target, Buffer.from(data));
+      return path.posix.join('Segments', name);
+    } catch (err) {
       event.sender.send('save-error', err.message);
       throw err;
     }
