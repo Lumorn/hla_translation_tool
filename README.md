@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.101-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.102-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -548,7 +548,7 @@ Seit Patch 1.40.97 greift ein Fallback auf die globale Funktion, falls die Text-
 Seit Patch 1.40.98 erlaubt die Content Security Policy nun auch Verbindungen zu `youtube.com`, damit Videotitel per oEmbed geladen werden können.
 Seit Patch 1.40.99 befindet sich der Hinweis zu oEmbed nicht mehr im Meta-Tag selbst. Dadurch zeigt der Browser keine CSP-Warnung mehr an.
 Seit Patch 1.40.100 erlaubt die Content Security Policy nun Verbindungen zu `api.openai.com`, damit der GPT-Key-Test im Einstellungsdialog funktioniert.
-Seit Patch 1.40.101 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch und Englisch‑Phonetisch.
+Seit Patch 1.40.102 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch und Englisch‑Phonetisch.
 Seit Patch 1.40.102 stehen die Segmentierungsfunktionen global zur Verfügung. Dadurch funktioniert der Upload auch nach dem Auslagern in einzelne Module zuverlässig.
 
 Beispiel einer gültigen CSV:
