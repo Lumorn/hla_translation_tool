@@ -16,57 +16,11 @@ let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false;
 let aktiveOrdnerDateien    = []; // Aktuelle Dateiliste im Ordner-Browser
 let debugInfo              = {}; // Pfadinformationen von Electron
-let segmentInfo            = null; // Ergebnisse der Audio-Segmentierung
-let segmentAssignments    = {};    // Zuordnung Segmente -> Zeilen
-let segmentPlayer         = null;  // Wiedergabe der Ausschnitte
-let segmentSelection      = [];    // aktuell ausgewaehlte Segmente
-let segmentPlayerUrl      = null;  // zuletzt erzeugte Object-URL
 
 // Verfügbarkeit der Electron-API einmalig prüfen
 const isElectron = !!window.electronAPI;
 if (!isElectron) {
     console.warn('🚫 Electron-API nicht verfügbar – Fallback auf Browser-Modus');
-}
-
-// Hilfsfunktionen zum Kodieren und Dekodieren von Audiodaten
-function arrayBufferToBase64(buf){
-    const bin=String.fromCharCode(...new Uint8Array(buf));
-    return btoa(bin);
-}
-function base64ToArrayBuffer(str){
-    const bin=atob(str);const len=bin.length;const buf=new Uint8Array(len);
-    for(let i=0;i<len;i++) buf[i]=bin.charCodeAt(i);
-    return buf.buffer;
-}
-
-// Segment-Daten projektweise merken und serialisierbar speichern
-function storeSegmentState() {
-    if (!currentProject) return;
-    // Erste Anlage der versteckten Felder
-    if (!Object.prototype.hasOwnProperty.call(currentProject, '_segmentInfo')) {
-        Object.defineProperty(currentProject, '_segmentInfo', {
-            value: segmentInfo,
-            writable: true,
-            enumerable: false,
-            configurable: true
-        });
-    } else {
-        currentProject._segmentInfo = segmentInfo;
-    }
-    if (!Object.prototype.hasOwnProperty.call(currentProject, '_segmentAssignments')) {
-        Object.defineProperty(currentProject, '_segmentAssignments', {
-            value: segmentAssignments,
-            writable: true,
-            enumerable: false,
-            configurable: true
-        });
-    } else {
-        currentProject._segmentAssignments = segmentAssignments;
-    }
-    currentProject.segmentAssignments = segmentAssignments;
-    currentProject.segmentSegments = segmentInfo ? segmentInfo.segments : null;
-    isDirty = true;
-    saveCurrentProject();
 }
 
 let projektOrdnerHandle    = null; // Gewählter Projektordner
@@ -1402,9 +1356,6 @@ function loadProjects() {
             if (!p.hasOwnProperty('levelPart')) { p.levelPart = 1;  migrated = true; }
             if (!p.hasOwnProperty('gptTests')) { p.gptTests = []; migrated = true; }
             if (!p.hasOwnProperty('gptTabIndex')) { p.gptTabIndex = 0; migrated = true; }
-            if (!p.hasOwnProperty('segmentAssignments')) { p.segmentAssignments = {}; migrated = true; }
-            if (!p.hasOwnProperty('segmentSegments')) { p.segmentSegments = null; migrated = true; }
-            if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
         });
 
         // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
@@ -1429,9 +1380,6 @@ function loadProjects() {
                 color: '#ff6b1a',
                 gptTests: [],
                 gptTabIndex: 0,
-                segmentAssignments: {},
-                segmentSegments: null,
-                segmentAudio: null,
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -1450,9 +1398,6 @@ function loadProjects() {
                 color: '#ff6b1a',
                 gptTests: [],
                 gptTabIndex: 0,
-                segmentAssignments: {},
-                segmentSegments: null,
-                segmentAudio: null,
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -1471,9 +1416,6 @@ function loadProjects() {
                 color: '#ff6b1a',
                 gptTests: [],
                 gptTabIndex: 0,
-                segmentAssignments: {},
-                segmentSegments: null,
-                segmentAudio: null,
                 fixedStats: {
                     enPercent: 95,
                     dePercent: 85,
@@ -1929,7 +1871,6 @@ function quickAddProject(levelName) {
 function selectProject(id){
     stopProjectPlayback();
     saveCurrentProject();
-    storeSegmentState();
 
     currentProject = projects.find(p => p.id === id);
     if(!currentProject) return;
@@ -1943,9 +1884,6 @@ function selectProject(id){
         .forEach(item=>item.classList.toggle('active',item.dataset.projectId==id));
 
     files = currentProject.files || [];
-    segmentInfo = currentProject._segmentInfo || null;
-    segmentAssignments = currentProject.segmentAssignments || {};
-    segmentSelection = [];
 
     // Migration: completed-Flag nachziehen
     let migrated=false;
@@ -6038,428 +5976,6 @@ function cleanupOrphanCustomizations() {
     }
 }
 // =========================== CLEANUPORPHANCUSTOMIZATIONS END ===============
-
-// =========================== SEGMENT DIALOG START ==========================
-// Hilfsfunktionen zur Audio-Segmentierung direkt hier eingebunden
-// Erkennt Pausen im Audio und liefert die Zeitbereiche der Segmente
-async function detectSegments(file, silenceMs = 300, threshold = 0.01, onProgress) {
-    const buffer = await loadAudioBuffer(file);
-    const data = buffer.getChannelData(0);
-    const sr = buffer.sampleRate;
-    const windowSize = Math.round(sr * 0.03); // 30 ms
-    const silenceSamples = Math.round(sr * silenceMs / 1000);
-    let segments = [];
-    let start = 0;
-    let silent = 0;
-    let inSound = false;
-    const total = data.length;
-    for (let i = 0; i < total; i += windowSize) {
-        let sum = 0;
-        for (let j = 0; j < windowSize && i + j < data.length; j++) {
-            sum += Math.abs(data[i + j]);
-        }
-        const amp = sum / windowSize;
-        const ms = i / sr * 1000;
-        if (amp < threshold) {
-            silent += windowSize;
-            if (inSound && silent >= silenceSamples) {
-                const end = (i - silent) / sr * 1000;
-                if (end > start) segments.push({ start, end });
-                inSound = false;
-            }
-        } else {
-            if (!inSound) {
-                start = ms;
-                inSound = true;
-            }
-            silent = 0;
-        }
-        if (onProgress && i % (sr * 0.5) === 0) {
-            onProgress(i / total);
-        }
-    }
-    if (inSound) {
-        const end = data.length / sr * 1000;
-        segments.push({ start, end });
-    }
-    if (onProgress) onProgress(1);
-    return { buffer, segments };
-}
-
-// Zeichnet die Segmente farbig in die Wellenform
-function drawSegments(canvas, buffer, segments) {
-    drawWaveform(canvas, buffer);
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const durationMs = buffer.length / buffer.sampleRate * 1000;
-    segments.forEach((s, i) => {
-        const startX = (s.start / durationMs) * width;
-        const endX = (s.end / durationMs) * width;
-        ctx.fillStyle = i % 2 ? 'rgba(0,0,255,0.3)' : 'rgba(255,0,255,0.3)';
-        ctx.fillRect(startX, 0, endX - startX, height);
-    });
-}
-
-// Schneidet einen Bereich aus einem Buffer heraus
-function sliceBuffer(buffer, startMs, endMs) {
-    const sr = buffer.sampleRate;
-    const start = Math.max(0, Math.floor(startMs * sr / 1000));
-    const end = Math.min(buffer.length, Math.floor(endMs * sr / 1000));
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const newBuf = ctx.createBuffer(buffer.numberOfChannels, end - start, sr);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch).subarray(start, end);
-        newBuf.copyToChannel(data, ch);
-    }
-    // AudioContext wieder schließen, um Browser-Limit zu vermeiden
-    ctx.close();
-    return newBuf;
-}
-
-async function openSegmentDialog() {
-    const dlg = document.getElementById('segmentDialog');
-    dlg.classList.remove('hidden');
-    const canvas = document.getElementById('segmentWaveform');
-    canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-    const input = document.getElementById('segmentFileInput');
-    input.addEventListener('change', analyzeSegmentFile);
-    canvas.addEventListener('click', handleSegmentCanvasClick);
-    if (!segmentInfo && currentProject.segmentAudio && currentProject.segmentSegments) {
-        const ab = base64ToArrayBuffer(currentProject.segmentAudio);
-        const blob = new Blob([ab]);
-        const buf = await loadAudioBuffer(blob);
-        segmentInfo = { buffer: buf, segments: currentProject.segmentSegments };
-        segmentAssignments = currentProject.segmentAssignments || {};
-    }
-    if (segmentInfo) {
-        drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
-        populateSegmentList();
-        highlightAssignedSegments();
-    } else {
-        resetSegmentDialog();
-    }
-}
-
-function closeSegmentDialog() {
-    document.getElementById('segmentDialog').classList.add('hidden');
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        // beim Schließen auch die erzeugte URL freigeben
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    document.getElementById('segmentWaveform').removeEventListener('click', handleSegmentCanvasClick);
-    document.getElementById('segmentFileInput').removeEventListener('change', analyzeSegmentFile);
-    segmentSelection = [];
-    storeSegmentState();
-}
-
-// Setzt den Dialog zurück und beendet eine laufende Wiedergabe
-// Ist keepStatus=true, bleibt der aktuelle Meldungstext erhalten
-function resetSegmentDialog(keepStatus=false) {
-    document.getElementById('segmentFileInput').value = '';
-    document.getElementById('segmentTextList').innerHTML = '';
-    const canvas = document.getElementById('segmentWaveform');
-    canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    segmentInfo = null;
-    segmentAssignments = {};
-    segmentSelection = [];
-    // laufende Wiedergabe stoppen und URL freigeben
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    const progress = document.getElementById('segmentProgress');
-    const fill = document.getElementById('segmentFill');
-    const status = document.getElementById('segmentStatus');
-    // Fortschrittsbalken und Status zurücksetzen
-    progress.classList.remove('active');
-    fill.style.width = '0%';
-    if (!keepStatus) {
-        status.textContent = 'Analysiere...';
-    }
-    currentProject.segmentAudio = null;
-    currentProject.segmentAssignments = {};
-    currentProject.segmentSegments = null;
-    storeSegmentState();
-}
-
-async function analyzeSegmentFile(ev) {
-    const file = ev.target.files[0];
-    if (!file) return;
-    segmentAssignments = {};
-    segmentSelection = [];
-    // Audio-Datei als Base64 speichern, damit sie im Projekt erhalten bleibt
-    const buf = await file.arrayBuffer();
-    currentProject.segmentAudio = arrayBufferToBase64(buf);
-    const progress = document.getElementById('segmentProgress');
-    const fill = document.getElementById('segmentFill');
-    const status = document.getElementById('segmentStatus');
-    let shown = false;
-    const timer = setTimeout(() => { progress.classList.add('active'); shown = true; }, 5000);
-    try {
-        segmentInfo = await detectSegments(file, 300, 0.01, p => {
-            fill.style.width = `${Math.round(p * 100)}%`;
-        });
-        status.textContent = 'Fertig';
-        drawSegments(document.getElementById('segmentWaveform'), segmentInfo.buffer, segmentInfo.segments);
-        populateSegmentList();
-        storeSegmentState();
-    } catch (err) {
-        console.error('Analyse fehlgeschlagen', err);
-        resetSegmentDialog(true);
-        status.textContent = 'Fehler beim Analysieren';
-        storeSegmentState();
-    } finally {
-        clearTimeout(timer);
-        if (shown) {
-            progress.classList.remove('active');
-            fill.style.width = '0%';
-        }
-    }
-}
-
-function populateSegmentList() {
-    const list = document.getElementById('segmentTextList');
-    list.innerHTML = '';
-    files.forEach((f, i) => {
-        const div = document.createElement('div');
-        div.className = 'seg-line';
-        div.dataset.line = i;
-        const playBtn = `<button class="seg-play" data-line="${i}">▶</button>`;
-        const value = segmentAssignments[i] ? segmentAssignments[i].join(',') : '';
-        div.innerHTML = `<span class="seg-label">${i + 1}. ${escapeHtml(f.deText || '')}</span>`+
-                        `<input type="text" data-line="${i}" placeholder="Segmente" value="${value}">`+
-                        playBtn;
-        list.appendChild(div);
-    });
-
-    list.querySelectorAll('input').forEach(inp => {
-        inp.addEventListener('input', () => updateSegmentAssignment(inp));
-    });
-    list.querySelectorAll('.seg-play').forEach(btn => {
-        btn.addEventListener('click', () => playSegmentLine(parseInt(btn.dataset.line)));
-    });
-    // Klick auf eine Zeile ordnet aktuelle Segmentauswahl zu
-    list.querySelectorAll('.seg-line').forEach(div => {
-        div.addEventListener('click', ev => {
-            if (ev.target.tagName === 'INPUT' || ev.target.classList.contains('seg-play')) return;
-            if (segmentSelection.length === 0) return;
-            const line = parseInt(div.dataset.line);
-            segmentAssignments[line] = segmentSelection.map(n => n + 1);
-            const inp = div.querySelector('input');
-            inp.value = segmentAssignments[line].join(',');
-            segmentSelection = [];
-            highlightAssignedSegments();
-        });
-    });
-}
-
-// Parst das Eingabefeld und validiert Zahlenbereich
-function parseSegmentInput(val, max) {
-    if (!val) return [];
-    val = val.replace(/\s+/g, '');
-    const parts = val.split(',');
-    let nums = [];
-    for (const p of parts) {
-        if (p.includes('-')) {
-            const [a,b] = p.split('-').map(n => parseInt(n));
-            if (isNaN(a) || isNaN(b) || a>b || a<1 || b>max) return null;
-            for (let n=a;n<=b;n++) nums.push(n);
-        } else {
-            const n = parseInt(p);
-            if (isNaN(n) || n<1 || n>max) return null;
-            nums.push(n);
-        }
-    }
-    return nums;
-}
-
-function updateSegmentAssignment(input) {
-    const line = parseInt(input.dataset.line);
-    const max = segmentInfo ? segmentInfo.segments.length : 0;
-    const nums = parseSegmentInput(input.value, max);
-    if (!nums) {
-        input.classList.add('error');
-        // ungültige Eingabe entfernt die bisherige Zuordnung
-        delete segmentAssignments[line];
-        highlightAssignedSegments();
-        return;
-    }
-    nums.sort((a,b)=>a-b);
-    for (let i=1;i<nums.length;i++) {
-        if (nums[i] !== nums[i-1] + 1) {
-            input.classList.add('error');
-            delete segmentAssignments[line];
-            highlightAssignedSegments();
-            return;
-        }
-    }
-    input.classList.remove('error');
-    segmentAssignments[line] = nums;
-    highlightAssignedSegments();
-    storeSegmentState();
-}
-
-function highlightAssignedSegments() {
-    if (!segmentInfo) return;
-    const canvas = document.getElementById('segmentWaveform');
-    drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const colors = ['rgba(255,100,100,0.4)','rgba(100,255,100,0.4)','rgba(100,100,255,0.4)','rgba(255,255,100,0.4)','rgba(255,100,255,0.4)'];
-
-    // Zuerst alle Zeilen zurücksetzen
-    document.querySelectorAll('#segmentTextList .seg-line').forEach(div => {
-        div.style.background = '';
-    });
-
-    Object.keys(segmentAssignments).forEach((lineIdx, ci) => {
-        const segNums = segmentAssignments[lineIdx];
-        if (!segNums || segNums.length===0) return;
-        const first = segmentInfo.segments[segNums[0]-1];
-        const last  = segmentInfo.segments[segNums[segNums.length-1]-1];
-        if (!first || !last) return;
-        const color = colors[ci % colors.length];
-        const sx = (first.start / dur) * width;
-        const ex = (last.end / dur) * width;
-        ctx.fillStyle = color;
-        ctx.fillRect(sx,0,ex-sx,height);
-
-        const row = document.querySelector(`#segmentTextList .seg-line[data-line="${lineIdx}"]`);
-        if (row) row.style.background = color;
-    });
-
-    highlightSegmentSelection();
-}
-
-function highlightSegmentSelection() {
-    if (!segmentInfo || segmentSelection.length === 0) return;
-    const canvas = document.getElementById('segmentWaveform');
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const first = segmentInfo.segments[segmentSelection[0]];
-    const last = segmentInfo.segments[segmentSelection[segmentSelection.length-1]];
-    if (!first || !last) return;
-    const sx = (first.start / dur) * width;
-    const ex = (last.end / dur) * width;
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.fillRect(sx, 0, ex - sx, height);
-}
-
-// Spielt die aktuell gewaehlten Segmente ab
-function playSelectedSegments() {
-    if (!segmentInfo || segmentSelection.length === 0) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const first = segmentInfo.segments[segmentSelection[0]];
-    const last  = segmentInfo.segments[segmentSelection[segmentSelection.length-1]];
-    if (!first || !last) return;
-    const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
-    const blob = bufferToWav(buf);
-    const url  = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-function handleSegmentCanvasClick(ev) {
-    if (!segmentInfo) return;
-    const canvas = ev.target;
-    const rect = canvas.getBoundingClientRect();
-    const x = ev.clientX - rect.left;
-    const width = canvas.width;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const ms = (x / width) * dur;
-    const idx = segmentInfo.segments.findIndex(s => ms >= s.start && ms <= s.end);
-    if (idx === -1) return;
-    if (ev.shiftKey && segmentSelection.length > 0) {
-        const min = Math.min(...segmentSelection);
-        const max = Math.max(...segmentSelection);
-        if (idx > max) {
-            for (let i = max + 1; i <= idx; i++) segmentSelection.push(i);
-        } else if (idx < min) {
-            const neu = [];
-            for (let i = idx; i <= max; i++) neu.push(i);
-            segmentSelection = neu;
-        } else {
-            segmentSelection = [idx];
-        }
-    } else {
-        segmentSelection = [idx];
-    }
-    highlightAssignedSegments();
-    playSelectedSegments();
-}
-
-function playSegmentLine(line) {
-    if (!segmentInfo || !segmentAssignments[line]) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const nums = segmentAssignments[line];
-    const first = segmentInfo.segments[nums[0]-1];
-    const last  = segmentInfo.segments[nums[nums.length-1]-1];
-    if (!first || !last) return;
-    const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
-    const blob = bufferToWav(buf);
-    const url = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-function playSegmentFull() {
-    if (!segmentInfo) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const blob = bufferToWav(segmentInfo.buffer);
-    const url = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-async function exportSegmentsToProject() {
-    if (!segmentInfo) return;
-    for (const [lineStr, nums] of Object.entries(segmentAssignments)) {
-        const line = parseInt(lineStr);
-        if (!nums || nums.length===0) continue;
-        const first = segmentInfo.segments[nums[0]-1];
-        const last  = segmentInfo.segments[nums[nums.length-1]-1];
-        if (!first || !last) continue;
-        const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
-        const relPath = getFullPath(files[line]);
-        await speichereUebersetzungsDatei(bufferToWav(buf), relPath);
-    }
-    updateStatus('Segmente importiert');
-    closeSegmentDialog();
-    storeSegmentState();
-    renderFileTable();
-}
-// =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
 
 // =========================== GETBROWSERDEBUGPATHINFO START ===========================
@@ -9494,20 +9010,14 @@ function initiateEmoDubbing(fileId) {
 // Lädt eine Audiodatei (String-URL oder File) und liefert ein AudioBuffer
 async function loadAudioBuffer(source) {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        let arrayBuffer;
-        if (typeof source === 'string') {
-            const resp = await fetch(source);
-            arrayBuffer = await resp.arrayBuffer();
-        } else {
-            arrayBuffer = await source.arrayBuffer();
-        }
-        // Kontext nach dem Dekodieren schließen, um Limits zu vermeiden
-        const buffer = await ctx.decodeAudioData(arrayBuffer);
-        return buffer;
-    } finally {
-        ctx.close();
+    let arrayBuffer;
+    if (typeof source === 'string') {
+        const resp = await fetch(source);
+        arrayBuffer = await resp.arrayBuffer();
+    } else {
+        arrayBuffer = await source.arrayBuffer();
     }
+    return await ctx.decodeAudioData(arrayBuffer);
 }
 
 // Ermittelt die Länge einer Audiodatei in Sekunden und nutzt einen Cache
