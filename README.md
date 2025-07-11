@@ -364,6 +364,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 28. `node dev_info.js` gibt alle relevanten Systemdaten sowie die Versionen von `ffmpeg`, `ytdl-core`, `play-dl` und `yt-dlp` aus.
 29. Das Debug-Fenster zeigt jetzt zusätzlich den Pfad zum VideoFrame-Ordner und die installierten Versionen der Video-Abhängigkeiten.
 30. Ein neuer Netztest im Debug-Fenster prüft die Erreichbarkeit von YouTube.
+31. `cliSendTextV2.js` schickt Textzeilen an ElevenLabs (v2) und überspringt doppelten Inhalt.
+32. Ein neuer Button `An ElevenLabs schicken` sendet alle Emotional-Texte des aktuellen Projekts ohne Duplikate an die Text-to-Speech-API (v2).
 
 ### ElevenLabs-Dubbing
 
@@ -388,7 +390,7 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
     // blob speichern ...
 }
 ```
-Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `getDubbingStatus`, `downloadDubbingAudio`, `getDefaultVoiceSettings`, `waitForDubbing`, `isDubReady`, `renderLanguage` und `pollRender`. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
+Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `getDubbingStatus`, `downloadDubbingAudio`, `getDefaultVoiceSettings`, `waitForDubbing`, `isDubReady`, `renderLanguage`, `pollRender` und `sendTextV2`. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
 Das komplette Workflow-Skript für den Upload, die Statusabfrage und das erneute
 Herunterladen befindet sich nun in `web/src/dubbing.js`.
 Im Desktop-Modus wird dieses Modul beim Start dynamisch geladen und stellt seine Funktionen sowohl für Node-Tests als auch im Browser global bereit. Fehlen im Importobjekt die Funktionsreferenzen, greift `main.js` auf die globalen `window`-Varianten zurück. Zusätzlich exportiert `dubbing.js` die Variable `waitDialogFileId`, über die `main.js` erkennt, zu welcher Datei der Download-Dialog gehört.
