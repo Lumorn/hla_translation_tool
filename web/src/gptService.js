@@ -154,7 +154,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 // Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
 async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini' }) {
     await promptReady;
-    // Emotionstags müssen in Englisch zurückgegeben werden, der restliche Text bleibt Deutsch
+    // Emotionstags müssen in Deutsch zurückgegeben werden, der restliche Text bleibt Deutsch
     const payload = {
         ...meta,
         lines,
