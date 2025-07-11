@@ -843,6 +843,8 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * ▶ **Fix:** Das Backup funktioniert jetzt auch über Laufwerksgrenzen hinweg, da beim Verschieben auf Kopieren mit anschließendem Löschen umgestellt wird.
 * ▶ **Neu:** Geänderte Dateiendungen werden erkannt und automatisch korrigiert.
 * ▶ **Fix:** Der 📋-Button kopiert den Text nun zuverlässig; das zugehörige Event wird korrekt verarbeitet.
+* **DE-Ordner nicht initialisiert**
+* ▶ **Lösung:** Beim Import oder Speichern fragt das Tool nun automatisch nach dem Projektordner und legt den DE-Ordner an.
 
 #### Häufige Crash-Stellen
 
