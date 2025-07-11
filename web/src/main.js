@@ -6490,6 +6490,11 @@ function playSegmentFull() {
 
 async function exportSegmentsToProject() {
     if (!segmentInfo) return;
+    // Vor dem Speichern sicherstellen, dass der DE-Ordner bereitsteht
+    if (!await ensureDeOrdner()) {
+        alert('Bitte wählen Sie erst einen Projektordner aus.');
+        return;
+    }
     for (const [lineStr, nums] of Object.entries(segmentAssignments)) {
         const line = parseInt(lineStr);
         if (!nums || nums.length===0) continue;
@@ -9149,6 +9154,24 @@ async function scanDeOrdner() {
         });
     }
 }
+
+// Prüft, ob der DE-Ordner vorhanden ist und versucht ihn ggf. zu initialisieren
+async function ensureDeOrdner() {
+    if (deOrdnerHandle) return true;
+    try {
+        if (!projektOrdnerHandle) {
+            const choose = confirm('Kein Projektordner gewählt. Jetzt auswählen?');
+            if (!choose) return false;
+            await waehleProjektOrdner();
+            return !!deOrdnerHandle;
+        }
+        deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
+        return true;
+    } catch (err) {
+        console.error('DE-Ordner konnte nicht initialisiert werden', err);
+        return false;
+    }
+}
 // =========================== SCANDEORDNER END ===============================
 
 // =========================== VERARBEITEGESCANNTE START =====================
@@ -9198,7 +9221,7 @@ async function verarbeiteGescannteDateien(dateien) {
 
 // =========================== SPEICHEREUEBERSETZUNGSDATEI START ===============
 async function speichereUebersetzungsDatei(datei, relativerPfad) {
-    if (!deOrdnerHandle) {
+    if (!await ensureDeOrdner()) {
         console.error('DE-Ordner nicht initialisiert');
         return;
     }
