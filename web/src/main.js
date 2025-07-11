@@ -29,8 +29,15 @@ if (!isElectron) {
 }
 
 // Hilfsfunktionen zum Kodieren und Dekodieren von Audiodaten
+// wandelt ein ArrayBuffer sicher in Base64 um, auch bei großen Dateien
 function arrayBufferToBase64(buf){
-    const bin=String.fromCharCode(...new Uint8Array(buf));
+    const bytes = new Uint8Array(buf);
+    const chunkSize = 0x8000; // 32 kB pro Teilstück
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+        const chunk = bytes.subarray(i, i + chunkSize);
+        bin += String.fromCharCode.apply(null, chunk);
+    }
     return btoa(bin);
 }
 function base64ToArrayBuffer(str){
