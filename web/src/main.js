@@ -6164,6 +6164,9 @@ async function openSegmentDialog() {
         drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
         populateSegmentList();
         highlightAssignedSegments();
+    } else if (Object.keys(currentProject.segmentAssignments || {}).length > 0) {
+        segmentAssignments = currentProject.segmentAssignments;
+        populateSegmentList();
     } else {
         resetSegmentDialog();
     }
@@ -6498,7 +6501,25 @@ async function exportSegmentsToProject() {
         if (!first || !last) continue;
         const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
         const relPath = getFullPath(files[line]);
-        await speichereUebersetzungsDatei(bufferToWav(buf), relPath);
+        const wavBlob = bufferToWav(buf);
+        if (window.electronAPI && window.electronAPI.saveDeFile) {
+            // In der Desktop-Version direkt über den Hauptprozess speichern
+            const arr = new Uint8Array(await wavBlob.arrayBuffer());
+            await window.electronAPI.saveDeFile(relPath, arr);
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            await updateHistoryCache(relPath);
+        } else {
+            await speichereUebersetzungsDatei(wavBlob, relPath);
+        }
+        // Bearbeitungs-Flags zurücksetzen, da die importierte Datei unbearbeitet ist
+        const file = files[line];
+        if (file) {
+            file.trimStartMs = 0;
+            file.trimEndMs = 0;
+            file.volumeMatched = false;
+            file.radioEffect = false;
+            file.hallEffect = false;
+        }
     }
     updateStatus('Segmente importiert');
     closeSegmentDialog();
