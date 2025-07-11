@@ -234,30 +234,6 @@ async function pollRender(id, lang = 'de', apiKey, logger = () => {}) {
 }
 // =========================== RENDERLANGUAGE END ============================
 
-// =========================== SENDTEXTV2 START =============================
-/**
- * Sendet einen Text an das Text-to-Speech-Endpunkt der Version 2.
- * Der Audio-Stream wird verworfen, es wird nur der Status geprüft.
- * @param {string} apiKey  Eigener API-Schlüssel.
- * @param {string} voiceId Gewählte Stimme.
- * @param {string} text    Zu generierender Text.
- */
-async function sendTextV2(apiKey, voiceId, text, logger = () => {}) {
-    const body = { text, model_id: 'eleven_multilingual_v2' };
-    const url = `${API}/text-to-speech/${voiceId}`;
-    logger(`POST ${url}`);
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-    });
-    logger(`Antwort (${res.status})`);
-    if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Text-to-Speech fehlgeschlagen: ${res.status} ${errText}`);
-    }
-}
-// =========================== SENDTEXTV2 END ===============================
 
 // =========================== DOWNLOADFROMURL START =======================
 // Hilfsfunktion zum Speichern eines Response-Streams
@@ -285,6 +261,5 @@ module.exports = {
     waitForDubbing,
     isDubReady,
     renderLanguage,
-    pollRender,
-    sendTextV2
+    pollRender
 };
