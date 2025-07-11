@@ -6131,8 +6131,16 @@ async function openSegmentDialog() {
     const dlg = document.getElementById('segmentDialog');
     dlg.classList.remove('hidden');
     const canvas = document.getElementById('segmentWaveform');
+    if (!canvas) {
+        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
+        return;
+    }
     canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
     const input = document.getElementById('segmentFileInput');
+    if (!input) {
+        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
+        return;
+    }
     // Listener vorsichtshalber neu setzen, falls der Dialog dynamisch erzeugt wurde
     input.onchange = analyzeSegmentFile;
     // Wert leeren, damit auch dieselbe Datei erneut erkannt wird
@@ -6155,7 +6163,12 @@ async function openSegmentDialog() {
 }
 
 function closeSegmentDialog() {
-    document.getElementById('segmentDialog').classList.add('hidden');
+    const dlg = document.getElementById('segmentDialog');
+    if (!dlg) {
+        console.error("Segmentdialog konnte nicht geschlossen werden: Element 'segmentDialog' fehlt.");
+    } else {
+        dlg.classList.add('hidden');
+    }
     if (segmentPlayer) {
         segmentPlayer.pause();
         // beim Schließen auch die erzeugte URL freigeben
@@ -6165,7 +6178,12 @@ function closeSegmentDialog() {
         }
         segmentPlayer = null;
     }
-    document.getElementById('segmentWaveform').removeEventListener('click', handleSegmentCanvasClick);
+    const canvas = document.getElementById('segmentWaveform');
+    if (!canvas) {
+        console.error("Segmentdialog: Element 'segmentWaveform' fehlt.");
+    } else {
+        canvas.removeEventListener('click', handleSegmentCanvasClick);
+    }
     segmentSelection = [];
     storeSegmentState();
 }
@@ -6173,12 +6191,21 @@ function closeSegmentDialog() {
 // Setzt den Dialog zurück und beendet eine laufende Wiedergabe
 // Ist keepStatus=true, bleibt der aktuelle Meldungstext erhalten
 function resetSegmentDialog(keepStatus=false) {
-    document.getElementById('segmentFileInput').value = '';
+    const input = document.getElementById('segmentFileInput');
+    if (input) {
+        input.value = '';
+    } else {
+        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
+    }
     document.getElementById('segmentTextList').innerHTML = '';
     const canvas = document.getElementById('segmentWaveform');
-    canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas) {
+        canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    } else {
+        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
+    }
     segmentInfo = null;
     segmentAssignments = {};
     segmentSelection = [];
