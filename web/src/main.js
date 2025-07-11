@@ -389,6 +389,7 @@ function cleanupDubCache() {
 if (typeof document !== "undefined" && typeof document.getElementById === "function") {
     const gptBtn = document.getElementById("gptScoreButton");
     const emoBtn = document.getElementById("generateEmotionsButton");
+    const sendBtn = document.getElementById("sendTextV2Button");
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
             if (currentProject?.gptTests?.length) {
@@ -400,6 +401,9 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     }
     if (emoBtn) {
         emoBtn.addEventListener("click", generateEmotionsForAll);
+    }
+    if (sendBtn) {
+        sendBtn.addEventListener("click", sendEmoTextsToApi);
     }
 }
 
@@ -2761,6 +2765,35 @@ function addFiles() {
             btn.textContent = 'Emotionen generieren';
             btn.disabled = false;
             updateStatus(`Fertig (${done}/${ids.length})`);
+        }
+
+        // Sendet alle Emotional-Texte in der Projektreihenfolge an ElevenLabs
+        async function sendEmoTextsToApi() {
+            const btn = document.getElementById('sendTextV2Button');
+            if (!btn || !elevenLabsApiKey) { updateStatus('API-Key fehlt'); return; }
+            btn.disabled = true;
+            btn.textContent = 'Sende...';
+            const seen = new Set();
+            let count = 0;
+            for (const file of files) {
+                const text = (file.emotionalText || '').trim();
+                const voiceId = folderCustomizations[file.folder]?.voiceId;
+                if (!text || !voiceId || seen.has(text)) continue;
+                try {
+                    await fetch(`${API}/text-to-speech/${voiceId}`, {
+                        method: 'POST',
+                        headers: { 'xi-api-key': elevenLabsApiKey, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' })
+                    });
+                    count++;
+                    seen.add(text);
+                } catch (e) {
+                    console.error('Fehler bei', text, e);
+                }
+            }
+            btn.textContent = 'An ElevenLabs schicken';
+            btn.disabled = false;
+            updateStatus(`Daten gesendet (${count})`);
         }
 
         // Context Menu
