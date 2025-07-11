@@ -43,6 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
+* **Audio-Datei zuordnen:** Lange Aufnahmen lassen sich automatisch in Segmente teilen, per Klick auswählen, farblich passenden Textzeilen zuweisen und direkt ins Projekt importieren. Fehlhafte Eingaben löschen die Zuordnung automatisch, laufende Wiedergaben stoppen beim Neu‑Upload. Die gewählte Datei und alle Zuordnungen werden im Projekt gespeichert und sind Teil des Backups. Beim Klicken werden ausgewählte Segmente sofort abgespielt. Die Segmentierungslogik ist nun fest im Hauptskript verankert und der Datei‑Upload wird per Event‑Listener verarbeitet, sodass die Auswahl zuverlässig reagiert.
 * **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand und nutzt nun die volle Breite. Im geöffneten Level wird der Rand grün. Das aktuell gewählte Projekt hebt sich mit einem blauen Balken, leicht transparentem Hintergrund (rgba(33,150,243,0.2)) und weißer Schrift deutlich ab.
 * **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
 * **Breitere Projektleiste:** Die Sidebar ist jetzt 320 px breit, damit lange Einträge korrekt angezeigt werden.
@@ -645,6 +646,15 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
 | **Auto-Resize verbessert** | Textfelder passen sich sauber an und schneiden keine Zeilen mehr ab; beim Projektstart wird die korrekte Höhe jetzt sofort gesetzt |
 * Beim Speichern eines DE-Audios verhindert das Tool nun ungültige Schnittbereiche und zeigt einen Fehler an.
+
+#### Lange Aufnahmen aufteilen
+Über den Button „🔊 Audio-Datei zuordnen“ lässt sich eine lange Aufnahme hochladen. Das Tool erkennt leise Pausen und zeichnet die Segmente farbig in der Waveform ein. Unterhalb stehen alle deutschen Textzeilen des Projekts bereit. Segmente lassen sich nun direkt in der Grafik anklicken – mit gedrückter Umschalttaste auch mehrere nebeneinander. Jede Auswahl wird sofort abgespielt, sodass man die Passagen leicht zuordnen kann. Ein Klick auf die gewünschte Zeile ordnet die Auswahl zu und füllt das Eingabefeld automatisch. Die aktuell gewählte Auswahl wird dabei stets neu gezeichnet, sodass keine Überlagerungen entstehen. Mit „Importieren“ schneidet das Tool die markierten Bereiche zurecht und verknüpft sie mit den Zeilen. Bei längerer Analyse erscheint ein Fortschrittsbalken. Ein immer sichtbarer Button „Neu hochladen“ erlaubt es, jederzeit eine andere Datei einzulesen; laufende Wiedergaben stoppen dabei automatisch. Datei, Segmentliste und Zuordnung werden im Projekt gespeichert und landen zusammen mit den Sounds im Backup. Beim erneuten Öffnen ist alles sofort verfügbar. Die Segmentierung ist nun direkt im Hauptskript eingebunden und funktioniert zuverlässiger.
+Die Dateiauswahl wird jetzt über einen Event‑Listener erkannt, wodurch der Upload sofort reagiert.
+Die Waveform passt ihre Breite nun automatisch an den Dialog an, damit Segmentmarkierungen exakt übereinstimmen.
+Ungültige Segmentnummern werden abgefangen, rot markiert und die Zuordnung gelöscht. Nach erfolgreichem Analysieren erscheint die Meldung „Fertig“. Tritt ein Fehler auf, wird der Fortschrittsbalken beendet, der Dialog geleert und die Fehlermeldung bleibt sichtbar.
+Beim Laden neuer Dateien schließt das Tool den verwendeten AudioContext sofort wieder, damit der Browser nicht zu viele offene Instanzen ansammelt.
+Beim Zurücksetzen springt die Statusanzeige wieder auf „Analysiere…“, damit neue Uploads korrekt starten. Schließt man den Dialog, stoppt das Tool laufende Wiedergaben und gibt die erzeugten Object‑URLs frei.
+Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderung sichert das Projekt sofort, damit die Zuordnung nach einem Neustart erhalten bleibt.
 ---
 
 ## ⌨️ Keyboard Shortcuts
