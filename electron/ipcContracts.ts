@@ -23,6 +23,11 @@ export interface SaveDeHistoryBufferArgs {
   data: Uint8Array;
 }
 
+export interface SaveSegmentFileArgs {
+  projectId: number;
+  data: Uint8Array;
+}
+
 export type IpcChannels =
   | 'scan-folders'
   | 'open-folder-dialog'
@@ -41,6 +46,7 @@ export type IpcChannels =
   | 'delete-de-backup-file'
   | 'restore-de-file'
   | 'save-de-file'
+  | 'save-segment-file'
   | 'move-file'
   | 'list-de-history'
   | 'restore-de-history'

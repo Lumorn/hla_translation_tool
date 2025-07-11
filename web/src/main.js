@@ -1421,6 +1421,7 @@ function loadProjects() {
             if (!p.hasOwnProperty('segmentAssignments')) { p.segmentAssignments = {}; migrated = true; }
             if (!p.hasOwnProperty('segmentSegments')) { p.segmentSegments = null; migrated = true; }
             if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
+            if (!p.hasOwnProperty('segmentAudioPath')) { p.segmentAudioPath = null; migrated = true; }
         });
 
         // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
@@ -1448,6 +1449,7 @@ function loadProjects() {
                 segmentAssignments: {},
                 segmentSegments: null,
                 segmentAudio: null,
+                segmentAudioPath: null,
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -1469,6 +1471,7 @@ function loadProjects() {
                 segmentAssignments: {},
                 segmentSegments: null,
                 segmentAudio: null,
+                segmentAudioPath: null,
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -1490,6 +1493,7 @@ function loadProjects() {
                 segmentAssignments: {},
                 segmentSegments: null,
                 segmentAudio: null,
+                segmentAudioPath: null,
                 fixedStats: {
                     enPercent: 95,
                     dePercent: 85,
@@ -6201,12 +6205,21 @@ async function openSegmentDialog() {
     // Wert leeren, damit auch dieselbe Datei erneut erkannt wird
     input.value = '';
     canvas.addEventListener('click', handleSegmentCanvasClick);
-    if (!segmentInfo && currentProject.segmentAudio && currentProject.segmentSegments) {
-        const ab = base64ToArrayBuffer(currentProject.segmentAudio);
-        const blob = new Blob([ab]);
-        const buf = await loadAudioBuffer(blob);
-        segmentInfo = { buffer: buf, segments: currentProject.segmentSegments };
-        segmentAssignments = currentProject.segmentAssignments || {};
+    if (!segmentInfo && currentProject.segmentSegments) {
+        let buf = null;
+        if (currentProject.segmentAudioPath && window.electronAPI && window.electronAPI.fsReadFile) {
+            const info = await window.electronAPI.getDebugInfo();
+            const full = window.electronAPI.join(info.soundsPath, currentProject.segmentAudioPath);
+            const data = window.electronAPI.fsReadFile(full);
+            buf = await loadAudioBuffer(new Blob([data]));
+        } else if (currentProject.segmentAudio) {
+            const ab = base64ToArrayBuffer(currentProject.segmentAudio);
+            buf = await loadAudioBuffer(new Blob([ab]));
+        }
+        if (buf) {
+            segmentInfo = { buffer: buf, segments: currentProject.segmentSegments };
+            segmentAssignments = currentProject.segmentAssignments || {};
+        }
     }
     if (segmentInfo) {
         drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
@@ -6286,6 +6299,7 @@ function resetSegmentDialog(keepStatus=false) {
         status.textContent = 'Analysiere...';
     }
     currentProject.segmentAudio = null;
+    currentProject.segmentAudioPath = null;
     currentProject.segmentAssignments = {};
     currentProject.segmentSegments = null;
     storeSegmentState();
@@ -6296,9 +6310,16 @@ async function analyzeSegmentFile(ev) {
     if (!file) return;
     segmentAssignments = {};
     segmentSelection = [];
-    // Audio-Datei als Base64 speichern, damit sie im Projekt erhalten bleibt
     const buf = await file.arrayBuffer();
-    currentProject.segmentAudio = arrayBufferToBase64(buf);
+    if (window.electronAPI && window.electronAPI.saveSegmentFile) {
+        const arr = new Uint8Array(buf);
+        currentProject.segmentAudioPath = await window.electronAPI.saveSegmentFile(currentProject.id, arr);
+        currentProject.segmentAudio = null;
+    } else {
+        // Im Browser als Base64 im Projekt speichern
+        currentProject.segmentAudio = arrayBufferToBase64(buf);
+        currentProject.segmentAudioPath = null;
+    }
     const progress = document.getElementById('segmentProgress');
     const fill = document.getElementById('segmentFill');
     const status = document.getElementById('segmentStatus');

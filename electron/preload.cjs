@@ -37,6 +37,7 @@ if (typeof require !== 'function') {
     saveFile: (data, defaultPath) => ipcRenderer.invoke('save-file', /** @type {SaveFileArgs} */({ data, defaultPath })),
     // DE-Datei im Projektordner speichern
     saveDeFile: (relPath, data) => ipcRenderer.invoke('save-de-file', /** @type {SaveDeFileArgs} */({ relPath, data })),
+    saveSegmentFile: (projectId, data) => ipcRenderer.invoke('save-segment-file', { projectId, data }),
     backupDeFile: (relPath) => ipcRenderer.invoke('backup-de-file', relPath),
     restoreDeFile: (relPath) => ipcRenderer.invoke('restore-de-file', relPath),
     deleteDeBackupFile: (relPath) => ipcRenderer.invoke('delete-de-backup-file', relPath),
