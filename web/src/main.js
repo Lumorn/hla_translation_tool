@@ -6466,6 +6466,14 @@ async function exportSegmentsToProject() {
     storeSegmentState();
     renderFileTable();
 }
+// Nach Auslagerung in einzelne Module sicherstellen, dass die
+// Funktionen weiterhin global verfuegbar sind
+if (typeof window !== 'undefined') {
+    window.openSegmentDialog = openSegmentDialog;
+    window.closeSegmentDialog = closeSegmentDialog;
+    window.analyzeSegmentFile = analyzeSegmentFile;
+    window.exportSegmentsToProject = exportSegmentsToProject;
+}
 // =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
 
@@ -12705,7 +12713,12 @@ if (typeof module !== "undefined" && module.exports) {
         __setFilePathDatabase: db => { filePathDatabase = db; },
         __setTextDatabase: db => { textDatabase = db; },
         autoApplySuggestion,
-        insertGptResults
+        insertGptResults,
+        // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
+        openSegmentDialog,
+        closeSegmentDialog,
+        analyzeSegmentFile,
+        exportSegmentsToProject
     };
 }
 
