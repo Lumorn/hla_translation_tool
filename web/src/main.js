@@ -3261,7 +3261,7 @@ return `
         <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
             <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
             <div class="btn-column">
-                <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text generieren</button>
+                <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
                 <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
             </div>
         </div>

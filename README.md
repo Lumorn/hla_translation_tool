@@ -244,11 +244,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tab/Shift+Tab Navigation** zwischen Textfeldern und Zeilen
 * **Ctrl+Leertaste:** Audio‑Playback direkt im Textfeld
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
-* **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Der Button „Emotional-Text generieren“ erstellt den Inhalt nun stets neu; ein 📋‑Knopf kopiert ihn.
-* **Emotionen generieren:** Der Button oberhalb der Tabelle erstellt jetzt für alle Zeilen neue Emotional-Text-Felder – vorhandene Inhalte werden überschrieben.
+* **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Der Button „Emotional-Text (DE) generieren“ erstellt den Inhalt nun stets neu; ein 📋‑Knopf kopiert ihn.
+* **Emotionen (DE) generieren:** Der Button oberhalb der Tabelle erstellt jetzt für alle Zeilen neue Emotional-Text-Felder – vorhandene Inhalte werden überschrieben.
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.
 * **Tags mitten im Satz:** Die erzeugten Emotionstags stehen jetzt direkt vor der jeweiligen Textstelle und nicht mehr am Ende der Zeile.
-* **Tags auf Englisch:** In den eckigen Klammern sind die Emotionstags nun auf Englisch, der eigentliche Dialog bleibt Deutsch.
+* **Tags auf Deutsch:** In den eckigen Klammern sind die Emotionstags nun auf Deutsch, der eigentliche Dialog bleibt weiterhin Deutsch.
 * **Begründung für Emotionstags:** Unter dem violetten Textfeld erscheint eine kurze Erklärung, warum diese Emotion gewählt wurde.
 * **Automatische Übersetzungsvorschau** unter jedem DE-Feld via *Argos Translate*
 * **Kompakter Auto-Übersetzungstext:** Vorschläge unter dem DE-Feld werden nun
