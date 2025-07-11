@@ -249,6 +249,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.
 * **Tags mitten im Satz:** Die erzeugten Emotionstags stehen jetzt direkt vor der jeweiligen Textstelle und nicht mehr am Ende der Zeile.
 * **Tags auf Englisch:** In den eckigen Klammern sind die Emotionstags nun auf Englisch, der eigentliche Dialog bleibt Deutsch.
+* **Begründung für Emotionstags:** Unter dem violetten Textfeld erscheint eine kurze Erklärung, warum diese Emotion gewählt wurde.
 * **Automatische Übersetzungsvorschau** unter jedem DE-Feld via *Argos Translate*
 * **Kompakter Auto-Übersetzungstext:** Vorschläge unter dem DE-Feld werden nun
   mit kleiner Schrift (0.8 rem) angezeigt

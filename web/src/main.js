@@ -1969,6 +1969,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
+        if(!f.hasOwnProperty('emoReason')){f.emoReason='';}
         if(!f.hasOwnProperty('emoCompleted')){f.emoCompleted=false;}
         if(!f.hasOwnProperty('emoDubbingId')){f.emoDubbingId='';}
         if(!f.hasOwnProperty('emoDubReady')){f.emoDubReady=null;}
@@ -2718,9 +2719,11 @@ function addFiles() {
                     text_de: f.deText || ''
                 }));
                 const targetPosition = files.indexOf(file) + 1;
-                const text = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
-                area.value = text;
-                updateText(file.id, 'emo', text, true);
+                const res = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
+                area.value = res.text || '';
+                file.emoReason = res.reason || '';
+                updateText(file.id, 'emo', area.value, true);
+                updateEmoReasonDisplay(file.id);
                 updateStatus(`Emotionen generiert: ${file.filename}`);
             } catch (e) {
                 console.error('Emotionen fehlgeschlagen', e);
@@ -3228,6 +3231,7 @@ return `
                 <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
             </div>
         </div>
+        <div class="emo-reason-box" data-file-id="${file.id}">${escapeHtml(file.emoReason || '')}</div>
         </td>
         <!-- Untertitel-Suche Knopf -->
         <td><div class="btn-column">
@@ -3286,6 +3290,7 @@ return `
             updateTranslationDisplay(f.id);
             updateCommentDisplay(f.id);
             updateSuggestionDisplay(f.id);
+            updateEmoReasonDisplay(f.id);
         });
         // GPT-Vorschlag per Klick übernehmen
         document.querySelectorAll('.suggestion-box').forEach(div => {
@@ -4487,6 +4492,16 @@ function updateCommentDisplay(fileId) {
     if (box && file) {
         box.textContent = file.comment || '';
         box.style.display = file.comment ? 'block' : 'none';
+    }
+}
+
+// Zeigt die Begründung unter dem Emotional-Text an
+function updateEmoReasonDisplay(fileId) {
+    const box = document.querySelector(`.emo-reason-box[data-file-id="${fileId}"]`);
+    const file = files.find(f => f.id === fileId);
+    if (box && file) {
+        box.textContent = file.emoReason || '';
+        box.style.display = file.emoReason ? 'block' : 'none';
     }
 }
 
@@ -6977,6 +6992,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         emotionalText: textDatabase[fileKey]?.emo || '',
+        emoReason: '',
         autoTranslation: '',
         autoSource: '',
         // Bewertungsergebnisse von GPT
@@ -11540,6 +11556,7 @@ function addFileToProject(filename, folder, originalResult) {
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         emotionalText: textDatabase[fileKey]?.emo || '',
+        emoReason: '',
         autoTranslation: '',
         autoSource: '',
         // Bewertungsergebnisse von GPT

@@ -91,3 +91,13 @@ test('fasst doppelte Zeilen zusammen', async () => {
     { id: 2, score: 5 }
   ]);
 });
+
+test('generateEmotionText liefert Objekt mit Begründung', async () => {
+  const { generateEmotionText } = require('../web/src/gptService.js');
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ choices: [{ message: { content: '{"text":"hi","reason":"ok"}' } }] })
+  });
+  const res = await generateEmotionText({ meta: {}, lines: [], targetPosition: 1, key: 'key', model: 'gpt' });
+  expect(res).toEqual({ text: 'hi', reason: 'ok' });
+});

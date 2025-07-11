@@ -2872,6 +2872,11 @@ th:nth-child(10) {
     color: #fff;
     margin-bottom: 2px;
 }
+.emo-reason-box {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-top: 2px;
+}
 .auto-trans {
     font-size: 0.8rem;
     color: #999;
@@ -2881,6 +2886,9 @@ th:nth-child(10) {
     display: none;
 }
 .comment-box:empty {
+    display: none;
+}
+.emo-reason-box:empty {
     display: none;
 }
 .suggestion-box.score-low,

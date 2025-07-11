@@ -5,4 +5,11 @@ Setze maximal drei Tags pro Zeile und kombiniere sie bei Bedarf.
 Achte darauf, dass die Tags **vor** der jeweiligen Textstelle stehen und niemals erst am Ende.
 Wenn mehrere Emotionen zutreffen, setze die wichtigste gleich an den Zeilenanfang oder vor den betroffenen Satzteil.
 Alle Emotionstags müssen in Englisch geschrieben werden, der übrige Text bleibt deutsch.
-Keine weiteren Kommentare.
+Gib **zusätzlich eine kurze Begründung** zurück, warum diese Tags gewählt wurden.
+Erkläre knapp den emotionalen Kontext anhand der vorherigen und folgenden Zeilen.
+
+### Ausgabeformat
+Antwort ausschließlich als JSON-Objekt mit den Feldern `text` und `reason`:
+```json
+{ "text": "<Deutsch mit Emotionstags>", "reason": "<knapper Kontext>" }
+```
