@@ -224,7 +224,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.101';
+const APP_VERSION = '1.40.103';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -6123,6 +6123,11 @@ function sliceBuffer(buffer, startMs, endMs) {
 }
 
 async function openSegmentDialog() {
+    if (!currentProject) {
+        // Ohne aktives Projekt kann keine Datei zugeordnet werden
+        alert('Bitte zuerst ein Projekt auswählen.');
+        return;
+    }
     const dlg = document.getElementById('segmentDialog');
     dlg.classList.remove('hidden');
     const canvas = document.getElementById('segmentWaveform');
@@ -6468,11 +6473,16 @@ async function exportSegmentsToProject() {
 }
 // Nach Auslagerung in einzelne Module sicherstellen, dass die
 // Funktionen weiterhin global verfuegbar sind
+// Diese Funktionen müssen auch im Browser als globale Funktionen verfügbar sein
+// Damit reagiert der Dialog weiterhin korrekt, selbst wenn der Code als Modul
+// geladen wird
 if (typeof window !== 'undefined') {
     window.openSegmentDialog = openSegmentDialog;
     window.closeSegmentDialog = closeSegmentDialog;
     window.analyzeSegmentFile = analyzeSegmentFile;
     window.exportSegmentsToProject = exportSegmentsToProject;
+    window.resetSegmentDialog = resetSegmentDialog;
+    window.playSegmentFull = playSegmentFull;
 }
 // =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
