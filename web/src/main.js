@@ -2655,12 +2655,12 @@ function addFiles() {
             btn.disabled = false;
         }
 
-        // Generiert die Emotional-Texte für alle sichtbaren Zeilen
+        // Generiert die Emotional-Texte für alle Zeilen im Projekt
         async function generateEmotionsForAll() {
             const btn = document.getElementById('generateEmotionsButton');
             if (!btn || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
-            const rows = [...document.querySelectorAll('#fileTableBody tr')].filter(r => r.offsetParent !== null);
-            const ids = rows.map(r => parseInt(r.dataset.id, 10)).filter(id => {
+            // IDs aller Dateien sammeln, die noch keinen Emotional-Text haben
+            const ids = files.map(f => f.id).filter(id => {
                 const area = document.querySelector(`tr[data-id='${id}'] textarea.emotional-text`);
                 return area && !area.value.trim();
             });
