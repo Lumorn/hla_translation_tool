@@ -6498,7 +6498,16 @@ async function exportSegmentsToProject() {
         if (!first || !last) continue;
         const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
         const relPath = getFullPath(files[line]);
-        await speichereUebersetzungsDatei(bufferToWav(buf), relPath);
+        const wavBlob = bufferToWav(buf);
+        if (window.electronAPI && window.electronAPI.saveDeFile) {
+            // In der Desktop-Version direkt über den Hauptprozess speichern
+            const arr = new Uint8Array(await wavBlob.arrayBuffer());
+            await window.electronAPI.saveDeFile(relPath, arr);
+            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            await updateHistoryCache(relPath);
+        } else {
+            await speichereUebersetzungsDatei(wavBlob, relPath);
+        }
     }
     updateStatus('Segmente importiert');
     closeSegmentDialog();
