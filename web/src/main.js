@@ -2704,7 +2704,7 @@ function addFiles() {
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.generate-emotions-btn');
             if (!row || !area || !btn) return;
-            if (area.value.trim()) return; // nichts überschreiben
+            // Bisherigen Inhalt immer verwerfen
             if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
             btn.disabled = true;
             area.value = '...';
@@ -2744,11 +2744,8 @@ function addFiles() {
         async function generateEmotionsForAll() {
             const btn = document.getElementById('generateEmotionsButton');
             if (!btn || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
-            // IDs aller Dateien sammeln, die noch keinen Emotional-Text haben
-            const ids = files.map(f => f.id).filter(id => {
-                const area = document.querySelector(`tr[data-id='${id}'] textarea.emotional-text`);
-                return area && !area.value.trim();
-            });
+            // IDs aller Dateien sammeln – vorhandener Text wird überschrieben
+            const ids = files.map(f => f.id);
             if (ids.length === 0) return;
             btn.disabled = true;
             btn.textContent = 'Generiere...';

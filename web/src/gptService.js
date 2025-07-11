@@ -159,7 +159,7 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
         ...meta,
         lines,
         target_position: targetPosition,
-        instructions: 'Analysiere die Szene und gib den deutschen Text zurück. Platziere die Emotionstags direkt vor der jeweiligen Textstelle und formuliere sie auf Englisch.'
+        instructions: 'Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Platziere die Emotionstags direkt vor der jeweiligen Textstelle und schreibe diese Tags auf Englisch.'
     };
     const messages = [
         { role: 'system', content: emotionPrompt },
