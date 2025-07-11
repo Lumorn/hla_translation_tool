@@ -47,7 +47,6 @@
                     <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
                     <button class="btn btn-secondary" onclick="showCcImportDialog()">📥 Untertitel importieren</button>
                     <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
-                    <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
                 </div>
                 <div class="system-tools">
                     <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
@@ -641,27 +640,6 @@
         </div>
     </div>
 
-    <!-- Audio-Segmentierung Dialog -->
-    <div class="dialog-overlay hidden" id="segmentDialog">
-        <div class="dialog">
-            <button class="dialog-close-btn" onclick="closeSegmentDialog()">×</button>
-            <h3>🎵 Audio-Datei zuordnen</h3>
-            <input type="file" id="segmentFileInput" accept=".mp3,.wav" onchange="analyzeSegmentFile(event)">
-            <div class="segment-progress" id="segmentProgress">
-                <div class="segment-status" id="segmentStatus">Analysiere...</div>
-                <div class="progress-bar"><div class="progress-fill" id="segmentFill"></div></div>
-            </div>
-            <button class="btn btn-secondary" onclick="playSegmentFull()" style="margin-top:6px;">▶ Gesamt</button>
-            <canvas id="segmentWaveform" width="600" height="80" style="width:100%; background:#111; margin-top:10px;"></canvas>
-            <div id="segmentTextList" style="margin-top:10px;"></div>
-            <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="resetSegmentDialog()">Neu hochladen</button>
-                <button class="btn btn-blue" onclick="exportSegmentsToProject()">Importieren</button>
-                <button class="btn btn-secondary" onclick="closeSegmentDialog()">Schließen</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Protokoll Dialog -->
     <div class="dialog-overlay hidden" id="dubbingLogDialog">
         <div class="dialog">
@@ -780,7 +758,6 @@
 
     <script src="src/colorUtils.js"></script>
     <script src="src/main.js"></script>
-    <script src="src/audioSegmenter.js"></script>
     <script type="module" src="renderer.js"></script>
 </body>
 </html>
