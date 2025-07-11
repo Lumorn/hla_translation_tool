@@ -175,7 +175,9 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    return data.choices[0].message.content.trim();
+    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const obj = JSON.parse(clean);
+    return obj;
 }
 
 function createProgressDialog(total) {
