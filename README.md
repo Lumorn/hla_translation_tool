@@ -43,7 +43,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
-* **Audio-Datei zuordnen:** Lange Aufnahmen lassen sich automatisch in Segmente teilen, per Klick auswählen, farblich passenden Textzeilen zuweisen und direkt ins Projekt importieren. Fehlhafte Eingaben löschen die Zuordnung automatisch, laufende Wiedergaben stoppen beim Neu‑Upload. Die gewählte Datei und alle Zuordnungen werden im Projekt gespeichert und sind Teil des Backups. Beim Klicken werden ausgewählte Segmente sofort abgespielt. Die Segmentierungslogik ist fest im Hauptskript verankert. Der Datei‑Input besitzt zusätzlich ein `onchange`-Attribut und der Listener wird beim Öffnen des Dialogs neu gesetzt, sodass der Upload immer reagiert.
+* **Audio-Datei zuordnen:** Lange Aufnahmen lassen sich automatisch in Segmente teilen, per Klick auswählen, farblich passenden Textzeilen zuweisen und direkt ins Projekt importieren. Fehlhafte Eingaben löschen die Zuordnung automatisch, laufende Wiedergaben stoppen beim Neu‑Upload. Die gewählte Datei und alle Zuordnungen werden im Projekt gespeichert und sind Teil des Backups. Beim Klicken werden ausgewählte Segmente sofort abgespielt. Die Segmentierungslogik ist fest im Hauptskript verankert. Der Datei‑Input besitzt zusätzlich ein `onchange`-Attribut und der Listener wird beim Öffnen des Dialogs neu gesetzt, sodass der Upload immer reagiert. Der Dialog setzt die HTML‑Elemente `segmentFileInput` und `segmentWaveform` voraus.
 * **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand und nutzt nun die volle Breite. Im geöffneten Level wird der Rand grün. Das aktuell gewählte Projekt hebt sich mit einem blauen Balken, leicht transparentem Hintergrund (rgba(33,150,243,0.2)) und weißer Schrift deutlich ab.
 * **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
 * **Breitere Projektleiste:** Die Sidebar ist jetzt 320 px breit, damit lange Einträge korrekt angezeigt werden.
@@ -552,6 +552,7 @@ Seit Patch 1.40.100 erlaubt die Content Security Policy nun Verbindungen zu `api
 Seit Patch 1.40.102 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch und Englisch‑Phonetisch.
 Seit Patch 1.40.102 stehen die Segmentierungsfunktionen global zur Verfügung. Dadurch funktioniert der Upload auch nach dem Auslagern in einzelne Module zuverlässig.
 Seit Patch 1.40.103 prüft das Tool vor dem Öffnen des Segmentdialogs, ob ein Projekt ausgewählt wurde.
+Seit Patch 1.40.104 meldet der Segmentdialog fehlende HTML-Elemente in der Konsole.
 
 Beispiel einer gültigen CSV:
 
