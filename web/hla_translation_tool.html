@@ -113,7 +113,6 @@
                     <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE) generieren</button>
                     <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
                     <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
-                    <button class="btn btn-secondary" onclick="showZipImportDialog()">ZIP importieren</button>
                     <button id="copyAssistantButton" class="btn btn-secondary">Kopierhilfe</button>
                     <button id="copyAllEmosButton" class="btn btn-secondary">Emotionen kopieren</button>
                 </div>
@@ -772,11 +771,9 @@
         </div>
     </div>
 
-
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
-    <input type="file" id="zipImportInput" style="display:none" accept=".zip" onchange="handleZipImport(this)">
     <input type="file" id="backupUploadInput" style="display:none" accept=".json" onchange="handleBackupUpload(this)">
 
     <!-- Umschaltbare Debug-Konsole -->
