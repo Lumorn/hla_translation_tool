@@ -870,17 +870,19 @@ let copyAssistIndex = 0;
 let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
 
 async function openCopyAssistant() {
+    // Zuletzt verwendete Position und Schritt wiederherstellen
     copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
-    copyAssistStep = 0;
+    copyAssistStep = parseInt(localStorage.getItem('copyAssistStep') || '0');
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
-    // Direkt beim Öffnen den Namen kopieren
+    // Beim Öffnen sofort den aktuellen Schritt kopieren
     copyAssistNext();
 }
 
 function closeCopyAssistant() {
     localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
     document.getElementById('copyAssistantDialog').classList.add('hidden');
 }
 
@@ -909,7 +911,30 @@ function copyAssistNext() {
         copyAssistIndex++;
         copyAssistStep = 0;
     }
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
     showCopyAssistant();
+}
+
+function copyAssistPrev() {
+    if (copyAssistStep === 1) {
+        // Einen Schritt zurück innerhalb derselben Datei
+        copyAssistStep = 0;
+    } else {
+        // Zur vorherigen Datei springen
+        if (copyAssistIndex > 0) {
+            copyAssistIndex--;
+            copyAssistStep = 1;
+        }
+    }
+    showCopyAssistant();
+    // Automatisch den aktuell sichtbaren Schritt kopieren
+    const text = copyAssistStep === 0
+        ? document.getElementById('copyName').textContent
+        : document.getElementById('copyEmo').textContent;
+    safeCopy(text);
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
 }
 
 function showCopyAssistant() {
