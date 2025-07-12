@@ -888,7 +888,29 @@ async function ensureVoiceList() {
 
 // =========================== COPY ASSISTANT START ==========================
 let copyAssistIndex = 0;
-let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
+// 0 = Name kopieren, ab 1 folgen die Absätze des Emotional-Textes
+let copyAssistStep = 0;
+let copyAssistParts = [];
+
+// Zerlegt einen Emotional-Text in Absätze ohne Leerzeilen
+function splitEmoParts(text) {
+    const parts = [];
+    if (!text) return parts;
+    let current = [];
+    for (const line of String(text).split(/\r?\n/)) {
+        const trimmed = line.trim();
+        if (trimmed === '') {
+            if (current.length) {
+                parts.push(current.join(' '));
+                current = [];
+            }
+        } else {
+            current.push(trimmed);
+        }
+    }
+    if (current.length) parts.push(current.join(' '));
+    return parts;
+}
 
 // Prüft, ob die Zwischenablage zum angezeigten Schritt passt
 async function verifyCopyAssistClipboard() {
@@ -909,9 +931,10 @@ async function verifyCopyAssistClipboard() {
 }
 
 async function openCopyAssistant() {
-    // Zuletzt verwendete Position und Schritt wiederherstellen
-    copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
-    copyAssistStep = parseInt(localStorage.getItem('copyAssistStep') || '0');
+    // Fortschritt immer zurücksetzen: startet bei Datei 1, Schritt 1
+    copyAssistIndex = 0;
+    copyAssistStep = 0;
+    copyAssistParts = splitEmoParts(files[0]?.emotionalText);
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
@@ -921,8 +944,6 @@ async function openCopyAssistant() {
 }
 
 function closeCopyAssistant() {
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
     document.getElementById('copyAssistantDialog').classList.add('hidden');
 }
 
@@ -942,7 +963,7 @@ function copyAssistCopy(field) {
 async function copyAssistCopyCurrent() {
     const text = copyAssistStep === 0
         ? document.getElementById('copyName').textContent
-        : document.getElementById('copyEmo').textContent;
+        : (copyAssistParts[copyAssistStep - 1] || '');
     await safeCopy(text);
 }
 
@@ -954,35 +975,34 @@ function copyAssistNext() {
         safeCopy(name);
         copyAssistStep = 1;
     } else {
-        const emo = document.getElementById('copyEmo').textContent;
-        safeCopy(emo);
-        copyAssistIndex++;
-        copyAssistStep = 0;
+        const part = copyAssistParts[copyAssistStep - 1] || '';
+        safeCopy(part);
+        copyAssistStep++;
+        if (copyAssistStep > copyAssistParts.length) {
+            copyAssistIndex++;
+            copyAssistStep = 0;
+            copyAssistParts = splitEmoParts(files[copyAssistIndex]?.emotionalText);
+        }
     }
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
     showCopyAssistant();
 }
 
 function copyAssistPrev() {
-    if (copyAssistStep === 1) {
-        // Einen Schritt zurück innerhalb derselben Datei
-        copyAssistStep = 0;
-    } else {
-        // Zur vorherigen Datei springen
+    if (copyAssistStep === 0) {
         if (copyAssistIndex > 0) {
             copyAssistIndex--;
-            copyAssistStep = 1;
+            copyAssistParts = splitEmoParts(files[copyAssistIndex].emotionalText);
+            copyAssistStep = copyAssistParts.length;
         }
+    } else {
+        copyAssistStep--;
     }
     showCopyAssistant();
     // Automatisch den aktuell sichtbaren Schritt kopieren
     const text = copyAssistStep === 0
         ? document.getElementById('copyName').textContent
-        : document.getElementById('copyEmo').textContent;
+        : copyAssistParts[copyAssistStep - 1] || '';
     safeCopy(text);
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
 }
 
 function showCopyAssistant() {
@@ -1007,9 +1027,13 @@ function showCopyAssistant() {
     document.getElementById('copyName').textContent = voiceName;
     document.getElementById('copyEn').textContent = file.enText || '';
     document.getElementById('copyDe').textContent = file.deText || '';
-    document.getElementById('copyEmo').textContent = file.emotionalText || '';
+    copyAssistParts = splitEmoParts(file.emotionalText);
+    const emoText = copyAssistStep === 0
+        ? (copyAssistParts[0] || '')
+        : (copyAssistParts[copyAssistStep - 1] || '');
+    document.getElementById('copyEmo').textContent = emoText;
     countSpan.textContent = `Datei ${copyAssistIndex + 1} von ${total}`;
-    stepSpan.textContent = `Schritt ${copyAssistStep + 1} / 2`;
+    stepSpan.textContent = `Schritt ${copyAssistStep + 1} / ${copyAssistParts.length + 1}`;
     prog.style.width = `${(copyAssistIndex / total) * 100}%`;
     verifyCopyAssistClipboard();
 }
