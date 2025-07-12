@@ -27,7 +27,6 @@ const { saveSettings, loadSettings } = require('../settingsStore.ts');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
-const extract = require('extract-zip');
 // Standbild-Erzeugung über ffmpeg
 const { ensureFrame } = require('../legacy/videoFrameUtils.js');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
@@ -55,9 +54,6 @@ fs.mkdirSync(audioBackupPath, { recursive: true });
 // Ordner für ZIP-Sicherungen der Sounds anlegen
 const soundZipBackupPath = path.join(backupPath, 'sounds');
 fs.mkdirSync(soundZipBackupPath, { recursive: true });
-// Temporärer Ordner für ZIP-Importe
-const zipImportTempPath = path.join(userDataPath, 'ZipTemp');
-fs.mkdirSync(zipImportTempPath, { recursive: true });
 // Ordner für Segment-Audiodateien anlegen
 const segmentFolderPath = path.join(SOUNDS_BASE_PATH, 'Segments');
 fs.mkdirSync(segmentFolderPath, { recursive: true });
@@ -335,27 +331,6 @@ app.whenReady().then(() => {
   ipcMain.handle('open-backup-folder', async () => {
     shell.openPath(backupPath);
     return true;
-  });
-
-  // ZIP-Import: Archiv wird in einen temporären Ordner entpackt
-  ipcMain.handle('import-zip', async (event, data) => {
-    try {
-      // Ordner leeren, falls noch Dateien vorhanden sind
-      fs.rmSync(zipImportTempPath, { recursive: true, force: true });
-      fs.mkdirSync(zipImportTempPath, { recursive: true });
-      const zipFile = path.join(zipImportTempPath, 'import.zip');
-      fs.writeFileSync(zipFile, Buffer.from(data));
-      await extract(zipFile, { dir: zipImportTempPath });
-      fs.unlinkSync(zipFile);
-      shell.openPath(zipImportTempPath);
-      return { success: true };
-    } catch (err) {
-      let msg = err.message || String(err);
-      if (msg.includes('multi-disk zip files are not supported')) {
-        msg = 'Mehrteilige ZIP-Archive werden nicht unterstützt.';
-      }
-      return { error: msg };
-    }
   });
 
   // Beliebige URL im Standardbrowser öffnen
