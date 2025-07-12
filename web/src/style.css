@@ -1115,6 +1115,10 @@ th:nth-child(10) {
     margin-bottom: 15px;
 }
 
+.ignore-container { margin-bottom: 15px; }
+.ignore-row { display:flex; gap:6px; margin-bottom:4px; }
+.ignore-row input { width:70px; }
+
 .radio-settings,
 .hall-settings {
     display: flex;
