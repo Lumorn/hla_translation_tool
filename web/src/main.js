@@ -21,6 +21,7 @@ let segmentAssignments    = {};    // Zuordnung Segmente -> Zeilen
 let segmentPlayer         = null;  // Wiedergabe der Ausschnitte
 let segmentSelection      = [];    // aktuell ausgewaehlte Segmente
 let segmentPlayerUrl      = null;  // zuletzt erzeugte Object-URL
+let ignoredSegments       = new Set(); // ignorierte Segmente
 
 // Verfügbarkeit der Electron-API einmalig prüfen
 const isElectron = !!window.electronAPI;
@@ -70,8 +71,19 @@ function storeSegmentState() {
     } else {
         currentProject._segmentAssignments = segmentAssignments;
     }
+    if (!Object.prototype.hasOwnProperty.call(currentProject, '_segmentIgnored')) {
+        Object.defineProperty(currentProject, '_segmentIgnored', {
+            value: ignoredSegments,
+            writable: true,
+            enumerable: false,
+            configurable: true
+        });
+    } else {
+        currentProject._segmentIgnored = ignoredSegments;
+    }
     currentProject.segmentAssignments = segmentAssignments;
     currentProject.segmentSegments = segmentInfo ? segmentInfo.segments : null;
+    currentProject.segmentIgnored = Array.from(ignoredSegments);
     isDirty = true;
     saveCurrentProject();
 }
@@ -1570,6 +1582,7 @@ function loadProjects() {
             if (!p.hasOwnProperty('segmentSegments')) { p.segmentSegments = null; migrated = true; }
             if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
             if (!p.hasOwnProperty('segmentAudioPath')) { p.segmentAudioPath = null; migrated = true; }
+            if (!p.hasOwnProperty('segmentIgnored')) { p.segmentIgnored = []; migrated = true; }
         });
 
         // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
@@ -1598,6 +1611,7 @@ function loadProjects() {
                 segmentSegments: null,
                 segmentAudio: null,
                 segmentAudioPath: null,
+                segmentIgnored: [],
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -1620,6 +1634,7 @@ function loadProjects() {
                 segmentSegments: null,
                 segmentAudio: null,
                 segmentAudioPath: null,
+                segmentIgnored: [],
                 fixedStats: {
                     enPercent: 100,
                     dePercent: 100,
@@ -2113,6 +2128,7 @@ function selectProject(id){
     files = currentProject.files || [];
     segmentInfo = currentProject._segmentInfo || null;
     segmentAssignments = currentProject.segmentAssignments || {};
+    ignoredSegments = new Set(currentProject.segmentIgnored || []);
     segmentSelection = [];
 
     // Migration: completed-Flag nachziehen
@@ -6305,7 +6321,11 @@ function drawSegments(canvas, buffer, segments) {
     segments.forEach((s, i) => {
         const startX = (s.start / durationMs) * width;
         const endX = (s.end / durationMs) * width;
-        ctx.fillStyle = i % 2 ? 'rgba(0,0,255,0.3)' : 'rgba(255,0,255,0.3)';
+        if (ignoredSegments.has(i + 1)) {
+            ctx.fillStyle = 'rgba(80,80,80,0.4)';
+        } else {
+            ctx.fillStyle = i % 2 ? 'rgba(0,0,255,0.3)' : 'rgba(255,0,255,0.3)';
+        }
         ctx.fillRect(startX, 0, endX - startX, height);
     });
 }
@@ -6324,6 +6344,42 @@ function sliceBuffer(buffer, startMs, endMs) {
     // AudioContext wieder schließen, um Browser-Limit zu vermeiden
     ctx.close();
     return newBuf;
+}
+
+// Fuegt mehrere Segmente hintereinander zu einem neuen Buffer zusammen
+function mergeSegments(buffer, segments) {
+    if (!segments || segments.length === 0) return null;
+    const sr = buffer.sampleRate;
+    const total = segments.reduce((sum, s) => sum + Math.floor((s.end - s.start) * sr / 1000), 0);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const newBuf = ctx.createBuffer(buffer.numberOfChannels, total, sr);
+    let offset = 0;
+    segments.forEach(seg => {
+        const start = Math.floor(seg.start * sr / 1000);
+        const end = Math.floor(seg.end * sr / 1000);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const data = buffer.getChannelData(ch).subarray(start, end);
+            newBuf.getChannelData(ch).set(data, offset);
+        }
+        offset += end - start;
+    });
+    ctx.close();
+    return newBuf;
+}
+
+function toggleIgnoreSelectedSegments() {
+    if (segmentSelection.length === 0) return;
+    segmentSelection.forEach(i => {
+        const num = i + 1;
+        if (ignoredSegments.has(num)) {
+            ignoredSegments.delete(num);
+        } else {
+            ignoredSegments.add(num);
+        }
+    });
+    segmentSelection = [];
+    highlightAssignedSegments();
+    storeSegmentState();
 }
 
 async function openSegmentDialog() {
@@ -6350,6 +6406,7 @@ async function openSegmentDialog() {
     // Wert leeren, damit auch dieselbe Datei erneut erkannt wird
     input.value = '';
     canvas.addEventListener('click', handleSegmentCanvasClick);
+    ignoredSegments = new Set(currentProject.segmentIgnored || []);
     if (!segmentInfo && currentProject.segmentSegments) {
         let buf = null;
         if (currentProject.segmentAudioPath && window.electronAPI && window.electronAPI.fsReadFile) {
@@ -6432,6 +6489,7 @@ function resetSegmentDialog(keepStatus=false) {
     segmentInfo = null;
     segmentAssignments = {};
     segmentSelection = [];
+    ignoredSegments.clear();
     // laufende Wiedergabe stoppen und URL freigeben
     if (segmentPlayer) {
         segmentPlayer.pause();
@@ -6454,6 +6512,7 @@ function resetSegmentDialog(keepStatus=false) {
     currentProject.segmentAudioPath = null;
     currentProject.segmentAssignments = {};
     currentProject.segmentSegments = null;
+    currentProject.segmentIgnored = [];
     storeSegmentState();
 }
 
@@ -6462,6 +6521,7 @@ async function analyzeSegmentFile(ev) {
     if (!file) return;
     segmentAssignments = {};
     segmentSelection = [];
+    ignoredSegments.clear();
     const buf = await file.arrayBuffer();
     if (window.electronAPI && window.electronAPI.saveSegmentFile) {
         const arr = new Uint8Array(buf);
@@ -6472,6 +6532,7 @@ async function analyzeSegmentFile(ev) {
         currentProject.segmentAudio = arrayBufferToBase64(buf);
         currentProject.segmentAudioPath = null;
     }
+    currentProject.segmentIgnored = [];
     const progress = document.getElementById('segmentProgress');
     const fill = document.getElementById('segmentFill');
     const status = document.getElementById('segmentStatus');
@@ -6511,6 +6572,9 @@ function populateSegmentList() {
         div.innerHTML = `<span class="seg-label">${i + 1}. ${escapeHtml(f.deText || '')}</span>`+
                         `<input type="text" data-line="${i}" placeholder="Segmente" value="${value}">`+
                         playBtn;
+        if (segmentAssignments[i] && segmentAssignments[i].some(n => ignoredSegments.has(n))) {
+            div.classList.add('seg-ignored');
+        }
         list.appendChild(div);
     });
 
@@ -6594,6 +6658,7 @@ function highlightAssignedSegments() {
     // Zuerst alle Zeilen zurücksetzen
     document.querySelectorAll('#segmentTextList .seg-line').forEach(div => {
         div.style.background = '';
+        div.classList.remove('seg-ignored');
     });
 
     Object.keys(segmentAssignments).forEach((lineIdx, ci) => {
@@ -6609,7 +6674,11 @@ function highlightAssignedSegments() {
         ctx.fillRect(sx,0,ex-sx,height);
 
         const row = document.querySelector(`#segmentTextList .seg-line[data-line="${lineIdx}"]`);
-        if (row) row.style.background = color;
+        if (row) {
+            row.style.background = color;
+            const hasIgnored = segNums.some(n => ignoredSegments.has(n));
+            row.classList.toggle('seg-ignored', hasIgnored);
+        }
     });
 
     highlightSegmentSelection();
@@ -6638,10 +6707,12 @@ function playSelectedSegments() {
         segmentPlayer.pause();
         if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
     }
-    const first = segmentInfo.segments[segmentSelection[0]];
-    const last  = segmentInfo.segments[segmentSelection[segmentSelection.length-1]];
-    if (!first || !last) return;
-    const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
+    const segs = segmentSelection
+        .filter(i => !ignoredSegments.has(i + 1))
+        .map(i => segmentInfo.segments[i])
+        .filter(Boolean);
+    if (segs.length === 0) return;
+    const buf = mergeSegments(segmentInfo.buffer, segs);
     const blob = bufferToWav(buf);
     const url  = URL.createObjectURL(blob);
     segmentPlayerUrl = url;
@@ -6685,11 +6756,11 @@ function playSegmentLine(line) {
         segmentPlayer.pause();
         if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
     }
-    const nums = segmentAssignments[line];
-    const first = segmentInfo.segments[nums[0]-1];
-    const last  = segmentInfo.segments[nums[nums.length-1]-1];
-    if (!first || !last) return;
-    const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
+    const nums = segmentAssignments[line].filter(n => !ignoredSegments.has(n));
+    if (nums.length === 0) return;
+    const segs = nums.map(n => segmentInfo.segments[n-1]).filter(Boolean);
+    if (segs.length === 0) return;
+    const buf = mergeSegments(segmentInfo.buffer, segs);
     const blob = bufferToWav(buf);
     const url = URL.createObjectURL(blob);
     segmentPlayerUrl = url;
@@ -6717,10 +6788,9 @@ async function exportSegmentsToProject() {
     for (const [lineStr, nums] of Object.entries(segmentAssignments)) {
         const line = parseInt(lineStr);
         if (!nums || nums.length===0) continue;
-        const first = segmentInfo.segments[nums[0]-1];
-        const last  = segmentInfo.segments[nums[nums.length-1]-1];
-        if (!first || !last) continue;
-        const buf = sliceBuffer(segmentInfo.buffer, first.start, last.end);
+        const valid = nums.filter(n => !ignoredSegments.has(n)).map(n => segmentInfo.segments[n-1]).filter(Boolean);
+        if (valid.length === 0) continue;
+        const buf = mergeSegments(segmentInfo.buffer, valid);
         const relPath = getFullPath(files[line]);
         const wavBlob = bufferToWav(buf);
         if (window.electronAPI && window.electronAPI.saveDeFile) {
@@ -6759,6 +6829,7 @@ if (typeof window !== 'undefined') {
     window.exportSegmentsToProject = exportSegmentsToProject;
     window.resetSegmentDialog = resetSegmentDialog;
     window.playSegmentFull = playSegmentFull;
+    window.toggleIgnoreSelectedSegments = toggleIgnoreSelectedSegments;
 }
 // =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
@@ -13006,7 +13077,15 @@ if (typeof module !== "undefined" && module.exports) {
         openSegmentDialog,
         closeSegmentDialog,
         analyzeSegmentFile,
-        exportSegmentsToProject
+        exportSegmentsToProject,
+        toggleIgnoreSelectedSegments,
+        mergeSegments,
+        __setSegmentInfo: info => { segmentInfo = info; },
+        __setSegmentAssignments: a => { segmentAssignments = a; },
+        __getSegmentInfo: () => segmentInfo,
+        __getSegmentAssignments: () => segmentAssignments,
+        __setIgnoredSegments: arr => { ignoredSegments = new Set(arr); },
+        __getIgnoredSegments: () => Array.from(ignoredSegments)
     };
 }
 
