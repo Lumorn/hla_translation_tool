@@ -76,6 +76,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Auswahl des GPT-Modells:** Im ChatGPT-Dialog lässt sich das Modell wählen. Die Liste wird auf Wunsch vom Server geladen und für 24&nbsp;Stunden gespeichert
 * **Automatisch geladene GPT-Einstellungen:** Gespeicherter Key und gewähltes Modell stehen nach dem Start sofort zur Verfügung
 * **Robuste GPT-Antworten:** Entfernt ```json-Blöcke``` automatisch und verhindert so Parsefehler
+* **Automatische Wiederholung bei 429:** Schlägt eine Anfrage fehl, wird sie bis zu drei Mal erneut gesendet
 * **Charaktername im GPT-Prompt:** Das Feld `character` nutzt nun den Ordnernamen
 * **Bugfix:** Scores werden korrekt eingefügt, auch wenn ID und Score als Zeichenketten geliefert werden
 * **Robustere Zuordnung:** GPT-Ergebnisse finden jetzt auch dann die richtige Zeile, wenn die ID leicht abweicht

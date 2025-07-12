@@ -55,6 +55,24 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     promptReady = Promise.resolve();
 }
 
+// Hilfsfunktion mit automatischen Wiederholungen bei 429 oder 503
+async function fetchWithRetry(url, options, retries = 3) {
+    let lastError;
+    for (let i = 0; i < retries; i++) {
+        try {
+            const res = await fetch(url, options);
+            if (res.ok || (res.status !== 429 && res.status !== 503)) {
+                return res;
+            }
+            lastError = new Error('HTTP ' + res.status);
+        } catch (e) {
+            lastError = e;
+        }
+        await new Promise(r => setTimeout(r, (i + 1) * 500));
+    }
+    throw lastError;
+}
+
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
 async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
@@ -112,7 +130,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
         console.log('[GPT REQUEST]', { model, messages });
         if (ui) appendGptLog(ui, '>> ' + reqText);
         try {
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            const res = await fetchWithRetry('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -165,7 +183,7 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
         { role: 'system', content: emotionPrompt },
         { role: 'user', content: JSON.stringify(payload) }
     ];
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    const res = await fetchWithRetry('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -258,7 +276,8 @@ if (typeof module !== 'undefined') {
         getSystemPrompt,
         getEmotionPrompt,
         generateEmotionText,
-        sanitizeJSONResponse
+        sanitizeJSONResponse,
+        fetchWithRetry
     };
 }
 if (typeof window !== 'undefined') {
@@ -269,4 +288,5 @@ if (typeof window !== 'undefined') {
     window.getEmotionPrompt = getEmotionPrompt;
     window.generateEmotionText = generateEmotionText;
     window.sanitizeJSONResponse = sanitizeJSONResponse;
+    window.fetchWithRetry = fetchWithRetry;
 }

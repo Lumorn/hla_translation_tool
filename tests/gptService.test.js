@@ -101,3 +101,14 @@ test('generateEmotionText liefert Objekt mit Begründung', async () => {
   const res = await generateEmotionText({ meta: {}, lines: [], targetPosition: 1, key: 'key', model: 'gpt' });
   expect(res).toEqual({ text: 'hi', reason: 'ok' });
 });
+
+test('wiederholt bei HTTP 429', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
+  jestFetch
+    .mockResolvedValueOnce({ ok: false, status: 429 })
+    .mockResolvedValueOnce({ ok: true, json: async () => ({ choices: [{ message: { content: '[{"id":1}]' } }] }) });
+  const res = await evaluateScene({ scene: 's', lines, key: 'k', model: 'gpt' });
+  expect(jestFetch).toHaveBeenCalledTimes(2);
+  expect(res).toEqual([{ id: 1 }]);
+});
