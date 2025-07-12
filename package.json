@@ -24,7 +24,6 @@
     "play-dl": "^1.9.7",
     "playwright": "^1.42.1",
     "progress": "^2.0.3",
-    "unzipper": "^0.12.3",
     "ytdl-core": "^4.11.5"
   }
 }
