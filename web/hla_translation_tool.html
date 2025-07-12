@@ -590,6 +590,12 @@
                     </div>
                 </div>
             </div>
+            <div id="lengthDiffInfo" class="length-diff-display"></div>
+            <div class="auto-trim-buttons">
+                <button class="btn btn-secondary" onclick="showAutoTrimSuggestion()">🛠 Kürzen (automatisch)</button>
+                <button id="applyAutoTrimBtn" class="btn btn-secondary hidden" onclick="applyAutoTrim()">Anwenden</button>
+                <button class="btn btn-secondary" onclick="fitToEnLength()">An EN-Länge anpassen</button>
+            </div>
             <div class="edit-range">
                 <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
                 <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>

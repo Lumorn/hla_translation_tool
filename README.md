@@ -281,6 +281,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Vier Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu vier Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät- und Hall-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
+* **Zeitdifferenz-Anzeige im DE-Editor:** Unter den Wellenformen zeigt eine farbige Meldung, ob das bearbeitete DE-Audio kürzer oder länger als das Original ist.
+* **Automatisches Kürzen:** Ein neuer Button berechnet anhand stiller Passagen einen Schnittvorschlag und zeigt ihn als blauen Marker an. Optional wird das Audio leicht gestretcht, um genau die EN-Länge zu treffen.
+* **Endpunkt auf EN-Länge setzen:** Mit "An EN-Länge anpassen" wird das bearbeitete Audio exakt auf die Länge des englischen Originals gekürzt.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
