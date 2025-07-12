@@ -110,11 +110,8 @@ let editBlobUrl            = null; // aktuelle Blob-URL
 
 // Zusätzliche Marker für Ignorier-Bereiche
 let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
-let manualIgnoreRanges    = [];    // Merker für manuelle Bereiche
 let ignoreTempStart       = null;  // Startpunkt für neuen Bereich
 let ignoreDragging        = null;  // {index, side} beim Ziehen
-let tempoFactor           = 1.0;   // Faktor für Time-Stretching
-let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
 let draggedElement         = null;
 let currentlyPlaying       = null;
@@ -6300,8 +6297,9 @@ function cleanupOrphanCustomizations() {
 
 // =========================== SEGMENT DIALOG START ==========================
 // Hilfsfunktionen zur Audio-Segmentierung direkt hier eingebunden
-// Erkennt Pausen im AudioBuffer und liefert die Segmente zurueck
-function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold = 0.01, onProgress) {
+// Erkennt Pausen im Audio und liefert die Zeitbereiche der Segmente
+async function detectSegments(file, silenceMs = 300, threshold = 0.01, onProgress) {
+    const buffer = await loadAudioBuffer(file);
     const data = buffer.getChannelData(0);
     const sr = buffer.sampleRate;
     const windowSize = Math.round(sr * 0.03); // 30 ms
@@ -6342,12 +6340,6 @@ function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold = 0.01, onPro
     }
     if (onProgress) onProgress(1);
     return { buffer, segments };
-}
-
-// Variante, die direkt eine Datei laedt
-async function detectSegments(file, silenceMs = 300, threshold = 0.01, onProgress) {
-    const buffer = await loadAudioBuffer(file);
-    return detectSegmentsInBuffer(buffer, silenceMs, threshold, onProgress);
 }
 
 // Zeichnet die Segmente farbig in die Wellenform
@@ -6461,90 +6453,6 @@ function playbackToOriginal(ms, ranges, duration) {
         offset += r.end - r.start;
     }
     return ms + offset;
-}
-
-// Ermittelt Pausen ueber einer Mindestlaenge und gibt passende Ignorierbereiche zurueck
-function detectPausesInBuffer(buffer, minPauseMs = 400) {
-    const { segments } = detectSegmentsInBuffer(buffer, minPauseMs, 0.01);
-    const ranges = [];
-    for (let i = 1; i < segments.length; i++) {
-        const gap = segments[i].start - segments[i - 1].end;
-        if (gap >= minPauseMs) {
-            ranges.push({ start: segments[i - 1].end, end: segments[i].start });
-        }
-    }
-    return ranges;
-}
-
-// Hochwertiges Time-Stretching mit SoundTouchJS
-let soundtouchPromise = null;
-function loadSoundTouch() {
-    if (!soundtouchPromise) {
-        soundtouchPromise = import('./lib/soundtouch.js');
-    }
-    return soundtouchPromise;
-}
-
-async function timeStretchBuffer(buffer, factor) {
-    if (factor <= 1.001 && factor >= 0.999) return buffer;
-
-    // Zur Sicherheit wird vorn und hinten je 50 ms Stille angefügt.
-    // Nach dem Stretch entfernen wir genau diese Stille wieder,
-    // damit kein Teil des Originals verloren geht.
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const padFrames = Math.round(buffer.sampleRate * 0.05);
-    const padded = ctx.createBuffer(buffer.numberOfChannels,
-        buffer.length + padFrames * 2,
-        buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        padded.getChannelData(ch).set(buffer.getChannelData(ch), padFrames);
-    }
-
-    const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
-    const st = new SoundTouch();
-    st.tempo = factor;
-    const source = new WebAudioBufferSource(padded);
-    const filter = new SimpleFilter(source, st);
-    const outL = [];
-    const outR = [];
-    const temp = new Float32Array(8192);
-    while (true) {
-        const frames = filter.extract(temp, 4096);
-        if (frames === 0) break;
-        for (let i = 0; i < frames; i++) {
-            outL.push(temp[i * 2]);
-            if (buffer.numberOfChannels > 1) {
-                outR.push(temp[i * 2 + 1]);
-            }
-        }
-    }
-    const out = ctx.createBuffer(buffer.numberOfChannels, outL.length, buffer.sampleRate);
-    out.getChannelData(0).set(Float32Array.from(outL));
-    if (buffer.numberOfChannels > 1) {
-        out.getChannelData(1).set(Float32Array.from(outR));
-    }
-
-    // Die eingefügte Stille wieder entfernen
-    const remove = Math.round(padFrames / factor);
-    let len = out.length - remove * 2;
-    if (len < 0) len = 0;
-    let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
-    for (let ch = 0; ch < out.numberOfChannels; ch++) {
-        trimmed.getChannelData(ch).set(out.getChannelData(ch).subarray(remove, remove + len));
-    }
-
-    // Laenge exakt auf das erwartete Ergebnis anpassen
-    const expected = Math.round(buffer.length / factor);
-    if (trimmed.length !== expected) {
-        const exact = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
-        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            const data = trimmed.getChannelData(ch);
-            exact.getChannelData(ch).set(data.subarray(0, Math.min(expected, data.length)));
-        }
-        trimmed = exact;
-    }
-    ctx.close();
-    return trimmed;
 }
 
 function toggleIgnoreSelectedSegments() {
@@ -10510,55 +10418,11 @@ async function openDeEdit(fileId) {
     editStartTrim = file.trimStartMs || 0;
     editEndTrim = file.trimEndMs || 0;
     editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
-    manualIgnoreRanges = editIgnoreRanges.map(r => ({start:r.start,end:r.end}));
     ignoreTempStart = null;
     document.getElementById('editStart').value = editStartTrim;
     document.getElementById('editEnd').value = editEndTrim;
     document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
-
-    tempoFactor = file.tempoFactor || 1.0;
-    autoIgnoreMs = 400;
-    const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp  = document.getElementById('tempoDisplay');
-    if (tempoRange && tempoDisp) {
-        tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoRange.oninput = async e => {
-            tempoFactor = parseFloat(e.target.value);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            updateLengthInfo();
-        };
-    }
-    const autoChk = document.getElementById('autoIgnoreChk');
-    const autoMs  = document.getElementById('autoIgnoreMs');
-    if (autoChk && autoMs) {
-        autoChk.checked = false;
-        autoMs.value = 400;
-        autoChk.onchange = () => {
-            if (autoChk.checked) {
-                manualIgnoreRanges = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-                autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-            } else {
-                editIgnoreRanges = manualIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-            }
-            refreshIgnoreList();
-            updateDeEditWaveforms();
-        };
-        autoMs.oninput = () => {
-            if (autoChk.checked) {
-                autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-                refreshIgnoreList();
-                updateDeEditWaveforms();
-            }
-        };
-    }
-    const autoTempo = document.getElementById('autoTempoChk');
-    if (autoTempo) autoTempo.checked = false;
-    const autoBtn = document.getElementById('autoAdjustBtn');
-    if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
     refreshIgnoreList();
 
     const deCanvas = document.getElementById('waveEdited');
@@ -10785,34 +10649,6 @@ function updateEffectButtons() {
     }
 }
 
-// Kombination aus Pausenkürzung und Tempoanpassung
-async function autoAdjustLength() {
-    const chk = document.getElementById('autoIgnoreChk');
-    const thr = document.getElementById('autoIgnoreMs');
-    const tempoChk = document.getElementById('autoTempoChk');
-    if (chk && chk.checked) {
-        autoIgnoreMs = parseInt(thr.value) || 400;
-        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-        refreshIgnoreList();
-    }
-    if (tempoChk && tempoChk.checked && editEnBuffer) {
-        const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-        let len = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-        len -= editStartTrim + editEndTrim;
-        for (const r of editIgnoreRanges) len -= (r.end - r.start);
-        tempoFactor = Math.min(Math.max(len / enMs, 1), 1.25);
-        const tempoRange = document.getElementById('tempoRange');
-        const tempoDisp = document.getElementById('tempoDisplay');
-        if (tempoRange && tempoDisp) {
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-        }
-    }
-    await recomputeEditBuffer();
-    updateLengthInfo();
-    updateDeEditWaveforms();
-}
-
 // =========================== APPLYVOLUMEMATCH START =======================
 // Führt den Lautstärkeabgleich einmalig aus
 // Beim ersten Aufruf wird das Original in die Historie geschrieben
@@ -10850,7 +10686,7 @@ async function recomputeEditBuffer() {
     if (isHallEffect) {
         buf = await applyReverbEffect(buf);
     }
-    originalEditBuffer = await timeStretchBuffer(buf, tempoFactor);
+    originalEditBuffer = buf;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     updateDeEditWaveforms();
 }
@@ -11004,7 +10840,6 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
     document.getElementById('editEnd').value = Math.round(editEndTrim);
-    updateLengthInfo();
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
 function refreshIgnoreList() {
@@ -11033,30 +10868,6 @@ function refreshIgnoreList() {
         };
         container.appendChild(row);
     });
-}
-
-// Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
-function calcFinalLength() {
-    let len = editDurationMs - editStartTrim - editEndTrim;
-    for (const r of editIgnoreRanges) {
-        len -= Math.max(0, r.end - r.start);
-    }
-    return len / tempoFactor;
-}
-
-// Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
-function updateLengthInfo() {
-    if (!editEnBuffer) return;
-    const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-    const deMs = calcFinalLength();
-    const diff = deMs - enMs;
-    const perc = Math.abs(diff) / enMs * 100;
-    const info = document.getElementById('tempoInfo');
-    const lbl = document.getElementById('waveLabelEdited');
-    if (!info || !lbl) return;
-    info.textContent = `${(deMs/1000).toFixed(2)}s`;
-    lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
-    lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
 }
 // =========================== UPDATEDEEDITWAVEFORMS END ====================
 
@@ -11258,10 +11069,7 @@ async function resetDeEdit() {
         currentEditFile.trimStartMs = 0;
         currentEditFile.trimEndMs = 0;
         editIgnoreRanges = [];
-        manualIgnoreRanges = [];
         currentEditFile.ignoreRanges = [];
-        tempoFactor = 1.0;
-        currentEditFile.tempoFactor = 1.0;
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
@@ -11321,7 +11129,6 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
-        newBuffer = await timeStretchBuffer(newBuffer, tempoFactor);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
@@ -11387,7 +11194,6 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
-        newBuffer = await timeStretchBuffer(newBuffer, tempoFactor);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
@@ -11401,7 +11207,6 @@ async function applyDeEdit() {
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
         currentEditFile.hallEffect = isHallEffect;
-        currentEditFile.tempoFactor = tempoFactor;
         // Änderungen sichern
         isDirty = true;
         renderFileTable();
