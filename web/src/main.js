@@ -6347,22 +6347,31 @@ function sliceBuffer(buffer, startMs, endMs) {
 }
 
 // Fuegt mehrere Segmente hintereinander zu einem neuen Buffer zusammen
+// Fuegt mehrere Segmente hintereinander zu einem neuen Buffer zusammen
 function mergeSegments(buffer, segments) {
     if (!segments || segments.length === 0) return null;
     const sr = buffer.sampleRate;
-    const total = segments.reduce((sum, s) => sum + Math.floor((s.end - s.start) * sr / 1000), 0);
+
+    // Segmentgrenzen auf die Pufferlaenge begrenzen und tatsaechliche Laengen berechnen
+    const infos = segments.map(seg => {
+        const start = Math.max(0, Math.floor(seg.start * sr / 1000));
+        const end = Math.min(buffer.length, Math.floor(seg.end * sr / 1000));
+        return { start, end, length: Math.max(0, end - start) };
+    }).filter(s => s.length > 0);
+
+    const total = infos.reduce((sum, s) => sum + s.length, 0);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const newBuf = ctx.createBuffer(buffer.numberOfChannels, total, sr);
     let offset = 0;
-    segments.forEach(seg => {
-        const start = Math.floor(seg.start * sr / 1000);
-        const end = Math.floor(seg.end * sr / 1000);
+
+    infos.forEach(seg => {
         for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch).subarray(start, end);
+            const data = buffer.getChannelData(ch).subarray(seg.start, seg.end);
             newBuf.getChannelData(ch).set(data, offset);
         }
-        offset += end - start;
+        offset += seg.length;
     });
+    // AudioContext wieder schliessen, um Ressourcen freizugeben
     ctx.close();
     return newBuf;
 }

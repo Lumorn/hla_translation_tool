@@ -564,6 +564,7 @@ Seit Patch 1.40.102 besitzt das Wörterbuch zwei Bereiche: Englisch‑Deutsch un
 Seit Patch 1.40.102 stehen die Segmentierungsfunktionen global zur Verfügung. Dadurch funktioniert der Upload auch nach dem Auslagern in einzelne Module zuverlässig.
 Seit Patch 1.40.103 prüft das Tool vor dem Öffnen des Segmentdialogs, ob ein Projekt ausgewählt wurde.
 Seit Patch 1.40.104 meldet der Segmentdialog fehlende HTML-Elemente in der Konsole.
+Seit Patch 1.40.105 begrenzt `mergeSegments` die Segmentgrenzen auf die Pufferlänge und verhindert so "offset out of bounds"-Fehler.
 
 Beispiel einer gültigen CSV:
 
