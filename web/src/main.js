@@ -875,6 +875,8 @@ async function openCopyAssistant() {
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
+    // Direkt beim Öffnen den Namen kopieren
+    copyAssistNext();
 }
 
 function closeCopyAssistant() {
