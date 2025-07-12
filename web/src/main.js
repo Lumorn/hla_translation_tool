@@ -408,7 +408,6 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const emoBtn = document.getElementById("generateEmotionsButton");
     const sendBtn = document.getElementById("sendTextV2Button");
     const copyBtn = document.getElementById("copyAssistantButton");
-    const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
             if (currentProject?.gptTests?.length) {
@@ -426,9 +425,6 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     }
     if (copyBtn) {
         copyBtn.addEventListener("click", openCopyAssistant);
-    }
-    if (copyAllEmosBtn) {
-        copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
     }
 }
 
@@ -1014,15 +1010,6 @@ function showCopyAssistant() {
     verifyCopyAssistClipboard();
 }
 // =========================== COPY ASSISTANT END ============================
-
-// Kopiert alle Emotionstexte nacheinander in die Zwischenablage
-function copyAllEmotionsToClipboard() {
-    const texts = files.map(f => (f.emotionalText || '').trim()).join('\n\n');
-    safeCopy(texts);
-    if (typeof showToast === 'function') {
-        showToast('Alle Emotionstexte kopiert');
-    }
-}
 
 // Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
 function stopCurrentPlayback() {
