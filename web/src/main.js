@@ -390,6 +390,7 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const gptBtn = document.getElementById("gptScoreButton");
     const emoBtn = document.getElementById("generateEmotionsButton");
     const sendBtn = document.getElementById("sendTextV2Button");
+    const copyBtn = document.getElementById("copyAssistantButton");
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
             if (currentProject?.gptTests?.length) {
@@ -404,6 +405,9 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     }
     if (sendBtn) {
         sendBtn.addEventListener("click", sendEmoTextsToApi);
+    }
+    if (copyBtn) {
+        copyBtn.addEventListener("click", openCopyAssistant);
     }
 }
 
@@ -845,6 +849,79 @@ function saveWordList() {
     localStorage.setItem('hla_translationList', JSON.stringify(translationList));
     closeWordList();
 }
+
+// =========================== COPY ASSISTANT START ==========================
+let copyAssistIndex = 0;
+let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
+
+function openCopyAssistant() {
+    copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
+    copyAssistStep = 0;
+    showCopyAssistant();
+    document.getElementById('copyAssistantDialog').classList.remove('hidden');
+}
+
+function closeCopyAssistant() {
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    document.getElementById('copyAssistantDialog').classList.add('hidden');
+}
+
+function copyAssistCopy(field) {
+    const map = {
+        folder: document.getElementById('copyFolder').textContent,
+        id: document.getElementById('copyId').textContent,
+        name: document.getElementById('copyName').textContent,
+        en: document.getElementById('copyEn').textContent,
+        de: document.getElementById('copyDe').textContent,
+        emo: document.getElementById('copyEmo').textContent
+    };
+    safeCopy(map[field]);
+}
+
+function copyAssistNext() {
+    const file = files[copyAssistIndex];
+    if (!file) return closeCopyAssistant();
+    if (copyAssistStep === 0) {
+        const name = document.getElementById('copyName').textContent;
+        safeCopy(name);
+        copyAssistStep = 1;
+    } else {
+        const emo = document.getElementById('copyEmo').textContent;
+        safeCopy(emo);
+        copyAssistIndex++;
+        copyAssistStep = 0;
+    }
+    showCopyAssistant();
+}
+
+function showCopyAssistant() {
+    const file = files[copyAssistIndex];
+    const total = files.length;
+    const countSpan = document.getElementById('copyAssistCount');
+    const stepSpan = document.getElementById('copyAssistStep');
+    const prog = document.getElementById('copyAssistProgress');
+    if (!file) {
+        countSpan.textContent = 'Fertig';
+        stepSpan.textContent = '';
+        prog.style.width = '100%';
+        return;
+    }
+    const voiceId = folderCustomizations[file.folder]?.voiceId || '';
+    let voiceName = voiceId;
+    const allVoices = [...availableVoices, ...customVoices];
+    const v = allVoices.find(v => v.voice_id === voiceId);
+    if (v) voiceName = v.name;
+    document.getElementById('copyFolder').textContent = file.folder || '';
+    document.getElementById('copyId').textContent = voiceId;
+    document.getElementById('copyName').textContent = voiceName;
+    document.getElementById('copyEn').textContent = file.enText || '';
+    document.getElementById('copyDe').textContent = file.deText || '';
+    document.getElementById('copyEmo').textContent = file.emotionalText || '';
+    countSpan.textContent = `Datei ${copyAssistIndex + 1} von ${total}`;
+    stepSpan.textContent = `Schritt ${copyAssistStep + 1} / 2`;
+    prog.style.width = `${(copyAssistIndex / total) * 100}%`;
+}
+// =========================== COPY ASSISTANT END ============================
 
 // Stoppt aktuell laufende Wiedergabe und setzt alle Buttons zurück
 function stopCurrentPlayback() {

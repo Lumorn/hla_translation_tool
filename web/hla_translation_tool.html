@@ -107,10 +107,13 @@
                 <div class="search-container">
                     <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
                     <div class="search-results" id="searchResults"></div>
-                    <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
-                    <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE) generieren</button>
-                    <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
-                    <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
+                    <div class="search-btns">
+                        <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
+                        <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE) generieren</button>
+                        <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
+                        <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
+                        <button id="copyAssistantButton" class="btn btn-secondary">Kopierhilfe</button>
+                    </div>
                 </div>
                 <div class="sort-controls">
                     <span style="color: #999;">Sortierung:</span>
@@ -732,6 +735,31 @@
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="closeWordList()">Abbrechen</button>
                 <button class="btn btn-success" onclick="saveWordList()">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Copy Assistant Dialog -->
+    <div class="dialog-overlay hidden" id="copyAssistantDialog">
+        <div class="dialog">
+            <button class="dialog-close-btn" onclick="closeCopyAssistant()">×</button>
+            <h3>📋 Kopierhilfe</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="copyAssistProgress"></div>
+            </div>
+            <div id="copyAssistInfo">
+                <p><strong>Ordner:</strong> <span id="copyFolder"></span> <button class="copy-btn" onclick="copyAssistCopy('folder')">⧉</button></p>
+                <p><strong>ID:</strong> <span id="copyId"></span> <button class="copy-btn" onclick="copyAssistCopy('id')">⧉</button></p>
+                <p><strong>Name:</strong> <span id="copyName"></span> <button class="copy-btn" onclick="copyAssistCopy('name')">⧉</button></p>
+                <p><strong>EN:</strong> <span id="copyEn"></span> <button class="copy-btn" onclick="copyAssistCopy('en')">⧉</button></p>
+                <p><strong>DE:</strong> <span id="copyDe"></span> <button class="copy-btn" onclick="copyAssistCopy('de')">⧉</button></p>
+                <p><strong>Emotion:</strong> <span id="copyEmo"></span> <button class="copy-btn" onclick="copyAssistCopy('emo')">⧉</button></p>
+            </div>
+            <div id="copyAssistStep" style="margin-top:10px; color:#999;"></div>
+            <div class="dialog-buttons">
+                <span id="copyAssistCount" style="margin-right:auto"></span>
+                <button class="btn btn-secondary" onclick="closeCopyAssistant()">Abbrechen</button>
+                <button class="btn btn-success" onclick="copyAssistNext()">Weiter</button>
             </div>
         </div>
     </div>

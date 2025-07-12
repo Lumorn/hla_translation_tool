@@ -214,6 +214,13 @@ th:nth-child(10) {
             z-index: 1000;
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
+
+        .search-btns {
+            display: flex;
+            gap: 10px;
+            margin-left: 10px;
+            flex-wrap: wrap;
+        }
 		
 		
 
@@ -3165,3 +3172,4 @@ th:nth-child(10) {
 .segment-progress.active { display:block; }
 .segment-status { font-size:14px; color:#999; }
 #segmentWaveform { cursor:pointer; }
+#copyAssistantDialog .dialog { max-width: 500px; }
