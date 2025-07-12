@@ -57,7 +57,7 @@ function storeSegmentState() {
             enumerable: false,
             configurable: true
         });
-    } else {
+            } else {
         currentProject._segmentInfo = segmentInfo;
     }
     if (!Object.prototype.hasOwnProperty.call(currentProject, '_segmentAssignments')) {
@@ -6207,8 +6207,15 @@ async function openSegmentDialog() {
         if (currentProject.segmentAudioPath && window.electronAPI && window.electronAPI.fsReadFile) {
             const info = await window.electronAPI.getDebugInfo();
             const full = window.electronAPI.join(info.soundsPath, currentProject.segmentAudioPath);
-            const data = window.electronAPI.fsReadFile(full);
-            buf = await loadAudioBuffer(new Blob([data]));
+            
+            // Prüfen, ob die Segment-Datei existiert und laden
+            if (window.electronAPI.fsExists(full)) {
+                        const data = window.electronAPI.fsReadFile(full);
+            const uint = new Uint8Array(data);
+            buf = await loadAudioBuffer(new Blob([uint]));
+        } else {
+                        console.warn('Segment-Datei nicht gefunden:', full);
+        }
         } else if (currentProject.segmentAudio) {
             const ab = base64ToArrayBuffer(currentProject.segmentAudio);
             buf = await loadAudioBuffer(new Blob([ab]));
