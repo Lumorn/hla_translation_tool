@@ -154,12 +154,12 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 // Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
 async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini' }) {
     await promptReady;
-    // Emotionstags müssen in Deutsch zurückgegeben werden, der restliche Text bleibt Deutsch
+    // Emotionstags müssen in Deutsch zurückgegeben werden und dürfen nie direkt aufeinander folgen
     const payload = {
         ...meta,
         lines,
         target_position: targetPosition,
-        instructions: 'Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Platziere die Emotionstags direkt vor der jeweiligen Textstelle und schreibe diese Tags auf Deutsch.'
+        instructions: 'Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch.'
     };
     const messages = [
         { role: 'system', content: emotionPrompt },

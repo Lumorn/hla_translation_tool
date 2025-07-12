@@ -250,6 +250,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tags mitten im Satz:** Die erzeugten Emotionstags stehen jetzt direkt vor der jeweiligen Textstelle und nicht mehr am Ende der Zeile.
 * **Tags auf Deutsch:** In den eckigen Klammern sind die Emotionstags nun auf Deutsch, der eigentliche Dialog bleibt weiterhin Deutsch.
 * **Begründung für Emotionstags:** Unter dem violetten Textfeld erscheint eine kurze Erklärung, warum diese Emotion gewählt wurde.
+* **Nie zwei Emotionstags hintereinander:** Die generierten Texte setzen maximal einen Tag auf einmal; aufeinanderfolgende Tags werden vermieden.
 * **Automatische Übersetzungsvorschau** unter jedem DE-Feld via *Argos Translate*
 * **Kompakter Auto-Übersetzungstext:** Vorschläge unter dem DE-Feld werden nun
   mit kleiner Schrift (0.8 rem) angezeigt
