@@ -277,6 +277,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Vier Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu vier Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät- und Hall-Effekt an.
+* **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
