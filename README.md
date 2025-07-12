@@ -281,6 +281,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Vier Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu vier Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät- und Hall-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
+* **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen der grünen Marker im Waveform-Editor setzen.
+* **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–1,25 anpassen oder automatisch auf die EN-Länge setzen. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
+* **Längenvergleich visualisiert:** Unter der DE-Wellenform zeigt ein Tooltip die neue Dauer. Abweichungen über 5 % werden orange oder rot hervorgehoben.
+* **Effektparameter speicherbar:** Trimmen, Pausenkürzung und Tempo werden im Projekt gesichert und lassen sich über "🔄 Zurücksetzen" rückgängig machen.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
