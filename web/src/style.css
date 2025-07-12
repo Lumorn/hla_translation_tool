@@ -3178,19 +3178,3 @@ th:nth-child(10) {
 .segment-status { font-size:14px; color:#999; }
 #segmentWaveform { cursor:pointer; }
 #copyAssistantDialog .dialog { max-width: 500px; }
-
-/* Tabelle für den ZIP-Import */
-.zip-preview-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-.zip-preview-table th,
-.zip-preview-table td {
-    border: 1px solid #444;
-    padding: 4px 6px;
-}
-.zip-preview-table th {
-    background: #2a2a2a;
-    color: #ff6b1a;
-}
