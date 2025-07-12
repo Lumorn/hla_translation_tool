@@ -281,6 +281,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Vier Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu vier Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät- und Hall-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
+* **Zeitdifferenz-Anzeige im DE-Editor:** Unter den Wellenformen zeigt eine farbige Meldung, ob das bearbeitete DE-Audio kürzer oder länger als das Original ist.
+* **Automatisches Kürzen:** Ein neuer Button berechnet anhand stiller Passagen einen Schnittvorschlag und zeigt ihn als blauen Marker an. Ob nur Pausen gekürzt oder zusätzlich mit tonhöhenstabilem Stretching (SoundTouchJS) verkürzt wird, lässt sich per Auswahlfeld bestimmen.
+* **Endpunkt auf EN-Länge setzen:** Mit "An EN-Länge anpassen" wird das bearbeitete Audio exakt auf die Länge des englischen Originals gekürzt.
+* **Start- und Endzeit setzen:** Die grüne Markierung in der Wellenform oder zwei Zahlenfelder erlauben präzises Trimmen in Millisekunden.
+* **Lange Pausen automatisch entfernen:** Ein Häkchen entfernt Sprechpausen oberhalb eines einstellbaren Schwellenwertes (z. B. 400 ms). Die gewählten Werte werden gespeichert.
+* **Effektparameter speichern und rückgängig machen:** Alle Einstellungen für Lautstärkeangleichung, Funkgerät- und Hall‑Effekt lassen sich sichern und über einen Zurücksetzen‑Knopf wieder auf die zuletzt gespeicherten Werte bringen.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
