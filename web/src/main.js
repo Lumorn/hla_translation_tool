@@ -850,13 +850,29 @@ function saveWordList() {
     closeWordList();
 }
 
+// Laedt bei Bedarf die verfuegbaren Stimmen von ElevenLabs
+async function ensureVoiceList() {
+    if (availableVoices.length || !elevenLabsApiKey) return;
+    try {
+        const res = await fetch(`${API}/voices`, { headers: { 'xi-api-key': elevenLabsApiKey } });
+        if (res.ok) {
+            const data = await res.json();
+            availableVoices = data.voices || [];
+            availableVoices.push(...customVoices);
+        }
+    } catch (e) {
+        console.error('Stimmen konnten nicht geladen werden', e);
+    }
+}
+
 // =========================== COPY ASSISTANT START ==========================
 let copyAssistIndex = 0;
 let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
 
-function openCopyAssistant() {
+async function openCopyAssistant() {
     copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
     copyAssistStep = 0;
+    await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
 }
