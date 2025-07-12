@@ -27,7 +27,6 @@ const { saveSettings, loadSettings } = require('../settingsStore.ts');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
-const extract = require('extract-zip');
 // Standbild-Erzeugung über ffmpeg
 const { ensureFrame } = require('../legacy/videoFrameUtils.js');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
@@ -332,37 +331,6 @@ app.whenReady().then(() => {
   ipcMain.handle('open-backup-folder', async () => {
     shell.openPath(backupPath);
     return true;
-  });
-
-  // ZIP-Import für Serien von Audiodateien
-  ipcMain.handle('import-zip', async (event, data) => {
-    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'hla_zip_'));
-    const zipFile = path.join(tmp, 'import.zip');
-    try {
-      fs.writeFileSync(zipFile, Buffer.from(data));
-      await extract(zipFile, { dir: tmp });
-      fs.unlinkSync(zipFile);
-      const result = [];
-      (function walk(dir) {
-        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-          const full = path.join(dir, entry.name);
-          if (entry.isDirectory()) walk(full);
-          else if (/\.(mp3|wav|ogg)$/i.test(entry.name)) {
-            result.push({ name: entry.name, data: fs.readFileSync(full) });
-          }
-        }
-      })(tmp);
-      return { files: result.map(f => ({ name: f.name, data: new Uint8Array(f.data) })) };
-    } catch (err) {
-      // Fehlermeldung für den Renderer aufbereiten
-      let msg = err.message || String(err);
-      if (msg.includes('multi-disk zip files are not supported')) {
-        msg = 'Mehrteilige ZIP-Archive werden nicht unterstützt.';
-      }
-      return { error: msg };
-    } finally {
-      fs.rmSync(tmp, { recursive: true, force: true });
-    }
   });
 
   // Beliebige URL im Standardbrowser öffnen
