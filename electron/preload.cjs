@@ -53,6 +53,7 @@ if (typeof require !== 'function') {
     createSoundBackup: () => ipcRenderer.invoke('create-sound-backup'),
     deleteSoundBackup: (name) => ipcRenderer.invoke('delete-sound-backup', name),
     openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
+    importZip: data => ipcRenderer.invoke('import-zip', data),
     moveFile: (src, dest) => ipcRenderer.invoke('move-file', /** @type {MoveFileArgs} */({ src, dest })),
     onManualFile: (cb) => ipcRenderer.on('manual-file', (e, file) => cb(file)),
     onDubDone: cb => ipcRenderer.on('dub-done', (e, info) => cb(info)),
