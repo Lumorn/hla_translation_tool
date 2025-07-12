@@ -869,6 +869,24 @@ async function ensureVoiceList() {
 let copyAssistIndex = 0;
 let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
 
+// Prüft, ob die Zwischenablage zum angezeigten Schritt passt
+async function verifyCopyAssistClipboard() {
+    const expected = copyAssistStep === 0
+        ? document.getElementById('copyName').textContent
+        : document.getElementById('copyEmo').textContent;
+    try {
+        const current = (await navigator.clipboard.readText()).trim();
+        if (current !== expected.trim()) {
+            await safeCopy(expected);
+            if (typeof showToast === 'function') {
+                showToast('Zwischenablage korrigiert', 'error');
+            }
+        }
+    } catch (e) {
+        console.error('Zwischenablage konnte nicht gelesen werden', e);
+    }
+}
+
 async function openCopyAssistant() {
     // Zuletzt verwendete Position und Schritt wiederherstellen
     copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
@@ -877,7 +895,8 @@ async function openCopyAssistant() {
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
     // Beim Öffnen nur den aktuellen Schritt kopieren, ohne weiterzuschalten
-    copyAssistCopyCurrent();
+    await copyAssistCopyCurrent();
+    verifyCopyAssistClipboard();
 }
 
 function closeCopyAssistant() {
@@ -899,11 +918,11 @@ function copyAssistCopy(field) {
 }
 
 // Kopiert den Text des aktuellen Schritts, ohne den Fortschritt zu ändern
-function copyAssistCopyCurrent() {
+async function copyAssistCopyCurrent() {
     const text = copyAssistStep === 0
         ? document.getElementById('copyName').textContent
         : document.getElementById('copyEmo').textContent;
-    safeCopy(text);
+    await safeCopy(text);
 }
 
 function copyAssistNext() {
@@ -971,6 +990,7 @@ function showCopyAssistant() {
     countSpan.textContent = `Datei ${copyAssistIndex + 1} von ${total}`;
     stepSpan.textContent = `Schritt ${copyAssistStep + 1} / 2`;
     prog.style.width = `${(copyAssistIndex / total) * 100}%`;
+    verifyCopyAssistClipboard();
 }
 // =========================== COPY ASSISTANT END ============================
 

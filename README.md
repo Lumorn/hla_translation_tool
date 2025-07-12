@@ -49,6 +49,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zurück‑Knopf und Fortschritts‑Speicherung:** Die Kopierhilfe merkt sich nun auch den aktuellen Schritt und bietet einen neuen „Zurück“-Button zum erneuten Kopieren vorangegangener Einträge.
 * **Aufgeräumte Filter-Leiste:** GPT-, Emotions- und Kopierhilfe-Knöpfe stehen jetzt direkt neben der Suche in einer Zeile.
 * **Automatischer Voice-Abgleich:** Beim Öffnen der Kopierhilfe lädt das Tool die verfügbaren ElevenLabs-Stimmen und zeigt Namen und IDs korrekt an.
+* **Zusätzliche Zwischenablage-Prüfung:** Die Kopierhilfe stellt sicher, dass im ersten Schritt der Name und im zweiten der Emotionstext in der Zwischenablage liegt.
 * **Stabile Base64-Kodierung:** Große Audiodateien werden beim Hochladen in handlichen Blöcken verarbeitet, sodass kein "Maximum call stack size exceeded" mehr auftritt.
 * **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand und nutzt nun die volle Breite. Im geöffneten Level wird der Rand grün. Das aktuell gewählte Projekt hebt sich mit einem blauen Balken, leicht transparentem Hintergrund (rgba(33,150,243,0.2)) und weißer Schrift deutlich ab.
 * **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
