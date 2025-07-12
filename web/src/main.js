@@ -909,9 +909,9 @@ async function verifyCopyAssistClipboard() {
 }
 
 async function openCopyAssistant() {
-    // Fortschritt immer zurücksetzen: startet bei Datei 1, Schritt 1
-    copyAssistIndex = 0;
-    copyAssistStep = 0;
+    // Zuletzt verwendete Position und Schritt wiederherstellen
+    copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
+    copyAssistStep = parseInt(localStorage.getItem('copyAssistStep') || '0');
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
@@ -921,6 +921,8 @@ async function openCopyAssistant() {
 }
 
 function closeCopyAssistant() {
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
     document.getElementById('copyAssistantDialog').classList.add('hidden');
 }
 
@@ -957,6 +959,8 @@ function copyAssistNext() {
         copyAssistIndex++;
         copyAssistStep = 0;
     }
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
     showCopyAssistant();
 }
 
@@ -977,6 +981,8 @@ function copyAssistPrev() {
         ? document.getElementById('copyName').textContent
         : document.getElementById('copyEmo').textContent;
     safeCopy(text);
+    localStorage.setItem('copyAssistIndex', copyAssistIndex);
+    localStorage.setItem('copyAssistStep', copyAssistStep);
 }
 
 function showCopyAssistant() {
