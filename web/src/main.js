@@ -113,16 +113,6 @@ let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
 let ignoreTempStart       = null;  // Startpunkt für neuen Bereich
 let ignoreDragging        = null;  // {index, side} beim Ziehen
 
-// Automatische Ignorierbereiche (lange Pausen)
-let autoIgnoreRanges      = [];
-// Aktiviert den automatischen Pausenfilter
-let autoIgnoreActive      = localStorage.getItem('hla_autoIgnoreActive') === 'true';
-// Mindestlänge einer zu ignorierenden Pause in Millisekunden
-let autoIgnoreMinMs       = parseInt(localStorage.getItem('hla_autoIgnoreMs') || '400');
-
-// Vorschlag für automatisches Kürzen
-let autoTrimSuggestion    = null;  // { start, end, stretchRatio }
-
 let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
@@ -10121,25 +10111,6 @@ function drawWaveform(canvas, buffer, opts = {}) {
         ctx.fillText(Math.round(opts.start) + 'ms', startX + 2, 10);
         ctx.fillText(Math.round(opts.end) + 'ms', endX + 2, 10);
     }
-    if (opts.suggest) {
-        ctx.strokeStyle = '#2196f3';
-        ctx.lineWidth = 2;
-        if (opts.suggest.start !== undefined) {
-            const sx = (opts.suggest.start / durationMs) * width;
-            ctx.beginPath();
-            ctx.moveTo(sx, 0);
-            ctx.lineTo(sx, height);
-            ctx.stroke();
-        }
-        if (opts.suggest.end !== undefined) {
-            const ex = (opts.suggest.end / durationMs) * width;
-            ctx.beginPath();
-            ctx.moveTo(ex, 0);
-            ctx.lineTo(ex, height);
-            ctx.stroke();
-        }
-        ctx.lineWidth = 1;
-    }
     if (opts.progress !== undefined) {
         ctx.strokeStyle = '#ff0';
         ctx.lineWidth = 2;
@@ -10170,140 +10141,6 @@ function trimAndPadBuffer(buffer, startMs, endMs) {
         newData.set(oldData.subarray(startSamples, buffer.length - endSamples), padStart);
     }
     return newBuffer;
-}
-
-// Ermittelt stillen Beginn eines Buffers in Millisekunden
-function detectLeadingSilence(buffer, threshold = 0.02) {
-    const data = buffer.getChannelData(0);
-    const sr = buffer.sampleRate;
-    const step = Math.round(sr * 0.005); // 5 ms
-    for (let i = 0; i < data.length; i += step) {
-        for (let j = 0; j < step && i + j < data.length; j++) {
-            if (Math.abs(data[i + j]) > threshold) {
-                return i / sr * 1000;
-            }
-        }
-    }
-    return buffer.length / sr * 1000;
-}
-
-// Ermittelt stilles Ende eines Buffers in Millisekunden
-function detectTrailingSilence(buffer, threshold = 0.02) {
-    const data = buffer.getChannelData(0);
-    const sr = buffer.sampleRate;
-    const step = Math.round(sr * 0.005); // 5 ms
-    for (let i = data.length; i > 0; i -= step) {
-        for (let j = 1; j <= step && i - j >= 0; j++) {
-            if (Math.abs(data[i - j]) > threshold) {
-                return (data.length - (i - j) - 1) / sr * 1000;
-            }
-        }
-    }
-    return buffer.length / sr * 1000;
-}
-
-// Stretcht einen Buffer unter Beibehaltung der Tonhöhe (SoundTouchJS)
-async function stretchBuffer(buffer, ratio) {
-    const samples = Math.round(buffer.length / ratio);
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, samples, buffer.sampleRate);
-    const { PitchShifter } = await import('soundtouchjs');
-    const shifter = new PitchShifter(ctx, buffer, 4096);
-    shifter.tempo = 1 / ratio;
-    shifter.connect(ctx.destination);
-    return await ctx.startRendering();
-}
-
-// Berechnet neuen Schnittvorschlag und ggf. Stretch-Faktor
-// Berechnet einen Schnittvorschlag; optional wird leicht gestretcht
-function computeAutoTrimSuggestion(allowStretch = false) {
-    if (!editEnBuffer || !originalEditBuffer) return null;
-    let deLen = editDurationMs - editStartTrim - editEndTrim;
-    const allIg = editIgnoreRanges.concat(autoIgnoreRanges);
-    allIg.forEach(r => { deLen -= (r.end - r.start); });
-    const enLen = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-    let diff = deLen - enLen;
-    if (diff <= 0) return null;
-
-    const lead = detectLeadingSilence(originalEditBuffer);
-    const trail = detectTrailingSilence(originalEditBuffer);
-
-    let start = editStartTrim;
-    let end = editEndTrim;
-
-    let cutEnd = Math.min(diff, trail - editEndTrim);
-    if (cutEnd > 0) {
-        end += cutEnd;
-        diff -= cutEnd;
-    }
-    if (diff > 0) {
-        let cutStart = Math.min(diff, lead - editStartTrim);
-        if (cutStart > 0) {
-            start += cutStart;
-            diff -= cutStart;
-        }
-    }
-
-    let ratio = 1;
-    if (allowStretch && diff > 0 && diff <= deLen * 0.1) {
-        ratio = deLen / (deLen - diff);
-        diff = 0;
-    }
-
-    if (diff > 0) return null; // Zu viel Differenz
-    return { start, end, stretchRatio: ratio };
-}
-
-// Erkennt Segmente in einem AudioBuffer
-function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold = 0.01) {
-    const data = buffer.getChannelData(0);
-    const sr = buffer.sampleRate;
-    const windowSize = Math.round(sr * 0.03); // 30 ms
-    const silenceSamples = Math.round(sr * silenceMs / 1000);
-    const segments = [];
-    let start = 0;
-    let silent = 0;
-    let inSound = false;
-    for (let i = 0; i < data.length; i += windowSize) {
-        let sum = 0;
-        for (let j = 0; j < windowSize && i + j < data.length; j++) {
-            sum += Math.abs(data[i + j]);
-        }
-        const amp = sum / windowSize;
-        const ms = i / sr * 1000;
-        if (amp < threshold) {
-            silent += windowSize;
-            if (inSound && silent >= silenceSamples) {
-                const end = (i - silent) / sr * 1000;
-                if (end > start) segments.push({ start, end });
-                inSound = false;
-            }
-        } else {
-            if (!inSound) { start = ms; inSound = true; }
-            silent = 0;
-        }
-    }
-    if (inSound) segments.push({ start, end: data.length / sr * 1000 });
-    return segments;
-}
-
-// Berechnet automatische Ignorierbereiche anhand langer Pausen
-function recomputeAutoIgnore() {
-    autoIgnoreRanges = [];
-    if (!originalEditBuffer || !autoIgnoreActive) {
-        updateDeEditWaveforms();
-        return;
-    }
-    const minMs = autoIgnoreMinMs;
-    const trimmed = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
-    const segs = detectSegmentsInBuffer(trimmed, minMs, 0.02);
-    for (let i = 0; i < segs.length - 1; i++) {
-        const gapStart = segs[i].end;
-        const gapEnd = segs[i + 1].start;
-        if (gapEnd - gapStart >= minMs) {
-            autoIgnoreRanges.push({ start: gapStart + editStartTrim, end: gapEnd + editStartTrim });
-        }
-    }
-    updateDeEditWaveforms();
 }
 // =========================== LAUTSTAERKEANGLEICH START =====================
 // Passt die Lautstärke eines Buffers an einen Ziel-Buffer an
@@ -10588,25 +10425,6 @@ async function openDeEdit(fileId) {
     document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     refreshIgnoreList();
 
-    const aiToggle = document.getElementById('autoIgnoreToggle');
-    const aiMs = document.getElementById('autoIgnoreMs');
-    if (aiToggle && aiMs) {
-        aiToggle.checked = autoIgnoreActive;
-        aiMs.value = autoIgnoreMinMs;
-        aiToggle.onchange = () => {
-            autoIgnoreActive = aiToggle.checked;
-            localStorage.setItem('hla_autoIgnoreActive', autoIgnoreActive);
-            if (autoIgnoreActive) recomputeAutoIgnore();
-            else { autoIgnoreRanges = []; updateDeEditWaveforms(); }
-        };
-        aiMs.oninput = () => {
-            autoIgnoreMinMs = parseInt(aiMs.value) || 400;
-            localStorage.setItem('hla_autoIgnoreMs', autoIgnoreMinMs);
-            if (autoIgnoreActive) recomputeAutoIgnore();
-        };
-        if (autoIgnoreActive) recomputeAutoIgnore();
-    }
-
     const deCanvas = document.getElementById('waveEdited');
     const origCanvas = document.getElementById('waveOriginal');
 
@@ -10872,56 +10690,6 @@ async function recomputeEditBuffer() {
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     updateDeEditWaveforms();
 }
-// =========================== AUTOTRIM START ================================
-// Berechnet automatisch einen Kürzungsvorschlag und blendet ihn ein
-function showAutoTrimSuggestion() {
-    const mode = document.querySelector('input[name="trimMode"]:checked');
-    const allowStretch = mode && mode.value === 'stretch';
-    autoTrimSuggestion = computeAutoTrimSuggestion(allowStretch);
-    const btn = document.getElementById('applyAutoTrimBtn');
-    if (autoTrimSuggestion && btn) {
-        btn.classList.remove('hidden');
-    } else if (btn) {
-        btn.classList.add('hidden');
-        autoTrimSuggestion = null;
-    }
-    updateDeEditWaveforms();
-}
-
-// Übernimmt den vorgeschlagenen Schnitt und optionales Stretching
-async function applyAutoTrim() {
-    if (!autoTrimSuggestion) return;
-    editStartTrim = autoTrimSuggestion.start;
-    editEndTrim   = autoTrimSuggestion.end;
-    if (autoTrimSuggestion.stretchRatio && autoTrimSuggestion.stretchRatio !== 1) {
-        let base = trimAndPadBuffer(savedOriginalBuffer, editStartTrim, editEndTrim);
-        base = await stretchBuffer(base, autoTrimSuggestion.stretchRatio);
-        savedOriginalBuffer = base;
-        volumeMatchedBuffer = null;
-        originalEditBuffer = base;
-        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-    }
-    autoTrimSuggestion = null;
-    const btn = document.getElementById('applyAutoTrimBtn');
-    if (btn) btn.classList.add('hidden');
-    await recomputeEditBuffer();
-}
-
-// Schneidet das bearbeitete Audio exakt auf die EN-Länge zu
-async function fitToEnLength() {
-    if (!editEnBuffer || !originalEditBuffer) return;
-    const enLen = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-    let deLen = editDurationMs - editStartTrim - editEndTrim;
-    const allIg = editIgnoreRanges.concat(autoIgnoreRanges);
-    allIg.forEach(r => { deLen -= (r.end - r.start); });
-    const diff = deLen - enLen;
-    if (diff > 0) {
-        editEndTrim = Math.min(editEndTrim + diff, editDurationMs - editStartTrim);
-        if (editEndTrim < 0) editEndTrim = 0;
-        await recomputeEditBuffer();
-    }
-}
-// =========================== AUTOTRIM END ==================================
 // =========================== RECOMPUTEEDITBUFFER END =======================
 
 // =========================== APPLYRADIOEFFECT START ========================
@@ -11064,42 +10832,14 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     }
     if (originalEditBuffer) {
         const endPos = editDurationMs - editEndTrim;
-        const allIgnores = editIgnoreRanges.concat(autoIgnoreRanges);
         drawWaveform(
             document.getElementById('waveEdited'),
             originalEditBuffer,
-            { start: editStartTrim, end: endPos, progress: showDe, ignore: allIgnores,
-              suggest: autoTrimSuggestion }
+            { start: editStartTrim, end: endPos, progress: showDe, ignore: editIgnoreRanges }
         );
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
     document.getElementById('editEnd').value = Math.round(editEndTrim);
-
-    // Zeitdifferenz zwischen EN und bearbeitetem DE anzeigen
-    if (editEnBuffer && originalEditBuffer) {
-        let deLen = editDurationMs - editStartTrim - editEndTrim;
-        const allIg = editIgnoreRanges.concat(autoIgnoreRanges);
-        allIg.forEach(r => { deLen -= (r.end - r.start); });
-        const deSec = Math.max(0, deLen) / 1000;
-        const enSec = editEnBuffer.length / editEnBuffer.sampleRate;
-        const diff = deSec - enSec;
-        const pct  = enSec ? diff / enSec * 100 : 0;
-        const info = document.getElementById('lengthDiffInfo');
-        if (info) {
-            let cls = 'good';
-            if (Math.abs(pct) >= 10) cls = 'bad';
-            else if (Math.abs(pct) >= 5) cls = 'warn';
-            const sign = diff >= 0 ? '+' : '';
-            info.className = 'length-diff-display ' + cls;
-            info.textContent = `DE ist ${sign}${diff.toFixed(1)} s / ${sign}${pct.toFixed(0)} % ${diff >= 0 ? 'l\u00e4nger' : 'k\u00fcrzer'} als EN`;
-        }
-    } else {
-        const info = document.getElementById('lengthDiffInfo');
-        if (info) {
-            info.textContent = '';
-            info.className = 'length-diff-display';
-        }
-    }
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
 function refreshIgnoreList() {
@@ -11239,7 +10979,7 @@ function playDePreview() {
     stopEditPlayback();
     const trimmed = trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim);
     const dur = trimmed.length / trimmed.sampleRate * 1000;
-    const adj = editIgnoreRanges.concat(autoIgnoreRanges).map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
     const finalBuf = removeRangesFromBuffer(trimmed, adj);
     const blob = bufferToWav(finalBuf);
     editBlobUrl = URL.createObjectURL(blob);
@@ -11387,7 +11127,7 @@ async function applyDeEdit() {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.concat(autoIgnoreRanges).map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
@@ -11452,7 +11192,7 @@ async function applyDeEdit() {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.concat(autoIgnoreRanges).map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
@@ -13585,9 +13325,6 @@ if (typeof module !== "undefined" && module.exports) {
         copyDownloadFolder,
         copyAllEmotionsToClipboard,
         toggleEmoCompletion,
-        showAutoTrimSuggestion,
-        applyAutoTrim,
-        fitToEnLength,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
