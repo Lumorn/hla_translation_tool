@@ -175,7 +175,7 @@ th:nth-child(10) {
 
         .search-container {
             flex: 1;
-            max-width: 400px;
+            min-width: 250px;
             position: relative;
             display: flex; /* Input und Knopf nebeneinander */
             align-items: center;
@@ -218,7 +218,6 @@ th:nth-child(10) {
         .search-btns {
             display: flex;
             gap: 10px;
-            margin-left: 10px;
             flex-wrap: wrap;
         }
 		
