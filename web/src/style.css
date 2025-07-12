@@ -877,6 +877,15 @@ th:nth-child(10) {
     color: #ffc107;
 }
 
+/* Anzeige der Zeitdifferenz im DE-Editor */
+.length-diff-display {
+    font-size: 14px;
+    margin-top: 4px;
+}
+.length-diff-display.good { color: #4caf50; }
+.length-diff-display.warn { color: #ffc107; }
+.length-diff-display.bad  { color: #f44336; }
+
         /* Raster-Anordnung der Bearbeitungs-Symbole (maximal zwei pro Zeile) */
         .edit-column {
             display: flex;
@@ -1113,6 +1122,11 @@ th:nth-child(10) {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
+}
+.auto-trim-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
 }
 
 .ignore-container { margin-bottom: 15px; }
