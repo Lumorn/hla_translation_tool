@@ -9796,6 +9796,35 @@ async function handleDeUpload(input) {
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
+// =========================== HANDLEZIPIMPORT START ===========================
+function showZipImportDialog() {
+    if (!currentProject) {
+        alert('Bitte zuerst ein Projekt auswählen.');
+        return;
+    }
+    document.getElementById('zipImportInput').click();
+}
+
+// Entpackt eine ZIP-Datei in den temporären Ordner
+async function handleZipImport(input) {
+    const file = input.files[0];
+    input.value = '';
+    if (!file || !window.electronAPI || !window.electronAPI.importZip) return;
+    try {
+        const buffer = await file.arrayBuffer();
+        const result = await window.electronAPI.importZip(new Uint8Array(buffer));
+        if (result && result.error) {
+            alert('Import abgebrochen: ' + result.error);
+            return;
+        }
+        showToast('ZIP-Datei entpackt. Bitte Dateien zuordnen.');
+        updateStatus('ZIP-Datei entpackt');
+    } catch (err) {
+        alert('Fehler beim Import: ' + err.message);
+    }
+}
+// =========================== HANDLEZIPIMPORT END ============================
+
 // =========================== INITIATEDUBBING START ==========================
 function initiateDubbing(fileId, lang = 'de') {
     if (lang === 'emo') {
@@ -13090,7 +13119,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
