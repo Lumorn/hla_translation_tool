@@ -1118,6 +1118,18 @@ th:nth-child(10) {
 .ignore-container { margin-bottom: 15px; }
 .ignore-row { display:flex; gap:6px; margin-bottom:4px; }
 .ignore-row input { width:70px; }
+.trim-options,
+.stretch-options {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.stretch-options span {
+    min-width: 80px;
+    display: inline-block;
+}
 
 .radio-settings,
 .hall-settings {
