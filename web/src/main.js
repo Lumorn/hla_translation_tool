@@ -876,8 +876,8 @@ async function openCopyAssistant() {
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
-    // Beim Öffnen sofort den aktuellen Schritt kopieren
-    copyAssistNext();
+    // Beim Öffnen nur den aktuellen Schritt kopieren, ohne weiterzuschalten
+    copyAssistCopyCurrent();
 }
 
 function closeCopyAssistant() {
@@ -896,6 +896,14 @@ function copyAssistCopy(field) {
         emo: document.getElementById('copyEmo').textContent
     };
     safeCopy(map[field]);
+}
+
+// Kopiert den Text des aktuellen Schritts, ohne den Fortschritt zu ändern
+function copyAssistCopyCurrent() {
+    const text = copyAssistStep === 0
+        ? document.getElementById('copyName').textContent
+        : document.getElementById('copyEmo').textContent;
+    safeCopy(text);
 }
 
 function copyAssistNext() {
