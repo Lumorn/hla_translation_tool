@@ -11,7 +11,7 @@ const { app, BrowserWindow, ipcMain, globalShortcut, dialog, shell, session } = 
 // 'node:path' nutzen, damit das integrierte Modul auch nach dem Packen gefunden wird
 const path = require('node:path'); // Pfadmodul einbinden
 const fs = require('fs');
-const { execSync, spawnSync, spawn } = require('child_process');
+const { execSync, spawnSync, spawn, execFile } = require('child_process');
 const os = require("os"); // Systeminformationen
 // Lade Konfiguration relativ zum aktuellen Verzeichnis
 const { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName } = require(path.join(__dirname, '..', 'web', 'src', 'config.js'));
@@ -27,6 +27,9 @@ const { saveSettings, loadSettings } = require('../settingsStore.ts');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
+// "unzipper" unterstuetzt auch ZIP64- und mehrteilige Archive
+const unzipper = require('unzipper');
+const { path7za } = require('7zip-bin');
 // Standbild-Erzeugung über ffmpeg
 const { ensureFrame } = require('../legacy/videoFrameUtils.js');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
@@ -54,6 +57,9 @@ fs.mkdirSync(audioBackupPath, { recursive: true });
 // Ordner für ZIP-Sicherungen der Sounds anlegen
 const soundZipBackupPath = path.join(backupPath, 'sounds');
 fs.mkdirSync(soundZipBackupPath, { recursive: true });
+// Temporärer Ordner für ZIP-Importe
+const zipImportTempPath = path.join(userDataPath, 'ZipTemp');
+fs.mkdirSync(zipImportTempPath, { recursive: true });
 // Ordner für Segment-Audiodateien anlegen
 const segmentFolderPath = path.join(SOUNDS_BASE_PATH, 'Segments');
 fs.mkdirSync(segmentFolderPath, { recursive: true });
@@ -333,6 +339,56 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // ZIP-Import: Archiv wird entpackt und die enthaltenen Audios werden zurückgegeben
+  // Empfaengt den Pfad zur ZIP-Datei und entpackt sie in ZipTemp
+  ipcMain.handle('import-zip', async (event, zipPath) => {
+    try {
+      // Temporären Ordner leeren
+      fs.rmSync(zipImportTempPath, { recursive: true, force: true });
+      fs.mkdirSync(zipImportTempPath, { recursive: true });
+
+      // ZIP entpacken; bei Fehler versucht 7-Zip als Fallback
+      try {
+        await new Promise((resolve, reject) => {
+          fs.createReadStream(zipPath)
+            .pipe(unzipper.Extract({ path: zipImportTempPath }))
+            .on('close', resolve)
+            .on('error', reject);
+        });
+      } catch (err) {
+        await new Promise((resolve, reject) => {
+          execFile(path7za, ['x', '-y', zipPath, `-o${zipImportTempPath}`], error => error ? reject(error) : resolve());
+        });
+      }
+
+      // Audiodateien rekursiv sammeln
+      const audioFiles = [];
+      const exts = ['.mp3', '.wav', '.ogg'];
+      const collect = dir => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+          const full = path.join(dir, entry.name);
+          if (entry.isDirectory()) collect(full);
+          else if (exts.includes(path.extname(entry.name).toLowerCase())) {
+            audioFiles.push(full);
+          }
+        }
+      };
+      collect(zipImportTempPath);
+
+      // Nach führender Zahl sortieren
+      const num = n => {
+        const m = /^(\d+)/.exec(path.basename(n));
+        return m ? parseInt(m[1], 10) : 0;
+      };
+      audioFiles.sort((a, b) => num(a) - num(b));
+
+      const rel = audioFiles.map(f => path.relative(zipImportTempPath, f));
+      return { files: rel };
+    } catch (err) {
+      return { error: err.message || String(err) };
+    }
+  });
+
   // Beliebige URL im Standardbrowser öffnen
   ipcMain.handle('open-external', async (event, url) => {
     shell.openExternal(url);
@@ -522,6 +578,7 @@ app.whenReady().then(() => {
       existsBackupsPath: fs.existsSync(backupsPath),
       userDataPath,
       backupPath,
+      zipImportTempPath,
       oldBackupPath,
       downloadWatchPath: DL_WATCH_PATH,
       appVersion: app.getVersion(),
