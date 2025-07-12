@@ -108,11 +108,6 @@ let editOrigCursor         = 0;    // Position der EN-Wiedergabe in ms
 let editDeCursor           = 0;    // Position der DE-Wiedergabe in ms
 let editBlobUrl            = null; // aktuelle Blob-URL
 
-// Zusätzliche Marker für Ignorier-Bereiche
-let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
-let ignoreTempStart       = null;  // Startpunkt für neuen Bereich
-let ignoreDragging        = null;  // {index, side} beim Ziehen
-
 let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
@@ -2150,7 +2145,6 @@ function selectProject(id){
         if(!f.hasOwnProperty('emoCompleted')){f.emoCompleted=false;}
         if(!f.hasOwnProperty('emoDubbingId')){f.emoDubbingId='';}
         if(!f.hasOwnProperty('emoDubReady')){f.emoDubReady=null;}
-        if(!f.hasOwnProperty('ignoreRanges')){f.ignoreRanges=[];migrated=true;}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) isDirty=true;
@@ -2369,7 +2363,6 @@ function addFiles() {
                 selected: true,
                 trimStartMs: 0,
                 trimEndMs: 0,
-                ignoreRanges: [],
                 volumeMatched: false,
                 radioEffect: false,
                 hallEffect: false,
@@ -6383,26 +6376,6 @@ function mergeSegments(buffer, segments) {
     return newBuf;
 }
 
-// Entfernt mehrere Bereiche aus einem Buffer
-function removeRangesFromBuffer(buffer, ranges) {
-    if (!ranges || ranges.length === 0) return buffer;
-    const duration = buffer.length / buffer.sampleRate * 1000;
-    // Bereiche sortieren und auf gültige Grenzen kürzen
-    const valid = ranges
-        .map(r => ({ start: Math.max(0, r.start), end: Math.min(duration, r.end) }))
-        .filter(r => r.end > r.start)
-        .sort((a, b) => a.start - b.start);
-    if (valid.length === 0) return buffer;
-    const segments = [];
-    let pos = 0;
-    for (const r of valid) {
-        if (r.start > pos) segments.push({ start: pos, end: r.start });
-        pos = Math.max(pos, r.end);
-    }
-    if (pos < duration) segments.push({ start: pos, end: duration });
-    return mergeSegments(buffer, segments) || buffer;
-}
-
 function toggleIgnoreSelectedSegments() {
     if (segmentSelection.length === 0) return;
     segmentSelection.forEach(i => {
@@ -9960,16 +9933,6 @@ function drawWaveform(canvas, buffer, opts = {}) {
     ctx.stroke();
 
     const durationMs = buffer.length / buffer.sampleRate * 1000;
-
-    // Ignorier-Bereiche halbtransparent darstellen
-    if (opts.ignore && Array.isArray(opts.ignore)) {
-        ctx.fillStyle = 'rgba(128,128,128,0.5)';
-        opts.ignore.forEach(r => {
-            const sx = (r.start / durationMs) * width;
-            const ex = (r.end   / durationMs) * width;
-            ctx.fillRect(sx, 0, ex - sx, height);
-        });
-    }
     if (opts.start !== undefined && opts.end !== undefined) {
         ctx.strokeStyle = '#0f0';
         ctx.lineWidth = 2;
@@ -10294,13 +10257,10 @@ async function openDeEdit(fileId) {
     if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
     editStartTrim = file.trimStartMs || 0;
     editEndTrim = file.trimEndMs || 0;
-    editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
-    ignoreTempStart = null;
     document.getElementById('editStart').value = editStartTrim;
     document.getElementById('editEnd').value = editEndTrim;
     document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
     document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
-    refreshIgnoreList();
 
     const deCanvas = document.getElementById('waveEdited');
     const origCanvas = document.getElementById('waveOriginal');
@@ -10442,40 +10402,15 @@ async function openDeEdit(fileId) {
         const rect = deCanvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const width = rect.width;
-        const time = (x / width) * editDurationMs;
-
-        if (e.shiftKey) {
-            if (ignoreTempStart === null) {
-                ignoreTempStart = time;
-            } else {
-                const start = Math.min(ignoreTempStart, time);
-                const end = Math.max(ignoreTempStart, time);
-                editIgnoreRanges.push({ start, end });
-                ignoreTempStart = null;
-                refreshIgnoreList();
-            }
-            updateDeEditWaveforms();
-            return;
-        }
-
         const startX = (editStartTrim / editDurationMs) * width;
         const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
-        // Prüfen, ob ein Ignoriermarker gezogen wird
-        for (let i = 0; i < editIgnoreRanges.length; i++) {
-            const r = editIgnoreRanges[i];
-            const sx = (r.start / editDurationMs) * width;
-            const ex = (r.end / editDurationMs) * width;
-            if (Math.abs(x - sx) < 5) { ignoreDragging = { index: i, side: 'start' }; return; }
-            if (Math.abs(x - ex) < 5) { ignoreDragging = { index: i, side: 'end' }; return; }
-        }
-
         if (Math.abs(x - startX) < 7) {
             editDragging = 'start';
         } else if (Math.abs(x - endX) < 7) {
             editDragging = 'end';
         } else {
             editDragging = null;
-            editDeCursor = time;
+            editDeCursor = (x / width) * editDurationMs;
             if (editPlaying === 'de') {
                 const audio = document.getElementById('audioPlayer');
                 const dur = editDurationMs - editStartTrim - editEndTrim;
@@ -10485,22 +10420,11 @@ async function openDeEdit(fileId) {
         }
     };
     window.onmousemove = e => {
+        if (!editDragging) return;
         const rect = deCanvas.getBoundingClientRect();
         const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
         const ratio = x / rect.width;
         const time = ratio * editDurationMs;
-        if (ignoreDragging) {
-            const r = editIgnoreRanges[ignoreDragging.index];
-            if (ignoreDragging.side === 'start') {
-                r.start = Math.min(time, r.end - 1);
-            } else {
-                r.end = Math.max(time, r.start + 1);
-            }
-            refreshIgnoreList();
-            updateDeEditWaveforms();
-            return;
-        }
-        if (!editDragging) return;
         if (editDragging === 'start') {
             editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
         } else if (editDragging === 'end') {
@@ -10508,7 +10432,7 @@ async function openDeEdit(fileId) {
         }
         updateDeEditWaveforms();
     };
-window.onmouseup = () => { editDragging = null; ignoreDragging = null; };
+window.onmouseup = () => { editDragging = null; };
     updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
@@ -10709,42 +10633,10 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     }
     if (originalEditBuffer) {
         const endPos = editDurationMs - editEndTrim;
-        drawWaveform(
-            document.getElementById('waveEdited'),
-            originalEditBuffer,
-            { start: editStartTrim, end: endPos, progress: showDe, ignore: editIgnoreRanges }
-        );
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, { start: editStartTrim, end: endPos, progress: showDe });
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
     document.getElementById('editEnd').value = Math.round(editEndTrim);
-}
-// Aktualisiert die Liste der Ignorier-Bereiche
-function refreshIgnoreList() {
-    const container = document.getElementById('ignoreList');
-    if (!container) return;
-    container.innerHTML = '';
-    editIgnoreRanges.forEach((r, idx) => {
-        const row = document.createElement('div');
-        row.className = 'ignore-row';
-        row.innerHTML =
-            `<input type="number" value="${Math.round(r.start)}" step="100" class="ignore-start">` +
-            `<input type="number" value="${Math.round(r.end)}" step="100" class="ignore-end">` +
-            `<button class="btn btn-secondary">🗑️</button>`;
-        row.querySelector('.ignore-start').oninput = e => {
-            r.start = parseInt(e.target.value) || 0;
-            updateDeEditWaveforms();
-        };
-        row.querySelector('.ignore-end').oninput = e => {
-            r.end = parseInt(e.target.value) || 0;
-            updateDeEditWaveforms();
-        };
-        row.querySelector('button').onclick = () => {
-            editIgnoreRanges.splice(idx, 1);
-            refreshIgnoreList();
-            updateDeEditWaveforms();
-        };
-        container.appendChild(row);
-    });
 }
 // =========================== UPDATEDEEDITWAVEFORMS END ====================
 
@@ -10889,9 +10781,6 @@ function closeDeEdit() {
     hallEffectBuffer = null;
     isHallEffect = false;
     editEnBuffer = null;
-    editIgnoreRanges = [];
-    ignoreTempStart = null;
-    ignoreDragging = null;
     window.onmousemove = null;
     window.onmouseup = null;
     updateEffectButtons();
@@ -10936,8 +10825,6 @@ async function resetDeEdit() {
         editEndTrim = 0;
         currentEditFile.trimStartMs = 0;
         currentEditFile.trimEndMs = 0;
-        editIgnoreRanges = [];
-        currentEditFile.ignoreRanges = [];
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
@@ -10952,7 +10839,6 @@ async function resetDeEdit() {
         isDirty = true;
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
-        refreshIgnoreList();
         updateStatus('DE-Audio zurückgesetzt');
         // Tabelle neu zeichnen, damit der Play-Button die aktuelle Datei nutzt
         renderFileTable();
@@ -10994,9 +10880,7 @@ async function applyDeEdit() {
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
-        let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         const buf = await blob.arrayBuffer();
@@ -11059,9 +10943,7 @@ async function applyDeEdit() {
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
-        let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        const newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
         const blob = bufferToWav(newBuffer);
         await speichereUebersetzungsDatei(blob, relPath);
@@ -11071,7 +10953,6 @@ async function applyDeEdit() {
     }
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
-        currentEditFile.ignoreRanges = editIgnoreRanges;
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
         currentEditFile.hallEffect = isHallEffect;
@@ -13208,7 +13089,6 @@ if (typeof module !== "undefined" && module.exports) {
         exportSegmentsToProject,
         toggleIgnoreSelectedSegments,
         mergeSegments,
-        removeRangesFromBuffer,
         __setSegmentInfo: info => { segmentInfo = info; },
         __setSegmentAssignments: a => { segmentAssignments = a; },
         __getSegmentInfo: () => segmentInfo,
