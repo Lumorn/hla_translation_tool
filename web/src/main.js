@@ -9796,6 +9796,90 @@ async function handleDeUpload(input) {
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
+// =========================== HANDLEZIPIMPORT START ===========================
+function showZipImportDialog() {
+    if (!currentProject) {
+        alert('Bitte zuerst ein Projekt auswählen.');
+        return;
+    }
+    document.getElementById('zipImportInput').click();
+}
+
+// Zwischenspeicher für entpackte Dateien
+let pendingZipImport = null;
+
+// Liest die ZIP-Datei ein und zeigt eine Vorschau an
+async function handleZipImport(input) {
+    const file = input.files[0];
+    input.value = '';
+    if (!file || !window.electronAPI || !window.electronAPI.importZip) return;
+    try {
+        const buffer = await file.arrayBuffer();
+        const result = await window.electronAPI.importZip(new Uint8Array(buffer));
+        if (result.error) {
+            alert('Fehler beim Entpacken: ' + result.error);
+            return;
+        }
+        const entries = result.files || result;
+        const valid = entries.filter(e => /\.(mp3|wav|ogg)$/i.test(e.name) && /^\d+/.test(e.name));
+        valid.sort((a,b)=>parseInt(a.name,10)-parseInt(b.name,10));
+        const active = files.filter(f => !f.isIgnored);
+        const ok = valid.length === active.length;
+
+        pendingZipImport = { active, valid };
+        const info = document.getElementById('zipPreviewInfo');
+        info.textContent = ok
+            ? `✅ ${valid.length} Dateien gefunden, entspricht ${active.length} Zeilen.`
+            : `⚠️ ${valid.length} Dateien gefunden, erwartet ${active.length}.`;
+        const tbody = document.getElementById('zipPreviewTableBody');
+        tbody.innerHTML = '';
+        const len = Math.max(active.length, valid.length);
+        for (let i = 0; i < len; i++) {
+            const row = document.createElement('tr');
+            const proj = active[i];
+            const zip = valid[i];
+            row.innerHTML = `<td>${proj ? escapeHtml(getFullPath(proj)) : ''}</td>` +
+                            `<td>${zip ? escapeHtml(zip.name) : ''}</td>`;
+            tbody.appendChild(row);
+        }
+        document.getElementById('zipImportConfirm').disabled = !ok;
+        document.getElementById('zipPreviewDialog').classList.remove('hidden');
+    } catch (err) {
+        alert('Fehler beim Import: ' + err.message);
+    }
+}
+
+// Übernimmt die Dateien aus der Vorschau ins Projekt
+async function confirmZipImport() {
+    if (!pendingZipImport) return;
+    const { active, valid } = pendingZipImport;
+    document.getElementById('zipPreviewDialog').classList.add('hidden');
+    for (let i = 0; i < active.length; i++) {
+        const rel = getFullPath(active[i]);
+        await window.electronAPI.saveDeFile(rel, valid[i].data);
+        deAudioCache[rel] = `sounds/DE/${rel}`;
+        await updateHistoryCache(rel);
+        active[i].trimStartMs = 0;
+        active[i].trimEndMs = 0;
+        active[i].volumeMatched = false;
+        active[i].radioEffect = false;
+        active[i].hallEffect = false;
+    }
+    isDirty = true;
+    saveCurrentProject();
+    renderFileTable();
+    showToast(`${valid.length} Dateien wurden erfolgreich zugeordnet und eingefügt.`);
+    updateStatus('ZIP-Import abgeschlossen');
+    pendingZipImport = null;
+}
+
+// Bricht den Import ab
+function closeZipPreview() {
+    pendingZipImport = null;
+    document.getElementById('zipPreviewDialog').classList.add('hidden');
+}
+// =========================== HANDLEZIPIMPORT END ============================
+
 // =========================== INITIATEDUBBING START ==========================
 function initiateDubbing(fileId, lang = 'de') {
     if (lang === 'emo') {
@@ -13090,7 +13174,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport, confirmZipImport, closeZipPreview };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
