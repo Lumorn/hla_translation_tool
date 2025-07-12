@@ -42,6 +42,7 @@ export type IpcChannels =
   | 'open-backup-folder'
   | 'get-download-path'
   | 'get-debug-info'
+  | 'import-zip'
   | 'backup-de-file'
   | 'delete-de-backup-file'
   | 'restore-de-file'
