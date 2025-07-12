@@ -9796,6 +9796,77 @@ async function handleDeUpload(input) {
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
+// =========================== HANDLEZIPIMPORT START ===========================
+function showZipImportDialog() {
+    if (!currentProject) {
+        alert('Bitte zuerst ein Projekt auswählen.');
+        return;
+    }
+    document.getElementById('zipImportInput').click();
+}
+
+// Liest eine ZIP-Datei ein und zeigt eine Zuordnungsvorschau an
+async function handleZipImport(input) {
+    const file = input.files[0];
+    input.value = '';
+    if (!file || !window.electronAPI?.importZip) return;
+    try {
+        const buffer = await file.arrayBuffer();
+        const result = await window.electronAPI.importZip(new Uint8Array(buffer));
+        if (result?.error) {
+            alert('Fehler beim Entpacken: ' + result.error);
+            return;
+        }
+        if (!result?.files || result.files.length === 0) {
+            alert('Keine Audiodateien gefunden.');
+            return;
+        }
+        showZipPreview(result.files);
+    } catch (err) {
+        alert('Fehler beim Import: ' + err.message);
+    }
+}
+
+// Zeigt Tabelle mit Zuordnung und übernimmt die Dateien bei Bestätigung
+async function showZipPreview(zipFiles) {
+    const countOk = zipFiles.length === files.length;
+    let rows = '';
+    for (let i = 0; i < files.length; i++) {
+        const name = zipFiles[i] || '-';
+        rows += `<tr><td>${i + 1}</td><td>${escapeHtml(files[i].filename)}</td><td>${escapeHtml(name)}</td></tr>`;
+    }
+    const html = `
+        <h3>ZIP-Import</h3>
+        <p>${zipFiles.length} Dateien im Archiv, ${files.length} Zeilen im Projekt.</p>
+        <table class="zip-preview-table"><thead><tr><th>Zeile</th><th>Projektdatei</th><th>ZIP-Datei</th></tr></thead><tbody>${rows}</tbody></table>
+        <div class="dialog-buttons">
+            <button class="btn btn-secondary" id="zipCancel">Abbrechen</button>
+            <button class="btn btn-success" id="zipConfirm" ${countOk ? '' : 'disabled'}>Importieren</button>
+        </div>`;
+    const ov = showModal(html);
+    ov.querySelector('#zipCancel').onclick = () => ov.remove();
+    ov.querySelector('#zipConfirm').onclick = async () => {
+        ov.remove();
+        if (countOk) await applyZipImport(zipFiles);
+    };
+}
+
+async function applyZipImport(zipFiles) {
+    if (!window.electronAPI?.fsReadFile) return;
+    const info = await window.electronAPI.getDebugInfo();
+    for (let i = 0; i < zipFiles.length && i < files.length; i++) {
+        const rel = getFullPath(files[i]);
+        const full = window.electronAPI.join(info.zipImportTempPath, zipFiles[i]);
+        if (!window.electronAPI.fsExists(full)) continue;
+        const data = window.electronAPI.fsReadFile(full);
+        const blob = new Blob([new Uint8Array(data)]);
+        await uploadDeFile(blob, rel);
+    }
+    showToast(`${zipFiles.length} Dateien importiert`);
+    updateStatus('ZIP-Import abgeschlossen');
+}
+// =========================== HANDLEZIPIMPORT END ============================
+
 // =========================== INITIATEDUBBING START ==========================
 function initiateDubbing(fileId, lang = 'de') {
     if (lang === 'emo') {
@@ -13090,7 +13161,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
