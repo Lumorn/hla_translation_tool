@@ -9796,6 +9796,47 @@ async function handleDeUpload(input) {
 }
 // =========================== HANDLEDEUPLOAD END ==============================
 
+// =========================== HANDLEZIPIMPORT START ===========================
+function showZipImportDialog() {
+    if (!currentProject) {
+        alert('Bitte zuerst ein Projekt auswählen.');
+        return;
+    }
+    document.getElementById('zipImportInput').click();
+}
+
+async function handleZipImport(input) {
+    const file = input.files[0];
+    input.value = '';
+    if (!file || !window.electronAPI || !window.electronAPI.importZip) return;
+    const buffer = await file.arrayBuffer();
+    const entries = await window.electronAPI.importZip(new Uint8Array(buffer));
+    const valid = entries.filter(e => /\.(mp3|wav|ogg)$/i.test(e.name) && /^\d+/.test(e.name));
+    valid.sort((a,b)=>parseInt(a.name,10)-parseInt(b.name,10));
+    const active = files.filter(f => !f.isIgnored);
+    if (valid.length !== active.length) {
+        alert('Import abgebrochen: Die Anzahl der Audiodateien stimmt nicht mit der Anzahl der Projektzeilen überein.');
+        return;
+    }
+    for (let i=0;i<active.length;i++) {
+        const rel = getFullPath(active[i]);
+        await window.electronAPI.saveDeFile(rel, valid[i].data);
+        deAudioCache[rel] = `sounds/DE/${rel}`;
+        await updateHistoryCache(rel);
+        active[i].trimStartMs = 0;
+        active[i].trimEndMs = 0;
+        active[i].volumeMatched = false;
+        active[i].radioEffect = false;
+        active[i].hallEffect = false;
+    }
+    isDirty = true;
+    saveCurrentProject();
+    renderFileTable();
+    showToast(`${valid.length} Dateien wurden erfolgreich zugeordnet und eingefügt.`);
+    updateStatus('ZIP-Import abgeschlossen');
+}
+// =========================== HANDLEZIPIMPORT END ============================
+
 // =========================== INITIATEDUBBING START ==========================
 function initiateDubbing(fileId, lang = 'de') {
     if (lang === 'emo') {
@@ -13090,7 +13131,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
