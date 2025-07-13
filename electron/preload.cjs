@@ -52,6 +52,7 @@ if (typeof require !== 'function') {
     listSoundBackups: () => ipcRenderer.invoke('list-sound-backups'),
     createSoundBackup: () => ipcRenderer.invoke('create-sound-backup'),
     deleteSoundBackup: (name) => ipcRenderer.invoke('delete-sound-backup', name),
+    onSoundBackupProgress: cb => ipcRenderer.on('sound-backup-progress', (e, prog) => cb(prog)),
     openBackupFolder: () => ipcRenderer.invoke('open-backup-folder'),
     // Pfad der ZIP-Datei an den Main-Prozess schicken
     importZip: filePath => ipcRenderer.invoke('import-zip', filePath),

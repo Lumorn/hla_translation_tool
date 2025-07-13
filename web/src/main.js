@@ -1249,6 +1249,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 resolve(text);
             });
         }
+        if (window.electronAPI.onSoundBackupProgress) {
+            window.electronAPI.onSoundBackupProgress(prog => {
+                const fill = document.getElementById('soundBackupFill');
+                const status = document.getElementById('soundBackupStatus');
+                if (!fill || !status) return;
+                const total = prog.entries.total || 0;
+                const processed = prog.entries.processed || 0;
+                const percent = total ? Math.round((processed / total) * 100) : 0;
+                fill.style.width = percent + '%';
+                status.textContent = `Backup ${processed}/${total} Dateien`;
+            });
+        }
     }
 
     // 🟩 NEU: Level-Farben laden
@@ -8179,7 +8191,20 @@ function checkFileAccess() {
 // =========================== SOUNDBACKUP START ============================
         async function createSoundBackup() {
             if (!window.electronAPI || !window.electronAPI.createSoundBackup) return;
+            const prog = document.getElementById('soundBackupProgress');
+            const fill = document.getElementById('soundBackupFill');
+            const status = document.getElementById('soundBackupStatus');
+            if (prog) {
+                prog.classList.add('active');
+                fill.style.width = '0%';
+                status.textContent = 'Erstelle Sound-Backup...';
+            }
             await window.electronAPI.createSoundBackup();
+            if (prog) {
+                prog.classList.remove('active');
+                fill.style.width = '0%';
+                status.textContent = '';
+            }
             loadSoundBackupList();
             updateStatus('Sound-Backup erstellt');
         }
@@ -8190,11 +8215,14 @@ function checkFileAccess() {
             listDiv.innerHTML = '';
             if (!window.electronAPI || !window.electronAPI.listSoundBackups) return;
             const files = await window.electronAPI.listSoundBackups();
-            files.forEach(name => {
+            files.forEach(({ name, size, mtime }, idx) => {
                 const item = document.createElement('div');
-                item.className = 'backup-item';
+                item.className = 'backup-item' + (idx === 0 ? ' latest' : '');
                 const label = document.createElement('span');
-                label.textContent = name;
+                const date = new Date(mtime);
+                const mb = (size / (1024 * 1024)).toFixed(1);
+                label.textContent = `${date.toLocaleString()} – ${mb} MB`;
+                label.title = name;
                 const del = document.createElement('button');
                 del.textContent = 'Löschen';
                 del.onclick = () => { deleteSoundBackup(name); };
