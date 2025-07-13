@@ -55,6 +55,32 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     promptReady = Promise.resolve();
 }
 
+// *** Einfache Warteschlange, um API-Aufrufe zu drosseln ***
+const queue = [];
+let queueActive = false;
+
+// Startet den nächsten Eintrag der Warteschlange
+async function processQueue() {
+    if (queue.length === 0) { queueActive = false; return; }
+    queueActive = true;
+    const job = queue.shift();
+    try {
+        const res = await fetchWithRetry(job.url, job.options, job.retries);
+        job.resolve(res);
+    } catch (e) {
+        job.reject(e);
+    }
+    setTimeout(processQueue, 1000); // kleine Pause zwischen den Anfragen
+}
+
+// Legt einen Aufruf in die Warteschlange und gibt ein Promise zurück
+function queuedFetch(url, options, retries = 5) {
+    return new Promise((resolve, reject) => {
+        queue.push({ url, options, retries, resolve, reject });
+        if (!queueActive) processQueue();
+    });
+}
+
 // Hilfsfunktion mit erweiterten Wiederholungen bei 429 oder 503
 // Beachtet den Header "Retry-After" und nutzt exponentielles Backoff
 async function fetchWithRetry(url, options, retries = 5) {
@@ -136,7 +162,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
         console.log('[GPT REQUEST]', { model, messages });
         if (ui) appendGptLog(ui, '>> ' + reqText);
         try {
-            const res = await fetchWithRetry('https://api.openai.com/v1/chat/completions', {
+            const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -189,7 +215,7 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
         { role: 'system', content: emotionPrompt },
         { role: 'user', content: JSON.stringify(payload) }
     ];
-    const res = await fetchWithRetry('https://api.openai.com/v1/chat/completions', {
+    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -283,7 +309,8 @@ if (typeof module !== 'undefined') {
         getEmotionPrompt,
         generateEmotionText,
         sanitizeJSONResponse,
-        fetchWithRetry
+        fetchWithRetry,
+        queuedFetch
     };
 }
 if (typeof window !== 'undefined') {
@@ -295,4 +322,5 @@ if (typeof window !== 'undefined') {
     window.generateEmotionText = generateEmotionText;
     window.sanitizeJSONResponse = sanitizeJSONResponse;
     window.fetchWithRetry = fetchWithRetry;
+    window.queuedFetch = queuedFetch;
 }
