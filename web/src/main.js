@@ -11443,6 +11443,15 @@ async function applyDeEdit() {
         currentEditFile.radioEffect = isRadioEffect;
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.tempoFactor = tempoFactor;
+        // Nach dem Speichern Start- und Endwerte zurücksetzen
+        editStartTrim = 0;
+        editEndTrim = 0;
+        currentEditFile.trimStartMs = 0;
+        currentEditFile.trimEndMs = 0;
+        const startInput = document.getElementById('editStart');
+        const endInput   = document.getElementById('editEnd');
+        if (startInput) startInput.value = 0;
+        if (endInput)   endInput.value = 0;
         // Änderungen sichern
         isDirty = true;
         renderFileTable();
