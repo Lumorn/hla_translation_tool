@@ -10621,6 +10621,15 @@ async function openDeEdit(fileId) {
         tempoRange.oninput = async e => {
             tempoFactor = parseFloat(e.target.value);
             tempoDisp.textContent = tempoFactor.toFixed(2);
+            tempoDisp.classList.remove('tempo-auto');
+            updateLengthInfo();
+        };
+        const tempoAuto = document.getElementById('tempoAutoBtn');
+        if (tempoAuto) tempoAuto.onclick = () => {
+            tempoFactor = parseFloat(tempoRange.min);
+            tempoRange.value = tempoFactor.toFixed(2);
+            tempoDisp.textContent = tempoFactor.toFixed(2);
+            tempoDisp.classList.add('tempo-auto');
             updateLengthInfo();
         };
     }
