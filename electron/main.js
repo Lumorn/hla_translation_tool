@@ -325,7 +325,18 @@ app.whenReady().then(() => {
 
   // Neues Sound-ZIP-Backup erstellen
   ipcMain.handle('create-sound-backup', async () => {
-    return await createSoundBackup(soundZipBackupPath, dePath, deBackupPath, deHistoryPath, 5);
+    return await createSoundBackup(
+      soundZipBackupPath,
+      dePath,
+      deBackupPath,
+      deHistoryPath,
+      5,
+      progress => {
+        if (mainWindow) {
+          mainWindow.webContents.send('sound-backup-progress', progress);
+        }
+      }
+    );
   });
 
   // Sound-ZIP-Backup löschen

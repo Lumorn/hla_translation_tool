@@ -19,8 +19,11 @@ describe('soundBackupUtils', () => {
 
     const list = listSoundBackups(backupRoot);
     expect(list.length).toBe(1);
+    expect(list[0]).toHaveProperty('name');
+    expect(list[0]).toHaveProperty('size');
+    expect(list[0]).toHaveProperty('mtime');
 
-    deleteSoundBackup(backupRoot, list[0]);
+    deleteSoundBackup(backupRoot, list[0].name);
     expect(listSoundBackups(backupRoot).length).toBe(0);
   });
 });
