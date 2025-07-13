@@ -6496,6 +6496,38 @@ function detectPausesInBuffer(buffer, minPauseMs = 400) {
     return ranges;
 }
 
+// =========================== DETECTSILENCETRIM START ======================
+// Erkennt Stille am Anfang und Ende eines AudioBuffers und
+// liefert die passenden Millisekundenwerte zurück
+function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
+    const data = buffer.getChannelData(0);
+    const sr = buffer.sampleRate;
+    const step = Math.max(1, Math.round(sr * windowMs / 1000));
+    let start = 0;
+    while (start < data.length) {
+        let sum = 0;
+        for (let i = start; i < Math.min(start + step, data.length); i++) {
+            sum += Math.abs(data[i]);
+        }
+        if (sum / step > threshold) break;
+        start += step;
+    }
+    let end = data.length;
+    while (end > start) {
+        let sum = 0;
+        for (let i = Math.max(end - step, 0); i < end; i++) {
+            sum += Math.abs(data[i]);
+        }
+        if (sum / step > threshold) break;
+        end -= step;
+    }
+    return {
+        start: Math.round(start / sr * 1000),
+        end: Math.round((data.length - end) / sr * 1000)
+    };
+}
+// =========================== DETECTSILENCETRIM END ========================
+
 // Hochwertiges Time-Stretching mit SoundTouchJS
 let soundtouchPromise = null;
 function loadSoundTouch() {
@@ -10562,8 +10594,21 @@ async function openDeEdit(fileId) {
     ignoreTempStart = null;
     document.getElementById('editStart').value = editStartTrim;
     document.getElementById('editEnd').value = editEndTrim;
-    document.getElementById('editStart').oninput = e => { editStartTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
-    document.getElementById('editEnd').oninput = e => { editEndTrim = parseInt(e.target.value) || 0; updateDeEditWaveforms(); };
+    document.getElementById('editStart').oninput = e => {
+        editStartTrim = parseInt(e.target.value) || 0;
+        updateDeEditWaveforms();
+    };
+    document.getElementById('editEnd').oninput = e => {
+        editEndTrim = parseInt(e.target.value) || 0;
+        updateDeEditWaveforms();
+    };
+    const autoTrim = document.getElementById('autoTrimBtn');
+    if (autoTrim) autoTrim.onclick = () => {
+        const vals = detectSilenceTrim(savedOriginalBuffer);
+        editStartTrim = vals.start;
+        editEndTrim = vals.end;
+        updateDeEditWaveforms();
+    };
 
     tempoFactor = file.tempoFactor || 1.0;
     loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln

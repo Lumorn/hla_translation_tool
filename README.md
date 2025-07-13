@@ -584,6 +584,7 @@ Seit Patch 1.40.102 stehen die Segmentierungsfunktionen global zur Verfügung. D
 Seit Patch 1.40.103 prüft das Tool vor dem Öffnen des Segmentdialogs, ob ein Projekt ausgewählt wurde.
 Seit Patch 1.40.104 meldet der Segmentdialog fehlende HTML-Elemente in der Konsole.
 Seit Patch 1.40.105 begrenzt `mergeSegments` die Segmentgrenzen auf die Pufferlänge und verhindert so "offset out of bounds"-Fehler.
+Seit Patch 1.40.106 stellt ein Auto-Knopf im DE-Audio-Editor Anfangs- und Endstille automatisch ein.
 
 Beispiel einer gültigen CSV:
 
