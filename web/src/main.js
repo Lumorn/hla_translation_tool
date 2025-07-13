@@ -10241,13 +10241,16 @@ function trimAndPadBuffer(buffer, startMs, endMs) {
     const endSamples = Math.max(0, Math.floor(endMs > 0 ? endMs * sr / 1000 : 0));
     const padStart = Math.max(0, Math.floor(startMs < 0 ? -startMs * sr / 1000 : 0));
     const padEnd = Math.max(0, Math.floor(endMs < 0 ? -endMs * sr / 1000 : 0));
-    const newLength = padStart + buffer.length - startSamples - endSamples + padEnd;
+    // Start- und Endwerte dürfen die Buffermitte nicht überschreiten
+    const effectiveStart = Math.min(startSamples, buffer.length);
+    const effectiveEnd = Math.min(endSamples, buffer.length - effectiveStart);
+    const newLength = Math.max(1, padStart + buffer.length - effectiveStart - effectiveEnd + padEnd);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const newBuffer = ctx.createBuffer(buffer.numberOfChannels, newLength, sr);
     for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
         const oldData = buffer.getChannelData(ch);
         const newData = newBuffer.getChannelData(ch);
-        newData.set(oldData.subarray(startSamples, buffer.length - endSamples), padStart);
+        newData.set(oldData.subarray(effectiveStart, buffer.length - effectiveEnd), padStart);
     }
     return newBuffer;
 }
