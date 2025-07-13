@@ -1593,25 +1593,6 @@ th:nth-child(10) {
             color: #999;
         }
 
-        /* Fortschritt für Sound-Backups */
-        .sound-backup-progress {
-            display: none;
-            padding: 20px;
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 6px;
-            margin: 20px;
-        }
-
-        .sound-backup-progress.active {
-            display: block;
-        }
-
-        .sound-backup-status {
-            font-size: 14px;
-            color: #999;
-        }
-
 
 /* =========================== DIALOG CLOSE BTN STYLE START =========================== */
 .folder-browser-dialog .dialog { position:relative; }
@@ -2849,11 +2830,6 @@ th:nth-child(10) {
     height: 100%;
     width: 50%;
     background: #ff6b1a;
-    animation: loadingBar 1s linear infinite;
-}
-
-.progress-loading {
-    width: 50%;
     animation: loadingBar 1s linear infinite;
 }
 

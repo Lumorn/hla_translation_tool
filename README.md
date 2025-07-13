@@ -792,7 +792,6 @@ Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal
 ## 💾 Backup
 
 Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben.
-Beim Erstellen eines Sound-Backups erscheint nun ein Fortschrittsbalken, damit man den laufenden Vorgang erkennt.
 
 
 ## 🗂️ Projektstruktur
@@ -984,7 +983,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`backup-de-file(relPath)`** – kopiert eine vorhandene deutsche Audiodatei nach `DE-Backup`, sofern dort noch keine Sicherung existiert.
 * **`delete-de-backup-file(relPath)`** – löscht eine Sicherung aus `DE-Backup` und entfernt leere Unterordner.
 * **`restore-de-file(relPath)`** – stellt eine deutsche Audiodatei aus dem Backup wieder her.
-* **`create-sound-backup()`** – packt `Sounds/DE`, `DE-Backup` und `DE-History` als ZIP in `Backups/sounds` und zeigt einen Fortschrittsbalken an.
+* **`create-sound-backup()`** – packt `Sounds/DE`, `DE-Backup` und `DE-History` als ZIP in `Backups/sounds`.
 * **`list-sound-backups()`** – listet vorhandene ZIP-Sicherungen auf.
 * **`delete-sound-backup(name)`** – entfernt ein ZIP-Backup.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
