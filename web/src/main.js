@@ -10667,23 +10667,23 @@ async function openDeEdit(fileId) {
         };
         const tempoAuto = document.getElementById('tempoAutoBtn');
         if (tempoAuto) tempoAuto.onclick = () => {
-            // Startwert auf das Minimum setzen und gelb markieren
+            // Startwert auf Minimum setzen und Eingabe hervorheben
             tempoFactor = parseFloat(tempoRange.min);
             tempoRange.value = tempoFactor.toFixed(2);
             tempoDisp.textContent = tempoFactor.toFixed(2);
             tempoDisp.classList.add('tempo-auto');
             updateLengthInfo();
 
-            // Schrittweite und Ziel definieren
+            // Schrittweite und Ziel festlegen
             const step = parseFloat(tempoRange.step) || 0.01;
             const max  = parseFloat(tempoRange.max);
             const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
 
-            // Erhöht den Faktor so lange, bis die Abweichung >= 5 % ist
+            // Erhöht den Faktor, bis die Differenz < 10 % aber > 5 % beträgt
             const raise = () => {
                 const deMs = calcFinalLength();
                 const perc = Math.abs(deMs - enMs) / enMs * 100;
-                if (perc >= 5 || tempoFactor >= max) return;
+                if ((perc <= 10 && perc > 5) || tempoFactor >= max) return;
                 tempoFactor = Math.min(tempoFactor + step, max);
                 tempoRange.value = tempoFactor.toFixed(2);
                 tempoDisp.textContent = tempoFactor.toFixed(2);
