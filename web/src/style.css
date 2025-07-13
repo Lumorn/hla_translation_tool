@@ -1131,6 +1131,12 @@ th:nth-child(10) {
     display: inline-block;
 }
 
+/* Gelbe Markierung, wenn das Tempo automatisch gesetzt wurde */
+.tempo-auto {
+    color: #ffd700;
+    font-weight: bold;
+}
+
 .radio-settings,
 .hall-settings {
     display: flex;
