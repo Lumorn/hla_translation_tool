@@ -230,6 +230,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
 * **Projekt‑übergreifende Fortschrittsanzeige:** Dateien und Dashboard zeigen Status über alle Projekte
 * **Visuelle Gesamtbalken** in der Filter-Leiste zeigen den Fortschritt aller Projekte
+* **Emo-Status-Anzeige:** Ein violettes Feld zählt gefüllte, leere und fehlerhafte Emotional-Texte. Ein Klick darauf generiert fehlende oder fehlerhafte Einträge neu.
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
 * **Grüne Haken** für abgeschlossene Kapitel
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen

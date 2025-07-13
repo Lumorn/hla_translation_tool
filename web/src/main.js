@@ -2190,6 +2190,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('emoCompleted')){f.emoCompleted=false;}
         if(!f.hasOwnProperty('emoDubbingId')){f.emoDubbingId='';}
         if(!f.hasOwnProperty('emoDubReady')){f.emoDubReady=null;}
+        if(!f.hasOwnProperty('emoError')){f.emoError=false;}
         if(!f.hasOwnProperty('ignoreRanges')){f.ignoreRanges=[];migrated=true;}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
@@ -2941,12 +2942,16 @@ function addFiles() {
                 const res = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
                 area.value = res.text || '';
                 file.emoReason = res.reason || '';
+                file.emoError = false;
                 updateText(file.id, 'emo', area.value, true);
                 updateEmoReasonDisplay(file.id);
                 updateStatus(`Emotionen generiert: ${file.filename}`);
             } catch (e) {
                 console.error('Emotionen fehlgeschlagen', e);
                 area.value = 'Fehler bei der Generierung';
+                file.emoReason = '';
+                file.emoError = true;
+                updateText(file.id, 'emo', area.value, true);
             }
             btn.disabled = false;
         }
@@ -2977,6 +2982,33 @@ function addFiles() {
             btn.textContent = 'Emotionen generieren';
             btn.disabled = false;
             updateStatus(`Fertig (${done}/${ids.length})`);
+        }
+
+        // Generiert alle leeren oder fehlerhaften Emotional-Texte erneut
+        async function regenerateMissingEmos() {
+            const box = document.getElementById('emoProgress');
+            if (!box || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            const ids = files
+                .filter(f => !f.emotionalText || !f.emotionalText.trim() || f.emoError)
+                .map(f => f.id);
+            if (ids.length === 0) return;
+            box.textContent = '🟣 ...';
+            let done = 0;
+            const max = 3;
+            const queue = [...ids];
+            async function worker() {
+                while (queue.length) {
+                    const id = queue.shift();
+                    await generateEmotionalText(id);
+                    done++;
+                    box.textContent = `🟣 ${done}/${ids.length}`;
+                }
+            }
+            const workers = [];
+            for (let i = 0; i < Math.min(max, queue.length); i++) workers.push(worker());
+            await Promise.all(workers);
+            box.textContent = '🟣 fertig';
+            updateStatus(`Emotional-Texte aktualisiert (${done})`);
         }
 
         // Sendet alle Emotional-Texte in der Projektreihenfolge an ElevenLabs
@@ -4884,6 +4916,15 @@ function toggleEmoCompletion(fileId) {
                 folderProgress.classList.add('good');
             } else if (folderCount > 0 && (completedFolders / folderCount) >= 0.3) {
                 folderProgress.classList.add('warning');
+            }
+
+            const emoBox = document.getElementById('emoProgress');
+            if (emoBox) {
+                const errorCount = files.filter(f => f.emoError || /^Fehler/i.test(f.emotionalText || '')).length;
+                const filledCount = files.filter(f => (f.emotionalText || '').trim().length > 0 && !(f.emoError || /^Fehler/i.test(f.emotionalText || ''))).length;
+                const emptyCount = totalFiles - filledCount - errorCount;
+                emoBox.textContent = `🟣 ${filledCount} | ${emptyCount} | ${errorCount}`;
+                emoBox.className = 'progress-stat clickable';
             }
             
             // Update folder progress tooltip
@@ -13718,5 +13759,8 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
                 videoDlg.removeAttribute("open");
             }
         }));
+
+        const emoBox = document.getElementById('emoProgress');
+        if (emoBox) emoBox.addEventListener('click', regenerateMissingEmos);
     }
 }

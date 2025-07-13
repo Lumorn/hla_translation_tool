@@ -364,6 +364,10 @@ th:nth-child(10) {
             border: 1px solid #444;
         }
 
+        .progress-stat.clickable {
+            cursor: pointer;
+        }
+
         .progress-stat.good {
             border-color: #4caf50;
             color: #4caf50;
