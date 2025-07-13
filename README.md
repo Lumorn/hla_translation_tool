@@ -296,6 +296,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Der manuelle Tempo-Regler entfernt nun 50 ms Sicherheitsstille nach dem Stretch, wodurch weder Anfang noch Ende verloren gehen.
 * **Bugfix:** Die Vorschau folgt jetzt exakt der Reihenfolge Trimmen → Pausen entfernen → Time‑Stretch. Dadurch verschwinden keine Abschnitte mehr beim Speichern.
 * **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
+* **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
