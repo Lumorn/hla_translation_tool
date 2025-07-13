@@ -3200,6 +3200,7 @@ th:nth-child(10) {
 .segment-status { font-size:14px; color:#999; }
 #segmentWaveform { cursor:pointer; }
 #copyAssistantDialog .dialog { max-width: 500px; }
+#copyAssistant2Dialog .dialog { max-width: 500px; }
 
 /* Tabelle für den ZIP-Import */
 .zip-preview-table {
