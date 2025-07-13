@@ -412,6 +412,7 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const emoBtn = document.getElementById("generateEmotionsButton");
     const sendBtn = document.getElementById("sendTextV2Button");
     const copyBtn = document.getElementById("copyAssistantButton");
+    const copyBtn2 = document.getElementById("copyAssistant2Button");
     const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
@@ -430,6 +431,9 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     }
     if (copyBtn) {
         copyBtn.addEventListener("click", openCopyAssistant);
+    }
+    if (copyBtn2) {
+        copyBtn2.addEventListener("click", openCopyAssistant2);
     }
     if (copyAllEmosBtn) {
         copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
@@ -893,6 +897,7 @@ async function ensureVoiceList() {
 // =========================== COPY ASSISTANT START ==========================
 let copyAssistIndex = 0;
 let copyAssistStep = 0; // 0 = Name kopieren, 1 = Emotion kopieren
+let copyAssist2Index = 0; // Einfacher Durchlauf fuer Kopierhilfe 2
 
 // Prüft, ob die Zwischenablage zum angezeigten Schritt passt
 async function verifyCopyAssistClipboard() {
@@ -1018,6 +1023,45 @@ function showCopyAssistant() {
     verifyCopyAssistClipboard();
 }
 // =========================== COPY ASSISTANT END ============================
+
+// =========================== COPY ASSISTANT 2 START =======================
+// Einfacher Dialog zum Durchblättern der Einträge
+function openCopyAssistant2() {
+    copyAssist2Index = 0;
+    showCopyAssistant2();
+    document.getElementById('copyAssistant2Dialog').classList.remove('hidden');
+}
+
+function closeCopyAssistant2() {
+    document.getElementById('copyAssistant2Dialog').classList.add('hidden');
+}
+
+function copyAssist2Next() {
+    if (copyAssist2Index < files.length - 1) {
+        copyAssist2Index++;
+        showCopyAssistant2();
+    } else {
+        closeCopyAssistant2();
+    }
+}
+
+function copyAssist2Prev() {
+    if (copyAssist2Index > 0) {
+        copyAssist2Index--;
+        showCopyAssistant2();
+    }
+}
+
+function showCopyAssistant2() {
+    const file = files[copyAssist2Index];
+    if (!file) return;
+    const total = files.length;
+    document.getElementById('copy2Name').textContent = file.folder || '';
+    document.getElementById('copy2De').textContent = file.deText || '';
+    document.getElementById('copy2Emo').textContent = file.emotionalText || '';
+    document.getElementById('copyAssist2Page').textContent = `Seite ${copyAssist2Index + 1} von ${total}`;
+}
+// =========================== COPY ASSISTANT 2 END ==========================
 
 // Kopiert alle Emotionstexte nacheinander in die Zwischenablage
 function normalizeEmotionalText(text) {
