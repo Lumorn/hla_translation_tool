@@ -55,8 +55,9 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     promptReady = Promise.resolve();
 }
 
-// Hilfsfunktion mit automatischen Wiederholungen bei 429 oder 503
-async function fetchWithRetry(url, options, retries = 3) {
+// Hilfsfunktion mit erweiterten Wiederholungen bei 429 oder 503
+// Beachtet den Header "Retry-After" und nutzt exponentielles Backoff
+async function fetchWithRetry(url, options, retries = 5) {
     let lastError;
     for (let i = 0; i < retries; i++) {
         try {
@@ -65,17 +66,22 @@ async function fetchWithRetry(url, options, retries = 3) {
                 return res;
             }
             lastError = new Error('HTTP ' + res.status);
+            // Vom Server empfohlene Wartezeit verwenden, falls vorhanden
+            let retryAfter = parseInt(res.headers.get('retry-after'), 10);
+            if (isNaN(retryAfter)) retryAfter = Math.pow(2, i); // 1,2,4,8,... Sekunden
+            await new Promise(r => setTimeout(r, retryAfter * 1000));
+            continue;
         } catch (e) {
             lastError = e;
         }
-        await new Promise(r => setTimeout(r, (i + 1) * 500));
+        await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
     }
     throw lastError;
 }
 
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
-async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
+async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries = 5 }) {
     await promptReady;
 
     // Doppelte Zeilen zusammenfassen
@@ -137,7 +143,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
                     'Authorization': 'Bearer ' + key
                 },
                 body: JSON.stringify({ model, messages, temperature: 0 })
-            });
+            }, retries);
             if (!res.ok) {
                 throw new Error(`HTTP ${res.status}`);
             }
@@ -170,7 +176,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini' }) {
 }
 
 // Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
-async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini' }) {
+async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini', retries = 5 }) {
     await promptReady;
     // Emotionstags müssen in Deutsch zurückgegeben werden und dürfen nie direkt aufeinander folgen
     const payload = {
@@ -190,7 +196,7 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
             'Authorization': 'Bearer ' + key
         },
         body: JSON.stringify({ model, messages, temperature: 0 })
-    });
+    }, retries);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const clean = sanitizeJSONResponse(data.choices[0].message.content);
