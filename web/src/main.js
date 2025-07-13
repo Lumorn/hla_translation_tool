@@ -8179,21 +8179,9 @@ function checkFileAccess() {
 // =========================== SOUNDBACKUP START ============================
         async function createSoundBackup() {
             if (!window.electronAPI || !window.electronAPI.createSoundBackup) return;
-            const progress = document.getElementById('soundBackupProgress');
-            const fill = document.getElementById('soundBackupFill');
-            progress.classList.add('active');
-            fill.classList.add('progress-loading');
-            try {
-                await window.electronAPI.createSoundBackup();
-                updateStatus('Sound-Backup erstellt');
-            } catch (err) {
-                console.error('Sound-Backup fehlgeschlagen', err);
-                updateStatus('Sound-Backup fehlgeschlagen');
-            } finally {
-                progress.classList.remove('active');
-                fill.classList.remove('progress-loading');
-            }
+            await window.electronAPI.createSoundBackup();
             loadSoundBackupList();
+            updateStatus('Sound-Backup erstellt');
         }
 
         async function loadSoundBackupList() {
