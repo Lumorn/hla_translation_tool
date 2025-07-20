@@ -252,7 +252,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.103';
+const APP_VERSION = '1.40.107';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -3011,6 +3011,51 @@ function addFiles() {
             btn.disabled = false;
         }
 
+        // Passt den Emotional-Text an die EN-Länge an
+        async function adjustEmotionalText(rowId) {
+            const row = document.querySelector(`tr[data-id='${rowId}']`);
+            const area = row?.querySelector('textarea.emotional-text');
+            const btn  = row?.querySelector('button.adjust-emotions-btn');
+            if (!row || !area || !btn) return;
+            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            btn.disabled = true;
+            area.value = '...';
+            const file = files.find(f => f.id === rowId);
+            if (!file) { btn.disabled = false; return; }
+            try {
+                const enSrc = `sounds/EN/${getFullPath(file)}`;
+                const dur = await getAudioDurationFn(enSrc);
+                const meta = {
+                    game: 'Half-Life: Alyx',
+                    project: currentProject?.name || '',
+                    chapter: getLevelChapter(currentProject?.levelName || ''),
+                    level: currentProject?.levelName || '',
+                    scene: currentProject?.name || ''
+                };
+                const lines = files.map((f, idx) => ({
+                    position: idx + 1,
+                    speaker: f.folder || '',
+                    text_en: f.enText || '',
+                    text_de: f.deText || ''
+                }));
+                const targetPosition = files.indexOf(file) + 1;
+                const res = await adjustEmotionText({ meta, lines, targetPosition, lengthSeconds: dur || 0, key: openaiApiKey, model: openaiModel });
+                area.value = res.text || '';
+                file.emoReason = res.reason || '';
+                file.emoError = false;
+                updateText(file.id, 'emo', area.value, true);
+                updateEmoReasonDisplay(file.id);
+                updateStatus(`Text angepasst: ${file.filename}`);
+            } catch (e) {
+                console.error('Anpassen fehlgeschlagen', e);
+                area.value = 'Fehler bei der Anpassung';
+                file.emoReason = '';
+                file.emoError = true;
+                updateText(file.id, 'emo', area.value, true);
+            }
+            btn.disabled = false;
+        }
+
         // Generiert die Emotional-Texte für alle Zeilen im Projekt
         async function generateEmotionsForAll() {
             const btn = document.getElementById('generateEmotionsButton');
@@ -3560,6 +3605,7 @@ return `
             <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
             <div class="btn-column">
                 <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
+                <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
                 <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
             </div>
         </div>
@@ -13768,6 +13814,7 @@ if (typeof module !== "undefined" && module.exports) {
         copyFolderName,
         copyDownloadFolder,
         copyAllEmotionsToClipboard,
+        adjustEmotionalText,
         toggleEmoCompletion,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },
