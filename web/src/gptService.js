@@ -230,6 +230,35 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
     return obj;
 }
 
+// Passt den bestehenden Emotional-Text auf eine Ziel-Länge an
+async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, key, model = 'gpt-4o-mini', retries = 5 }) {
+    await promptReady;
+    const payload = {
+        ...meta,
+        lines,
+        target_position: targetPosition,
+        length_seconds: lengthSeconds,
+        instructions: `Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch. Passe den Text so an, dass die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt, ohne Inhalt, Persönlichkeit oder Kontext zu verlieren und ohne unnatürlich zu klingen.`
+    };
+    const messages = [
+        { role: 'system', content: emotionPrompt },
+        { role: 'user', content: JSON.stringify(payload) }
+    ];
+    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({ model, messages, temperature: 0 })
+    }, retries);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const obj = JSON.parse(clean);
+    return obj;
+}
+
 function createProgressDialog(total) {
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
@@ -308,6 +337,7 @@ if (typeof module !== 'undefined') {
         getSystemPrompt,
         getEmotionPrompt,
         generateEmotionText,
+        adjustEmotionText,
         sanitizeJSONResponse,
         fetchWithRetry,
         queuedFetch
@@ -320,6 +350,7 @@ if (typeof window !== 'undefined') {
     window.getSystemPrompt = getSystemPrompt;
     window.getEmotionPrompt = getEmotionPrompt;
     window.generateEmotionText = generateEmotionText;
+    window.adjustEmotionText = adjustEmotionText;
     window.sanitizeJSONResponse = sanitizeJSONResponse;
     window.fetchWithRetry = fetchWithRetry;
     window.queuedFetch = queuedFetch;

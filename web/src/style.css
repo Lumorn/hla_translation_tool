@@ -697,6 +697,7 @@ th:nth-child(10) {
 
 /* Buttons zum Generieren und Kopieren des Emotionstexts */
 .generate-emotions-btn,
+.adjust-emotions-btn,
 .copy-emotional-text {
     background: #444;
     border: none;
@@ -714,6 +715,7 @@ th:nth-child(10) {
 }
 
 .generate-emotions-btn:hover,
+.adjust-emotions-btn:hover,
 .copy-emotional-text:hover {
     background: #aa4dff;
     color: white;
@@ -721,6 +723,7 @@ th:nth-child(10) {
 }
 
 .generate-emotions-btn:active,
+.adjust-emotions-btn:active,
 .copy-emotional-text:active {
     transform: scale(0.95);
 }
