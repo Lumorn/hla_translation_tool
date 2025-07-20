@@ -3041,7 +3041,8 @@ function addFiles() {
                 const targetPosition = files.indexOf(file) + 1;
                 const res = await adjustEmotionText({ meta, lines, targetPosition, lengthSeconds: dur || 0, key: openaiApiKey, model: openaiModel });
                 area.value = res.text || '';
-                file.emoReason = res.reason || '';
+                const lenStr = (dur || 0).toFixed(2).replace('.', ',');
+                file.emoReason = res.reason ? `${res.reason} (EN: ${lenStr}s)` : '';
                 file.emoError = false;
                 updateText(file.id, 'emo', area.value, true);
                 updateEmoReasonDisplay(file.id);

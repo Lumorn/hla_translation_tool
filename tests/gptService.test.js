@@ -102,6 +102,16 @@ test('generateEmotionText liefert Objekt mit Begründung', async () => {
   expect(res).toEqual({ text: 'hi', reason: 'ok' });
 });
 
+test('adjustEmotionText liefert Objekt mit Begründung', async () => {
+  const { adjustEmotionText } = require('../web/src/gptService.js');
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ choices: [{ message: { content: '{"text":"neu","reason":"gekürzt"}' } }] })
+  });
+  const res = await adjustEmotionText({ meta: {}, lines: [], targetPosition: 1, lengthSeconds: 1.23, key: 'key', model: 'gpt', retries: 1 });
+  expect(res).toEqual({ text: 'neu', reason: 'gekürzt' });
+});
+
 test('wiederholt bei HTTP 429', async () => {
   const { evaluateScene } = require('../web/src/gptService.js');
   const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
