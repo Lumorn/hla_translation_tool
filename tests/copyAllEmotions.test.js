@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-let copyAllEmotionsToClipboard, __setFiles;
+let copyAllEmotionsToClipboard, __setFiles, __setGetAudioDuration;
 
 function loadMain() {
     jest.resetModules();
@@ -11,7 +11,7 @@ function loadMain() {
     global.safeCopy = async text => { await navigator.clipboard.writeText(text); return true; };
     global.showToast = jest.fn();
     global.files = [];
-    ({ copyAllEmotionsToClipboard, __setFiles } = require('../web/src/main.js'));
+    ({ copyAllEmotionsToClipboard, __setFiles, __setGetAudioDuration } = require('../web/src/main.js'));
     // nach dem Laden die Toast-Funktion überschreiben und DOM vorbereiten
     global.showToast = jest.fn();
     document.body.innerHTML = '<div id="toastContainer"></div>';
@@ -22,11 +22,12 @@ describe('copyAllEmotionsToClipboard', () => {
 
     test('bereitet Emotionstexte auf und kopiert sie', async () => {
         const arr = [
-            { emotionalText: '[dankbar]\nDanke\n' },
-            { emotionalText: 'Hallo Welt!\nWie gehts?\n' }
+            { emotionalText: '[dankbar]\nDanke\n', filename: 'a.wav', folder: 'f1' },
+            { emotionalText: 'Hallo Welt!\nWie gehts?\n', filename: 'b.wav', folder: 'f1' }
         ];
         __setFiles(arr);
+        __setGetAudioDuration(() => 8.57);
         await copyAllEmotionsToClipboard();
-        expect(navigator.clipboard.writeText).toHaveBeenCalledWith('[dankbar] Danke\n\nHallo Welt! Wie gehts?');
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith('[8,57sec] [dankbar] Danke\n\n[8,57sec] Hallo Welt! Wie gehts?');
     });
 });
