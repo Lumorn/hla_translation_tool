@@ -1074,10 +1074,21 @@ function normalizeEmotionalText(text) {
 }
 
 // Kopiert alle Emotionstexte nacheinander in die Zwischenablage
-function copyAllEmotionsToClipboard() {
-    const texts = files.map(f => normalizeEmotionalText(f.emotionalText || ''))
-        .join('\n\n');
-    safeCopy(texts);
+// Fuegt vor jedem Emotionstext die Laufzeit der EN-Audiodatei an
+async function copyAllEmotionsToClipboard() {
+    const blocks = [];
+    for (const f of files) {
+        let dur = null;
+        if (f && f.filename && f.folder) {
+            const enSrc = `sounds/EN/${getFullPath(f)}`;
+            dur = await getAudioDurationFn(enSrc);
+        }
+        const durStr = dur != null ? dur.toFixed(2).replace('.', ',') + 'sec' : '?sec';
+        const text = normalizeEmotionalText(f.emotionalText || '');
+        blocks.push(`[${durStr}] ${text}`);
+    }
+    const texts = blocks.join('\n\n');
+    await safeCopy(texts);
     if (typeof showToast === 'function') {
         showToast('Alle Emotionstexte kopiert');
     }
@@ -10309,6 +10320,8 @@ async function getAudioDuration(src) {
         return null;
     }
 }
+// fuer Tests austauschbare Funktion
+let getAudioDurationFn = getAudioDuration;
 // =========================== LOADAUDIOBUFFER END =============================
 
 // =========================== DRAWWAVEFORM START =============================
@@ -13763,6 +13776,7 @@ if (typeof module !== "undefined" && module.exports) {
         __setProjects: p => { projects = p; },
         __setFilePathDatabase: db => { filePathDatabase = db; },
         __setTextDatabase: db => { textDatabase = db; },
+        __setGetAudioDuration: fn => { getAudioDurationFn = fn; },
         autoApplySuggestion,
         insertGptResults,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
