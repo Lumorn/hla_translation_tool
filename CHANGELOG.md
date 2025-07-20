@@ -79,6 +79,8 @@
 * "Emotionen kopieren" zeigt nun vor jedem Eintrag die Laufzeit der EN-Datei an, z.B. `[8,57sec]`.
 ## 🛠️ Patch in 1.40.38
 * Neuer Button „Anpassen-Kürzen“ unter dem Emotional-Text passt den Inhalt automatisch an die Länge der EN-Datei an.
+## 🛠️ Patch in 1.40.39
+* Der Erklärungstext nach "Anpassen-Kürzen" nennt jetzt, wie der Text gekürzt wurde und verweist auf die Länge der EN-Datei.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
