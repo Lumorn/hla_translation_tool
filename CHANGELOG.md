@@ -83,6 +83,8 @@
 * Der Erklärungstext nach "Anpassen-Kürzen" nennt jetzt, wie der Text gekürzt wurde und verweist auf die Länge der EN-Datei.
 ## 🛠️ Patch in 1.40.108
 * Preset-Verwaltung für den Funkgeräte-Effekt. Einstellungen lassen sich speichern und löschen.
+## 🛠️ Patch in 1.40.109
+* Speichern eines Funkgeräte-Presets öffnet nun einen eigenen Dialog, da `prompt()` in Electron nicht unterstützt wird.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
