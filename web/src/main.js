@@ -113,6 +113,10 @@ let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
 let manualIgnoreRanges    = [];    // Merker für manuelle Bereiche
 let ignoreTempStart       = null;  // Startpunkt für neuen Bereich
 let ignoreDragging        = null;  // {index, side} beim Ziehen
+let editSilenceRanges     = [];    // Bereiche zum Einfügen von Stille
+let manualSilenceRanges   = [];    // Merker für manuelle Stille
+let silenceTempStart      = null;  // Startpunkt für Stille-Bereich
+let silenceDragging       = null;  // {index, side} beim Ziehen der Stille
 let tempoFactor           = 1.0;   // Faktor für Time-Stretching
 let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
@@ -6614,6 +6618,41 @@ function removeRangesFromBuffer(buffer, ranges) {
     return mergeSegments(buffer, segments) || buffer;
 }
 
+// Fügt stille Bereiche in einen Buffer ein
+function insertSilenceIntoBuffer(buffer, ranges) {
+    if (!ranges || ranges.length === 0) return buffer;
+    const sr = buffer.sampleRate;
+    const valid = ranges
+        .map(r => ({ start: Math.max(0, r.start), end: Math.max(0, r.end) }))
+        .filter(r => r.end > r.start)
+        .sort((a, b) => a.start - b.start);
+    if (valid.length === 0) return buffer;
+
+    const totalSamples = valid.reduce((sum, r) => sum + Math.round((r.end - r.start) * sr / 1000), 0) + buffer.length;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const out = ctx.createBuffer(buffer.numberOfChannels, totalSamples, sr);
+
+    let inPos = 0; // Position im Original
+    let outPos = 0; // Position im Ergebnis
+    valid.forEach(r => {
+        const startSamples = Math.round(r.start * sr / 1000);
+        const silenceSamples = Math.round((r.end - r.start) * sr / 1000);
+        const copyLen = Math.min(startSamples, buffer.length) - inPos;
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const data = buffer.getChannelData(ch).subarray(inPos, inPos + copyLen);
+            out.getChannelData(ch).set(data, outPos);
+        }
+        inPos += copyLen;
+        outPos += copyLen + silenceSamples; // Stille ist bereits mit Nullen gefüllt
+    });
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const data = buffer.getChannelData(ch).subarray(inPos);
+        out.getChannelData(ch).set(data, outPos);
+    }
+    ctx.close();
+    return out;
+}
+
 // Rechnet Originalposition auf Abspielposition um (nach Entfernen der Bereiche)
 function originalToPlayback(ms, ranges, duration) {
     const valid = normalizeRanges(ranges, duration);
@@ -6635,6 +6674,34 @@ function playbackToOriginal(ms, ranges, duration) {
         offset += r.end - r.start;
     }
     return ms + offset;
+}
+
+// Rechnet Originalzeit auf Wiedergabezeit um, wenn Stille eingefügt wurde
+function originalToPlaybackSilence(ms, ranges) {
+    const valid = (ranges || [])
+        .map(r => ({ start: Math.max(0, r.start), end: Math.max(r.start, r.end) }))
+        .filter(r => r.end > r.start)
+        .sort((a, b) => a.start - b.start);
+    let offset = 0;
+    for (const r of valid) {
+        if (ms < r.start + offset) break;
+        offset += r.end - r.start;
+    }
+    return ms + offset;
+}
+
+// Rechnet Wiedergabezeit zurück auf Originalzeit bei eingefügter Stille
+function playbackToOriginalSilence(ms, ranges) {
+    const valid = (ranges || [])
+        .map(r => ({ start: Math.max(0, r.start), end: Math.max(r.start, r.end) }))
+        .filter(r => r.end > r.start)
+        .sort((a, b) => a.start - b.start);
+    let offset = 0;
+    for (const r of valid) {
+        if (ms < r.start + offset) break;
+        offset += r.end - r.start;
+    }
+    return ms - offset;
 }
 
 // Ermittelt Pausen ueber einer Mindestlaenge und gibt passende Ignorierbereiche zurueck
@@ -10418,6 +10485,14 @@ function drawWaveform(canvas, buffer, opts = {}) {
             ctx.fillRect(sx, 0, ex - sx, height);
         });
     }
+    if (opts.silence && Array.isArray(opts.silence)) {
+        ctx.fillStyle = 'rgba(0,0,255,0.3)';
+        opts.silence.forEach(r => {
+            const sx = (r.start / durationMs) * width;
+            const ex = (r.end   / durationMs) * width;
+            ctx.fillRect(sx, 0, ex - sx, height);
+        });
+    }
     if (opts.start !== undefined && opts.end !== undefined) {
         ctx.strokeStyle = '#0f0';
         ctx.lineWidth = 2;
@@ -10747,7 +10822,10 @@ async function openDeEdit(fileId) {
     editEndTrim = file.trimEndMs || 0;
     editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
     manualIgnoreRanges = editIgnoreRanges.map(r => ({start:r.start,end:r.end}));
+    editSilenceRanges = Array.isArray(file.silenceRanges) ? file.silenceRanges.map(r => ({start:r.start,end:r.end})) : [];
+    manualSilenceRanges = editSilenceRanges.map(r => ({start:r.start,end:r.end}));
     ignoreTempStart = null;
+    silenceTempStart = null;
     document.getElementById('editStart').value = editStartTrim;
     document.getElementById('editEnd').value = editEndTrim;
     document.getElementById('editStart').oninput = e => {
@@ -10838,6 +10916,7 @@ async function openDeEdit(fileId) {
     const autoBtn = document.getElementById('autoAdjustBtn');
     if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
     refreshIgnoreList();
+    refreshSilenceList();
 
     const deCanvas = document.getElementById('waveEdited');
     const origCanvas = document.getElementById('waveOriginal');
@@ -11028,6 +11107,19 @@ async function openDeEdit(fileId) {
             updateDeEditWaveforms();
             return;
         }
+        if (e.altKey) {
+            if (silenceTempStart === null) {
+                silenceTempStart = time;
+            } else {
+                const start = Math.min(silenceTempStart, time);
+                const end = Math.max(silenceTempStart, time);
+                editSilenceRanges.push({ start, end });
+                silenceTempStart = null;
+                refreshSilenceList();
+            }
+            updateDeEditWaveforms();
+            return;
+        }
 
         const startX = (editStartTrim / editDurationMs) * width;
         const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
@@ -11038,6 +11130,13 @@ async function openDeEdit(fileId) {
             const ex = (r.end / editDurationMs) * width;
             if (Math.abs(x - sx) < 5) { ignoreDragging = { index: i, side: 'start' }; return; }
             if (Math.abs(x - ex) < 5) { ignoreDragging = { index: i, side: 'end' }; return; }
+        }
+        for (let i = 0; i < editSilenceRanges.length; i++) {
+            const r = editSilenceRanges[i];
+            const sx = (r.start / editDurationMs) * width;
+            const ex = (r.end / editDurationMs) * width;
+            if (Math.abs(x - sx) < 5) { silenceDragging = { index: i, side: 'start' }; return; }
+            if (Math.abs(x - ex) < 5) { silenceDragging = { index: i, side: 'end' }; return; }
         }
 
         if (Math.abs(x - startX) < 7) {
@@ -11071,6 +11170,17 @@ async function openDeEdit(fileId) {
             updateDeEditWaveforms();
             return;
         }
+        if (silenceDragging) {
+            const r = editSilenceRanges[silenceDragging.index];
+            if (silenceDragging.side === 'start') {
+                r.start = Math.min(time, r.end - 1);
+            } else {
+                r.end = Math.max(time, r.start + 1);
+            }
+            refreshSilenceList();
+            updateDeEditWaveforms();
+            return;
+        }
         if (!editDragging) return;
         if (editDragging === 'start') {
             editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
@@ -11079,7 +11189,7 @@ async function openDeEdit(fileId) {
         }
         updateDeEditWaveforms();
     };
-window.onmouseup = () => { editDragging = null; ignoreDragging = null; };
+window.onmouseup = () => { editDragging = null; ignoreDragging = null; silenceDragging = null; };
     updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
@@ -11113,6 +11223,7 @@ async function autoAdjustLength() {
         let len = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
         len -= editStartTrim + editEndTrim;
         for (const r of editIgnoreRanges) len -= (r.end - r.start);
+        for (const r of editSilenceRanges) len += (r.end - r.start);
         // Faktor relativ zum ursprünglichen Wert bestimmen
         const rel = len / enMs;
         // Faktor bei 3 begrenzen, damit extreme Werte vermieden werden
@@ -11173,6 +11284,8 @@ async function recomputeEditBuffer() {
     let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
     const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
     trimmed = removeRangesFromBuffer(trimmed, adj);
+    const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    trimmed = insertSilenceIntoBuffer(trimmed, pads);
 
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
@@ -11414,7 +11527,7 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
         drawWaveform(
             document.getElementById('waveEdited'),
             originalEditBuffer,
-            { start: editStartTrim, end: endPos, progress: showDe, ignore: editIgnoreRanges }
+            { start: editStartTrim, end: endPos, progress: showDe, ignore: editIgnoreRanges, silence: editSilenceRanges }
         );
     }
     document.getElementById('editStart').value = Math.round(editStartTrim);
@@ -11450,6 +11563,35 @@ function refreshIgnoreList() {
     });
 }
 
+// Aktualisiert die Liste der Stille-Bereiche
+function refreshSilenceList() {
+    const container = document.getElementById('silenceList');
+    if (!container) return;
+    container.innerHTML = '';
+    editSilenceRanges.forEach((r, idx) => {
+        const row = document.createElement('div');
+        row.className = 'ignore-row';
+        row.innerHTML =
+            `<input type="number" value="${Math.round(r.start)}" step="100" class="ignore-start">` +
+            `<input type="number" value="${Math.round(r.end)}" step="100" class="ignore-end">` +
+            `<button class="btn btn-secondary">🗑️</button>`;
+        row.querySelector('.ignore-start').oninput = e => {
+            r.start = parseInt(e.target.value) || 0;
+            updateDeEditWaveforms();
+        };
+        row.querySelector('.ignore-end').oninput = e => {
+            r.end = parseInt(e.target.value) || 0;
+            updateDeEditWaveforms();
+        };
+        row.querySelector('button').onclick = () => {
+            editSilenceRanges.splice(idx, 1);
+            refreshSilenceList();
+            updateDeEditWaveforms();
+        };
+        container.appendChild(row);
+    });
+}
+
 // Verschiebt alle Ignorier-Bereiche symmetrisch
 function adjustIgnoreRanges(deltaMs) {
     for (const r of editIgnoreRanges) {
@@ -11465,11 +11607,29 @@ function adjustIgnoreRanges(deltaMs) {
     updateDeEditWaveforms();
 }
 
+// Verschiebt alle Stille-Bereiche symmetrisch
+function adjustSilenceRanges(deltaMs) {
+    for (const r of editSilenceRanges) {
+        r.start = Math.max(0, r.start - deltaMs);
+        r.end   = Math.min(editDurationMs, r.end + deltaMs);
+        if (r.start >= r.end) {
+            const m = (r.start + r.end) / 2;
+            r.start = Math.max(0, m - 1);
+            r.end   = Math.min(editDurationMs, m + 1);
+        }
+    }
+    refreshSilenceList();
+    updateDeEditWaveforms();
+}
+
 // Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
 function calcFinalLength() {
     let len = editDurationMs - editStartTrim - editEndTrim;
     for (const r of editIgnoreRanges) {
         len -= Math.max(0, r.end - r.start);
+    }
+    for (const r of editSilenceRanges) {
+        len += Math.max(0, r.end - r.start);
     }
     // Aktuelle Datei ist bereits mit loadedTempoFactor gestretcht
     const relFactor = tempoFactor / loadedTempoFactor;
@@ -11692,6 +11852,9 @@ async function resetDeEdit() {
         editIgnoreRanges = [];
         manualIgnoreRanges = [];
         currentEditFile.ignoreRanges = [];
+        editSilenceRanges = [];
+        manualSilenceRanges = [];
+        currentEditFile.silenceRanges = [];
         tempoFactor = 1.0;
         currentEditFile.tempoFactor = 1.0;
         currentEditFile.volumeMatched = false;
@@ -11753,6 +11916,8 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+        newBuffer = insertSilenceIntoBuffer(newBuffer, pads);
         // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
         editIgnoreRanges = [];
         currentEditFile.ignoreRanges = [];
@@ -11826,6 +11991,8 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        const pads2 = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+        newBuffer = insertSilenceIntoBuffer(newBuffer, pads2);
         // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
         editIgnoreRanges = [];
         currentEditFile.ignoreRanges = [];
@@ -11844,6 +12011,7 @@ async function applyDeEdit() {
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.ignoreRanges = editIgnoreRanges;
+        currentEditFile.silenceRanges = editSilenceRanges;
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
         const sel = document.getElementById('radioPresetSelect');

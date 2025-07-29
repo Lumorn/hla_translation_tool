@@ -609,6 +609,14 @@
                     <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)">Länger ▶</button>
                 </div>
             </div>
+            <div class="ignore-container">
+                <h4>Stille-Bereiche</h4>
+                <div id="silenceList"></div>
+                <div class="ignore-buttons">
+                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)">◀ Kürzer</button>
+                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)">Länger ▶</button>
+                </div>
+            </div>
             <div class="trim-options">
                 <label><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"> ms entfernen</label>
             </div>

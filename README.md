@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.109-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.115-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -288,6 +288,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Vier Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu vier Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät- und Hall-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
+* **Stille einfügen:** Mit gedrückter Alt‑Taste lassen sich Bereiche markieren, an denen beim Speichern Stille eingefügt wird. So lassen sich Audios zeitlich verschieben.
 * **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen der grünen Marker im Waveform-Editor setzen.
 * **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
 * **Verbesserter Tempo‑Auto‑Knopf:** Er setzt den Wert zunächst auf 1,00, markiert ihn gelb und erhöht das Tempo automatisch, bis „DE (bearbeiten)“ orange leuchtet (Abweichung unter 10 %).
@@ -597,6 +598,7 @@ Seit Patch 1.40.104 meldet der Segmentdialog fehlende HTML-Elemente in der Konso
 Seit Patch 1.40.105 begrenzt `mergeSegments` die Segmentgrenzen auf die Pufferlänge und verhindert so "offset out of bounds"-Fehler.
 Seit Patch 1.40.106 stellt ein Auto-Knopf im DE-Audio-Editor Anfangs- und Endstille automatisch ein.
 Seit Patch 1.40.114 erweitern oder verkleinern zwei neue Buttons alle Ignorier-Bereiche in 50‑ms-Schritten.
+Seit Patch 1.40.115 lassen sich mit der Alt-Taste Stille-Bereiche einfügen, um Audios zeitlich zu verschieben.
 
 Beispiel einer gültigen CSV:
 
