@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.108-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.109-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -279,6 +279,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
 * **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
+* **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät- und Hall-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
 * **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – ⚡ und Funkgerät-Effekt – 📻 besitzen nun eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.

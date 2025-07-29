@@ -255,7 +255,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.108';
+const APP_VERSION = '1.40.109';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -10970,8 +10970,9 @@ async function openDeEdit(fileId) {
         };
     }
     if (presetSave) {
-        presetSave.onclick = () => {
-            const name = prompt('Preset-Name eingeben:', presetSel?.value || '');
+        // Eingabedialog anstelle des nicht unterstützten prompt()
+        presetSave.onclick = async () => {
+            const name = await showInputDialog('Preset-Name eingeben:', presetSel?.value || '');
             if (name) {
                 saveRadioPreset(name);
                 if (presetSel) presetSel.value = name;
