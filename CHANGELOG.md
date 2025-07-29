@@ -97,6 +97,8 @@
 * Neuer Puffer-Knopf verschiebt alle Ignorier-Bereiche in 50-ms-Schritten nach innen oder außen.
 ## 🛠️ Patch in 1.40.115
 * Alt-Drag fügt nun Stille-Bereiche ein, um Audios zeitlich zu verschieben.
+## 🛠️ Patch in 1.40.116
+* Uploads ersetzen nun die Sicherungsdatei in `DE-Backup`, sodass "Zurücksetzen" die zuletzt geladene Version wiederherstellt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

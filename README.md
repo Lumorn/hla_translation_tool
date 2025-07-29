@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.115-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.116-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -308,6 +308,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
 * **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
+* **Backup wird beim Upload ersetzt:** Die zuletzt geladene Datei landet nun sofort in `DE-Backup`, sodass "🔄 Zurücksetzen" immer die aktuellste Version wiederherstellt.
 * **Hall-Effekt wird beim Dubbing zurückgesetzt.**
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
