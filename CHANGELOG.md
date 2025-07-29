@@ -99,6 +99,8 @@
 * Alt-Drag fügt nun Stille-Bereiche ein, um Audios zeitlich zu verschieben.
 ## 🛠️ Patch in 1.40.116
 * Uploads ersetzen nun die Sicherungsdatei in `DE-Backup`, sodass "Zurücksetzen" die zuletzt geladene Version wiederherstellt.
+## 🛠️ Patch in 1.40.117
+* Beim Speichern wird die Sicherung nicht mehr überschrieben, damit stets die ursprünglich hochgeladene Datei wiederhergestellt werden kann.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
