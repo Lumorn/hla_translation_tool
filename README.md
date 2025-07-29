@@ -401,6 +401,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 30. Ein neuer Netztest im Debug-Fenster prüft die Erreichbarkeit von YouTube.
 31. `cliSendTextV2.js` schickt Textzeilen an ElevenLabs (v2) und überspringt doppelten Inhalt.
 32. Ein neuer Button `An ElevenLabs schicken` sendet alle Emotional-Texte des aktuellen Projekts ohne Duplikate an die Text-to-Speech-API (v2).
+33. `update_repo.py` prüft den Git-Status und führt bei Bedarf `git pull` aus. Anschließend werden die übernommenen Commits angezeigt.
 
 ### ElevenLabs-Dubbing
 
