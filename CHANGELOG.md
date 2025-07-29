@@ -85,6 +85,8 @@
 * Preset-Verwaltung für den Funkgeräte-Effekt. Einstellungen lassen sich speichern und löschen.
 ## 🛠️ Patch in 1.40.109
 * Speichern eines Funkgeräte-Presets öffnet nun einen eigenen Dialog, da `prompt()` in Electron nicht unterstützt wird.
+## 🛠️ Patch in 1.40.110
+* Der 📋-Knopf unter dem Emotional-Text kopiert jetzt zusätzlich die Laufzeit der EN-Datei im Format `[8,57sec]`.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

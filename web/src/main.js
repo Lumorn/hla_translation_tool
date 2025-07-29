@@ -2964,7 +2964,15 @@ function addFiles() {
                 updateStatus('Emotionaler Text ist leer');
                 return;
             }
-            if (await safeCopy(area.value)) {
+            const file = files.find(f => f.id === fileId);
+            let dur = null;
+            if (file && file.filename && file.folder) {
+                const enSrc = `sounds/EN/${getFullPath(file)}`;
+                dur = await getAudioDurationFn(enSrc);
+            }
+            const durStr = dur != null ? dur.toFixed(2).replace('.', ',') + 'sec' : '?sec';
+            const text = `[${durStr}] ${normalizeEmotionalText(area.value)}`;
+            if (await safeCopy(text)) {
                 updateStatus(`Emotionaler Text kopiert: ${fileId}`);
             }
         }
