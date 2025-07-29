@@ -755,6 +755,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         file.trimEndMs = 0;
         file.volumeMatched = false;
         file.radioEffect = false;
+        file.hallEffect = false;
         updateStatus('Download abgeschlossen');
         showToast('Auto-Download erfolgreich.');
         addDubbingLog('Auto-Download erfolgreich');
@@ -941,6 +942,7 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     file.trimEndMs = 0;
     file.volumeMatched = false;
     file.radioEffect = false;
+    file.hallEffect = false;
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
@@ -1075,6 +1077,7 @@ async function downloadDe(fileId, lang = 'de') {
     file.trimEndMs = 0;
     file.volumeMatched = false;
     file.radioEffect = false;
+    file.hallEffect = false;
     updateStatus('Deutsche Audiodatei gespeichert.');
     renderFileTable();
     saveCurrentProject();
