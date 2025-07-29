@@ -11738,6 +11738,11 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
+        editIgnoreRanges = [];
+        currentEditFile.ignoreRanges = [];
+        refreshIgnoreList();
+        updateDeEditWaveforms();
         // Nur den Unterschied zum geladenen Faktor anwenden
         const relFactor = tempoFactor / loadedTempoFactor;
         newBuffer = await timeStretchBuffer(newBuffer, relFactor);
@@ -11806,6 +11811,11 @@ async function applyDeEdit() {
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
+        // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
+        editIgnoreRanges = [];
+        currentEditFile.ignoreRanges = [];
+        refreshIgnoreList();
+        updateDeEditWaveforms();
         // Nur den Unterschied zum geladenen Faktor anwenden
         const relFactor = tempoFactor / loadedTempoFactor;
         newBuffer = await timeStretchBuffer(newBuffer, relFactor);
