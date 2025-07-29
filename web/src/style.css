@@ -1125,6 +1125,7 @@ th:nth-child(10) {
 .ignore-container { margin-bottom: 15px; }
 .ignore-row { display:flex; gap:6px; margin-bottom:4px; }
 .ignore-row input { width:70px; }
+.ignore-buttons { display:flex; gap:6px; margin:4px 0; }
 .trim-options,
 .stretch-options {
     display: flex;

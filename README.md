@@ -596,6 +596,7 @@ Seit Patch 1.40.103 prüft das Tool vor dem Öffnen des Segmentdialogs, ob ein P
 Seit Patch 1.40.104 meldet der Segmentdialog fehlende HTML-Elemente in der Konsole.
 Seit Patch 1.40.105 begrenzt `mergeSegments` die Segmentgrenzen auf die Pufferlänge und verhindert so "offset out of bounds"-Fehler.
 Seit Patch 1.40.106 stellt ein Auto-Knopf im DE-Audio-Editor Anfangs- und Endstille automatisch ein.
+Seit Patch 1.40.114 erweitern oder verkleinern zwei neue Buttons alle Ignorier-Bereiche in 50‑ms-Schritten.
 
 Beispiel einer gültigen CSV:
 

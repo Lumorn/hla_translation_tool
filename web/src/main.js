@@ -11450,6 +11450,21 @@ function refreshIgnoreList() {
     });
 }
 
+// Verschiebt alle Ignorier-Bereiche symmetrisch
+function adjustIgnoreRanges(deltaMs) {
+    for (const r of editIgnoreRanges) {
+        r.start = Math.max(0, r.start - deltaMs);
+        r.end   = Math.min(editDurationMs, r.end + deltaMs);
+        if (r.start >= r.end) {
+            const m = (r.start + r.end) / 2;
+            r.start = Math.max(0, m - 1);
+            r.end   = Math.min(editDurationMs, m + 1);
+        }
+    }
+    refreshIgnoreList();
+    updateDeEditWaveforms();
+}
+
 // Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
 function calcFinalLength() {
     let len = editDurationMs - editStartTrim - editEndTrim;

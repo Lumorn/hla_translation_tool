@@ -93,6 +93,8 @@
 * Neues Skript `update_repo.py` aktualisiert das Repository und zeigt die eingespielten Commits an.
 ## 🛠️ Patch in 1.40.113
 * Beim Speichern leert der DE-Editor nun automatisch die Ignorier-Liste. Automatisch erkannte Pausen landen damit nicht mehr im Projekt.
+## 🛠️ Patch in 1.40.114
+* Neuer Puffer-Knopf verschiebt alle Ignorier-Bereiche in 50-ms-Schritten nach innen oder außen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
