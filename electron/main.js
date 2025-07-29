@@ -703,10 +703,6 @@ app.whenReady().then(() => {
         historyUtils.saveVersion(deHistoryPath, relPath, target);
       }
       fs.writeFileSync(target, Buffer.from(data));
-      // Beim Speichern immer auch eine aktuelle Sicherung ablegen
-      const backup = path.join(deBackupPath, relPath);
-      fs.mkdirSync(path.dirname(backup), { recursive: true });
-      fs.copyFileSync(target, backup);
       return target;
     } catch (err) {
       // Fehler an den Renderer melden

@@ -1,6 +1,6 @@
 {
   "name": "hla-translation-desktop",
-  "version": "1.40.116",
+  "version": "1.40.109",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
