@@ -226,6 +226,9 @@ let radioLowpass       = parseFloat(localStorage.getItem('hla_radioLowpass') || 
 let radioSaturation    = parseFloat(localStorage.getItem('hla_radioSaturation') || '0.2');
 let radioNoise         = parseFloat(localStorage.getItem('hla_radioNoise') || '-26');
 let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || '0.1');
+// Gespeicherte Presets und zuletzt genutztes Preset
+let radioPresets = JSON.parse(localStorage.getItem('hla_radioPresets') || '{}');
+let lastRadioPreset = localStorage.getItem('hla_lastRadioPreset') || '';
 
 // Letzte Einstellungen des Hall-Effekts
 let hallRoom   = parseFloat(localStorage.getItem('hla_hallRoom') || '0.5');
@@ -252,7 +255,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.107';
+const APP_VERSION = '1.40.108';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -2237,6 +2240,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
         if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
@@ -10949,6 +10953,39 @@ async function openDeEdit(fileId) {
         hToggle.onchange = e => toggleHallEffect(e.target.checked);
     }
 
+    // Preset-Auswahl initialisieren
+    updateRadioPresetList();
+    const presetSel  = document.getElementById('radioPresetSelect');
+    const presetSave = document.getElementById('saveRadioPresetBtn');
+    const presetDel  = document.getElementById('deleteRadioPresetBtn');
+    if (presetSel) {
+        const name = file.radioPreset || lastRadioPreset;
+        if (name && radioPresets[name]) {
+            presetSel.value = name;
+            loadRadioPreset(name);
+        }
+        presetSel.onchange = () => {
+            loadRadioPreset(presetSel.value);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+    if (presetSave) {
+        presetSave.onclick = () => {
+            const name = prompt('Preset-Name eingeben:', presetSel?.value || '');
+            if (name) {
+                saveRadioPreset(name);
+                if (presetSel) presetSel.value = name;
+            }
+        };
+    }
+    if (presetDel) {
+        presetDel.onclick = () => {
+            if (presetSel && presetSel.value && confirm('Preset wirklich löschen?')) {
+                deleteRadioPreset(presetSel.value);
+            }
+        };
+    }
+
     // Klick auf das Original-Wellenbild setzt den EN-Cursor
     origCanvas.onmousedown = e => {
         const rect = origCanvas.getBoundingClientRect();
@@ -11225,6 +11262,95 @@ function resetRadioSettings() {
 
     // Effekte neu berechnen, falls aktiv
     if (isRadioEffect) recomputeEditBuffer();
+}
+// Aktualisiert die Slider auf die aktuellen Funk-Effektwerte
+function refreshRadioControls() {
+    const rStrength = document.getElementById('radioStrength');
+    const rStrengthDisp = document.getElementById('radioStrengthDisplay');
+    if (rStrength && rStrengthDisp) {
+        rStrength.value = radioEffectStrength;
+        rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+    }
+    const rHigh = document.getElementById('radioHighpass');
+    if (rHigh) rHigh.value = radioHighpass;
+    const rLow = document.getElementById('radioLowpass');
+    if (rLow) rLow.value = radioLowpass;
+    const rSat = document.getElementById('radioSaturation');
+    const rSatDisp = document.getElementById('radioSaturationDisplay');
+    if (rSat && rSatDisp) {
+        rSat.value = radioSaturation;
+        rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+    }
+    const rNoise = document.getElementById('radioNoise');
+    if (rNoise) rNoise.value = radioNoise;
+    const rCrackle = document.getElementById('radioCrackle');
+    const rCrackleDisp = document.getElementById('radioCrackleDisplay');
+    if (rCrackle && rCrackleDisp) {
+        rCrackle.value = radioCrackle;
+        rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
+    }
+}
+// Aktualisiert die Auswahlbox fuer Presets
+function updateRadioPresetList() {
+    const sel = document.getElementById('radioPresetSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    for (const name of Object.keys(radioPresets)) {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+    }
+    if (lastRadioPreset && radioPresets[lastRadioPreset]) {
+        sel.value = lastRadioPreset;
+    }
+}
+// Speichert die aktuellen Werte als Preset
+function saveRadioPreset(name) {
+    if (!name) return;
+    radioPresets[name] = {
+        strength: radioEffectStrength,
+        high: radioHighpass,
+        low: radioLowpass,
+        sat: radioSaturation,
+        noise: radioNoise,
+        crack: radioCrackle
+    };
+    localStorage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
+    lastRadioPreset = name;
+    localStorage.setItem('hla_lastRadioPreset', name);
+    updateRadioPresetList();
+}
+// Laedt ein Preset und setzt alle Werte
+function loadRadioPreset(name) {
+    const p = radioPresets[name];
+    if (!p) return;
+    radioEffectStrength = p.strength;
+    radioHighpass = p.high;
+    radioLowpass = p.low;
+    radioSaturation = p.sat;
+    radioNoise = p.noise;
+    radioCrackle = p.crack;
+    localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
+    localStorage.setItem('hla_radioHighpass', radioHighpass);
+    localStorage.setItem('hla_radioLowpass', radioLowpass);
+    localStorage.setItem('hla_radioSaturation', radioSaturation);
+    localStorage.setItem('hla_radioNoise', radioNoise);
+    localStorage.setItem('hla_radioCrackle', radioCrackle);
+    lastRadioPreset = name;
+    localStorage.setItem('hla_lastRadioPreset', name);
+    refreshRadioControls();
+}
+// Entfernt ein Preset dauerhaft
+function deleteRadioPreset(name) {
+    if (!radioPresets[name]) return;
+    delete radioPresets[name];
+    localStorage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
+    if (lastRadioPreset === name) {
+        lastRadioPreset = Object.keys(radioPresets)[0] || '';
+        localStorage.setItem('hla_lastRadioPreset', lastRadioPreset);
+    }
+    updateRadioPresetList();
 }
 // =========================== RESETRADIOSETTINGS END =======================
 
@@ -11686,6 +11812,8 @@ async function applyDeEdit() {
         currentEditFile.ignoreRanges = editIgnoreRanges;
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
+        const sel = document.getElementById('radioPresetSelect');
+        currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
@@ -13839,7 +13967,13 @@ if (typeof module !== "undefined" && module.exports) {
         __getSegmentInfo: () => segmentInfo,
         __getSegmentAssignments: () => segmentAssignments,
         __setIgnoredSegments: arr => { ignoredSegments = new Set(arr); },
-        __getIgnoredSegments: () => Array.from(ignoredSegments)
+        __getIgnoredSegments: () => Array.from(ignoredSegments),
+        // Preset-Funktionen fuer Tests
+        saveRadioPreset,
+        loadRadioPreset,
+        deleteRadioPreset,
+        __setRadioPresets: obj => { radioPresets = obj; },
+        __getRadioPresets: () => radioPresets
     };
 }
 
