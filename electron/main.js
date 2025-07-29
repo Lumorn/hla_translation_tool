@@ -703,6 +703,13 @@ app.whenReady().then(() => {
         historyUtils.saveVersion(deHistoryPath, relPath, target);
       }
       fs.writeFileSync(target, Buffer.from(data));
+      // Nur initial eine Sicherungskopie anlegen, damit Zurücksetzen
+      // stets auf die ursprüngliche hochgeladene Datei zurückgreift
+      const backup = path.join(deBackupPath, relPath);
+      if (!fs.existsSync(backup)) {
+        fs.mkdirSync(path.dirname(backup), { recursive: true });
+        fs.copyFileSync(target, backup);
+      }
       return target;
     } catch (err) {
       // Fehler an den Renderer melden

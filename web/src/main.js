@@ -259,7 +259,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.109';
+const APP_VERSION = '1.40.117';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -10014,6 +10014,24 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     await writable.write(blob);
     await writable.close();
 
+    // Beim ersten Speichern eine Sicherungskopie im Backup ablegen
+    try {
+        const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+        const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
+        let ziel = backupDir;
+        for (const teil of teile) {
+            ziel = await ziel.getDirectoryHandle(teil, { create: true });
+        }
+        let already = true;
+        try { await ziel.getFileHandle(dateiname); } catch { already = false; }
+        if (!already) {
+            const backupFile = await ziel.getFileHandle(dateiname, { create: true });
+            const w = await backupFile.createWritable();
+            await w.write(blob);
+            await w.close();
+        }
+    } catch {}
+
     // DE-Audio im Cache aktualisieren
     deAudioCache[relativerPfad] = blob;
 }
@@ -10154,10 +10172,41 @@ async function handleDeUpload(input) {
             }
         }
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
+        // Hochgeladene Datei sofort als Sicherung ablegen
+        if (window.electronAPI.deleteDeBackupFile) {
+            await window.electronAPI.deleteDeBackupFile(aktuellerUploadPfad);
+        }
+        if (window.electronAPI.backupDeFile) {
+            await window.electronAPI.backupDeFile(aktuellerUploadPfad);
+        }
         deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
         await updateHistoryCache(aktuellerUploadPfad);
     } else {
         await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
+        // Backup ohne Electron im Browser speichern
+        if (deOrdnerHandle) {
+            try {
+                const teile = aktuellerUploadPfad.split('/');
+                const name = teile.pop();
+                let ordner = deOrdnerHandle;
+                for (const t of teile) {
+                    ordner = await ordner.getDirectoryHandle(t, { create: true });
+                }
+                const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+                const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
+                let ziel = backupDir;
+                for (const t of teile) {
+                    ziel = await ziel.getDirectoryHandle(t, { create: true });
+                }
+                try { await ziel.removeEntry(name); } catch {}
+                const orgFile = await ordner.getFileHandle(name);
+                const orgData = await orgFile.getFile();
+                const backupFile = await ziel.getFileHandle(name, { create: true });
+                const w = await backupFile.createWritable();
+                await w.write(orgData);
+                await w.close();
+            } catch {}
+        }
     }
 
     // Zugehörige Datei als fertig markieren
@@ -11973,11 +12022,15 @@ async function applyDeEdit() {
                     ziel = await ziel.getDirectoryHandle(t, { create: true });
                 }
                 const orgFile = await ordner.getFileHandle(name);
-                const backupFile = await ziel.getFileHandle(name, { create: true });
-                const orgData = await orgFile.getFile();
-                const w = await backupFile.createWritable();
-                await w.write(orgData);
-                await w.close();
+                let existiert = true;
+                try { await ziel.getFileHandle(name); } catch { existiert = false; }
+                if (!existiert) {
+                    const backupFile = await ziel.getFileHandle(name, { create: true });
+                    const orgData = await orgFile.getFile();
+                    const w = await backupFile.createWritable();
+                    await w.write(orgData);
+                    await w.close();
+                }
             } catch {}
         }
         originalEditBuffer = savedOriginalBuffer;
