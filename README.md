@@ -306,6 +306,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
 * **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑Effekt und Hall‑Effekt automatisch deaktiviert.
+* **Hall-Effekt wird beim Dubbing zurückgesetzt.**
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Kompaktere Dubbing-Spalte:** Der Statuspunkt und der Download-Pfeil stehen jetzt direkt neben dem Dubbing-Button in einer gemeinsamen Spalte.
