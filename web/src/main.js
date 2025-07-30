@@ -142,6 +142,7 @@ let projectPlayState       = 'stopped'; // 'playing', 'paused'
 let projectPlayIndex       = 0;        // Aktuelle Datei im Projekt
 let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiedergabe
 let playbackStatus         = {};       // Merkt Existenz, Reihenfolge und Abspiel-Erfolg
+let playbackProtocol       = '';       // Protokoll der Wiedergabe
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -5575,7 +5576,19 @@ function updatePlaybackList() {
         const orderIcon = status.orderOk ? '✅' : '❌';
         return `<li class="${idx === projectPlayIndex ? 'current' : ''}"><span class="icon">${existIcon}</span><span class="icon">${playIcon}</span><span class="icon">${orderIcon}</span>${getFilePosition(f.id)}. ${escapeHtml(f.filename)}<br><small>${pathInfo}</small></li>`;
     }).join('');
+    const protocol = document.getElementById('playbackProtocol');
+    if (protocol) protocol.textContent = playbackProtocol;
     updateProjectPlaybackButtons();
+}
+
+// Fügt dem Protokoll eine Zeile hinzu und aktualisiert die Anzeige
+function addPlaybackLog(text) {
+    playbackProtocol += text + '\n';
+    const pre = document.getElementById('playbackProtocol');
+    if (pre) {
+        pre.textContent = playbackProtocol;
+        pre.scrollTop = pre.scrollHeight;
+    }
 }
 
 function highlightProjectRow(fileId) {
@@ -5615,6 +5628,7 @@ function getProjectPlaybackList() {
 function playCurrentProjectFile() {
     if (projectPlayIndex >= playbackFiles.length) { stopProjectPlayback(); return; }
     const file = playbackFiles[projectPlayIndex];
+    addPlaybackLog(`${projectPlayIndex + 1}. ${file.filename}`);
     // Wenn keine DE-Datei existiert, überspringen wir diese Datei
     if (!getDeFilePath(file)) {
         if (playbackStatus[file.id]) playbackStatus[file.id].success = null;
@@ -5649,6 +5663,9 @@ function startProjectPlayback() {
             success: null
         };
     });
+    playbackProtocol = 'Erwartete Reihenfolge:\n' +
+        playbackFiles.map((f, idx) => `${idx + 1}. ${f.filename}`).join('\n') +
+        '\nAbspielreihenfolge:\n';
     projectPlayIndex = 0;
     projectPlayState = 'playing';
     updateProjectPlaybackButtons();
@@ -5677,6 +5694,7 @@ function stopProjectPlayback() {
     projectPlayIndex = 0;
     playbackFiles = [];
     playbackStatus = {};
+    addPlaybackLog('--- Ende ---');
     clearProjectRowHighlight();
     stopCurrentPlayback();
     updateProjectPlaybackButtons();
@@ -14313,8 +14331,11 @@ if (typeof module !== "undefined" && module.exports) {
         deleteRadioPreset,
         __setRadioPresets: obj => { radioPresets = obj; },
         __getRadioPresets: () => radioPresets,
+        startProjectPlayback,
+        stopProjectPlayback,
         openPlaybackList,
-        closePlaybackList
+        closePlaybackList,
+        __getPlaybackProtocol: () => playbackProtocol
     };
 }
 

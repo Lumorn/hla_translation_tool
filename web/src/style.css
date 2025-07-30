@@ -3211,6 +3211,7 @@ th:nth-child(10) {
 .playback-list li.current { background: #333; }
 .playback-list li small { color: #999; }
 .playback-list li .icon { margin-right: 4px; }
+.playback-protocol { background:#111; color:#eee; padding:4px; max-height:100px; overflow-y:auto; }
 
 /* Tabelle für den ZIP-Import */
 .zip-preview-table {

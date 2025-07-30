@@ -607,6 +607,7 @@ Seit Patch 1.40.121 zeigt ein kleines Wiedergabe-Fenster die aktuelle Reihenfolg
 Seit Patch 1.40.122 zeigt die Wiedergabeliste nun die Positionsnummern der Dateien.
 Seit Patch 1.40.123 zeigt die Wiedergabeliste zusätzliche Pfadinformationen an.
 Seit Patch 1.40.124 zeigt die Wiedergabeliste kleine Icons für Dateiexistenz, Wiedergabe-Erfolg und Reihenfolge.
+Seit Patch 1.40.125 führt ein Protokoll neben der Wiedergabeliste die erwartete und die tatsächliche Reihenfolge auf.
 
 Beispiel einer gültigen CSV:
 
