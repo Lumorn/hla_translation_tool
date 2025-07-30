@@ -3210,6 +3210,7 @@ th:nth-child(10) {
 .playback-list li { padding: 2px 4px; border-bottom: 1px solid #444; }
 .playback-list li.current { background: #333; }
 .playback-list li small { color: #999; }
+.playback-list li .icon { margin-right: 4px; }
 
 /* Tabelle für den ZIP-Import */
 .zip-preview-table {
