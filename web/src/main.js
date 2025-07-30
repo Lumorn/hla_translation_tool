@@ -259,7 +259,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.118';
+const APP_VERSION = '1.40.119';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -5546,7 +5546,7 @@ function clearProjectRowHighlight() {
 function getProjectPlaybackList() {
     // Wenn eine Sortierung aktiv ist, enthält displayOrder die Originalreihenfolge
     if (displayOrder.length === files.length) {
-        return displayOrder
+        return [...displayOrder]
             .sort((a, b) => a.originalIndex - b.originalIndex)
             .map(item => item.file)
             .filter(f => getDeFilePath(f));

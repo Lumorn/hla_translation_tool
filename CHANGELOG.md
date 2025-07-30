@@ -103,6 +103,8 @@
 * Beim Speichern wird die Sicherung nicht mehr überschrieben, damit stets die ursprünglich hochgeladene Datei wiederhergestellt werden kann.
 ## 🛠️ Patch in 1.40.118
 * Fehler behoben: Die Projekt-Wiedergabe hält jetzt immer die Positionsreihenfolge ein.
+## 🛠️ Patch in 1.40.119
+* Sortierung bleibt bei der Projekt-Wiedergabe unverändert, dadurch werden keine Zeilen mehr übersprungen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
