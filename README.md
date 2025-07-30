@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.123-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.124-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -606,6 +606,7 @@ Seit Patch 1.40.120 prüft die Projekt-Wiedergabe vor dem Start die Reihenfolge 
 Seit Patch 1.40.121 zeigt ein kleines Wiedergabe-Fenster die aktuelle Reihenfolge samt Dateinamen an.
 Seit Patch 1.40.122 zeigt die Wiedergabeliste nun die Positionsnummern der Dateien.
 Seit Patch 1.40.123 zeigt die Wiedergabeliste zusätzliche Pfadinformationen an.
+Seit Patch 1.40.124 zeigt die Wiedergabeliste kleine Icons für Dateiexistenz, Wiedergabe-Erfolg und Reihenfolge.
 
 Beispiel einer gültigen CSV:
 

@@ -141,6 +141,7 @@ let chapterColors         = {}; // Farbe pro Kapitel
 let projectPlayState       = 'stopped'; // 'playing', 'paused'
 let projectPlayIndex       = 0;        // Aktuelle Datei im Projekt
 let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiedergabe
+let playbackStatus         = {};       // Merkt Existenz, Reihenfolge und Abspiel-Erfolg
 
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
@@ -259,7 +260,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.123';
+const APP_VERSION = '1.40.124';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -5437,7 +5438,8 @@ function playAudio(fileId) {
 // Spiele die vorhandene DE-Datei ab
 // Spielt die vorhandene DE-Datei ab und erlaubt einen optionalen Callback
 // der nach dem Ende ausgeführt wird (z.B. für Projekt-Wiedergabe)
-async function playDeAudio(fileId, onEnded = null) {
+// Spielt die vorhandene DE-Datei ab und merkt optional den Erfolg
+async function playDeAudio(fileId, onEnded = null, track = false) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -5505,6 +5507,10 @@ async function playDeAudio(fileId, onEnded = null) {
             if (url) URL.revokeObjectURL(url);
             if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
             currentlyPlaying = null;
+            if (track && playbackStatus[fileId]) {
+                playbackStatus[fileId].success = true;
+                updatePlaybackList();
+            }
             if (onEnded) onEnded();
             if (previousEnded) previousEnded();
         };
@@ -5515,6 +5521,10 @@ async function playDeAudio(fileId, onEnded = null) {
         }
         console.error('DE-Playback fehlgeschlagen', err);
         updateStatus('Fehler beim Abspielen der DE-Datei');
+        if (track && playbackStatus[fileId]) {
+            playbackStatus[fileId].success = false;
+            updatePlaybackList();
+        }
         if (url) URL.revokeObjectURL(url);
     });
 
@@ -5557,7 +5567,13 @@ function updatePlaybackList() {
         const dePath = getDeFilePath(f);
         const fullPath = getFullPath(f);
         const pathInfo = `${escapeHtml(fullPath)} ➜ ${dePath ? escapeHtml(dePath) : 'kein DE-Audio'}`;
-        return `<li class="${idx === projectPlayIndex ? 'current' : ''}">${getFilePosition(f.id)}. ${escapeHtml(f.filename)}<br><small>${pathInfo}</small></li>`;
+        const status = playbackStatus[f.id] || {};
+        const existIcon = status.exists ? '✅' : '❌';
+        let playIcon = '⏳';
+        if (status.success === true) playIcon = '✅';
+        else if (status.success === false) playIcon = '❌';
+        const orderIcon = status.orderOk ? '✅' : '❌';
+        return `<li class="${idx === projectPlayIndex ? 'current' : ''}"><span class="icon">${existIcon}</span><span class="icon">${playIcon}</span><span class="icon">${orderIcon}</span>${getFilePosition(f.id)}. ${escapeHtml(f.filename)}<br><small>${pathInfo}</small></li>`;
     }).join('');
     updateProjectPlaybackButtons();
 }
@@ -5601,10 +5617,12 @@ function playCurrentProjectFile() {
     const file = playbackFiles[projectPlayIndex];
     // Wenn keine DE-Datei existiert, überspringen wir diese Datei
     if (!getDeFilePath(file)) {
+        if (playbackStatus[file.id]) playbackStatus[file.id].success = null;
         projectPlayIndex++;
         if (projectPlayState === 'playing') {
             playCurrentProjectFile();
         }
+        updatePlaybackList();
         return;
     }
 
@@ -5618,11 +5636,19 @@ function playCurrentProjectFile() {
             playCurrentProjectFile();
         }
         updatePlaybackList();
-    });
+    }, true);
 }
 
 function startProjectPlayback() {
     playbackFiles = getProjectPlaybackList();
+    playbackStatus = {};
+    playbackFiles.forEach((f, idx) => {
+        playbackStatus[f.id] = {
+            exists: !!getDeFilePath(f),
+            orderOk: getFilePosition(f.id) === idx + 1,
+            success: null
+        };
+    });
     projectPlayIndex = 0;
     projectPlayState = 'playing';
     updateProjectPlaybackButtons();
@@ -5650,6 +5676,7 @@ function stopProjectPlayback() {
     projectPlayState = 'stopped';
     projectPlayIndex = 0;
     playbackFiles = [];
+    playbackStatus = {};
     clearProjectRowHighlight();
     stopCurrentPlayback();
     updateProjectPlaybackButtons();
