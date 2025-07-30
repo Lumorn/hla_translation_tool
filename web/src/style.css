@@ -3205,6 +3205,10 @@ th:nth-child(10) {
 #segmentWaveform { cursor:pointer; }
 #copyAssistantDialog .dialog { max-width: 500px; }
 #copyAssistant2Dialog .dialog { max-width: 500px; }
+#playbackListDialog .dialog { max-width: 400px; }
+.playback-list { list-style: none; padding: 0; margin: 0 0 15px; max-height: 200px; overflow-y: auto; }
+.playback-list li { padding: 2px 4px; border-bottom: 1px solid #444; }
+.playback-list li.current { background: #333; }
 
 /* Tabelle für den ZIP-Import */
 .zip-preview-table {

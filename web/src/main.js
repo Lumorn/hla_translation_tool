@@ -5524,12 +5524,33 @@ async function playDeAudio(fileId, onEnded = null) {
 // =========================== PROJEKT-WIEDERGABE START ========================
 function updateProjectPlaybackButtons() {
     const playPauseBtn = document.getElementById('projectPlayPauseBtn');
+    const listPlayBtn = document.getElementById('playbackPlayBtn');
     if (!playPauseBtn) return;
     if (projectPlayState === 'playing') {
         playPauseBtn.textContent = '⏸';
+        if (listPlayBtn) listPlayBtn.textContent = '⏸';
     } else {
         playPauseBtn.textContent = '▶';
+        if (listPlayBtn) listPlayBtn.textContent = '▶';
     }
+}
+
+function openPlaybackList() {
+    updatePlaybackList();
+    document.getElementById('playbackListDialog')?.classList.remove('hidden');
+}
+
+function closePlaybackList() {
+    document.getElementById('playbackListDialog')?.classList.add('hidden');
+}
+
+function updatePlaybackList() {
+    const list = document.getElementById('playbackList');
+    if (!list) return;
+    list.innerHTML = playbackFiles.map((f, idx) =>
+        `<li class="${idx === projectPlayIndex ? 'current' : ''}">${idx + 1}. ${escapeHtml(f.filename)}</li>`
+    ).join('');
+    updateProjectPlaybackButtons();
 }
 
 function highlightProjectRow(fileId) {
@@ -5579,6 +5600,7 @@ function playCurrentProjectFile() {
     }
 
     highlightProjectRow(file.id);
+    updatePlaybackList();
     // Deutsche Version abspielen und danach ggf. naechste Datei starten
     playDeAudio(file.id, () => {
         clearProjectRowHighlight();
@@ -5586,6 +5608,7 @@ function playCurrentProjectFile() {
         if (projectPlayState === 'playing') {
             playCurrentProjectFile();
         }
+        updatePlaybackList();
     });
 }
 
@@ -5594,6 +5617,7 @@ function startProjectPlayback() {
     projectPlayIndex = 0;
     projectPlayState = 'playing';
     updateProjectPlaybackButtons();
+    openPlaybackList();
     playCurrentProjectFile();
 }
 
@@ -5602,6 +5626,7 @@ function pauseProjectPlayback() {
     audio.pause();
     projectPlayState = 'paused';
     updateProjectPlaybackButtons();
+    updatePlaybackList();
 }
 
 function resumeProjectPlayback() {
@@ -5609,6 +5634,7 @@ function resumeProjectPlayback() {
     audio.play();
     projectPlayState = 'playing';
     updateProjectPlaybackButtons();
+    updatePlaybackList();
 }
 
 function stopProjectPlayback() {
@@ -5618,6 +5644,7 @@ function stopProjectPlayback() {
     clearProjectRowHighlight();
     stopCurrentPlayback();
     updateProjectPlaybackButtons();
+    updatePlaybackList();
 }
 
 function toggleProjectPlayback() {
@@ -14249,7 +14276,9 @@ if (typeof module !== "undefined" && module.exports) {
         loadRadioPreset,
         deleteRadioPreset,
         __setRadioPresets: obj => { radioPresets = obj; },
-        __getRadioPresets: () => radioPresets
+        __getRadioPresets: () => radioPresets,
+        openPlaybackList,
+        closePlaybackList
     };
 }
 

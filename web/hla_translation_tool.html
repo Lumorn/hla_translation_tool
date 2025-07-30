@@ -825,6 +825,19 @@
         </div>
     </div>
 
+    <!-- Projekt-Wiedergabe Liste -->
+    <div class="dialog-overlay hidden" id="playbackListDialog">
+        <div class="dialog playback-dialog">
+            <button class="dialog-close-btn" onclick="closePlaybackList()">×</button>
+            <h3>🔊 Wiedergabeliste</h3>
+            <ul id="playbackList" class="playback-list"></ul>
+            <div class="dialog-buttons">
+                <button class="btn" id="playbackPlayBtn" onclick="toggleProjectPlayback()">▶</button>
+                <button class="btn btn-secondary" onclick="closePlaybackList()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Audio Player -->
     <audio id="audioPlayer"></audio>
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">

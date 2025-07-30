@@ -603,6 +603,7 @@ Seit Patch 1.40.115 lassen sich mit der Alt-Taste Stille-Bereiche einfügen, um 
 Seit Patch 1.40.118 spielt die Projekt-Wiedergabe alle Dateien wieder in korrekter Reihenfolge ab.
 Seit Patch 1.40.119 wird die Sortierung nicht mehr verändert und Zeilen werden nicht übersprungen.
 Seit Patch 1.40.120 prüft die Projekt-Wiedergabe vor dem Start die Reihenfolge und korrigiert sie falls nötig.
+Seit Patch 1.40.121 zeigt ein kleines Wiedergabe-Fenster die aktuelle Reihenfolge samt Dateinamen an.
 
 Beispiel einer gültigen CSV:
 
