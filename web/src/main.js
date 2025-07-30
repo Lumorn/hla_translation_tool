@@ -259,7 +259,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.119';
+const APP_VERSION = '1.40.122';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -5544,11 +5544,16 @@ function closePlaybackList() {
     document.getElementById('playbackListDialog')?.classList.add('hidden');
 }
 
+// Gibt die aktuelle Positionsnummer einer Datei zurück
+function getFilePosition(fileId) {
+    return files.findIndex(f => f.id === fileId) + 1;
+}
+
 function updatePlaybackList() {
     const list = document.getElementById('playbackList');
     if (!list) return;
     list.innerHTML = playbackFiles.map((f, idx) =>
-        `<li class="${idx === projectPlayIndex ? 'current' : ''}">${idx + 1}. ${escapeHtml(f.filename)}</li>`
+        `<li class="${idx === projectPlayIndex ? 'current' : ''}">${getFilePosition(f.id)}. ${escapeHtml(f.filename)}</li>`
     ).join('');
     updateProjectPlaybackButtons();
 }
