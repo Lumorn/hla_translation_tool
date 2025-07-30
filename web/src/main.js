@@ -5542,8 +5542,18 @@ function clearProjectRowHighlight() {
     document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
 }
 
+// Stellt sicher, dass die Wiedergabereihenfolge der aktuellen Dateireihenfolge entspricht
+function ensurePlaybackOrder() {
+    const mismatch = displayOrder.length !== files.length ||
+        displayOrder.some((item, idx) => item.file.id !== files[idx].id);
+    if (mismatch) {
+        displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
+    }
+}
+
 // Gibt alle Dateien mit vorhandener DE-Version in Positionsreihenfolge zurück
 function getProjectPlaybackList() {
+    ensurePlaybackOrder();
     // Wenn eine Sortierung aktiv ist, enthält displayOrder die Originalreihenfolge
     if (displayOrder.length === files.length) {
         return [...displayOrder]
@@ -14192,6 +14202,7 @@ if (typeof module !== "undefined" && module.exports) {
         markDubAsReady,
         cleanupDubCache,
         getProjectPlaybackList,
+        ensurePlaybackOrder,
         applyDeEdit,
         speichereUebersetzungsDatei,
         // 🔄 Projektbereinigung & Dateiendungs-Reparatur
@@ -14211,6 +14222,8 @@ if (typeof module !== "undefined" && module.exports) {
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
         __setSaveCurrentProject: fn => { saveCurrentProject = fn; },
+        __setDisplayOrder: arr => { displayOrder = arr; },
+        __getDisplayOrder: () => displayOrder,
         __setProjects: p => { projects = p; },
         __setFilePathDatabase: db => { filePathDatabase = db; },
         __setTextDatabase: db => { textDatabase = db; },
