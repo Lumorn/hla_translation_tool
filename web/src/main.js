@@ -259,7 +259,7 @@ let redoStack          = [];
 
 // Version wird zur Laufzeit ersetzt
 // Aktuelle Programmversion
-const APP_VERSION = '1.40.117';
+const APP_VERSION = '1.40.118';
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
@@ -5542,8 +5542,16 @@ function clearProjectRowHighlight() {
     document.querySelectorAll('tr.current-project-row').forEach(r => r.classList.remove('current-project-row'));
 }
 
-// Liefert alle Dateien mit vorhandener DE-Version in aktueller Reihenfolge
+// Gibt alle Dateien mit vorhandener DE-Version in Positionsreihenfolge zurück
 function getProjectPlaybackList() {
+    // Wenn eine Sortierung aktiv ist, enthält displayOrder die Originalreihenfolge
+    if (displayOrder.length === files.length) {
+        return displayOrder
+            .sort((a, b) => a.originalIndex - b.originalIndex)
+            .map(item => item.file)
+            .filter(f => getDeFilePath(f));
+    }
+    // Ohne Sortierung ist die Reihenfolge der files bereits korrekt
     return files.filter(f => getDeFilePath(f));
 }
 

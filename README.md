@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.117-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.118-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -600,6 +600,7 @@ Seit Patch 1.40.105 begrenzt `mergeSegments` die Segmentgrenzen auf die Pufferl�
 Seit Patch 1.40.106 stellt ein Auto-Knopf im DE-Audio-Editor Anfangs- und Endstille automatisch ein.
 Seit Patch 1.40.114 erweitern oder verkleinern zwei neue Buttons alle Ignorier-Bereiche in 50‑ms-Schritten.
 Seit Patch 1.40.115 lassen sich mit der Alt-Taste Stille-Bereiche einfügen, um Audios zeitlich zu verschieben.
+Seit Patch 1.40.118 spielt die Projekt-Wiedergabe alle Dateien wieder in korrekter Reihenfolge ab.
 
 Beispiel einer gültigen CSV:
 
