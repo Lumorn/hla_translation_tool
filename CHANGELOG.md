@@ -115,6 +115,8 @@
 * Wiedergabeliste zeigt nun zusätzliche Pfadinformationen zu jeder Datei.
 ## 🛠 Patch in 1.40.124
 * Wiedergabeliste prüft jede Datei und zeigt Icons für Existenz, Abspielstatus und korrekte Reihenfolge.
+## 🛠 Patch in 1.40.125
+* Wiedergabeliste erzeugt nun ein Protokoll der erwarteten und der tatsächlichen Abspielreihenfolge.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
