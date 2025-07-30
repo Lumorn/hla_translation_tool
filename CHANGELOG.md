@@ -101,6 +101,8 @@
 * Uploads ersetzen nun die Sicherungsdatei in `DE-Backup`, sodass "Zurücksetzen" die zuletzt geladene Version wiederherstellt.
 ## 🛠️ Patch in 1.40.117
 * Beim Speichern wird die Sicherung nicht mehr überschrieben, damit stets die ursprünglich hochgeladene Datei wiederhergestellt werden kann.
+## 🛠️ Patch in 1.40.118
+* Fehler behoben: Die Projekt-Wiedergabe hält jetzt immer die Positionsreihenfolge ein.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
