@@ -111,6 +111,8 @@
 * Wiedergabeliste zeigt während der Projekt-Wiedergabe alle Dateinamen in korrekter Reihenfolge an.
 ## 🛠️ Patch in 1.40.122
 * Wiedergabeliste zeigt nun die Positionsnummern statt fortlaufender Zählung.
+## 🛠 Patch in 1.40.123
+* Wiedergabeliste zeigt nun zusätzliche Pfadinformationen zu jeder Datei.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
