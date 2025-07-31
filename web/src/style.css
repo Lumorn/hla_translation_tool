@@ -1108,6 +1108,12 @@ th:nth-child(8) {
     gap: 8px;
     width: 100%;
 }
+/* Dezente Trennlinie zwischen den Reihen */
+.action-row + .action-row {
+    border-top: 1px solid #3a3a3a;
+    padding-top: 8px;
+    margin-top: 8px;
+}
 
 /* Einheitliches Aussehen aller Aktions-Buttons */
 .icon-btn {

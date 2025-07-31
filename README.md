@@ -319,6 +319,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Schmalere Versionsspalte:** "Version" und "Score" stehen im Kopf sowie in jeder Zeile untereinander, wodurch die Tabelle breiterem Text mehr Platz lässt.
 * **Modernisierte Aktionsleiste:** Alle Bedienknöpfe erscheinen als runde Symbole und sind in klaren Zeilen gruppiert.
 * **Verbesserte Aktionsspalte:** Einheitliche Icon-Größe mit dunklem Hintergrund und deutlichen Abständen erleichtern die Bedienung.
+* **Trennlinien teilen die Aktionszeile:** Upload, Dubbing, Bearbeitung und Löschen sind jetzt optisch getrennt.
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Neuer Button „Dubbing (Emo)“:** Öffnet ein eigenes Fenster und erzeugt über die Text‑to‑Speech‑API (V3) eine emotionale Spur. Halbautomatik steht hier nicht zur Verfügung.
