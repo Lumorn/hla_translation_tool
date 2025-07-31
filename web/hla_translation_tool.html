@@ -576,23 +576,23 @@
     <!-- DE Edit Dialog -->
     <div class="dialog-overlay hidden" id="deEditDialog">
         <div class="dialog">
-<button class="dialog-close-btn" onclick="closeDeEdit()">×</button>
+<button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
             <h3>✂️ DE-Audio bearbeiten</h3>
             <div style="margin-bottom:15px;">
                 <div style="display:flex;flex-direction:column;gap:5px;">
                     <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
                     <div style="display:flex;align-items:center;gap:10px;">
                         <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
-                        <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()">▶</button>
-                        <button class="de-stop-btn" onclick="stopEditPlayback()">⏹</button>
+                        <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen">▶</button>
+                        <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
                     <span class="wave-label" id="waveLabelEdited">DE (bearbeiten)</span>
                     <div style="display:flex;align-items:center;gap:10px;">
                         <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
-                        <button id="playDePreview" class="de-play-btn" onclick="playDePreview()">▶</button>
-                        <button class="de-stop-btn" onclick="stopEditPlayback()">⏹</button>
+                        <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen">▶</button>
+                        <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
                 </div>
             </div>
@@ -605,28 +605,28 @@
                 <h4>Ignorierbereiche</h4>
                 <div id="ignoreList"></div>
                 <div class="ignore-buttons">
-                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)">◀ Kürzer</button>
-                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)">Länger ▶</button>
+                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
+                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
                 </div>
             </div>
             <div class="ignore-container">
                 <h4>Stille-Bereiche</h4>
                 <div id="silenceList"></div>
                 <div class="ignore-buttons">
-                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)">◀ Kürzer</button>
-                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)">Länger ▶</button>
+                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
+                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
                 </div>
             </div>
             <div class="trim-options">
-                <label><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"> ms entfernen</label>
+                <label title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"> ms entfernen</label>
             </div>
             <div class="stretch-options">
-                <label><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
-                <label>Tempo: <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1"><span id="tempoDisplay">1.00</span></label>
+                <label title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
+                <label>Tempo: <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo"><span id="tempoDisplay">1.00</span></label>
                 <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen">Auto</button>
                 <span id="tempoInfo" style="margin-left:10px;"></span>
             </div>
-            <button class="btn btn-secondary" id="autoAdjustBtn" style="margin-top:5px;">🎯 Anpassen &amp; Anwenden</button>
+            <button class="btn btn-secondary" id="autoAdjustBtn" style="margin-top:5px;" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
             <hr class="effect-separator">
             <fieldset class="effect-group">
                 <legend>📡 Funkgerät-Effekt</legend>
@@ -650,15 +650,15 @@
                         <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
                     </label>
                 <div class="radio-preset">
-                    <select id="radioPresetSelect"></select>
-                    <button id="saveRadioPresetBtn" type="button">💾 Speichern</button>
-                    <button id="deleteRadioPresetBtn" type="button">🗑 Löschen</button>
+                    <select id="radioPresetSelect" title="Gespeicherte Presets"></select>
+                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
+                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
                 </div>
                 </div>
             </fieldset>
             <fieldset class="effect-group">
                 <legend>🎚️ Hall-Effekt</legend>
-                <label id="hallToggleLabel" class="effect-toggle"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
+                <label id="hallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
                 <div class="hall-settings">
                     <label title="Raumgröße">Room:
                         <input type="range" id="hallRoom" min="0" max="1" step="0.05">
@@ -670,17 +670,17 @@
                         <input type="number" id="hallDelay" min="0" max="500" step="10">
                     </label>
                 </div>
-                <button class="btn-reset-settings" onclick="resetHallSettings()">⟳ Hall-Standardwerte</button>
+                <button class="btn-reset-settings" onclick="resetHallSettings()" title="Hall-Effekt zurücksetzen">⟳ Hall-Standardwerte</button>
             </fieldset>
             <div class="effect-buttons">
-                <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()">🔊 Lautstärke angleichen</button>
-                <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()">📻 Funkgerät-Effekt</button>
-                <button class="btn-reset-settings" onclick="resetRadioSettings()">⟳ Standardwerte</button>
+                <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
+                <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
+                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Funkgeräteinstellungen zurücksetzen">⟳ Standardwerte</button>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="resetDeEdit()">Zurücksetzen</button>
-                <button class="btn btn-secondary" onclick="applyDeEdit()">Speichern</button>
-                <button class="btn btn-secondary" onclick="closeDeEdit()">Abbrechen</button>
+                <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
+                <button class="btn btn-secondary" onclick="applyDeEdit()" title="Bearbeitung speichern">Speichern</button>
+                <button class="btn btn-secondary" onclick="closeDeEdit()" title="Fenster schließen">Abbrechen</button>
             </div>
         </div>
     </div>
@@ -882,7 +882,7 @@
 
     <!-- Versionsanzeige -->
     <!-- Verlinkung zur aktuellen Version -->
-    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.126</a>
+    <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.127</a>
 
     <script src="src/colorUtils.js"></script>
     <script src="src/main.js"></script>

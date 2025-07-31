@@ -119,6 +119,8 @@
 * Wiedergabeliste erzeugt nun ein Protokoll der erwarteten und der tatsächlichen Abspielreihenfolge.
 ## 🛠 Patch in 1.40.126
 * Beim Kürzen eines Emotional-Texts darf die Übersetzung nun leicht verändert werden, um sehr kurze EN-Zeilen besser abzudecken.
+## 🛠 Patch in 1.40.127
+* DE-Audio-Editor mit verbesserten Buttons und erläuternden Tooltips.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
