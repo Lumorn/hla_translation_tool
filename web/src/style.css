@@ -1091,22 +1091,6 @@ th:nth-child(10) {
     gap: 3px;
 }
 
-/* Vertikale Anordnung der Aktions-Buttons */
-.action-column {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-}
-
-/* Version und Score untereinander */
-.version-score-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
 /* Buttons für Effekte im Audio-Editor */
 .effect-btn {
     background: #ff6b1a; /* Grundfarbe der Effekt-Buttons */

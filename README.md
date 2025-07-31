@@ -313,7 +313,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerhinweise beim Speichern:** Tritt ein Problem auf, erscheint eine rote Toast-Meldung statt eines stummen Abbruchs.
 * **Neue Meldung:** Scheitert das Anlegen einer History-Version, wird "Fehler beim Anlegen der History-Version" ausgegeben.
 * **Kompaktere Dubbing-Spalte:** Der Statuspunkt und der Download-Pfeil stehen jetzt direkt neben dem Dubbing-Button in einer gemeinsamen Spalte.
-* **Einheitliche Tabellenspalten:** EN- und DE-Text erscheinen untereinander, alle Aktions-Buttons bilden eine vertikale Spalte.
 * **Bugfix:** Ein Klick auf den Download-Pfeil öffnet jetzt zuverlässig die korrekte V1-Dubbing-Seite.
 * **Automatik-Button für halbautomatisches Dubbing:** Per Playwright werden alle notwendigen Klicks im ElevenLabs-Studio ausgeführt.
 * **Neuer Button „Dubbing (Emo)“:** Öffnet ein eigenes Fenster und erzeugt über die Text‑to‑Speech‑API (V3) eine emotionale Spur. Halbautomatik steht hier nicht zur Verfügung.
