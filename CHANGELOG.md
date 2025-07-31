@@ -141,6 +141,8 @@
 * Jede Aktionsgruppe steckt nun in einem eigenen Block mit Abstand; der Löschknopf ist deutlich nach unten versetzt.
 ## 🛠 Patch in 1.40.137
 * Aktionsknöpfe besitzen nun abgerundete Ecken und passen optisch zu den anderen Buttons.
+## 🛠 Patch in 1.40.138
+* Beim Hochladen einer DE-Audiodatei wird der Tempo-Faktor wieder auf 1,0 gesetzt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
