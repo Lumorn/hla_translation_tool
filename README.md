@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.127-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.126-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -609,7 +609,6 @@ Seit Patch 1.40.123 zeigt die Wiedergabeliste zusätzliche Pfadinformationen an.
 Seit Patch 1.40.124 zeigt die Wiedergabeliste kleine Icons für Dateiexistenz, Wiedergabe-Erfolg und Reihenfolge.
 Seit Patch 1.40.125 führt ein Protokoll neben der Wiedergabeliste die erwartete und die tatsächliche Reihenfolge auf.
 Seit Patch 1.40.126 darf beim Anpassen-Kürzen die deutsche Übersetzung leicht verändert werden, um extrem kurze EN-Zeilen besser abzudecken.
-Seit Patch 1.40.127 besitzt der DE-Audio-Editor überarbeitete Buttons mit hilfreichen Tooltips.
 
 Beispiel einer gültigen CSV:
 
