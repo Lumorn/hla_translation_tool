@@ -13962,10 +13962,41 @@ function quickAddLevel(chapterName) {
             if (window.electronAPI && window.electronAPI.saveDeFile) {
                 const buffer = await datei.arrayBuffer();
                 await window.electronAPI.saveDeFile(zielPfad, new Uint8Array(buffer));
+                // Bereits vorhandene Sicherung loeschen und aktuelle Datei sichern
+                if (window.electronAPI.deleteDeBackupFile) {
+                    await window.electronAPI.deleteDeBackupFile(zielPfad);
+                }
+                if (window.electronAPI.backupDeFile) {
+                    await window.electronAPI.backupDeFile(zielPfad);
+                }
                 deAudioCache[zielPfad] = `sounds/DE/${zielPfad}`;
                 await updateHistoryCache(zielPfad);
             } else {
                 await speichereUebersetzungsDatei(datei, zielPfad);
+                // Ohne Electron das Backup manuell aktualisieren
+                if (deOrdnerHandle) {
+                    try {
+                        const teile = zielPfad.split('/');
+                        const name = teile.pop();
+                        let ordner = deOrdnerHandle;
+                        for (const t of teile) {
+                            ordner = await ordner.getDirectoryHandle(t, { create: true });
+                        }
+                        const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+                        const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
+                        let ziel = backupDir;
+                        for (const t of teile) {
+                            ziel = await ziel.getDirectoryHandle(t, { create: true });
+                        }
+                        try { await ziel.removeEntry(name); } catch {}
+                        const orgFile = await ordner.getFileHandle(name);
+                        const orgData = await orgFile.getFile();
+                        const backupFile = await ziel.getFileHandle(name, { create: true });
+                        const w = await backupFile.createWritable();
+                        await w.write(orgData);
+                        await w.close();
+                    } catch {}
+                }
             }
             if (f) {
                 // Versionsnummer automatisch erhöhen, falls bereits Datei vorhanden
