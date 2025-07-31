@@ -145,6 +145,8 @@
 * Beim Hochladen einer DE-Audiodatei wird der Tempo-Faktor wieder auf 1,0 gesetzt.
 ## 🛠 Patch in 1.40.139
 * Beim Kürzen eines Emotional-Texts bleiben abgebrochene Sätze und Fülllaute aus dem Original erhalten.
+## 🛠 Patch in 1.40.140
+* ZIP-Import ersetzt nun ebenfalls die Sicherungsdatei in `DE-Backup`, sodass der "Zurücksetzen"-Knopf die importierte Version wiederherstellt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
