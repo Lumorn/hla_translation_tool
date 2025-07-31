@@ -1,4 +1,17 @@
 // =========================== GLOBAL STATE START ===========================
+const window = typeof globalThis.window !== 'undefined' ? globalThis.window : (globalThis.window = {});
+let storage = window.localStorage || globalThis.localStorage;
+if (!storage) {
+    const store = {};
+    storage = {
+        getItem: k => (k in store ? store[k] : null),
+        setItem: (k, v) => { store[k] = String(v); },
+        removeItem: k => { delete store[k]; }
+    };
+}
+window.localStorage = storage;
+globalThis.localStorage = storage;
+const localStorage = storage;
 let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
@@ -24,7 +37,7 @@ let segmentPlayerUrl      = null;  // zuletzt erzeugte Object-URL
 let ignoredSegments       = new Set(); // ignorierte Segmente
 
 // Verfügbarkeit der Electron-API einmalig prüfen
-const isElectron = !!window.electronAPI;
+const isElectron = typeof window !== "undefined" && !!window.electronAPI;
 if (!isElectron) {
     console.warn('🚫 Electron-API nicht verfügbar – Fallback auf Browser-Modus');
 }

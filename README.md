@@ -58,6 +58,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **ZIP-Import speichert Originaldatei:** Importierte Audios landen direkt in `DE-Backup`, sodass ein Zurücksetzen immer die zuletzt importierte Version wiederherstellt.
 * **Projektkarten mit Rahmen:** Jede Karte besitzt einen grauen Rand und nutzt nun die volle Breite. Im geöffneten Level wird der Rand grün. Das aktuell gewählte Projekt hebt sich mit einem blauen Balken, leicht transparentem Hintergrund (rgba(33,150,243,0.2)) und weißer Schrift deutlich ab.
 * **Überarbeitete Seitenleiste:** Jede Projektkarte besteht aus zwei Zeilen mit einheitlich breiten Badges für EN, DE und Audio.
+* **Node-kompatibler Start:** Ohne Browser-API werden `window` und `localStorage` automatisch simuliert, damit Tests unter Node laufen.
 * **Breitere Projektleiste:** Die Sidebar ist jetzt 320 px breit, damit lange Einträge korrekt angezeigt werden.
 * **Aktiver Level hervorgehoben:** Geöffnete Level-Gruppen besitzen jetzt einen grünen Rahmen und einen leicht abgedunkelten Hintergrund.
 * **Dezente Level-Gruppen:** Geschlossene Level zeigen einen ganz leichten Hintergrund und nur beim Überfahren einen feinen Rahmen.
