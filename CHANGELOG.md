@@ -121,8 +121,6 @@
 * Beim Kürzen eines Emotional-Texts darf die Übersetzung nun leicht verändert werden, um sehr kurze EN-Zeilen besser abzudecken.
 ## 🛠 Patch in 1.40.127
 * DE-Audio-Editor mit verbesserten Buttons und erläuternden Tooltips.
-## 🛠 Patch in 1.40.128
-* Tabelle vereint EN- und DE-Spalte sowie alle Aktionen in zwei übersichtlichen Feldern.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
