@@ -3585,7 +3585,7 @@ return `
         <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Klick um Position zu ändern">${originalIndex + 1}</td>
         <td class="filename-cell clickable" onclick="checkFilename(${file.id}, event)">${file.filename}</td>
-        <td>
+        <td class="folder-cell">
             <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"
                   title="Ordner: ${file.folder} - Klick für Datei-Austausch"
@@ -3593,41 +3593,52 @@ return `
                 ${folderIcon} ${lastFolder}
             </span>
         </td>
-        <td>
+        <td class="version-score-cell">
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
+            ${(() => {
+                const cls = scoreClass(file.score);
+                const color = getContrastingTextColor(SCORE_COLORS[cls]);
+                const sug = escapeHtml(file.suggestion || '');
+                const com = escapeHtml(file.comment || '');
+                const scoreText = file.score === undefined || file.score === null ? '0' : file.score;
+                return `<span class="score-cell ${cls}" title="${com}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}%</span>`;
+            })()}
         </td>
-        ${scoreCellTemplate(file, escapeHtml)}
-        <td><div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="text-input"
-                 onchange="updateText(${file.id}, 'en', this.value)"
-                 oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
-            <div class="btn-column">
-                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en', event)" title="EN Text kopieren">📋</button>
-                <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
-            </div>
-        </div></td>
         <td>
-        <div class="comment-box" data-file-id="${file.id}">${escapeHtml(file.comment || '')}</div>
-        <div class="suggestion-box ${scoreClass(file.score)}" style="color:${getContrastingTextColor(SCORE_COLORS[scoreClass(file.score)])}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
-        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="text-input"
-                 onchange="updateText(${file.id}, 'de', this.value)"
-                 oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
-            <div class="btn-column">
-                <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de', event)" title="DE Text kopieren">📋</button>
-                ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+        <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+                <textarea class="text-input"
+                     onchange="updateText(${file.id}, 'en', this.value)"
+                     oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
+                <div class="btn-column">
+                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en', event)" title="EN Text kopieren">📋</button>
+                    <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
+                </div>
+            </div>
+            <div>
+            <div class="comment-box" data-file-id="${file.id}">${escapeHtml(file.comment || '')}</div>
+            <div class="suggestion-box ${scoreClass(file.score)}" style="color:${getContrastingTextColor(SCORE_COLORS[scoreClass(file.score)])}" data-file-id="${file.id}">${escapeHtml(file.suggestion || '')}</div>
+            <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+                <textarea class="text-input"
+                     onchange="updateText(${file.id}, 'de', this.value)"
+                     oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
+                <div class="btn-column">
+                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de', event)" title="DE Text kopieren">📋</button>
+                    ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
+                </div>
+            </div>
+            <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
+            <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
+                <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
+                <div class="btn-column">
+                    <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
+                    <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
+                    <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
+                </div>
+            </div>
+            <div class="emo-reason-box" data-file-id="${file.id}">${escapeHtml(file.emoReason || '')}</div>
             </div>
         </div>
-        <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
-        <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-            <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
-            <div class="btn-column">
-                <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
-                <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
-                <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
-            </div>
-        </div>
-        <div class="emo-reason-box" data-file-id="${file.id}">${escapeHtml(file.emoReason || '')}</div>
         </td>
         <!-- Untertitel-Suche Knopf -->
         <td><div class="btn-column">
@@ -3641,30 +3652,38 @@ return `
             </div>
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
-        <td><button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button></td>
+        <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
         <td>
-            <div class="dubbing-cell">
-                <button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button>
-                ${file.emotionalText && file.emotionalText.trim() ? `<button class="dubbing-btn emo" onclick="initiateEmoDubbing(${file.id})">🟣</button>` : ''}
-                <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
-                ${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
-                ${file.emotionalText && file.emotionalText.trim() ? `<span class="emo-dub-status ${!file.emoDubbingId ? 'none' : (file.emoDubReady ? 'done' : 'pending')}" title="${!file.emoDubbingId ? 'kein Dubbing' : (file.emoDubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.emoDubbingId || file.emoDubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>` : ''}
-                ${file.emoDubbingId ? `<button class="download-emo-btn" data-file-id="${file.id}" title="Emo-ID: ${file.emoDubbingId}" onclick="openDubbingPage(${file.id}, 'emo')">⬇️</button>` : ''}
+            <div class="action-column">
+                <div class="action-group">
+                    <button class="upload-btn" onclick="initiateDeUpload(${file.id})">⬆️</button>
+                    ${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}
+                </div>
+                <div class="action-group">
+                    <div class="dubbing-cell">
+                        <button class="dubbing-btn" onclick="initiateDubbing(${file.id})">🔈</button>
+                        ${file.emotionalText && file.emotionalText.trim() ? `<button class="dubbing-btn emo" onclick="initiateEmoDubbing(${file.id})">🟣</button>` : ''}
+                        <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
+                        ${file.dubbingId ? `<button class="download-de-btn" data-file-id="${file.id}" title="Dubbing-ID: ${file.dubbingId}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
+                        ${file.emotionalText && file.emotionalText.trim() ? `<span class="emo-dub-status ${!file.emoDubbingId ? 'none' : (file.emoDubReady ? 'done' : 'pending')}" title="${!file.emoDubbingId ? 'kein Dubbing' : (file.emoDubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.emoDubbingId || file.emoDubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>` : ''}
+                        ${file.emoDubbingId ? `<button class="download-emo-btn" data-file-id="${file.id}" title="Emo-ID: ${file.emoDubbingId}" onclick="openDubbingPage(${file.id}, 'emo')">⬇️</button>` : ''}
+                    </div>
+                </div>
+                <div class="action-group" style="align-items:flex-start;">
+                    <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
+                    <div class="edit-column">
+                        ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
+                        ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
+                        ${file.radioEffect ? '<span class="edit-status-icon">📻</span>' : ''}
+                        ${file.hallEffect ? '<span class="edit-status-icon">🏛️</span>' : ''}
+                    </div>
+                    ${file.emotionalText && file.emotionalText.trim() ? `<button class="emo-done-btn" onclick="toggleEmoCompletion(${file.id})">Fertig (DE)</button>` : ''}
+                </div>
+                <div class="action-group">
+                    <button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button>
+                </div>
             </div>
         </td>
-        <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
-        <td>${hasHistory ? `<button class="history-btn" onclick="openHistory(${file.id})">🕒</button>` : ''}</td>
-        <td><div style="display:flex;align-items:flex-start;gap:5px;">
-            <button class="edit-audio-btn" onclick="openDeEdit(${file.id})">✂️</button>
-            <div class="edit-column">
-                ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon">✂️</span>' : ''}
-                ${file.volumeMatched ? '<span class="edit-status-icon">🔊</span>' : ''}
-                ${file.radioEffect ? '<span class="edit-status-icon">📻</span>' : ''}
-                ${file.hallEffect ? '<span class="edit-status-icon">🏛️</span>' : ''}
-            </div>
-            ${file.emotionalText && file.emotionalText.trim() ? `<button class="emo-done-btn" onclick="toggleEmoCompletion(${file.id})">Fertig (DE)</button>` : ''}
-        </div></td>
-        <td><button class="delete-row-btn" onclick="deleteFile(${file.id})">🗑️</button></td>
     </tr>
 `;
     }));
