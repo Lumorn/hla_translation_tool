@@ -13962,6 +13962,13 @@ function quickAddLevel(chapterName) {
             if (window.electronAPI && window.electronAPI.saveDeFile) {
                 const buffer = await datei.arrayBuffer();
                 await window.electronAPI.saveDeFile(zielPfad, new Uint8Array(buffer));
+                // Bereits vorhandenes Backup ersetzen, damit Zurücksetzen die neue Datei nutzt
+                if (window.electronAPI.deleteDeBackupFile) {
+                    await window.electronAPI.deleteDeBackupFile(zielPfad);
+                }
+                if (window.electronAPI.backupDeFile) {
+                    await window.electronAPI.backupDeFile(zielPfad);
+                }
                 deAudioCache[zielPfad] = `sounds/DE/${zielPfad}`;
                 await updateHistoryCache(zielPfad);
             } else {
