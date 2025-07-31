@@ -238,7 +238,7 @@ async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, k
         lines,
         target_position: targetPosition,
         length_seconds: lengthSeconds,
-        instructions: `Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch. Passe den Text so an, dass die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt, ohne Inhalt, Persönlichkeit oder Kontext zu verlieren und ohne unnatürlich zu klingen. Beschreibe im Feld "reason" in einem Satz, wie der Text angepasst wurde, um die Länge der englischen Audiodatei von ${lengthSeconds.toFixed(2)} Sekunden zu erreichen.`
+        instructions: `Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch. Kürze den Text kreativ, damit die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt. Dabei darfst du Formulierungen ändern und unwichtige Details weglassen, solange die Aussage erhalten bleibt und der Text natürlich klingt. Beschreibe im Feld "reason" in einem Satz, wie der Text verändert wurde, um die Länge der englischen Audiodatei von ${lengthSeconds.toFixed(2)} Sekunden zu erreichen.`
     };
     const messages = [
         { role: 'system', content: emotionPrompt },

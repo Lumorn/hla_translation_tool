@@ -117,6 +117,8 @@
 * Wiedergabeliste prüft jede Datei und zeigt Icons für Existenz, Abspielstatus und korrekte Reihenfolge.
 ## 🛠 Patch in 1.40.125
 * Wiedergabeliste erzeugt nun ein Protokoll der erwarteten und der tatsächlichen Abspielreihenfolge.
+## 🛠 Patch in 1.40.126
+* Beim Kürzen eines Emotional-Texts darf die Übersetzung nun leicht verändert werden, um sehr kurze EN-Zeilen besser abzudecken.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

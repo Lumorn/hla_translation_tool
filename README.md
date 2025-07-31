@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.124-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.126-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -258,7 +258,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
 * **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Der Button „Emotional-Text (DE) generieren“ erstellt den Inhalt nun stets neu; ein 📋‑Knopf kopiert ihn.
 * **Emotionen (DE) generieren:** Der Button oberhalb der Tabelle erstellt jetzt für alle Zeilen neue Emotional-Text-Felder – vorhandene Inhalte werden überschrieben.
-* **Anpassen‑Kürzen:** Direkt neben dem Generieren-Knopf passt ein weiterer Button den Emotional-Text auf die Länge der englischen Originalaufnahme an. Die Begründung unter dem violetten Feld erklärt nun kurz, wie der Text auf z. B. "8,57 s" gekürzt wurde.
+* **Anpassen‑Kürzen:** Direkt neben dem Generieren-Knopf passt ein weiterer Button den Emotional-Text auf die Länge der englischen Originalaufnahme an. Bei sehr kurzen EN-Zeilen darf der deutsche Text nun kreativ gekürzt und leicht umformuliert werden. Die Begründung unter dem violetten Feld erklärt weiterhin kurz, wie der Text auf z. B. "8,57 s" gebracht wurde.
 * **Laufzeit vor Emotional-Text:** Der 📋-Knopf schreibt beim Kopieren jetzt die Dauer der EN-Datei im Format `[8,57sec]` vor den Text.
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.
 * **Tags mitten im Satz:** Die erzeugten Emotionstags stehen jetzt direkt vor der jeweiligen Textstelle und nicht mehr am Ende der Zeile.
@@ -608,6 +608,7 @@ Seit Patch 1.40.122 zeigt die Wiedergabeliste nun die Positionsnummern der Datei
 Seit Patch 1.40.123 zeigt die Wiedergabeliste zusätzliche Pfadinformationen an.
 Seit Patch 1.40.124 zeigt die Wiedergabeliste kleine Icons für Dateiexistenz, Wiedergabe-Erfolg und Reihenfolge.
 Seit Patch 1.40.125 führt ein Protokoll neben der Wiedergabeliste die erwartete und die tatsächliche Reihenfolge auf.
+Seit Patch 1.40.126 darf beim Anpassen-Kürzen die deutsche Übersetzung leicht verändert werden, um extrem kurze EN-Zeilen besser abzudecken.
 
 Beispiel einer gültigen CSV:
 
