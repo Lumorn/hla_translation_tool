@@ -121,24 +121,6 @@
 * Beim Kürzen eines Emotional-Texts darf die Übersetzung nun leicht verändert werden, um sehr kurze EN-Zeilen besser abzudecken.
 ## 🛠 Patch in 1.40.127
 * DE-Audio-Editor mit verbesserten Buttons und erläuternden Tooltips.
-## 🛠 Patch in 1.40.128
-* Tabelle vereint EN- und DE-Spalte sowie alle Aktionen in zwei übersichtlichen Feldern.
-## 🛠 Patch in 1.40.129
-* Spaltenbreiten korrigiert: Ordnertext überlappt nicht mehr und Aktions-Symbole sind gruppiert.
-## 🛠 Patch in 1.40.130
-* Aktions-Symbole besitzen nun Tooltips mit kurzen Erklärungen.
-## 🛠 Patch in 1.40.131
-* Versions- und Score-Spalte sind nun schmaler: Überschrift und Werte werden untereinander dargestellt.
-## 🛠 Patch in 1.40.132
-* Neue Aktionsleiste mit runden Symbolknöpfen, die alle Funktionen übersichtlich in Zeilen gruppiert.
-## 🛠 Patch in 1.40.133
-* Einheitliche Icon-Größen, dunkler Hintergrund und klare Abstände machen die Aktionsspalte übersichtlicher.
-## 🛠 Patch in 1.40.134
-* Dezente Trennlinien strukturieren die Aktionszeile in Upload-, Dubbing-, Bearbeitungs- und Löschbereich.
-## 🛠 Patch in 1.40.135
-* Zusätzliche Kommentare im Code erläutern den kompakten Tabellenaufbau und die vertikal gruppierten Aktionen.
-## 🛠 Patch in 1.40.136
-* Jede Aktionsgruppe steckt nun in einem eigenen Block mit Abstand; der Löschknopf ist deutlich nach unten versetzt.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
