@@ -13978,6 +13978,8 @@ function quickAddLevel(chapterName) {
                 f.volumeMatched = false;
                 f.radioEffect = false;
                 f.hallEffect = false;
+                // Tempo bei neuem Upload auf Standard zurücksetzen
+                f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
             }
             isDirty = true;
