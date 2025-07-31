@@ -58,7 +58,7 @@
 		
 		/* Debug column styling */
 /* Stil der Pfad-Spalte */
-td:nth-child(8) {
+td:nth-child(10) {
     max-width: 200px;
     font-size: 11px;
     color: #666;
@@ -66,7 +66,7 @@ td:nth-child(8) {
     line-height: 1.2;
 }
 
-th:nth-child(8) {
+th:nth-child(10) {
     max-width: 200px;
     font-size: 12px;
 }
@@ -646,13 +646,15 @@ th:nth-child(8) {
 
         /* Flexible Spaltenbreite für EN und DE */
         /* Spaltenbreite für EN- und DE-Text nach neuer Score-Spalte */
-        td:nth-child(6) {
-            min-width: 250px;
+        td:nth-child(7), td:nth-child(8) {
+            width: 25%;
+            min-width: 200px;
             vertical-align: top;
         }
 
-        th:nth-child(6) {
-            min-width: 250px;
+        th:nth-child(7), th:nth-child(8) {
+            width: 25%;
+            min-width: 200px;
         }
 
         /* Ordner-Spalte so schmal wie möglich halten */
@@ -663,14 +665,16 @@ th:nth-child(8) {
 
 /* Make table responsive - aktualisierte Spalten-Nummern */
 @media (max-width: 1200px) {
-    td:nth-child(6) {
+    td:nth-child(7), td:nth-child(8) {
+        width: 25%;
         min-width: 180px;
     }
-    th:nth-child(6) {
+    th:nth-child(7), th:nth-child(8) {
+        width: 25%;
         min-width: 180px;
     }
     /* Debug-Spalte (UT-Suche) bei kleinen Bildschirmen ausblenden */
-    td:nth-child(7), th:nth-child(7) {
+    td:nth-child(9), th:nth-child(9) {
         display: none;
     }
 }
@@ -725,13 +729,15 @@ th:nth-child(8) {
 }
 
 @media (max-width: 900px) {
-    td:nth-child(6) {
+    td:nth-child(7), td:nth-child(8) {
+        width: 30%;
         min-width: 160px;
     }
-    th:nth-child(6) {
+    th:nth-child(7), th:nth-child(8) {
+        width: 30%;
         min-width: 160px;
     }
-    td:nth-child(7), th:nth-child(7) {
+    td:nth-child(9), th:nth-child(9) {
         display: none;
     }
 }
@@ -1083,43 +1089,6 @@ th:nth-child(8) {
     display: flex;
     flex-direction: column;
     gap: 3px;
-}
-
-/* Vertikale Anordnung der Aktions-Buttons */
-.action-column {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
-}
-
-/* Einzelne Gruppen in der Aktionenspalte etwas trennen */
-.action-group {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-}
-
-/* Ordner-Badge sauber platzieren */
-.folder-cell {
-    white-space: nowrap;
-    vertical-align: top;
-}
-
-/* Version und Score untereinander */
-.version-score-cell {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-}
-
-/* Ueberschrift mit wenig Breite: Version und Score untereinander */
-.version-score-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1.1;
 }
 
 /* Buttons für Effekte im Audio-Editor */
