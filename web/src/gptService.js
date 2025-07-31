@@ -25,9 +25,7 @@ function getEmotionPrompt() {
     return emotionPrompt;
 }
 
-const hasRequire = typeof require === 'function';
-
-if (typeof window !== 'undefined' && typeof fetch === 'function' && !hasRequire) {
+if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompts per Fetch laden
     const urlScore = '../prompts/gpt_score.txt';
     const urlEmo   = '../prompts/gpt_emotions.txt';
