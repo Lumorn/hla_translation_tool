@@ -149,6 +149,8 @@
 * ZIP-Import aktualisiert nun den Ordner `DE-Backup`, sodass ein Zurücksetzen die importierte Datei wiederherstellt.
 ## 🛠 Patch in 1.40.141
 * Fallback für `window` und `localStorage` sorgt für stabile Tests ohne Browser-API.
+## 🛠 Patch in 1.40.142
+* `gptService` nutzt im Electron-Renderer wieder `fetch`, wenn kein `require` verfügbar ist.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
