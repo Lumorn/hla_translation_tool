@@ -143,6 +143,8 @@
 * Aktionsknöpfe besitzen nun abgerundete Ecken und passen optisch zu den anderen Buttons.
 ## 🛠 Patch in 1.40.138
 * Beim Hochladen einer DE-Audiodatei wird der Tempo-Faktor wieder auf 1,0 gesetzt.
+## 🛠 Patch in 1.40.139
+* Beim Kürzen eines Emotional-Texts bleiben abgebrochene Sätze und Fülllaute aus dem Original erhalten.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
