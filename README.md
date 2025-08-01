@@ -133,8 +133,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Finale Stylesheet-Overrides:** Am Dateiende erzwingen `!important`-Angaben die korrekte Größe des Video-Managers.
 * **Korrektes Skalieren nach erneutem Öffnen:** Der Player passt sich nach dem Wiedereinblenden automatisch an die aktuelle Fenstergröße an.
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
-* **Video & OCR Workbench:** Liste und Player teilen sich die obere Zeile, das OCR-Ergebnis belegt den gesamten Bereich darunter.
-* **Dreispaltiges Dialog-Layout:** Das OCR-Fenster sitzt jetzt rechts oben und die Steuerleiste belegt eine eigene Zeile.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
 * **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com` und `api.openai.com`, damit Storyboards und die GPT-API funktionieren.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
@@ -157,16 +155,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
 * **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
 * **Responsiver Video-Manager:** Fester Dialog-Abstand, flexible Toolbar mit Min-Buttons und kompaktem ❌-Icon bei schmaler Breite. Tabellenzeilen besitzen gleichmäßiges Padding und einen Hover-Effekt.
-* **Zweispaltiges Video-Dashboard:** Links steht die Videoliste, rechts der 16:9‑Player mit schwebender Leiste. Das OCR‑Panel füllt darunter die komplette Breite und die Aktions-Icons befinden sich direkt unter dem Player.
-* **Flexibles Dashboard-Layout:** Das Dashboard basiert jetzt auf einem vertikalen Flex-Layout. Liste, Player und OCR-Bereich ordnen sich untereinander an und passen sich dynamisch der Fensterhöhe an.
 * **Robuster Video-Dialog:** Das Flex-Layout verhindert Überlappungen und lässt jede Sektion dynamisch wachsen.
 * **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
 * **Bereinigte CSS-Regeln:** Alte, starre Blöcke gelöscht; `video-dialog` und `wb-grid` stehen jetzt einmalig am Ende.
 * **Vereinfachtes Dialoglayout:** Grundwerte und geöffnete Variante wurden zu einem Grid-Block zusammengeführt.
-* **Dynamische Spaltenbreite im Video-Manager:** Die Liste schrumpft bis auf 30 % der Dialogbreite und bleibt mindestens 180 px breit. Gleichzeitig entfallen starre Zeilenhöhen, sodass Player und OCR-Bereich flexibel wachsen.
 * **Entschlacktes Video-Dialog-Raster:** Kopf, Inhalt und Steuerleiste passen sich automatisch an und der Rahmen zeigt keine Scrollbalken mehr.
 * **Klar kommentierte CSS-Blöcke:** `video-dialog` und `wb-grid` besitzen jetzt eindeutige Abschnittsüberschriften.
-* **Aussagekräftige IDs:** Die drei Bereiche heißen nun `videoListSection`, `videoPlayerSection` und `ocrOutputSection`.
 * **Verbesserter Schließen-Button:** Das kleine ❌ sitzt fest oben rechts im Dialog.
 * **Aufgeräumtes Drei-Leisten-Layout** für Projektsteuerung, Spielstart und Dateifilter.
 * **Flexible Player-Steuerleiste:** Bei schmalen Fenstern rutscht der Slider in eine zweite Zeile. Icons und Zeitangaben verkleinern sich automatisch.
@@ -185,47 +179,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Dialog startet bei 80 % Fenstergröße:** Direkt nach `showModal()` setzt das Skript Breite und Höhe auf 80 % des Browserfensters. Ein `DOMContentLoaded`-Listener im IFrame stellt diese Werte nach dem Laden von YouTube erneut ein.
 * **Optimal genutzter Player-Bereich:** Breite und Höhe orientieren sich jetzt an der größeren freien Dimension. Die Player-Sektion schrumpft exakt auf die IFrame-Höhe und vermeidet so schwarze Balken.
 * **Einheitliche Größenberechnung:** Auch `adjustVideoPlayerSize()` prüft nun freie Breite und Höhe und wählt automatisch das größere Maß.
-* **OCR-Funktion im Player:** Ein präzises Overlay deckt nur die Untertitel ab. Der Auto-Modus pausiert bei einem Treffer das Video und sammelt den Text im rechten Panel. F9 erstellt jetzt einen einzelnen OCR‑Screenshot. Ein neuer 🔍‑Button aktiviert den Dauerlauf.
-* **Verbesserte OCR-Pipeline:** Overlay und Panel passen sich dynamisch an, starten nur nach Aktivierung und zeigen den erkannten Text gut lesbar im neuen Ergebnis‑Panel.
-* **Nahtloser Player mit OCR-Panel:** Die Breite des IFrames berücksichtigt die Panelbreite, die Steuerleiste reicht bis an den Rand und der blaue OCR‑Rahmen sitzt exakt auf dem Videobild.
-* **Feinschliff am OCR‑Panel:** Breite clamped, Panel überlappt keine Buttons mehr, Text scrollt automatisch und der 🔍‑Button blinkt kurz bei einem Treffer.
-* **Fest rechts verankertes Ergebnis-Panel:** Das Panel sitzt nun neben dem Video und passt seine Höhe automatisch an, ohne das Bild zu überdecken.
-* **Aufräumarbeiten am Panel-Layout:** Überflüssige CSS-Regeln entfernt und Höhe dynamisch gesetzt.
-* **Panelgröße korrekt berechnet:** Die Player-Anpassung zieht nun die Breite des Ergebnis-Panels ab und setzt dessen Höhe direkt nach dem Video.
-* **Schnell-Fix:** Das Ergebnis-Panel überdeckt das Video nicht mehr und passt seine Höhe exakt an die IFrame-Größe an.
-* **Responsive OCR-Anzeige:** Bei schmalen Dialogen rutscht das Ergebnis-Panel automatisch unter das Video.
-* **Dynamisch mitskalierender OCR-Bereich:** Overlay und Panel wachsen oder schrumpfen nun mit dem Dialog.
- * **Robuster Auto‑OCR‑Loop:** Das Intervall startet nur bei aktivem Toggle, pausiert nach einem Treffer das Video, stoppt automatisch und setzt sich beim erneuten Abspielen fort.
- * **CPU-schonendere OCR:** Nach jedem Durchlauf wird das Intervall angehalten und erst mit einem erneuten Play-Befehl wieder gestartet.
-* **GPU-beschleunigte EasyOCR-Engine:** Erkennt Texte deutlich schneller und liefert stabilere Ergebnisse als Tesseract.
-* **Neuer 📋-Button:** Kopiert den letzten OCR-Treffer direkt in die Zwischenablage.
-* **ROI-Vorschau im Panel:** Das geschnittene Bild wird live im rechten Bereich angezeigt.
-* **F9 führt einen einzelnen OCR-Durchlauf aus und zeigt eine Bildvorschau.**
-* **Korrektur der OCR-Breite:** Der blaue Rahmen deckt jetzt die komplette Videobreite ab.
-* **Verschieb- und skalierbares OCR-Overlay:** Der Rahmen lässt sich per Maus anpassen und merkt sich die letzte Position.
-* **Verbesserte Positionierung:** Overlay und Ergebnis-Panel orientieren sich exakt am Video und umschiffen so Steuerleiste und Bild.
-* **Overlay kollidiert nicht mehr mit den Controls:** Der blaue Rahmen endet 48 px über dem Rand und liegt mit niedrigerem `z-index` unter den Bedienelementen.
-* **Neues OCR-Pop‑up:** Erkennt die OCR Text, pausiert das Video und öffnet ein separates Fenster mit dem gefundenen Text.
-* **Debug-Fenster für die OCR:** Ein 🐞‑Button öffnet ein separates Fenster. Jetzt wird nach jedem Durchlauf der Screenshot samt Rohtext per `postMessage` übertragen und in einer kleinen Galerie gesammelt; ein erneuter Klick schließt das Fenster und stoppt den Stream.
-* **OCR nur noch per EasyOCR-Worker:** Die aufwändigen Tesseract-Fallbacks wurden entfernt. Die Erkennung läuft komplett über den lokalen Python-Worker.
-* **Exakte Video-Positionierung:** Playerbreite, Steuerleiste und Overlay richten sich nun dynamisch nach Dialog- und Panelgröße aus. Das IFrame skaliert dabei rein per CSS und die Berechnung läuft auch im versteckten Zustand.
-* **OCR-Panel immer sichtbar:** Ein Platzhalter weist nun darauf hin, wenn noch kein Text erkannt wurde.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
 * **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
 * **Gesicherte Schnittstelle im Preload:** Über `window.api.captureFrame(bounds)` kann der Renderer nun sicher einen Screenshot anfordern.
 * **Desktop-Capturer entfernt:** Die API `desktopCapturer.getSources` steht nicht mehr zur Verfügung.
-* **Neuer Frame-Grab-Workflow im Renderer:** Für jeden OCR-Durchlauf wird das IFrame direkt fotografiert und das PNG ohne zusätzliche Berechtigungen verarbeitet.
-* **Bildverarbeitung für exakteres OCR:** Der Screenshot wird noch heller und kontrastreicher aufbereitet und anschließend hart binarisiert.
-* **Optimierte OCR-Parameter für bessere Trefferquote**
-* **Genauere ROI-Erkennung dank Helligkeitsprüfung** – der erkannte Bereich wird geringfügig nach unten verschoben, wenn zu wenig helle Pixel vorhanden sind.
-* **Stabilere Helligkeitsprüfung:** Überprüft zuerst die Abmessungen des Overlay-Bereichs und vermeidet so Fehlermeldungen.
-* **OffscreenCanvas mit Graustufen-Verarbeitung:** Screenshots werden doppelt skaliert, kontrastverstärkt und in Graustufen umgewandelt.
-* **willReadFrequently gesetzt:** Canvas-Kontexte nutzen das Attribut für schnellere Mehrfachzugriffe ohne Warnungen.
-* **OCR-Tuning im Einstell-Drawer:** Der ⚙️‑Button klappt nun einen seitlichen Drawer aus. Darin lassen sich Helligkeit, Kontrast, Invertierung, Schärfen, Schwellenwert, PSM-Modus und Whitelist live anpassen. Eine kleine Vorschau zeigt sofort das gefilterte Bild und das erkannte Ergebnis. Das Ergebnisfeld färbt sich abhängig von der erkannten Confidence rot, gelb oder grün und alle Werte bleiben dank `localStorage` dauerhaft erhalten.
-* **Escape schließt den Einstell-Drawer:** Mit der Escape-Taste verschwindet nur der Drawer, der Player bleibt sichtbar.
-* **Präzisere Texterkennung:** Das Overlay endet jetzt 3 px über dem Slider und nutzt nur 14 % der Bildhöhe.
-* **Schnellerer Auto‑OCR‑Loop:** Läuft alle 750 ms und pausiert das Video ab vier erkannten Zeichen.
-* **Statusleiste mit GPU-Anzeige und Start-/Stop-Buttons** erleichtert die Kontrolle der Erkennung.
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
@@ -395,10 +352,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 13. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 14. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 15. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
-16. Zudem erkennt das Skript automatisch eine vorhandene NVIDIA‑GPU und installiert PyTorch mitsamt EasyOCR wahlweise als CUDA- oder CPU-Version.
-17. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
-18. `run_easyocr.py` verwendet eine globale EasyOCR-Instanz. Über die Umgebungsvariable `HLA_OCR_LANGS` lassen sich die Sprachen anpassen (Standard: `en,de`).
-19. Für die Bildvorverarbeitung installiert das Skript `Pillow>=10.3`. Dieses Wheel unterstützt Python 3.12. `opencv-python-headless>=4.9.0` ist weiterhin optional.
+16. Bereits vorhandene Python‑Pakete werden beim Start übersprungen, damit das Setup schneller abgeschlossen ist.
 20. Die Vorschaubilder nutzen standardmäßig `yt-dlp`:
 
     ```bash
@@ -541,21 +495,13 @@ Seit Patch 1.40.41 startet die Desktop-App ohne Fehlermeldung, da `session` in `
 Seit Patch 1.40.42 erlaubt die Content Security Policy nun Bilder von `i.ytimg.com`, wodurch der YouTube-Player keine CSP-Fehler mehr verursacht.
 Seit Patch 1.40.43 verschwindet der YouTube-Player nicht mehr, wenn man dasselbe Video erneut anklickt.
 Seit Patch 1.40.44 entfällt das separate Element `ytPlayerBox`; der Player wird nun direkt im Dialog erzeugt.
-Seit Patch 1.40.45 erlaubt die Content Security Policy nun Web Worker aus `blob:`-URLs. Dadurch funktioniert die OCR wieder fehlerfrei.
-Seit Patch 1.40.46 darf die Content Security Policy auch Skripte von `cdn.jsdelivr.net` laden. Damit startet der Tesseract-Worker ohne Fehlermeldung.
-Seit Patch 1.40.47 erlaubt die Content Security Policy nun zusätzlich `'unsafe-eval'` und `'data:'` in den passenden Direktiven. Dadurch läuft die OCR ohne CSP-Fehler.
-Seit Patch 1.40.48 akzeptiert die Richtlinie auch `tessdata.projectnaptha.com`, damit Tesseract seine Sprachdaten herunterladen kann.
-Seit Patch 1.40.49 entfernt die Content Security Policy `'unsafe-eval'` wieder, da alle eingebundenen Bibliotheken ohne diese Option auskommen. Dadurch entfallen die Sicherheitshinweise beim Start.
-Seit Patch 1.40.50 fügt die Richtlinie `'unsafe-eval'` erneut hinzu, damit der Tesseract-Worker ohne Fehler startet.
 Seit Patch 1.40.51 wurde die CSS-Klasse `.video-player-section` bereinigt. Jetzt gilt ein eindeutiger Block mit `overflow-x:hidden`, `overflow-y:auto` und `min-height:0`, damit die Steuerelement-Leiste nicht mehr abgeschnitten wird.
 Seit Patch 1.40.52 entfernt die Content Security Policy `'unsafe-eval'` erneut und erlaubt `worker-src 'self'`. Dadurch verschwindet die Electron-Sicherheitswarnung, ohne die App-Funktionalität einzuschränken.
 Seit Patch 1.40.53 nutzt die Content Security Policy eine minimale Konfiguration. Sie erlaubt Blob‑Worker für Tesseract, ohne `'unsafe-eval'` zu verwenden.
 Seit Patch 1.40.54 erlaubt die Richtlinie Skripte und Frames von `youtube.com` und `youtube-nocookie.com`. Vorschaubilder von `i.ytimg.com` bleiben erlaubt.
-Seit Patch 1.40.55 wird die Datei `tesseract-core-simd.wasm.js` lokal eingebunden und über `corePath` geladen. Dadurch benötigt die OCR keine externen Skripte mehr.
 Seit Patch 1.40.56 erlaubt die Content Security Policy zusätzlich `wasm-unsafe-eval` und `connect-src data:`, damit Tesseract im Browser ohne Fehlermeldungen startet.
 Seit Patch 1.40.57 akzeptiert die Richtlinie auch `'unsafe-inline'` in `style-src`. Damit funktionieren eingebettete Style-Attribute wieder ohne CSP-Warnung.
 Seit Patch 1.40.58 wird `style-src` aufgeteilt: `style-src-elem 'self'` und `style-src-attr 'self' 'unsafe-inline'`. Inline-Styles bleiben erlaubt, externe Styles müssen aber weiterhin lokal geladen werden.
-Seit Patch 1.40.59 entfernt die Web-App alle Tesseract-Dateien. Die OCR läuft jetzt ausschließlich über EasyOCR und benötigt keine zusätzlichen CSP-Ausnahmen.
 Seit Patch 1.40.60 ignoriert `start_tool.py` Kommentare in `requirements.txt`, damit `pip install` unter Windows nicht mehr scheitert.
 Seit Patch 1.40.61 setzt `start_tool.py` den Pfad zum Python-Interpreter in Anführungszeichen, wodurch `pip install` auch bei Leerzeichen im Pfad funktioniert.
 Seit Patch 1.40.62 greift die Gestaltung des Video-Dialogs erst mit dem `open`-Attribut und das Öffnen erfolgt ohne Animation.
@@ -766,9 +712,6 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 | **`Escape`**       | Player schließen |
 | **`Leertaste`**    | Wiedergabe starten/pausieren |
 | **`←` / `→`**      | 10 s zurück/vor |
-| **`F9`**           | Einzelbild-OCR |
-| **`Ctrl + Shift + O`** | OCR-Einstell-Drawer |
-| **`R`**             | Reset der OCR-Einstellungen (nur bei offenem Drawer) |
 
 ---
 

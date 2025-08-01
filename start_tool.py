@@ -248,8 +248,6 @@ if os.path.exists(req_file):
                     packages.append(clean)
         missing = []
         for pkg in packages:
-            if pkg.startswith("torch") or pkg.startswith("easyocr"):
-                continue  # werden separat behandelt
             mod = pkg.split("==")[0].split(">=")[0]
             if not has_module(mod):
                 missing.append(pkg)
@@ -266,24 +264,6 @@ if os.path.exists(req_file):
         sys.exit(1)
 else:
     log("requirements.txt nicht gefunden")
-
-# --- GPU-Unterstützung und EasyOCR installieren ---
-log("Pruefe EasyOCR-Umgebung")
-
-cuda_available = shutil.which("nvidia-smi") is not None
-
-if not has_module("torch"):
-    log("Installiere PyTorch")
-    if cuda_available:
-        run(f"{quote_path(sys.executable)} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121")
-    else:
-        run(f"{quote_path(sys.executable)} -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu")
-
-if not has_module("easyocr"):
-    log("Installiere EasyOCR")
-    run(f"{quote_path(sys.executable)} -m pip install easyocr opencv-python-headless Pillow")
-
-
 # ----------------------- Haupt-Abhaengigkeiten installieren -----------------
 log("npm ci (root) starten")
 if needs_npm_ci("package-lock.json", "node_modules"):
