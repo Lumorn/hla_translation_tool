@@ -155,6 +155,8 @@
 * "Verbessern" berücksichtigt nun den gesamten Kontext, zeigt eine Ladeanimation am Knopf und der Dialog besitzt ein überarbeitetes Layout.
 ## 🛠 Patch in 1.40.144
 * Anpassen-Kürzen sorgt nun dafür, dass die deutsche Variante die Länge der EN-Aufnahme nie unterschreitet.
+## 🛠 Patch in 1.40.145
+* ZIP-Import setzt den Tempo-Regler jeder importierten Zeile wieder auf 1,0.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
