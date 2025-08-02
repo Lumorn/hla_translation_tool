@@ -10501,6 +10501,8 @@ async function applyZipImport(zipFiles) {
         if (!window.electronAPI.fsExists(full)) continue;
         const data = window.electronAPI.fsReadFile(full);
         const blob = new Blob([new Uint8Array(data)]);
+        // Tempo-Faktor der Zeile zurücksetzen, damit der Regler nach dem Import auf 1,0 steht
+        files[i].tempoFactor = 1.0;
         await uploadDeFile(blob, rel);
     }
     showToast(`${zipFiles.length} Dateien importiert`);
