@@ -157,6 +157,8 @@
 * Anpassen-Kürzen sorgt nun dafür, dass die deutsche Variante die Länge der EN-Aufnahme nie unterschreitet.
 ## 🛠 Patch in 1.40.145
 * ZIP-Import setzt den Tempo-Regler jeder importierten Zeile wieder auf 1,0.
+## 🛠 Patch in 1.40.146
+* Button "Verbesserungsvorschläge" öffnet einen Dialog mit drei Alternativen, die Länge und Sprechzeit des englischen Originals berücksichtigen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

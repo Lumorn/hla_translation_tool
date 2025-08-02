@@ -270,7 +270,8 @@ async function improveEmotionText({ meta, lines, targetPosition, currentText, cu
         target_position: targetPosition,
         current_text: currentText,
         current_translation: currentTranslation,
-        instructions: 'Analysiere die gesamte Übersetzung und schlage genau drei alternative deutsche Fassungen vor. Jede Variante soll den englischen Originaltext besser wiedergeben, alle Emotionstags beibehalten und nicht kürzer sein. Gib ein Array [{"text":"...","reason":"..."}] zurück und begründe kurz die Verbesserungen.'
+        // LLM soll Alternativen liefern, die Länge und Sprechzeit des EN-Texts beachten
+        instructions: 'Analysiere die gesamte Übersetzung und schlage genau drei alternative deutsche Fassungen vor. Jede Variante soll den englischen Originaltext besser wiedergeben, alle Emotionstags beibehalten und ungefähr die gleiche Länge sowie geschätzte Sprechdauer wie der englische Text haben. Vermeide längere Formulierungen. Gib ein Array [{"text":"...","reason":"..."}] zurück und begründe kurz die Verbesserungen.'
     };
     const messages = [
         { role: 'system', content: emotionPrompt },
