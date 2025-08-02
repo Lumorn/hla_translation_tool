@@ -260,6 +260,36 @@ async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, k
     return obj;
 }
 
+// Liefert drei Verbesserungsvorschläge für einen bestehenden Emotional-Text
+async function improveEmotionText({ meta, lines, targetPosition, currentText, key, model = 'gpt-4o-mini', retries = 5 }) {
+    await promptReady;
+    // Kontext und aktueller Emotional-Text werden an das LLM gesendet
+    const payload = {
+        ...meta,
+        lines,
+        target_position: targetPosition,
+        current_text: currentText,
+        instructions: 'Analysiere die Szene und gib genau drei alternative Versionen des Emotional-Texts auf Deutsch zurück. Behalte alle Emotionstags bei und liefere ein Array [{"text":"...","reason":"..."}].'
+    };
+    const messages = [
+        { role: 'system', content: emotionPrompt },
+        { role: 'user', content: JSON.stringify(payload) }
+    ];
+    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify({ model, messages, temperature: 0 })
+    }, retries);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const arr = JSON.parse(clean);
+    return arr;
+}
+
 function createProgressDialog(total) {
     const overlay = document.createElement('div');
     overlay.className = 'dialog-overlay';
@@ -339,6 +369,7 @@ if (typeof module !== 'undefined') {
         getEmotionPrompt,
         generateEmotionText,
         adjustEmotionText,
+        improveEmotionText,
         sanitizeJSONResponse,
         fetchWithRetry,
         queuedFetch
@@ -352,6 +383,7 @@ if (typeof window !== 'undefined') {
     window.getEmotionPrompt = getEmotionPrompt;
     window.generateEmotionText = generateEmotionText;
     window.adjustEmotionText = adjustEmotionText;
+    window.improveEmotionText = improveEmotionText;
     window.sanitizeJSONResponse = sanitizeJSONResponse;
     window.fetchWithRetry = fetchWithRetry;
     window.queuedFetch = queuedFetch;
