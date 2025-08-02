@@ -153,6 +153,8 @@
 * Neuer Button "Verbessern" unter dem Emotional-Text zeigt drei alternative Übersetzungen mit Begründung an.
 ## 🛠 Patch in 1.40.143
 * "Verbessern" berücksichtigt nun den gesamten Kontext, zeigt eine Ladeanimation am Knopf und der Dialog besitzt ein überarbeitetes Layout.
+## 🛠 Patch in 1.40.144
+* Anpassen-Kürzen sorgt nun dafür, dass die deutsche Variante die Länge der EN-Aufnahme nie unterschreitet.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
