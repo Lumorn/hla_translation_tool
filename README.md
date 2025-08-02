@@ -216,7 +216,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Der Button „Emotional-Text (DE) generieren“ erstellt den Inhalt nun stets neu; ein 📋‑Knopf kopiert ihn.
 * **Emotionen (DE) generieren:** Der Button oberhalb der Tabelle erstellt jetzt für alle Zeilen neue Emotional-Text-Felder – vorhandene Inhalte werden überschrieben.
 * **Anpassen‑Kürzen:** Direkt neben dem Generieren-Knopf passt ein weiterer Button den Emotional-Text auf die Länge der englischen Originalaufnahme an. Bei sehr kurzen EN-Zeilen darf der deutsche Text nun kreativ gekürzt und leicht umformuliert werden. Die Begründung unter dem violetten Feld erklärt weiterhin kurz, wie der Text auf z. B. "8,57 s" gebracht wurde.
-* **Verbessern:** Ein zusätzlicher Button analysiert den bestehenden Emotional-Text und zeigt drei alternative Übersetzungen inklusive Begründung zur Auswahl an.
 * **Eigenheiten bewahren:** Abgebrochene Sätze oder Fülllaute wie "äh" oder "mh" bleiben auch in gekürzten Emotional-Texten sinngemäß erhalten.
 * **Laufzeit vor Emotional-Text:** Der 📋-Knopf schreibt beim Kopieren jetzt die Dauer der EN-Datei im Format `[8,57sec]` vor den Text.
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.

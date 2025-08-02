@@ -694,8 +694,7 @@ th:nth-child(8) {
 /* Buttons zum Generieren und Kopieren des Emotionstexts */
 .generate-emotions-btn,
 .adjust-emotions-btn,
-.copy-emotional-text,
-.improve-emotions-btn {
+.copy-emotional-text {
     background: #444;
     border: none;
     color: #e0e0e0;
@@ -713,8 +712,7 @@ th:nth-child(8) {
 
 .generate-emotions-btn:hover,
 .adjust-emotions-btn:hover,
-.copy-emotional-text:hover,
-.improve-emotions-btn:hover {
+.copy-emotional-text:hover {
     background: #aa4dff;
     color: white;
     transform: scale(1.1);
@@ -722,8 +720,7 @@ th:nth-child(8) {
 
 .generate-emotions-btn:active,
 .adjust-emotions-btn:active,
-.copy-emotional-text:active,
-.improve-emotions-btn:active {
+.copy-emotional-text:active {
     transform: scale(0.95);
 }
 
@@ -3311,8 +3308,3 @@ th:nth-child(8) {
     color: #ff6b1a;
 }
 .radio-preset{display:flex;gap:5px;margin-top:10px;}
-
-/* Layout für Verbesserungsvorschläge im Dialog */
-.improve-option { margin-top: 10px; }
-.improve-option textarea { width: 100%; height: 4em; }
-.improve-option p { margin: 4px 0; }
