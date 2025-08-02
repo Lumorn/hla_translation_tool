@@ -149,8 +149,6 @@
 * ZIP-Import ersetzt nun ebenfalls die Sicherungsdatei in `DE-Backup`, sodass der "Zurücksetzen"-Knopf die importierte Version wiederherstellt.
 ## 🛠 Patch in 1.40.141
 * Entfernt die komplette OCR-Funktion samt `easyocr`-Abhängigkeiten.
-## 🛠 Patch in 1.40.142
-* Neuer Button "Verbessern" unter dem Emotional-Text zeigt drei alternative Übersetzungen mit Begründung an.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
