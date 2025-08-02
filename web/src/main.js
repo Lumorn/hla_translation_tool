@@ -3074,6 +3074,84 @@ function addFiles() {
             btn.disabled = false;
         }
 
+        // Analysiert den Emotional-Text und schlägt Alternativen vor
+        async function improveEmotionalText(rowId) {
+            const row = document.querySelector(`tr[data-id='${rowId}']`);
+            const area = row?.querySelector('textarea.emotional-text');
+            const btn  = row?.querySelector('button.improve-emotions-btn');
+            if (!row || !area || !btn) return;
+            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            btn.disabled = true;
+            const file = files.find(f => f.id === rowId);
+            if (!file) { btn.disabled = false; return; }
+            try {
+                const meta = {
+                    game: 'Half-Life: Alyx',
+                    project: currentProject?.name || '',
+                    chapter: getLevelChapter(currentProject?.levelName || ''),
+                    level: currentProject?.levelName || '',
+                    scene: currentProject?.name || ''
+                };
+                const lines = files.map((f, idx) => ({
+                    position: idx + 1,
+                    speaker: f.folder || '',
+                    text_en: f.enText || '',
+                    text_de: f.deText || '',
+                    emotional_de: f.emotionalText || ''
+                }));
+                const targetPosition = files.indexOf(file) + 1;
+                const suggestions = await improveEmotionText({ meta, lines, targetPosition, currentText: area.value || '', key: openaiApiKey, model: openaiModel });
+                const choice = await showImprovementDialog(area.value || '', suggestions || []);
+                if (choice) {
+                    area.value = choice.text || '';
+                    file.emoReason = choice.reason || '';
+                    file.emoError = false;
+                    updateText(file.id, 'emo', area.value, true);
+                    updateEmoReasonDisplay(file.id);
+                    updateStatus(`Text verbessert: ${file.filename}`);
+                } else {
+                    updateStatus('Verbesserung abgebrochen');
+                }
+            } catch (e) {
+                console.error('Verbesserung fehlgeschlagen', e);
+                updateStatus('Verbesserung fehlgeschlagen');
+            }
+            btn.disabled = false;
+        }
+
+        // Zeigt einen Dialog mit Verbesserungsvorschlägen an
+        function showImprovementDialog(oldText, suggestions) {
+            return new Promise(resolve => {
+                const overlay = document.createElement('div');
+                overlay.className = 'dialog-overlay';
+                const optionsHtml = suggestions.map((s, i) => `
+                    <div class="improve-option">
+                        <textarea readonly>${escapeHtml(s.text || '')}</textarea>
+                        <p>${escapeHtml(s.reason || '')}</p>
+                        <button data-idx="${i}">Übernehmen</button>
+                    </div>`).join('');
+                overlay.innerHTML = `<div class="dialog" style="max-width:600px">
+                    <h3>Verbesserungsvorschläge</h3>
+                    <p><strong>Aktueller Text:</strong></p>
+                    <textarea readonly style="width:100%;height:4em;">${escapeHtml(oldText)}</textarea>
+                    ${optionsHtml}
+                    <div style="text-align:right;margin-top:10px;">
+                        <button id="improveCancel">Abbrechen</button>
+                    </div>
+                </div>`;
+                document.body.appendChild(overlay);
+                overlay.querySelector('#improveCancel').onclick = () => { overlay.remove(); resolve(null); };
+                overlay.querySelectorAll('button[data-idx]').forEach(b => {
+                    b.onclick = () => {
+                        const idx = parseInt(b.dataset.idx, 10);
+                        const s = suggestions[idx];
+                        overlay.remove();
+                        resolve(s);
+                    };
+                });
+            });
+        }
+
         // Generiert die Emotional-Texte für alle Zeilen im Projekt
         async function generateEmotionsForAll() {
             const btn = document.getElementById('generateEmotionsButton');
@@ -3634,6 +3712,7 @@ return `
                 <div class="btn-column">
                     <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
                     <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
+                    <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">Verbessern</button>
                     <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
                 </div>
             </div>
@@ -14328,6 +14407,7 @@ if (typeof module !== "undefined" && module.exports) {
         copyDownloadFolder,
         copyAllEmotionsToClipboard,
         adjustEmotionalText,
+        improveEmotionalText,
         toggleEmoCompletion,
         __setFiles: f => { files = f; },
         __setDeAudioCache: c => { deAudioCache = c; },

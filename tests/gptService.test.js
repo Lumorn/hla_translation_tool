@@ -102,6 +102,20 @@ test('generateEmotionText liefert Objekt mit Begründung', async () => {
   expect(res).toEqual({ text: 'hi', reason: 'ok' });
 });
 
+test('improveEmotionText liefert drei Vorschläge', async () => {
+  const { improveEmotionText } = require('../web/src/gptService.js');
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ choices: [{ message: { content: '[{"text":"a","reason":"r1"},{"text":"b","reason":"r2"},{"text":"c","reason":"r3"}]' } }] })
+  });
+  const res = await improveEmotionText({ meta: {}, lines: [], targetPosition: 1, currentText: 'alt', key: 'k', model: 'gpt', retries: 1 });
+  expect(res).toEqual([
+    { text: 'a', reason: 'r1' },
+    { text: 'b', reason: 'r2' },
+    { text: 'c', reason: 'r3' }
+  ]);
+});
+
 test('wiederholt bei HTTP 429', async () => {
   const { evaluateScene } = require('../web/src/gptService.js');
   const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
