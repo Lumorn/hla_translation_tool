@@ -3075,7 +3075,7 @@ function addFiles() {
             btn.disabled = false;
         }
 
-        // Analysiert Übersetzung und Emotional-Text und schlägt Alternativen vor
+        // Analysiert Übersetzung und Emotional-Text und zeigt Verbesserungsvorschläge im Dialog
         async function improveEmotionalText(rowId) {
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
@@ -3715,7 +3715,7 @@ return `
                 <div class="btn-column">
                     <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
                     <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
-                    <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">Verbessern</button>
+                    <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">Verbesserungsvorschläge</button>
                     <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
                 </div>
             </div>

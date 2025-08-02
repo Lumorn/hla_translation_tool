@@ -93,6 +93,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
 * **Feste Schriftfarben:** Gelber Score nutzt schwarze Schrift, rot und gruen weiss
+* **Verbesserungsvorschläge berücksichtigen Länge:** Der Knopf "Verbesserungsvorschläge" öffnet einen Dialog mit drei Alternativen, die sich an Länge und geschätzter Sprechzeit des englischen Originals orientieren
 * **Bereinigte Vorschau-Anzeige:** Leere GPT-Vorschläge lassen keinen zusätzlichen Abstand mehr
 * **Kommentar über dem Vorschlag:** Ist ein Kommentar vorhanden, erscheint er in weißer Schrift direkt über der farbigen Box
 * **Einheitliche GPT-Vorschau:** Der farbige Vorschlagsbalken ist nun direkt klickbar und es gibt nur noch einen Tooltip
