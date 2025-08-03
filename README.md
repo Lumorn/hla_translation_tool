@@ -233,7 +233,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Lade-Indikator für Übersetzungen:** Jede Anfrage zeigt nun einen Spinner und das Ergebnis kommt über das IPC-Event `translate-finished`
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
-* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer, zentrieren die Zeile in der Tabelle und merken die Position. Schnelle Klicks nach unten funktionieren jetzt ebenfalls ohne Zurückspringen
+* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer, zentrieren die Zeile stets in der Mitte des Bildschirms und merken die Position. Beim Scrollen mit dem Mausrad wird automatisch die Zeile in Bildschirmmitte markiert, ohne die Ausrichtung zu verändern. Schnelle Klicks nach unten funktionieren jetzt ebenfalls ohne Zurückspringen
 * **Aktuelle Zeile angeheftet:** Beim Scrollen bleibt die oberste Zeile direkt unter der Überschrift stehen und ist dezent markiert
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
@@ -315,6 +315,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt, Rechtsklick auf Kapitel → Schnell‑Level
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
+* **Mausrad:** Markiert beim Scrollen automatisch die Zeile in der Bildschirmmitte, ohne sie neu auszurichten
 * **Doppelklick:** Projekt umbenennen
 
 ---
@@ -665,7 +666,7 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
 | **Projekt-Playback**      | ▶/⏸/⏹ spielt vorhandene DE-Dateien der Reihe nach |
-| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück, zentrieren die Zeile und reagieren nun auch bei schnellen Klicks zuverlässig |
+| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück und zentrieren die gewählte Zeile auf dem Bildschirm; das Mausrad markiert nur die Zeile in der Bildschirmmitte, ohne die Position zu verändern. Schnelle Klicks funktionieren weiterhin zuverlässig |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |

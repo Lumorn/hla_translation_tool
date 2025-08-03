@@ -2932,7 +2932,7 @@ function addFiles() {
             }
         }
 
-        // Springt zu einer bestimmten Nummer und zentriert die Zeile im sichtbaren Bereich
+        // Springt zu einer bestimmten Nummer und zentriert die Zeile auf dem Bildschirm
         function scrollToNumber(num) {
             if (!files.length) return;
             num = Math.max(1, Math.min(num, files.length));
@@ -2942,9 +2942,14 @@ function addFiles() {
             if (row) {
                 const container = document.querySelector('.table-container');
                 if (container) {
-                    // Berechne Scrollposition so, dass die Zeile in der Mitte steht
-                    const offset = row.offsetTop - container.offsetTop;
-                    const target = offset - (container.clientHeight / 2 - row.clientHeight / 2);
+                    // Ziel so berechnen, dass die Zeile mittig im sichtbaren Bereich des Monitors erscheint
+                    const containerRect = container.getBoundingClientRect();
+                    const rowRect = row.getBoundingClientRect();
+                    const viewportCenter = window.innerHeight / 2;
+                    const currentScroll = container.scrollTop;
+                    // Abstand der Zeilenmitte relativ zum Container plus aktueller Scroll
+                    const rowCenterOffset = rowRect.top - containerRect.top + rowRect.height / 2;
+                    const target = currentScroll + rowCenterOffset - viewportCenter;
                     container.scrollTo({ top: target, behavior: 'smooth' });
                 } else {
                     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2966,17 +2971,16 @@ function addFiles() {
             scrollToNumber(currentRowNumber - 1);
         }
 
-        // Aktualisiert die aktuelle Nummer anhand der scrollbaren Tabellenmitte
+        // Aktualisiert die aktuelle Nummer anhand der Bildschirmmitte beim manuellen Scrollen
         function updateNumberFromScroll() {
             if (isAutoScrolling) return; // Ignoriere Scroll-Events während automatischem Scrollen
             const container = document.querySelector('.table-container');
             if (!container) return;
-            const containerTop = container.getBoundingClientRect().top;
-            const containerCenter = containerTop + container.clientHeight / 2;
+            const viewportCenter = window.innerHeight / 2;
             const rows = container.querySelectorAll('#fileTableBody tr');
             for (const row of rows) {
                 const rect = row.getBoundingClientRect();
-                if (rect.top <= containerCenter && rect.bottom >= containerCenter) {
+                if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
                     const cell = row.querySelector('.row-number');
                     if (cell) {
                         const num = parseInt(cell.textContent, 10);
