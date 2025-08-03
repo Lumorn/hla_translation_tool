@@ -163,6 +163,8 @@
 * ▲/▼-Knöpfe neben ▶/⏹ springen zur nächsten oder vorherigen Nummer und merken die letzte Position.
 ## 🛠 Patch in 1.40.148
 * Beim Scrollen bleibt die aktuelle Zeile am Tabellenkopf fixiert und wird dezent hervorgehoben.
+## 🛠 Patch in 1.40.149
+* Debug-Konsole ist nun standardmäßig ausgeblendet und erscheint nur bei Entwickleraktionen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

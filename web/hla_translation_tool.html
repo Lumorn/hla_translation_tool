@@ -842,8 +842,8 @@
     <input type="file" id="zipImportInput" style="display:none" accept=".zip" onchange="handleZipImport(this)">
     <input type="file" id="backupUploadInput" style="display:none" accept=".json" onchange="handleBackupUpload(this)">
 
-    <!-- Umschaltbare Debug-Konsole -->
-    <details id="debugConsoleWrapper" style="margin:10px 0;">
+    <!-- Umschaltbare Debug-Konsole (standardmäßig versteckt) -->
+    <details id="debugConsoleWrapper" style="margin:10px 0; display:none;">
         <summary>🛠️ Debug-Konsole</summary>
         <button class="btn btn-secondary" onclick="showFolderDebug()">🐞 Ordner prüfen</button>
         <div id="folderDebug" style="margin:10px 0;"></div>
