@@ -2930,12 +2930,21 @@ function addFiles() {
             }
         }
 
+        // Springt zu einer bestimmten Nummer und zentriert die Zeile im sichtbaren Bereich
         function scrollToNumber(num) {
             if (!files.length) return;
             num = Math.max(1, Math.min(num, files.length));
             const row = getRowByNumber(num);
             if (row) {
-                row.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const container = document.querySelector('.table-container');
+                if (container) {
+                    // Berechne Scrollposition so, dass die Zeile in der Mitte steht
+                    const offset = row.offsetTop - container.offsetTop;
+                    const target = offset - (container.clientHeight / 2 - row.clientHeight / 2);
+                    container.scrollTo({ top: target, behavior: 'smooth' });
+                } else {
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 setActiveRow(row);
                 currentRowNumber = num;
                 if (currentProject) {
@@ -2952,14 +2961,16 @@ function addFiles() {
             scrollToNumber(currentRowNumber - 1);
         }
 
+        // Aktualisiert die aktuelle Nummer anhand der scrollbaren Tabellenmitte
         function updateNumberFromScroll() {
             const container = document.querySelector('.table-container');
             if (!container) return;
             const containerTop = container.getBoundingClientRect().top;
+            const containerCenter = containerTop + container.clientHeight / 2;
             const rows = container.querySelectorAll('#fileTableBody tr');
             for (const row of rows) {
                 const rect = row.getBoundingClientRect();
-                if (rect.bottom >= containerTop) {
+                if (rect.top <= containerCenter && rect.bottom >= containerCenter) {
                     const cell = row.querySelector('.row-number');
                     if (cell) {
                         const num = parseInt(cell.textContent, 10);
