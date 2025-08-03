@@ -233,6 +233,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Lade-Indikator für Übersetzungen:** Jede Anfrage zeigt nun einen Spinner und das Ergebnis kommt über das IPC-Event `translate-finished`
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
+* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer und merken die Position
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Fehlerhinweis bei der Bearbeitungs-Vorschau:** Schlägt das Abspielen fehl, erscheint jetzt eine Meldung
@@ -663,6 +664,7 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
 | **Projekt-Playback**      | ▶/⏸/⏹ spielt vorhandene DE-Dateien der Reihe nach |
+| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
