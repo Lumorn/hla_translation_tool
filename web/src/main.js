@@ -2932,7 +2932,7 @@ function addFiles() {
             }
         }
 
-        // Springt zu einer bestimmten Nummer und zentriert die Zeile auf dem Bildschirm
+        // Springt zu einer bestimmten Nummer und sorgt dafür, dass die Zeile unter dem Tabellenkopf vollständig sichtbar bleibt
         function scrollToNumber(num) {
             if (!files.length) return;
             num = Math.max(1, Math.min(num, files.length));
@@ -2942,17 +2942,22 @@ function addFiles() {
             if (row) {
                 const container = document.querySelector('.table-container');
                 if (container) {
-                    // Ziel so berechnen, dass die Zeile mittig im sichtbaren Bereich des Monitors erscheint
+                    // Scroll-Snap kurz deaktivieren, damit der Tabellenkopf nichts überdeckt
+                    const originalSnap = container.style.scrollSnapType;
+                    container.style.scrollSnapType = 'none';
                     const containerRect = container.getBoundingClientRect();
                     const rowRect = row.getBoundingClientRect();
-                    const viewportCenter = window.innerHeight / 2;
                     const currentScroll = container.scrollTop;
-                    // Abstand der Zeilenmitte relativ zum Container plus aktueller Scroll
-                    const rowCenterOffset = rowRect.top - containerRect.top + rowRect.height / 2;
-                    const target = currentScroll + rowCenterOffset - viewportCenter;
+                    const header = container.querySelector('thead');
+                    const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                    // Ziel so setzen, dass Nummer, Name und Ordner unterhalb des Kopfes bleiben
+                    const rowTopOffset = rowRect.top - containerRect.top + currentScroll;
+                    const target = Math.max(0, rowTopOffset - headerHeight);
                     container.scrollTo({ top: target, behavior: 'smooth' });
+                    // Scroll-Snap nach kurzer Zeit wieder aktivieren
+                    setTimeout(() => { container.style.scrollSnapType = originalSnap; }, 300);
                 } else {
-                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    row.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
                 setActiveRow(row);
                 currentRowNumber = num;
