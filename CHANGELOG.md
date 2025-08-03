@@ -169,6 +169,8 @@
 * ▲/▼-Knöpfe zentrieren die gewählte Zeile nun in der Tabellenmitte.
 ## 🛠 Patch in 1.40.151
 * Schnelle Klicks auf den ▼-Knopf springen nun zuverlässig zur nächsten Nummer, ohne wieder hochzuspringen.
+## 🛠 Patch in 1.40.152
+* ▲/▼-Knöpfe richten die gewählte Zeile jetzt an der Bildschirmmitte aus. Beim Scrollen mit dem Mausrad wird automatisch die Zeile in der Mitte des Monitors markiert, ohne den Scrollpunkt zu verändern.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
