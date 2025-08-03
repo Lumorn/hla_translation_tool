@@ -138,6 +138,8 @@ let expandedChapter       = null; // aktuell geöffnetes Kapitel
 let chapterColors         = {}; // Farbe pro Kapitel
 let currentRowNumber      = 1;  // Merkt die aktuelle Zeilennummer im Projekt
 let currentRowElement     = null; // HTML-Element der aktuell markierten Zeile
+let isAutoScrolling       = false; // Wahr, solange ein automatischer Scroll läuft
+let autoScrollTimeout     = null;  // Timer zum Zurücksetzen von isAutoScrolling
 
 // Status für Projekt-Wiedergabe
 let projectPlayState       = 'stopped'; // 'playing', 'paused'
@@ -2934,6 +2936,8 @@ function addFiles() {
         function scrollToNumber(num) {
             if (!files.length) return;
             num = Math.max(1, Math.min(num, files.length));
+            isAutoScrolling = true;
+            if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
             const row = getRowByNumber(num);
             if (row) {
                 const container = document.querySelector('.table-container');
@@ -2951,6 +2955,7 @@ function addFiles() {
                     localStorage.setItem('hla_lastNumber_' + currentProject.id, num);
                 }
             }
+            autoScrollTimeout = setTimeout(() => { isAutoScrolling = false; }, 300);
         }
 
         function goToNextNumber() {
@@ -2963,6 +2968,7 @@ function addFiles() {
 
         // Aktualisiert die aktuelle Nummer anhand der scrollbaren Tabellenmitte
         function updateNumberFromScroll() {
+            if (isAutoScrolling) return; // Ignoriere Scroll-Events während automatischem Scrollen
             const container = document.querySelector('.table-container');
             if (!container) return;
             const containerTop = container.getBoundingClientRect().top;

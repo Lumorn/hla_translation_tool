@@ -233,7 +233,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Lade-Indikator für Übersetzungen:** Jede Anfrage zeigt nun einen Spinner und das Ergebnis kommt über das IPC-Event `translate-finished`
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
-* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer, zentrieren die Zeile in der Tabelle und merken die Position
+* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer, zentrieren die Zeile in der Tabelle und merken die Position. Schnelle Klicks nach unten funktionieren jetzt ebenfalls ohne Zurückspringen
 * **Aktuelle Zeile angeheftet:** Beim Scrollen bleibt die oberste Zeile direkt unter der Überschrift stehen und ist dezent markiert
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
@@ -665,7 +665,7 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
 | **Projekt-Playback**      | ▶/⏸/⏹ spielt vorhandene DE-Dateien der Reihe nach |
-| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück und zentrieren diese |
+| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück, zentrieren die Zeile und reagieren nun auch bei schnellen Klicks zuverlässig |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |

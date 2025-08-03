@@ -167,6 +167,8 @@
 * Debug-Konsole ist nun standardmäßig ausgeblendet und erscheint nur bei Entwickleraktionen.
 ## 🛠 Patch in 1.40.150
 * ▲/▼-Knöpfe zentrieren die gewählte Zeile nun in der Tabellenmitte.
+## 🛠 Patch in 1.40.151
+* Schnelle Klicks auf den ▼-Knopf springen nun zuverlässig zur nächsten Nummer, ohne wieder hochzuspringen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
