@@ -165,6 +165,8 @@
 * Beim Scrollen bleibt die aktuelle Zeile am Tabellenkopf fixiert und wird dezent hervorgehoben.
 ## 🛠 Patch in 1.40.149
 * Debug-Konsole ist nun standardmäßig ausgeblendet und erscheint nur bei Entwickleraktionen.
+## 🛠 Patch in 1.40.150
+* ▲/▼-Knöpfe zentrieren die gewählte Zeile nun in der Tabellenmitte.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
