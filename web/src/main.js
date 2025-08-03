@@ -6598,7 +6598,8 @@ function cleanupIncorrectFolderNames() {
 // Ordner. Fehlende Ordner lassen sich direkt löschen.
 function showFolderDebug() {
     const wrapper = document.getElementById('debugConsoleWrapper');
-    wrapper.open = true;
+    wrapper.style.display = 'block'; // Debug-Konsole einblenden
+    wrapper.open = true; // Bereich aufklappen
 
     const listDiv = document.getElementById('folderDebug');
     if (!listDiv) return;
@@ -9744,6 +9745,7 @@ async function scanAudioDuplicates() {
         function toggleDevTools() {
             const wrapper = document.getElementById('debugConsoleWrapper');
             if (wrapper) {
+                wrapper.style.display = 'block'; // Debug-Konsole sichtbar machen
                 wrapper.open = true; // Zeigt die eingebettete Konsole an
             }
             debugLog('Dev-Button aktiviert');

@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.148-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.149-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -879,7 +879,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🔍 Debug‑Spalte:** Zeigt aufgelöste Pfade und Status
 * **📊 Datenquellen‑Analyse:** Console‑Logs für Entwickler
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
-* **🔧 Debug-Konsole:** Über das Dropdown "Debug-Konsole" können Sie Logs einsehen. In der Desktop-Version öffnen sich die DevTools jetzt automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
+* **🔧 Debug-Konsole:** Diese Konsole ist standardmäßig verborgen und erscheint nur bei Entwickleraktionen (z. B. Dev-Button). In der Desktop-Version öffnen sich die DevTools automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
 * **💡 Neues Debug-Fenster:** Gruppiert System- und Pfadinformationen übersichtlich und bietet eine Kopierfunktion.
 * **📦 Modul-Status:** Neue Spalte im Debug-Fenster zeigt, ob alle Module korrekt geladen wurden und aus welcher Quelle sie stammen.
 * **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
