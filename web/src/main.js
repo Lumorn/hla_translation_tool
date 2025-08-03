@@ -136,7 +136,6 @@ let levelChapters         = {}; // Zuordnung Level → Kapitel
 let chapterOrders         = {}; // Reihenfolge der Kapitel
 let expandedChapter       = null; // aktuell geöffnetes Kapitel
 let chapterColors         = {}; // Farbe pro Kapitel
-let currentRowNumber      = 1;  // Merkt die aktuelle Zeilennummer im Projekt
 
 // Status für Projekt-Wiedergabe
 let projectPlayState       = 'stopped'; // 'playing', 'paused'
@@ -1416,11 +1415,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
-// Scroll-Listener zur Aktualisierung der aktuellen Zeilennummer
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.table-container');
-    if (container) container.addEventListener('scroll', updateNumberFromScroll);
-});
 // =========================== DOM READY INITIALISIERUNG ENDE ===========================
 
 
@@ -2245,8 +2239,6 @@ function selectProject(id){
     segmentAssignments = currentProject.segmentAssignments || {};
     ignoredSegments = new Set(currentProject.segmentIgnored || []);
     segmentSelection = [];
-    // Letzte bearbeitete Zeile für dieses Projekt laden
-    currentRowNumber = parseInt(localStorage.getItem('hla_lastNumber_' + currentProject.id) || '1');
 
     // Migration: completed-Flag nachziehen
     let migrated=false;
@@ -2905,58 +2897,6 @@ function addFiles() {
             if (selectedRow) {
                 selectedRow.classList.add('selected-row');
                 selectedRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
-        // ======= Zeilennavigation über Nummern =======
-        function getRowByNumber(num) {
-            const rows = document.querySelectorAll('#fileTableBody tr');
-            for (const row of rows) {
-                const cell = row.querySelector('.row-number');
-                if (cell && parseInt(cell.textContent) === num) return row;
-            }
-            return null;
-        }
-
-        function scrollToNumber(num) {
-            if (!files.length) return;
-            num = Math.max(1, Math.min(num, files.length));
-            const row = getRowByNumber(num);
-            if (row) {
-                row.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                currentRowNumber = num;
-                if (currentProject) {
-                    localStorage.setItem('hla_lastNumber_' + currentProject.id, num);
-                }
-            }
-        }
-
-        function goToNextNumber() {
-            scrollToNumber(currentRowNumber + 1);
-        }
-
-        function goToPreviousNumber() {
-            scrollToNumber(currentRowNumber - 1);
-        }
-
-        function updateNumberFromScroll() {
-            const container = document.querySelector('.table-container');
-            if (!container) return;
-            const containerTop = container.getBoundingClientRect().top;
-            const rows = container.querySelectorAll('#fileTableBody tr');
-            for (const row of rows) {
-                const rect = row.getBoundingClientRect();
-                if (rect.bottom >= containerTop) {
-                    const cell = row.querySelector('.row-number');
-                    if (cell) {
-                        const num = parseInt(cell.textContent, 10);
-                        currentRowNumber = num;
-                        if (currentProject) {
-                            localStorage.setItem('hla_lastNumber_' + currentProject.id, num);
-                        }
-                    }
-                    break;
-                }
             }
         }
 
@@ -3836,13 +3776,11 @@ return `
     // Tooltip- und Klicklogik auslagern
     // Bindet Tooltip und Klick auf die Score-Zellen und stellt die CSS-Klassen sicher
     attachScoreHandlers(tbody, files);
-
+    
     addDragAndDropHandlers();
     addPathCellContextMenus();
     updateCounts();
     updateDubButtons();
-    // Nach dem Rendern zur gemerkten Zeile springen
-    scrollToNumber(currentRowNumber);
 
     // Nach dem Rendern Textfelder und Übersetzungsanzeige anpassen
     setTimeout(() => {
