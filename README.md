@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.127-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.148-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -233,6 +233,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Lade-Indikator für Übersetzungen:** Jede Anfrage zeigt nun einen Spinner und das Ergebnis kommt über das IPC-Event `translate-finished`
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
+* **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer und merken die Position
+* **Aktuelle Zeile angeheftet:** Beim Scrollen bleibt die oberste Zeile direkt unter der Überschrift stehen und ist dezent markiert
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Fehlerhinweis bei der Bearbeitungs-Vorschau:** Schlägt das Abspielen fehl, erscheint jetzt eine Meldung
@@ -663,6 +665,7 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
 | **Projekt-Playback**      | ▶/⏸/⏹ spielt vorhandene DE-Dateien der Reihe nach |
+| **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |
 | **Zwischen Feldern**      | `Tab` / `Shift + Tab` |
