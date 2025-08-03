@@ -519,12 +519,17 @@ th:nth-child(8) {
             flex: 1;
             overflow: auto;
             background: #1a1a1a;
+            scroll-snap-type: y mandatory; /* Zeilen am Tabellenkopf einrasten lassen */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             table-layout: auto;
+        }
+
+        #fileTableBody tr {
+            scroll-snap-align: start; /* Jede Zeile rastet am oberen Rand ein */
         }
 
         th {
@@ -584,6 +589,10 @@ th:nth-child(8) {
         tr.selected-row {
             background: rgba(255, 107, 26, 0.1) !important;
             border: 1px solid rgba(255, 107, 26, 0.3);
+        }
+
+        tr.current-row {
+            background: rgba(255, 255, 0, 0.05); /* Aktuelle Zeile dezent hervorheben */
         }
 
         tr.current-project-row {

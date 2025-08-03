@@ -159,6 +159,10 @@
 * ZIP-Import setzt den Tempo-Regler jeder importierten Zeile wieder auf 1,0.
 ## 🛠 Patch in 1.40.146
 * Button "Verbesserungsvorschläge" öffnet einen Dialog mit drei Alternativen, die Länge und Sprechzeit des englischen Originals berücksichtigen.
+## 🛠 Patch in 1.40.147
+* ▲/▼-Knöpfe neben ▶/⏹ springen zur nächsten oder vorherigen Nummer und merken die letzte Position.
+## 🛠 Patch in 1.40.148
+* Beim Scrollen bleibt die aktuelle Zeile am Tabellenkopf fixiert und wird dezent hervorgehoben.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
