@@ -819,7 +819,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 
 * **🧠 Smart Folder Detection:** Erkennt Half‑Life Charaktere automatisch
 * **📏 Auto‑Height Textboxen:** EN/DE Felder bleiben höhengleich
-* **📐 Längen-Vergleich:** Farbige Symbole zeigen, ob die deutsche Audiodatei kürzer (grün) oder länger (rot) als das englische Original ist
+* **📐 Längen-Vergleich:** Zwei farbige Symbole zeigen, ob die ursprüngliche und die bearbeitete deutsche Audiodatei kürzer (grün), länger (rot) oder gleich lang wie das englische Original sind
 * **🎨 Theme‑System:** Automatische Icon‑ und Farb‑Zuweisungen
 * **💡 Context‑Awareness:** Funktionen passen sich dem aktuellen Kontext an
 * **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen öffnet einen Dialog mit passenden Endungen
