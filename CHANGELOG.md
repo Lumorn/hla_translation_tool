@@ -173,6 +173,8 @@
 * ▲/▼-Knöpfe richten die gewählte Zeile jetzt an der Bildschirmmitte aus. Beim Scrollen mit dem Mausrad wird automatisch die Zeile in der Mitte des Monitors markiert, ohne den Scrollpunkt zu verändern.
 ## 🛠 Patch in 1.40.153
 * Ein-Nummer-Zurück/Vor zeigt Nummer, Dateiname und Ordner stets vollständig unter dem Tabellenkopf an.
+## 🛠 Patch in 1.40.154
+* Längen-Vergleich zeigt nun zusätzlich, ob die bearbeitete deutsche Datei länger, kürzer oder gleich lang wie das englische Original ist.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

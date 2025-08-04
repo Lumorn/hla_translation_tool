@@ -3703,24 +3703,43 @@ async function renderFileTableWithOrder(sortedFiles) {
         const dePath = getDeFilePath(file);
         const hasDeAudio = !!dePath;
         const hasHistory = await checkHistoryAvailable(file);
-        // Symbol und Farbe für den Längenvergleich vorbereiten
-        let lengthIndicator = '';
-        let lengthClass = '';
+        // Symbole und Farben für Längenvergleich vorbereiten
+        let lengthIndicatorOrig = '';
+        let lengthClassOrig = '';
+        let lengthIndicatorEdit = '';
+        let lengthClassEdit = '';
         if (hasDeAudio) {
+            // Pfade zu EN, DE (bearbeitet) und DE-Backup
             const enUrl = audioFileCache[relPath] || `sounds/EN/${relPath}`;
             const deUrl = deAudioCache[dePath] || `sounds/DE/${dePath}`;
+            const deBackupUrl = `sounds/DE-Backup/${dePath}`;
             const enDur = await getAudioDuration(enUrl);
-            const deDur = await getAudioDuration(deUrl);
-            if (enDur != null && deDur != null) {
-                if (deDur < enDur) {
-                    lengthIndicator = '⬇️';
-                    lengthClass = 'good'; // kürzer = positiv
-                } else if (deDur > enDur) {
-                    lengthIndicator = '‼️';
-                    lengthClass = 'bad'; // länger = potentiell negativ
+            const editDur = await getAudioDuration(deUrl);
+            const origDur = await getAudioDuration(deBackupUrl);
+            // Vergleich für ursprüngliche DE-Datei
+            if (enDur != null && origDur != null) {
+                if (origDur < enDur) {
+                    lengthIndicatorOrig = '⬇️';
+                    lengthClassOrig = 'good'; // kürzer = positiv
+                } else if (origDur > enDur) {
+                    lengthIndicatorOrig = '‼️';
+                    lengthClassOrig = 'bad'; // länger = negativ
                 } else {
-                    lengthIndicator = '↔️';
-                    lengthClass = 'neutral';
+                    lengthIndicatorOrig = '↔️';
+                    lengthClassOrig = 'neutral';
+                }
+            }
+            // Vergleich für bearbeitete DE-Datei
+            if (enDur != null && editDur != null) {
+                if (editDur < enDur) {
+                    lengthIndicatorEdit = '⬇️';
+                    lengthClassEdit = 'good'; // kürzer = positiv
+                } else if (editDur > enDur) {
+                    lengthIndicatorEdit = '‼️';
+                    lengthClassEdit = 'bad'; // länger = negativ
+                } else {
+                    lengthIndicatorEdit = '↔️';
+                    lengthClassEdit = 'neutral';
                 }
             }
         }
@@ -3835,7 +3854,10 @@ return `
             </div>
             <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
         </td>
-        <td><span class="length-diff ${lengthClass}">${lengthIndicator}</span></td>
+        <td>
+            <span class="length-diff ${lengthClassOrig}" title="Original">${lengthIndicatorOrig}</span>
+            <span class="length-diff ${lengthClassEdit}" title="Bearbeitet">${lengthIndicatorEdit}</span>
+        </td>
         <td>
             <!-- Vertikal gruppierte Aktionsknöpfe -->
             <div class="action-toolbar">

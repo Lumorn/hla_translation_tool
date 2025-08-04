@@ -909,6 +909,9 @@ th:nth-child(8) {
 .length-diff.neutral {
     color: #ffc107;
 }
+.length-diff + .length-diff {
+    margin-left: 4px; /* kleiner Abstand zwischen den Symbolen */
+}
 
         /* Raster-Anordnung der Bearbeitungs-Symbole (maximal zwei pro Zeile) */
         .edit-column {
