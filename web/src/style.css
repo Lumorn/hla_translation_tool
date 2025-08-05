@@ -1253,6 +1253,13 @@ th:nth-child(8) {
     display: inline-block;
 }
 
+/* Steuerung für den Tempo-Regler mit Plus/Minus-Knöpfen */
+.tempo-control {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 /* Gelbe Markierung, wenn das Tempo automatisch gesetzt wurde */
 .tempo-auto {
     color: #ffd700;

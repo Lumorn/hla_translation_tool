@@ -175,6 +175,8 @@
 * Ein-Nummer-Zurück/Vor zeigt Nummer, Dateiname und Ordner stets vollständig unter dem Tabellenkopf an.
 ## 🛠 Patch in 1.40.154
 * Längen-Vergleich zeigt nun zusätzlich, ob die bearbeitete deutsche Datei länger, kürzer oder gleich lang wie das englische Original ist.
+## 🛠 Patch in 1.40.155
+* Tempo-Regler besitzt jetzt kleine ➖/➕-Knöpfe und einen zweiten Auto-Knopf zum Zurücksetzen auf den gespeicherten Wert.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 
