@@ -11237,6 +11237,28 @@ async function openDeEdit(fileId) {
             tempoDisp.classList.remove('tempo-auto');
             updateLengthInfo();
         };
+        // Minus-Knopf reduziert das Tempo in kleinen Schritten
+        const tempoMinus = document.getElementById('tempoMinusBtn');
+        if (tempoMinus) tempoMinus.onclick = () => {
+            const step = parseFloat(tempoRange.step) || 0.01;
+            const min  = parseFloat(tempoRange.min);
+            tempoFactor = Math.max(min, tempoFactor - step);
+            tempoRange.value = tempoFactor.toFixed(2);
+            tempoDisp.textContent = tempoFactor.toFixed(2);
+            tempoDisp.classList.remove('tempo-auto');
+            updateLengthInfo();
+        };
+        // Plus-Knopf erhöht das Tempo in kleinen Schritten
+        const tempoPlus = document.getElementById('tempoPlusBtn');
+        if (tempoPlus) tempoPlus.onclick = () => {
+            const step = parseFloat(tempoRange.step) || 0.01;
+            const max  = parseFloat(tempoRange.max);
+            tempoFactor = Math.min(max, tempoFactor + step);
+            tempoRange.value = tempoFactor.toFixed(2);
+            tempoDisp.textContent = tempoFactor.toFixed(2);
+            tempoDisp.classList.remove('tempo-auto');
+            updateLengthInfo();
+        };
         const tempoAuto = document.getElementById('tempoAutoBtn');
         if (tempoAuto) tempoAuto.onclick = () => {
             // Startwert auf Minimum setzen und Eingabe hervorheben
@@ -11263,6 +11285,15 @@ async function openDeEdit(fileId) {
                 requestAnimationFrame(raise);
             };
             requestAnimationFrame(raise);
+        };
+        // Zweiter Auto-Knopf stellt den gespeicherten Wert wieder her
+        const tempoAutoReset = document.getElementById('tempoAutoResetBtn');
+        if (tempoAutoReset) tempoAutoReset.onclick = () => {
+            tempoFactor = loadedTempoFactor;
+            tempoRange.value = tempoFactor.toFixed(2);
+            tempoDisp.textContent = tempoFactor.toFixed(2);
+            tempoDisp.classList.remove('tempo-auto');
+            updateLengthInfo();
         };
     }
     const autoChk = document.getElementById('autoIgnoreChk');
