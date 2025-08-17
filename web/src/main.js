@@ -9806,15 +9806,30 @@ async function scanAudioDuplicates() {
         window.toggleDevTools = toggleDevTools;
 
         // Startet Half-Life: Alyx über die Desktop-Version
-        async function startHla(preset = 'normal') {
+        async function startHla() {
             const modeSel = document.getElementById('modusSelect');
             const langSel = document.getElementById('spracheSelect');
             const mapCb   = document.getElementById('mapCheckbox');
             const mapSel  = document.getElementById('mapSelect');
+            const godCb   = document.getElementById('optGod');
+            const ammoCb  = document.getElementById('optAmmo');
+            const conCb   = document.getElementById('optConsole');
 
             const mode = modeSel ? modeSel.value : 'normal';
             const lang = langSel ? langSel.value : 'english';
             const map  = mapCb && mapCb.checked && mapSel ? mapSel.value.trim() : '';
+
+            // Ermittelt das gewünschte Cheat-Preset
+            let preset = 'normal';
+            if (godCb?.checked && ammoCb?.checked) {
+                preset = 'both';
+            } else if (godCb?.checked) {
+                preset = 'god';
+            } else if (ammoCb?.checked) {
+                preset = 'ammo';
+            } else if (conCb?.checked) {
+                preset = 'console';
+            }
 
             if (window.electronAPI && window.electronAPI.startHla) {
                 const ok = await window.electronAPI.startHla(mode, lang, map, preset);
@@ -9834,45 +9849,38 @@ async function scanAudioDuplicates() {
         }
         window.toggleStartMenu = toggleStartMenu;
 
-        // Aktualisiert die Tooltips der Startknöpfe mit aktueller Map
+        // Aktualisiert den Tooltip des Startknopfs mit aktueller Map und Optionen
         function updateStartTooltips() {
             const mapSel = document.getElementById('mapSelect');
             const level = mapSel ? mapSel.value.trim() : '';
             const mapTxt = level ? ` (Map: ${level})` : '';
-            const cheatTip = `Startet HLA mit -vconsole/-console und setzt +sv_cheats 1. Cheats können Erfolge deaktivieren.${mapTxt}`;
-            const consoleTip = `Startet HLA mit -vconsole/-console ohne Cheats${mapTxt}`;
-            const normalTip = `Startet HLA${mapTxt}`;
+            const god   = document.getElementById('optGod')?.checked;
+            const ammo  = document.getElementById('optAmmo')?.checked;
+            const con   = document.getElementById('optConsole')?.checked;
+
+            let optTxt = '';
+            if (god && ammo) {
+                optTxt = ' mit Godmode und unendlicher Munition';
+            } else if (god) {
+                optTxt = ' mit Godmode';
+            } else if (ammo) {
+                optTxt = ' mit unendlicher Munition';
+            } else if (con) {
+                optTxt = ' mit Entwicklerkonsole';
+            }
 
             const startBtn = document.getElementById('startButton');
-            const godBtn = document.getElementById('startCheatGod');
-            const ammoBtn = document.getElementById('startCheatAmmo');
-            const bothBtn = document.getElementById('startCheatBoth');
-            const consoleBtn = document.getElementById('startConsole');
-            if (startBtn) startBtn.title = normalTip;
-            if (godBtn) godBtn.title = cheatTip;
-            if (ammoBtn) ammoBtn.title = cheatTip;
-            if (bothBtn) bothBtn.title = cheatTip;
-            if (consoleBtn) consoleBtn.title = consoleTip;
+            if (startBtn) startBtn.title = `Startet HLA${optTxt}${mapTxt}`;
         }
         window.updateStartTooltips = updateStartTooltips;
 
         if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
             document.getElementById('mapSelect')?.addEventListener('input', updateStartTooltips);
             document.getElementById('mapCheckbox')?.addEventListener('change', updateStartTooltips);
+            document.getElementById('optGod')?.addEventListener('change', updateStartTooltips);
+            document.getElementById('optAmmo')?.addEventListener('change', updateStartTooltips);
+            document.getElementById('optConsole')?.addEventListener('change', updateStartTooltips);
             updateStartTooltips();
-
-            // Tastenkürzel für Cheat-Starts
-            document.addEventListener('keydown', e => {
-                if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
-                const key = e.key.toLowerCase();
-                if (e.shiftKey && key === 'g') {
-                    startHla('both');
-                } else if (key === 'g') {
-                    startHla('god');
-                } else if (key === 'i') {
-                    startHla('ammo');
-                }
-            });
         }
 
         // Speichert die URL des Videos dauerhaft
