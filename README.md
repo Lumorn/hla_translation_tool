@@ -41,6 +41,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
+* **Schnellstart mit Cheats:** Über ein Dropdown lassen sich Godmode, unendliche Munition, beides oder nur die Entwicklerkonsole direkt aktivieren.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
 * **Audio-Datei zuordnen:** Lange Aufnahmen lassen sich automatisch in Segmente teilen, per Klick auswählen, farblich passenden Textzeilen zuweisen und direkt ins Projekt importieren. Über den 🚫‑Knopf markierte Bereiche werden dauerhaft übersprungen und in der Liste grau hinterlegt. Fehlhafte Eingaben löschen die Zuordnung automatisch, laufende Wiedergaben stoppen beim Neu‑Upload. Die gewählte Datei und alle Zuordnungen werden im Projekt gespeichert und sind Teil des Backups. In der Desktop‑Version landet die Originaldatei zusätzlich im Ordner `Sounds/Segments` und trägt die ID des Projekts. Beim Klicken werden ausgewählte Segmente sofort abgespielt. Die Segmentierungslogik ist fest im Hauptskript verankert. Der Datei‑Input besitzt zusätzlich ein `onchange`-Attribut und der Listener wird beim Öffnen des Dialogs neu gesetzt, sodass der Upload immer reagiert. Der Dialog setzt die HTML‑Elemente `segmentFileInput` und `segmentWaveform` voraus.
@@ -643,7 +644,7 @@ In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über da
 | **Schnell-Level**         | Rechtsklick auf Kapitel → Schnell-Level |
 | **Level anpassen**        | Rechtsklick auf Level-Titel → Bearbeiten/Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
-| **Half-Life: Alyx starten** | Zentrale Start-Leiste mit Modus‑ und Sprachauswahl sowie optionalem +map‑Parameter |
+| **Half-Life: Alyx starten** | Zentrale Start-Leiste mit Modus‑ und Sprachauswahl, optionalem +map‑Parameter und Cheat-Dropdown |
 
 Beim Rechtsklick auf eine Projekt‑Kachel erscheint ein kleines Menü zum Bearbeiten (⚙️) oder Löschen (🗑️) des Projekts.
 Auch Kapitel und Level bieten dieses Rechtsklick-Menü.

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.156
+* Schnellstart-Knöpfe mit Cheat-Presets (Godmode, unendliche Munition, Kombination oder nur Entwicklerkonsole) hinzugefügt.
 ## ✨ Neue Features in 1.40.0
 * GitHub-Workflow `node-test.yml` führt automatisch `npm ci` und `npm test` für Node 18–22 bei jedem Push und Pull Request aus.
 

@@ -443,6 +443,41 @@ th:nth-child(8) {
             align-items: center;
         }
 
+        /* Dropdown für Schnellstart mit Cheats */
+        .start-dropdown {
+            position: relative;
+            display: flex;
+        }
+
+        .start-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c2c2c;
+            border: 1px solid #555;
+            flex-direction: column;
+            min-width: 180px;
+            z-index: 10;
+        }
+
+        .start-dropdown.show .dropdown-menu {
+            display: flex;
+        }
+
+        .start-dropdown .dropdown-menu .dropdown-item {
+            padding: 5px 10px;
+            text-align: left;
+            background: none;
+            border: none;
+            color: inherit;
+            width: 100%;
+        }
+
+        .start-dropdown .dropdown-menu .dropdown-item:hover {
+            background: #444;
+        }
+
         /* GPT-Knopf neben der Suche */
         #gptScoreButton {
             margin-left: 10px;

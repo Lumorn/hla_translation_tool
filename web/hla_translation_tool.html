@@ -85,7 +85,16 @@
                         <input type="checkbox" id="mapCheckbox"> +map
                     </label>
                     <input type="text" id="mapSelect" placeholder="Level" style="width:140px">
-                    <button id="startButton" class="btn btn-secondary" onclick="startHla()">Starten</button>
+                    <div class="start-dropdown">
+                        <button id="startButton" class="btn btn-secondary" onclick="startHla('normal')" title="">Starten</button>
+                        <button id="startDropdown" class="btn btn-secondary" onclick="toggleStartMenu()">▼</button>
+                        <div id="startMenu" class="dropdown-menu">
+                            <button id="startCheatGod" class="dropdown-item" onclick="startHla('god')" title="">Start (Cheats: God)</button>
+                            <button id="startCheatAmmo" class="dropdown-item" onclick="startHla('ammo')" title="">Start (Cheats: Infinite Ammo)</button>
+                            <button id="startCheatBoth" class="dropdown-item" onclick="startHla('both')" title="">Start (Cheats: God + Ammo)</button>
+                            <button id="startConsole" class="dropdown-item" onclick="startHla('console')" title="">Start (Entwicklerkonsole)</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 			
