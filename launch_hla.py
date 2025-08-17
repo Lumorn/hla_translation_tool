@@ -19,12 +19,13 @@ def _get_steam_path() -> str | None:
         return None
 
 
-def start_hla(mode: str = "normal", lang: str = "english", level: str | None = None) -> bool:
+def start_hla(mode: str = "normal", lang: str = "english", level: str | None = None, preset: str = "normal") -> bool:
     """Startet Half-Life: Alyx oder den Workshop-Modus.
 
     Bei ``mode == 'workshop'`` wird ``hlvrcfg.exe`` direkt aufgerufen.
     Ansonsten erfolgt der Start über ``steam.exe``. Optional kann ein
-    Level per ``+map`` übergeben werden.
+    Level per ``+map`` übergeben werden. Mit ``preset`` lassen sich
+    voreingestellte Cheats aktivieren.
     Gibt ``True`` bei Erfolg zurück.
     """
 
@@ -49,6 +50,16 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
 
         if lang:
             cmd.extend(["-language", lang])
+
+        cheat_args = {
+            "god": ["-vconsole", "-console", "+sv_cheats", "1", "+god"],
+            "ammo": ["-vconsole", "-console", "+sv_cheats", "1", "+sv_infinite_ammo", "1"],
+            "both": ["-vconsole", "-console", "+sv_cheats", "1", "+god", "+sv_infinite_ammo", "1"],
+            "console": ["-vconsole", "-console"],
+        }
+        if preset in cheat_args:
+            cmd.extend(cheat_args[preset])
+
         if level:
             cmd.extend(["+map", level])
         subprocess.Popen(cmd)
@@ -61,6 +72,16 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
         args.append("-hlvr_workshop")
     if lang:
         args.extend(["-language", lang])
+
+    cheat_args = {
+        "god": ["-vconsole", "-console", "+sv_cheats", "1", "+god"],
+        "ammo": ["-vconsole", "-console", "+sv_cheats", "1", "+sv_infinite_ammo", "1"],
+        "both": ["-vconsole", "-console", "+sv_cheats", "1", "+god", "+sv_infinite_ammo", "1"],
+        "console": ["-vconsole", "-console"],
+    }
+    if preset in cheat_args:
+        args.extend(cheat_args[preset])
+
     if level:
         args.extend(["+map", level])
 
@@ -78,10 +99,11 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
 
 
 if __name__ == "__main__":
-    # Optionaler Aufruf über Kommandozeile: ``python launch_hla.py workshop german``
+    # Optionaler Aufruf über Kommandozeile: ``python launch_hla.py workshop german a1 intro god``
     import sys
     mode = sys.argv[1] if len(sys.argv) > 1 else "normal"
     lang = sys.argv[2] if len(sys.argv) > 2 else "english"
     level = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3] else None
-    ok = start_hla(mode, lang, level)
+    preset = sys.argv[4] if len(sys.argv) > 4 else "normal"
+    ok = start_hla(mode, lang, level, preset)
     sys.exit(0 if ok else 1)

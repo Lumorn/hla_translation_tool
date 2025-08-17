@@ -74,8 +74,8 @@ if (typeof require !== 'function') {
     join: (...segments) => path.join(...segments),
     translateText: (id, text) => ipcRenderer.send('translate-text', { id, text }),
     onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => cb(data)),
-    // Half-Life: Alyx starten (Modus und Sprache wählbar, optional Map)
-    startHla: (mode, lang, map) => ipcRenderer.invoke('start-hla', { mode, lang, map }),
+    // Half-Life: Alyx starten (Modus, Sprache, Map und Cheat-Preset)
+    startHla: (mode, lang, map, preset) => ipcRenderer.invoke('start-hla', { mode, lang, map, preset }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
     openPath: (p) => ipcRenderer.invoke('open-path', p),
     loadOpenaiSettings: () => ipcRenderer.invoke('load-openai-settings'),

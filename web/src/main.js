@@ -9806,7 +9806,7 @@ async function scanAudioDuplicates() {
         window.toggleDevTools = toggleDevTools;
 
         // Startet Half-Life: Alyx über die Desktop-Version
-        async function startHla() {
+        async function startHla(preset = 'normal') {
             const modeSel = document.getElementById('modusSelect');
             const langSel = document.getElementById('spracheSelect');
             const mapCb   = document.getElementById('mapCheckbox');
@@ -9817,13 +9817,63 @@ async function scanAudioDuplicates() {
             const map  = mapCb && mapCb.checked && mapSel ? mapSel.value.trim() : '';
 
             if (window.electronAPI && window.electronAPI.startHla) {
-                const ok = await window.electronAPI.startHla(mode, lang, map);
+                const ok = await window.electronAPI.startHla(mode, lang, map, preset);
                 if (!ok) showToast('Start fehlgeschlagen', 'error');
             } else {
                 alert('Nur in der Desktop-Version verfügbar');
             }
+
+            // Dropdown nach dem Start wieder schließen
+            document.querySelector('.start-dropdown')?.classList.remove('show');
         }
         window.startHla = startHla;
+
+        // Zeigt/versteckt das Dropdown-Menü für den Schnellstart
+        function toggleStartMenu() {
+            document.querySelector('.start-dropdown')?.classList.toggle('show');
+        }
+        window.toggleStartMenu = toggleStartMenu;
+
+        // Aktualisiert die Tooltips der Startknöpfe mit aktueller Map
+        function updateStartTooltips() {
+            const mapSel = document.getElementById('mapSelect');
+            const level = mapSel ? mapSel.value.trim() : '';
+            const mapTxt = level ? ` (Map: ${level})` : '';
+            const cheatTip = `Startet HLA mit -vconsole/-console und setzt +sv_cheats 1. Cheats können Erfolge deaktivieren.${mapTxt}`;
+            const consoleTip = `Startet HLA mit -vconsole/-console ohne Cheats${mapTxt}`;
+            const normalTip = `Startet HLA${mapTxt}`;
+
+            const startBtn = document.getElementById('startButton');
+            const godBtn = document.getElementById('startCheatGod');
+            const ammoBtn = document.getElementById('startCheatAmmo');
+            const bothBtn = document.getElementById('startCheatBoth');
+            const consoleBtn = document.getElementById('startConsole');
+            if (startBtn) startBtn.title = normalTip;
+            if (godBtn) godBtn.title = cheatTip;
+            if (ammoBtn) ammoBtn.title = cheatTip;
+            if (bothBtn) bothBtn.title = cheatTip;
+            if (consoleBtn) consoleBtn.title = consoleTip;
+        }
+        window.updateStartTooltips = updateStartTooltips;
+
+        if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
+            document.getElementById('mapSelect')?.addEventListener('input', updateStartTooltips);
+            document.getElementById('mapCheckbox')?.addEventListener('change', updateStartTooltips);
+            updateStartTooltips();
+
+            // Tastenkürzel für Cheat-Starts
+            document.addEventListener('keydown', e => {
+                if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+                const key = e.key.toLowerCase();
+                if (e.shiftKey && key === 'g') {
+                    startHla('both');
+                } else if (key === 'g') {
+                    startHla('god');
+                } else if (key === 'i') {
+                    startHla('ammo');
+                }
+            });
+        }
 
         // Speichert die URL des Videos dauerhaft
         function saveVideoUrl() {

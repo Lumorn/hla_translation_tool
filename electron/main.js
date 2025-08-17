@@ -868,12 +868,12 @@ app.whenReady().then(() => {
 
   // =========================== START-HLA START ==============================
   // Startet Half-Life: Alyx oder den Workshop-Modus über ein Python-Skript
-  ipcMain.handle('start-hla', async (event, { mode, lang, map }) => {
+  ipcMain.handle('start-hla', async (event, { mode, lang, map, preset }) => {
     return await new Promise(resolve => {
       try {
         const proc = spawn(
           'python',
-          [path.join(__dirname, '..', 'launch_hla.py'), mode, lang || '', map || ''],
+          [path.join(__dirname, '..', 'launch_hla.py'), mode, lang || '', map || '', preset || 'normal'],
           { env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }
         );
         proc.on('close', code => resolve(code === 0));
