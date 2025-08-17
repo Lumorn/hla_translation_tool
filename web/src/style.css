@@ -443,7 +443,7 @@ th:nth-child(8) {
             align-items: center;
         }
 
-        /* Dropdown für Schnellstart mit Cheats */
+        /* Dropdown für Schnellstart-Optionen */
         .start-dropdown {
             position: relative;
             display: flex;
@@ -472,6 +472,9 @@ th:nth-child(8) {
             border: none;
             color: inherit;
             width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .start-dropdown .dropdown-menu .dropdown-item:hover {

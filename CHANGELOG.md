@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.157
+* Schnellstart-Dropdown bietet jetzt Checkboxen für Godmode, unendliche Munition und die Entwicklerkonsole. Das Spiel startet erst nach Klick auf „Starten“ mit den gewählten Optionen.
 ## 🛠️ Patch in 1.40.156
 * Schnellstart-Knöpfe mit Cheat-Presets (Godmode, unendliche Munition, Kombination oder nur Entwicklerkonsole) hinzugefügt.
 ## ✨ Neue Features in 1.40.0
