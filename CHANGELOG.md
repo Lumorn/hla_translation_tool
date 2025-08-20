@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.159
+* Offline-Übersetzung meldet fehlende Sprachpakete nun verständlich und beendet sich mit Status 1.
 ## 🛠️ Patch in 1.40.158
 * `settingsStore` nutzt jetzt einen zufälligen IV pro Speicherung und leitet den Schlüssel aus `HLA_ENC_KEY` ab.
 ## 🛠️ Patch in 1.40.157

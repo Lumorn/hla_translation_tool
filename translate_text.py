@@ -38,9 +38,18 @@ def ensure_package(from_code: str, to_code: str, allow_download: bool = True) ->
     # Paket nur herunterladen, wenn es nicht vorhanden ist
     package.update_package_index()
     available = package.get_available_packages()
+    # passendes Paket suchen; liefert None, wenn nichts gefunden wird
     pkg = next(
-        p for p in available if p.from_code == from_code and p.to_code == to_code
+        (
+            p for p in available if p.from_code == from_code and p.to_code == to_code
+        ),
+        None,
     )
+    if pkg is None:
+        sys.stderr.write(
+            f"Kein Sprachpaket für {from_code}->{to_code} gefunden.\n"
+        )
+        sys.exit(1)
     package.install_from_path(pkg.download())
 
 
