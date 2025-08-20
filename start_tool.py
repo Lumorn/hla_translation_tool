@@ -43,10 +43,15 @@ def log(message: str) -> None:
         f.write(f"{timestamp} {message}\n")
 
 
-def run(cmd: str) -> None:
-    """Kommando ausfuehren und Ausgabe direkt weitergeben."""
-    log(f"Fuehre aus: {cmd}")
-    subprocess.check_call(cmd, shell=True)
+def run(cmd: list[str]) -> None:
+    """Kommando ausführen und Datei-nicht-gefunden sauber behandeln."""
+    log(f"Fuehre aus: {' '.join(cmd)}")
+    try:
+        subprocess.run(cmd, check=True)
+    except FileNotFoundError as e:
+        log(f"Befehl nicht gefunden: {cmd[0]}")
+        # Fehlende Programme (z.B. npm unter Node 22) in einen einheitlichen Fehler wandeln
+        raise subprocess.CalledProcessError(127, cmd) from e
 
 
 def has_module(name: str) -> bool:
@@ -59,16 +64,19 @@ def needs_npm_ci(lockfile: str, modules_dir: str) -> bool:
     if not os.path.isdir(modules_dir):
         return True
     stamp = os.path.join(modules_dir, ".modules_hash")
-    h = hashlib.sha1(open(lockfile, "rb").read()).hexdigest()
+    with open(lockfile, "rb") as lf:
+        h = hashlib.sha1(lf.read()).hexdigest()
     if not os.path.exists(stamp):
         return True
-    return open(stamp, "r", encoding="utf-8").read().strip() != h
+    with open(stamp, "r", encoding="utf-8") as sf:
+        return sf.read().strip() != h
 
 
 def write_npm_hash(lockfile: str, modules_dir: str) -> None:
     """Speichert den Hash des Lockfiles in node_modules."""
     os.makedirs(modules_dir, exist_ok=True)
-    h = hashlib.sha1(open(lockfile, "rb").read()).hexdigest()
+    with open(lockfile, "rb") as lf:
+        h = hashlib.sha1(lf.read()).hexdigest()
     with open(os.path.join(modules_dir, ".modules_hash"), "w", encoding="utf-8") as f:
         f.write(h)
 
@@ -133,7 +141,7 @@ if CHECK_MODE:
 # ----------------------- Git pruefen -----------------------
 log("Pruefe Git-Version")
 try:
-    run("git --version")
+    run(["git", "--version"])
 except subprocess.CalledProcessError as e:
     print("[Fehler] Git wurde nicht gefunden. Bitte installieren und im PATH verfuegbar machen.")
     print("Weitere Details siehe setup.log")
@@ -144,7 +152,7 @@ except subprocess.CalledProcessError as e:
 # ----------------------- Node pruefen ----------------------
 log("Pruefe Node-Version")
 try:
-    run("node --version")
+    run(["node", "--version"])
     # Version erneut abfragen, um sie auswerten zu koennen
     output = subprocess.check_output("node --version", shell=True, text=True).strip()
     log(f"Gefundene Node-Version: {output}")
@@ -167,7 +175,7 @@ except subprocess.CalledProcessError as e:
 # ----------------------- npm pruefen -----------------------
 log("Pruefe npm-Version")
 try:
-    run("npm --version")
+    run(["npm", "--version"])
 except subprocess.CalledProcessError as e:
     print("[Fehler] npm wurde nicht gefunden. Node 22 enthaelt standardmaessig kein npm. Bitte \"npm install -g npm\" oder \"corepack enable\" ausfuehren.")
     print("Weitere Details siehe setup.log")
@@ -199,7 +207,7 @@ else:
     if not os.path.exists(repo_path):
         print("Repository wird geklont...")
         log("Repository wird geklont")
-        run(f"git clone https://github.com/Lumorn/hla_translation_tool \"{repo_path}\"")
+        run(["git", "clone", "https://github.com/Lumorn/hla_translation_tool", repo_path])
 
 os.chdir(repo_path)
 
@@ -218,12 +226,26 @@ else:
     log("Setze Repository zur\u00fcck und hole Updates")
     try:
         if has_remote():
-            run("git fetch --depth=1")
-            run("git reset --hard origin/main")
+            run(["git", "fetch", "--depth=1"])
+            run(["git", "reset", "--hard", "origin/main"])
         else:
             log("Kein Remote gefunden - setze lokal zurueck")
-            run("git reset --hard HEAD")
-        run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
+            run(["git", "reset", "--hard", "HEAD"])
+        run([
+            "git",
+            "clean",
+            "-fd",
+            "-e",
+            "web/sounds",
+            "-e",
+            "web/Sounds",
+            "-e",
+            "web/backups",
+            "-e",
+            "web/Backups",
+            "-e",
+            "web/Download",
+        ])
         current_head = subprocess.check_output("git rev-parse HEAD", shell=True, text=True).strip()
         with open(HEAD_FILE, "w", encoding="utf-8") as f:
             f.write(current_head)
@@ -269,7 +291,7 @@ log("npm ci (root) starten")
 if needs_npm_ci("package-lock.json", "node_modules"):
     print("Abhaengigkeiten im Hauptverzeichnis werden installiert...")
     try:
-        run("npm ci --prefer-offline --no-audit --progress=false")
+        run(["npm", "ci", "--prefer-offline", "--no-audit", "--progress=false"])
         log("npm ci (root) erfolgreich")
         write_npm_hash("package-lock.json", "node_modules")
     except subprocess.CalledProcessError as e:
@@ -285,7 +307,7 @@ if not os.path.isdir("electron"):
     print("'electron'-Ordner fehlt, wird wiederhergestellt...")
     log("Electron-Ordner fehlt - versuche Wiederherstellung")
     try:
-        run("git checkout -- electron")
+        run(["git", "checkout", "--", "electron"])
         log("Electron-Ordner wiederhergestellt")
     except subprocess.CalledProcessError as e:
         print("Electron-Ordner konnte nicht wiederhergestellt werden. Weitere Details siehe setup.log")
@@ -299,7 +321,7 @@ log("npm ci starten")
 if needs_npm_ci("package-lock.json", "node_modules"):
     print("Abhaengigkeiten werden installiert...")
     try:
-        run("npm ci --prefer-offline --no-audit --progress=false")
+        run(["npm", "ci", "--prefer-offline", "--no-audit", "--progress=false"])
         log("npm ci erfolgreich")
         write_npm_hash("package-lock.json", "node_modules")
     except subprocess.CalledProcessError:
@@ -316,7 +338,7 @@ if not os.path.isdir(os.path.join("node_modules", "electron")):
     log("Electron-Modul fehlt - versuche 'npm install electron'")
     install_error = False
     try:
-        run("npm install electron")
+        run(["npm", "install", "electron"])
         log("npm install electron erfolgreich")
     except subprocess.CalledProcessError as e:
         install_error = True
@@ -349,10 +371,10 @@ else:
 try:
     if uid == 0:
         log("Starte Electron ohne Sandbox")
-        run("npm start -- --no-sandbox")
+        run(["npm", "start", "--", "--no-sandbox"])
     else:
         log("Starte Electron mit Sandbox")
-        run("npm start")
+        run(["npm", "start"])
 except subprocess.CalledProcessError as e:
     print("[Fehler] Anwendung konnte nicht gestartet werden. Weitere Details siehe setup.log")
     log("Anwendung konnte nicht gestartet werden")

@@ -1,4 +1,22 @@
 # Changelog
+## 🛠️ Patch in 1.40.165
+* `verify_environment.py` prüft jetzt auch Paketversionen für Python und Node, repariert Abweichungen automatisch und wartet am Ende auf eine Eingabe.
+## 🛠️ Patch in 1.40.164
+* `reset_repo.py` richtet fehlendes `npm` über `corepack` automatisch ein.
+## 🛠️ Patch in 1.40.163
+* `start_tool.py` erkennt fehlendes `npm` und zeigt einen Hinweis auf `corepack enable` statt mit `FileNotFoundError` zu abbrechen.
+## 🛠️ Patch in 1.40.162
+* `fetchJson` bricht Netzwerkabfragen nach fünf Sekunden mit verständlicher Fehlermeldung ab und beendet den Prozess.
+## 🛠️ Patch in 1.40.161
+* `chooseExisting` prüft jetzt leere Namenslisten und wirft bei Bedarf einen Fehler.
+* Kommentar von `copyDubbedFile` nutzt korrekte JSDoc-Syntax.
+## 🛠️ Patch in 1.40.160
+* Python-Skripte setzen jetzt auf `subprocess.run` mit `check=True` ohne `shell=True`.
+* `needs_npm_ci` und `write_npm_hash` verwenden `with`-Blöcke und schließen Dateien automatisch.
+## 🛠️ Patch in 1.40.159
+* Offline-Übersetzung meldet fehlende Sprachpakete nun verständlich und beendet sich mit Status 1.
+## 🛠️ Patch in 1.40.158
+* `settingsStore` nutzt jetzt einen zufälligen IV pro Speicherung und leitet den Schlüssel aus `HLA_ENC_KEY` ab.
 ## 🛠️ Patch in 1.40.157
 * Schnellstart-Dropdown bietet jetzt Checkboxen für Godmode, unendliche Munition und die Entwicklerkonsole. Das Spiel startet erst nach Klick auf „Starten“ mit den gewählten Optionen.
 ## 🛠️ Patch in 1.40.156

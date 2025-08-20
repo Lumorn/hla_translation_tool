@@ -30,6 +30,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 🎯 Kernfunktionen
 
+* **Überarbeitete Hilfsskripte:** Python-Tools nutzen jetzt `subprocess.run` mit `check=True` ohne `shell=True` und schließen Dateien konsequent über `with`-Blöcke.
+* **Robuster npm-Test:** Fehlt `npm` (z. B. bei Node 22), bricht das Startskript nicht mehr ab, sondern weist auf `corepack enable` oder eine separate Installation hin.
+* **Automatische npm-Aktivierung:** `reset_repo.py` versucht bei fehlendem `npm`, es über `corepack` einzurichten, bevor das Tool startet.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
@@ -354,8 +357,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
 9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
 10. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
-11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
-12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben.
+11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Netzwerkabfragen brechen nach fünf Sekunden mit einer verständlichen Fehlermeldung ab. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
+12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben. Das Skript prüft zusätzlich die Versionsnummern aller Python‑ und Node‑Pakete, korrigiert Abweichungen auf Wunsch automatisch und hält das Terminal am Ende offen, bis eine Eingabe erfolgt. Für automatisierte Abläufe kann die Pause mit `--no-pause` deaktiviert werden.
 13. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 14. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 15. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
@@ -591,7 +594,7 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 ### Python-Übersetzungsskript
 
-`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Die benötigten Pakete werden durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
+`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Die benötigten Pakete werden durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Findet es kein passendes Paket im Index, gibt das Skript nun eine verständliche Fehlermeldung aus und beendet sich mit Status 1. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über das Event `translate-finished` zurückgegeben.
 
 ### Version aktualisieren
@@ -774,7 +777,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **🔧 Ordner reparieren:** Aktualisiert Ordnernamen in allen Projekten
 
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
-Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert und lässt sich über einen Test-Knopf prüfen. Nach erfolgreichem Test kannst du die Liste der verfügbaren Modelle abrufen (↻) und eines auswählen. Die Modell-Liste wird 24&nbsp;Stunden zwischengespeichert. Vor dem Senden wird die geschätzte Tokenzahl angezeigt, ab 75k folgt ein Warnhinweis. Der Bewertungs‑Prompt liegt in `prompts/gpt_score.txt`. Beim Start der Bewertung öffnet sich zusätzlich eine Konsole, die alle GPT-Nachrichten anzeigt.
+Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert und lässt sich über einen Test-Knopf prüfen. Der verwendete Verschlüsselungsschlüssel stammt aus der Umgebungsvariable `HLA_ENC_KEY`; pro Speicherung wird ein zufälliger IV erzeugt und zusammen mit dem Ciphertext abgelegt. Nach erfolgreichem Test kannst du die Liste der verfügbaren Modelle abrufen (↻) und eines auswählen. Die Modell-Liste wird 24&nbsp;Stunden zwischengespeichert. Vor dem Senden wird die geschätzte Tokenzahl angezeigt, ab 75k folgt ein Warnhinweis. Der Bewertungs‑Prompt liegt in `prompts/gpt_score.txt`. Beim Start der Bewertung öffnet sich zusätzlich eine Konsole, die alle GPT-Nachrichten anzeigt.
 
 ---
 
@@ -976,6 +979,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`list-sound-backups()`** – listet vorhandene ZIP-Sicherungen auf.
 * **`delete-sound-backup(name)`** – entfernt ein ZIP-Backup.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
+* **`chooseExisting(base, names)`** – liefert den ersten existierenden Ordnernamen und wirft einen Fehler bei leerer Liste.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
 * **`extractRelevantFolder(parts)`** – gibt den relevanten Abschnitt eines Dateipfades ab "vo" oder ohne führendes "sounds" zurück (siehe `web/src/pathUtils.js`).
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.

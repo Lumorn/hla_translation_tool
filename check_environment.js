@@ -17,19 +17,46 @@ function run(cmd, options = {}) {
   return execSync(cmd, { stdio: 'inherit', ...options });
 }
 
+// Holt JSON von einer URL und bricht nach 5 Sekunden mit Fehler ab
 function fetchJson(url) {
+  const timeoutMs = 5000;
+  // Globale fetch-API vorhanden?
   if (typeof fetch === 'function') {
-    return fetch(url).then(res => res.json());
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { signal: controller.signal })
+      .then(res => res.json())
+      .catch(err => {
+        if (err.name === 'AbortError') {
+          log(`Zeitüberschreitung beim Abrufen von ${url}`);
+          console.error('Zeitüberschreitung beim Abrufen von', url);
+          process.exit(1);
+        }
+        throw err;
+      })
+      .finally(() => clearTimeout(timeout));
   }
+  // Rückfall auf http/https-Module
   return new Promise((resolve, reject) => {
     const client = url.startsWith('https') ? https : http;
-    client.get(url, res => {
+    const req = client.get(url, res => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        clearTimeout(timer);
         try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
       });
-    }).on('error', reject);
+    });
+    const timer = setTimeout(() => {
+      req.destroy();
+      log(`Zeitüberschreitung beim Abrufen von ${url}`);
+      console.error('Zeitüberschreitung beim Abrufen von', url);
+      process.exit(1);
+    }, timeoutMs);
+    req.on('error', err => {
+      clearTimeout(timer);
+      reject(err);
+    });
   });
 }
 
