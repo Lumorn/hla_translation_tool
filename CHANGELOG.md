@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.158
+* `settingsStore` nutzt jetzt einen zufälligen IV pro Speicherung und leitet den Schlüssel aus `HLA_ENC_KEY` ab.
 ## 🛠️ Patch in 1.40.157
 * Schnellstart-Dropdown bietet jetzt Checkboxen für Godmode, unendliche Munition und die Entwicklerkonsole. Das Spiel startet erst nach Klick auf „Starten“ mit den gewählten Optionen.
 ## 🛠️ Patch in 1.40.156
