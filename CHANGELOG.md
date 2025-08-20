@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.163
+* `start_tool.py` erkennt fehlendes `npm` und zeigt einen Hinweis auf `corepack enable` statt mit `FileNotFoundError` zu abbrechen.
 ## 🛠️ Patch in 1.40.162
 * `fetchJson` bricht Netzwerkabfragen nach fünf Sekunden mit verständlicher Fehlermeldung ab und beendet den Prozess.
 ## 🛠️ Patch in 1.40.161

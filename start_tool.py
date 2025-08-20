@@ -44,9 +44,14 @@ def log(message: str) -> None:
 
 
 def run(cmd: list[str]) -> None:
-    """Kommando ausführen und Ausgabe direkt weitergeben."""
+    """Kommando ausführen und Datei-nicht-gefunden sauber behandeln."""
     log(f"Fuehre aus: {' '.join(cmd)}")
-    subprocess.run(cmd, check=True)
+    try:
+        subprocess.run(cmd, check=True)
+    except FileNotFoundError as e:
+        log(f"Befehl nicht gefunden: {cmd[0]}")
+        # Fehlende Programme (z.B. npm unter Node 22) in einen einheitlichen Fehler wandeln
+        raise subprocess.CalledProcessError(127, cmd) from e
 
 
 def has_module(name: str) -> bool:
