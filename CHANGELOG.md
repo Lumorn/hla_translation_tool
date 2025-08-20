@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.165
+* `verify_environment.py` prüft jetzt auch Paketversionen für Python und Node, repariert Abweichungen automatisch und wartet am Ende auf eine Eingabe.
 ## 🛠️ Patch in 1.40.164
 * `reset_repo.py` richtet fehlendes `npm` über `corepack` automatisch ein.
 ## 🛠️ Patch in 1.40.163

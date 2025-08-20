@@ -8,10 +8,25 @@ import os
 import subprocess
 import sys
 import importlib.util
+import json
+from importlib import metadata
+
+# Verpackung für Versionsabgleiche sicherstellen
+try:
+    from packaging.requirements import Requirement
+    from packaging.version import Version
+    from packaging.specifiers import SpecifierSet
+except Exception:  # pragma: no cover - nur beim ersten Lauf nötig
+    subprocess.run([sys.executable, "-m", "pip", "install", "packaging"], check=False)
+    from packaging.requirements import Requirement
+    from packaging.version import Version
+    from packaging.specifiers import SpecifierSet
 
 FAIL: list[str] = []  # gescheiterte Paket-Installationen sammeln
 
 FIX_MODE = "--check-only" not in sys.argv
+# Terminal nach der Ausgabe offen lassen?
+PAUSE = "--no-pause" not in sys.argv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORTS: list[tuple[str, bool, str]] = []
@@ -35,16 +50,36 @@ def run(cmd: list[str], cwd: str | None = BASE_DIR) -> str:
     return result.stdout.strip()
 
 
-def ensure_package(pkg: str) -> None:
-    """Installiert fehlende Python-Pakete bei Bedarf."""
+def ensure_package(requirement: str) -> None:
+    """Installiert fehlende Python-Pakete oder korrigiert Versionen."""
+    name = requirement.split("==")[0].split(">=")[0].split("<")[0].strip()
+    mod = {
+        "pillow": "PIL",
+        "opencv-python-headless": "cv2",
+    }.get(name.lower(), name)
     try:
-        import importlib.util, subprocess, sys
-        if importlib.util.find_spec(pkg) is None:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
-        import importlib  # nach der Installation erneut laden
-        __import__(pkg)
+        subprocess.check_call([sys.executable, "-m", "pip", "install", requirement])
+        __import__(mod)
     except Exception as e:
-        FAIL.append(f"Python-Pakete: {pkg} ({e})")
+        FAIL.append(f"{requirement} ({e})")
+
+
+def node_version_satisfies(installed: str, req: str) -> bool:
+    """Vergleicht Node-Versionen grob nach SemVer-Regeln."""
+    try:
+        inst = Version(installed)
+    except Exception:
+        return False
+    if req.startswith("^"):
+        base = Version(req[1:])
+        return inst >= base and inst.major == base.major
+    if req.startswith("~"):
+        base = Version(req[1:])
+        return inst >= base and inst.major == base.major and inst.minor == base.minor
+    if req.startswith(">="):
+        base = Version(req[2:])
+        return inst >= base
+    return installed == req.lstrip("=")
 
 
 def check_git_installed() -> bool:
@@ -102,6 +137,69 @@ def check_npm() -> bool:
     return True
 
 
+def check_node_packages(retry: bool = False) -> bool:
+    """Prüft, ob die in package.json genannten Node-Pakete installiert und in der richtigen Version vorliegen."""
+    pkg_path = os.path.join(BASE_DIR, "package.json")
+    if not os.path.exists(pkg_path):
+        report("Node-Pakete", False, "package.json fehlt")
+        return False
+    try:
+        result = subprocess.run(
+            ["npm", "ls", "--depth=0", "--json"],
+            cwd=BASE_DIR,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        data = json.loads(result.stdout or "{}")
+    except subprocess.CalledProcessError as e:
+        if FIX_MODE and not retry:
+            try:
+                subprocess.check_call(["npm", "ci", "--ignore-scripts"], cwd=BASE_DIR)
+                return check_node_packages(True)
+            except Exception as inst:
+                report("Node-Pakete", False, str(inst))
+                return False
+        report("Node-Pakete", False, "npm ls fehlgeschlagen")
+        return False
+
+    with open(pkg_path, "r", encoding="utf-8") as f:
+        pkg_json = json.load(f)
+    required = {**pkg_json.get("dependencies", {}), **pkg_json.get("devDependencies", {})}
+    deps = data.get("dependencies", {})
+    fehlend: list[str] = []
+    falsch: list[str] = []
+
+    for name, req_ver in required.items():
+        info = deps.get(name)
+        if not info or info.get("missing"):
+            fehlend.append(name)
+            continue
+        installed = info.get("version", "")
+        if not node_version_satisfies(installed, req_ver):
+            falsch.append(f"{name} {installed} ≠ {req_ver}")
+
+    if (fehlend or falsch) and FIX_MODE and not retry:
+        try:
+            subprocess.check_call(["npm", "ci", "--ignore-scripts"], cwd=BASE_DIR)
+            return check_node_packages(True)
+        except Exception as inst:
+            report("Node-Pakete", False, str(inst))
+            return False
+
+    if fehlend or falsch:
+        teile: list[str] = []
+        if fehlend:
+            teile.append("fehlend: " + ", ".join(fehlend))
+        if falsch:
+            teile.append("Version: " + ", ".join(falsch))
+        report("Node-Pakete", False, "; ".join(teile))
+        return False
+
+    report("Node-Pakete", True, "alle vorhanden")
+    return True
+
+
 def check_electron_folder() -> bool:
     """Kontrolliert, ob der Ordner 'electron' existiert."""
     path = os.path.join(BASE_DIR, "electron")
@@ -121,7 +219,7 @@ def check_electron_folder() -> bool:
 
 
 def check_python_packages(retry: bool = False) -> bool:
-    """Prüft, ob alle in requirements.txt aufgeführten Pakete installiert sind."""
+    """Prüft, ob alle in requirements.txt aufgeführten Pakete mit korrekter Version installiert sind."""
     global FAIL
     FAIL = []
     req = os.path.join(BASE_DIR, "requirements.txt")
@@ -131,6 +229,8 @@ def check_python_packages(retry: bool = False) -> bool:
 
     fehlend: list[str] = []          # Pflicht-Pakete, die fehlen
     fehlend_optional: list[str] = []  # Optionale Pakete, die fehlen
+    falsch: list[tuple[str, str]] = []            # (Anforderung, Hinweis)
+    falsch_optional: list[tuple[str, str]] = []   # Optionale Pakete mit falscher Version
 
     with open(req, "r", encoding="utf-8") as f:
         for line in f:
@@ -139,35 +239,62 @@ def check_python_packages(retry: bool = False) -> bool:
                 continue
 
             optional = "# optional" in zeile
-            pip_pkg = zeile.split("#")[0].split("==")[0].split(">=")[0].strip()
-            # Einige Paketnamen weichen vom eigentlichen Importnamen ab
+            req_str = zeile.split("#")[0].strip()
+            r = Requirement(req_str)
+            pip_pkg = r.name
             mod = {
                 "pillow": "PIL",
                 "opencv-python-headless": "cv2",
             }.get(pip_pkg.lower(), pip_pkg)
 
+            spec = r.specifier
             if importlib.util.find_spec(mod) is None:
                 if optional:
-                    fehlend_optional.append(pip_pkg)
+                    fehlend_optional.append(req_str)
                 else:
-                    fehlend.append(pip_pkg)
+                    fehlend.append(req_str)
+                continue
+            if spec:
+                try:
+                    installed = Version(metadata.version(pip_pkg))
+                except metadata.PackageNotFoundError:
+                    if optional:
+                        fehlend_optional.append(req_str)
+                    else:
+                        fehlend.append(req_str)
+                    continue
+                if not spec.contains(installed, prereleases=True):
+                    info = f"{pip_pkg} {installed} erwartet {spec}"
+                    if optional:
+                        falsch_optional.append((req_str, info))
+                    else:
+                        falsch.append((req_str, info))
 
-    if fehlend or fehlend_optional:
+    if fehlend or falsch or fehlend_optional or falsch_optional:
         if FIX_MODE and not retry:
-            for pkg in fehlend + fehlend_optional:
-                ensure_package(pkg)
+            for req_str in fehlend + [f[0] for f in falsch] + fehlend_optional + [f[0] for f in falsch_optional]:
+                ensure_package(req_str)
             if FAIL:
                 report("Python-Pakete", False, ", ".join(FAIL))
                 return False
             return check_python_packages(True)
 
-    if fehlend:
-        report("Python-Pakete", False, ", ".join(fehlend))
+    if fehlend or falsch:
+        teile: list[str] = []
+        if fehlend:
+            teile.append("fehlend: " + ", ".join(fehlend))
+        if falsch:
+            teile.append("Version: " + ", ".join(t[1] for t in falsch))
+        report("Python-Pakete", False, "; ".join(teile))
         return False
 
-    if fehlend_optional:
-        detail = "fehlend: " + ", ".join(fehlend_optional)
-        report("Optionale Pakete", True, detail)
+    if fehlend_optional or falsch_optional:
+        teile: list[str] = []
+        if fehlend_optional:
+            teile.append("fehlend: " + ", ".join(fehlend_optional))
+        if falsch_optional:
+            teile.append("Version: " + ", ".join(t[1] for t in falsch_optional))
+        report("Optionale Pakete", True, "; ".join(teile))
     else:
         report("Python-Pakete", True, "alle vorhanden")
 
@@ -249,6 +376,8 @@ def main() -> None:
         ok = False
     if not check_npm():
         ok = False
+    if not check_node_packages():
+        ok = False
     if not check_git_installed():
         ok = False
     if not check_electron_folder():
@@ -270,10 +399,17 @@ def main() -> None:
 
     if ok:
         print("Umgebung OK. Tool kann gestartet werden.")
-        sys.exit(0)
+        status = 0
     else:
         print("Mindestens eine Prüfung ist fehlgeschlagen.")
-        sys.exit(1)
+        status = 1
+
+    if PAUSE:
+        try:
+            input("\nDrücke Enter zum Schließen...")
+        except EOFError:
+            pass
+    sys.exit(status)
 
 
 if __name__ == "__main__":
