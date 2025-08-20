@@ -27,9 +27,12 @@ def report(name: str, ok: bool, detail: str = "") -> None:
     REPORTS.append((name, ok, detail))
 
 
-def run(cmd: str, cwd: str | None = BASE_DIR) -> str:
+def run(cmd: list[str], cwd: str | None = BASE_DIR) -> str:
     """Führt ein Kommando im angegebenen Verzeichnis aus und gibt die Ausgabe zurück."""
-    return subprocess.check_output(cmd, shell=True, cwd=cwd, text=True).strip()
+    result = subprocess.run(
+        cmd, cwd=cwd, text=True, capture_output=True, check=True
+    )
+    return result.stdout.strip()
 
 
 def ensure_package(pkg: str) -> None:
@@ -47,7 +50,7 @@ def ensure_package(pkg: str) -> None:
 def check_git_installed() -> bool:
     """Prüft, ob Git verfügbar ist."""
     try:
-        version = run("git --version")
+        version = run(["git", "--version"])
     except Exception:
         report("Git", False, "nicht gefunden")
         return False
@@ -72,7 +75,7 @@ def check_python() -> bool:
 def check_node() -> bool:
     """Prüft, ob eine unterstützte Node-Version installiert ist."""
     try:
-        version = run("node --version")
+        version = run(["node", "--version"])
     except Exception:
         report("Node-Version", False, "nicht gefunden")
         return False
@@ -91,7 +94,7 @@ def check_node() -> bool:
 def check_npm() -> bool:
     """Prüft, ob npm verfügbar ist."""
     try:
-        version = run("npm --version")
+        version = run(["npm", "--version"])
     except Exception:
         report("npm", False, "nicht gefunden")
         return False
@@ -107,7 +110,7 @@ def check_electron_folder() -> bool:
         return True
     if FIX_MODE:
         try:
-            run("git checkout -- electron")
+            run(["git", "checkout", "--", "electron"])
         except Exception:
             pass
         if os.path.isdir(path):
@@ -174,7 +177,7 @@ def check_python_packages(retry: bool = False) -> bool:
 def check_repo_clean() -> bool:
     """Prüft, ob ein Git-Repository vorhanden und sauber ist."""
     try:
-        inside = run("git rev-parse --is-inside-work-tree")
+        inside = run(["git", "rev-parse", "--is-inside-work-tree"])
     except Exception:
         report("Git-Repository", False, "nicht gefunden")
         return False
@@ -182,16 +185,16 @@ def check_repo_clean() -> bool:
         report("Git-Repository", False, "nicht gefunden")
         return False
     try:
-        output = run("git status --porcelain")
+        output = run(["git", "status", "--porcelain"])
     except Exception:
         report("Git", False, "Fehler bei 'git status'")
         return False
     if output:
         if FIX_MODE:
             try:
-                run("git reset --hard")
-                run("git clean -fd")
-                output = run("git status --porcelain")
+                run(["git", "reset", "--hard"])
+                run(["git", "clean", "-fd"])
+                output = run(["git", "status", "--porcelain"])
             except Exception as e:
                 report("Git-Status", False, str(e))
                 return False
@@ -203,9 +206,9 @@ def check_repo_clean() -> bool:
             return False
     if FIX_MODE:
         try:
-            run("git fetch --depth=1")
-            run("git reset --hard origin/main")
-            run("git clean -fd")
+            run(["git", "fetch", "--depth=1"])
+            run(["git", "reset", "--hard", "origin/main"])
+            run(["git", "clean", "-fd"])
         except Exception as e:
             report("Git-Update", False, str(e))
     report("Git-Status", True, "sauber")
@@ -223,7 +226,7 @@ def check_files() -> bool:
         else:
             if FIX_MODE:
                 try:
-                    run(f"git checkout -- {name}")
+                    run(["git", "checkout", "--", name])
                 except Exception:
                     pass
             if os.path.exists(path):

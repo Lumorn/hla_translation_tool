@@ -7,10 +7,10 @@ import os
 import subprocess
 
 
-def run(cmd: str, cwd: str | None = None) -> None:
+def run(cmd: list[str], cwd: str | None = None) -> None:
     """Hilfsfunktion zum Ausführen eines Befehls."""
-    print(f"Führe aus: {cmd}")
-    subprocess.check_call(cmd, shell=True, cwd=cwd)
+    print(f"Führe aus: {' '.join(cmd)}")
+    subprocess.run(cmd, check=True, cwd=cwd)
 
 
 def main() -> None:
@@ -21,15 +21,29 @@ def main() -> None:
     electron_dir = os.path.join(repo_dir, "electron")
 
     try:
-        run("git reset --hard HEAD")
-        run("git clean -fd -e web/sounds -e web/Sounds -e web/backups -e web/Backups -e web/Download")
-        run("git pull")
+        run(["git", "reset", "--hard", "HEAD"])
+        run([
+            "git",
+            "clean",
+            "-fd",
+            "-e",
+            "web/sounds",
+            "-e",
+            "web/Sounds",
+            "-e",
+            "web/backups",
+            "-e",
+            "web/Backups",
+            "-e",
+            "web/Download",
+        ])
+        run(["git", "pull"])
         print("Installiere Abh\u00e4ngigkeiten im Hauptordner...")
-        run("npm ci")
+        run(["npm", "ci"])
         print("Installiere Abh\u00e4ngigkeiten im electron-Ordner...")
-        run("npm ci", cwd=electron_dir)
+        run(["npm", "ci"], cwd=electron_dir)
         print("Starte Desktop-App...")
-        run("npm start", cwd=electron_dir)
+        run(["npm", "start"], cwd=electron_dir)
     except subprocess.CalledProcessError as e:
         print(f"Fehler: {e}")
     else:
