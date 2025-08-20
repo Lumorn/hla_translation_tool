@@ -17,12 +17,35 @@ def run(cmd: list[str], cwd: str | None = None) -> None:
         raise subprocess.CalledProcessError(127, cmd) from e
 
 
+def ensure_npm() -> bool:
+    """Prüft, ob npm verfügbar ist und richtet es bei Bedarf über corepack ein."""
+    try:
+        run(["npm", "--version"])
+        return True
+    except subprocess.CalledProcessError:
+        print("npm fehlt. Versuche, corepack zu aktivieren...")
+        try:
+            run(["corepack", "enable"])
+            run(["corepack", "prepare", "npm@latest", "--activate"])
+            run(["npm", "--version"])
+            return True
+        except subprocess.CalledProcessError:
+            print(
+                "npm konnte nicht automatisch eingerichtet werden. Bitte Node mit npm installieren oder corepack manuell nutzen."
+            )
+            return False
+
+
 def main() -> None:
     # Verzeichnis dieses Skripts ermitteln
     repo_dir = os.path.dirname(os.path.abspath(__file__))
     os.chdir(repo_dir)
 
     electron_dir = os.path.join(repo_dir, "electron")
+
+    if not ensure_npm():
+        input("Fertig. Mit Enter schliessen...")
+        return
 
     try:
         run(["git", "reset", "--hard", "HEAD"])

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.164
+* `reset_repo.py` richtet fehlendes `npm` über `corepack` automatisch ein.
 ## 🛠️ Patch in 1.40.163
 * `start_tool.py` erkennt fehlendes `npm` und zeigt einen Hinweis auf `corepack enable` statt mit `FileNotFoundError` zu abbrechen.
 ## 🛠️ Patch in 1.40.162
