@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.161
+* `chooseExisting` prüft jetzt leere Namenslisten und wirft bei Bedarf einen Fehler.
+* Kommentar von `copyDubbedFile` nutzt korrekte JSDoc-Syntax.
 ## 🛠️ Patch in 1.40.160
 * Python-Skripte setzen jetzt auf `subprocess.run` mit `check=True` ohne `shell=True`.
 * `needs_npm_ci` und `write_npm_hash` verwenden `with`-Blöcke und schließen Dateien automatisch.
