@@ -17,4 +17,9 @@ describe('Pfaderkennung', () => {
     const name = chooseExisting(tmp, ['Sounds', 'sounds']);
     expect(name).toBe('sounds');
   });
+
+  test('wirft Fehler bei leerer Liste', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'case-'));
+    expect(() => chooseExisting(tmp, [])).toThrow('Namen-Liste darf nicht leer sein');
+  });
 });
