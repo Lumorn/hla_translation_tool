@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.162
+* `fetchJson` bricht Netzwerkabfragen nach fünf Sekunden mit verständlicher Fehlermeldung ab und beendet den Prozess.
 ## 🛠️ Patch in 1.40.161
 * `chooseExisting` prüft jetzt leere Namenslisten und wirft bei Bedarf einen Fehler.
 * Kommentar von `copyDubbedFile` nutzt korrekte JSDoc-Syntax.
