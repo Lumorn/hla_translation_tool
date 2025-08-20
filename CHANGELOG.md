@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.160
+* Python-Skripte setzen jetzt auf `subprocess.run` mit `check=True` ohne `shell=True`.
+* `needs_npm_ci` und `write_npm_hash` verwenden `with`-Blöcke und schließen Dateien automatisch.
 ## 🛠️ Patch in 1.40.159
 * Offline-Übersetzung meldet fehlende Sprachpakete nun verständlich und beendet sich mit Status 1.
 ## 🛠️ Patch in 1.40.158

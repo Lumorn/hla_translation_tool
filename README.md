@@ -30,6 +30,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 🎯 Kernfunktionen
 
+* **Überarbeitete Hilfsskripte:** Python-Tools nutzen jetzt `subprocess.run` mit `check=True` ohne `shell=True` und schließen Dateien konsequent über `with`-Blöcke.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
