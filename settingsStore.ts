@@ -2,19 +2,28 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Algorithmus für die AES-256-CBC-Verschlüsselung
 const algorithm = 'aes-256-cbc';
-const KEY = crypto.createHash('sha256').update('hla_translation_tool').digest();
-const IV = Buffer.alloc(16, 0);
+// Schlüssel aus Umgebungsvariable ableiten, damit nichts Hartkodiertes im Repo landet
+const KEY = crypto.createHash('sha256').update(process.env.HLA_ENC_KEY || '').digest();
 
 function encrypt(text) {
-    const cipher = crypto.createCipheriv(algorithm, KEY, IV);
-    return Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]).toString('base64');
+    // Für jede Speicherung einen neuen Initialisierungsvektor erzeugen
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv(algorithm, KEY, iv);
+    const encrypted = Buffer.concat([cipher.update(text, 'utf8'), cipher.final()]);
+    // IV dem Ergebnis voranstellen und alles als Base64 zurückgeben
+    return Buffer.concat([iv, encrypted]).toString('base64');
 }
 
 function decrypt(enc) {
     try {
-        const decipher = crypto.createDecipheriv(algorithm, KEY, IV);
-        return Buffer.concat([decipher.update(Buffer.from(enc, 'base64')), decipher.final()]).toString('utf8');
+        const buf = Buffer.from(enc, 'base64');
+        // Ersten 16 Bytes als IV auslesen, Rest ist der Ciphertext
+        const iv = buf.subarray(0, 16);
+        const data = buf.subarray(16);
+        const decipher = crypto.createDecipheriv(algorithm, KEY, iv);
+        return Buffer.concat([decipher.update(data), decipher.final()]).toString('utf8');
     } catch {
         return '';
     }
