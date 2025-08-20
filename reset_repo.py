@@ -10,7 +10,11 @@ import subprocess
 def run(cmd: list[str], cwd: str | None = None) -> None:
     """Hilfsfunktion zum Ausführen eines Befehls."""
     print(f"Führe aus: {' '.join(cmd)}")
-    subprocess.run(cmd, check=True, cwd=cwd)
+    try:
+        subprocess.run(cmd, check=True, cwd=cwd)
+    except FileNotFoundError as e:
+        # Fehlende Programme als normalen Fehler weiterreichen
+        raise subprocess.CalledProcessError(127, cmd) from e
 
 
 def main() -> None:
