@@ -13405,15 +13405,9 @@ function addFileToProject(filename, folder, originalResult) {
     
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
-
+    
     isDirty = true;
-    renderFileTable().then(() => {
-        // Neu hinzugefügte Datei automatisch auswählen
-        const row = document.querySelector(`tr[data-id="${newFile.id}"]`);
-        if (row) {
-            selectRow(row);
-        }
-    });
+    renderFileTable();
     renderProjects(); // Live Update
     updateProgressStats();
     
