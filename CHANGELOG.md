@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.166
+* Neu hinzugefügte Dateien werden nach dem Einfügen automatisch ausgewählt.
 ## 🛠️ Patch in 1.40.165
 * `verify_environment.py` prüft jetzt auch Paketversionen für Python und Node, repariert Abweichungen automatisch und wartet am Ende auf eine Eingabe.
 ## 🛠️ Patch in 1.40.164
