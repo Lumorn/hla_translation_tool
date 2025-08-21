@@ -315,6 +315,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### ⌨️ Keyboard & Maus
 
 * **Keyboard‑Navigation:** Pfeiltasten, Tab, Leertaste für Audio, Enter für Texteingabe
+* **Automatische Markierung:** Neue Zeilen werden nach dem Hinzufügen sofort ausgewählt
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
 * **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt, Rechtsklick auf Kapitel → Schnell‑Level
 * **Drag & Drop:** Projekte und Dateien sortieren

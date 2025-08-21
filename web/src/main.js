@@ -124,6 +124,7 @@ let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
+let pendingSelectId        = null; // Merkt die ID der zuletzt hinzugefügten Datei
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let versionMenuFile        = null; // Menü für Versionsauswahl
 let projectContextId       = null; // Rechtsklick-Menü-Projekt
@@ -2492,8 +2493,9 @@ function addFiles() {
                 hallEffect: false,
                 version: 1
             };
-            
+
             files.push(newFile);
+            pendingSelectId = newFile.id; // neue Datei vormerken
             updateAutoTranslation(newFile, true);
             added++;
         }
@@ -3905,6 +3907,15 @@ return `
     updateDubButtons();
     // Nach dem Rendern zur gemerkten Zeile springen
     scrollToNumber(currentRowNumber);
+
+    // Falls eine neue Datei hinzugekommen ist, diese Zeile auswählen
+    if (pendingSelectId !== null) {
+        const neueZeile = tbody.querySelector(`tr[data-id="${pendingSelectId}"]`);
+        if (neueZeile) {
+            selectRow(neueZeile);
+        }
+        pendingSelectId = null;
+    }
 
     // Nach dem Rendern Textfelder und Übersetzungsanzeige anpassen
     setTimeout(() => {
@@ -8073,8 +8084,9 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         hallEffect: false,
         version: 1
     };
-    
+
     files.push(newFile);
+    pendingSelectId = newFile.id; // neue Datei markieren
     updateAutoTranslation(newFile, true);
     updateAutoTranslation(newFile, true);
     
@@ -13400,9 +13412,10 @@ function addFileToProject(filename, folder, originalResult) {
         hallEffect: false,
         version: 1
     };
-    
+
     files.push(newFile);
-    
+    pendingSelectId = newFile.id; // hinzugefügte Datei merken
+
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
     
