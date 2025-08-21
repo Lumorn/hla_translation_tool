@@ -124,7 +124,6 @@ let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 let draggedElement         = null;
 let currentlyPlaying       = null;
 let selectedRow            = null; // für Tastatur-Navigation
-let lastAddedFileId        = null; // ID der zuletzt hinzugefügten Datei
 let contextMenuFile        = null; // Rechtsklick-Menü-Datei
 let versionMenuFile        = null; // Menü für Versionsauswahl
 let projectContextId       = null; // Rechtsklick-Menü-Projekt
@@ -2493,9 +2492,8 @@ function addFiles() {
                 hallEffect: false,
                 version: 1
             };
-
+            
             files.push(newFile);
-            lastAddedFileId = newFile.id; // Neu: zuletzt hinzugefügte Datei merken
             updateAutoTranslation(newFile, true);
             added++;
         }
@@ -4884,20 +4882,6 @@ function findAudioInFilePathCache(filename, folder) {
         }
 
         await renderFileTableWithOrder(sortedFiles);
-
-        // Neu: zuletzt hinzugefügte Datei automatisch auswählen
-        if (lastAddedFileId !== null) {
-            const row = document.querySelector(`#fileTableBody tr[data-id='${lastAddedFileId}']`);
-            if (row) {
-                selectRow(row);
-                setActiveRow(row);
-                const numCell = row.querySelector('.row-number');
-                if (numCell) {
-                    currentRowNumber = parseInt(numCell.textContent, 10);
-                }
-            }
-            lastAddedFileId = null;
-        }
     }
 
 function addDragAndDropHandlers() {
@@ -8091,7 +8075,6 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
     };
     
     files.push(newFile);
-    lastAddedFileId = newFile.id; // Neu: zuletzt hinzugefügte Datei merken
     updateAutoTranslation(newFile, true);
     updateAutoTranslation(newFile, true);
     
@@ -13417,10 +13400,9 @@ function addFileToProject(filename, folder, originalResult) {
         hallEffect: false,
         version: 1
     };
-
+    
     files.push(newFile);
-    lastAddedFileId = newFile.id; // Neu: zuletzt hinzugefügte Datei merken
-
+    
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
     
