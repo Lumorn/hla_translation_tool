@@ -239,6 +239,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
 * **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer und stellen sicher, dass Nummer, Dateiname und Ordner direkt unter dem Tabellenkopf komplett sichtbar bleiben. Beim Scrollen mit dem Mausrad wird automatisch die Zeile in Bildschirmmitte markiert, ohne die Ausrichtung zu verändern. Schnelle Klicks nach unten funktionieren jetzt ebenfalls ohne Zurückspringen
 * **Aktuelle Zeile angeheftet:** Beim Scrollen bleibt die oberste Zeile direkt unter der Überschrift stehen und ist dezent markiert
+* **Automatische Zeilenauswahl:** Neu hinzugefügte Dateien werden direkt markiert und in den sichtbaren Bereich gescrollt
 * **Feste Reihenfolge:** Beim Projekt-Playback wird die Dateiliste strikt von oben nach unten abgespielt, unabhängig vom Dateityp
 * **Stabileres Audio-Playback:** Unterbrochene Wiedergabe erzeugt keine Fehlermeldungen mehr
 * **Fehlerhinweis bei der Bearbeitungs-Vorschau:** Schlägt das Abspielen fehl, erscheint jetzt eine Meldung
