@@ -1315,12 +1315,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast('Fehler beim Speichern: ' + msg, 'error'));
         }
         if (window.electronAPI.onTranslateFinished) {
-            window.electronAPI.onTranslateFinished(({ id, text }) => {
+            window.electronAPI.onTranslateFinished(({ id, text, error }) => {
                 const entry = pendingTranslations.get(id);
                 if (!entry) return;
                 pendingTranslations.delete(id);
                 const { file, resolve } = entry;
-                file.autoTranslation = text;
+                if (text) {
+                    // Erfolgreiche Übersetzung übernehmen
+                    file.autoTranslation = text;
+                } else {
+                    // Bei Fehler einen Hinweis eintragen und Meldung zeigen
+                    file.autoTranslation = '[Übersetzung fehlgeschlagen]';
+                    if (error) console.error('Übersetzung:', error);
+                    if (typeof showToast === 'function') {
+                        showToast('Automatische Übersetzung fehlgeschlagen', 'error');
+                    }
+                }
+                // Quelle merken, damit nicht erneut automatisch übersetzt wird
                 file.autoSource = file.enText;
                 isDirty = true;
                 updateTranslationDisplay(file.id);
