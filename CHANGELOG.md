@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.174
+* `selectRow` blockiert `updateNumberFromScroll` während des automatischen Scrollens.
 ## 🛠️ Patch in 1.40.173
 * Dateitabelle scrollt nur, wenn keine neue Zeile zur Auswahl ansteht oder nach dem Selektieren der neuen Zeile.
 ## 🛠️ Patch in 1.40.172
