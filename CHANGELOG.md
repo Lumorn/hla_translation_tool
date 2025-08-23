@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.167
+* Neuer Effekt für elektromagnetische Störgeräusche mit regelbarer Stärke.
+* Störgeräusch-Effekt wird wie Funkgerät- und Hall-Effekt beim Upload oder Dubbing zurückgesetzt.
 ## 🛠️ Patch in 1.40.166
 * Neue Dateien werden nach dem Einfügen automatisch markiert.
 ## 🛠️ Patch in 1.40.165
