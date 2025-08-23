@@ -1,6 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.168
-* DE-Editor: Markierte EN-Abschnitte können nun am Anfang, Ende oder an der Cursor-Position in das deutsche Audio eingefügt werden.
 ## 🛠️ Patch in 1.40.167
 * Neuer Effekt für elektromagnetische Störgeräusche mit regelbarer Stärke.
 * Störgeräusch-Effekt wird wie Funkgerät- und Hall-Effekt beim Upload oder Dubbing zurückgesetzt.
