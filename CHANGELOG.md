@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.184
+* `translate_text.py` installiert fehlendes `argostranslate` automatisch und weist bei DLL-Problemen auf das VC++‑Laufzeitpaket hin.
 ## 🛠️ Patch in 1.40.183
 * Automatische Übersetzung zeigt den konkreten Fehltext nun in einem Hinweis an.
 ## 🛠️ Patch in 1.40.182
