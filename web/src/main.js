@@ -246,6 +246,9 @@ let hallRoom   = parseFloat(localStorage.getItem('hla_hallRoom') || '0.5');
 let hallAmount = parseFloat(localStorage.getItem('hla_hallAmount') || '0.5');
 let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
 
+// Letzte Einstellungen für elektromagnetische Störgeräusche
+let emiNoiseLevel = parseFloat(localStorage.getItem('hla_emiNoiseLevel') || '0.5');
+
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
@@ -2260,6 +2263,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -2491,6 +2495,7 @@ function addFiles() {
                 volumeMatched: false,
                 radioEffect: false,
                 hallEffect: false,
+                emiEffect: false,
                 version: 1
             };
 
@@ -3884,6 +3889,7 @@ return `
                         ${file.volumeMatched ? '<span class="edit-status-icon" title="Lautstärke angepasst">🔊</span>' : ''}
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
                         ${file.hallEffect ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
+                        ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -7610,6 +7616,7 @@ async function exportSegmentsToProject() {
             file.volumeMatched = false;
             file.radioEffect = false;
             file.hallEffect = false;
+            file.emiEffect = false;
         }
     }
     updateStatus('Segmente importiert');
@@ -8082,6 +8089,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         volumeMatched: false,
         radioEffect: false,
         hallEffect: false,
+        emiEffect: false,
         version: 1
     };
 
@@ -10620,6 +10628,7 @@ async function handleDeUpload(input) {
         file.volumeMatched = false;
         file.radioEffect = false;
         file.hallEffect = false;
+        file.emiEffect = false;
         // Fertig-Status ergibt sich nun automatisch
     }
 
@@ -11180,6 +11189,37 @@ async function applyReverbEffect(buffer, opts = {}) {
     return await ctx.startRendering();
 }
 // =========================== REVERB END =====================================
+
+// =========================== EMI NOISE START ===============================
+// Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
+async function applyInterferenceEffect(buffer, opts = {}) {
+    const { level = emiNoiseLevel } = opts;
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const noiseBuffer = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    for (let ch = 0; ch < noiseBuffer.numberOfChannels; ch++) {
+        const data = noiseBuffer.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            if (Math.random() < 0.01) {
+                data[i] = Math.random() * 2 - 1;
+            }
+        }
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    const gain = ctx.createGain();
+    gain.gain.value = level;
+
+    source.connect(ctx.destination);
+    noise.connect(gain).connect(ctx.destination);
+    source.start();
+    noise.start();
+
+    return await ctx.startRendering();
+}
+// =========================== EMI NOISE END ===================================
 // =========================== TRIMANDBUFFER END ==============================
 
 // =========================== BUFFERTOWAV START ==============================
@@ -11226,6 +11266,8 @@ let radioEffectBuffer = null;  // Buffer mit Funkgeräteffekt
 let isRadioEffect = false;     // Merkt, ob der Funkgeräteffekt angewendet wurde
 let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
 let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
+let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
+let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -11254,6 +11296,8 @@ async function openDeEdit(fileId) {
     isRadioEffect = false;
     hallEffectBuffer = null;
     isHallEffect = false;
+    emiEffectBuffer = null;
+    isEmiEffect = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -11520,6 +11564,20 @@ async function openDeEdit(fileId) {
         hToggle.onchange = e => toggleHallEffect(e.target.checked);
     }
 
+    // Regler für elektromagnetische Störgeräusche initialisieren
+    const emiLevel = document.getElementById('emiLevel');
+    const emiLevelDisp = document.getElementById('emiLevelDisplay');
+    if (emiLevel && emiLevelDisp) {
+        emiLevel.value = emiNoiseLevel;
+        emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+        emiLevel.oninput = e => {
+            emiNoiseLevel = parseFloat(e.target.value);
+            localStorage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+            emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
     // Preset-Auswahl initialisieren
     updateRadioPresetList();
     const presetSel  = document.getElementById('radioPresetSelect');
@@ -11685,6 +11743,10 @@ function updateEffectButtons() {
     if (hallLabel) {
         hallLabel.classList.toggle('active', isHallEffect);
     }
+    const emiBtn = document.getElementById('emiEffectBtn');
+    if (emiBtn) {
+        emiBtn.classList.toggle('active', isEmiEffect);
+    }
 }
 
 // Kombination aus Pausenkürzung und Tempoanpassung
@@ -11759,6 +11821,9 @@ async function recomputeEditBuffer() {
     if (isHallEffect) {
         buf = await applyReverbEffect(buf);
     }
+    if (isEmiEffect) {
+        buf = await applyInterferenceEffect(buf);
+    }
 
     // Trimmen und Pausen entfernen, damit die Vorschau exakt dem Endergebnis entspricht
     let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
@@ -11815,6 +11880,22 @@ function toggleHallEffect(active) {
     updateEffectButtons();
 }
 // =========================== APPLYHALLEFFECT END ============================
+
+// =========================== APPLYEMIEFFECT START ===========================
+// Aktiviert elektromagnetische Störgeräusche und legt bei Erstnutzung eine History an
+async function applyEmiEffect() {
+    if (!isEmiEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isEmiEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+// =========================== APPLYEMIEFFECT END =============================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== RESETRADIOSETTINGS START =====================
@@ -11985,6 +12066,24 @@ function resetHallSettings() {
     if (isHallEffect) recomputeEditBuffer();
 }
 // =========================== RESETHALLSETTINGS END =======================
+
+// =========================== RESETEMISETTINGS START =====================
+function resetEmiSettings() {
+    // Standardwert für Störgeräusche setzen
+    emiNoiseLevel = 0.5;
+    localStorage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+
+    const eLevel = document.getElementById('emiLevel');
+    const eDisp  = document.getElementById('emiLevelDisplay');
+    if (eLevel && eDisp) {
+        eLevel.value = emiNoiseLevel;
+        eDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+    }
+
+    // Effekt neu berechnen, falls aktiv
+    if (isEmiEffect) recomputeEditBuffer();
+}
+// =========================== RESETEMISETTINGS END =======================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
@@ -12281,6 +12380,8 @@ function closeDeEdit() {
     isRadioEffect = false;
     hallEffectBuffer = null;
     isHallEffect = false;
+    emiEffectBuffer = null;
+    isEmiEffect = false;
     editEnBuffer = null;
     editIgnoreRanges = [];
     ignoreTempStart = null;
@@ -12340,12 +12441,15 @@ async function resetDeEdit() {
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
+        currentEditFile.emiEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
         isRadioEffect = false;
         hallEffectBuffer = null;
         isHallEffect = false;
+        emiEffectBuffer = null;
+        isEmiEffect = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
@@ -12392,6 +12496,9 @@ async function applyDeEdit() {
         }
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
+        }
+        if (isEmiEffect) {
+            baseBuffer = await applyInterferenceEffect(baseBuffer);
         }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
@@ -12472,6 +12579,9 @@ async function applyDeEdit() {
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
+        if (isEmiEffect) {
+            baseBuffer = await applyInterferenceEffect(baseBuffer);
+        }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
@@ -12501,6 +12611,7 @@ async function applyDeEdit() {
         const sel = document.getElementById('radioPresetSelect');
         currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
+        currentEditFile.emiEffect = isEmiEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
@@ -13410,6 +13521,7 @@ function addFileToProject(filename, folder, originalResult) {
         volumeMatched: false,
         radioEffect: false,
         hallEffect: false,
+        emiEffect: false,
         version: 1
     };
 
@@ -14297,6 +14409,7 @@ function quickAddLevel(chapterName) {
                 f.volumeMatched = false;
                 f.radioEffect = false;
                 f.hallEffect = false;
+                f.emiEffect = false;
                 // Tempo bei neuem Upload auf Standard zurücksetzen
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
@@ -14471,6 +14584,7 @@ function quickAddLevel(chapterName) {
             file.volumeMatched = false;
             file.radioEffect = false;
             file.hallEffect = false;
+            file.emiEffect = false;
             renderFileTable();
             saveCurrentProject();
         }

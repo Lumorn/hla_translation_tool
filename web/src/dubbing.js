@@ -756,6 +756,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         file.volumeMatched = false;
         file.radioEffect = false;
         file.hallEffect = false;
+        file.emiEffect = false;
         updateStatus('Download abgeschlossen');
         showToast('Auto-Download erfolgreich.');
         addDubbingLog('Auto-Download erfolgreich');
@@ -844,6 +845,7 @@ async function startEmoDubbing(fileId, settings = {}) {
     file.trimEndMs = 0;
     file.volumeMatched = false;
     file.radioEffect = false;
+    file.emiEffect = false;
     updateStatus('Emo-Download abgeschlossen');
     renderFileTable();
     saveCurrentProject();
@@ -943,6 +945,7 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     file.volumeMatched = false;
     file.radioEffect = false;
     file.hallEffect = false;
+    file.emiEffect = false;
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
@@ -991,6 +994,7 @@ async function redownloadEmo(fileId) {
     file.trimEndMs = 0;
     file.volumeMatched = false;
     file.radioEffect = false;
+    file.emiEffect = false;
     updateStatus('Download abgeschlossen');
     addDubbingLog('Fertig.');
     renderFileTable();
@@ -1078,6 +1082,7 @@ async function downloadDe(fileId, lang = 'de') {
     file.volumeMatched = false;
     file.radioEffect = false;
     file.hallEffect = false;
+    file.emiEffect = false;
     updateStatus('Deutsche Audiodatei gespeichert.');
     renderFileTable();
     saveCurrentProject();

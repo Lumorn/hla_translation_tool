@@ -8,6 +8,7 @@ function afterDubbingMock(file) {
     file.volumeMatched = false;
     file.radioEffect = false;
     file.hallEffect = false;
+    file.emiEffect = false;
 }
 
 test('Dubbing setzt Bearbeitungs-Flags zurück', () => {
@@ -16,7 +17,8 @@ test('Dubbing setzt Bearbeitungs-Flags zurück', () => {
         trimEndMs: 8,
         volumeMatched: true,
         radioEffect: true,
-        hallEffect: true
+        hallEffect: true,
+        emiEffect: true
     };
     afterDubbingMock(file);
     expect(file.trimStartMs).toBe(0);
@@ -24,4 +26,5 @@ test('Dubbing setzt Bearbeitungs-Flags zurück', () => {
     expect(file.volumeMatched).toBe(false);
     expect(file.radioEffect).toBe(false);
     expect(file.hallEffect).toBe(false);
+    expect(file.emiEffect).toBe(false);
 });
