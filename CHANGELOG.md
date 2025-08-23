@@ -1,10 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.180
-* `verify_environment.py` sucht bei Python 3.13 oder neuer automatisch eine unterstuetzte Installation und startet sich gegebenenfalls neu.
-* README beschreibt die automatische Wahl einer passenden Python-Version.
-## 🛠️ Patch in 1.40.179
-* `verify_environment.py` verweigert Python 3.13 oder neuer mit einem klaren Hinweis.
-* README betont, dass nur Python 3.9–3.12 unterstuetzt wird.
 ## 🛠️ Patch in 1.40.178
 * `start_tool.py` prüft fehlende Python-Module durch Import und installiert sie bei Bedarf neu.
 * `reset_repo.py` installiert jetzt automatisch alle Python-Abhängigkeiten aus `requirements.txt`.
