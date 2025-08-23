@@ -601,6 +601,22 @@
                     </div>
                 </div>
             </div>
+            <!-- Bereich zum Einfügen eines EN-Ausschnitts -->
+            <div class="insert-en-section">
+                <h4>EN-Abschnitt einfügen</h4>
+                <div class="insert-controls">
+                    <label>Start EN (ms): <input type="number" id="enSegStart" value="0" step="100"></label>
+                    <label>Ende EN (ms): <input type="number" id="enSegEnd" value="0" step="100"></label>
+                    <label>Einfügen bei:
+                        <select id="enInsertPos">
+                            <option value="cursor">Cursor</option>
+                            <option value="start">Anfang</option>
+                            <option value="end">Ende</option>
+                        </select>
+                    </label>
+                    <button class="btn btn-secondary" onclick="insertEnglishSegment()" title="EN-Abschnitt in DE-Audio einfügen">Einfügen</button>
+                </div>
+            </div>
             <div class="edit-range">
                 <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
                 <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
