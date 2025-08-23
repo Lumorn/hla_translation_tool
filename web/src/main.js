@@ -2927,7 +2927,10 @@ function addFiles() {
                     scrollToNumber(num);
                 } else {
                     // Fallback: Scrollt den Eintrag an den oberen Rand
+                    isAutoScrolling = true; // verhindert Updates während des Auto-Scrolls
+                    if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
                     selectedRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    autoScrollTimeout = setTimeout(() => { isAutoScrolling = false; }, 300);
                 }
             }
         }
