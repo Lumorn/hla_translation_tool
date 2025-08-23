@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.171
+* DE-Editor: Kopieren-Knopf überträgt markierten EN-Ausschnitt zuverlässig.
+* Start- und Endpunkte des EN-Bereichs lassen sich direkt auf der Welle verschieben; die Eingabefelder aktualisieren sich automatisch.
 ## 🛠️ Patch in 1.40.170
 * `start_tool.py` sucht bei mehreren Python-Installationen automatisch eine passende Version und startet sich gegebenenfalls neu.
 ## 🛠️ Patch in 1.40.169
