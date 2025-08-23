@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.177
+* Fehlgeschlagene automatische Übersetzungen werden nach einem Neustart beim ersten Projektaufruf einmalig erneut versucht.
+* Rechtsklick auf den grauen Übersetzungstext bietet Optionen zum erneuten Übersetzen einzelner oder aller Zeilen.
 ## 🛠️ Patch in 1.40.176
 * `translate_text.py` fängt fehlende Abhängigkeiten wie PyTorch ab und gibt einen klaren Hinweis aus.
 ## 🛠️ Patch in 1.40.175

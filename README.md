@@ -240,6 +240,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fortschrittsanzeige** beim automatischen Übersetzen aller fehlenden Texte
 * **Lade-Indikator für Übersetzungen:** Jede Anfrage zeigt nun einen Spinner und das Ergebnis kommt über das IPC-Event `translate-finished`
 * **Fehlerhinweis bei Übersetzungsproblemen:** Schlägt die automatische Übersetzung fehl, erscheint eine Meldung und die Konsole protokolliert den Grund
+* **Automatischer Neustartversuch:** Nach einem Programmneustart wird beim ersten geöffneten Projekt eine fehlgeschlagene Übersetzung einmalig automatisch neu gestartet
+* **Rechtsklick auf Übersetzungsvorschlag:** Ein Kontextmenü erlaubt die automatische Übersetzung der aktuellen oder aller Zeilen
 * **Projekt-Playback:** ▶/⏸/⏹ spielt verfügbare DE-Dateien nacheinander ab
 * **Numerische Navigation:** ▲/▼ neben den Playback-Knöpfen springen zur nächsten oder vorherigen Nummer und stellen sicher, dass Nummer, Dateiname und Ordner direkt unter dem Tabellenkopf komplett sichtbar bleiben. Beim Scrollen mit dem Mausrad wird automatisch die Zeile in Bildschirmmitte markiert, ohne die Ausrichtung zu verändern. Schnelle Klicks nach unten funktionieren jetzt ebenfalls ohne Zurückspringen
 * **Aktuelle Zeile angeheftet:** Beim Scrollen bleibt die oberste Zeile direkt unter der Überschrift stehen und ist dezent markiert

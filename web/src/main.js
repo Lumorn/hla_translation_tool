@@ -163,6 +163,7 @@ let autoBackupTimer    = null;
 let soundBackupLimit   = 5;
 
 // Warteschlange für automatische Übersetzungen
+let autoRetryDone      = false; // wurde eine fehlgeschlagene Übersetzung nach Neustart bereits neu versucht?
 let translateQueue     = [];
 let translateRunning   = false;
 let translateCounter   = 0;
@@ -2294,7 +2295,19 @@ function selectProject(id){
     });
     if(migrated) isDirty=true;
 
-    const needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
+    let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
+
+    // Nach Neustart fehlgeschlagene Übersetzungen einmalig automatisch neu versuchen
+    if (!autoRetryDone) {
+        const failed = files.filter(f => f.enText && f.autoTranslation === '[Übersetzung fehlgeschlagen]');
+        if (failed.length > 0) {
+            const set = new Set(needTrans);
+            failed.forEach(f => set.add(f));
+            needTrans = Array.from(set);
+        }
+        autoRetryDone = true;
+    }
+
     runTranslationQueue(needTrans);
 
     renderFileTable();
@@ -2766,6 +2779,7 @@ function addFiles() {
             document.addEventListener('contextmenu', handleContextMenu);
             document.addEventListener('click', () => {
                 hideContextMenu();
+                hideAutoTransMenu();
                 hideVersionMenu();
                 hideProjectMenu();
                 hideLevelMenu();
@@ -3376,33 +3390,55 @@ function addFiles() {
 
         // Context Menu
         function handleContextMenu(e) {
+            hideContextMenu();
+            hideAutoTransMenu();
+            const autoDiv = e.target.closest('.auto-trans');
+            if (autoDiv) {
+                e.preventDefault();
+                const fileId = parseInt(autoDiv.dataset.fileId, 10);
+                contextMenuFile = files.find(f => f && f.id === fileId);
+                if (!contextMenuFile) return;
+                const autoMenu = document.getElementById('autoTransMenu');
+                autoMenu.style.display = 'block';
+                autoMenu.style.left = e.pageX + 'px';
+                autoMenu.style.top = e.pageY + 'px';
+                const rect = autoMenu.getBoundingClientRect();
+                if (rect.right > window.innerWidth) {
+                    autoMenu.style.left = (e.pageX - rect.width) + 'px';
+                }
+                if (rect.bottom > window.innerHeight) {
+                    autoMenu.style.top = (e.pageY - rect.height) + 'px';
+                }
+                return;
+            }
+
             const row = e.target.closest('tr[data-id]');
             if (!row) return;
-            
+
             e.preventDefault();
-            
+
             const fileIdStr = row.dataset.id;
             const fileId = parseFloat(fileIdStr);
-            
+
             debugLog('Context menu - Row data-id:', fileIdStr, 'Parsed as:', fileId);
-            
-            // Find file more safely
+
+            // Datei sicher ermitteln
             contextMenuFile = files.find(f => f && f.id && f.id == fileId);
-            
+
             if (!contextMenuFile) {
                 console.error('Context menu file not found for ID:', fileId);
                 debugLog('Available files:', files.map(f => ({id: f?.id, filename: f?.filename})));
                 return;
             }
-            
+
             debugLog('Context menu opened for file:', contextMenuFile.filename, 'ID:', contextMenuFile.id);
-            
+
             const contextMenu = document.getElementById('contextMenu');
             contextMenu.style.display = 'block';
             contextMenu.style.left = e.pageX + 'px';
             contextMenu.style.top = e.pageY + 'px';
-            
-            // Ensure menu stays within viewport
+
+            // Menü innerhalb des Sichtbereichs halten
             const rect = contextMenu.getBoundingClientRect();
             if (rect.right > window.innerWidth) {
                 contextMenu.style.left = (e.pageX - rect.width) + 'px';
@@ -3414,6 +3450,11 @@ function addFiles() {
 
         function hideContextMenu() {
             document.getElementById('contextMenu').style.display = 'none';
+            contextMenuFile = null;
+        }
+
+        function hideAutoTransMenu() {
+            document.getElementById('autoTransMenu').style.display = 'none';
             contextMenuFile = null;
         }
 
@@ -3552,6 +3593,18 @@ function addFiles() {
             }
         }
 
+        // Aktionen des Übersetzungs-Kontextmenüs
+        function autoTransMenuAction(action) {
+            if (!contextMenuFile) return;
+            hideAutoTransMenu();
+            if (action === 'line') {
+                runTranslationQueue([contextMenuFile]);
+            } else if (action === 'all') {
+                const all = files.filter(f => f.enText);
+                runTranslationQueue(all);
+            }
+        }
+
         // Kontextmenü für Projekte
         function showProjectMenu(e, projectId) {
             // eigenes Kontextmenü anzeigen
@@ -3583,8 +3636,10 @@ function addFiles() {
         }
 
         // Funktionen im globalen Scope verfügbar machen
-        window.showProjectMenu  = showProjectMenu;
-        window.hideProjectMenu  = hideProjectMenu;
+        window.contextMenuAction  = contextMenuAction;
+        window.autoTransMenuAction = autoTransMenuAction;
+        window.showProjectMenu   = showProjectMenu;
+        window.hideProjectMenu   = hideProjectMenu;
         window.projectMenuAction = projectMenuAction;
 
         function showLevelMenu(e, levelName) {
