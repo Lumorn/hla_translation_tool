@@ -1274,6 +1274,16 @@ th:nth-child(8) {
     margin-bottom: 15px;
 }
 
+/* Bereich zur Übernahme eines EN-Ausschnitts */
+.insert-en-section { margin: 5px 0; }
+.insert-en-section .insert-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
 .ignore-container { margin-bottom: 15px; }
 .ignore-row { display:flex; gap:6px; margin-bottom:4px; }
 .ignore-row input { width:70px; }
