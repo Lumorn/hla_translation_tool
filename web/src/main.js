@@ -2920,7 +2920,15 @@ function addFiles() {
             selectedRow = row;
             if (selectedRow) {
                 selectedRow.classList.add('selected-row');
-                selectedRow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                const cell = selectedRow.querySelector('.row-number');
+                const num = cell ? parseInt(cell.textContent, 10) : null;
+                // Zeile so scrollen, dass sie vollständig unter dem Tabellenkopf erscheint
+                if (num !== null) {
+                    scrollToNumber(num);
+                } else {
+                    // Fallback: Scrollt den Eintrag an den oberen Rand
+                    selectedRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         }
 

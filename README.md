@@ -326,6 +326,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
 * **Mausrad:** Markiert beim Scrollen automatisch die Zeile in der Bildschirmmitte, ohne sie neu auszurichten
+* **Zeilenauswahl:** Gewählte Zeilen werden vollständig unter dem Tabellenkopf positioniert
 * **Doppelklick:** Projekt umbenennen
 
 ---
