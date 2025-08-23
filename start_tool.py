@@ -20,6 +20,8 @@ import shutil
 import hashlib
 from typing import Optional, Iterable
 
+from verify_environment import ensure_supported_python  # sorgt beim Import fuer passende Python-Version
+
 # =======================
 # Hilfsfunktionen
 # =======================
@@ -50,46 +52,6 @@ def which_exe(name: str) -> Optional[str]:
                 return path
     return None
 
-
-def find_compatible_python() -> Optional[str]:
-    """Durchsucht das System nach einer passenden Python-Version (3.9–3.12, 64-Bit)."""
-    candidates = []
-    py_launcher = which_exe("py")
-    if py_launcher:
-        try:
-            out = subprocess.check_output([py_launcher, "-0p"], text=True)
-            for line in out.splitlines():
-                parts = line.strip().split()
-                if len(parts) == 2:
-                    candidates.append(parts[1])
-        except subprocess.CalledProcessError:
-            pass
-    for ver in ("3.12", "3.11", "3.10", "3.9"):
-        exe = which_exe(f"python{ver}")
-        if exe:
-            candidates.append(exe)
-    for name in ("python3", "python"):
-        exe = which_exe(name)
-        if exe:
-            candidates.append(exe)
-    seen = set()
-    unique = []
-    for exe in candidates:
-        if exe not in seen:
-            unique.append(exe)
-            seen.add(exe)
-    for exe in unique:
-        try:
-            out = subprocess.check_output(
-                [exe, "-c", "import sys,struct;print(sys.version_info[0],sys.version_info[1],struct.calcsize('P')*8)"],
-                text=True,
-            ).strip()
-            major, minor, bits = map(int, out.split())
-            if major == 3 and 9 <= minor < 13 and bits == 64:
-                return exe
-        except Exception:
-            continue
-    return None
 
 
 def run(cmd: Iterable[str], cwd: Optional[str] = None) -> None:
@@ -216,42 +178,14 @@ def has_remote() -> bool:
         return False
 
 
-def quote_path(path: str) -> str:
-    return f'"{path}"' if " " in path else path
-
-
 # =======================
 # Start
 # =======================
 
+ensure_supported_python()  # startet sich bei Bedarf mit einer unterstuetzten Version neu
+
 log("Setup gestartet")
 log(f"Python-Version: {sys.version.split()[0]} auf {sys.platform}")
-
-def supported_python() -> bool:
-    return (3, 9) <= sys.version_info < (3, 13) and sys.maxsize > 2**32
-
-if not supported_python():
-    log("Suche nach kompatibler Python-Version")
-    alt = find_compatible_python()
-    if alt and os.path.abspath(alt) != os.path.abspath(sys.executable):
-        print(f"Starte neu mit {alt} ...")
-        log(f"Starte neu mit {alt}")
-        os.execv(alt, [alt, __file__, *sys.argv[1:]])
-    if sys.version_info < (3, 9):
-        print("[Fehler] Python 3.9 oder neuer wird benoetigt.")
-        log("Python-Version zu alt")
-        sys.exit(1)
-    if sys.maxsize <= 2**32:
-        print("[Fehler] 32-Bit-Python wird nicht unterstuetzt. Bitte 64-Bit installieren.")
-        log("Python-Architektur 32-Bit")
-        sys.exit(1)
-    if sys.version_info >= (3, 13):
-        print("[Warnung] Python 3.13 oder neuer erkannt. Diese Version wird moeglicherweise nicht unterstuetzt.")
-        log("Python-Version zu neu")
-        antwort = input("Fortsetzen? [j/N] ")
-        if antwort.lower() not in ("j", "ja"):
-            print("Abbruch.")
-            sys.exit(1)
 
 print("=== Starte HLA Translation Tool Setup ===")
 

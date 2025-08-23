@@ -33,7 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Hilfsskripte:** Python-Tools nutzen jetzt `subprocess.run` mit `check=True` ohne `shell=True` und schließen Dateien konsequent über `with`-Blöcke.
 * **Robuster npm-Test:** Fehlt `npm` (z. B. bei Node 22), bricht das Startskript nicht mehr ab, sondern weist auf `corepack enable` oder eine separate Installation hin.
 * **Automatische npm-Aktivierung:** `reset_repo.py` versucht bei fehlendem `npm`, es über `corepack` einzurichten, bevor das Tool startet.
-* **Automatische Python-Wahl:** `start_tool.py` startet sich bei mehreren Python-Versionen mit der passenden Umgebung neu.
+* **Automatische Python-Wahl:** `start_tool.py` und `verify_environment.py` suchen bei mehreren Installationen nach einer passenden 64‑Bit‑Python-Version (3.9–3.12) und starten sich bei Bedarf neu.
 * **Zuverlässige Python-Abhängigkeiten:** `start_tool.py` prüft Pakete durch Import und `reset_repo.py` installiert `requirements.txt` automatisch.
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
@@ -352,7 +352,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
 * **Playwright** als zusätzliche Abhängigkeit für die Schritt-für-Schritt-Automatik
-* **64‑Bit Python 3.9–3.12** erforderlich; 3.13+ wird moeglicherweise nicht unterstuetzt (Warnhinweis). 32‑Bit wird nicht unterstuetzt
+* **64‑Bit Python 3.9–3.12** erforderlich; die Skripte suchen bei höheren Versionen automatisch nach einer passenden Installation. 32‑Bit wird nicht unterstuetzt
 
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
@@ -371,7 +371,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
 10. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Netzwerkabfragen brechen nach fünf Sekunden mit einer verständlichen Fehlermeldung ab. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
-12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben. Das Skript prüft zusätzlich die Versionsnummern aller Python‑ und Node‑Pakete, korrigiert Abweichungen auf Wunsch automatisch und hält das Terminal am Ende offen, bis eine Eingabe erfolgt. Für automatisierte Abläufe kann die Pause mit `--no-pause` deaktiviert werden.
+12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben. Das Skript prüft zusätzlich die Versionsnummern aller Python‑ und Node‑Pakete, korrigiert Abweichungen auf Wunsch automatisch und hält das Terminal am Ende offen, bis eine Eingabe erfolgt. Für automatisierte Abläufe kann die Pause mit `--no-pause` deaktiviert werden. Bei Python 3.13 oder neuer suchen sowohl `verify_environment.py` als auch `start_tool.py` automatisch nach einer unterstützten Version und starten sich gegebenenfalls neu.
 13. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 14. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 15. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
@@ -538,6 +538,8 @@ damit `pip install` ohne aufwendiges Quoting auch unter Windows funktioniert.
 Seit Patch 1.40.67 warnt `start_tool.py` vor Python 3.13 oder neuer und ermoeglicht einen Abbruch.
 Seit Patch 1.40.68 öffnet sich das Versionsmenü beim Klick auf die Nummer wieder korrekt.
 Seit Patch 1.40.69 ändert die Schnellwahl (Version 1–10) nur noch die angeklickte Datei.
+Seit Patch 1.40.181 bricht `start_tool.py` bei Python 3.13 oder neuer mit einem Hinweis ab.
+Seit Patch 1.40.182 verwendet `start_tool.py` die gleiche Suchroutine wie `verify_environment.py` und startet sich bei Bedarf mit einer unterstuetzten Python-Version neu.
 Beim Punkt "Benutzerdefiniert..." können Sie eine beliebige Nummer eingeben und entscheiden,
 ob alle Dateien mit demselben Namen im Projekt angepasst werden sollen.
 Seit Patch 1.40.70 wird die ausgewählte Datei beim Eintragen einer benutzerdefinierten Versionsnummer korrekt übernommen.

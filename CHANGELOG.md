@@ -1,4 +1,16 @@
 # Changelog
+## 🛠️ Patch in 1.40.182
+* `start_tool.py` nutzt jetzt die Python-Suchroutine von `verify_environment.py` und startet sich bei Bedarf mit einer unterstuetzten Version neu.
+* README beschreibt die gemeinsame automatische Wahl einer passenden Python-Version.
+## 🛠️ Patch in 1.40.181
+* `start_tool.py` bricht bei Python 3.13 oder neuer mit einem Hinweis ab.
+* README erwaehnt den Abbruch von `start_tool.py` bei zu neuer Python-Version.
+## 🛠️ Patch in 1.40.180
+* `verify_environment.py` sucht bei Python 3.13 oder neuer automatisch eine unterstuetzte Installation und startet sich gegebenenfalls neu.
+* README beschreibt die automatische Wahl einer passenden Python-Version.
+## 🛠️ Patch in 1.40.179
+* `verify_environment.py` verweigert Python 3.13 oder neuer mit einem klaren Hinweis.
+* README betont, dass nur Python 3.9–3.12 unterstuetzt wird.
 ## 🛠️ Patch in 1.40.178
 * `start_tool.py` prüft fehlende Python-Module durch Import und installiert sie bei Bedarf neu.
 * `reset_repo.py` installiert jetzt automatisch alle Python-Abhängigkeiten aus `requirements.txt`.
