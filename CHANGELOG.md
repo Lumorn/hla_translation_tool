@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.173
+* Dateitabelle scrollt nur, wenn keine neue Zeile zur Auswahl ansteht oder nach dem Selektieren der neuen Zeile.
 ## 🛠️ Patch in 1.40.172
 * Zeilenauswahl scrollt die markierte Zeile vollständig unter den Tabellenkopf.
 ## 🛠️ Patch in 1.40.171
