@@ -6997,23 +6997,6 @@ function insertSilenceIntoBuffer(buffer, ranges) {
     return out;
 }
 
-// Fügt einen Buffer an einer bestimmten Position in einen anderen ein
-function insertBufferIntoBuffer(target, insert, posMs) {
-    const sr = target.sampleRate;
-    const pos = Math.round(Math.max(0, posMs) * sr / 1000);
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const out = ctx.createBuffer(target.numberOfChannels, target.length + insert.length, sr);
-    for (let ch = 0; ch < target.numberOfChannels; ch++) {
-        const outData = out.getChannelData(ch);
-        const tData = target.getChannelData(ch);
-        outData.set(tData.subarray(0, pos), 0);
-        outData.set(insert.getChannelData(ch), pos);
-        outData.set(tData.subarray(pos), pos + insert.length);
-    }
-    ctx.close();
-    return out;
-}
-
 // Rechnet Originalposition auf Abspielposition um (nach Entfernen der Bereiche)
 function originalToPlayback(ms, ranges, duration) {
     const valid = normalizeRanges(ranges, duration);
@@ -11766,33 +11749,6 @@ function updateEffectButtons() {
     }
 }
 
-// Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
-function insertEnglishSegment() {
-    if (!editEnBuffer || !savedOriginalBuffer) return;
-    const startField = document.getElementById('enSegStart');
-    const endField   = document.getElementById('enSegEnd');
-    const posField   = document.getElementById('enInsertPos');
-    const segStart = parseInt(startField?.value) || 0;
-    const segEnd   = parseInt(endField?.value) || 0;
-    const startMs = Math.max(0, Math.min(segStart, segEnd));
-    const endMs   = Math.max(startMs, segEnd);
-    const deDurMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    let insertPosMs;
-    if (posField?.value === 'start') {
-        insertPosMs = 0;
-    } else if (posField?.value === 'end') {
-        insertPosMs = deDurMs;
-    } else {
-        insertPosMs = editDeCursor;
-    }
-    const segment = sliceBuffer(editEnBuffer, startMs, endMs);
-    savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
-    originalEditBuffer = savedOriginalBuffer;
-    editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    updateDeEditWaveforms();
-    updateLengthInfo();
-}
-
 // Kombination aus Pausenkürzung und Tempoanpassung
 async function autoAdjustLength() {
     const chk = document.getElementById('autoIgnoreChk');
@@ -14812,7 +14768,6 @@ if (typeof module !== "undefined" && module.exports) {
         __setGetAudioDuration: fn => { getAudioDurationFn = fn; },
         autoApplySuggestion,
         insertGptResults,
-        insertEnglishSegment,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,
