@@ -3925,14 +3925,18 @@ return `
     addPathCellContextMenus();
     updateCounts();
     updateDubButtons();
-    // Nach dem Rendern zur gemerkten Zeile springen
-    scrollToNumber(currentRowNumber);
+    // Nur scrollen, wenn keine neue Auswahl aussteht
+    if (pendingSelectId === null) {
+        scrollToNumber(currentRowNumber);
+    }
 
-    // Falls eine neue Datei hinzugekommen ist, diese Zeile auswählen
+    // Falls eine neue Datei hinzugekommen ist, diese Zeile auswählen und dann scrollen
     if (pendingSelectId !== null) {
         const neueZeile = tbody.querySelector(`tr[data-id="${pendingSelectId}"]`);
         if (neueZeile) {
             selectRow(neueZeile);
+            // Nach dem Selektieren zur neuen Zeile springen
+            scrollToNumber(currentRowNumber);
         }
         pendingSelectId = null;
     }
