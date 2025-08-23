@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.172
+* Zeilenauswahl scrollt die markierte Zeile vollständig unter den Tabellenkopf.
 ## 🛠️ Patch in 1.40.171
 * DE-Editor: Kopieren-Knopf überträgt markierten EN-Ausschnitt zuverlässig.
 * Start- und Endpunkte des EN-Bereichs lassen sich direkt auf der Welle verschieben; die Eingabefelder aktualisieren sich automatisch.
