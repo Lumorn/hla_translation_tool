@@ -352,7 +352,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Empfohlener Speicher:** 2+ GB freier RAM für große Projekte
 * **Node.js 18–22** wird benötigt (u.a. für ElevenLabs-Dubbing; nutzt `fetch` und `FormData`)
 * **Playwright** als zusätzliche Abhängigkeit für die Schritt-für-Schritt-Automatik
-* **64‑Bit Python 3.9–3.12** erforderlich; bei höheren Versionen sucht das Skript automatisch eine passende Installation. 32‑Bit wird nicht unterstuetzt
+* **64‑Bit Python 3.9–3.12** erforderlich; 3.13+ wird moeglicherweise nicht unterstuetzt (Warnhinweis). 32‑Bit wird nicht unterstuetzt
 
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
@@ -371,7 +371,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
 10. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Netzwerkabfragen brechen nach fünf Sekunden mit einer verständlichen Fehlermeldung ab. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`.
-12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben. Das Skript prüft zusätzlich die Versionsnummern aller Python‑ und Node‑Pakete, korrigiert Abweichungen auf Wunsch automatisch und hält das Terminal am Ende offen, bis eine Eingabe erfolgt. Für automatisierte Abläufe kann die Pause mit `--no-pause` deaktiviert werden. Bei Python 3.13 oder neuer sucht das Skript automatisch nach einer unterstützten Version und startet sich gegebenenfalls neu.
+12. `python verify_environment.py` versucht nun fehlende Dateien oder Abhängigkeiten automatisch nachzuladen. Mit `--check-only` lässt sich dieser Reparaturmodus abschalten. Jede Prüfung wird weiterhin mit einem ✓ ausgegeben. Das Skript prüft zusätzlich die Versionsnummern aller Python‑ und Node‑Pakete, korrigiert Abweichungen auf Wunsch automatisch und hält das Terminal am Ende offen, bis eine Eingabe erfolgt. Für automatisierte Abläufe kann die Pause mit `--no-pause` deaktiviert werden.
 13. Das Startskript kontrolliert die installierte Node-Version und bricht bei Abweichungen ab.
 14. `reset_repo.py` setzt das Repository nun komplett zurück, installiert alle Abhängigkeiten in beiden Ordnern und startet anschließend automatisch die Desktop-App.
 15. `start_tool.py` installiert nun zusätzlich alle Python-Abhängigkeiten aus `requirements.txt`. `translate_text.py` geht daher davon aus, dass `argostranslate` bereits vorhanden ist.
