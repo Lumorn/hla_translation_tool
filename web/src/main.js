@@ -108,6 +108,11 @@ let editOrigCursor         = 0;    // Position der EN-Wiedergabe in ms
 let editDeCursor           = 0;    // Position der DE-Wiedergabe in ms
 let editBlobUrl            = null; // aktuelle Blob-URL
 
+// Markierung eines EN-Ausschnitts für das Runterkopieren
+let enSelectStart          = 0;    // Start der Auswahl in ms
+let enSelectEnd            = 0;    // Ende der Auswahl in ms
+let enSelecting            = false; // Wahr während Alt+Ziehen
+
 // Zusätzliche Marker für Ignorier-Bereiche
 let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
 let manualIgnoreRanges    = [];    // Merker für manuelle Bereiche
@@ -6997,6 +7002,23 @@ function insertSilenceIntoBuffer(buffer, ranges) {
     return out;
 }
 
+// Fügt einen Buffer an einer bestimmten Position in einen anderen ein
+function insertBufferIntoBuffer(target, insert, posMs) {
+    const sr = target.sampleRate;
+    const pos = Math.round(Math.max(0, posMs) * sr / 1000);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const out = ctx.createBuffer(target.numberOfChannels, target.length + insert.length, sr);
+    for (let ch = 0; ch < target.numberOfChannels; ch++) {
+        const outData = out.getChannelData(ch);
+        const tData = target.getChannelData(ch);
+        outData.set(tData.subarray(0, pos), 0);
+        outData.set(insert.getChannelData(ch), pos);
+        outData.set(tData.subarray(pos), pos + insert.length);
+    }
+    ctx.close();
+    return out;
+}
+
 // Rechnet Originalposition auf Abspielposition um (nach Entfernen der Bereiche)
 function originalToPlayback(ms, ranges, duration) {
     const valid = normalizeRanges(ranges, duration);
@@ -10951,6 +10973,19 @@ function drawWaveform(canvas, buffer, opts = {}) {
             ctx.fillRect(sx, 0, ex - sx, height);
         });
     }
+    if (opts.selection) {
+        const sx = (opts.selection.start / durationMs) * width;
+        const ex = (opts.selection.end / durationMs) * width;
+        ctx.fillStyle = 'rgba(255,255,0,0.2)';
+        ctx.fillRect(sx, 0, ex - sx, height);
+        ctx.strokeStyle = '#0f0';
+        ctx.beginPath();
+        ctx.moveTo(sx, 0);
+        ctx.lineTo(sx, height);
+        ctx.moveTo(ex, 0);
+        ctx.lineTo(ex, height);
+        ctx.stroke();
+    }
     if (opts.start !== undefined && opts.end !== undefined) {
         ctx.strokeStyle = '#0f0';
         ctx.lineWidth = 2;
@@ -11445,6 +11480,50 @@ async function openDeEdit(fileId) {
     const deCanvas = document.getElementById('waveEdited');
     const origCanvas = document.getElementById('waveOriginal');
 
+    const startField = document.getElementById('enSegStart');
+    const endField   = document.getElementById('enSegEnd');
+
+    // Eingabefelder aktualisieren die Markierung
+    if (startField) {
+        startField.oninput = () => {
+            enSelectStart = parseInt(startField.value) || 0;
+            updateDeEditWaveforms();
+        };
+        enSelectStart = parseInt(startField.value) || 0;
+    }
+    if (endField) {
+        endField.oninput = () => {
+            enSelectEnd = parseInt(endField.value) || 0;
+            updateDeEditWaveforms();
+        };
+        enSelectEnd = parseInt(endField.value) || 0;
+    }
+
+    // Auswahl eines EN-Bereichs per Alt+Ziehen mit der Maus
+    origCanvas.onmousedown = e => {
+        if (e.altKey && editEnBuffer) {
+            // Standardaktion (z. B. Bildziehen) unterbinden, damit die Markierung funktioniert
+            e.preventDefault();
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            enSelectStart = enSelectEnd = x / origCanvas.width * dur;
+            enSelecting = true;
+            updateDeEditWaveforms();
+        }
+    };
+    origCanvas.onmousemove = e => {
+        if (enSelecting && editEnBuffer) {
+            // Verhindert Seiteneffekte beim Alt‑Ziehen
+            e.preventDefault();
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            enSelectEnd = x / origCanvas.width * dur;
+            updateDeEditWaveforms();
+        }
+    };
+
     // Wellenbreite passend zur Länge setzen
     const enRatio = enSeconds / maxSeconds;
     const deRatio = deSeconds / maxSeconds;
@@ -11727,7 +11806,21 @@ async function openDeEdit(fileId) {
         }
         updateDeEditWaveforms();
     };
-window.onmouseup = () => { editDragging = null; ignoreDragging = null; silenceDragging = null; };
+    window.onmouseup = () => {
+        if (enSelecting && editEnBuffer) {
+            enSelecting = false;
+            const start = Math.min(enSelectStart, enSelectEnd);
+            const end = Math.max(enSelectStart, enSelectEnd);
+            const sField = document.getElementById('enSegStart');
+            const eField = document.getElementById('enSegEnd');
+            if (sField) sField.value = Math.round(start);
+            if (eField) eField.value = Math.round(end);
+            updateDeEditWaveforms();
+        }
+        editDragging = null;
+        ignoreDragging = null;
+        silenceDragging = null;
+    };
     updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
@@ -11747,6 +11840,33 @@ function updateEffectButtons() {
     if (emiBtn) {
         emiBtn.classList.toggle('active', isEmiEffect);
     }
+}
+
+// Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
+function insertEnglishSegment() {
+    if (!editEnBuffer || !savedOriginalBuffer) return;
+    const startField = document.getElementById('enSegStart');
+    const endField   = document.getElementById('enSegEnd');
+    const posField   = document.getElementById('enInsertPos');
+    const segStart = parseInt(startField?.value) || 0;
+    const segEnd   = parseInt(endField?.value) || 0;
+    const startMs = Math.max(0, Math.min(segStart, segEnd));
+    const endMs   = Math.max(startMs, segEnd);
+    const deDurMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    let insertPosMs;
+    if (posField?.value === 'start') {
+        insertPosMs = 0;
+    } else if (posField?.value === 'end') {
+        insertPosMs = deDurMs;
+    } else {
+        insertPosMs = editDeCursor;
+    }
+    const segment = sliceBuffer(editEnBuffer, startMs, endMs);
+    savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
+    originalEditBuffer = savedOriginalBuffer;
+    editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    updateDeEditWaveforms();
+    updateLengthInfo();
 }
 
 // Kombination aus Pausenkürzung und Tempoanpassung
@@ -12099,7 +12219,13 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     const showDe   = progressDe !== null ? progressDe + editStartTrim : editDeCursor;
 
     if (editEnBuffer) {
-        drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, { progress: showOrig });
+        const opts = { progress: showOrig };
+        if (enSelectStart !== enSelectEnd) {
+            const start = Math.min(enSelectStart, enSelectEnd);
+            const end = Math.max(enSelectStart, enSelectEnd);
+            opts.selection = { start, end };
+        }
+        drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, opts);
     }
     if (originalEditBuffer) {
         const endPos = editDurationMs - editEndTrim;
@@ -12386,6 +12512,17 @@ function closeDeEdit() {
     editIgnoreRanges = [];
     ignoreTempStart = null;
     ignoreDragging = null;
+    // Auswahl und Einfügeposition für EN-Abschnitte zurücksetzen
+    enSelectStart = 0;
+    enSelectEnd = 0;
+    enSelecting = false;
+    editDeCursor = 0;
+    const sField = document.getElementById('enSegStart');
+    const eField = document.getElementById('enSegEnd');
+    const pField = document.getElementById('enInsertPos');
+    if (sField) sField.value = '';
+    if (eField) eField.value = '';
+    if (pField) pField.value = 'cursor';
     window.onmousemove = null;
     window.onmouseup = null;
     updateEffectButtons();
@@ -14768,6 +14905,7 @@ if (typeof module !== "undefined" && module.exports) {
         __setGetAudioDuration: fn => { getAudioDurationFn = fn; },
         autoApplySuggestion,
         insertGptResults,
+        insertEnglishSegment,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,

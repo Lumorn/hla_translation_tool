@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.169
+* DE-Editor: Auswahlfelder und Einfügeposition werden nach dem Schließen zurückgesetzt.
+* Alt+Ziehen zum Markieren funktioniert zuverlässiger.
+## 🛠️ Patch in 1.40.168
+* DE-Editor: EN-Ausschnitte lassen sich per Alt+Ziehen im Original markieren. Ein Pfeil zwischen beiden Wellen kopiert den markierten Bereich an Anfang, Ende oder an die Cursor-Position der DE-Datei.
 ## 🛠️ Patch in 1.40.167
 * Neuer Effekt für elektromagnetische Störgeräusche mit regelbarer Stärke.
 * Störgeräusch-Effekt wird wie Funkgerät- und Hall-Effekt beim Upload oder Dubbing zurückgesetzt.
