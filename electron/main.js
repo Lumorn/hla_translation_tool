@@ -821,16 +821,21 @@ app.whenReady().then(() => {
         { env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }
       );
       let out = '';
+      let err = '';
+      // Ausgaben des Skripts sammeln
       proc.stdout.on('data', d => { out += d.toString(); });
+      // Fehlerausgaben gesondert puffern, um Hinweise geben zu können
+      proc.stderr.on('data', d => { err += d.toString(); });
       proc.on('close', code => {
         const result = code === 0 ? out.trim() : '';
-        event.sender.send('translate-finished', { id, text: result });
+        // Fehlertext ebenfalls mitsenden, damit die Oberfläche ihn anzeigen kann
+        event.sender.send('translate-finished', { id, text: result, error: err.trim() });
       });
       proc.stdin.write(text);
       proc.stdin.end();
     } catch (e) {
       console.error('[Translate]', e);
-      event.sender.send('translate-finished', { id, text: '' });
+      event.sender.send('translate-finished', { id, text: '', error: e.message });
     }
   });
 

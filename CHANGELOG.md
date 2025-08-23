@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.175
+* Fehlermeldungen der automatischen Übersetzung werden nun an die Oberfläche weitergegeben und als Hinweis angezeigt.
 ## 🛠️ Patch in 1.40.174
 * `selectRow` blockiert `updateNumberFromScroll` während des automatischen Scrollens.
 ## 🛠️ Patch in 1.40.173
