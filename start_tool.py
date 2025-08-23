@@ -15,7 +15,7 @@ import os
 import subprocess
 import sys
 from datetime import datetime
-import importlib.util
+import importlib
 import shutil
 import hashlib
 from typing import Optional, Iterable
@@ -99,7 +99,12 @@ def run(cmd: Iterable[str], cwd: Optional[str] = None) -> None:
 
 
 def has_module(name: str) -> bool:
-    return importlib.util.find_spec(name) is not None
+    """Prueft durch direkten Import, ob ein Python-Modul funktioniert."""
+    try:
+        importlib.import_module(name)
+        return True
+    except Exception:
+        return False
 
 
 def needs_npm_ci(lockfile: str, modules_dir: str) -> bool:

@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.178
+* `start_tool.py` prüft fehlende Python-Module durch Import und installiert sie bei Bedarf neu.
+* `reset_repo.py` installiert jetzt automatisch alle Python-Abhängigkeiten aus `requirements.txt`.
 ## 🛠️ Patch in 1.40.177
 * Fehlgeschlagene automatische Übersetzungen werden nach einem Neustart beim ersten Projektaufruf einmalig erneut versucht.
 * Rechtsklick auf den grauen Übersetzungstext bietet Optionen zum erneuten Übersetzen einzelner oder aller Zeilen.
