@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.170
+* `start_tool.py` sucht bei mehreren Python-Installationen automatisch eine passende Version und startet sich gegebenenfalls neu.
 ## 🛠️ Patch in 1.40.169
 * DE-Editor: Auswahlfelder und Einfügeposition werden nach dem Schließen zurückgesetzt.
 * Alt+Ziehen zum Markieren funktioniert zuverlässiger.
