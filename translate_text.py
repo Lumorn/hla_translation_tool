@@ -4,10 +4,12 @@ import argparse
 
 try:
     from argostranslate import package, translate
-except ModuleNotFoundError:
-    # Abhängigkeit nicht vorhanden -> Hinweis ausgeben und abbrechen
+except (ModuleNotFoundError, ImportError) as exc:
+    # Abhängigkeit fehlt oder kann nicht geladen werden -> verständlichen Hinweis ausgeben
     sys.stderr.write(
-        "Das Paket 'argostranslate' fehlt. Bitte vorher 'pip install -r requirements.txt' ausfuehren.\n"
+        "Das Paket 'argostranslate' oder eine seiner Abhängigkeiten fehlt. "
+        "Bitte vorher 'pip install -r requirements.txt' ausführen.\n"
+        f"Fehler: {exc}\n"
     )
     sys.exit(1)
 

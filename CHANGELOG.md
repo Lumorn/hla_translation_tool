@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.176
+* `translate_text.py` fängt fehlende Abhängigkeiten wie PyTorch ab und gibt einen klaren Hinweis aus.
 ## 🛠️ Patch in 1.40.175
 * Fehlermeldungen der automatischen Übersetzung werden nun an die Oberfläche weitergegeben und als Hinweis angezeigt.
 ## 🛠️ Patch in 1.40.174
