@@ -592,21 +592,6 @@
                         <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
                 </div>
-                <!-- Steuerung zum Runterkopieren des markierten EN-Bereichs -->
-                <div class="insert-en-section">
-                    <div class="insert-controls">
-                        <label>Start EN (ms): <input type="number" id="enSegStart" value="0" step="100"></label>
-                        <label>Ende EN (ms): <input type="number" id="enSegEnd" value="0" step="100"></label>
-                        <label>Einfügen bei:
-                            <select id="enInsertPos">
-                                <option value="cursor">Cursor</option>
-                                <option value="start">Anfang</option>
-                                <option value="end">Ende</option>
-                            </select>
-                        </label>
-                        <button class="btn btn-secondary" onclick="insertEnglishSegment()" title="Markierten EN-Abschnitt in DE-Audio kopieren">⬇️ Kopieren</button>
-                    </div>
-                </div>
                 <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
                     <span class="wave-label" id="waveLabelEdited">DE (bearbeiten)</span>
                     <div style="display:flex;align-items:center;gap:10px;">
