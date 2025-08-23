@@ -169,6 +169,18 @@ def main() -> None:
         pause()
         sys.exit(e.returncode if hasattr(e, "returncode") else 1)
 
+    print_header("Python-Abhängigkeiten installieren")
+    req_file = os.path.join(repo_dir, "requirements.txt")
+    if os.path.exists(req_file):
+        try:
+            run([sys.executable, "-m", "pip", "install", "-r", req_file])
+        except subprocess.CalledProcessError as e:
+            print("❌  'pip install -r requirements.txt' ist fehlgeschlagen.")
+            pause()
+            sys.exit(e.returncode if hasattr(e, "returncode") else 1)
+    else:
+        print("⚠️  requirements.txt nicht gefunden – Installation übersprungen.")
+
     print_header("Dependencies installieren (Root)")
     try:
         # NPM v7+ nutzt automatisch package-lock; 'ci' ist deterministisch

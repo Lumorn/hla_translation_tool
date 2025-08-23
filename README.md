@@ -34,6 +34,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robuster npm-Test:** Fehlt `npm` (z. B. bei Node 22), bricht das Startskript nicht mehr ab, sondern weist auf `corepack enable` oder eine separate Installation hin.
 * **Automatische npm-Aktivierung:** `reset_repo.py` versucht bei fehlendem `npm`, es über `corepack` einzurichten, bevor das Tool startet.
 * **Automatische Python-Wahl:** `start_tool.py` startet sich bei mehreren Python-Versionen mit der passenden Umgebung neu.
+* **Zuverlässige Python-Abhängigkeiten:** `start_tool.py` prüft Pakete durch Import und `reset_repo.py` installiert `requirements.txt` automatisch.
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
