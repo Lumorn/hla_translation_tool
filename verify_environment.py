@@ -9,6 +9,7 @@ import subprocess
 import sys
 import importlib.util
 import json
+import shutil
 from importlib import metadata
 
 # Verpackung für Versionsabgleiche sicherstellen
@@ -30,6 +31,49 @@ PAUSE = "--no-pause" not in sys.argv
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REPORTS: list[tuple[str, bool, str]] = []
+
+# Erlaubter Python-Bereich: 64-Bit 3.9 bis 3.12
+SUPPORTED_PYTHON = SpecifierSet(">=3.9,<3.13")
+
+
+def ensure_supported_python() -> None:
+    """Sucht bei Bedarf eine unterstuetzte Python-Version und startet sich neu."""
+    current = Version(sys.version.split()[0])
+    if current in SUPPORTED_PYTHON and sys.maxsize > 2**32:
+        return
+
+    kandidaten: list[tuple[str, str]] = []
+    if os.name == "nt":
+        try:
+            # `py -0p` listet alle installierten Python-Versionen mit Pfad
+            out = subprocess.check_output(["py", "-0p"], text=True)
+            for line in out.splitlines():
+                parts = line.strip().split()
+                if len(parts) == 2 and parts[0].startswith("-V:"):
+                    ver = parts[0][3:].split("-")[0]
+                    kandidaten.append((ver, parts[1].strip('"')))
+        except Exception:
+            pass
+    else:
+        for ver in ("3.12", "3.11", "3.10", "3.9"):
+            path = shutil.which(f"python{ver}")
+            if path:
+                kandidaten.append((ver, path))
+
+    for ver, path in sorted(kandidaten, reverse=True):
+        try:
+            if Version(ver) in SUPPORTED_PYTHON:
+                print(f"Starte neu mit Python {ver} ({path})")
+                os.execv(path, [path] + sys.argv)
+        except Exception:
+            continue
+
+    print(
+        "Keine unterstuetzte Python-Version gefunden. Erforderlich ist 64-Bit Python 3.9 bis 3.12.")
+    sys.exit(1)
+
+
+ensure_supported_python()
 
 
 def report(name: str, ok: bool, detail: str = "") -> None:
@@ -95,15 +139,17 @@ def check_git_installed() -> bool:
 
 def check_python() -> bool:
     """Prüft Version **und Architektur** von Python."""
-    if sys.version_info < (3, 9):
-        report("Python-Version", False, f"{sys.version.split()[0]} (<3.9)")
+    ver_str = sys.version.split()[0]
+    ver = Version(ver_str)
+    if ver not in SUPPORTED_PYTHON:
+        report("Python-Version", False, f"{ver_str} (nicht unterstuetzt)")
         return False
     if sys.maxsize <= 2**32:
         # Hinweis fuer 32-Bit-Umgebungen
-        detail = "32-Bit nicht unterst\u00fctzt (64-Bit Python installieren)"
+        detail = "32-Bit nicht unterstuetzt (64-Bit Python installieren)"
         report("Python-Architektur", False, detail)
         return False
-    report("Python-Version", True, sys.version.split()[0])
+    report("Python-Version", True, ver_str)
     return True
 
 
