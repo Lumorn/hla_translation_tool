@@ -4,14 +4,25 @@ import argparse
 
 try:
     from argostranslate import package, translate
-except (ModuleNotFoundError, ImportError) as exc:
-    # Abhängigkeit fehlt oder kann nicht geladen werden -> verständlichen Hinweis ausgeben
-    sys.stderr.write(
-        "Das Paket 'argostranslate' oder eine seiner Abhängigkeiten fehlt. "
-        "Bitte vorher 'pip install -r requirements.txt' ausführen.\n"
-        f"Fehler: {exc}\n"
-    )
-    sys.exit(1)
+except (ModuleNotFoundError, ImportError):
+    # Versuch, Argos Translate automatisch nachzuinstallieren
+    try:
+        import subprocess
+
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", "argostranslate"],
+            stdout=subprocess.DEVNULL,
+        )
+        from argostranslate import package, translate  # erneuter Import
+    except Exception as exc2:  # pragma: no cover - nur bei fehlgeschlagener Installation
+        # Abhängigkeit fehlt oder kann nicht geladen werden -> verständlichen Hinweis ausgeben
+        sys.stderr.write(
+            "Das Paket 'argostranslate' oder eine seiner Abhängigkeiten fehlt. "
+            "Bitte vorher 'pip install -r requirements.txt' ausführen.\n"
+            "Unter Windows wird ggf. das Microsoft Visual C++ Laufzeitpaket benötigt.\n"
+            f"Fehler: {exc2}\n"
+        )
+        sys.exit(1)
 
 FROM_CODE = "en"
 TO_CODE = "de"

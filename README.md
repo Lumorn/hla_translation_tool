@@ -609,9 +609,9 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 ### Python-Übersetzungsskript
 
-`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Die benötigten Pakete werden durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Findet es kein passendes Paket im Index, gibt das Skript nun eine verständliche Fehlermeldung aus und beendet sich mit Status 1. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
+`translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, versucht das Skript eine automatische Installation über `pip`. Die benötigten Pakete werden ansonsten durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Findet es kein passendes Paket im Index, gibt das Skript eine verständliche Fehlermeldung aus und beendet sich mit Status 1. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über das Event `translate-finished` zurückgegeben. Tritt ein Fehler auf, zeigt die Oberfläche nun den konkreten Fehltext als Hinweis an.
-Fehlt eine Abhängigkeit wie PyTorch, bricht das Skript jetzt mit einem klaren Hinweis ab.
+Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das Skript mit einem klaren Hinweis ab.
 
 ### Version aktualisieren
 
