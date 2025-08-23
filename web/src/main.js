@@ -112,6 +112,7 @@ let editBlobUrl            = null; // aktuelle Blob-URL
 let enSelectStart          = 0;    // Start der Auswahl in ms
 let enSelectEnd            = 0;    // Ende der Auswahl in ms
 let enSelecting            = false; // Wahr während Alt+Ziehen
+let enMarkerDragging       = null; // 'start' oder 'end' beim Verschieben der Markierung
 
 // Zusätzliche Marker für Ignorier-Bereiche
 let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
@@ -11499,7 +11500,7 @@ async function openDeEdit(fileId) {
         enSelectEnd = parseInt(endField.value) || 0;
     }
 
-    // Auswahl eines EN-Bereichs per Alt+Ziehen mit der Maus
+    // Auswahl eines EN-Bereichs per Alt+Ziehen oder Verschieben der Marker
     origCanvas.onmousedown = e => {
         if (e.altKey && editEnBuffer) {
             // Standardaktion (z. B. Bildziehen) unterbinden, damit die Markierung funktioniert
@@ -11509,7 +11510,23 @@ async function openDeEdit(fileId) {
             const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
             enSelectStart = enSelectEnd = x / origCanvas.width * dur;
             enSelecting = true;
+            if (startField) startField.value = Math.round(enSelectStart);
+            if (endField)   endField.value   = Math.round(enSelectEnd);
             updateDeEditWaveforms();
+        } else if (editEnBuffer && enSelectStart !== enSelectEnd) {
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+            const endX   = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+            const grip = 5; // Pixelbreite für die Griffe
+            if (Math.abs(x - startX) <= grip) {
+                enMarkerDragging = 'start';
+                e.preventDefault();
+            } else if (Math.abs(x - endX) <= grip) {
+                enMarkerDragging = 'end';
+                e.preventDefault();
+            }
         }
     };
     origCanvas.onmousemove = e => {
@@ -11520,6 +11537,21 @@ async function openDeEdit(fileId) {
             const x = e.clientX - rect.left;
             const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
             enSelectEnd = x / origCanvas.width * dur;
+            if (endField) endField.value = Math.round(enSelectEnd);
+            updateDeEditWaveforms();
+        } else if (enMarkerDragging && editEnBuffer) {
+            e.preventDefault();
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            const pos = x / origCanvas.width * dur;
+            if (enMarkerDragging === 'start') {
+                enSelectStart = pos;
+                if (startField) startField.value = Math.round(pos);
+            } else {
+                enSelectEnd = pos;
+                if (endField) endField.value = Math.round(pos);
+            }
             updateDeEditWaveforms();
         }
     };
@@ -11816,7 +11848,16 @@ async function openDeEdit(fileId) {
             if (sField) sField.value = Math.round(start);
             if (eField) eField.value = Math.round(end);
             updateDeEditWaveforms();
+        } else if (enMarkerDragging && editEnBuffer) {
+            const start = Math.min(enSelectStart, enSelectEnd);
+            const end   = Math.max(enSelectStart, enSelectEnd);
+            const sField = document.getElementById('enSegStart');
+            const eField = document.getElementById('enSegEnd');
+            if (sField) sField.value = Math.round(start);
+            if (eField) eField.value = Math.round(end);
+            updateDeEditWaveforms();
         }
+        enMarkerDragging = null;
         editDragging = null;
         ignoreDragging = null;
         silenceDragging = null;
@@ -11851,7 +11892,7 @@ function insertEnglishSegment() {
     const segStart = parseInt(startField?.value) || 0;
     const segEnd   = parseInt(endField?.value) || 0;
     const startMs = Math.max(0, Math.min(segStart, segEnd));
-    const endMs   = Math.max(startMs, segEnd);
+    const endMs   = Math.max(segStart, segEnd);
     const deDurMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
     let insertPosMs;
     if (posField?.value === 'start') {
