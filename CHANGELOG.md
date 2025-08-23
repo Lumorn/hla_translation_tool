@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.183
+* Automatische Übersetzung zeigt den konkreten Fehltext nun in einem Hinweis an.
 ## 🛠️ Patch in 1.40.182
 * `start_tool.py` nutzt jetzt die Python-Suchroutine von `verify_environment.py` und startet sich bei Bedarf mit einer unterstuetzten Version neu.
 * README beschreibt die gemeinsame automatische Wahl einer passenden Python-Version.
