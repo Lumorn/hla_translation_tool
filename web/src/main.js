@@ -1325,10 +1325,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                     // Erfolgreiche Übersetzung übernehmen
                     file.autoTranslation = text;
                 } else {
-                    // Bei Fehler einen Hinweis eintragen und Meldung zeigen
+                    // Bei Fehler einen Hinweis eintragen und die genaue Ursache anzeigen
                     file.autoTranslation = '[Übersetzung fehlgeschlagen]';
-                    if (error) console.error('Übersetzung:', error);
-                    if (typeof showToast === 'function') {
+                    if (error) {
+                        console.error('Übersetzung:', error);
+                        if (typeof showToast === 'function') {
+                            showToast('Automatische Übersetzung fehlgeschlagen: ' + error, 'error');
+                        }
+                    } else if (typeof showToast === 'function') {
                         showToast('Automatische Übersetzung fehlgeschlagen', 'error');
                     }
                 }
