@@ -10737,6 +10737,18 @@ async function handleDeUpload(input) {
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
+        file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
+        if (currentEditFile === file) {
+            tempoFactor = 1.0;
+            loadedTempoFactor = 1.0;
+            const tempoRange = document.getElementById('tempoRange');
+            const tempoDisp = document.getElementById('tempoDisplay');
+            if (tempoRange && tempoDisp) {
+                tempoRange.value = '1.00';
+                tempoDisp.textContent = '1.00';
+                tempoDisp.classList.remove('tempo-auto');
+            }
+        }
         // Fertig-Status ergibt sich nun automatisch
     }
 
