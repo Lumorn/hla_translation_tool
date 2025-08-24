@@ -285,7 +285,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
 * **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑, Hall‑ und Störgeräusch‑Effekt automatisch deaktiviert.
-* **Tempo-Regler zurückgesetzt:** Nach einem Upload steht der Geschwindigkeitsregler wieder auf 1,00.
+* **Tempo-Regler zurückgesetzt:** Nach einem Upload steht der Geschwindigkeitsregler wieder zuverlässig auf 1,00.
 * **Tempo-Regler auch beim ZIP-Import auf 1,00:** Beim Import mehrerer Dateien per ZIP wird der Geschwindigkeitsregler jeder Zeile auf den Standardwert gesetzt.
 * **Backup bleibt beim Speichern erhalten:** Nur ein neuer Upload ersetzt die Sicherung in `DE-Backup`. "🔄 Zurücksetzen" stellt dadurch stets die zuletzt geladene Originaldatei wieder her.
 * **ZIP-Import aktualisiert das Backup:** Auch importierte ZIP-Dateien gelten nun als Original und lassen sich über "🔄 Zurücksetzen" wiederherstellen.
