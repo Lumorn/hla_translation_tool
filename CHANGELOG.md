@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.186
+* "Emotionen kopieren" bietet Checkboxen, um Zeit und/oder `---` anzufügen.
 ## 🛠️ Patch in 1.40.185
 * Beim Hochladen einer DE-Audiodatei wird der Tempo-Faktor nun zuverlässig auf 1,0 gesetzt.
 ## 🛠️ Patch in 1.40.184

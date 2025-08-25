@@ -59,7 +59,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatischer Voice-Abgleich:** Beim Öffnen der Kopierhilfe lädt das Tool die verfügbaren ElevenLabs-Stimmen und zeigt Namen und IDs korrekt an.
 * **Zusätzliche Zwischenablage-Prüfung:** Die Kopierhilfe stellt sicher, dass im ersten Schritt der Name und im zweiten der Emotionstext in der Zwischenablage liegt.
 * **Zweite Kopierhilfe:** Ein neuer Dialog blättert durch alle Einträge und zeigt Ordnernamen, deutschen Text und Emotionstext an. Ein Seitenzähler informiert über die aktuelle Position.
-* **Alle Emotionstexte kopieren:** Der Button sammelt alle Emotionstexte, entfernt Zeilenumbrüche, trennt die Blöcke mit einer Leerzeile und stellt die Laufzeit der EN‑Datei im Format `[8,57sec]` voran.
+* **Alle Emotionstexte kopieren:** Der Button sammelt alle Emotionstexte, entfernt Zeilenumbrüche und trennt die Blöcke mit einer Leerzeile. Optional stellt er die Laufzeit der EN‑Datei im Format `[8,57sec]` voran und/oder hängt `---` ans Ende.
 * **Stabile Base64-Kodierung:** Große Audiodateien werden beim Hochladen in handlichen Blöcken verarbeitet, sodass kein "Maximum call stack size exceeded" mehr auftritt.
 * **Warteschlange für GPT-Anfragen:** Mehrere Emotionstexte werden nacheinander an OpenAI geschickt, um HTTP‑429‑Fehler zu vermeiden.
 * **ZIP-Import mit Vorschau:** Die gewählte ZIP-Datei wird in einen temporären Ordner entpackt. Scheitert "unzipper", greift automatisch 7‑Zip als Fallback. Anschließend werden die Audios nach führender Nummer sortiert angezeigt und bei Übereinstimmung direkt zugeordnet.

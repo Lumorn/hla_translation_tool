@@ -220,6 +220,12 @@ th:nth-child(8) {
             gap: 10px;
             flex-wrap: wrap;
         }
+        /* Optionen im Suchbereich */
+        .copy-option {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
 		
 		
 
