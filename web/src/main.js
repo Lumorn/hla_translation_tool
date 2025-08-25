@@ -256,6 +256,9 @@ let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
 // Letzte Einstellungen für elektromagnetische Störgeräusche
 let emiNoiseLevel = parseFloat(localStorage.getItem('hla_emiNoiseLevel') || '0.5');
 
+// Letzte Einstellung für den Combine-Effekt (Modulationsfrequenz)
+let combineModFreq = parseFloat(localStorage.getItem('hla_combineModFreq') || '30');
+
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
@@ -2297,6 +2300,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('combineEffect')){f.combineEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -2541,6 +2545,7 @@ function addFiles() {
                 radioEffect: false,
                 hallEffect: false,
                 emiEffect: false,
+                combineEffect: false,
                 version: 1
             };
 
@@ -3988,6 +3993,7 @@ return `
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
                         ${file.hallEffect ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
+                        ${file.combineEffect ? '<span class="edit-status-icon" title="Combine-Effekt">🤖</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -7736,6 +7742,7 @@ async function exportSegmentsToProject() {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
+            file.combineEffect = false;
         }
     }
     updateStatus('Segmente importiert');
@@ -10748,6 +10755,7 @@ async function handleDeUpload(input) {
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
+        file.combineEffect = false;
         file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
         if (currentEditFile === file) {
             tempoFactor = 1.0;
@@ -11364,6 +11372,36 @@ async function applyInterferenceEffect(buffer, opts = {}) {
     return await ctx.startRendering();
 }
 // =========================== EMI NOISE END ===================================
+
+// =========================== COMBINE EFFECT START ==========================
+// Erzeugt einen Combine-Stimmeffekt durch Bandpass und Ringmodulation
+async function applyCombineFilter(buffer, opts = {}) {
+    const { freq = combineModFreq } = opts;
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const band = ctx.createBiquadFilter();
+    band.type = 'bandpass';
+    band.frequency.value = 1000;
+    band.Q.value = 1;
+
+    const mod = ctx.createGain();
+    const osc = ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.value = freq;
+    osc.connect(mod.gain);
+    mod.gain.value = 0.5;
+
+    source.connect(mod);
+    mod.connect(band).connect(ctx.destination);
+
+    source.start();
+    osc.start();
+
+    return await ctx.startRendering();
+}
+// =========================== COMBINE EFFECT END ===========================
 // =========================== TRIMANDBUFFER END ==============================
 
 // =========================== BUFFERTOWAV START ==============================
@@ -11412,6 +11450,8 @@ let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
 let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
 let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
 let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
+let combineEffectBuffer = null; // Buffer mit Combine-Effekt
+let isCombineEffect    = false; // Merkt, ob der Combine-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -11797,6 +11837,20 @@ async function openDeEdit(fileId) {
         };
     }
 
+    // Regler für Combine-Effekt initialisieren
+    const cFreq = document.getElementById('combineFreq');
+    const cFreqDisp = document.getElementById('combineFreqDisplay');
+    if (cFreq && cFreqDisp) {
+        cFreq.value = combineModFreq;
+        cFreqDisp.textContent = combineModFreq + ' Hz';
+        cFreq.oninput = e => {
+            combineModFreq = parseFloat(e.target.value);
+            localStorage.setItem('hla_combineModFreq', combineModFreq);
+            cFreqDisp.textContent = combineModFreq + ' Hz';
+            if (isCombineEffect) recomputeEditBuffer();
+        };
+    }
+
     // Preset-Auswahl initialisieren
     updateRadioPresetList();
     const presetSel  = document.getElementById('radioPresetSelect');
@@ -11989,6 +12043,10 @@ function updateEffectButtons() {
     if (emiBtn) {
         emiBtn.classList.toggle('active', isEmiEffect);
     }
+    const combineBtn = document.getElementById('combineEffectBtn');
+    if (combineBtn) {
+        combineBtn.classList.toggle('active', isCombineEffect);
+    }
 }
 
 // Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
@@ -12093,6 +12151,9 @@ async function recomputeEditBuffer() {
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
     }
+    if (isCombineEffect) {
+        buf = await applyCombineFilter(buf);
+    }
 
     // Trimmen und Pausen entfernen, damit die Vorschau exakt dem Endergebnis entspricht
     let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
@@ -12165,6 +12226,21 @@ async function applyEmiEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYEMIEFFECT END =============================
+// =========================== APPLYCOMBINEEFFECT START =======================
+// Aktiviert den Combine-Effekt und legt bei Erstnutzung eine History an
+async function applyCombineEffect() {
+    if (!isCombineEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isCombineEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+// =========================== APPLYCOMBINEEFFECT END =========================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== RESETRADIOSETTINGS START =====================
@@ -12353,6 +12429,24 @@ function resetEmiSettings() {
     if (isEmiEffect) recomputeEditBuffer();
 }
 // =========================== RESETEMISETTINGS END =======================
+
+// =========================== RESETCOMBINESETTINGS START ==================
+function resetCombineSettings() {
+    // Standardwert der Modulationsfrequenz setzen
+    combineModFreq = 30;
+    localStorage.setItem('hla_combineModFreq', combineModFreq);
+
+    const cFreq = document.getElementById('combineFreq');
+    const cDisp = document.getElementById('combineFreqDisplay');
+    if (cFreq && cDisp) {
+        cFreq.value = combineModFreq;
+        cDisp.textContent = combineModFreq + ' Hz';
+    }
+
+    // Effekt neu berechnen, falls aktiv
+    if (isCombineEffect) recomputeEditBuffer();
+}
+// =========================== RESETCOMBINESETTINGS END ====================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
@@ -12657,6 +12751,8 @@ function closeDeEdit() {
     isHallEffect = false;
     emiEffectBuffer = null;
     isEmiEffect = false;
+    combineEffectBuffer = null;
+    isCombineEffect = false;
     editEnBuffer = null;
     editIgnoreRanges = [];
     ignoreTempStart = null;
@@ -12728,6 +12824,7 @@ async function resetDeEdit() {
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
         currentEditFile.emiEffect = false;
+        currentEditFile.combineEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -12736,6 +12833,8 @@ async function resetDeEdit() {
         isHallEffect = false;
         emiEffectBuffer = null;
         isEmiEffect = false;
+        combineEffectBuffer = null;
+        isCombineEffect = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
@@ -12785,6 +12884,9 @@ async function applyDeEdit() {
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
+        }
+        if (isCombineEffect) {
+            baseBuffer = await applyCombineFilter(baseBuffer);
         }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
@@ -12868,6 +12970,9 @@ async function applyDeEdit() {
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
         }
+        if (isCombineEffect) {
+            baseBuffer = await applyCombineFilter(baseBuffer);
+        }
         let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
         const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
         newBuffer = removeRangesFromBuffer(newBuffer, adj);
@@ -12898,6 +13003,7 @@ async function applyDeEdit() {
         currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.emiEffect = isEmiEffect;
+        currentEditFile.combineEffect = isCombineEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
@@ -14696,6 +14802,7 @@ function quickAddLevel(chapterName) {
                 f.radioEffect = false;
                 f.hallEffect = false;
                 f.emiEffect = false;
+                f.combineEffect = false;
                 // Tempo bei neuem Upload auf Standard zurücksetzen
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
@@ -14871,6 +14978,7 @@ function quickAddLevel(chapterName) {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
+            file.combineEffect = false;
             renderFileTable();
             saveCurrentProject();
         }

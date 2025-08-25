@@ -719,10 +719,20 @@
                 </div>
                 <button class="btn-reset-settings" onclick="resetEmiSettings()" title="EM-Störgeräusch zurücksetzen">⟳ Standardwerte</button>
             </fieldset>
-            <div class="effect-buttons">
+<fieldset class="effect-group">
+                <legend>🤖 Combine-Effekt</legend>
+                <div class="combine-settings">
+                    <label title="Modulationsfrequenz">Frequenz: <span id="combineFreqDisplay"></span>
+                        <input type="range" id="combineFreq" min="10" max="100" step="1">
+                    </label>
+                </div>
+                <button class="btn-reset-settings" onclick="resetCombineSettings()" title="Combine-Effekt zurücksetzen">⟳ Standardwerte</button>
+            </fieldset>
+                        <div class="effect-buttons">
                 <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
                 <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
                 <button id="emiEffectBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">⚡ EM-Störgeräusch</button>
+                                <button id="combineEffectBtn" class="effect-btn" onclick="applyCombineEffect()" title="Combine-Effekt anwenden">🤖 Combine-Effekt</button>
                 <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Funkgeräteinstellungen zurücksetzen">⟳ Standardwerte</button>
             </div>
             <div class="dialog-buttons">
