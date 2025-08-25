@@ -1098,18 +1098,29 @@ function normalizeEmotionalText(text) {
 }
 
 // Kopiert alle Emotionstexte nacheinander in die Zwischenablage
-// Fuegt vor jedem Emotionstext die Laufzeit der EN-Audiodatei an
+// Optional: Zeit vorne anfügen und drei Striche am Ende setzen
 async function copyAllEmotionsToClipboard() {
     const blocks = [];
+    // Optionen aus den Checkboxen lesen
+    const addTime = document.getElementById('copyIncludeTime')?.checked;
+    const addDashes = document.getElementById('copyAddDashes')?.checked;
     for (const f of files) {
-        let dur = null;
-        if (f && f.filename && f.folder) {
-            const enSrc = `sounds/EN/${getFullPath(f)}`;
-            dur = await getAudioDurationFn(enSrc);
+        let entry = normalizeEmotionalText(f.emotionalText || '');
+        if (addTime) {
+            // Zeit berechnen und voranstellen
+            let dur = null;
+            if (f && f.filename && f.folder) {
+                const enSrc = `sounds/EN/${getFullPath(f)}`;
+                dur = await getAudioDurationFn(enSrc);
+            }
+            const durStr = dur != null ? dur.toFixed(2).replace('.', ',') + 'sec' : '?sec';
+            entry = `[${durStr}] ${entry}`;
         }
-        const durStr = dur != null ? dur.toFixed(2).replace('.', ',') + 'sec' : '?sec';
-        const text = normalizeEmotionalText(f.emotionalText || '');
-        blocks.push(`[${durStr}] ${text}`);
+        if (addDashes) {
+            // Gewünschte Trennstriche hinten anfügen
+            entry += ' ---';
+        }
+        blocks.push(entry);
     }
     const texts = blocks.join('\n\n');
     await safeCopy(texts);
