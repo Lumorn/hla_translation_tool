@@ -256,11 +256,6 @@ let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
 // Letzte Einstellungen für elektromagnetische Störgeräusche
 let emiNoiseLevel = parseFloat(localStorage.getItem('hla_emiNoiseLevel') || '0.5');
 
-// Letzte Einstellungen für den Combine-Effekt
-let combineModFreq = parseFloat(localStorage.getItem('hla_combineModFreq') || '120');
-let combineDepth   = parseFloat(localStorage.getItem('hla_combineDepth') || '0.35');
-let combineWet     = parseFloat(localStorage.getItem('hla_combineWet') || '0.45');
-
 // Gespeicherte URL für das Dubbing-Video
 let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
 
@@ -2302,7 +2297,6 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
-        if(!f.hasOwnProperty('combineEffect')){f.combineEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -2547,7 +2541,6 @@ function addFiles() {
                 radioEffect: false,
                 hallEffect: false,
                 emiEffect: false,
-                combineEffect: false,
                 version: 1
             };
 
@@ -3995,7 +3988,6 @@ return `
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
                         ${file.hallEffect ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
-                        ${file.combineEffect ? '<span class="edit-status-icon" title="Combine-Effekt">🎛️</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -7744,7 +7736,6 @@ async function exportSegmentsToProject() {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
-            file.combineEffect = false;
         }
     }
     updateStatus('Segmente importiert');
@@ -8218,7 +8209,6 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
-        combineEffect: false,
         version: 1
     };
 
@@ -10758,7 +10748,6 @@ async function handleDeUpload(input) {
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
-        file.combineEffect = false;
         file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
         if (currentEditFile === file) {
             tempoFactor = 1.0;
@@ -11195,180 +11184,6 @@ function bufferRms(buffer) {
 }
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
-// =========================== COMBINEFILTER START ============================
-// Erzeugt den typischen Combine-Soldaten-Klang
-async function applyCombineFilter(buffer, opts = {}) {
-    const p = {
-        modFreqHz: combineModFreq,
-        depth: combineDepth,
-        wet: combineWet,
-        hpHz: 300,
-        lpHz: 3800,
-        saturationAmount: 1.6,
-        lofiBits: 12,
-        lofiRateHz: 16000,
-        lofiMix: 0.22,
-        reverb: { type: 'room', wet: 0.25 },
-        stereoWidth: 0.3,
-        ...opts
-    };
-
-    const modFreq = Math.max(80, Math.min(160, p.modFreqHz));
-    const depth = Math.max(0, Math.min(1, p.depth));
-    const wet = Math.max(0, Math.min(1, p.wet));
-    const hpHz = p.hpHz || 300;
-    const lpHz = p.lpHz || 3800;
-    const satAmt = Math.max(0, Math.min(2, p.saturationAmount));
-
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-
-    const hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = hpHz;
-    const lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = lpHz;
-    const midBoost = ctx.createBiquadFilter();
-    midBoost.type = 'peaking';
-    midBoost.frequency.value = 1800;
-    midBoost.Q.value = 1.2;
-    midBoost.gain.value = 4;
-    const midCut = ctx.createBiquadFilter();
-    midCut.type = 'peaking';
-    midCut.frequency.value = 500;
-    midCut.Q.value = 1;
-    midCut.gain.value = -3;
-
-    const comp = ctx.createDynamicsCompressor();
-    comp.ratio.value = 6;
-    comp.attack.value = 0.002;
-    comp.release.value = 0.08;
-    comp.threshold.value = opts.threshold || -20;
-
-    const amGain = ctx.createGain();
-    const osc = ctx.createOscillator();
-    osc.frequency.value = modFreq;
-    const modGain = ctx.createGain();
-    modGain.gain.value = depth;
-    const dc = ctx.createConstantSource();
-    dc.offset.value = 1 - depth;
-    osc.connect(modGain);
-    modGain.connect(amGain.gain);
-    dc.connect(amGain.gain);
-
-    const sat = ctx.createWaveShaper();
-    sat.curve = createSaturationCurve(satAmt);
-    sat.oversample = '4x';
-
-    source.connect(hp);
-    hp.connect(lp);
-    lp.connect(midBoost);
-    midBoost.connect(midCut);
-    midCut.connect(comp);
-    comp.connect(amGain);
-    amGain.connect(sat);
-    sat.connect(ctx.destination);
-
-    source.start();
-    osc.start();
-    dc.start();
-
-    let processed = await ctx.startRendering();
-
-    if (p.lofiMix > 0) {
-        processed = applyLofi(processed, p.lofiBits, p.lofiRateHz, p.lofiMix);
-    }
-
-    if (p.reverb && p.reverb.wet > 0 && p.reverb.type !== 'off') {
-        processed = await applyReverbEffect(processed, { room: 0.3, wet: p.reverb.wet, delay: 40 });
-    }
-
-    if (p.stereoWidth >= 0 && p.stereoWidth < 1) {
-        processed = adjustStereoWidth(processed, p.stereoWidth);
-    }
-
-    const mixCtx = new OfflineAudioContext(buffer.numberOfChannels, processed.length, processed.sampleRate);
-    const dry = mixCtx.createBufferSource();
-    dry.buffer = buffer;
-    const wetSrc = mixCtx.createBufferSource();
-    wetSrc.buffer = processed;
-    const dryGain = mixCtx.createGain();
-    dryGain.gain.value = 1 - wet;
-    const wetGain = mixCtx.createGain();
-    wetGain.gain.value = wet;
-    dry.connect(dryGain);
-    wetSrc.connect(wetGain);
-    dryGain.connect(mixCtx.destination);
-    wetGain.connect(mixCtx.destination);
-    dry.start();
-    wetSrc.start();
-    let mixed = await mixCtx.startRendering();
-
-    const peakTarget = Math.pow(10, -0.3 / 20);
-    let peak = 0;
-    for (let ch = 0; ch < mixed.numberOfChannels; ch++) {
-        const data = mixed.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            peak = Math.max(peak, Math.abs(data[i]));
-        }
-    }
-    const gain = peak > peakTarget ? peakTarget / peak : 1;
-    for (let ch = 0; ch < mixed.numberOfChannels; ch++) {
-        const data = mixed.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.max(-1, Math.min(1, data[i] * gain));
-        }
-    }
-
-    return mixed;
-}
-
-function createSaturationCurve(amount) {
-    const samples = 44100;
-    const curve = new Float32Array(samples);
-    for (let i = 0; i < samples; i++) {
-        const x = i / samples * 2 - 1;
-        curve[i] = Math.tanh(x * amount);
-    }
-    return curve;
-}
-
-function applyLofi(buffer, bits, rateHz, mix) {
-    const out = new AudioBuffer({ length: buffer.length, numberOfChannels: buffer.numberOfChannels, sampleRate: buffer.sampleRate });
-    const step = Math.max(1, Math.floor(buffer.sampleRate / rateHz));
-    const levels = Math.pow(2, bits - 1) - 1;
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const input = buffer.getChannelData(ch);
-        const output = out.getChannelData(ch);
-        let held = 0;
-        for (let i = 0; i < input.length; i++) {
-            if (i % step === 0) held = input[i];
-            const crushed = Math.round(held * levels) / levels;
-            output[i] = input[i] * (1 - mix) + crushed * mix;
-        }
-    }
-    return out;
-}
-
-function adjustStereoWidth(buffer, width) {
-    if (buffer.numberOfChannels < 2) return buffer;
-    const out = new AudioBuffer({ length: buffer.length, numberOfChannels: 2, sampleRate: buffer.sampleRate });
-    const left = buffer.getChannelData(0);
-    const right = buffer.getChannelData(1);
-    const outL = out.getChannelData(0);
-    const outR = out.getChannelData(1);
-    for (let i = 0; i < left.length; i++) {
-        const mid = (left[i] + right[i]) / 2;
-        const side = (left[i] - right[i]) / 2 * width;
-        outL[i] = mid + side;
-        outR[i] = mid - side;
-    }
-    return out;
-}
-// =========================== COMBINEFILTER END ==============================
-
 // =========================== RADIOFILTER START ==============================
 // Erzeugt einen Funkgeräteklang. Die Parameter werden über ein Objekt gesteuert
 // und dauerhaft in localStorage gespeichert.
@@ -11597,8 +11412,6 @@ let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
 let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
 let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
 let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
-let combineEffectBuffer = null; // Buffer mit Combine-Effekt
-let isCombineEffect     = false; // Merkt, ob der Combine-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -11629,8 +11442,6 @@ async function openDeEdit(fileId) {
     isHallEffect = false;
     emiEffectBuffer = null;
     isEmiEffect = false;
-    combineEffectBuffer = null;
-    isCombineEffect = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -11986,41 +11797,6 @@ async function openDeEdit(fileId) {
         };
     }
 
-    // Regler für Combine-Effekt initialisieren
-    const cMod = document.getElementById('combineModFreq');
-    if (cMod) {
-        cMod.value = combineModFreq;
-        cMod.oninput = e => {
-            combineModFreq = Math.max(80, Math.min(160, parseFloat(e.target.value)));
-            localStorage.setItem('hla_combineModFreq', combineModFreq);
-            if (isCombineEffect) recomputeEditBuffer();
-        };
-    }
-    const cDepth = document.getElementById('combineDepth');
-    const cDepthDisp = document.getElementById('combineDepthDisplay');
-    if (cDepth && cDepthDisp) {
-        cDepth.value = combineDepth;
-        cDepthDisp.textContent = Math.round(combineDepth * 100) + '%';
-        cDepth.oninput = e => {
-            combineDepth = Math.max(0, Math.min(1, parseFloat(e.target.value)));
-            localStorage.setItem('hla_combineDepth', combineDepth);
-            cDepthDisp.textContent = Math.round(combineDepth * 100) + '%';
-            if (isCombineEffect) recomputeEditBuffer();
-        };
-    }
-    const cWet = document.getElementById('combineWet');
-    const cWetDisp = document.getElementById('combineWetDisplay');
-    if (cWet && cWetDisp) {
-        cWet.value = combineWet;
-        cWetDisp.textContent = Math.round(combineWet * 100) + '%';
-        cWet.oninput = e => {
-            combineWet = Math.max(0, Math.min(1, parseFloat(e.target.value)));
-            localStorage.setItem('hla_combineWet', combineWet);
-            cWetDisp.textContent = Math.round(combineWet * 100) + '%';
-            if (isCombineEffect) recomputeEditBuffer();
-        };
-    }
-
     // Preset-Auswahl initialisieren
     updateRadioPresetList();
     const presetSel  = document.getElementById('radioPresetSelect');
@@ -12213,10 +11989,6 @@ function updateEffectButtons() {
     if (emiBtn) {
         emiBtn.classList.toggle('active', isEmiEffect);
     }
-    const combineBtn = document.getElementById('combineEffectBtn');
-    if (combineBtn) {
-        combineBtn.classList.toggle('active', isCombineEffect);
-    }
 }
 
 // Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
@@ -12315,9 +12087,6 @@ async function recomputeEditBuffer() {
     if (isRadioEffect) {
         buf = await applyRadioFilter(buf);
     }
-    if (isCombineEffect) {
-        buf = await applyCombineFilter(buf);
-    }
     if (isHallEffect) {
         buf = await applyReverbEffect(buf);
     }
@@ -12396,21 +12165,6 @@ async function applyEmiEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYEMIEFFECT END =============================
-// =========================== APPLYCOMBINEEFFECT START =======================
-// Aktiviert den Combine-Effekt und legt bei Erstnutzung eine History an
-async function applyCombineEffect() {
-    if (!isCombineEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
-        const relPath = getFullPath(currentEditFile);
-        const blob = bufferToWav(savedOriginalBuffer);
-        const buf = await blob.arrayBuffer();
-        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
-        await updateHistoryCache(relPath);
-    }
-    isCombineEffect = true;
-    await recomputeEditBuffer();
-    updateEffectButtons();
-}
-// =========================== APPLYCOMBINEEFFECT END =========================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== RESETRADIOSETTINGS START =====================
@@ -12598,37 +12352,6 @@ function resetEmiSettings() {
     // Effekt neu berechnen, falls aktiv
     if (isEmiEffect) recomputeEditBuffer();
 }
-// =========================== RESETEMISETTINGS END =====================
-
-// =========================== RESETCOMBINESETTINGS START ==================
-function resetCombineSettings() {
-    // Standardwerte für den Combine-Effekt setzen
-    combineModFreq = 120;
-    combineDepth   = 0.35;
-    combineWet     = 0.45;
-    localStorage.setItem('hla_combineModFreq', combineModFreq);
-    localStorage.setItem('hla_combineDepth', combineDepth);
-    localStorage.setItem('hla_combineWet', combineWet);
-
-    const cMod = document.getElementById('combineModFreq');
-    if (cMod) cMod.value = combineModFreq;
-    const cDepth = document.getElementById('combineDepth');
-    const cDepthDisp = document.getElementById('combineDepthDisplay');
-    if (cDepth && cDepthDisp) {
-        cDepth.value = combineDepth;
-        cDepthDisp.textContent = Math.round(combineDepth * 100) + '%';
-    }
-    const cWet = document.getElementById('combineWet');
-    const cWetDisp = document.getElementById('combineWetDisplay');
-    if (cWet && cWetDisp) {
-        cWet.value = combineWet;
-        cWetDisp.textContent = Math.round(combineWet * 100) + '%';
-    }
-
-    // Effekt neu berechnen, falls aktiv
-    if (isCombineEffect) recomputeEditBuffer();
-}
-// =========================== RESETCOMBINESETTINGS END ==================
 // =========================== RESETEMISETTINGS END =======================
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
@@ -13005,7 +12728,6 @@ async function resetDeEdit() {
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
         currentEditFile.emiEffect = false;
-        currentEditFile.combineEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -13014,8 +12736,6 @@ async function resetDeEdit() {
         isHallEffect = false;
         emiEffectBuffer = null;
         isEmiEffect = false;
-        combineEffectBuffer = null;
-        isCombineEffect = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
@@ -13178,7 +12898,6 @@ async function applyDeEdit() {
         currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.emiEffect = isEmiEffect;
-        currentEditFile.combineEffect = isCombineEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
@@ -14089,7 +13808,6 @@ function addFileToProject(filename, folder, originalResult) {
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
-        combineEffect: false,
         version: 1
     };
 
@@ -14978,7 +14696,6 @@ function quickAddLevel(chapterName) {
                 f.radioEffect = false;
                 f.hallEffect = false;
                 f.emiEffect = false;
-                f.combineEffect = false;
                 // Tempo bei neuem Upload auf Standard zurücksetzen
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
@@ -15154,7 +14871,6 @@ function quickAddLevel(chapterName) {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
-            file.combineEffect = false;
             renderFileTable();
             saveCurrentProject();
         }
