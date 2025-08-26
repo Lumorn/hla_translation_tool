@@ -253,11 +253,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
 * **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
 * **EM-Störgeräusch mit Intensitätsregler:** fügt elektromagnetische Störungen hinzu; die Stärke ist frei wählbar.
+* **Combine-Effekt:** erzeugt einen HL-Combine-Funkklang mit Ringmodulation, Filtern und Sättigung.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
-* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
+* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻, Combine-Effekt – 🤖 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
 * **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
 * **Störgeräusch-Standardwerte:** Im Störgeräusch-Bereich stellt **⟳ Standardwerte** die Intensität zurück.
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
