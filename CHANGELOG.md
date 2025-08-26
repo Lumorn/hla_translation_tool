@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.187
+* DE-Audio-Bearbeitung erhält einen Combine-Soldaten-Effekt mit Amplitudenmodulation.
 ## 🛠️ Patch in 1.40.186
 * "Emotionen kopieren" bietet Checkboxen, um Zeit und/oder `---` anzufügen.
 ## 🛠️ Patch in 1.40.185

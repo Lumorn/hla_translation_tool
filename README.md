@@ -253,15 +253,16 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
 * **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
 * **EM-Störgeräusch mit Intensitätsregler:** fügt elektromagnetische Störungen hinzu; die Stärke ist frei wählbar.
+* **Combine-Effekt:** Erzeugt per Amplitudenmodulation den typischen Funkklang der Combine-Soldaten.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
-* **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
+* **Getrennte Effektbereiche:** Funkgerät-, Hall-, Störgeräusch- und Combine-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
-* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
+* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻, EM-Störgeräusch – ⚡ und Combine-Effekt – 🎛 besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
 * **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
 * **Störgeräusch-Standardwerte:** Im Störgeräusch-Bereich stellt **⟳ Standardwerte** die Intensität zurück.
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
-* **Fünf Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu fünf Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall- und Störgeräusch-Effekt an.
+* **Sechs Bearbeitungssymbole:** Der Status neben der Schere zeigt nun Icons für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall-, Störgeräusch- und Combine-Effekt.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
 * **Stille einfügen:** Mit gedrückter Alt‑Taste lassen sich Bereiche markieren, an denen beim Speichern Stille eingefügt wird. So lassen sich Audios zeitlich verschieben.
 * **EN-Abschnitt einfügen:** Halte die Alt-Taste und ziehe mit der Maus im EN-Original einen Bereich auf. Über den Pfeil zwischen den beiden Wellen lässt sich der markierte Ausschnitt am Anfang, am Ende oder an der aktuellen Cursor-Position in das DE-Audio kopieren. Beim Schließen des Bearbeitungsdialogs werden Start, Ende und Einfügeposition zurückgesetzt.
@@ -284,7 +285,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Die Vorschau folgt jetzt exakt der Reihenfolge Trimmen → Pausen entfernen → Time‑Stretch. Dadurch verschwinden keine Abschnitte mehr beim Speichern.
 * **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
 * **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
-* **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑, Hall‑ und Störgeräusch‑Effekt automatisch deaktiviert.
+* **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑, Hall‑, Störgeräusch‑ und Combine‑Effekt automatisch deaktiviert.
 * **Tempo-Regler zurückgesetzt:** Nach einem Upload steht der Geschwindigkeitsregler wieder zuverlässig auf 1,00.
 * **Tempo-Regler auch beim ZIP-Import auf 1,00:** Beim Import mehrerer Dateien per ZIP wird der Geschwindigkeitsregler jeder Zeile auf den Standardwert gesetzt.
 * **Backup bleibt beim Speichern erhalten:** Nur ein neuer Upload ersetzt die Sicherung in `DE-Backup`. "🔄 Zurücksetzen" stellt dadurch stets die zuletzt geladene Originaldatei wieder her.
