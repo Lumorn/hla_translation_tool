@@ -1722,33 +1722,57 @@ function loadProjects() {
     // DANN: Projekte laden
     const savedProjects = localStorage.getItem('hla_projects');
     if (savedProjects) {
-        projects = JSON.parse(savedProjects);
-
-        let migrated = false;
-        projects.forEach(p => {
-            // Alte Icon-Felder entfernen, Projekte erben nun das Level-Icon
-            if (p.hasOwnProperty('icon')) { delete p.icon; migrated = true; }
-            if (!p.hasOwnProperty('color')) { p.color = '#333333'; migrated = true; }
-            if (!p.hasOwnProperty('levelName')) { p.levelName = ''; migrated = true; }
-            if (!p.hasOwnProperty('levelPart')) { p.levelPart = 1;  migrated = true; }
-            if (!p.hasOwnProperty('gptTests')) { p.gptTests = []; migrated = true; }
-            if (!p.hasOwnProperty('gptTabIndex')) { p.gptTabIndex = 0; migrated = true; }
-            if (!p.hasOwnProperty('segmentAssignments')) { p.segmentAssignments = {}; migrated = true; }
-            if (!p.hasOwnProperty('segmentSegments')) { p.segmentSegments = null; migrated = true; }
-            if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
-            if (!p.hasOwnProperty('segmentAudioPath')) { p.segmentAudioPath = null; migrated = true; }
-            if (!p.hasOwnProperty('segmentIgnored')) { p.segmentIgnored = []; migrated = true; }
-        });
-
-        // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
-        projects.forEach(p => {
-            if (p.levelName && levelColors[p.levelName]) {
-                p.color = levelColors[p.levelName];
-                migrated = true;
+        // Hilfsfunktion für ein detailliertes Fehlerfenster
+        const showError = msg => {
+            if (window.electronAPI && window.electronAPI.showProjectError) {
+                window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
+            } else {
+                alert('Projekt-Ladefehler:\n' + msg);
             }
-        });
+        };
 
-        if (migrated) saveProjects();
+        try {
+            projects = JSON.parse(savedProjects);
+            let migrated = false;
+            const projErrors = [];
+            projects.forEach((p, idx) => {
+                const missing = [];
+                if (p.id === undefined) { p.id = Date.now() + idx; missing.push('id'); migrated = true; }
+                if (typeof p.name !== 'string') { p.name = 'Unbenannt'; missing.push('name'); migrated = true; }
+                if (!Array.isArray(p.files)) { p.files = []; missing.push('files'); migrated = true; }
+                if (missing.length) projErrors.push(`Projekt ${p.name || idx + 1}: ${missing.join(', ')}`);
+                // Alte Icon-Felder entfernen, Projekte erben nun das Level-Icon
+                if (p.hasOwnProperty('icon')) { delete p.icon; migrated = true; }
+                if (!p.hasOwnProperty('color')) { p.color = '#333333'; migrated = true; }
+                if (!p.hasOwnProperty('levelName')) { p.levelName = ''; migrated = true; }
+                if (!p.hasOwnProperty('levelPart')) { p.levelPart = 1;  migrated = true; }
+                if (!p.hasOwnProperty('gptTests')) { p.gptTests = []; migrated = true; }
+                if (!p.hasOwnProperty('gptTabIndex')) { p.gptTabIndex = 0; migrated = true; }
+                if (!p.hasOwnProperty('segmentAssignments')) { p.segmentAssignments = {}; migrated = true; }
+                if (!p.hasOwnProperty('segmentSegments')) { p.segmentSegments = null; migrated = true; }
+                if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
+                if (!p.hasOwnProperty('segmentAudioPath')) { p.segmentAudioPath = null; migrated = true; }
+                if (!p.hasOwnProperty('segmentIgnored')) { p.segmentIgnored = []; migrated = true; }
+            });
+
+            // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
+            projects.forEach(p => {
+                if (p.levelName && levelColors[p.levelName]) {
+                    p.color = levelColors[p.levelName];
+                    migrated = true;
+                }
+            });
+
+            if (projErrors.length) {
+                showError('Einige Projekte waren unvollständig:\n' + projErrors.join('\n') + '\n\nReparatur: Fehlende Felder wurden mit Standardwerten ergänzt.');
+            }
+
+            if (migrated) saveProjects();
+        } catch (err) {
+            showError(`Projekte konnten nicht geladen werden: ${err.message}\n\nReparatur: Projektliste wurde zurückgesetzt.`);
+            projects = [];
+            saveProjects();
+        }
     } else {
         // Beispielprojekte fuer einen frischen Start
         const now = Date.now();

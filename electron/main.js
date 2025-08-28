@@ -412,6 +412,15 @@ app.whenReady().then(() => {
     return true;
   });
 
+  // Zeigt ein Fehlerfenster für fehlgeschlagene Projekt-Ladevorgänge
+  ipcMain.handle('show-project-error', (event, { title, message }) => {
+    dialog.showMessageBoxSync(mainWindow, {
+      type: 'error',
+      title,
+      message
+    });
+  });
+
   // Startet die automatische Browser-Steuerung über Playwright
   ipcMain.handle('auto-dub', async (event, { id, folder }) => {
     // Aktuell wird nur die ID verwendet. Der Ordnerparameter ist für künftige
