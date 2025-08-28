@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.190
+* Beim Laden eines Projekts führen Vorschlagsfelder ohne zugehörige Datei nicht mehr zu einem Fehler
 ## 🛠️ Patch in 1.40.189
 * 📊‑Symbol neben jedem Level zeigt die Notizen dieses Levels samt Gesamtanzahl im Projekt.
 ## 🛠️ Patch in 1.40.188
