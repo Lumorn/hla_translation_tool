@@ -3901,6 +3901,7 @@ return `
             </span>
             <input type="text" class="folder-note" placeholder="Notiz" value="${escapeHtml(file.folderNote || '')}"
                    oninput="setFolderNote(${file.id}, this.value)">
+            <div class="note-dup-info"></div>
         </td>
         <td class="version-score-cell">
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
@@ -4012,6 +4013,7 @@ return `
     addPathCellContextMenus();
     updateCounts();
     updateDubButtons();
+    updateDuplicateNotes();
     // Nur scrollen, wenn keine neue Auswahl aussteht
     if (pendingSelectId === null) {
         scrollToNumber(currentRowNumber);
@@ -5631,6 +5633,48 @@ function setFolderNote(fileId, note) {
     file.folderNote = note;
     isDirty = true;
     saveCurrentProject();
+    updateDuplicateNotes();
+}
+
+// Erzeugt aus einer Notiz einen stabilen Farbton
+const noteColorCache = {};
+function getNoteColorForNote(text) {
+    const key = text.toLowerCase();
+    if (noteColorCache[key]) return noteColorCache[key];
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+        hash = key.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const hue = Math.abs(hash) % 360;
+    const color = `hsl(${hue},70%,45%)`;
+    noteColorCache[key] = color;
+    return color;
+}
+
+// Zeigt an, wie viele Einträge die gleiche Notiz besitzen
+function updateDuplicateNotes() {
+    const counts = {};
+    for (const f of files) {
+        const note = (f.folderNote || '').trim();
+        if (!note) continue;
+        const key = note.toLowerCase();
+        if (!counts[key]) counts[key] = { count: 0, color: getNoteColorForNote(note) };
+        counts[key].count++;
+    }
+
+    document.querySelectorAll('tr[data-id] .folder-note').forEach(input => {
+        const tr = input.closest('tr');
+        const id = Number(tr.dataset.id);
+        const file = files.find(f => f.id === id);
+        const note = (file?.folderNote || '').trim();
+        const key = note.toLowerCase();
+        const info = input.nextElementSibling;
+        if (note && counts[key] && counts[key].count > 1) {
+            info.innerHTML = `<span class="note-badge" style="background:${counts[key].color}"></span>${counts[key].count}`;
+        } else if (info) {
+            info.textContent = '';
+        }
+    });
 }
 
 // =========================== CHECKFILENAME START ===========================
