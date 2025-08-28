@@ -78,6 +78,8 @@ if (typeof require !== 'function') {
     startHla: (mode, lang, map, preset) => ipcRenderer.invoke('start-hla', { mode, lang, map, preset }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
     openPath: (p) => ipcRenderer.invoke('open-path', p),
+    // Fehlerfenster für Projekt-Ladeprobleme anzeigen
+    showProjectError: (title, message) => ipcRenderer.invoke('show-project-error', { title, message }),
     loadOpenaiSettings: () => ipcRenderer.invoke('load-openai-settings'),
     saveOpenaiSettings: data => ipcRenderer.invoke('save-openai-settings', data),
     loadOpenaiModels: () => ipcRenderer.invoke('load-openai-models'),

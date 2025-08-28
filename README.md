@@ -37,6 +37,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zuverlässige Python-Abhängigkeiten:** `start_tool.py` prüft Pakete durch Import und `reset_repo.py` installiert `requirements.txt` automatisch.
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
+* **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich

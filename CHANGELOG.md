@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.191
+* Kann ein Projekt nicht geladen werden, erscheint ein Fenster mit genauer Ursache und Reparaturhinweis.
 ## 🛠️ Patch in 1.40.190
 * Beim Laden eines Projekts führen Vorschlagsfelder ohne zugehörige Datei nicht mehr zu einem Fehler
 ## 🛠️ Patch in 1.40.189
