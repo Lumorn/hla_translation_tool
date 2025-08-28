@@ -46,6 +46,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
+* **Notiz-Übersicht pro Level:** 📊‑Symbol zeigt alle Notizen eines Levels und deren Häufigkeit im gesamten Projekt
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Schnellstart mit Cheats:** Im Dropdown lassen sich Godmode, unendliche Munition und die Entwicklerkonsole einzeln auswählen. Das Spiel startet nach Klick auf **Starten** mit allen markierten Optionen.

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.189
+* 📊‑Symbol neben jedem Level zeigt die Notizen dieses Levels samt Gesamtanzahl im Projekt.
 ## 🛠️ Patch in 1.40.188
 * Gleichlautende Notizen werden farbig hervorgehoben und zeigen die Anzahl identischer Einträge.
 ## 🛠️ Patch in 1.40.187

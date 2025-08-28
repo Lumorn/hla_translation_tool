@@ -1983,6 +1983,7 @@ function renderProjects() {
         header.innerHTML = `
             <span class="level-order">${order}.</span><span class="level-id">${lvl}</span>
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
+            <span class="level-stats-icon" title="Level-Statistiken">📊</span>
             <span class="level-arrow">${expandedLevel === lvl ? '▼' : '▶'}</span>
         `;
         header.addEventListener('contextmenu', e => showLevelMenu(e, lvl));
@@ -1991,6 +1992,14 @@ function renderProjects() {
             renderProjects();
         };
         const arrowEl = header.querySelector('.level-arrow');
+        const statsEl = header.querySelector('.level-stats-icon');
+        // Klick auf das Statistik-Symbol öffnet eine Übersicht der Notizen
+        if (statsEl) {
+            statsEl.addEventListener('click', ev => {
+                ev.stopPropagation();
+                showLevelStats(lvl);
+            });
+        }
         // Pfeil bei Hover vorübergehend nach unten zeigen
         header.addEventListener('mouseenter', () => {
             if (!header.classList.contains('active') && arrowEl) arrowEl.textContent = '▼';
@@ -5675,6 +5684,62 @@ function updateDuplicateNotes() {
             info.textContent = '';
         }
     });
+}
+
+// Ermittelt die Häufigkeit aller Notizen in allen Projekten
+function computeGlobalNoteCounts() {
+    const counts = {};
+    for (const prj of projects) {
+        if (!prj.files) continue;
+        for (const f of prj.files) {
+            const note = (f.folderNote || '').trim();
+            if (!note) continue;
+            const key = note.toLowerCase();
+            if (!counts[key]) counts[key] = { note, count: 0, color: getNoteColorForNote(note) };
+            counts[key].count++;
+        }
+    }
+    return counts;
+}
+
+// Zeigt ein Dialogfenster mit Notizstatistiken zum angeklickten Level
+function showLevelStats(levelName) {
+    const globalCounts = computeGlobalNoteCounts();
+    const levelNotes = {};
+
+    // Notizen des Levels sammeln
+    projects.filter(p => p.levelName === levelName).forEach(p => {
+        (p.files || []).forEach(f => {
+            const note = (f.folderNote || '').trim();
+            if (!note) return;
+            const key = note.toLowerCase();
+            if (!levelNotes[key]) levelNotes[key] = globalCounts[key];
+        });
+    });
+
+    let content = '';
+    const rows = Object.values(levelNotes);
+    if (rows.length) {
+        content += '<table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;">';
+        content += '<tr><th style="text-align:left;padding:6px;border-bottom:1px solid #333;">Notiz</th><th style="text-align:center;padding:6px;border-bottom:1px solid #333;">Anzahl</th></tr>';
+        rows.forEach(r => {
+            content += `<tr><td style="padding:6px;border-bottom:1px solid #333;"><span class="note-badge" style="background:${r.color}"></span>${escapeHtml(r.note)}</td><td style="padding:6px;text-align:center;border-bottom:1px solid #333;">${r.count}</td></tr>`;
+        });
+        content += '</table>';
+    } else {
+        content = '<p style="margin-top:10px;">Keine Notizen in diesem Level.</p>';
+    }
+
+    const ov = document.createElement('div');
+    ov.className = 'dialog-overlay';
+    const dialog = document.createElement('div');
+    dialog.className = 'dialog';
+    dialog.style.maxWidth = '400px';
+    dialog.innerHTML = `<h3>Level-Statistiken: ${escapeHtml(levelName)}</h3>${content}<div class="dialog-buttons"><button onclick="this.closest('.dialog-overlay').remove()">Schließen</button></div>`;
+    ov.appendChild(dialog);
+    ov.onclick = () => ov.remove();
+    dialog.onclick = e => e.stopPropagation();
+    document.body.appendChild(ov);
 }
 
 // =========================== CHECKFILENAME START ===========================
