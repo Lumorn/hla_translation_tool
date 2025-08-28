@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.188
+* Gleichlautende Notizen werden farbig hervorgehoben und zeigen die Anzahl identischer Einträge.
 ## 🛠️ Patch in 1.40.187
 * Pro Datei kann jetzt eine individuelle Notiz unter dem Ordnernamen gespeichert werden.
 ## 🛠️ Patch in 1.40.186

@@ -1240,6 +1240,23 @@ th:nth-child(8) {
     margin-top: 4px;
 }
 
+/* Hinweis für doppelte Notizen */
+.note-dup-info {
+    font-size: 11px;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Farbige Kennzeichnung je Notiz */
+.note-badge {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
 /* Version und Score untereinander */
 .version-score-cell {
     display: flex;
