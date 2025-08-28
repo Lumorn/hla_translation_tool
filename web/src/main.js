@@ -438,6 +438,7 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     const copyBtn = document.getElementById("copyAssistantButton");
     const copyBtn2 = document.getElementById("copyAssistant2Button");
     const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
+    const subtitleAllBtn = document.getElementById("subtitleSearchAllButton");
     if (gptBtn) {
         gptBtn.addEventListener("click", () => {
             if (currentProject?.gptTests?.length) {
@@ -461,6 +462,9 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     }
     if (copyAllEmosBtn) {
         copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
+    }
+    if (subtitleAllBtn) {
+        subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
     }
 }
 
@@ -4326,6 +4330,98 @@ function showSubtitleResults(fileId, results, searchText) {
     });
 }
 // =========================== SUBTITLE SEARCH END =============================
+
+// Startet die Untertitel-Suche für alle Dateien ohne deutschen Text
+async function runGlobalSubtitleSearch() {
+    // Sammle alle Dateien ohne DE-Text
+    const targets = files.filter(f => !f.deText || !f.deText.trim());
+    if (targets.length === 0) {
+        alert('✅ Alle Dateien besitzen bereits einen deutschen Text.');
+        return;
+    }
+
+    // Text-Utilities bei Bedarf laden
+    if (typeof calculateTextSimilarity !== 'function') {
+        try {
+            const mod = await import('./fileUtils.mjs');
+            calculateTextSimilarity = mod.calculateTextSimilarity;
+            levenshteinDistance = mod.levenshteinDistance;
+        } catch (err) {
+            if (typeof window !== 'undefined' && typeof window.calculateTextSimilarity === 'function') {
+                calculateTextSimilarity = window.calculateTextSimilarity;
+                levenshteinDistance = window.levenshteinDistance;
+            } else {
+                console.error('Text-Utilities konnten nicht geladen werden', err);
+                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                return;
+            }
+        }
+    }
+
+    // Untertitel bei Bedarf laden
+    if (typeof loadClosecaptions !== 'function') {
+        try {
+            const mod = await import('../../closecaptionParser.js');
+            loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
+        } catch (e) {
+            console.error('closecaptionParser konnte nicht geladen werden', e);
+            alert('❌ Untertitel konnten nicht geladen werden.');
+            return;
+        }
+    }
+
+    if (!subtitleData) {
+        const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
+        subtitleData = await loadClosecaptions(base);
+        if (!subtitleData) {
+            alert('❌ Untertitel konnten nicht geladen werden.');
+            return;
+        }
+    }
+
+    // Fortschrittsanzeige vorbereiten
+    const progress = document.getElementById('subtitleSearchProgress');
+    const status   = document.getElementById('subtitleSearchStatus');
+    const fill     = document.getElementById('subtitleSearchFill');
+    progress.classList.add('active');
+
+    let applied = 0;
+    for (let i = 0; i < targets.length; i++) {
+        const file = targets[i];
+        status.textContent = `Suche ${i + 1}/${targets.length}...`;
+        const current = stripColorCodes(file.enText).trim().toLowerCase();
+        const matches = [];
+        subtitleData.forEach(entry => {
+            const enClean = stripColorCodes(entry.enText).trim();
+            const similarity = calculateTextSimilarity(current, enClean.toLowerCase());
+            if (similarity === 1) {
+                matches.push({ ...entry, deText: stripColorCodes(entry.deText).trim() });
+            }
+        });
+
+        if (matches.length === 1) {
+            updateText(file.id, 'de', matches[0].deText, true);
+            applied++;
+        } else if (matches.length > 1) {
+            const useOne = confirm(`Mehrere perfekte Treffer für "${file.filename}" gefunden. Ersten übernehmen?`);
+            if (useOne) {
+                updateText(file.id, 'de', matches[0].deText, true);
+                applied++;
+            }
+        }
+        fill.style.width = `${Math.round(((i + 1) / targets.length) * 100)}%`;
+        await new Promise(r => setTimeout(r, 0));
+    }
+
+    progress.classList.remove('active');
+    fill.style.width = '0%';
+    if (applied > 0) {
+        renderFileTable();
+        saveCurrentProject();
+    }
+    alert(`🔍 Untertitelsuche abgeschlossen. ${applied} Texte übernommen.`);
+}
+
 // =========================== TEXT-ÄHNLICHKEIT (siehe fileUtils.js) =====================
 
 // =========================== DISPLAY FILE EXCHANGE DIALOG START ===========================

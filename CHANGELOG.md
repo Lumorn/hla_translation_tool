@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.194
+* Neuer globaler Knopf durchsucht alle Dateien ohne deutschen Text und übernimmt eindeutige Untertitel automatisch.
 ## 🛠️ Patch in 1.40.193
 * `cleanupProject.js` entfernt unbekannte Datei-IDs aus Projekten oder protokolliert sie als Fehler.
 ## 🛠️ Patch in 1.40.192

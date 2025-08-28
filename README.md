@@ -599,6 +599,7 @@ Seit Patch 1.40.124 zeigt die Wiedergabeliste kleine Icons für Dateiexistenz, W
 Seit Patch 1.40.125 führt ein Protokoll neben der Wiedergabeliste die erwartete und die tatsächliche Reihenfolge auf.
 Seit Patch 1.40.126 darf beim Anpassen-Kürzen die deutsche Übersetzung leicht verändert werden, um extrem kurze EN-Zeilen besser abzudecken.
 Seit Patch 1.40.127 besitzt der DE-Audio-Editor überarbeitete Buttons mit hilfreichen Tooltips.
+Seit Patch 1.40.194 durchsucht ein neuer Knopf das gesamte Projekt nach passenden Untertiteln und fügt eindeutige Treffer automatisch ein.
 
 Beispiel einer gültigen CSV:
 
@@ -760,6 +761,7 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
   * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
   * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text; der gesuchte EN-Text wird angezeigt, `<clr:...>`-Farbcodes werden entfernt, `<HEADSET>`, `<cr>` sowie `<sb>`-Markierungen werden durch Leerzeichen ersetzt
+  * **Globale Untertitel-Suche:** ein zusätzlicher Knopf durchsucht das gesamte Projekt nach fehlenden DE-Texten und fügt eindeutige 100%-Treffer automatisch ein; bei mehreren Treffern wird nachgefragt
 
 ---
 

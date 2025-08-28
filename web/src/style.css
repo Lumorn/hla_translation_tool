@@ -1806,6 +1806,25 @@ th:nth-child(8) {
             color: #999;
         }
 
+        /* Fortschrittsanzeige für die globale Untertitel-Suche */
+        .subtitle-search-progress {
+            display: none;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            margin: 20px;
+        }
+
+        .subtitle-search-progress.active {
+            display: block;
+        }
+
+        .subtitle-search-status {
+            font-size: 14px;
+            color: #999;
+        }
+
 
 /* =========================== DIALOG CLOSE BTN STYLE START =========================== */
 .folder-browser-dialog .dialog { position:relative; }
