@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.187
+* Pro Datei kann jetzt eine individuelle Notiz unter dem Ordnernamen gespeichert werden.
 ## 🛠️ Patch in 1.40.186
 * "Emotionen kopieren" bietet Checkboxen, um Zeit und/oder `---` anzufügen.
 ## 🛠️ Patch in 1.40.185
