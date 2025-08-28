@@ -3279,7 +3279,7 @@ th:nth-child(8) {
 .level-container.collapsed .projects { display: none; }
 .level {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto auto 1fr auto auto;
     gap: 6px;
     align-items: center;
     cursor: pointer;
@@ -3302,6 +3302,14 @@ th:nth-child(8) {
     font-size: 0.8em;                      /* Level-ID kleiner und grau */
     color: #aaa;
     font-family: "Courier New", monospace;
+}
+.level-header .level-stats-icon {
+    cursor: pointer;                       /* Klickbares Statistik-Symbol */
+    color: #888;                           /* dezente Ausgangsfarbe */
+    transition: color 0.2s;
+}
+.level-header .level-stats-icon:hover {
+    color: #fff;                           /* hellere Farbe beim Überfahren */
 }
 .level-header .level-arrow {
     color: #888;
