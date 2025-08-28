@@ -125,6 +125,7 @@
                     <button id="copyAssistantButton" class="btn btn-secondary">Kopierhilfe</button>
                     <button id="copyAssistant2Button" class="btn btn-secondary">Kopierhilfe 2</button>
                     <button id="copyAllEmosButton" class="btn btn-secondary">Emotionen kopieren</button>
+                    <button id="subtitleSearchAllButton" class="btn btn-secondary" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
                     <label class="copy-option"><input type="checkbox" id="copyIncludeTime" checked> Zeit voranstellen</label>
                     <label class="copy-option"><input type="checkbox" id="copyAddDashes"> --- anhängen</label>
                 </div>
@@ -165,6 +166,14 @@
                 <div class="translate-status" id="translateStatus">Übersetze...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="translateFill"></div>
+                </div>
+            </div>
+
+            <!-- Globale Untertitel-Suche -->
+            <div class="subtitle-search-progress" id="subtitleSearchProgress">
+                <div class="subtitle-search-status" id="subtitleSearchStatus">Suche Untertitel...</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="subtitleSearchFill"></div>
                 </div>
             </div>
 
