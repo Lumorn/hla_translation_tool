@@ -4052,8 +4052,14 @@ return `
         document.querySelectorAll('.suggestion-box').forEach(div => {
             const id = Number(div.dataset.fileId);
             const file = files.find(f => f.id === id);
+            if (!file) {
+                // Fehlende Zuordnung abfangen, um Laufzeitfehler zu vermeiden
+                console.warn(`Keine Datei für Vorschlag mit ID ${id} gefunden.`);
+                return;
+            }
             div.textContent = file.suggestion || '';
             div.onclick = () => {
+                // Klick übernimmt den GPT-Vorschlag in den DE-Text
                 file.deText = file.suggestion;
                 window.isDirty = true;
                 const container = div.nextElementSibling;
