@@ -2525,6 +2525,7 @@ function addFiles() {
                 filename: filename,
                 folder: folder,
                 fullPath: fullPath,
+                folderNote: '',
                 enText: textDatabase[fileKey]?.en || '',
                 deText: textDatabase[fileKey]?.de || '',
                 emotionalText: textDatabase[fileKey]?.emo || '',
@@ -3898,6 +3899,8 @@ return `
                   onclick="showFileExchangeOptions(${file.id})">
                 ${folderIcon} ${lastFolder}
             </span>
+            <input type="text" class="folder-note" placeholder="Notiz" value="${escapeHtml(file.folderNote || '')}"
+                   oninput="setFolderNote(${file.id}, this.value)">
         </td>
         <td class="version-score-cell">
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
@@ -5620,6 +5623,15 @@ function deleteFile(fileId) {
                 }
             }, 100);
         }
+        
+// Aktualisiert die Notiz eines Datei-Eintrags
+function setFolderNote(fileId, note) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    file.folderNote = note;
+    isDirty = true;
+    saveCurrentProject();
+}
 
 // =========================== CHECKFILENAME START ===========================
 // Prüft beim Klick auf den Dateinamen, ob die Datei existiert und bietet
@@ -8192,6 +8204,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         filename: filename,
         folder: folder,
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
+        folderNote: '',
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         emotionalText: textDatabase[fileKey]?.emo || '',
@@ -13791,6 +13804,7 @@ function addFileToProject(filename, folder, originalResult) {
         filename: filename,
         folder: folder,
         // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
+        folderNote: '',
         enText: textDatabase[fileKey]?.en || '',
         deText: textDatabase[fileKey]?.de || '',
         emotionalText: textDatabase[fileKey]?.emo || '',

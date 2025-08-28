@@ -1233,6 +1233,13 @@ th:nth-child(8) {
     vertical-align: top;
 }
 
+/* Eingabefeld für Notizen unter dem Ordnernamen */
+.folder-note {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+}
+
 /* Version und Score untereinander */
 .version-score-cell {
     display: flex;
