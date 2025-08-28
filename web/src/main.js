@@ -4077,8 +4077,10 @@ return `
             const id = Number(div.dataset.fileId);
             const file = files.find(f => f.id === id);
             if (!file) {
-                // Fehlende Zuordnung abfangen, um Laufzeitfehler zu vermeiden
-                console.warn(`Keine Datei für Vorschlag mit ID ${id} gefunden.`);
+                // Dateizuordnung fehlt → Element entfernen und Nutzer informieren
+                const row = div.closest('tr');
+                if (row) row.remove();
+                alert(`❌ Keine Datei für Vorschlag mit ID ${id} gefunden. Der Eintrag wurde entfernt.`);
                 return;
             }
             div.textContent = file.suggestion || '';
