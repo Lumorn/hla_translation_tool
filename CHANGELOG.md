@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.192
+* Vorschlagsfelder prüfen nun die zugehörige Datei, entfernen ungültige Einträge aus der Tabelle und zeigen eine Fehlermeldung an.
 ## 🛠️ Patch in 1.40.191
 * Kann ein Projekt nicht geladen werden, erscheint ein Fenster mit genauer Ursache und Reparaturhinweis.
 ## 🛠️ Patch in 1.40.190

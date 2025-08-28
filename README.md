@@ -100,6 +100,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Score in Prozent:** Die Bewertung wird in der Tabelle mit Prozentzeichen dargestellt
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
 * **Bugfix:** Verwaiste Vorschlagsfelder lösen beim Laden kein Fehlerereignis mehr aus
+* **Validierte Vorschlagsfelder:** Fehlt die zugehörige Datei, wird der Eintrag entfernt und eine Meldung weist darauf hin
 * **Kommentar-Anzeige auf ganzer Fläche:** Der Tooltip reagiert jetzt auf das gesamte Score-Feld
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
