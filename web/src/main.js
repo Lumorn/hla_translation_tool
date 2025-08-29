@@ -10912,28 +10912,64 @@ async function scanAudioDuplicates() {
             }
         }
 
-        // Exportiert einen vollständigen Debug-Bericht als JSON-Datei
+        // Exportiert einen vollständigen Debug-Bericht als mehrere Dateien
         async function exportDebugReport() {
-            const data = await collectDebugInfo();
-            // Projekt- und Datenbankzustände hinzufügen
-            data.projects = projects;
-            data.filePathDatabase = filePathDatabase;
-            data.textDatabase = textDatabase;
-            // Alle lokalen Speicherwerte sichern
+            // Zielordner vom Nutzer erfragen
+            let rootDir;
+            try {
+                rootDir = await window.showDirectoryPicker();
+            } catch {
+                showToast('Kein Ordner gewählt', 'error');
+                return;
+            }
+
+            // Unterordner mit Zeitstempel anlegen
+            const ts = new Date().toISOString().replace(/[:.]/g, '-');
+            const reportDir = await rootDir.getDirectoryHandle(`debug_report_${ts}`, { create: true });
+
+            // Hilfsfunktion zum Schreiben einer JSON-Datei
+            async function saveJson(dir, name, obj) {
+                const handle = await dir.getFileHandle(name, { create: true });
+                const writable = await handle.createWritable();
+                await writable.write(JSON.stringify(obj, null, 2));
+                await writable.close();
+            }
+
+            // Allgemeine Informationen erfassen
+            const info = await collectDebugInfo();
+            await saveJson(reportDir, 'info.json', info);
+
+            // Projekte getrennt speichern
+            const projDir = await reportDir.getDirectoryHandle('projects', { create: true });
+            for (const prj of projects) {
+                const safe = (prj.name || prj.id || 'projekt').replace(/[^a-z0-9_-]/gi, '_');
+                await saveJson(projDir, `${safe}.json`, prj);
+            }
+
+            // Große Datenbanken chunkweise sichern
+            const dbDir = await reportDir.getDirectoryHandle('database', { create: true });
+
+            async function saveChunks(obj, base) {
+                const entries = Object.entries(obj);
+                const size = 1000;
+                for (let i = 0; i < entries.length; i += size) {
+                    const part = Object.fromEntries(entries.slice(i, i + size));
+                    await saveJson(dbDir, `${base}_${Math.floor(i / size) + 1}.json`, part);
+                }
+            }
+
+            await saveChunks(filePathDatabase, 'filePathDatabase');
+            await saveChunks(textDatabase, 'textDatabase');
+
+            // localStorage separat ablegen
             const ls = {};
             for (let i = 0; i < localStorage.length; i++) {
                 const k = localStorage.key(i);
                 if (k) ls[k] = localStorage.getItem(k);
             }
-            data.localStorage = ls;
+            await saveJson(reportDir, 'localStorage.json', ls);
 
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `debug_report_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
+            showToast('Debug-Bericht gespeichert');
         }
         window.exportDebugReport = exportDebugReport;
 
