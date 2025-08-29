@@ -1,7 +1,6 @@
 const API = "https://api.elevenlabs.io/v1";
-// Zugriff auf den gewählten Speicher
-const storage = window.storage;
-let csvLineEnding = (typeof storage !== "undefined" && storage.getItem("hla_lineEnding")) || (typeof global !== "undefined" && global.csvLineEnding) || "LF";
+// Zugriff auf den gewählten Speicher immer dynamisch über window.storage
+let csvLineEnding = (typeof window.storage !== "undefined" && window.storage.getItem("hla_lineEnding")) || (typeof global !== "undefined" && global.csvLineEnding) || "LF";
 
 // =========================== SHOWDUBBINGSETTINGS START ======================
 async function getDefaultVoiceSettings(apiKey) {
@@ -218,7 +217,7 @@ async function confirmDubbingSettings(fileId) {
     };
     settings.advanced = adv;
     // Gewählte Einstellungen persistent speichern
-    storage.setItem('hla_voiceSettings', JSON.stringify(settings));
+    if (window.storage) window.storage.setItem('hla_voiceSettings', JSON.stringify(settings));
     storedVoiceSettings = settings;
     updateVoiceSettingsDisplay();
     await startDubbing(fileId, settings, currentDubLang, currentDubMode);
@@ -227,7 +226,7 @@ async function confirmDubbingSettings(fileId) {
 
 // Entfernt gespeicherte Voice-Settings und lädt den Dialog neu
 function resetStoredVoiceSettings() {
-    storage.removeItem('hla_voiceSettings');
+    if (window.storage) window.storage.removeItem('hla_voiceSettings');
     storedVoiceSettings = null;
     updateVoiceSettingsDisplay();
     closeDubbingSettings();

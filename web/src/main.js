@@ -59,10 +59,15 @@ async function switchStorage(targetMode) {
     updateStatus(`Lade ${zielLabel}...`);
     showToast(`Wechsle zu ${zielLabel}`);
     const newBackend = window.createStorage(newMode);
-    // Beim Wechsel werden keine Daten übertragen
+    // Lokale und globale Referenzen aktualisieren, damit kein altes Backend weiterverwendet wird
     window.storage = newBackend;
+    if (typeof storage !== 'undefined') storage = newBackend;
     window.localStorage.setItem('hla_storageMode', newMode);
     updateStorageIndicator(newMode);
+    // Alle Zwischencaches leeren, damit Daten nicht vermischt werden
+    if (typeof audioFileCache !== 'undefined') audioFileCache = {};
+    if (typeof deAudioCache !== 'undefined')   deAudioCache = {};
+    if (typeof historyPresenceCache !== 'undefined') historyPresenceCache = {};
     // Abschlussmeldung ausgeben
     updateStatus(`${zielLabel} geladen`);
     showToast(`Jetzt im ${zielLabel}`);
