@@ -1019,3 +1019,4 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
+  * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend, derzeit wird `localStorage` unterstützt.
