@@ -28,3 +28,17 @@ window.loadMigration = async function() {
         statusEl.textContent = `Fehler beim Import: ${err.message}`;
     }
 };
+
+// Kopiert alle Einträge vom LocalStorage in das neue Backend
+window.migrateData = async function() {
+    const statusEl = document.getElementById('migration-status');
+    statusEl.textContent = 'Migration läuft...';
+    try {
+        const oldBackend = window.createStorage('localStorage');
+        const newBackend = window.createStorage('indexedDB');
+        const count = await window.migrateStorage(oldBackend, newBackend);
+        statusEl.textContent = `Migration abgeschlossen: ${count} Einträge übertragen.`;
+    } catch (err) {
+        statusEl.textContent = `Fehler bei Migration: ${err.message}`;
+    }
+};

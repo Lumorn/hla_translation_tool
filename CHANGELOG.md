@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.206
+* Speicher-Adapter enthält `migrateStorage`, um Daten zwischen Backends zu kopieren.
+* UI-Knopf „Daten migrieren“ überträgt alle Einträge in das neue System.
 ## 🛠️ Patch in 1.40.205
 * Beim Start Auswahl zwischen LocalStorage und neuem System; alle Zugriffe laufen über einen Speicher-Adapter.
 ## 🛠️ Patch in 1.40.204
