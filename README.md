@@ -41,7 +41,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
-* **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Bericht mit Umgebung gespeichert werden.
+* **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.
 * **Abgesicherte Ordnerauswahl:** Verweigert der Browser den Dateisystem-Zugriff, erscheint eine verständliche Fehlermeldung.
 * **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; danach prüft das Tool Pflichtfelder und entfernt unbekannte Datei-IDs.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
@@ -110,7 +110,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
 * **Bugfix:** Verwaiste Vorschlagsfelder lösen beim Laden kein Fehlerereignis mehr aus
 * **Validierte Vorschlagsfelder:** Fehlt die zugehörige Datei, wird der Eintrag entfernt und eine Meldung weist darauf hin
-* **Debug-Bericht bei fehlender Vorschlagsdatei:** Nach dem Entfernen kann sofort ein Bericht gespeichert werden
+* **Debug-Bericht bei fehlender Vorschlagsdatei:** Nach dem Entfernen öffnet sich ein Fenster zum Speichern einzelner Berichte
 * **Kommentar-Anzeige auf ganzer Fläche:** Der Tooltip reagiert jetzt auf das gesamte Score-Feld
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
@@ -957,7 +957,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
 * **📸 VideoFrame-Details:** Zusätzlich werden der Pfad zum Frame-Ordner und die Versionen der Video-Abhängigkeiten angezeigt.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
-* **📋 Debug-Bericht exportieren:** Ein Knopf legt mehrere JSON-Dateien in einem gewählten Ordner ab und trennt Projekte, Datenbanken und Einstellungen. Nicht serialisierbare Inhalte wie `fileObject` werden dabei ausgelassen, um Fehler zu vermeiden.
+* **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden.
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 * **🐞 Ausführliche Fehlerprotokolle:** Im Debug-Modus erscheinen unbehandelte Promise-Ablehnungen sowie Datei-, Zeilen- und Stack-Informationen
 

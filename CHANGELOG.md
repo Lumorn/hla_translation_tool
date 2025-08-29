@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.234
+* Debug-Bericht-Knopf öffnet nun ein Fenster mit einzelnen Berichten und zeigt die Dateigröße in MB an.
 ## 🛠️ Patch in 1.40.233
 * Ordnerauswahl verweigerte Dateisystem-Zugriffe und zeigt nun eine verständliche Fehlermeldung.
 ## 🛠️ Patch in 1.40.232
