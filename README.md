@@ -946,6 +946,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **📸 VideoFrame-Details:** Zusätzlich werden der Pfad zum Frame-Ordner und die Versionen der Video-Abhängigkeiten angezeigt.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
+* **🐞 Ausführliche Fehlerprotokolle:** Im Debug-Modus erscheinen unbehandelte Promise-Ablehnungen sowie Datei-, Zeilen- und Stack-Informationen
 
 ### Performance‑Tipps
 

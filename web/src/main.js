@@ -845,16 +845,33 @@ function debugLog(...args) {
 }
 window.debugLog = debugLog;
 
-// =========================== ERROR-HANDLING START ===========================
-// Leitet JavaScript-Fehler in die Debug-Konsole um
+// =========================== FEHLERBEHANDLUNG START ===========================
+// Leitet JavaScript-Fehler detailliert in die Debug-Konsole um
 window.addEventListener('error', (event) => {
-    debugLog('FEHLER:', event.message);
+    const { message, filename, lineno, colno, error } = event;
+    debugLog('FEHLER:', message, `${filename}:${lineno}:${colno}`);
+    if (error && error.stack) {
+        debugLog('STAPEL:', error.stack);
+    }
+});
+// Fängt unbehandelte Promise-Ablehnungen ab
+window.addEventListener('unhandledrejection', (event) => {
+    const grund = event.reason;
+    debugLog('UNBEHANDELTE PROMISE:', grund);
+    if (grund && grund.stack) {
+        debugLog('STAPEL:', grund.stack);
+    }
 });
 // Ergänzt console.error, damit Fehler im Debug-Bereich auftauchen
 const origConsoleError = console.error;
 console.error = function(...args) {
     origConsoleError.apply(console, args);
     debugLog('FEHLER:', ...args);
+    for (const arg of args) {
+        if (arg && arg.stack) {
+            debugLog('STAPEL:', arg.stack);
+        }
+    }
 };
 // =========================== ZWISCHENABLAGE HELFER ==========================
 // Versucht zuerst das Browser-Clipboard und nutzt bei Fehlern Electron
