@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.210
+* Kommentar im Speicher-Adapter bereinigt; Dokumentation betont den Wegfall des Benutzerschlüssels.
 ## 🛠️ Patch in 1.40.209
 * IndexedDB-Backend speichert Daten jetzt unverschlüsselt ohne Benutzerschlüssel.
 * `createIndexedDbBackend` benötigt keinen Parameter mehr.
