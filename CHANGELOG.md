@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.215
+* Dateiliste zeigt jetzt pro Datei, ob der Eintrag im neuen Speichersystem liegt.
 ## 🛠️ Patch in 1.40.214
 * Neue Funktion `visualizeFileStorage` zeigt an, ob ein Eintrag im neuen Speichersystem liegt.
 ## 🛠️ Patch in 1.40.213
