@@ -1,4 +1,4 @@
-// Steuert den Export von LocalStorage-Daten in eine Datei und zeigt Statusmeldungen an
+// Steuert den Export und Import von LocalStorage-Daten und zeigt Statusmeldungen an
 window.startMigration = async function() {
     const statusEl = document.getElementById('migration-status');
     const oldCount = localStorage.length;
@@ -11,5 +11,20 @@ window.startMigration = async function() {
     } catch (err) {
         // Fehlerhinweis bei Problemen
         statusEl.textContent = `Fehler beim Export: ${err.message}`;
+    }
+};
+
+// Lädt die zuvor exportierten LocalStorage-Daten aus dem OPFS
+window.loadMigration = async function() {
+    const statusEl = document.getElementById('migration-status');
+    // Hinweis vor dem Start anzeigen
+    statusEl.textContent = 'Import läuft...';
+    try {
+        const result = await window.importLocalStorageFromOpfs();
+        // Erfolgsmeldung mit Anzahl der geladenen Einträge
+        statusEl.textContent = `Import abgeschlossen: ${result.count} Einträge aus "${result.fileName}".`;
+    } catch (err) {
+        // Fehlerhinweis bei Problemen
+        statusEl.textContent = `Fehler beim Import: ${err.message}`;
     }
 };

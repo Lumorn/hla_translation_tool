@@ -71,5 +71,26 @@ window.exportLocalStorageToFile = async function() {
     return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName };
 };
 
+// Lädt die exportierte Migrationsdatei aus dem internen Browser-Speicher (OPFS)
+// und ersetzt den aktuellen LocalStorage durch deren Inhalt
+window.importLocalStorageFromOpfs = async function() {
+    // Sicherstellen, dass OPFS im aktuellen Kontext verfügbar ist
+    if (!(navigator.storage && navigator.storage.getDirectory)) {
+        throw new Error('OPFS wird in diesem Kontext nicht unterstützt');
+    }
+    // OPFS-Wurzelverzeichnis öffnen und Datei lesen
+    const dirHandle = await navigator.storage.getDirectory();
+    const fileHandle = await dirHandle.getFileHandle('hla_daten.json');
+    const file = await fileHandle.getFile();
+    const text = await file.text();
+    const data = JSON.parse(text);
+    // LocalStorage durch geladene Daten ersetzen
+    localStorage.clear();
+    for (const [key, value] of Object.entries(data)) {
+        localStorage.setItem(key, value);
+    }
+    return { count: localStorage.length, fileName: fileHandle.name };
+};
+
 // Rückwärtskompatibilität: alter Funktionsname bleibt als Alias erhalten
 window.migrateLocalStorageToFile = window.exportLocalStorageToFile;

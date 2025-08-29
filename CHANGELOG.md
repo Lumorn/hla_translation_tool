@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.202
+* OPFS-Datei kann über einen neuen UI-Knopf geladen und in den LocalStorage importiert werden.
 ## 🛠️ Patch in 1.40.201
 * `exportLocalStorageToFile` sichert LocalStorage-Einträge ohne sie zu löschen; der alte Name `migrateLocalStorageToFile` bleibt als Alias erhalten.
 ## 🛠️ Patch in 1.40.200
