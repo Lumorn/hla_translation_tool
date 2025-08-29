@@ -3975,6 +3975,62 @@ function addFiles() {
             projectContextId = null;
         }
 
+        // Analysiert ein Projekt und bietet eine Reparatur an
+        function analyzeProject(projectId) {
+            const prj = projects.find(p => p.id === projectId);
+            if (!prj) {
+                alert('Projekt nicht gefunden.');
+                return;
+            }
+
+            const fehler = [];
+            const namenSet = new Set();
+            let sortiert = true;
+
+            prj.files.forEach((f, idx) => {
+                if (!f.filename) {
+                    fehler.push(`Datei ${idx + 1} besitzt keinen Dateinamen.`);
+                    return;
+                }
+                if (namenSet.has(f.filename)) {
+                    fehler.push(`Datei ${f.filename} ist doppelt vorhanden.`);
+                }
+                namenSet.add(f.filename);
+                if (idx > 0 && prj.files[idx - 1].filename && prj.files[idx - 1].filename.localeCompare(f.filename) > 0) {
+                    sortiert = false;
+                }
+            });
+
+            if (prj.files.length === 0) {
+                fehler.push('Projekt enthält keine Dateien.');
+            }
+
+            if (fehler.length === 0 && sortiert) {
+                alert('Analyse abgeschlossen:\nKeine Probleme gefunden.');
+                return;
+            }
+
+            if (!sortiert) fehler.push('Dateien sind nicht alphabetisch sortiert.');
+            const bericht = 'Analysebericht:\n- ' + fehler.join('\n- ');
+
+            if (confirm(bericht + '\n\nProbleme automatisch reparieren?')) {
+                const einzigartige = [];
+                const gesehen = new Set();
+                prj.files.forEach(f => {
+                    if (!f.filename || gesehen.has(f.filename)) return;
+                    gesehen.add(f.filename);
+                    einzigartige.push(f);
+                });
+                einzigartige.sort((a, b) => (a.filename || '').localeCompare(b.filename || ''));
+                prj.files = einzigartige;
+                saveProjects();
+                renderProjects();
+                alert('Projekt wurde repariert.');
+            } else {
+                alert('Keine Änderungen vorgenommen.');
+            }
+        }
+
         function projectMenuAction(action) {
             // gewählte Aktion ausführen
             if (!projectContextId) return;
@@ -3984,6 +4040,8 @@ function addFiles() {
                 showProjectCustomization(id);
             } else if (action === 'delete') {
                 deleteProject(id, { stopPropagation() {} });
+            } else if (action === 'analyze') {
+                analyzeProject(id);
             }
         }
 
