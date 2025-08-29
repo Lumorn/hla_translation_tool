@@ -6,12 +6,14 @@ window.storage = storage;
 if (typeof module === 'undefined' || !module.exports) {
     (async () => {
         // Speicher-Adapter dynamisch laden
-        const { createStorage } = await import('./storage/storageAdapter.js');
+        const { createStorage, migrateStorage } = await import('./storage/storageAdapter.js');
         let storageMode = window.localStorage.getItem('hla_storageMode');
         // Gewählten Speicher herstellen
         storage = createStorage(storageMode || 'localStorage');
         // Global verfügbar machen
         window.storage = storage;
+        window.createStorage = createStorage;
+        window.migrateStorage = migrateStorage;
         // Beim ersten Start Auswahl anbieten
         if (!storageMode) {
             window.addEventListener('DOMContentLoaded', () => {

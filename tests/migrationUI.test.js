@@ -137,3 +137,50 @@ test('loadMigration importiert Daten aus dem OPFS und ersetzt den LocalStorage',
     expect(status).toContain('Import abgeschlossen');
     expect(status).toContain('hla_daten.json');
 });
+
+test('migrateData überträgt alle Schlüssel in das neue Backend', async () => {
+    localStorage.setItem('foo', 'bar');
+    localStorage.setItem('baz', 'qux');
+
+    const newData = {};
+    window.createStorage = type => {
+        if (type === 'localStorage') {
+            return {
+                getItem: k => localStorage.getItem(k),
+                setItem: (k, v) => localStorage.setItem(k, v),
+                removeItem: k => localStorage.removeItem(k),
+                clear: () => localStorage.clear(),
+                keys: () => Object.keys(localStorage)
+            };
+        }
+        if (type === 'indexedDB') {
+            return {
+                getItem: k => newData[k],
+                setItem: (k, v) => { newData[k] = v; },
+                removeItem: k => { delete newData[k]; },
+                clear: () => { for (const k in newData) delete newData[k]; },
+                keys: () => Object.keys(newData)
+            };
+        }
+    };
+    // Einfache Migration wie im Adapter
+    window.migrateStorage = async (oldB, newB) => {
+        const keys = await oldB.keys();
+        for (const k of keys) {
+            const val = await oldB.getItem(k);
+            await newB.setItem(k, val);
+        }
+        return keys.length;
+    };
+
+    const migrationUI = fs.readFileSync(path.join(__dirname, '../web/src/migrationUI.js'), 'utf8');
+    eval(migrationUI);
+
+    await window.migrateData();
+
+    expect(newData.foo).toBe('bar');
+    expect(newData.baz).toBe('qux');
+    const status = document.getElementById('migration-status').textContent;
+    expect(status).toContain('Migration abgeschlossen');
+    expect(status).toContain('2');
+});

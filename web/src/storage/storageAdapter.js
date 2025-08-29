@@ -22,3 +22,18 @@ export function createStorage(type, options = {}) {
             throw new Error(`Unbekannter Speicher-Typ: ${type}`);
     }
 }
+
+/**
+ * Kopiert alle Einträge aus einem alten Backend in ein neues
+ * @param {{getItem: Function, setItem: Function, keys: Function}} oldBackend - Quelle der Daten
+ * @param {{setItem: Function}} newBackend - Ziel-Backend für die Daten
+ * @returns {Promise<number>} Anzahl der übertragenen Schlüssel
+ */
+export async function migrateStorage(oldBackend, newBackend) {
+    const keys = await oldBackend.keys();
+    for (const key of keys) {
+        const value = await oldBackend.getItem(key);
+        await newBackend.setItem(key, value);
+    }
+    return keys.length;
+}
