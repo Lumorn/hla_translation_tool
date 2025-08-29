@@ -1,6 +1,20 @@
 // Verwaltet das Speichern und Laden großer Datenmengen über die File System Access API
 // Diese Funktionen ermöglichen es, Projektdaten außerhalb des LocalStorage abzulegen
 
+// Hilfsfunktion: Stellt anhand eines Journals unvollendete Schreibvorgänge fertig
+async function journalWiederherstellen(dirHandle) {
+    try {
+        const journalHandle = await dirHandle.getFileHandle('journal.json', { create: false });
+        const file = await journalHandle.getFile();
+        const eintrag = JSON.parse(await file.text());
+        const tmpHandle = await dirHandle.getFileHandle(eintrag.tmp, { create: false });
+        await tmpHandle.move(eintrag.ziel);
+        await dirHandle.removeEntry('journal.json');
+    } catch (e) {
+        // Kein Journal vorhanden oder nichts zu tun
+    }
+}
+
 // Speichert das übergebene Objekt als JSON-Datei
 window.saveProjectToFile = async function(data) {
     // Nutzer nach einem Speicherort fragen
@@ -10,6 +24,37 @@ window.saveProjectToFile = async function(data) {
             accept: { 'application/json': ['.json'] }
         }]
     });
+
+    // Prüfen, ob temporäre Dateien angelegt und umbenannt werden können
+    const dirHandle = handle.getParent ? await handle.getParent() : null;
+    const kannTmp = dirHandle && typeof dirHandle.getFileHandle === 'function' && typeof handle.move === 'function';
+
+    if (kannTmp) {
+        // Vorherige unvollständige Vorgänge abschließen
+        await journalWiederherstellen(dirHandle);
+
+        // Journal anlegen
+        const tmpHandle = await dirHandle.getFileHandle(handle.name + '.tmp', { create: true });
+        const journalHandle = await dirHandle.getFileHandle('journal.json', { create: true });
+        const jw = await journalHandle.createWritable();
+        await jw.write(JSON.stringify({ ziel: handle.name, tmp: tmpHandle.name }));
+        await jw.close();
+
+        // Daten zunächst in temporäre Datei schreiben
+        const writable = await tmpHandle.createWritable();
+        await writable.write(JSON.stringify(data, null, 2));
+        await writable.close();
+
+        // Danach atomar umbenennen
+        await tmpHandle.move(handle.name);
+
+        // Journal wieder löschen
+        await dirHandle.removeEntry('journal.json');
+
+        return await dirHandle.getFileHandle(handle.name);
+    }
+
+    // Fallback: direktes Schreiben ohne Journal
     const writable = await handle.createWritable();
     await writable.write(JSON.stringify(data, null, 2));
     await writable.close();
