@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.212
+* Wechsel zwischen Speichersystemen zeigt jetzt Ladehinweise an, und die Statusleiste meldet beim Speichern das aktive System.
 ## 🛠️ Patch in 1.40.211
 * JSON-Fehler beim Laden der Level- und Kapitel-Daten behoben; Speicherzugriffe nutzen jetzt `await`.
 ## 🛠️ Patch in 1.40.210
