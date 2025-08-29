@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.196
+* Button „Migration starten“ exportiert LocalStorage-Daten in eine JSON-Datei und zeigt den Fortschritt an.
+* Speicheroperationen fangen das Überschreiten des LocalStorage-Limits ab und weisen auf die Migration hin.
+## 🛠️ Patch in 1.40.195
+* Projektdaten lassen sich per File System Access API als JSON speichern und wieder laden.
+* `migrateLocalStorageToFile` exportiert bestehende LocalStorage-Daten in das neue Dateiformat.
 ## 🛠️ Patch in 1.40.194
 * Neuer globaler Knopf durchsucht alle Dateien ohne deutschen Text und übernimmt eindeutige Untertitel automatisch.
 ## 🛠️ Patch in 1.40.193

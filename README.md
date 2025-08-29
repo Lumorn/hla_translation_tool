@@ -894,6 +894,10 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * ▶ **Neu:** Segment-Import ohne Ordnerauswahl – in der Desktop-Version landen zugeschnittene Segmente jetzt direkt per `saveDeFile` am richtigen Ort.
 * ▶ **Fix:** Importierte Segmente setzen alle Bearbeitungs-Symbole zurück.
 * ▶ **Neu:** Zuordnungen im Segment-Dialog bleiben nach einem Neustart erhalten.
+ 
+**📦 Zu große Projekte**
+* ▶ **Hinweis:** Überschreitet das Projekt das LocalStorage-Limit, erscheint beim Speichern eine Warnung.
+* ▶ **Lösung:** Über den Knopf „Migration starten“ lassen sich alle Einträge in eine JSON-Datei exportieren und der LocalStorage wird geleert.
 
 #### Häufige Crash-Stellen
 
@@ -1011,5 +1015,9 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
 * **`repairFileExtensions(projects, filePathDatabase, textDatabase)`** – aktualisiert veraltete Dateiendungen in Projekten und verschiebt vorhandene Texte.
   Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
-* **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
-* **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
+  * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
+  * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
+  * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei und liefert deren Inhalt als Objekt.
+  * **`migrateLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei und leert anschließend den Speicher.
+  * **`startMigration()`** – ruft die Migration per Button auf und zeigt den Fortschritt im Element `#migration-status` an.
+  * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.

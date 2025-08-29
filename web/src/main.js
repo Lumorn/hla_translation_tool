@@ -1869,21 +1869,36 @@ function loadProjects() {
 // =========================== LOAD PROJECTS END ===========================
 
 
+        // Sicheres Speichern in den LocalStorage mit Fehlerabfang
+        function safeSetItem(key, value) {
+            try {
+                localStorage.setItem(key, value);
+                return true;
+            } catch (e) {
+                if (e.name === 'QuotaExceededError') {
+                    alert('Speicherlimit erreicht. Bitte nutzen Sie "Migration starten" und speichern Sie Daten in eine Datei.');
+                }
+                console.error('Speichern in LocalStorage fehlgeschlagen', e);
+                return false;
+            }
+        }
+
         function saveProjects() {
-            localStorage.setItem('hla_projects', JSON.stringify(projects));
-            updateGlobalProjectProgress();
+            if (safeSetItem('hla_projects', JSON.stringify(projects))) {
+                updateGlobalProjectProgress();
+            }
         }
 
         function saveTextDatabase() {
-            localStorage.setItem('hla_textDatabase', JSON.stringify(textDatabase));
+            safeSetItem('hla_textDatabase', JSON.stringify(textDatabase));
         }
 
         function saveFilePathDatabase() {
-            localStorage.setItem('hla_filePathDatabase', JSON.stringify(filePathDatabase));
+            safeSetItem('hla_filePathDatabase', JSON.stringify(filePathDatabase));
         }
 
         function saveFolderCustomizations() {
-            localStorage.setItem('hla_folderCustomizations', JSON.stringify(folderCustomizations));
+            safeSetItem('hla_folderCustomizations', JSON.stringify(folderCustomizations));
         }
 
         // =========================== HANDLE-DATENBANK START =====================
