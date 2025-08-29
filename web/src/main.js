@@ -50,7 +50,7 @@ function updateStorageIndicator(mode) {
     button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu neuem System';
 }
 
-// Wechselt das Speichersystem und migriert bestehende Daten
+// Wechselt das Speichersystem ohne automatische Migration der Daten
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     const newMode = targetMode || (currentMode === 'localStorage' ? 'indexedDB' : 'localStorage');
@@ -58,9 +58,8 @@ async function switchStorage(targetMode) {
     // Hinweis auf den bevorstehenden Wechsel anzeigen
     updateStatus(`Lade ${zielLabel}...`);
     showToast(`Wechsle zu ${zielLabel}`);
-    const oldBackend = window.storage;
     const newBackend = window.createStorage(newMode);
-    await window.migrateStorage(oldBackend, newBackend);
+    // Beim Wechsel werden keine Daten übertragen
     window.storage = newBackend;
     window.localStorage.setItem('hla_storageMode', newMode);
     updateStorageIndicator(newMode);
@@ -1792,6 +1791,13 @@ function handleAccessStatusClick() {
 // =========================== LOAD PROJECTS START ===========================
 // Lädt Projekte und zugehörige Einstellungen asynchron aus dem Speicher
 async function loadProjects() {
+    // Alte Daten verwerfen, damit beim Wechsel kein alter Zustand bleibt
+    projects = [];
+    levelColors = {};
+    levelOrders = {};
+    levelIcons = {};
+    levelColorHistory = [];
+
     // 🟩 ERST: Level-Farben laden
     const savedLevelColors = await storage.getItem('hla_levelColors');
     if (savedLevelColors) {
@@ -1808,6 +1814,12 @@ async function loadProjects() {
     const savedLevelIcons = await storage.getItem('hla_levelIcons');
     if (savedLevelIcons) {
         levelIcons = JSON.parse(savedLevelIcons);
+    }
+
+    // Historie der Level-Farben laden
+    const savedHistory = await storage.getItem('hla_levelColorHistory');
+    if (savedHistory) {
+        levelColorHistory = JSON.parse(savedHistory);
     }
 
     // DANN: Projekte laden

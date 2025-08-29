@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.213
+* Wechsel des Speichersystems lädt den gewählten Speicher ohne automatische Migration und setzt interne Daten zurück.
 ## 🛠️ Patch in 1.40.212
 * Wechsel zwischen Speichersystemen zeigt jetzt Ladehinweise an, und die Statusleiste meldet beim Speichern das aktive System.
 ## 🛠️ Patch in 1.40.211

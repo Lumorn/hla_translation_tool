@@ -2,45 +2,40 @@
 const fs = require('fs');
 const path = require('path');
 
-test('switchStorage migriert Daten in beide Richtungen und aktualisiert Anzeige', async () => {
-    document.body.innerHTML = '<span id="storageModeIndicator"></span><button id="switchStorageButton"></button><span id="statusText"></span>';
+test('switchStorage lädt gewählten Speicher ohne Migration neu', async () => {
+    document.body.innerHTML = '<span id="storageModeIndicator"></span><button id="switchStorageButton"></button>';
 
-    const altDaten = { eintrag: 'wert' };
+    const alterSpeicher = { 'hla_projects': JSON.stringify([{ id: 1, name: 'Alt' }]) };
     const neuerSpeicher = {};
 
     const altesBackend = {
-        getItem: k => altDaten[k],
-        setItem: (k, v) => { altDaten[k] = v; },
-        removeItem: k => { delete altDaten[k]; },
-        clear: () => { for (const k in altDaten) delete altDaten[k]; },
-        keys: () => Object.keys(altDaten)
+        getItem: k => alterSpeicher[k],
+        setItem: (k, v) => { alterSpeicher[k] = v; },
+        removeItem: k => { delete alterSpeicher[k]; },
+        clear: () => { for (const k in alterSpeicher) delete alterSpeicher[k]; }
+    };
+
+    const neuesBackend = {
+        getItem: k => neuerSpeicher[k],
+        setItem: (k, v) => { neuerSpeicher[k] = v; },
+        removeItem: k => { delete neuerSpeicher[k]; },
+        clear: () => { for (const k in neuerSpeicher) delete neuerSpeicher[k]; }
     };
 
     window.storage = altesBackend;
-    window.createStorage = typ => {
-        if (typ === 'indexedDB') {
-            return {
-                getItem: k => neuerSpeicher[k],
-                setItem: (k, v) => { neuerSpeicher[k] = v; },
-                removeItem: k => { delete neuerSpeicher[k]; },
-                clear: () => { for (const k in neuerSpeicher) delete neuerSpeicher[k]; },
-                keys: () => Object.keys(neuerSpeicher)
-            };
-        }
-        return altesBackend;
-    };
-    window.migrateStorage = async (alt, neu) => {
-        const schluessel = await alt.keys();
-        for (const k of schluessel) {
-            const val = await alt.getItem(k);
-            await neu.setItem(k, val);
-        }
-        return schluessel.length;
-    };
+    window.createStorage = typ => typ === 'indexedDB' ? neuesBackend : altesBackend;
+    window.migrateStorage = jest.fn();
 
     // Platzhalter für Meldungen
     window.showToast = () => {};
     window.updateStatus = () => {};
+
+    // Einfaches Nachladen simulieren
+    window.projects = JSON.parse(alterSpeicher['hla_projects']);
+    window.loadProjects = async () => {
+        const saved = await window.storage.getItem('hla_projects');
+        window.projects = saved ? JSON.parse(saved) : [];
+    };
 
     localStorage.setItem('hla_storageMode', 'localStorage');
 
@@ -58,19 +53,21 @@ test('switchStorage migriert Daten in beide Richtungen und aktualisiert Anzeige'
     updateStorageIndicator('localStorage');
     await switchStorage('indexedDB');
 
-    expect(neuerSpeicher.eintrag).toBe('wert');
+    expect(window.migrateStorage).not.toHaveBeenCalled();
     expect(localStorage.getItem('hla_storageMode')).toBe('indexedDB');
     expect(document.getElementById('storageModeIndicator').textContent).toContain('Neues System');
-    expect(document.getElementById('switchStorageButton').textContent).toContain('LocalStorage');
+    expect(window.projects).toEqual([]);
 
-    // Daten im neuen System ändern und zurückwechseln
-    neuerSpeicher.eintrag = 'neu';
+    // Neues Projekt im neuen Speicher anlegen und zurückwechseln
+    neuerSpeicher['hla_projects'] = JSON.stringify([{ id: 2, name: 'Neu' }]);
+    window.projects = [{ id: 2, name: 'Neu' }];
+
     await switchStorage('localStorage');
 
-    expect(altDaten.eintrag).toBe('neu');
     expect(localStorage.getItem('hla_storageMode')).toBe('localStorage');
     expect(document.getElementById('storageModeIndicator').textContent).toContain('LocalStorage');
-    expect(document.getElementById('switchStorageButton').textContent).toContain('neuem System');
+    expect(window.projects).toEqual([{ id: 1, name: 'Alt' }]);
+    expect(alterSpeicher['hla_projects']).toBe(JSON.stringify([{ id: 1, name: 'Alt' }]));
 });
 
 test('updateStatus ergänzt aktiven Speichermodus', () => {
