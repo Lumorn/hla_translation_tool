@@ -1,13 +1,13 @@
 // Steuert die Migration von LocalStorage-Daten in eine Datei und zeigt Statusmeldungen an
 window.startMigration = async function() {
     const statusEl = document.getElementById('migration-status');
-    const count = localStorage.length;
-    // Anzahl der vorhandenen Einträge anzeigen
-    statusEl.textContent = `Starte Migration mit ${count} Einträgen...`;
+    const oldCount = localStorage.length;
+    // Vorherige Anzahl anzeigen
+    statusEl.textContent = `Alte Daten: ${oldCount} Einträge – Export läuft...`;
     try {
-        await window.migrateLocalStorageToFile();
-        // Erfolgsmeldung nach Abschluss
-        statusEl.textContent = `Migration abgeschlossen: ${count} Einträge exportiert.`;
+        const result = await window.migrateLocalStorageToFile();
+        // Erfolgsmeldung mit Vergleich alt/neu und Zielordner
+        statusEl.textContent = `Migration abgeschlossen: ${oldCount} → ${result.newCount} Einträge in "${result.dirName}" (${result.fileName}).`;
     } catch (err) {
         // Fehlerhinweis bei Problemen
         statusEl.textContent = `Fehler bei der Migration: ${err.message}`;

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.197
+* Migration zeigt alte und neue Eintragsanzahl und speichert die Daten in einen gewählten Ordner.
 ## 🛠️ Patch in 1.40.196
 * UI-Knopf „Migration starten“ exportiert alle LocalStorage-Einträge in eine Datei und zeigt Statusmeldungen an.
 ## 🛠️ Patch in 1.40.195
