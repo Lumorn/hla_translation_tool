@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.214
+* Neue Funktion `visualizeFileStorage` zeigt an, ob ein Eintrag im neuen Speichersystem liegt.
 ## 🛠️ Patch in 1.40.213
 * Wechsel des Speichersystems lädt den gewählten Speicher ohne automatische Migration und setzt interne Daten zurück.
 ## 🛠️ Patch in 1.40.212

@@ -71,9 +71,31 @@ async function switchStorage(targetMode) {
     }
 }
 
+// Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an
+async function visualizeFileStorage(key) {
+    // Beide Backends erstellen, ohne den globalen Speicher zu ändern
+    const local = window.createStorage('localStorage');
+    const indexed = window.createStorage('indexedDB');
+    const localValue = await local.getItem(key);
+    const indexedValue = await indexed.getItem(key);
+    let message;
+    if (indexedValue && !localValue) {
+        message = `„${key}“ liegt im neuen Speichersystem.`;
+    } else if (!indexedValue && localValue) {
+        message = `„${key}“ liegt noch im LocalStorage.`;
+    } else if (indexedValue && localValue) {
+        message = `„${key}“ existiert in beiden Speichersystemen.`;
+    } else {
+        message = `„${key}“ wurde in keinem Speichersystem gefunden.`;
+    }
+    updateStatus(message);
+    return { local: !!localValue, indexedDB: !!indexedValue };
+}
+
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
+window.visualizeFileStorage = visualizeFileStorage;
 window.addEventListener('DOMContentLoaded', () => {
     const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     updateStorageIndicator(mode);
