@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.218
+* Content-Addressed Storage legt große Dateien unter `.hla_store/objects/<sha256-prefix>/<sha256>` ab und speichert Verweise als `blob://sha256:<hash>`.
+* Projektdateien werden kapitelweise als NDJSON in `data/chapters/<id>.ndjson` ausgelagert.
+* Schlüssel folgen jetzt einem strikten Schema (`project:<id>:*`, `cache:<typ>:<hash>`), um Kollisionen zu vermeiden.
 ## 🛠️ Patch in 1.40.217
 * Debug-Modus protokolliert jetzt unbehandelte Promise-Ablehnungen und zeigt Datei-, Zeilen- sowie Stack-Informationen an.
 ## 🛠️ Patch in 1.40.216
