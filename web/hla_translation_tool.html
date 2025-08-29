@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
+    <!-- Globaler Ladebalken für Projektwechsel -->
+    <div id="projectLoadingOverlay" class="loading-overlay hidden">
+        <div class="loading-box">
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+            <span id="projectLoadingText">Projekt wird geladen...</span>
+        </div>
+    </div>
     <div id="errorBanner" class="error-banner hidden">
         <span id="errorBannerMessage"></span>
         <button id="errorBannerRetry">Erneut versuchen</button>
