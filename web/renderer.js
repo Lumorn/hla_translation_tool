@@ -1,5 +1,8 @@
 // Verwaltet die gespeicherten YouTube-Links
-// Alle Bookmarks werden dauerhaft im LocalStorage abgelegt
+// Alle Bookmarks werden dauerhaft im gewählten Speicher abgelegt
+
+// Zugriff auf den globalen Speicher
+const storage = window.storage;
 
 const urlInput  = document.getElementById('videoUrlInput');
 const addBtn    = document.getElementById('addVideoBtn');
@@ -28,10 +31,10 @@ async function previewFor(b) {
 if (!window.videoApi) {
     window.videoApi = {
         loadBookmarks: async () => {
-            try { return JSON.parse(localStorage.getItem('hla_videoBookmarks')) || []; } catch { return []; }
+            try { return JSON.parse(storage.getItem('hla_videoBookmarks')) || []; } catch { return []; }
         },
         saveBookmarks: async list => {
-            try { localStorage.setItem('hla_videoBookmarks', JSON.stringify(list ?? [])); } catch {}
+            try { storage.setItem('hla_videoBookmarks', JSON.stringify(list ?? [])); } catch {}
             return true;
         }
     };
@@ -133,7 +136,7 @@ videoGrid.addEventListener('click', async e=>{
 });
 
 videoFilter.addEventListener('input', ()=>{
-    localStorage.setItem('hla_videoFilter', videoFilter.value);
+    storage.setItem('hla_videoFilter', videoFilter.value);
     refreshTable();
 });
 
@@ -207,7 +210,7 @@ closeDlg.addEventListener('click', closeDialog);
 if (closeDlgSmall) closeDlgSmall.addEventListener('click', closeDialog);
 videoDlg.addEventListener('cancel', closeDialog);
 
-const savedFilter = localStorage.getItem('hla_videoFilter') || '';
+const savedFilter = storage.getItem('hla_videoFilter') || '';
 if (savedFilter) videoFilter.value = savedFilter;
 
 refreshTable();

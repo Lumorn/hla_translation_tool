@@ -10,6 +10,8 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
+    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
     ({ markDubAsReady, cleanupDubCache, __setFiles, __setDeAudioCache, __setRenderFileTable, __setSaveCurrentProject } = require('../web/src/main.js'));
     __setRenderFileTable(() => {});
     __setSaveCurrentProject(() => {});

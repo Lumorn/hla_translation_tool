@@ -24,6 +24,8 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
+    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
     ({ insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject } = require('../web/src/main.js'));
     __setRenderFileTable(jest.fn());
     __setSaveCurrentProject(jest.fn());

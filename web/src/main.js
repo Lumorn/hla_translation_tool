@@ -1,9 +1,49 @@
+// =========================== SPEICHERINITIALISIERUNG START ===========================
+// Standardmäßig auf LocalStorage zurückgreifen
+let storage = window.localStorage;
+window.storage = storage;
+
+if (typeof module === 'undefined' || !module.exports) {
+    (async () => {
+        // Speicher-Adapter dynamisch laden
+        const { createStorage } = await import('./storage/storageAdapter.js');
+        let storageMode = window.localStorage.getItem('hla_storageMode');
+        // Gewählten Speicher herstellen
+        storage = createStorage(storageMode || 'localStorage');
+        // Global verfügbar machen
+        window.storage = storage;
+        // Beim ersten Start Auswahl anbieten
+        if (!storageMode) {
+            window.addEventListener('DOMContentLoaded', () => {
+                const html = `<h3>Speichermodus wählen</h3>
+                    <p>Bitte Speichersystem auswählen:</p>
+                    <div class="dialog-buttons">
+                        <button id="chooseLocal" class="btn btn-secondary">LocalStorage</button>
+                        <button id="chooseNew" class="btn btn-primary">Neues System</button>
+                    </div>`;
+                const ov = showModal(html);
+                const dlg = ov.querySelector('.dialog');
+                dlg.addEventListener('click', e => e.stopPropagation());
+                dlg.querySelector('#chooseLocal').onclick = () => setMode('localStorage');
+                dlg.querySelector('#chooseNew').onclick = () => setMode('indexedDB');
+                function setMode(mode) {
+                    window.localStorage.setItem('hla_storageMode', mode);
+                    storage = createStorage(mode);
+                    window.storage = storage;
+                    ov.remove();
+                }
+            });
+        }
+    })();
+}
+// =========================== SPEICHERINITIALISIERUNG END ===========================
+
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let levelIcons             = {}; // ⬅️ NEU: Icon je Level
-let levelColorHistory     = JSON.parse(localStorage.getItem('hla_levelColorHistory') || '[]'); // ➡️ Merkt letzte 5 Farben
+let levelColorHistory     = JSON.parse(storage.getItem('hla_levelColorHistory') || '[]'); // ➡️ Merkt letzte 5 Farben
 let currentProject         = null;
 let files                  = [];
 let textDatabase           = {};
@@ -156,8 +196,8 @@ let playbackStatus         = {};       // Merkt Existenz, Reihenfolge und Abspie
 let playbackProtocol       = '';       // Protokoll der Wiedergabe
 
 // Automatische Backup-Einstellungen
-let autoBackupInterval = parseInt(localStorage.getItem('hla_autoBackupInterval')) || 10; // Minuten
-let autoBackupLimit    = parseInt(localStorage.getItem('hla_autoBackupLimit')) || 10;
+let autoBackupInterval = parseInt(storage.getItem('hla_autoBackupInterval')) || 10; // Minuten
+let autoBackupLimit    = parseInt(storage.getItem('hla_autoBackupLimit')) || 10;
 let autoBackupTimer    = null;
 // Maximale Anzahl an Sound-ZIP-Backups
 let soundBackupLimit   = 5;
@@ -170,7 +210,7 @@ let translateCounter   = 0;
 const pendingTranslations = new Map();
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
-let elevenLabsApiKey   = localStorage.getItem('hla_elevenLabsApiKey') || '';
+let elevenLabsApiKey   = storage.getItem('hla_elevenLabsApiKey') || '';
 // Gespeicherter API-Key für ChatGPT (wird verschlüsselt auf der Festplatte gespeichert)
 let openaiApiKey       = '';
 let openaiModel        = '';
@@ -179,7 +219,7 @@ let gptPromptData      = null;
 // Speichert die Ergebnisse der letzten GPT-Bewertung
 let gptEvaluationResults = null;
 // Soll der GPT-Vorschlag sofort übernommen werden?
-let autoApplySuggestion = localStorage.getItem('hla_autoApplySuggestion') === 'true';
+let autoApplySuggestion = storage.getItem('hla_autoApplySuggestion') === 'true';
 if (typeof window !== 'undefined') {
     window.autoApplySuggestion = autoApplySuggestion;
 }
@@ -199,11 +239,11 @@ async function ladeGptEinstellungen() {
 // Liste der verfügbaren Stimmen der API
 let availableVoices    = [];
 // Manuell hinzugefügte Stimmen
-let customVoices       = JSON.parse(localStorage.getItem('hla_customVoices') || '[]');
+let customVoices       = JSON.parse(storage.getItem('hla_customVoices') || '[]');
 // Zwischenspeicher für eingelesene Untertitel
 let subtitleData       = null;
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
-let storedVoiceSettings = JSON.parse(localStorage.getItem('hla_voiceSettings') || 'null');
+let storedVoiceSettings = JSON.parse(storage.getItem('hla_voiceSettings') || 'null');
 
 // Aktualisiert die Anzeige der gespeicherten Dubbing-Parameter im API-Dialog
 function updateVoiceSettingsDisplay() {
@@ -228,7 +268,7 @@ function updateVoiceSettingsDisplay() {
     });
 }
 // Bevorzugtes Zeilenende für CSV-Dateien
-let csvLineEnding = localStorage.getItem('hla_lineEnding') || 'LF';
+let csvLineEnding = storage.getItem('hla_lineEnding') || 'LF';
 // Merkt die Datei, für die der Dubbing-Dialog geöffnet wurde
 let currentDubbingFileId = null;
 // Gewählter Modus für Dubbing: 'beta' oder 'manual'
@@ -238,32 +278,32 @@ let currentDubLang = 'de';
 
 // Letzte Einstellungen des Funk-Effekts
 // Wet bestimmt das Mischverhältnis zwischen Original und Effekt
-let radioEffectStrength = parseFloat(localStorage.getItem('hla_radioEffectStrength') || '0.85');
-let radioHighpass      = parseFloat(localStorage.getItem('hla_radioHighpass') || '300');
-let radioLowpass       = parseFloat(localStorage.getItem('hla_radioLowpass') || '3200');
-let radioSaturation    = parseFloat(localStorage.getItem('hla_radioSaturation') || '0.2');
-let radioNoise         = parseFloat(localStorage.getItem('hla_radioNoise') || '-26');
-let radioCrackle       = parseFloat(localStorage.getItem('hla_radioCrackle') || '0.1');
+let radioEffectStrength = parseFloat(storage.getItem('hla_radioEffectStrength') || '0.85');
+let radioHighpass      = parseFloat(storage.getItem('hla_radioHighpass') || '300');
+let radioLowpass       = parseFloat(storage.getItem('hla_radioLowpass') || '3200');
+let radioSaturation    = parseFloat(storage.getItem('hla_radioSaturation') || '0.2');
+let radioNoise         = parseFloat(storage.getItem('hla_radioNoise') || '-26');
+let radioCrackle       = parseFloat(storage.getItem('hla_radioCrackle') || '0.1');
 // Gespeicherte Presets und zuletzt genutztes Preset
-let radioPresets = JSON.parse(localStorage.getItem('hla_radioPresets') || '{}');
-let lastRadioPreset = localStorage.getItem('hla_lastRadioPreset') || '';
+let radioPresets = JSON.parse(storage.getItem('hla_radioPresets') || '{}');
+let lastRadioPreset = storage.getItem('hla_lastRadioPreset') || '';
 
 // Letzte Einstellungen des Hall-Effekts
-let hallRoom   = parseFloat(localStorage.getItem('hla_hallRoom') || '0.5');
-let hallAmount = parseFloat(localStorage.getItem('hla_hallAmount') || '0.5');
-let hallDelay  = parseFloat(localStorage.getItem('hla_hallDelay')  || '80');
+let hallRoom   = parseFloat(storage.getItem('hla_hallRoom') || '0.5');
+let hallAmount = parseFloat(storage.getItem('hla_hallAmount') || '0.5');
+let hallDelay  = parseFloat(storage.getItem('hla_hallDelay')  || '80');
 
 // Letzte Einstellungen für elektromagnetische Störgeräusche
-let emiNoiseLevel = parseFloat(localStorage.getItem('hla_emiNoiseLevel') || '0.5');
+let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 
 // Gespeicherte URL für das Dubbing-Video
-let savedVideoUrl      = localStorage.getItem('hla_videoUrl') || '';
+let savedVideoUrl      = storage.getItem('hla_videoUrl') || '';
 
 // Listen für eigene Wörter
 // Phonetische Umschrift
-let phoneticList    = JSON.parse(localStorage.getItem('hla_wordList') || '[]');
+let phoneticList    = JSON.parse(storage.getItem('hla_wordList') || '[]');
 // Englische Übersetzungen ins Deutsche
-let translationList = JSON.parse(localStorage.getItem('hla_translationList') || '[]');
+let translationList = JSON.parse(storage.getItem('hla_translationList') || '[]');
 
 // Merkt das aktuell angezeigte Studio-Fenster
 let studioModal = null;
@@ -281,7 +321,7 @@ const APP_VERSION = '1.40.126';
 const API = 'https://api.elevenlabs.io/v1';
 
 // Debug-Schalter: true zeigt Konsolenlogs und Debug-Anzeige
-const DEBUG_MODE = localStorage.getItem('hla_debug_mode') === 'true';
+const DEBUG_MODE = storage.getItem('hla_debug_mode') === 'true';
 
 // Statusinformationen der geladenen Module für das Debug-Fenster
 const moduleStatus = {
@@ -902,8 +942,8 @@ function saveWordList() {
         };
     }).filter(e => e.word || e.translation);
 
-    localStorage.setItem('hla_wordList', JSON.stringify(phoneticList));
-    localStorage.setItem('hla_translationList', JSON.stringify(translationList));
+    storage.setItem('hla_wordList', JSON.stringify(phoneticList));
+    storage.setItem('hla_translationList', JSON.stringify(translationList));
     closeWordList();
 }
 
@@ -947,8 +987,8 @@ async function verifyCopyAssistClipboard() {
 
 async function openCopyAssistant() {
     // Zuletzt verwendete Position und Schritt wiederherstellen
-    copyAssistIndex = parseInt(localStorage.getItem('copyAssistIndex') || '0');
-    copyAssistStep = parseInt(localStorage.getItem('copyAssistStep') || '0');
+    copyAssistIndex = parseInt(storage.getItem('copyAssistIndex') || '0');
+    copyAssistStep = parseInt(storage.getItem('copyAssistStep') || '0');
     await ensureVoiceList();
     showCopyAssistant();
     document.getElementById('copyAssistantDialog').classList.remove('hidden');
@@ -958,8 +998,8 @@ async function openCopyAssistant() {
 }
 
 function closeCopyAssistant() {
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
+    storage.setItem('copyAssistIndex', copyAssistIndex);
+    storage.setItem('copyAssistStep', copyAssistStep);
     document.getElementById('copyAssistantDialog').classList.add('hidden');
 }
 
@@ -996,8 +1036,8 @@ function copyAssistNext() {
         copyAssistIndex++;
         copyAssistStep = 0;
     }
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
+    storage.setItem('copyAssistIndex', copyAssistIndex);
+    storage.setItem('copyAssistStep', copyAssistStep);
     showCopyAssistant();
 }
 
@@ -1018,8 +1058,8 @@ function copyAssistPrev() {
         ? document.getElementById('copyName').textContent
         : document.getElementById('copyEmo').textContent;
     safeCopy(text);
-    localStorage.setItem('copyAssistIndex', copyAssistIndex);
-    localStorage.setItem('copyAssistStep', copyAssistStep);
+    storage.setItem('copyAssistIndex', copyAssistIndex);
+    storage.setItem('copyAssistStep', copyAssistStep);
 }
 
 function showCopyAssistant() {
@@ -1180,7 +1220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         cb.checked = autoApplySuggestion;
         cb.onchange = () => {
             autoApplySuggestion = cb.checked;
-            localStorage.setItem('hla_autoApplySuggestion', autoApplySuggestion);
+            storage.setItem('hla_autoApplySuggestion', autoApplySuggestion);
             if (typeof window !== 'undefined') {
                 window.autoApplySuggestion = autoApplySuggestion;
             }
@@ -1373,32 +1413,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 🟩 NEU: Level-Farben laden
-    const savedLevelColors = localStorage.getItem('hla_levelColors');
+    const savedLevelColors = storage.getItem('hla_levelColors');
     if (savedLevelColors) {
         levelColors = JSON.parse(savedLevelColors);
     }
 
-    const savedLevelOrders = localStorage.getItem('hla_levelOrders');
+    const savedLevelOrders = storage.getItem('hla_levelOrders');
     if (savedLevelOrders) {
         levelOrders = JSON.parse(savedLevelOrders);
     }
 
-    const savedLevelIcons = localStorage.getItem('hla_levelIcons');
+    const savedLevelIcons = storage.getItem('hla_levelIcons');
     if (savedLevelIcons) {
         levelIcons = JSON.parse(savedLevelIcons);
     }
 
-    const savedLevelChapters = localStorage.getItem('hla_levelChapters');
+    const savedLevelChapters = storage.getItem('hla_levelChapters');
     if (savedLevelChapters) {
         levelChapters = JSON.parse(savedLevelChapters);
     }
 
-    const savedChapterOrders = localStorage.getItem('hla_chapterOrders');
+    const savedChapterOrders = storage.getItem('hla_chapterOrders');
     if (savedChapterOrders) {
         chapterOrders = JSON.parse(savedChapterOrders);
     }
 
-    const savedChapterColors = localStorage.getItem('hla_chapterColors');
+    const savedChapterColors = storage.getItem('hla_chapterColors');
     if (savedChapterColors) {
         chapterColors = JSON.parse(savedChapterColors);
     }
@@ -1416,13 +1456,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 📁 Ordner-Anpassungen laden
-    const savedCustomizations = localStorage.getItem('hla_folderCustomizations');
+    const savedCustomizations = storage.getItem('hla_folderCustomizations');
     if (savedCustomizations) {
         folderCustomizations = JSON.parse(savedCustomizations);
     }
 
     // 📂 Datei-Pfad-Datenbank laden
-    const savedPathDB = localStorage.getItem('hla_filePathDatabase');
+    const savedPathDB = storage.getItem('hla_filePathDatabase');
     if (savedPathDB) {
         filePathDatabase = JSON.parse(savedPathDB);
     }
@@ -1549,7 +1589,7 @@ function setChapterColor(chapterName, color) {
 function saveLevelColors() {
     try {
         // Lokalen Speicher aktualisieren
-        localStorage.setItem('hla_levelColors', JSON.stringify(levelColors));
+        storage.setItem('hla_levelColors', JSON.stringify(levelColors));
     } catch (e) {
         console.error('[saveLevelColors] Speichern fehlgeschlagen:', e);
     }
@@ -1559,7 +1599,7 @@ function saveLevelColors() {
 // =========================== SAVELEVELORDERS START ==========================
 function saveLevelOrders() {
     try {
-        localStorage.setItem('hla_levelOrders', JSON.stringify(levelOrders));
+        storage.setItem('hla_levelOrders', JSON.stringify(levelOrders));
     } catch (e) {
         console.error('[saveLevelOrders] Speichern fehlgeschlagen:', e);
     }
@@ -1569,7 +1609,7 @@ function saveLevelOrders() {
 // =========================== SAVELEVELICONS START ===========================
 function saveLevelIcons() {
     try {
-        localStorage.setItem('hla_levelIcons', JSON.stringify(levelIcons));
+        storage.setItem('hla_levelIcons', JSON.stringify(levelIcons));
     } catch (e) {
         console.error('[saveLevelIcons] Speichern fehlgeschlagen:', e);
     }
@@ -1579,7 +1619,7 @@ function saveLevelIcons() {
 // =========================== SAVELEVELCHAPTERS START ========================
 function saveLevelChapters() {
     try {
-        localStorage.setItem('hla_levelChapters', JSON.stringify(levelChapters));
+        storage.setItem('hla_levelChapters', JSON.stringify(levelChapters));
     } catch (e) {
         console.error('[saveLevelChapters] Speichern fehlgeschlagen:', e);
     }
@@ -1589,7 +1629,7 @@ function saveLevelChapters() {
 // =========================== SAVECHAPTERORDERS START ========================
 function saveChapterOrders() {
     try {
-        localStorage.setItem('hla_chapterOrders', JSON.stringify(chapterOrders));
+        storage.setItem('hla_chapterOrders', JSON.stringify(chapterOrders));
     } catch (e) {
         console.error('[saveChapterOrders] Speichern fehlgeschlagen:', e);
     }
@@ -1597,7 +1637,7 @@ function saveChapterOrders() {
 // =========================== SAVECHAPTERCOLORS START ========================
 function saveChapterColors() {
     try {
-        localStorage.setItem('hla_chapterColors', JSON.stringify(chapterColors));
+        storage.setItem('hla_chapterColors', JSON.stringify(chapterColors));
     } catch (e) {
         console.error('[saveChapterColors] Speichern fehlgeschlagen:', e);
     }
@@ -1615,7 +1655,7 @@ function updateLevelColorHistory(color) {
 
 function saveLevelColorHistory() {
     try {
-        localStorage.setItem('hla_levelColorHistory', JSON.stringify(levelColorHistory));
+        storage.setItem('hla_levelColorHistory', JSON.stringify(levelColorHistory));
     } catch (e) {
         console.error('[saveLevelColorHistory] Speichern fehlgeschlagen:', e);
     }
@@ -1706,25 +1746,25 @@ function handleAccessStatusClick() {
 // =========================== LOAD PROJECTS START ===========================
 function loadProjects() {
     // 🟩 ERST: Level-Farben laden
-    const savedLevelColors = localStorage.getItem('hla_levelColors');
+    const savedLevelColors = storage.getItem('hla_levelColors');
     if (savedLevelColors) {
         levelColors = JSON.parse(savedLevelColors);
     }
 
     // 🟢 Ebenfalls Reihenfolge der Level laden
-    const savedLevelOrders = localStorage.getItem('hla_levelOrders');
+    const savedLevelOrders = storage.getItem('hla_levelOrders');
     if (savedLevelOrders) {
         levelOrders = JSON.parse(savedLevelOrders);
     }
 
     // 🆕 Level-Icons laden
-    const savedLevelIcons = localStorage.getItem('hla_levelIcons');
+    const savedLevelIcons = storage.getItem('hla_levelIcons');
     if (savedLevelIcons) {
         levelIcons = JSON.parse(savedLevelIcons);
     }
 
     // DANN: Projekte laden
-    const savedProjects = localStorage.getItem('hla_projects');
+    const savedProjects = storage.getItem('hla_projects');
     if (savedProjects) {
         // Hilfsfunktion für ein detailliertes Fehlerfenster
         const showError = msg => {
@@ -1854,15 +1894,15 @@ function loadProjects() {
     }
 
     // Text- & Pfaddatenbanken laden (unverändert)
-    const savedDB  = localStorage.getItem('hla_textDatabase');
+    const savedDB  = storage.getItem('hla_textDatabase');
     if (savedDB)  textDatabase = JSON.parse(savedDB);
-    const savedPDB = localStorage.getItem('hla_filePathDatabase');
+    const savedPDB = storage.getItem('hla_filePathDatabase');
     if (savedPDB) filePathDatabase = JSON.parse(savedPDB);
 
     renderProjects();
     updateGlobalProjectProgress();
 
-    const lastActive = localStorage.getItem('hla_lastActiveProject');
+    const lastActive = storage.getItem('hla_lastActiveProject');
     const first     = projects.find(p => p.id == lastActive) || projects[0];
     if (first) selectProject(first.id);
 }
@@ -1870,20 +1910,20 @@ function loadProjects() {
 
 
         function saveProjects() {
-            localStorage.setItem('hla_projects', JSON.stringify(projects));
+            storage.setItem('hla_projects', JSON.stringify(projects));
             updateGlobalProjectProgress();
         }
 
         function saveTextDatabase() {
-            localStorage.setItem('hla_textDatabase', JSON.stringify(textDatabase));
+            storage.setItem('hla_textDatabase', JSON.stringify(textDatabase));
         }
 
         function saveFilePathDatabase() {
-            localStorage.setItem('hla_filePathDatabase', JSON.stringify(filePathDatabase));
+            storage.setItem('hla_filePathDatabase', JSON.stringify(filePathDatabase));
         }
 
         function saveFolderCustomizations() {
-            localStorage.setItem('hla_folderCustomizations', JSON.stringify(folderCustomizations));
+            storage.setItem('hla_folderCustomizations', JSON.stringify(folderCustomizations));
         }
 
         // =========================== HANDLE-DATENBANK START =====================
@@ -2309,7 +2349,7 @@ function selectProject(id){
     currentProject = projects.find(p => p.id === id);
     if(!currentProject) return;
 
-    localStorage.setItem('hla_lastActiveProject',id);
+    storage.setItem('hla_lastActiveProject',id);
 
     expandedLevel = currentProject.levelName;
     expandedChapter = getLevelChapter(currentProject.levelName);
@@ -2323,7 +2363,7 @@ function selectProject(id){
     ignoredSegments = new Set(currentProject.segmentIgnored || []);
     segmentSelection = [];
     // Letzte bearbeitete Zeile für dieses Projekt laden
-    currentRowNumber = parseInt(localStorage.getItem('hla_lastNumber_' + currentProject.id) || '1');
+    currentRowNumber = parseInt(storage.getItem('hla_lastNumber_' + currentProject.id) || '1');
 
     // Migration: completed-Flag nachziehen
     let migrated=false;
@@ -3064,7 +3104,7 @@ function addFiles() {
                 setActiveRow(row);
                 currentRowNumber = num;
                 if (currentProject) {
-                    localStorage.setItem('hla_lastNumber_' + currentProject.id, num);
+                    storage.setItem('hla_lastNumber_' + currentProject.id, num);
                 }
             }
             autoScrollTimeout = setTimeout(() => { isAutoScrolling = false; }, 300);
@@ -3094,7 +3134,7 @@ function addFiles() {
                         setActiveRow(row);
                         currentRowNumber = num;
                         if (currentProject) {
-                            localStorage.setItem('hla_lastNumber_' + currentProject.id, num);
+                            storage.setItem('hla_lastNumber_' + currentProject.id, num);
                         }
                     }
                     break;
@@ -9119,11 +9159,11 @@ function checkFileAccess() {
                     loadBackupList();
                 });
             } else {
-                let list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                let list = JSON.parse(storage.getItem('hla_backups') || '[]');
                 const name = `backup_${new Date().toISOString()}.json`;
                 list.push({ name, data: json });
                 if (list.length > autoBackupLimit) list = list.slice(list.length - autoBackupLimit);
-                localStorage.setItem('hla_backups', JSON.stringify(list));
+                storage.setItem('hla_backups', JSON.stringify(list));
                 if (showMsg) updateStatus('Backup erstellt');
                 loadBackupList();
             }
@@ -9217,7 +9257,7 @@ function checkFileAccess() {
             if (window.electronAPI && window.electronAPI.listBackups) {
                 files = await window.electronAPI.listBackups();
             } else {
-                files = (JSON.parse(localStorage.getItem('hla_backups') || '[]')).map(b => b.name);
+                files = (JSON.parse(storage.getItem('hla_backups') || '[]')).map(b => b.name);
             }
             // Nach Datum sortieren, neuestes zuerst
             files.sort((a, b) => parseBackupDate(b) - parseBackupDate(a));
@@ -9257,12 +9297,12 @@ function checkFileAccess() {
             document.getElementById('backupInterval').focus();
             document.getElementById('backupInterval').onchange = () => {
                 autoBackupInterval = parseInt(document.getElementById('backupInterval').value) || 1;
-                localStorage.setItem('hla_autoBackupInterval', autoBackupInterval);
+                storage.setItem('hla_autoBackupInterval', autoBackupInterval);
                 startAutoBackup();
             };
             document.getElementById('backupLimit').onchange = () => {
                 autoBackupLimit = parseInt(document.getElementById('backupLimit').value) || 1;
-                localStorage.setItem('hla_autoBackupLimit', autoBackupLimit);
+                storage.setItem('hla_autoBackupLimit', autoBackupLimit);
                 enforceBackupLimit();
                 startAutoBackup();
             };
@@ -9270,7 +9310,7 @@ function checkFileAccess() {
             sel.value = csvLineEnding;
             sel.onchange = () => {
                 csvLineEnding = sel.value;
-                localStorage.setItem('hla_lineEnding', csvLineEnding);
+                storage.setItem('hla_lineEnding', csvLineEnding);
             };
         }
 
@@ -9419,7 +9459,7 @@ function checkFileAccess() {
 
         async function saveApiSettings() {
             elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
-            localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
+            storage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
 
             document.querySelectorAll('#voiceIdList select').forEach(sel => {
                 const folder = sel.dataset.folder;
@@ -9439,7 +9479,7 @@ function checkFileAccess() {
                 newVoices.push({ voice_id: id, name });
             });
             customVoices = newVoices;
-            localStorage.setItem('hla_customVoices', JSON.stringify(customVoices));
+            storage.setItem('hla_customVoices', JSON.stringify(customVoices));
 
             saveFolderCustomizations();
             await validateApiKey();
@@ -9683,7 +9723,7 @@ function checkFileAccess() {
             if (!name) name = id;
             const neu = { voice_id: id, name };
             customVoices.push(neu);
-            localStorage.setItem('hla_customVoices', JSON.stringify(customVoices));
+            storage.setItem('hla_customVoices', JSON.stringify(customVoices));
             availableVoices.push(neu);
             closeAddVoiceDialog();
             showApiDialog();
@@ -9771,7 +9811,7 @@ function checkFileAccess() {
                 if (window.electronAPI && window.electronAPI.readBackup) {
                     content = await window.electronAPI.readBackup(name);
                 } else {
-                    const list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                    const list = JSON.parse(storage.getItem('hla_backups') || '[]');
                     const entry = list.find(b => b.name === name);
                     if (!entry) return;
                     content = entry.data;
@@ -9787,9 +9827,9 @@ function checkFileAccess() {
             if (window.electronAPI && window.electronAPI.deleteBackup) {
                 await window.electronAPI.deleteBackup(name);
             } else {
-                let list = JSON.parse(localStorage.getItem('hla_backups') || '[]');
+                let list = JSON.parse(storage.getItem('hla_backups') || '[]');
                 list = list.filter(b => b.name !== name);
-                localStorage.setItem('hla_backups', JSON.stringify(list));
+                storage.setItem('hla_backups', JSON.stringify(list));
             }
             loadBackupList();
         }
@@ -9847,9 +9887,9 @@ function checkFileAccess() {
             saveLevelOrders();
             saveLevelIcons();
             saveIgnoredFiles();
-            localStorage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
-            localStorage.setItem('hla_autoBackupInterval', autoBackupInterval);
-            localStorage.setItem('hla_autoBackupLimit', autoBackupLimit);
+            storage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
+            storage.setItem('hla_autoBackupInterval', autoBackupInterval);
+            storage.setItem('hla_autoBackupLimit', autoBackupLimit);
             startAutoBackup();
 
             renderProjects();
@@ -10134,7 +10174,7 @@ async function scanAudioDuplicates() {
     for (const base of Object.keys(groups)) {
         const files = groups[base];
         if (files.length < 2) continue;
-        const pref = localStorage.getItem('dupPref_' + base);
+        const pref = storage.getItem('dupPref_' + base);
         const info = await window.electronAPI.getDeDuplicates(files[0]);
         const oldInfo = info.find(i => i.relPath === files[1]);
         const newInfo = info.find(i => i.relPath === files[0]);
@@ -10151,7 +10191,7 @@ async function scanAudioDuplicates() {
         }
         const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
         const res = await showDupeDialog(oldInfo, url);
-        if (res.remember) localStorage.setItem('dupPref_' + base, res.choice);
+        if (res.remember) storage.setItem('dupPref_' + base, res.choice);
         if (res.choice === 'new') {
             await window.electronAPI.deleteDeFile(oldInfo.relPath);
             delete deAudioCache[oldInfo.relPath];
@@ -10277,7 +10317,7 @@ async function scanAudioDuplicates() {
             const inp = document.getElementById('videoUrlInput');
             if (inp) {
                 const url = inp.value.trim();
-                localStorage.setItem('hla_videoUrl', url);
+                storage.setItem('hla_videoUrl', url);
                 savedVideoUrl = url;
             }
         }
@@ -10881,11 +10921,11 @@ async function handleDuplicateBeforeSave(relPath, buffer, previewUrl) {
     const duplicates = await window.electronAPI.getDeDuplicates(relPath);
     const others = duplicates.filter(d => d.relPath !== relPath);
     if (!others.length) return 'new';
-    const pref = localStorage.getItem('dupPref_' + base);
+    const pref = storage.getItem('dupPref_' + base);
     if (pref) return pref;
     if (others.some(o => !o.valid)) return 'new';
     const result = await showDupeDialog(others[0], previewUrl);
-    if (result.remember) localStorage.setItem('dupPref_' + base, result.choice);
+    if (result.remember) storage.setItem('dupPref_' + base, result.choice);
     return result.choice;
 }
 
@@ -10894,7 +10934,7 @@ async function resolveDuplicateAfterCopy(relPath) {
     const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
     const info = await window.electronAPI.getDeDuplicates(relPath);
     if (info.length < 2) return;
-    const pref = localStorage.getItem('dupPref_' + base);
+    const pref = storage.getItem('dupPref_' + base);
     const newInfo = info.find(i => i.relPath === relPath);
     const oldInfo = info.find(i => i.relPath !== relPath);
     if (!oldInfo || !newInfo) return;
@@ -10910,7 +10950,7 @@ async function resolveDuplicateAfterCopy(relPath) {
     }
     const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
     const res = await showDupeDialog(oldInfo, url);
-    if (res.remember) localStorage.setItem('dupPref_' + base, res.choice);
+    if (res.remember) storage.setItem('dupPref_' + base, res.choice);
     if (res.choice === 'new') {
         await window.electronAPI.deleteDeFile(oldInfo.relPath);
         delete deAudioCache[oldInfo.relPath];
@@ -11436,7 +11476,7 @@ function bufferRms(buffer) {
 
 // =========================== RADIOFILTER START ==============================
 // Erzeugt einen Funkgeräteklang. Die Parameter werden über ein Objekt gesteuert
-// und dauerhaft in localStorage gespeichert.
+// und dauerhaft in storage gespeichert.
 async function applyRadioFilter(buffer, opts = {}) {
     const {
         hp = radioHighpass,
@@ -11938,7 +11978,7 @@ async function openDeEdit(fileId) {
         rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
         rStrength.oninput = e => {
             radioEffectStrength = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
+            storage.setItem('hla_radioEffectStrength', radioEffectStrength);
             rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
             if (isRadioEffect) recomputeEditBuffer();
         };
@@ -11948,7 +11988,7 @@ async function openDeEdit(fileId) {
         rHigh.value = radioHighpass;
         rHigh.oninput = e => {
             radioHighpass = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioHighpass', radioHighpass);
+            storage.setItem('hla_radioHighpass', radioHighpass);
             if (isRadioEffect) recomputeEditBuffer();
         };
     }
@@ -11957,7 +11997,7 @@ async function openDeEdit(fileId) {
         rLow.value = radioLowpass;
         rLow.oninput = e => {
             radioLowpass = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioLowpass', radioLowpass);
+            storage.setItem('hla_radioLowpass', radioLowpass);
             if (isRadioEffect) recomputeEditBuffer();
         };
     }
@@ -11968,7 +12008,7 @@ async function openDeEdit(fileId) {
         rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
         rSat.oninput = e => {
             radioSaturation = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioSaturation', radioSaturation);
+            storage.setItem('hla_radioSaturation', radioSaturation);
             rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
             if (isRadioEffect) recomputeEditBuffer();
         };
@@ -11978,7 +12018,7 @@ async function openDeEdit(fileId) {
         rNoise.value = radioNoise;
         rNoise.oninput = e => {
             radioNoise = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioNoise', radioNoise);
+            storage.setItem('hla_radioNoise', radioNoise);
             if (isRadioEffect) recomputeEditBuffer();
         };
     }
@@ -11989,7 +12029,7 @@ async function openDeEdit(fileId) {
         rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
         rCrackle.oninput = e => {
             radioCrackle = parseFloat(e.target.value);
-            localStorage.setItem('hla_radioCrackle', radioCrackle);
+            storage.setItem('hla_radioCrackle', radioCrackle);
             rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
             if (isRadioEffect) recomputeEditBuffer();
         };
@@ -12001,7 +12041,7 @@ async function openDeEdit(fileId) {
         hRoom.value = hallRoom;
         hRoom.oninput = e => {
             hallRoom = parseFloat(e.target.value);
-            localStorage.setItem('hla_hallRoom', hallRoom);
+            storage.setItem('hla_hallRoom', hallRoom);
             if (isHallEffect) recomputeEditBuffer();
         };
     }
@@ -12012,7 +12052,7 @@ async function openDeEdit(fileId) {
         hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
         hAmount.oninput = e => {
             hallAmount = parseFloat(e.target.value);
-            localStorage.setItem('hla_hallAmount', hallAmount);
+            storage.setItem('hla_hallAmount', hallAmount);
             hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
             if (isHallEffect) recomputeEditBuffer();
         };
@@ -12022,7 +12062,7 @@ async function openDeEdit(fileId) {
         hDelay.value = hallDelay;
         hDelay.oninput = e => {
             hallDelay = parseFloat(e.target.value);
-            localStorage.setItem('hla_hallDelay', hallDelay);
+            storage.setItem('hla_hallDelay', hallDelay);
             if (isHallEffect) recomputeEditBuffer();
         };
     }
@@ -12041,7 +12081,7 @@ async function openDeEdit(fileId) {
         emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
         emiLevel.oninput = e => {
             emiNoiseLevel = parseFloat(e.target.value);
-            localStorage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+            storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
             emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
             if (isEmiEffect) recomputeEditBuffer();
         };
@@ -12429,12 +12469,12 @@ function resetRadioSettings() {
     radioCrackle = 0.1;
 
     // Werte im LocalStorage aktualisieren
-    localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
-    localStorage.setItem('hla_radioHighpass', radioHighpass);
-    localStorage.setItem('hla_radioLowpass', radioLowpass);
-    localStorage.setItem('hla_radioSaturation', radioSaturation);
-    localStorage.setItem('hla_radioNoise', radioNoise);
-    localStorage.setItem('hla_radioCrackle', radioCrackle);
+    storage.setItem('hla_radioEffectStrength', radioEffectStrength);
+    storage.setItem('hla_radioHighpass', radioHighpass);
+    storage.setItem('hla_radioLowpass', radioLowpass);
+    storage.setItem('hla_radioSaturation', radioSaturation);
+    storage.setItem('hla_radioNoise', radioNoise);
+    storage.setItem('hla_radioCrackle', radioCrackle);
 
     // Regler im Dialog zurücksetzen
     const rStrength = document.getElementById('radioStrength');
@@ -12518,9 +12558,9 @@ function saveRadioPreset(name) {
         noise: radioNoise,
         crack: radioCrackle
     };
-    localStorage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
+    storage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
     lastRadioPreset = name;
-    localStorage.setItem('hla_lastRadioPreset', name);
+    storage.setItem('hla_lastRadioPreset', name);
     updateRadioPresetList();
 }
 // Laedt ein Preset und setzt alle Werte
@@ -12533,24 +12573,24 @@ function loadRadioPreset(name) {
     radioSaturation = p.sat;
     radioNoise = p.noise;
     radioCrackle = p.crack;
-    localStorage.setItem('hla_radioEffectStrength', radioEffectStrength);
-    localStorage.setItem('hla_radioHighpass', radioHighpass);
-    localStorage.setItem('hla_radioLowpass', radioLowpass);
-    localStorage.setItem('hla_radioSaturation', radioSaturation);
-    localStorage.setItem('hla_radioNoise', radioNoise);
-    localStorage.setItem('hla_radioCrackle', radioCrackle);
+    storage.setItem('hla_radioEffectStrength', radioEffectStrength);
+    storage.setItem('hla_radioHighpass', radioHighpass);
+    storage.setItem('hla_radioLowpass', radioLowpass);
+    storage.setItem('hla_radioSaturation', radioSaturation);
+    storage.setItem('hla_radioNoise', radioNoise);
+    storage.setItem('hla_radioCrackle', radioCrackle);
     lastRadioPreset = name;
-    localStorage.setItem('hla_lastRadioPreset', name);
+    storage.setItem('hla_lastRadioPreset', name);
     refreshRadioControls();
 }
 // Entfernt ein Preset dauerhaft
 function deleteRadioPreset(name) {
     if (!radioPresets[name]) return;
     delete radioPresets[name];
-    localStorage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
+    storage.setItem('hla_radioPresets', JSON.stringify(radioPresets));
     if (lastRadioPreset === name) {
         lastRadioPreset = Object.keys(radioPresets)[0] || '';
-        localStorage.setItem('hla_lastRadioPreset', lastRadioPreset);
+        storage.setItem('hla_lastRadioPreset', lastRadioPreset);
     }
     updateRadioPresetList();
 }
@@ -12565,9 +12605,9 @@ function resetHallSettings() {
     hallDelay  = 80;
 
     // Speicherung im LocalStorage
-    localStorage.setItem('hla_hallRoom', hallRoom);
-    localStorage.setItem('hla_hallAmount', hallAmount);
-    localStorage.setItem('hla_hallDelay', hallDelay);
+    storage.setItem('hla_hallRoom', hallRoom);
+    storage.setItem('hla_hallAmount', hallAmount);
+    storage.setItem('hla_hallDelay', hallDelay);
 
     // Regler im Dialog zurücksetzen
     const hRoom = document.getElementById('hallRoom');
@@ -12590,7 +12630,7 @@ function resetHallSettings() {
 function resetEmiSettings() {
     // Standardwert für Störgeräusche setzen
     emiNoiseLevel = 0.5;
-    localStorage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+    storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
 
     const eLevel = document.getElementById('emiLevel');
     const eDisp  = document.getElementById('emiLevelDisplay');
@@ -14087,7 +14127,7 @@ let ignoredFiles = {};               // fileKey -> true
 
 function loadIgnoredFiles() {
     try {
-        const raw = localStorage.getItem('ignoredFiles');
+        const raw = storage.getItem('ignoredFiles');
         ignoredFiles = raw ? JSON.parse(raw) : {};
     } catch (e) {
         ignoredFiles = {};
@@ -14095,7 +14135,7 @@ function loadIgnoredFiles() {
 }
 
 function saveIgnoredFiles() {
-    localStorage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
+    storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
 }
 
 // Beim Start laden

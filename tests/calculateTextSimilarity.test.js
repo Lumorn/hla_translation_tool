@@ -10,6 +10,7 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
+    global.storage = global.localStorage;
     ({ calculateTextSimilarity } = require('../web/src/fileUtils.js'));
 }
 

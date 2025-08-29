@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.205
+* Beim Start Auswahl zwischen LocalStorage und neuem System; alle Zugriffe laufen über einen Speicher-Adapter.
 ## 🛠️ Patch in 1.40.204
 * IndexedDB-Backend mit AES-GCM-Verschlüsselung und Auslagerung großer Dateien nach OPFS oder Blob.
 ## 🛠️ Patch in 1.40.203

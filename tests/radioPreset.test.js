@@ -11,6 +11,8 @@ function loadMain(store={}) {
         removeItem: k => { delete local[k]; },
         clear: () => { local = {}; }
     };
+    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
     return require('../web/src/main.js');
 }
 

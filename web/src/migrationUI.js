@@ -1,7 +1,7 @@
-// Steuert den Export und Import von LocalStorage-Daten und zeigt Statusmeldungen an
+// Steuert den Export und Import der Daten und zeigt Statusmeldungen an
 window.startMigration = async function() {
     const statusEl = document.getElementById('migration-status');
-    const oldCount = localStorage.length;
+    const oldCount = (await storage.keys()).length;
     // Vorherige Anzahl anzeigen
     statusEl.textContent = `Alte Daten: ${oldCount} Einträge – Export läuft...`;
     try {

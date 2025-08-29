@@ -20,6 +20,8 @@ function loadMain() {
     global.window = { addEventListener: jest.fn() };
     global.URL = { createObjectURL: jest.fn(()=>'blob:'), revokeObjectURL: jest.fn() };
     global.localStorage = { getItem: () => null };
+    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
     ({ startProjectPlayback, stopProjectPlayback, __setFiles, __setDeAudioCache, __getPlaybackProtocol } = require('../web/src/main.js'));
 }
 

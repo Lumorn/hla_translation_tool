@@ -39,6 +39,7 @@ function loadMain(lineEnd) {
         removeItem: k => { delete storage[k]; },
         clear: () => { storage = {}; }
     };
+    global.storage = global.localStorage;
     ({ createDubbingCSV, startDubbing, validateCsv } = require('../web/src/dubbing.js'));
 }
 
