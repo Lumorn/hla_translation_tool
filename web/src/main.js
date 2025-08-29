@@ -54,12 +54,19 @@ function updateStorageIndicator(mode) {
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     const newMode = targetMode || (currentMode === 'localStorage' ? 'indexedDB' : 'localStorage');
+    const zielLabel = newMode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    // Hinweis auf den bevorstehenden Wechsel anzeigen
+    updateStatus(`Lade ${zielLabel}...`);
+    showToast(`Wechsle zu ${zielLabel}`);
     const oldBackend = window.storage;
     const newBackend = window.createStorage(newMode);
     await window.migrateStorage(oldBackend, newBackend);
     window.storage = newBackend;
     window.localStorage.setItem('hla_storageMode', newMode);
     updateStorageIndicator(newMode);
+    // Abschlussmeldung ausgeben
+    updateStatus(`${zielLabel} geladen`);
+    showToast(`Jetzt im ${zielLabel}`);
     if (typeof loadProjects === 'function') {
         await loadProjects();
     }
@@ -15056,6 +15063,12 @@ function quickAddLevel(chapterName) {
         function updateStatus(message) {
             const statusText = document.getElementById('statusText');
             if (message) {
+                // Aktiven Speichermodus ermitteln
+                const mode = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+                // Bei Speicherhinweisen den Modus ergänzen
+                if (message.toLowerCase().includes('gespeichert')) {
+                    message += ` (im ${mode})`;
+                }
                 statusText.textContent = message;
                 setTimeout(() => {
                     statusText.textContent = isDirty ? 'Ungespeicherte Änderungen' : 'Bereit';

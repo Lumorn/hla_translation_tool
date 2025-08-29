@@ -829,7 +829,7 @@ Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Ent
 
 ### Anzeige und Wechsel
 
-In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System und migriert die Daten automatisch.
+In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System und migriert die Daten automatisch. Beim Wechsel erscheinen kurze Hinweise, und die Statusleiste nennt beim Speichern das aktive System.
 
 
 ## 🗂️ Projektstruktur
