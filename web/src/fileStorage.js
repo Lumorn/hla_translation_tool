@@ -25,8 +25,30 @@ window.loadProjectFromFile = async function() {
         }]
     });
     const file = await handle.getFile();
-    const text = await file.text();
-    return JSON.parse(text);
+
+    // Dateiinhalt lesen und dabei mögliche Fehler abfangen
+    let text;
+    try {
+        text = await file.text();
+    } catch (err) {
+        // Nutzer informieren und optional Sicherungsdatei anbieten
+        if (confirm('Fehler beim Lesen der Datei. Möchten Sie eine Sicherungsdatei wählen?')) {
+            return await window.loadProjectFromFile();
+        }
+        alert('Ladevorgang abgebrochen: ' + err.message);
+        return null;
+    }
+
+    // JSON parsen und bei Problemen auf Sicherungsdatei hinweisen
+    try {
+        return JSON.parse(text);
+    } catch (err) {
+        if (confirm('Die Datei enthält keine gültigen Projektdaten. Sicherungsdatei laden?')) {
+            return await window.loadProjectFromFile();
+        }
+        alert('Ladevorgang abgebrochen: ' + err.message);
+        return null;
+    }
 };
 
 // Überträgt alle Einträge aus dem aktuellen Speicher in eine Datei, belässt die Originaldaten jedoch im Speicher
