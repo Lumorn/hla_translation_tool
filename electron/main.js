@@ -34,6 +34,8 @@ const { path7za } = require('7zip-bin');
 const { ensureFrame } = require('../legacy/videoFrameUtils.js');
 // Pfad zum App-Icon (im Ordner 'assets' als 'app-icon.png' ablegen)
 const iconPath = path.join(__dirname, 'assets', 'app-icon.png');
+// Debug-Berichte schreiben
+const { writeDebugReport } = require('../utils/debugReport');
 // Workshop-Start erfolgt über ein Python-Skript mit hlvrcfg.exe
 const pendingDubs = [];
 let mainWindow;
@@ -89,6 +91,36 @@ app.setPath('sessionData', sessionDataPath);
 const videoFramesPath = path.join(userDataPath, 'videoFrames');
 fs.mkdirSync(videoFramesPath, { recursive: true });
 // =========================== USER-DATA-PFAD END =============================
+
+// Ordner für Debug-Berichte definieren
+const debugReportDir = path.join(userDataPath, 'debug_reports');
+
+// Globale Fehlerbehandlung mit optionalem Debug-Bericht
+function offerDebugReport(err) {
+  // Fehler in der Konsole ausgeben
+  console.error('Unerwarteter Fehler', err);
+  // Benutzer fragen, ob ein Bericht gespeichert werden soll
+  const choice = dialog.showMessageBoxSync({
+    type: 'error',
+    title: 'Fehler',
+    message: `Es ist ein Fehler aufgetreten:\n${err?.message}\nSoll ein Debug-Bericht gespeichert werden?`,
+    buttons: ['Ja', 'Nein'],
+    defaultId: 0,
+    cancelId: 1,
+  });
+  // Bei Zustimmung Bericht schreiben und bestätigen
+  if (choice === 0) {
+    const file = writeDebugReport(err instanceof Error ? err : new Error(String(err)), debugReportDir);
+    dialog.showMessageBoxSync({
+      type: 'info',
+      title: 'Bericht gespeichert',
+      message: `Debug-Bericht gespeichert unter:\n${file}`,
+    });
+  }
+}
+
+process.on('uncaughtException', offerDebugReport);
+process.on('unhandledRejection', (reason) => offerDebugReport(reason));
 
 // =========================== VIDEO-BOOKMARKS START ==========================
 // Pfad zur Datei mit den gespeicherten Video-Bookmarks

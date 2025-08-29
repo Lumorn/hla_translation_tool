@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.229
+* Fehlermeldungen bieten an, einen Debug-Bericht mit Umgebung zu speichern.
 ## 🛠️ Patch in 1.40.228
 * Neuer Debug-Bericht-Knopf exportiert den vollständigen Zustand von Projekten, Dateien und Einstellungen als JSON.
 ## 🛠️ Patch in 1.40.227
