@@ -21,5 +21,10 @@ export const localStorageBackend = {
     // Gibt alle vorhandenen Schlüssel als Array zurück
     keys() {
         return Object.keys(window.localStorage);
+    },
+    // Unterstützte Features dieses Backends
+    capabilities: {
+        blobs: 'none',          // keine Speicherung großer Binärdaten
+        atomicWrite: false      // keine atomaren Mehrfach-Schreibvorgänge
     }
 };

@@ -152,12 +152,18 @@ async function keysInternal() {
 
 // Factory-Funktion zum Erstellen des Backends
 export function createIndexedDbBackend() {
+    const hasOpfs = typeof navigator !== 'undefined' && navigator.storage && navigator.storage.getDirectory;
+    const capabilities = {
+        blobs: hasOpfs ? 'opfs' : 'file', // bevorzugt OPFS, sonst Datei-Fallback
+        atomicWrite: true                 // IndexedDB-Transaktionen sind atomar
+    };
     return {
         getItem: key => getItemInternal(key),
         setItem: (key, value) => setItemInternal(key, value),
         removeItem: key => removeItemInternal(key),
         clear: () => clearInternal(),
-        keys: () => keysInternal()
+        keys: () => keysInternal(),
+        capabilities
     };
 }
 
