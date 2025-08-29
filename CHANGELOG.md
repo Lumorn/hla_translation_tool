@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.224
+* Kontextmenü bietet Projekt-Analyse mit optionaler Reparatur.
 ## 🛠️ Patch in 1.40.223
 * Beim Wechsel des Speichersystems werden alle globalen Caches geleert, sodass keine Datenreste zwischen den Backends verbleiben.
 ## 🛠️ Patch in 1.40.222
