@@ -16,6 +16,11 @@ if (typeof module === 'undefined' || !module.exports) {
         window.createStorage = createStorage;
         window.migrateStorage = migrateStorage;
         window.acquireProjectLock = acquireProjectLock;
+        // Bei aktivem Datei-Modus nach Altlasten im LocalStorage suchen
+        if (storageMode === 'indexedDB') {
+            const { cleanupLegacyLocalStorage } = await import('./storage/legacyCleanup.mjs');
+            cleanupLegacyLocalStorage();
+        }
         // Beim ersten Start Auswahl anbieten
         if (!storageMode) {
             window.addEventListener('DOMContentLoaded', () => {

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.237
+* Datei-Modus bereinigt beim Start alte LocalStorage-Projekt- und Datei-Schlüssel automatisch.
 ## 🛠️ Patch in 1.40.236
 * Wechsel des Speichersystems löscht jetzt automatisch alte LocalStorage-Daten und setzt den gewählten Modus direkt wieder.
 ## 🛠️ Patch in 1.40.235
