@@ -10,6 +10,8 @@ beforeEach(() => {
     localStorage.clear();
     // Sicherstellen, dass der Kontext als sicher gilt
     window.isSecureContext = true;
+    // Standardmäßig keine OPFS-Unterstützung
+    Object.defineProperty(navigator, 'storage', { value: undefined, configurable: true });
     // File-System-API stubben: Verzeichnis- und Dateihandles
     window.showDirectoryPicker = async () => ({
         name: 'Export',
@@ -45,8 +47,9 @@ test('startMigration exportiert alle Einträge und leert den Speicher', async ()
 });
 
 test('startMigration meldet fehlende File-System-API verständlich', async () => {
-    // API entfernt, um Fehlerpfad zu testen
+    // API entfernen, um Fehlerpfad zu testen
     delete window.showDirectoryPicker;
+    Object.defineProperty(navigator, 'storage', { value: undefined, configurable: true });
 
     const fileStorage = fs.readFileSync(path.join(__dirname, '../web/src/fileStorage.js'), 'utf8');
     eval(fileStorage);
@@ -60,12 +63,29 @@ test('startMigration meldet fehlende File-System-API verständlich', async () =>
     expect(status).toContain('Dateisystem-API');
 });
 
-test('startMigration meldet verweigerten Dateizugriff verständlich', async () => {
-    // Verzeichnis-Handle liefert beim Öffnen der Datei einen Fehler
+test('startMigration nutzt OPFS-Fallback bei verweigertem Dateizugriff', async () => {
+    // showDirectoryPicker wirft Fehler, OPFS übernimmt
     window.showDirectoryPicker = async () => ({
         name: 'Export',
         getFileHandle: async () => { throw new Error('not allowed'); }
     });
+    Object.defineProperty(navigator, 'storage', {
+        value: {
+            getDirectory: async () => ({
+                name: 'OPFS',
+                getFileHandle: async (name, opts) => ({
+                    name,
+                    createWritable: async () => ({
+                        write: async (text) => { gespeicherterText = text; },
+                        close: async () => {}
+                    })
+                })
+            })
+        },
+        configurable: true
+    });
+
+    localStorage.setItem('projektA', 'datenA');
 
     const fileStorage = fs.readFileSync(path.join(__dirname, '../web/src/fileStorage.js'), 'utf8');
     eval(fileStorage);
@@ -74,7 +94,10 @@ test('startMigration meldet verweigerten Dateizugriff verständlich', async () =
 
     await window.startMigration();
 
+    const gespeichert = JSON.parse(gespeicherterText);
+    expect(gespeichert.projektA).toBe('datenA');
+    expect(localStorage.length).toBe(0);
     const status = document.getElementById('migration-status').textContent;
-    expect(status).toContain('Fehler bei der Migration');
-    expect(status).toContain('Dateisystem-Zugriff');
+    expect(status).toContain('Migration abgeschlossen');
+    expect(status).toContain('OPFS');
 });

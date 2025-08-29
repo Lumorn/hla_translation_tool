@@ -39,7 +39,11 @@ window.migrateLocalStorageToFile = async function() {
         data[key] = localStorage.getItem(key);
     }
     // Prüfen, ob die File-System-API im aktuellen Kontext verfügbar ist
-    if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
+    if (
+        !window.isSecureContext ||
+        (typeof window.showDirectoryPicker !== 'function' &&
+            !(navigator.storage && navigator.storage.getDirectory))
+    ) {
         throw new Error('Dateisystem-API wird in diesem Kontext nicht unterstützt');
     }
     // Ordner wählen und Schreibzugriff anfordern
@@ -49,13 +53,22 @@ window.migrateLocalStorageToFile = async function() {
         fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
         writable = await fileHandle.createWritable();
     } catch (err) {
-        // Verständliche Fehlermeldung, falls der Zugriff verweigert oder blockiert wird
-        throw new Error('Dateisystem-Zugriff verweigert oder vom Browser blockiert');
+        // Fallback: interner Browser-Speicher (OPFS), wenn verfügbar
+        if (navigator.storage && navigator.storage.getDirectory) {
+            dirHandle = await navigator.storage.getDirectory();
+            fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
+            writable = await fileHandle.createWritable();
+        } else {
+            // Verständliche Fehlermeldung, falls der Zugriff verweigert oder blockiert wird
+            throw new Error('Dateisystem-Zugriff verweigert oder vom Browser blockiert');
+        }
     }
     // Daten schreiben und Datei schließen
     await writable.write(JSON.stringify(data, null, 2));
     await writable.close();
     // LocalStorage aufräumen
     localStorage.clear();
-    return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName: dirHandle.name };
+    // Name des Verzeichnisses, bei OPFS ggf. leer -> Platzhalter setzen
+    const dirName = dirHandle.name || 'OPFS';
+    return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName };
 };
