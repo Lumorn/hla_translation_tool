@@ -10914,78 +10914,79 @@ async function scanAudioDuplicates() {
 
         // Exportiert einen vollständigen Debug-Bericht als mehrere Dateien
         async function exportDebugReport() {
-            // Vor dem Export prüfen, ob die Dateisystem-API verfügbar ist
-            if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
+            // Prüfen, ob die File-System-API verfügbar ist
+            if (!window.isSecureContext || typeof window.showSaveFilePicker !== 'function') {
                 showToast('Dateisystem-API nicht verfügbar', 'error');
                 return;
             }
 
-            // Zielordner vom Nutzer erfragen
-            let rootDir;
-            try {
-                rootDir = await window.showDirectoryPicker();
-            } catch {
-                showToast('Kein Ordner gewählt', 'error');
-                return;
-            }
+            // Nicht serialisierbare Felder wie fileObject entfernen
+            const sanitize = obj => JSON.parse(JSON.stringify(obj, (k, v) => k === 'fileObject' ? undefined : v));
 
-            // Unterordner mit Zeitstempel anlegen
-            const ts = new Date().toISOString().replace(/[:.]/g, '-');
-            const reportDir = await rootDir.getDirectoryHandle(`debug_report_${ts}`, { create: true });
+            // Alle Debug-Daten vorbereiten
+            const reports = [];
 
-            // Hilfsfunktion zum Schreiben einer JSON-Datei
-            async function saveJson(dir, name, obj) {
-                const handle = await dir.getFileHandle(name, { create: true });
-                const writable = await handle.createWritable();
-                await writable.write(JSON.stringify(obj, null, 2));
-                await writable.close();
-            }
-
-            // Hilfsfunktion entfernt nicht serialisierbare Felder wie fileObject
-            function sanitize(obj) {
-                return JSON.parse(JSON.stringify(obj, (key, value) => key === 'fileObject' ? undefined : value));
-            }
-
-            // Allgemeine Informationen erfassen
+            // Allgemeine Informationen sammeln
             const info = await collectDebugInfo();
-            await saveJson(reportDir, 'info.json', info);
+            reports.push({ key: 'info', name: 'Allgemeine Informationen', content: info });
 
-            // Projekte getrennt speichern
-            const projDir = await reportDir.getDirectoryHandle('projects', { create: true });
-            for (const prj of projects) {
-                const safe = (prj.name || prj.id || 'projekt').replace(/[^a-z0-9_-]/gi, '_');
-                await saveJson(projDir, `${safe}.json`, sanitize(prj));
-            }
+            // Projekte sichern
+            const projData = projects.map(prj => sanitize(prj));
+            reports.push({ key: 'projects', name: 'Projekte', content: projData });
 
-            // Große Datenbanken chunkweise sichern
-            const dbDir = await reportDir.getDirectoryHandle('database', { create: true });
-
-            async function saveChunks(obj, base) {
-                const entries = Object.entries(obj);
-                const size = 1000;
-                for (let i = 0; i < entries.length; i += size) {
-                    const part = Object.fromEntries(entries.slice(i, i + size));
-                    await saveJson(dbDir, `${base}_${Math.floor(i / size) + 1}.json`, part);
-                }
-            }
-
-            // Datei-Datenbank ohne fileObject speichern
+            // Datei-Datenbank ohne fileObject
             const cleanFilePathDB = {};
             Object.entries(filePathDatabase).forEach(([fn, paths]) => {
                 cleanFilePathDB[fn] = paths.map(p => ({ folder: p.folder, fullPath: p.fullPath }));
             });
-            await saveChunks(cleanFilePathDB, 'filePathDatabase');
-            await saveChunks(textDatabase, 'textDatabase');
+            reports.push({ key: 'filePathDatabase', name: 'Datei-Datenbank', content: cleanFilePathDB });
 
-            // localStorage separat ablegen
+            // Text-Datenbank
+            reports.push({ key: 'textDatabase', name: 'Text-Datenbank', content: textDatabase });
+
+            // localStorage-Inhalte
             const ls = {};
             for (let i = 0; i < localStorage.length; i++) {
                 const k = localStorage.key(i);
                 if (k) ls[k] = localStorage.getItem(k);
             }
-            await saveJson(reportDir, 'localStorage.json', ls);
+            reports.push({ key: 'localStorage', name: 'localStorage', content: ls });
 
-            showToast('Debug-Bericht gespeichert');
+            // Dateigrößen in MB berechnen
+            reports.forEach(r => {
+                const json = JSON.stringify(r.content);
+                r.sizeMB = (new Blob([json]).size / (1024 * 1024)).toFixed(2);
+            });
+
+            // Modal mit exportierbaren Berichten anzeigen
+            let html = '<h3>Debug-Berichte</h3><ul class="debug-info-list">';
+            reports.forEach(r => {
+                html += `<li><span><strong>${escapeHtml(r.name)}</strong></span><span><code>${r.sizeMB} MB</code> <button class="btn btn-secondary" data-report="${r.key}">Exportieren</button></span></li>`;
+            });
+            html += '</ul>';
+            ui.showModal(html);
+
+            // Export-Buttons verbinden
+            document.querySelectorAll('[data-report]').forEach(btn => {
+                btn.addEventListener('click', async e => {
+                    e.stopPropagation();
+                    const key = btn.dataset.report;
+                    const rep = reports.find(x => x.key === key);
+                    if (!rep) return;
+                    try {
+                        const handle = await window.showSaveFilePicker({
+                            suggestedName: `${key}.json`,
+                            types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+                        });
+                        const writable = await handle.createWritable();
+                        await writable.write(JSON.stringify(rep.content, null, 2));
+                        await writable.close();
+                        showToast('Debug-Datei gespeichert');
+                    } catch {
+                        showToast('Speichern abgebrochen', 'error');
+                    }
+                });
+            });
         }
         window.exportDebugReport = exportDebugReport;
 
