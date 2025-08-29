@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.204
+* IndexedDB-Backend mit AES-GCM-Verschlüsselung und Auslagerung großer Dateien nach OPFS oder Blob.
 ## 🛠️ Patch in 1.40.203
 * Neuer Speicher-Adapter mit LocalStorage-Backend.
 ## 🛠️ Patch in 1.40.202
