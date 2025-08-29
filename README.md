@@ -22,6 +22,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📁 Ordner-Management](#-ordner-management)
 * [💾 Backup](#-backup)
 * [🗃️ Speichersysteme](#-speichersysteme)
+* [🗄️ Datenlayout & Dateiverwaltung](#-datenlayout--dateiverwaltung)
 * [🗂️ Projektstruktur](#-projektstruktur)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
@@ -840,6 +841,11 @@ Ein weiterer Knopf öffnet den Ordner, in dem das neue Speichersystem seine Date
 
 In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine Datei im neuen Speichersystem oder noch im LocalStorage gespeichert ist. Beim Wechsel des Systems aktualisiert sich die Anzeige automatisch.
 
+## 🗄️ Datenlayout & Dateiverwaltung
+
+* **Content-Addressed Storage:** Große Dateien landen unter `.hla_store/objects/<sha256-prefix>/<sha256>` und werden in Projekten nur als `blob://sha256:<hash>` referenziert.
+* **Kapitel-Shards:** Umfangreiche Projekt-JSONs werden kapitelweise als NDJSON in `data/chapters/<id>.ndjson` abgelegt und bei Bedarf nachgeladen.
+* **Striktes Namespacing:** Schlüssel folgen dem Schema `project:<id>:meta`, `project:<id>:index` und `cache:<typ>:<hash>`, um Kollisionen zu vermeiden.
 
 ## 🗂️ Projektstruktur
 
