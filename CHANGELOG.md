@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.217
+* Debug-Modus protokolliert jetzt unbehandelte Promise-Ablehnungen und zeigt Datei-, Zeilen- sowie Stack-Informationen an.
 ## 🛠️ Patch in 1.40.216
 * Reitermenü bietet jetzt einen Knopf, der den Ordner des neuen Speichersystems öffnet.
 ## 🛠️ Patch in 1.40.215
