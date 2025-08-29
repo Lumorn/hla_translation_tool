@@ -36,8 +36,9 @@ window.migrateData = async function() {
     try {
         const oldBackend = window.createStorage('localStorage');
         const newBackend = window.createStorage('indexedDB');
-        const count = await window.migrateStorage(oldBackend, newBackend);
-        statusEl.textContent = `Migration abgeschlossen: ${count} Einträge übertragen.`;
+        // Nach der Übertragung den alten Speicher vollständig leeren
+        const count = await window.migrateStorage(oldBackend, newBackend, { clearOld: true });
+        statusEl.textContent = `Migration abgeschlossen: ${count} Einträge übertragen und alter Speicher geleert.`;
     } catch (err) {
         statusEl.textContent = `Fehler bei Migration: ${err.message}`;
     }
