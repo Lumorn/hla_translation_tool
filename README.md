@@ -1077,4 +1077,6 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`journalWiederherstellen(basis)`** – prüft ein vorhandenes `journal.json` und schließt abgebrochene Schreibvorgänge atomar ab.
   * **`garbageCollect(manifeste, basis, dryRun)`** – entfernt nicht referenzierte Dateien aus `.hla_store/objects` und meldet wahlweise nur den potentiellen Speichergewinn.
   * **`validateProjectManifest(data)`** – prüft `project.json` gegen ein Zod-Schema und stellt sicher, dass `schemaVersion` und Name vorhanden sind.
+  * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab und repariert Verweise.
+  * **`switchStorageSafe(mode)`** – wechselt das Speichersystem mit bereinigten Caches und gestopptem Autosave.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.
