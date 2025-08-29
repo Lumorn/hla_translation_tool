@@ -957,7 +957,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
 * **📸 VideoFrame-Details:** Zusätzlich werden der Pfad zum Frame-Ordner und die Versionen der Video-Abhängigkeiten angezeigt.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
-* **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden.
+* **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden. Scheitert das Speichern, wird der Inhalt automatisch in die Zwischenablage kopiert.
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 * **🐞 Ausführliche Fehlerprotokolle:** Im Debug-Modus erscheinen unbehandelte Promise-Ablehnungen sowie Datei-, Zeilen- und Stack-Informationen
 

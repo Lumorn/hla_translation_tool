@@ -10982,8 +10982,14 @@ async function scanAudioDuplicates() {
                         await writable.write(JSON.stringify(rep.content, null, 2));
                         await writable.close();
                         showToast('Debug-Datei gespeichert');
-                    } catch {
-                        showToast('Speichern abgebrochen', 'error');
+                    } catch (err) {
+                        // Fallback: Bei fehlgeschlagenem Speichern Inhalte in die Zwischenablage kopieren
+                        try {
+                            await navigator.clipboard.writeText(JSON.stringify(rep.content, null, 2));
+                            showToast('Speichern fehlgeschlagen – Daten in Zwischenablage kopiert');
+                        } catch {
+                            showToast('Speichern fehlgeschlagen: ' + (err?.message || 'unbekannter Fehler'), 'error');
+                        }
                     }
                 });
             });
