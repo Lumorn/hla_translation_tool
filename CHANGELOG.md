@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.221
+* Speicher-Backends liefern jetzt Feature-Flags über `storage.capabilities`, um fehlendes OPFS zu erkennen.
+* `validateProjectManifest` prüft `project.json` gegen ein Zod-Schema.
 ## 🛠️ Patch in 1.40.220
 * Single-Writer-Lock pro Projekt mit BroadcastChannel und Heartbeat im localStorage.
 * `storage.runTransaction` bündelt Mehrfach-Schreibvorgänge und verwirft alle bei Fehlern.

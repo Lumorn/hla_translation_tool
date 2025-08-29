@@ -23,15 +23,18 @@ export function createStorage(type) {
         default:
             throw new Error(`Unbekannter Speicher-Typ: ${type}`);
     }
-
-    return {
+    const result = {
         ...backend,
+        // Standard-Fähigkeiten festlegen, falls das Backend keine angibt
+        capabilities: backend.capabilities || { blobs: 'none', atomicWrite: false }
+    };
+    if (!backend.runTransaction) {
         /**
          * Führt mehrere Schreiboperationen als Einheit aus.
          * Bei Fehlern werden keine Änderungen übernommen.
          * @param {Function} fn - Callback, das einen Transaktions-Kontext erhält
          */
-        async runTransaction(fn) {
+        result.runTransaction = async function (fn) {
             // Operationen zwischenspeichern
             const ops = [];
             const tx = {
@@ -52,8 +55,9 @@ export function createStorage(type) {
                 // Bei Fehlern nichts schreiben
                 throw err;
             }
-        }
-    };
+        };
+    }
+    return result;
 }
 
 /**

@@ -48,7 +48,14 @@ function updateStorageIndicator(mode) {
     const indicator = document.getElementById('storageModeIndicator');
     const button = document.getElementById('switchStorageButton');
     if (!indicator || !button) return;
-    indicator.textContent = mode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    // Basistext je nach Modus
+    let text = mode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    // Zusatzhinweis, falls keine OPFS-Unterstützung vorhanden ist
+    const caps = window.storage && window.storage.capabilities;
+    if (caps && caps.blobs !== 'opfs') {
+        text += ' (ohne OPFS)';
+    }
+    indicator.textContent = text;
     button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu neuem System';
 }
 
