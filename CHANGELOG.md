@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.232
+* Debug-Bericht-Knopf entfernt nicht serialisierbare Felder und erzeugt wieder getrennte Dateien.
 ## 🛠️ Patch in 1.40.231
 * Debug-Bericht exportiert mehrere getrennte Dateien in einem gewählten Ordner.
 ## 🛠️ Patch in 1.40.230
