@@ -61,16 +61,21 @@ export function createStorage(type) {
 }
 
 /**
- * Kopiert alle Einträge aus einem alten Backend in ein neues
- * @param {{getItem: Function, setItem: Function, keys: Function}} oldBackend - Quelle der Daten
+ * Kopiert alle Einträge aus einem alten Backend in ein neues und entfernt auf Wunsch die Quelle.
+ * @param {{getItem: Function, setItem: Function, keys: Function, clear?: Function}} oldBackend - Quelle der Daten
  * @param {{setItem: Function}} newBackend - Ziel-Backend für die Daten
+ * @param {{clearOld?: boolean}} [opts] - Optionale Einstellungen, z. B. ob der alte Speicher geleert wird
  * @returns {Promise<number>} Anzahl der übertragenen Schlüssel
  */
-export async function migrateStorage(oldBackend, newBackend) {
+export async function migrateStorage(oldBackend, newBackend, opts = {}) {
     const keys = await oldBackend.keys();
     for (const key of keys) {
         const value = await oldBackend.getItem(key);
         await newBackend.setItem(key, value);
+    }
+    // Alten Speicher bei Bedarf vollständig leeren
+    if (opts.clearOld && typeof oldBackend.clear === 'function') {
+        await oldBackend.clear();
     }
     return keys.length;
 }

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.238
+* Speichermigration leert nach erfolgreichem Kopieren automatisch den alten Speicher.
 ## 🛠️ Patch in 1.40.237
 * Datei-Modus bereinigt beim Start alte LocalStorage-Projekt- und Datei-Schlüssel automatisch.
 ## 🛠️ Patch in 1.40.236

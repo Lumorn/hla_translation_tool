@@ -831,7 +831,7 @@ Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Ent
 
 ### Migration
 
-Über den Knopf **Daten migrieren** werden sämtliche Einträge vom bisherigen Backend in das neue System kopiert. Die Originaldaten bleiben dabei erhalten, sodass ein Wechsel gefahrlos möglich ist.
+Über den Knopf **Daten migrieren** werden sämtliche Einträge vom bisherigen Backend in das neue System kopiert. Anschließend wird der alte Speicher geleert, sodass keine veralteten Schlüssel zurückbleiben.
 
 ### Anzeige und Wechsel
 

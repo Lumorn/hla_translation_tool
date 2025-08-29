@@ -18,11 +18,14 @@ beforeEach(() => {
             keys: () => Object.keys(localStorage)
         };
     }
-    async function migrateStorage(oldB, newB) {
+    async function migrateStorage(oldB, newB, opts = {}) {
         const keys = await oldB.keys();
         for (const k of keys) {
             const val = await oldB.getItem(k);
             await newB.setItem(k, val);
+        }
+        if (opts.clearOld) {
+            await oldB.clear();
         }
         return keys.length;
     }
@@ -183,6 +186,7 @@ test('migrateData überträgt alle Schlüssel in das neue Backend', async () => 
 
     expect(newData.foo).toBe('bar');
     expect(newData.baz).toBe('qux');
+    expect(localStorage.length).toBe(0);
     const status = document.getElementById('migration-status').textContent;
     expect(status).toContain('Migration abgeschlossen');
     expect(status).toContain('2');
