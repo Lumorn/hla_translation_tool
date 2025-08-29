@@ -40,8 +40,9 @@ window.loadProjectFromFile = async function() {
     }
 
     // JSON parsen und bei Problemen auf Sicherungsdatei hinweisen
+    let project;
     try {
-        return JSON.parse(text);
+        project = JSON.parse(text);
     } catch (err) {
         if (confirm('Die Datei enthält keine gültigen Projektdaten. Sicherungsdatei laden?')) {
             return await window.loadProjectFromFile();
@@ -49,6 +50,37 @@ window.loadProjectFromFile = async function() {
         alert('Ladevorgang abgebrochen: ' + err.message);
         return null;
     }
+
+    // Pflichtfelder des Manifests prüfen
+    try {
+        const { validateProjectManifest } = await import('../../utils/projectSchema.js');
+        validateProjectManifest(project);
+    } catch (err) {
+        if (confirm('Die Datei erfüllt nicht das erforderliche Schema. Sicherungsdatei laden?')) {
+            return await window.loadProjectFromFile();
+        }
+        alert('Ladevorgang abgebrochen: ' + err.message);
+        return null;
+    }
+
+    // IDs gegen vorhandene Daten abgleichen
+    try {
+        const keys = await storage.keys();
+        const validIds = new Set();
+        for (const key of keys) {
+            const match = key.match(/file[_:-](\d+)/);
+            if (match) validIds.add(match[1]);
+        }
+        project.files = (project.files || []).filter(f => {
+            if (validIds.has(String(f.id))) return true;
+            console.warn('Entfernte unbekannte Datei-ID: ' + f.id);
+            return false;
+        });
+    } catch (err) {
+        console.warn('Fehler beim Prüfen der Datei-IDs:', err);
+    }
+
+    return project;
 };
 
 // Überträgt alle Einträge aus dem aktuellen Speicher in eine Datei, belässt die Originaldaten jedoch im Speicher
