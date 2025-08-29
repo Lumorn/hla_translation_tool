@@ -4454,7 +4454,11 @@ return `
                 // Dateizuordnung fehlt → Element entfernen und Nutzer informieren
                 const row = div.closest('tr');
                 if (row) row.remove();
-                alert(`❌ Keine Datei für Vorschlag mit ID ${id} gefunden. Der Eintrag wurde entfernt.`);
+                const msg = `❌ Keine Datei für Vorschlag mit ID ${id} gefunden. Der Eintrag wurde entfernt.`;
+                // Fragt optional nach einem Debug-Bericht
+                if (confirm(`${msg}\n\nSoll ein Debug-Bericht gespeichert werden?`)) {
+                    exportDebugReport();
+                }
                 return;
             }
             div.textContent = file.suggestion || '';
