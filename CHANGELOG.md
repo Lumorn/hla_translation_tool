@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.239
+* Sicherer Projekt- und Speicherwechsel verhindert Race-Conditions und repariert verwaiste Einträge.
+
 ## 🛠️ Patch in 1.40.238
 * Speichermigration leert nach erfolgreichem Kopieren automatisch den alten Speicher.
 ## 🛠️ Patch in 1.40.237
