@@ -8,11 +8,15 @@ beforeEach(() => {
     document.body.innerHTML = '<div id="migration-status"></div>';
     // LocalStorage leeren
     localStorage.clear();
-    // File-System-API stubben
-    window.showSaveFilePicker = async () => ({
-        createWritable: async () => ({
-            write: async (text) => { gespeicherterText = text; },
-            close: async () => {}
+    // File-System-API stubben: Verzeichnis- und Dateihandles
+    window.showDirectoryPicker = async () => ({
+        name: 'Export',
+        getFileHandle: async (name, opts) => ({
+            name,
+            createWritable: async () => ({
+                write: async (text) => { gespeicherterText = text; },
+                close: async () => {}
+            })
         })
     });
 });
@@ -32,6 +36,8 @@ test('startMigration exportiert alle Einträge und leert den Speicher', async ()
     expect(gespeichert.projektA).toBe('datenA');
     expect(gespeichert.projektB).toBe('datenB');
     expect(localStorage.length).toBe(0);
-    expect(document.getElementById('migration-status').textContent)
-        .toContain('Migration abgeschlossen');
+    const status = document.getElementById('migration-status').textContent;
+    expect(status).toContain('Migration abgeschlossen');
+    expect(status).toContain('Export');
+    expect(status).toContain('2 → 2');
 });

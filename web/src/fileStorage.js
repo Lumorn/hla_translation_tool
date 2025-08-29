@@ -30,12 +30,21 @@ window.loadProjectFromFile = async function() {
 };
 
 // Überträgt alle Einträge aus dem LocalStorage in eine Datei und leert den Speicher
+// Die Daten werden in einem vom Nutzer gewählten Ordner als "hla_daten.json" gespeichert
+// und die Funktion liefert Informationen über den Speicherort zurück
 window.migrateLocalStorageToFile = async function() {
     const data = {};
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         data[key] = localStorage.getItem(key);
     }
-    await window.saveProjectToFile(data);
+    // Ordner wählen, in dem die Datei landen soll
+    const dirHandle = await window.showDirectoryPicker();
+    const fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(data, null, 2));
+    await writable.close();
+    // LocalStorage aufräumen
     localStorage.clear();
+    return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName: dirHandle.name };
 };
