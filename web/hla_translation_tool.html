@@ -65,6 +65,8 @@
                     </div>
                     <button id="devToolsButton" class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
                     <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                    <button class="btn btn-secondary" onclick="startMigration()">Migration starten</button>
+                    <div id="migration-status"></div>
                 </div>
             </div>
 
@@ -941,10 +943,11 @@
     <!-- Verlinkung zur aktuellen Version -->
     <a id="versionLink" href="https://github.com/Lumorn/hla_translation_tool" target="_blank">v1.40.127</a>
 
-     <script src="src/colorUtils.js"></script>
-     <script src="src/fileStorage.js"></script>
-     <script src="src/main.js"></script>
-     <script type="module" src="renderer.js"></script>
+    <script src="src/colorUtils.js"></script>
+    <script src="src/fileStorage.js"></script>
+    <script src="src/migrationUI.js"></script>
+    <script src="src/main.js"></script>
+    <script type="module" src="renderer.js"></script>
 </body>
 </html>
 

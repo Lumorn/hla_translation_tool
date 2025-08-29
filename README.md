@@ -1015,4 +1015,5 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
   * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei und liefert deren Inhalt als Objekt.
   * **`migrateLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei und leert anschließend den Speicher.
+  * **`startMigration()`** – startet die LocalStorage-Migration und zeigt Statusmeldungen in der Oberfläche an.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
