@@ -618,6 +618,11 @@ th:nth-child(8) {
             vertical-align: top;
         }
 
+        /* Symbol zur Anzeige des Speichersystems zentrieren */
+        .storage-cell {
+            text-align: center;
+        }
+
         tr:hover {
             background: #242424;
         }

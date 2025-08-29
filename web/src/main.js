@@ -4043,7 +4043,19 @@ async function renderFileTableWithOrder(sortedFiles) {
             else if (lastFolder.toLowerCase().includes('zombie')) folderColor = '#424242';
             else folderColor = '#333';
         }
-        
+
+        // Speicherort für diese Datei ermitteln
+        const storageState = await window.visualizeFileStorage(relPath);
+        // 🆕 = nur neues System, 📦 = nur LocalStorage, ⚖️ = beide, ❔ = keines gefunden
+        let storageIcon = '❔';
+        if (storageState.indexedDB && !storageState.local) {
+            storageIcon = '🆕';
+        } else if (storageState.local && !storageState.indexedDB) {
+            storageIcon = '📦';
+        } else if (storageState.local && storageState.indexedDB) {
+            storageIcon = '⚖️';
+        }
+
 return `
     <!-- Neue kompakte Zeile mit zusammengefassten Spalten -->
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
@@ -4061,6 +4073,7 @@ return `
                    oninput="setFolderNote(${file.id}, this.value)">
             <div class="note-dup-info"></div>
         </td>
+        <td class="storage-cell" title="Speicherort">${storageIcon}</td>
         <td class="version-score-cell">
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
             ${(() => {

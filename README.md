@@ -835,6 +835,10 @@ In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speic
 
 Über `visualizeFileStorage('schlüssel')` lässt sich prüfen, ob ein bestimmter Eintrag ausschließlich im neuen Speichersystem liegt. Das Ergebnis wird im Statusbereich angezeigt.
 
+### Visualisierung pro Datei
+
+In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine Datei im neuen Speichersystem oder noch im LocalStorage gespeichert ist. Beim Wechsel des Systems aktualisiert sich die Anzeige automatisch.
+
 
 ## 🗂️ Projektstruktur
 
