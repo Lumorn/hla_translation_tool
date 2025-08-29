@@ -48,15 +48,15 @@ function updateStorageIndicator(mode) {
     const indicator = document.getElementById('storageModeIndicator');
     const button = document.getElementById('switchStorageButton');
     if (!indicator || !button) return;
-    // Basistext je nach Modus
-    let text = mode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    // Klarer Text für beide Modi
+    let text = mode === 'indexedDB' ? 'Datei-Modus (OPFS)' : 'LocalStorage';
     // Zusatzhinweis, falls keine OPFS-Unterstützung vorhanden ist
     const caps = window.storage && window.storage.capabilities;
-    if (caps && caps.blobs !== 'opfs') {
-        text += ' (ohne OPFS)';
+    if (mode === 'indexedDB' && caps && caps.blobs !== 'opfs') {
+        text = 'Datei-Modus (ohne OPFS)';
     }
     indicator.textContent = text;
-    button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu neuem System';
+    button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu Datei-Modus';
 }
 
 // Fordert persistenten Speicher an und zeigt die verfügbare Menge an
@@ -76,10 +76,10 @@ async function requestPersistentStorage() {
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     const newMode = targetMode || (currentMode === 'localStorage' ? 'indexedDB' : 'localStorage');
-    const zielLabel = newMode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    const zielLabel = newMode === 'indexedDB' ? 'Datei-Modus' : 'LocalStorage';
     // Hinweis auf den bevorstehenden Wechsel anzeigen
     updateStatus(`Lade ${zielLabel}...`);
-    showToast(`Wechsle zu ${zielLabel}`);
+    showToast(`Wechsle zu ${zielLabel} (ohne Kopieren der Daten)`);
     const newBackend = window.createStorage(newMode);
     // Beim Wechsel werden keine Daten übertragen
     window.storage = newBackend;
@@ -124,17 +124,83 @@ async function openStorageFolder() {
     await window.electronAPI.openPath(pfad);
 }
 
+// Aktualisiert Fortschrittsbalken und Text für den belegten Speicher
+async function updateStorageUsage() {
+    if (!(navigator.storage && navigator.storage.estimate)) return;
+    const { usage = 0, quota = 0 } = await navigator.storage.estimate();
+    const usedMb = (usage / (1024 * 1024)).toFixed(1);
+    const quotaMb = quota ? (quota / (1024 * 1024)).toFixed(1) : '0';
+    const percent = quota ? (usage / quota) * 100 : 0;
+    const fill = document.getElementById('storageUsageFill');
+    const label = document.getElementById('storageUsageLabel');
+    if (fill) fill.style.width = percent.toFixed(1) + '%';
+    if (label) label.textContent = `${usedMb} MB von ${quotaMb} MB`;
+}
+
+// Zeigt das Datum der letzten Bereinigung an
+function updateLastCleanup() {
+    const label = document.getElementById('lastCleanupLabel');
+    if (!label) return;
+    const ts = window.localStorage.getItem('hla_lastCleanup');
+    label.textContent = ts ? `Zuletzt bereinigt am ${new Date(ts).toLocaleString()}` : 'Noch nie bereinigt';
+}
+
+// Startet die Garbage-Collection des Speichers
+async function runCleanup() {
+    if (window.storage && window.storage.garbageCollect) {
+        await window.storage.garbageCollect();
+        window.localStorage.setItem('hla_lastCleanup', new Date().toISOString());
+        updateLastCleanup();
+        updateStorageUsage();
+        showToast('Speicher bereinigt');
+    }
+}
+
+// Lokaler Suchindex
+let projectIndex = null;
+
+// Baut den Index für ein gegebenes Projekt neu auf
+async function rebuildProjectIndex(project) {
+    const { LocalIndex } = await import('./localIndex.js');
+    projectIndex = new LocalIndex();
+    (project.files || []).forEach(f => {
+        if (f.text) projectIndex.add(f.id, f.text);
+    });
+}
+
+// Durchsucht den lokalen Index
+function searchLocal(term) {
+    if (!projectIndex) return [];
+    return projectIndex.search(term);
+}
+
+// Virtuelle Tabelle vorbereiten (Platzhalter)
+let virtualTable = null;
+async function initVirtualTable() {
+    const container = document.querySelector('.table-container');
+    if (!container) return;
+    const { createVirtualList } = await import('./virtualList.js');
+    virtualTable = createVirtualList(container, 40, () => document.createElement('div'));
+}
+
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
 window.visualizeFileStorage = visualizeFileStorage;
 window.openStorageFolder = openStorageFolder;
+window.rebuildProjectIndex = rebuildProjectIndex;
+window.searchLocal = searchLocal;
 window.addEventListener('DOMContentLoaded', () => {
     const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     updateStorageIndicator(mode);
     const btn = document.getElementById('switchStorageButton');
     if (btn) btn.addEventListener('click', () => switchStorage());
     requestPersistentStorage();
+    updateStorageUsage();
+    updateLastCleanup();
+    const cleanBtn = document.getElementById('cleanupButton');
+    if (cleanBtn) cleanBtn.addEventListener('click', runCleanup);
+    initVirtualTable();
 });
 
 // =========================== GLOBAL STATE START ===========================
@@ -15184,7 +15250,11 @@ function quickAddLevel(chapterName) {
             const statusText = document.getElementById('statusText');
             if (message) {
                 // Aktiven Speichermodus ermitteln
-                const mode = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+                let mode = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'Datei-Modus' : 'LocalStorage';
+                if (mode === 'Datei-Modus') {
+                    const caps = window.storage && window.storage.capabilities;
+                    mode = (caps && caps.blobs !== 'opfs') ? 'Datei-Modus (ohne OPFS)' : 'Datei-Modus (OPFS)';
+                }
                 // Bei Speicherhinweisen den Modus ergänzen
                 if (message.toLowerCase().includes('gespeichert')) {
                     message += ` (im ${mode})`;

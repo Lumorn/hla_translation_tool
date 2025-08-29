@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.222
+* Virtuelle Listen rendern nur sichtbare Zeilen und laden Daten bei Bedarf.
+* Optionaler invertierter Suchindex pro Projekt für schnelle lokale Treffer.
+* Speicher-Monitor zeigt belegten Platz und bietet einen „Aufräumen“-Knopf.
+* Toolbar kennzeichnet den aktiven Speichermodus deutlicher.
 ## 🛠️ Patch in 1.40.221
 * Speicher-Backends liefern jetzt Feature-Flags über `storage.capabilities`, um fehlendes OPFS zu erkennen.
 * `validateProjectManifest` prüft `project.json` gegen ein Zod-Schema.
