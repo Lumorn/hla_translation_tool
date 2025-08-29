@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.198
+* Migration fängt fehlende File-System-API ab und zeigt eine verständliche Fehlermeldung an.
 ## 🛠️ Patch in 1.40.197
 * Migration zeigt alte und neue Eintragsanzahl und speichert die Daten in einen gewählten Ordner.
 ## 🛠️ Patch in 1.40.196
