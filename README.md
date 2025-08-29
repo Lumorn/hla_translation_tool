@@ -1058,6 +1058,8 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
   * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, große Dateien im OPFS oder als Blob auslagert und ohne Benutzerschlüssel auskommt.
+  * **`storage.runTransaction(async tx => { ... })`** – führt mehrere Schreibvorgänge gebündelt aus und bricht bei Fehlern komplett ab.
+  * **`acquireProjectLock(id)`** – verhandelt einen exklusiven Schreibzugriff pro Projekt und schaltet weitere Fenster in den Nur-Lesen-Modus.
   * **`journalWiederherstellen(basis)`** – prüft ein vorhandenes `journal.json` und schließt abgebrochene Schreibvorgänge atomar ab.
   * **`garbageCollect(manifeste, basis, dryRun)`** – entfernt nicht referenzierte Dateien aus `.hla_store/objects` und meldet wahlweise nur den potentiellen Speichergewinn.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.

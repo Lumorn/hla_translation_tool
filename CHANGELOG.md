@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.220
+* Single-Writer-Lock pro Projekt mit BroadcastChannel und Heartbeat im localStorage.
+* `storage.runTransaction` bündelt Mehrfach-Schreibvorgänge und verwirft alle bei Fehlern.
 ## 🛠️ Patch in 1.40.219
 * Schreibvorgänge nutzen nun ein Journal und atomare Umbenennungen, um korrupte Dateien zu vermeiden.
 * `garbageCollect` räumt nicht referenzierte Blobs aus `.hla_store/objects` auf und unterstützt einen Dry-Run.
