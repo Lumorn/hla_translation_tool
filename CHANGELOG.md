@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.216
+* Reitermenü bietet jetzt einen Knopf, der den Ordner des neuen Speichersystems öffnet.
 ## 🛠️ Patch in 1.40.215
 * Dateiliste zeigt jetzt pro Datei, ob der Eintrag im neuen Speichersystem liegt.
 ## 🛠️ Patch in 1.40.214
