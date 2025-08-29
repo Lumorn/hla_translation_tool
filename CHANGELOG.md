@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.200
+* Migration sichert Daten bei verweigertem Dateizugriff dauerhaft in einer Browser-Datenbank (IndexedDB), ohne den LocalStorage zu löschen.
 ## 🛠️ Patch in 1.40.199
 * Migration zeigt bei verweigertem Dateizugriff eine verständliche Fehlermeldung an.
 ## 🛠️ Patch in 1.40.198

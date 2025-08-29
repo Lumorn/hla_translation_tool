@@ -1014,6 +1014,6 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
   * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei und liefert deren Inhalt als Objekt.
-  * **`migrateLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei im gewählten Ordner, leert anschließend den Speicher und gibt den Speicherort zurück; prüft die Verfügbarkeit der File-System-API und liefert bei fehlendem Support oder verweigertem Zugriff eine verständliche Fehlermeldung.
+  * **`migrateLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei im gewählten Ordner, leert anschließend den Speicher und gibt den Speicherort zurück; prüft die Verfügbarkeit der File-System-API, sichert bei verweigertem Zugriff die Daten dauerhaft in einer Browser-Datenbank (IndexedDB) und liefert nur bei fehlendem Support eine verständliche Fehlermeldung.
   * **`startMigration()`** – startet den Export, zeigt alte und neue Eintragsanzahl sowie den Zielordner in der Oberfläche an.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.

@@ -48,14 +48,57 @@ window.migrateLocalStorageToFile = async function() {
         dirHandle = await window.showDirectoryPicker();
         fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
         writable = await fileHandle.createWritable();
+        // Daten schreiben und Datei schließen
+        await writable.write(JSON.stringify(data, null, 2));
+        await writable.close();
+        // LocalStorage aufräumen
+        localStorage.clear();
+        // Name des Verzeichnisses ermitteln
+        const dirName = dirHandle.name || '';
+        return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName };
     } catch (err) {
+        // Fallback: Daten dauerhaft in IndexedDB sichern
+        if (window.indexedDB) {
+            await saveToIndexedDB('hla_daten', data);
+            // LocalStorage nicht leeren, damit die Daten erhalten bleiben
+            return { newCount: localStorage.length, fileName: 'hla_daten', dirName: 'IndexedDB' };
+        }
         // Verständliche Fehlermeldung, falls der Zugriff verweigert oder blockiert wird
         throw new Error('Dateisystem-Zugriff verweigert oder vom Browser blockiert');
     }
-    // Daten schreiben und Datei schließen
-    await writable.write(JSON.stringify(data, null, 2));
-    await writable.close();
-    // LocalStorage aufräumen
-    localStorage.clear();
-    return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName: dirHandle.name };
+};
+
+// Speichert Daten unter dem angegebenen Schlüssel dauerhaft in IndexedDB
+async function saveToIndexedDB(key, value) {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('hlaMigration', 1);
+        request.onupgradeneeded = () => {
+            request.result.createObjectStore('daten');
+        };
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            const db = request.result;
+            const tx = db.transaction('daten', 'readwrite');
+            tx.objectStore('daten').put(value, key).onsuccess = () => resolve();
+            tx.onerror = () => reject(tx.error);
+        };
+    });
+}
+
+// Lädt zuvor gesicherte Daten aus IndexedDB
+window.loadProjectFromIndexedDB = async function(key = 'hla_daten') {
+    return new Promise((resolve, reject) => {
+        const request = indexedDB.open('hlaMigration', 1);
+        request.onupgradeneeded = () => {
+            request.result.createObjectStore('daten');
+        };
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+            const db = request.result;
+            const tx = db.transaction('daten', 'readonly');
+            const getReq = tx.objectStore('daten').get(key);
+            getReq.onsuccess = () => resolve(getReq.result);
+            getReq.onerror = () => reject(getReq.error);
+        };
+    });
 };

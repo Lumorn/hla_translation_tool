@@ -1,6 +1,10 @@
 /** @jest-environment jsdom */
 const fs = require('fs');
 const path = require('path');
+require('fake-indexeddb/auto');
+if (!global.structuredClone) {
+    global.structuredClone = (val) => JSON.parse(JSON.stringify(val));
+}
 
 let gespeicherterText = '';
 
@@ -45,7 +49,7 @@ test('startMigration exportiert alle Einträge und leert den Speicher', async ()
 });
 
 test('startMigration meldet fehlende File-System-API verständlich', async () => {
-    // API entfernt, um Fehlerpfad zu testen
+    // API entfernen, um Fehlerpfad zu testen
     delete window.showDirectoryPicker;
 
     const fileStorage = fs.readFileSync(path.join(__dirname, '../web/src/fileStorage.js'), 'utf8');
@@ -60,12 +64,11 @@ test('startMigration meldet fehlende File-System-API verständlich', async () =>
     expect(status).toContain('Dateisystem-API');
 });
 
-test('startMigration meldet verweigerten Dateizugriff verständlich', async () => {
-    // Verzeichnis-Handle liefert beim Öffnen der Datei einen Fehler
-    window.showDirectoryPicker = async () => ({
-        name: 'Export',
-        getFileHandle: async () => { throw new Error('not allowed'); }
-    });
+test('startMigration nutzt IndexedDB-Fallback bei verweigertem Dateizugriff', async () => {
+    // showDirectoryPicker wirft Fehler, IndexedDB übernimmt
+    window.showDirectoryPicker = async () => { throw new Error('not allowed'); };
+
+    localStorage.setItem('projektA', 'datenA');
 
     const fileStorage = fs.readFileSync(path.join(__dirname, '../web/src/fileStorage.js'), 'utf8');
     eval(fileStorage);
@@ -74,7 +77,10 @@ test('startMigration meldet verweigerten Dateizugriff verständlich', async () =
 
     await window.startMigration();
 
+    const gespeichert = await window.loadProjectFromIndexedDB();
+    expect(gespeichert.projektA).toBe('datenA');
+    expect(localStorage.length).toBe(1);
     const status = document.getElementById('migration-status').textContent;
-    expect(status).toContain('Fehler bei der Migration');
-    expect(status).toContain('Dateisystem-Zugriff');
+    expect(status).toContain('Migration abgeschlossen');
+    expect(status).toContain('IndexedDB');
 });
