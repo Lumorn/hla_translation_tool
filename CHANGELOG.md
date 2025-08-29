@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.231
+* Debug-Bericht exportiert mehrere getrennte Dateien in einem gewählten Ordner.
 ## 🛠️ Patch in 1.40.230
 * Fehlende Vorschlagsdatei bietet an, einen Debug-Bericht zu speichern.
 ## 🛠️ Patch in 1.40.229
