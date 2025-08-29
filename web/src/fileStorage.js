@@ -38,8 +38,18 @@ window.migrateLocalStorageToFile = async function() {
         const key = localStorage.key(i);
         data[key] = localStorage.getItem(key);
     }
+    // Prüfen, ob die File-System-API im aktuellen Kontext verfügbar ist
+    if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
+        throw new Error('Dateisystem-API wird in diesem Kontext nicht unterstützt');
+    }
     // Ordner wählen, in dem die Datei landen soll
-    const dirHandle = await window.showDirectoryPicker();
+    let dirHandle;
+    try {
+        dirHandle = await window.showDirectoryPicker();
+    } catch (err) {
+        // Verständliche Fehlermeldung, falls der Zugriff verweigert wird
+        throw new Error('Dateisystem-Zugriff verweigert oder vom Browser blockiert');
+    }
     const fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
     const writable = await fileHandle.createWritable();
     await writable.write(JSON.stringify(data, null, 2));
