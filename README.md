@@ -1016,4 +1016,6 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei und liefert deren Inhalt als Objekt.
   * **`exportLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei im gewählten Ordner und gibt den Speicherort zurück, ohne die Originaldaten zu löschen; prüft die Verfügbarkeit der File-System-API, nutzt bei verweigertem Zugriff den internen Browser-Speicher (OPFS) als Fallback und liefert nur bei fehlendem Support eine verständliche Fehlermeldung. Der frühere Funktionsname `migrateLocalStorageToFile` bleibt als Alias erhalten.
   * **`startMigration()`** – startet den Export, zeigt alte und neue Eintragsanzahl sowie den Zielordner in der Oberfläche an.
+  * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
+  * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.

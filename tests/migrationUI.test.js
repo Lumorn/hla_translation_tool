@@ -100,3 +100,33 @@ test('startMigration nutzt OPFS-Fallback bei verweigertem Dateizugriff', async (
     expect(status).toContain('Export abgeschlossen');
     expect(status).toContain('OPFS');
 });
+
+test('loadMigration importiert Daten aus dem OPFS und ersetzt den LocalStorage', async () => {
+    localStorage.setItem('alt', 'wert');
+    Object.defineProperty(navigator, 'storage', {
+        value: {
+            getDirectory: async () => ({
+                getFileHandle: async () => ({
+                    name: 'hla_daten.json',
+                    getFile: async () => ({
+                        text: async () => JSON.stringify({ neu: 'daten' })
+                    })
+                })
+            })
+        },
+        configurable: true
+    });
+
+    const fileStorage = fs.readFileSync(path.join(__dirname, '../web/src/fileStorage.js'), 'utf8');
+    eval(fileStorage);
+    const migrationUI = fs.readFileSync(path.join(__dirname, '../web/src/migrationUI.js'), 'utf8');
+    eval(migrationUI);
+
+    await window.loadMigration();
+
+    expect(localStorage.getItem('neu')).toBe('daten');
+    expect(localStorage.length).toBe(1);
+    const status = document.getElementById('migration-status').textContent;
+    expect(status).toContain('Import abgeschlossen');
+    expect(status).toContain('hla_daten.json');
+});
