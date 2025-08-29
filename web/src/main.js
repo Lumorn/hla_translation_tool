@@ -84,7 +84,20 @@ async function switchStorage(targetMode) {
     // Beim Wechsel werden keine Daten übertragen
     resetGlobalState();
     window.storage = newBackend;
+    // Aktive Projekt-Locks sichern, damit parallele Tabs ihre Sperren behalten
+    const gesicherteLocks = {};
+    for (const key of Object.keys(window.localStorage)) {
+        if (key.startsWith('project-lock:')) {
+            gesicherteLocks[key] = window.localStorage.getItem(key);
+        }
+    }
+    // LocalStorage leeren und Modus direkt wieder setzen
+    window.localStorage.clear();
     window.localStorage.setItem('hla_storageMode', newMode);
+    // Gesicherte Lock-Einträge wiederherstellen
+    for (const [key, value] of Object.entries(gesicherteLocks)) {
+        window.localStorage.setItem(key, value);
+    }
     updateStorageIndicator(newMode);
     // Abschlussmeldung ausgeben
     updateStatus(`${zielLabel} geladen`);

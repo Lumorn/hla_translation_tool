@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.236
+* Wechsel des Speichersystems löscht jetzt automatisch alte LocalStorage-Daten und setzt den gewählten Modus direkt wieder.
 ## 🛠️ Patch in 1.40.235
 * Debug-Bericht-Export kopiert Daten in die Zwischenablage, wenn das Speichern fehlschlägt.
 ## 🛠️ Patch in 1.40.234

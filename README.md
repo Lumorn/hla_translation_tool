@@ -835,7 +835,7 @@ Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Ent
 
 ### Anzeige und Wechsel
 
-In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System, ohne dabei Daten zu kopieren. Für eine Übernahme steht weiterhin **Daten migrieren** bereit. Beim Wechsel erscheinen kurze Hinweise, und die Statusleiste nennt beim Speichern das aktive System. Dabei werden alle internen Caches geleert, damit keine Daten aus dem zuvor aktiven Backend sichtbar bleiben.
+In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System, ohne dabei Daten zu kopieren. Für eine Übernahme steht weiterhin **Daten migrieren** bereit. Beim Wechsel erscheinen kurze Hinweise, und die Statusleiste nennt beim Speichern das aktive System. Dabei werden alle internen Caches geleert, damit keine Daten aus dem zuvor aktiven Backend sichtbar bleiben. Zusätzlich werden sämtliche alten LocalStorage-Einträge entfernt; der gewählte Modus und bestehende Projekt-Locks bleiben erhalten.
 Ein weiterer Knopf öffnet den Ordner, in dem das neue Speichersystem seine Daten ablegt.
 
 ### Kontrolle
