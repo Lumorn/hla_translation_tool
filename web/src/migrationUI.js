@@ -42,3 +42,15 @@ window.migrateData = async function() {
         statusEl.textContent = `Fehler bei Migration: ${err.message}`;
     }
 };
+
+// Optionaler Wechsel mit expliziter Richtung zur Verdeutlichung des Zielsystems
+window.switchStorageDirection = async function(von, zu) {
+    const statusEl = document.getElementById('migration-status');
+    statusEl.textContent = `Wechsle von ${von} zu ${zu} ...`;
+    try {
+        await window.switchStorage(zu);
+        statusEl.textContent = `Wechsel zu ${zu} abgeschlossen.`;
+    } catch (err) {
+        statusEl.textContent = `Fehler beim Wechsel: ${err.message}`;
+    }
+};

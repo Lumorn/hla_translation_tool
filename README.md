@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.206-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.208-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -55,6 +55,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Wählbarer Speichermodus:** Beim ersten Start kann zwischen klassischem LocalStorage und dem neuen verschlüsselten System gewählt werden; alle Zugriffe erfolgen über einen Speicher-Adapter.
 * **Daten migrieren:** Ein zusätzlicher Knopf kopiert alle LocalStorage-Einträge in das neue Speicher-System.
+* **Speichermodus-Anzeige:** In der Werkzeugleiste zeigt ein Indikator das aktive System und ermöglicht den direkten Wechsel.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
 * **Audio-Datei zuordnen:** Lange Aufnahmen lassen sich automatisch in Segmente teilen, per Klick auswählen, farblich passenden Textzeilen zuweisen und direkt ins Projekt importieren. Über den 🚫‑Knopf markierte Bereiche werden dauerhaft übersprungen und in der Liste grau hinterlegt. Fehlhafte Eingaben löschen die Zuordnung automatisch, laufende Wiedergaben stoppen beim Neu‑Upload. Die gewählte Datei und alle Zuordnungen werden im Projekt gespeichert und sind Teil des Backups. In der Desktop‑Version landet die Originaldatei zusätzlich im Ordner `Sounds/Segments` und trägt die ID des Projekts. Beim Klicken werden ausgewählte Segmente sofort abgespielt. Die Segmentierungslogik ist fest im Hauptskript verankert. Der Datei‑Input besitzt zusätzlich ein `onchange`-Attribut und der Listener wird beim Öffnen des Dialogs neu gesetzt, sodass der Upload immer reagiert. Der Dialog setzt die HTML‑Elemente `segmentFileInput` und `segmentWaveform` voraus.
 * **Segment-Zuordnungen behalten:** Beim Neustart lädt der Segment-Dialog automatisch die gespeicherte Audiodatei und zeigt alle zuvor getroffenen Zuordnungen.
@@ -824,6 +825,10 @@ Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Ent
 ### Migration
 
 Über den Knopf **Daten migrieren** werden sämtliche Einträge vom bisherigen Backend in das neue System kopiert. Die Originaldaten bleiben dabei erhalten, sodass ein Wechsel gefahrlos möglich ist.
+
+### Anzeige und Wechsel
+
+In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System und migriert die Daten automatisch.
 
 
 ## 🗂️ Projektstruktur

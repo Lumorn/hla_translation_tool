@@ -32,6 +32,7 @@ if (typeof module === 'undefined' || !module.exports) {
                     window.localStorage.setItem('hla_storageMode', mode);
                     storage = createStorage(mode);
                     window.storage = storage;
+                    updateStorageIndicator(mode);
                     ov.remove();
                 }
             });
@@ -39,6 +40,40 @@ if (typeof module === 'undefined' || !module.exports) {
     })();
 }
 // =========================== SPEICHERINITIALISIERUNG END ===========================
+
+// Aktualisiert Anzeige und Beschriftung für das aktuelle Speichersystem
+function updateStorageIndicator(mode) {
+    const indicator = document.getElementById('storageModeIndicator');
+    const button = document.getElementById('switchStorageButton');
+    if (!indicator || !button) return;
+    indicator.textContent = mode === 'indexedDB' ? 'Neues System' : 'LocalStorage';
+    button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu neuem System';
+}
+
+// Wechselt das Speichersystem und migriert bestehende Daten
+async function switchStorage(targetMode) {
+    const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
+    const newMode = targetMode || (currentMode === 'localStorage' ? 'indexedDB' : 'localStorage');
+    const oldBackend = window.storage;
+    const newBackend = window.createStorage(newMode);
+    await window.migrateStorage(oldBackend, newBackend);
+    window.storage = newBackend;
+    window.localStorage.setItem('hla_storageMode', newMode);
+    updateStorageIndicator(newMode);
+    if (typeof loadProjects === 'function') {
+        await loadProjects();
+    }
+}
+
+// Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
+window.updateStorageIndicator = updateStorageIndicator;
+window.switchStorage = switchStorage;
+window.addEventListener('DOMContentLoaded', () => {
+    const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
+    updateStorageIndicator(mode);
+    const btn = document.getElementById('switchStorageButton');
+    if (btn) btn.addEventListener('click', () => switchStorage());
+});
 
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];

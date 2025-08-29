@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.208
+* Anzeige des aktuellen Speichermodus mit direktem Wechsel und Migration.
 ## 🛠️ Patch in 1.40.207
 * Startdialog ermöglicht die Auswahl zwischen LocalStorage und verschlüsseltem System.
 * Neues Speichersystem mit Adapter und Datenmigration.
