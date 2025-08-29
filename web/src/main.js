@@ -7,6 +7,7 @@ if (typeof module === 'undefined' || !module.exports) {
     (async () => {
         // Speicher-Adapter dynamisch laden
         const { createStorage, migrateStorage } = await import('./storage/storageAdapter.js');
+        const { acquireProjectLock } = await import('./storage/projectLock.js');
         let storageMode = window.localStorage.getItem('hla_storageMode');
         // Gewählten Speicher herstellen
         storage = createStorage(storageMode || 'localStorage');
@@ -14,6 +15,7 @@ if (typeof module === 'undefined' || !module.exports) {
         window.storage = storage;
         window.createStorage = createStorage;
         window.migrateStorage = migrateStorage;
+        window.acquireProjectLock = acquireProjectLock;
         // Beim ersten Start Auswahl anbieten
         if (!storageMode) {
             window.addEventListener('DOMContentLoaded', () => {
@@ -135,6 +137,8 @@ let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let levelIcons             = {}; // ⬅️ NEU: Icon je Level
 let levelColorHistory     = JSON.parse(storage.getItem('hla_levelColorHistory') || '[]'); // ➡️ Merkt letzte 5 Farben
 let currentProject         = null;
+let currentProjectLock     = null; // Lock-Objekt für Schreibzugriff
+let readOnlyMode           = false; // Wahr, wenn nur lesen erlaubt ist
 let files                  = [];
 let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
@@ -158,6 +162,13 @@ const isElectron = !!window.electronAPI;
 if (!isElectron) {
     console.warn('🚫 Electron-API nicht verfügbar – Fallback auf Browser-Modus');
 }
+
+// Beim Schließen des Fensters Lock freigeben
+window.addEventListener('beforeunload', () => {
+    if (currentProjectLock) {
+        currentProjectLock.release();
+    }
+});
 
 // Hilfsfunktionen zum Kodieren und Dekodieren von Audiodaten
 // wandelt ein ArrayBuffer sicher in Base64 um, auch bei großen Dateien
@@ -2471,6 +2482,19 @@ function selectProject(id){
 
     currentProject = projects.find(p => p.id === id);
     if(!currentProject) return;
+
+    // Vorherigen Lock freigeben und neuen anfordern
+    if (currentProjectLock) {
+        currentProjectLock.release();
+        currentProjectLock = null;
+    }
+    window.acquireProjectLock(id).then(lock => {
+        currentProjectLock = lock;
+        readOnlyMode = lock.readOnly;
+        if (readOnlyMode) {
+            showToast('🔒 Projekt nur lesend geöffnet');
+        }
+    });
 
     storage.setItem('hla_lastActiveProject',id);
 
