@@ -1,6 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.216
-* Wechsel des Speichersystems setzt nun Caches und die Speicher-Referenz zurück, sodass beide Systeme strikt getrennt bleiben.
 ## 🛠️ Patch in 1.40.215
 * Dateiliste zeigt jetzt pro Datei, ob der Eintrag im neuen Speichersystem liegt.
 ## 🛠️ Patch in 1.40.214
