@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.211
+* JSON-Fehler beim Laden der Level- und Kapitel-Daten behoben; Speicherzugriffe nutzen jetzt `await`.
 ## 🛠️ Patch in 1.40.210
 * Kommentar im Speicher-Adapter bereinigt; Dokumentation betont den Wegfall des Benutzerschlüssels.
 ## 🛠️ Patch in 1.40.209
