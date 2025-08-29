@@ -29,10 +29,10 @@ window.loadProjectFromFile = async function() {
     return JSON.parse(text);
 };
 
-// Überträgt alle Einträge aus dem LocalStorage in eine Datei und leert den Speicher
+// Überträgt alle Einträge aus dem LocalStorage in eine Datei, belässt die Originaldaten jedoch im Speicher
 // Die Daten werden in einem vom Nutzer gewählten Ordner als "hla_daten.json" gespeichert
 // und die Funktion liefert Informationen über den Speicherort zurück
-window.migrateLocalStorageToFile = async function() {
+window.exportLocalStorageToFile = async function() {
     const data = {};
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -66,9 +66,10 @@ window.migrateLocalStorageToFile = async function() {
     // Daten schreiben und Datei schließen
     await writable.write(JSON.stringify(data, null, 2));
     await writable.close();
-    // LocalStorage aufräumen
-    localStorage.clear();
     // Name des Verzeichnisses, bei OPFS ggf. leer -> Platzhalter setzen
     const dirName = dirHandle.name || 'OPFS';
     return { newCount: Object.keys(data).length, fileName: fileHandle.name, dirName };
 };
+
+// Rückwärtskompatibilität: alter Funktionsname bleibt als Alias erhalten
+window.migrateLocalStorageToFile = window.exportLocalStorageToFile;
