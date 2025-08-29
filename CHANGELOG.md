@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.227
+* Speichern über File System Access nutzt jetzt temporäre Dateien und ein `journal.json`, um Schreibvorgänge atomar abzuschließen.
 ## 🛠️ Patch in 1.40.226
 * Dateiimport validiert jetzt das Manifest und entfernt fehlende Datei-IDs.
 * Filterlogik in `cleanupProject.js` wurde in die Hilfsfunktion `removeUnknownFileIds` ausgelagert.

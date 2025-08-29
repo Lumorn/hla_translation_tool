@@ -848,6 +848,7 @@ In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine 
 * **Content-Addressed Storage:** Große Dateien landen unter `.hla_store/objects/<sha256-prefix>/<sha256>` und werden in Projekten nur als `blob://sha256:<hash>` referenziert.
 * **Kapitel-Shards:** Umfangreiche Projekt-JSONs werden kapitelweise als NDJSON in `data/chapters/<id>.ndjson` abgelegt und bei Bedarf nachgeladen.
 * **Striktes Namespacing:** Schlüssel folgen dem Schema `project:<id>:meta`, `project:<id>:index` und `cache:<typ>:<hash>`, um Kollisionen zu vermeiden.
+* **Sichere Speicher-Routine:** Dateien entstehen zuerst als `*.tmp` und werden dann atomar umbenannt; ein `journal.json` stellt nach Abstürzen den letzten Schritt fertig.
 
 ## 🗂️ Projektstruktur
 
