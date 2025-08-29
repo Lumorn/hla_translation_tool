@@ -82,6 +82,7 @@ async function switchStorage(targetMode) {
     showToast(`Wechsle zu ${zielLabel} (ohne Kopieren der Daten)`);
     const newBackend = window.createStorage(newMode);
     // Beim Wechsel werden keine Daten übertragen
+    resetGlobalState();
     window.storage = newBackend;
     window.localStorage.setItem('hla_storageMode', newMode);
     updateStorageIndicator(newMode);
@@ -91,6 +92,44 @@ async function switchStorage(targetMode) {
     if (typeof loadProjects === 'function') {
         await loadProjects();
     }
+}
+
+// Setzt alle globalen Zustände zurück, um Reste des alten Backends zu vermeiden
+function resetGlobalState() {
+    if (typeof projects !== 'undefined') projects = [];
+    if (typeof levelColors !== 'undefined') levelColors = {};
+    if (typeof levelOrders !== 'undefined') levelOrders = {};
+    if (typeof levelIcons !== 'undefined') levelIcons = {};
+    if (typeof levelColorHistory !== 'undefined') levelColorHistory = [];
+    if (typeof currentProjectLock !== 'undefined' && currentProjectLock && typeof currentProjectLock.release === 'function') {
+        currentProjectLock.release();
+    }
+    if (typeof currentProject !== 'undefined') currentProject = null;
+    if (typeof currentProjectLock !== 'undefined') currentProjectLock = null;
+    if (typeof readOnlyMode !== 'undefined') readOnlyMode = false;
+    if (typeof files !== 'undefined') files = [];
+    if (typeof textDatabase !== 'undefined') textDatabase = {};
+    if (typeof filePathDatabase !== 'undefined') filePathDatabase = {};
+    if (typeof audioFileCache !== 'undefined') audioFileCache = {};
+    if (typeof deAudioCache !== 'undefined') deAudioCache = {};
+    if (typeof audioDurationCache !== 'undefined') audioDurationCache = {};
+    if (typeof historyPresenceCache !== 'undefined') historyPresenceCache = {};
+    if (typeof folderCustomizations !== 'undefined') folderCustomizations = {};
+    if (typeof isDirty !== 'undefined') isDirty = false;
+    if (typeof aktiveOrdnerDateien !== 'undefined') aktiveOrdnerDateien = [];
+    if (typeof segmentInfo !== 'undefined') segmentInfo = null;
+    if (typeof segmentAssignments !== 'undefined') segmentAssignments = {};
+    if (typeof segmentPlayer !== 'undefined' && segmentPlayer) {
+        try { segmentPlayer.pause && segmentPlayer.pause(); } catch (e) {}
+        segmentPlayer = null;
+    }
+    if (typeof segmentSelection !== 'undefined') segmentSelection = [];
+    if (typeof segmentPlayerUrl !== 'undefined' && segmentPlayerUrl) {
+        URL.revokeObjectURL(segmentPlayerUrl);
+        segmentPlayerUrl = null;
+    }
+    if (typeof ignoredSegments !== 'undefined' && ignoredSegments.clear) ignoredSegments.clear();
+    if (typeof projectIndex !== 'undefined') projectIndex = null;
 }
 
 // Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an

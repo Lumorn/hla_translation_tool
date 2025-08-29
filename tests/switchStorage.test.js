@@ -32,6 +32,10 @@ test('switchStorage lädt gewählten Speicher ohne Migration neu', async () => {
 
     // Einfaches Nachladen simulieren
     window.projects = JSON.parse(alterSpeicher['hla_projects']);
+    window.files = ['alt'];
+    window.textDatabase = { foo: 'bar' };
+    window.audioFileCache = { a: 1 };
+    window.historyPresenceCache = { h: true };
     window.loadProjects = async () => {
         const saved = await window.storage.getItem('hla_projects');
         window.projects = saved ? JSON.parse(saved) : [];
@@ -57,6 +61,10 @@ test('switchStorage lädt gewählten Speicher ohne Migration neu', async () => {
     expect(localStorage.getItem('hla_storageMode')).toBe('indexedDB');
     expect(document.getElementById('storageModeIndicator').textContent).toContain('Datei-Modus');
     expect(window.projects).toEqual([]);
+    expect(window.files).toEqual([]);
+    expect(window.textDatabase).toEqual({});
+    expect(window.audioFileCache).toEqual({});
+    expect(window.historyPresenceCache).toEqual({});
 
     // Neues Projekt im neuen Speicher anlegen und zurückwechseln
     neuerSpeicher['hla_projects'] = JSON.stringify([{ id: 2, name: 'Neu' }]);
