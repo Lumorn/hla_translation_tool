@@ -333,8 +333,8 @@ let hallDelay  = parseFloat(storage.getItem('hla_hallDelay')  || '80');
 // Letzte Einstellungen für elektromagnetische Störgeräusche
 let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 
-// Gespeicherte URL für das Dubbing-Video
-let savedVideoUrl      = storage.getItem('hla_videoUrl') || '';
+// Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
+let savedVideoUrl      = '';
 
 // Listen für eigene Wörter
 // Phonetische Umschrift
@@ -1450,56 +1450,58 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // 🟩 NEU: Level-Farben laden
-    const savedLevelColors = storage.getItem('hla_levelColors');
+    const savedLevelColors = await storage.getItem('hla_levelColors');
     if (savedLevelColors) {
         levelColors = JSON.parse(savedLevelColors);
     }
 
-    const savedLevelOrders = storage.getItem('hla_levelOrders');
+    const savedLevelOrders = await storage.getItem('hla_levelOrders');
     if (savedLevelOrders) {
         levelOrders = JSON.parse(savedLevelOrders);
     }
 
-    const savedLevelIcons = storage.getItem('hla_levelIcons');
+    const savedLevelIcons = await storage.getItem('hla_levelIcons');
     if (savedLevelIcons) {
         levelIcons = JSON.parse(savedLevelIcons);
     }
 
-    const savedLevelChapters = storage.getItem('hla_levelChapters');
+    const savedLevelChapters = await storage.getItem('hla_levelChapters');
     if (savedLevelChapters) {
         levelChapters = JSON.parse(savedLevelChapters);
     }
 
-    const savedChapterOrders = storage.getItem('hla_chapterOrders');
+    const savedChapterOrders = await storage.getItem('hla_chapterOrders');
     if (savedChapterOrders) {
         chapterOrders = JSON.parse(savedChapterOrders);
     }
 
-    const savedChapterColors = storage.getItem('hla_chapterColors');
+    const savedChapterColors = await storage.getItem('hla_chapterColors');
     if (savedChapterColors) {
         chapterColors = JSON.parse(savedChapterColors);
     }
 
     // Wichtig: Kapitel-Daten müssen vor dem Laden der Projekte vorhanden sein,
     // sonst sortiert sich die Liste beim ersten Start falsch
-    loadProjects();
+    await loadProjects();
 
     initializeEventListeners();
 
     const urlInput = document.getElementById('videoUrlInput');
     if (urlInput) {
+        // Gespeicherte Video-URL aus dem Speicher laden
+        savedVideoUrl = await storage.getItem('hla_videoUrl') || '';
         urlInput.value = savedVideoUrl;
         urlInput.addEventListener('change', saveVideoUrl);
     }
 
     // 📁 Ordner-Anpassungen laden
-    const savedCustomizations = storage.getItem('hla_folderCustomizations');
+    const savedCustomizations = await storage.getItem('hla_folderCustomizations');
     if (savedCustomizations) {
         folderCustomizations = JSON.parse(savedCustomizations);
     }
 
     // 📂 Datei-Pfad-Datenbank laden
-    const savedPathDB = storage.getItem('hla_filePathDatabase');
+    const savedPathDB = await storage.getItem('hla_filePathDatabase');
     if (savedPathDB) {
         filePathDatabase = JSON.parse(savedPathDB);
     }
@@ -1781,27 +1783,28 @@ function handleAccessStatusClick() {
 }
 
 // =========================== LOAD PROJECTS START ===========================
-function loadProjects() {
+// Lädt Projekte und zugehörige Einstellungen asynchron aus dem Speicher
+async function loadProjects() {
     // 🟩 ERST: Level-Farben laden
-    const savedLevelColors = storage.getItem('hla_levelColors');
+    const savedLevelColors = await storage.getItem('hla_levelColors');
     if (savedLevelColors) {
         levelColors = JSON.parse(savedLevelColors);
     }
 
     // 🟢 Ebenfalls Reihenfolge der Level laden
-    const savedLevelOrders = storage.getItem('hla_levelOrders');
+    const savedLevelOrders = await storage.getItem('hla_levelOrders');
     if (savedLevelOrders) {
         levelOrders = JSON.parse(savedLevelOrders);
     }
 
     // 🆕 Level-Icons laden
-    const savedLevelIcons = storage.getItem('hla_levelIcons');
+    const savedLevelIcons = await storage.getItem('hla_levelIcons');
     if (savedLevelIcons) {
         levelIcons = JSON.parse(savedLevelIcons);
     }
 
     // DANN: Projekte laden
-    const savedProjects = storage.getItem('hla_projects');
+    const savedProjects = await storage.getItem('hla_projects');
     if (savedProjects) {
         // Hilfsfunktion für ein detailliertes Fehlerfenster
         const showError = msg => {
@@ -1931,15 +1934,15 @@ function loadProjects() {
     }
 
     // Text- & Pfaddatenbanken laden (unverändert)
-    const savedDB  = storage.getItem('hla_textDatabase');
+    const savedDB  = await storage.getItem('hla_textDatabase');
     if (savedDB)  textDatabase = JSON.parse(savedDB);
-    const savedPDB = storage.getItem('hla_filePathDatabase');
+    const savedPDB = await storage.getItem('hla_filePathDatabase');
     if (savedPDB) filePathDatabase = JSON.parse(savedPDB);
 
     renderProjects();
     updateGlobalProjectProgress();
 
-    const lastActive = storage.getItem('hla_lastActiveProject');
+    const lastActive = await storage.getItem('hla_lastActiveProject');
     const first     = projects.find(p => p.id == lastActive) || projects[0];
     if (first) selectProject(first.id);
 }
