@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.228
+* Neuer Debug-Bericht-Knopf exportiert den vollständigen Zustand von Projekten, Dateien und Einstellungen als JSON.
 ## 🛠️ Patch in 1.40.227
 * Speichern über File System Access nutzt jetzt temporäre Dateien und ein `journal.json`, um Schreibvorgänge atomar abzuschließen.
 ## 🛠️ Patch in 1.40.226
