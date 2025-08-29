@@ -41,6 +41,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
+* **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; auf Wunsch lässt sich eine Sicherungsdatei auswählen.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich

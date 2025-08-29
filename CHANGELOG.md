@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.225
+* Dateiimport fängt Lese- und JSON-Fehler ab und bietet bei Problemen eine Sicherungsdatei an.
 ## 🛠️ Patch in 1.40.224
 * Kontextmenü bietet Projekt-Analyse mit optionaler Reparatur.
 ## 🛠️ Patch in 1.40.223
