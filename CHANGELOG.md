@@ -1,6 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.200
-* Migration speichert bei verweigertem Dateizugriff automatisch im internen Browser-Speicher (OPFS).
 ## 🛠️ Patch in 1.40.199
 * Migration zeigt bei verweigertem Dateizugriff eine verständliche Fehlermeldung an.
 ## 🛠️ Patch in 1.40.198
