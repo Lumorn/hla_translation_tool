@@ -6,8 +6,8 @@ import { localStorageBackend } from './localStorageBackend.js';
 import { createIndexedDbBackend } from './indexedDbBackend.js';
 
 /**
- * Gibt je nach Typ das passende Speicher-Backend zurück
- * @param {string} type - Bezeichner des gewünschten Backends
+ * Liefert je nach Typ das passende Speicher-Backend.
+ * @param {string} type – gewünschter Backend-Typ
  * @returns {{getItem: Function, setItem: Function, removeItem: Function, clear: Function, keys: Function}}
  */
 export function createStorage(type) {
