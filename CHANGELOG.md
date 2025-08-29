@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.219
+* Schreibvorgänge nutzen nun ein Journal und atomare Umbenennungen, um korrupte Dateien zu vermeiden.
+* `garbageCollect` räumt nicht referenzierte Blobs aus `.hla_store/objects` auf und unterstützt einen Dry-Run.
+* Oberfläche fordert persistenten Speicher an und zeigt die verbleibende Quote an.
 ## 🛠️ Patch in 1.40.218
 * Content-Addressed Storage legt große Dateien unter `.hla_store/objects/<sha256-prefix>/<sha256>` ab und speichert Verweise als `blob://sha256:<hash>`.
 * Projektdateien werden kapitelweise als NDJSON in `data/chapters/<id>.ndjson` ausgelagert.

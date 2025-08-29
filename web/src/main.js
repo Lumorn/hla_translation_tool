@@ -50,6 +50,19 @@ function updateStorageIndicator(mode) {
     button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu neuem System';
 }
 
+// Fordert persistenten Speicher an und zeigt die verfügbare Menge an
+async function requestPersistentStorage() {
+    if (!(navigator.storage && navigator.storage.persist)) return;
+    const ok = await navigator.storage.persist();
+    if (!ok) {
+        showToast('Persistenter Speicher wurde nicht gewährt');
+        return;
+    }
+    const { quota, usage } = await navigator.storage.estimate();
+    const frei = ((quota - usage) / (1024 * 1024)).toFixed(1);
+    showToast(`Lokaler Speicher gesichert, verfügbar: ${frei} MB`);
+}
+
 // Wechselt das Speichersystem ohne automatische Migration der Daten
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
@@ -112,6 +125,7 @@ window.addEventListener('DOMContentLoaded', () => {
     updateStorageIndicator(mode);
     const btn = document.getElementById('switchStorageButton');
     if (btn) btn.addEventListener('click', () => switchStorage());
+    requestPersistentStorage();
 });
 
 // =========================== GLOBAL STATE START ===========================

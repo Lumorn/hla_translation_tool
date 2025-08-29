@@ -2,6 +2,36 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// Schreibt eine Datei zuerst als *.tmp und benennt sie danach um.
+// Gleichzeitig wird ein Journal geführt, um unvollständige Vorgänge
+// beim nächsten Start abschließen zu können.
+async function writeFileSicher(ziel, daten, basis = path.dirname(ziel)) {
+    const tmp = `${ziel}.tmp`;
+    const journal = path.join(basis, 'journal.json');
+    // Vorgang protokollieren
+    await fs.promises.writeFile(journal, JSON.stringify({ ziel, tmp }));
+    // Temporäre Datei schreiben
+    await fs.promises.writeFile(tmp, daten);
+    // Atomar umbenennen
+    await fs.promises.rename(tmp, ziel);
+    // Journal wieder entfernen
+    await fs.promises.unlink(journal);
+}
+
+// Prüft beim Start, ob ein Journal existiert und stellt den letzten
+// Schreibvorgang fertig. So bleiben keine korrupten Dateien zurück.
+async function journalWiederherstellen(basis = '.hla_store') {
+    const journal = path.join(basis, 'journal.json');
+    try {
+        const eintrag = JSON.parse(await fs.promises.readFile(journal, 'utf8'));
+        // Falls eine temporäre Datei existiert, als Ziel übernehmen
+        await fs.promises.rename(eintrag.tmp, eintrag.ziel);
+        await fs.promises.unlink(journal);
+    } catch {
+        // Kein Journal vorhanden oder Wiederherstellung nicht nötig
+    }
+}
+
 // Speichert große Dateien in einem Content-Addressed Storage.
 // Die Daten landen unter .hla_store/objects/<sha256-prefix>/<sha256>
 // und die Funktion gibt eine Referenz "blob://sha256:<hash>" zurück.
@@ -13,7 +43,7 @@ async function storeBlob(data, baseDir = '.hla_store') {
     try {
         await fs.promises.access(file);
     } catch {
-        await fs.promises.writeFile(file, data);
+        await writeFileSicher(file, data, baseDir);
     }
     return `blob://sha256:${hash}`;
 }
@@ -38,7 +68,7 @@ async function writeChapterShard(id, items, baseDir = path.join('data', 'chapter
     await fs.promises.mkdir(baseDir, { recursive: true });
     const file = path.join(baseDir, `${id}.ndjson`);
     const content = items.map(obj => JSON.stringify(obj)).join('\n') + '\n';
-    await fs.promises.writeFile(file, content, 'utf8');
+    await writeFileSicher(file, content, baseDir);
     return file;
 }
 
@@ -58,6 +88,51 @@ function cacheKey(type, hash) {
     return `cache:${type}:${hash}`;
 }
 
+// Sammelt alle in Manifesten referenzierten SHA-256 und entfernt
+// nicht benötigte Objekte aus dem Speicher. Bei "dryRun" werden
+// lediglich Statistikwerte geliefert.
+async function garbageCollect(manifestPfadListe, basis = '.hla_store', dryRun = false) {
+    const referenzen = new Set();
+    const regex = /blob:\/\/sha256:([a-f0-9]{64})/g;
+    for (const mf of manifestPfadListe) {
+        const inhalt = await fs.promises.readFile(mf, 'utf8');
+        let m;
+        while ((m = regex.exec(inhalt))) {
+            referenzen.add(m[1]);
+        }
+    }
+
+    const objectsDir = path.join(basis, 'objects');
+    let geloescht = 0;
+    let freiBytes = 0;
+
+    async function walk(dir) {
+        const entries = await fs.promises.readdir(dir, { withFileTypes: true });
+        for (const ent of entries) {
+            const voll = path.join(dir, ent.name);
+            if (ent.isDirectory()) {
+                await walk(voll);
+            } else {
+                const hash = ent.name;
+                if (!referenzen.has(hash)) {
+                    const stat = await fs.promises.stat(voll);
+                    if (!dryRun) {
+                        await fs.promises.unlink(voll);
+                    }
+                    geloescht++;
+                    freiBytes += stat.size;
+                }
+            }
+        }
+    }
+
+    await walk(objectsDir);
+    return { geloescht, freiBytes };
+}
+
+// Beim Laden des Moduls gleich prüfen, ob ein Journal zu erledigen ist
+journalWiederherstellen().catch(() => {});
+
 module.exports = {
     storeBlob,
     getBlobPath,
@@ -65,5 +140,7 @@ module.exports = {
     writeChapterShard,
     readChapterShard,
     projectKey,
-    cacheKey
+    cacheKey,
+    journalWiederherstellen,
+    garbageCollect
 };
