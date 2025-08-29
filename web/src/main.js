@@ -10914,6 +10914,12 @@ async function scanAudioDuplicates() {
 
         // Exportiert einen vollständigen Debug-Bericht als mehrere Dateien
         async function exportDebugReport() {
+            // Vor dem Export prüfen, ob die Dateisystem-API verfügbar ist
+            if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
+                showToast('Dateisystem-API nicht verfügbar', 'error');
+                return;
+            }
+
             // Zielordner vom Nutzer erfragen
             let rootDir;
             try {
@@ -11011,6 +11017,12 @@ async function scanAudioDuplicates() {
 // =========================== WAEHLEPROJEKTORDNER START =======================
 async function waehleProjektOrdner() {
     try {
+        // Prüfen, ob die Dateisystem-API verfügbar ist
+        if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
+            showToast('Dateisystem-API nicht verfügbar', 'error');
+            return;
+        }
+
         // Nutzer wählt den Wurzelordner aus
         projektOrdnerHandle = await window.showDirectoryPicker();
         await saveProjectFolderHandle(projektOrdnerHandle); // Merken des Ordners
@@ -11082,6 +11094,10 @@ async function waehleProjektOrdner() {
         updateProjectFolderPathDisplay();
     } catch (e) {
         console.error('Ordnerauswahl fehlgeschlagen:', e);
+        if (e.name !== 'AbortError') {
+            // Nutzerfreundliche Fehlermeldung bei verweigertem Zugriff
+            showToast('Browser verweigert den Zugriff auf das Dateisystem', 'error');
+        }
     }
 }
 // =========================== WAEHLEPROJEKTORDNER END =========================

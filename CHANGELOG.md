@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.233
+* Ordnerauswahl verweigerte Dateisystem-Zugriffe und zeigt nun eine verständliche Fehlermeldung.
 ## 🛠️ Patch in 1.40.232
 * Debug-Bericht-Knopf entfernt nicht serialisierbare Felder und erzeugt wieder getrennte Dateien.
 ## 🛠️ Patch in 1.40.231
