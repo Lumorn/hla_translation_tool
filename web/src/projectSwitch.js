@@ -19,6 +19,16 @@ const ui = {
 };
 
 /**
+ * Blendet einen globalen Ladebalken ein oder aus,
+ * um weitere Projektwechsel während des Ladens zu verhindern.
+ */
+function setBusy(aktiv) {
+  const overlay = document.getElementById('projectLoadingOverlay');
+  if (!overlay) return; // Falls Oberfläche fehlt, nichts tun
+  overlay.classList.toggle('hidden', !aktiv);
+}
+
+/**
  * Führt einen sicheren Projektwechsel durch.
  * Alle laufenden Vorgänge werden abgebrochen und Caches geleert.
  */

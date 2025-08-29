@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.240
+* Ladebalken beim Projektwechsel blockiert weitere Wechsel, bis das Projekt vollständig geladen ist.
+
 ## 🛠️ Patch in 1.40.239
 * Sicherer Projekt- und Speicherwechsel verhindert Race-Conditions und repariert verwaiste Einträge.
 
