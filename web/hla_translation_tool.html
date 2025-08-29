@@ -71,6 +71,14 @@
                     <span id="storageModeIndicator"></span>
                     <button id="switchStorageButton" class="btn btn-secondary">...</button>
                     <button id="openStorageFolderButton" class="btn btn-secondary" onclick="openStorageFolder()">📂 Speicherordner</button>
+                    <div id="storageMonitor" style="min-width:150px;">
+                        <div class="progress-bar"><div class="progress-fill" id="storageUsageFill"></div></div>
+                        <div class="storage-info">
+                            <span id="storageUsageLabel"></span>
+                            <span id="lastCleanupLabel"></span>
+                            <button id="cleanupButton" class="btn btn-secondary">Aufräumen</button>
+                        </div>
+                    </div>
                     <div id="migration-status"></div>
                 </div>
             </div>

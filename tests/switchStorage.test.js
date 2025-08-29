@@ -55,7 +55,7 @@ test('switchStorage lädt gewählten Speicher ohne Migration neu', async () => {
 
     expect(window.migrateStorage).not.toHaveBeenCalled();
     expect(localStorage.getItem('hla_storageMode')).toBe('indexedDB');
-    expect(document.getElementById('storageModeIndicator').textContent).toContain('Neues System');
+    expect(document.getElementById('storageModeIndicator').textContent).toContain('Datei-Modus');
     expect(window.projects).toEqual([]);
 
     // Neues Projekt im neuen Speicher anlegen und zurückwechseln
@@ -80,5 +80,5 @@ test('updateStatus ergänzt aktiven Speichermodus', () => {
     const statusCode = hauptskript.slice(statusStart, statusEnd);
     eval(statusCode);
     updateStatus('Datei gespeichert');
-    expect(document.getElementById('statusText').textContent).toBe('Datei gespeichert (im Neues System)');
+    expect(document.getElementById('statusText').textContent).toBe('Datei gespeichert (im Datei-Modus (OPFS))');
 });

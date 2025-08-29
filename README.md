@@ -987,6 +987,10 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 * **🧹 Duplikate bereinigen** bei großen Datenbanken
 * **🚫 Unnötige Dateien ignorieren** für bessere Übersicht
 * **📊 Level‑Statistiken nutzen** für Fortschritts‑Übersicht
+* **🪟 Virtuelle Listen** für sehr lange Tabellen
+* **🔎 Lokale Suchindizes** je Projekt
+* **💽 Speicher‑Monitor** mit Aufräumen‑Knopf
+* **🛈 Klare Anzeige des Speichermodus** in Toolbar und Statusleiste
 
 ---
 
