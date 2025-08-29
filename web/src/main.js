@@ -92,10 +92,21 @@ async function visualizeFileStorage(key) {
     return { local: !!localValue, indexedDB: !!indexedValue };
 }
 
+// Öffnet den Ordner des neuen Speichersystems im Dateimanager
+async function openStorageFolder() {
+    if (!debugInfo.userDataPath || !window.electronAPI) {
+        showToast('Pfad zum neuen Speichersystem ist nicht verfügbar');
+        return;
+    }
+    const pfad = window.electronAPI.join(debugInfo.userDataPath, 'IndexedDB');
+    await window.electronAPI.openPath(pfad);
+}
+
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
 window.visualizeFileStorage = visualizeFileStorage;
+window.openStorageFolder = openStorageFolder;
 window.addEventListener('DOMContentLoaded', () => {
     const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     updateStorageIndicator(mode);
