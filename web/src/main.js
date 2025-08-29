@@ -10709,16 +10709,15 @@ async function scanAudioDuplicates() {
             }
         });
 
-        // Öffnet ein Fenster mit detaillierten Debug-Informationen
-        async function openDebugInfo() {
-            // Zu sammelnde Informationen
+        // Sammelt Informationen über System, Pfade und Browser
+        async function collectDebugInfo() {
+            // Grundobjekt für alle gesammelten Daten
             let info = {};
             if (window.electronAPI && window.electronAPI.getDebugInfo) {
-                // Desktop-Version liefert Pfad- und System-Informationen
+                // Desktop-Version: Anfrage an den Hauptprozess
                 info = await window.electronAPI.getDebugInfo();
             } else {
-                // Fallback für die Browser-Version ohne Electron
-                // Basisinformationen ohne Electron-API
+                // Browser-Fallback ohne Electron
                 info = {
                     Hinweis: 'Browser-Version ohne Electron-API',
                     appVersion: APP_VERSION,
@@ -10730,7 +10729,7 @@ async function scanAudioDuplicates() {
                     'Im Browser gestartet': true
                 };
 
-                // Zusätzliche Infos, wenn ein Node-Process existiert
+                // Zusätzliche Node-Informationen, falls vorhanden
                 if (typeof process !== 'undefined') {
                     info.nodeVersion = process.version;
                     if (process.versions) {
@@ -10740,19 +10739,19 @@ async function scanAudioDuplicates() {
                     info['Process-Plattform'] = process.platform;
                     info['CPU-Architektur'] = process.arch;
 
-                    // Renderer-spezifische Eigenschaften
+                    // Renderer-spezifische Flags
                     if ('type' in process) info['Process-Typ'] = process.type;
                     if ('contextIsolated' in process) info['Context Isolation'] = String(process.contextIsolated);
                     if ('sandboxed' in process) info['Sandbox'] = String(process.sandboxed);
 
-                    // Ein paar häufige Umgebungsvariablen
+                    // Häufige Umgebungsvariablen
                     if (process.env.NODE_ENV) info['NODE_ENV'] = process.env.NODE_ENV;
                     if (process.env.ELECTRON_RUN_AS_NODE) info['ELECTRON_RUN_AS_NODE'] = process.env.ELECTRON_RUN_AS_NODE;
                     if (process.env.ELECTRON_DISABLE_SANDBOX) info['ELECTRON_DISABLE_SANDBOX'] = process.env.ELECTRON_DISABLE_SANDBOX;
                 }
             }
 
-            // Allgemeine Browser-Informationen
+            // Allgemeine Browserinformationen
             info['Fenstergröße'] = `${window.innerWidth}x${window.innerHeight}`;
             info['Bildschirmauflösung'] = `${screen.width}x${screen.height}`;
             info['Seitenzustand'] = document.readyState;
@@ -10764,21 +10763,25 @@ async function scanAudioDuplicates() {
             info['Electron-API vorhanden'] = isElectron;
             info['Im Browser gestartet'] = !isElectron;
 
-            // Debug-Konsole auslesen
+            // Letzte Zeilen der Debug-Konsole
             const debugText = document.getElementById('debugConsole')?.textContent || '';
             if (debugText.trim()) {
                 info['Debug-Konsole'] = debugText.trim().split('\n').slice(-10).join('\n');
             }
 
-            // setup.log wurde aus dem Hauptprozess geliefert
+            // setup.log aus dem Hauptprozess umbenennen
             if (info.setupLog) {
                 info['setup.log'] = info.setupLog;
                 delete info.setupLog;
             }
+            return info;
+        }
+
+        // Öffnet ein Fenster mit detaillierten Debug-Informationen
+        async function openDebugInfo() {
+            const info = await collectDebugInfo();
 
             // Versionsinformationen separat sammeln
-            // Versionen der genutzten Plattformen sammeln; bei fehlendem
-            // Node-Prozess werden leere Platzhalter verwendet
             const nodeDefined = typeof process !== 'undefined';
             const versionInfo = {
                 'App-Version': info.appVersion ?? info['App-Version'] ?? APP_VERSION,
@@ -10791,7 +10794,7 @@ async function scanAudioDuplicates() {
             delete info.electronVersion; delete info['Electron-Version'];
             delete info.chromeVersion; delete info['Chrome-Version'];
 
-            // Hilfsfunktion für die Anzeige von Werten
+            // Hilfsfunktion zur Anzeige
             function formatVal(v) {
                 if (v === true) return '✔️';
                 if (v === false) return '✖️';
@@ -10799,7 +10802,7 @@ async function scanAudioDuplicates() {
                 return escapeHtml(String(v));
             }
 
-            // Kategorien für eine bessere Struktur
+            // Kategorien für eine übersichtliche Darstellung
             const categories = [
                 { title: 'Programmversionen', data: versionInfo },
                 {
@@ -10830,7 +10833,7 @@ async function scanAudioDuplicates() {
                         'Download-Pfad': info.downloadWatchPath
                     }
                 },
-                { 
+                {
                     title: 'Ausführungspfade & Scripts',
                     data: {
                         'Arbeitsverzeichnis': info.cwd,
@@ -10876,7 +10879,7 @@ async function scanAudioDuplicates() {
                 }
             ];
 
-            // HTML für die Anzeige aufbauen
+            // HTML für die Anzeige bauen
             let html = '<h3>Debug-Informationen</h3>';
             categories.forEach(cat => {
                 html += `<h4>${cat.title}</h4><ul class="debug-info-list">`;
@@ -10888,7 +10891,7 @@ async function scanAudioDuplicates() {
             html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
             ui.showModal(html);
 
-            // Kopier-Knopf mit Funktion belegen
+            // Kopier-Knopf zum schnellen Übernehmen in die Zwischenablage
             const copyBtn = document.getElementById('copyDebugInfoBtn');
             if (copyBtn) {
                 copyBtn.addEventListener('click', (e) => {
@@ -10904,6 +10907,31 @@ async function scanAudioDuplicates() {
                 });
             }
         }
+
+        // Exportiert einen vollständigen Debug-Bericht als JSON-Datei
+        async function exportDebugReport() {
+            const data = await collectDebugInfo();
+            // Projekt- und Datenbankzustände hinzufügen
+            data.projects = projects;
+            data.filePathDatabase = filePathDatabase;
+            data.textDatabase = textDatabase;
+            // Alle lokalen Speicherwerte sichern
+            const ls = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k) ls[k] = localStorage.getItem(k);
+            }
+            data.localStorage = ls;
+
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `debug_report_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        window.exportDebugReport = exportDebugReport;
 
         // Zeigt oder versteckt das Einstellungen-Menü
         function toggleSettingsMenu() {
