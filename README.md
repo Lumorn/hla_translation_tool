@@ -21,6 +21,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * [📥 Import](#-import)
 * [📁 Ordner-Management](#-ordner-management)
 * [💾 Backup](#-backup)
+* [🗃️ Speichersysteme](#-speichersysteme)
 * [🗂️ Projektstruktur](#-projektstruktur)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
@@ -810,6 +811,19 @@ Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal
 ## 💾 Backup
 
 Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben. Beim Erstellen eines Sound-Backups erscheint jetzt ein Fortschrittsbalken und die Liste zeigt Datum sowie Dateigröße jeder ZIP-Datei an.
+
+
+## 🗃️ Speichersysteme
+
+Beim ersten Start erscheint ein Dialog zur Wahl des Speichersystems. Zur Auswahl stehen der klassische `localStorage` und ein neues, verschlüsseltes `IndexedDB`-Backend. Alle Zugriffe erfolgen über einen gemeinsamen Adapter, der die gewählte Variante kapselt.
+
+### Auswahl
+
+Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Entscheidung. Ein späterer Wechsel ist jederzeit möglich.
+
+### Migration
+
+Über den Knopf **Daten migrieren** werden sämtliche Einträge vom bisherigen Backend in das neue System kopiert. Die Originaldaten bleiben dabei erhalten, sodass ein Wechsel gefahrlos möglich ist.
 
 
 ## 🗂️ Projektstruktur

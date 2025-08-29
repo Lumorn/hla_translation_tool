@@ -1,18 +1,27 @@
 const { expect, test } = require('@jest/globals');
 
-function loadMain(store={}) {
+function loadMain(store = {}) {
     jest.resetModules();
     global.document = { getElementById: jest.fn(() => null), addEventListener: jest.fn() };
     global.window = { addEventListener: jest.fn() };
     let local = { ...store };
+    function createStorage() {
+        return {
+            getItem: key => local[key] || null,
+            setItem: (k, v) => { local[k] = v; },
+            removeItem: k => { delete local[k]; },
+            clear: () => { local = {}; },
+            keys: () => Object.keys(local)
+        };
+    }
     global.localStorage = {
         getItem: key => local[key] || null,
-        setItem: (k,v) => { local[k] = v; },
+        setItem: (k, v) => { local[k] = v; },
         removeItem: k => { delete local[k]; },
         clear: () => { local = {}; }
     };
-    global.storage = global.localStorage;
     global.window.localStorage = global.localStorage;
+    global.storage = createStorage();
     return require('../web/src/main.js');
 }
 

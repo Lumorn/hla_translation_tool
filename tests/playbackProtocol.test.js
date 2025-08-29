@@ -4,6 +4,16 @@
 
 let startProjectPlayback, stopProjectPlayback, __setFiles, __setDeAudioCache, __getPlaybackProtocol;
 
+function createStorage() {
+    return {
+        getItem: k => localStorage.getItem(k),
+        setItem: (k, v) => localStorage.setItem(k, v),
+        removeItem: k => localStorage.removeItem(k),
+        clear: () => localStorage.clear(),
+        keys: () => Object.keys(localStorage)
+    };
+}
+
 function loadMain() {
     jest.resetModules();
     const doc = global.document;
@@ -20,8 +30,8 @@ function loadMain() {
     global.window = { addEventListener: jest.fn() };
     global.URL = { createObjectURL: jest.fn(()=>'blob:'), revokeObjectURL: jest.fn() };
     global.localStorage = { getItem: () => null };
-    global.storage = global.localStorage;
     global.window.localStorage = global.localStorage;
+    global.storage = createStorage('localStorage');
     ({ startProjectPlayback, stopProjectPlayback, __setFiles, __setDeAudioCache, __getPlaybackProtocol } = require('../web/src/main.js'));
 }
 

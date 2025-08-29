@@ -1,5 +1,15 @@
 let insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject;
 
+function createStorage() {
+    return {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+        clear: () => {},
+        keys: () => []
+    };
+}
+
 function loadMain() {
     jest.resetModules();
     global.window = {
@@ -24,8 +34,8 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
-    global.storage = global.localStorage;
     global.window.localStorage = global.localStorage;
+    global.storage = createStorage();
     ({ insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject } = require('../web/src/main.js'));
     __setRenderFileTable(jest.fn());
     __setSaveCurrentProject(jest.fn());

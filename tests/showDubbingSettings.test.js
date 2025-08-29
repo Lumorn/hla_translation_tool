@@ -2,12 +2,23 @@
  * @jest-environment jsdom
  */
 
+let showDubbingSettings;
+
 // Konsolenausgaben unterdrücken
 beforeAll(() => {
     document.addEventListener = jest.fn();
     localStorage.removeItem('hla_voiceSettings');
     localStorage.removeItem('hla_elevenLabsApiKey');
-    global.storage = global.localStorage;
+    function createStorage() {
+        return {
+            getItem: k => localStorage.getItem(k),
+            setItem: (k, v) => localStorage.setItem(k, v),
+            removeItem: k => localStorage.removeItem(k),
+            clear: () => localStorage.clear(),
+            keys: () => Object.keys(localStorage)
+        };
+    }
+    global.storage = createStorage();
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'warn').mockImplementation(() => {});
     global.currentDubMode = 'beta';
@@ -19,8 +30,6 @@ beforeAll(() => {
     global.updateVoiceSettingsDisplay = jest.fn();
     ({ showDubbingSettings } = require('../web/src/dubbing.js'));
 });
-
-let showDubbingSettings;
 
 test('Dialog wird sichtbar angezeigt', async () => {
     await showDubbingSettings(1);
