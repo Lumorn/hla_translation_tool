@@ -71,9 +71,69 @@ async function switchStorage(targetMode) {
     }
 }
 
+// Ermittelt, in welchem Speichersystem ein Projekt gespeichert ist
+async function getProjectStorageStatus(projectId) {
+    const local   = window.createStorage('localStorage');
+    const indexed = window.createStorage('indexedDB');
+    const [localProjects, indexedProjects] = await Promise.all([
+        local.getItem('hla_projects'),
+        indexed.getItem('hla_projects')
+    ]);
+    let inLocal = false, inIndexed = false;
+    try {
+        inLocal = JSON.parse(localProjects || '[]').some(p => p.id === projectId);
+    } catch {}
+    try {
+        inIndexed = JSON.parse(indexedProjects || '[]').some(p => p.id === projectId);
+    } catch {}
+    return { local: inLocal, indexedDB: inIndexed };
+}
+
+// Ermittelt den Speicherort für einen Datei-Eintrag ("Ordner/Datei")
+async function getFileStorageStatus(fileKey) {
+    const local   = window.createStorage('localStorage');
+    const indexed = window.createStorage('indexedDB');
+    const [localDB, indexedDB] = await Promise.all([
+        local.getItem('hla_textDatabase'),
+        indexed.getItem('hla_textDatabase')
+    ]);
+    let inLocal = false, inIndexed = false;
+    try {
+        inLocal = !!JSON.parse(localDB || '{}')[fileKey];
+    } catch {}
+    try {
+        inIndexed = !!JSON.parse(indexedDB || '{}')[fileKey];
+    } catch {}
+    return { local: inLocal, indexedDB: inIndexed };
+}
+
+// Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an
+async function visualizeFileStorage(key) {
+    // Beide Backends erstellen, ohne den globalen Speicher zu ändern
+    const local = window.createStorage('localStorage');
+    const indexed = window.createStorage('indexedDB');
+    const localValue = await local.getItem(key);
+    const indexedValue = await indexed.getItem(key);
+    let message;
+    if (indexedValue && !localValue) {
+        message = `„${key}“ liegt im neuen Speichersystem.`;
+    } else if (!indexedValue && localValue) {
+        message = `„${key}“ liegt noch im LocalStorage.`;
+    } else if (indexedValue && localValue) {
+        message = `„${key}“ existiert in beiden Speichersystemen.`;
+    } else {
+        message = `„${key}“ wurde in keinem Speichersystem gefunden.`;
+    }
+    updateStatus(message);
+    return { local: !!localValue, indexedDB: !!indexedValue };
+}
+
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
+window.visualizeFileStorage = visualizeFileStorage;
+window.getProjectStorageStatus = getProjectStorageStatus;
+window.getFileStorageStatus = getFileStorageStatus;
 window.addEventListener('DOMContentLoaded', () => {
     const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     updateStorageIndicator(mode);
@@ -2169,6 +2229,7 @@ function renderProjects() {
                 <div class="project-row">
                     <div class="top-row">
                         <span class="project-title">${p.levelPart}. ${p.name}</span>
+                        <span class="storage-badge"></span>
                         <span class="badge-summary">Σ ${stats.completedPercent}%</span>
                         <span class="star ${scoreClass(stats.scoreMin)}">★ ${stats.scoreMin}</span>
                     </div>
@@ -2198,6 +2259,21 @@ function renderProjects() {
             card.addEventListener('dragend',   handleProjectDragEnd);
             card.addEventListener('dragenter', handleProjectDragEnter);
             card.addEventListener('dragleave', handleProjectDragLeave);
+
+            // Speicher-Badge mit aktuellem Speicherort füllen
+            const badge = card.querySelector('.storage-badge');
+            getProjectStorageStatus(p.id).then(stat => {
+                const txt = stat.indexedDB && stat.local ? 'Beide'
+                            : stat.indexedDB ? 'Neu'
+                            : stat.local ? 'Alt'
+                            : 'Keins';
+                badge.textContent = txt;
+                badge.classList.add(
+                    stat.indexedDB && stat.local ? 'both' :
+                    stat.indexedDB ? 'new' :
+                    stat.local ? 'local' : 'none'
+                );
+            });
 
             wrap.appendChild(card);
         });
@@ -4021,13 +4097,25 @@ async function renderFileTableWithOrder(sortedFiles) {
             else if (lastFolder.toLowerCase().includes('zombie')) folderColor = '#424242';
             else folderColor = '#333';
         }
+
+        // Speicherstatus für diese Datei ermitteln
+        const fileKey = `${file.folder}/${file.filename}`;
+        const stat = await getFileStorageStatus(fileKey);
+        const badgeTxt = stat.indexedDB && stat.local ? 'Beide'
+                        : stat.indexedDB ? 'Neu'
+                        : stat.local ? 'Alt'
+                        : 'Keins';
+        const badgeCls = stat.indexedDB && stat.local ? 'both'
+                        : stat.indexedDB ? 'new'
+                        : stat.local ? 'local'
+                        : 'none';
         
 return `
     <!-- Neue kompakte Zeile mit zusammengefassten Spalten -->
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
         <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Klick um Position zu ändern">${originalIndex + 1}</td>
-        <td class="filename-cell clickable" onclick="checkFilename(${file.id}, event)">${file.filename}</td>
+        <td class="filename-cell clickable" onclick="checkFilename(${file.id}, event)">${file.filename}<span class="storage-badge ${badgeCls}">${badgeTxt}</span></td>
         <td class="folder-cell">
             <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"

@@ -158,6 +158,20 @@ th:nth-child(8) {
             flex-wrap: wrap;
         }
 
+/* Anzeige des Speichersystems je Projekt/Datei */
+.storage-badge {
+    margin-left: 6px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: 10px;
+    background: #555;
+    color: #fff;
+}
+.storage-badge.new { background: #2e7d32; }
+.storage-badge.local { background: #616161; }
+.storage-badge.both { background: #1565c0; }
+.storage-badge.none { background: #b71c1c; }
+
         .topbar {
             justify-content: space-between;
         }

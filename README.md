@@ -831,6 +831,12 @@ Der Startdialog fragt einmalig nach dem bevorzugten Modus und merkt sich die Ent
 
 In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speicher. Ein danebenliegender Knopf wechselt auf Wunsch das System, ohne dabei Daten zu kopieren. Für eine Übernahme steht weiterhin **Daten migrieren** bereit. Beim Wechsel erscheinen kurze Hinweise, und die Statusleiste nennt beim Speichern das aktive System.
 
+### Kontrolle
+
+Über `visualizeFileStorage('schlüssel')` lässt sich prüfen, ob ein bestimmter Eintrag ausschließlich im neuen Speichersystem liegt. Das Ergebnis wird im Statusbereich angezeigt.
+
+Zusätzlich zeigen in der Projekt- und Dateiliste kleine Badges den aktuellen Speicherort jedes Elements an. Die Kennzeichnungen wechseln zwischen „Neu“, „Alt“, „Beide“ oder „Keins“ und aktualisieren sich automatisch beim Wechsel des Speichermodus.
+
 
 ## 🗂️ Projektstruktur
 
