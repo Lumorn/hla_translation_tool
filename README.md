@@ -42,6 +42,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Bericht mit Umgebung gespeichert werden.
+* **Abgesicherte Ordnerauswahl:** Verweigert der Browser den Dateisystem-Zugriff, erscheint eine verständliche Fehlermeldung.
 * **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; danach prüft das Tool Pflichtfelder und entfernt unbekannte Datei-IDs.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
