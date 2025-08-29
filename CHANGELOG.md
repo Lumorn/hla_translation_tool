@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.196
+* UI-Knopf „Migration starten“ exportiert alle LocalStorage-Einträge in eine Datei und zeigt Statusmeldungen an.
 ## 🛠️ Patch in 1.40.195
 * Projektdaten lassen sich per File System Access API als JSON speichern und wieder laden.
 * `migrateLocalStorageToFile` exportiert bestehende LocalStorage-Daten in das neue Dateiformat.
