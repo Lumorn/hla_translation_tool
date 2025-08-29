@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.199
+* Migration zeigt bei verweigertem Dateizugriff eine verständliche Fehlermeldung an.
 ## 🛠️ Patch in 1.40.198
 * Migration fängt fehlende File-System-API ab und zeigt eine verständliche Fehlermeldung an.
 ## 🛠️ Patch in 1.40.197

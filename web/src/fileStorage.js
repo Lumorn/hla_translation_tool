@@ -42,16 +42,17 @@ window.migrateLocalStorageToFile = async function() {
     if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
         throw new Error('Dateisystem-API wird in diesem Kontext nicht unterstützt');
     }
-    // Ordner wählen, in dem die Datei landen soll
-    let dirHandle;
+    // Ordner wählen und Schreibzugriff anfordern
+    let dirHandle, fileHandle, writable;
     try {
         dirHandle = await window.showDirectoryPicker();
+        fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
+        writable = await fileHandle.createWritable();
     } catch (err) {
-        // Verständliche Fehlermeldung, falls der Zugriff verweigert wird
+        // Verständliche Fehlermeldung, falls der Zugriff verweigert oder blockiert wird
         throw new Error('Dateisystem-Zugriff verweigert oder vom Browser blockiert');
     }
-    const fileHandle = await dirHandle.getFileHandle('hla_daten.json', { create: true });
-    const writable = await fileHandle.createWritable();
+    // Daten schreiben und Datei schließen
     await writable.write(JSON.stringify(data, null, 2));
     await writable.close();
     // LocalStorage aufräumen
