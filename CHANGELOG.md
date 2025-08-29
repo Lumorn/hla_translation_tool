@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.201
+* `exportLocalStorageToFile` sichert LocalStorage-Einträge ohne sie zu löschen; der alte Name `migrateLocalStorageToFile` bleibt als Alias erhalten.
 ## 🛠️ Patch in 1.40.200
 * Migration speichert bei verweigertem Dateizugriff automatisch im internen Browser-Speicher (OPFS).
 ## 🛠️ Patch in 1.40.199

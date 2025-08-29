@@ -25,7 +25,7 @@ beforeEach(() => {
     });
 });
 
-test('startMigration exportiert alle Einträge und leert den Speicher', async () => {
+test('startMigration exportiert alle Einträge und belässt den Speicher', async () => {
     localStorage.setItem('projektA', 'datenA');
     localStorage.setItem('projektB', 'datenB');
 
@@ -39,10 +39,9 @@ test('startMigration exportiert alle Einträge und leert den Speicher', async ()
     const gespeichert = JSON.parse(gespeicherterText);
     expect(gespeichert.projektA).toBe('datenA');
     expect(gespeichert.projektB).toBe('datenB');
-    expect(localStorage.length).toBe(0);
+    expect(localStorage.length).toBe(2);
     const status = document.getElementById('migration-status').textContent;
-    expect(status).toContain('Migration abgeschlossen');
-    expect(status).toContain('Export');
+    expect(status).toContain('Export abgeschlossen');
     expect(status).toContain('2 → 2');
 });
 
@@ -59,7 +58,7 @@ test('startMigration meldet fehlende File-System-API verständlich', async () =>
     await window.startMigration();
 
     const status = document.getElementById('migration-status').textContent;
-    expect(status).toContain('Fehler bei der Migration');
+    expect(status).toContain('Fehler beim Export');
     expect(status).toContain('Dateisystem-API');
 });
 
@@ -96,8 +95,8 @@ test('startMigration nutzt OPFS-Fallback bei verweigertem Dateizugriff', async (
 
     const gespeichert = JSON.parse(gespeicherterText);
     expect(gespeichert.projektA).toBe('datenA');
-    expect(localStorage.length).toBe(0);
+    expect(localStorage.length).toBe(1);
     const status = document.getElementById('migration-status').textContent;
-    expect(status).toContain('Migration abgeschlossen');
+    expect(status).toContain('Export abgeschlossen');
     expect(status).toContain('OPFS');
 });
