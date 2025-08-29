@@ -7,6 +7,7 @@ beforeAll(() => {
     document.addEventListener = jest.fn();
     localStorage.removeItem('hla_voiceSettings');
     localStorage.removeItem('hla_elevenLabsApiKey');
+    global.storage = global.localStorage;
     jest.spyOn(console, 'log').mockImplementation(() => {});
     jest.spyOn(console, 'warn').mockImplementation(() => {});
     global.currentDubMode = 'beta';

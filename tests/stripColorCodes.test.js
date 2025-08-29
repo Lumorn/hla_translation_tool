@@ -10,6 +10,8 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
+    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
     ({ stripColorCodes } = require('../web/src/main.js'));
 }
 

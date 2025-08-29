@@ -8,6 +8,13 @@ beforeEach(() => {
     document.body.innerHTML = '<div id="migration-status"></div>';
     // LocalStorage leeren
     localStorage.clear();
+    global.storage = {
+        getItem: k => localStorage.getItem(k),
+        setItem: (k,v) => localStorage.setItem(k,v),
+        removeItem: k => localStorage.removeItem(k),
+        clear: () => localStorage.clear(),
+        keys: () => Object.keys(localStorage)
+    };
     // Sicherstellen, dass der Kontext als sicher gilt
     window.isSecureContext = true;
     // Standardmäßig keine OPFS-Unterstützung

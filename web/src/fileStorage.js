@@ -29,14 +29,14 @@ window.loadProjectFromFile = async function() {
     return JSON.parse(text);
 };
 
-// Überträgt alle Einträge aus dem LocalStorage in eine Datei, belässt die Originaldaten jedoch im Speicher
+// Überträgt alle Einträge aus dem aktuellen Speicher in eine Datei, belässt die Originaldaten jedoch im Speicher
 // Die Daten werden in einem vom Nutzer gewählten Ordner als "hla_daten.json" gespeichert
 // und die Funktion liefert Informationen über den Speicherort zurück
 window.exportLocalStorageToFile = async function() {
     const data = {};
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        data[key] = localStorage.getItem(key);
+    const keys = await storage.keys();
+    for (const key of keys) {
+        data[key] = await storage.getItem(key);
     }
     // Prüfen, ob die File-System-API im aktuellen Kontext verfügbar ist
     if (
@@ -72,7 +72,7 @@ window.exportLocalStorageToFile = async function() {
 };
 
 // Lädt die exportierte Migrationsdatei aus dem internen Browser-Speicher (OPFS)
-// und ersetzt den aktuellen LocalStorage durch deren Inhalt
+// und ersetzt den aktuellen Speicher durch deren Inhalt
 window.importLocalStorageFromOpfs = async function() {
     // Sicherstellen, dass OPFS im aktuellen Kontext verfügbar ist
     if (!(navigator.storage && navigator.storage.getDirectory)) {
@@ -84,12 +84,13 @@ window.importLocalStorageFromOpfs = async function() {
     const file = await fileHandle.getFile();
     const text = await file.text();
     const data = JSON.parse(text);
-    // LocalStorage durch geladene Daten ersetzen
-    localStorage.clear();
+    // Speicher durch geladene Daten ersetzen
+    await storage.clear();
     for (const [key, value] of Object.entries(data)) {
-        localStorage.setItem(key, value);
+        await storage.setItem(key, value);
     }
-    return { count: localStorage.length, fileName: fileHandle.name };
+    const count = (await storage.keys()).length;
+    return { count, fileName: fileHandle.name };
 };
 
 // Rückwärtskompatibilität: alter Funktionsname bleibt als Alias erhalten
