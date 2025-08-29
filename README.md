@@ -839,10 +839,6 @@ In der Werkzeugleiste informiert ein Indikator über den aktuell genutzten Speic
 
 In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine Datei im neuen Speichersystem oder noch im LocalStorage gespeichert ist. Beim Wechsel des Systems aktualisiert sich die Anzeige automatisch.
 
-### Sauberer Wechsel
-
-Beim Umschalten zwischen den Speichersystemen werden nun alle internen Zwischenspeicher geleert und die globale Speicher-Referenz neu gesetzt. Dadurch bleiben altes und neues System strikt getrennt und Einträge aus dem jeweils anderen System erscheinen nicht mehr als Fragezeichen.
-
 
 ## 🗂️ Projektstruktur
 
