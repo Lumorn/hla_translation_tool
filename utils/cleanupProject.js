@@ -1,9 +1,10 @@
 const fs = require('fs');
+const { removeUnknownFileIds } = require('./removeUnknownFileIds.js');
 
 // Ein einfaches Skript zum Bereinigen von Projektdateien.
 // Erwartet zwei Argumente:
 //   1. Pfad zur Projektdatei (JSON mit "files"-Array)
-//   2. Pfad zu einer JSON-Datei mit gueltigen IDs aus der Oberflaeche
+//   2. Pfad zu einer JSON-Datei mit gültigen IDs aus der Oberfläche
 // Dateien mit unbekannten IDs werden entfernt und als Fehler protokolliert.
 
 const [,, projectPath, idsPath] = process.argv;
@@ -32,15 +33,7 @@ try {
   process.exit(1);
 }
 
-const valid = new Set(ids);
-const originalCount = Array.isArray(project.files) ? project.files.length : 0;
-project.files = (project.files || []).filter(f => {
-  if (valid.has(f.id)) {
-    return true;
-  }
-  console.error(`Unbekannte ID entfernt: ${f.id}`);
-  return false;
-});
+const removed = removeUnknownFileIds(project, ids);
 
 try {
   fs.writeFileSync(projectPath, JSON.stringify(project, null, 2), 'utf8');
@@ -49,4 +42,5 @@ try {
   process.exit(1);
 }
 
+const originalCount = project.files.length + removed;
 console.log(`Bereinigung abgeschlossen. ${project.files.length} von ${originalCount} Dateien behalten.`);

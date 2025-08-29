@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.226
+* Dateiimport validiert jetzt das Manifest und entfernt fehlende Datei-IDs.
+* Filterlogik in `cleanupProject.js` wurde in die Hilfsfunktion `removeUnknownFileIds` ausgelagert.
 ## 🛠️ Patch in 1.40.225
 * Dateiimport fängt Lese- und JSON-Fehler ab und bietet bei Problemen eine Sicherungsdatei an.
 ## 🛠️ Patch in 1.40.224

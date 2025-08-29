@@ -41,7 +41,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
-* **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; auf Wunsch lässt sich eine Sicherungsdatei auswählen.
+* **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; danach prüft das Tool Pflichtfelder und entfernt unbekannte Datei-IDs.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
@@ -1057,12 +1057,13 @@ verwendet werden, um optionale Downloads zu überspringen.
   Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
   * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
-  * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei und liefert deren Inhalt als Objekt.
+  * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei, prüft Pflichtfelder und entfernt Einträge mit unbekannter Datei-ID.
   * **`exportLocalStorageToFile()`** – exportiert alle LocalStorage-Einträge in eine Datei im gewählten Ordner und gibt den Speicherort zurück, ohne die Originaldaten zu löschen; prüft die Verfügbarkeit der File-System-API, nutzt bei verweigertem Zugriff den internen Browser-Speicher (OPFS) als Fallback und liefert nur bei fehlendem Support eine verständliche Fehlermeldung. Der frühere Funktionsname `migrateLocalStorageToFile` bleibt als Alias erhalten.
   * **`startMigration()`** – startet den Export, zeigt alte und neue Eintragsanzahl sowie den Zielordner in der Oberfläche an.
   * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
-  * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
+  * **`cleanupProject.js`** – nutzt `removeUnknownFileIds`, um Datei-IDs mit einer Liste aus der Oberfläche abzugleichen und unbekannte Einträge zu entfernen. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
+  * **`removeUnknownFileIds(project, ids, logFn)`** – Hilfsfunktion, die alle Dateien mit unbekannter ID entfernt und jede Entfernung protokolliert.
   * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, große Dateien im OPFS oder als Blob auslagert und ohne Benutzerschlüssel auskommt.
   * **`storage.capabilities`** – liefert Feature-Flags wie `blobs` (`opfs`, `file` oder `none`) und `atomicWrite`, sodass die Oberfläche fehlende OPFS-Unterstützung erkennen und ausweichen kann.
   * **`storage.runTransaction(async tx => { ... })`** – führt mehrere Schreibvorgänge gebündelt aus und bricht bei Fehlern komplett ab.
