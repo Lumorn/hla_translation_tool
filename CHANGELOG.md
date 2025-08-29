@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.223
+* Beim Wechsel des Speichersystems werden alle globalen Caches geleert, sodass keine Datenreste zwischen den Backends verbleiben.
 ## 🛠️ Patch in 1.40.222
 * Virtuelle Listen rendern nur sichtbare Zeilen und laden Daten bei Bedarf.
 * Optionaler invertierter Suchindex pro Projekt für schnelle lokale Treffer.
