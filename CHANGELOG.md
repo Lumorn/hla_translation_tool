@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.230
+* Fehlende Vorschlagsdatei bietet an, einen Debug-Bericht zu speichern.
 ## 🛠️ Patch in 1.40.229
 * Fehlermeldungen bieten an, einen Debug-Bericht mit Umgebung zu speichern.
 ## 🛠️ Patch in 1.40.228
