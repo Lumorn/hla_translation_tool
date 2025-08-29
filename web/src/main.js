@@ -10935,6 +10935,11 @@ async function scanAudioDuplicates() {
                 await writable.close();
             }
 
+            // Hilfsfunktion entfernt nicht serialisierbare Felder wie fileObject
+            function sanitize(obj) {
+                return JSON.parse(JSON.stringify(obj, (key, value) => key === 'fileObject' ? undefined : value));
+            }
+
             // Allgemeine Informationen erfassen
             const info = await collectDebugInfo();
             await saveJson(reportDir, 'info.json', info);
@@ -10943,7 +10948,7 @@ async function scanAudioDuplicates() {
             const projDir = await reportDir.getDirectoryHandle('projects', { create: true });
             for (const prj of projects) {
                 const safe = (prj.name || prj.id || 'projekt').replace(/[^a-z0-9_-]/gi, '_');
-                await saveJson(projDir, `${safe}.json`, prj);
+                await saveJson(projDir, `${safe}.json`, sanitize(prj));
             }
 
             // Große Datenbanken chunkweise sichern
@@ -10958,7 +10963,12 @@ async function scanAudioDuplicates() {
                 }
             }
 
-            await saveChunks(filePathDatabase, 'filePathDatabase');
+            // Datei-Datenbank ohne fileObject speichern
+            const cleanFilePathDB = {};
+            Object.entries(filePathDatabase).forEach(([fn, paths]) => {
+                cleanFilePathDB[fn] = paths.map(p => ({ folder: p.folder, fullPath: p.fullPath }));
+            });
+            await saveChunks(cleanFilePathDB, 'filePathDatabase');
             await saveChunks(textDatabase, 'textDatabase');
 
             // localStorage separat ablegen
