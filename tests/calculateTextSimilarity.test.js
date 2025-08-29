@@ -1,5 +1,15 @@
 let calculateTextSimilarity;
 
+function createStorage() {
+    return {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+        clear: () => {},
+        keys: () => []
+    };
+}
+
 function loadMain() {
     jest.resetModules();
     global.document = { addEventListener: jest.fn() };
@@ -10,7 +20,8 @@ function loadMain() {
         removeItem: () => {},
         clear: () => {}
     };
-    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
+    global.storage = createStorage();
     ({ calculateTextSimilarity } = require('../web/src/fileUtils.js'));
 }
 

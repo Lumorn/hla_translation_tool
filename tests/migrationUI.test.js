@@ -8,13 +8,27 @@ beforeEach(() => {
     document.body.innerHTML = '<div id="migration-status"></div>';
     // LocalStorage leeren
     localStorage.clear();
-    global.storage = {
-        getItem: k => localStorage.getItem(k),
-        setItem: (k,v) => localStorage.setItem(k,v),
-        removeItem: k => localStorage.removeItem(k),
-        clear: () => localStorage.clear(),
-        keys: () => Object.keys(localStorage)
-    };
+    function createStorage(type) {
+        if (type === 'indexedDB') throw new Error('nicht implementiert');
+        return {
+            getItem: k => localStorage.getItem(k),
+            setItem: (k, v) => localStorage.setItem(k, v),
+            removeItem: k => localStorage.removeItem(k),
+            clear: () => localStorage.clear(),
+            keys: () => Object.keys(localStorage)
+        };
+    }
+    async function migrateStorage(oldB, newB) {
+        const keys = await oldB.keys();
+        for (const k of keys) {
+            const val = await oldB.getItem(k);
+            await newB.setItem(k, val);
+        }
+        return keys.length;
+    }
+    global.storage = createStorage('localStorage');
+    window.createStorage = createStorage;
+    window.migrateStorage = migrateStorage;
     // Sicherstellen, dass der Kontext als sicher gilt
     window.isSecureContext = true;
     // Standardmäßig keine OPFS-Unterstützung
@@ -144,15 +158,6 @@ test('migrateData überträgt alle Schlüssel in das neue Backend', async () => 
 
     const newData = {};
     window.createStorage = type => {
-        if (type === 'localStorage') {
-            return {
-                getItem: k => localStorage.getItem(k),
-                setItem: (k, v) => localStorage.setItem(k, v),
-                removeItem: k => localStorage.removeItem(k),
-                clear: () => localStorage.clear(),
-                keys: () => Object.keys(localStorage)
-            };
-        }
         if (type === 'indexedDB') {
             return {
                 getItem: k => newData[k],
@@ -162,15 +167,13 @@ test('migrateData überträgt alle Schlüssel in das neue Backend', async () => 
                 keys: () => Object.keys(newData)
             };
         }
-    };
-    // Einfache Migration wie im Adapter
-    window.migrateStorage = async (oldB, newB) => {
-        const keys = await oldB.keys();
-        for (const k of keys) {
-            const val = await oldB.getItem(k);
-            await newB.setItem(k, val);
-        }
-        return keys.length;
+        return {
+            getItem: k => localStorage.getItem(k),
+            setItem: (k, v) => localStorage.setItem(k, v),
+            removeItem: k => localStorage.removeItem(k),
+            clear: () => localStorage.clear(),
+            keys: () => Object.keys(localStorage)
+        };
     };
 
     const migrationUI = fs.readFileSync(path.join(__dirname, '../web/src/migrationUI.js'), 'utf8');

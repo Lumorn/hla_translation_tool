@@ -22,24 +22,35 @@ afterEach(() => {
 let createDubbingCSV;
 let startDubbing;
 let validateCsv;
-let storage;
+let storeData;
+
+function createStorage() {
+    return {
+        getItem: key => storeData[key] || null,
+        setItem: (k, v) => { storeData[k] = v; },
+        removeItem: k => { delete storeData[k]; },
+        clear: () => { storeData = {}; },
+        keys: () => Object.keys(storeData)
+    };
+}
 
 function loadMain(lineEnd) {
     jest.resetModules();
-    storage = {};
-    if (lineEnd) storage['hla_lineEnding'] = lineEnd;
+    storeData = {};
+    if (lineEnd) storeData['hla_lineEnding'] = lineEnd;
     global.document = { addEventListener: jest.fn() };
     global.document.getElementById = jest.fn(() => null);
     global.window = { addEventListener: jest.fn() };
     global.csvLineEnding = lineEnd || 'LF';
     global.currentDubMode = 'beta';
     global.localStorage = {
-        getItem: key => storage[key] || null,
-        setItem: (k, v) => { storage[k] = v; },
-        removeItem: k => { delete storage[k]; },
-        clear: () => { storage = {}; }
+        getItem: key => storeData[key] || null,
+        setItem: (k, v) => { storeData[k] = v; },
+        removeItem: k => { delete storeData[k]; },
+        clear: () => { storeData = {}; }
     };
-    global.storage = global.localStorage;
+    global.window.localStorage = global.localStorage;
+    global.storage = createStorage();
     ({ createDubbingCSV, startDubbing, validateCsv } = require('../web/src/dubbing.js'));
 }
 
