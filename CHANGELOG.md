@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.209
+* IndexedDB-Backend speichert Daten jetzt unverschlüsselt ohne Benutzerschlüssel.
+* `createIndexedDbBackend` benötigt keinen Parameter mehr.
 ## 🛠️ Patch in 1.40.208
 * Anzeige des aktuellen Speichermodus mit direktem Wechsel und Migration.
 ## 🛠️ Patch in 1.40.207

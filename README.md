@@ -53,7 +53,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Schnellstart mit Cheats:** Im Dropdown lassen sich Godmode, unendliche Munition und die Entwicklerkonsole einzeln auswählen. Das Spiel startet nach Klick auf **Starten** mit allen markierten Optionen.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
-* **Wählbarer Speichermodus:** Beim ersten Start kann zwischen klassischem LocalStorage und dem neuen verschlüsselten System gewählt werden; alle Zugriffe erfolgen über einen Speicher-Adapter.
+* **Wählbarer Speichermodus:** Beim ersten Start kann zwischen klassischem LocalStorage und einem IndexedDB-System gewählt werden; alle Zugriffe erfolgen über einen Speicher-Adapter.
 * **Daten migrieren:** Ein zusätzlicher Knopf kopiert alle LocalStorage-Einträge in das neue Speicher-System.
 * **Speichermodus-Anzeige:** In der Werkzeugleiste zeigt ein Indikator das aktive System und ermöglicht den direkten Wechsel.
 * **Eigenes Wörterbuch:** Der 📚-Knopf speichert nun sowohl englisch‑deutsche Übersetzungen als auch Lautschrift.
@@ -816,7 +816,7 @@ Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist
 
 ## 🗃️ Speichersysteme
 
-Beim ersten Start erscheint ein Dialog zur Wahl des Speichersystems. Zur Auswahl stehen der klassische `localStorage` und ein neues, verschlüsseltes `IndexedDB`-Backend. Alle Zugriffe erfolgen über einen gemeinsamen Adapter, der die gewählte Variante kapselt.
+Beim ersten Start erscheint ein Dialog zur Wahl des Speichersystems. Zur Auswahl stehen der klassische `localStorage` und ein neues `IndexedDB`-Backend. Alle Zugriffe erfolgen über einen gemeinsamen Adapter, der die gewählte Variante kapselt.
 
 ### Auswahl
 
@@ -1040,4 +1040,4 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
   * **`cleanupProject.js`** – gleicht Datei-IDs mit einer Liste aus der Oberfläche ab und entfernt unbekannte Einträge. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
-  * **`createStorage(type, options)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, vor dem Speichern per AES‑GCM verschlüsselt und große Dateien im OPFS oder als Blob auslagert.
+  * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt und große Dateien im OPFS oder als Blob auslagert.

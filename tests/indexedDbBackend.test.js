@@ -1,5 +1,5 @@
 /** @jest-environment jsdom */
-// Testet das verschlüsselte IndexedDB-Backend
+// Testet das IndexedDB-Backend
 
 global.structuredClone = obj => JSON.parse(JSON.stringify(obj));
 const { indexedDB, IDBKeyRange } = require('fake-indexeddb');
@@ -29,14 +29,14 @@ beforeEach(() => {
 });
 
 test('setItem und getItem liefern gespeicherten Wert', async () => {
-    const backend = createIndexedDbBackend(new Uint8Array(16).buffer);
+    const backend = createIndexedDbBackend();
     await backend.setItem('misc:foo', 'bar');
     const wert = await backend.getItem('misc:foo');
     expect(wert).toBe('bar');
 });
 
 test('keys listet alle Schlüssel', async () => {
-    const backend = createIndexedDbBackend(new Uint8Array(16).buffer);
+    const backend = createIndexedDbBackend();
     await backend.setItem('projects:p1', 'a');
     await backend.setItem('textDB:t1', 'b');
     const schluessel = await backend.keys();
@@ -44,7 +44,7 @@ test('keys listet alle Schlüssel', async () => {
 });
 
 test('removeItem und clear löschen Einträge', async () => {
-    const backend = createIndexedDbBackend(new Uint8Array(16).buffer);
+    const backend = createIndexedDbBackend();
     await backend.setItem('misc:a', '1');
     await backend.removeItem('misc:a');
     expect(await backend.getItem('misc:a')).toBeNull();
