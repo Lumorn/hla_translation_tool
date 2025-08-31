@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.245-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.248-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -275,8 +275,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
 * **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
-* **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
-* **Störgeräusch-Standardwerte:** Im Störgeräusch-Bereich stellt **⟳ Standardwerte** die Intensität zurück.
+* **Standardwerte:** Im Hall- und Störgeräusch-Bereich setzt **⟳ Standardwerte** alle Parameter beziehungsweise die Intensität auf ihre Ausgangswerte zurück. Tooltip und Code-Kommentar erklären übereinstimmend: „Setzt nur diesen Effekt zurück.“
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Fünf Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu fünf Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall- und Störgeräusch-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
