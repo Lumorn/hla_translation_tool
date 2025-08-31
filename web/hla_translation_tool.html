@@ -630,7 +630,7 @@
     <div class="dialog-overlay hidden" id="deEditDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
-            <h3>✂️ DE-Audio bearbeiten</h3>
+            <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
             <div style="margin-bottom:15px;">
                 <div style="display:flex;flex-direction:column;gap:5px;">
                     <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
@@ -785,13 +785,13 @@
             <!-- Untere Leiste: Effekt-Toolbar links, Aktionen rechts -->
             <div class="edit-bottom">
                 <div class="effect-toolbar">
-                    <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
                     <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt anwenden</button>
                     <button id="emiEffectBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">⚡ EM-Störgeräusch anwenden</button>
+                    <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
                 </div>
                 <div class="dialog-buttons">
                     <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
-                    <button class="btn btn-secondary" onclick="applyDeEdit()" title="Bearbeitung speichern">Speichern</button>
+                    <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern">Speichern</button>
                     <button class="btn btn-secondary" onclick="closeDeEdit()" title="Fenster schließen">Abbrechen</button>
                 </div>
             </div>

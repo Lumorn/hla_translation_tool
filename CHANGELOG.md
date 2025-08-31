@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.249
+* Effekt-Toolbar im DE-Audio-Editor bleibt als Sticky-Footer sichtbar und die Buttons besitzen gleiche Breite.
+* Speichern ist nun als primärer Button hervorgehoben und Zurücksetzen fragt vor dem Wiederherstellen nach einer Bestätigung.
 ## 🛠️ Patch in 1.40.248
 * Tippfehler im vorherigen Eintrag korrigiert und Versionsabzeichen in der README auf 1.40.248 aktualisiert.
 ## 🛠️ Patch in 1.40.247

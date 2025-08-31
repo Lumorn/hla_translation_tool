@@ -1321,12 +1321,29 @@ th:nth-child(8) {
     justify-content: space-between;
     align-items: center;
     margin-top: 15px;
+    position: sticky;
+    bottom: 0;
+    background: #1a1a1a; /* bleibt beim Scrollen sichtbar */
+    padding: 10px 0;
+    border-top: 1px solid #444;
 }
 
 .effect-toolbar {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+/* Effekt-Buttons in der Toolbar gleich breit */
+.effect-toolbar .effect-btn {
+    flex: 1;
+}
+
+/* Zeitstempel der letzten Speicherung */
+#deEditDialog .save-info {
+    font-size: 0.8em;
+    margin-left: 10px;
+    color: #ccc;
 }
 
 /* Bereich zur Übernahme eines EN-Ausschnitts */
