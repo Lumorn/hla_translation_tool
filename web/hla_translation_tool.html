@@ -710,6 +710,14 @@
                 <!-- Rechte Spalte für Effekt-Einstellungen -->
                 <div class="edit-right">
 
+            <!-- Lautstärkeangleichung mit eigenem Rahmen -->
+            <fieldset class="effect-group">
+                <legend>🔊 Lautstärke angleichen</legend>
+                <div class="effect-buttons">
+                    <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
+                </div>
+            </fieldset>
+            <!-- Funkgerät-Effekt mit zugeordneten Knöpfen -->
             <fieldset class="effect-group">
                 <legend>📡 Funkgerät-Effekt</legend>
                 <div class="radio-settings">
@@ -737,6 +745,10 @@
                     <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
                 </div>
                 </div>
+                <div class="effect-buttons">
+                    <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
+                    <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Funkgeräteinstellungen zurücksetzen">⟳ Standardwerte</button>
+                </div>
             </fieldset>
             <fieldset class="effect-group">
                 <legend>🎚️ Hall-Effekt</legend>
@@ -752,7 +764,9 @@
                         <input type="number" id="hallDelay" min="0" max="500" step="10">
                     </label>
                 </div>
-                <button class="btn-reset-settings" onclick="resetHallSettings()" title="Hall-Effekt zurücksetzen">⟳ Hall-Standardwerte</button>
+                <div class="effect-buttons">
+                    <button class="btn-reset-settings" onclick="resetHallSettings()" title="Hall-Effekt zurücksetzen">⟳ Hall-Standardwerte</button>
+                </div>
             </fieldset>
             <fieldset class="effect-group">
                 <legend>⚡ EM-Störgeräusch</legend>
@@ -761,14 +775,11 @@
                         <input type="range" id="emiLevel" min="0" max="1" step="0.05">
                     </label>
                 </div>
-                <button class="btn-reset-settings" onclick="resetEmiSettings()" title="EM-Störgeräusch zurücksetzen">⟳ Standardwerte</button>
+                <div class="effect-buttons">
+                    <button id="emiEffectBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">⚡ EM-Störgeräusch</button>
+                    <button class="btn-reset-settings" onclick="resetEmiSettings()" title="EM-Störgeräusch zurücksetzen">⟳ Standardwerte</button>
+                </div>
             </fieldset>
-            <div class="effect-buttons">
-                <button id="volumeMatchBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
-                <button id="radioEffectBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
-                <button id="emiEffectBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">⚡ EM-Störgeräusch</button>
-                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Funkgeräteinstellungen zurücksetzen">⟳ Standardwerte</button>
-            </div>
                 </div> <!-- edit-right Ende -->
             </div> <!-- edit-flex Ende -->
             <div class="dialog-buttons">

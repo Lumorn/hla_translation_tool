@@ -271,9 +271,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **EM-Störgeräusch mit Intensitätsregler:** fügt elektromagnetische Störungen hinzu; die Stärke ist frei wählbar.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
-* **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
+* **Getrennte Effektbereiche:** Lautstärke angleichen sowie Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen jeweils in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
-* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
+* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen in ihren Rahmen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** steht jeweils daneben.
 * **Hall-Standardwerte:** Im Hall-Bereich setzt **⟳ Hall-Standardwerte** alle Parameter auf ihre Ausgangswerte zurück.
 * **Störgeräusch-Standardwerte:** Im Störgeräusch-Bereich stellt **⟳ Standardwerte** die Intensität zurück.
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
