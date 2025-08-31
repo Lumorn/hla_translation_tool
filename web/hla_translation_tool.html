@@ -664,12 +664,32 @@
                     </div>
                 </div>
             </div>
-            <div class="edit-range">
-                <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
-                <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
-                <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen">Auto</button>
-            </div>
-            <div class="ignore-container">
+            <div class="edit-flex">
+                <div class="edit-left">
+                    <div class="edit-range">
+                        <label>Start (ms): <input type="number" id="editStart" value="0" step="100"></label>
+                        <label>Ende (ms): <input type="number" id="editEnd" value="0" step="100"></label>
+                        <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen">Auto</button>
+                    </div>
+                    <div class="trim-options">
+                        <label title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"> ms entfernen</label>
+                    </div>
+                    <div class="stretch-options">
+                        <label title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
+                        <label class="tempo-control">Tempo:
+                            <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
+                            <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
+                            <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
+                            <span id="tempoDisplay">1.00</span>
+                        </label>
+                        <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen und anpassen">Auto</button>
+                        <button id="tempoAutoResetBtn" class="copy-btn" title="Tempo auf gespeicherten Wert zurücksetzen">Auto</button>
+                        <span id="tempoInfo" style="margin-left:10px;"></span>
+                    </div>
+                    <button class="btn btn-secondary" id="autoAdjustBtn" style="margin-top:5px;" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
+                </div>
+                <div class="edit-right">
+                    <div class="ignore-container">
                 <h4>Ignorierbereiche</h4>
                 <div id="ignoreList"></div>
                 <div class="ignore-buttons">
@@ -685,23 +705,7 @@
                     <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
                 </div>
             </div>
-            <div class="trim-options">
-                <label title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"> ms entfernen</label>
-            </div>
-            <div class="stretch-options">
-                <label title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
-                <label class="tempo-control">Tempo:
-                    <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
-                    <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
-                    <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
-                    <span id="tempoDisplay">1.00</span>
-                </label>
-                <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen und anpassen">Auto</button>
-                <button id="tempoAutoResetBtn" class="copy-btn" title="Tempo auf gespeicherten Wert zurücksetzen">Auto</button>
-                <span id="tempoInfo" style="margin-left:10px;"></span>
-            </div>
-            <button class="btn btn-secondary" id="autoAdjustBtn" style="margin-top:5px;" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
-            <hr class="effect-separator">
+            
             <fieldset class="effect-group">
                 <legend>📡 Funkgerät-Effekt</legend>
                 <div class="radio-settings">
@@ -761,6 +765,8 @@
                 <button id="emiEffectBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">⚡ EM-Störgeräusch</button>
                 <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Funkgeräteinstellungen zurücksetzen">⟳ Standardwerte</button>
             </div>
+                </div> <!-- edit-right Ende -->
+            </div> <!-- edit-flex Ende -->
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
                 <button class="btn btn-secondary" onclick="applyDeEdit()" title="Bearbeitung speichern">Speichern</button>
