@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.251
+* Abschnitt „Timing & Bereiche“ im DE-Audio-Editor nutzt jetzt ein zweispaltiges Kartenlayout, das bei schmaler Breite sauber auf eine Spalte umbricht.
 ## 🛠️ Patch in 1.40.250
 * Bereiche in EN- und DE-Wellenformen lassen sich direkt per Ziehen markieren, Start-/End-Felder synchronisieren sich bidirektional und ungültige Eingaben werden markiert.
 
