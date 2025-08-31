@@ -12746,17 +12746,25 @@ async function openDeEdit(fileId) {
 // Aktualisiert die Aktiv-Markierung der Effekt-Buttons
 function updateEffectButtons() {
     const radioBtn = document.getElementById('radioEffectBtn');
+    const radioBoxBtn = document.getElementById('radioEffectBoxBtn');
     if (radioBtn) {
         // Je nach Status den aktiven Stil setzen oder entfernen
         radioBtn.classList.toggle('active', isRadioEffect);
+    }
+    if (radioBoxBtn) {
+        radioBoxBtn.classList.toggle('active', isRadioEffect);
     }
     const hallLabel = document.getElementById('hallToggleLabel');
     if (hallLabel) {
         hallLabel.classList.toggle('active', isHallEffect);
     }
     const emiBtn = document.getElementById('emiEffectBtn');
+    const emiBoxBtn = document.getElementById('emiEffectBoxBtn');
     if (emiBtn) {
         emiBtn.classList.toggle('active', isEmiEffect);
+    }
+    if (emiBoxBtn) {
+        emiBoxBtn.classList.toggle('active', isEmiEffect);
     }
 }
 

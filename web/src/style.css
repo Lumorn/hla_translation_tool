@@ -1302,11 +1302,31 @@ th:nth-child(8) {
 }
 
 /* Gruppen für Effekt-Einstellungen */
-.edit-range,
-.effect-buttons {
+.edit-range {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
+}
+
+/* Aktionen innerhalb eines Effekt-Kastens */
+.effect-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Untere Leiste mit Effekt-Toolbar und globalen Buttons */
+.edit-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.effect-toolbar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 /* Bereich zur Übernahme eines EN-Ausschnitts */
@@ -1889,10 +1909,6 @@ th:nth-child(8) {
     overflow-y: auto;
 }
 
-/* Effekt-Knöpfe umbrechen bei schmaler Breite */
-#deEditDialog .effect-buttons {
-    flex-wrap: wrap;
-}
 .dialog-close-btn:hover{
     color:#ff6b1a;
     transform:scale(1.2);

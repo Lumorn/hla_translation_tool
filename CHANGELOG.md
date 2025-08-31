@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.244
+* DE-Audio-Editor besitzt nun eine untere Effekt-Toolbar mit schnellen Aktionsknöpfen.
+
 ## 🛠️ Patch in 1.40.243
 * DE-Audio-Editor nutzt jetzt ein dreispaltiges Layout mit scrollbaren Listen, damit sich Elemente nicht überlappen.
 ## 🛠️ Patch in 1.40.242
