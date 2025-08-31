@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.248
+* Tippfehler im vorherigen Eintrag korrigiert und Versionsabzeichen in der README auf 1.40.248 aktualisiert.
+## 🛠️ Patch in 1.40.247
+* HTML-Kommentare der Reset-Knöpfe verwenden nun durchgehend den Hinweis „Setzt nur diesen Effekt zurück“.
+## 🛠️ Patch in 1.40.246
+* Reset-Knöpfe in allen Effektbereichen heißen jetzt einheitlich **⟳ Standardwerte** und das Tooltip erläutert: „Setzt nur diesen Effekt zurück.“
 ## 🛠️ Patch in 1.40.245
 * Score-Zellen zeigen Prozentwerte mit geschütztem Leerzeichen und deutschem Dezimaltrennzeichen an.
 ## 🛠️ Patch in 1.40.244
