@@ -13459,6 +13459,18 @@ function closeDeEdit() {
 // Stellt die letzte gespeicherte Version der DE-Datei aus dem Backup wieder her
 async function resetDeEdit() {
     if (!currentEditFile) return;
+    // Liste nicht gespeicherter Schritte für Bestätigungsdialog sammeln
+    const steps = [];
+    if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push('Trimmen');
+    if (currentEditFile.ignoreRanges && currentEditFile.ignoreRanges.length) steps.push('Ignorierbereiche');
+    if (currentEditFile.silenceRanges && currentEditFile.silenceRanges.length) steps.push('Stille-Bereiche');
+    if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push('Tempo');
+    if (currentEditFile.volumeMatched) steps.push('Lautstärke angleichen');
+    if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
+    if (currentEditFile.hallEffect) steps.push('Hall-Effekt');
+    if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
+    const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
+    if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
     const relPath = getFullPath(currentEditFile);
     try {
         if (window.electronAPI && window.electronAPI.restoreDeFile) {
@@ -13688,6 +13700,13 @@ async function applyDeEdit() {
         // Änderungen sichern
         isDirty = true;
         renderFileTable();
+        // Zeitstempel setzen und Erfolg melden
+        const now = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+        const info = document.getElementById('deEditSaveInfo');
+        if (info) info.textContent = `Zuletzt gespeichert: ${now}`;
+        if (typeof showToast === 'function') {
+            showToast('DE-Audio gespeichert', 'success');
+        }
         closeDeEdit();
         updateStatus('DE-Audio bearbeitet und gespeichert');
         // Sofort speichern, damit die Bearbeitung gesichert ist
