@@ -12788,7 +12788,8 @@ async function openDeEdit(fileId) {
             } else {
                 if (startField) startField.value = Math.round(start);
                 if (endField)   endField.value = Math.round(end);
-                zoomCanvasToRange(origCanvas, start, end, editEnBuffer.length / editEnBuffer.sampleRate * 1000);
+                // Zoom der Wellenform wurde entfernt
+                // zoomCanvasToRange(origCanvas, start, end, editEnBuffer.length / editEnBuffer.sampleRate * 1000);
             }
             validateEnSelection();
             updateDeEditWaveforms();
@@ -12818,7 +12819,8 @@ async function openDeEdit(fileId) {
                     audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
                 }
             } else {
-                zoomCanvasToRange(deCanvas, start, end, editDurationMs);
+                // Zoom der Wellenform wurde entfernt
+                // zoomCanvasToRange(deCanvas, start, end, editDurationMs);
             }
             validateDeSelection();
             updateDeEditWaveforms();

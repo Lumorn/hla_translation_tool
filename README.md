@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.251-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.252-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -352,6 +352,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
 * **Mausrad:** Markiert beim Scrollen automatisch die Zeile in der Bildschirmmitte, ohne sie neu auszurichten
+* **Kein Zoom in Wellenformen:** Beim Ziehen in EN- und DE-Spuren des DE-Audio-Editors erfolgt kein automatisches Zoom mehr
 * **Zeilenauswahl:** Gewählte Zeilen werden vollständig unter dem Tabellenkopf positioniert
 * **Doppelklick:** Projekt umbenennen
 
