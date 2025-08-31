@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.242
+* DE-Audio-Editor stellt Elemente jetzt zweispaltig dar und benötigt kein Scrollen mehr.
 ## 🛠️ Patch in 1.40.241
 * Wörterbuch lädt gespeicherte Einträge wieder korrekt im Datei-Modus.
 ## 🛠️ Patch in 1.40.240
