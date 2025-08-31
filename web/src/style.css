@@ -1361,17 +1361,9 @@ th:nth-child(8) {
     justify-content: center;
 }
 
-.ignore-container { margin-bottom: 15px; }
 .ignore-row { display:flex; gap:6px; margin-bottom:4px; }
 .ignore-row input { width:70px; }
 .ignore-buttons { display:flex; gap:6px; margin:4px 0; }
-.trim-options,
-.stretch-options {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    align-items: center;
-}
 
 .stretch-options span {
     min-width: 80px;
@@ -1916,12 +1908,91 @@ th:nth-child(8) {
     flex-wrap: wrap;
 }
 
-/* Linke, mittlere und rechte Spalte des Editors */
-#deEditDialog .edit-left,
-#deEditDialog .edit-center,
+/* Rechte Spalte für Effekte */
 #deEditDialog .edit-right {
     flex: 1;
     min-width: 320px;
+}
+
+/* Grid für Timing & Bereiche */
+#deEditDialog .timing-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+#deEditDialog .timing-card {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#deEditDialog .trim-fields {
+    display: flex;
+    gap: 10px;
+}
+
+#deEditDialog .trim-fields .field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#deEditDialog .input-unit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#deEditDialog .input-unit .unit {
+    font-size: 0.9em;
+    color: #bbb;
+}
+
+#deEditDialog .checkbox-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+#deEditDialog .checkbox-line input[type="checkbox"] {
+    margin-top: 2px;
+}
+
+#deEditDialog .tempo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#deEditDialog .tempo-row .tempo-value {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #444;
+    padding: 2px;
+    border-radius: 4px;
+}
+
+#deEditDialog .tempo-auto {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#deEditDialog #tempoInfo {
+    margin-left: 10px;
+    color: #ccc;
+}
+
+#deEditDialog #autoAdjustBtn {
+    grid-column: 1 / -1;
+    width: 100%;
 }
 
 /* Listen mit fester Höhe und Scrollbar, damit nichts überlappt */
