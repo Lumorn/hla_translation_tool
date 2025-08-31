@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.252
+* Zoom-Funktion per Maus in EN- und DE-Wellenformen des DE-Audio-Editors entfernt.
 ## 🛠️ Patch in 1.40.251
 * Abschnitt „Timing & Bereiche“ im DE-Audio-Editor nutzt jetzt ein zweispaltiges Kartenlayout, das bei schmaler Breite sauber auf eine Spalte umbricht.
 ## 🛠️ Patch in 1.40.250
