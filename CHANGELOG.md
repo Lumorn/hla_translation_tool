@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.241
+* Wörterbuch lädt gespeicherte Einträge wieder korrekt im Datei-Modus.
 ## 🛠️ Patch in 1.40.240
 * Ladebalken beim Projektwechsel blockiert weitere Wechsel, bis das Projekt vollständig geladen ist.
 
