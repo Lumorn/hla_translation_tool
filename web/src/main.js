@@ -16,6 +16,8 @@ if (typeof module === 'undefined' || !module.exports) {
         window.createStorage = createStorage;
         window.migrateStorage = migrateStorage;
         window.acquireProjectLock = acquireProjectLock;
+        // Wörterbuch aus dem gewählten Speicher laden
+        await loadWordLists();
         // Bei aktivem Datei-Modus nach Altlasten im LocalStorage suchen
         if (storageMode === 'indexedDB') {
             const { cleanupLegacyLocalStorage } = await import('./storage/legacyCleanup.mjs');
@@ -40,6 +42,8 @@ if (typeof module === 'undefined' || !module.exports) {
                     storage = createStorage(mode);
                     window.storage = storage;
                     updateStorageIndicator(mode);
+                    // Nach Moduswechsel Wörterbuch neu laden
+                    loadWordLists();
                     ov.remove();
                 }
             });
@@ -102,6 +106,10 @@ async function switchStorage(targetMode) {
     // Gesicherte Lock-Einträge wiederherstellen
     for (const [key, value] of Object.entries(gesicherteLocks)) {
         window.localStorage.setItem(key, value);
+    }
+    // Wörterbuch aus neuem Speicher laden, falls Funktion vorhanden
+    if (typeof loadWordLists === 'function') {
+        await loadWordLists();
     }
     updateStorageIndicator(newMode);
     // Abschlussmeldung ausgeben
@@ -531,10 +539,32 @@ let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 let savedVideoUrl      = '';
 
 // Listen für eigene Wörter
-// Phonetische Umschrift
-let phoneticList    = JSON.parse(storage.getItem('hla_wordList') || '[]');
-// Englische Übersetzungen ins Deutsche
-let translationList = JSON.parse(storage.getItem('hla_translationList') || '[]');
+// Phonetische Umschrift und Übersetzungen werden erst nach dem Laden des Speichers gefüllt
+let phoneticList    = [];
+let translationList = [];
+
+// Lädt beide Wörterbuchlisten aus dem aktuellen Speicher
+async function loadWordLists() {
+    try {
+        // Phonetische Einträge lesen
+        const phonRaw = await storage.getItem('hla_wordList');
+        phoneticList = phonRaw ? JSON.parse(phonRaw) : [];
+    } catch (e) {
+        console.error('Phonetische Wörter konnten nicht geladen werden', e);
+        phoneticList = [];
+    }
+    try {
+        // Übersetzungen lesen
+        const transRaw = await storage.getItem('hla_translationList');
+        translationList = transRaw ? JSON.parse(transRaw) : [];
+    } catch (e) {
+        console.error('Übersetzungen konnten nicht geladen werden', e);
+        translationList = [];
+    }
+}
+
+// Beim Start initial aus dem aktuellen Speicher lesen
+loadWordLists();
 
 // Merkt das aktuell angezeigte Studio-Fenster
 let studioModal = null;
@@ -1172,8 +1202,8 @@ function deleteWordRow(btn) {
     btn.closest('tr').remove();
 }
 
-// Speichert die aktuellen Wörter in den LocalStorage
-function saveWordList() {
+// Speichert die aktuellen Wörter im aktiven Speicher
+async function saveWordList() {
     const rowsPhon = document.querySelectorAll('#phoneticTable tbody tr');
     phoneticList = Array.from(rowsPhon).map(row => {
         return {
@@ -1190,8 +1220,8 @@ function saveWordList() {
         };
     }).filter(e => e.word || e.translation);
 
-    storage.setItem('hla_wordList', JSON.stringify(phoneticList));
-    storage.setItem('hla_translationList', JSON.stringify(translationList));
+    await storage.setItem('hla_wordList', JSON.stringify(phoneticList));
+    await storage.setItem('hla_translationList', JSON.stringify(translationList));
     closeWordList();
 }
 
