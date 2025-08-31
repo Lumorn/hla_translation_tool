@@ -390,8 +390,11 @@ let editBlobUrl            = null; // aktuelle Blob-URL
 // Markierung eines EN-Ausschnitts für das Runterkopieren
 let enSelectStart          = 0;    // Start der Auswahl in ms
 let enSelectEnd            = 0;    // Ende der Auswahl in ms
-let enSelecting            = false; // Wahr während Alt+Ziehen
-let enMarkerDragging       = null; // 'start' oder 'end' beim Verschieben der Markierung
+let enSelecting            = false; // Wahr während Ziehen
+let enMarkerDragging       = null; // "start" oder "end" beim Verschieben der Markierung
+let enDragStart            = null; // Startposition beim Ziehen
+let enPrevStart            = 0;    // Vorheriger Start zur Wiederherstellung bei Klick
+let enPrevEnd              = 0;    // Vorheriges Ende zur Wiederherstellung bei Klick
 
 // Zusätzliche Marker für Ignorier-Bereiche
 let editIgnoreRanges      = [];    // Liste der zu überspringenden Bereiche
@@ -405,6 +408,39 @@ let silenceDragging       = null;  // {index, side} beim Ziehen der Stille
 let tempoFactor           = 1.0;   // Faktor für Time-Stretching
 let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
+
+let deDragStart           = null;  // Startposition beim Ziehen im DE-Wave
+let deSelecting           = false; // Wahr während Ziehen im DE-Wave
+let dePrevStartTrim       = 0;     // Vorheriger Start-Trim
+let dePrevEndTrim         = 0;     // Vorheriger End-Trim
+let activeWave            = null;  // Merkt die letzte aktive Wellenform
+let updateWaveTimer       = null;  // Debounce-Timer für die Zeichnung
+let deEditEscHandler      = null;  // Handler zum Entfernen bei ESC
+let deSelectionActive     = false; // Gibt an, ob eine DE-Markierung existiert
+
+// Aktualisierung der Wellenbilder leicht entprellen
+function scheduleWaveformUpdate() {
+    if (updateWaveTimer) clearTimeout(updateWaveTimer);
+    updateWaveTimer = setTimeout(() => updateDeEditWaveforms(), 120);
+}
+
+// Zoomt eine Canvas auf den angegebenen Bereich
+function zoomCanvasToRange(canvas, startMs, endMs, totalMs) {
+    if (!canvas) return;
+    const ratio = (endMs - startMs) / totalMs;
+    const scale = Math.min(10, 1 / ratio);
+    const selWidth = canvas.width * ratio * scale;
+    const container = canvas.parentElement;
+    const cWidth = container ? container.clientWidth : canvas.width;
+    const offset = -startMs / totalMs * canvas.width * scale + (cWidth - selWidth) / 2;
+    canvas.style.transformOrigin = '0 0';
+    canvas.style.transform = `translateX(${offset}px) scaleX(${scale})`;
+}
+
+// Setzt den Zoom einer Canvas zurück
+function resetCanvasZoom(canvas) {
+    if (canvas) canvas.style.transform = '';
+}
 
 let draggedElement         = null;
 let currentlyPlaying       = null;
@@ -12233,21 +12269,28 @@ async function openDeEdit(fileId) {
     ignoreTempStart = null;
     silenceTempStart = null;
     document.getElementById('editStart').value = editStartTrim;
-    document.getElementById('editEnd').value = editEndTrim;
+    document.getElementById('editEnd').value = editDurationMs - editEndTrim;
     document.getElementById('editStart').oninput = e => {
-        editStartTrim = parseInt(e.target.value) || 0;
-        updateDeEditWaveforms();
+        const val = parseInt(e.target.value) || 0;
+        editStartTrim = Math.max(0, Math.min(val, editDurationMs));
+        validateDeSelection();
+        scheduleWaveformUpdate();
     };
     document.getElementById('editEnd').oninput = e => {
-        editEndTrim = parseInt(e.target.value) || 0;
-        updateDeEditWaveforms();
+        const val = parseInt(e.target.value) || 0;
+        const clamped = Math.max(0, Math.min(val, editDurationMs));
+        editEndTrim = Math.max(0, editDurationMs - clamped);
+        validateDeSelection();
+        scheduleWaveformUpdate();
     };
+    validateDeSelection();
     const autoTrim = document.getElementById('autoTrimBtn');
     if (autoTrim) autoTrim.onclick = () => {
         const vals = detectSilenceTrim(savedOriginalBuffer);
         editStartTrim = vals.start;
         editEndTrim = vals.end;
         updateDeEditWaveforms();
+        validateDeSelection();
     };
 
     tempoFactor = file.tempoFactor || 1.0;
@@ -12365,59 +12408,55 @@ async function openDeEdit(fileId) {
     if (startField) {
         startField.oninput = () => {
             enSelectStart = parseInt(startField.value) || 0;
-            updateDeEditWaveforms();
+            validateEnSelection();
+            scheduleWaveformUpdate();
         };
         enSelectStart = parseInt(startField.value) || 0;
     }
     if (endField) {
         endField.oninput = () => {
             enSelectEnd = parseInt(endField.value) || 0;
-            updateDeEditWaveforms();
+            validateEnSelection();
+            scheduleWaveformUpdate();
         };
         enSelectEnd = parseInt(endField.value) || 0;
     }
 
-    // Auswahl eines EN-Bereichs per Alt+Ziehen oder Verschieben der Marker
+    // Auswahl eines EN-Bereichs per Ziehen
     origCanvas.onmousedown = e => {
-        if (e.altKey && editEnBuffer) {
-            // Standardaktion (z. B. Bildziehen) unterbinden, damit die Markierung funktioniert
-            e.preventDefault();
-            const rect = origCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-            enSelectStart = enSelectEnd = x / origCanvas.width * dur;
-            enSelecting = true;
-            if (startField) startField.value = Math.round(enSelectStart);
-            if (endField)   endField.value   = Math.round(enSelectEnd);
-            updateDeEditWaveforms();
-        } else if (editEnBuffer && enSelectStart !== enSelectEnd) {
-            const rect = origCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-            const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
-            const endX   = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
-            const grip = 5; // Pixelbreite für die Griffe
-            if (Math.abs(x - startX) <= grip) {
-                enMarkerDragging = 'start';
-                e.preventDefault();
-            } else if (Math.abs(x - endX) <= grip) {
-                enMarkerDragging = 'end';
-                e.preventDefault();
-            }
+        if (!editEnBuffer) return;
+        activeWave = 'en';
+        const rect = origCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+        const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+        const endX   = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+        const grip = 5;
+        if (enSelectStart !== enSelectEnd && Math.abs(x - startX) <= grip) {
+            enMarkerDragging = 'start';
+            return;
         }
+        if (enSelectStart !== enSelectEnd && Math.abs(x - endX) <= grip) {
+            enMarkerDragging = 'end';
+            return;
+        }
+        enPrevStart = enSelectStart;
+        enPrevEnd   = enSelectEnd;
+        enDragStart = x / origCanvas.width * dur;
+        enSelecting = true;
     };
     origCanvas.onmousemove = e => {
         if (enSelecting && editEnBuffer) {
-            // Verhindert Seiteneffekte beim Alt‑Ziehen
-            e.preventDefault();
             const rect = origCanvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-            enSelectEnd = x / origCanvas.width * dur;
-            if (endField) endField.value = Math.round(enSelectEnd);
-            updateDeEditWaveforms();
+            enSelectStart = enDragStart;
+            enSelectEnd   = x / origCanvas.width * dur;
+            if (startField) startField.value = Math.round(Math.min(enSelectStart, enSelectEnd));
+            if (endField)   endField.value   = Math.round(Math.max(enSelectStart, enSelectEnd));
+            validateEnSelection();
+            scheduleWaveformUpdate();
         } else if (enMarkerDragging && editEnBuffer) {
-            e.preventDefault();
             const rect = origCanvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
@@ -12429,8 +12468,18 @@ async function openDeEdit(fileId) {
                 enSelectEnd = pos;
                 if (endField) endField.value = Math.round(pos);
             }
-            updateDeEditWaveforms();
+            validateEnSelection();
+            scheduleWaveformUpdate();
         }
+    };
+    origCanvas.ondblclick = () => {
+        enSelectStart = 0;
+        enSelectEnd = 0;
+        if (startField) startField.value = '';
+        if (endField) endField.value = '';
+        resetCanvasZoom(origCanvas);
+        validateEnSelection();
+        scheduleWaveformUpdate();
     };
 
     // Wellenbreite passend zur Länge setzen
@@ -12600,21 +12649,9 @@ async function openDeEdit(fileId) {
         };
     }
 
-    // Klick auf das Original-Wellenbild setzt den EN-Cursor
-    origCanvas.onmousedown = e => {
-        const rect = origCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const ratio = x / rect.width;
-        editOrigCursor = ratio * editDurationMs;
-        if (editPlaying === 'orig') {
-            const audio = document.getElementById('audioPlayer');
-            audio.currentTime = Math.min(editOrigCursor, editDurationMs) / 1000;
-        }
-        updateDeEditWaveforms(null, null);
-    };
-
-    // Klick auf das bearbeitete Wellenbild setzt Cursor bzw. Trimmer
+    // Klick auf das bearbeitete Wellenbild setzt Cursor oder startet Bereichsauswahl
     deCanvas.onmousedown = e => {
+        activeWave = 'de';
         const rect = deCanvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const width = rect.width;
@@ -12630,7 +12667,7 @@ async function openDeEdit(fileId) {
                 ignoreTempStart = null;
                 refreshIgnoreList();
             }
-            updateDeEditWaveforms();
+            scheduleWaveformUpdate();
             return;
         }
         if (e.altKey) {
@@ -12643,13 +12680,12 @@ async function openDeEdit(fileId) {
                 silenceTempStart = null;
                 refreshSilenceList();
             }
-            updateDeEditWaveforms();
+            scheduleWaveformUpdate();
             return;
         }
 
         const startX = (editStartTrim / editDurationMs) * width;
         const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
-        // Prüfen, ob ein Ignoriermarker gezogen wird
         for (let i = 0; i < editIgnoreRanges.length; i++) {
             const r = editIgnoreRanges[i];
             const sx = (r.start / editDurationMs) * width;
@@ -12664,27 +12700,41 @@ async function openDeEdit(fileId) {
             if (Math.abs(x - sx) < 5) { silenceDragging = { index: i, side: 'start' }; return; }
             if (Math.abs(x - ex) < 5) { silenceDragging = { index: i, side: 'end' }; return; }
         }
+        if (Math.abs(x - startX) < 7) { editDragging = 'start'; return; }
+        if (Math.abs(x - endX) < 7) { editDragging = 'end'; return; }
 
-        if (Math.abs(x - startX) < 7) {
-            editDragging = 'start';
-        } else if (Math.abs(x - endX) < 7) {
-            editDragging = 'end';
-        } else {
-            editDragging = null;
-            editDeCursor = time;
-            if (editPlaying === 'de') {
-                const audio = document.getElementById('audioPlayer');
-                const dur = editDurationMs - editStartTrim - editEndTrim;
-                audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
-            }
-            updateDeEditWaveforms(null, null);
-        }
+        dePrevStartTrim = editStartTrim;
+        dePrevEndTrim = editEndTrim;
+        deDragStart = time;
+        deSelecting = true;
+    };
+    deCanvas.ondblclick = () => {
+        editStartTrim = 0;
+        editEndTrim = 0;
+        const sField = document.getElementById('editStart');
+        const eField = document.getElementById('editEnd');
+        if (sField) sField.value = 0;
+        if (eField) eField.value = 0;
+        resetCanvasZoom(deCanvas);
+        validateDeSelection();
+        scheduleWaveformUpdate();
     };
     window.onmousemove = e => {
         const rect = deCanvas.getBoundingClientRect();
         const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
         const ratio = x / rect.width;
         const time = ratio * editDurationMs;
+        if (deSelecting) {
+            editStartTrim = Math.min(deDragStart, time);
+            editEndTrim   = editDurationMs - Math.max(deDragStart, time);
+            const sField = document.getElementById('editStart');
+            const eField = document.getElementById('editEnd');
+            if (sField) sField.value = Math.round(editStartTrim);
+            if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+            validateDeSelection();
+            scheduleWaveformUpdate();
+            return;
+        }
         if (ignoreDragging) {
             const r = editIgnoreRanges[ignoreDragging.index];
             if (ignoreDragging.side === 'start') {
@@ -12693,7 +12743,7 @@ async function openDeEdit(fileId) {
                 r.end = Math.max(time, r.start + 1);
             }
             refreshIgnoreList();
-            updateDeEditWaveforms();
+            scheduleWaveformUpdate();
             return;
         }
         if (silenceDragging) {
@@ -12704,7 +12754,7 @@ async function openDeEdit(fileId) {
                 r.end = Math.max(time, r.start + 1);
             }
             refreshSilenceList();
-            updateDeEditWaveforms();
+            scheduleWaveformUpdate();
             return;
         }
         if (!editDragging) return;
@@ -12713,25 +12763,64 @@ async function openDeEdit(fileId) {
         } else if (editDragging === 'end') {
             editEndTrim = Math.min(editDurationMs - time, editDurationMs - editStartTrim - 1);
         }
-        updateDeEditWaveforms();
+        const sField = document.getElementById('editStart');
+        const eField = document.getElementById('editEnd');
+        if (sField) sField.value = Math.round(editStartTrim);
+        if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+        validateDeSelection();
+        scheduleWaveformUpdate();
     };
-    window.onmouseup = () => {
+    window.onmouseup = e => {
         if (enSelecting && editEnBuffer) {
             enSelecting = false;
             const start = Math.min(enSelectStart, enSelectEnd);
             const end = Math.max(enSelectStart, enSelectEnd);
-            const sField = document.getElementById('enSegStart');
-            const eField = document.getElementById('enSegEnd');
-            if (sField) sField.value = Math.round(start);
-            if (eField) eField.value = Math.round(end);
+            if (Math.abs(end - start) < 2) {
+                enSelectStart = enPrevStart;
+                enSelectEnd = enPrevEnd;
+                if (startField) startField.value = Math.round(enSelectStart);
+                if (endField) endField.value = Math.round(enSelectEnd);
+                editOrigCursor = start;
+                if (editPlaying === 'orig') {
+                    const audio = document.getElementById('audioPlayer');
+                    audio.currentTime = Math.min(editOrigCursor, editDurationMs) / 1000;
+                }
+            } else {
+                if (startField) startField.value = Math.round(start);
+                if (endField)   endField.value = Math.round(end);
+                zoomCanvasToRange(origCanvas, start, end, editEnBuffer.length / editEnBuffer.sampleRate * 1000);
+            }
+            validateEnSelection();
             updateDeEditWaveforms();
         } else if (enMarkerDragging && editEnBuffer) {
             const start = Math.min(enSelectStart, enSelectEnd);
             const end   = Math.max(enSelectStart, enSelectEnd);
-            const sField = document.getElementById('enSegStart');
-            const eField = document.getElementById('enSegEnd');
-            if (sField) sField.value = Math.round(start);
-            if (eField) eField.value = Math.round(end);
+            if (startField) startField.value = Math.round(start);
+            if (endField) endField.value = Math.round(end);
+            validateEnSelection();
+            updateDeEditWaveforms();
+        } else if (deSelecting) {
+            deSelecting = false;
+            const finalTime = (e.clientX - deCanvas.getBoundingClientRect().left) / deCanvas.getBoundingClientRect().width * editDurationMs;
+            const start = Math.min(deDragStart, finalTime);
+            const end   = Math.max(deDragStart, finalTime);
+            if (Math.abs(end - start) < 2) {
+                editStartTrim = dePrevStartTrim;
+                editEndTrim   = dePrevEndTrim;
+                const sField = document.getElementById('editStart');
+                const eField = document.getElementById('editEnd');
+                if (sField) sField.value = Math.round(editStartTrim);
+                if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+                editDeCursor = start;
+                if (editPlaying === 'de') {
+                    const audio = document.getElementById('audioPlayer');
+                    const dur = editDurationMs - editStartTrim - editEndTrim;
+                    audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
+                }
+            } else {
+                zoomCanvasToRange(deCanvas, start, end, editDurationMs);
+            }
+            validateDeSelection();
             updateDeEditWaveforms();
         }
         enMarkerDragging = null;
@@ -12739,6 +12828,29 @@ async function openDeEdit(fileId) {
         ignoreDragging = null;
         silenceDragging = null;
     };
+    deEditEscHandler = e => {
+        if (e.key === 'Escape') {
+            if (activeWave === 'en') {
+                enSelectStart = 0;
+                enSelectEnd = 0;
+                if (startField) startField.value = '';
+                if (endField) endField.value = '';
+                resetCanvasZoom(origCanvas);
+                validateEnSelection();
+            } else if (activeWave === 'de') {
+                editStartTrim = 0;
+                editEndTrim = 0;
+                const sField = document.getElementById('editStart');
+                const eField = document.getElementById('editEnd');
+                if (sField) sField.value = 0;
+                if (eField) eField.value = 0;
+                resetCanvasZoom(deCanvas);
+                validateDeSelection();
+            }
+            scheduleWaveformUpdate();
+        }
+    };
+    window.addEventListener('keydown', deEditEscHandler);
     updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
@@ -12793,6 +12905,9 @@ function insertEnglishSegment() {
     editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
     updateDeEditWaveforms();
     updateLengthInfo();
+    if (typeof showToast === 'function') {
+        showToast('EN-Bereich kopiert', 'success');
+    }
 }
 
 // Kombination aus Pausenkürzung und Tempoanpassung
@@ -12826,6 +12941,9 @@ async function autoAdjustLength() {
     await recomputeEditBuffer();
     updateLengthInfo();
     updateDeEditWaveforms();
+    if (typeof showToast === 'function') {
+        showToast('Bereich angewendet', 'success');
+    }
 }
 
 // =========================== APPLYVOLUMEMATCH START =======================
@@ -13154,15 +13272,18 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
         drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, opts);
     }
     if (originalEditBuffer) {
-        const endPos = editDurationMs - editEndTrim;
-        drawWaveform(
-            document.getElementById('waveEdited'),
-            originalEditBuffer,
-            { start: editStartTrim, end: endPos, progress: showDe, ignore: editIgnoreRanges, silence: editSilenceRanges }
-        );
+        const selStart = editStartTrim;
+        const selEnd   = editDurationMs - editEndTrim;
+        const opts = { progress: showDe, ignore: editIgnoreRanges, silence: editSilenceRanges };
+        if (deSelectionActive && selStart < selEnd) {
+            opts.selection = { start: selStart, end: selEnd };
+        }
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, opts);
     }
-    document.getElementById('editStart').value = Math.round(editStartTrim);
-    document.getElementById('editEnd').value = Math.round(editEndTrim);
+    const sInput = document.getElementById('editStart');
+    const eInput = document.getElementById('editEnd');
+    if (sInput) sInput.value = deSelectionActive ? Math.round(editStartTrim) : 0;
+    if (eInput) eInput.value = deSelectionActive ? Math.round(editDurationMs - editEndTrim) : 0;
     updateLengthInfo();
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
@@ -13280,6 +13401,35 @@ function updateLengthInfo() {
     info.textContent = `${(deMs/1000).toFixed(2)}s`;
     lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
     lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
+}
+// Prüft EN-Auswahl und schaltet den Kopier-Button
+function validateEnSelection() {
+    const sField = document.getElementById('enSegStart');
+    const eField = document.getElementById('enSegEnd');
+    const btn    = document.getElementById('copyEnBtn');
+    const dur    = editEnBuffer ? editEnBuffer.length / editEnBuffer.sampleRate * 1000 : 0;
+    const start  = parseInt(sField?.value);
+    const end    = parseInt(eField?.value);
+    const valid  = !isNaN(start) && !isNaN(end) && start < end && start >= 0 && end <= dur;
+    if (btn) btn.disabled = !valid;
+    if (sField) sField.classList.toggle('input-invalid', !valid);
+      if (eField) eField.classList.toggle('input-invalid', !valid);
+      return valid;
+}
+// Prüft DE-Auswahl und schaltet den Anwenden-Button
+function validateDeSelection() {
+    const sField = document.getElementById('editStart');
+    const eField = document.getElementById('editEnd');
+    const btn    = document.getElementById('autoAdjustBtn');
+    const start  = parseInt(sField?.value);
+    const end    = parseInt(eField?.value);
+    const dur    = editDurationMs;
+    const valid  = !isNaN(start) && !isNaN(end) && start < end && start >= 0 && end <= dur;
+    if (btn) btn.disabled = !valid;
+    if (sField) sField.classList.toggle('input-invalid', !valid);
+      if (eField) eField.classList.toggle('input-invalid', !valid);
+      deSelectionActive = valid;
+      return valid;
 }
 // =========================== UPDATEDEEDITWAVEFORMS END ====================
 
@@ -13451,6 +13601,13 @@ function closeDeEdit() {
     if (pField) pField.value = 'cursor';
     window.onmousemove = null;
     window.onmouseup = null;
+    if (deEditEscHandler) {
+        window.removeEventListener('keydown', deEditEscHandler);
+        deEditEscHandler = null;
+    }
+    resetCanvasZoom(document.getElementById('waveOriginal'));
+    resetCanvasZoom(document.getElementById('waveEdited'));
+    deSelectionActive = false;
     updateEffectButtons();
 }
 // =========================== CLOSEDEEDIT END ===============================

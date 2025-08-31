@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.250
+* Bereiche in EN- und DE-Wellenformen lassen sich direkt per Ziehen markieren, Start-/End-Felder synchronisieren sich bidirektional und ungültige Eingaben werden markiert.
+
 ## 🛠️ Patch in 1.40.249
 * Effekt-Toolbar im DE-Audio-Editor bleibt als Sticky-Footer sichtbar und die Buttons besitzen gleiche Breite.
 * Speichern ist nun als primärer Button hervorgehoben und Zurücksetzen fragt vor dem Wiederherstellen nach einer Bestätigung.

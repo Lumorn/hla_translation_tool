@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.248-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.250-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -280,9 +280,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fünf Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu fünf Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall- und Störgeräusch-Effekt an.
 * **Ignorier-Bereiche im DE-Editor:** Mit gedrückter Umschalttaste lassen sich beliebige Abschnitte markieren, die beim Abspielen und Speichern übersprungen werden. Die Bereiche bleiben bearbeitbar und erscheinen in einer eigenen Liste. Vorschau und Export überspringen diese Stellen automatisch.
 * **Stille einfügen:** Mit gedrückter Alt‑Taste lassen sich Bereiche markieren, an denen beim Speichern Stille eingefügt wird. So lassen sich Audios zeitlich verschieben.
-* **EN-Abschnitt einfügen:** Halte die Alt-Taste und ziehe mit der Maus im EN-Original einen Bereich auf. Über den Pfeil zwischen den beiden Wellen lässt sich der markierte Ausschnitt am Anfang, am Ende oder an der aktuellen Cursor-Position in das DE-Audio kopieren. Beim Schließen des Bearbeitungsdialogs werden Start, Ende und Einfügeposition zurückgesetzt.
+* **EN-Abschnitt einfügen:** Ziehe mit der Maus im EN-Original einen Bereich auf. Über den Pfeil zwischen den beiden Wellen lässt sich der markierte Ausschnitt am Anfang, am Ende oder an der aktuellen Cursor-Position in das DE-Audio kopieren. Doppelklick oder Esc entfernt die Markierung, beim Schließen des Bearbeitungsdialogs werden Start, Ende und Einfügeposition zurückgesetzt.
 * **Start/Ende verschieben:** Die Markierungsgriffe im EN-Original lassen sich mit der Maus bewegen; die Felder „Start EN" und „Ende EN" passen sich automatisch an.
-* **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen der grünen Marker im Waveform-Editor setzen.
+* **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen eines Bereichs direkt im DE-Wellenbild setzen; die Felder synchronisieren sich bidirektional.
 * **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Kleine ➖/➕‑Knöpfe erlauben präzise Schritte. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
 * **Zwei Tempo‑Auto‑Knöpfe:** Der erste setzt den Wert auf 1,00, markiert ihn gelb und erhöht das Tempo automatisch, bis „DE (bearbeiten)“ orange leuchtet (Abweichung unter 10 %). Der zweite stellt den gespeicherten Wert wieder her und färbt die Anzeige grau.
 * **Sanftere Pausenkürzung:** Beim Entfernen langer Pausen bleiben jetzt 2 ms an jedem Übergang stehen, damit die Schnitte nicht zu hart wirken.
@@ -616,6 +616,7 @@ Seit Patch 1.40.242 zeigt der DE-Audio-Editor seine Bedienelemente in zwei Spalt
 Seit Patch 1.40.243 ordnet der DE-Audio-Editor Bereiche und Effekte in drei Spalten an. Lange Listen besitzen eigene Scrollleisten, sodass nichts überlappt.
 Seit Patch 1.40.244 bietet der DE-Audio-Editor eine untere Effekt-Toolbar und eigene Anwenden-Knöpfe in den Effekt-Kästen.
 Seit Patch 1.40.245 bleibt diese Effekt-Toolbar als Sticky-Footer sichtbar, und "Speichern" erscheint als primärer Button. "Zurücksetzen" fragt jetzt nach einer Bestätigung.
+Seit Patch 1.40.250 lassen sich Bereiche in EN- und DE-Wellenformen direkt per Ziehen markieren; Start- und Endfelder synchronisieren sich und ungültige Eingaben werden rot hervorgehoben.
 Seit Patch 1.40.194 durchsucht ein neuer Knopf das gesamte Projekt nach passenden Untertiteln und fügt eindeutige Treffer automatisch ein.
 
 Beispiel einer gültigen CSV:

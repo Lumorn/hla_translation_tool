@@ -9,6 +9,11 @@
             display: none !important;
         }
 
+        /* Fehlerhafte Eingabefelder rot umranden */
+        .input-invalid {
+            border: 1px solid red;
+        }
+
         /* Zentrale Buttons und Status in einer Zelle */
         .dubbing-cell {
             display: flex;
