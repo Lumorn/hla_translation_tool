@@ -688,24 +688,28 @@
                     </div>
                     <button class="btn btn-secondary" id="autoAdjustBtn" style="margin-top:5px;" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
                 </div>
-                <div class="edit-right">
+                <!-- Mittlere Spalte für Ignorier- und Stillebereiche -->
+                <div class="edit-center">
                     <div class="ignore-container">
-                <h4>Ignorierbereiche</h4>
-                <div id="ignoreList"></div>
-                <div class="ignore-buttons">
-                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
-                    <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
+                        <h4>Ignorierbereiche</h4>
+                        <div id="ignoreList"></div>
+                        <div class="ignore-buttons">
+                            <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
+                            <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
+                        </div>
+                    </div>
+                    <div class="ignore-container">
+                        <h4>Stille-Bereiche</h4>
+                        <div id="silenceList"></div>
+                        <div class="ignore-buttons">
+                            <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
+                            <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="ignore-container">
-                <h4>Stille-Bereiche</h4>
-                <div id="silenceList"></div>
-                <div class="ignore-buttons">
-                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
-                    <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
-                </div>
-            </div>
-            
+                <!-- Rechte Spalte für Effekt-Einstellungen -->
+                <div class="edit-right">
+
             <fieldset class="effect-group">
                 <legend>📡 Funkgerät-Effekt</legend>
                 <div class="radio-settings">

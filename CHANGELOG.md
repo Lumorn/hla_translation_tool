@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.243
+* DE-Audio-Editor nutzt jetzt ein dreispaltiges Layout mit scrollbaren Listen, damit sich Elemente nicht überlappen.
 ## 🛠️ Patch in 1.40.242
 * DE-Audio-Editor stellt Elemente jetzt zweispaltig dar und benötigt kein Scrollen mehr.
 ## 🛠️ Patch in 1.40.241
