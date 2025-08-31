@@ -1,6 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.244
-* Alle Audio-Funktionen im DE-Editor besitzen nun eigene Rahmen mit zugehörigen Knöpfen.
 ## 🛠️ Patch in 1.40.243
 * DE-Audio-Editor nutzt jetzt ein dreispaltiges Layout mit scrollbaren Listen, damit sich Elemente nicht überlappen.
 ## 🛠️ Patch in 1.40.242
