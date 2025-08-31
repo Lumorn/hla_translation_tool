@@ -1864,21 +1864,29 @@ th:nth-child(8) {
 
 /* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
 #deEditDialog .dialog {
-    max-width: 1100px; /* Mehr Breite für zweispaltiges Layout */
+    max-width: 1100px; /* Mehr Breite für dreispaltiges Layout */
 }
 
-/* Zweispaltiges Layout für den DE-Audio-Editor */
+/* Dreispaltiges Layout für den DE-Audio-Editor */
 #deEditDialog .edit-flex {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
 
-/* Linke und rechte Spalte des Editors */
+/* Linke, mittlere und rechte Spalte des Editors */
 #deEditDialog .edit-left,
+#deEditDialog .edit-center,
 #deEditDialog .edit-right {
     flex: 1;
     min-width: 320px;
+}
+
+/* Listen mit fester Höhe und Scrollbar, damit nichts überlappt */
+#deEditDialog #ignoreList,
+#deEditDialog #silenceList {
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 /* Effekt-Knöpfe umbrechen bei schmaler Breite */

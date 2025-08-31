@@ -613,6 +613,7 @@ Seit Patch 1.40.125 führt ein Protokoll neben der Wiedergabeliste die erwartete
 Seit Patch 1.40.126 darf beim Anpassen-Kürzen die deutsche Übersetzung leicht verändert werden, um extrem kurze EN-Zeilen besser abzudecken.
 Seit Patch 1.40.127 besitzt der DE-Audio-Editor überarbeitete Buttons mit hilfreichen Tooltips.
 Seit Patch 1.40.242 zeigt der DE-Audio-Editor seine Bedienelemente in zwei Spalten, sodass kein Scrollen mehr nötig ist.
+Seit Patch 1.40.243 ordnet der DE-Audio-Editor Bereiche und Effekte in drei Spalten an. Lange Listen besitzen eigene Scrollleisten, sodass nichts überlappt.
 Seit Patch 1.40.194 durchsucht ein neuer Knopf das gesamte Projekt nach passenden Untertiteln und fügt eindeutige Treffer automatisch ein.
 
 Beispiel einer gültigen CSV:
