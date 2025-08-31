@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.245
+* Score-Zellen zeigen Prozentwerte mit geschütztem Leerzeichen und deutschem Dezimaltrennzeichen an.
 ## 🛠️ Patch in 1.40.244
 * DE-Audio-Editor besitzt nun eine untere Effekt-Toolbar mit schnellen Aktionsknöpfen.
 

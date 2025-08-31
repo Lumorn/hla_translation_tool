@@ -1,3 +1,5 @@
+import { withUnit } from './unitFormat.js';
+
 // Erzeugt den HTML-Code für eine Score-Zelle und bindet Tooltip sowie Klick
 // Ermittelt die passende CSS-Klasse basierend auf dem Score
 // Liefert die CSS-Klasse abhängig von der prozentualen Bewertung
@@ -36,10 +38,10 @@ export function scoreCellTemplate(file, escapeHtml) {
     const noScore = file.score === undefined || file.score === null;
     const sug = escapeHtml(file.suggestion || '');
     const com = escapeHtml(file.comment || '');
-    // Score immer als Prozentwert anzeigen
-    const scoreText = noScore ? '0' : file.score;
+    // Score immer als Prozentwert mit geschütztem Leerzeichen anzeigen
+    const scoreText = withUnit(noScore ? 0 : file.score, '%');
     // Tooltip auch per title-Attribut hinterlegen, damit das gesamte Feld reagiert
-    return `<td class="score-cell ${cls}" title="${com}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}%</td>`;
+    return `<td class="score-cell ${cls}" title="${com}" style="color:${color}" data-suggestion="${sug}" data-comment="${com}">${scoreText}</td>`;
 }
 
 export function attachScoreHandlers(tbody, files) {
