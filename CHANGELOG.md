@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.265
+* Notiz-Hinweis zeigt jetzt auch die Anzahl gleicher Einträge im gesamten Kapitel.
 ## 🛠️ Patch in 1.40.264
 * Ordner-Browser legt beim ersten Knopfdruck das Kapitel "Offene" (Nr. 9999) an und erzeugt darin pro Ordner ein Level mit allen fehlenden Dateien.
 ## 🛠️ Patch in 1.40.263

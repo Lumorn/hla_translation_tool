@@ -1275,6 +1275,13 @@ th:nth-child(8) {
     display: inline-block;
 }
 
+/* Anzeige für Kapitel-Häufigkeit */
+.chapter-note-count {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
 /* Version und Score untereinander */
 .version-score-cell {
     display: flex;

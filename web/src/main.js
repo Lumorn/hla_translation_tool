@@ -6271,14 +6271,23 @@ function getNoteColorForNote(text) {
 }
 
 // Zeigt an, wie viele Einträge die gleiche Notiz besitzen
+// und ob sie im gesamten Kapitel bereits existiert
 function updateDuplicateNotes() {
-    const counts = {};
+    // Zählung für aktuelles Projekt
+    const projectCounts = {};
     for (const f of files) {
         const note = (f.folderNote || '').trim();
         if (!note) continue;
         const key = note.toLowerCase();
-        if (!counts[key]) counts[key] = { count: 0, color: getNoteColorForNote(note) };
-        counts[key].count++;
+        if (!projectCounts[key]) projectCounts[key] = { count: 0, color: getNoteColorForNote(note) };
+        projectCounts[key].count++;
+    }
+
+    // Zählung für das komplette Kapitel
+    let chapterCounts = {};
+    if (currentProject) {
+        const chapterName = getLevelChapter(currentProject.levelName);
+        chapterCounts = computeChapterNoteCounts(chapterName);
     }
 
     document.querySelectorAll('tr[data-id] .folder-note').forEach(input => {
@@ -6288,9 +6297,18 @@ function updateDuplicateNotes() {
         const note = (file?.folderNote || '').trim();
         const key = note.toLowerCase();
         const info = input.nextElementSibling;
-        if (note && counts[key] && counts[key].count > 1) {
-            info.innerHTML = `<span class="note-badge" style="background:${counts[key].color}"></span>${counts[key].count}`;
-        } else if (info) {
+        if (!info) return;
+
+        if (note) {
+            let html = '';
+            if (projectCounts[key] && projectCounts[key].count > 1) {
+                html += `<span class="note-badge" style="background:${projectCounts[key].color}"></span>${projectCounts[key].count}`;
+            }
+            if (chapterCounts[key] && chapterCounts[key].count > (projectCounts[key]?.count || 0)) {
+                html += `<span class="chapter-note-count" title="Vorkommen im Kapitel">📘${chapterCounts[key].count}</span>`;
+            }
+            info.innerHTML = html;
+        } else {
             info.textContent = '';
         }
     });
@@ -6306,6 +6324,24 @@ function computeGlobalNoteCounts() {
             if (!note) continue;
             const key = note.toLowerCase();
             if (!counts[key]) counts[key] = { note, count: 0, color: getNoteColorForNote(note) };
+            counts[key].count++;
+        }
+    }
+    return counts;
+}
+
+// Ermittelt die Häufigkeit aller Notizen innerhalb eines Kapitels
+function computeChapterNoteCounts(chapterName) {
+    const counts = {};
+    if (!chapterName) return counts;
+    for (const prj of projects) {
+        if (!prj.files) continue;
+        if (getLevelChapter(prj.levelName) !== chapterName) continue;
+        for (const f of prj.files) {
+            const note = (f.folderNote || '').trim();
+            if (!note) continue;
+            const key = note.toLowerCase();
+            if (!counts[key]) counts[key] = { count: 0, color: getNoteColorForNote(note) };
             counts[key].count++;
         }
     }
