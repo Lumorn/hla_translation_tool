@@ -272,7 +272,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
 * **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
 * **EM-Störgeräusch mit Intensitätsregler:** fügt elektromagnetische Störungen hinzu; die Stärke ist frei wählbar.
-* **Nebenraum-Effekt:** simuliert gedämpfte Sprache aus einem angrenzenden Raum.
+* **Nebenraum-Effekt:** simuliert gedämpfte Sprache aus einem angrenzenden Raum; optionaler Hall kann zugeschaltet werden.
 * **Zuverlässiges Speichern des Nebenraum-Effekts:** der Effekt wird nun dauerhaft beim Speichern übernommen.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
