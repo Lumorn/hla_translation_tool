@@ -11929,6 +11929,16 @@ function drawWaveform(canvas, buffer, opts = {}) {
         ctx.moveTo(ex, 0);
         ctx.lineTo(ex, height);
         ctx.stroke();
+        // Griffe oben und unten zeichnen, damit Start- und Endpunkte leichter zu greifen sind
+        const handleW = 10; // Breite der Anfasser
+        const handleH = 6;  // Höhe der Anfasser
+        ctx.fillStyle = '#0f0';
+        // Startgriff oben und unten
+        ctx.fillRect(sx - handleW / 2, 0, handleW, handleH);
+        ctx.fillRect(sx - handleW / 2, height - handleH, handleW, handleH);
+        // Endgriff oben und unten
+        ctx.fillRect(ex - handleW / 2, 0, handleW, handleH);
+        ctx.fillRect(ex - handleW / 2, height - handleH, handleW, handleH);
     }
     if (opts.start !== undefined && opts.end !== undefined) {
         ctx.strokeStyle = '#0f0';
@@ -12496,7 +12506,8 @@ async function openDeEdit(fileId) {
         const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
         const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
         const endX   = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
-        const grip = 5;
+        // Größerer Griffbereich für einfacheres Anfassen der EN-Marker
+        const grip = 8;
         if (enSelectStart !== enSelectEnd && Math.abs(x - startX) <= grip) {
             enMarkerDragging = 'start';
             return;
@@ -12779,8 +12790,9 @@ async function openDeEdit(fileId) {
             if (Math.abs(x - sx) < 5) { silenceDragging = { index: i, side: 'start' }; return; }
             if (Math.abs(x - ex) < 5) { silenceDragging = { index: i, side: 'end' }; return; }
         }
-        if (Math.abs(x - startX) < 7) { editDragging = 'start'; return; }
-        if (Math.abs(x - endX) < 7) { editDragging = 'end'; return; }
+        // Breiterer Bereich zum Anfassen der Trimmgrenzen
+        if (Math.abs(x - startX) < 10) { editDragging = 'start'; return; }
+        if (Math.abs(x - endX)   < 10) { editDragging = 'end';   return; }
 
         dePrevStartTrim = editStartTrim;
         dePrevEndTrim = editEndTrim;
