@@ -2721,6 +2721,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
         if(!f.hasOwnProperty('neighborEffect')){f.neighborEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('neighborHall')){f.neighborHall=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -2967,6 +2968,7 @@ function addFiles() {
                 hallEffect: false,
                 emiEffect: false,
                 neighborEffect: false,
+                neighborHall: false,
                 version: 1
             };
 
@@ -4497,7 +4499,7 @@ return `
                         ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon" title="Audio gekürzt">✂️</span>' : ''}
                         ${file.volumeMatched ? '<span class="edit-status-icon" title="Lautstärke angepasst">🔊</span>' : ''}
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
-                        ${file.hallEffect ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
+                        ${(file.hallEffect || file.neighborHall) ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
                         ${file.neighborEffect ? '<span class="edit-status-icon" title="Nebenraum-Effekt">🚪</span>' : ''}
                     </div>
@@ -8461,6 +8463,7 @@ async function exportSegmentsToProject() {
             file.hallEffect = false;
             file.emiEffect = false;
             file.neighborEffect = false;
+            file.neighborHall = false;
         }
     }
     updateStatus('Segmente importiert');
@@ -8936,6 +8939,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         hallEffect: false,
         emiEffect: false,
         neighborEffect: false,
+        neighborHall: false,
         version: 1
     };
 
@@ -11573,6 +11577,7 @@ async function handleDeUpload(input) {
         file.hallEffect = false;
         file.emiEffect = false;
         file.neighborEffect = false;
+        file.neighborHall = false;
         file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
         if (currentEditFile === file) {
             tempoFactor = 1.0;
@@ -12302,6 +12307,8 @@ async function openDeEdit(fileId) {
     isEmiEffect = false;
     neighborEffectBuffer = null;
     isNeighborEffect = false;
+    // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
+    neighborHall = !!file.neighborHall;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -13736,7 +13743,7 @@ async function resetDeEdit() {
     if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push('Tempo');
     if (currentEditFile.volumeMatched) steps.push('Lautstärke angleichen');
     if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
-    if (currentEditFile.hallEffect) steps.push('Hall-Effekt');
+    if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push('Hall-Effekt');
     if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
     if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
     const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
@@ -13788,6 +13795,7 @@ async function resetDeEdit() {
         currentEditFile.hallEffect = false;
         currentEditFile.emiEffect = false;
         currentEditFile.neighborEffect = false;
+        currentEditFile.neighborHall = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -13798,6 +13806,7 @@ async function resetDeEdit() {
         isEmiEffect = false;
         neighborEffectBuffer = null;
         isNeighborEffect = false;
+        neighborHall = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
@@ -13969,6 +13978,8 @@ async function applyDeEdit() {
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.emiEffect = isEmiEffect;
         currentEditFile.neighborEffect = isNeighborEffect;
+        // Optionaler Hall im Nebenraum-Effekt speichern
+        currentEditFile.neighborHall = neighborHall;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
@@ -14888,6 +14899,7 @@ function addFileToProject(filename, folder, originalResult) {
         hallEffect: false,
         emiEffect: false,
         neighborEffect: false,
+        neighborHall: false,
         version: 1
     };
 
@@ -15777,6 +15789,7 @@ function quickAddLevel(chapterName) {
                 f.hallEffect = false;
                 f.emiEffect = false;
                 f.neighborEffect = false;
+                f.neighborHall = false;
                 // Tempo bei neuem Upload auf Standard zurücksetzen
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
@@ -15963,6 +15976,7 @@ function quickAddLevel(chapterName) {
             file.hallEffect = false;
             file.emiEffect = false;
             file.neighborEffect = false;
+            file.neighborHall = false;
             renderFileTable();
             saveCurrentProject();
         }

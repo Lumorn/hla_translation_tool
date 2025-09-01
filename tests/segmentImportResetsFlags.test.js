@@ -9,6 +9,7 @@ function importSegmentsMock(file) {
     file.hallEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
+    file.neighborHall = false;
 }
 
 test('Segment-Import setzt Bearbeitungs-Flags zurück', () => {
@@ -19,7 +20,8 @@ test('Segment-Import setzt Bearbeitungs-Flags zurück', () => {
         radioEffect: true,
         hallEffect: true,
         emiEffect: true,
-        neighborEffect: true
+        neighborEffect: true,
+        neighborHall: true
     };
     importSegmentsMock(file);
     expect(file.trimStartMs).toBe(0);
@@ -29,4 +31,5 @@ test('Segment-Import setzt Bearbeitungs-Flags zurück', () => {
     expect(file.hallEffect).toBe(false);
     expect(file.emiEffect).toBe(false);
     expect(file.neighborEffect).toBe(false);
+    expect(file.neighborHall).toBe(false);
 });
