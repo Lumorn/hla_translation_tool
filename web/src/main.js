@@ -12495,6 +12495,14 @@ async function openDeEdit(fileId) {
     document.getElementById('waveLabelOriginal').textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
     document.getElementById('waveLabelEdited').textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
 
+    // EN-Text, DE-Text und Emotional-Text unter den Wellen anzeigen
+    const enTextEl = document.getElementById('editEnText');
+    if (enTextEl) enTextEl.textContent = file.enText || '';
+    const deTextEl = document.getElementById('editDeText');
+    if (deTextEl) deTextEl.textContent = file.deText || '';
+    const emoTextEl = document.getElementById('editEmoText');
+    if (emoTextEl) emoTextEl.textContent = file.emotionalText || '';
+
     updateDeEditWaveforms();
     document.getElementById('deEditDialog').classList.remove('hidden');
 

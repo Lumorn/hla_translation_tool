@@ -1074,6 +1074,13 @@ th:nth-child(8) {
             white-space: nowrap;
         }
 
+        /* Kleiner Text unter den Wellenformen */
+        .wave-text {
+            font-size: 12px;
+            color: #ccc;
+            margin-top: 2px;
+        }
+
         .delete-row-btn {
             background: none;
             border: none;
