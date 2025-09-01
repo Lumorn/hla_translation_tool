@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.260-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.263-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -287,6 +287,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **EN-Abschnitt einfügen:** Ziehe mit der Maus im EN-Original einen Bereich auf. Über den Pfeil zwischen den beiden Wellen lässt sich der markierte Ausschnitt am Anfang, am Ende oder an der aktuellen Cursor-Position in das DE-Audio kopieren. Doppelklick oder Esc entfernt die Markierung, beim Schließen des Bearbeitungsdialogs werden Start, Ende und Einfügeposition zurückgesetzt.
 * **Start/Ende verschieben:** Die Markierungsgriffe im EN-Original lassen sich mit der Maus bewegen; die Felder „Start EN" und „Ende EN" passen sich automatisch an.
 * **Live-Markierung beim Ziehen:** Änderungen an Start oder Ende aktualisieren die Wellenformen nun sofort während des Verschiebens.
+* **Bessere Anfasser:** Kleine Griffe oben und unten erleichtern das Verschieben von Start- und Endpunkten in EN- und DE-Wellenform.
 * **Texte unter den Wellenformen:** Unter der EN-Welle erscheint der englische Text und unter der DE-Welle der emotionale deutsche Text.
 * **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen eines Bereichs direkt im DE-Wellenbild setzen; die Felder synchronisieren sich bidirektional.
 * **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Kleine ➖/➕‑Knöpfe erlauben präzise Schritte. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
