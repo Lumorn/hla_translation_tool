@@ -13811,6 +13811,10 @@ async function applyDeEdit() {
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
         }
+        // Nebenraum-Effekt anwenden, falls aktiv
+        if (isNeighborEffect) {
+            baseBuffer = await applyNeighborRoomEffect(baseBuffer);
+        }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
         }
@@ -13892,6 +13896,10 @@ async function applyDeEdit() {
         }
         if (isHallEffect) {
             baseBuffer = await applyReverbEffect(baseBuffer);
+        }
+        // Nebenraum-Effekt anwenden, falls aktiv
+        if (isNeighborEffect) {
+            baseBuffer = await applyNeighborRoomEffect(baseBuffer);
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);

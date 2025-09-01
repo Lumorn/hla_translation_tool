@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.255
+* Nebenraum-Effekt wird beim Speichern korrekt angewendet.
 ## 🛠️ Patch in 1.40.254
 * Neuer Nebenraum-Effekt simuliert gedämpfte Stimmen aus dem angrenzenden Raum.
 ## 🛠️ Patch in 1.40.253
