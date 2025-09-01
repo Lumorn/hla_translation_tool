@@ -568,6 +568,9 @@ let hallRoom   = parseFloat(storage.getItem('hla_hallRoom') || '0.5');
 let hallAmount = parseFloat(storage.getItem('hla_hallAmount') || '0.5');
 let hallDelay  = parseFloat(storage.getItem('hla_hallDelay')  || '80');
 
+// Merkt, ob der Nebenraum-Effekt zusätzlich mit Hall versehen werden soll
+let neighborHall = storage.getItem('hla_neighborHall') === '1';
+
 // Letzte Einstellungen für elektromagnetische Störgeräusche
 let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 
@@ -12159,7 +12162,7 @@ async function applyReverbEffect(buffer, opts = {}) {
 // =========================== NEBENRAUMEFFEKT START ==========================
 // Simuliert gedämpfte Sprache aus einem Nachbarraum
 async function applyNeighborRoomEffect(buffer, opts = {}) {
-    const { cutoff = 1000, wet = 0.3 } = opts;
+    const { cutoff = 1000, wet = 0.3, hall = false } = opts;
     // Offline-Kontext für Tiefpass und Pegelabsenkung
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
@@ -12178,8 +12181,10 @@ async function applyNeighborRoomEffect(buffer, opts = {}) {
     source.start();
     let processed = await ctx.startRendering();
 
-    // Kleiner Hall für Raumklang
-    processed = await applyReverbEffect(processed, { room: 0.2, wet, delay: 40 });
+    // Optionaler Hall für Raumklang
+    if (hall) {
+        processed = await applyReverbEffect(processed, { room: 0.2, wet, delay: 40 });
+    }
 
     return processed;
 }
@@ -12659,6 +12664,12 @@ async function openDeEdit(fileId) {
         hToggle.onchange = e => toggleHallEffect(e.target.checked);
     }
 
+    const nHall = document.getElementById('neighborHallToggle');
+    if (nHall) {
+        nHall.checked = neighborHall;
+        nHall.onchange = e => toggleNeighborHall(e.target.checked);
+    }
+
     // Regler für elektromagnetische Störgeräusche initialisieren
     const emiLevel = document.getElementById('emiLevel');
     const emiLevelDisp = document.getElementById('emiLevelDisplay');
@@ -12930,6 +12941,10 @@ function updateEffectButtons() {
     if (hallLabel) {
         hallLabel.classList.toggle('active', isHallEffect);
     }
+    const neighborHallLabel = document.getElementById('neighborHallToggleLabel');
+    if (neighborHallLabel) {
+        neighborHallLabel.classList.toggle('active', neighborHall);
+    }
     const emiBtn = document.getElementById('emiEffectBtn');
     const emiBoxBtn = document.getElementById('emiEffectBoxBtn');
     if (emiBtn) {
@@ -13054,7 +13069,7 @@ async function recomputeEditBuffer() {
         buf = await applyReverbEffect(buf);
     }
     if (isNeighborEffect) {
-        buf = await applyNeighborRoomEffect(buf);
+        buf = await applyNeighborRoomEffect(buf, { hall: neighborHall });
     }
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
@@ -13131,6 +13146,14 @@ async function applyNeighborEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYNEIGHBOREFFECT END ========================
+
+// Schaltet den optionalen Hall für den Nebenraum-Effekt
+function toggleNeighborHall(active) {
+    neighborHall = active;
+    storage.setItem('hla_neighborHall', active ? '1' : '0');
+    if (isNeighborEffect) recomputeEditBuffer();
+    updateEffectButtons();
+}
 
 // =========================== APPLYEMIEFFECT START ===========================
 // Aktiviert elektromagnetische Störgeräusche und legt bei Erstnutzung eine History an
@@ -13824,7 +13847,7 @@ async function applyDeEdit() {
         }
         // Nebenraum-Effekt anwenden, falls aktiv
         if (isNeighborEffect) {
-            baseBuffer = await applyNeighborRoomEffect(baseBuffer);
+            baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
@@ -13910,7 +13933,7 @@ async function applyDeEdit() {
         }
         // Nebenraum-Effekt anwenden, falls aktiv
         if (isNeighborEffect) {
-            baseBuffer = await applyNeighborRoomEffect(baseBuffer);
+            baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
