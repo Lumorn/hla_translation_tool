@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.256
+* Ausgewählte Zeile bleibt vollständig sichtbar und wird nicht mehr von der Tabellenüberschrift überdeckt.
 ## 🛠️ Patch in 1.40.255
 * Nebenraum-Effekt wird beim Speichern korrekt angewendet.
 ## 🛠️ Patch in 1.40.254
