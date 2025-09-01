@@ -322,6 +322,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Optimierte Tabelle:** Ordnernamen sind korrekt ausgerichtet, schmale UT- und Pfad-Spalten lassen mehr Platz für die Texte und die Aktionssymbole sind gruppiert.
 * **Notizen pro Ordnerzeile:** Unter dem Ordnernamen lässt sich nun eine individuelle Notiz speichern.
 * **Duplikat-Hinweis für Notizen:** Gleiche Notizen werden farbig markiert und zeigen die Anzahl gleicher Einträge.
+* **Kapitelweiter Notiz-Hinweis:** Unter jeder Notiz wird nun angezeigt, wie oft sie im gesamten Kapitel vorkommt.
 * **Erklärende Tooltips:** In der Aktionenspalte zeigt jedes Symbol beim Überfahren mit der Maus seinen Zweck an.
 * **Schmalere Versionsspalte:** "Version" und "Score" stehen im Kopf sowie in jeder Zeile untereinander, wodurch die Tabelle breiterem Text mehr Platz lässt.
 * **Modernisierte Aktionsleiste:** Alle Bedienknöpfe besitzen abgerundete Ecken und sind in klaren Zeilen gruppiert.
