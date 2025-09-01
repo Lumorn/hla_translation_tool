@@ -12398,23 +12398,30 @@ async function openDeEdit(fileId) {
         };
         const tempoAuto = document.getElementById('tempoAutoBtn');
         if (tempoAuto) tempoAuto.onclick = () => {
-            // Startwert auf Minimum setzen und Eingabe hervorheben
+            // Setzt den Tempofaktor auf das definierte Minimum
             tempoFactor = parseFloat(tempoRange.min);
             tempoRange.value = tempoFactor.toFixed(2);
             tempoDisp.textContent = tempoFactor.toFixed(2);
             tempoDisp.classList.add('tempo-auto');
             updateLengthInfo();
-
-            // Schrittweite und Ziel festlegen
+        };
+        // Zweiter Auto-Knopf gleicht die DE-Zeit an die EN-Zeit an
+        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
+        if (tempoAutoMatch) tempoAutoMatch.onclick = () => {
+            // Schrittweite und Zielwerte bestimmen
             const step = parseFloat(tempoRange.step) || 0.01;
             const max  = parseFloat(tempoRange.max);
             const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
 
-            // Erhöht den Faktor, bis die Differenz < 10 % aber > 5 % beträgt
+            tempoDisp.classList.add('tempo-auto');
+
+            // Erhöht das Tempo so lange, bis DE ungefähr EN entspricht
             const raise = () => {
                 const deMs = calcFinalLength();
-                const perc = Math.abs(deMs - enMs) / enMs * 100;
-                if ((perc <= 10 && perc > 5) || tempoFactor >= max) return;
+                if (deMs <= enMs || tempoFactor >= max) {
+                    updateLengthInfo();
+                    return;
+                }
                 tempoFactor = Math.min(tempoFactor + step, max);
                 tempoRange.value = tempoFactor.toFixed(2);
                 tempoDisp.textContent = tempoFactor.toFixed(2);
@@ -12422,15 +12429,6 @@ async function openDeEdit(fileId) {
                 requestAnimationFrame(raise);
             };
             requestAnimationFrame(raise);
-        };
-        // Zweiter Auto-Knopf stellt den gespeicherten Wert wieder her
-        const tempoAutoReset = document.getElementById('tempoAutoResetBtn');
-        if (tempoAutoReset) tempoAutoReset.onclick = () => {
-            tempoFactor = loadedTempoFactor;
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
         };
     }
     const autoChk = document.getElementById('autoIgnoreChk');

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.262
+* Zweiter Tempo-Auto-Knopf erhöht das Tempo automatisch, bis die DE-Zeit etwa der EN-Zeit entspricht; der erste setzt nur auf das Minimum.
 ## 🛠️ Patch in 1.40.261
 * DE-Audio-Editor zeigt neben der DE-Zeit nun auch die EN-Originalzeit an.
 ## 🛠️ Patch in 1.40.260
