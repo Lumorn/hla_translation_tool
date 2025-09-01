@@ -3389,10 +3389,10 @@ function addFiles() {
                 if (num !== null) {
                     scrollToNumber(num);
                 } else {
-                    // Fallback: Scrollt den Eintrag an den oberen Rand
+                    // Fallback: Scrollt die Zeile unter Berücksichtigung der Tabellenüberschrift
                     isAutoScrolling = true; // verhindert Updates während des Auto-Scrolls
                     if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
-                    selectedRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    scrollRowIntoView(selectedRow);
                     autoScrollTimeout = setTimeout(() => { isAutoScrolling = false; }, 300);
                 }
             }
@@ -3419,6 +3419,25 @@ function addFiles() {
             }
         }
 
+        // Hilfsfunktion: Scrollt eine beliebige Zeile so, dass sie nicht vom Tabellenkopf überdeckt wird
+        function scrollRowIntoView(row) {
+            const container = document.querySelector('.table-container');
+            if (container) {
+                const containerRect = container.getBoundingClientRect();
+                const rowRect = row.getBoundingClientRect();
+                const currentScroll = container.scrollTop;
+                const header = container.querySelector('thead');
+                const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                // Zielposition unterhalb der Überschrift berechnen
+                const rowTopOffset = rowRect.top - containerRect.top + currentScroll;
+                const target = Math.max(0, rowTopOffset - headerHeight);
+                container.scrollTo({ top: target, behavior: 'smooth' });
+            } else {
+                // Fallback ohne speziellen Container
+                row.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
         // Springt zu einer bestimmten Nummer und sorgt dafür, dass die Zeile unter dem Tabellenkopf vollständig sichtbar bleibt
         function scrollToNumber(num) {
             if (!files.length) return;
@@ -3432,19 +3451,11 @@ function addFiles() {
                     // Scroll-Snap kurz deaktivieren, damit der Tabellenkopf nichts überdeckt
                     const originalSnap = container.style.scrollSnapType;
                     container.style.scrollSnapType = 'none';
-                    const containerRect = container.getBoundingClientRect();
-                    const rowRect = row.getBoundingClientRect();
-                    const currentScroll = container.scrollTop;
-                    const header = container.querySelector('thead');
-                    const headerHeight = header ? header.getBoundingClientRect().height : 0;
-                    // Ziel so setzen, dass Nummer, Name und Ordner unterhalb des Kopfes bleiben
-                    const rowTopOffset = rowRect.top - containerRect.top + currentScroll;
-                    const target = Math.max(0, rowTopOffset - headerHeight);
-                    container.scrollTo({ top: target, behavior: 'smooth' });
+                    scrollRowIntoView(row);
                     // Scroll-Snap nach kurzer Zeit wieder aktivieren
                     setTimeout(() => { container.style.scrollSnapType = originalSnap; }, 300);
                 } else {
-                    row.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    scrollRowIntoView(row);
                 }
                 setActiveRow(row);
                 currentRowNumber = num;
