@@ -418,10 +418,13 @@ let updateWaveTimer       = null;  // Debounce-Timer für die Zeichnung
 let deEditEscHandler      = null;  // Handler zum Entfernen bei ESC
 let deSelectionActive     = false; // Gibt an, ob eine DE-Markierung existiert
 
-// Aktualisierung der Wellenbilder leicht entprellen
+// Aktualisierung der Wellenbilder begrenzt ausführen, damit das Ziehen live sichtbar bleibt
 function scheduleWaveformUpdate() {
-    if (updateWaveTimer) clearTimeout(updateWaveTimer);
-    updateWaveTimer = setTimeout(() => updateDeEditWaveforms(), 120);
+    if (updateWaveTimer) return;
+    updateWaveTimer = setTimeout(() => {
+        updateDeEditWaveforms();
+        updateWaveTimer = null;
+    }, 120);
 }
 
 // Zoomt eine Canvas auf den angegebenen Bereich
