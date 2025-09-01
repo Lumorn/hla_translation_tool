@@ -291,6 +291,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen eines Bereichs direkt im DE-Wellenbild setzen; die Felder synchronisieren sich bidirektional.
 * **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Kleine ➖/➕‑Knöpfe erlauben präzise Schritte. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
 * **Zwei Tempo‑Auto‑Knöpfe:** Der erste setzt den Wert auf 1,00, markiert ihn gelb und erhöht das Tempo automatisch, bis „DE (bearbeiten)“ orange leuchtet (Abweichung unter 10 %). Der zweite stellt den gespeicherten Wert wieder her und färbt die Anzeige grau.
+* **EN-Originalzeit neben DE-Zeit:** Rechts neben der DE-Dauer zeigt der Editor nun die englische Originalzeit an.
 * **Sanftere Pausenkürzung:** Beim Entfernen langer Pausen bleiben jetzt 2 ms an jedem Übergang stehen, damit die Schnitte nicht zu hart wirken.
 * **Längenvergleich visualisiert:** Unter der DE-Wellenform zeigt ein Tooltip die neue Dauer. Abweichungen über 5 % werden orange oder rot hervorgehoben.
 * **Effektparameter speicherbar:** Trimmen, Pausenkürzung und Tempo werden im Projekt gesichert und lassen sich über "🔄 Zurücksetzen" rückgängig machen.

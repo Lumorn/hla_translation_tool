@@ -13518,9 +13518,12 @@ function updateLengthInfo() {
     const diff = deMs - enMs;
     const perc = Math.abs(diff) / enMs * 100;
     const info = document.getElementById('tempoInfo');
+    const enInfo = document.getElementById('tempoEnInfo');
     const lbl = document.getElementById('waveLabelEdited');
     if (!info || !lbl) return;
     info.textContent = `${(deMs/1000).toFixed(2)}s`;
+    // EN-Originalzeit ebenfalls anzeigen
+    if (enInfo) enInfo.textContent = `EN: ${(enMs/1000).toFixed(2)}s`;
     lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
     lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
 }

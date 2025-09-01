@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.261
+* DE-Audio-Editor zeigt neben der DE-Zeit nun auch die EN-Originalzeit an.
 ## 🛠️ Patch in 1.40.260
 * Markierte Zeilen erscheinen nun mit leichtem Abstand unter dem Tabellenkopf und bleiben bei jeder Bildschirmauflösung komplett sichtbar.
 ## 🛠️ Patch in 1.40.259
