@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.259
+* Markierungen in EN- und DE-Wellenform aktualisieren sich jetzt live beim Ziehen.
 ## 🛠️ Patch in 1.40.258
 * Optionaler Hall im Nebenraum-Effekt wird in Vorschau und beim Speichern korrekt übernommen.
 ## 🛠️ Patch in 1.40.257
