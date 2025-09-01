@@ -1998,6 +1998,12 @@ th:nth-child(8) {
     color: #ccc;
 }
 
+/* EN-Originalzeit rechts neben der DE-Zeit in normaler Schriftfarbe */
+#deEditDialog #tempoEnInfo {
+    color: #ccc;
+    font-weight: normal;
+}
+
 #deEditDialog #autoAdjustBtn {
     grid-column: 1 / -1;
     width: 100%;
