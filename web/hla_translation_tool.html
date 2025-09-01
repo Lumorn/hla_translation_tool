@@ -639,6 +639,8 @@
                         <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen">▶</button>
                         <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
+                    <!-- EN-Text unter der Original-Welle -->
+                    <div id="editEnText" class="wave-text"></div>
                 </div>
                 <!-- Steuerung zum Runterkopieren des markierten EN-Bereichs -->
                 <div class="insert-en-section">
@@ -662,6 +664,9 @@
                         <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen">▶</button>
                         <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
+                    <!-- DE-Text und Emotional-Text unter der Bearbeitungs-Welle -->
+                    <div id="editDeText" class="wave-text"></div>
+                    <div id="editEmoText" class="wave-text"></div>
                 </div>
             </div>
             <div class="edit-flex">

@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.253
+* EN-Text und emotionaler DE-Text werden unter den Wellenformen im DE-Audio-Editor angezeigt.
 ## 🛠️ Patch in 1.40.252
 * Zoom-Funktion per Maus in EN- und DE-Wellenformen des DE-Audio-Editors entfernt.
 ## 🛠️ Patch in 1.40.251
