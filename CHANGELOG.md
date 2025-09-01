@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.260
+* Markierte Zeilen erscheinen nun mit leichtem Abstand unter dem Tabellenkopf und bleiben bei jeder Bildschirmauflösung komplett sichtbar.
 ## 🛠️ Patch in 1.40.259
 * Markierungen in EN- und DE-Wellenform aktualisieren sich jetzt live beim Ziehen.
 ## 🛠️ Patch in 1.40.258
