@@ -8603,6 +8603,16 @@ function showFolderFiles(folderName) {
     aktiveOrdnerDateien = folderFiles;
     renderFolderFilesList(folderFiles);
 
+    // Knopf zum automatischen Projekt mit fehlenden Dateien einfügen
+    const createBtnWrap = document.createElement('div');
+    createBtnWrap.style.marginBottom = '10px';
+    const createBtn = document.createElement('button');
+    createBtn.className = 'btn btn-secondary';
+    createBtn.textContent = 'Projekt erstellen mit fehlenden Dateien';
+    createBtn.onclick = () => createProjectWithMissingFiles(folderName);
+    createBtnWrap.appendChild(createBtn);
+    document.getElementById('folderFilesView').prepend(createBtnWrap);
+
     // Suche nach jedem Tastendruck im Ordner aktivieren
     const searchInput = document.getElementById('folderFileSearchInput');
     searchInput.value = '';
@@ -8967,6 +8977,121 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
     addButton.disabled = true;
     addButton.textContent = '✓ Bereits hinzugefügt';
 }
+
+/* =========================== CREATE MISSING PROJECT START =========================== */
+
+// Hilfsfunktion: Kapitel "Offene" und zugehöriges Level nur bei Bedarf anlegen
+function ensureOffeneStruktur(levelName) {
+    const chapterName = 'Offene';
+    // Kapitel erst erstellen, wenn es noch nicht existiert
+    if (!chapterColors[chapterName]) {
+        setChapterColor(chapterName, '#54428E');
+        setChapterOrder(chapterName, 9999);
+    } else {
+        setChapterOrder(chapterName, 9999); // Nummer stets fixieren
+    }
+    // Level bei Bedarf erzeugen
+    if (!projects.some(p => p.levelName === levelName)) {
+        setLevelColor(levelName, '#54428E');
+        const maxOrder = Math.max(0, ...Object.values(levelOrders));
+        setLevelOrder(levelName, maxOrder + 1);
+        setLevelIcon(levelName, '📁');
+    }
+    // Level dem Kapitel zuweisen
+    setLevelChapter(levelName, chapterName);
+}
+
+function createProjectWithMissingFiles(folderName) {
+    // Sammle alle Dateien des Ordners ohne DE-Audio
+    const { completionMap } = getGlobalCompletionStatus();
+    const all = [];
+    Object.entries(filePathDatabase).forEach(([fn, paths]) => {
+        paths.forEach(p => {
+            if (p.folder !== folderName) return;
+            const key = `${p.folder}/${fn}`;
+            if (!completionMap.has(key)) {
+                all.push({ filename: fn, folder: p.folder });
+            }
+        });
+    });
+    if (all.length === 0) {
+        alert('Keine fehlenden Dateien gefunden.');
+        return;
+    }
+    // Numerisch sortieren
+    all.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: 'base' }));
+
+    const levelName = folderName;
+
+    // Prüfen, ob Projekt bereits existiert
+    const existing = projects.find(p => p.levelName === levelName && p.name === folderName);
+    if (existing) {
+        if (confirm('Projekt existiert bereits. Fehlende Dateien hinzufügen?')) {
+            const existingKeys = new Set(existing.files.map(f => `${f.folder}/${f.filename}`));
+            const toAdd = all.filter(f => !existingKeys.has(`${f.folder}/${f.filename}`));
+            if (toAdd.length === 0) {
+                alert('Keine neuen fehlenden Dateien gefunden.');
+                return;
+            }
+            ensureOffeneStruktur(levelName);
+            toAdd.forEach(f => existing.files.push(buildProjectFile(f.filename, f.folder)));
+            existing.files.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: 'base' }));
+            saveProjects();
+            renderProjects();
+            updateStatus(`${toAdd.length} Dateien zum bestehenden Projekt hinzugefügt`);
+        }
+        return;
+    }
+
+    // Neues Projekt anlegen: Kapitel und Level erst jetzt erstellen
+    ensureOffeneStruktur(levelName);
+    const nextPart = Math.max(0, ...projects.filter(p => p.levelName === levelName).map(p => p.levelPart)) + 1;
+    const prj = {
+        id: Date.now(),
+        name: folderName,
+        levelName,
+        levelPart: nextPart,
+        files: all.map(f => buildProjectFile(f.filename, f.folder)),
+        icon: getLevelIcon(levelName),
+        color: getLevelColor(levelName)
+    };
+
+    projects.push(prj);
+    saveProjects();
+    renderProjects();
+    updateStatus(`Projekt "${folderName}" erstellt (${all.length} Dateien)`);
+}
+
+// Hilfsfunktion zum Erzeugen eines Dateiobjekts
+function buildProjectFile(filename, folder) {
+    const key = `${folder}/${filename}`;
+    return {
+        id: Date.now() + Math.random(),
+        filename,
+        folder,
+        folderNote: '',
+        enText: textDatabase[key]?.en || '',
+        deText: textDatabase[key]?.de || '',
+        emotionalText: textDatabase[key]?.emo || '',
+        emoReason: '',
+        autoTranslation: '',
+        autoSource: '',
+        score: null,
+        comment: '',
+        suggestion: '',
+        selected: true,
+        trimStartMs: 0,
+        trimEndMs: 0,
+        volumeMatched: false,
+        radioEffect: false,
+        hallEffect: false,
+        emiEffect: false,
+        neighborEffect: false,
+        neighborHall: false,
+        version: 1
+    };
+}
+/* =========================== CREATE MISSING PROJECT END ============================= */
 
         // Folder customization functions
         function showFolderCustomization(folderName) {
