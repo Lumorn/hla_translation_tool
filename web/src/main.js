@@ -3436,9 +3436,11 @@ function addFiles() {
                 const currentScroll = container.scrollTop;
                 const header = container.querySelector('thead');
                 const headerHeight = header ? header.getBoundingClientRect().height : 0;
+                // Kleiner Sicherheitsabstand unter dem Tabellenkopf
+                const abstand = 8; // px
                 // Zielposition unterhalb der Überschrift berechnen
                 const rowTopOffset = rowRect.top - containerRect.top + currentScroll;
-                const target = Math.max(0, rowTopOffset - headerHeight);
+                const target = Math.max(0, rowTopOffset - headerHeight - abstand);
                 container.scrollTo({ top: target, behavior: 'smooth' });
             } else {
                 // Fallback ohne speziellen Container

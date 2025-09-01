@@ -569,6 +569,7 @@ th:nth-child(8) {
             overflow: auto;
             background: #1a1a1a;
             scroll-snap-type: y mandatory; /* Zeilen am Tabellenkopf einrasten lassen */
+            scroll-padding-top: 8px; /* Kleiner Abstand oben für volle Sichtbarkeit */
         }
 
         table {
