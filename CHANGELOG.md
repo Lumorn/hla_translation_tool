@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.254
+* Neuer Nebenraum-Effekt simuliert gedämpfte Stimmen aus dem angrenzenden Raum.
 ## 🛠️ Patch in 1.40.253
 * EN-Text und emotionaler DE-Text werden unter den Wellenformen im DE-Audio-Editor angezeigt.
 ## 🛠️ Patch in 1.40.252

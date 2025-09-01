@@ -2717,6 +2717,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('neighborEffect')){f.neighborEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -2962,6 +2963,7 @@ function addFiles() {
                 radioEffect: false,
                 hallEffect: false,
                 emiEffect: false,
+                neighborEffect: false,
                 version: 1
             };
 
@@ -4483,6 +4485,7 @@ return `
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
                         ${file.hallEffect ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
+                        ${file.neighborEffect ? '<span class="edit-status-icon" title="Nebenraum-Effekt">🚪</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -8443,6 +8446,7 @@ async function exportSegmentsToProject() {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
+            file.neighborEffect = false;
         }
     }
     updateStatus('Segmente importiert');
@@ -8917,6 +8921,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
+        neighborEffect: false,
         version: 1
     };
 
@@ -11553,6 +11558,7 @@ async function handleDeUpload(input) {
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
+        file.neighborEffect = false;
         file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
         if (currentEditFile === file) {
             tempoFactor = 1.0;
@@ -12139,6 +12145,35 @@ async function applyReverbEffect(buffer, opts = {}) {
 }
 // =========================== REVERB END =====================================
 
+// =========================== NEBENRAUMEFFEKT START ==========================
+// Simuliert gedämpfte Sprache aus einem Nachbarraum
+async function applyNeighborRoomEffect(buffer, opts = {}) {
+    const { cutoff = 1000, wet = 0.3 } = opts;
+    // Offline-Kontext für Tiefpass und Pegelabsenkung
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const low = ctx.createBiquadFilter();
+    low.type = 'lowpass';
+    low.frequency.value = cutoff;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0.6; // leichte Dämpfung
+
+    source.connect(low);
+    low.connect(gain);
+    gain.connect(ctx.destination);
+    source.start();
+    let processed = await ctx.startRendering();
+
+    // Kleiner Hall für Raumklang
+    processed = await applyReverbEffect(processed, { room: 0.2, wet, delay: 40 });
+
+    return processed;
+}
+// =========================== NEBENRAUMEFFEKT END ============================
+
 // =========================== EMI NOISE START ===============================
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
@@ -12217,6 +12252,8 @@ let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
 let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
 let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
 let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
+let neighborEffectBuffer = null;  // Buffer mit Nebenraum-Effekt
+let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -12247,6 +12284,8 @@ async function openDeEdit(fileId) {
     isHallEffect = false;
     emiEffectBuffer = null;
     isEmiEffect = false;
+    neighborEffectBuffer = null;
+    isNeighborEffect = false;
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -12888,6 +12927,14 @@ function updateEffectButtons() {
     if (emiBoxBtn) {
         emiBoxBtn.classList.toggle('active', isEmiEffect);
     }
+    const neighborBtn = document.getElementById('neighborEffectBtn');
+    const neighborBoxBtn = document.getElementById('neighborEffectBoxBtn');
+    if (neighborBtn) {
+        neighborBtn.classList.toggle('active', isNeighborEffect);
+    }
+    if (neighborBoxBtn) {
+        neighborBoxBtn.classList.toggle('active', isNeighborEffect);
+    }
 }
 
 // Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
@@ -12995,6 +13042,9 @@ async function recomputeEditBuffer() {
     if (isHallEffect) {
         buf = await applyReverbEffect(buf);
     }
+    if (isNeighborEffect) {
+        buf = await applyNeighborRoomEffect(buf);
+    }
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
     }
@@ -13054,6 +13104,22 @@ function toggleHallEffect(active) {
     updateEffectButtons();
 }
 // =========================== APPLYHALLEFFECT END ============================
+
+// =========================== APPLYNEIGHBOREFFECT START ======================
+// Aktiviert den Nebenraum-Effekt und legt bei Erstnutzung eine History an
+async function applyNeighborEffect() {
+    if (!isNeighborEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isNeighborEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+// =========================== APPLYNEIGHBOREFFECT END ========================
 
 // =========================== APPLYEMIEFFECT START ===========================
 // Aktiviert elektromagnetische Störgeräusche und legt bei Erstnutzung eine History an
@@ -13594,6 +13660,8 @@ function closeDeEdit() {
     isHallEffect = false;
     emiEffectBuffer = null;
     isEmiEffect = false;
+    neighborEffectBuffer = null;
+    isNeighborEffect = false;
     editEnBuffer = null;
     editIgnoreRanges = [];
     ignoreTempStart = null;
@@ -13636,6 +13704,7 @@ async function resetDeEdit() {
     if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
     if (currentEditFile.hallEffect) steps.push('Hall-Effekt');
     if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
+    if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
     const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
     if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
     const relPath = getFullPath(currentEditFile);
@@ -13684,6 +13753,7 @@ async function resetDeEdit() {
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
         currentEditFile.emiEffect = false;
+        currentEditFile.neighborEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -13692,6 +13762,8 @@ async function resetDeEdit() {
         isHallEffect = false;
         emiEffectBuffer = null;
         isEmiEffect = false;
+        neighborEffectBuffer = null;
+        isNeighborEffect = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         isDirty = true;
@@ -13854,6 +13926,7 @@ async function applyDeEdit() {
         currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.emiEffect = isEmiEffect;
+        currentEditFile.neighborEffect = isNeighborEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
@@ -14772,6 +14845,7 @@ function addFileToProject(filename, folder, originalResult) {
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
+        neighborEffect: false,
         version: 1
     };
 
@@ -15660,6 +15734,7 @@ function quickAddLevel(chapterName) {
                 f.radioEffect = false;
                 f.hallEffect = false;
                 f.emiEffect = false;
+                f.neighborEffect = false;
                 // Tempo bei neuem Upload auf Standard zurücksetzen
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
@@ -15845,6 +15920,7 @@ function quickAddLevel(chapterName) {
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
+            file.neighborEffect = false;
             renderFileTable();
             saveCurrentProject();
         }
