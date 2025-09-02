@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.269
+* Debug-Bericht-Knopf öffnet Fenster nun auch ohne Dateisystem-API und kopiert die Daten direkt in die Zwischenablage.
 ## 🛠️ Patch in 1.40.268
 * DevTools- und Debug-Bericht-Knöpfe reagieren wieder auf Klicks.
 ## 🛠️ Patch in 1.40.267

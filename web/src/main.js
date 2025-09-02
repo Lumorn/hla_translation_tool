@@ -11242,13 +11242,8 @@ async function scanAudioDuplicates() {
 
         // Exportiert einen vollständigen Debug-Bericht als mehrere Dateien
         async function exportDebugReport() {
-            // Prüfen, ob die File-System-API verfügbar ist
-            if (!window.isSecureContext || typeof window.showSaveFilePicker !== 'function') {
-                showToast('Dateisystem-API nicht verfügbar', 'error');
-                return;
-            }
-
             // Nicht serialisierbare Felder wie fileObject entfernen
+            // Diese Bereinigung verhindert zirkuläre Referenzen beim JSON-Export
             const sanitize = obj => JSON.parse(JSON.stringify(obj, (k, v) => k === 'fileObject' ? undefined : v));
 
             // Alle Debug-Daten vorbereiten
@@ -11302,16 +11297,23 @@ async function scanAudioDuplicates() {
                     const rep = reports.find(x => x.key === key);
                     if (!rep) return;
                     try {
-                        const handle = await window.showSaveFilePicker({
-                            suggestedName: `${key}.json`,
-                            types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
-                        });
-                        const writable = await handle.createWritable();
-                        await writable.write(JSON.stringify(rep.content, null, 2));
-                        await writable.close();
-                        showToast('Debug-Datei gespeichert');
+                        if (typeof window.showSaveFilePicker === 'function') {
+                            // Normalfall: Dateidialog öffnen und JSON speichern
+                            const handle = await window.showSaveFilePicker({
+                                suggestedName: `${key}.json`,
+                                types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+                            });
+                            const writable = await handle.createWritable();
+                            await writable.write(JSON.stringify(rep.content, null, 2));
+                            await writable.close();
+                            showToast('Debug-Datei gespeichert');
+                        } else {
+                            // Fallback: Keine Dateisystem-API – Inhalte direkt in Zwischenablage kopieren
+                            await navigator.clipboard.writeText(JSON.stringify(rep.content, null, 2));
+                            showToast('Dateisystem-API fehlt – Daten in Zwischenablage kopiert');
+                        }
                     } catch (err) {
-                        // Fallback: Bei fehlgeschlagenem Speichern Inhalte in die Zwischenablage kopieren
+                        // Letzter Fallback: Kopie in die Zwischenablage versuchen
                         try {
                             await navigator.clipboard.writeText(JSON.stringify(rep.content, null, 2));
                             showToast('Speichern fehlgeschlagen – Daten in Zwischenablage kopiert');
