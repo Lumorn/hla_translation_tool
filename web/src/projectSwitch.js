@@ -1,6 +1,9 @@
 // Sorgt für sicheren Projekt- und Speicherwechsel, um Race-Conditions zu vermeiden
 // Kommentare sind auf Deutsch gehalten
 
+// Quarantäne-Helfer bereitstellen
+import '../../utils/repairOrphans.js';
+
 // Warteschlange, damit Wechsel nacheinander abgearbeitet werden
 let switchQueue = Promise.resolve();
 // Laufende Sitzung zur Vermeidung veralteter Rückläufer
@@ -17,6 +20,32 @@ const ui = {
   // Fortschrittsanzeige optional
   progress: (d, t) => {}
 };
+
+/**
+ * Repariert verwaiste Vorschläge und speichert das Projekt sofort.
+ * @param {Object} adapter   Aktueller Speicheradapter zum Persistieren.
+ * @param {string|number} projectId ID des zu prüfenden Projekts.
+ * @param {Object} ui        Hilfsobjekt für Hinweise.
+ */
+async function repairProjectIntegrity(adapter, projectId, ui) {
+  const index = (projects || []).findIndex(p => p.id === projectId);
+  if (index === -1) return; // Kein Projekt vorhanden
+
+  const project = projects[index];
+  const { movedCount } = window.repairOrphans(project, p => {
+    projects[index] = p;
+    adapter.setItem('hla_projects', JSON.stringify(projects));
+  });
+
+  if (movedCount > 0) {
+    const msg = `${movedCount} verwaiste Vorschläge in Quarantäne verschoben – Debug › Quarantäne.`;
+    if (typeof window.showToast === 'function') {
+      window.showToast(msg);
+    } else if (ui && typeof ui.info === 'function') {
+      ui.info(msg);
+    }
+  }
+}
 
 /**
  * Blendet einen globalen Ladebalken ein oder aus,
