@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.267
+* Automatische Quarantäne verschiebt verwaiste Vorschläge beim Laden in einen gesicherten Bereich.
+
 ## 🛠️ Patch in 1.40.266
 * Pro Projekt zuschaltbarer Reste-Modus, der GPT mitteilt, dass Zeilen unabhängig und nicht chronologisch sind.
 ## 🛠️ Patch in 1.40.265
