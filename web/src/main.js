@@ -809,6 +809,20 @@ if (typeof document !== "undefined" && typeof document.getElementById === "funct
     if (subtitleAllBtn) {
         subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
     }
+    const restBox = document.getElementById("restTranslationCheckbox");
+    if (restBox) {
+        restBox.addEventListener("change", e => {
+            if (currentProject) {
+                currentProject.restTranslation = e.target.checked;
+                saveProjects();
+                if (window.setRestMode) {
+                    window.setRestMode(e.target.checked);
+                } else {
+                    window.restTranslationFlag = e.target.checked;
+                }
+            }
+        });
+    }
 }
 
 // Öffnet die gespeicherten GPT-Tabs ohne neue Bewertung
@@ -2133,6 +2147,7 @@ async function loadProjects() {
                 if (!p.hasOwnProperty('segmentAudio')) { p.segmentAudio = null; migrated = true; }
                 if (!p.hasOwnProperty('segmentAudioPath')) { p.segmentAudioPath = null; migrated = true; }
                 if (!p.hasOwnProperty('segmentIgnored')) { p.segmentIgnored = []; migrated = true; }
+                if (!p.hasOwnProperty('restTranslation')) { p.restTranslation = false; migrated = true; }
             });
 
             // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
@@ -2164,6 +2179,7 @@ async function loadProjects() {
                 levelPart: 1,
                 files: [],
                 color: '#ff6b1a',
+                restTranslation: false,
                 gptTests: [],
                 gptTabIndex: 0,
                 segmentAssignments: {},
@@ -2187,6 +2203,7 @@ async function loadProjects() {
                 levelPart: 1,
                 files: [],
                 color: '#ff6b1a',
+                restTranslation: false,
                 gptTests: [],
                 gptTabIndex: 0,
                 segmentAssignments: {},
@@ -2210,6 +2227,7 @@ async function loadProjects() {
                 levelPart: 2,
                 files: [],
                 color: '#ff6b1a',
+                restTranslation: false,
                 gptTests: [],
                 gptTabIndex: 0,
                 segmentAssignments: {},
@@ -2618,7 +2636,8 @@ function addProject() {
         levelPart: 1,
         files: [],
         icon: '🗂️',
-        color: '#54428E'
+        color: '#54428E',
+        restTranslation: false
     };
 
     // Dialog öffnen; erst nach Bestätigung wird es gespeichert
@@ -2647,7 +2666,8 @@ function quickAddProject(levelName) {
         levelPart: 1,
         files: [],
         icon: '🗂️',
-        color: getLevelColor(levelName)
+        color: getLevelColor(levelName),
+        restTranslation: false
     };
 
     projects.push(prj);
@@ -2684,6 +2704,19 @@ function selectProject(id){
 
     currentProject = projects.find(p => p.id === id);
     if(!currentProject) return;
+
+    // Fehlendes Flag für Reste-Modus ergänzen
+    if (!currentProject.hasOwnProperty('restTranslation')) {
+        currentProject.restTranslation = false;
+    }
+
+    const restBox = document.getElementById('restTranslationCheckbox');
+    if (restBox) restBox.checked = !!currentProject.restTranslation;
+    if (window.setRestMode) {
+        window.setRestMode(!!currentProject.restTranslation);
+    } else {
+        window.restTranslationFlag = !!currentProject.restTranslation;
+    }
 
     // Vorherigen Lock freigeben und neuen anfordern
     if (currentProjectLock) {

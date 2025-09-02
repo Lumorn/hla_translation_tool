@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.266
+* Pro Projekt zuschaltbarer Reste-Modus, der GPT mitteilt, dass Zeilen unabhängig und nicht chronologisch sind.
 ## 🛠️ Patch in 1.40.265
 * Notiz-Hinweis zeigt jetzt auch die Anzahl gleicher Einträge im gesamten Kapitel.
 ## 🛠️ Patch in 1.40.264
