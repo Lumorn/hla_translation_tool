@@ -251,6 +251,15 @@ function createWindow() {
       win.webContents.openDevTools();
     }
   });
+  // F12 ebenfalls als DevTools-Schalter anbieten
+  globalShortcut.register('F12', () => {
+    if (win.webContents.isDevToolsOpened()) {
+      win.webContents.closeDevTools();
+    } else {
+      // Immer im separaten Fenster öffnen
+      win.webContents.openDevTools({ mode: 'detach' });
+    }
+  });
 
   return win;
 }
@@ -637,6 +646,7 @@ app.whenReady().then(() => {
       nodeVersion: process.version,
       electronVersion: process.versions.electron,
       chromeVersion: process.versions.chrome,
+      v8Version: process.versions.v8,
       processPlatform: process.platform,
       cpuArch: process.arch,
       osType: os.type(),
@@ -645,6 +655,8 @@ app.whenReady().then(() => {
       cpuCount: os.cpus().length,
       totalMemMB: Math.round(os.totalmem() / 1024 / 1024),
       freeMemMB: Math.round(os.freemem() / 1024 / 1024),
+      memoryRssMB: Math.round(process.memoryUsage().rss / 1024 / 1024),
+      uptimeSec: Math.round(process.uptime()),
       processType: 'browser',
       contextIsolation: true,
       sandbox: mainWindow ? mainWindow.webContents.getLastWebPreferences().sandbox : false,
@@ -905,10 +917,12 @@ app.whenReady().then(() => {
   // DevTools per IPC ein-/ausblenden
   ipcMain.on('toggle-devtools', (event) => {
     const win = BrowserWindow.fromWebContents(event.sender);
+    if (!win) return; // Falls das Fenster bereits geschlossen wurde
     if (win.webContents.isDevToolsOpened()) {
       win.webContents.closeDevTools();
     } else {
-      win.webContents.openDevTools();
+      // Beim Öffnen immer ein separates Fenster verwenden
+      win.webContents.openDevTools({ mode: 'detach' });
     }
   });
 

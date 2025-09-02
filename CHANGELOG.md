@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.268
+* DevTools- und Debug-Bericht-Knöpfe reagieren wieder auf Klicks.
+## 🛠️ Patch in 1.40.267
+* DevTools lassen sich wieder per Knopf und F12 öffnen.
+* Debug-Fenster zeigt nun Prozesslaufzeit und RAM-Verbrauch an.
 ## 🛠️ Patch in 1.40.266
 * Pro Projekt zuschaltbarer Reste-Modus, der GPT mitteilt, dass Zeilen unabhängig und nicht chronologisch sind.
 ## 🛠️ Patch in 1.40.265

@@ -10873,6 +10873,19 @@ async function scanAudioDuplicates() {
         }
         // Funktion global verfügbar machen, damit der Button im HTML immer wirkt
         window.toggleDevTools = toggleDevTools;
+        // Klick-Events für DevTools- und Debug-Bericht-Knopf registrieren
+        // (nur ausführen, wenn ein echtes DOM verfügbar ist)
+        if (typeof document !== 'undefined' && document.getElementById) {
+            document.getElementById('devToolsButton')?.addEventListener('click', toggleDevTools);
+            document.getElementById('debugReportButton')?.addEventListener('click', exportDebugReport);
+        }
+        // F12-Shortcut auch im Renderer abfangen
+        window.addEventListener('keydown', e => {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                toggleDevTools();
+            }
+        });
 
         // Startet Half-Life: Alyx über die Desktop-Version
         async function startHla() {
@@ -11097,12 +11110,14 @@ async function scanAudioDuplicates() {
                 'App-Version': info.appVersion ?? info['App-Version'] ?? APP_VERSION,
                 'Node-Version': info.nodeVersion ?? info['Node-Version'] ?? (nodeDefined ? process.version : 'n/a'),
                 'Electron-Version': info.electronVersion ?? info['Electron-Version'] ?? (nodeDefined && process.versions ? process.versions.electron || 'n/a' : 'n/a'),
-                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (nodeDefined && process.versions ? process.versions.chrome || 'n/a' : 'n/a')
+                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (nodeDefined && process.versions ? process.versions.chrome || 'n/a' : 'n/a'),
+                'V8-Version': info.v8Version ?? info['V8-Version'] ?? (nodeDefined && process.versions ? process.versions.v8 || 'n/a' : 'n/a')
             };
             delete info.appVersion; delete info['App-Version'];
             delete info.nodeVersion; delete info['Node-Version'];
             delete info.electronVersion; delete info['Electron-Version'];
             delete info.chromeVersion; delete info['Chrome-Version'];
+            delete info.v8Version; delete info['V8-Version'];
 
             // Hilfsfunktion zur Anzeige
             function formatVal(v) {
@@ -11130,6 +11145,13 @@ async function scanAudioDuplicates() {
                         'Kontext-Isolation': info.contextIsolation,
                         'Sandbox aktiviert': info.sandbox,
                         'Adminrechte': info.admin
+                    }
+                },
+                {
+                    title: 'Laufzeit & Ressourcen',
+                    data: {
+                        'Prozess-Uptime (s)': info.uptimeSec,
+                        'RAM-Verbrauch (MB)': info.memoryRssMB
                     }
                 },
                 {

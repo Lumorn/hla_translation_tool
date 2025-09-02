@@ -971,13 +971,14 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🔍 Debug‑Spalte:** Zeigt aufgelöste Pfade und Status
 * **📊 Datenquellen‑Analyse:** Console‑Logs für Entwickler
 * **🎯 Access‑Status:** Echtzeit‑Anzeige der Dateiberechtigungen
-* **🔧 Debug-Konsole:** Diese Konsole ist standardmäßig verborgen und erscheint nur bei Entwickleraktionen (z. B. Dev-Button). In der Desktop-Version öffnen sich die DevTools automatisch in einem separaten Fenster oder per `Ctrl+Shift+I`.
+* **🔧 Debug-Konsole:** Diese Konsole ist standardmäßig verborgen und erscheint nur bei Entwickleraktionen (z. B. Dev-Button). In der Desktop-Version öffnen sich die DevTools automatisch in einem separaten Fenster oder per `F12` bzw. `Ctrl+Shift+I`. Der zugehörige Knopf reagiert wieder wie erwartet und blendet zusätzlich die Debug-Infos ein.
 * **💡 Neues Debug-Fenster:** Gruppiert System- und Pfadinformationen übersichtlich und bietet eine Kopierfunktion.
 * **📦 Modul-Status:** Neue Spalte im Debug-Fenster zeigt, ob alle Module korrekt geladen wurden und aus welcher Quelle sie stammen.
 * **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
+* **🧠 Laufzeit-Infos:** Zusätzlich werden Prozesslaufzeit und RAM-Verbrauch angezeigt.
 * **📸 VideoFrame-Details:** Zusätzlich werden der Pfad zum Frame-Ordner und die Versionen der Video-Abhängigkeiten angezeigt.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
-* **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden. Scheitert das Speichern, wird der Inhalt automatisch in die Zwischenablage kopiert.
+* **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden. Scheitert das Speichern, wird der Inhalt automatisch in die Zwischenablage kopiert. Der Button funktioniert nach einer internen Umstellung wieder zuverlässig.
 * **🛠 Debug-Logging aktivieren:** Setze `localStorage.setItem('hla_debug_mode','true')` im Browser, um zusätzliche Konsolen-Ausgaben zu erhalten
 * **🐞 Ausführliche Fehlerprotokolle:** Im Debug-Modus erscheinen unbehandelte Promise-Ablehnungen sowie Datei-, Zeilen- und Stack-Informationen
 
