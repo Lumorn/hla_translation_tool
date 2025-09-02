@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.266-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.270-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -976,6 +976,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **📦 Modul-Status:** Neue Spalte im Debug-Fenster zeigt, ob alle Module korrekt geladen wurden und aus welcher Quelle sie stammen.
 * **🖥️ Erweiterte Systemdaten:** Das Debug-Fenster zeigt jetzt Betriebssystem, CPU-Modell und freien Arbeitsspeicher an.
 * **🧠 Laufzeit-Infos:** Zusätzlich werden Prozesslaufzeit und RAM-Verbrauch angezeigt.
+* **🐞 Fehlerbehebung:** Das Debug-Fenster nutzt eine interne `showModal`-Funktion und vermeidet so den Fehler „ui.showModal ist keine Funktion“.
 * **📸 VideoFrame-Details:** Zusätzlich werden der Pfad zum Frame-Ordner und die Versionen der Video-Abhängigkeiten angezeigt.
 * **📝 Ausführliche API-Logs:** Alle Anfragen und Antworten werden im Dubbing-Log protokolliert
 * **📋 Debug-Bericht exportieren:** Ein Knopf öffnet ein Fenster mit einzelnen Debug-Berichten samt Dateigröße in MB; jede Datei kann separat exportiert werden. Fehlt die Dateisystem-API oder scheitert das Speichern, wandern die Inhalte automatisch in die Zwischenablage. Der Button funktioniert nach einer internen Umstellung wieder zuverlässig.

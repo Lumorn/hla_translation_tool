@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.270
+* Debug-Fenster ruft `showModal` direkt auf und vermeidet damit den Fehler "ui.showModal ist keine Funktion".
 ## 🛠️ Patch in 1.40.269
 * Debug-Bericht-Knopf öffnet Fenster nun auch ohne Dateisystem-API und kopiert die Daten direkt in die Zwischenablage.
 ## 🛠️ Patch in 1.40.268
