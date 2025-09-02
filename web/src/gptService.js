@@ -1,6 +1,21 @@
 let systemPrompt = '';
 let emotionPrompt = '';
 let promptReady;
+// Merker, ob die Zeilen innerhalb eines Projekts fragmentiert sind
+let restMode = false;
+
+// Aktiviert oder deaktiviert den Reste-Modus
+function setRestMode(flag) {
+    restMode = !!flag;
+    if (typeof window !== 'undefined') {
+        window.restTranslationFlag = restMode;
+    }
+}
+
+// Bereits gesetzten Zustand aus dem Fenster übernehmen
+if (typeof window !== 'undefined' && typeof window.restTranslationFlag !== 'undefined') {
+    restMode = !!window.restTranslationFlag;
+}
 
 // Entfernt Codeblock-Markierungen und prüft grob auf JSON
 function sanitizeJSONResponse(content) {
@@ -151,8 +166,12 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
     for (let i = 0; i < uniqueLines.length && !canceled; i += chunkSize) {
         const chunk = uniqueLines.slice(i, i + chunkSize);
         if (ui) updateProgressDialog(ui, i, uniqueLines.length);
+        // Bei aktivem Reste-Modus Hinweis anhängen
+        const sys = restMode
+            ? systemPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und stehen nicht in chronologischer Reihenfolge. Behandle jede Zeile unabhängig."
+            : systemPrompt;
         const messages = [
-            { role: 'system', content: systemPrompt },
+            { role: 'system', content: sys },
             { role: 'user', content: JSON.stringify({ scene, lines: chunk }) }
         ];
         const reqText = JSON.stringify({ model, messages });
@@ -211,8 +230,11 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
         target_position: targetPosition,
         instructions: 'Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch.'
     };
+    const emoSys = restMode
+        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : emotionPrompt;
     const messages = [
-        { role: 'system', content: emotionPrompt },
+        { role: 'system', content: emoSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
     const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
@@ -241,8 +263,11 @@ async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, k
         // Beim Kürzen sollen Abbrüche und Fülllaute erhalten bleiben
         instructions: `Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch. Kürze den Text so, dass die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt und diese Dauer keinesfalls unterschreitet. Dabei darfst du Formulierungen ändern und unwichtige Details weglassen, solange die Aussage erhalten bleibt, der Stil des englischen Originals gewahrt bleibt und der Text natürlich klingt. Eigenheiten wie abgebrochene Sätze oder Fülllaute ("äh", "mh") aus dem englischen Original sollen sinngemäß erhalten bleiben. Beschreibe im Feld "reason" in einem Satz, wie der Text verändert wurde, um die Länge der englischen Audiodatei von ${lengthSeconds.toFixed(2)} Sekunden zu erreichen.`
     };
+    const adjSys = restMode
+        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : emotionPrompt;
     const messages = [
-        { role: 'system', content: emotionPrompt },
+        { role: 'system', content: adjSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
     const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
@@ -273,8 +298,11 @@ async function improveEmotionText({ meta, lines, targetPosition, currentText, cu
         // LLM soll Alternativen liefern, die Länge und Sprechzeit des EN-Texts beachten
         instructions: 'Analysiere die gesamte Übersetzung und schlage genau drei alternative deutsche Fassungen vor. Jede Variante soll den englischen Originaltext besser wiedergeben, alle Emotionstags beibehalten und ungefähr die gleiche Länge sowie geschätzte Sprechdauer wie der englische Text haben. Vermeide längere Formulierungen. Gib ein Array [{"text":"...","reason":"..."}] zurück und begründe kurz die Verbesserungen.'
     };
+    const impSys = restMode
+        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : emotionPrompt;
     const messages = [
-        { role: 'system', content: emotionPrompt },
+        { role: 'system', content: impSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
     const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
@@ -374,7 +402,8 @@ if (typeof module !== 'undefined') {
         improveEmotionText,
         sanitizeJSONResponse,
         fetchWithRetry,
-        queuedFetch
+        queuedFetch,
+        setRestMode
     };
 }
 if (typeof window !== 'undefined') {
@@ -389,4 +418,5 @@ if (typeof window !== 'undefined') {
     window.sanitizeJSONResponse = sanitizeJSONResponse;
     window.fetchWithRetry = fetchWithRetry;
     window.queuedFetch = queuedFetch;
+    window.setRestMode = setRestMode;
 }
