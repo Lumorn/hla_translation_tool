@@ -81,8 +81,15 @@ function moveSuggestionsToQuarantine(project, items, reason) {
   project.suggestions = (project.suggestions || []).filter(s => !ids.has(s.id));
 }
 
-module.exports = {
-  repairOrphans,
-  moveSuggestionsToQuarantine
-};
+// Die Funktionen sowohl für Node (module.exports) als auch für den Browser bereitstellen
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    repairOrphans,
+    moveSuggestionsToQuarantine
+  };
+} else {
+  // Im Browser global verfügbar machen
+  window.repairOrphans = repairOrphans;
+  window.moveSuggestionsToQuarantine = moveSuggestionsToQuarantine;
+}
 

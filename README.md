@@ -1080,6 +1080,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
 * **`repairFileExtensions(projects, filePathDatabase, textDatabase)`** – aktualisiert veraltete Dateiendungen in Projekten und verschiebt vorhandene Texte.
 * **`repairOrphans(project, saveFn)`** – verschiebt Vorschläge ohne passende Datei in die Quarantäne und gibt die Anzahl verschobener Einträge zurück.
+* **`repairProjectIntegrity(adapter, projectId, ui)`** – prüft ein geladenes Projekt auf verwaiste Vorschläge, verschiebt sie in die Quarantäne und informiert per Toast.
   Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
   * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.

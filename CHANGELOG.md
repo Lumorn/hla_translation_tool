@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.268
+* Projektwechsel repariert verwaiste Vorschläge automatisch und informiert per Toast.
 ## 🛠️ Patch in 1.40.267
 * Automatische Quarantäne verschiebt verwaiste Vorschläge beim Laden in einen gesicherten Bereich.
 
