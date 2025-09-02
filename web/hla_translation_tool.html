@@ -73,6 +73,7 @@
                     <button id="devToolsButton" class="btn btn-secondary" onclick="toggleDevTools()">🐞 DevTools</button>
                     <button class="btn btn-secondary" onclick="exportDebugReport()">📋 Debug-Bericht</button>
                     <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                    <button class="btn btn-secondary" onclick="openQuarantine()">🦠 Quarantäne</button>
                     <button class="btn btn-secondary" onclick="startMigration()">Migration starten</button>
                     <button class="btn btn-secondary" onclick="loadMigration()">Migration laden</button>
                     <button class="btn btn-secondary" onclick="migrateData()">Daten migrieren</button>
@@ -1032,6 +1033,8 @@
     <script src="src/colorUtils.js"></script>
     <script src="src/fileStorage.js"></script>
     <script src="src/migrationUI.js"></script>
+    <script src="../utils/repairOrphans.js"></script>
+    <script src="src/quarantineUI.js"></script>
     <script src="src/projectSwitch.js"></script>
     <script src="src/main.js"></script>
     <script type="module" src="renderer.js"></script>

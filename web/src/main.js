@@ -4592,14 +4592,18 @@ return `
             const id = Number(div.dataset.fileId);
             const file = files.find(f => f.id === id);
             if (!file) {
-                // Dateizuordnung fehlt → Element entfernen und Nutzer informieren
+                // Keine Datei gefunden → Vorschlag in Quarantäne verschieben und Nutzer informieren
+                if (currentProject && Array.isArray(currentProject.suggestions) && typeof window.moveSuggestionsToQuarantine === 'function') {
+                    const verwaiste = currentProject.suggestions.filter(s => s.fileId === id);
+                    if (verwaiste.length) {
+                        window.moveSuggestionsToQuarantine(currentProject, verwaiste, 'missing-file');
+                        if (typeof saveCurrentProject === 'function') saveCurrentProject();
+                        const text = `${verwaiste.length} verwaister Vorschlag in Quarantäne verschoben – Debug › Quarantäne.`;
+                        if (typeof window.showToast === 'function') window.showToast(text);
+                    }
+                }
                 const row = div.closest('tr');
                 if (row) row.remove();
-                const msg = `❌ Keine Datei für Vorschlag mit ID ${id} gefunden. Der Eintrag wurde entfernt.`;
-                // Fragt optional nach einem Debug-Bericht
-                if (confirm(`${msg}\n\nSoll ein Debug-Bericht gespeichert werden?`)) {
-                    exportDebugReport();
-                }
                 return;
             }
             div.textContent = file.suggestion || '';
@@ -6200,9 +6204,17 @@ function toggleCompletionAll() {
 function deleteFile(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
-    
+
+    // Zugehörige Vorschläge in die Quarantäne verschieben
+    if (currentProject && Array.isArray(currentProject.suggestions)) {
+        const betroffene = currentProject.suggestions.filter(s => s.fileId === fileId);
+        if (betroffene.length && typeof window.moveSuggestionsToQuarantine === 'function') {
+            window.moveSuggestionsToQuarantine(currentProject, betroffene, 'missing-file');
+        }
+    }
+
     files = files.filter(f => f.id !== fileId);
-    
+
     // Update display order
     displayOrder = displayOrder.filter(item => item.file.id !== fileId);
     
@@ -6211,6 +6223,7 @@ function deleteFile(fileId) {
     renderProjects(); // HINZUGEFÜGT für live Update
     updateStatus(`${file.filename} entfernt`);
     updateProgressStats();
+    saveProjects();
 }
 
         // Aufgerufen durch Klick auf die Zeilennummer, 
