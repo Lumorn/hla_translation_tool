@@ -11221,7 +11221,8 @@ async function scanAudioDuplicates() {
                 html += '</ul>';
             });
             html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
-            ui.showModal(html);
+            // Dialog direkt anzeigen, ohne auf window.ui zuzugreifen
+            showModal(html);
 
             // Kopier-Knopf zum schnellen Übernehmen in die Zwischenablage
             const copyBtn = document.getElementById('copyDebugInfoBtn');
@@ -11234,8 +11235,8 @@ async function scanAudioDuplicates() {
                         .map(([k, v]) => `${k}: ${v}`)
                         .join('\n');
                     safeCopy(text)
-                        .then(ok => { if (ok) ui.notify('Debug-Daten kopiert'); })
-                        .catch(err => ui.notify('Kopieren fehlgeschlagen: ' + err, 'error'));
+                        .then(ok => { if (ok) showToast('Debug-Daten kopiert'); })
+                        .catch(err => showToast('Kopieren fehlgeschlagen: ' + err, 'error'));
                 });
             }
         }
@@ -11287,7 +11288,8 @@ async function scanAudioDuplicates() {
                 html += `<li><span><strong>${escapeHtml(r.name)}</strong></span><span><code>${r.sizeMB} MB</code> <button class="btn btn-secondary" data-report="${r.key}">Exportieren</button></span></li>`;
             });
             html += '</ul>';
-            ui.showModal(html);
+            // Dialog direkt anzeigen, ohne auf window.ui zuzugreifen
+            showModal(html);
 
             // Export-Buttons verbinden
             document.querySelectorAll('[data-report]').forEach(btn => {
