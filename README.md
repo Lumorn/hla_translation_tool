@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.266-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.271-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -115,8 +115,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Score in Prozent:** Die Bewertung wird in der Tabelle mit Prozentzeichen dargestellt
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
 * **Bugfix:** Verwaiste Vorschlagsfelder lösen beim Laden kein Fehlerereignis mehr aus
-* **Validierte Vorschlagsfelder:** Fehlt die zugehörige Datei, wird der Eintrag entfernt und eine Meldung weist darauf hin
-* **Debug-Bericht bei fehlender Vorschlagsdatei:** Nach dem Entfernen öffnet sich ein Fenster zum Speichern einzelner Berichte
+* **Automatische Quarantäne:** Fehlt die zugehörige Datei, wandert der Vorschlag ohne Rückfrage in die Quarantäne
+* **Info-Toast statt Debug-Bericht:** Ein kurzer Hinweis informiert über die Verschiebung; der Debug-Dialog entfällt
+* **Quarantäne bei Dateilöschungen:** Wird eine Datei entfernt, wandern verknüpfte Vorschläge automatisch in die Quarantäne
+* **Quarantäne-Ansicht:** Im Protokoll zeigt ein eigener Dialog alle verwaisten Vorschläge mit Aktionen zum Wiederherstellen, Entfernen oder Exportieren
 * **Kommentar-Anzeige auf ganzer Fläche:** Der Tooltip reagiert jetzt auf das gesamte Score-Feld
 * **Direkter Daten-Refresh:** Nach jeder Bewertung wird die Tabelle mit den aktualisierten Dateien neu gerendert
 * **Farbiger GPT-Vorschlag:** Der empfohlene DE-Text erscheint nun oberhalb des Textfelds und nutzt die Score-Farbe
@@ -1079,6 +1081,9 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`ipcContracts.ts`** – definiert Typen für die IPC-Kommunikation zwischen Preload und Hauptprozess.
 * **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
 * **`repairFileExtensions(projects, filePathDatabase, textDatabase)`** – aktualisiert veraltete Dateiendungen in Projekten und verschiebt vorhandene Texte.
+* **`repairOrphans(project, saveFn)`** – verschiebt Vorschläge ohne passende Datei in die Quarantäne und gibt die Anzahl verschobener Einträge zurück.
+* **`moveSuggestionsToQuarantine(project, items, reason)`** – schiebt gezielt übergebene Vorschläge mit Grundangabe in die Quarantäne.
+* **`repairProjectIntegrity(adapter, projectId, ui)`** – prüft ein geladenes Projekt auf verwaiste Vorschläge, verschiebt sie in die Quarantäne und informiert per Toast.
   Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
   * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
