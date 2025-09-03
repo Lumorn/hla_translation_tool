@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.290
+* Fehlende Projekte lösen nun einen erneuten Ladeversuch aus; `switchProjectSafe` lädt dafür die Projektliste neu und startet den Wechsel erneut.
 ## 🛠️ Patch in 1.40.289
 * Projektliste lässt sich neu laden, ohne automatisch ein Projekt zu öffnen; `loadProjects(skipSelect)` verhindert veraltete Projekt-IDs.
 ## 🛠️ Patch in 1.40.288
