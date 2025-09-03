@@ -2352,8 +2352,20 @@ async function loadProjects(skipSelect = false) {
         // =========================== HANDLE-DATENBANK END =======================
 
 /* =========================== RENDER PROJECTS START =========================== */
+let projectListClickBound = false; // Merker, ob der Klick-Listener gesetzt ist
+
 function renderProjects() {
     const list = document.getElementById('projectList');
+    // Event-Delegation nur einmal einrichten, um doppelte Handler zu vermeiden
+    if (!projectListClickBound) {
+        list.addEventListener('click', e => {
+            const item = e.target.closest('.project-item');
+            if (item && !e.target.closest('button')) {
+                switchProjectSafe(item.dataset.projectId);
+            }
+        });
+        projectListClickBound = true;
+    }
     list.innerHTML = '';
 
     // Projekte nach Kapitel und Level gruppieren
@@ -2514,9 +2526,7 @@ function renderProjects() {
                 `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
                 `• GPT: ${stats.scoreMin}  • Dateien: ${stats.totalFiles}`;
 
-            card.onclick = () => {
-                switchProjectSafe(p.id); // Sicherer Wechsel löst clearGptState aus
-            };
+            // Klick-Handler wird über Event-Delegation gesetzt
             card.addEventListener('contextmenu', e => showProjectMenu(e, p.id));
             card.addEventListener('dragstart', handleProjectDragStart);
             card.addEventListener('dragover',  handleProjectDragOver);

@@ -186,18 +186,19 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
   ]);
 
   let changed = false;
+  const writes = []; // Sammeln der Schreibvorgänge
 
   // Fehlende Metadaten durch leere Struktur ersetzen
   if (!meta) {
     ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – Metadaten angelegt`);
-    await adapter.setItem(metaKey, JSON.stringify({ id: projectId }));
+    writes.push(adapter.setItem(metaKey, JSON.stringify({ id: projectId })));
     changed = true;
   }
 
   // Fehlenden Index durch leeres Array ersetzen
   if (!index) {
     ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – Index angelegt`);
-    await adapter.setItem(indexKey, '[]');
+    writes.push(adapter.setItem(indexKey, '[]'));
     changed = true;
   }
 
@@ -225,9 +226,16 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
       levelName: '',
       levelPart: 1
     });
-    await adapter.setItem(listKey, JSON.stringify(list));
+    writes.push(adapter.setItem(listKey, JSON.stringify(list)));
     changed = true;
+    // In-Memory-Projekte sofort aktualisieren, um Race-Conditions zu vermeiden
+    if (Array.isArray(window.projects)) {
+      window.projects = list;
+    }
   }
+
+  // Auf Abschluss aller Schreibvorgänge warten
+  await Promise.all(writes);
 
   if (changed) {
     return true;
