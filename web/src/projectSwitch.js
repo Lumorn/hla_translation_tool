@@ -67,7 +67,9 @@ function switchProjectSafe(projectId) {
         geladen = true;
       } catch (err) {
         // Wenn das Projekt fehlt, zunächst Reparaturversuch starten
-        if (err && String(err.message).includes('nicht gefunden')) {
+        // Prüft Fehlermeldungen auf Deutsch und Englisch
+        const msg = err ? String(err.message) : '';
+        if (/(nicht gefunden|not found)/i.test(msg)) {
           const adapter = getStorageAdapter('current');
           try {
             await repairProjectIntegrity(adapter, projectId, ui);
@@ -100,9 +102,11 @@ function switchProjectSafe(projectId) {
     }
 }).catch(async err => {
   setBusy(false);
-  if (err && String(err.message).includes('nicht gefunden')) {
+  // Fehlermeldung sowohl auf Deutsch als auch auf Englisch erkennen
+  const msg = err ? String(err.message) : '';
+  if (/(nicht gefunden|not found)/i.test(msg)) {
     // Fehlende Projekte führen nur zu einer Warnung und die Liste wird aktualisiert
-    console.warn('Projektwechsel abgebrochen:', err.message);
+    console.warn('Projektwechsel abgebrochen:', msg);
     try {
       await reloadProjectList();
     } catch {}
