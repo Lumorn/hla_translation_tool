@@ -21,9 +21,11 @@ if (typeof window !== 'undefined' && window.attachScoreHandlers) {
 }
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
-function applyEvaluationResults(results, files) {
-    if (!Array.isArray(results)) return;
+// Nur Einträge mit passender Projekt-ID werden übernommen
+function applyEvaluationResults(results, files, currentProject) {
+    if (!Array.isArray(results) || !currentProject) return;
     for (const r of results) {
+        if (r.projectId !== currentProject.id) continue;
         // IDs als Strings vergleichen, damit auch Gleitkommawerte gefunden werden
         const f = files.find(fl => String(fl.id) === String(r.id));
         if (f) {
@@ -74,14 +76,15 @@ async function scoreVisibleLines(opts) {
     const scene = currentProject?.levelName || '';
     let results = [];
     try {
-        results = await evaluateScene({ scene, lines, key: apiKey, model: gptModel });
+        // projectId wird an den Service übergeben, damit die Ergebnisse zugeordnet werden können
+        results = await evaluateScene({ scene, lines, key: apiKey, model: gptModel, projectId: currentProject?.id });
     } catch (e) {
         if (showErrorBanner) {
             showErrorBanner(String(e), () => scoreVisibleLines({ ...opts, autoApplySuggestion }));
         }
         return;
     }
-    applyEvaluationResults(results, files);
+    applyEvaluationResults(results, files, currentProject);
     // Tabelle mit den aktualisierten Dateien neu aufbauen
     await renderTable(displayOrder.map(d => d.file));
     if (typeof attachScoreHandlers === 'function' && typeof document !== 'undefined') {

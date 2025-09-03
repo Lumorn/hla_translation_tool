@@ -14,7 +14,7 @@ test('teilt lange Anfragen in Blöcke', async () => {
   const { evaluateScene } = require('../web/src/gptService.js');
   const lines = Array.from({ length: 300 }, (_, i) => ({ id: i, character: '', en: 'a', de: 'b' }));
   jestFetch.mockResolvedValue({ ok: true, json: async () => ({ choices: [{ message: { content: '[]' } }] }) });
-  await evaluateScene({ scene: 'scene', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1 });
+  await evaluateScene({ scene: 'scene', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1, projectId: 'p1' });
   expect(jestFetch).toHaveBeenCalledTimes(1);
 });
 
@@ -22,7 +22,7 @@ test('wirft bei API-Fehler', async () => {
   const { evaluateScene } = require('../web/src/gptService.js');
   const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
   jestFetch.mockResolvedValue({ ok: false, status: 429, json: async () => ({ error: { message: 'limit' } }) });
-  await expect(evaluateScene({ scene: 's', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1 })).rejects.toThrow('API-Fehler');
+  await expect(evaluateScene({ scene: 's', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1, projectId: 'p1' })).rejects.toThrow('API-Fehler');
 });
 
 test('testKey prüft API-Schlüssel', async () => {
@@ -59,8 +59,8 @@ test('sanitizeJSONResponse entfernt ```json-Blöcke', () => {
 test('applyEvaluationResults überträgt Score und Kommentar', () => {
   const { applyEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
   const files = [{ id: 1 }, { id: 2 }];
-  const results = [{ id: '1', score: '55', comment: 'ok', suggestion: 'neu' }];
-  applyEvaluationResults(results, files);
+  const results = [{ id: '1', score: '55', comment: 'ok', suggestion: 'neu', projectId: 'p1' }];
+  applyEvaluationResults(results, files, { id: 'p1' });
   expect(files[0].score).toBe(55);
   expect(files[0].comment).toBe('ok');
   expect(files[0].suggestion).toBe('neu');
@@ -84,11 +84,11 @@ test('fasst doppelte Zeilen zusammen', async () => {
     ok: true,
     json: async () => ({ choices: [{ message: { content: '[{"id":1,"score":5}]' } }] })
   });
-  const res = await evaluateScene({ scene: 's', lines, key: 'key', model: 'gpt', retries: 1 });
+  const res = await evaluateScene({ scene: 's', lines, key: 'key', model: 'gpt', retries: 1, projectId: 'p1' });
   expect(jestFetch).toHaveBeenCalledTimes(1);
   expect(res).toEqual([
-    { id: 1, score: 5 },
-    { id: 2, score: 5 }
+    { id: 1, score: 5, projectId: 'p1' },
+    { id: 2, score: 5, projectId: 'p1' }
   ]);
 });
 
@@ -122,7 +122,7 @@ test('wiederholt bei HTTP 429', async () => {
   jestFetch
     .mockResolvedValueOnce({ ok: false, status: 429 })
     .mockResolvedValueOnce({ ok: true, json: async () => ({ choices: [{ message: { content: '[{"id":1}]' } }] }) });
-  const res = await evaluateScene({ scene: 's', lines, key: 'k', model: 'gpt', retries: 2 });
+  const res = await evaluateScene({ scene: 's', lines, key: 'k', model: 'gpt', retries: 2, projectId: 'p1' });
   expect(jestFetch).toHaveBeenCalledTimes(2);
-  expect(res).toEqual([{ id: 1 }]);
+  expect(res).toEqual([{ id: 1, projectId: 'p1' }]);
 });

@@ -152,7 +152,7 @@ async function fetchWithRetry(url, options, retries = 5) {
 
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
-async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries = 5 }) {
+async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries = 5, projectId }) {
     await promptReady;
 
     // Doppelte Zeilen zusammenfassen
@@ -245,7 +245,8 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
     const expanded = [];
     link.forEach((uIdx, i) => {
         const base = results[uIdx] || {};
-        expanded.push({ ...base, id: lines[i].id });
+        // projectId zur Ergebniszeile hinzufügen, damit nur passende Projekte Daten übernehmen
+        expanded.push({ ...base, id: lines[i].id, projectId });
     });
     return expanded;
 }

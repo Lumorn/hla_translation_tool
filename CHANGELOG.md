@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.279
+* GPT-Ergebnisse enthalten eine `projectId` und werden nur im entsprechenden Projekt übernommen.
 ## 🛠️ Patch in 1.40.278
 * Projektwechsel leert zusätzlich die Zeilenreihenfolge, indem `displayOrder` zurückgesetzt wird.
 ## 🛠️ Patch in 1.40.277
