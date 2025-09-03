@@ -73,6 +73,8 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
 // *** Einfache Warteschlange, um API-Aufrufe zu drosseln ***
 const queue = [];
 let queueActive = false;
+// Merkt alle aktiven AbortController, damit laufende Anfragen abgebrochen werden können
+const controllers = new Set();
 
 // Startet den nächsten Eintrag der Warteschlange
 async function processQueue() {
@@ -84,16 +86,29 @@ async function processQueue() {
         job.resolve(res);
     } catch (e) {
         job.reject(e);
+    } finally {
+        controllers.delete(job.controller);
     }
     setTimeout(processQueue, 1000); // kleine Pause zwischen den Anfragen
 }
 
 // Legt einen Aufruf in die Warteschlange und gibt ein Promise zurück
-function queuedFetch(url, options, retries = 5) {
+function queuedFetch(url, options = {}, retries = 5) {
     return new Promise((resolve, reject) => {
-        queue.push({ url, options, retries, resolve, reject });
+        const controller = new AbortController();
+        controllers.add(controller);
+        const opts = { ...options, signal: controller.signal };
+        queue.push({ url, options: opts, retries, resolve, reject, controller });
         if (!queueActive) processQueue();
     });
+}
+
+// Bricht alle laufenden und wartenden GPT-Anfragen ab
+function cancelGptRequests() {
+    queue.length = 0;
+    controllers.forEach(c => c.abort());
+    controllers.clear();
+    queueActive = false;
 }
 
 // Hilfsfunktion mit erweiterten Wiederholungen bei 429 oder 503
@@ -114,6 +129,7 @@ async function fetchWithRetry(url, options, retries = 5) {
             continue;
         } catch (e) {
             lastError = e;
+            if (e.name === 'AbortError') break; // Bei Abbruch keine weiteren Versuche
         }
         await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000));
     }
@@ -403,6 +419,7 @@ if (typeof module !== 'undefined') {
         sanitizeJSONResponse,
         fetchWithRetry,
         queuedFetch,
+        cancelGptRequests,
         setRestMode
     };
 }
@@ -418,5 +435,6 @@ if (typeof window !== 'undefined') {
     window.sanitizeJSONResponse = sanitizeJSONResponse;
     window.fetchWithRetry = fetchWithRetry;
     window.queuedFetch = queuedFetch;
+    window.cancelGptRequests = cancelGptRequests;
     window.setRestMode = setRestMode;
 }
