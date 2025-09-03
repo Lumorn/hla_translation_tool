@@ -51,6 +51,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ladebalken beim Projektwechsel:** blockiert weitere Wechsel, bis das Projekt vollständig geladen ist
 * **Sicherer Projektwechsel:** `pauseAutosave`, `flushPendingWrites` und weitere Helfer räumen Speicher und Listener auf
 * **Sauberer GPT-Reset beim Projektwechsel:** Beendet laufende Bewertungen, entfernt Vorschlagsboxen und verhindert dadurch Fehlermeldungen
+* **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
