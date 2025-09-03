@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.294
+* Fehlender `switchProjectSafe` verhindert das Öffnen nicht mehr; Projektkarten greifen auf `selectProject` zurück.
 ## 🛠️ Patch in 1.40.293
 * Projektkarten nutzen jetzt einen delegierten Click-Listener; doppelte `selectProject`-Aufrufe entfallen.
 * `repairProjectIntegrity` wartet auf alle Schreibvorgänge und aktualisiert den In-Memory-Projektcache sofort.

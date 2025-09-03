@@ -2361,7 +2361,12 @@ function renderProjects() {
         list.addEventListener('click', e => {
             const item = e.target.closest('.project-item');
             if (item && !e.target.closest('button')) {
-                switchProjectSafe(item.dataset.projectId);
+                // Falls der sichere Wechsel fehlt, direktes selectProject verwenden
+                if (typeof window.switchProjectSafe === 'function') {
+                    window.switchProjectSafe(item.dataset.projectId);
+                } else {
+                    selectProject(item.dataset.projectId);
+                }
             }
         });
         projectListClickBound = true;
