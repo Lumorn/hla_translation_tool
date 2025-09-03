@@ -32,4 +32,5 @@ test('switchProjectSafe lädt nach Fehler die Projektliste neu', async () => {
 
   expect(window.reloadProjectList).toHaveBeenCalledTimes(1);
   expect(window.loadProjectData).toHaveBeenCalledTimes(2);
+  expect(window.repairProjectIntegrity).toHaveBeenCalledTimes(2);
 });

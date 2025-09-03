@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.292
+* Fehlende Projekte werden vor dem erneuten Laden automatisch repariert; `switchProjectSafe` ruft bei einem Fehler sofort `repairProjectIntegrity` auf.
 ## 🛠️ Patch in 1.40.291
 * Fehlende Projekte führen nur zu einer Warnung; `switchProjectSafe` protokolliert keinen Fehler mehr, wenn ein Projekt endgültig fehlt.
 ## 🛠️ Patch in 1.40.290
