@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.299
+* Englische Fehlermeldungen wie "Project not found" werden erkannt und die Projektliste wird erneut geladen.
 ## 🛠️ Patch in 1.40.298
 * Neuer 🎲 Zufallsprojekt-Knopf lädt ein zufälliges Projekt und speichert ein Protokoll als Datei oder in der Zwischenablage.
 ## 🛠️ Patch in 1.40.297
