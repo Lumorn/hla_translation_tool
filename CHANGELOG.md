@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.285
+* Fehlende Projekte werden der Projektliste hinzugefügt und die Liste wird nach der Reparatur neu geladen.
 ## 🛠️ Patch in 1.40.284
 * LocalStorage-Bereinigung lässt das Schema `project:<id>:meta` unangetastet.
 ## 🛠️ Patch in 1.40.283
