@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.277
+* Projektwechsel sichert Dateien, bevor der GPT-Zustand bereinigt wird.
 ## 🛠️ Patch in 1.40.276
 * GPT-Auswertung vergleicht Datei-IDs nun als Strings, sodass Ganzzahl- und Gleitkomma-IDs korrekt zugeordnet werden.
 ## 🛠️ Patch in 1.40.275
