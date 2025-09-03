@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.297
+* Lade-Mechanik komplett überarbeitet; Projekte lassen sich wieder zuverlässig laden.
 ## 🛠️ Patch in 1.40.296
 * Ersetzt `navigator.userAgent` und `navigator.platform` durch `navigator.userAgentData` mit Fallback, um künftige User-Agent-Reduktionen zu unterstützen.
 ## 🛠️ Patch in 1.40.295
