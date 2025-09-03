@@ -535,6 +535,7 @@ function clearGptState() {
     if (typeof files !== 'undefined') files = [];
     if (typeof gptPromptData !== 'undefined') gptPromptData = null;
     if (typeof gptEvaluationResults !== 'undefined') gptEvaluationResults = null;
+    if (typeof displayOrder !== 'undefined') displayOrder = []; // Zeilenreihenfolge zurücksetzen
     // Vorschlagsboxen und Kommentare aus dem DOM entfernen
     if (typeof document !== 'undefined') {
         document.querySelectorAll('.suggestion-box, .comment-box, .emo-reason-box').forEach(el => el.remove());
