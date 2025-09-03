@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.275-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.276-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -113,6 +113,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Charaktername im GPT-Prompt:** Das Feld `character` nutzt nun den Ordnernamen
 * **Bugfix:** Scores werden korrekt eingefügt, auch wenn ID und Score als Zeichenketten geliefert werden
 * **Robustere Zuordnung:** GPT-Ergebnisse finden jetzt auch dann die richtige Zeile, wenn die ID leicht abweicht
+* **String-Vergleich der IDs:** Datei-IDs werden als Strings abgeglichen, sodass auch Gleitkomma-IDs eindeutig zugeordnet werden
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Einheitliche Score-Klassen:** Die Funktion `scoreClass` vergibt überall die gleichen Farbstufen
 * **Feineres Bewertungsschema:** Ab 95 % wird der Score grün, zwischen 85 % und 94 % gelb

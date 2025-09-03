@@ -24,13 +24,8 @@ if (typeof window !== 'undefined' && window.attachScoreHandlers) {
 function applyEvaluationResults(results, files) {
     if (!Array.isArray(results)) return;
     for (const r of results) {
-        // ID in Zahl umwandeln, bei Präzisionsproblemen auch String vergleichen
-        const idNum = Number(r.id);
-        let f = files.find(fl => fl.id === idNum);
-        if (!f) {
-            const idStr = String(r.id);
-            f = files.find(fl => String(fl.id) === idStr);
-        }
+        // IDs als Strings vergleichen, damit auch Gleitkommawerte gefunden werden
+        const f = files.find(fl => String(fl.id) === String(r.id));
         if (f) {
             // Score in Zahl umwandeln, sonst 0
             const sc = Number(r.score);
@@ -70,7 +65,7 @@ async function scoreVisibleLines(opts) {
         return row && row.offsetParent !== null;
     });
     const lines = visible.map(({ file }) => ({
-        id: file.id,
+        id: String(file.id), // ID als String serialisieren
         // Charakter entspricht dem Ordnernamen
         character: file.character || file.folder || '',
         en: file.enText || '',

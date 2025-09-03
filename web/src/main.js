@@ -1011,9 +1011,8 @@ function updateGptSummary(results) {
     // Tabelle leeren
     body.innerHTML = '';
     for (const r of results) {
-        const idNum = Number(r.id);
-        let f = files.find(fl => fl.id === idNum);
-        if (!f) f = files.find(fl => String(fl.id) === String(r.id));
+        // IDs als Strings vergleichen, um Ganzzahlen und Gleitkommazahlen sicher zu finden
+        const f = files.find(fl => String(fl.id) === String(r.id));
         const name = f?.name || '';
         const folder = f?.folder || '';
         const score = r.score ?? '';
@@ -16494,6 +16493,7 @@ if (typeof module !== "undefined" && module.exports) {
         __setGetAudioDuration: fn => { getAudioDurationFn = fn; },
         autoApplySuggestion,
         insertGptResults,
+        updateGptSummary,
         insertEnglishSegment,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,

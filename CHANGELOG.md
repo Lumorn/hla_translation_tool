@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.276
+* GPT-Auswertung vergleicht Datei-IDs nun als Strings, sodass Ganzzahl- und Gleitkomma-IDs korrekt zugeordnet werden.
 ## 🛠️ Patch in 1.40.275
 * Projektkarten nutzen `switchProjectSafe` und `selectProject` löscht vorsorglich den GPT-Zustand.
 ## 🛠️ Patch in 1.40.274
