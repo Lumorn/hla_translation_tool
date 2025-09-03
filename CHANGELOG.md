@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.275
+* Projektkarten nutzen `switchProjectSafe` und `selectProject` löscht vorsorglich den GPT-Zustand.
 ## 🛠️ Patch in 1.40.274
 * Abbrechbare GPT-Bewertungen: Projekt- und Speicherwechsel verwerfen offene GPT-Jobs und protokollieren den Abbruch.
 ## 🛠️ Patch in 1.40.273

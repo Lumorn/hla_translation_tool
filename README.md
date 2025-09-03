@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.270-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.275-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -52,6 +52,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Sicherer Projektwechsel:** `pauseAutosave`, `flushPendingWrites` und weitere Helfer räumen Speicher und Listener auf
 * **Sauberer GPT-Reset beim Projektwechsel:** Beendet laufende Bewertungen, entfernt Vorschlagsboxen und verhindert dadurch Fehlermeldungen
 * **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt
+* **Sicherer Projektwechsel für GPT:** Projektkarten rufen jetzt `switchProjectSafe` auf und `selectProject` leert den GPT-Zustand vorsorglich
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
@@ -1102,6 +1103,6 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`journalWiederherstellen(basis)`** – prüft ein vorhandenes `journal.json` und schließt abgebrochene Schreibvorgänge atomar ab.
   * **`garbageCollect(manifeste, basis, dryRun)`** – entfernt nicht referenzierte Dateien aus `.hla_store/objects` und meldet wahlweise nur den potentiellen Speichergewinn.
   * **`validateProjectManifest(data)`** – prüft `project.json` gegen ein Zod-Schema und stellt sicher, dass `schemaVersion` und Name vorhanden sind.
-  * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab und repariert Verweise.
+  * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab, leert GPT-Zustände und repariert Verweise.
   * **`switchStorageSafe(mode)`** – wechselt das Speichersystem mit bereinigten Caches und gestopptem Autosave.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.

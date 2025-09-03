@@ -2507,7 +2507,7 @@ function renderProjects() {
                 `• GPT: ${stats.scoreMin}  • Dateien: ${stats.totalFiles}`;
 
             card.onclick = () => {
-                selectProject(p.id);
+                switchProjectSafe(p.id); // Sicherer Wechsel löst clearGptState aus
             };
             card.addEventListener('contextmenu', e => showProjectMenu(e, p.id));
             card.addEventListener('dragstart', handleProjectDragStart);
@@ -2721,6 +2721,7 @@ function quickAddProject(levelName) {
 
 // =========================== SELECT PROJECT START ===========================
 function selectProject(id){
+    clearGptState(); // GPT-Zustand vorsorglich zurücksetzen
     stopProjectPlayback();
     saveCurrentProject();
     storeSegmentState();
