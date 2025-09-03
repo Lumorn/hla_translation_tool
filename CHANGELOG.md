@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.296
+* Ersetzt `navigator.userAgent` und `navigator.platform` durch `navigator.userAgentData` mit Fallback, um künftige User-Agent-Reduktionen zu unterstützen.
 ## 🛠️ Patch in 1.40.295
 * Bleibt ein Projekt trotz Reparatur unauffindbar, lädt `switchProjectSafe` die Projektliste erneut, um verwaiste Einträge zu entfernen.
 ## 🛠️ Patch in 1.40.294

@@ -11093,6 +11093,12 @@ async function scanAudioDuplicates() {
         async function collectDebugInfo() {
             // Grundobjekt für alle gesammelten Daten
             let info = {};
+            // User-Agent-Information mit moderner API und Rückfall
+            const browserInfo = navigator.userAgentData
+                ? navigator.userAgentData.brands.map(b => `${b.brand}/${b.version}`).join(', ')
+                : navigator.userAgent;
+            // Plattform-Erkennung mit Fallback für ältere Browser
+            const platformInfo = navigator.userAgentData?.platform || navigator.platform;
             if (window.electronAPI && window.electronAPI.getDebugInfo) {
                 // Desktop-Version: Anfrage an den Hauptprozess
                 info = await window.electronAPI.getDebugInfo();
@@ -11101,9 +11107,9 @@ async function scanAudioDuplicates() {
                 info = {
                     Hinweis: 'Browser-Version ohne Electron-API',
                     appVersion: APP_VERSION,
-                    Browser: navigator.userAgent,
+                    Browser: browserInfo,
                     URL: location.href,
-                    Plattform: navigator.platform,
+                    Plattform: platformInfo,
                     Sprache: navigator.language,
                     'Electron-API vorhanden': isElectron,
                     'Im Browser gestartet': true
@@ -11137,7 +11143,8 @@ async function scanAudioDuplicates() {
             info['Seitenzustand'] = document.readyState;
             info['Sicherer Kontext'] = window.isSecureContext;
             info['Protokoll'] = location.protocol;
-            info['Benutzeragent'] = navigator.userAgent;
+            // Einheitlicher Benutzeragent mit moderner API
+            info['Benutzeragent'] = browserInfo;
             info['Verwendete Sprache'] = navigator.language;
             info.URL = location.href;
             info['Electron-API vorhanden'] = isElectron;
