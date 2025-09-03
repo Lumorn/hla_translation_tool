@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.274
+* Abbrechbare GPT-Bewertungen: Projekt- und Speicherwechsel verwerfen offene GPT-Jobs und protokollieren den Abbruch.
 ## 🛠️ Patch in 1.40.273
 * Projektwechsel bereinigt GPT-Zustände, bricht laufende Bewertungsanfragen ab und entfernt alte Vorschläge.
 ## 🛠️ Patch in 1.40.272

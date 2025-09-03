@@ -46,8 +46,8 @@ function switchProjectSafe(projectId) {
       try {
         await flushPendingWrites(3000);
       } catch {}
-      // GPT-Anfragen sofort abbrechen
-      if (window.cancelGptRequests) window.cancelGptRequests();
+      // GPT-Anfragen sofort abbrechen und verworfene Jobs protokollieren
+      if (window.cancelGptRequests) window.cancelGptRequests('Projektwechsel');
       // Laufende Ladevorgänge abbrechen
       if (projectAbort) {
         projectAbort.abort();
@@ -94,8 +94,8 @@ async function switchStorageSafe(mode) {
         autosavePaused = true;
       }
       try { await flushPendingWrites(3000); } catch {}
-      // GPT-Anfragen sofort abbrechen
-      if (window.cancelGptRequests) window.cancelGptRequests();
+      // GPT-Anfragen sofort abbrechen und verworfene Jobs protokollieren
+      if (window.cancelGptRequests) window.cancelGptRequests('Speicherwechsel');
       if (projectAbort) projectAbort.abort();
       projectAbort = new AbortController();
       detachAllEventListeners();

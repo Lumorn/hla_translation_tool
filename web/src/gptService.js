@@ -85,6 +85,10 @@ async function processQueue() {
         const res = await fetchWithRetry(job.url, job.options, job.retries);
         job.resolve(res);
     } catch (e) {
+        // Bei Abbruch deutliche Warnung ausgeben
+        if (e && e.name === 'AbortError') {
+            console.warn('GPT-Anfrage abgebrochen', job.url);
+        }
         job.reject(e);
     } finally {
         controllers.delete(job.controller);
@@ -104,11 +108,21 @@ function queuedFetch(url, options = {}, retries = 5) {
 }
 
 // Bricht alle laufenden und wartenden GPT-Anfragen ab
-function cancelGptRequests() {
-    queue.length = 0;
+function cancelGptRequests(grund = 'Projektwechsel') {
+    // Wartende Jobs mit einer Fehlermeldung ablehnen
+    const wartend = queue.splice(0, queue.length);
+    for (const job of wartend) {
+        console.warn('Verwerfe GPT-Job wegen Abbruch:', job.url);
+        job.reject(new Error('Abgebrochen: ' + grund));
+    }
+    // Laufende Fetches abbrechen
+    const laufend = controllers.size;
     controllers.forEach(c => c.abort());
     controllers.clear();
     queueActive = false;
+    if (wartend.length > 0 || laufend > 0) {
+        console.warn(`Abbruch ausgelöst (${grund}).`);
+    }
 }
 
 // Hilfsfunktion mit erweiterten Wiederholungen bei 429 oder 503

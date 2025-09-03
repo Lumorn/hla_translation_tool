@@ -527,9 +527,9 @@ let storedVoiceSettings = JSON.parse(storage.getItem('hla_voiceSettings') || 'nu
 function clearGptState() {
     // Laufende GPT-Anfragen abbrechen
     if (typeof cancelGptRequests === 'function') {
-        try { cancelGptRequests(); } catch {}
+        try { cancelGptRequests('Reset'); } catch {}
     } else if (typeof window !== 'undefined' && typeof window.cancelGptRequests === 'function') {
-        try { window.cancelGptRequests(); } catch {}
+        try { window.cancelGptRequests('Reset'); } catch {}
     }
     // Globale Variablen leeren
     if (typeof files !== 'undefined') files = [];
