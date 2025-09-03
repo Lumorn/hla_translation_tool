@@ -939,7 +939,9 @@ async function sendGptPrompt() {
             scene: gptPromptData.scene,
             lines: gptPromptData.lines,
             key: openaiApiKey,
-            model: openaiModel
+            model: openaiModel,
+            // projectId sorgt dafür, dass Einfügungen nur im passenden Projekt landen
+            projectId: currentProject?.id
         });
         resultArea.value = JSON.stringify(results, null, 2);
         gptEvaluationResults = results;
@@ -993,7 +995,8 @@ async function insertGptResults() {
     }
     // Kein gültiges Ergebnis gefunden
     if (!results) { btn.disabled = false; return; }
-    applyEvaluationResults(results, files);
+    // Ergebnisse nur dem aktiven Projekt zuordnen
+    applyEvaluationResults(results, files, currentProject);
     await renderFileTable();
     const tbody = document.getElementById('fileTableBody');
     if (tbody && typeof attachScoreHandlers === 'function') {
@@ -16486,6 +16489,8 @@ if (typeof module !== "undefined" && module.exports) {
         __setDeAudioCache: c => { deAudioCache = c; },
         __setRenderFileTable: fn => { renderFileTable = fn; },
         __setSaveCurrentProject: fn => { saveCurrentProject = fn; },
+        // Setter für Tests, um das aktive Projekt zu setzen
+        __setCurrentProject: p => { currentProject = p; },
         __setDisplayOrder: arr => { displayOrder = arr; },
         __getDisplayOrder: () => displayOrder,
         __setProjects: p => { projects = p; },

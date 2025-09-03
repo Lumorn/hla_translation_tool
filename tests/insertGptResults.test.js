@@ -1,4 +1,4 @@
-let insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject;
+let insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject, __setCurrentProject;
 
 function createStorage() {
     return {
@@ -22,7 +22,7 @@ function loadMain() {
         addEventListener: jest.fn(),
         getElementById: jest.fn(id => {
             if (id === 'gptPromptInsert') return { disabled: false };
-            if (id === 'gptResultArea') return { value: '[{"id":1,"score":88,"suggestion":"neu","comment":"ok"}]' };
+            if (id === 'gptResultArea') return { value: '[{"id":1,"score":88,"suggestion":"neu","comment":"ok","projectId":"p1"}]' };
             if (id === 'fileTableBody') return {};
             if (id === 'gptPromptDialog') return { classList: { add: jest.fn() } };
             return null;
@@ -36,9 +36,10 @@ function loadMain() {
     };
     global.window.localStorage = global.localStorage;
     global.storage = createStorage();
-    ({ insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject } = require('../web/src/main.js'));
+    ({ insertGptResults, __setFiles, __setRenderFileTable, __setSaveCurrentProject, __setCurrentProject } = require('../web/src/main.js'));
     __setRenderFileTable(jest.fn());
     __setSaveCurrentProject(jest.fn());
+    __setCurrentProject({ id: 'p1' });
 }
 
 describe('insertGptResults', () => {
