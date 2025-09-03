@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.282
+* Fehlende Projekte werden nach der Reparatur automatisch neu geladen.
 ## 🛠️ Patch in 1.40.281
 * Projektladen fängt Speicherfehler ab und zeigt einen Dialog.
 ## 🛠️ Patch in 1.40.280
