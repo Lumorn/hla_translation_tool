@@ -20,4 +20,14 @@ describe('cleanupLegacyLocalStorage', () => {
         expect(localStorage.getItem('andere')).toBe('c');
         expect(window.showToast).toHaveBeenCalledWith('Alte LocalStorage-Daten entfernt (2)');
     });
+
+    test('lässt neue Projektschlüssel unangetastet', async () => {
+        const { cleanupLegacyLocalStorage } = await import('../web/src/storage/legacyCleanup.mjs');
+        localStorage.setItem('project:1:meta', '{}');
+        localStorage.setItem('project:1:index', '[]');
+        const count = cleanupLegacyLocalStorage();
+        expect(count).toBe(0);
+        expect(localStorage.getItem('project:1:meta')).toBe('{}');
+        expect(localStorage.getItem('project:1:index')).toBe('[]');
+    });
 });

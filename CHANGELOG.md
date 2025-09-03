@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.284
+* LocalStorage-Bereinigung lässt das Schema `project:<id>:meta` unangetastet.
 ## 🛠️ Patch in 1.40.283
 * Projektschlüssel im Schema `project:<id>:meta` werden bei der Reparatur korrekt erkannt.
 ## 🛠️ Patch in 1.40.282
