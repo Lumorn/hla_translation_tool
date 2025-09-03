@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.296-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.297-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -33,6 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
+* **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.

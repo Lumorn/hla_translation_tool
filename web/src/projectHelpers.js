@@ -63,87 +63,64 @@ async function closeProjectData() {
 let laufendeProjektladung = null;
 
 // Lädt ein Projekt über die bestehende selectProject-Funktion
-// und liefert ein Promise, das erst nach vollständigem Laden auflöst
+// und wartet auf deren Abschluss, egal ob sie synchron oder asynchron arbeitet
 async function loadProjectData(id, opts = {}) {
-  // Bereits laufenden Ladevorgang zurückgeben
+  // Läuft bereits eine Ladung, diese zurückgeben
   if (laufendeProjektladung) {
     return laufendeProjektladung;
   }
 
   laufendeProjektladung = (async () => {
-    // Sicherstellen, dass eine Projektliste vorhanden ist
+    // Abbruch vor Beginn berücksichtigen
+    if (opts.signal?.aborted) {
+      throw new DOMException('Abgebrochen', 'AbortError');
+    }
+
+    // Projektliste bei Bedarf nachladen
     if (!Array.isArray(window.projects) || window.projects.length === 0) {
       if (typeof window.reloadProjectList === 'function') {
         await window.reloadProjectList();
       }
     }
 
-    // Projekt anhand String-Vergleich suchen
+    // Projekt anhand String-Vergleich ermitteln
     const existiert = Array.isArray(window.projects) &&
       window.projects.some(p => String(p.id) === String(id));
 
     if (!existiert) {
-      // Spinner ausblenden
       const overlay = document.getElementById('projectLoadingOverlay');
       if (overlay) overlay.classList.add('hidden');
-      // Fehlerhinweis ausgeben
       const msg = `Projekt ${id} nicht gefunden`;
       if (window.electronAPI && window.electronAPI.showProjectError) {
         window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
       } else {
         alert('Projekt-Ladefehler:\n' + msg);
       }
-      // Promise mit Fehler beenden – kein finalize()
       throw new Error(msg);
     }
 
-    return new Promise((resolve, reject) => {
-      if (opts.signal?.aborted) {
-        reject(new DOMException('Abgebrochen', 'AbortError'));
-        return;
+    // Abbruch während des Ladens prüfen
+    if (opts.signal?.aborted) {
+      throw new DOMException('Abgebrochen', 'AbortError');
+    }
+
+    // Projekt laden und auf eine mögliche Promise warten
+    if (typeof window.selectProject === 'function') {
+      const res = window.selectProject(id);
+      if (res && typeof res.then === 'function') {
+        await res;
       }
-      if (typeof window.selectProject !== 'function') {
-        resolve();
-        return;
-      }
-      let abgeschlossen = false;
-      const finalize = () => {
-        // Debug-Ausgabe zur Überprüfung, ob finalize() erreicht wird
-        console.log('[DEBUG] finalize() aufgerufen für Projekt', id);
-        if (abgeschlossen) return;
-        abgeschlossen = true;
-        if (typeof opts.callback === 'function') {
-          try {
-            const r = opts.callback();
-            if (r && typeof r.then === 'function') {
-              r.then(resolve).catch(reject);
-              return;
-            }
-          } catch (err) {
-            reject(err);
-            return;
-          }
-        }
-        resolve();
-      };
-      if (opts.signal) {
-        opts.signal.addEventListener('abort', () => {
-          if (abgeschlossen) return;
-          abgeschlossen = true;
-          reject(new DOMException('Abgebrochen', 'AbortError'));
-        }, { once: true });
-      }
-      try {
-        const res = window.selectProject(id, finalize);
-        if (res && typeof res.then === 'function') {
-          res.then(finalize).catch(reject);
-        } else if (window.selectProject.length < 2) {
-          finalize();
-        }
-      } catch (err) {
-        reject(err);
-      }
-    });
+    }
+
+    // Nach dem Laden erneut auf Abbruch prüfen
+    if (opts.signal?.aborted) {
+      throw new DOMException('Abgebrochen', 'AbortError');
+    }
+
+    // Optionalen Callback ausführen
+    if (typeof opts.callback === 'function') {
+      await opts.callback();
+    }
   })();
 
   try {
