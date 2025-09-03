@@ -54,13 +54,53 @@ async function closeProjectData() {
 }
 
 // Lädt ein Projekt über die bestehende selectProject-Funktion
+// und liefert ein Promise, das erst nach vollständigem Laden auflöst
 async function loadProjectData(id, opts = {}) {
-  if (opts.signal?.aborted) {
-    throw new DOMException('Abgebrochen', 'AbortError');
-  }
-  if (typeof window.selectProject === 'function') {
-    window.selectProject(id);
-  }
+  return new Promise((resolve, reject) => {
+    if (opts.signal?.aborted) {
+      reject(new DOMException('Abgebrochen', 'AbortError'));
+      return;
+    }
+    if (typeof window.selectProject !== 'function') {
+      resolve();
+      return;
+    }
+    let abgeschlossen = false;
+    const finalize = () => {
+      if (abgeschlossen) return;
+      abgeschlossen = true;
+      if (typeof opts.callback === 'function') {
+        try {
+          const r = opts.callback();
+          if (r && typeof r.then === 'function') {
+            r.then(resolve).catch(reject);
+            return;
+          }
+        } catch (err) {
+          reject(err);
+          return;
+        }
+      }
+      resolve();
+    };
+    if (opts.signal) {
+      opts.signal.addEventListener('abort', () => {
+        if (abgeschlossen) return;
+        abgeschlossen = true;
+        reject(new DOMException('Abgebrochen', 'AbortError'));
+      }, { once: true });
+    }
+    try {
+      const res = window.selectProject(id, finalize);
+      if (res && typeof res.then === 'function') {
+        res.then(finalize).catch(reject);
+      } else if (window.selectProject.length < 2) {
+        finalize();
+      }
+    } catch (err) {
+      reject(err);
+    }
+  });
 }
 
 // Liefert das gewünschte Speicher-Backend

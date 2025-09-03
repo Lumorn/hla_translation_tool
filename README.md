@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.278-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.280-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -49,6 +49,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Robustes Datei-Laden:** Beim Import werden Lese- und JSON-Fehler abgefangen; danach prüft das Tool Pflichtfelder und entfernt unbekannte Datei-IDs.
 * **Mehrere Projekte** mit Icon, Farbe, Level‑Namen & Teil‑Nummer
 * **Ladebalken beim Projektwechsel:** blockiert weitere Wechsel, bis das Projekt vollständig geladen ist
+* **Vollständig asynchroner Projektwechsel:** Wartet auf `selectProject`, bevor Folgearbeiten starten
 * **Sicherer Projektwechsel:** `pauseAutosave`, `flushPendingWrites` und weitere Helfer räumen Speicher und Listener auf
 * **Sauberer GPT-Reset beim Projektwechsel:** Beendet laufende Bewertungen, entfernt Vorschlagsboxen und verhindert dadurch Fehlermeldungen
 * **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt

@@ -60,7 +60,7 @@ function switchProjectSafe(projectId) {
       try { await closeProjectData(); } catch {}
       // GPT-Zustände und UI leeren
       if (window.clearGptState) window.clearGptState();
-      // Neues Projekt laden
+      // Neues Projekt laden und auf Promise warten
       await loadProjectData(projectId, { signal: projectAbort.signal });
       if (currentSession !== mySession) return;
       // Direkt im Anschluss verwaiste Einträge reparieren
