@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.271
+* Level-Kontextmenü bietet Export eines Debug-Berichts nur für dieses Level.
 ## 🛠️ Patch in 1.40.270
 * Debug-Fenster ruft `showModal` direkt auf und vermeidet damit den Fehler "ui.showModal ist keine Funktion".
 ## 🛠️ Patch in 1.40.269
