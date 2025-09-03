@@ -2725,12 +2725,16 @@ function quickAddProject(levelName) {
 
 // =========================== SELECT PROJECT START ===========================
 function selectProject(id){
+    // Debug-Ausgabe: Start der Projektwahl
+    console.log('[DEBUG] selectProject gestartet', { id, projektAnzahl: projects.length });
+
     stopProjectPlayback();
     saveCurrentProject(); // Aktuelles Projekt sichern, bevor der GPT-Zustand gelöscht wird
     storeSegmentState(); // Segmentzustand vor dem Reset speichern
     clearGptState(); // GPT-Zustand anschließend bereinigen
 
     currentProject = projects.find(p => p.id === id);
+    console.log('[DEBUG] selectProject: Projekt gefunden', currentProject);
     if(!currentProject) return;
 
     // Fehlendes Flag für Reste-Modus ergänzen
@@ -2824,6 +2828,8 @@ function selectProject(id){
     updateProgressStats();
     updateGlobalProjectProgress();
     updateProjectMetaBar();          //  <-- NEU!
+    // Debug-Ausgabe: Ende der Projektwahl
+    console.log('[DEBUG] selectProject abgeschlossen', { id, name: currentProject?.name, dateien: files.length });
 }
 // =========================== SELECT PROJECT END ===========================
 

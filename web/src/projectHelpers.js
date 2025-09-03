@@ -73,6 +73,8 @@ async function loadProjectData(id, opts = {}) {
     }
     let abgeschlossen = false;
     const finalize = () => {
+      // Debug-Ausgabe zur Überprüfung, ob finalize() erreicht wird
+      console.log('[DEBUG] finalize() aufgerufen für Projekt', id);
       if (abgeschlossen) return;
       abgeschlossen = true;
       if (typeof opts.callback === 'function') {

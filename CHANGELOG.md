@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.287
+* Ergänzt Debug-Logs: `selectProject` protokolliert Start und Ende, `loadProjectData` meldet den Aufruf von `finalize()`.
 ## 🛠️ Patch in 1.40.286
 * Behebt einen Fehler, bei dem nach dem Projektladen keine Elemente mehr klickbar waren.
 ## 🛠️ Patch in 1.40.285
