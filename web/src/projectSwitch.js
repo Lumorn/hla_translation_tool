@@ -61,8 +61,21 @@ function switchProjectSafe(projectId) {
       // GPT-Zustände und UI leeren
       if (window.clearGptState) window.clearGptState();
       // Neues Projekt laden und auf Promise warten
-      await loadProjectData(projectId, { signal: projectAbort.signal });
-      if (currentSession !== mySession) return;
+      let geladen = false;
+      try {
+        await loadProjectData(projectId, { signal: projectAbort.signal });
+        geladen = true;
+      } catch (err) {
+        // Wenn das Projekt fehlt: Liste neu laden und erneut versuchen
+        if (err && String(err.message).includes('nicht gefunden')) {
+          await reloadProjectList();
+          await loadProjectData(projectId, { signal: projectAbort.signal });
+          geladen = true;
+        } else {
+          throw err; // Unbekannter Fehler wird nach außen gereicht
+        }
+      }
+      if (currentSession !== mySession || !geladen) return;
       // Direkt im Anschluss verwaiste Einträge reparieren
       const adapter = getStorageAdapter('current');
       const neuAngelegt = await repairProjectIntegrity(adapter, projectId, ui);
