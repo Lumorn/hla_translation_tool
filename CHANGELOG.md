@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.281
+* Projektladen fängt Speicherfehler ab und zeigt einen Dialog.
 ## 🛠️ Patch in 1.40.280
 * Projektwechsel wartet nun asynchron auf `selectProject`, bevor Folgearbeiten starten.
 ## 🛠️ Patch in 1.40.279

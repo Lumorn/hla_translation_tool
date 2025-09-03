@@ -2108,50 +2108,50 @@ function handleAccessStatusClick() {
 // =========================== LOAD PROJECTS START ===========================
 // Lädt Projekte und zugehörige Einstellungen asynchron aus dem Speicher
 async function loadProjects() {
-    // Alte Daten verwerfen, damit beim Wechsel kein alter Zustand bleibt
-    projects = [];
-    levelColors = {};
-    levelOrders = {};
-    levelIcons = {};
-    levelColorHistory = [];
+    // Hilfsfunktion für Fehlerhinweise
+    const showError = msg => {
+        if (window.electronAPI && window.electronAPI.showProjectError) {
+            window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
+        } else {
+            alert('Projekt-Ladefehler:\n' + msg);
+        }
+    };
 
-    // 🟩 ERST: Level-Farben laden
-    const savedLevelColors = await storage.getItem('hla_levelColors');
-    if (savedLevelColors) {
-        levelColors = JSON.parse(savedLevelColors);
-    }
+    try {
+        // Alte Daten verwerfen, damit beim Wechsel kein alter Zustand bleibt
+        projects = [];
+        levelColors = {};
+        levelOrders = {};
+        levelIcons = {};
+        levelColorHistory = [];
 
-    // 🟢 Ebenfalls Reihenfolge der Level laden
-    const savedLevelOrders = await storage.getItem('hla_levelOrders');
-    if (savedLevelOrders) {
-        levelOrders = JSON.parse(savedLevelOrders);
-    }
+        // 🟩 ERST: Level-Farben laden
+        const savedLevelColors = await storage.getItem('hla_levelColors');
+        if (savedLevelColors) {
+            levelColors = JSON.parse(savedLevelColors);
+        }
 
-    // 🆕 Level-Icons laden
-    const savedLevelIcons = await storage.getItem('hla_levelIcons');
-    if (savedLevelIcons) {
-        levelIcons = JSON.parse(savedLevelIcons);
-    }
+        // 🟢 Ebenfalls Reihenfolge der Level laden
+        const savedLevelOrders = await storage.getItem('hla_levelOrders');
+        if (savedLevelOrders) {
+            levelOrders = JSON.parse(savedLevelOrders);
+        }
 
-    // Historie der Level-Farben laden
-    const savedHistory = await storage.getItem('hla_levelColorHistory');
-    if (savedHistory) {
-        levelColorHistory = JSON.parse(savedHistory);
-    }
+        // 🆕 Level-Icons laden
+        const savedLevelIcons = await storage.getItem('hla_levelIcons');
+        if (savedLevelIcons) {
+            levelIcons = JSON.parse(savedLevelIcons);
+        }
 
-    // DANN: Projekte laden
-    const savedProjects = await storage.getItem('hla_projects');
-    if (savedProjects) {
-        // Hilfsfunktion für ein detailliertes Fehlerfenster
-        const showError = msg => {
-            if (window.electronAPI && window.electronAPI.showProjectError) {
-                window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
-            } else {
-                alert('Projekt-Ladefehler:\n' + msg);
-            }
-        };
+        // Historie der Level-Farben laden
+        const savedHistory = await storage.getItem('hla_levelColorHistory');
+        if (savedHistory) {
+            levelColorHistory = JSON.parse(savedHistory);
+        }
 
-        try {
+        // DANN: Projekte laden
+        const savedProjects = await storage.getItem('hla_projects');
+        if (savedProjects) {
             projects = JSON.parse(savedProjects);
             let migrated = false;
             const projErrors = [];
@@ -2176,7 +2176,7 @@ async function loadProjects() {
                 if (!p.hasOwnProperty('restTranslation')) { p.restTranslation = false; migrated = true; }
             });
 
-            // 🔥 WICHTIG: Level-Farben auf Projekte anwenden (FIX)
+            // 🔥 WICHTIG: Level-Farben auf Projekte anwenden
             projects.forEach(p => {
                 if (p.levelName && levelColors[p.levelName]) {
                     p.color = levelColors[p.levelName];
@@ -2189,12 +2189,7 @@ async function loadProjects() {
             }
 
             if (migrated) saveProjects();
-        } catch (err) {
-            showError(`Projekte konnten nicht geladen werden: ${err.message}\n\nReparatur: Projektliste wurde zurückgesetzt.`);
-            projects = [];
-            saveProjects();
-        }
-    } else {
+        } else {
         // Beispielprojekte fuer einen frischen Start
         const now = Date.now();
         projects = [
@@ -2272,19 +2267,25 @@ async function loadProjects() {
         ];
         saveProjects();
     }
+        // Text- & Pfaddatenbanken laden (unverändert)
+        const savedDB  = await storage.getItem('hla_textDatabase');
+        if (savedDB)  textDatabase = JSON.parse(savedDB);
+        const savedPDB = await storage.getItem('hla_filePathDatabase');
+        if (savedPDB) filePathDatabase = JSON.parse(savedPDB);
 
-    // Text- & Pfaddatenbanken laden (unverändert)
-    const savedDB  = await storage.getItem('hla_textDatabase');
-    if (savedDB)  textDatabase = JSON.parse(savedDB);
-    const savedPDB = await storage.getItem('hla_filePathDatabase');
-    if (savedPDB) filePathDatabase = JSON.parse(savedPDB);
+        renderProjects();
+        updateGlobalProjectProgress();
 
-    renderProjects();
-    updateGlobalProjectProgress();
-
-    const lastActive = await storage.getItem('hla_lastActiveProject');
-    const first     = projects.find(p => p.id == lastActive) || projects[0];
-    if (first) selectProject(first.id);
+        const lastActive = await storage.getItem('hla_lastActiveProject');
+        const first     = projects.find(p => p.id == lastActive) || projects[0];
+        if (first) selectProject(first.id);
+    } catch (err) {
+        // Fehler beim Zugriff auf den Speicher melden und zurücksetzen
+        showError(`Projekte konnten nicht geladen werden: ${err.message}`);
+        projects = [];
+        saveProjects();
+        renderProjects();
+    }
 }
 // =========================== LOAD PROJECTS END ===========================
 
