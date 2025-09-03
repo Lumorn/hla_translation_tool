@@ -4213,10 +4213,13 @@ function levelMenuAction(action) {
             hideLevelMenu();
             if (action === 'edit') {
                 showLevelCustomization(lvl);
-            } else if (action === 'delete') {
-                deleteLevel(lvl);
             } else if (action === 'quickProject') {
                 quickAddProject(lvl);
+            } else if (action === 'exportDebug') {
+                // Debug-Bericht nur für dieses Level speichern
+                exportLevelDebug(lvl);
+            } else if (action === 'delete') {
+                deleteLevel(lvl);
             }
         }
 
@@ -11327,6 +11330,75 @@ async function scanAudioDuplicates() {
             });
         }
         window.exportDebugReport = exportDebugReport;
+
+        // Exportiert Debug-Daten nur für ein bestimmtes Level
+        async function exportLevelDebug(levelName) {
+            // Nicht serialisierbare Felder wie fileObject entfernen
+            const sanitize = obj => JSON.parse(JSON.stringify(obj, (k, v) => k === 'fileObject' ? undefined : v));
+
+            // Allgemeine Informationen sammeln
+            const info = await collectDebugInfo();
+
+            // Projekte dieses Levels bereinigt übernehmen
+            const levelProjects = projects
+                .filter(p => p.levelName === levelName)
+                .map(p => sanitize(p));
+
+            // Alle betroffenen Dateien einsammeln
+            const fileEntries = [];
+            levelProjects.forEach(p => {
+                (p.files || []).forEach(f => fileEntries.push({ filename: f.filename, folder: f.folder }));
+            });
+
+            // filePathDatabase auf relevante Pfade reduzieren
+            const levelFilePathDB = {};
+            fileEntries.forEach(({ filename, folder }) => {
+                const paths = filePathDatabase[filename];
+                if (paths) {
+                    const matched = paths
+                        .filter(p => p.folder === folder)
+                        .map(p => ({ folder: p.folder, fullPath: p.fullPath }));
+                    if (matched.length) levelFilePathDB[filename] = matched;
+                }
+            });
+
+            // textDatabase auf relevante Einträge beschränken
+            const levelTextDB = {};
+            fileEntries.forEach(({ filename, folder }) => {
+                const key = `${folder}/${filename}`;
+                if (textDatabase[key]) levelTextDB[key] = textDatabase[key];
+            });
+
+            const report = {
+                info,
+                projects: levelProjects,
+                filePathDatabase: levelFilePathDB,
+                textDatabase: levelTextDB
+            };
+
+            try {
+                if (typeof window.showSaveFilePicker === 'function') {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: `${levelName}_debug.json`,
+                        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(report, null, 2));
+                    await writable.close();
+                    showToast('Debug-Datei gespeichert');
+                } else {
+                    await navigator.clipboard.writeText(JSON.stringify(report, null, 2));
+                    showToast('Dateisystem-API fehlt – Daten in Zwischenablage kopiert');
+                }
+            } catch (err) {
+                try {
+                    await navigator.clipboard.writeText(JSON.stringify(report, null, 2));
+                    showToast('Speichern fehlgeschlagen – Daten in Zwischenablage kopiert');
+                } catch {
+                    showToast('Speichern fehlgeschlagen: ' + (err?.message || 'unbekannter Fehler'), 'error');
+                }
+            }
+        }
 
         // Zeigt oder versteckt das Einstellungen-Menü
         function toggleSettingsMenu() {

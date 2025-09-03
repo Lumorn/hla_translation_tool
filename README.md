@@ -359,6 +359,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
 * **Projekt-Analyse:** Rechtsklick auf ein Projekt prüft Dateien und bietet eine automatische Reparatur an
 * **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt, Rechtsklick auf Kapitel → Schnell‑Level
+* **Debug-Bericht pro Level:** Rechtsklick auf ein Level exportiert relevante Debug-Daten
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
 * **Mausrad:** Markiert beim Scrollen automatisch die Zeile in der Bildschirmmitte, ohne sie neu auszurichten
