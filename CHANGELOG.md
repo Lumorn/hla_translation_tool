@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.273
+* Projektwechsel bereinigt GPT-Zustände, bricht laufende Bewertungsanfragen ab und entfernt alte Vorschläge.
 ## 🛠️ Patch in 1.40.272
 * Zentrale Helfer wie `pauseAutosave` und `clearInMemoryCachesHard` ermöglichen einen sicheren Projekt- und Speicherwechsel.
 ## 🛠️ Patch in 1.40.271

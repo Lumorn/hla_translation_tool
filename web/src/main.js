@@ -523,6 +523,29 @@ let subtitleData       = null;
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
 let storedVoiceSettings = JSON.parse(storage.getItem('hla_voiceSettings') || 'null');
 
+// Setzt alle GPT-bezogenen Zustände zurück und entfernt UI-Reste
+function clearGptState() {
+    // Laufende GPT-Anfragen abbrechen
+    if (typeof cancelGptRequests === 'function') {
+        try { cancelGptRequests(); } catch {}
+    } else if (typeof window !== 'undefined' && typeof window.cancelGptRequests === 'function') {
+        try { window.cancelGptRequests(); } catch {}
+    }
+    // Globale Variablen leeren
+    if (typeof files !== 'undefined') files = [];
+    if (typeof gptPromptData !== 'undefined') gptPromptData = null;
+    if (typeof gptEvaluationResults !== 'undefined') gptEvaluationResults = null;
+    // Vorschlagsboxen und Kommentare aus dem DOM entfernen
+    if (typeof document !== 'undefined') {
+        document.querySelectorAll('.suggestion-box, .comment-box, .emo-reason-box').forEach(el => el.remove());
+        const tabs = document.getElementById('gptTestTabs');
+        if (tabs) tabs.innerHTML = '';
+    }
+}
+if (typeof window !== 'undefined') {
+    window.clearGptState = clearGptState;
+}
+
 // Aktualisiert die Anzeige der gespeicherten Dubbing-Parameter im API-Dialog
 function updateVoiceSettingsDisplay() {
     const list = document.getElementById('voiceSettingsDisplay');

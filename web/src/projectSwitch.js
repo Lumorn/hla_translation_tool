@@ -46,6 +46,8 @@ function switchProjectSafe(projectId) {
       try {
         await flushPendingWrites(3000);
       } catch {}
+      // GPT-Anfragen sofort abbrechen
+      if (window.cancelGptRequests) window.cancelGptRequests();
       // Laufende Ladevorgänge abbrechen
       if (projectAbort) {
         projectAbort.abort();
@@ -56,6 +58,8 @@ function switchProjectSafe(projectId) {
       clearInMemoryCachesHard();
       // Offenes Projekt schließen
       try { await closeProjectData(); } catch {}
+      // GPT-Zustände und UI leeren
+      if (window.clearGptState) window.clearGptState();
       // Neues Projekt laden
       await loadProjectData(projectId, { signal: projectAbort.signal });
       if (currentSession !== mySession) return;
@@ -90,11 +94,15 @@ async function switchStorageSafe(mode) {
         autosavePaused = true;
       }
       try { await flushPendingWrites(3000); } catch {}
+      // GPT-Anfragen sofort abbrechen
+      if (window.cancelGptRequests) window.cancelGptRequests();
       if (projectAbort) projectAbort.abort();
       projectAbort = new AbortController();
       detachAllEventListeners();
       clearInMemoryCachesHard();
       try { await closeProjectData(); } catch {}
+      // GPT-Zustände und UI leeren
+      if (window.clearGptState) window.clearGptState();
       // Gewünschten Adapter setzen und initialisieren
       const adapter = getStorageAdapter(mode);
       setStorageAdapter(adapter);
