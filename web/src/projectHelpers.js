@@ -118,15 +118,18 @@ function setStorageAdapter(adapter) {
 }
 
 // Repariert offensichtliche Inkonsistenzen im Projekt
+// Liefert true zurück, wenn das Projekt neu angelegt wurde
 async function repairProjectIntegrity(adapter, projectId, ui = {}) {
-  if (!adapter || !adapter.getItem) return;
+  if (!adapter || !adapter.getItem) return false;
   const key = 'project:' + projectId;
   const data = await adapter.getItem(key);
   if (!data) {
     ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – leere Struktur angelegt`);
     await adapter.setItem(key, JSON.stringify({ id: projectId, files: [] }));
+    return true;
   } else {
     ui.info && ui.info(`Projekt ${projectId} geprüft`);
+    return false;
   }
 }
 

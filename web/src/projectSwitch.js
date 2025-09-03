@@ -65,7 +65,12 @@ function switchProjectSafe(projectId) {
       if (currentSession !== mySession) return;
       // Direkt im Anschluss verwaiste Einträge reparieren
       const adapter = getStorageAdapter('current');
-      await repairProjectIntegrity(adapter, projectId, ui);
+      const neuAngelegt = await repairProjectIntegrity(adapter, projectId, ui);
+      if (neuAngelegt) {
+        // Projekt wurde angelegt und muss erneut geladen werden
+        await loadProjectData(projectId, { signal: projectAbort.signal });
+        if (currentSession !== mySession) return;
+      }
     } finally {
       // Autosave wieder aktivieren
       if (autosavePaused) {
