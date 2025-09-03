@@ -66,8 +66,13 @@ function switchProjectSafe(projectId) {
         await loadProjectData(projectId, { signal: projectAbort.signal });
         geladen = true;
       } catch (err) {
-        // Wenn das Projekt fehlt: Liste neu laden und erneut versuchen
+        // Wenn das Projekt fehlt, zunächst Reparaturversuch starten
         if (err && String(err.message).includes('nicht gefunden')) {
+          const adapter = getStorageAdapter('current');
+          try {
+            await repairProjectIntegrity(adapter, projectId, ui);
+          } catch {}
+          // Danach Liste neu laden und erneut versuchen
           await reloadProjectList();
           await loadProjectData(projectId, { signal: projectAbort.signal });
           geladen = true;
