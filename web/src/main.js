@@ -2720,10 +2720,10 @@ function quickAddProject(levelName) {
 
 // =========================== SELECT PROJECT START ===========================
 function selectProject(id){
-    clearGptState(); // GPT-Zustand vorsorglich zurücksetzen
     stopProjectPlayback();
-    saveCurrentProject();
-    storeSegmentState();
+    saveCurrentProject(); // Aktuelles Projekt sichern, bevor der GPT-Zustand gelöscht wird
+    storeSegmentState(); // Segmentzustand vor dem Reset speichern
+    clearGptState(); // GPT-Zustand anschließend bereinigen
 
     currentProject = projects.find(p => p.id === id);
     if(!currentProject) return;
