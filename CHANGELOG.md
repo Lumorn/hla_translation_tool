@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.280
+* Projektwechsel wartet nun asynchron auf `selectProject`, bevor Folgearbeiten starten.
 ## 🛠️ Patch in 1.40.279
 * GPT-Ergebnisse enthalten eine `projectId` und werden nur im entsprechenden Projekt übernommen.
 ## 🛠️ Patch in 1.40.278
