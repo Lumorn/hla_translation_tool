@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.298
+* Neuer 🎲 Zufallsprojekt-Knopf lädt ein zufälliges Projekt und speichert ein Protokoll als Datei oder in der Zwischenablage.
 ## 🛠️ Patch in 1.40.297
 * Lade-Mechanik komplett überarbeitet; Projekte lassen sich wieder zuverlässig laden.
 ## 🛠️ Patch in 1.40.296
