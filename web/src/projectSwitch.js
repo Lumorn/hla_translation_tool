@@ -95,7 +95,12 @@ function switchProjectSafe(projectId) {
     }
   }).catch(err => {
     setBusy(false);
-    console.error('switchProjectSafe error', err);
+    if (err && String(err.message).includes('nicht gefunden')) {
+      // Fehlende Projekte führen nur zu einer Warnung
+      console.warn('Projektwechsel abgebrochen:', err.message);
+    } else {
+      console.error('switchProjectSafe error', err);
+    }
   });
   return switchQueue;
 }
