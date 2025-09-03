@@ -65,6 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlende Projekte nur als Warnung:** Bleibt ein Projekt auch danach unauffindbar, meldet `switchProjectSafe` lediglich eine Warnung statt eines Fehlers
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
 * **Einziger Click-Listener für Projektkarten:** Ereignisdelegation verhindert doppelte `selectProject`-Aufrufe beim Neurendern
+* **Fallback ohne `switchProjectSafe`:** Sollte das Skript fehlen, öffnen Klicks Projekte direkt über `selectProject`
 * **Synchronisierte Projektreparatur:** `repairProjectIntegrity` wartet auf alle Speicherzugriffe und aktualisiert den In-Memory-Cache sofort
 * **Projektliste ohne Auto-Auswahl:** `loadProjects` nimmt optional `skipSelect` entgegen; `reloadProjectList` lädt dadurch nur die Liste und öffnet kein altes Projekt
 * **Gesicherte Dateien vor GPT-Reset:** Beim Projektwechsel werden Dateien zuerst gespeichert und erst danach der GPT-Zustand bereinigt
