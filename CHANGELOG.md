@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.289
+* Projektliste lässt sich neu laden, ohne automatisch ein Projekt zu öffnen; `loadProjects(skipSelect)` verhindert veraltete Projekt-IDs.
 ## 🛠️ Patch in 1.40.288
 * Projektladen verhindert Doppelaufrufe, lädt bei leerer Liste automatisch nach und vergleicht Projekt-IDs als Strings. Fehlende Projekte brechen mit Meldung ab.
 ## 🛠️ Patch in 1.40.287

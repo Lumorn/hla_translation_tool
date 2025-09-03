@@ -2107,7 +2107,8 @@ function handleAccessStatusClick() {
 
 // =========================== LOAD PROJECTS START ===========================
 // Lädt Projekte und zugehörige Einstellungen asynchron aus dem Speicher
-async function loadProjects() {
+// Parameter "skipSelect" verhindert das automatische Öffnen eines Projekts
+async function loadProjects(skipSelect = false) {
     // Hilfsfunktion für Fehlerhinweise
     const showError = msg => {
         if (window.electronAPI && window.electronAPI.showProjectError) {
@@ -2276,9 +2277,12 @@ async function loadProjects() {
         renderProjects();
         updateGlobalProjectProgress();
 
-        const lastActive = await storage.getItem('hla_lastActiveProject');
-        const first     = projects.find(p => p.id == lastActive) || projects[0];
-        if (first) selectProject(first.id);
+        // Nur ein Projekt wählen, wenn dies nicht explizit unterbunden wurde
+        if (!skipSelect) {
+            const lastActive = await storage.getItem('hla_lastActiveProject');
+            const first     = projects.find(p => p.id == lastActive) || projects[0];
+            if (first) selectProject(first.id);
+        }
     } catch (err) {
         // Fehler beim Zugriff auf den Speicher melden und zurücksetzen
         showError(`Projekte konnten nicht geladen werden: ${err.message}`);
