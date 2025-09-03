@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.272
+* Zentrale Helfer wie `pauseAutosave` und `clearInMemoryCachesHard` ermöglichen einen sicheren Projekt- und Speicherwechsel.
 ## 🛠️ Patch in 1.40.271
 * Level-Kontextmenü bietet Export eines Debug-Berichts nur für dieses Level.
 ## 🛠️ Patch in 1.40.270
