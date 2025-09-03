@@ -10935,6 +10935,7 @@ async function scanAudioDuplicates() {
         if (typeof document !== 'undefined' && document.getElementById) {
             document.getElementById('devToolsButton')?.addEventListener('click', toggleDevTools);
             document.getElementById('debugReportButton')?.addEventListener('click', exportDebugReport);
+            document.getElementById('randomProjectButton')?.addEventListener('click', loadRandomProject);
         }
         // F12-Shortcut auch im Renderer abfangen
         window.addEventListener('keydown', e => {
@@ -11390,6 +11391,53 @@ async function scanAudioDuplicates() {
                 });
             });
         }
+
+        // Lädt ein zufälliges Projekt und schreibt ein Protokoll
+        async function loadRandomProject() {
+            const log = [];
+            log.push('Starte Zufallsprojekt-Ladung');
+            try {
+                if (!Array.isArray(window.projects) || window.projects.length === 0) {
+                    log.push('Keine Projekte vorhanden');
+                    throw new Error('Keine Projekte vorhanden');
+                }
+                const index = Math.floor(Math.random() * window.projects.length);
+                const projekt = window.projects[index];
+                log.push(`Ausgewähltes Projekt: ${projekt.name} (ID: ${projekt.id})`);
+                if (typeof window.loadProjectData === 'function') {
+                    await window.loadProjectData(projekt.id);
+                    log.push('Projekt erfolgreich geladen');
+                } else {
+                    throw new Error('loadProjectData fehlt');
+                }
+            } catch (err) {
+                log.push('Fehler: ' + (err?.message || err));
+            }
+
+            const text = log.join('\n');
+            try {
+                if (typeof window.showSaveFilePicker === 'function') {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'random_project_log.txt',
+                        types: [{ description: 'Textdatei', accept: { 'text/plain': ['.txt'] } }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(text);
+                    await writable.close();
+                    showToast('Protokoll gespeichert');
+                } else {
+                    throw new Error('Dateisystem-API fehlt');
+                }
+            } catch {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('Protokoll in Zwischenablage kopiert');
+                } catch {
+                    showToast('Protokoll konnte nicht gesichert werden', 'error');
+                }
+            }
+        }
+        window.loadRandomProject = loadRandomProject;
         window.exportDebugReport = exportDebugReport;
 
         // Exportiert Debug-Daten nur für ein bestimmtes Level
