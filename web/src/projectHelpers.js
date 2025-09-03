@@ -30,6 +30,12 @@ function detachAllEventListeners() {
   document.querySelectorAll('*').forEach(el => {
     if (el.tagName === 'SCRIPT') return; // Skripte nicht anfassen
     const clone = el.cloneNode(true);
+    // Inline-Event-Handler erhalten
+    for (const attr of el.getAttributeNames()) {
+      if (attr.startsWith('on')) {
+        clone[attr] = el[attr];
+      }
+    }
     el.replaceWith(clone);
   });
 }

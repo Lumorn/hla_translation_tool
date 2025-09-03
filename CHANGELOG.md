@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.286
+* Behebt einen Fehler, bei dem nach dem Projektladen keine Elemente mehr klickbar waren.
 ## 🛠️ Patch in 1.40.285
 * Fehlende Projekte werden der Projektliste hinzugefügt und die Liste wird nach der Reparatur neu geladen.
 ## 🛠️ Patch in 1.40.284
