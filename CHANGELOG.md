@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.288
+* Projektladen verhindert Doppelaufrufe, lädt bei leerer Liste automatisch nach und vergleicht Projekt-IDs als Strings. Fehlende Projekte brechen mit Meldung ab.
 ## 🛠️ Patch in 1.40.287
 * Ergänzt Debug-Logs: `selectProject` protokolliert Start und Ende, `loadProjectData` meldet den Aufruf von `finalize()`.
 ## 🛠️ Patch in 1.40.286

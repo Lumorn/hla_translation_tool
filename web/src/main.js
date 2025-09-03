@@ -2714,11 +2714,11 @@ function quickAddProject(levelName) {
             
             if (!confirm('Projekt wirklich löschen?')) return;
             
-            projects = projects.filter(p => p.id !== id);
+            projects = projects.filter(p => String(p.id) !== String(id));
             saveProjects();
             renderProjects();
             
-            if (currentProject && currentProject.id === id) {
+            if (currentProject && String(currentProject.id) === String(id)) {
                 selectProject(projects[0].id);
             }
         }
@@ -2733,7 +2733,8 @@ function selectProject(id){
     storeSegmentState(); // Segmentzustand vor dem Reset speichern
     clearGptState(); // GPT-Zustand anschließend bereinigen
 
-    currentProject = projects.find(p => p.id === id);
+    // Projekt anhand String-Vergleich ermitteln, um Typkonflikte zu vermeiden
+    currentProject = projects.find(p => String(p.id) === String(id));
     console.log('[DEBUG] selectProject: Projekt gefunden', currentProject);
     if(!currentProject) return;
 
