@@ -118,14 +118,26 @@ function setStorageAdapter(adapter) {
 }
 
 // Repariert offensichtliche Inkonsistenzen im Projekt
+// Prüft dabei das neue Namensschema "project:<id>:meta" und "project:<id>:index"
 // Liefert true zurück, wenn das Projekt neu angelegt wurde
 async function repairProjectIntegrity(adapter, projectId, ui = {}) {
   if (!adapter || !adapter.getItem) return false;
-  const key = 'project:' + projectId;
-  const data = await adapter.getItem(key);
-  if (!data) {
+
+  // Schlüssel nach neuem Schema bilden
+  const metaKey = `project:${projectId}:meta`;
+  const indexKey = `project:${projectId}:index`;
+
+  // Beide Teile parallel aus dem Speicher laden
+  const [meta, index] = await Promise.all([
+    adapter.getItem(metaKey),
+    adapter.getItem(indexKey)
+  ]);
+
+  if (!meta || !index) {
+    // Fehlende Daten durch leere Struktur ersetzen
     ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – leere Struktur angelegt`);
-    await adapter.setItem(key, JSON.stringify({ id: projectId, files: [] }));
+    if (!meta) await adapter.setItem(metaKey, JSON.stringify({ id: projectId }));
+    if (!index) await adapter.setItem(indexKey, '[]');
     return true;
   } else {
     ui.info && ui.info(`Projekt ${projectId} geprüft`);
