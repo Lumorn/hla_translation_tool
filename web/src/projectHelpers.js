@@ -238,9 +238,10 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
 }
 
 // Lädt die Projektliste neu
-async function reloadProjectList() {
+// Über den Parameter "skipSelect" wird verhindert, dass loadProjects ein Projekt öffnet
+async function reloadProjectList(skipSelect = true) {
   if (typeof window.loadProjects === 'function') {
-    await window.loadProjects();
+    await window.loadProjects(skipSelect);
   }
 }
 

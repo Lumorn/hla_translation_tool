@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt
 * **Sicherer Projektwechsel für GPT:** Projektkarten rufen jetzt `switchProjectSafe` auf und `selectProject` leert den GPT-Zustand vorsorglich
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
+* **Projektliste ohne Auto-Auswahl:** `loadProjects` nimmt optional `skipSelect` entgegen; `reloadProjectList` lädt dadurch nur die Liste und öffnet kein altes Projekt
 * **Gesicherte Dateien vor GPT-Reset:** Beim Projektwechsel werden Dateien zuerst gespeichert und erst danach der GPT-Zustand bereinigt
 * **Leere Zeilenreihenfolge beim Projektwechsel:** Neben den GPT-Daten wird auch die Anzeige-Reihenfolge gelöscht
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
