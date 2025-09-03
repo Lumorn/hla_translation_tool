@@ -67,7 +67,8 @@ function switchProjectSafe(projectId) {
       const adapter = getStorageAdapter('current');
       const neuAngelegt = await repairProjectIntegrity(adapter, projectId, ui);
       if (neuAngelegt) {
-        // Projekt wurde angelegt und muss erneut geladen werden
+        // Projekt wurde angelegt: Liste neu laden und Projekt erneut öffnen
+        await reloadProjectList();
         await loadProjectData(projectId, { signal: projectAbort.signal });
         if (currentSession !== mySession) return;
       }

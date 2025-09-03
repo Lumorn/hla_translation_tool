@@ -15,6 +15,7 @@ test('switchProjectSafe lädt fehlendes Projekt erneut', async () => {
   window.loadProjectData = jest.fn(async () => { loadCount++; });
   window.getStorageAdapter = jest.fn(() => ({}));
   window.repairProjectIntegrity = jest.fn(async () => true);
+  window.reloadProjectList = jest.fn(async () => {});
   window.resumeAutosave = jest.fn(async () => {});
   window.cancelGptRequests = jest.fn();
   window.clearGptState = jest.fn();
@@ -24,4 +25,5 @@ test('switchProjectSafe lädt fehlendes Projekt erneut', async () => {
 
   await window.switchProjectSafe('p1');
   expect(window.loadProjectData).toHaveBeenCalledTimes(2);
+  expect(window.reloadProjectList).toHaveBeenCalledTimes(1);
 });

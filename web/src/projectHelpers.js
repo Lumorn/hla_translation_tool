@@ -126,18 +126,60 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
   // Schlüssel nach neuem Schema bilden
   const metaKey = `project:${projectId}:meta`;
   const indexKey = `project:${projectId}:index`;
+  const listKey = 'hla_projects';
 
-  // Beide Teile parallel aus dem Speicher laden
-  const [meta, index] = await Promise.all([
+  // Alle benötigten Daten parallel aus dem Speicher laden
+  const [meta, index, listRaw] = await Promise.all([
     adapter.getItem(metaKey),
-    adapter.getItem(indexKey)
+    adapter.getItem(indexKey),
+    adapter.getItem(listKey)
   ]);
 
-  if (!meta || !index) {
-    // Fehlende Daten durch leere Struktur ersetzen
-    ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – leere Struktur angelegt`);
-    if (!meta) await adapter.setItem(metaKey, JSON.stringify({ id: projectId }));
-    if (!index) await adapter.setItem(indexKey, '[]');
+  let changed = false;
+
+  // Fehlende Metadaten durch leere Struktur ersetzen
+  if (!meta) {
+    ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – Metadaten angelegt`);
+    await adapter.setItem(metaKey, JSON.stringify({ id: projectId }));
+    changed = true;
+  }
+
+  // Fehlenden Index durch leeres Array ersetzen
+  if (!index) {
+    ui.warn && ui.warn(`Projekt ${projectId} nicht gefunden – Index angelegt`);
+    await adapter.setItem(indexKey, '[]');
+    changed = true;
+  }
+
+  // Projektliste prüfen und Platzhalter eintragen, falls das Projekt fehlt
+  let list = [];
+  try {
+    if (listRaw) list = JSON.parse(listRaw);
+  } catch { /* Ungültige Liste wird ignoriert */ }
+
+  if (!list.some(p => String(p.id) === String(projectId))) {
+    ui.warn && ui.warn(`Projekt ${projectId} fehlte in der Projektliste – Platzhalter erstellt`);
+    list.push({
+      id: projectId,
+      name: 'Unbenannt',
+      files: [],
+      color: '#333333',
+      restTranslation: false,
+      gptTests: [],
+      gptTabIndex: 0,
+      segmentAssignments: {},
+      segmentSegments: null,
+      segmentAudio: null,
+      segmentAudioPath: null,
+      segmentIgnored: [],
+      levelName: '',
+      levelPart: 1
+    });
+    await adapter.setItem(listKey, JSON.stringify(list));
+    changed = true;
+  }
+
+  if (changed) {
     return true;
   } else {
     ui.info && ui.info(`Projekt ${projectId} geprüft`);
