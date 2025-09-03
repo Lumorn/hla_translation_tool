@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.278
+* Projektwechsel leert zusätzlich die Zeilenreihenfolge, indem `displayOrder` zurückgesetzt wird.
 ## 🛠️ Patch in 1.40.277
 * Projektwechsel sichert Dateien, bevor der GPT-Zustand bereinigt wird.
 ## 🛠️ Patch in 1.40.276
