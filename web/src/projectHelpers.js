@@ -59,56 +59,98 @@ async function closeProjectData() {
   window.currentProject = null;
 }
 
+// Merker für laufende Ladeprozesse, um Doppelaufrufe zu verhindern
+let laufendeProjektladung = null;
+
 // Lädt ein Projekt über die bestehende selectProject-Funktion
 // und liefert ein Promise, das erst nach vollständigem Laden auflöst
 async function loadProjectData(id, opts = {}) {
-  return new Promise((resolve, reject) => {
-    if (opts.signal?.aborted) {
-      reject(new DOMException('Abgebrochen', 'AbortError'));
-      return;
-    }
-    if (typeof window.selectProject !== 'function') {
-      resolve();
-      return;
-    }
-    let abgeschlossen = false;
-    const finalize = () => {
-      // Debug-Ausgabe zur Überprüfung, ob finalize() erreicht wird
-      console.log('[DEBUG] finalize() aufgerufen für Projekt', id);
-      if (abgeschlossen) return;
-      abgeschlossen = true;
-      if (typeof opts.callback === 'function') {
-        try {
-          const r = opts.callback();
-          if (r && typeof r.then === 'function') {
-            r.then(resolve).catch(reject);
-            return;
-          }
-        } catch (err) {
-          reject(err);
-          return;
-        }
+  // Bereits laufenden Ladevorgang zurückgeben
+  if (laufendeProjektladung) {
+    return laufendeProjektladung;
+  }
+
+  laufendeProjektladung = (async () => {
+    // Sicherstellen, dass eine Projektliste vorhanden ist
+    if (!Array.isArray(window.projects) || window.projects.length === 0) {
+      if (typeof window.reloadProjectList === 'function') {
+        await window.reloadProjectList();
       }
-      resolve();
-    };
-    if (opts.signal) {
-      opts.signal.addEventListener('abort', () => {
+    }
+
+    // Projekt anhand String-Vergleich suchen
+    const existiert = Array.isArray(window.projects) &&
+      window.projects.some(p => String(p.id) === String(id));
+
+    if (!existiert) {
+      // Spinner ausblenden
+      const overlay = document.getElementById('projectLoadingOverlay');
+      if (overlay) overlay.classList.add('hidden');
+      // Fehlerhinweis ausgeben
+      const msg = `Projekt ${id} nicht gefunden`;
+      if (window.electronAPI && window.electronAPI.showProjectError) {
+        window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
+      } else {
+        alert('Projekt-Ladefehler:\n' + msg);
+      }
+      // Promise mit Fehler beenden – kein finalize()
+      throw new Error(msg);
+    }
+
+    return new Promise((resolve, reject) => {
+      if (opts.signal?.aborted) {
+        reject(new DOMException('Abgebrochen', 'AbortError'));
+        return;
+      }
+      if (typeof window.selectProject !== 'function') {
+        resolve();
+        return;
+      }
+      let abgeschlossen = false;
+      const finalize = () => {
+        // Debug-Ausgabe zur Überprüfung, ob finalize() erreicht wird
+        console.log('[DEBUG] finalize() aufgerufen für Projekt', id);
         if (abgeschlossen) return;
         abgeschlossen = true;
-        reject(new DOMException('Abgebrochen', 'AbortError'));
-      }, { once: true });
-    }
-    try {
-      const res = window.selectProject(id, finalize);
-      if (res && typeof res.then === 'function') {
-        res.then(finalize).catch(reject);
-      } else if (window.selectProject.length < 2) {
-        finalize();
+        if (typeof opts.callback === 'function') {
+          try {
+            const r = opts.callback();
+            if (r && typeof r.then === 'function') {
+              r.then(resolve).catch(reject);
+              return;
+            }
+          } catch (err) {
+            reject(err);
+            return;
+          }
+        }
+        resolve();
+      };
+      if (opts.signal) {
+        opts.signal.addEventListener('abort', () => {
+          if (abgeschlossen) return;
+          abgeschlossen = true;
+          reject(new DOMException('Abgebrochen', 'AbortError'));
+        }, { once: true });
       }
-    } catch (err) {
-      reject(err);
-    }
-  });
+      try {
+        const res = window.selectProject(id, finalize);
+        if (res && typeof res.then === 'function') {
+          res.then(finalize).catch(reject);
+        } else if (window.selectProject.length < 2) {
+          finalize();
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  })();
+
+  try {
+    return await laufendeProjektladung;
+  } finally {
+    laufendeProjektladung = null;
+  }
 }
 
 // Liefert das gewünschte Speicher-Backend
