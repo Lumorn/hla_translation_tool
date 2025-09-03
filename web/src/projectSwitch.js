@@ -98,15 +98,18 @@ function switchProjectSafe(projectId) {
       }
       if (currentSession === mySession) setBusy(false);
     }
-  }).catch(err => {
-    setBusy(false);
-    if (err && String(err.message).includes('nicht gefunden')) {
-      // Fehlende Projekte führen nur zu einer Warnung
-      console.warn('Projektwechsel abgebrochen:', err.message);
-    } else {
-      console.error('switchProjectSafe error', err);
-    }
-  });
+}).catch(async err => {
+  setBusy(false);
+  if (err && String(err.message).includes('nicht gefunden')) {
+    // Fehlende Projekte führen nur zu einer Warnung und die Liste wird aktualisiert
+    console.warn('Projektwechsel abgebrochen:', err.message);
+    try {
+      await reloadProjectList();
+    } catch {}
+  } else {
+    console.error('switchProjectSafe error', err);
+  }
+});
   return switchQueue;
 }
 

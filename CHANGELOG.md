@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.295
+* Bleibt ein Projekt trotz Reparatur unauffindbar, lädt `switchProjectSafe` die Projektliste erneut, um verwaiste Einträge zu entfernen.
 ## 🛠️ Patch in 1.40.294
 * Fehlender `switchProjectSafe` verhindert das Öffnen nicht mehr; Projektkarten greifen auf `selectProject` zurück.
 ## 🛠️ Patch in 1.40.293
