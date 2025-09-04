@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.306
+* Nach einem globalen Reset wird der Klick-Listener der Projektliste neu gesetzt, sodass Projekte wieder anwählbar sind.
 ## 🛠️ Patch in 1.40.305
 * Projektwechsel lädt die Projektliste vor dem Öffnen neu und übergibt `skipSelect=true`, sodass kein Projekt automatisch geladen wird und der Fehler „Projekte konnten nicht geladen werden“ ausbleibt.
 ## 🛠️ Patch in 1.40.304

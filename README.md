@@ -72,6 +72,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Englische Fehlermeldung erkannt:** Meldungen wie „Project not found“ werden ebenfalls erkannt und die Projektliste neu geladen
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
 * **Einziger Click-Listener für Projektkarten:** Ereignisdelegation verhindert doppelte `selectProject`-Aufrufe beim Neurendern
+* **Listener nach Reset neu gesetzt:** `resetGlobalState` setzt den Merker zurück und `renderProjects` bindet den Klick-Listener erneut, damit Projekte weiterhin auswählbar bleiben
 * **Fallback ohne `switchProjectSafe`:** Sollte das Skript fehlen, öffnen Klicks Projekte direkt über `selectProject`
 * **Synchronisierte Projektreparatur:** `repairProjectIntegrity` wartet auf alle Speicherzugriffe und aktualisiert den In-Memory-Cache sofort
 * **Projektliste ohne Auto-Auswahl:** `loadProjects` nimmt optional `skipSelect` entgegen; `reloadProjectList` lädt dadurch nur die Liste und öffnet kein altes Projekt

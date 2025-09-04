@@ -159,6 +159,8 @@ function resetGlobalState() {
     }
     if (typeof ignoredSegments !== 'undefined' && ignoredSegments.clear) ignoredSegments.clear();
     if (typeof projectIndex !== 'undefined') projectIndex = null;
+    // Click-Listener für die Projektliste zurücksetzen, damit er neu gebunden wird
+    if (typeof projectListClickBound !== 'undefined') projectListClickBound = false;
 }
 
 // Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an
