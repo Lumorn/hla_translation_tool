@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.300
+* Integritätsprüfung ergänzt fehlende Projekte beim Start automatisch.
+* LocalStorage-Bereinigung entfernt `hla_projects` nur noch ohne neue Projektschlüssel.
+* Fehlermeldung „Projekt nicht gefunden“ erscheint erst nach erfolgloser Reparatur.
 ## 🛠️ Patch in 1.40.299
 * Englische Fehlermeldungen wie "Project not found" werden erkannt und die Projektliste wird erneut geladen.
 ## 🛠️ Patch in 1.40.298

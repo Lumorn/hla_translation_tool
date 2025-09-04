@@ -88,15 +88,8 @@ async function loadProjectData(id, opts = {}) {
       window.projects.some(p => String(p.id) === String(id));
 
     if (!existiert) {
-      const overlay = document.getElementById('projectLoadingOverlay');
-      if (overlay) overlay.classList.add('hidden');
-      const msg = `Projekt ${id} nicht gefunden`;
-      if (window.electronAPI && window.electronAPI.showProjectError) {
-        window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
-      } else {
-        alert('Projekt-Ladefehler:\n' + msg);
-      }
-      throw new Error(msg);
+      // Keine sofortige Benachrichtigung – Fehler wird vom Aufrufer behandelt
+      throw new Error(`Projekt ${id} nicht gefunden`);
     }
 
     // Abbruch während des Ladens prüfen
@@ -222,12 +215,31 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
   }
 }
 
+// Prüft beim Start alle vorhandenen Projekt-Schlüssel und ergänzt fehlende Listeneinträge
+async function syncProjectListWithStorage(adapter, ui = {}) {
+  if (!adapter || typeof adapter.keys !== 'function') return;
+  let keys = [];
+  try { keys = await adapter.keys(); } catch { return; }
+  const ids = new Set();
+  for (const key of keys) {
+    const teile = String(key).split(':');
+    if (teile.length === 3 && teile[0] === 'project') {
+      ids.add(teile[1]);
+    }
+  }
+  for (const id of ids) {
+    try { await repairProjectIntegrity(adapter, id, ui); } catch {}
+  }
+}
+
 // Lädt die Projektliste neu
 // Über den Parameter "skipSelect" wird verhindert, dass loadProjects ein Projekt öffnet
 async function reloadProjectList(skipSelect = true) {
   if (typeof window.loadProjects === 'function') {
     await window.loadProjects(skipSelect);
   }
+  const adapter = getStorageAdapter('current');
+  await syncProjectListWithStorage(adapter);
 }
 
 // Globale Bereitstellung
@@ -239,6 +251,7 @@ window.closeProjectData = closeProjectData;
 window.loadProjectData = loadProjectData;
 window.getStorageAdapter = getStorageAdapter;
 window.repairProjectIntegrity = repairProjectIntegrity;
+window.syncProjectListWithStorage = syncProjectListWithStorage;
 window.resumeAutosave = resumeAutosave;
 window.setStorageAdapter = setStorageAdapter;
 window.reloadProjectList = reloadProjectList;

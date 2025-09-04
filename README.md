@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.298-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.300-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -37,8 +37,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.
+* **Integritätsprüfung beim Start:** Alle gespeicherten Projektschlüssel werden mit der Liste abgeglichen und fehlende Einträge ergänzt.
+* **Verzögerte Fehlermeldungen:** Warnhinweise erscheinen erst, wenn ein Reparaturversuch scheitert.
 * **Kompatible Projektschlüssel:** Das Tool erkennt das Schema `project:<id>:meta` und lädt vorhandene Projekte korrekt.
-* **Schonende Altlasten-Bereinigung:** Die LocalStorage-Reinigung entfernt nur alte Schlüssel und lässt neue Projektdaten unberührt.
+* **Schonende Altlasten-Bereinigung:** Die LocalStorage-Reinigung entfernt `hla_projects` nur, wenn keine neuen Projektschlüssel vorhanden sind.
 * **Überarbeitete Hilfsskripte:** Python-Tools nutzen jetzt `subprocess.run` mit `check=True` ohne `shell=True` und schließen Dateien konsequent über `with`-Blöcke.
 * **Robuster npm-Test:** Fehlt `npm` (z. B. bei Node 22), bricht das Startskript nicht mehr ab, sondern weist auf `corepack enable` oder eine separate Installation hin.
 * **Automatische npm-Aktivierung:** `reset_repo.py` versucht bei fehlendem `npm`, es über `corepack` einzurichten, bevor das Tool startet.
