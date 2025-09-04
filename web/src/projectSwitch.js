@@ -58,6 +58,8 @@ function switchProjectSafe(projectId) {
       clearInMemoryCachesHard();
       // Offenes Projekt schließen
       try { await closeProjectData(); } catch {}
+      // Projektliste aktualisieren, ohne automatisch ein Projekt zu öffnen
+      await reloadProjectList(true);
       // GPT-Zustände und UI leeren
       if (window.clearGptState) window.clearGptState();
       // Neues Projekt laden und auf Promise warten
@@ -75,7 +77,7 @@ function switchProjectSafe(projectId) {
             await repairProjectIntegrity(adapter, projectId, ui);
           } catch {}
           // Danach Liste neu laden und erneut versuchen
-          await reloadProjectList();
+          await reloadProjectList(true);
           await loadProjectData(projectId, { signal: projectAbort.signal });
           geladen = true;
         } else {
@@ -88,7 +90,7 @@ function switchProjectSafe(projectId) {
       const neuAngelegt = await repairProjectIntegrity(adapter, projectId, ui);
       if (neuAngelegt) {
         // Projekt wurde angelegt: Liste neu laden und Projekt erneut öffnen
-        await reloadProjectList();
+        await reloadProjectList(true);
         await loadProjectData(projectId, { signal: projectAbort.signal });
         if (currentSession !== mySession) return;
       }
@@ -108,7 +110,7 @@ function switchProjectSafe(projectId) {
     // Fehlendes Ausgangsprojekt nur protokollieren und Liste neu indizieren
     console.warn('Vorheriges Projekt nicht gefunden, versuche es erneut:', msg);
     try {
-      await reloadProjectList();
+      await reloadProjectList(true);
     } catch {}
     // Wechsel erneut anstoßen, damit er abgeschlossen wird
     return switchProjectSafe(projectId);
@@ -118,7 +120,7 @@ function switchProjectSafe(projectId) {
     try {
       const adapter = getStorageAdapter('current');
       try { await repairProjectIntegrity(adapter, projectId, ui); } catch {}
-      await reloadProjectList();
+      await reloadProjectList(true);
       try {
         await loadProjectData(projectId, projectAbort ? { signal: projectAbort.signal } : {});
       } catch (e2) {
@@ -160,7 +162,7 @@ async function switchStorageSafe(mode) {
       if (adapter && typeof adapter.init === 'function') {
         await adapter.init();
       }
-      await reloadProjectList();
+      await reloadProjectList(true);
     } finally {
       if (autosavePaused) {
         await resumeAutosave();

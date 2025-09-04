@@ -31,7 +31,7 @@ test('switchProjectSafe lädt nach englischer Fehlermeldung die Projektliste neu
 
   await window.switchProjectSafe('p1');
 
-  expect(window.reloadProjectList).toHaveBeenCalledTimes(1);
+  expect(window.reloadProjectList).toHaveBeenCalledTimes(2);
   expect(window.loadProjectData).toHaveBeenCalledTimes(2);
   expect(window.repairProjectIntegrity).toHaveBeenCalledTimes(2);
 });

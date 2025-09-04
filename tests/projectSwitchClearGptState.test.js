@@ -24,6 +24,7 @@ test('switchProjectSafe setzt gptEvaluationResults auf null', async () => {
     window.repairProjectIntegrity = jest.fn(async () => {});
     window.resumeAutosave = jest.fn(async () => {});
     window.cancelGptRequests = jest.fn();
+    window.reloadProjectList = jest.fn(async () => {});
 
     // switchProjectSafe aus projectSwitch.js laden
     const psCode = fs.readFileSync(path.join(__dirname, '../web/src/projectSwitch.js'), 'utf8');

@@ -25,5 +25,5 @@ test('switchProjectSafe lädt fehlendes Projekt erneut', async () => {
 
   await window.switchProjectSafe('p1');
   expect(window.loadProjectData).toHaveBeenCalledTimes(2);
-  expect(window.reloadProjectList).toHaveBeenCalledTimes(1);
+  expect(window.reloadProjectList).toHaveBeenCalledTimes(2);
 });
