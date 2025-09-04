@@ -113,10 +113,17 @@ function switchProjectSafe(projectId) {
     // Wechsel erneut anstoßen, damit er abgeschlossen wird
     return switchProjectSafe(projectId);
   } else if (/(nicht gefunden|not found)/i.test(msg)) {
-    // Allgemeiner Projektfehler: Warnung ausgeben und Liste auffrischen
-    console.warn('Projektwechsel abgebrochen:', msg);
+    // Projekt fehlt: Liste neu laden und Platzhalter versuchen
+    console.warn('Projekt nicht gefunden, versuche Platzhalter zu laden:', msg);
     try {
+      const adapter = getStorageAdapter('current');
+      try { await repairProjectIntegrity(adapter, projectId, ui); } catch {}
       await reloadProjectList();
+      try {
+        await loadProjectData(projectId, projectAbort ? { signal: projectAbort.signal } : {});
+      } catch (e2) {
+        console.warn('Platzhalter-Projekt konnte nicht geladen werden:', String(e2.message || e2));
+      }
     } catch {}
   } else {
     console.error('switchProjectSafe error', err);

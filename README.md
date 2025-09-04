@@ -67,7 +67,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Sicherer Projektwechsel für GPT:** Projektkarten rufen jetzt `switchProjectSafe` auf und `selectProject` leert den GPT-Zustand vorsorglich
 * **Automatischer Neustart bei fehlenden Projekten:** Schlägt das Laden mit „Projekt nicht gefunden“ fehl, lädt `switchProjectSafe` die Liste neu und versucht den Wechsel erneut
 * **Reparatur vor erneutem Laden:** Fehlt ein Projekt, führt `switchProjectSafe` zuerst `repairProjectIntegrity` aus und legt fehlende Strukturen automatisch an
-* **Fehlende Projekte nur als Warnung:** Bleibt ein Projekt auch danach unauffindbar, meldet `switchProjectSafe` lediglich eine Warnung und lädt die Projektliste neu
+* **Fehlende Projekte werden als Platzhalter geladen:** Bleibt ein Projekt auch danach unauffindbar, lädt `switchProjectSafe` einen leeren Platzhalter und setzt den Wechsel fort
 * **Fehlendes Ausgangsprojekt blockiert den Wechsel nicht mehr:** Ist das vorherige Projekt verschwunden, gibt `switchProjectSafe` nur eine Warnung aus und `reloadProjectList` indiziert die Liste neu
 * **Englische Fehlermeldung erkannt:** Meldungen wie „Project not found“ werden ebenfalls erkannt und die Projektliste neu geladen
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
