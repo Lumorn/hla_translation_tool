@@ -33,6 +33,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
+* **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
