@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.307
+* `window.projects` bleibt nun synchron, damit alle Module dieselbe Projektreferenz verwenden.
 ## 🛠️ Patch in 1.40.306
 * Nach einem globalen Reset wird der Klick-Listener der Projektliste neu gesetzt, sodass Projekte wieder anwählbar sind.
 ## 🛠️ Patch in 1.40.305

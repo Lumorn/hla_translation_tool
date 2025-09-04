@@ -275,6 +275,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];
+window.projects            = projects; // Globale Referenz auf die Projektliste
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let levelIcons             = {}; // ⬅️ NEU: Icon je Level
@@ -2300,6 +2301,7 @@ async function loadProjects(skipSelect = false) {
         saveProjects();
         renderProjects();
     }
+    window.projects = projects; // Referenz für andere Module aktualisieren
 }
 // =========================== LOAD PROJECTS END ===========================
 
@@ -2307,6 +2309,7 @@ async function loadProjects(skipSelect = false) {
         function saveProjects() {
             storage.setItem('hla_projects', JSON.stringify(projects));
             updateGlobalProjectProgress();
+            window.projects = projects; // Referenz für andere Module aktualisieren
         }
 
         function saveTextDatabase() {
