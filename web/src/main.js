@@ -115,7 +115,10 @@ async function switchStorage(targetMode) {
     // Abschlussmeldung ausgeben
     updateStatus(`${zielLabel} geladen`);
     showToast(`Jetzt im ${zielLabel}`);
-    if (typeof loadProjects === 'function') {
+    // Projektliste nach Speichermodus-Wechsel vollständig neu laden
+    if (typeof reloadProjectList === 'function') {
+        await reloadProjectList(false);
+    } else if (typeof loadProjects === 'function') {
         await loadProjects();
     }
 }
@@ -1805,7 +1808,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Wichtig: Kapitel-Daten müssen vor dem Laden der Projekte vorhanden sein,
     // sonst sortiert sich die Liste beim ersten Start falsch
-    await loadProjects();
+    // Projektliste dabei direkt mit gespeicherten Projekten abgleichen
+    if (typeof reloadProjectList === 'function') {
+        await reloadProjectList(false);
+    } else {
+        await loadProjects();
+    }
 
     initializeEventListeners();
 
