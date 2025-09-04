@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.302
+* Projektwechsel bricht nicht mehr ab, wenn das vorherige Projekt fehlt; `reloadProjectList` reindiziert die Projektliste automatisch
 ## 🛠️ Patch in 1.40.301
 * Start und Speichermodus-Wechsel rufen `reloadProjectList` auf und ergänzen fehlende Projekte, bevor eines geöffnet wird.
 ## 🛠️ Patch in 1.40.300
