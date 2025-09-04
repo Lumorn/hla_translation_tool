@@ -11,23 +11,27 @@ describe('cleanupLegacyLocalStorage', () => {
         localStorage.setItem('file-1', 'a');
         localStorage.setItem('project-1', 'b');
         localStorage.setItem('project-lock:1', 'lock');
+        localStorage.setItem('hla_projects', '[]');
         localStorage.setItem('andere', 'c');
         const count = cleanupLegacyLocalStorage();
-        expect(count).toBe(2);
+        expect(count).toBe(3);
         expect(localStorage.getItem('file-1')).toBeNull();
         expect(localStorage.getItem('project-1')).toBeNull();
         expect(localStorage.getItem('project-lock:1')).toBe('lock');
+        expect(localStorage.getItem('hla_projects')).toBeNull();
         expect(localStorage.getItem('andere')).toBe('c');
-        expect(window.showToast).toHaveBeenCalledWith('Alte LocalStorage-Daten entfernt (2)');
+        expect(window.showToast).toHaveBeenCalledWith('Alte LocalStorage-Daten entfernt (3)');
     });
 
     test('lässt neue Projektschlüssel unangetastet', async () => {
         const { cleanupLegacyLocalStorage } = await import('../web/src/storage/legacyCleanup.mjs');
         localStorage.setItem('project:1:meta', '{}');
         localStorage.setItem('project:1:index', '[]');
+        localStorage.setItem('hla_projects', '[]');
         const count = cleanupLegacyLocalStorage();
         expect(count).toBe(0);
         expect(localStorage.getItem('project:1:meta')).toBe('{}');
         expect(localStorage.getItem('project:1:index')).toBe('[]');
+        expect(localStorage.getItem('hla_projects')).toBe('[]');
     });
 });

@@ -10,7 +10,7 @@ test('loadProjectData bricht bei fehlendem Projekt ab', async () => {
   // Projekte sind leer, Nachladen bringt nichts
   window.projects = [];
   window.selectProject = jest.fn();
-  // electronAPI simulieren, um Fehlhinweis zu vermeiden
+  // electronAPI simulieren, sollte aber nicht aufgerufen werden
   window.electronAPI = { showProjectError: jest.fn() };
 
   const helpersCode = fs.readFileSync(path.join(__dirname, '../web/src/projectHelpers.js'), 'utf8');
@@ -21,5 +21,6 @@ test('loadProjectData bricht bei fehlendem Projekt ab', async () => {
   await expect(window.loadProjectData('p1')).rejects.toThrow('Projekt p1 nicht gefunden');
   expect(window.reloadProjectList).toHaveBeenCalled();
   expect(window.selectProject).not.toHaveBeenCalled();
-  expect(document.getElementById('projectLoadingOverlay').classList.contains('hidden')).toBe(true);
+  expect(window.electronAPI.showProjectError).not.toHaveBeenCalled();
+  expect(document.getElementById('projectLoadingOverlay').classList.contains('hidden')).toBe(false);
 });
