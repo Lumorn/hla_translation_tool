@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.304
+* Fehlende Projekt-IDs laden nun einen Platzhalter; der Projektwechsel bricht nicht mehr ab.
 ## 🛠️ Patch in 1.40.303
 * Tests bereinigen nun Timer und Mocks in `saveFormats.test.js`, wodurch Jest sauber beendet wird.
 ## 🛠️ Patch in 1.40.302
