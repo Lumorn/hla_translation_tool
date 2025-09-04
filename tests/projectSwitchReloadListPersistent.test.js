@@ -24,6 +24,6 @@ test('switchProjectSafe lädt Liste bei dauerhaft fehlendem Projekt erneut', asy
 
   await window.switchProjectSafe('p1');
 
-  expect(window.reloadProjectList).toHaveBeenCalledTimes(2);
+  expect(window.reloadProjectList).toHaveBeenCalledTimes(3);
   expect(window.loadProjectData).toHaveBeenCalledTimes(3);
 });
