@@ -102,10 +102,18 @@ function switchProjectSafe(projectId) {
     }
 }).catch(async err => {
   setBusy(false);
-  // Fehlermeldung sowohl auf Deutsch als auch auf Englisch erkennen
+  // Text der Fehlermeldung für Auswertung zwischenspeichern
   const msg = err ? String(err.message) : '';
-  if (/(nicht gefunden|not found)/i.test(msg)) {
-    // Fehlende Projekte führen nur zu einer Warnung und die Liste wird aktualisiert
+  if (/(from|vorherige[s]? Projekt).*?(nicht gefunden|not found)/i.test(msg)) {
+    // Fehlendes Ausgangsprojekt nur protokollieren und Liste neu indizieren
+    console.warn('Vorheriges Projekt nicht gefunden, versuche es erneut:', msg);
+    try {
+      await reloadProjectList();
+    } catch {}
+    // Wechsel erneut anstoßen, damit er abgeschlossen wird
+    return switchProjectSafe(projectId);
+  } else if (/(nicht gefunden|not found)/i.test(msg)) {
+    // Allgemeiner Projektfehler: Warnung ausgeben und Liste auffrischen
     console.warn('Projektwechsel abgebrochen:', msg);
     try {
       await reloadProjectList();
