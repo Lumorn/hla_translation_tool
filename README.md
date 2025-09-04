@@ -68,6 +68,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatischer Neustart bei fehlenden Projekten:** Schlägt das Laden mit „Projekt nicht gefunden“ fehl, lädt `switchProjectSafe` die Liste neu und versucht den Wechsel erneut
 * **Reparatur vor erneutem Laden:** Fehlt ein Projekt, führt `switchProjectSafe` zuerst `repairProjectIntegrity` aus und legt fehlende Strukturen automatisch an
 * **Fehlende Projekte nur als Warnung:** Bleibt ein Projekt auch danach unauffindbar, meldet `switchProjectSafe` lediglich eine Warnung und lädt die Projektliste neu
+* **Fehlendes Ausgangsprojekt blockiert den Wechsel nicht mehr:** Ist das vorherige Projekt verschwunden, gibt `switchProjectSafe` nur eine Warnung aus und `reloadProjectList` indiziert die Liste neu
 * **Englische Fehlermeldung erkannt:** Meldungen wie „Project not found“ werden ebenfalls erkannt und die Projektliste neu geladen
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
 * **Einziger Click-Listener für Projektkarten:** Ereignisdelegation verhindert doppelte `selectProject`-Aufrufe beim Neurendern
@@ -1068,6 +1069,11 @@ Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, so
 1. Tests starten
    ```bash
    npm test
+   ```
+
+   Zur Fehlersuche bei offenen Handles kann Jest auch so gestartet werden:
+   ```bash
+   npm test -- tests/saveFormats.test.js --detectOpenHandles
    ```
 
 Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus.

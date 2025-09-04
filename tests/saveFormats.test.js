@@ -1,12 +1,23 @@
 /**
  * @jest-environment jsdom
  */
+
+// Verhindert offene Timer und unterdrückt Konsolen-Ausgaben
+jest.useFakeTimers();
+jest.spyOn(console, 'log').mockImplementation(() => {});
+jest.spyOn(console, 'warn').mockImplementation(() => {});
+
 let bufferToWav;
 
 beforeAll(() => {
     ({ bufferToWav } = require('../web/src/main.js'));
-    jest.spyOn(console, 'log').mockImplementation(() => {});
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+});
+
+afterAll(() => {
+    // Nach den Tests alle Mocks und Timer zurücksetzen
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.restoreAllMocks();
 });
 
 function createBuffer(samples, sampleRate = 44100) {
