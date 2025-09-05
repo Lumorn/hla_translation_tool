@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.312
+* Live-Speichern: Änderungen werden nach kurzer Verzögerung automatisch gesichert.
 ## 🛠️ Patch in 1.40.311
 * Live-Suche funktioniert nach Projektwechsel, da `switchProjectSafe` die Event-Listener erneut setzt.
 ## 🛠️ Patch in 1.40.310
