@@ -79,7 +79,7 @@ function applySuggestion(id, files) {
     const file = files.find(f => f.id === id);
     if (!file || !file.suggestion) return;
     file.deText = file.suggestion;
-    window.isDirty = true;
+    markDirty();
     const row = document.querySelector(`tr[data-id='${id}']`);
     const deCell = row?.querySelectorAll('textarea.text-input')[1];
     if (deCell) {

@@ -291,7 +291,17 @@ let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let audioDurationCache    = {}; // Cache für ermittelte Audiodauern
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
-let isDirty                = false;
+let isDirty                = false; // Merker für ungespeicherte Änderungen
+let saveDelayTimer         = null;  // Timer für verzögertes Speichern
+
+// Merkt Änderungen und löst nach kurzer Zeit automatisch das Speichern aus
+function markDirty() {
+    isDirty = true;
+    clearTimeout(saveDelayTimer);
+    saveDelayTimer = setTimeout(() => saveCurrentProject(), 500);
+}
+// Funktion global bereitstellen
+window.markDirty = markDirty;
 let aktiveOrdnerDateien    = []; // Aktuelle Dateiliste im Ordner-Browser
 let debugInfo              = {}; // Pfadinformationen von Electron
 let segmentInfo            = null; // Ergebnisse der Audio-Segmentierung
@@ -369,8 +379,7 @@ function storeSegmentState() {
     currentProject.segmentAssignments = segmentAssignments;
     currentProject.segmentSegments = segmentInfo ? segmentInfo.segments : null;
     currentProject.segmentIgnored = Array.from(ignoredSegments);
-    isDirty = true;
-    saveCurrentProject();
+    markDirty();
 }
 
 let projektOrdnerHandle    = null; // Gewählter Projektordner
@@ -963,7 +972,8 @@ async function sendGptPrompt() {
                 summary: results
             });
             currentProject.gptTabIndex = currentProject.gptTests.length - 1;
-            isDirty = true; // Änderungen merken, damit Tabs gespeichert werden
+            markDirty();
+            // Änderungen merken, damit Tabs gespeichert werden
             saveCurrentProject();
             renderGptTestTabs();
         }
@@ -1067,7 +1077,8 @@ function selectGptTestTab(index) {
     const test = currentProject.gptTests[index];
     if (!test) return;
     currentProject.gptTabIndex = index;
-    isDirty = true; // Aktive Tab-Position speichern
+    markDirty();
+    // Aktive Tab-Position speichern
     saveCurrentProject();
     const area = document.getElementById('gptPromptArea');
     const res  = document.getElementById('gptResultArea');
@@ -1087,7 +1098,8 @@ function deleteGptTestTab(index) {
     if (currentProject.gptTabIndex >= currentProject.gptTests.length) {
         currentProject.gptTabIndex = currentProject.gptTests.length - 1;
     }
-    isDirty = true; // Tab-Liste wurde geändert
+    markDirty();
+    // Tab-Liste wurde geändert
     saveCurrentProject();
     renderGptTestTabs();
     if (currentProject.gptTabIndex >= 0) {
@@ -1759,7 +1771,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 // Quelle merken, damit nicht erneut automatisch übersetzt wird
                 file.autoSource = file.enText;
-                isDirty = true;
+                markDirty();
                 updateTranslationDisplay(file.id);
                 resolve(text);
             });
@@ -2829,9 +2841,8 @@ function selectProject(id){
         if(!f.hasOwnProperty('ignoreRanges')){f.ignoreRanges=[];migrated=true;}
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
-    if(migrated) isDirty=true;
-
-    let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
+    if(migrated) markDirty();
+let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
 
     // Nach Neustart fehlgeschlagene Übersetzungen einmalig automatisch neu versuchen
     if (!autoRetryDone) {
@@ -2978,8 +2989,7 @@ function renderLevelStats() {
 /* =========================== HANDLE TEXT CHANGE START =========================== */
 function handleTextChange(file, field, value) {
     file[field] = value;
-    isDirty     = true;
-
+    markDirty();
     const key = `${file.folder}/${file.filename}`;
     if (!textDatabase[key]) textDatabase[key] = { en: '', de: '' };
     textDatabase[key][field === 'enText' ? 'en' : 'de'] = value;
@@ -3078,7 +3088,7 @@ function addFiles() {
     });
     
     if (added > 0) {
-        isDirty = true;
+        markDirty();
         renderFileTable();
         renderProjects(); // HINZUGEFÜGT für live Update
         updateStatus(`${added} Dateien hinzugefügt`);
@@ -4075,7 +4085,8 @@ function addFiles() {
                 file.version = num;
             }
 
-            isDirty = true;
+            markDirty();
+
             renderFileTable();
             saveProjects();
         }
@@ -4686,7 +4697,7 @@ return `
             div.onclick = () => {
                 // Klick übernimmt den GPT-Vorschlag in den DE-Text
                 file.deText = file.suggestion;
-                window.isDirty = true;
+                markDirty();
                 const container = div.nextElementSibling;
                 const textarea = container?.querySelector('textarea.text-input');
                 if (textarea) {
@@ -4911,7 +4922,7 @@ function showSubtitleResults(fileId, results, searchText) {
         const f = files.find(f => f.id === fileId);
         if (!f) return;
         f.deText = hit.deText;
-        isDirty = true;
+        markDirty();
         renderFileTable();
         closeSubtitleDialog();
     };
@@ -5187,8 +5198,7 @@ function executeFileExchange() {
     // DE-Text bleibt erhalten: current.deText = current.deText;
     
     // 2. Markiere als dirty für Speicherung
-    isDirty = true;
-    
+    markDirty();
     // 3. Aktualisiere textDatabase mit dem erhaltenen DE-Text
     const newFileKey = `${selected.folder}/${selected.filename}`;
     if (!textDatabase[newFileKey]) {
@@ -5922,7 +5932,8 @@ function updateText(fileId, lang, value, skipUndo) {
         textDatabase[fileKey][lang] = value;
     }
     
-    isDirty = true;
+    markDirty();
+    
     updateProgressStats();
     renderProjects(); // HINZUFÜGEN für live Update
 }
@@ -6073,7 +6084,7 @@ function toggleEmoCompletion(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     file.emoCompleted = !file.emoCompleted;
-    isDirty = true;
+    markDirty();
     renderFileTable();
     saveCurrentProject();
 }
@@ -6242,7 +6253,8 @@ function toggleCompletionAll() {
         }
     });
     
-    isDirty = true;
+    markDirty();
+    
     updateProgressStats();
     renderProjects(); // HINZUFÜGEN für live Update
     
@@ -6265,7 +6277,7 @@ function toggleCompletionAll() {
             const file = files.find(f => f.id === fileId);
             if (file) {
                 file.selected = !file.selected;
-                isDirty = true;
+                markDirty();
                 updateCounts();
             }
         }
@@ -6273,7 +6285,7 @@ function toggleCompletionAll() {
         function toggleSelectAll() {
             const selectAll = document.getElementById('selectAll').checked;
             files.forEach(file => file.selected = selectAll);
-            isDirty = true;
+            markDirty();
             renderFileTable();
         }
 
@@ -6286,7 +6298,8 @@ function deleteFile(fileId) {
     // Update display order
     displayOrder = displayOrder.filter(item => item.file.id !== fileId);
     
-    isDirty = true;
+    markDirty();
+    
     renderFileTable();
     renderProjects(); // HINZUGEFÜGT für live Update
     updateStatus(`${file.filename} entfernt`);
@@ -6335,7 +6348,8 @@ function deleteFile(fileId) {
             // Reset display order to reflect new order
             displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
             
-            isDirty = true;
+            markDirty();
+            
             renderFileTable();
             
             // Show success message
@@ -6363,8 +6377,7 @@ function setFolderNote(fileId, note) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     file.folderNote = note;
-    isDirty = true;
-    saveCurrentProject();
+    markDirty();
     updateDuplicateNotes();
 }
 
@@ -6574,8 +6587,7 @@ async function checkFilename(fileId, event) {
     // Aktualisiere den Eintrag auf die gewählte Datei
     file.filename = auswahl.filename;
     file.fullPath = auswahl.pathInfo.fullPath;
-    isDirty = true;
-    saveCurrentProject();
+    markDirty();
     renderFileTable();
     updateStatus(`Dateiname geändert: ${auswahl.filename}`);
 }
@@ -9115,7 +9127,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
     
-    isDirty = true;
+    markDirty();
+    
     renderFileTable();
     renderProjects(); // HINZUGEFÜGT für live Update
     updateStatus(`${filename} zum Projekt hinzugefügt`);
@@ -12080,8 +12093,7 @@ async function handleDeUpload(input) {
         // Fertig-Status ergibt sich nun automatisch
     }
 
-    isDirty = true;
-    saveCurrentProject();
+    markDirty();
 
     aktuellerUploadPfad = null;
     input.value = '';
@@ -14309,7 +14321,7 @@ async function resetDeEdit() {
         neighborHall = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
-        isDirty = true;
+        markDirty();
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
         refreshIgnoreList();
@@ -14491,7 +14503,7 @@ async function applyDeEdit() {
         if (startInput) startInput.value = 0;
         if (endInput)   endInput.value = 0;
         // Änderungen sichern
-        isDirty = true;
+        markDirty();
         renderFileTable();
         // Zeitstempel setzen und Erfolg melden
         const now = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
@@ -14734,7 +14746,7 @@ async function startImportProcess() {
     });
     
     if (imported > 0 || updated > 0) {
-        isDirty = true;
+        markDirty();
         saveTextDatabase();
         if (updated > 0) {
             renderFileTable();
@@ -15115,7 +15127,7 @@ async function importClosecaptions() {
     }
 
     if (imported > 0) {
-        isDirty = true;
+        markDirty();
         saveTextDatabase();
         renderFileTable();
         updateProgressStats();
@@ -15409,7 +15421,8 @@ function addFileToProject(filename, folder, originalResult) {
     // Update display order for new file
     displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
     
-    isDirty = true;
+    markDirty();
+    
     renderFileTable();
     renderProjects(); // Live Update
     updateProgressStats();
@@ -16201,7 +16214,8 @@ function quickAddLevel(chapterName) {
             // Reset display order to reflect new order
             displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
             
-            isDirty = true;
+            markDirty();
+            
             renderFileTable();
             
             return false;
@@ -16294,8 +16308,7 @@ function quickAddLevel(chapterName) {
                 f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
             }
-            isDirty = true;
-            saveCurrentProject();
+            markDirty();
             renderFileTable();
             updateStatus('DE-Datei gespeichert');
         }
