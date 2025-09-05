@@ -2882,24 +2882,34 @@ let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSourc
 
         function saveCurrentProject() {
             if (!currentProject || !isDirty) return;
-            
+
             currentProject.files = files;
             saveProjects();
             saveTextDatabase();
             saveFilePathDatabase();
             isDirty = false;
-			updateProjectMetaBar();
+            updateProjectMetaBar();
+        }
+
+        // Globale Referenz, damit andere Module speichern können
+        if (typeof window !== 'undefined') {
+            window.saveCurrentProject = saveCurrentProject;
         }
 		
 		
 // =========================== PROJECT META FUNCTIONS START ===========================
 function updateProjectMetaBar(){
     const bar=document.getElementById('projectMetaBar');
+    const nameEl=document.getElementById('metaProjectName');
+    const levelEl=document.getElementById('metaLevelName');
+    const partEl=document.getElementById('metaPartNumber');
+    // Ohne passende Elemente abbrechen
+    if(!bar||!nameEl||!levelEl||!partEl) return;
     if(!currentProject){bar.style.display='none';return;}
 
-    document.getElementById('metaProjectName').textContent=currentProject.name||'–';
-    document.getElementById('metaLevelName').textContent  =currentProject.levelName||'–';
-    document.getElementById('metaPartNumber').textContent =currentProject.levelPart ||1;
+    nameEl.textContent=currentProject.name||'–';
+    levelEl.textContent=currentProject.levelName||'–';
+    partEl.textContent=currentProject.levelPart||1;
     bar.style.display='flex';
 
     // Level-Name auch im Map-Feld anzeigen
@@ -5940,7 +5950,11 @@ function updateText(fileId, lang, value, skipUndo) {
     }
     
     markDirty();
-    
+    // Geänderte Texte sofort sichern
+    if (typeof saveCurrentProject === 'function') {
+        saveCurrentProject();
+    }
+
     updateProgressStats();
     renderProjects(); // HINZUFÜGEN für live Update
 }
@@ -16683,6 +16697,8 @@ if (typeof module !== "undefined" && module.exports) {
         __setFilePathDatabase: db => { filePathDatabase = db; },
         __setTextDatabase: db => { textDatabase = db; },
         __setGetAudioDuration: fn => { getAudioDurationFn = fn; },
+        markDirty,
+        saveCurrentProject,
         autoApplySuggestion,
         insertGptResults,
         updateGptSummary,

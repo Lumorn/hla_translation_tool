@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.314
+* GPT-Bewertungen und Emotionstexte werden nach dem Einfügen sofort gespeichert.
 ## 🛠️ Patch in 1.40.313
 * Toolbar-Schaltflächen werden nach einem Projektwechsel zuverlässig neu initialisiert.
 ## 🛠️ Patch in 1.40.312
