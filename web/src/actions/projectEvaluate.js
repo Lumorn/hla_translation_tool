@@ -3,10 +3,12 @@
 let evaluateScene;
 let autoApplySuggestion = false;
 let attachScoreHandlers;
+let markDirty;
+let saveCurrentProject;
 if (typeof require !== 'undefined') {
     try {
         ({ evaluateScene } = require('../gptService.js'));
-        ({ autoApplySuggestion } = require('../main.js'));
+        ({ autoApplySuggestion, markDirty, saveCurrentProject } = require('../main.js'));
         ({ attachScoreHandlers } = require('../scoreColumn.js'));
     } catch {}
 }
@@ -19,11 +21,18 @@ if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
 if (typeof window !== 'undefined' && window.attachScoreHandlers) {
     attachScoreHandlers = window.attachScoreHandlers;
 }
+if (typeof window !== 'undefined' && window.markDirty) {
+    markDirty = window.markDirty;
+}
+if (typeof window !== 'undefined' && window.saveCurrentProject) {
+    saveCurrentProject = window.saveCurrentProject;
+}
 
 // Überträgt die GPT-Ergebnisse in die Dateiliste
 // Nur Einträge mit passender Projekt-ID werden übernommen
 function applyEvaluationResults(results, files, currentProject) {
     if (!Array.isArray(results) || !currentProject) return;
+    let geaendert = false; // Merkt, ob Daten angepasst wurden
     for (const r of results) {
         if (r.projectId !== currentProject.id) continue;
         // IDs als Strings vergleichen, damit auch Gleitkommawerte gefunden werden
@@ -38,7 +47,13 @@ function applyEvaluationResults(results, files, currentProject) {
             if (autoApplySuggestion) {
                 f.deText = f.suggestion;
             }
+            geaendert = true;
         }
+    }
+    // Nur speichern, wenn tatsächlich etwas geändert wurde
+    if (geaendert) {
+        if (typeof markDirty === 'function') markDirty();
+        if (typeof saveCurrentProject === 'function') saveCurrentProject();
     }
 }
 

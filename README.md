@@ -34,6 +34,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
+* **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen und generierte Emotionstexte werden unmittelbar dauerhaft gesichert.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
