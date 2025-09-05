@@ -114,6 +114,8 @@ function switchProjectSafe(projectId) {
       updateFileAccessStatus();
       // Nach dem Laden Toolbar-Knöpfe neu verbinden
       window.initToolbarButtons?.();
+      // Event-Listener wie die Live-Suche neu setzen
+      window.initializeEventListeners?.();
     } finally {
       // Autosave wieder aktivieren
       if (autosavePaused) {
