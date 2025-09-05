@@ -94,6 +94,24 @@ function switchProjectSafe(projectId) {
         await loadProjectData(projectId, { signal: projectAbort.signal });
         if (currentSession !== mySession) return;
       }
+      // Nach erfolgreichem Laden alle relevanten Ordner scannen
+      if (window.electronAPI?.scanFolders) {
+        // Electron-Umgebung: Scan über die Hauptanwendung
+        const data = await window.electronAPI.scanFolders();
+        await verarbeiteGescannteDateien(data.enFiles);
+        data.deFiles.forEach(f => {
+          deAudioCache[f.fullPath] = `sounds/DE/${f.fullPath}`;
+        });
+      } else {
+        // Browser-Fallback: lokale Ordner direkt scannen
+        await scanEnOrdner();
+        if (typeof scanDeOrdner === 'function') {
+          await scanDeOrdner();
+        }
+      }
+      // Anschließend Projekte und Zugriffsstatus aktualisieren
+      updateAllProjectsAfterScan();
+      updateFileAccessStatus();
     } finally {
       // Autosave wieder aktivieren
       if (autosavePaused) {

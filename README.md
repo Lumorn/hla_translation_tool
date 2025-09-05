@@ -81,6 +81,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Proaktive Listen-Synchronisierung:** Beim Start und nach einem Speichermodus-Wechsel gleicht `reloadProjectList` alle `project:<id>`-Schlüssel mit `hla_projects` ab und ergänzt fehlende Projekte automatisch
 * **Gesicherte Dateien vor GPT-Reset:** Beim Projektwechsel werden Dateien zuerst gespeichert und erst danach der GPT-Zustand bereinigt
 * **Leere Zeilenreihenfolge beim Projektwechsel:** Neben den GPT-Daten wird auch die Anzeige-Reihenfolge gelöscht
+* **Automatischer Ordnerscan beim Projektwechsel:** Nach dem Laden werden Audio-Ordner durchsucht, damit Dateien sofort verfügbar sind
 * **Level-Kapitel** zur besseren Gruppierung und ein-/ausklappbaren Bereichen
 * **Kapitel bearbeiten:** Name, Farbe und Löschung im Projekt möglich
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
