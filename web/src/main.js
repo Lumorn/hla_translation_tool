@@ -3340,6 +3340,9 @@ function addFiles() {
             window.updateNumberFromScroll = updateNumberFromScroll;
         }
 
+        // Globale Bereitstellung für Projektwechsel
+        window.initializeEventListeners = initializeEventListeners;
+
         // Keyboard Navigation
         function handleKeyboardNavigation(e) {
             // Skip if user is typing in an input field
