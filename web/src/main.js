@@ -2795,23 +2795,9 @@ function selectProject(id){
 
     expandedLevel = currentProject.levelName;
     expandedChapter = getLevelChapter(currentProject.levelName);
-    // Scrollposition der Projektliste merken
-    const list = document.getElementById('projectList');
-    const alteScrollPos = list ? list.scrollTop : 0;
-
     renderProjects();
     document.querySelectorAll('.project-item')
         .forEach(item=>item.classList.toggle('active',item.dataset.projectId==id));
-
-    // Ausgewählte Projektkarte nach dem Rendern zentrieren
-    if (list) {
-        const aktiveKarte = list.querySelector(`.project-item[data-project-id="${id}"]`);
-        if (aktiveKarte && aktiveKarte.scrollIntoView) {
-            aktiveKarte.scrollIntoView({ block: 'center' });
-        } else {
-            list.scrollTop = alteScrollPos;
-        }
-    }
 
     files = currentProject.files || [];
     segmentInfo = currentProject._segmentInfo || null;
