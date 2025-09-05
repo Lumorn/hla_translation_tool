@@ -112,6 +112,8 @@ function switchProjectSafe(projectId) {
       // Anschließend Projekte und Zugriffsstatus aktualisieren
       updateAllProjectsAfterScan();
       updateFileAccessStatus();
+      // Nach dem Laden Toolbar-Knöpfe neu verbinden
+      window.initToolbarButtons?.();
     } finally {
       // Autosave wieder aktivieren
       if (autosavePaused) {

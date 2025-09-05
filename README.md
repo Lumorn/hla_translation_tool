@@ -37,6 +37,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
+* **Bugfix:** Nach einem Projektwechsel funktionieren alle Toolbar‑Knöpfe wieder.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.
 * **Integritätsprüfung beim Start:** Alle gespeicherten Projektschlüssel werden mit der Liste abgeglichen und fehlende Einträge ergänzt.
 * **Verzögerte Fehlermeldungen:** Warnhinweise erscheinen erst, wenn ein Reparaturversuch scheitert.

@@ -10943,13 +10943,71 @@ async function scanAudioDuplicates() {
         }
         // Funktion global verfügbar machen, damit der Button im HTML immer wirkt
         window.toggleDevTools = toggleDevTools;
-        // Klick-Events für DevTools- und Debug-Bericht-Knopf registrieren
-        // (nur ausführen, wenn ein echtes DOM verfügbar ist)
-        if (typeof document !== 'undefined' && document.getElementById) {
-            document.getElementById('devToolsButton')?.addEventListener('click', toggleDevTools);
-            document.getElementById('debugReportButton')?.addEventListener('click', exportDebugReport);
-            document.getElementById('randomProjectButton')?.addEventListener('click', loadRandomProject);
+
+        // Bündelt das Anbinden aller Toolbar-Knöpfe
+        function initToolbarButtons() {
+            // Standard-Knöpfe erneut verbinden
+            if (typeof document !== 'undefined' && document.getElementById) {
+                const devBtn = document.getElementById('devToolsButton');
+                if (devBtn) devBtn.onclick = toggleDevTools;
+                const dbgBtn = document.getElementById('debugReportButton');
+                if (dbgBtn) dbgBtn.onclick = exportDebugReport;
+                const rndBtn = document.getElementById('randomProjectButton');
+                if (rndBtn) rndBtn.onclick = loadRandomProject;
+            }
+
+            // Video-Manager mitsamt Schließen‑Knöpfen vorbereiten
+            const videoBtn = (typeof document !== 'undefined' && document.getElementById)
+                ? document.getElementById('openVideoManager')
+                : null;
+            const videoDlg = (typeof document !== 'undefined' && document.getElementById)
+                ? document.getElementById('videoMgrDialog')
+                : null;
+            if (videoBtn && videoDlg) {
+                // Öffnet den Dialog, falls noch nicht sichtbar
+                videoBtn.onclick = async () => {
+                    if (!videoDlg.classList.contains('hidden')) return;
+
+                    if (typeof videoDlg.showModal === 'function') {
+                        videoDlg.showModal();
+                    } else {
+                        videoDlg.setAttribute('open', '');
+                    }
+
+                    videoDlg.classList.remove('hidden');
+
+                    if (typeof refreshTable === 'function') {
+                        await refreshTable();
+                    } else if (typeof renderFileTable === 'function') {
+                        await renderFileTable();
+                    }
+
+                    videoDlg.querySelector('#videoListSection')?.classList.remove('hidden');
+                };
+
+                const closeBtns = [
+                    document.getElementById('closeVideoDlg'),
+                    document.getElementById('closeVideoDlgSmall')
+                ];
+                closeBtns.forEach(btn => {
+                    if (btn) btn.onclick = () => {
+                        videoDlg.classList.add('hidden');
+                        if (typeof videoDlg.close === 'function') {
+                            videoDlg.close();
+                        } else {
+                            videoDlg.removeAttribute('open');
+                        }
+                    };
+                });
+
+                const emoBox = document.getElementById('emoProgress');
+                if (emoBox) emoBox.onclick = regenerateMissingEmos;
+            }
         }
+
+        // Funktion global verfügbar machen und direkt ausführen
+        window.initToolbarButtons = initToolbarButtons;
+        initToolbarButtons();
         // F12-Shortcut auch im Renderer abfangen
         window.addEventListener('keydown', e => {
             if (e.key === 'F12') {
@@ -16624,48 +16682,3 @@ if (typeof module !== "undefined" && module.exports) {
     };
 }
 
-// -- Video-Manager initialisieren --
-if (typeof document !== "undefined" && typeof document.getElementById === "function") {
-    const videoBtn = document.getElementById("openVideoManager");
-    const videoDlg = document.getElementById("videoMgrDialog");
-    if (videoBtn && videoDlg) {
-        // Klick öffnet den Dialog nur einmal
-        videoBtn.addEventListener("click", async () => {
-            if (!videoDlg.classList.contains('hidden')) return;
-
-            if (typeof videoDlg.showModal === "function") {
-                videoDlg.showModal();
-            } else {
-                videoDlg.setAttribute("open", "");
-            }
-
-            videoDlg.classList.remove("hidden");
-
-            if (typeof refreshTable === 'function') {
-                await refreshTable();
-            } else if (typeof renderFileTable === 'function') {
-                await renderFileTable();
-            }
-
-            videoDlg
-                .querySelector("#videoListSection")
-                ?.classList.remove("hidden");
-        });
-
-        const closeBtns = [
-            document.getElementById("closeVideoDlg"),
-            document.getElementById("closeVideoDlgSmall")
-        ];
-        closeBtns.forEach(btn => btn && btn.addEventListener("click", () => {
-            videoDlg.classList.add("hidden");
-            if (typeof videoDlg.close === "function") {
-                videoDlg.close();
-            } else {
-                videoDlg.removeAttribute("open");
-            }
-        }));
-
-        const emoBox = document.getElementById('emoProgress');
-        if (emoBox) emoBox.addEventListener('click', regenerateMissingEmos);
-    }
-}
