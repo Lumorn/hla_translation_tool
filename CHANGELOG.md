@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.308
+* Beim Projektwechsel startet nun automatisch ein Ordnerscan, sodass Audiodateien unmittelbar verfügbar sind.
 ## 🛠️ Patch in 1.40.307
 * `window.projects` bleibt nun synchron, damit alle Module dieselbe Projektreferenz verwenden.
 ## 🛠️ Patch in 1.40.306
