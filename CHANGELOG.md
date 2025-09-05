@@ -1,6 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.311
-* Projektleiste scrollt nach einem Projektwechsel automatisch zur ausgewählten Karte und bleibt zentriert.
 ## 🛠️ Patch in 1.40.310
 * Navigationsfunktionen sind wieder global verfügbar und der Scroll-Listener wird beim Initialisieren gesetzt, wodurch Vor-/Zurück-Schaltflächen und manuelles Scrollen erneut korrekt arbeiten.
 ## 🛠️ Patch in 1.40.309
