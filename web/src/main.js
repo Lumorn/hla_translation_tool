@@ -1873,11 +1873,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 });
-// Scroll-Listener zur Aktualisierung der aktuellen Zeilennummer
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.querySelector('.table-container');
-    if (container) container.addEventListener('scroll', updateNumberFromScroll);
-});
 // =========================== DOM READY INITIALISIERUNG ENDE ===========================
 
 
@@ -3331,6 +3326,18 @@ function addFiles() {
                 hideLevelMenu();
                 hideChapterMenu();
             });
+
+            // Scroll-Listener nach Laden der Funktionen setzen
+            const tableContainer = document.querySelector('.table-container');
+            if (tableContainer) {
+                tableContainer.addEventListener('scroll', updateNumberFromScroll);
+            }
+
+            // Navigationsfunktionen global zur Verfügung stellen
+            window.scrollToNumber = scrollToNumber;
+            window.goToNextNumber = goToNextNumber;
+            window.goToPreviousNumber = goToPreviousNumber;
+            window.updateNumberFromScroll = updateNumberFromScroll;
         }
 
         // Keyboard Navigation
