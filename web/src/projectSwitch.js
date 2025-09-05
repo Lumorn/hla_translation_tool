@@ -113,7 +113,7 @@ function switchProjectSafe(projectId) {
       updateAllProjectsAfterScan();
       updateFileAccessStatus();
       // Nach dem Laden Toolbar-Knöpfe neu verbinden
-      window.initToolbarButtons?.();
+      window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut
       // Event-Listener wie die Live-Suche neu setzen
       window.initializeEventListeners?.();
     } finally {

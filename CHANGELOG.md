@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.313
+* Toolbar-Schaltflächen werden nach einem Projektwechsel zuverlässig neu initialisiert.
 ## 🛠️ Patch in 1.40.312
 * Live-Speichern: Änderungen werden nach kurzer Verzögerung automatisch gesichert.
 ## 🛠️ Patch in 1.40.311

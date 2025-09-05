@@ -812,55 +812,62 @@ function cleanupDubCache() {
     }
 }
 
-// -- GPT-Bewertung initialisieren --
-if (typeof document !== "undefined" && typeof document.getElementById === "function") {
-    const gptBtn = document.getElementById("gptScoreButton");
-    const emoBtn = document.getElementById("generateEmotionsButton");
-    const sendBtn = document.getElementById("sendTextV2Button");
-    const copyBtn = document.getElementById("copyAssistantButton");
-    const copyBtn2 = document.getElementById("copyAssistant2Button");
-    const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
-    const subtitleAllBtn = document.getElementById("subtitleSearchAllButton");
-    if (gptBtn) {
-        gptBtn.addEventListener("click", () => {
-            if (currentProject?.gptTests?.length) {
-                openSavedGptTests();
-            } else {
-                showGptStartDialog();
-            }
-        });
-    }
-    if (emoBtn) {
-        emoBtn.addEventListener("click", generateEmotionsForAll);
-    }
-    if (sendBtn) {
-        sendBtn.addEventListener("click", sendEmoTextsToApi);
-    }
-    if (copyBtn) {
-        copyBtn.addEventListener("click", openCopyAssistant);
-    }
-    if (copyBtn2) {
-        copyBtn2.addEventListener("click", openCopyAssistant2);
-    }
-    if (copyAllEmosBtn) {
-        copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
-    }
-    if (subtitleAllBtn) {
-        subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
-    }
-    const restBox = document.getElementById("restTranslationCheckbox");
-    if (restBox) {
-        restBox.addEventListener("change", e => {
-            if (currentProject) {
-                currentProject.restTranslation = e.target.checked;
-                saveProjects();
-                if (window.setRestMode) {
-                    window.setRestMode(e.target.checked);
+// Bündelt alle Aktionsknöpfe der Toolbar in einer separaten Funktion
+function setupToolbarActionButtons() {
+    if (typeof document !== "undefined" && typeof document.getElementById === "function") {
+        // Alle relevanten Buttons aus der Oberfläche holen
+        const gptBtn = document.getElementById("gptScoreButton");
+        const emoBtn = document.getElementById("generateEmotionsButton");
+        const sendBtn = document.getElementById("sendTextV2Button");
+        const copyBtn = document.getElementById("copyAssistantButton");
+        const copyBtn2 = document.getElementById("copyAssistant2Button");
+        const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
+        const subtitleAllBtn = document.getElementById("subtitleSearchAllButton");
+
+        // Einzelne Klick-Listener nach Bedarf setzen
+        if (gptBtn) {
+            gptBtn.addEventListener("click", () => {
+                if (currentProject?.gptTests?.length) {
+                    openSavedGptTests();
                 } else {
-                    window.restTranslationFlag = e.target.checked;
+                    showGptStartDialog();
                 }
-            }
-        });
+            });
+        }
+        if (emoBtn) {
+            emoBtn.addEventListener("click", generateEmotionsForAll);
+        }
+        if (sendBtn) {
+            sendBtn.addEventListener("click", sendEmoTextsToApi);
+        }
+        if (copyBtn) {
+            copyBtn.addEventListener("click", openCopyAssistant);
+        }
+        if (copyBtn2) {
+            copyBtn2.addEventListener("click", openCopyAssistant2);
+        }
+        if (copyAllEmosBtn) {
+            copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
+        }
+        if (subtitleAllBtn) {
+            subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
+        }
+
+        // Checkbox für Rest-Modus nach Projektwechsel neu verbinden
+        const restBox = document.getElementById("restTranslationCheckbox");
+        if (restBox) {
+            restBox.addEventListener("change", e => {
+                if (currentProject) {
+                    currentProject.restTranslation = e.target.checked;
+                    saveProjects();
+                    if (window.setRestMode) {
+                        window.setRestMode(e.target.checked);
+                    } else {
+                        window.restTranslationFlag = e.target.checked;
+                    }
+                }
+            });
+        }
     }
 }
 
@@ -10978,6 +10985,9 @@ async function scanAudioDuplicates() {
                 const rndBtn = document.getElementById('randomProjectButton');
                 if (rndBtn) rndBtn.onclick = loadRandomProject;
             }
+
+            // Spezielle Aktionsknöpfe der Toolbar separat einrichten
+            setupToolbarActionButtons();
 
             // Video-Manager mitsamt Schließen‑Knöpfen vorbereiten
             const videoBtn = (typeof document !== 'undefined' && document.getElementById)
