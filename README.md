@@ -401,6 +401,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Mausrad:** Markiert beim Scrollen automatisch die Zeile in der Bildschirmmitte, ohne sie neu auszurichten
 * **Kein Zoom in Wellenformen:** Beim Ziehen in EN- und DE-Spuren des DE-Audio-Editors erfolgt kein automatisches Zoom mehr
 * **Zeilenauswahl:** Gewählte Zeilen werden vollständig unter dem Tabellenkopf positioniert
+* **Nummern-Navigation:** Vor-/Zurück-Schaltflächen und manuelles Scrollen markieren die aktive Zeile wieder zuverlässig
 * **Doppelklick:** Projekt umbenennen
 
 ---
