@@ -397,7 +397,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatische Markierung:** Neue Zeilen werden nach dem Hinzufügen sofort ausgewählt
 * **Context‑Menu** (Rechtsklick): Audio, Kopieren, Einfügen, Ordner öffnen, Löschen
 * **Projekt-Analyse:** Rechtsklick auf ein Projekt prüft Dateien und bietet eine automatische Reparatur an
-* **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt, Rechtsklick auf Kapitel → Schnell‑Level
+* **Schnell hinzufügen:** Rechtsklick auf Level → Schnellprojekt (vergibt die nächste freie Projektnummer), Rechtsklick auf Kapitel → Schnell‑Level
 * **Debug-Bericht pro Level:** Rechtsklick auf ein Level exportiert relevante Debug-Daten
 * **Drag & Drop:** Projekte und Dateien sortieren
 * **Klick auf Zeilennummer:** Position über Dialog anpassen
@@ -704,7 +704,7 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 * Beim Start liest die App automatisch alle Audio‑Dateien aus `web/sounds/EN` und vorhandene Übersetzungen aus `web/sounds/DE` ein
 
 ### 2. 📂 Neues Projekt erstellen
-| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt |
+| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt (vergibt die nächste freie Projektnummer) |
 * Klicken Sie auf **„+ Neues Projekt"**
 * Vergeben Sie einen Namen
 * Optional: Level‑Name und Teil‑Nummer angeben
@@ -731,7 +731,7 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 |  Aktion                    |  Bedienung                                          |
 | -------------------------- | --------------------------------------------------- |
 | **Projekt erstellen**     | `+ Neues Projekt` Button                          |
-| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt |
+| **Schnellprojekt**        | Rechtsklick auf Level → Schnellprojekt (vergibt die nächste freie Projektnummer) |
 | **Projekt auswählen**     | Klick auf Projekt‑Kachel                          |
 | **Projekt anpassen**      | Rechtsklick auf Projekt → ⚙️ bearbeiten |
 | **Projekt löschen**       | Rechtsklick auf Projekt → 🗑️ löschen |
