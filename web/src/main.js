@@ -2733,11 +2733,16 @@ function quickAddProject(levelName) {
         nextNum++;
     }
 
+    // Nächste freie Teil-Nummer für dieses Level bestimmen
+    const nextPart = Math.max(0, ...projects
+        .filter(p => p.levelName === levelName)
+        .map(p => p.levelPart)) + 1;
+
     const prj = {
         id: Date.now(),
         name: `Neu ${nextNum}`,
         levelName: levelName,
-        levelPart: 1,
+        levelPart: nextPart,
         files: [],
         icon: '🗂️',
         color: getLevelColor(levelName),

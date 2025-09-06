@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.316
+* Schnellprojekt setzt die Teil-Nummer automatisch auf den nächsten freien Wert.
 ## 🛠️ Patch in 1.40.315
 * Schnellprojekt vergibt nun die nächste freie Projektnummer.
 ## 🛠️ Patch in 1.40.314
