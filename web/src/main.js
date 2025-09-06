@@ -2823,6 +2823,11 @@ function selectProject(id){
     renderProjects();
     document.querySelectorAll('.project-item')
         .forEach(item=>item.classList.toggle('active',item.dataset.projectId==id));
+    const aktivesProjekt = document.querySelector('.project-item.active');
+    // Nach dem Wechsel die Projektliste auf den gewählten Eintrag zentrieren
+    if (aktivesProjekt && typeof aktivesProjekt.scrollIntoView === 'function') {
+        aktivesProjekt.scrollIntoView({ block: 'center', inline: 'nearest' });
+    }
 
     files = currentProject.files || [];
     segmentInfo = currentProject._segmentInfo || null;

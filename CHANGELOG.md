@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.317
+* Projektliste zentriert nach einem Wechsel automatisch das gewählte Projekt.
 ## 🛠️ Patch in 1.40.316
 * Schnellprojekt setzt die Teil-Nummer automatisch auf den nächsten freien Wert.
 ## 🛠️ Patch in 1.40.315
