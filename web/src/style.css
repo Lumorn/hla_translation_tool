@@ -2099,6 +2099,13 @@ th:nth-child(8) {
             font-size: 12px;
         }
 
+        /* Zusätzliche Statistikzeile im Ordner-Browser */
+        .folder-card-details {
+            color: #bbb;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
         .folder-files-view {
             display: none;
             max-height: 400px;
