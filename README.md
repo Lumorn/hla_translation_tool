@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.300-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.317-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -82,6 +82,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Synchronisierte Projektreparatur:** `repairProjectIntegrity` wartet auf alle Speicherzugriffe und aktualisiert den In-Memory-Cache sofort
 * **Projektliste ohne Auto-Auswahl:** `loadProjects` nimmt optional `skipSelect` entgegen; `reloadProjectList` lädt dadurch nur die Liste und öffnet kein altes Projekt
 * **Fehlerfreier Projektwechsel:** `switchProjectSafe` lädt vor dem Öffnen die Projektliste neu und vermeidet so die Meldung „Projekte konnten nicht geladen werden“
+* **Zentrierter Projektfokus:** Nach einem Projektwechsel scrollt die linke Projektleiste automatisch zum aktiven Eintrag und zentriert ihn
 * **Proaktive Listen-Synchronisierung:** Beim Start und nach einem Speichermodus-Wechsel gleicht `reloadProjectList` alle `project:<id>`-Schlüssel mit `hla_projects` ab und ergänzt fehlende Projekte automatisch
 * **Gesicherte Dateien vor GPT-Reset:** Beim Projektwechsel werden Dateien zuerst gespeichert und erst danach der GPT-Zustand bereinigt
 * **Leere Zeilenreihenfolge beim Projektwechsel:** Neben den GPT-Daten wird auch die Anzeige-Reihenfolge gelöscht
