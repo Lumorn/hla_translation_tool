@@ -2720,21 +2720,22 @@ function addProject() {
 
 /* =========================== QUICK ADD PROJECT START =========================== */
 function quickAddProject(levelName) {
-    // Nächste freie Nummer für ein "Neu"-Projekt bestimmen
-    const existing = projects
-        .filter(p => p.levelName === levelName)
-        .map(p => p.name);
-    let maxNum = 0;
-    existing.forEach(n => {
-        const m = n.match(/^Neu (\d+)$/);
-        if (m) {
-            const num = parseInt(m[1]);
-            if (num > maxNum) maxNum = num;
-        }
+    // Alle vergebenen Nummern der "Neu"-Projekte global sammeln
+    const usedNums = new Set();
+    projects.forEach(p => {
+        const m = p.name.match(/^Neu (\d+)$/);
+        if (m) usedNums.add(parseInt(m[1]));
     });
+
+    // Kleinste noch freie Nummer ermitteln
+    let nextNum = 1;
+    while (usedNums.has(nextNum)) {
+        nextNum++;
+    }
+
     const prj = {
         id: Date.now(),
-        name: `Neu ${maxNum + 1}`,
+        name: `Neu ${nextNum}`,
         levelName: levelName,
         levelPart: 1,
         files: [],

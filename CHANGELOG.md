@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.315
+* Schnellprojekt vergibt nun die nächste freie Projektnummer.
 ## 🛠️ Patch in 1.40.314
 * GPT-Bewertungen und Emotionstexte werden nach dem Einfügen sofort gespeichert.
 ## 🛠️ Patch in 1.40.313
