@@ -7542,7 +7542,9 @@ function showFolderGrid() {
                 <div onclick="showFolderFiles('${folder.name}')" style="cursor: pointer; padding: 15px;">
                     <div class="folder-card-icon">${folderIcon}</div>
                     <div class="folder-card-name">${lastFolderName}</div>
-                    <div class="folder-card-count">${folder.files.length} Dateien</div>
+                    <div class="folder-card-count">${stats.total} Dateien</div>
+                    <!-- Neue Zeile: zeigt übersetzte und offene Dateien an -->
+                    <div class="folder-card-details">${stats.completed} übersetzt · ${stats.total - stats.completed} offen</div>
                     <div class="folder-card-completion ${stats.isComplete ? 'complete' : stats.percentage > 0 ? 'partial' : 'none'}" style="color: ${completionColor};">
                         ${stats.percentage}% übersetzt
                         ${stats.isComplete ? ' ✅' : stats.percentage > 0 ? ' 🔄' : ' ⏳'}

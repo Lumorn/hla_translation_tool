@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.318
+* Ordner-Browser zeigt jetzt Gesamt-, übersetzte und offene Dateien pro Ordner an.
 ## 🛠️ Patch in 1.40.317
 * Projektliste zentriert nach einem Wechsel automatisch das gewählte Projekt.
 ## 🛠️ Patch in 1.40.316

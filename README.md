@@ -1,7 +1,7 @@
 # hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.317-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.318-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -849,6 +849,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 * **📊 Globale Statistiken:** Übersetzungsfortschritt über alle Projekte
 * **📈 Level‑Statistiken:** Aufklappbares Panel mit Details pro Level
 * **🎨 Ordner‑Anpassung:** Icons und Farben individuell einstellbar
+* **📄 Datei‑Zähler:** Zeigt pro Ordner Gesamt‑, fertige und offene Dateien an
 * **🔍 Pfad‑Anzeige:** Status und aufgelöster Pfad für jede Datei
 * **✅ Completion‑Status:** Visuelle Markierung übersetzter Dateien
 * **🔍 Ordner-Textsuche:** Filtert Dateien nach EN- oder DE-Texten
