@@ -7248,6 +7248,45 @@ function calculateFolderCompletionStats() {
 // =========================== CALCFOLDERCOMPLETIONSTATS END ===========================
 
 
+/* =========================== FOLDER REPORT START =========================== */
+function copyFolderReport() {
+    // Statistiken pro Ordner ermitteln
+    const folderStats = calculateFolderCompletionStats();
+
+    let totalFiles = 0;
+    let totalCompleted = 0;
+    const lines = [];
+
+    // Ordner alphabetisch sortieren und Zeilen aufbauen
+    Array.from(folderStats.values())
+        .sort((a, b) => a.folderName.localeCompare(b.folderName))
+        .forEach(stats => {
+            totalFiles += stats.total;
+            totalCompleted += stats.completed;
+            const open = stats.total - stats.completed;
+            lines.push(`${stats.folderName}: ${stats.total} Dateien, ${stats.completed} übersetzt, ${open} offen, ${stats.percentage}%`);
+        });
+
+    const openTotal = totalFiles - totalCompleted;
+    const percent = totalFiles > 0 ? Math.round((totalCompleted / totalFiles) * 100) : 0;
+
+    const reportText = [
+        `Gesamt: ${totalFiles} Dateien, ${totalCompleted} übersetzt, ${openTotal} offen, ${percent}%`,
+        '',
+        ...lines
+    ].join('\n');
+
+    // Text in die Zwischenablage kopieren
+    navigator.clipboard.writeText(reportText)
+        .then(() => updateStatus('📋 Bericht kopiert'))
+        .catch(err => {
+            console.error('Clipboard-Fehler', err);
+            alert('Bericht konnte nicht kopiert werden.');
+        });
+}
+/* =========================== FOLDER REPORT END =========================== */
+
+
         // Auto-scan system for missing permissions
         // Versucht fehlende Dateiberechtigungen ohne Rueckfragen automatisch zu beheben
         function checkAndAutoScan(requiredFiles = [], functionName = 'Funktion') {

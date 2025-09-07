@@ -716,6 +716,7 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 ### 3. 📄 Dateien hinzufügen
 * **Über Suche:** Live‑Suche nach Dateinamen oder Textinhalten
 * **Über Browser:** „📁 Ordner durchsuchen" für visuelles Browsen mit Live-Suche im aktuellen Ordner – unterstützt jetzt Suchbegriffe mit Leerzeichen
+* **Bericht:** Im Ordner-Browser erstellt der Knopf **„Bericht“** eine Übersicht aller Ordner samt Übersetzungsfortschritt und kopiert sie in die Zwischenablage
 * **Direct‑Input:** Dateinamen direkt ins Eingabefeld
 
 ### 4. ✏️ Übersetzen
