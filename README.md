@@ -274,7 +274,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live‑Filter:** *„Übersetzt / Ignoriert / Offen"*
 * **Ordner‑Anpassung:** Icons und Farben pro Ordner
 * **Live‑Suche im Ordner** analog zur globalen Suche (Cursor bleibt beim Tippen an der richtigen Position) – unterstützt jetzt mehrere Suchbegriffe mit Leerzeichen
-* **Projekt aus fehlenden Dateien:** Über den Knopf „Projekt erstellen mit fehlenden Dateien“ sammelt der Ordner-Browser alle Dateien ohne deutsche Audios. Beim ersten Gebrauch wird automatisch das Kapitel "Offene" (Nr. 9999) angelegt und pro Ordner ein gleichnamiges Level verwendet.
+* **Projekt aus fehlenden Dateien:** Über den Knopf „Projekt erstellen mit fehlenden Dateien“ sammelt der Ordner-Browser alle Dateien ohne deutsche Audios. Beim ersten Gebrauch wird automatisch das Kapitel "Offene" (Nr. 9999) angelegt und pro Ordner ein gleichnamiges Level verwendet. Enthält ein Projekt mehr als 50 offene Dateien, wird es automatisch in mehrere Projekte mit jeweils höchstens 50 Dateien aufgeteilt.
 
 ### 🖋️ Texteingabe & Navigation
 
