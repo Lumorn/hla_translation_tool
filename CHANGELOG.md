@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.319
+* Texteingaben werden nun ohne Verzögerung sofort gespeichert.
 ## 🛠️ Patch in 1.40.318
 * Ordner-Browser zeigt jetzt Gesamt-, übersetzte und offene Dateien pro Ordner an.
 ## 🛠️ Patch in 1.40.317
