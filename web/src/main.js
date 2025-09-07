@@ -9198,6 +9198,9 @@ function ensureOffeneStruktur(levelName) {
 }
 
 function createProjectWithMissingFiles(folderName) {
+    // Maximale Anzahl Dateien pro Projekt
+    const MAX_FILES = 50;
+
     // Sammle alle Dateien des Ordners ohne DE-Audio
     const { completionMap } = getGlobalCompletionStatus();
     const all = [];
@@ -9230,32 +9233,62 @@ function createProjectWithMissingFiles(folderName) {
                 return;
             }
             ensureOffeneStruktur(levelName);
-            toAdd.forEach(f => existing.files.push(buildProjectFile(f.filename, f.folder)));
+            const totalNew = toAdd.length;
+
+            // Zuerst bestehendes Projekt bis zur Grenze auffüllen
+            const maxAdd = Math.max(0, MAX_FILES - existing.files.length);
+            const firstChunk = toAdd.splice(0, maxAdd);
+            firstChunk.forEach(f => existing.files.push(buildProjectFile(f.filename, f.folder)));
             existing.files.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: 'base' }));
+
+            // Verbleibende Dateien in neue Projekte aufteilen
+            let nextPart = Math.max(...projects
+                .filter(p => p.levelName === levelName)
+                .map(p => p.levelPart));
+            while (toAdd.length > 0) {
+                const chunk = toAdd.splice(0, MAX_FILES);
+                const prj = {
+                    id: Date.now() + Math.random(),
+                    name: folderName,
+                    levelName,
+                    levelPart: ++nextPart,
+                    files: chunk.map(f => buildProjectFile(f.filename, f.folder)),
+                    icon: getLevelIcon(levelName),
+                    color: getLevelColor(levelName)
+                };
+                projects.push(prj);
+            }
+
             saveProjects();
             renderProjects();
-            updateStatus(`${toAdd.length} Dateien zum bestehenden Projekt hinzugefügt`);
+            updateStatus(`${totalNew} Dateien auf Projekte verteilt`);
         }
         return;
     }
 
     // Neues Projekt anlegen: Kapitel und Level erst jetzt erstellen
     ensureOffeneStruktur(levelName);
-    const nextPart = Math.max(0, ...projects.filter(p => p.levelName === levelName).map(p => p.levelPart)) + 1;
-    const prj = {
-        id: Date.now(),
-        name: folderName,
-        levelName,
-        levelPart: nextPart,
-        files: all.map(f => buildProjectFile(f.filename, f.folder)),
-        icon: getLevelIcon(levelName),
-        color: getLevelColor(levelName)
-    };
-
-    projects.push(prj);
+    const total = all.length;
+    const chunks = [];
+    for (let i = 0; i < total; i += MAX_FILES) {
+        chunks.push(all.slice(i, i + MAX_FILES));
+    }
+    let nextPart = Math.max(0, ...projects.filter(p => p.levelName === levelName).map(p => p.levelPart));
+    chunks.forEach((chunk, idx) => {
+        const prj = {
+            id: Date.now() + idx,
+            name: folderName,
+            levelName,
+            levelPart: nextPart + idx + 1,
+            files: chunk.map(f => buildProjectFile(f.filename, f.folder)),
+            icon: getLevelIcon(levelName),
+            color: getLevelColor(levelName)
+        };
+        projects.push(prj);
+    });
     saveProjects();
     renderProjects();
-    updateStatus(`Projekt "${folderName}" erstellt (${all.length} Dateien)`);
+    updateStatus(`Projekt "${folderName}" erstellt (${total} Dateien in ${chunks.length} Projekten)`);
 }
 
 // Hilfsfunktion zum Erzeugen eines Dateiobjekts

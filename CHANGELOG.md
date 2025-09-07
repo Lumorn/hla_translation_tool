@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.320
+* Projekte aus fehlenden Dateien werden automatisch in Pakete zu höchstens 50 Dateien aufgeteilt.
 ## 🛠️ Patch in 1.40.319
 * Texteingaben werden nun ohne Verzögerung sofort gespeichert.
 ## 🛠️ Patch in 1.40.318
