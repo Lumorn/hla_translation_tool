@@ -16578,18 +16578,14 @@ function quickAddLevel(chapterName) {
             });
         }
 
-        // Auto-save on input changes with debouncing
-        let saveTimeout;
+        // Sofortiges Speichern bei Änderungen in Texteingaben
         document.addEventListener('input', (e) => {
             if (e.target.classList.contains('text-input')) {
-                // Auto-resize the input (height)
+                // Eingabefeld automatisch in der Höhe anpassen
                 autoResizeInput(e.target);
-                
-                // Debounced save
-                clearTimeout(saveTimeout);
-                saveTimeout = setTimeout(() => {
-                    saveCurrentProject();
-                }, 1000);
+
+                // Änderungen ohne Verzögerung sichern
+                saveCurrentProject();
             }
         });
 

@@ -66,6 +66,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ladebalken beim Projektwechsel:** blockiert weitere Wechsel, bis das Projekt vollständig geladen ist
 * **Vollständig asynchroner Projektwechsel:** Wartet auf `selectProject`, bevor Folgearbeiten starten
 * **Sicherer Projektwechsel:** `pauseAutosave`, `flushPendingWrites` und weitere Helfer räumen Speicher und Listener auf
+* **Direktes Speichern bei Texteingaben:** Änderungen in Textfeldern werden ohne Verzögerung automatisch gesichert
 * **Sauberer GPT-Reset beim Projektwechsel:** Beendet laufende Bewertungen, entfernt Vorschlagsboxen und verhindert dadurch Fehlermeldungen
 * **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt
 * **Sicherer Projektwechsel für GPT:** Projektkarten rufen jetzt `switchProjectSafe` auf und `selectProject` leert den GPT-Zustand vorsorglich
