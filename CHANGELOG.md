@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.321
+* Ordner-Browser besitzt einen neuen „Bericht“-Knopf, der globale Ordnerstatistiken in die Zwischenablage kopiert.
 ## 🛠️ Patch in 1.40.320
 * Projekte aus fehlenden Dateien werden automatisch in Pakete zu höchstens 50 Dateien aufgeteilt.
 ## 🛠️ Patch in 1.40.319
