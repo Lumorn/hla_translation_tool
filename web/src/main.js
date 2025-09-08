@@ -615,6 +615,8 @@ let neighborHall = storage.getItem('hla_neighborHall') === '1';
 
 // Letzte Einstellungen für elektromagnetische Störgeräusche
 let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
+// Startposition, ab der die Störung stärker wird (0 = sofort)
+let emiRampPosition = parseFloat(storage.getItem('hla_emiRamp') || '0');
 
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
@@ -12816,7 +12818,7 @@ async function applyNeighborRoomEffect(buffer, opts = {}) {
 // =========================== EMI NOISE START ===============================
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
-    const { level = emiNoiseLevel } = opts;
+    const { level = emiNoiseLevel, ramp = emiRampPosition } = opts;
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -12833,7 +12835,14 @@ async function applyInterferenceEffect(buffer, opts = {}) {
     const noise = ctx.createBufferSource();
     noise.buffer = noiseBuffer;
     const gain = ctx.createGain();
-    gain.gain.value = level;
+    const duration = buffer.length / buffer.sampleRate;
+    const rampTime = duration * ramp;
+    const startLevel = level * 0.1; // Leichtes Rauschen am Anfang
+    gain.gain.setValueAtTime(startLevel, 0);
+    if (ramp > 0) {
+        gain.gain.setValueAtTime(startLevel, rampTime);
+    }
+    gain.gain.linearRampToValueAtTime(level, duration);
 
     source.connect(ctx.destination);
     noise.connect(gain).connect(ctx.destination);
@@ -13304,6 +13313,18 @@ async function openDeEdit(fileId) {
             emiNoiseLevel = parseFloat(e.target.value);
             storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
             emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    const emiRamp = document.getElementById('emiRamp');
+    const emiRampDisp = document.getElementById('emiRampDisplay');
+    if (emiRamp && emiRampDisp) {
+        emiRamp.value = emiRampPosition;
+        emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
+        emiRamp.oninput = e => {
+            emiRampPosition = parseFloat(e.target.value);
+            storage.setItem('hla_emiRamp', emiRampPosition);
+            emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
             if (isEmiEffect) recomputeEditBuffer();
         };
     }
@@ -13971,12 +13992,21 @@ function resetEmiSettings() {
     // Standardwert für Störgeräusche setzen
     emiNoiseLevel = 0.5;
     storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+    // Startposition zurück auf sofort
+    emiRampPosition = 0;
+    storage.setItem('hla_emiRamp', emiRampPosition);
 
     const eLevel = document.getElementById('emiLevel');
     const eDisp  = document.getElementById('emiLevelDisplay');
     if (eLevel && eDisp) {
         eLevel.value = emiNoiseLevel;
         eDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+    }
+    const eRamp = document.getElementById('emiRamp');
+    const eRampDisp = document.getElementById('emiRampDisplay');
+    if (eRamp && eRampDisp) {
+        eRamp.value = emiRampPosition;
+        eRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
     }
 
     // Effekt neu berechnen, falls aktiv

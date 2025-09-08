@@ -801,6 +801,10 @@
                     <label title="Stärke der Störung">Stärke: <span id="emiLevelDisplay"></span>
                         <input type="range" id="emiLevel" min="0" max="1" step="0.05">
                     </label>
+                    <!-- Regler für den Anstiegszeitpunkt -->
+                    <label title="Zeitpunkt des starken Anstiegs">Anstieg ab: <span id="emiRampDisplay"></span>
+                        <input type="range" id="emiRamp" min="0" max="1" step="0.05">
+                    </label>
                 </div>
                 <div class="effect-actions">
                     <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">EM-Störgeräusch anwenden</button>
