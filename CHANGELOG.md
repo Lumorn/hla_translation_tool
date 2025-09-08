@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.322
+* EM-Störgeräusch bietet einen Regler für den Anstieg der Störintensität.
 ## 🛠️ Patch in 1.40.321
 * Ordner-Browser besitzt einen neuen „Bericht“-Knopf, der globale Ordnerstatistiken in die Zwischenablage kopiert.
 ## 🛠️ Patch in 1.40.320
