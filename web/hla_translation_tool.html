@@ -797,6 +797,7 @@
             </fieldset>
             <fieldset class="effect-group">
                 <legend>⚡ EM-Störgeräusch</legend>
+                <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> Sprachdämpfung</label>
                 <div class="emi-settings">
                     <label title="Stärke der Störung">Stärke: <span id="emiLevelDisplay"></span>
                         <input type="range" id="emiLevel" min="0" max="1" step="0.05">

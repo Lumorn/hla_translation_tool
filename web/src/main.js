@@ -629,6 +629,9 @@ let emiCrackleAmp  = parseFloat(storage.getItem('hla_emiCrackleAmp')  || '0.3');
 let emiSpikeProb   = parseFloat(storage.getItem('hla_emiSpikeProb')   || '0.001');
 let emiSpikeAmp    = parseFloat(storage.getItem('hla_emiSpikeAmp')    || '1.0');
 
+// Dämpfung des Originalsignals bei Störereignissen
+let emiVoiceDamp = storage.getItem('hla_emiVoiceDamp') === '1';
+
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
 
@@ -12874,6 +12877,9 @@ async function applyInterferenceEffect(buffer, opts = {}) {
     const source = ctx.createBufferSource();
     source.buffer = buffer;
 
+    // Ereignisse für Aussetzer und Knackser sammeln
+    const events = [];
+
     // Rauschbuffer mit Aussetzern, Knacksern und Ausreißern füllen
     const noiseBuffer = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     for (let ch = 0; ch < noiseBuffer.numberOfChannels; ch++) {
@@ -12887,29 +12893,56 @@ async function applyInterferenceEffect(buffer, opts = {}) {
             }
             if (Math.random() < dropoutProb) {
                 dropout = Math.floor(ctx.sampleRate * dropoutDur);
+                events.push({ type: 'dropout', time: i / ctx.sampleRate, dur: dropout / ctx.sampleRate });
                 data[i] = 0;
+                dropout--;
                 continue;
             }
             let sample = (Math.random() * 2 - 1) * 0.02; // Grundrauschen
-            if (Math.random() < crackleProb) sample += (Math.random() * 2 - 1) * crackleAmp; // kurzer Knackser
-            if (Math.random() < spikeProb)   sample += (Math.random() * 2 - 1) * spikeAmp;   // großer Ausreißer
+            if (Math.random() < crackleProb) {
+                sample += (Math.random() * 2 - 1) * crackleAmp; // kurzer Knackser
+                events.push({ type: 'crackle', time: i / ctx.sampleRate });
+            }
+            if (Math.random() < spikeProb) {
+                sample += (Math.random() * 2 - 1) * spikeAmp; // großer Ausreißer
+            }
             data[i] = Math.max(-1, Math.min(1, sample));
         }
     }
     const noise = ctx.createBufferSource();
     noise.buffer = noiseBuffer;
 
-    // Hüllkurve auf Gain anwenden
-    const gain = ctx.createGain();
+    // Hüllkurve auf Noise-Gain anwenden
+    const noiseGain = ctx.createGain();
     const duration = buffer.length / buffer.sampleRate;
     const env = computeEmiEnvelope(duration, level, ramp, mode);
     env.forEach((p, idx) => {
-        if (idx === 0) gain.gain.setValueAtTime(p.value, p.time);
-        else gain.gain.linearRampToValueAtTime(p.value, p.time);
+        if (idx === 0) noiseGain.gain.setValueAtTime(p.value, p.time);
+        else noiseGain.gain.linearRampToValueAtTime(p.value, p.time);
     });
 
-    source.connect(ctx.destination);
-    noise.connect(gain).connect(ctx.destination);
+    // Optional Sprachdämpfung des Originalsignals
+    if (emiVoiceDamp) {
+        const signalGain = ctx.createGain();
+        signalGain.gain.setValueAtTime(1, 0);
+        events.forEach(ev => {
+            if (ev.type === 'dropout') {
+                signalGain.gain.setValueAtTime(1, ev.time);
+                signalGain.gain.linearRampToValueAtTime(0.1, ev.time + 0.01);
+                signalGain.gain.setValueAtTime(0.1, ev.time + ev.dur);
+                signalGain.gain.linearRampToValueAtTime(1, ev.time + ev.dur + 0.05);
+            } else if (ev.type === 'crackle') {
+                signalGain.gain.setValueAtTime(1, ev.time);
+                signalGain.gain.linearRampToValueAtTime(0.7, ev.time + 0.005);
+                signalGain.gain.linearRampToValueAtTime(1, ev.time + 0.015);
+            }
+        });
+        source.connect(signalGain).connect(ctx.destination);
+    } else {
+        source.connect(ctx.destination);
+    }
+
+    noise.connect(noiseGain).connect(ctx.destination);
     source.start();
     noise.start();
 
@@ -13366,6 +13399,11 @@ async function openDeEdit(fileId) {
         nHall.checked = neighborHall;
         nHall.onchange = e => toggleNeighborHall(e.target.checked);
     }
+    const emiVoice = document.getElementById('emiVoiceDampToggle');
+    if (emiVoice) {
+        emiVoice.checked = emiVoiceDamp;
+        emiVoice.onchange = e => toggleEmiVoiceDamp(e.target.checked);
+    }
 
     // Regler für elektromagnetische Störgeräusche initialisieren
     const emiLevel = document.getElementById('emiLevel');
@@ -13744,6 +13782,10 @@ function updateEffectButtons() {
     if (neighborHallLabel) {
         neighborHallLabel.classList.toggle('active', neighborHall);
     }
+    const emiVoiceLabel = document.getElementById('emiVoiceDampToggleLabel');
+    if (emiVoiceLabel) {
+        emiVoiceLabel.classList.toggle('active', emiVoiceDamp);
+    }
     const emiBtn = document.getElementById('emiEffectBtn');
     const emiBoxBtn = document.getElementById('emiEffectBoxBtn');
     if (emiBtn) {
@@ -13951,6 +13993,14 @@ function toggleNeighborHall(active) {
     neighborHall = active;
     storage.setItem('hla_neighborHall', active ? '1' : '0');
     if (isNeighborEffect) recomputeEditBuffer();
+    updateEffectButtons();
+}
+
+// Schaltet die Sprachdämpfung bei EM-Störungen
+function toggleEmiVoiceDamp(active) {
+    emiVoiceDamp = active;
+    storage.setItem('hla_emiVoiceDamp', active ? '1' : '0');
+    if (isEmiEffect) recomputeEditBuffer();
     updateEffectButtons();
 }
 
@@ -14182,6 +14232,8 @@ function resetEmiSettings() {
     storage.setItem('hla_emiSpikeProb', emiSpikeProb);
     emiSpikeAmp = 1.0;
     storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
+    emiVoiceDamp = false;
+    storage.setItem('hla_emiVoiceDamp', '0');
 
     const eDropProb = document.getElementById('emiDropoutProb');
     const eDropProbDisp = document.getElementById('emiDropoutProbDisplay');
@@ -14220,9 +14272,12 @@ function resetEmiSettings() {
         eSpikeAmp.value = emiSpikeAmp;
         eSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
     }
+    const eVoice = document.getElementById('emiVoiceDampToggle');
+    if (eVoice) eVoice.checked = emiVoiceDamp;
 
     // Effekt neu berechnen, falls aktiv
     if (isEmiEffect) recomputeEditBuffer();
+    updateEffectButtons();
 }
 // =========================== RESETEMISETTINGS END =======================
 
