@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.328
+* EM-Störgeräusch-Presets können gespeichert und geladen werden.
 ## 🛠️ Patch in 1.40.327
 * Canvas zeigt die EM-Störgeräusch-Hüllkurve und reagiert auf Regleränderungen.
 * Info-Icons mit Tooltips erklären alle Parameter des Störgeräuschs.
