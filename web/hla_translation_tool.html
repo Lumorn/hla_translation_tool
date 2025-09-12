@@ -811,6 +811,18 @@
                     <label title="Dauer eines Aussetzers">Aussetzer-Dauer: <span id="emiDropoutDurDisplay"></span>
                         <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
                     </label>
+                    <label title="Häufigkeit der Knackser">Knackser-Häufigkeit: <span id="emiCrackleProbDisplay"></span>
+                        <input type="range" id="emiCrackleProb" min="0" max="0.02" step="0.001">
+                    </label>
+                    <label title="Lautstärke der Knackser">Knackser-Amplitude: <span id="emiCrackleAmpDisplay"></span>
+                        <input type="range" id="emiCrackleAmp" min="0" max="1" step="0.05">
+                    </label>
+                    <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit: <span id="emiSpikeProbDisplay"></span>
+                        <input type="range" id="emiSpikeProb" min="0" max="0.01" step="0.0005">
+                    </label>
+                    <label title="Lautstärke der Ausreißer">Spike-Amplitude: <span id="emiSpikeAmpDisplay"></span>
+                        <input type="range" id="emiSpikeAmp" min="0" max="1" step="0.05">
+                    </label>
                     <label title="Verlauf der Störung">Verlauf:
                         <select id="emiMode">
                             <option value="constant">Konstant</option>
