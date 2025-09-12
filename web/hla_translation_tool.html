@@ -805,6 +805,14 @@
                     <label title="Zeitpunkt des starken Anstiegs">Anstieg ab: <span id="emiRampDisplay"></span>
                         <input type="range" id="emiRamp" min="0" max="1" step="0.05">
                     </label>
+                    <label title="Verlauf der Störung">Verlauf:
+                        <select id="emiMode">
+                            <option value="constant">Konstant</option>
+                            <option value="up">Anstieg</option>
+                            <option value="updown">Anstieg &amp; Abfall</option>
+                            <option value="down">Abfall</option>
+                        </select>
+                    </label>
                 </div>
                 <div class="effect-actions">
                     <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">EM-Störgeräusch anwenden</button>

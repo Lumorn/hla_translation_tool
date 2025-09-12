@@ -617,6 +617,8 @@ let neighborHall = storage.getItem('hla_neighborHall') === '1';
 let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 // Startposition, ab der die Störung stärker wird (0 = sofort)
 let emiRampPosition = parseFloat(storage.getItem('hla_emiRamp') || '0');
+// Verlauf der Störung (konstant, Anstieg, Anstieg & Abfall, Abfall)
+let emiRampMode = storage.getItem('hla_emiMode') || 'constant';
 
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
@@ -12816,33 +12818,76 @@ async function applyNeighborRoomEffect(buffer, opts = {}) {
 // =========================== NEBENRAUMEFFEKT END ============================
 
 // =========================== EMI NOISE START ===============================
+// Hilfsfunktion: erstellt die Hüllkurve für den Störpegel
+function computeEmiEnvelope(duration, level, ramp, mode) {
+    const rampTime = duration * ramp;
+    switch (mode) {
+        case 'up':
+            return [
+                { time: 0, value: 0 },
+                { time: rampTime, value: 0 },
+                { time: duration, value: level }
+            ];
+        case 'updown':
+            return [
+                { time: 0, value: 0 },
+                { time: rampTime, value: level },
+                { time: duration, value: 0 }
+            ];
+        case 'down':
+            return [
+                { time: 0, value: level },
+                { time: rampTime, value: level },
+                { time: duration, value: 0 }
+            ];
+        default:
+            return [
+                { time: 0, value: level },
+                { time: duration, value: level }
+            ];
+    }
+}
+
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
-    const { level = emiNoiseLevel, ramp = emiRampPosition } = opts;
+    const { level = emiNoiseLevel, ramp = emiRampPosition, mode = emiRampMode } = opts;
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
 
+    // Rauschbuffer mit Aussetzern und Knacksern füllen
     const noiseBuffer = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     for (let ch = 0; ch < noiseBuffer.numberOfChannels; ch++) {
         const data = noiseBuffer.getChannelData(ch);
+        let dropout = 0;
         for (let i = 0; i < data.length; i++) {
-            if (Math.random() < 0.01) {
-                data[i] = Math.random() * 2 - 1;
+            if (dropout > 0) { // Verbindungsaussetzer
+                data[i] = 0;
+                dropout--;
+                continue;
             }
+            if (Math.random() < 0.0005) {
+                dropout = Math.floor(ctx.sampleRate * 0.02);
+                data[i] = 0;
+                continue;
+            }
+            let sample = (Math.random() * 2 - 1) * 0.02; // Grundrauschen
+            if (Math.random() < 0.005) sample += (Math.random() * 2 - 1) * 0.3; // kurzer Knackser
+            if (Math.random() < 0.001) sample += (Math.random() * 2 - 1);       // großer Ausreißer
+            data[i] = Math.max(-1, Math.min(1, sample));
         }
     }
     const noise = ctx.createBufferSource();
     noise.buffer = noiseBuffer;
+
+    // Hüllkurve auf Gain anwenden
     const gain = ctx.createGain();
     const duration = buffer.length / buffer.sampleRate;
-    const rampTime = duration * ramp;
-    const startLevel = level * 0.1; // Leichtes Rauschen am Anfang
-    gain.gain.setValueAtTime(startLevel, 0);
-    if (ramp > 0) {
-        gain.gain.setValueAtTime(startLevel, rampTime);
-    }
-    gain.gain.linearRampToValueAtTime(level, duration);
+    const env = computeEmiEnvelope(duration, level, ramp, mode);
+    env.forEach((p, idx) => {
+        if (idx === 0) gain.gain.setValueAtTime(p.value, p.time);
+        else gain.gain.linearRampToValueAtTime(p.value, p.time);
+    });
 
     source.connect(ctx.destination);
     noise.connect(gain).connect(ctx.destination);
@@ -13325,6 +13370,15 @@ async function openDeEdit(fileId) {
             emiRampPosition = parseFloat(e.target.value);
             storage.setItem('hla_emiRamp', emiRampPosition);
             emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    const emiMode = document.getElementById('emiMode');
+    if (emiMode) {
+        emiMode.value = emiRampMode;
+        emiMode.onchange = e => {
+            emiRampMode = e.target.value;
+            storage.setItem('hla_emiMode', emiRampMode);
             if (isEmiEffect) recomputeEditBuffer();
         };
     }
@@ -13995,6 +14049,9 @@ function resetEmiSettings() {
     // Startposition zurück auf sofort
     emiRampPosition = 0;
     storage.setItem('hla_emiRamp', emiRampPosition);
+    // Verlauf zurück auf konstant
+    emiRampMode = 'constant';
+    storage.setItem('hla_emiMode', emiRampMode);
 
     const eLevel = document.getElementById('emiLevel');
     const eDisp  = document.getElementById('emiLevelDisplay');
@@ -14008,6 +14065,8 @@ function resetEmiSettings() {
         eRamp.value = emiRampPosition;
         eRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
     }
+    const eMode = document.getElementById('emiMode');
+    if (eMode) eMode.value = emiRampMode;
 
     // Effekt neu berechnen, falls aktiv
     if (isEmiEffect) recomputeEditBuffer();
@@ -16838,7 +16897,9 @@ if (typeof module !== "undefined" && module.exports) {
         stopProjectPlayback,
         openPlaybackList,
         closePlaybackList,
-        __getPlaybackProtocol: () => playbackProtocol
+        __getPlaybackProtocol: () => playbackProtocol,
+        // Testzugriff auf die Berechnung der EM-Hüllkurve
+        __computeEmiEnvelope: computeEmiEnvelope
     };
 }
 
