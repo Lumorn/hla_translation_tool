@@ -632,6 +632,11 @@ let emiSpikeAmp    = parseFloat(storage.getItem('hla_emiSpikeAmp')    || '1.0');
 // Dämpfung des Originalsignals bei Störereignissen
 let emiVoiceDamp = storage.getItem('hla_emiVoiceDamp') === '1';
 
+// Gespeicherte Presets für elektromagnetische Störgeräusche
+let emiPresets = JSON.parse(storage.getItem('hla_emiPresets') || '{}');
+// Zuletzt verwendetes EM-Preset
+let lastEmiPreset = storage.getItem('hla_lastEmiPreset') || '';
+
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
 
@@ -2862,6 +2867,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
         if(!f.hasOwnProperty('emiEffect')){f.emiEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('emiPreset')){f.emiPreset='';}
         if(!f.hasOwnProperty('neighborEffect')){f.neighborEffect=false;migrated=true;}
         if(!f.hasOwnProperty('neighborHall')){f.neighborHall=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
@@ -13547,7 +13553,41 @@ async function openDeEdit(fileId) {
         };
     }
 
-    // Preset-Auswahl initialisieren
+    // Preset-Auswahl für EM-Störgeräusch initialisieren
+    updateEmiPresetList();
+    const emiPresetSel  = document.getElementById('emiPresetSelect');
+    const emiPresetSave = document.getElementById('saveEmiPresetBtn');
+    const emiPresetDel  = document.getElementById('deleteEmiPresetBtn');
+    if (emiPresetSel) {
+        const name = file.emiPreset || lastEmiPreset;
+        if (name && emiPresets[name]) {
+            emiPresetSel.value = name;
+            loadEmiPreset(name);
+        }
+        emiPresetSel.onchange = () => {
+            loadEmiPreset(emiPresetSel.value);
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    if (emiPresetSave) {
+        // Eingabedialog statt prompt()
+        emiPresetSave.onclick = async () => {
+            const name = await showInputDialog('Preset-Name eingeben:', emiPresetSel?.value || '');
+            if (name) {
+                saveEmiPreset(name);
+                if (emiPresetSel) emiPresetSel.value = name;
+            }
+        };
+    }
+    if (emiPresetDel) {
+        emiPresetDel.onclick = () => {
+            if (emiPresetSel && emiPresetSel.value && confirm('Preset wirklich löschen?')) {
+                deleteEmiPreset(emiPresetSel.value);
+            }
+        };
+    }
+
+    // Preset-Auswahl für Funkgerät-Effekt initialisieren
     updateRadioPresetList();
     const presetSel  = document.getElementById('radioPresetSelect');
     const presetSave = document.getElementById('saveRadioPresetBtn');
@@ -14046,6 +14086,137 @@ async function applyEmiEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYEMIEFFECT END =============================
+// =========================== EMIPRESET-FUNKTIONEN START ====================
+// Aktualisiert die Auswahlbox für EM-Störgeräusch-Presets
+function updateEmiPresetList() {
+    const sel = document.getElementById('emiPresetSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    for (const name of Object.keys(emiPresets)) {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+    }
+    if (lastEmiPreset && emiPresets[lastEmiPreset]) {
+        sel.value = lastEmiPreset;
+    }
+}
+// Speichert die aktuellen EM-Störgeräusch-Werte als Preset
+function saveEmiPreset(name) {
+    if (!name) return;
+    emiPresets[name] = {
+        level: emiNoiseLevel,
+        ramp: emiRampPosition,
+        mode: emiRampMode,
+        dropoutProb: emiDropoutProb,
+        dropoutDur: emiDropoutDur,
+        crackleProb: emiCrackleProb,
+        crackleAmp: emiCrackleAmp,
+        spikeProb: emiSpikeProb,
+        spikeAmp: emiSpikeAmp,
+        voiceDamp: emiVoiceDamp
+    };
+    storage.setItem('hla_emiPresets', JSON.stringify(emiPresets));
+    lastEmiPreset = name;
+    storage.setItem('hla_lastEmiPreset', name);
+    updateEmiPresetList();
+}
+// Lädt ein Preset und setzt alle EM-Störgeräusch-Werte
+function loadEmiPreset(name) {
+    const p = emiPresets[name];
+    if (!p) return;
+    emiNoiseLevel = p.level;
+    emiRampPosition = p.ramp;
+    emiRampMode = p.mode;
+    emiDropoutProb = p.dropoutProb;
+    emiDropoutDur = p.dropoutDur;
+    emiCrackleProb = p.crackleProb;
+    emiCrackleAmp = p.crackleAmp;
+    emiSpikeProb = p.spikeProb;
+    emiSpikeAmp = p.spikeAmp;
+    emiVoiceDamp = !!p.voiceDamp;
+    storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+    storage.setItem('hla_emiRamp', emiRampPosition);
+    storage.setItem('hla_emiMode', emiRampMode);
+    storage.setItem('hla_emiDropoutProb', emiDropoutProb);
+    storage.setItem('hla_emiDropoutDur', emiDropoutDur);
+    storage.setItem('hla_emiCrackleProb', emiCrackleProb);
+    storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
+    storage.setItem('hla_emiSpikeProb', emiSpikeProb);
+    storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
+    storage.setItem('hla_emiVoiceDamp', emiVoiceDamp ? '1' : '0');
+    lastEmiPreset = name;
+    storage.setItem('hla_lastEmiPreset', name);
+    refreshEmiControls();
+}
+// Entfernt ein Preset dauerhaft
+function deleteEmiPreset(name) {
+    if (!emiPresets[name]) return;
+    delete emiPresets[name];
+    storage.setItem('hla_emiPresets', JSON.stringify(emiPresets));
+    if (lastEmiPreset === name) {
+        lastEmiPreset = Object.keys(emiPresets)[0] || '';
+        storage.setItem('hla_lastEmiPreset', lastEmiPreset);
+    }
+    updateEmiPresetList();
+}
+// Aktualisiert alle Regler entsprechend der aktuellen EM-Werte
+function refreshEmiControls() {
+    const eLevel = document.getElementById('emiLevel');
+    const eDisp = document.getElementById('emiLevelDisplay');
+    if (eLevel && eDisp) {
+        eLevel.value = emiNoiseLevel;
+        eDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+    }
+    const eRamp = document.getElementById('emiRamp');
+    const eRampDisp = document.getElementById('emiRampDisplay');
+    if (eRamp && eRampDisp) {
+        eRamp.value = emiRampPosition;
+        eRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
+    }
+    const eMode = document.getElementById('emiMode');
+    if (eMode) eMode.value = emiRampMode;
+    const eDropProb = document.getElementById('emiDropoutProb');
+    const eDropProbDisp = document.getElementById('emiDropoutProbDisplay');
+    if (eDropProb && eDropProbDisp) {
+        eDropProb.value = emiDropoutProb;
+        eDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+    }
+    const eDropDur = document.getElementById('emiDropoutDur');
+    const eDropDurDisp = document.getElementById('emiDropoutDurDisplay');
+    if (eDropDur && eDropDurDisp) {
+        eDropDur.value = emiDropoutDur;
+        eDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+    }
+    const eCrackProb = document.getElementById('emiCrackleProb');
+    const eCrackProbDisp = document.getElementById('emiCrackleProbDisplay');
+    if (eCrackProb && eCrackProbDisp) {
+        eCrackProb.value = emiCrackleProb;
+        eCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+    }
+    const eCrackAmp = document.getElementById('emiCrackleAmp');
+    const eCrackAmpDisp = document.getElementById('emiCrackleAmpDisplay');
+    if (eCrackAmp && eCrackAmpDisp) {
+        eCrackAmp.value = emiCrackleAmp;
+        eCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+    }
+    const eSpikeProb = document.getElementById('emiSpikeProb');
+    const eSpikeProbDisp = document.getElementById('emiSpikeProbDisplay');
+    if (eSpikeProb && eSpikeProbDisp) {
+        eSpikeProb.value = emiSpikeProb;
+        eSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+    }
+    const eSpikeAmp = document.getElementById('emiSpikeAmp');
+    const eSpikeAmpDisp = document.getElementById('emiSpikeAmpDisplay');
+    if (eSpikeAmp && eSpikeAmpDisp) {
+        eSpikeAmp.value = emiSpikeAmp;
+        eSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
+    }
+    const eVoice = document.getElementById('emiVoiceDampToggle');
+    if (eVoice) eVoice.checked = emiVoiceDamp;
+}
+// =========================== EMIPRESET-FUNKTIONEN END ======================
 // =========================== APPLYVOLUMEMATCH END =========================
 
 // =========================== RESETRADIOSETTINGS START =====================
@@ -14922,6 +15093,8 @@ async function applyDeEdit() {
         currentEditFile.radioPreset = sel ? sel.value : '';
         currentEditFile.hallEffect = isHallEffect;
         currentEditFile.emiEffect = isEmiEffect;
+        const emiSel = document.getElementById('emiPresetSelect');
+        currentEditFile.emiPreset = emiSel ? emiSel.value : '';
         currentEditFile.neighborEffect = isNeighborEffect;
         // Optionaler Hall im Nebenraum-Effekt speichern
         currentEditFile.neighborHall = neighborHall;
@@ -17128,6 +17301,11 @@ if (typeof module !== "undefined" && module.exports) {
         deleteRadioPreset,
         __setRadioPresets: obj => { radioPresets = obj; },
         __getRadioPresets: () => radioPresets,
+        saveEmiPreset,
+        loadEmiPreset,
+        deleteEmiPreset,
+        __setEmiPresets: obj => { emiPresets = obj; },
+        __getEmiPresets: () => emiPresets,
         startProjectPlayback,
         stopProjectPlayback,
         openPlaybackList,
