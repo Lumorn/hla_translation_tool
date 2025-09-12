@@ -622,6 +622,12 @@ let emiRampMode = storage.getItem('hla_emiMode') || 'constant';
 // Häufigkeit und Dauer der Aussetzer
 let emiDropoutProb = parseFloat(storage.getItem('hla_emiDropoutProb') || '0.0005');
 let emiDropoutDur  = parseFloat(storage.getItem('hla_emiDropoutDur')  || '0.02');
+// Häufigkeit kurzer Knackser und deren Stärke
+let emiCrackleProb = parseFloat(storage.getItem('hla_emiCrackleProb') || '0.005');
+let emiCrackleAmp  = parseFloat(storage.getItem('hla_emiCrackleAmp')  || '0.3');
+// Häufigkeit großer Ausreißer und deren Amplitude
+let emiSpikeProb   = parseFloat(storage.getItem('hla_emiSpikeProb')   || '0.001');
+let emiSpikeAmp    = parseFloat(storage.getItem('hla_emiSpikeAmp')    || '1.0');
 
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
@@ -12853,12 +12859,22 @@ function computeEmiEnvelope(duration, level, ramp, mode) {
 
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
-    const { level = emiNoiseLevel, ramp = emiRampPosition, mode = emiRampMode, dropoutProb = emiDropoutProb, dropoutDur = emiDropoutDur } = opts;
+    const {
+        level = emiNoiseLevel,
+        ramp = emiRampPosition,
+        mode = emiRampMode,
+        dropoutProb = emiDropoutProb,
+        dropoutDur = emiDropoutDur,
+        crackleProb = emiCrackleProb,
+        crackleAmp = emiCrackleAmp,
+        spikeProb = emiSpikeProb,
+        spikeAmp = emiSpikeAmp
+    } = opts;
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
 
-    // Rauschbuffer mit Aussetzern und Knacksern füllen
+    // Rauschbuffer mit Aussetzern, Knacksern und Ausreißern füllen
     const noiseBuffer = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     for (let ch = 0; ch < noiseBuffer.numberOfChannels; ch++) {
         const data = noiseBuffer.getChannelData(ch);
@@ -12875,8 +12891,8 @@ async function applyInterferenceEffect(buffer, opts = {}) {
                 continue;
             }
             let sample = (Math.random() * 2 - 1) * 0.02; // Grundrauschen
-            if (Math.random() < 0.005) sample += (Math.random() * 2 - 1) * 0.3; // kurzer Knackser
-            if (Math.random() < 0.001) sample += (Math.random() * 2 - 1);       // großer Ausreißer
+            if (Math.random() < crackleProb) sample += (Math.random() * 2 - 1) * crackleAmp; // kurzer Knackser
+            if (Math.random() < spikeProb)   sample += (Math.random() * 2 - 1) * spikeAmp;   // großer Ausreißer
             data[i] = Math.max(-1, Math.min(1, sample));
         }
     }
@@ -13409,6 +13425,59 @@ async function openDeEdit(fileId) {
             emiDropoutDur = parseFloat(e.target.value);
             storage.setItem('hla_emiDropoutDur', emiDropoutDur);
             emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    // Regler für Knackser-Häufigkeit
+    const emiCrackProb = document.getElementById('emiCrackleProb');
+    const emiCrackProbDisp = document.getElementById('emiCrackleProbDisplay');
+    if (emiCrackProb && emiCrackProbDisp) {
+        emiCrackProb.value = emiCrackleProb;
+        emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+        emiCrackProb.oninput = e => {
+            emiCrackleProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiCrackleProb', emiCrackleProb);
+            emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    // Regler für Knackser-Amplitude
+    const emiCrackAmp = document.getElementById('emiCrackleAmp');
+    const emiCrackAmpDisp = document.getElementById('emiCrackleAmpDisplay');
+    if (emiCrackAmp && emiCrackAmpDisp) {
+        emiCrackAmp.value = emiCrackleAmp;
+        emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+        emiCrackAmp.oninput = e => {
+            emiCrackleAmp = parseFloat(e.target.value);
+            storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
+            emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    // Regler für Ausreißer-Häufigkeit
+    const emiSpikeProbEl = document.getElementById('emiSpikeProb');
+    const emiSpikeProbDisp = document.getElementById('emiSpikeProbDisplay');
+    if (emiSpikeProbEl && emiSpikeProbDisp) {
+        emiSpikeProbEl.value = emiSpikeProb;
+        emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+        emiSpikeProbEl.oninput = e => {
+            emiSpikeProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiSpikeProb', emiSpikeProb);
+            emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    // Regler für Ausreißer-Amplitude
+    const emiSpikeAmpEl = document.getElementById('emiSpikeAmp');
+    const emiSpikeAmpDisp = document.getElementById('emiSpikeAmpDisplay');
+    if (emiSpikeAmpEl && emiSpikeAmpDisp) {
+        emiSpikeAmpEl.value = emiSpikeAmp;
+        emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
+        emiSpikeAmpEl.oninput = e => {
+            emiSpikeAmp = parseFloat(e.target.value);
+            storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
+            emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
             if (isEmiEffect) recomputeEditBuffer();
         };
     }
@@ -14104,6 +14173,16 @@ function resetEmiSettings() {
     emiDropoutDur = 0.02;
     storage.setItem('hla_emiDropoutDur', emiDropoutDur);
 
+    // Knackser- und Ausreißer-Werte zurücksetzen
+    emiCrackleProb = 0.005;
+    storage.setItem('hla_emiCrackleProb', emiCrackleProb);
+    emiCrackleAmp = 0.3;
+    storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
+    emiSpikeProb = 0.001;
+    storage.setItem('hla_emiSpikeProb', emiSpikeProb);
+    emiSpikeAmp = 1.0;
+    storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
+
     const eDropProb = document.getElementById('emiDropoutProb');
     const eDropProbDisp = document.getElementById('emiDropoutProbDisplay');
     if (eDropProb && eDropProbDisp) {
@@ -14115,6 +14194,31 @@ function resetEmiSettings() {
     if (eDropDur && eDropDurDisp) {
         eDropDur.value = emiDropoutDur;
         eDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+    }
+
+    const eCrackProb = document.getElementById('emiCrackleProb');
+    const eCrackProbDisp = document.getElementById('emiCrackleProbDisplay');
+    if (eCrackProb && eCrackProbDisp) {
+        eCrackProb.value = emiCrackleProb;
+        eCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+    }
+    const eCrackAmp = document.getElementById('emiCrackleAmp');
+    const eCrackAmpDisp = document.getElementById('emiCrackleAmpDisplay');
+    if (eCrackAmp && eCrackAmpDisp) {
+        eCrackAmp.value = emiCrackleAmp;
+        eCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+    }
+    const eSpikeProb = document.getElementById('emiSpikeProb');
+    const eSpikeProbDisp = document.getElementById('emiSpikeProbDisplay');
+    if (eSpikeProb && eSpikeProbDisp) {
+        eSpikeProb.value = emiSpikeProb;
+        eSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+    }
+    const eSpikeAmp = document.getElementById('emiSpikeAmp');
+    const eSpikeAmpDisp = document.getElementById('emiSpikeAmpDisplay');
+    if (eSpikeAmp && eSpikeAmpDisp) {
+        eSpikeAmp.value = emiSpikeAmp;
+        eSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
     }
 
     // Effekt neu berechnen, falls aktiv

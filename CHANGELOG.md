@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.325
+* EM-Störgeräusch bietet Regler für Knackser- und Spike-Häufigkeit sowie deren Amplituden.
 ## 🛠️ Patch in 1.40.324
 * EM-Störgeräusch besitzt Regler für Aussetzer-Häufigkeit und Aussetzer-Dauer.
 ## 🛠️ Patch in 1.40.323
