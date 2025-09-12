@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.326
+* EM-Störgeräusch kann das Originalsignal auf Wunsch synchron zu Aussetzern und Knacksern dämpfen.
 ## 🛠️ Patch in 1.40.325
 * EM-Störgeräusch bietet Regler für Knackser- und Spike-Häufigkeit sowie deren Amplituden.
 ## 🛠️ Patch in 1.40.324
