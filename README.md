@@ -100,6 +100,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Vollständig offline** – keine Server, keine externen Abhängigkeiten
 * **Direkter Spielstart:** Über eine zentrale Start-Leiste lässt sich das Spiel oder der Workshop in der gewünschten Sprache starten. Der Steam-Pfad wird automatisch aus der Windows‑Registry ermittelt.
 * **Schnellstart mit Cheats:** Im Dropdown lassen sich Godmode, unendliche Munition und die Entwicklerkonsole einzeln auswählen. Das Spiel startet nach Klick auf **Starten** mit allen markierten Optionen.
+* **Start-Presets:** Alle Startoptionen können als Preset gespeichert und über ein Dropdown geladen werden; die Daten liegen im LocalStorage und das letzte Preset wird beim Start automatisch gesetzt.
 * **Eigene Video-Links:** Über den Video-Manager lassen sich mehrere URLs speichern und per Knopfdruck öffnen. Fehlt die Desktop-App, werden die Links im Browser gespeichert.
 * **Wählbarer Speichermodus:** Beim ersten Start kann zwischen klassischem LocalStorage und einem IndexedDB-System gewählt werden; alle Zugriffe erfolgen über einen Speicher-Adapter.
 * **Daten migrieren:** Ein zusätzlicher Knopf kopiert alle LocalStorage-Einträge in das neue Speicher-System.

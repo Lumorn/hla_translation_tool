@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.328
+* Start-Leiste bietet jetzt ein Preset-Dropdown zum Speichern und Laden der Startparameter.
 ## 🛠️ Patch in 1.40.327
 * Canvas zeigt die EM-Störgeräusch-Hüllkurve und reagiert auf Regleränderungen.
 * Info-Icons mit Tooltips erklären alle Parameter des Störgeräuschs.

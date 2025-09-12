@@ -605,6 +605,10 @@ let radioCrackle       = parseFloat(storage.getItem('hla_radioCrackle') || '0.1'
 let radioPresets = JSON.parse(storage.getItem('hla_radioPresets') || '{}');
 let lastRadioPreset = storage.getItem('hla_lastRadioPreset') || '';
 
+// Gespeicherte Start-Presets und zuletzt gewähltes Preset
+let startPresets = JSON.parse(storage.getItem('hla_startPresets') || '{}');
+let lastStartPreset = storage.getItem('hla_lastStartPreset') || '';
+
 // Letzte Einstellungen des Hall-Effekts
 let hallRoom   = parseFloat(storage.getItem('hla_hallRoom') || '0.5');
 let hallAmount = parseFloat(storage.getItem('hla_hallAmount') || '0.5');
@@ -1626,6 +1630,27 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.autoApplySuggestion = autoApplySuggestion;
             }
         };
+    }
+    // Start-Preset-Auswahl und Buttons initialisieren
+    updateStartPresetList();
+    const startSel  = document.getElementById('startPresetSelect');
+    const startSave = document.getElementById('saveStartPresetBtn');
+    const startLoad = document.getElementById('loadStartPresetBtn');
+    if (startLoad) {
+        startLoad.onclick = () => {
+            if (startSel && startSel.value) {
+                loadStartPreset(startSel.value);
+            }
+        };
+    }
+    if (startSave) {
+        startSave.onclick = async () => {
+            const name = await showInputDialog('Preset-Name eingeben:', startSel?.value || '');
+            if (name) saveStartPreset(name);
+        };
+    }
+    if (lastStartPreset && startPresets[lastStartPreset]) {
+        loadStartPreset(lastStartPreset);
     }
     // Dubbing-Modul nachladen, bevor Funktionen verwendet werden
     if (!moduleStatus.dubbing.loaded) {
@@ -14187,6 +14212,57 @@ function deleteRadioPreset(name) {
 }
 // =========================== RESETRADIOSETTINGS END =======================
 
+// =========================== START-PRESETS START ===========================
+// Aktualisiert die Auswahlbox der Start-Presets
+function updateStartPresetList() {
+    const sel = document.getElementById('startPresetSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    for (const name of Object.keys(startPresets)) {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+    }
+    if (lastStartPreset && startPresets[lastStartPreset]) {
+        sel.value = lastStartPreset;
+    }
+}
+
+// Speichert die aktuellen Startoptionen als Preset
+function saveStartPreset(name) {
+    if (!name) return;
+    startPresets[name] = {
+        modus: document.getElementById('modusSelect')?.value || 'normal',
+        sprache: document.getElementById('spracheSelect')?.value || 'english',
+        mapAktiv: document.getElementById('mapCheckbox')?.checked || false,
+        map: document.getElementById('mapSelect')?.value || '',
+        god: document.getElementById('optGod')?.checked || false,
+        ammo: document.getElementById('optAmmo')?.checked || false,
+        console: document.getElementById('optConsole')?.checked || false
+    };
+    storage.setItem('hla_startPresets', JSON.stringify(startPresets));
+    lastStartPreset = name;
+    storage.setItem('hla_lastStartPreset', name);
+    updateStartPresetList();
+}
+
+// Lädt ein Start-Preset und setzt alle Werte
+function loadStartPreset(name) {
+    const p = startPresets[name];
+    if (!p) return;
+    document.getElementById('modusSelect').value = p.modus;
+    document.getElementById('spracheSelect').value = p.sprache;
+    document.getElementById('mapCheckbox').checked = p.mapAktiv;
+    document.getElementById('mapSelect').value = p.map;
+    document.getElementById('optGod').checked = p.god;
+    document.getElementById('optAmmo').checked = p.ammo;
+    document.getElementById('optConsole').checked = p.console;
+    lastStartPreset = name;
+    storage.setItem('hla_lastStartPreset', name);
+}
+// =========================== START-PRESETS END ===========================
+
 // =========================== RESETHALLSETTINGS START =====================
 // Setzt alle Hall-Parameter auf Standardwerte
 function resetHallSettings() {
@@ -17128,6 +17204,11 @@ if (typeof module !== "undefined" && module.exports) {
         deleteRadioPreset,
         __setRadioPresets: obj => { radioPresets = obj; },
         __getRadioPresets: () => radioPresets,
+        // Start-Preset-Funktionen fuer Tests
+        saveStartPreset,
+        loadStartPreset,
+        __setStartPresets: obj => { startPresets = obj; },
+        __getStartPresets: () => startPresets,
         startProjectPlayback,
         stopProjectPlayback,
         openPlaybackList,
