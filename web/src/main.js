@@ -12860,6 +12860,23 @@ function computeEmiEnvelope(duration, level, ramp, mode) {
     }
 }
 
+// Zeichnet die berechnete EM-Hüllkurve in ein Canvas
+function drawEmiEnvelope(canvas, env) {
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    ctx.beginPath();
+    ctx.strokeStyle = '#0f0';
+    env.forEach((p, i) => {
+        const x = (p.time / env[env.length - 1].time) * w;
+        const y = h - p.value * h;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+}
+
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
     const {
@@ -13406,6 +13423,12 @@ async function openDeEdit(fileId) {
     }
 
     // Regler für elektromagnetische Störgeräusche initialisieren
+    const emiCanvas = document.getElementById('emiEnvelopeCanvas');
+    const updateEmiEnvelope = () => {
+        if (!emiCanvas) return;
+        const env = computeEmiEnvelope(1, emiNoiseLevel, emiRampPosition, emiRampMode);
+        drawEmiEnvelope(emiCanvas, env);
+    };
     const emiLevel = document.getElementById('emiLevel');
     const emiLevelDisp = document.getElementById('emiLevelDisplay');
     if (emiLevel && emiLevelDisp) {
@@ -13416,6 +13439,7 @@ async function openDeEdit(fileId) {
             storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
             emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
             if (isEmiEffect) recomputeEditBuffer();
+            updateEmiEnvelope();
         };
     }
     const emiRamp = document.getElementById('emiRamp');
@@ -13428,6 +13452,7 @@ async function openDeEdit(fileId) {
             storage.setItem('hla_emiRamp', emiRampPosition);
             emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
             if (isEmiEffect) recomputeEditBuffer();
+            updateEmiEnvelope();
         };
     }
     const emiMode = document.getElementById('emiMode');
@@ -13437,8 +13462,10 @@ async function openDeEdit(fileId) {
             emiRampMode = e.target.value;
             storage.setItem('hla_emiMode', emiRampMode);
             if (isEmiEffect) recomputeEditBuffer();
+            updateEmiEnvelope();
         };
     }
+    updateEmiEnvelope();
 
     // Regler für Aussetzer-Häufigkeit
     const emiDropProb = document.getElementById('emiDropoutProb');
