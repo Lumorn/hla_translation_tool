@@ -799,32 +799,34 @@
                 <legend>⚡ EM-Störgeräusch</legend>
                 <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> Sprachdämpfung</label>
                 <div class="emi-settings">
-                    <label title="Stärke der Störung">Stärke: <span id="emiLevelDisplay"></span>
+                    <!-- Canvas für die Hüllkurve des Störgeräuschs -->
+                    <canvas id="emiEnvelopeCanvas" width="200" height="60"></canvas>
+                    <label title="Stärke der Störung">Stärke <span class="info-icon" title="Regelt die Lautstärke der Störung">ℹ️</span>: <span id="emiLevelDisplay"></span>
                         <input type="range" id="emiLevel" min="0" max="1" step="0.05">
                     </label>
                     <!-- Regler für den Anstiegszeitpunkt -->
-                    <label title="Zeitpunkt des starken Anstiegs">Anstieg ab: <span id="emiRampDisplay"></span>
+                    <label title="Zeitpunkt des starken Anstiegs">Anstieg ab <span class="info-icon" title="Zeitpunkt, ab dem die Störung deutlich lauter wird">ℹ️</span>: <span id="emiRampDisplay"></span>
                         <input type="range" id="emiRamp" min="0" max="1" step="0.05">
                     </label>
-                    <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit: <span id="emiDropoutProbDisplay"></span>
+                    <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit <span class="info-icon" title="Wie oft die Verbindung kurz abbricht">ℹ️</span>: <span id="emiDropoutProbDisplay"></span>
                         <input type="range" id="emiDropoutProb" min="0" max="0.005" step="0.0001">
                     </label>
-                    <label title="Dauer eines Aussetzers">Aussetzer-Dauer: <span id="emiDropoutDurDisplay"></span>
+                    <label title="Dauer eines Aussetzers">Aussetzer-Dauer <span class="info-icon" title="Länge eines einzelnen Aussetzers">ℹ️</span>: <span id="emiDropoutDurDisplay"></span>
                         <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
                     </label>
-                    <label title="Häufigkeit der Knackser">Knackser-Häufigkeit: <span id="emiCrackleProbDisplay"></span>
+                    <label title="Häufigkeit der Knackser">Knackser-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für kurze Knackser">ℹ️</span>: <span id="emiCrackleProbDisplay"></span>
                         <input type="range" id="emiCrackleProb" min="0" max="0.02" step="0.001">
                     </label>
-                    <label title="Lautstärke der Knackser">Knackser-Amplitude: <span id="emiCrackleAmpDisplay"></span>
+                    <label title="Lautstärke der Knackser">Knackser-Amplitude <span class="info-icon" title="Lautstärke der Knackser">ℹ️</span>: <span id="emiCrackleAmpDisplay"></span>
                         <input type="range" id="emiCrackleAmp" min="0" max="1" step="0.05">
                     </label>
-                    <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit: <span id="emiSpikeProbDisplay"></span>
+                    <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für starke Ausreißer">ℹ️</span>: <span id="emiSpikeProbDisplay"></span>
                         <input type="range" id="emiSpikeProb" min="0" max="0.01" step="0.0005">
                     </label>
-                    <label title="Lautstärke der Ausreißer">Spike-Amplitude: <span id="emiSpikeAmpDisplay"></span>
+                    <label title="Lautstärke der Ausreißer">Spike-Amplitude <span class="info-icon" title="Lautstärke der Ausreißer">ℹ️</span>: <span id="emiSpikeAmpDisplay"></span>
                         <input type="range" id="emiSpikeAmp" min="0" max="1" step="0.05">
                     </label>
-                    <label title="Verlauf der Störung">Verlauf:
+                    <label title="Verlauf der Störung">Verlauf <span class="info-icon" title="Form der Lautstärkeentwicklung">ℹ️</span>:
                         <select id="emiMode">
                             <option value="constant">Konstant</option>
                             <option value="up">Anstieg</option>

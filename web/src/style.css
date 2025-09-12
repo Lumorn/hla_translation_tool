@@ -3022,10 +3022,24 @@ th:nth-child(8) {
     text-align: right;
 }
 
+/* Info-Icon für zusätzliche Hinweise */
 .info-icon {
     margin-left: 5px;
     cursor: pointer;
     color: #999;
+}
+
+/* Canvas zur Visualisierung der EM-Hüllkurve */
+#emiEnvelopeCanvas {
+    border: 1px solid #555;
+    display: block;
+    margin: 4px 0;
+    background: #111;
+}
+
+/* Kleinere Icons innerhalb der EM-Einstellungen */
+.emi-settings label .info-icon {
+    font-size: 12px;
 }
 
 .info-tooltip {

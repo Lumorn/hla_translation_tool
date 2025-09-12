@@ -315,6 +315,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Funkgeräte-Effekt:** Alle Parameter (Bandpass, Sättigung, Rauschen, Knackser, Wet) lassen sich bequem per Regler einstellen und werden dauerhaft gespeichert.
 * **Hall-Effekt mit Raumgröße, Hallintensität und Verzögerung:** alle Werte lassen sich justieren und bleiben erhalten.
 * **EM-Störgeräusch mit professionellem Bedienmenü:** realistische Aussetzer, Knackser und Ausreißer; Stärke, Verlauf (Anstieg, Anstieg & Abfall, Abfall, konstant), Anstiegszeit sowie Aussetzer-, Knackser- und Spike-Häufigkeit und -Amplitude sind frei wählbar.
+* **Visualisierung der Störgeräusch-Hüllkurve:** Ein Canvas stellt die berechnete Hüllkurve dar und aktualisiert sich bei jeder Regleränderung.
 * **Sprachdämpfung-Schalter:** Dämpft das Originalsignal synchron zu Aussetzern und Knacksern.
 * **Nebenraum-Effekt:** simuliert gedämpfte Sprache aus einem angrenzenden Raum; optionaler Hall kann zugeschaltet werden.
 * **Optionaler Hall im Nebenraum-Effekt:** wird nun in der Vorschau und beim Speichern korrekt übernommen.

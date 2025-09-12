@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.327
+* Canvas zeigt die EM-Störgeräusch-Hüllkurve und reagiert auf Regleränderungen.
+* Info-Icons mit Tooltips erklären alle Parameter des Störgeräuschs.
 ## 🛠️ Patch in 1.40.326
 * EM-Störgeräusch kann das Originalsignal auf Wunsch synchron zu Aussetzern und Knacksern dämpfen.
 ## 🛠️ Patch in 1.40.325
