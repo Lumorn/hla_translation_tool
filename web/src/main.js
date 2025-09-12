@@ -619,6 +619,9 @@ let emiNoiseLevel = parseFloat(storage.getItem('hla_emiNoiseLevel') || '0.5');
 let emiRampPosition = parseFloat(storage.getItem('hla_emiRamp') || '0');
 // Verlauf der Störung (konstant, Anstieg, Anstieg & Abfall, Abfall)
 let emiRampMode = storage.getItem('hla_emiMode') || 'constant';
+// Häufigkeit und Dauer der Aussetzer
+let emiDropoutProb = parseFloat(storage.getItem('hla_emiDropoutProb') || '0.0005');
+let emiDropoutDur  = parseFloat(storage.getItem('hla_emiDropoutDur')  || '0.02');
 
 // Gespeicherte URL für das Dubbing-Video (wird beim Start asynchron geladen)
 let savedVideoUrl      = '';
@@ -12850,7 +12853,7 @@ function computeEmiEnvelope(duration, level, ramp, mode) {
 
 // Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
 async function applyInterferenceEffect(buffer, opts = {}) {
-    const { level = emiNoiseLevel, ramp = emiRampPosition, mode = emiRampMode } = opts;
+    const { level = emiNoiseLevel, ramp = emiRampPosition, mode = emiRampMode, dropoutProb = emiDropoutProb, dropoutDur = emiDropoutDur } = opts;
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -12866,8 +12869,8 @@ async function applyInterferenceEffect(buffer, opts = {}) {
                 dropout--;
                 continue;
             }
-            if (Math.random() < 0.0005) {
-                dropout = Math.floor(ctx.sampleRate * 0.02);
+            if (Math.random() < dropoutProb) {
+                dropout = Math.floor(ctx.sampleRate * dropoutDur);
                 data[i] = 0;
                 continue;
             }
@@ -13379,6 +13382,33 @@ async function openDeEdit(fileId) {
         emiMode.onchange = e => {
             emiRampMode = e.target.value;
             storage.setItem('hla_emiMode', emiRampMode);
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    // Regler für Aussetzer-Häufigkeit
+    const emiDropProb = document.getElementById('emiDropoutProb');
+    const emiDropProbDisp = document.getElementById('emiDropoutProbDisplay');
+    if (emiDropProb && emiDropProbDisp) {
+        emiDropProb.value = emiDropoutProb;
+        emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+        emiDropProb.oninput = e => {
+            emiDropoutProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiDropoutProb', emiDropoutProb);
+            emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+    // Regler für Aussetzer-Dauer
+    const emiDropDur = document.getElementById('emiDropoutDur');
+    const emiDropDurDisp = document.getElementById('emiDropoutDurDisplay');
+    if (emiDropDur && emiDropDurDisp) {
+        emiDropDur.value = emiDropoutDur;
+        emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+        emiDropDur.oninput = e => {
+            emiDropoutDur = parseFloat(e.target.value);
+            storage.setItem('hla_emiDropoutDur', emiDropoutDur);
+            emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
             if (isEmiEffect) recomputeEditBuffer();
         };
     }
@@ -14067,6 +14097,25 @@ function resetEmiSettings() {
     }
     const eMode = document.getElementById('emiMode');
     if (eMode) eMode.value = emiRampMode;
+
+    // Aussetzer-Werte zurücksetzen
+    emiDropoutProb = 0.0005;
+    storage.setItem('hla_emiDropoutProb', emiDropoutProb);
+    emiDropoutDur = 0.02;
+    storage.setItem('hla_emiDropoutDur', emiDropoutDur);
+
+    const eDropProb = document.getElementById('emiDropoutProb');
+    const eDropProbDisp = document.getElementById('emiDropoutProbDisplay');
+    if (eDropProb && eDropProbDisp) {
+        eDropProb.value = emiDropoutProb;
+        eDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+    }
+    const eDropDur = document.getElementById('emiDropoutDur');
+    const eDropDurDisp = document.getElementById('emiDropoutDurDisplay');
+    if (eDropDur && eDropDurDisp) {
+        eDropDur.value = emiDropoutDur;
+        eDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+    }
 
     // Effekt neu berechnen, falls aktiv
     if (isEmiEffect) recomputeEditBuffer();

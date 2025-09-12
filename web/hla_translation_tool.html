@@ -805,6 +805,12 @@
                     <label title="Zeitpunkt des starken Anstiegs">Anstieg ab: <span id="emiRampDisplay"></span>
                         <input type="range" id="emiRamp" min="0" max="1" step="0.05">
                     </label>
+                    <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit: <span id="emiDropoutProbDisplay"></span>
+                        <input type="range" id="emiDropoutProb" min="0" max="0.005" step="0.0001">
+                    </label>
+                    <label title="Dauer eines Aussetzers">Aussetzer-Dauer: <span id="emiDropoutDurDisplay"></span>
+                        <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
+                    </label>
                     <label title="Verlauf der Störung">Verlauf:
                         <select id="emiMode">
                             <option value="constant">Konstant</option>
