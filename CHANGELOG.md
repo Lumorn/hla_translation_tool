@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.324
+* EM-Störgeräusch besitzt Regler für Aussetzer-Häufigkeit und Aussetzer-Dauer.
 ## 🛠️ Patch in 1.40.323
 * EM-Störgeräusch simuliert nun Aussetzer und Knackser und bietet wählbare Verlaufsformen.
 ## 🛠️ Patch in 1.40.322
