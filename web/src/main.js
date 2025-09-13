@@ -14076,11 +14076,19 @@ function toggleNeighborEffect(active) {
 }
 
 // Schaltet den optionalen Hall für den Nebenraum-Effekt
+// Wird der Nebenraum-Effekt nicht genutzt, aktiviert diese Funktion
+// stattdessen den allgemeinen Hall-Effekt
 function toggleNeighborHall(active) {
     neighborHall = active;
     storage.setItem('hla_neighborHall', active ? '1' : '0');
-    if (isNeighborEffect) recomputeEditBuffer();
-    updateEffectButtons();
+    if (isNeighborEffect) {
+        recomputeEditBuffer();
+        updateEffectButtons();
+    } else {
+        const hToggle = document.getElementById('hallToggle');
+        if (hToggle) hToggle.checked = active;
+        toggleHallEffect(active);
+    }
 }
 
 // Schaltet die Sprachdämpfung bei EM-Störungen
