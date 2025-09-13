@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.331
+* Hall-Effekt wird beim Speichern angewendet, auch wenn der Nebenraum-Effekt deaktiviert ist.
 ## 🛠️ Patch in 1.40.330
 * Hall-Effekt des Nebenraum-Dialogs funktioniert nun auch ohne aktivierten Nebenraum-Effekt.
 ## 🛠️ Patch in 1.40.329
