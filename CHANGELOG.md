@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.333
+* Telefon-auf-Tisch-Effekt bietet wählbare Raum-Presets wie Wohnzimmer oder Halle.
 ## 🛠️ Patch in 1.40.332
 * Neuer Telefon-auf-Tisch-Effekt simuliert ein abgelegtes Mikrofon.
 ## 🛠️ Patch in 1.40.331

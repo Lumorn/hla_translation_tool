@@ -851,6 +851,13 @@
                 <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> Nebenraum-Effekt</label>
                 <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall-Effekt</label>
                 <label id="tableMicToggleLabel" class="effect-toggle" title="Telefon-auf-Tisch-Effekt ein- oder ausschalten"><input type="checkbox" id="tableMicToggle" onchange="toggleTableMicEffect(this.checked)"> Telefon auf Tisch</label>
+                <label for="tableMicRoom" title="Raumtyp für den Telefon-auf-Tisch-Effekt">Raumtyp:</label>
+                <select id="tableMicRoom">
+                    <option value="wohnzimmer">Wohnzimmer</option>
+                    <option value="buero">Büro</option>
+                    <option value="halle">Halle</option>
+                    <option value="keller">Keller</option>
+                </select>
             </fieldset>
             </div> <!-- edit-right Ende -->
         </div> <!-- edit-flex Ende -->

@@ -2871,6 +2871,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('neighborEffect')){f.neighborEffect=false;migrated=true;}
         if(!f.hasOwnProperty('neighborHall')){f.neighborHall=false;migrated=true;}
         if(!f.hasOwnProperty('tableMicEffect')){f.tableMicEffect=false;migrated=true;}
+        if(!f.hasOwnProperty('tableMicRoom')){f.tableMicRoom='wohnzimmer';migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -9215,6 +9216,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         neighborEffect: false,
         neighborHall: false,
         tableMicEffect: false,
+        tableMicRoom: 'wohnzimmer',
         version: 1
     };
 
@@ -9383,6 +9385,7 @@ function buildProjectFile(filename, folder) {
         neighborEffect: false,
         neighborHall: false,
         tableMicEffect: false,
+        tableMicRoom: 'wohnzimmer',
         version: 1
     };
 }
@@ -12839,9 +12842,17 @@ async function applyNeighborRoomEffect(buffer, opts = {}) {
     return processed;
 }
 
+// Vordefinierte Raum-Presets für den Telefon-auf-Tisch-Effekt
+const tableMicRoomPresets = {
+    wohnzimmer: { room: 0.3, wet: 0.5,  delay: 60 },
+    buero:      { room: 0.4, wet: 0.55, delay: 70 },
+    halle:      { room: 0.8, wet: 0.7,  delay: 120 },
+    keller:     { room: 0.6, wet: 0.65, delay: 90 }
+};
+
 // Simuliert ein abgelegtes Telefon auf dem Tisch
 async function applyTableMicFilter(buffer, opts = {}) {
-    const { cutoff = 800, wet = 0.5 } = opts;
+    const { cutoff = 800, room = 0.3, wet = 0.5, delay = 60 } = opts;
     // Offline-Kontext für starke Dämpfung und Lowpass
     const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
     const source = ctx.createBufferSource();
@@ -12860,8 +12871,8 @@ async function applyTableMicFilter(buffer, opts = {}) {
     source.start();
     let processed = await ctx.startRendering();
 
-    // Hall für räumlichen Klang
-    processed = await applyReverbEffect(processed, { room: 0.3, wet, delay: 60 });
+    // Hall für räumlichen Klang entsprechend dem gewählten Preset
+    processed = await applyReverbEffect(processed, { room, wet, delay });
 
     return processed;
 }
@@ -13056,6 +13067,7 @@ let neighborEffectBuffer = null;  // Buffer mit Nebenraum-Effekt
 let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet wurde
 let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
+let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -13092,6 +13104,7 @@ async function openDeEdit(fileId) {
     isTableMicEffect = false;
     // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
     neighborHall = !!file.neighborHall;
+    tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
@@ -13467,6 +13480,14 @@ async function openDeEdit(fileId) {
     if (tToggle) {
         tToggle.checked = isTableMicEffect;
         tToggle.onchange = e => toggleTableMicEffect(e.target.checked);
+    }
+    const tRoom = document.getElementById('tableMicRoom');
+    if (tRoom) {
+        tRoom.value = tableMicRoomType;
+        tRoom.onchange = e => {
+            tableMicRoomType = e.target.value;
+            if (isTableMicEffect) recomputeEditBuffer();
+        };
     }
     const emiVoice = document.getElementById('emiVoiceDampToggle');
     if (emiVoice) {
@@ -14046,7 +14067,7 @@ async function recomputeEditBuffer() {
         buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
     }
     if (isTableMicEffect) {
-        buf = await applyTableMicFilter(buf);
+        buf = await applyTableMicFilter(buf, tableMicRoomPresets[tableMicRoomType]);
     }
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
@@ -15034,6 +15055,10 @@ async function resetDeEdit() {
         neighborHall = false;
         tableMicEffectBuffer = null;
         isTableMicEffect = false;
+        tableMicRoomType = 'wohnzimmer';
+        currentEditFile.tableMicRoom = 'wohnzimmer';
+        const tRoom = document.getElementById('tableMicRoom');
+        if (tRoom) tRoom.value = tableMicRoomType;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         markDirty();
@@ -15088,7 +15113,7 @@ async function applyDeEdit() {
             baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
         }
         if (isTableMicEffect) {
-            baseBuffer = await applyTableMicFilter(baseBuffer);
+            baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
@@ -15177,7 +15202,7 @@ async function applyDeEdit() {
             baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
         }
         if (isTableMicEffect) {
-            baseBuffer = await applyTableMicFilter(baseBuffer);
+            baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
@@ -15218,6 +15243,7 @@ async function applyDeEdit() {
         // Optionaler Hall im Nebenraum-Effekt speichern
         currentEditFile.neighborHall = neighborHall;
         currentEditFile.tableMicEffect = isTableMicEffect;
+        currentEditFile.tableMicRoom = tableMicRoomType;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
