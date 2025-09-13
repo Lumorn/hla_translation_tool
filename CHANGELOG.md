@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.332
+* Neuer Telefon-auf-Tisch-Effekt simuliert ein abgelegtes Mikrofon.
 ## 🛠️ Patch in 1.40.331
 * Hall-Effekt wird beim Speichern angewendet, auch wenn der Nebenraum-Effekt deaktiviert ist.
 ## 🛠️ Patch in 1.40.330
