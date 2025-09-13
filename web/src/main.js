@@ -2870,6 +2870,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('emiPreset')){f.emiPreset='';}
         if(!f.hasOwnProperty('neighborEffect')){f.neighborEffect=false;migrated=true;}
         if(!f.hasOwnProperty('neighborHall')){f.neighborHall=false;migrated=true;}
+        if(!f.hasOwnProperty('tableMicEffect')){f.tableMicEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -3127,6 +3128,7 @@ function addFiles() {
                 emiEffect: false,
                 neighborEffect: false,
                 neighborHall: false,
+                tableMicEffect: false,
                 version: 1
             };
 
@@ -4681,6 +4683,7 @@ return `
                         ${(file.hallEffect || file.neighborHall) ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
                         ${file.neighborEffect ? '<span class="edit-status-icon" title="Nebenraum-Effekt">🚪</span>' : ''}
+                        ${file.tableMicEffect ? '<span class="edit-status-icon" title="Telefon-auf-Tisch-Effekt">📱</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -9211,6 +9214,7 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         emiEffect: false,
         neighborEffect: false,
         neighborHall: false,
+        tableMicEffect: false,
         version: 1
     };
 
@@ -9378,6 +9382,7 @@ function buildProjectFile(filename, folder) {
         emiEffect: false,
         neighborEffect: false,
         neighborHall: false,
+        tableMicEffect: false,
         version: 1
     };
 }
@@ -12833,6 +12838,33 @@ async function applyNeighborRoomEffect(buffer, opts = {}) {
 
     return processed;
 }
+
+// Simuliert ein abgelegtes Telefon auf dem Tisch
+async function applyTableMicFilter(buffer, opts = {}) {
+    const { cutoff = 800, wet = 0.5 } = opts;
+    // Offline-Kontext für starke Dämpfung und Lowpass
+    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+
+    const low = ctx.createBiquadFilter();
+    low.type = 'lowpass';
+    low.frequency.value = cutoff;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0.4; // stärkere Dämpfung
+
+    source.connect(low);
+    low.connect(gain);
+    gain.connect(ctx.destination);
+    source.start();
+    let processed = await ctx.startRendering();
+
+    // Hall für räumlichen Klang
+    processed = await applyReverbEffect(processed, { room: 0.3, wet, delay: 60 });
+
+    return processed;
+}
 // =========================== NEBENRAUMEFFEKT END ============================
 
 // =========================== EMI NOISE START ===============================
@@ -13022,6 +13054,8 @@ let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
 let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
 let neighborEffectBuffer = null;  // Buffer mit Nebenraum-Effekt
 let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet wurde
+let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
+let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -13054,6 +13088,8 @@ async function openDeEdit(fileId) {
     isEmiEffect = false;
     neighborEffectBuffer = null;
     isNeighborEffect = false;
+    tableMicEffectBuffer = null;
+    isTableMicEffect = false;
     // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
     neighborHall = !!file.neighborHall;
     const enBuffer = await loadAudioBuffer(enSrc);
@@ -13426,6 +13462,11 @@ async function openDeEdit(fileId) {
     if (nToggle) {
         nToggle.checked = isNeighborEffect;
         nToggle.onchange = e => toggleNeighborEffect(e.target.checked);
+    }
+    const tToggle = document.getElementById('tableMicToggle');
+    if (tToggle) {
+        tToggle.checked = isTableMicEffect;
+        tToggle.onchange = e => toggleTableMicEffect(e.target.checked);
     }
     const emiVoice = document.getElementById('emiVoiceDampToggle');
     if (emiVoice) {
@@ -13878,6 +13919,19 @@ function updateEffectButtons() {
     if (neighborToggle) {
         neighborToggle.checked = isNeighborEffect;
     }
+
+    const tableBtn = document.getElementById('tableMicEffectBtn');
+    const tableLabel = document.getElementById('tableMicToggleLabel');
+    const tableToggle = document.getElementById('tableMicToggle');
+    if (tableBtn) {
+        tableBtn.classList.toggle('active', isTableMicEffect);
+    }
+    if (tableLabel) {
+        tableLabel.classList.toggle('active', isTableMicEffect);
+    }
+    if (tableToggle) {
+        tableToggle.checked = isTableMicEffect;
+    }
 }
 
 // Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
@@ -13991,6 +14045,9 @@ async function recomputeEditBuffer() {
         // Nur der Nebenraum-Hall ist aktiv: wende den Raumklang separat an
         buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
     }
+    if (isTableMicEffect) {
+        buf = await applyTableMicFilter(buf);
+    }
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
     }
@@ -14084,6 +14141,31 @@ function toggleNeighborHall(active) {
     storage.setItem('hla_neighborHall', active ? '1' : '0');
     recomputeEditBuffer();
     updateEffectButtons();
+}
+
+// Aktiviert den Telefon-auf-Tisch-Effekt und legt bei Erstnutzung eine History an
+async function applyTableMicEffect() {
+    if (!isTableMicEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isTableMicEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+
+// Schaltet den Telefon-auf-Tisch-Effekt abhängig vom Kontrollkästchen ein oder aus
+function toggleTableMicEffect(active) {
+    if (active) {
+        applyTableMicEffect();
+    } else {
+        isTableMicEffect = false;
+        recomputeEditBuffer();
+        updateEffectButtons();
+    }
 }
 
 // Schaltet die Sprachdämpfung bei EM-Störungen
@@ -14842,6 +14924,8 @@ function closeDeEdit() {
     isEmiEffect = false;
     neighborEffectBuffer = null;
     isNeighborEffect = false;
+    tableMicEffectBuffer = null;
+    isTableMicEffect = false;
     editEnBuffer = null;
     editIgnoreRanges = [];
     ignoreTempStart = null;
@@ -14885,6 +14969,7 @@ async function resetDeEdit() {
     if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push('Hall-Effekt');
     if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
     if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
+    if (currentEditFile.tableMicEffect) steps.push('Telefon-auf-Tisch-Effekt');
     const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
     if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
     const relPath = getFullPath(currentEditFile);
@@ -14935,6 +15020,7 @@ async function resetDeEdit() {
         currentEditFile.emiEffect = false;
         currentEditFile.neighborEffect = false;
         currentEditFile.neighborHall = false;
+        currentEditFile.tableMicEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -14946,6 +15032,8 @@ async function resetDeEdit() {
         neighborEffectBuffer = null;
         isNeighborEffect = false;
         neighborHall = false;
+        tableMicEffectBuffer = null;
+        isTableMicEffect = false;
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         markDirty();
@@ -14998,6 +15086,9 @@ async function applyDeEdit() {
         // Nebenraum-Effekt anwenden, falls aktiv
         if (isNeighborEffect) {
             baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
+        }
+        if (isTableMicEffect) {
+            baseBuffer = await applyTableMicFilter(baseBuffer);
         }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
@@ -15085,6 +15176,9 @@ async function applyDeEdit() {
         if (isNeighborEffect) {
             baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
         }
+        if (isTableMicEffect) {
+            baseBuffer = await applyTableMicFilter(baseBuffer);
+        }
         if (isEmiEffect) {
             baseBuffer = await applyInterferenceEffect(baseBuffer);
         }
@@ -15123,6 +15217,7 @@ async function applyDeEdit() {
         currentEditFile.neighborEffect = isNeighborEffect;
         // Optionaler Hall im Nebenraum-Effekt speichern
         currentEditFile.neighborHall = neighborHall;
+        currentEditFile.tableMicEffect = isTableMicEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern Start- und Endwerte zurücksetzen
         editStartTrim = 0;
