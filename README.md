@@ -320,6 +320,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Presets für EM-Störgeräusch:** Individuelle Einstellungen lassen sich speichern und später wieder laden.
 * **Nebenraum- und Hall-Effekt getrennt schaltbar:** Beide Effekte besitzen eigene Kontrollkästchen und lassen sich einzeln oder gemeinsam aktivieren.
 * **Hall-Effekt im Nebenraum-Dialog separat nutzbar:** Der Hall des Nebenraums kann nun auch ohne aktivierten Nebenraum-Effekt verwendet werden.
+* **Hall-Effekt wird auch ohne Nebenraum-Effekt gespeichert:** Beim Speichern bleibt der Hall erhalten, selbst wenn der Nebenraum-Effekt deaktiviert ist.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
