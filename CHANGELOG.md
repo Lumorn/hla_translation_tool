@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.330
+* Hall-Effekt kann ohne aktivierten Nebenraum-Effekt genutzt werden.
 ## 🛠️ Patch in 1.40.329
 * Nebenraum- und Hall-Effekt lassen sich über eigene Kontrollkästchen unabhängig aktivieren.
 ## 🛠️ Patch in 1.40.328
