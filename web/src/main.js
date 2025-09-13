@@ -13987,6 +13987,9 @@ async function recomputeEditBuffer() {
     }
     if (isNeighborEffect) {
         buf = await applyNeighborRoomEffect(buf, { hall: neighborHall });
+    } else if (neighborHall) {
+        // Nur der Nebenraum-Hall ist aktiv: wende den Raumklang separat an
+        buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
     }
     if (isEmiEffect) {
         buf = await applyInterferenceEffect(buf);
@@ -14075,11 +14078,11 @@ function toggleNeighborEffect(active) {
     }
 }
 
-// Schaltet den optionalen Hall für den Nebenraum-Effekt
+// Schaltet den optionalen Hall für den Nebenraum-Effekt oder als alleinstehenden Raumklang
 function toggleNeighborHall(active) {
     neighborHall = active;
     storage.setItem('hla_neighborHall', active ? '1' : '0');
-    if (isNeighborEffect) recomputeEditBuffer();
+    recomputeEditBuffer();
     updateEffectButtons();
 }
 
