@@ -13422,6 +13422,11 @@ async function openDeEdit(fileId) {
         nHall.checked = neighborHall;
         nHall.onchange = e => toggleNeighborHall(e.target.checked);
     }
+    const nToggle = document.getElementById('neighborToggle');
+    if (nToggle) {
+        nToggle.checked = isNeighborEffect;
+        nToggle.onchange = e => toggleNeighborEffect(e.target.checked);
+    }
     const emiVoice = document.getElementById('emiVoiceDampToggle');
     if (emiVoice) {
         emiVoice.checked = emiVoiceDamp;
@@ -13862,12 +13867,16 @@ function updateEffectButtons() {
         emiBoxBtn.classList.toggle('active', isEmiEffect);
     }
     const neighborBtn = document.getElementById('neighborEffectBtn');
-    const neighborBoxBtn = document.getElementById('neighborEffectBoxBtn');
+    const neighborLabel = document.getElementById('neighborToggleLabel');
+    const neighborToggle = document.getElementById('neighborToggle');
     if (neighborBtn) {
         neighborBtn.classList.toggle('active', isNeighborEffect);
     }
-    if (neighborBoxBtn) {
-        neighborBoxBtn.classList.toggle('active', isNeighborEffect);
+    if (neighborLabel) {
+        neighborLabel.classList.toggle('active', isNeighborEffect);
+    }
+    if (neighborToggle) {
+        neighborToggle.checked = isNeighborEffect;
     }
 }
 
@@ -14054,6 +14063,17 @@ async function applyNeighborEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYNEIGHBOREFFECT END ========================
+
+// Schaltet den Nebenraum-Effekt abhängig vom Kontrollkästchen ein oder aus
+function toggleNeighborEffect(active) {
+    if (active) {
+        applyNeighborEffect();
+    } else {
+        isNeighborEffect = false;
+        recomputeEditBuffer();
+        updateEffectButtons();
+    }
+}
 
 // Schaltet den optionalen Hall für den Nebenraum-Effekt
 function toggleNeighborHall(active) {

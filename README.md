@@ -318,8 +318,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Visualisierung der Störgeräusch-Hüllkurve:** Ein Canvas stellt die berechnete Hüllkurve dar und aktualisiert sich bei jeder Regleränderung.
 * **Sprachdämpfung-Schalter:** Dämpft das Originalsignal synchron zu Aussetzern und Knacksern.
 * **Presets für EM-Störgeräusch:** Individuelle Einstellungen lassen sich speichern und später wieder laden.
-* **Nebenraum-Effekt:** simuliert gedämpfte Sprache aus einem angrenzenden Raum; optionaler Hall kann zugeschaltet werden.
-* **Optionaler Hall im Nebenraum-Effekt:** wird nun in der Vorschau und beim Speichern korrekt übernommen.
+* **Nebenraum- und Hall-Effekt getrennt schaltbar:** Beide Effekte besitzen eigene Kontrollkästchen und lassen sich einzeln oder gemeinsam aktivieren.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
