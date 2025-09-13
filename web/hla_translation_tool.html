@@ -848,10 +848,8 @@
             </fieldset>
             <fieldset class="effect-group">
                 <legend>🚪 Nebenraum-Effekt</legend>
-                <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall zum Nebenraum-Effekt hinzufügen"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall hinzufügen</label>
-                <div class="effect-actions">
-                    <button id="neighborEffectBoxBtn" class="effect-btn" onclick="applyNeighborEffect()" title="Nebenraum-Effekt anwenden">Nebenraum-Effekt anwenden</button>
-                </div>
+                <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> Nebenraum-Effekt</label>
+                <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall-Effekt</label>
             </fieldset>
             </div> <!-- edit-right Ende -->
         </div> <!-- edit-flex Ende -->
