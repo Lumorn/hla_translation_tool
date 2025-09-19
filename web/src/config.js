@@ -19,14 +19,18 @@ if (!fs.existsSync(SOUNDS_BASE_PATH)) {
     }
 }
 
+// Hilfsfunktion, die den Download-Pfad relativ zum Basisordner ermittelt
+const resolveDownloadPath = (baseDir) => {
+    const dirName = chooseExisting(baseDir, ['Download', 'Downloads']);
+    return path.resolve(baseDir, dirName);
+};
+
 // Download-Ordner analog bestimmen
-let downloadDirName = chooseExisting(projectRoot, ['Download', 'Downloads']);
-let DL_WATCH_PATH = path.resolve(projectRoot, downloadDirName);
+let DL_WATCH_PATH = resolveDownloadPath(projectRoot);
 
 if (!fs.existsSync(DL_WATCH_PATH)) {
     const rootDir = path.resolve(projectRoot, '..');
-    downloadDirName = chooseExisting(rootDir, ['Download', 'Downloads']);
-    const altPath = path.resolve(rootDir, downloadDirName);
+    const altPath = resolveDownloadPath(rootDir);
     if (fs.existsSync(altPath)) {
         DL_WATCH_PATH = altPath;
     }
@@ -36,4 +40,4 @@ if (!fs.existsSync(DL_WATCH_PATH)) {
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
 // Export für andere Module
-module.exports = { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName, downloadDirName };
+module.exports = { DL_WATCH_PATH, projectRoot, SOUNDS_BASE_PATH, soundsDirName };
