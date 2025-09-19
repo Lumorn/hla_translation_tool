@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.343
+* `web/src/main.js` bindet `extractTime` aus `utils/videoFrameUtils.js` ein, damit Video-Zeitstempel überall identisch berechnet werden.
+* README und Changelog dokumentieren die gemeinsame Nutzung des YouTube-Helfers.
 ## 🛠️ Patch in 1.40.342
 * `extractRelevantFolder` erwartet nur noch das Ordner-Array; der ungenutzte Parameter für vollständige Pfade wurde entfernt und alle Aufrufe angepasst.
 * README und Changelog dokumentieren die verschlankte Signatur für Frontend-Helfer.

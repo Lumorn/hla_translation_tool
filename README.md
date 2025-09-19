@@ -181,6 +181,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kompakter GPT-Versand:** Doppelte Zeilen werden zusammengefasst. Der Startdialog zeigt an, wie viele Zeilen wirklich übertragen werden.
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
+* **Gemeinsamer Zeitstempel-Helfer:** Hauptoberfläche und Video-Manager nutzen `utils/videoFrameUtils.js` für identische Startzeiten.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
 * **Tests für Video-Bookmarks:** Überprüfen Laden, Sortierung sowie Hinzufügen und Entfernen von Einträgen.
 * **Tests für Segment-Dialog:** Stellt sicher, dass analysierte Segmente gespeichert und wieder geladen werden.
