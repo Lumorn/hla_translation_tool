@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.350
+* `web/src/migrationUI.js` entfernt den UI-Helfer `switchStorageDirection`; Speicherwechsel laufen direkt über die bestehende Funktion `switchStorage`.
+* README und Changelog vermerken den Wegfall des Richtungsschalters in der Migration-Oberfläche.
 ## 🛠️ Patch in 1.40.349
 * `web/src/elevenlabs.js` entfernt den ungenutzten Export `isDubReady`; Statusabfragen erfolgen ausschließlich über `web/src/dubbing.js`.
 * README und Changelog dokumentieren die verschobene Statusprüfung und die abgespeckte Exportliste.
