@@ -156,45 +156,5 @@ function switchProjectSafe(projectId) {
   return switchQueue;
 }
 
-/**
- * Wechselt das Speichersystem sicher und leert vorher alle Zustände.
- */
-async function switchStorageSafe(mode) {
-  await (switchQueue = switchQueue.then(async () => {
-    const mySession = ++currentSession;
-    setBusy(true);
-    try {
-      if (!autosavePaused) {
-        await pauseAutosave();
-        autosavePaused = true;
-      }
-      try { await flushPendingWrites(3000); } catch {}
-      // GPT-Anfragen sofort abbrechen und verworfene Jobs protokollieren
-      if (window.cancelGptRequests) window.cancelGptRequests('Speicherwechsel');
-      if (projectAbort) projectAbort.abort();
-      projectAbort = new AbortController();
-      detachAllEventListeners();
-      clearInMemoryCachesHard();
-      try { await closeProjectData(); } catch {}
-      // GPT-Zustände und UI leeren
-      if (window.clearGptState) window.clearGptState();
-      // Gewünschten Adapter setzen und initialisieren
-      const adapter = getStorageAdapter(mode);
-      setStorageAdapter(adapter);
-      if (adapter && typeof adapter.init === 'function') {
-        await adapter.init();
-      }
-      await reloadProjectList(true);
-    } finally {
-      if (autosavePaused) {
-        await resumeAutosave();
-        autosavePaused = false;
-      }
-      if (currentSession === mySession) setBusy(false);
-    }
-  }));
-}
-
 // Globale Bereitstellung für die Oberfläche
 window.switchProjectSafe = switchProjectSafe;
-window.switchStorageSafe = switchStorageSafe;
