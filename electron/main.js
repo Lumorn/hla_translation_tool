@@ -892,26 +892,6 @@ app.whenReady().then(() => {
     }
   });
 
-  // OCR via EasyOCR-Python-Skript
-  ipcMain.handle('run-easyocr', async (event, buf) => {
-    return await new Promise(resolve => {
-      try {
-        const proc = spawn(
-          'python',
-          [path.join(__dirname, '..', 'run_easyocr.py')],
-          { env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }
-        );
-        let out = '';
-        proc.stdout.on('data', d => { out += d.toString(); });
-        proc.on('close', code => resolve(code === 0 ? out.trim() : ''));
-        proc.stdin.write(Buffer.from(buf));
-        proc.stdin.end();
-      } catch (e) {
-        console.error('[EasyOCR]', e);
-        resolve('');
-      }
-    });
-  });
   // =========================== SAVE-DE-FILE END =============================
 
   // DevTools per IPC ein-/ausblenden

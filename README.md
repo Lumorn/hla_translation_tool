@@ -181,6 +181,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feste Buttons im GPT-Test:** Das Fenster hat nun eine begrenzte Höhe, Prompt- und Ergebnis-Spalten scrollen separat.
 * **Kompakter GPT-Versand:** Doppelte Zeilen werden zusammengefasst. Der Startdialog zeigt an, wie viele Zeilen wirklich übertragen werden.
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
+* **Bereinigte Electron-Brücke:** Die frühere `ocrApi` entfällt vollständig; der Preload stellt nur noch die tatsächlich genutzten Schnittstellen bereit.
 * **Video-Bookmarks:** Speichert Links für einen schnellen Zugriff.
 * **Gemeinsamer Zeitstempel-Helfer:** Hauptoberfläche und Video-Manager nutzen `utils/videoFrameUtils.js` für identische Startzeiten.
 * **Löschen per Desktop-API:** Einzelne Bookmarks lassen sich über einen IPC-Kanal entfernen.
