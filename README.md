@@ -38,6 +38,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen und generierte Emotionstexte werden unmittelbar dauerhaft gesichert.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
+* **Bereinigter Textvergleich:** Der Helfer `calculateTextSimilarity` verzichtet auf eine ungenutzte Wortmenge und behält alle Funktionen bei.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Bugfix:** Nach einem Projektwechsel funktionieren alle Toolbar‑Schaltflächen wieder zuverlässig.

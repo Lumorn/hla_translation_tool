@@ -27,7 +27,6 @@ function calculateTextSimilarity(text1, text2) {
     const words2 = norm2.split(/\s+/);
 
     let commonWords = 0;
-    const allWords = new Set([...words1, ...words2]);
 
     words1.forEach(word1 => {
         if (words2.some(word2 => {

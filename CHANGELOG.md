@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.355
+* `web/src/fileUtils.js` entfernt die ungenutzte Konstante `allWords`, damit der Textvergleich ohne überflüssige Zwischenspeicher auskommt.
+* README und Changelog dokumentieren die bereinigte Textanalyse.
 ## 🛠️ Patch in 1.40.354
 * `web/src/config.js` exportiert nur noch die fertigen Pfade; der ermittelte Download-Ordnername bleibt intern und entfällt aus der Exportliste.
 * README und Changelog vermerken die bereinigte Download-Konfiguration ohne öffentlichen Ordnernamen.
