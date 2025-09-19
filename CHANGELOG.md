@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.335
+* Node-Modul `elevenlabs.js` entfernt die Exporte `getDubbingStatus` und `getDefaultVoiceSettings`; Statusprüfungen laufen über `waitForDubbing`.
+* Test-Suite bereinigt veraltete Szenarien und Dokumentation listet nur noch die aktiven ElevenLabs-Exporte.
 ## 🛠️ Patch in 1.40.334
 * Browser-Modul `web/src/elevenlabs.js` entfernt `waitForDubbing` und nutzt ausschließlich `isDubReady` für Statusabfragen.
 ## 🛠️ Patch in 1.40.333
@@ -957,7 +960,7 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 | -------------------------- | ----------------------------------------------- |
 | **CSV-Header**            | `createDubbingCSV()` fügt nun eine Kopfzeile ein. |
 | **Neuer Test**            | `manualDub.test.js` kontrolliert den CSV-Inhalt. |
-| **GET-Test**              | `elevenlabs.test.js` simuliert `getDubbingStatus`. |
+| **GET-Test**              | `elevenlabs.test.js` simulierte `getDubbingStatus` (seit 1.40.335 entfernt). |
 
 ## ✨ Neue Features in 1.11.0
 
@@ -969,7 +972,7 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 
 |  Kategorie                 |  Beschreibung |
 | -------------------------- | ----------------------------------------------- |
-| **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert, lassen sich per `getDefaultVoiceSettings` zurücksetzen und zeigen jetzt ein Einstellungsfenster vor dem Start. |
+| **Voice-Settings**        | Dubbing-Einstellungen werden im Browser gespeichert, lassen sich per `getDefaultVoiceSettings` zurücksetzen und zeigen jetzt ein Einstellungsfenster vor dem Start (Node-Export entfiel in 1.40.335). |
 
 ## ✨ Neue Features in 1.8.0
 

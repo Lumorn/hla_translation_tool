@@ -498,6 +498,8 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
 }
 ```
 Die Browser-Datei `web/src/elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `downloadDubbingAudio` und `isDubReady`. `waitForDubbing` wurde entfernt, da die Browser-Oberfläche ausschließlich auf Statusprüfungen setzt. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
+
+Das Node-Modul `elevenlabs.js` exportiert derzeit `createDubbing`, `downloadDubbingAudio`, `waitForDubbing`, `isDubReady`, `renderLanguage`, `pollRender` und `sendTextV2`. Die Hilfsfunktionen `getDubbingStatus` und `getDefaultVoiceSettings` sind entfallen, weil Statusabfragen und Standardeinstellungen inzwischen direkt in den jeweiligen Workflows gekapselt werden.
 Das komplette Workflow-Skript für den Upload, die Statusabfrage und das erneute
 Herunterladen befindet sich nun in `web/src/dubbing.js`.
 Im Desktop-Modus wird dieses Modul beim Start dynamisch geladen und stellt seine Funktionen sowohl für Node-Tests als auch im Browser global bereit. Fehlen im Importobjekt die Funktionsreferenzen, greift `main.js` auf die globalen `window`-Varianten zurück. Zusätzlich exportiert `dubbing.js` die Variable `waitDialogFileId`, über die `main.js` erkennt, zu welcher Datei der Download-Dialog gehört.
