@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.339
+* `utils/videoFrameUtils.js` entfernt sämtliche Storyboard-Helfer; `extractTime` bleibt als einziger Export.
+* README dokumentiert den Wegfall des Storyboard-Fallbacks und die ausschließliche Nutzung von ffmpeg-Vorschaubildern.
 ## 🛠️ Patch in 1.40.338
 * Projektstatistik-Logik liegt jetzt zentral in `web/src/calculateProjectStats.js`, sodass Browser und Node-Tests dieselben Werte berechnen.
 * `web/src/main.js` lädt die gemeinsame Funktion und verwendet weiterhin die bestehenden Pfadhelfer.

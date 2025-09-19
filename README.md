@@ -190,11 +190,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitete Video-Manager-Oberfläche:** Neue Farbakzente und deutliche Aktions-Icons erleichtern die Bedienung.
 * **Stabiles Sortieren:** Nach Filterung oder Sortierung funktionieren die Video-Buttons dank Originalindex weiterhin korrekt.
 * **Thumbnail-Ansicht:** Die Tabelle zeigt Vorschaubilder, ein Klick auf Titel oder Bild öffnet das Video im Browser.
-* **Vorschaubilder direkt per ffmpeg:** Das Storyboard wird nicht mehr verwendet. Die Desktop-App erstellt das Bild sofort über `get-video-frame` im Ordner `videoFrames`.
+* **Vorschaubilder direkt per ffmpeg:** Das Storyboard wird nicht mehr verwendet. Die Desktop-App erstellt das Bild sofort über `get-video-frame` im Ordner `videoFrames` und benötigt keinen Storyboard-Fallback mehr.
 * **Direkte URL via yt-dlp:** Ist `yt-dlp` installiert, nutzt das Tool diese Methode automatisch. `ytdl-core` und `play-dl` dienen nur noch als Fallback.
 * **Hilfsfunktion `previewFor`:** Ruft direkt `get-video-frame` auf und zeigt bei Fehlern das normale YouTube-Thumbnail.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
-* **Neues ⟳-Symbol:** Ein Klick auf das kleine Icon oben links lädt das Storyboard neu und aktualisiert das Vorschaubild.
+* **Storyboards entfernt:** Der frühere ⟳-Knopf sowie sämtliche Storyboard-Fallbacks wurden entfernt; Vorschaubilder stammen ausschließlich aus dem ffmpeg-Aufruf `get-video-frame`.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
 * **Fixer Dialog-Abstand:** Der Video-Manager steht nun stets mit 10 % Rand im Fenster. Die Funktion `adjustVideoDialogHeight` wurde entfernt.
 * **Behobenes Resize-Problem:** Nach einer Verkleinerung wächst der Videoplayer jetzt korrekt mit, sobald das Fenster wieder größer wird.
@@ -204,7 +204,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Korrektes Skalieren nach erneutem Öffnen:** Der Player passt sich nach dem Wiedereinblenden automatisch an die aktuelle Fenstergröße an.
 * **Aktualisierung im Hintergrund:** Selbst bei geschlossenem Player wird die Größe im Hintergrund neu berechnet und beim nächsten Öffnen korrekt übernommen.
 * **Verbesserte Thumbnail-Ladefunktion:** Vorschaubilder werden über `i.ytimg.com` geladen und die gesamte Zeile ist zum Öffnen des Videos anklickbar.
-* **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com` und `api.openai.com`, damit Storyboards und die GPT-API funktionieren.
+* **Angepasste Content Security Policy:** `connect-src` erlaubt nun zusätzlich `i.ytimg.com` und `api.openai.com`, damit YouTube-Thumbnails und die GPT-API funktionieren.
 * **Fehlerhinweis bei fehlender YouTube-API:** Lädt der Player nicht, erscheint eine Meldung statt eines schwarzen Fensters.
 * **Fallback ohne YouTube-API:** Kann das Script nicht geladen werden, öffnet sich der Link automatisch im Browser.
 * **Toast bei gesperrten Videos:** Tritt ein YouTube-Fehler auf, informiert ein roter Hinweis über mögliche Proxy-Pflicht.
