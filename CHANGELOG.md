@@ -609,6 +609,8 @@
 * Längen-Vergleich zeigt nun zusätzlich, ob die bearbeitete deutsche Datei länger, kürzer oder gleich lang wie das englische Original ist.
 ## 🛠 Patch in 1.40.155
 * Tempo-Regler besitzt jetzt kleine ➖/➕-Knöpfe und einen zweiten Auto-Knopf zum Zurücksetzen auf den gespeicherten Wert.
+## 🛠 Patch in 1.40.156
+* Letzte OCR-Reste entfernt: `ocrApi` im Preload und der zugehörige IPC-Handler wurden gestrichen.
 ## ✨ Neue Features in 1.38.0
 * Neues Skript `check_environment.js` prueft Node-Version, installiert Abhaengigkeiten und startet einen Electron-Testlauf.
 

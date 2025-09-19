@@ -91,11 +91,6 @@ if (typeof require !== 'function') {
     writeClipboard: text => clipboard.writeText(text),
   });
 
-  // OCR-API
-  contextBridge.exposeInMainWorld('ocrApi', {
-    recognize: buf => ipcRenderer.invoke('run-easyocr', Buffer.from(buf)),
-  });
-
   // API für Video-Bookmarks bereitstellen
   contextBridge.exposeInMainWorld('videoApi', {
     loadBookmarks: () => ipcRenderer.invoke('load-bookmarks'),
