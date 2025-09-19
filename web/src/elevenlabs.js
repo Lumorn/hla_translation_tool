@@ -50,17 +50,6 @@ export async function downloadDubbingAudio(apiKey, id, targetLang = 'de', logger
     return await res.blob();
 }
 
-// Prüft, ob ein Dubbing bereits generiert wurde
-export async function isDubReady(id, lang = 'de', apiKey = import.meta.env.ELEVEN_API_KEY, logger = () => {}) {
-    logger(`GET ${API}/dubbing/${id}`);
-    const res = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
-    const text = await res.text();
-    logger(`Antwort (${res.status}): ${text}`);
-    if (!res.ok) throw new Error(text);
-    const meta = JSON.parse(text);
-    return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
-}
-
 // export async function renderLanguage(dubbingId, targetLang = 'de', renderType = 'wav', apiKey, logger = () => {}) {
 //     // Funktion wurde entfernt, da der Studio-Workflow das manuelle Rendering uebernimmt
 //     logger('renderLanguage wird nicht mehr verwendet');
