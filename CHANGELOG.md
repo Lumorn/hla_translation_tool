@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.340
+* Video-Manager setzt das Suchfeld beim Öffnen zurück, damit keine alten Filter hängen bleiben.
 ## 🛠️ Patch in 1.40.339
 * `utils/videoFrameUtils.js` entfernt sämtliche Storyboard-Helfer; `extractTime` bleibt als einziger Export.
 * README dokumentiert den Wegfall des Storyboard-Fallbacks und die ausschließliche Nutzung von ffmpeg-Vorschaubildern.
