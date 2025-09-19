@@ -136,7 +136,6 @@ videoGrid.addEventListener('click', async e=>{
 });
 
 videoFilter.addEventListener('input', ()=>{
-    storage.setItem('hla_videoFilter', videoFilter.value);
     refreshTable();
 });
 
@@ -200,6 +199,8 @@ async function updateBookmark(index, raw, list){
 openMgr.addEventListener('click', async ()=>{
     if (videoDlg.open) return;
     videoDlg.showModal();
+    // Suchfeld beim Öffnen bewusst leeren, damit alle Videos sichtbar sind
+    videoFilter.value = '';
     await refreshTable();
 });
 
@@ -209,8 +210,5 @@ function closeDialog(){
 closeDlg.addEventListener('click', closeDialog);
 if (closeDlgSmall) closeDlgSmall.addEventListener('click', closeDialog);
 videoDlg.addEventListener('cancel', closeDialog);
-
-const savedFilter = storage.getItem('hla_videoFilter') || '';
-if (savedFilter) videoFilter.value = savedFilter;
 
 refreshTable();

@@ -223,7 +223,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Gethrottleter Video-ResizeObserver:** `adjustVideoPlayerSize` und `positionOverlay` werden pro Frame gebündelt ausgeführt und umgehen so Endlos-Schleifen.
 * **Dynamische Größenberechnung:** `calcLayout()` ermittelt Breite und Höhe des Players aus Dialog- und Panelgröße und wird per `ResizeObserver` automatisch aufgerufen.
 * **Exportfunktion für Video-Bookmarks:** Gespeicherte Links lassen sich als `videoBookmarks.json` herunterladen.
-* **Dauerhafte Video-Suche:** Der Suchbegriff im Video-Manager bleibt zwischen den Sitzungen erhalten.
+* **Leeres Suchfeld beim Öffnen:** Der Filter im Video-Manager wird jedes Mal zurückgesetzt, damit alle gespeicherten Links sofort sichtbar sind.
 * **Responsiver Video-Manager:** Fester Dialog-Abstand, flexible Toolbar mit Min-Buttons und kompaktem ❌-Icon bei schmaler Breite. Tabellenzeilen besitzen gleichmäßiges Padding und einen Hover-Effekt.
 * **Robuster Video-Dialog:** Das Flex-Layout verhindert Überlappungen und lässt jede Sektion dynamisch wachsen.
 * **Stabileres Grid-Layout im Video-Manager:** Die Aufteilung nutzt jetzt CSS-Grid und die Anzeige aller Dialoge wird komplett über die Klasse `.hidden` gesteuert.
