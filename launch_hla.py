@@ -7,6 +7,14 @@ except ImportError:  # Nicht-Windows-Systeme
     winreg = None
 
 
+CHEAT_ARGS: dict[str, list[str]] = {
+    "god": ["-vconsole", "-console", "+sv_cheats", "1", "+god"],
+    "ammo": ["-vconsole", "-console", "+sv_cheats", "1", "+sv_infinite_ammo", "1"],
+    "both": ["-vconsole", "-console", "+sv_cheats", "1", "+god", "+sv_infinite_ammo", "1"],
+    "console": ["-vconsole", "-console"],
+}
+
+
 def _get_steam_path() -> str | None:
     """Liest den Installationspfad von Steam aus der Registry aus."""
     if winreg is None:
@@ -51,14 +59,8 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
         if lang:
             cmd.extend(["-language", lang])
 
-        cheat_args = {
-            "god": ["-vconsole", "-console", "+sv_cheats", "1", "+god"],
-            "ammo": ["-vconsole", "-console", "+sv_cheats", "1", "+sv_infinite_ammo", "1"],
-            "both": ["-vconsole", "-console", "+sv_cheats", "1", "+god", "+sv_infinite_ammo", "1"],
-            "console": ["-vconsole", "-console"],
-        }
-        if preset in cheat_args:
-            cmd.extend(cheat_args[preset])
+        if preset in CHEAT_ARGS:
+            cmd.extend(CHEAT_ARGS[preset])
 
         if level:
             cmd.extend(["+map", level])
@@ -73,14 +75,8 @@ def start_hla(mode: str = "normal", lang: str = "english", level: str | None = N
     if lang:
         args.extend(["-language", lang])
 
-    cheat_args = {
-        "god": ["-vconsole", "-console", "+sv_cheats", "1", "+god"],
-        "ammo": ["-vconsole", "-console", "+sv_cheats", "1", "+sv_infinite_ammo", "1"],
-        "both": ["-vconsole", "-console", "+sv_cheats", "1", "+god", "+sv_infinite_ammo", "1"],
-        "console": ["-vconsole", "-console"],
-    }
-    if preset in cheat_args:
-        args.extend(cheat_args[preset])
+    if preset in CHEAT_ARGS:
+        args.extend(CHEAT_ARGS[preset])
 
     if level:
         args.extend(["+map", level])
