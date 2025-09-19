@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.352
+* `web/src/projectHelpers.js` entfernt den globalen Setter `setStorageAdapter`; Speicherwechsel setzen weiterhin auf `switchStorage` aus `web/src/main.js`.
+* README und Changelog dokumentieren, dass globale Speicherwechsel über die vorhandene Funktion erfolgen und kein separater Setter mehr nötig ist.
 ## 🛠️ Patch in 1.40.351
 * `extensionUtils.js` entfernt die Hilfsfunktion `syncProjectData` samt Export und `window`-Alias; übrig bleibt `repairFileExtensions`.
 * Testsuite und Dokumentation verweisen nicht länger auf `syncProjectData` und beschreiben den Funktionswegfall.

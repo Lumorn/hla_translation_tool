@@ -132,11 +132,6 @@ function getStorageAdapter(mode) {
   return null;
 }
 
-// Setzt das globale Speicher-Backend
-function setStorageAdapter(adapter) {
-  window.storage = adapter;
-}
-
 // Repariert offensichtliche Inkonsistenzen im Projekt
 // Prüft dabei das neue Namensschema "project:<id>:meta" und "project:<id>:index"
 // Liefert true zurück, wenn das Projekt neu angelegt wurde
@@ -253,6 +248,5 @@ window.getStorageAdapter = getStorageAdapter;
 window.repairProjectIntegrity = repairProjectIntegrity;
 window.syncProjectListWithStorage = syncProjectListWithStorage;
 window.resumeAutosave = resumeAutosave;
-window.setStorageAdapter = setStorageAdapter;
 window.reloadProjectList = reloadProjectList;
 
