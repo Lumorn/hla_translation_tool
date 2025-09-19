@@ -114,6 +114,7 @@ function switchProjectSafe(projectId) {
       updateFileAccessStatus();
       // Nach dem Laden Toolbar-Knöpfe neu verbinden
       window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut
+      window.initVideoManager?.(); // richtet den Video-Manager nach jedem Wechsel neu ein
       // Event-Listener wie die Live-Suche neu setzen
       window.initializeEventListeners?.();
     } finally {
