@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.345
+* `web/src/gptService.js` entfernt den Export `getEmotionPrompt`; das Emotion-Prompt bleibt ausschließlich intern verfügbar.
+* README und Changelog vermerken, dass der Helfer nicht mehr öffentlich angeboten wird.
 ## 🛠️ Patch in 1.40.344
 * `web/src/main.js` entfernt die überholten Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll`, weil der Fertig-Status automatisch anhand der Projektdaten berechnet wird.
 * README und Changelog dokumentieren den Wegfall der manuellen Abschluss-Schaltflächen.

@@ -36,10 +36,6 @@ function getSystemPrompt() {
     return systemPrompt;
 }
 
-function getEmotionPrompt() {
-    return emotionPrompt;
-}
-
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompts per Fetch laden
     const urlScore = '../prompts/gpt_score.txt';
@@ -427,7 +423,6 @@ if (typeof module !== 'undefined') {
         testKey,
         fetchModels,
         getSystemPrompt,
-        getEmotionPrompt,
         generateEmotionText,
         adjustEmotionText,
         improveEmotionText,
@@ -443,7 +438,6 @@ if (typeof window !== 'undefined') {
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
     window.getSystemPrompt = getSystemPrompt;
-    window.getEmotionPrompt = getEmotionPrompt;
     window.generateEmotionText = generateEmotionText;
     window.adjustEmotionText = adjustEmotionText;
     window.improveEmotionText = improveEmotionText;
