@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.346
+* `web/src/projectSwitch.js` entfernt `switchStorageSafe`; Speichermodus-Wechsel laufen wieder über den vorhandenen Helfer `switchStorage` in `web/src/main.js`.
+* README und Changelog verweisen auf den Standard-Helfer für den Speichermoduswechsel.
 ## 🛠️ Patch in 1.40.345
 * `web/src/gptService.js` entfernt den Export `getEmotionPrompt`; das Emotion-Prompt bleibt ausschließlich intern verfügbar.
 * README und Changelog vermerken, dass der Helfer nicht mehr öffentlich angeboten wird.
