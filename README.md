@@ -1159,6 +1159,7 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`removeUnknownFileIds(project, ids, logFn)`** – Hilfsfunktion, die alle Dateien mit unbekannter ID entfernt und jede Entfernung protokolliert.
   * **Entfernt:** Die frühere Hilfsfunktion `syncProjectData` steht nicht mehr zur Verfügung, da ihre Aufgaben vollständig von `repairFileExtensions` abgedeckt werden.
   * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, große Dateien im OPFS oder als Blob auslagert und ohne Benutzerschlüssel auskommt.
+  * **Entfernt:** Der frühere Setter `setStorageAdapter` steht nicht mehr unter `window`; Speichermodus-Wechsel greifen ausschließlich auf `switchStorage` zurück und erzeugen neue Adapter bei Bedarf über `createStorage`.
   * **`storage.capabilities`** – liefert Feature-Flags wie `blobs` (`opfs`, `file` oder `none`) und `atomicWrite`, sodass die Oberfläche fehlende OPFS-Unterstützung erkennen und ausweichen kann.
   * **`storage.runTransaction(async tx => { ... })`** – führt mehrere Schreibvorgänge gebündelt aus und bricht bei Fehlern komplett ab.
   * **`acquireProjectLock(id)`** – verhandelt einen exklusiven Schreibzugriff pro Projekt und schaltet weitere Fenster in den Nur-Lesen-Modus.
