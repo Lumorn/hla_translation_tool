@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.353
+* `launch_hla.py` bündelt die Cheat-Voreinstellungen als Modulkonstante `CHEAT_ARGS`, damit beide Startpfade dieselben Parameter verwenden.
+* README und Changelog vermerken die zentrale Konstante für konsistente Cheat-Voreinstellungen.
 ## 🛠️ Patch in 1.40.352
 * `web/src/projectHelpers.js` entfernt den globalen Setter `setStorageAdapter`; Speicherwechsel setzen weiterhin auf `switchStorage` aus `web/src/main.js`.
 * README und Changelog dokumentieren, dass globale Speicherwechsel über die vorhandene Funktion erfolgen und kein separater Setter mehr nötig ist.
