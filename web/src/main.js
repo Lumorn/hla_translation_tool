@@ -702,7 +702,7 @@ const moduleStatus = {
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
-let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
+let downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
 let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
@@ -723,7 +723,7 @@ let showDubbingSettings, showEmoDubbingSettings,
     openStudioAndWait, dubStatusClicked, downloadDe;
 let sharedProjectStatsCalculator;
 if (typeof module !== 'undefined' && module.exports) {
-    ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
+    ({ downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     moduleStatus.elevenlabs = { loaded: true, source: 'Main' };
 
     ({ showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
@@ -788,7 +788,6 @@ if (typeof module !== 'undefined' && module.exports) {
         moduleStatus.projectStats = { loaded: false, source: 'Ausgelagert' };
     }
     import('./elevenlabs.js').then(mod => {
-        createDubbing = mod.createDubbing;
         downloadDubbingAudio = mod.downloadDubbingAudio;
         moduleStatus.elevenlabs = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.elevenlabs = { loaded: false, source: 'Ausgelagert' }; });

@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.357
+* `web/src/main.js` verzichtet auf den ungenutzten Helfer `createDubbing` und lädt im Browser nur noch `downloadDubbingAudio`.
+* `web/src/elevenlabs.js` exportiert ausschließlich `downloadDubbingAudio`; das Anlegen neuer Dubbings erfolgt über das Node-Modul `elevenlabs.js`.
+* README und Changelog dokumentieren die verschlankte Exportliste ohne Browser-Variante von `createDubbing`.
 ## 🛠️ Patch in 1.40.356
 * `web/renderer.js` fasst das Ermitteln der DOM-Elemente samt Listenern im neuen Helfer `initVideoManager` zusammen, exportiert ihn global und stellt die aktuellen Referenzen über `window.videoManager` bereit.
 * `web/src/main.js` öffnet den Video-Manager stets über die gemeinsam genutzten Referenzen, leert das Suchfeld, prüft `dialog.open` und triggert danach direkt `refreshTable()`.
