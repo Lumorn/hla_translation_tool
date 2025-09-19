@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.338
+* Projektstatistik-Logik liegt jetzt zentral in `web/src/calculateProjectStats.js`, sodass Browser und Node-Tests dieselben Werte berechnen.
+* `web/src/main.js` lädt die gemeinsame Funktion und verwendet weiterhin die bestehenden Pfadhelfer.
+* Test und HTML binden den neuen Helfer ein, wodurch doppelte Implementierungen entfallen.
 ## 🛠️ Patch in 1.40.337
 * Browser-Modul `web/src/localIndex.js` entfernt die ungenutzte Methode `remove`; der Index wird bei Bedarf vollständig neu aufgebaut.
 * README dokumentiert den abgespeckten `LocalIndex` samt Fokus auf `add` und `search`.

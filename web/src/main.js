@@ -696,7 +696,8 @@ const moduleStatus = {
     fileUtils:        { loaded: false, source: '' },
     pathUtils:        { loaded: false, source: '' },
     gptService:       { loaded: false, source: '' },
-    projectEvaluate:  { loaded: false, source: '' }
+    projectEvaluate:  { loaded: false, source: '' },
+    projectStats:     { loaded: false, source: '' }
 };
 
 // Gemeinsame Funktionen aus elevenlabs.js laden
@@ -718,6 +719,7 @@ let showDubbingSettings, showEmoDubbingSettings,
     openDubbingPage, openLocalFile, startDubAutomation,
     showDownloadWaitDialog, copyFolderName, copyDownloadFolder,
     openStudioAndWait, dubStatusClicked, downloadDe;
+let sharedProjectStatsCalculator;
 if (typeof module !== 'undefined' && module.exports) {
     ({ createDubbing, downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
     moduleStatus.elevenlabs = { loaded: true, source: 'Main' };
@@ -738,6 +740,8 @@ if (typeof module !== 'undefined' && module.exports) {
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
+    ({ calculateProjectStats: sharedProjectStatsCalculator } = require('./calculateProjectStats.js'));
+    moduleStatus.projectStats = { loaded: true, source: 'Main' };
     import('./gptService.js').then(() => {
         evaluateScene = window.evaluateScene;
         moduleStatus.gptService = { loaded: true, source: 'Main' };
@@ -763,6 +767,13 @@ if (typeof module !== 'undefined' && module.exports) {
         moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
+    const statsModule = window.hlaProjectStats;
+    if (statsModule && typeof statsModule.calculateProjectStats === 'function') {
+        sharedProjectStatsCalculator = statsModule.calculateProjectStats;
+        moduleStatus.projectStats = { loaded: true, source: 'Ausgelagert' };
+    } else {
+        moduleStatus.projectStats = { loaded: false, source: 'Ausgelagert' };
+    }
     import('./elevenlabs.js').then(mod => {
         createDubbing = mod.createDubbing;
         downloadDubbingAudio = mod.downloadDubbingAudio;
@@ -2072,15 +2083,10 @@ function saveLevelColorHistory() {
 
 
 
-// Berechne Projekt-Statistiken
+// Berechne Projekt-Statistiken ueber das gemeinsame Modul
 function calculateProjectStats(project) {
-    // Falls feste Werte vorhanden sind, diese bevorzugen
-    if (project.fixedStats) return project.fixedStats;
-
-    const files = project.files || [];
-    const totalFiles = files.length;
-    
-    if (totalFiles === 0) {
+    if (!sharedProjectStatsCalculator) {
+        console.warn('Projektstatistik-Modul nicht geladen, gebe leere Werte zurueck.');
         return {
             enPercent: 0,
             dePercent: 0,
@@ -2091,31 +2097,10 @@ function calculateProjectStats(project) {
             scoreMin: 0
         };
     }
-    
-    const filesWithEN = files.filter(f => f.enText && f.enText.trim().length > 0).length;
-    const filesWithDE = files.filter(f => f.deText && f.deText.trim().length > 0).length;
-    const filesCompleted = files.filter(isFileCompleted).length;
-    const filesWithDeAudio = files.filter(f => getDeFilePath(f)).length;
-    // Durchschnittliche GPT-Bewertung ermitteln
-    const validScores = files
-        .map(f => Number(f.score))
-        .filter(n => Number.isFinite(n));
-    const avgScore = validScores.length
-        ? Math.round(validScores.reduce((a, b) => a + b, 0) / validScores.length)
-        : 0;
-    const minScore = validScores.length
-        ? Math.min(...validScores)
-        : 0;
-    
-    return {
-        enPercent: Math.round((filesWithEN / totalFiles) * 100),
-        dePercent: Math.round((filesWithDE / totalFiles) * 100),
-        deAudioPercent: Math.round((filesWithDeAudio / totalFiles) * 100),
-        completedPercent: Math.round((filesCompleted / totalFiles) * 100),
-        totalFiles: totalFiles,
-        scoreAvg: avgScore,
-        scoreMin: minScore
-    };
+    return sharedProjectStatsCalculator(project, {
+        getDeFilePath,
+        isFileCompleted
+    });
 }
 
 // Handle Access Status Click - für den Button unten rechts

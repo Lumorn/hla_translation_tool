@@ -1,4 +1,4 @@
-const calculateProjectStats = require('../calculateProjectStats');
+const { calculateProjectStats } = require('../web/src/calculateProjectStats.js');
 
 describe('calculateProjectStats', () => {
     afterEach(() => {
