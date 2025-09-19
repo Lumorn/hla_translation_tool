@@ -7656,7 +7656,7 @@ function cleanupIncorrectFolderNames() {
                     if (realPath.endsWith('/' + filename)) {
                         // Finde den korrekten Ordner für diese Datei
                         const parts = realPath.split('/');
-                        const correctFolder = extractRelevantFolder(parts.slice(0, -1), realPath);
+                        const correctFolder = extractRelevantFolder(parts.slice(0, -1));
                         
                         // Prüfe ob wir schon einen Eintrag für diesen Ordner haben
                         const alreadyHasCorrectFolder = correctPaths.some(p => p.folder === correctFolder);
@@ -11940,7 +11940,7 @@ async function verarbeiteGescannteDateien(dateien) {
         const relPath  = file.fullPath;
         const parts    = relPath.split('/');
         const filename = parts.pop();
-        const folder   = extractRelevantFolder(parts, relPath);
+        const folder   = extractRelevantFolder(parts);
 
         if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
 

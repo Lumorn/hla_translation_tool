@@ -1,7 +1,8 @@
 // Hilfsfunktionen für Pfadoperationen
 
-function extractRelevantFolder(folderParts, fullPath) {
+function extractRelevantFolder(folderParts) {
     // Gibt den relevanten Ordnerpfad einer Datei zurück.
+    // Wir benötigen nur die Ordnerteile, um die Struktur zu bestimmen.
     // Enthält der Pfad einen "vo"-Ordner, liefern wir alles ab diesem Punkt
     // (inklusive "vo") zurück, um die komplette Struktur zu bewahren.
 
