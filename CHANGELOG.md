@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.334
+* Browser-Modul `web/src/elevenlabs.js` entfernt `waitForDubbing` und nutzt ausschließlich `isDubReady` für Statusabfragen.
 ## 🛠️ Patch in 1.40.333
 * Telefon-auf-Tisch-Effekt bietet wählbare Raum-Presets wie Wohnzimmer oder Halle.
 ## 🛠️ Patch in 1.40.332
