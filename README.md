@@ -968,6 +968,10 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **🔄 Dateinamen-Prüfung:** Klick auf den Dateinamen öffnet einen Dialog mit passenden Endungen
 * **📋 Strg+Klick auf Dateiname:** kopiert den Namen ohne Endung in die Zwischenablage
 
+### Gemeinsame Auswertungen
+
+* **📊 Geteilte Statistiklogik:** Browser und Node-Tests verwenden jetzt gemeinsam `web/src/calculateProjectStats.js`, sodass Projektauswertungen überall auf demselben Stand bleiben.
+
 ---
 
 ## 🐛 Troubleshooting
