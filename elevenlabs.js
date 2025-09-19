@@ -50,26 +50,6 @@ async function createDubbing({ audioFile, csvContent, voiceId = '', apiKey }, lo
 }
 // =========================== CREATEDUBBING END =============================
 
-// =========================== GETDUBBINGSTATUS START =======================
-/**
- * Fragt den aktuellen Status eines Dubbings ab.
- * @param {string} apiKey - Eigener API-Schluessel.
- * @param {string} dubbingId - Die von createDubbing erhaltene ID.
- * @returns {Promise<object>} Status-Objekt der API.
- */
-async function getDubbingStatus(apiKey, dubbingId, logger = () => {}) {
-    logger(`GET ${API}/dubbing/${dubbingId}`);
-    const response = await fetch(`${API}/dubbing/${dubbingId}`, {
-        headers: { 'xi-api-key': apiKey }
-    });
-    const text = await response.text();
-    logger(`Antwort (${response.status}): ${text}`);
-
-    if (!response.ok) {
-        throw new Error('Status-Abfrage fehlgeschlagen: ' + text);
-    }
-    return JSON.parse(text);
-}
 // =========================== WAITFORDUBBING START ==========================
 /**
  * Wartet so lange, bis die API den Status "complete" liefert.
@@ -105,7 +85,6 @@ async function waitForDubbing(apiKey, dubbingId, targetLang = 'de', timeout = 18
     throw new Error('Dubbing nicht fertig');
 }
 // =========================== WAITFORDUBBING END ============================
-// =========================== GETDUBBINGSTATUS END =========================
 
 // =========================== DOWNLOADDUBBING START ========================
 /**
@@ -180,28 +159,6 @@ async function isDubReady(id, lang = 'de', apiKey, logger = () => {}) {
     return meta.status === 'dubbed' && (meta.target_languages || []).includes(lang);
 }
 // =========================== ISDUBREADY END ===============================
-
-// =========================== GETDEFAULTVOICESETTINGS START ================
-/**
- * Holt die Standardwerte für Voice-Einstellungen von ElevenLabs.
- * @param {string} apiKey - Eigener API-Schlüssel.
- * @returns {Promise<object>} Einstellungen der API als Objekt.
- */
-async function getDefaultVoiceSettings(apiKey, logger = () => {}) {
-    logger(`GET ${API}/voices/settings/default`);
-    const response = await fetch(`${API}/voices/settings/default`, {
-        headers: { 'xi-api-key': apiKey }
-    });
-    const text = await response.text();
-    logger(`Antwort (${response.status}): ${text}`);
-
-    if (!response.ok) {
-        throw new Error('Fehler beim Abrufen der Default-Settings: ' + text);
-    }
-
-    return JSON.parse(text);
-}
-// =========================== GETDEFAULTVOICESETTINGS END ==================
 
 // =========================== RENDERLANGUAGE START ==========================
 // Rendert ein Dubbing-Resource ueber die Beta-API
@@ -279,9 +236,7 @@ async function downloadFromUrl(url, targetPath, existingResponse = null) {
 
 module.exports = {
     createDubbing,
-    getDubbingStatus,
     downloadDubbingAudio,
-    getDefaultVoiceSettings,
     waitForDubbing,
     isDubReady,
     renderLanguage,
