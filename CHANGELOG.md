@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.356
+* `web/renderer.js` fasst das Ermitteln der DOM-Elemente samt Listenern im neuen Helfer `initVideoManager` zusammen, exportiert ihn global und stellt die aktuellen Referenzen über `window.videoManager` bereit.
+* `web/src/main.js` öffnet den Video-Manager stets über die gemeinsam genutzten Referenzen, leert das Suchfeld, prüft `dialog.open` und triggert danach direkt `refreshTable()`.
+* `web/src/projectSwitch.js` ruft `window.initVideoManager?.()` nach jedem Projektwechsel auf, damit Grid, Filter und Buttons erneut verdrahtet werden.
+* README und Changelog dokumentieren den neu initialisierten Video-Manager.
 ## 🛠️ Patch in 1.40.355
 * `web/src/fileUtils.js` entfernt die ungenutzte Konstante `allWords`, damit der Textvergleich ohne überflüssige Zwischenspeicher auskommt.
 * README und Changelog dokumentieren die bereinigte Textanalyse.

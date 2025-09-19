@@ -11041,24 +11041,35 @@ async function scanAudioDuplicates() {
             setupToolbarActionButtons();
 
             // Video-Manager mitsamt Schließen‑Knöpfen vorbereiten
-            const videoBtn = (typeof document !== 'undefined' && document.getElementById)
-                ? document.getElementById('openVideoManager')
-                : null;
-            const videoDlg = (typeof document !== 'undefined' && document.getElementById)
-                ? document.getElementById('videoMgrDialog')
-                : null;
+            const vmState = window.videoManager || {};
+            const videoBtn = vmState.button
+                || ((typeof document !== 'undefined' && document.getElementById)
+                    ? document.getElementById('openVideoManager')
+                    : null);
+            const videoDlg = vmState.dialog
+                || ((typeof document !== 'undefined' && document.getElementById)
+                    ? document.getElementById('videoMgrDialog')
+                    : null);
             if (videoBtn && videoDlg) {
-                // Öffnet den Dialog, falls noch nicht sichtbar
+                // Öffnet den Dialog zuverlässig und aktualisiert direkt die Tabelle
                 videoBtn.onclick = async () => {
-                    if (!videoDlg.classList.contains('hidden')) return;
+                    window.initVideoManager?.();
+                    const currentDlg = window.videoManager?.dialog || videoDlg;
+                    if (!currentDlg) return;
 
-                    if (typeof videoDlg.showModal === 'function') {
-                        videoDlg.showModal();
-                    } else {
-                        videoDlg.setAttribute('open', '');
+                    if (!currentDlg.open) {
+                        if (typeof currentDlg.showModal === 'function') {
+                            currentDlg.showModal();
+                        } else {
+                            currentDlg.setAttribute('open', '');
+                        }
                     }
 
-                    videoDlg.classList.remove('hidden');
+                    currentDlg.classList.remove('hidden');
+
+                    const filterField = window.videoManager?.filter
+                        || currentDlg.querySelector('#videoFilter');
+                    if (filterField) filterField.value = '';
 
                     if (typeof refreshTable === 'function') {
                         await refreshTable();
@@ -11066,7 +11077,7 @@ async function scanAudioDuplicates() {
                         await renderFileTable();
                     }
 
-                    videoDlg.querySelector('#videoListSection')?.classList.remove('hidden');
+                    currentDlg.querySelector('#videoListSection')?.classList.remove('hidden');
                 };
 
                 const closeBtns = [
@@ -11075,11 +11086,13 @@ async function scanAudioDuplicates() {
                 ];
                 closeBtns.forEach(btn => {
                     if (btn) btn.onclick = () => {
-                        videoDlg.classList.add('hidden');
-                        if (typeof videoDlg.close === 'function') {
-                            videoDlg.close();
+                        const currentDlg = window.videoManager?.dialog || videoDlg;
+                        if (!currentDlg) return;
+                        currentDlg.classList.add('hidden');
+                        if (typeof currentDlg.close === 'function') {
+                            currentDlg.close();
                         } else {
-                            videoDlg.removeAttribute('open');
+                            currentDlg.removeAttribute('open');
                         }
                     };
                 });

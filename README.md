@@ -198,6 +198,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Vorschaubilder direkt per ffmpeg:** Das Storyboard wird nicht mehr verwendet. Die Desktop-App erstellt das Bild sofort über `get-video-frame` im Ordner `videoFrames` und benötigt keinen Storyboard-Fallback mehr.
 * **Direkte URL via yt-dlp:** Ist `yt-dlp` installiert, nutzt das Tool diese Methode automatisch. `ytdl-core` und `play-dl` dienen nur noch als Fallback.
 * **Hilfsfunktion `previewFor`:** Ruft direkt `get-video-frame` auf und zeigt bei Fehlern das normale YouTube-Thumbnail.
+* **Neu initialisierter Video-Manager:** DOM-Knoten und Listener werden über `initVideoManager` gesammelt, sodass ein Projektwechsel alle Buttons, Filter und das Grid zuverlässig neu verdrahtet.
 * **Moderne Rasteransicht:** Gespeicherte Videos erscheinen jetzt in einem übersichtlichen Grid mit großem Thumbnail und direktem "Aktualisieren"-Knopf.
 * **Storyboards entfernt:** Der frühere ⟳-Knopf sowie sämtliche Storyboard-Fallbacks wurden entfernt; Vorschaubilder stammen ausschließlich aus dem ffmpeg-Aufruf `get-video-frame`.
 * **Intuitiver Hinzufügen-Button:** Der +‑Button sitzt nun direkt neben dem URL-Feld und speichert den Link auf Knopfdruck.
