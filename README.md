@@ -1137,7 +1137,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
 * **`chooseExisting(base, names)`** – liefert den ersten existierenden Ordnernamen und wirft einen Fehler bei leerer Liste.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
-* **`extractRelevantFolder(parts)`** – gibt den relevanten Abschnitt eines Dateipfades ab "vo" oder ohne führendes "sounds" zurück (siehe `web/src/pathUtils.js`).
+* **`extractRelevantFolder(parts)`** – gibt den relevanten Abschnitt eines Dateipfades ab "vo" oder ohne führendes "sounds" zurück (siehe `web/src/pathUtils.js`). Der frühere zweite Parameter mit dem vollständigen Pfad entfällt; das Array der Ordnerteile reicht aus.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
 * **`addFileToProject(filename, folder)`** – fügt eine neue Datei anhand von Dateiname und Ordner in das aktuell geladene Projekt ein; weitere Metadaten wie Texte werden direkt aus den globalen Datenbanken abgerufen, daher ist kein dritter Parameter mehr nötig.
 * **`ipcContracts.ts`** – definiert Typen für die IPC-Kommunikation zwischen Preload und Hauptprozess.

@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.342
+* `extractRelevantFolder` erwartet nur noch das Ordner-Array; der ungenutzte Parameter für vollständige Pfade wurde entfernt und alle Aufrufe angepasst.
+* README und Changelog dokumentieren die verschlankte Signatur für Frontend-Helfer.
 ## 🛠️ Patch in 1.40.341
 * `web/src/main.js` vereinfacht `addFileToProject` auf die Parameter `filename` und `folder`; alle Aufrufe arbeiten ohne das frühere Ergebnisobjekt.
 * README und Changelog dokumentieren die neue Funktionssignatur für Entwicklerinnen und Entwickler.
