@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.349
+* `web/src/elevenlabs.js` entfernt den ungenutzten Export `isDubReady`; Statusabfragen erfolgen ausschließlich über `web/src/dubbing.js`.
+* README und Changelog dokumentieren die verschobene Statusprüfung und die abgespeckte Exportliste.
 ## 🛠️ Patch in 1.40.348
 * `web/src/scoreColumn.js` entfernt den ungenutzten Helfer `applySuggestion`, sodass die Score-Spalte ausschließlich Kommentare präsentiert.
 * README und Changelog dokumentieren die bereinigte Score-Spalte ohne automatische Übernahmevorschläge.
