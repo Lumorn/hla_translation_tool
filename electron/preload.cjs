@@ -91,12 +91,6 @@ if (typeof require !== 'function') {
     writeClipboard: text => clipboard.writeText(text),
   });
 
-  // Vereinfachtes API nur für Bildschirmaufnahmen
-  // So bleibt der Renderer klar von Node-Funktionen getrennt
-  contextBridge.exposeInMainWorld('api', {
-    captureFrame: b => ipcRenderer.invoke('capture-frame', b),
-  });
-
   // OCR-API
   contextBridge.exposeInMainWorld('ocrApi', {
     recognize: buf => ipcRenderer.invoke('run-easyocr', Buffer.from(buf)),
