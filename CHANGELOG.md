@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.347
+* `electron/preload.cjs` entfernt die ehemalige Capture-Bridge und verlässt sich ausschließlich auf die bestehenden Preload-Schnittstellen.
+* README und Changelog beschreiben nur noch die tatsächlich genutzte `window.videoApi` für Renderer-Aufrufe.
 ## 🛠️ Patch in 1.40.346
 * `web/src/projectSwitch.js` entfernt `switchStorageSafe`; Speichermodus-Wechsel laufen wieder über den vorhandenen Helfer `switchStorage` in `web/src/main.js`.
 * README und Changelog verweisen auf den Standard-Helfer für den Speichermoduswechsel.
