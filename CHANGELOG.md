@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.344
+* `web/src/main.js` entfernt die überholten Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll`, weil der Fertig-Status automatisch anhand der Projektdaten berechnet wird.
+* README und Changelog dokumentieren den Wegfall der manuellen Abschluss-Schaltflächen.
 ## 🛠️ Patch in 1.40.343
 * `web/src/main.js` bindet `extractTime` aus `utils/videoFrameUtils.js` ein, damit Video-Zeitstempel überall identisch berechnet werden.
 * README und Changelog dokumentieren die gemeinsame Nutzung des YouTube-Helfers.

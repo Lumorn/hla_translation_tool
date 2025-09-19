@@ -6115,30 +6115,6 @@ function redoEdit() {
     }
 }
 
-        // File completion status
-function toggleFileCompletion(fileId) {
-    const file = files.find(f => f.id === fileId);
-
-    // Fertig-Status wird nun anhand der Daten ermittelt
-    updateProgressStats();
-    renderProjects();
-    updateStatus('Fertig-Status wird automatisch berechnet');
-
-    // Update folder browser if it's open
-    const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
-    if (folderBrowserOpen) {
-        // Check if we're in folder grid or file view
-        const folderFilesView = document.getElementById('folderFilesView');
-        if (folderFilesView.style.display === 'block' && file) {
-            // We're in file view - refresh it
-            showFolderFiles(file.folder);
-        } else {
-            // We're in grid view - refresh it
-            showFolderGrid();
-        }
-    }
-}
-
 // Markiert die emotionale DE-Version als fertig
 function toggleEmoCompletion(fileId) {
     const file = files.find(f => f.id === fileId);
@@ -6283,45 +6259,6 @@ function autoResizeAllInputs() {
             });
         }
 		
-// Completion Toggle All - für den orangen Haken
-function toggleCompletionAll() {
-    const completionCheckboxes = document.querySelectorAll('.completion-checkbox');
-    
-    // Prüfe ob alle bereits markiert sind
-    const allCompleted = Array.from(completionCheckboxes).every(cb => cb.checked);
-    
-    // Wenn alle markiert sind, alle abwählen, sonst alle auswählen
-    const newState = !allCompleted;
-    
-    completionCheckboxes.forEach(checkbox => {
-        if (checkbox.checked !== newState) {
-            checkbox.checked = newState;
-            
-            // Trigger das change event für jede Checkbox
-            const fileId = parseFloat(checkbox.closest('tr').dataset.id);
-            const file = files.find(f => f.id === fileId);
-            if (file) {
-                const row = checkbox.closest('tr');
-                if (row) {
-                    if (newState && isFileCompleted(file)) {
-                        row.classList.add('completed');
-                    } else {
-                        row.classList.remove('completed');
-                    }
-                }
-            }
-        }
-    });
-    
-    markDirty();
-    
-    updateProgressStats();
-    renderProjects(); // HINZUFÜGEN für live Update
-    
-    const count = Array.from(completionCheckboxes).filter(cb => cb.checked).length;
-    updateStatus(`Status für ${count} Dateien aktualisiert`);
-}
-
         // Textfelder nach dem Laden und nach fertigem Font anpassen
         function resizeTextFields() {
             setTimeout(() => {
@@ -6330,23 +6267,6 @@ function toggleCompletionAll() {
                     document.fonts.ready.then(() => autoResizeAllInputs());
                 }
             }, 100);
-        }
-
-        // Selection
-        function toggleFileSelection(fileId) {
-            const file = files.find(f => f.id === fileId);
-            if (file) {
-                file.selected = !file.selected;
-                markDirty();
-                updateCounts();
-            }
-        }
-
-        function toggleSelectAll() {
-            const selectAll = document.getElementById('selectAll').checked;
-            files.forEach(file => file.selected = selectAll);
-            markDirty();
-            renderFileTable();
         }
 
 function deleteFile(fileId) {
