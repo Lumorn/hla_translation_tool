@@ -1155,6 +1155,7 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`startMigration()`** – startet den Export, zeigt alte und neue Eintragsanzahl sowie den Zielordner in der Oberfläche an.
   * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
+  * **Entfernt:** Der frühere UI-Helfer `switchStorageDirection` entfällt; Speichermodus-Wechsel erfolgen direkt über `switchStorage`.
   * **`cleanupProject.js`** – nutzt `removeUnknownFileIds`, um Datei-IDs mit einer Liste aus der Oberfläche abzugleichen und unbekannte Einträge zu entfernen. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
   * **`removeUnknownFileIds(project, ids, logFn)`** – Hilfsfunktion, die alle Dateien mit unbekannter ID entfernt und jede Entfernung protokolliert.
   * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, große Dateien im OPFS oder als Blob auslagert und ohne Benutzerschlüssel auskommt.
