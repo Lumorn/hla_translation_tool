@@ -75,20 +75,6 @@ export function closeScoreTooltip() {
     if (box) box.remove();
 }
 
-function applySuggestion(id, files) {
-    const file = files.find(f => f.id === id);
-    if (!file || !file.suggestion) return;
-    file.deText = file.suggestion;
-    markDirty();
-    const row = document.querySelector(`tr[data-id='${id}']`);
-    const deCell = row?.querySelectorAll('textarea.text-input')[1];
-    if (deCell) {
-        deCell.value = file.deText;
-        deCell.classList.add('blink-blue');
-        setTimeout(() => deCell.classList.remove('blink-blue'), 600);
-    }
-}
-
 // Export für Node-Tests
 if (typeof module !== 'undefined') {
     module.exports = {

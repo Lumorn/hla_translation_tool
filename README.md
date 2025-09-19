@@ -155,6 +155,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feineres Bewertungsschema:** Ab 95 % wird der Score grün, zwischen 85 % und 94 % gelb
 * **Score in Prozent:** Die Bewertung wird in der Tabelle mit Prozentzeichen dargestellt
 * **Aktive Score-Events:** Nach jedem Rendern bindet `attachScoreHandlers` Tooltip und Klick
+* **Bereinigte Score-Aktionen:** Die Score-Spalte verzichtet auf den früheren Helfer `applySuggestion` und konzentriert sich auf die Kommentar-Anzeige
 * **Bugfix:** Verwaiste Vorschlagsfelder lösen beim Laden kein Fehlerereignis mehr aus
 * **Validierte Vorschlagsfelder:** Fehlt die zugehörige Datei, wird der Eintrag entfernt und eine Meldung weist darauf hin
 * **Debug-Bericht bei fehlender Vorschlagsdatei:** Nach dem Entfernen öffnet sich ein Fenster zum Speichern einzelner Berichte
