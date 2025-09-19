@@ -920,10 +920,10 @@ In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine 
 
 ## 🗄️ Datenlayout & Dateiverwaltung
 
-* **Content-Addressed Storage:** Große Dateien landen unter `.hla_store/objects/<sha256-prefix>/<sha256>` und werden in Projekten nur als `blob://sha256:<hash>` referenziert.
-* **Kapitel-Shards:** Umfangreiche Projekt-JSONs werden kapitelweise als NDJSON in `data/chapters/<id>.ndjson` abgelegt und bei Bedarf nachgeladen.
-* **Striktes Namespacing:** Schlüssel folgen dem Schema `project:<id>:meta`, `project:<id>:index` und `cache:<typ>:<hash>`, um Kollisionen zu vermeiden.
-* **Sichere Speicher-Routine:** Dateien entstehen zuerst als `*.tmp` und werden dann atomar umbenannt; ein `journal.json` stellt nach Abstürzen den letzten Schritt fertig.
+Der bisher dokumentierte Node-Speicherlayer (`utils/dataLayout.js`) wurde entfernt, weil keine Module mehr darauf zugreifen.
+Die Browser-Helfer aus `web/src/fileStorage.js` übernehmen weiterhin Journal-Wiederherstellungen und sichere Schreibvorgänge.
+Content-Addressed Storage, Kapitel-Shards und das `cache:<typ>:<hash>`-Schema sind damit aus dem aktiven Code verschwunden und
+werden vorerst nicht mehr bereitgestellt.
 
 ## 🗂️ Projektstruktur
 
@@ -1152,8 +1152,8 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`storage.capabilities`** – liefert Feature-Flags wie `blobs` (`opfs`, `file` oder `none`) und `atomicWrite`, sodass die Oberfläche fehlende OPFS-Unterstützung erkennen und ausweichen kann.
   * **`storage.runTransaction(async tx => { ... })`** – führt mehrere Schreibvorgänge gebündelt aus und bricht bei Fehlern komplett ab.
   * **`acquireProjectLock(id)`** – verhandelt einen exklusiven Schreibzugriff pro Projekt und schaltet weitere Fenster in den Nur-Lesen-Modus.
-  * **`journalWiederherstellen(basis)`** – prüft ein vorhandenes `journal.json` und schließt abgebrochene Schreibvorgänge atomar ab.
-  * **`garbageCollect(manifeste, basis, dryRun)`** – entfernt nicht referenzierte Dateien aus `.hla_store/objects` und meldet wahlweise nur den potentiellen Speichergewinn.
+  * **Entfernt:** Die Node-Hilfsfunktionen `journalWiederherstellen(basis)` und `garbageCollect(manifeste, basis, dryRun)` wurden aus dem Projekt gestrichen.
+    Die Browser-Variante kümmert sich weiterhin um Journale; eine Blob-Aufräumroutine existiert derzeit nicht mehr.
   * **`validateProjectManifest(data)`** – prüft `project.json` gegen ein Zod-Schema und stellt sicher, dass `schemaVersion` und Name vorhanden sind.
   * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab, leert GPT-Zustände und repariert Verweise.
   * **`switchStorageSafe(mode)`** – wechselt das Speichersystem mit bereinigten Caches und gestopptem Autosave.

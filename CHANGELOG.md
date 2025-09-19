@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.336
+* Ungenutztes Node-Modul `utils/dataLayout.js` entfernt; Browser-Storage bleibt als einzige Quelle für Journaling-Helfer.
+* Dokumentation passt Datenlayout-Beschreibung und Funktionsliste an den Wegfall der Blob-Verwaltung an.
 ## 🛠️ Patch in 1.40.335
 * Node-Modul `elevenlabs.js` entfernt die Exporte `getDubbingStatus` und `getDefaultVoiceSettings`; Statusprüfungen laufen über `waitForDubbing`.
 * Test-Suite bereinigt veraltete Szenarien und Dokumentation listet nur noch die aktiven ElevenLabs-Exporte.
