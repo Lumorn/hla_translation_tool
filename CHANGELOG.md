@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.351
+* `extensionUtils.js` entfernt die Hilfsfunktion `syncProjectData` samt Export und `window`-Alias; übrig bleibt `repairFileExtensions`.
+* Testsuite und Dokumentation verweisen nicht länger auf `syncProjectData` und beschreiben den Funktionswegfall.
 ## 🛠️ Patch in 1.40.350
 * `web/src/migrationUI.js` entfernt den UI-Helfer `switchStorageDirection`; Speicherwechsel laufen direkt über die bestehende Funktion `switchStorage`.
 * README und Changelog vermerken den Wegfall des Richtungsschalters in der Migration-Oberfläche.

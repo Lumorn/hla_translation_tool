@@ -1145,9 +1145,8 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`calculateProjectStats(project)`** – ermittelt pro Projekt den Übersetzungs‑ und Audio‑Fortschritt. Diese Funktion wird auch in den Tests ausführlich geprüft.
 * **`addFileToProject(filename, folder)`** – fügt eine neue Datei anhand von Dateiname und Ordner in das aktuell geladene Projekt ein; weitere Metadaten wie Texte werden direkt aus den globalen Datenbanken abgerufen, daher ist kein dritter Parameter mehr nötig.
 * **`ipcContracts.ts`** – definiert Typen für die IPC-Kommunikation zwischen Preload und Hauptprozess.
-* **`syncProjectData(projects, filePathDatabase, textDatabase)`** – gleicht Projekte mit der Datenbank ab, korrigiert Dateiendungen und überträgt Texte.
 * **`repairFileExtensions(projects, filePathDatabase, textDatabase)`** – aktualisiert veraltete Dateiendungen in Projekten und verschiebt vorhandene Texte.
-  Die Funktionen stehen im Browser direkt unter `window` zur Verfügung und können ohne Import genutzt werden.
+  Die Funktion steht im Browser direkt unter `window` zur Verfügung und kann ohne Import genutzt werden.
   * **`safeCopy(text)`** – kopiert Text in die Zwischenablage und greift bei Fehlern auf Electron zurück.
   * **`saveProjectToFile(data)`** – speichert das übergebene Objekt per File System Access API als JSON auf der Festplatte.
   * **`loadProjectFromFile()`** – öffnet eine zuvor gesicherte JSON-Datei, prüft Pflichtfelder und entfernt Einträge mit unbekannter Datei-ID.
@@ -1158,6 +1157,7 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **Entfernt:** Der frühere UI-Helfer `switchStorageDirection` entfällt; Speichermodus-Wechsel erfolgen direkt über `switchStorage`.
   * **`cleanupProject.js`** – nutzt `removeUnknownFileIds`, um Datei-IDs mit einer Liste aus der Oberfläche abzugleichen und unbekannte Einträge zu entfernen. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
   * **`removeUnknownFileIds(project, ids, logFn)`** – Hilfsfunktion, die alle Dateien mit unbekannter ID entfernt und jede Entfernung protokolliert.
+  * **Entfernt:** Die frühere Hilfsfunktion `syncProjectData` steht nicht mehr zur Verfügung, da ihre Aufgaben vollständig von `repairFileExtensions` abgedeckt werden.
   * **`createStorage(type)`** – liefert je nach Typ ein Speicher-Backend; neben `localStorage` steht nun `indexedDB` zur Verfügung, das Daten je Objekt in eigenen Stores ablegt, große Dateien im OPFS oder als Blob auslagert und ohne Benutzerschlüssel auskommt.
   * **`storage.capabilities`** – liefert Feature-Flags wie `blobs` (`opfs`, `file` oder `none`) und `atomicWrite`, sodass die Oberfläche fehlende OPFS-Unterstützung erkennen und ausweichen kann.
   * **`storage.runTransaction(async tx => { ... })`** – führt mehrere Schreibvorgänge gebündelt aus und bricht bei Fehlern komplett ab.
