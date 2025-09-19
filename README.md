@@ -497,7 +497,7 @@ if (await isDubReady(job.dubbing_id, 'de', apiKey)) {
     // blob speichern ...
 }
 ```
-Die Datei `elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `getDubbingStatus`, `downloadDubbingAudio`, `getDefaultVoiceSettings`, `waitForDubbing`, `isDubReady`, `renderLanguage`, `pollRender` und `sendTextV2`. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
+Die Browser-Datei `web/src/elevenlabs.js` stellt aktuell folgende Funktionen bereit: `createDubbing`, `downloadDubbingAudio` und `isDubReady`. `waitForDubbing` wurde entfernt, da die Browser-Oberfläche ausschließlich auf Statusprüfungen setzt. Auskommentierte Alt-Funktionen wie `dubSegments`, `renderDubbingResource` oder `getDubbingResource` sind entfernt worden.
 Das komplette Workflow-Skript für den Upload, die Statusabfrage und das erneute
 Herunterladen befindet sich nun in `web/src/dubbing.js`.
 Im Desktop-Modus wird dieses Modul beim Start dynamisch geladen und stellt seine Funktionen sowohl für Node-Tests als auch im Browser global bereit. Fehlen im Importobjekt die Funktionsreferenzen, greift `main.js` auf die globalen `window`-Varianten zurück. Zusätzlich exportiert `dubbing.js` die Variable `waitDialogFileId`, über die `main.js` erkennt, zu welcher Datei der Download-Dialog gehört.
@@ -985,7 +985,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * ▶ **Lösung:** Spur im Studio manuell generieren oder Beta-Zugang für den Auto-Download freischalten.
 
 **❓ target_lang nicht gesetzt?**
-* ▶ **Hinweis:** Diese Meldung erscheint, wenn `waitForDubbing` im Fortschritt keine Zielsprache findet.
+* ▶ **Hinweis:** Diese Warnung stammt aus älteren Automatisierungen mit `waitForDubbing`. Die Browser-Variante setzt stattdessen auf `isDubReady` und blendet den Hinweis nicht mehr ein.
 
 **⚙️ Fehlerhafter Permissions-Policy-Header**
 * ▶ **Lösung:** Das Desktop-Tool entfernt nun automatisch den Header-Eintrag `ch-ua-form-factors`.

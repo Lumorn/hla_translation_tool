@@ -1,5 +1,4 @@
 const API = 'https://api.elevenlabs.io/v1';
-const WAIT_INTERVAL_MS = 5000;
 
 // Erstellt ein Dubbing-Projekt bei ElevenLabs
 // target_lang und target_languages sind fest auf "de" gesetzt
@@ -38,35 +37,6 @@ export async function createDubbing({
         throw new Error(`Create dubbing failed: ${res.status} ${text}`);
     }
     return JSON.parse(text);
-}
-
-export async function waitForDubbing(apiKey, id, targetLang = 'de', timeout = 180, onProgress = () => {}, logger = () => {}) {
-    const start = Date.now();
-    let info = null;
-
-    while (Date.now() - start < timeout * 1000) {
-        logger(`GET ${API}/dubbing/${id}`);
-        const res  = await fetch(`${API}/dubbing/${id}`, { headers: { 'xi-api-key': apiKey } });
-        const text = await res.text();
-        logger(`Antwort (${res.status}): ${text}`);
-        if (!res.ok) throw new Error(text);
-        info = JSON.parse(text);
-        onProgress(info.status);
-
-        const ready = info.status === 'dubbed' && (info.target_languages || []).includes(targetLang);
-        if (ready) return;
-        if (info.status === 'failed') {
-            const reason = info.error || 'Server meldet failed';
-            throw new Error(reason);
-        }
-
-        await new Promise(r => setTimeout(r, WAIT_INTERVAL_MS));
-    }
-
-    if (info && info.status === 'dubbed' && !(info.target_languages || []).includes(targetLang)) {
-        console.error('target_lang nicht gesetzt?');
-    }
-    throw new Error('Dubbing nicht fertig');
 }
 
 // Lädt die gerenderte Audiodatei einer Sprache herunter
