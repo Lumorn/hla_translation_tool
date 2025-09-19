@@ -694,6 +694,7 @@ const moduleStatus = {
     extensionUtils:   { loaded: false, source: '' },
     closecaptionParser:{ loaded: false, source: '' },
     fileUtils:        { loaded: false, source: '' },
+    videoFrameUtils: { loaded: false, source: '' },
     pathUtils:        { loaded: false, source: '' },
     gptService:       { loaded: false, source: '' },
     projectEvaluate:  { loaded: false, source: '' },
@@ -705,6 +706,7 @@ let createDubbing, downloadDubbingAudio, renderLanguage, pollRender;
 let repairFileExtensions;
 let loadClosecaptions;
 let calculateTextSimilarity, levenshteinDistance;
+let extractTime;
 let extractRelevantFolder;
 let pathUtilsPromise;
 let evaluateScene;
@@ -738,6 +740,17 @@ if (typeof module !== 'undefined' && module.exports) {
 
     ({ calculateTextSimilarity, levenshteinDistance } = require('./fileUtils.js'));
     moduleStatus.fileUtils = { loaded: true, source: 'Main' };
+    try {
+        ({ extractTime } = require('../../utils/videoFrameUtils.js'));
+        moduleStatus.videoFrameUtils = { loaded: true, source: 'Main' };
+    } catch (err) {
+        // Fallback: Wenn CommonJS den Helfer nicht parsen kann, dynamisch als ES-Modul laden
+        moduleStatus.videoFrameUtils = { loaded: false, source: 'Main' };
+        import('../../utils/videoFrameUtils.js').then(mod => {
+            extractTime = mod.extractTime;
+            moduleStatus.videoFrameUtils = { loaded: true, source: 'Main' };
+        }).catch(() => { moduleStatus.videoFrameUtils = { loaded: false, source: 'Main' }; });
+    }
     ({ extractRelevantFolder } = require('./pathUtils.js'));
     moduleStatus.pathUtils = { loaded: true, source: 'Main' };
     ({ calculateProjectStats: sharedProjectStatsCalculator } = require('./calculateProjectStats.js'));
@@ -798,6 +811,10 @@ if (typeof module !== 'undefined' && module.exports) {
         levenshteinDistance = mod.levenshteinDistance;
         moduleStatus.fileUtils = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.fileUtils = { loaded: false, source: 'Ausgelagert' }; });
+    import('../../utils/videoFrameUtils.js').then(mod => {
+        extractTime = mod.extractTime;
+        moduleStatus.videoFrameUtils = { loaded: true, source: 'Ausgelagert' };
+    }).catch(() => { moduleStatus.videoFrameUtils = { loaded: false, source: 'Ausgelagert' }; });
     pathUtilsPromise = import('./pathUtils.mjs').then(mod => {
         extractRelevantFolder = mod.extractRelevantFolder;
         moduleStatus.pathUtils = { loaded: true, source: 'Ausgelagert' };
@@ -11252,10 +11269,6 @@ async function scanAudioDuplicates() {
         }
 
         // Öffnet die gespeicherte URL extern und legt bei Bedarf einen Bookmark an
-        function extractTime(url) {
-            const m = url.match(/[?&#]t=(\d+)/) || url.match(/[?&#]start=(\d+)/);
-            return m ? Number(m[1]) : 0;
-        }
         async function openVideoUrl() {
             const url = (document.getElementById('videoUrlInput')?.value || '').trim();
             if (!url) return;
@@ -11276,7 +11289,9 @@ async function scanAudioDuplicates() {
                         const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(url)+'&format=json');
                         if (res.ok) ({ title } = await res.json());
                     } catch {}
-                    list.push({ url, title, time: extractTime(url) });
+                    // Gemeinsamen Zeitstempel-Helper verwenden; im Fehlerfall 0 Sekunden annehmen
+                    const zeitstempel = typeof extractTime === 'function' ? extractTime(url) : 0;
+                    list.push({ url, title, time: zeitstempel });
                     list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
                     index = list.findIndex(b => b.url === url);
                     await window.videoApi.saveBookmarks(list);
