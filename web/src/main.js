@@ -15913,17 +15913,17 @@ async function addFromSearch(result) {
 
                 // Nur hinzufügen, wenn Text gleich ist und Datei noch nicht vorhanden
                 if (!already && baseEn && pathEn && pathEn === baseEn) {
-                    addFileToProject(result.filename, p.folder, result);
+                    addFileToProject(result.filename, p.folder);
                 }
             });
         } else {
             // Verwende ausgewählten Pfad
             const selectedPath = paths[selection.selectedIndex];
-            addFileToProject(result.filename, selectedPath.folder, result);
+            addFileToProject(result.filename, selectedPath.folder);
         }
     } else {
         // Nur ein Pfad oder bereits spezifischer Pfad aus Suchergebnis
-        addFileToProject(result.filename, result.folder, result);
+        addFileToProject(result.filename, result.folder);
     }
 }
 
@@ -16122,7 +16122,7 @@ function playPreview(fullPath) {
 
 // Hilfsfunktion zum Hinzufügen einer Datei zum Projekt
 // fullPath wird nicht mehr als Parameter übergeben
-function addFileToProject(filename, folder, originalResult) {
+function addFileToProject(filename, folder) {
     const fileKey = `${folder}/${filename}`;
     const newFile = {
         id: Date.now() + Math.random(),

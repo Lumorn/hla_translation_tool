@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.341
+* `web/src/main.js` vereinfacht `addFileToProject` auf die Parameter `filename` und `folder`; alle Aufrufe arbeiten ohne das frühere Ergebnisobjekt.
+* README und Changelog dokumentieren die neue Funktionssignatur für Entwicklerinnen und Entwickler.
 ## 🛠️ Patch in 1.40.340
 * Video-Manager setzt das Suchfeld beim Öffnen zurück, damit keine alten Filter hängen bleiben.
 ## 🛠️ Patch in 1.40.339
