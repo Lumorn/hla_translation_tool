@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.354
+* `web/src/config.js` exportiert nur noch die fertigen Pfade; der ermittelte Download-Ordnername bleibt intern und entfällt aus der Exportliste.
+* README und Changelog vermerken die bereinigte Download-Konfiguration ohne öffentlichen Ordnernamen.
 ## 🛠️ Patch in 1.40.353
 * `launch_hla.py` bündelt die Cheat-Voreinstellungen als Modulkonstante `CHEAT_ARGS`, damit beide Startpfade dieselben Parameter verwenden.
 * README und Changelog vermerken die zentrale Konstante für konsistente Cheat-Voreinstellungen.
