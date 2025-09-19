@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.348
+* `web/src/scoreColumn.js` entfernt den ungenutzten Helfer `applySuggestion`, sodass die Score-Spalte ausschließlich Kommentare präsentiert.
+* README und Changelog dokumentieren die bereinigte Score-Spalte ohne automatische Übernahmevorschläge.
 ## 🛠️ Patch in 1.40.347
 * `electron/preload.cjs` entfernt die ehemalige Capture-Bridge und verlässt sich ausschließlich auf die bestehenden Preload-Schnittstellen.
 * README und Changelog beschreiben nur noch die tatsächlich genutzte `window.videoApi` für Renderer-Aufrufe.
