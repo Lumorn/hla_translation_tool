@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.358
+* `web/src/style.css` erhöht `scroll-padding-top` der Dateitabelle auf die reale Höhe des sticky Tabellenkopfs, damit die erste Zeile vollständig sichtbar bleibt.
+* README und Changelog dokumentieren das korrigierte Scroll-Padding des Tabellenkopfs.
 ## 🛠️ Patch in 1.40.357
 * `web/src/main.js` verzichtet auf den ungenutzten Helfer `createDubbing` und lädt im Browser nur noch `downloadDubbingAudio`.
 * `web/src/elevenlabs.js` exportiert ausschließlich `downloadDubbingAudio`; das Anlegen neuer Dubbings erfolgt über das Node-Modul `elevenlabs.js`.
