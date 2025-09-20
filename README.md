@@ -56,6 +56,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessertes Scrollen in der Dateitabelle:** Nach dem Rendern springt die Tabelle nur zur gemerkten Zeile, wenn keine neue Datei markiert wird; andernfalls wird nach der Auswahl gescrollt.
 * **Auto-Scroll blockiert Zeilennummer-Aktualisierung:** Der Fallback in `selectRow` setzt kurzzeitig `isAutoScrolling`, damit `updateNumberFromScroll` nicht dazwischenfunkt.
 * **Übersichtliche Auswahlzeile:** Die gewählte Zeile wird mit kleinem Abstand unter dem Tabellenkopf positioniert, bleibt vollständig sichtbar und zeigt noch einen Teil der vorherigen Zeile.
+* **Tabellenkopf mit vollem Sichtfenster:** Das Scroll-Padding der Tabelle entspricht jetzt der Höhe des sticky Kopfbereichs, sodass die erste Zeile nicht mehr teilweise verdeckt wird.
 * **Überarbeitetes Timing-Layout:** Der Abschnitt „Timing & Bereiche“ nutzt ein zweispaltiges Kartenraster, das bei schmaler Breite automatisch auf eine Spalte umbricht.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.
