@@ -10,30 +10,47 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 🎥 **Projekt in Aktion:** Auf dem YouTube-Kanal [Half-Life Alyx DE](https://www.youtube.com/@Half-LifeAlyxDE) siehst du, wie das Übersetzungstool im Einsatz ist und wie die deutsche Fassung Schritt für Schritt entsteht.
 
+---
 
-<a id="schnellueberblick"></a>
 ## 🔍 Schnellüberblick
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
-<a id="inhaltsnavigator"></a>
 ## 🧭 Inhaltsnavigator
-
-| Bereich | Kapitel |
-| --- | --- |
-| **Überblick & Start** | [Schnellüberblick](#schnellueberblick) · [Funktionsarchiv (komplett)](#funktionsarchiv) · [Erste Schritte](#erste-schritte) |
-| **Setup & Technik** | [Installation](#installation) · [Systemanforderungen](#systemanforderungen) · [Desktop-Version (Electron)](#desktop-version) · [ElevenLabs-Dubbing](#elevenlabs-dubbing) · [Emotionales Dubbing (v3)](#emotionales-dubbing-v3) · [Python-Übersetzungsskript](#python-uebersetzungsskript) · [Version aktualisieren](#version-aktualisieren) |
-| **Bedienung & Workflow** | [Bedienung](#bedienung) · [Keyboard Shortcuts](#keyboard-shortcuts) · [Import](#import) · [Ordner-Management (Dialog)](#ordner-management-dialog) · [Backup](#backup) |
-| **Struktur & Verwaltung** | [Speichersysteme](#speichersysteme) · [Datenlayout & Dateiverwaltung](#datenlayout) · [Projektstruktur](#projektstruktur) · [Erweiterte Funktionen](#erweiterte-funktionen) |
-| **Qualität & Support** | [Troubleshooting](#troubleshooting) · [Changelog](#changelog) · [Tipps & Best Practices](#tipps-best-practices) · [Tests](#tests) · [Wichtige Funktionen](#wichtige-funktionen) · [CHANGELOG.md](CHANGELOG.md) |
-
-> **Direkt zu den Highlights im Funktionsarchiv:** [Kernfunktionen](#kernfunktionen) · [Fortschritts-Tracking](#fortschritts-tracking) · [Ordner-Management](#ordner-management) · [Suche & Import](#suche-import) · [Keyboard & Maus](#keyboard-maus)
+* [🏆 Funktionsarchiv (komplett)](#-funktionsarchiv-komplett)
+  * [🎯 Kernfunktionen](#-kernfunktionen)
+  * [📊 Fortschritts‑Tracking](#-fortschritts-tracking)
+  * [📁 Ordner‑Management](#-ordner-management)
+  * [🔍 Suche & Import](#-suche--import)
+  * [⌨️ Keyboard & Maus](#-keyboard--maus)
+* [🛠️ Installation](#-installation)
+  * [Systemanforderungen](#systemanforderungen)
+  * [Desktop-Version (Electron)](#desktop-version-electron)
+  * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
+  * [Emotionales Dubbing (v3)](#emotionales-dubbing-v3)
+  * [Python-Übersetzungsskript](#python-übersetzungsskript)
+  * [Version aktualisieren](#version-aktualisieren)
+* [🏁 Erste Schritte](#-erste-schritte)
+* [🎮 Bedienung](#-bedienung)
+* [⌨️ Keyboard Shortcuts](#-keyboard-shortcuts)
+* [📥 Import](#-import)
+* [📁 Ordner‑Management (Dialog)](#-ordner-management-1)
+* [💾 Backup](#-backup)
+* [🗃️ Speichersysteme](#-speichersysteme)
+* [🗄️ Datenlayout & Dateiverwaltung](#-datenlayout--dateiverwaltung)
+* [🗂️ Projektstruktur](#-projektstruktur)
+* [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
+* [🐛 Troubleshooting](#-troubleshooting)
+* [🧪 Tests](#-tests)
+* [🧩 Wichtige Funktionen](#-wichtige-funktionen)
+* [💡 Tipps & Best Practices](#-tipps--best-practices)
+* [📝 Changelog](#-changelog)
+* [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-<a id="funktionsarchiv"></a>
 ## 🏆 Funktionsarchiv (komplett)
 
 > 💡 Tipp: Klappe die folgenden Kapitel bei Bedarf ein, um dich schneller zurechtzufinden.
@@ -41,7 +58,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 <details open>
 <summary>🎯 Kernfunktionen</summary>
 
-<a id="kernfunktionen"></a>
 ### 🎯 Kernfunktionen
 
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
@@ -277,7 +293,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 <details>
 <summary>📊 Fortschritts‑Tracking</summary>
 
-<a id="fortschritts-tracking"></a>
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
@@ -294,7 +309,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 <details>
 <summary>📁 Ordner‑Management</summary>
 
-<a id="ordner-management"></a>
 ### 📁 Ordner‑Management
 
 * **Folder‑Browser** mit Icons, Such‑ & Filter‑Funktionen
@@ -427,7 +441,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 <details>
 <summary>🔍 Suche & Import</summary>
 
-<a id="suche-import"></a>
 ### 🔍 Suche & Import
 
 * **Erweiterte Ähnlichkeitssuche** (ignoriert Groß‑/Kleinschreibung, Punkte)
@@ -440,7 +453,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 <details>
 <summary>⌨️ Keyboard & Maus</summary>
 
-<a id="keyboard-maus"></a>
 ### ⌨️ Keyboard & Maus
 
 * **Keyboard‑Navigation:** Pfeiltasten, Tab, Leertaste für Audio, Enter für Texteingabe
@@ -459,8 +471,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 </details>
 
+---
 
-<a id="installation"></a>
 ## 🛠️ Installation
 
 1. **`web/hla_translation_tool.html`** herunterladen
@@ -468,7 +480,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 > **💡 Tipp:** Desktop‑Verknüpfung erstellen ⇒ Ein‑Klick‑Start
 
-<a id="systemanforderungen"></a>
 ### Systemanforderungen
 
 * **Moderner Browser:** Chrome, Firefox, Edge, Safari
@@ -479,7 +490,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Playwright** als zusätzliche Abhängigkeit für die Schritt-für-Schritt-Automatik
 * **64‑Bit Python 3.9–3.12** erforderlich; die Skripte suchen bei höheren Versionen automatisch nach einer passenden Installation. 32‑Bit wird nicht unterstuetzt
 
-<a id="desktop-version"></a>
 ### Desktop-Version (Electron)
 1. Im Hauptverzeichnis `npm ci --ignore-scripts` ausführen, damit benötigte Pakete wie `chokidar` vorhanden sind und optionale Skripte übersprungen werden
 2. In das Verzeichnis `electron/` wechseln und ebenfalls `npm ci --ignore-scripts` ausführen. Fehlt npm (z.B. bei Node 22), `npm install -g npm` oder `corepack enable` nutzen
@@ -521,7 +531,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 32. Ein neuer Button `An ElevenLabs schicken` sendet alle Emotional-Texte des aktuellen Projekts ohne Duplikate an die Text-to-Speech-API (v2).
 33. `update_repo.py` prüft den Git-Status und führt bei Bedarf `git pull` aus. Anschließend werden die übernommenen Commits angezeigt.
 
-<a id="elevenlabs-dubbing"></a>
 ### ElevenLabs-Dubbing
 
 1. API-Schlüssel bei [ElevenLabs](https://elevenlabs.io) erstellen.
@@ -587,12 +596,9 @@ Ein Watcher überwacht automatisch den Ordner `web/Download` bzw. `web/Downloads
 Der automatische Import greift also nur, wenn eine Dubbing-ID passt.
 Taucht eine unbekannte Datei auf, öffnet sich stattdessen der Import-Dialog.
 Persönliche Zusätze wie `_Alex` oder `-Bob` entfernt er dabei automatisch.
-<a id="emotionales-dubbing-v3"></a>
-### Emotionales Dubbing (v3)
-
-Die Emotionen nutzen eine eigene Version der ElevenLabs-API. Der neue Button ruft den folgenden Endpunkt auf und speichert die Antwort als WAV-Datei: Der API-Schlüssel wird dabei automatisch aus den Einstellungen übernommen:
-
-```text
+\n### Emotionales Dubbing (v3)
+\nDie Emotionen nutzen eine eigene Version der ElevenLabs-API. Der neue Button ruft den folgenden Endpunkt auf und speichert die Antwort als WAV-Datei: Der API-Schlüssel wird dabei automatisch aus den Einstellungen übernommen:
+\n```text
 POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id}/stream
 xi-api-key: <DEIN_API_KEY>
 Content-Type: application/json
@@ -745,14 +751,12 @@ speaker,start_time,end_time,transcription,translation
 Nach jedem Start eines Dubbing-Vorgangs öffnet sich automatisch das Fenster **Dubbing-Protokoll**. Dort sind jetzt ausführliche Fehlermeldungen sichtbar, inklusive HTTP-Code und Server-Antwort. Das Protokoll lässt sich jederzeit über den Schließen-Button beenden oder kopieren.
 Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeugten CSV angezeigt. So lässt sich schnell prüfen, ob die Daten korrekt formatiert sind.
 
-<a id="python-uebersetzungsskript"></a>
 ### Python-Übersetzungsskript
 
 `translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, versucht das Skript eine automatische Installation über `pip`. Die benötigten Pakete werden ansonsten durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Findet es kein passendes Paket im Index, gibt das Skript eine verständliche Fehlermeldung aus und beendet sich mit Status 1. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 In der Desktop-App wird das Skript asynchron gestartet und das Ergebnis über das Event `translate-finished` zurückgegeben. Tritt ein Fehler auf, zeigt die Oberfläche nun den konkreten Fehltext als Hinweis an.
 Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das Skript mit einem klaren Hinweis ab.
 
-<a id="version-aktualisieren"></a>
 ### Version aktualisieren
 
 1. In `package.json` die neue Versionsnummer eintragen.
@@ -760,7 +764,6 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 
 ---
 
-<a id="erste-schritte"></a>
 ## 🏁 Erste Schritte
 
 ### 1. 📁 Programm starten
@@ -788,7 +791,6 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 
 ---
 
-<a id="bedienung"></a>
 ## 🎮 Bedienung
 
 ### Projekt‑Management
@@ -848,7 +850,6 @@ Beim Zurücksetzen springt die Statusanzeige wieder auf „Analysiere…“, dam
 Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderung sichert das Projekt sofort, damit die Zuordnung nach einem Neustart erhalten bleibt.
 ---
 
-<a id="keyboard-shortcuts"></a>
 ## ⌨️ Keyboard Shortcuts
 
 ### Globale Shortcuts
@@ -886,7 +887,6 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 
 ---
 
-<a id="import"></a>
 ## 📥 Import
 
 ### Import‑Funktionen
@@ -908,7 +908,6 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 Mit diesem Import liest das Tool die Dateien `closecaption_english.txt` und `closecaption_german.txt` aus dem Ordner `closecaption/` ein. Eine Utility-Funktion `loadClosecaptions()` verarbeitet beide Dateien und liefert ein Array aller Zeilen. Die Einträge werden über ihre ID zusammengeführt und mit der Datenbank abgeglichen. Bei eindeutiger Übereinstimmung wird der deutsche Text automatisch zugeordnet. Sind mehrere Dateien möglich, erscheint eine Auswahl, um den passenden Ordner festzulegen oder den Eintrag zu überspringen.
 Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des jeweiligen Ordners an. Die gleiche Funktion wird auch für die neue Untertitel-Suche verwendet.
 
-<a id="ordner-management-dialog"></a>
 ## 📁 Ordner‑Management
 
 ### Ordner‑Browser Features
@@ -945,13 +944,11 @@ Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal
 
 ---
 
-<a id="backup"></a>
 ## 💾 Backup
 
 Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben. Beim Erstellen eines Sound-Backups erscheint jetzt ein Fortschrittsbalken und die Liste zeigt Datum sowie Dateigröße jeder ZIP-Datei an.
 
 
-<a id="speichersysteme"></a>
 ## 🗃️ Speichersysteme
 
 Beim ersten Start erscheint ein Dialog zur Wahl des Speichersystems. Zur Auswahl stehen der klassische `localStorage` und ein neues `IndexedDB`-Backend. Alle Zugriffe erfolgen über einen gemeinsamen Adapter, der die gewählte Variante kapselt.
@@ -978,7 +975,6 @@ Startet das Werkzeug bereits im Datei-Modus, wird der LocalStorage auf alte Proj
 
 In der Dateiliste markiert eine zusätzliche Spalte mit 🆕 oder 📦, ob eine Datei im neuen Speichersystem oder noch im LocalStorage gespeichert ist. Beim Wechsel des Systems aktualisiert sich die Anzeige automatisch.
 
-<a id="datenlayout"></a>
 ## 🗄️ Datenlayout & Dateiverwaltung
 
 Der bisher dokumentierte Node-Speicherlayer (`utils/dataLayout.js`) wurde entfernt, weil keine Module mehr darauf zugreifen.
@@ -986,7 +982,6 @@ Die Browser-Helfer aus `web/src/fileStorage.js` übernehmen weiterhin Journal-Wi
 Content-Addressed Storage, Kapitel-Shards und das `cache:<typ>:<hash>`-Schema sind damit aus dem aktiven Code verschwunden und
 werden vorerst nicht mehr bereitgestellt.
 
-<a id="projektstruktur"></a>
 ## 🗂️ Projektstruktur
 
 Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
@@ -999,7 +994,6 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 
 ---
 
-<a id="erweiterte-funktionen"></a>
 ## 🔧 Erweiterte Funktionen
 
 ### Auto‑Scan‑System
@@ -1037,7 +1031,6 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 
 ---
 
-<a id="troubleshooting"></a>
 ## 🐛 Troubleshooting
 
 ### Häufige Probleme
@@ -1110,12 +1103,10 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **💾 Backup‑Strategie:** Regelmäßige Datensicherung vor größeren Änderungen
 
 ---
-<a id="changelog"></a>
 ## 📝 Changelog
 
 Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
-<a id="tipps-best-practices"></a>
 ## 💡 Tipps & Best Practices
 
 ### Projekt‑Organisation
@@ -1146,7 +1137,6 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 ---
 
 
-<a id="tests"></a>
 ## 🧪 Tests
 
 Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
@@ -1191,7 +1181,6 @@ verwendet werden, um optionale Downloads zu überspringen.
 * Ausgabe erfolgt auf Deutsch.
 * Timing der Sprachausgabe passt zum Original.
 
-<a id="wichtige-funktionen"></a>
 ## 🧩 Wichtige Funktionen
 
 * **`readAudioFiles(dir)`** – liest alle Audiodateien eines Ordners rekursiv ein und gibt ihre Pfade im POSIX‑Format zurück.
