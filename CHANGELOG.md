@@ -1,4 +1,6 @@
 # Changelog
+## 🛠️ Patch in 1.40.359
+* README verweist jetzt auf den YouTube-Kanal „Half-Life Alyx DE“, damit Interessierte das Übersetzungsprojekt in Aktion verfolgen können.
 ## 🛠️ Patch in 1.40.358
 * `web/src/style.css` erhöht `scroll-padding-top` der Dateitabelle auf die reale Höhe des sticky Tabellenkopfs, damit die erste Zeile vollständig sichtbar bleibt.
 * README und Changelog dokumentieren das korrigierte Scroll-Padding des Tabellenkopfs.

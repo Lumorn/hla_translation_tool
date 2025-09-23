@@ -8,6 +8,8 @@
 
 Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller Audio‑Zeilen aus *Half‑Life: Alyx*.
 
+🎥 **Projekt in Aktion:** Auf dem YouTube-Kanal [Half-Life Alyx DE](https://www.youtube.com/@Half-LifeAlyxDE) siehst du, wie das Übersetzungstool im Einsatz ist und wie die deutsche Fassung Schritt für Schritt entsteht.
+
 ---
 
 ## 📋 Inhaltsverzeichnis
