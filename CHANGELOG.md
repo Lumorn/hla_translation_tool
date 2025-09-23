@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.360
+* README strukturiert das komplette Feature-Archiv jetzt mit einklappbaren Kapiteln, ergänzt einen Schnellüberblick und erweitert das Inhaltsverzeichnis für eine schnellere Orientierung.
+
 ## 🛠️ Patch in 1.40.359
 * README verweist jetzt auf den YouTube-Kanal „Half-Life Alyx DE“, damit Interessierte das Übersetzungsprojekt in Aktion verfolgen können.
 ## 🛠️ Patch in 1.40.358

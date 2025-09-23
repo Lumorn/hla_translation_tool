@@ -1,5 +1,5 @@
-# hla_translation_tool
 # 🎮 Half‑Life: Alyx Translation Tool
+*(Projektname: `hla_translation_tool`)*
 
 ![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.326-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
@@ -12,25 +12,51 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ---
 
-## 📋 Inhaltsverzeichnis
-* [Changelog](CHANGELOG.md)
-* [🚀 Features (komplett)](#-features-komplett)
+## 🔍 Schnellüberblick
+* Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
+* Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
+* Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
+* Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
+
+## 🧭 Inhaltsnavigator
+* [🏆 Funktionsarchiv (komplett)](#-funktionsarchiv-komplett)
+  * [🎯 Kernfunktionen](#-kernfunktionen)
+  * [📊 Fortschritts‑Tracking](#-fortschritts-tracking)
+  * [📁 Ordner‑Management](#-ordner-management)
+  * [🔍 Suche & Import](#-suche--import)
+  * [⌨️ Keyboard & Maus](#-keyboard--maus)
 * [🛠️ Installation](#-installation)
-* [ElevenLabs-Dubbing](#elevenlabs-dubbing)
+  * [Systemanforderungen](#systemanforderungen)
+  * [Desktop-Version (Electron)](#desktop-version-electron)
+  * [ElevenLabs-Dubbing](#elevenlabs-dubbing)
+  * [Emotionales Dubbing (v3)](#emotionales-dubbing-v3)
+  * [Python-Übersetzungsskript](#python-übersetzungsskript)
+  * [Version aktualisieren](#version-aktualisieren)
 * [🏁 Erste Schritte](#-erste-schritte)
 * [🎮 Bedienung](#-bedienung)
 * [⌨️ Keyboard Shortcuts](#-keyboard-shortcuts)
 * [📥 Import](#-import)
-* [📁 Ordner-Management](#-ordner-management)
+* [📁 Ordner‑Management (Dialog)](#-ordner-management-1)
 * [💾 Backup](#-backup)
 * [🗃️ Speichersysteme](#-speichersysteme)
 * [🗄️ Datenlayout & Dateiverwaltung](#-datenlayout--dateiverwaltung)
 * [🗂️ Projektstruktur](#-projektstruktur)
 * [🔧 Erweiterte Funktionen](#-erweiterte-funktionen)
 * [🐛 Troubleshooting](#-troubleshooting)
+* [🧪 Tests](#-tests)
+* [🧩 Wichtige Funktionen](#-wichtige-funktionen)
+* [💡 Tipps & Best Practices](#-tipps--best-practices)
+* [📝 Changelog](#-changelog)
+* [CHANGELOG.md](CHANGELOG.md)
+
 ---
 
-## 🚀 Features (komplett)
+## 🏆 Funktionsarchiv (komplett)
+
+> 💡 Tipp: Klappe die folgenden Kapitel bei Bedarf ein, um dich schneller zurechtzufinden.
+
+<details open>
+<summary>🎯 Kernfunktionen</summary>
 
 ### 🎯 Kernfunktionen
 
@@ -262,6 +288,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
 * **Video-API im Preload:** Über `window.videoApi` stehen `loadBookmarks`, `saveBookmarks`, `deleteBookmark` und `getFrame` sicher im Renderer zur Verfügung.
 * **Desktop-Capturer entfernt:** Die API `desktopCapturer.getSources` steht nicht mehr zur Verfügung.
+</details>
+
+<details>
+<summary>📊 Fortschritts‑Tracking</summary>
+
 ### 📊 Fortschritts‑Tracking
 
 * **Globale Dashboard‑Kacheln:** Gesamt, Übersetzt, Ordner komplett, **EN/DE/BEIDE/∑**
@@ -272,6 +303,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
 * **Grüne Haken** für abgeschlossene Kapitel
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen
+
+</details>
+
+<details>
+<summary>📁 Ordner‑Management</summary>
 
 ### 📁 Ordner‑Management
 
@@ -400,12 +436,22 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Farbige Versionsnummern:** Der Hintergrund des Versions‑Buttons wird mit steigender Nummer zunehmend grün und ab Version 10 fast schwarzgrün.
 * **Automatische Versionsanpassung:** Beim manuellen Upload, Drag & Drop oder Dubben erhöht sich die Versionsnummer automatisch, falls bereits eine deutsche Datei vorhanden ist.
 
+</details>
+
+<details>
+<summary>🔍 Suche & Import</summary>
+
 ### 🔍 Suche & Import
 
 * **Erweiterte Ähnlichkeitssuche** (ignoriert Groß‑/Kleinschreibung, Punkte)
 * **Intelligenter Import** mit automatischer Spalten‑Erkennung
 * **Multi‑Ordner‑Auswahl** bei mehrdeutigen Dateien
 * **Live‑Highlighting** von Suchbegriffen
+
+</details>
+
+<details>
+<summary>⌨️ Keyboard & Maus</summary>
 
 ### ⌨️ Keyboard & Maus
 
@@ -422,6 +468,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zeilenauswahl:** Gewählte Zeilen werden vollständig unter dem Tabellenkopf positioniert
 * **Nummern-Navigation:** Vor-/Zurück-Schaltflächen und manuelles Scrollen markieren die aktive Zeile wieder zuverlässig
 * **Doppelklick:** Projekt umbenennen
+
+</details>
 
 ---
 
