@@ -1,7 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.361
-* README besitzt jetzt ein tabellarisches Inhaltsverzeichnis mit stabilen Anker-Links, bereinigten Überschriften und korrigierten Formatierungsfehlern (z. B. sichtbaren `\n`).
-
 ## 🛠️ Patch in 1.40.360
 * README strukturiert das komplette Feature-Archiv jetzt mit einklappbaren Kapiteln, ergänzt einen Schnellüberblick und erweitert das Inhaltsverzeichnis für eine schnellere Orientierung.
 
