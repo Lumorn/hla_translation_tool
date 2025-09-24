@@ -825,6 +825,8 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | **Sortierung ändern**     | Klick auf Spalten‑Header                          |
 | **Datei löschen**         | × am Zeilenende oder Context‑Menu                 |
 
+Ignorierte Einträge merkt sich der Ordner-Browser jetzt dauerhaft – unabhängig davon, ob LocalStorage oder der Datei-Modus aktiv ist.
+
 ### Audio & Text
 
 |  Aktion                    |  Bedienung |
