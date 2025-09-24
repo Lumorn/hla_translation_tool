@@ -35,21 +35,50 @@ function parseKey(key) {
 // Hinweis: Früher wurden Einträge verschlüsselt. Die Verschlüsselung wurde entfernt,
 // daher bleiben Hilfsfunktionen für Base64 und AES-GCM ungenutzt und entfallen.
 
+// Wandelt ArrayBuffer sicher in Base64 um (auch für große Dateien geeignet)
+function arrayBufferToBase64(buffer) {
+    const view = new Uint8Array(buffer);
+    const chunkSize = 0x8000; // 32 kB pro Teilstück, damit der Stack klein bleibt
+    let binary = '';
+    for (let i = 0; i < view.length; i += chunkSize) {
+        const chunk = view.subarray(i, i + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk);
+    }
+    return btoa(binary);
+}
+
+// Wandelt Base64 wieder in einen ArrayBuffer zurück
+function base64ToArrayBuffer(str) {
+    const binary = atob(str);
+    const length = binary.length;
+    const buffer = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+        buffer[i] = binary.charCodeAt(i);
+    }
+    return buffer.buffer;
+}
+
 // Größere Dateien auslagern
 async function storeLargeData(value) {
-    // OPFS bevorzugen, falls verfügbar
+    const blob = value instanceof Blob ? value : new Blob([value]);
+    // OPFS bevorzugen, sofern verfügbar und freigegeben
     if (navigator.storage && navigator.storage.getDirectory) {
-        const dir = await navigator.storage.getDirectory();
-        const name = `blob_${crypto.randomUUID()}`;
-        const fileHandle = await dir.getFileHandle(name, { create: true });
-        const writable = await fileHandle.createWritable();
-        await writable.write(value instanceof Blob ? value : new Blob([value]));
-        await writable.close();
-        return { type: 'opfs', name };
+        try {
+            const dir = await navigator.storage.getDirectory();
+            const name = `blob_${crypto.randomUUID()}`;
+            const fileHandle = await dir.getFileHandle(name, { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(blob);
+            await writable.close();
+            return { type: 'opfs', name, mime: blob.type || '' };
+        } catch (err) {
+            // Einige Browser blockieren OPFS in file://-Kontexten (CSP „worker-src“)
+            console.warn('OPFS nicht verfügbar, verwende Base64-Fallback', err);
+        }
     }
-    // Fallback: Blob-URL im Speicher behalten
-    const url = URL.createObjectURL(value instanceof Blob ? value : new Blob([value]));
-    return { type: 'blob', url };
+    // Fallback: Daten komprimiert als Base64 im IndexedDB-Eintrag speichern
+    const arrayBuffer = value instanceof ArrayBuffer ? value : await blob.arrayBuffer();
+    return { type: 'base64', data: arrayBufferToBase64(arrayBuffer), mime: blob.type || '' };
 }
 
 // Ausgelagerte Daten laden
@@ -62,6 +91,8 @@ async function loadLargeData(ref) {
     } else if (ref.type === 'blob') {
         const res = await fetch(ref.url);
         return await res.arrayBuffer();
+    } else if (ref.type === 'base64') {
+        return base64ToArrayBuffer(ref.data);
     }
     return null;
 }
@@ -98,7 +129,7 @@ async function getItemInternal(key) {
     if (!result) return null;
     // Gespeicherten String direkt zu Daten umwandeln
     const data = JSON.parse(result);
-    if (data && (data.type === 'opfs' || data.type === 'blob')) {
+    if (data && (data.type === 'opfs' || data.type === 'blob' || data.type === 'base64')) {
         return await loadLargeData(data);
     }
     return data;
@@ -154,8 +185,8 @@ async function keysInternal() {
 export function createIndexedDbBackend() {
     const hasOpfs = typeof navigator !== 'undefined' && navigator.storage && navigator.storage.getDirectory;
     const capabilities = {
-        blobs: hasOpfs ? 'opfs' : 'file', // bevorzugt OPFS, sonst Datei-Fallback
-        atomicWrite: true                 // IndexedDB-Transaktionen sind atomar
+        blobs: hasOpfs ? 'opfs' : 'base64', // bevorzugt OPFS, sonst Base64 im Store
+        atomicWrite: true                  // IndexedDB-Transaktionen sind atomar
     };
     return {
         getItem: key => getItemInternal(key),

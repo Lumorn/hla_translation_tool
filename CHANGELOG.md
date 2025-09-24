@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.363
+* `web/src/storage/indexedDbBackend.js` speichert große Dateien bei blockiertem OPFS automatisch als Base64 in IndexedDB und verhindert so die `worker-src`-Fehlermeldung im `file://`-Kontext.
+* `web/src/main.js` kennzeichnet den Fallback im UI als „Datei-Modus (Base64)“, damit sofort sichtbar ist, welcher Speicherpfad aktiv ist.
+* README erläutert den neuen Base64-Fallback und listet die angepassten Speicher-Fähigkeiten.
+
 ## 🛠️ Patch in 1.40.362
 * `web/src/main.js` lädt und speichert ignorierte Ordner-Einträge jetzt asynchron, sodass der Datei-Modus (IndexedDB) die Auswahlen dauerhaft behält.
 * README ergänzt den Hinweis, dass der Ordner-Browser ignorierte Dateien dauerhaft merkt.
