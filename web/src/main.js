@@ -5842,18 +5842,29 @@ function addDragAndDropHandlers() {
 }
 
 // Registriert Rechtsklick-Handler für Pfad-Zellen, um Details anzuzeigen
+let pathCellDocumentClickHandler = null;
+
 function addPathCellContextMenus() {
     document.querySelectorAll('.path-cell').forEach(cell => {
+        if (cell.dataset.pathMenuBound === '1') {
+            return;
+        }
+        cell.dataset.pathMenuBound = '1';
         cell.addEventListener('contextmenu', e => {
+            // Kontextmenü anzeigen ohne mehrfachen Listener-Aufbau
             e.preventDefault();
             cell.classList.toggle('show-path');
         });
     });
-    document.addEventListener('click', e => {
-        if (!e.target.closest('.path-cell')) {
-            document.querySelectorAll('.path-cell.show-path').forEach(c => c.classList.remove('show-path'));
-        }
-    });
+    if (!pathCellDocumentClickHandler) {
+        // Nur einen globalen Klick-Handler registrieren, um Speicherlecks zu vermeiden
+        pathCellDocumentClickHandler = e => {
+            if (!e.target.closest('.path-cell')) {
+                document.querySelectorAll('.path-cell.show-path').forEach(c => c.classList.remove('show-path'));
+            }
+        };
+        document.addEventListener('click', pathCellDocumentClickHandler);
+    }
 }
 
 // Prüft bei allen Download-Buttons den Status und aktiviert sie ggf.
