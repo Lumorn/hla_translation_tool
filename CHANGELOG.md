@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.362
+* `web/src/main.js` lädt und speichert ignorierte Ordner-Einträge jetzt asynchron, sodass der Datei-Modus (IndexedDB) die Auswahlen dauerhaft behält.
+* README ergänzt den Hinweis, dass der Ordner-Browser ignorierte Dateien dauerhaft merkt.
+
 ## 🛠️ Patch in 1.40.361
 * `web/src/main.js` markiert Pfad-Zellen nach dem Binden mit einem Datenattribut und registriert den globalen Klick-Listener nur ein einziges Mal, sodass sich keine stetig wachsende Zahl an Handlern ansammelt und die Oberfläche nach langer Laufzeit flott bleibt.
 * README beschreibt das behobene Performance-Problem und nennt die neue Schutzlogik für den Dokument-Listener.

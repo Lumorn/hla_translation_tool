@@ -8726,7 +8726,10 @@ function getBrowserDebugPathInfo(file) {
 // =========================== GETBROWSERDEBUGPATHINFO END ===========================
 
 // =========================== SHOWFOLDERFILES START ===========================
-function showFolderFiles(folderName) {
+async function showFolderFiles(folderName) {
+    // Sicherstellen, dass Ignorier-Informationen vorliegen
+    await ignoredFilesLoaded;
+
     const folderGrid      = document.getElementById('folderGrid');
     const folderFilesView = document.getElementById('folderFilesView');
     const folderBackBtn   = document.getElementById('folderBackBtn');
@@ -16133,18 +16136,37 @@ function addFileToProject(filename, folder) {
 
 // =========================== IGNOREDFILES VAR START ===========================
 let ignoredFiles = {};               // fileKey -> true
+let ignoredFilesLoaded = Promise.resolve(); // Merker für asynchrones Laden
 
 function loadIgnoredFiles() {
-    try {
-        const raw = storage.getItem('ignoredFiles');
-        ignoredFiles = raw ? JSON.parse(raw) : {};
-    } catch (e) {
-        ignoredFiles = {};
-    }
+    // Laden immer über Promise abwickeln, damit auch asynchrone Speicher funktionieren
+    ignoredFilesLoaded = (async () => {
+        try {
+            const raw = await storage.getItem('ignoredFiles');
+            ignoredFiles = raw ? JSON.parse(raw) : {};
+        } catch (e) {
+            console.warn('Ignorierte Dateien konnten nicht geladen werden:', e);
+            ignoredFiles = {};
+        }
+    })();
+
+    ignoredFilesLoaded.then(() => {
+        // Nach erfolgreichem Laden Statistiken aktualisieren
+        if (typeof refreshGlobalStatsAndGrids === 'function') {
+            refreshGlobalStatsAndGrids();
+        }
+    });
+
+    return ignoredFilesLoaded;
 }
 
-function saveIgnoredFiles() {
-    storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
+async function saveIgnoredFiles() {
+    // Sicherstellen, dass Schreiben unabhängig vom Backend funktioniert
+    try {
+        await storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
+    } catch (e) {
+        console.error('Ignorierte Dateien konnten nicht gespeichert werden:', e);
+    }
 }
 
 // Beim Start laden
@@ -16152,7 +16174,10 @@ loadIgnoredFiles();
 // =========================== IGNOREDFILES VAR END ===========================
 
 // =========================== TOGGLESKIPFILE START ===========================
-function toggleSkipFile(folder, filename) {
+async function toggleSkipFile(folder, filename) {
+    // Zuerst warten, bis der aktuelle Ignorier-Stand geladen ist
+    await ignoredFilesLoaded;
+
     const fileKey = `${folder}/${filename}`;
 
     if (ignoredFiles[fileKey]) {
@@ -16163,10 +16188,10 @@ function toggleSkipFile(folder, filename) {
         debugLog(`[IGNORED] Markiert: ${fileKey}`);
     }
 
-    saveIgnoredFiles();
+    await saveIgnoredFiles();
 
     // UI & Statistiken sofort aktualisieren
-    showFolderFiles(folder);          // aktuelle Ansicht neu rendern
+    await showFolderFiles(folder);    // aktuelle Ansicht neu rendern
     refreshGlobalStatsAndGrids();     // eigene Hilfs-Funktion, s. ganz unten
 }
 // =========================== TOGGLESKIPFILE END ===========================
