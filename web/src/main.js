@@ -59,10 +59,10 @@ function updateStorageIndicator(mode) {
     if (!indicator || !button) return;
     // Klarer Text für beide Modi
     let text = mode === 'indexedDB' ? 'Datei-Modus (OPFS)' : 'LocalStorage';
-    // Zusatzhinweis, falls keine OPFS-Unterstützung vorhanden ist
+    // Zusatzhinweis, falls das IndexedDB-Backend auf den Base64-Fallback ausweicht
     const caps = window.storage && window.storage.capabilities;
-    if (mode === 'indexedDB' && caps && caps.blobs !== 'opfs') {
-        text = 'Datei-Modus (ohne OPFS)';
+    if (mode === 'indexedDB' && caps) {
+        text = caps.blobs === 'opfs' ? 'Datei-Modus (OPFS)' : 'Datei-Modus (Base64)';
     }
     indicator.textContent = text;
     button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu Datei-Modus';
@@ -17056,7 +17056,7 @@ function quickAddLevel(chapterName) {
                 let mode = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'Datei-Modus' : 'LocalStorage';
                 if (mode === 'Datei-Modus') {
                     const caps = window.storage && window.storage.capabilities;
-                    mode = (caps && caps.blobs !== 'opfs') ? 'Datei-Modus (ohne OPFS)' : 'Datei-Modus (OPFS)';
+                    mode = (caps && caps.blobs !== 'opfs') ? 'Datei-Modus (Base64)' : 'Datei-Modus (OPFS)';
                 }
                 // Bei Speicherhinweisen den Modus ergänzen
                 if (message.toLowerCase().includes('gespeichert')) {
