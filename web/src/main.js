@@ -17,6 +17,7 @@ if (typeof module === 'undefined' || !module.exports) {
         window.migrateStorage = migrateStorage;
         window.acquireProjectLock = acquireProjectLock;
         // Wörterbuch aus dem gewählten Speicher laden
+        await loadIgnoredFiles();
         await loadWordLists();
         // Bei aktivem Datei-Modus nach Altlasten im LocalStorage suchen
         if (storageMode === 'indexedDB') {
@@ -42,6 +43,7 @@ if (typeof module === 'undefined' || !module.exports) {
                     storage = createStorage(mode);
                     window.storage = storage;
                     updateStorageIndicator(mode);
+                    loadIgnoredFiles();
                     // Nach Moduswechsel Wörterbuch neu laden
                     loadWordLists();
                     ov.remove();
@@ -93,6 +95,7 @@ async function switchStorage(targetMode) {
     // Beim Wechsel werden keine Daten übertragen
     resetGlobalState();
     window.storage = newBackend;
+    await loadIgnoredFiles();
     // Aktive Projekt-Locks sichern, damit parallele Tabs ihre Sperren behalten
     const gesicherteLocks = {};
     for (const key of Object.keys(window.localStorage)) {
@@ -144,6 +147,9 @@ function resetGlobalState() {
     if (typeof audioDurationCache !== 'undefined') audioDurationCache = {};
     if (typeof historyPresenceCache !== 'undefined') historyPresenceCache = {};
     if (typeof folderCustomizations !== 'undefined') folderCustomizations = {};
+    if (typeof folderStates !== 'undefined') folderStates = {};
+    if (typeof ignoredFiles !== 'undefined') ignoredFiles = {};
+    if (typeof ignoredFilesLoaded !== 'undefined') ignoredFilesLoaded = Promise.resolve();
     if (typeof isDirty !== 'undefined') isDirty = false;
     if (typeof aktiveOrdnerDateien !== 'undefined') aktiveOrdnerDateien = [];
     if (typeof segmentInfo !== 'undefined') segmentInfo = null;
@@ -291,6 +297,7 @@ let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let audioDurationCache    = {}; // Cache für ermittelte Audiodauern
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
+let folderStates           = {}; // Zustände pro Ordner (z. B. ignorierte Dateien)
 let isDirty                = false; // Merker für ungespeicherte Änderungen
 let saveDelayTimer         = null;  // Timer für verzögertes Speichern
 
@@ -8726,7 +8733,10 @@ function getBrowserDebugPathInfo(file) {
 // =========================== GETBROWSERDEBUGPATHINFO END ===========================
 
 // =========================== SHOWFOLDERFILES START ===========================
-function showFolderFiles(folderName) {
+async function showFolderFiles(folderName) {
+    // Sicherstellen, dass Ignorier-Informationen vorliegen
+    await ignoredFilesLoaded;
+
     const folderGrid      = document.getElementById('folderGrid');
     const folderFilesView = document.getElementById('folderFilesView');
     const folderBackBtn   = document.getElementById('folderBackBtn');
@@ -9941,6 +9951,7 @@ function checkFileAccess() {
                 textDatabase: textDatabase,
                 filePathDatabase: filePathDatabase,
                 folderCustomizations: folderCustomizations,
+                folderStates: folderStates,
                 levelColors: levelColors,
                 levelOrders: levelOrders,
                 levelIcons: levelIcons,
@@ -10141,7 +10152,7 @@ function checkFileAccess() {
             try {
                 const text = await file.text();
                 const backup = JSON.parse(text);
-                applyBackupData(backup);
+                await applyBackupData(backup);
             } catch (err) {
                 alert('Fehler beim Importieren: ' + err.message);
             }
@@ -10618,7 +10629,7 @@ function checkFileAccess() {
                     content = entry.data;
                 }
                 const backup = JSON.parse(content);
-                applyBackupData(backup);
+                await applyBackupData(backup);
             } catch (err) {
                 alert('Fehler beim Wiederherstellen: ' + err.message);
             }
@@ -10644,7 +10655,7 @@ function checkFileAccess() {
 // =========================== STARTAUTOBACKUP END =========================
 
 // =========================== APPLYBACKUPDATA START =======================
-        function applyBackupData(backup) {
+        async function applyBackupData(backup) {
             if (!backup.version || !backup.projects) {
                 throw new Error('Ungültiges Backup-Format');
             }
@@ -10661,7 +10672,14 @@ function checkFileAccess() {
             levelIcons = backup.levelIcons || {};
             autoBackupInterval = backup.autoBackupInterval || autoBackupInterval;
             autoBackupLimit = backup.autoBackupLimit || autoBackupLimit;
-            ignoredFiles = backup.ignoredFiles || {};
+            if (backup.folderStates) {
+                folderStates = backup.folderStates;
+            } else {
+                folderStates = convertLegacyIgnoredMap(backup.ignoredFiles || {});
+            }
+            rebuildIgnoredLookup();
+            ignoredFilesLoaded = Promise.resolve();
+            await saveIgnoredFiles(true);
             elevenLabsApiKey = backup.elevenLabsApiKey || elevenLabsApiKey;
 
             let migrationNeeded = false;
@@ -10687,7 +10705,7 @@ function checkFileAccess() {
             saveLevelColors();
             saveLevelOrders();
             saveLevelIcons();
-            saveIgnoredFiles();
+            saveIgnoredFiles(true);
             storage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
             storage.setItem('hla_autoBackupInterval', autoBackupInterval);
             storage.setItem('hla_autoBackupLimit', autoBackupLimit);
@@ -16132,19 +16150,92 @@ function addFileToProject(filename, folder) {
 // =========================== IMPROVED SEARCH FUNCTION END ===========================
 
 // =========================== IGNOREDFILES VAR START ===========================
-let ignoredFiles = {};               // fileKey -> true
+let ignoredFiles = {};               // fileKey -> true (Laufzeit-Lookup)
+let ignoredFilesLoaded = Promise.resolve(); // Merker für asynchrones Laden
 
-function loadIgnoredFiles() {
-    try {
-        const raw = storage.getItem('ignoredFiles');
-        ignoredFiles = raw ? JSON.parse(raw) : {};
-    } catch (e) {
-        ignoredFiles = {};
+function rebuildIgnoredLookup() {
+    // Laufzeit-Lookup komplett neu zusammensetzen
+    const lookup = {};
+    for (const [folder, state] of Object.entries(folderStates)) {
+        const list = Array.isArray(state?.ignoredFiles) ? state.ignoredFiles : [];
+        for (const name of list) {
+            lookup[`${folder}/${name}`] = true;
+        }
     }
+    ignoredFiles = lookup;
 }
 
-function saveIgnoredFiles() {
-    storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
+function convertLegacyIgnoredMap(legacyMap) {
+    const result = {};
+    for (const [key, flag] of Object.entries(legacyMap || {})) {
+        if (!flag) continue;
+        const idx = key.lastIndexOf('/');
+        if (idx === -1) continue;
+        const folder = key.slice(0, idx);
+        const filename = key.slice(idx + 1);
+        if (!filename) continue;
+        if (!result[folder]) {
+            result[folder] = { ignoredFiles: [] };
+        }
+        if (!result[folder].ignoredFiles.includes(filename)) {
+            result[folder].ignoredFiles.push(filename);
+        }
+    }
+    return result;
+}
+
+function loadIgnoredFiles() {
+    // Laden immer über Promise abwickeln, damit auch asynchrone Speicher funktionieren
+    ignoredFilesLoaded = (async () => {
+        try {
+            const rawStates = await storage.getItem('hla_folderStates');
+            if (rawStates) {
+                folderStates = JSON.parse(rawStates) || {};
+            } else {
+                const legacyRaw = await storage.getItem('ignoredFiles');
+                const legacyMap = legacyRaw ? JSON.parse(legacyRaw) : {};
+                folderStates = convertLegacyIgnoredMap(legacyMap);
+                if (Object.keys(legacyMap).length) {
+                    await saveIgnoredFiles(true);
+                }
+            }
+        } catch (e) {
+            console.warn('Ignorierte Dateien konnten nicht geladen werden:', e);
+            folderStates = {};
+        }
+        rebuildIgnoredLookup();
+    })();
+
+    ignoredFilesLoaded.then(() => {
+        // Nach erfolgreichem Laden Statistiken aktualisieren
+        if (typeof refreshGlobalStatsAndGrids === 'function') {
+            refreshGlobalStatsAndGrids();
+        }
+    });
+
+    return ignoredFilesLoaded;
+}
+
+async function saveIgnoredFiles(removeLegacy = false) {
+    // Sicherstellen, dass Schreiben unabhängig vom Backend funktioniert
+    const serialized = JSON.stringify(folderStates);
+    try {
+        if (typeof storage.runTransaction === 'function') {
+            await storage.runTransaction(tx => {
+                tx.setItem('hla_folderStates', serialized);
+                if (removeLegacy && typeof tx.removeItem === 'function') {
+                    tx.removeItem('ignoredFiles');
+                }
+            });
+        } else {
+            await storage.setItem('hla_folderStates', serialized);
+            if (removeLegacy && typeof storage.removeItem === 'function') {
+                await storage.removeItem('ignoredFiles');
+            }
+        }
+    } catch (e) {
+        console.error('Ignorierte Dateien konnten nicht gespeichert werden:', e);
+    }
 }
 
 // Beim Start laden
@@ -16152,21 +16243,42 @@ loadIgnoredFiles();
 // =========================== IGNOREDFILES VAR END ===========================
 
 // =========================== TOGGLESKIPFILE START ===========================
-function toggleSkipFile(folder, filename) {
+async function toggleSkipFile(folder, filename) {
+    // Zuerst warten, bis der aktuelle Ignorier-Stand geladen ist
+    await ignoredFilesLoaded;
+
     const fileKey = `${folder}/${filename}`;
 
-    if (ignoredFiles[fileKey]) {
-        delete ignoredFiles[fileKey];
+    const state = folderStates[folder] || {};
+    const list = Array.isArray(state.ignoredFiles) ? [...state.ignoredFiles] : [];
+    const idx = list.indexOf(filename);
+
+    if (idx !== -1) {
+        list.splice(idx, 1);
         debugLog(`[IGNORED] Aufgehoben: ${fileKey}`);
     } else {
-        ignoredFiles[fileKey] = true;
+        list.push(filename);
         debugLog(`[IGNORED] Markiert: ${fileKey}`);
     }
 
-    saveIgnoredFiles();
+    if (list.length > 0) {
+        state.ignoredFiles = list;
+        folderStates[folder] = state;
+    } else {
+        delete state.ignoredFiles;
+        if (Object.keys(state).length === 0) {
+            delete folderStates[folder];
+        } else {
+            folderStates[folder] = state;
+        }
+    }
+
+    rebuildIgnoredLookup();
+
+    await saveIgnoredFiles(true);
 
     // UI & Statistiken sofort aktualisieren
-    showFolderFiles(folder);          // aktuelle Ansicht neu rendern
+    await showFolderFiles(folder);    // aktuelle Ansicht neu rendern
     refreshGlobalStatsAndGrids();     // eigene Hilfs-Funktion, s. ganz unten
 }
 // =========================== TOGGLESKIPFILE END ===========================

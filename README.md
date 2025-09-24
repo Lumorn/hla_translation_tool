@@ -825,6 +825,10 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | **Sortierung ändern**     | Klick auf Spalten‑Header                          |
 | **Datei löschen**         | × am Zeilenende oder Context‑Menu                 |
 
+Ignorierte Einträge merkt sich der Ordner-Browser jetzt dauerhaft – unabhängig davon, ob LocalStorage oder der Datei-Modus aktiv ist.
+Die Auswahl landet dabei pro Ordner im Schlüssel `hla_folderStates` des gewählten Speichers und wird bei jedem Wechsel erneut geladen.
+Bestehende Installationen, die noch den alten Eintrag `ignoredFiles` nutzen, werden beim ersten Öffnen automatisch in die neue Struktur übertragen.
+
 ### Audio & Text
 
 |  Aktion                    |  Bedienung |
