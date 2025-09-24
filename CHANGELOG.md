@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.361
+* `web/src/main.js` markiert Pfad-Zellen nach dem Binden mit einem Datenattribut und registriert den globalen Klick-Listener nur ein einziges Mal, sodass sich keine stetig wachsende Zahl an Handlern ansammelt und die Oberfläche nach langer Laufzeit flott bleibt.
+* README beschreibt das behobene Performance-Problem und nennt die neue Schutzlogik für den Dokument-Listener.
+
 ## 🛠️ Patch in 1.40.360
 * README strukturiert das komplette Feature-Archiv jetzt mit einklappbaren Kapiteln, ergänzt einen Schnellüberblick und erweitert das Inhaltsverzeichnis für eine schnellere Orientierung.
 

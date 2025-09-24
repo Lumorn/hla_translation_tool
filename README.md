@@ -1043,6 +1043,10 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * ▶ **Lösung:** Haupt‑Audio‑Ordner erneut einlesen
 * ▶ **Prüfung:** Debug‑Spalte zeigt Pfad‑Status
 
+**🐢 Oberfläche wird nach langer Laufzeit träge**
+* ▶ **Ursache:** Vor Version 1.40.361 legte jede Aktualisierung der Dateitabelle einen weiteren globalen Klick-Listener auf dem Dokument ab. Mit zunehmender Laufzeit sammelten sich dadurch hunderte Handler an und jeder Klick prüfte alle Pfad-Zellen erneut.
+* ▶ **Fix:** Die Pfad-Spalte markiert gebundene Zellen jetzt mit `data-path-menu-bound` und registriert den Dokument-Listener nur einmal. Damit bleibt die Oberfläche auch nach vielen Stunden responsiv.
+
 **⚠️ Spur manuell generieren oder Beta freischalten**
 * ▶ **Ursache:** Die gewählte Sprachspur konnte nicht automatisch heruntergeladen werden.
 * ▶ **Lösung:** Spur im Studio manuell generieren oder Beta-Zugang für den Auto-Download freischalten.
