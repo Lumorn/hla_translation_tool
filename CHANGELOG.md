@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.371
+* `web/src/gptService.js` bevorzugt bei Responses-Antworten jetzt echte Ausgabeblöcke und überspringt Reasoning-Texte, damit `gpt-5-chat-latest` zuverlässig JSON liefert.
+* `tests/gptService.test.js` simuliert einen Reasoning-Block im Responses-Format und prüft, dass nur der eigentliche Output übernommen wird.
+* README beschreibt die automatische Filterung der Reasoning-Blöcke und die stabileren Bewertungen mit GPT‑5.
+
 ## 🛠️ Patch in 1.40.370
 * `web/src/gptService.js` liest Fehlermeldungen der OpenAI-API vollständig ein, ergänzt sie bei HTTP-Fehlern um den Originaltext und verhindert so rätselhafte `HTTP 400`-Hinweise bei GPT‑5.
 * `tests/gptService.test.js` simuliert die neuen Antwortpfade über `response.text()`, damit die Testumgebung das verbesserte Fehler-Parsing abdeckt.

@@ -119,6 +119,28 @@ test('verwendet den Responses-Endpunkt für gpt-5-Modelle', async () => {
   expect(res).toEqual([{ id: 1, score: 7, projectId: 'p1' }]);
 });
 
+test('ignoriert Reasoning-Blöcke bei Responses-Ausgaben', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  const payload = {
+    output: [
+      {
+        content: [
+          { type: 'reasoning', text: 'Denke laut, aber liefere kein JSON.' },
+          { type: 'output_text', text: '[{"id":1,"score":9}]' }
+        ]
+      }
+    ]
+  };
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => payload,
+    text: async () => JSON.stringify(payload)
+  });
+  const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
+  const res = await evaluateScene({ scene: 'y', lines, key: 'key', model: 'gpt-5-chat-latest', retries: 1, projectId: 'p1' });
+  expect(res).toEqual([{ id: 1, score: 9, projectId: 'p1' }]);
+});
+
 test('generateEmotionText liefert Objekt mit Begründung', async () => {
   const { generateEmotionText } = require('../web/src/gptService.js');
   const payload = { choices: [{ message: { content: '{"text":"hi","reason":"ok"}' } }] };
