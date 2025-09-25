@@ -16142,8 +16142,26 @@ function loadIgnoredFiles() {
     // Laden immer über Promise abwickeln, damit auch asynchrone Speicher funktionieren
     ignoredFilesLoaded = (async () => {
         try {
-            const raw = await storage.getItem('ignoredFiles');
-            ignoredFiles = raw ? JSON.parse(raw) : {};
+            let electronData = null;
+            if (window.electronAPI && window.electronAPI.loadIgnoredFiles) {
+                try {
+                    electronData = await window.electronAPI.loadIgnoredFiles();
+                } catch (err) {
+                    console.warn('Electron konnte die Ignorierliste nicht liefern:', err);
+                }
+            }
+
+            if (electronData && typeof electronData === 'object' && !Array.isArray(electronData)) {
+                ignoredFiles = electronData;
+                try {
+                    await storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
+                } catch (syncErr) {
+                    console.warn('Lokaler Abgleich der Ignorierliste fehlgeschlagen:', syncErr);
+                }
+            } else {
+                const raw = await storage.getItem('ignoredFiles');
+                ignoredFiles = raw ? JSON.parse(raw) : {};
+            }
         } catch (e) {
             console.warn('Ignorierte Dateien konnten nicht geladen werden:', e);
             ignoredFiles = {};
@@ -16166,6 +16184,14 @@ async function saveIgnoredFiles() {
         await storage.setItem('ignoredFiles', JSON.stringify(ignoredFiles));
     } catch (e) {
         console.error('Ignorierte Dateien konnten nicht gespeichert werden:', e);
+    }
+
+    if (window.electronAPI && window.electronAPI.saveIgnoredFiles) {
+        try {
+            await window.electronAPI.saveIgnoredFiles(ignoredFiles);
+        } catch (err) {
+            console.error('Electron konnte die Ignorierliste nicht speichern:', err);
+        }
     }
 }
 

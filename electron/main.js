@@ -126,6 +126,7 @@ process.on('unhandledRejection', (reason) => offerDebugReport(reason));
 // Pfad zur Datei mit den gespeicherten Video-Bookmarks
 const dataPath = app.getPath('userData');
 const bookmarkFile = path.join(dataPath, 'videoBookmarks.json');
+const ignoredFilesFile = path.join(dataPath, 'ignoredFiles.json');
 
 // Liest vorhandene Bookmarks aus der JSON-Datei
 function readBookmarks() {
@@ -149,6 +150,31 @@ function saveBookmarks(list) {
   }
 }
 // =========================== VIDEO-BOOKMARKS END ============================
+
+// =========================== IGNORIERTE DATEIEN START =======================
+// Liest die ignorierten Dateien aus dem Nutzerverzeichnis
+function readIgnoredFiles() {
+  try {
+    if (fs.existsSync(ignoredFilesFile)) {
+      const txt = fs.readFileSync(ignoredFilesFile, 'utf8');
+      if (txt.trim()) return JSON.parse(txt);
+    }
+  } catch (err) {
+    console.error('Ignorierliste konnte nicht geladen werden', err);
+  }
+  return {};
+}
+
+// Speichert die ignorierten Dateien im Nutzerverzeichnis
+function saveIgnoredFiles(list) {
+  try {
+    const payload = list && typeof list === 'object' ? list : {};
+    fs.writeFileSync(ignoredFilesFile, JSON.stringify(payload, null, 2));
+  } catch (err) {
+    console.error('Ignorierliste konnte nicht gespeichert werden', err);
+  }
+}
+// =========================== IGNORIERTE DATEIEN END =========================
 
 
 // Pfade zu EN und DE relativ zur HTML-Datei
@@ -538,6 +564,13 @@ app.whenReady().then(() => {
       list.splice(idx, 1);
       saveBookmarks(list);
     }
+    return true;
+  });
+
+  // Ignorierte Dateien laden und speichern
+  ipcMain.handle('load-ignored-files', () => readIgnoredFiles());
+  ipcMain.handle('save-ignored-files', (event, data) => {
+    saveIgnoredFiles(data);
     return true;
   });
 

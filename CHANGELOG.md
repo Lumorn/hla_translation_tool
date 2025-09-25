@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.364
+* `electron/main.js` speichert ignorierte Ordner-Dateien jetzt als `ignoredFiles.json` im Nutzerverzeichnis und stellt passende IPC-Handler bereit.
+* `electron/preload.cjs` reicht neue `loadIgnoredFiles`- und `saveIgnoredFiles`-Brücken an den Renderer weiter.
+* `web/src/main.js` synchronisiert die Ignorierliste zwischen Electron-Speicher und Browser-Backend, damit Markierungen nach einem Neustart erhalten bleiben.
+* README nennt das neue Speicherziel der Ignorierliste in der Desktop-Version.
+
 ## 🛠️ Patch in 1.40.363
 * `web/src/storage/indexedDbBackend.js` speichert große Dateien bei blockiertem OPFS automatisch als Base64 in IndexedDB und verhindert so die `worker-src`-Fehlermeldung im `file://`-Kontext.
 * `web/src/main.js` kennzeichnet den Fallback im UI als „Datei-Modus (Base64)“, damit sofort sichtbar ist, welcher Speicherpfad aktiv ist.
