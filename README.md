@@ -948,6 +948,8 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des j
 Diese Wartungsfunktionen findest du nun gesammelt im neuen **⚙️ Einstellungen**‑Knopf oben rechts.
 Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal AES‑verschlüsselt im Nutzerordner gespeichert und lässt sich über einen Test-Knopf prüfen. Der verwendete Verschlüsselungsschlüssel stammt aus der Umgebungsvariable `HLA_ENC_KEY`; pro Speicherung wird ein zufälliger IV erzeugt und zusammen mit dem Ciphertext abgelegt. Nach erfolgreichem Test kannst du die Liste der verfügbaren Modelle abrufen (↻) und eines auswählen. Die Modell-Liste wird 24&nbsp;Stunden zwischengespeichert. Vor dem Senden wird die geschätzte Tokenzahl angezeigt, ab 75k folgt ein Warnhinweis. Der Bewertungs‑Prompt liegt in `prompts/gpt_score.txt`. Beim Start der Bewertung öffnet sich zusätzlich eine Konsole, die alle GPT-Nachrichten anzeigt.
 
+Neu hinzugekommen ist eine automatische Erkennung der modernen **Responses-API** von OpenAI. Modelle wie `gpt-4.1` oder `gpt-5.0` funktionieren jetzt ohne Anpassungen; das Tool wählt intern den passenden Endpunkt und interpretiert die Antworten korrekt als JSON. Dadurch lassen sich auch kommende GPT‑Generationen verwenden, ohne dass Konfigurationsdateien angepasst werden müssen.
+
 ---
 
 ## 💾 Backup

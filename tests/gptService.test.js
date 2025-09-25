@@ -92,6 +92,18 @@ test('fasst doppelte Zeilen zusammen', async () => {
   ]);
 });
 
+test('verwendet den Responses-Endpunkt für gpt-5-Modelle', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => ({ output_text: '[{"id":1,"score":7}]' })
+  });
+  const lines = [{ id: 1, character: '', en: 'a', de: 'b' }];
+  const res = await evaluateScene({ scene: 'x', lines, key: 'key', model: 'gpt-5.0', retries: 1, projectId: 'p1' });
+  expect(jestFetch).toHaveBeenCalledWith('https://api.openai.com/v1/responses', expect.any(Object));
+  expect(res).toEqual([{ id: 1, score: 7, projectId: 'p1' }]);
+});
+
 test('generateEmotionText liefert Objekt mit Begründung', async () => {
   const { generateEmotionText } = require('../web/src/gptService.js');
   jestFetch.mockResolvedValue({

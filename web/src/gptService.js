@@ -3,6 +3,8 @@ let emotionPrompt = '';
 let promptReady;
 // Merker, ob die Zeilen innerhalb eines Projekts fragmentiert sind
 let restMode = false;
+// Zwischenspeicher, um zu erkennen, welche Modelle den neuen Responses-Endpunkt benötigen
+const responsesModelPattern = /^(gpt-4\.1|gpt-5)/i;
 
 // Aktiviert oder deaktiviert den Reste-Modus
 function setRestMode(flag) {
@@ -29,6 +31,64 @@ function sanitizeJSONResponse(content) {
         console.warn('Unerwartetes Antwortformat', text.slice(0, 30));
     }
     return text;
+}
+
+// Prüft, ob ein Modell den neuen Responses-Endpunkt benötigt
+function usesResponsesEndpoint(model) {
+    return responsesModelPattern.test(model || '');
+}
+
+// Wandelt Chat-Nachrichten in das Responses-Format um
+function toResponsesInput(messages) {
+    return messages.map(msg => ({
+        role: msg.role,
+        content: [{ type: 'input_text', text: msg.content }]
+    }));
+}
+
+// Extrahiert den eigentlichen Antworttext aus beiden API-Varianten
+function extractAssistantText(data) {
+    if (data?.choices?.[0]?.message?.content) {
+        return data.choices[0].message.content;
+    }
+    if (typeof data?.output_text === 'string' && data.output_text.trim().length > 0) {
+        return data.output_text;
+    }
+    if (Array.isArray(data?.output)) {
+        for (const item of data.output) {
+            if (!item || !Array.isArray(item.content)) continue;
+            for (const entry of item.content) {
+                if (typeof entry?.text === 'string' && entry.text.trim().length > 0) {
+                    return entry.text;
+                }
+            }
+        }
+    }
+    throw new Error('Antwort enthielt keinen Text');
+}
+
+// Sendet eine Anfrage an die passende OpenAI-API und liefert den Antworttext
+async function requestAssistantText({ messages, key, model, temperature = 0, retries = 5 }) {
+    const useResponses = usesResponsesEndpoint(model);
+    const url = useResponses
+        ? 'https://api.openai.com/v1/responses'
+        : 'https://api.openai.com/v1/chat/completions';
+    const payload = useResponses
+        ? { model, input: toResponsesInput(messages), temperature }
+        : { model, messages, temperature };
+    const response = await queuedFetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key
+        },
+        body: JSON.stringify(payload)
+    }, retries);
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+    const data = await response.json();
+    return extractAssistantText(data);
 }
 
 // Liefert den geladenen System-Prompt
@@ -200,26 +260,16 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             { role: 'system', content: sys },
             { role: 'user', content: JSON.stringify({ scene, lines: chunk }) }
         ];
-        const reqText = JSON.stringify({ model, messages });
+        const endpoint = usesResponsesEndpoint(model) ? 'responses' : 'chat';
+        const reqText = JSON.stringify({ endpoint, model, messages });
         if (typeof window !== 'undefined' && window.debugLog) {
             window.debugLog('[GPT REQUEST]', reqText);
         }
-        console.log('[GPT REQUEST]', { model, messages });
+        console.log('[GPT REQUEST]', { endpoint, model, messages });
         if (ui) appendGptLog(ui, '>> ' + reqText);
         try {
-            const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + key
-                },
-                body: JSON.stringify({ model, messages, temperature: 0 })
-            }, retries);
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
-            const data = await res.json();
-            const clean = sanitizeJSONResponse(data.choices[0].message.content);
+            const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
+            const clean = sanitizeJSONResponse(raw);
             const arr = JSON.parse(clean);
             const resText = JSON.stringify(arr);
             if (typeof window !== 'undefined' && window.debugLog) {
@@ -264,17 +314,8 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
         { role: 'system', content: emoSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
-    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + key
-        },
-        body: JSON.stringify({ model, messages, temperature: 0 })
-    }, retries);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
+    const clean = sanitizeJSONResponse(raw);
     const obj = JSON.parse(clean);
     return obj;
 }
@@ -297,17 +338,8 @@ async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, k
         { role: 'system', content: adjSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
-    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + key
-        },
-        body: JSON.stringify({ model, messages, temperature: 0 })
-    }, retries);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
+    const clean = sanitizeJSONResponse(raw);
     const obj = JSON.parse(clean);
     return obj;
 }
@@ -332,17 +364,8 @@ async function improveEmotionText({ meta, lines, targetPosition, currentText, cu
         { role: 'system', content: impSys },
         { role: 'user', content: JSON.stringify(payload) }
     ];
-    const res = await queuedFetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + key
-        },
-        body: JSON.stringify({ model, messages, temperature: 0 })
-    }, retries);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const clean = sanitizeJSONResponse(data.choices[0].message.content);
+    const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
+    const clean = sanitizeJSONResponse(raw);
     const arr = JSON.parse(clean);
     return arr;
 }

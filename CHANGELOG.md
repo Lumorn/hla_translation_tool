@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.369
+* `web/src/gptService.js` erkennt GPT-5-Modelle automatisch und nutzt bei Bedarf den neuen Responses-Endpunkt inklusive gemeinsamer JSON-Auswertung.
+* `tests/gptService.test.js` prüft den Responses-Pfad mit einem simulierten `gpt-5.0`-Modell.
+* README dokumentiert die zusätzliche Responses-Unterstützung für kommende GPT-Generationen.
+
 ## 🛠️ Patch in 1.40.368
 * `web/hla_translation_tool.html` ergänzt ein neues Kopier-Häkchen, das bei Bedarf „extrem schnell reden“ in Emotionstags einfügt.
 * `web/src/main.js` erweitert das Kopieren einzelner und aller Emotional-Texte um die optionale Schnellsprech-Anweisung.
