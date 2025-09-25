@@ -500,6 +500,9 @@ let autoRetryDone      = false; // wurde eine fehlgeschlagene Übersetzung nach 
 let translateQueue     = [];
 let translateRunning   = false;
 let translateCounter   = 0;
+let currentTranslateProjectId = null; // merkt das Projekt der aktiven Übersetzung
+let activeTranslateQueue      = null; // aktuell abgearbeitete Dateien
+let activeTranslateIndex      = 0;    // Fortschritt innerhalb der aktiven Warteschlange
 const pendingTranslations = new Map();
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
@@ -1829,6 +1832,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 markDirty();
                 updateTranslationDisplay(file.id);
                 resolve(text);
+                updateTranslationQueueDisplay();
             });
         }
         if (window.electronAPI.onSoundBackupProgress) {
@@ -2898,7 +2902,7 @@ let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSourc
         autoRetryDone = true;
     }
 
-    runTranslationQueue(needTrans);
+    runTranslationQueue(needTrans, currentProject?.id);
 
     renderFileTable();
 
@@ -2910,6 +2914,7 @@ let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSourc
     updateProgressStats();
     updateGlobalProjectProgress();
     updateProjectMetaBar();          //  <-- NEU!
+    updateTranslationQueueDisplay();
     // Debug-Ausgabe: Ende der Projektwahl
     console.log('[DEBUG] selectProject abgeschlossen', { id, name: currentProject?.name, dateien: files.length });
 }
@@ -4232,10 +4237,10 @@ function addFiles() {
             if (!contextMenuFile) return;
             hideAutoTransMenu();
             if (action === 'line') {
-                runTranslationQueue([contextMenuFile]);
+                runTranslationQueue([contextMenuFile], currentProject?.id);
             } else if (action === 'all') {
                 const all = files.filter(f => f.enText);
-                runTranslationQueue(all);
+                runTranslationQueue(all, currentProject?.id);
             }
         }
 
@@ -6065,22 +6070,179 @@ function updateEmoReasonDisplay(fileId) {
     }
 }
 
-async function runTranslationQueue(queue) {
-    if (translateRunning || !queue || queue.length === 0) return;
-    translateRunning = true;
+function mergeTranslationQueue(target, additions) {
+    if (!target || !additions) return;
+    const existingIds = new Set(target.map(item => item?.id));
+    additions.forEach(item => {
+        if (!item || !item.id || existingIds.has(item.id)) return;
+        target.push(item);
+        existingIds.add(item.id);
+    });
+}
+
+function updateTranslationQueueDisplay() {
     const progress = document.getElementById('translateProgress');
     const status   = document.getElementById('translateStatus');
     const fill     = document.getElementById('translateFill');
-    progress.classList.add('active');
-    for (let i = 0; i < queue.length; i++) {
-        status.textContent = `Übersetze ${i + 1}/${queue.length}...`;
-        await updateAutoTranslation(queue[i], true);
-        fill.style.width = `${Math.round(((i + 1) / queue.length) * 100)}%`;
+    if (!progress || !status || !fill) return;
+
+    if (!currentProject) {
+        progress.classList.remove('active');
+        fill.style.width = '0%';
+        status.textContent = '';
+        return;
     }
-    progress.classList.remove('active');
-    fill.style.width = '0%';
-    translateRunning = false;
-    saveCurrentProject();
+
+    if (translateRunning) {
+        const activeProject = projects.find(p => p.id === currentTranslateProjectId);
+        if (currentTranslateProjectId === currentProject.id && activeTranslateQueue) {
+            const total = activeTranslateQueue.length;
+            const done  = Math.min(activeTranslateIndex, total);
+            const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+            progress.classList.add('active');
+            fill.style.width = percent + '%';
+            if (done < total) {
+                status.textContent = `Übersetze ${done + 1}/${total}...`;
+            } else {
+                status.textContent = 'Automatische Übersetzung abgeschlossen.';
+            }
+        } else {
+            progress.classList.add('active');
+            fill.style.width = '0%';
+            const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject.id);
+            if (waitingIndex >= 0) {
+                status.textContent = waitingIndex === 0
+                    ? 'Übersetzung startet, sobald das aktuelle Projekt fertig ist.'
+                    : `Übersetzung wartet (Position ${waitingIndex + 1}).`;
+            } else {
+                status.textContent = activeProject
+                    ? `Übersetzung läuft im Hintergrund für „${activeProject.name}“.`
+                    : 'Übersetzung läuft im Hintergrund.';
+            }
+        }
+    } else {
+        const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject.id);
+        if (waitingIndex >= 0) {
+            progress.classList.add('active');
+            fill.style.width = '0%';
+            status.textContent = waitingIndex === 0
+                ? 'Übersetzung startet in Kürze...'
+                : `Übersetzung wartet (Position ${waitingIndex + 1}).`;
+        } else {
+            progress.classList.remove('active');
+            fill.style.width = '0%';
+            status.textContent = '';
+        }
+    }
+}
+
+async function processActiveTranslationQueue() {
+    if (!activeTranslateQueue || activeTranslateQueue.length === 0) {
+        saveProjects();
+        return;
+    }
+
+    const projectId = currentTranslateProjectId;
+    const progress  = document.getElementById('translateProgress');
+    const status    = document.getElementById('translateStatus');
+    const fill      = document.getElementById('translateFill');
+    const isCurrent = currentProject && currentProject.id === projectId;
+
+    if (isCurrent && progress) {
+        progress.classList.add('active');
+    }
+
+    for (let i = 0; i < activeTranslateQueue.length; i++) {
+        const file = activeTranslateQueue[i];
+        if (!file) continue;
+        const total = activeTranslateQueue.length;
+        activeTranslateIndex = i;
+        if (isCurrent && progress && status && fill) {
+            status.textContent = `Übersetze ${i + 1}/${total}...`;
+            fill.style.width = `${Math.round((i / total) * 100)}%`;
+        } else {
+            updateTranslationQueueDisplay();
+        }
+        await updateAutoTranslation(file, true);
+        if (isCurrent && progress && status && fill) {
+            const total = activeTranslateQueue.length;
+            fill.style.width = `${Math.round(((i + 1) / total) * 100)}%`;
+        } else {
+            updateTranslationQueueDisplay();
+        }
+    }
+
+    activeTranslateIndex = activeTranslateQueue.length;
+    if (isCurrent && progress && status && fill) {
+        progress.classList.remove('active');
+        fill.style.width = '0%';
+        status.textContent = 'Automatische Übersetzung abgeschlossen.';
+    }
+
+    saveProjects();
+}
+
+function processNextTranslationQueue() {
+    if (translateRunning) return;
+
+    const next = translateQueue.shift();
+    if (!next) {
+        updateTranslationQueueDisplay();
+        return;
+    }
+
+    activeTranslateQueue = next.files;
+    activeTranslateIndex = 0;
+    currentTranslateProjectId = next.projectId;
+    translateRunning = true;
+    updateTranslationQueueDisplay();
+
+    processActiveTranslationQueue()
+        .catch(err => {
+            console.error('Fehler in der Übersetzungswarteschlange:', err);
+            if (typeof showToast === 'function') {
+                showToast('Fehler in der Übersetzungswarteschlange: ' + err.message, 'error');
+            }
+        })
+        .finally(() => {
+            translateRunning = false;
+            activeTranslateQueue = null;
+            activeTranslateIndex = 0;
+            currentTranslateProjectId = null;
+            updateTranslationQueueDisplay();
+            if (translateQueue.length > 0) {
+                processNextTranslationQueue();
+            }
+        });
+}
+
+function runTranslationQueue(queue, projectId = currentProject?.id) {
+    if (!queue || queue.length === 0 || !projectId) {
+        updateTranslationQueueDisplay();
+        return;
+    }
+
+    const sanitized = queue.filter(item => item && item.id);
+    if (sanitized.length === 0) {
+        updateTranslationQueueDisplay();
+        return;
+    }
+
+    if (translateRunning && currentTranslateProjectId === projectId && activeTranslateQueue) {
+        mergeTranslationQueue(activeTranslateQueue, sanitized);
+        updateTranslationQueueDisplay();
+        return;
+    }
+
+    const existing = translateQueue.find(entry => entry.projectId === projectId);
+    if (existing) {
+        mergeTranslationQueue(existing.files, sanitized);
+    } else {
+        translateQueue.push({ projectId, files: [...sanitized] });
+    }
+
+    updateTranslationQueueDisplay();
+    processNextTranslationQueue();
 }
 
 // Stellt den letzten Textzustand wieder her

@@ -63,6 +63,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
 * **Bereinigte Abschluss-Logik:** Die früheren UI-Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll` wurden entfernt, weil der Fertig-Status nun vollständig automatisch aus den Projekt- und Dateidaten berechnet wird.
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
+* **Hintergrund-Übersetzungswarteschlange:** Automatische Übersetzungen laufen projektübergreifend weiter; beim Wechsel landen neue Projekte hinten in der Warteschlange und starten, sobald die aktuelle Übersetzung abgeschlossen ist.
 * **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen und generierte Emotionstexte werden unmittelbar dauerhaft gesichert.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
