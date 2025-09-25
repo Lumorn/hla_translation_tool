@@ -825,7 +825,7 @@ Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 | **Sortierung ändern**     | Klick auf Spalten‑Header                          |
 | **Datei löschen**         | × am Zeilenende oder Context‑Menu                 |
 
-Ignorierte Einträge merkt sich der Ordner-Browser jetzt dauerhaft – unabhängig davon, ob LocalStorage oder der Datei-Modus aktiv ist.
+Ignorierte Einträge merkt sich der Ordner-Browser jetzt dauerhaft – unabhängig davon, ob LocalStorage oder der Datei-Modus aktiv ist. In der Desktop-Version landet die Liste zusätzlich als `ignoredFiles.json` im Nutzerverzeichnis (`AppData/Roaming/Half-Life Alyx Translation Tool`), sodass die Markierungen auch nach einem kompletten Neustart garantiert bestehen bleiben.
 
 ### Audio & Text
 

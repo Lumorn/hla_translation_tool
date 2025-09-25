@@ -84,6 +84,8 @@ if (typeof require !== 'function') {
     saveOpenaiSettings: data => ipcRenderer.invoke('save-openai-settings', data),
     loadOpenaiModels: () => ipcRenderer.invoke('load-openai-models'),
     saveOpenaiModels: data => ipcRenderer.invoke('save-openai-models', data),
+    loadIgnoredFiles: () => ipcRenderer.invoke('load-ignored-files'),
+    saveIgnoredFiles: data => ipcRenderer.invoke('save-ignored-files', data),
     // Automatische Steuerung der Dubbing-Seite
     autoDub: data => ipcRenderer.invoke('auto-dub', data),
     captureFrame: bounds => ipcRenderer.invoke('capture-frame', bounds),
