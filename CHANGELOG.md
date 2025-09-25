@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.368
+* `web/hla_translation_tool.html` ergänzt ein neues Kopier-Häkchen, das bei Bedarf „extrem schnell reden“ in Emotionstags einfügt.
+* `web/src/main.js` erweitert das Kopieren einzelner und aller Emotional-Texte um die optionale Schnellsprech-Anweisung.
+* README und Changelog dokumentieren die neue Kopieroption für extrem schnelles Sprechen.
+
 ## 🛠️ Patch in 1.40.367
 * `web/src/main.js` merkt sich die Projekt-ID jeder Übersetzungsanfrage, synchronisiert das Ergebnis mit dem richtigen Projektobjekt und speichert sofort, damit automatische Vorschläge auch nach einem Projektwechsel sichtbar bleiben.
 * README beschreibt die zuverlässige Übernahme der Auto-Übersetzungen trotz laufender Warteschlange.

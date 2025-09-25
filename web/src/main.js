@@ -1577,6 +1577,27 @@ function normalizeEmotionalText(text) {
     return cleaned.trim();
 }
 
+// Fügt in die erste Emotionstag-Klammer die Anweisung „extrem schnell reden“ ein, falls gewünscht
+function addExtremeSpeedInstruction(text) {
+    if (!text) return '';
+    const bracketMatch = text.match(/^\s*\[([^\]]+)\]/);
+    if (!bracketMatch) {
+        return text;
+    }
+    const inner = bracketMatch[1];
+    if (/extrem schnell reden/i.test(inner)) {
+        return text;
+    }
+    const wordMatch = inner.match(/^([^\s,|]+)(.*)$/);
+    if (!wordMatch) {
+        return text;
+    }
+    const first = wordMatch[1];
+    const rest = wordMatch[2] ?? '';
+    const updated = `[${first}, extrem schnell reden${rest}]`;
+    return text.replace(/^\s*\[[^\]]+\]/, updated);
+}
+
 // Kopiert alle Emotionstexte nacheinander in die Zwischenablage
 // Optional: Zeit vorne anfügen und drei Striche am Ende setzen
 async function copyAllEmotionsToClipboard() {
@@ -1584,8 +1605,12 @@ async function copyAllEmotionsToClipboard() {
     // Optionen aus den Checkboxen lesen
     const addTime = document.getElementById('copyIncludeTime')?.checked;
     const addDashes = document.getElementById('copyAddDashes')?.checked;
+    const addExtremeSpeed = document.getElementById('copyAddExtremeSpeed')?.checked;
     for (const f of files) {
         let entry = normalizeEmotionalText(f.emotionalText || '');
+        if (addExtremeSpeed) {
+            entry = addExtremeSpeedInstruction(entry);
+        }
         if (addTime) {
             // Zeit berechnen und voranstellen
             let dur = null;
@@ -3779,7 +3804,12 @@ function addFiles() {
                 dur = await getAudioDurationFn(enSrc);
             }
             const durStr = dur != null ? dur.toFixed(2).replace('.', ',') + 'sec' : '?sec';
-            const text = `[${durStr}] ${normalizeEmotionalText(area.value)}`;
+            const addExtremeSpeed = document.getElementById('copyAddExtremeSpeed')?.checked;
+            let normalized = normalizeEmotionalText(area.value);
+            if (addExtremeSpeed) {
+                normalized = addExtremeSpeedInstruction(normalized);
+            }
+            const text = `[${durStr}] ${normalized}`;
             if (await safeCopy(text)) {
                 updateStatus(`Emotionaler Text kopiert: ${fileId}`);
             }
