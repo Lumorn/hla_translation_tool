@@ -6222,7 +6222,7 @@ function runTranslationQueue(queue, projectId = currentProject?.id) {
         return;
     }
 
-    const sanitized = queue.filter(item => item && item.id);
+    const sanitized = queue.filter(item => item && item.id !== undefined && item.id !== null);
     if (sanitized.length === 0) {
         updateTranslationQueueDisplay();
         return;
