@@ -84,10 +84,34 @@ async function requestAssistantText({ messages, key, model, temperature = 0, ret
         },
         body: JSON.stringify(payload)
     }, retries);
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+
+    // Serverantwort komplett einlesen, damit wir Fehlermeldungen sauber ausgeben können
+    const rawText = await response.text();
+    let data = null;
+    if (rawText) {
+        try {
+            data = JSON.parse(rawText);
+        } catch (err) {
+            // Hinweis im Log, damit unerwartete Formate leichter zu finden sind
+            console.warn('Antwort konnte nicht als JSON geparst werden', err);
+        }
     }
-    const data = await response.json();
+
+    if (!response.ok) {
+        let hint = '';
+        if (data?.error?.message) {
+            hint = data.error.message;
+        } else if (rawText && rawText.trim()) {
+            hint = rawText.trim();
+        }
+        const suffix = hint ? `: ${hint}` : '';
+        throw new Error(`HTTP ${response.status}${suffix}`);
+    }
+
+    if (!data) {
+        throw new Error('Leere Antwort vom Server');
+    }
+
     return extractAssistantText(data);
 }
 
