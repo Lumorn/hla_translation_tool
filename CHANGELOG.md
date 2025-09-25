@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.365
+* `web/src/main.js` organisiert automatische Übersetzungen jetzt in einer globalen Warteschlange, damit laufende Jobs bei Projektwechseln zu Ende geführt werden und wartende Projekte nacheinander abgearbeitet werden.
+* README beschreibt die neue Hintergrund-Warteschlange für automatische Übersetzungen.
+
 ## 🛠️ Patch in 1.40.364
 * `electron/main.js` speichert ignorierte Ordner-Dateien jetzt als `ignoredFiles.json` im Nutzerverzeichnis und stellt passende IPC-Handler bereit.
 * `electron/preload.cjs` reicht neue `loadIgnoredFiles`- und `saveIgnoredFiles`-Brücken an den Renderer weiter.
