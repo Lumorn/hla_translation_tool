@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.366
+* `web/src/main.js` übernimmt jetzt auch Dateien mit der ID `0` in die Übersetzungswarteschlange, damit frisch erzeugte Projekte beim ersten Öffnen sofort automatische Vorschläge erhalten.
+* README dokumentiert die stabilisierte Initialübersetzung.
+
 ## 🛠️ Patch in 1.40.365
 * `web/src/main.js` organisiert automatische Übersetzungen jetzt in einer globalen Warteschlange, damit laufende Jobs bei Projektwechseln zu Ende geführt werden und wartende Projekte nacheinander abgearbeitet werden.
 * README beschreibt die neue Hintergrund-Warteschlange für automatische Übersetzungen.
