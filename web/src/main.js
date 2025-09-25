@@ -1811,7 +1811,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const entry = pendingTranslations.get(id);
                 if (!entry) return;
                 pendingTranslations.delete(id);
-                const { file, resolve } = entry;
+                const { file, resolve, projectId } = entry;
                 if (text) {
                     // Erfolgreiche Übersetzung übernehmen
                     file.autoTranslation = text;
@@ -1829,8 +1829,23 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 // Quelle merken, damit nicht erneut automatisch übersetzt wird
                 file.autoSource = file.enText;
+                if (projectId) {
+                    // Sicherstellen, dass die Projektdaten auch bei offenen anderen Projekten aktualisiert werden
+                    const targetProject = projects.find(p => p.id === projectId);
+                    if (targetProject?.files) {
+                        const storedFile = targetProject.files.find(f => f.id === file.id);
+                        if (storedFile && storedFile !== file) {
+                            Object.assign(storedFile, {
+                                autoTranslation: file.autoTranslation,
+                                autoSource: file.autoSource,
+                            });
+                        }
+                    }
+                }
                 markDirty();
                 updateTranslationDisplay(file.id);
+                // Direkt speichern, damit übersetzte Texte auch nach Projektwechsel sichtbar sind
+                saveProjects();
                 resolve(text);
                 updateTranslationQueueDisplay();
             });
@@ -6013,7 +6028,7 @@ function updateText(fileId, lang, value, skipUndo) {
     renderProjects(); // HINZUFÜGEN für live Update
 }
 
-function updateAutoTranslation(file, force = false) {
+function updateAutoTranslation(file, force = false, projectId = currentTranslateProjectId || currentProject?.id) {
     return new Promise(resolve => {
         if (!window.electronAPI || !window.electronAPI.translateText) { resolve(); return; }
         if (!file.enText) { resolve(); return; }
@@ -6023,7 +6038,8 @@ function updateAutoTranslation(file, force = false) {
         if (div) div.innerHTML = '<span class="loading-spinner"></span>';
 
         const id = ++translateCounter;
-        pendingTranslations.set(id, { file, resolve });
+        // Projekt-ID mitsichern, damit wir das Ergebnis auch nach einem Projektwechsel korrekt zuordnen koennen
+        pendingTranslations.set(id, { file, resolve, projectId });
         window.electronAPI.translateText(id, file.enText);
     });
 }
@@ -6163,7 +6179,7 @@ async function processActiveTranslationQueue() {
         } else {
             updateTranslationQueueDisplay();
         }
-        await updateAutoTranslation(file, true);
+        await updateAutoTranslation(file, true, projectId);
         if (isCurrent && progress && status && fill) {
             const total = activeTranslateQueue.length;
             fill.style.width = `${Math.round(((i + 1) / total) * 100)}%`;

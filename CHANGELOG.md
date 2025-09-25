@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.367
+* `web/src/main.js` merkt sich die Projekt-ID jeder Übersetzungsanfrage, synchronisiert das Ergebnis mit dem richtigen Projektobjekt und speichert sofort, damit automatische Vorschläge auch nach einem Projektwechsel sichtbar bleiben.
+* README beschreibt die zuverlässige Übernahme der Auto-Übersetzungen trotz laufender Warteschlange.
+
 ## 🛠️ Patch in 1.40.366
 * `web/src/main.js` übernimmt jetzt auch Dateien mit der ID `0` in die Übersetzungswarteschlange, damit frisch erzeugte Projekte beim ersten Öffnen sofort automatische Vorschläge erhalten.
 * README dokumentiert die stabilisierte Initialübersetzung.
