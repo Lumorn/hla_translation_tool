@@ -337,6 +337,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbessern:** Ein zusätzlicher Button bewertet die gesamte Übersetzung, zeigt drei verbesserte Fassungen des Emotional-Texts samt Begründung und blendet während der Analyse eine Lade-Animation ein.
 * **Eigenheiten bewahren:** Abgebrochene Sätze oder Fülllaute wie "äh" oder "mh" bleiben auch in gekürzten Emotional-Texten sinngemäß erhalten.
 * **Laufzeit vor Emotional-Text:** Der 📋-Knopf schreibt beim Kopieren jetzt die Dauer der EN-Datei im Format `[8,57sec]` vor den Text.
+* **Schnellsprech-Häkchen:** Beim Button „Emotionen kopieren“ ergänzt ein optionales Häkchen in der ersten Klammer „extrem schnell reden“ direkt nach dem ersten Emotionstag.
 * **Kontextvolle Emotionstags:** Beim Generieren eines Emotional-Texts wird nun der komplette Dialog des Levels an ChatGPT gesendet, damit der Tonfall korrekt erkannt wird.
 * **Tags mitten im Satz:** Die erzeugten Emotionstags stehen jetzt direkt vor der jeweiligen Textstelle und nicht mehr am Ende der Zeile.
 * **Tags auf Deutsch:** In den eckigen Klammern sind die Emotionstags nun auf Deutsch, der eigentliche Dialog bleibt weiterhin Deutsch.
