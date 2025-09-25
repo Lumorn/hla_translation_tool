@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.370
+* `web/src/gptService.js` liest Fehlermeldungen der OpenAI-API vollständig ein, ergänzt sie bei HTTP-Fehlern um den Originaltext und verhindert so rätselhafte `HTTP 400`-Hinweise bei GPT‑5.
+* `tests/gptService.test.js` simuliert die neuen Antwortpfade über `response.text()`, damit die Testumgebung das verbesserte Fehler-Parsing abdeckt.
+* README verweist auf die ausführlichen GPT‑5-Fehlertexte und beschreibt, wie sich falsch konfigurierte Modelle schneller erkennen lassen.
+
 ## 🛠️ Patch in 1.40.369
 * `web/src/gptService.js` erkennt GPT-5-Modelle automatisch und nutzt bei Bedarf den neuen Responses-Endpunkt inklusive gemeinsamer JSON-Auswertung.
 * `tests/gptService.test.js` prüft den Responses-Pfad mit einem simulierten `gpt-5.0`-Modell.
