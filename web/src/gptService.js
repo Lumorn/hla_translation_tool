@@ -55,14 +55,24 @@ function extractAssistantText(data) {
         return data.output_text;
     }
     if (Array.isArray(data?.output)) {
+        let fallbackText = null;
         for (const item of data.output) {
             if (!item || !Array.isArray(item.content)) continue;
             for (const entry of item.content) {
-                if (typeof entry?.text === 'string' && entry.text.trim().length > 0) {
-                    return entry.text;
+                if (typeof entry?.text !== 'string') continue;
+                const text = entry.text.trim();
+                if (!text) continue;
+                const type = typeof entry.type === 'string' ? entry.type.toLowerCase() : '';
+                // Reasoning-Blöcke liefern häufig nur Zwischenschritte und kein verwertbares JSON
+                if (type === 'output_text' || type === 'assistant_message' || type === 'message' || type === 'text') {
+                    return text;
+                }
+                if (!fallbackText) {
+                    fallbackText = text;
                 }
             }
         }
+        if (fallbackText) return fallbackText;
     }
     throw new Error('Antwort enthielt keinen Text');
 }

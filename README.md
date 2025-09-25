@@ -950,6 +950,8 @@ Dort gibt es jetzt auch einen Bereich **ChatGPT API**. Der Schlüssel wird lokal
 
 Neu hinzugekommen ist eine automatische Erkennung der modernen **Responses-API** von OpenAI. Modelle wie `gpt-4.1` oder `gpt-5.0` funktionieren jetzt ohne Anpassungen; das Tool wählt intern den passenden Endpunkt und interpretiert die Antworten korrekt als JSON. Dadurch lassen sich auch kommende GPT‑Generationen verwenden, ohne dass Konfigurationsdateien angepasst werden müssen. Zusätzlich zeigen Fehlermeldungen bei Problemen mit GPT‑5 jetzt den Originaltext aus der OpenAI-Antwort an. So lassen sich Konfigurationsfehler (z. B. veraltete Modellnamen oder Limits) deutlich schneller erkennen, statt nur den Statuscode `HTTP 400` zu sehen.
 
+Seit Patch 1.40.371 filtert der Bewertungsdienst außerdem die neuen **Reasoning-Blöcke** von `gpt-5-chat-latest` heraus. Das Modell sendet dabei häufig zuerst interne Gedanken, bevor der eigentliche JSON-Block folgt. Die Anwendung ignoriert diese Zwischenschritte automatisch und übernimmt ausschließlich den tatsächlichen Antworttext. Dadurch bleiben die Bewertungen stabil, selbst wenn das Modell ausführliche Denkprozesse mitsendet.
+
 ---
 
 ## 💾 Backup
