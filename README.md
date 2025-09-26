@@ -17,7 +17,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
-* Modernisierte, responsive Oberfläche mit klaren Panels, Raster-Schaltflächen und einer veredelten Tabelle für Ultra-Wide-Monitore.
 
 ## 🧭 Inhaltsnavigator
 * [🏆 Funktionsarchiv (komplett)](#-funktionsarchiv-komplett)
@@ -802,8 +801,6 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 
 ### Projekt‑Management
 
-Die Startseite gruppiert Projektleiste und Hauptbereich jetzt in einer aufgeräumten Panelstruktur. Buttons ordnen sich automatisch in flexible Raster ein, wodurch auch breite Monitore ohne Scroll-Chaos ausgenutzt werden. Auf kleineren Bildschirmen falten sich dieselben Elemente in übersichtliche Spalten zusammen.
-
 |  Aktion                    |  Bedienung                                          |
 | -------------------------- | --------------------------------------------------- |
 | **Projekt erstellen**     | `+ Neues Projekt` Button                          |
@@ -823,8 +820,6 @@ Beim Rechtsklick auf eine Projekt‑Kachel erscheint ein kleines Menü zum Bearb
 Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
 
 ### Datei‑Management
-
-Die Dateitabelle erscheint jetzt in einem dunklen Glas-Panel mit Sticky-Kopfzeile, weicheren Farbübergängen und klaren Hover-Zuständen. Dadurch bleiben selbst bei tausenden Zeilen Orientierung und Scrolltempo erhalten.
 
 |  Aktion                    |  Bedienung                                          |
 | -------------------------- | --------------------------------------------------- |
