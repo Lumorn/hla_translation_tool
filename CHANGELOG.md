@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.373
+* `web/hla_translation_tool.html` gestaltet den Schnellzugriff als Kartenraster mit erklärenden Titeln und ergänzt den Button „Tempo angleichen“, der die EN-Laufzeit sofort übernimmt.
+* `web/src/style.css` schärft die Optik mit größeren Karten, klareren Überschriften und feineren Schatten für Schnellzugriff und Timing-Bereiche.
+* `web/src/main.js` bindet den neuen Schnellzugriffsknopf an die bestehende Tempo-Autoanpassung und hebt die betroffenen Felder visuell hervor.
+* README und CHANGELOG dokumentieren die verfeinerte Ansicht samt zusätzlichem Tempo-Knopf.
 ## 🛠️ Patch in 1.40.372
 * `web/hla_translation_tool.html` ordnet den DE-Audio-Editor in eine zweispaltige Struktur mit eigener Schnellzugriffsleiste für Trimmen, Auto-Trim, Lautstärkeabgleich und Funkgerät-Effekt ein.
 * `web/src/style.css` liefert das responsive Grid, Scrollbereiche für Effekte sowie optische Rückmeldungen der Schnellzugriffe.

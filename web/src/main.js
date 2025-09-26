@@ -13339,6 +13339,15 @@ async function openDeEdit(fileId) {
         triggerPulse('autoTrimBtn');
     };
 
+    const quickTempoMatch = document.getElementById('quickTempoMatch');
+    if (quickTempoMatch) quickTempoMatch.onclick = () => {
+        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
+        if (tempoAutoMatch) {
+            tempoAutoMatch.click();
+            triggerPulse('tempoAutoMatchBtn', '#tempoRange');
+        }
+    };
+
     const quickVolume = document.getElementById('quickVolumeMatch');
     if (quickVolume) quickVolume.onclick = () => {
         applyVolumeMatch();
