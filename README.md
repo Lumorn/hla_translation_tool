@@ -375,7 +375,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
-* **Schneller Zugriff:** Die Funktionen Lautstärke angleichen – 🔊, Funkgerät-Effekt – 📻 und EM-Störgeräusch – ⚡ besitzen eigene Buttons mit Symbolen. Der Button **⟳ Standardwerte** befindet sich direkt daneben.
+* **Schneller Zugriff:** Eine neue Schnellzugriffsleiste bündelt Trimmen, Auto-Trim, Lautstärke angleichen 🔊 und Funkgerät-Effekt 📻 in großen Buttons direkt unter den Wellenformen. Die wichtigsten Werkzeuge lassen sich damit ohne Scrollen nacheinander auslösen.
+* **Responsives Layout:** Der Editor nutzt ein zweispaltiges Raster, das sich auf großen Monitoren weit öffnet und bei geringer Breite automatisch in eine Spalte wechselt. Die Effektseite besitzt eine eigene Scrollfläche, wodurch alles sichtbar bleibt.
 * **Standardwerte:** Im Hall- und Störgeräusch-Bereich setzt **⟳ Standardwerte** alle Parameter beziehungsweise die Intensität auf ihre Ausgangswerte zurück. Tooltip und Code-Kommentar erklären übereinstimmend: „Setzt nur diesen Effekt zurück.“
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Fünf Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu fünf Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall- und Störgeräusch-Effekt an.

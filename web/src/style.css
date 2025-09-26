@@ -1338,25 +1338,40 @@ th:nth-child(8) {
 /* Untere Leiste mit Effekt-Toolbar und globalen Buttons */
 .edit-bottom {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
+    gap: 12px;
+    margin-top: 20px;
     position: sticky;
     bottom: 0;
     background: #1a1a1a; /* bleibt beim Scrollen sichtbar */
-    padding: 10px 0;
+    padding: 12px 0;
     border-top: 1px solid #444;
+    z-index: 5;
 }
 
 .effect-toolbar {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    flex: 1 1 60%;
 }
 
 /* Effekt-Buttons in der Toolbar gleich breit */
 .effect-toolbar .effect-btn {
-    flex: 1;
+    flex: 1 1 160px;
+}
+
+@media (max-width: 900px) {
+    .edit-bottom {
+        position: static; /* Auf kleinen Bildschirmen nicht kleben */
+        padding-bottom: 0;
+    }
+
+    .effect-toolbar {
+        flex: 1 1 100%;
+    }
 }
 
 /* Zeitstempel der letzten Speicherung */
@@ -1913,27 +1928,112 @@ th:nth-child(8) {
 
 /* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
 #deEditDialog .dialog {
-    max-width: 1100px; /* Mehr Breite für dreispaltiges Layout */
+    max-width: 1260px; /* Mehr Arbeitsfläche für große Monitore */
+    width: min(95vw, 1260px);
 }
 
-/* Dreispaltiges Layout für den DE-Audio-Editor */
-#deEditDialog .edit-flex {
+@media (min-width: 1600px) {
+    #deEditDialog .dialog {
+        max-width: 1400px; /* Auf sehr breiten Displays weiter ausnutzen */
+    }
+}
+
+/* Neues zweispaltiges Raster für Timing links und Effekte rechts */
+#deEditDialog .edit-layout {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+}
+
+@media (max-width: 1200px) {
+    #deEditDialog .edit-layout {
+        grid-template-columns: 1fr; /* Bei wenig Platz stapeln */
+    }
+}
+
+/* Linke Steuerungsseite strukturiert mit vertikalem Abstand */
+#deEditDialog .timing-section {
     display: flex;
+    flex-direction: column;
     gap: 20px;
-    flex-wrap: wrap;
+    min-width: 0;
 }
 
-/* Rechte Spalte für Effekte */
-#deEditDialog .edit-right {
-    flex: 1;
-    min-width: 320px;
+/* Rechte Seite darf unabhängig scrollen */
+#deEditDialog .effects-section {
+    min-width: 0;
+}
+
+#deEditDialog .effect-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+@media (max-width: 1200px) {
+    #deEditDialog .effect-scroll {
+        max-height: none; /* Auf kleinen Monitoren nicht abschneiden */
+    }
+}
+
+/* Schnellzugriff oberhalb der Detailkarten */
+#deEditDialog .quick-actions {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+#deEditDialog .section-headline {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ff6b1a;
+}
+
+#deEditDialog .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+#deEditDialog .quick-btn {
+    background: linear-gradient(135deg, #ff8c3a, #ff6b1a);
+    border: none;
+    border-radius: 6px;
+    color: #0d0d0d;
+    font-weight: 600;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+#deEditDialog .quick-btn:hover,
+#deEditDialog .quick-btn:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(255, 107, 26, 0.35);
+}
+
+@media (max-width: 700px) {
+    #deEditDialog .quick-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 /* Grid für Timing & Bereiche */
 #deEditDialog .timing-grid {
-    flex: 1;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
 }
 
@@ -1945,6 +2045,11 @@ th:nth-child(8) {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+#deEditDialog .timing-card.focused-card {
+    box-shadow: 0 0 0 2px #ff6b1a;
+    transition: box-shadow 0.3s ease;
 }
 
 #deEditDialog .trim-fields {
@@ -1967,6 +2072,22 @@ th:nth-child(8) {
 #deEditDialog .input-unit .unit {
     font-size: 0.9em;
     color: #bbb;
+}
+
+#deEditDialog .trigger-pulse {
+    animation: pulseGlow 0.45s ease;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 rgba(255, 107, 26, 0);
+    }
+    50% {
+        box-shadow: 0 0 12px rgba(255, 107, 26, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(255, 107, 26, 0);
+    }
 }
 
 #deEditDialog .checkbox-line {
@@ -2021,6 +2142,18 @@ th:nth-child(8) {
 #deEditDialog #silenceList {
     max-height: 150px;
     overflow-y: auto;
+}
+
+#deEditDialog .silence-buttons,
+#deEditDialog .silence-actions,
+#deEditDialog .ignore-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#deEditDialog .silence-actions {
+    justify-content: space-between;
 }
 
 .dialog-close-btn:hover{
