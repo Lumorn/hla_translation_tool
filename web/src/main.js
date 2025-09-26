@@ -13280,6 +13280,28 @@ async function openDeEdit(fileId) {
     manualSilenceRanges = editSilenceRanges.map(r => ({start:r.start,end:r.end}));
     ignoreTempStart = null;
     silenceTempStart = null;
+
+    // Hilfsfunktionen für visuelles Feedback der Schnellzugriffe (Kommentare auf Deutsch gewünscht)
+    const triggerPulse = (elementId, fallbackSelector) => {
+        const el = document.getElementById(elementId) || (fallbackSelector ? document.querySelector(fallbackSelector) : null);
+        if (!el) return;
+        el.classList.add('trigger-pulse');
+        setTimeout(() => el.classList.remove('trigger-pulse'), 400);
+    };
+
+    const focusTrimCard = () => {
+        const trimCard = document.querySelector('#deEditDialog .trim-card');
+        if (trimCard) {
+            trimCard.classList.add('focused-card');
+            setTimeout(() => trimCard.classList.remove('focused-card'), 800);
+            trimCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        const startInput = document.getElementById('editStart');
+        if (startInput) {
+            startInput.focus();
+            startInput.select();
+        }
+    };
     document.getElementById('editStart').value = editStartTrim;
     document.getElementById('editEnd').value = editDurationMs - editEndTrim;
     document.getElementById('editStart').oninput = e => {
@@ -13296,13 +13318,37 @@ async function openDeEdit(fileId) {
         scheduleWaveformUpdate();
     };
     validateDeSelection();
-    const autoTrim = document.getElementById('autoTrimBtn');
-    if (autoTrim) autoTrim.onclick = () => {
+    const runAutoTrim = () => {
         const vals = detectSilenceTrim(savedOriginalBuffer);
         editStartTrim = vals.start;
         editEndTrim = vals.end;
         updateDeEditWaveforms();
         validateDeSelection();
+    };
+    const autoTrim = document.getElementById('autoTrimBtn');
+    if (autoTrim) autoTrim.onclick = runAutoTrim;
+
+    const quickTrim = document.getElementById('quickFocusTrim');
+    if (quickTrim) quickTrim.onclick = () => {
+        focusTrimCard();
+    };
+
+    const quickAutoTrim = document.getElementById('quickAutoTrim');
+    if (quickAutoTrim) quickAutoTrim.onclick = () => {
+        runAutoTrim();
+        triggerPulse('autoTrimBtn');
+    };
+
+    const quickVolume = document.getElementById('quickVolumeMatch');
+    if (quickVolume) quickVolume.onclick = () => {
+        applyVolumeMatch();
+        triggerPulse('volumeMatchBtn', '#volumeMatchBoxBtn');
+    };
+
+    const quickRadio = document.getElementById('quickRadioEffect');
+    if (quickRadio) quickRadio.onclick = () => {
+        applyRadioEffect();
+        triggerPulse('radioEffectBtn', '#radioEffectBoxBtn');
     };
 
     tempoFactor = file.tempoFactor || 1.0;

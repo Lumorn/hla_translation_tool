@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.372
+* `web/hla_translation_tool.html` ordnet den DE-Audio-Editor in eine zweispaltige Struktur mit eigener Schnellzugriffsleiste für Trimmen, Auto-Trim, Lautstärkeabgleich und Funkgerät-Effekt ein.
+* `web/src/style.css` liefert das responsive Grid, Scrollbereiche für Effekte sowie optische Rückmeldungen der Schnellzugriffe.
+* `web/src/main.js` verknüpft die neuen Schnellzugriffsknöpfe mit bestehenden Aktionen und sorgt für visuelles Feedback.
+* README und CHANGELOG beschreiben den dynamischen Editor inklusive Schnellzugriffsleiste.
 ## 🛠️ Patch in 1.40.371
 * `web/src/gptService.js` bevorzugt bei Responses-Antworten jetzt echte Ausgabeblöcke und überspringt Reasoning-Texte, damit `gpt-5-chat-latest` zuverlässig JSON liefert.
 * `tests/gptService.test.js` simuliert einen Reasoning-Block im Responses-Format und prüft, dass nur der eigentliche Output übernommen wird.

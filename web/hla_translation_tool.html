@@ -676,192 +676,225 @@
                     <div id="editEmoText" class="wave-text"></div>
                 </div>
             </div>
-            <div class="edit-flex">
-                <!-- Bereich: Timing & Bereiche -->
-                <div class="timing-grid">
-                    <!-- Karte Trimmen -->
-                    <div class="timing-card trim-card">
-                        <h4>Trimmen</h4>
-                        <div class="trim-fields">
-                            <div class="field">
-                                <label for="editStart">Start (ms)</label>
-                                <div class="input-unit"><input type="number" id="editStart" value="0" step="100"><span class="unit">ms</span></div>
+            <div class="edit-layout">
+                <!-- Linke Seite: Bereiche & Timing -->
+                <section class="timing-section">
+                    <div class="quick-actions" aria-label="Schnellzugriff auf häufige Werkzeuge">
+                        <h4 class="section-headline">Schnellzugriff</h4>
+                        <div class="quick-grid">
+                            <button id="quickFocusTrim" class="quick-btn" type="button" title="Trimmbereiche bearbeiten">✂️ Trimmen</button>
+                            <button id="quickAutoTrim" class="quick-btn" type="button" title="Stille automatisch erkennen">⚡ Auto-Trim</button>
+                            <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
+                            <button id="quickRadioEffect" class="quick-btn" type="button" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
+                        </div>
+                    </div>
+                    <div class="timing-grid">
+                        <!-- Karte Trimmen -->
+                        <div class="timing-card trim-card">
+                            <h4>Trimmen</h4>
+                            <div class="trim-fields">
+                                <div class="field">
+                                    <label for="editStart">Start (ms)</label>
+                                    <div class="input-unit"><input type="number" id="editStart" value="0" step="100"><span class="unit">ms</span></div>
+                                </div>
+                                <div class="field">
+                                    <label for="editEnd">Ende (ms)</label>
+                                    <div class="input-unit"><input type="number" id="editEnd" value="0" step="100"><span class="unit">ms</span></div>
+                                </div>
                             </div>
-                            <div class="field">
-                                <label for="editEnd">Ende (ms)</label>
-                                <div class="input-unit"><input type="number" id="editEnd" value="0" step="100"><span class="unit">ms</span></div>
+                            <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen">Auto</button>
+                        </div>
+                        <!-- Karte Ignorierbereiche -->
+                        <div class="timing-card ignore-card">
+                            <h4>Ignorierbereiche</h4>
+                            <div id="ignoreList"></div>
+                            <div class="ignore-buttons">
+                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
+                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
                             </div>
                         </div>
-                        <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen">Auto</button>
-                    </div>
-                    <!-- Karte Ignorierbereiche -->
-                    <div class="timing-card ignore-card">
-                        <h4>Ignorierbereiche</h4>
-                        <div id="ignoreList"></div>
-                        <div class="ignore-buttons">
-                            <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
-                            <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
+                        <!-- Karte Pausen entfernen -->
+                        <div class="timing-card pause-card">
+                            <h4>Pausen entfernen</h4>
+                            <label class="checkbox-line" title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <span class="input-unit"><input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"><span class="unit">ms</span></span> entfernen</label>
                         </div>
-                    </div>
-                    <!-- Karte Pausen entfernen -->
-                    <div class="timing-card pause-card">
-                        <h4>Pausen entfernen</h4>
-                        <label class="checkbox-line" title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <span class="input-unit"><input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"><span class="unit">ms</span></span> entfernen</label>
-                    </div>
-                    <!-- Karte Stille-Bereiche -->
-                    <div class="timing-card silence-card">
-                        <h4>Stille-Bereiche</h4>
-                        <div id="silenceList"></div>
-                        <div class="ignore-buttons">
-                            <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
-                            <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
+                        <!-- Karte Stille-Bereiche -->
+                        <div class="timing-card silence-card">
+                            <h4>Stille-Bereiche</h4>
+                            <div id="silenceList"></div>
+                            <div class="silence-buttons">
+                                <button class="btn btn-secondary" onclick="markSilenceRange('start')" title="Startpunkt setzen">Start</button>
+                                <button class="btn btn-secondary" onclick="markSilenceRange('end')" title="Endpunkt setzen">Ende</button>
+                                <button class="btn btn-danger" onclick="clearSilenceTemp()" title="Markierung aufheben">⟲</button>
+                            </div>
+                            <div class="silence-buttons">
+                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
+                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
+                            </div>
+                            <label title="Markierung übernehmen">Übernehmen nach: <span class="input-unit"><input type="number" id="silenceApplyDelay" value="0" step="100" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <div class="silence-actions">
+                                <button class="btn btn-secondary" onclick="applySilenceRange()" title="Bereich übernehmen">Übernehmen</button>
+                                <button class="btn btn-danger" onclick="deleteSilenceRange()" title="Letzten Bereich löschen">Löschen</button>
+                            </div>
                         </div>
-                    </div>
-                    <!-- Karte Tempo -->
-                    <div class="timing-card tempo-card">
-                        <h4>Tempo</h4>
-                        <label class="checkbox-line" title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
-                        <div class="tempo-row">
-                            <span class="tempo-icon">⏱️</span>
-                            <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
-                            <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
-                            <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
-                            <span id="tempoDisplay" class="tempo-value">1.00</span>
+                        <!-- Karte Bereiche verschmelzen -->
+                        <div class="timing-card merge-card">
+                            <h4>Bereiche verschmelzen</h4>
+                            <label title="Bereiche verschmelzen, wenn Abstand kleiner ist">Abstand &lt; <span class="input-unit"><input type="number" id="mergeGapMs" value="120" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <label title="Bereiche verschmelzen, wenn Gesamtzeit kleiner ist">Gesamt &lt; <span class="input-unit"><input type="number" id="mergeTotalMs" value="500" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <label title="Zeitspanne verschmelzen">Bereiche zusammenlegen: <span class="input-unit"><input type="number" id="mergeRangeMs" value="80" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <button class="btn btn-secondary" onclick="mergeSilenceRanges()" title="Überlappende Bereiche vereinen">Bereiche mergen</button>
                         </div>
-                        <div class="tempo-auto">
-                            <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen">Auto</button>
-                            <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen">Auto</button>
-                            <span id="tempoInfo"></span><span id="tempoEnInfo"></span>
+                        <!-- Karte Tempo -->
+                        <div class="timing-card tempo-card">
+                            <h4>Tempo</h4>
+                            <label class="checkbox-line" title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
+                            <div class="tempo-row">
+                                <span class="tempo-icon">⏱️</span>
+                                <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
+                                <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
+                                <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
+                                <span id="tempoDisplay" class="tempo-value">1.00</span>
+                            </div>
+                            <div class="tempo-auto">
+                                <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen">Auto</button>
+                                <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen">Auto</button>
+                                <span id="tempoInfo"></span><span id="tempoEnInfo"></span>
+                            </div>
                         </div>
+                        <!-- Button Anpassen & Anwenden -->
+                        <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
                     </div>
-                    <!-- Button Anpassen & Anwenden -->
-                    <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
-                </div>
-                <!-- Rechte Spalte für Effekt-Einstellungen -->
-                <div class="edit-right">
+                </section>
+                <!-- Rechte Seite: Effekte & Optionen -->
+                <section class="effects-section">
+                    <div class="effect-scroll">
+                        <fieldset class="effect-group">
+                            <legend>🔊 Lautstärke angleichen</legend>
+                            <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen">Lautstärke angleichen</button>
+                        </fieldset>
 
-            <!-- Lautstärke angleichen als eigener Kasten -->
-            <fieldset class="effect-group">
-                <legend>🔊 Lautstärke angleichen</legend>
-                <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen">Lautstärke angleichen</button>
-            </fieldset>
+                        <fieldset class="effect-group">
+                            <legend>📡 Funkgerät-Effekt</legend>
+                            <div class="radio-settings">
+                                <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
+                                    <input type="range" id="radioStrength" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Hochpassfrequenz">Highpass (Hz):
+                                    <input type="number" id="radioHighpass" min="0" max="1000" step="50">
+                                </label>
+                                <label title="Tiefpassfrequenz">Lowpass (Hz):
+                                    <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
+                                </label>
+                                <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
+                                    <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Rauschpegel in dBFS">Rauschen (dB):
+                                    <input type="number" id="radioNoise" min="-60" max="0" step="1">
+                                </label>
+                                <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
+                                    <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
+                                </label>
+                                <div class="radio-preset">
+                                    <select id="radioPresetSelect" title="Gespeicherte Presets"></select>
+                                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
+                                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
+                                </div>
+                            </div>
+                            <div class="effect-actions">
+                                <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">Funkgerät-Effekt anwenden</button>
+                                <!-- Setzt nur diesen Effekt zurück -->
+                                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                            </div>
+                        </fieldset>
 
-            <fieldset class="effect-group">
-                <legend>📡 Funkgerät-Effekt</legend>
-                <div class="radio-settings">
-                    <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
-                        <input type="range" id="radioStrength" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Hochpassfrequenz">Highpass (Hz):
-                        <input type="number" id="radioHighpass" min="0" max="1000" step="50">
-                    </label>
-                    <label title="Tiefpassfrequenz">Lowpass (Hz):
-                        <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
-                    </label>
-                    <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
-                        <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Rauschpegel in dBFS">Rauschen (dB):
-                        <input type="number" id="radioNoise" min="-60" max="0" step="1">
-                    </label>
-                    <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
-                        <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
-                    </label>
-                <div class="radio-preset">
-                    <select id="radioPresetSelect" title="Gespeicherte Presets"></select>
-                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
-                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
-                </div>
-                </div>
-                <div class="effect-actions">
-                    <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">Funkgerät-Effekt anwenden</button>
-                    <!-- Setzt nur diesen Effekt zurück -->
-                    <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
-                </div>
-            </fieldset>
-            <fieldset class="effect-group">
-                <legend>🎚️ Hall-Effekt</legend>
-                <label id="hallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
-                <div class="hall-settings">
-                    <label title="Raumgröße">Room:
-                        <input type="range" id="hallRoom" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Mischverhältnis">Wet: <span id="hallAmountDisplay"></span>
-                        <input type="range" id="hallAmount" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Vorlaufzeit">Delay (ms):
-                        <input type="number" id="hallDelay" min="0" max="500" step="10">
-                    </label>
-                </div>
-                <!-- Setzt nur diesen Effekt zurück -->
-                <button class="btn-reset-settings" onclick="resetHallSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
-            </fieldset>
-            <fieldset class="effect-group">
-                <legend>⚡ EM-Störgeräusch</legend>
-                <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> Sprachdämpfung</label>
-                <div class="emi-settings">
-                    <!-- Canvas für die Hüllkurve des Störgeräuschs -->
-                    <canvas id="emiEnvelopeCanvas" width="200" height="60"></canvas>
-                    <label title="Stärke der Störung">Stärke <span class="info-icon" title="Regelt die Lautstärke der Störung">ℹ️</span>: <span id="emiLevelDisplay"></span>
-                        <input type="range" id="emiLevel" min="0" max="1" step="0.05">
-                    </label>
-                    <!-- Regler für den Anstiegszeitpunkt -->
-                    <label title="Zeitpunkt des starken Anstiegs">Anstieg ab <span class="info-icon" title="Zeitpunkt, ab dem die Störung deutlich lauter wird">ℹ️</span>: <span id="emiRampDisplay"></span>
-                        <input type="range" id="emiRamp" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit <span class="info-icon" title="Wie oft die Verbindung kurz abbricht">ℹ️</span>: <span id="emiDropoutProbDisplay"></span>
-                        <input type="range" id="emiDropoutProb" min="0" max="0.005" step="0.0001">
-                    </label>
-                    <label title="Dauer eines Aussetzers">Aussetzer-Dauer <span class="info-icon" title="Länge eines einzelnen Aussetzers">ℹ️</span>: <span id="emiDropoutDurDisplay"></span>
-                        <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
-                    </label>
-                    <label title="Häufigkeit der Knackser">Knackser-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für kurze Knackser">ℹ️</span>: <span id="emiCrackleProbDisplay"></span>
-                        <input type="range" id="emiCrackleProb" min="0" max="0.02" step="0.001">
-                    </label>
-                    <label title="Lautstärke der Knackser">Knackser-Amplitude <span class="info-icon" title="Lautstärke der Knackser">ℹ️</span>: <span id="emiCrackleAmpDisplay"></span>
-                        <input type="range" id="emiCrackleAmp" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für starke Ausreißer">ℹ️</span>: <span id="emiSpikeProbDisplay"></span>
-                        <input type="range" id="emiSpikeProb" min="0" max="0.01" step="0.0005">
-                    </label>
-                    <label title="Lautstärke der Ausreißer">Spike-Amplitude <span class="info-icon" title="Lautstärke der Ausreißer">ℹ️</span>: <span id="emiSpikeAmpDisplay"></span>
-                        <input type="range" id="emiSpikeAmp" min="0" max="1" step="0.05">
-                    </label>
-                    <label title="Verlauf der Störung">Verlauf <span class="info-icon" title="Form der Lautstärkeentwicklung">ℹ️</span>:
-                        <select id="emiMode">
-                            <option value="constant">Konstant</option>
-                            <option value="up">Anstieg</option>
-                            <option value="updown">Anstieg &amp; Abfall</option>
-                            <option value="down">Abfall</option>
-                        </select>
-                    </label>
-                </div>
-                <div class="radio-preset">
-                    <select id="emiPresetSelect" title="Gespeicherte Presets"></select>
-                    <button id="saveEmiPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
-                    <button id="deleteEmiPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
-                </div>
-                <div class="effect-actions">
-                    <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">EM-Störgeräusch anwenden</button>
-                    <!-- Setzt nur diesen Effekt zurück -->
-                    <button class="btn-reset-settings" onclick="resetEmiSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
-                </div>
-            </fieldset>
-            <fieldset class="effect-group">
-                <legend>🚪 Nebenraum-Effekt</legend>
-                <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> Nebenraum-Effekt</label>
-                <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall-Effekt</label>
-                <label id="tableMicToggleLabel" class="effect-toggle" title="Telefon-auf-Tisch-Effekt ein- oder ausschalten"><input type="checkbox" id="tableMicToggle" onchange="toggleTableMicEffect(this.checked)"> Telefon auf Tisch</label>
-                <label for="tableMicRoom" title="Raumtyp für den Telefon-auf-Tisch-Effekt">Raumtyp:</label>
-                <select id="tableMicRoom">
-                    <option value="wohnzimmer">Wohnzimmer</option>
-                    <option value="buero">Büro</option>
-                    <option value="halle">Halle</option>
-                    <option value="keller">Keller</option>
-                </select>
-            </fieldset>
-            </div> <!-- edit-right Ende -->
-        </div> <!-- edit-flex Ende -->
+                        <fieldset class="effect-group">
+                            <legend>🎚️ Hall-Effekt</legend>
+                            <label id="hallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
+                            <div class="hall-settings">
+                                <label title="Raumgröße">Room:
+                                    <input type="range" id="hallRoom" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Mischverhältnis">Wet: <span id="hallAmountDisplay"></span>
+                                    <input type="range" id="hallAmount" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Vorlaufzeit">Delay (ms):
+                                    <input type="number" id="hallDelay" min="0" max="500" step="10">
+                                </label>
+                            </div>
+                            <!-- Setzt nur diesen Effekt zurück -->
+                            <button class="btn-reset-settings" onclick="resetHallSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                        </fieldset>
+
+                        <fieldset class="effect-group">
+                            <legend>⚡ EM-Störgeräusch</legend>
+                            <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> Sprachdämpfung</label>
+                            <div class="emi-settings">
+                                <!-- Canvas für die Hüllkurve des Störgeräuschs -->
+                                <canvas id="emiEnvelopeCanvas" width="200" height="60"></canvas>
+                                <label title="Stärke der Störung">Stärke <span class="info-icon" title="Regelt die Lautstärke der Störung">ℹ️</span>: <span id="emiLevelDisplay"></span>
+                                    <input type="range" id="emiLevel" min="0" max="1" step="0.05">
+                                </label>
+                                <!-- Regler für den Anstiegszeitpunkt -->
+                                <label title="Zeitpunkt des starken Anstiegs">Anstieg ab <span class="info-icon" title="Zeitpunkt, ab dem die Störung deutlich lauter wird">ℹ️</span>: <span id="emiRampDisplay"></span>
+                                    <input type="range" id="emiRamp" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit <span class="info-icon" title="Wie oft die Verbindung kurz abbricht">ℹ️</span>: <span id="emiDropoutProbDisplay"></span>
+                                    <input type="range" id="emiDropoutProb" min="0" max="0.005" step="0.0001">
+                                </label>
+                                <label title="Dauer eines Aussetzers">Aussetzer-Dauer <span class="info-icon" title="Länge eines einzelnen Aussetzers">ℹ️</span>: <span id="emiDropoutDurDisplay"></span>
+                                    <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
+                                </label>
+                                <label title="Häufigkeit der Knackser">Knackser-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für kurze Knackser">ℹ️</span>: <span id="emiCrackleProbDisplay"></span>
+                                    <input type="range" id="emiCrackleProb" min="0" max="0.02" step="0.001">
+                                </label>
+                                <label title="Lautstärke der Knackser">Knackser-Amplitude <span class="info-icon" title="Lautstärke der Knackser">ℹ️</span>: <span id="emiCrackleAmpDisplay"></span>
+                                    <input type="range" id="emiCrackleAmp" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für starke Ausreißer">ℹ️</span>: <span id="emiSpikeProbDisplay"></span>
+                                    <input type="range" id="emiSpikeProb" min="0" max="0.01" step="0.0005">
+                                </label>
+                                <label title="Lautstärke der Ausreißer">Spike-Amplitude <span class="info-icon" title="Lautstärke der Ausreißer">ℹ️</span>: <span id="emiSpikeAmpDisplay"></span>
+                                    <input type="range" id="emiSpikeAmp" min="0" max="1" step="0.05">
+                                </label>
+                                <label title="Verlauf der Störung">Verlauf <span class="info-icon" title="Form der Lautstärkeentwicklung">ℹ️</span>:
+                                    <select id="emiMode">
+                                        <option value="constant">Konstant</option>
+                                        <option value="up">Anstieg</option>
+                                        <option value="updown">Anstieg &amp; Abfall</option>
+                                        <option value="down">Abfall</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="radio-preset">
+                                <select id="emiPresetSelect" title="Gespeicherte Presets"></select>
+                                <button id="saveEmiPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
+                                <button id="deleteEmiPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
+                            </div>
+                            <div class="effect-actions">
+                                <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">EM-Störgeräusch anwenden</button>
+                                <!-- Setzt nur diesen Effekt zurück -->
+                                <button class="btn-reset-settings" onclick="resetEmiSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="effect-group">
+                            <legend>🚪 Nebenraum-Effekt</legend>
+                            <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> Nebenraum-Effekt</label>
+                            <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall-Effekt</label>
+                            <label id="tableMicToggleLabel" class="effect-toggle" title="Telefon-auf-Tisch-Effekt ein- oder ausschalten"><input type="checkbox" id="tableMicToggle" onchange="toggleTableMicEffect(this.checked)"> Telefon auf Tisch</label>
+                            <label for="tableMicRoom" title="Raumtyp für den Telefon-auf-Tisch-Effekt">Raumtyp:</label>
+                            <select id="tableMicRoom">
+                                <option value="wohnzimmer">Wohnzimmer</option>
+                                <option value="buero">Büro</option>
+                                <option value="halle">Halle</option>
+                                <option value="keller">Keller</option>
+                            </select>
+                        </fieldset>
+                    </div>
+                </section>
+            </div> <!-- edit-layout Ende -->
+
 
             <!-- Untere Leiste: Effekt-Toolbar links, Aktionen rechts -->
             <div class="edit-bottom">
