@@ -680,12 +680,46 @@
                 <!-- Linke Seite: Bereiche & Timing -->
                 <section class="timing-section">
                     <div class="quick-actions" aria-label="Schnellzugriff auf häufige Werkzeuge">
-                        <h4 class="section-headline">Schnellzugriff</h4>
+                        <div class="quick-header">
+                            <h4 class="section-headline">Schnellzugriff</h4>
+                            <p class="quick-subheadline">Die wichtigsten Schritte liegen als farbige Karten bereit und markieren die passenden Detailbereiche.</p>
+                        </div>
                         <div class="quick-grid">
-                            <button id="quickFocusTrim" class="quick-btn" type="button" title="Trimmbereiche bearbeiten">✂️ Trimmen</button>
-                            <button id="quickAutoTrim" class="quick-btn" type="button" title="Stille automatisch erkennen">⚡ Auto-Trim</button>
-                            <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen">🔊 Lautstärke angleichen</button>
-                            <button id="quickRadioEffect" class="quick-btn" type="button" title="Funkgerät-Effekt anwenden">📻 Funkgerät-Effekt</button>
+                            <button id="quickFocusTrim" class="quick-btn" type="button" title="Trimmbereiche bearbeiten">
+                                <span class="quick-icon" aria-hidden="true">✂️</span>
+                                <span class="quick-label">
+                                    <span class="quick-title">Trimmen</span>
+                                    <span class="quick-desc">Start und Ende präzise setzen</span>
+                                </span>
+                            </button>
+                            <button id="quickAutoTrim" class="quick-btn" type="button" title="Stille automatisch erkennen">
+                                <span class="quick-icon" aria-hidden="true">⚡</span>
+                                <span class="quick-label">
+                                    <span class="quick-title">Auto-Trim</span>
+                                    <span class="quick-desc">Leise Bereiche automatisch kürzen</span>
+                                </span>
+                            </button>
+                            <button id="quickTempoMatch" class="quick-btn" type="button" title="Tempo automatisch auf EN-Zeit anpassen">
+                                <span class="quick-icon" aria-hidden="true">⏱️</span>
+                                <span class="quick-label">
+                                    <span class="quick-title">Tempo angleichen</span>
+                                    <span class="quick-desc">Passt die Länge an das EN-Original an</span>
+                                </span>
+                            </button>
+                            <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen">
+                                <span class="quick-icon" aria-hidden="true">🔊</span>
+                                <span class="quick-label">
+                                    <span class="quick-title">Lautstärke</span>
+                                    <span class="quick-desc">Pegel mit dem Original vergleichen</span>
+                                </span>
+                            </button>
+                            <button id="quickRadioEffect" class="quick-btn" type="button" title="Funkgerät-Effekt anwenden">
+                                <span class="quick-icon" aria-hidden="true">📻</span>
+                                <span class="quick-label">
+                                    <span class="quick-title">Funkgerät</span>
+                                    <span class="quick-desc">Preset öffnen und Effekt anwenden</span>
+                                </span>
+                            </button>
                         </div>
                     </div>
                     <div class="timing-grid">
