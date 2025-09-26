@@ -1082,6 +1082,42 @@ th:nth-child(8) {
             margin-top: 2px;
         }
 
+        /* Raster für die Wellenformen – reagiert auf verschiedene Monitorbreiten */
+        #deEditDialog .wave-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 18px;
+            margin-bottom: 20px;
+            align-items: start;
+        }
+
+        @media (min-width: 1800px) {
+            #deEditDialog .wave-area {
+                grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); /* Großzügigere Spalten auf Ultra-Wide */
+                gap: 22px;
+            }
+        }
+
+        #deEditDialog .wave-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        #deEditDialog .wave-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        #deEditDialog .wave-canvas {
+            width: 100%;
+            background: #111;
+            border-radius: 8px;
+        }
+
         .delete-row-btn {
             background: none;
             border: none;
@@ -1382,13 +1418,18 @@ th:nth-child(8) {
 }
 
 /* Bereich zur Übernahme eines EN-Ausschnitts */
-.insert-en-section { margin: 5px 0; }
+.insert-en-section { margin: 0; }
 .insert-en-section .insert-controls {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+}
+
+/* EN-Einfügebereich nimmt im Raster immer die volle Breite ein */
+#deEditDialog .insert-en-section {
+    grid-column: 1 / -1;
 }
 
 .ignore-row { display:flex; gap:6px; margin-bottom:4px; }
@@ -1425,7 +1466,14 @@ th:nth-child(8) {
     border: 1px solid #444;
     border-radius: 4px;
     padding: 10px;
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#deEditDialog .effect-scroll .effect-group {
+    margin: 0; /* Abstände werden über das Raster gesteuert */
+    height: 100%;
 }
 
 .effect-separator {
@@ -1928,13 +1976,21 @@ th:nth-child(8) {
 
 /* Speziell breiterer Dialog für die DE-Audio-Bearbeitung */
 #deEditDialog .dialog {
-    max-width: 1260px; /* Mehr Arbeitsfläche für große Monitore */
-    width: min(95vw, 1260px);
+    max-width: 1400px; /* Grundbreite für großzügige Arbeitsfläche */
+    width: min(96vw, 1400px);
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1800px) {
     #deEditDialog .dialog {
-        max-width: 1400px; /* Auf sehr breiten Displays weiter ausnutzen */
+        max-width: 1600px; /* Zusätzlicher Spielraum auf Ultra-Wide-Monitoren */
+        width: min(92vw, 1600px);
+    }
+}
+
+@media (min-width: 2100px) {
+    #deEditDialog .dialog {
+        max-width: 1800px; /* Sehr breite Displays ausnutzen */
+        width: min(88vw, 1800px);
     }
 }
 
@@ -1942,8 +1998,15 @@ th:nth-child(8) {
 #deEditDialog .edit-layout {
     display: grid;
     gap: 24px;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
     align-items: start;
+}
+
+@media (min-width: 1700px) {
+    #deEditDialog .edit-layout {
+        gap: 30px; /* Mehr Abstand bei großen Auflösungen */
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr);
+    }
 }
 
 @media (max-width: 1200px) {
@@ -1966,16 +2029,25 @@ th:nth-child(8) {
 }
 
 #deEditDialog .effect-scroll {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Gitter passt sich flexibel an */
     gap: 20px;
     max-height: 70vh;
     overflow-y: auto;
     padding-right: 6px;
+    align-content: flex-start;
+}
+
+@media (min-width: 1800px) {
+    #deEditDialog .effect-scroll {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Auf breiten Monitoren mehr Spalten */
+        gap: 24px;
+    }
 }
 
 @media (max-width: 1200px) {
     #deEditDialog .effect-scroll {
+        grid-template-columns: 1fr; /* Auf kleinen Monitoren einspaltig */
         max-height: none; /* Auf kleinen Monitoren nicht abschneiden */
     }
 }

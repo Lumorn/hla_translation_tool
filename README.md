@@ -88,6 +88,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Übersichtliche Auswahlzeile:** Die gewählte Zeile wird mit kleinem Abstand unter dem Tabellenkopf positioniert, bleibt vollständig sichtbar und zeigt noch einen Teil der vorherigen Zeile.
 * **Tabellenkopf mit vollem Sichtfenster:** Das Scroll-Padding der Tabelle entspricht jetzt der Höhe des sticky Kopfbereichs, sodass die erste Zeile nicht mehr teilweise verdeckt wird.
 * **Überarbeitetes Timing-Layout:** Der Abschnitt „Timing & Bereiche“ nutzt ein zweispaltiges Kartenraster, das bei schmaler Breite automatisch auf eine Spalte umbricht.
+* **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen reagieren nun auf breite Monitore mit flexiblen Gittern und ordnen sich auf kleineren Displays automatisch übereinander an.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.
 * **Zufallsprojekt-Knopf:** Lädt ein zufälliges Projekt und speichert ein Protokoll als Datei oder in die Zwischenablage.
