@@ -638,11 +638,11 @@
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
             <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
-            <div style="margin-bottom:15px;">
-                <div style="display:flex;flex-direction:column;gap:5px;">
+            <div class="wave-area">
+                <div class="wave-block wave-block-original">
                     <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <canvas id="waveOriginal" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                    <div class="wave-controls">
+                        <canvas id="waveOriginal" width="500" height="80" class="wave-canvas"></canvas>
                         <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen">▶</button>
                         <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>
@@ -664,10 +664,10 @@
                         <button id="copyEnBtn" class="btn btn-secondary" onclick="insertEnglishSegment()" title="Markierten EN-Abschnitt in DE-Audio kopieren">⬇️ Kopieren</button>
                     </div>
                 </div>
-                <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+                <div class="wave-block wave-block-edited">
                     <span class="wave-label" id="waveLabelEdited">DE (bearbeiten)</span>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <canvas id="waveEdited" width="500" height="80" style="width:100%; background:#111;"></canvas>
+                    <div class="wave-controls">
+                        <canvas id="waveEdited" width="500" height="80" class="wave-canvas"></canvas>
                         <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen">▶</button>
                         <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
                     </div>

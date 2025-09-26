@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.374
+* `web/hla_translation_tool.html` fasst die Wellenformen in einem klassengebundenen Raster zusammen, damit Original- und DE-Ansicht auf breiten Monitoren nebeneinander Platz finden.
+* `web/src/style.css` vergrößert den Dialog für Ultra-Wide-Displays, verteilt Wellenformen und Effektgruppen in responsiven Gittern und reduziert Abstände automatisch auf kleineren Screens.
+* README und CHANGELOG vermerken die adaptive DE-Audio-Ansicht für breite Monitore.
 ## 🛠️ Patch in 1.40.373
 * `web/hla_translation_tool.html` gestaltet den Schnellzugriff als Kartenraster mit erklärenden Titeln und ergänzt den Button „Tempo angleichen“, der die EN-Laufzeit sofort übernimmt.
 * `web/src/style.css` schärft die Optik mit größeren Karten, klareren Überschriften und feineren Schatten für Schnellzugriff und Timing-Bereiche.
