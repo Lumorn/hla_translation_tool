@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.375
+* `web/src/style.css` erhält ein variables Farb- und Abstands-System, moderne Glas-Panels sowie responsive Raster für Projektwerkzeuge, Startleiste und Filter, damit große Monitore ohne Klickwegeverlust nutzbar bleiben.
+* `web/src/style.css` poliert die Dateitabelle mit Sticky-Header, weicheren Hover-Zuständen und angepassten Fortschrittsanzeigen für eine professionelle Gesamtwirkung.
+* README und CHANGELOG beschreiben die modernisierte, schnell bedienbare Oberfläche.
 ## 🛠️ Patch in 1.40.374
 * `web/hla_translation_tool.html` fasst die Wellenformen in einem klassengebundenen Raster zusammen, damit Original- und DE-Ansicht auf breiten Monitoren nebeneinander Platz finden.
 * `web/src/style.css` vergrößert den Dialog für Ultra-Wide-Displays, verteilt Wellenformen und Effektgruppen in responsiven Gittern und reduziert Abstände automatisch auf kleineren Screens.
