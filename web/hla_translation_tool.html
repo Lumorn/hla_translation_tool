@@ -638,13 +638,37 @@
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
             <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
+            <div class="wave-toolbar" id="waveToolbar">
+                <div class="wave-slider">
+                    <label for="waveZoomRange">Zoom</label>
+                    <input type="range" id="waveZoomRange" min="0.8" max="2.5" step="0.1">
+                    <span id="waveZoomDisplay">100%</span>
+                </div>
+                <div class="wave-slider">
+                    <label for="waveHeightRange">Höhe</label>
+                    <input type="range" id="waveHeightRange" min="60" max="200" step="10">
+                    <span id="waveHeightDisplay">100px</span>
+                </div>
+                <label class="wave-sync-label"><input type="checkbox" id="waveSyncScroll"> Scroll koppeln</label>
+                <div class="wave-toolbar-buttons">
+                    <button id="waveFitFullBtn" class="btn btn-secondary" type="button" title="Gesamtes Audio einpassen">↔ Alles zeigen</button>
+                    <button id="waveFocusSelectionBtn" class="btn btn-secondary" type="button" title="Auswahl in den Fokus holen">🎯 Auswahl</button>
+                </div>
+            </div>
             <div class="wave-area">
                 <div class="wave-block wave-block-original">
                     <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
                     <div class="wave-controls">
-                        <canvas id="waveOriginal" width="500" height="80" class="wave-canvas"></canvas>
-                        <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen">▶</button>
-                        <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
+                        <div class="wave-viewport" id="waveOriginalViewport">
+                            <div class="wave-scroll" id="waveOriginalScroll">
+                                <canvas id="waveOriginal" width="500" height="80" class="wave-canvas"></canvas>
+                                <div class="wave-ruler" id="waveOriginalRuler"></div>
+                            </div>
+                        </div>
+                        <div class="wave-buttons">
+                            <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen">▶</button>
+                            <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
+                        </div>
                     </div>
                     <!-- EN-Text unter der Original-Welle -->
                     <div id="editEnText" class="wave-text"></div>
@@ -667,9 +691,16 @@
                 <div class="wave-block wave-block-edited">
                     <span class="wave-label" id="waveLabelEdited">DE (bearbeiten)</span>
                     <div class="wave-controls">
-                        <canvas id="waveEdited" width="500" height="80" class="wave-canvas"></canvas>
-                        <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen">▶</button>
-                        <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
+                        <div class="wave-viewport" id="waveEditedViewport">
+                            <div class="wave-scroll" id="waveEditedScroll">
+                                <canvas id="waveEdited" width="500" height="80" class="wave-canvas"></canvas>
+                                <div class="wave-ruler" id="waveEditedRuler"></div>
+                            </div>
+                        </div>
+                        <div class="wave-buttons">
+                            <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen">▶</button>
+                            <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen">⏹</button>
+                        </div>
                     </div>
                     <!-- DE-Text und Emotional-Text unter der Bearbeitungs-Welle -->
                     <div id="editDeText" class="wave-text"></div>

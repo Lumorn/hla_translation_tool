@@ -1093,29 +1093,165 @@ th:nth-child(8) {
 
         @media (min-width: 1800px) {
             #deEditDialog .wave-area {
-                grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); /* Großzügigere Spalten auf Ultra-Wide */
+                grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); /* Großzügigere Spalten auf Ultra-Wide */
+                gap: 24px;
+            }
+        }
+
+        #deEditDialog .wave-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+            justify-content: flex-start;
+            background: #1c1c1c;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+
+        #deEditDialog .wave-slider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        #deEditDialog .wave-slider input[type="range"] {
+            width: 150px;
+        }
+
+        #deEditDialog .wave-slider span {
+            font-weight: 600;
+            color: #f0f0f0;
+        }
+
+        #deEditDialog .wave-sync-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        #deEditDialog .wave-toolbar-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        #deEditDialog .wave-toolbar .btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            height: 30px;
+        }
+
+        @media (min-width: 1700px) {
+            #deEditDialog .wave-slider input[type="range"] {
+                width: 220px;
+            }
+            #deEditDialog .wave-toolbar {
                 gap: 22px;
+                padding: 14px 22px;
             }
         }
 
         #deEditDialog .wave-block {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             min-width: 0;
         }
 
         #deEditDialog .wave-controls {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            align-items: stretch;
+            gap: 14px;
+        }
+
+        #deEditDialog .wave-viewport {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #deEditDialog .wave-scroll {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            background: #111;
+            border-radius: 8px;
+            padding: 8px 0 18px;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        #deEditDialog .wave-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #deEditDialog .wave-scroll::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 8px;
+        }
+
+        #deEditDialog .wave-scroll::-webkit-scrollbar-track {
+            background: #1b1b1b;
         }
 
         #deEditDialog .wave-canvas {
+            display: block;
             width: 100%;
             background: #111;
             border-radius: 8px;
+        }
+
+        #deEditDialog .wave-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: flex-start;
+        }
+
+        #deEditDialog .wave-buttons button {
+            width: 40px;
+            height: 40px;
+        }
+
+        #deEditDialog .wave-ruler {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 16px;
+            pointer-events: none;
+            font-size: 10px;
+            color: #d0d0d0;
+        }
+
+        #deEditDialog .wave-ruler-mark {
+            position: absolute;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateX(-50%);
+        }
+
+        #deEditDialog .wave-ruler-mark::before {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 8px;
+            background: #5c5c5c;
+        }
+
+        #deEditDialog .wave-ruler-mark span {
+            margin-top: 2px;
+            padding: 1px 3px;
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.55);
         }
 
         .delete-row-btn {
