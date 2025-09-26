@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.375
+* `web/hla_translation_tool.html` ergänzt eine Waveform-Werkzeugleiste mit Zoom- und Höhenreglern, Fokusknöpfen sowie eigenen Scrollbereichen für Original- und DE-Wellenform.
+* `web/src/style.css` liefert das Layout für die Toolbar, definiert Scrollleisten, Zeitlineale und sorgt für großzügige Abstände auf Ultrawide-Monitoren.
+* `web/src/main.js` speichert Zoom- und Höhenwerte, koppelt das Scrollen beider Wellen, zeichnet Zeitmarken-Lineale und bindet die neuen Bedienelemente in die Bearbeitungslogik ein.
+* README und CHANGELOG dokumentieren die erweiterte Audiobearbeitung für große Monitore inklusive der neuen Werkzeuge.
 ## 🛠️ Patch in 1.40.374
 * `web/hla_translation_tool.html` fasst die Wellenformen in einem klassengebundenen Raster zusammen, damit Original- und DE-Ansicht auf breiten Monitoren nebeneinander Platz finden.
 * `web/src/style.css` vergrößert den Dialog für Ultra-Wide-Displays, verteilt Wellenformen und Effektgruppen in responsiven Gittern und reduziert Abstände automatisch auf kleineren Screens.

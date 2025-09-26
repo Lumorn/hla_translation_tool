@@ -424,6 +424,22 @@ let tempoFactor           = 1.0;   // Faktor für Time-Stretching
 let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
+// Anzeigeeinstellungen für die Wellenformen
+let waveZoomLevel         = parseFloat(storage.getItem('hla_waveZoomLevel')) || 1.0; // Basiszoom für große Monitore
+let waveHeightPx          = parseInt(storage.getItem('hla_waveHeightPx'), 10) || 100; // Höhe der Wellenform
+let waveSyncScroll        = storage.getItem('hla_waveSyncScroll') === 'true'; // Gemeinsames Scrollen aktiv?
+let waveScrollSyncing     = false; // Sperre beim synchronen Scrollen
+let currentEnSeconds      = 0;     // Länge der EN-Datei in Sekunden
+let currentDeSeconds      = 0;     // Länge der DE-Datei in Sekunden
+let maxWaveSeconds        = 0;     // Maximale Länge zur Skalierung
+
+if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
+    waveZoomLevel = 1.0;
+}
+if (!Number.isFinite(waveHeightPx) || waveHeightPx < 60) {
+    waveHeightPx = 100;
+}
+
 let deDragStart           = null;  // Startposition beim Ziehen im DE-Wave
 let deSelecting           = false; // Wahr während Ziehen im DE-Wave
 let dePrevStartTrim       = 0;     // Vorheriger Start-Trim
@@ -458,6 +474,231 @@ function zoomCanvasToRange(canvas, startMs, endMs, totalMs) {
 // Setzt den Zoom einer Canvas zurück
 function resetCanvasZoom(canvas) {
     if (canvas) canvas.style.transform = '';
+}
+
+// Aktualisiert die Anzeige der Zoom- und Höheneinstellungen im Toolbarbereich
+function updateWaveToolbarDisplays() {
+    const zoomDisplay = document.getElementById('waveZoomDisplay');
+    if (zoomDisplay) {
+        zoomDisplay.textContent = `${Math.round(waveZoomLevel * 100)}%`;
+    }
+    const zoomRange = document.getElementById('waveZoomRange');
+    if (zoomRange) {
+        zoomRange.value = waveZoomLevel.toFixed(1);
+    }
+    const heightDisplay = document.getElementById('waveHeightDisplay');
+    if (heightDisplay) {
+        heightDisplay.textContent = `${waveHeightPx}px`;
+    }
+    const heightRange = document.getElementById('waveHeightRange');
+    if (heightRange) {
+        heightRange.value = waveHeightPx;
+    }
+    const syncCheckbox = document.getElementById('waveSyncScroll');
+    if (syncCheckbox) {
+        syncCheckbox.checked = waveSyncScroll;
+    }
+}
+
+// Aktualisiert die Dimensionen der Wellenform-Canvas entsprechend der aktuellen Einstellungen
+function updateWaveCanvasDimensions() {
+    const canvases = [
+        { canvas: document.getElementById('waveOriginal'), ratio: maxWaveSeconds ? currentEnSeconds / maxWaveSeconds : 1 },
+        { canvas: document.getElementById('waveEdited'), ratio: maxWaveSeconds ? currentDeSeconds / maxWaveSeconds : 1 }
+    ];
+    const baseWidth = 640;
+    const minWidth = 420;
+    canvases.forEach(entry => {
+        const { canvas, ratio } = entry;
+        if (!canvas) return;
+        const effectiveRatio = Math.max(0.4, ratio || 1);
+        const widthPx = Math.max(minWidth, Math.round(baseWidth * waveZoomLevel * effectiveRatio));
+        canvas.width = widthPx;
+        canvas.height = waveHeightPx;
+        canvas.style.width = `${Math.max(1, waveZoomLevel * effectiveRatio) * 100}%`;
+        canvas.style.height = `${waveHeightPx}px`;
+    });
+    updateWaveRulers();
+    bindWaveScrollSync();
+}
+
+// Zentriert einen Zeitabschnitt innerhalb eines Scroll-Containers
+function centerScrollOnRange(container, startMs, endMs, totalMs) {
+    if (!container || totalMs <= 0) return;
+    const scrollable = container.scrollWidth - container.clientWidth;
+    if (scrollable <= 0) return;
+    const center = (startMs + endMs) / 2;
+    const ratio = Math.min(1, Math.max(0, center / totalMs));
+    container.scrollLeft = scrollable * ratio;
+}
+
+// Synchronisiert die Scrollposition eines Zielcontainers mit der Quelle
+function syncScrollPositions(source, target) {
+    if (!source || !target) return;
+    const sourceScrollable = source.scrollWidth - source.clientWidth;
+    const targetScrollable = target.scrollWidth - target.clientWidth;
+    if (sourceScrollable <= 0 || targetScrollable <= 0) {
+        target.scrollLeft = 0;
+        return;
+    }
+    const ratio = source.scrollLeft / sourceScrollable;
+    target.scrollLeft = ratio * targetScrollable;
+}
+
+// Aktiviert das gekoppelte Scrollen beider Wellenformen
+function bindWaveScrollSync() {
+    const origScroll = document.getElementById('waveOriginalScroll');
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (!origScroll || !deScroll) return;
+    origScroll.onscroll = () => {
+        if (!waveSyncScroll || waveScrollSyncing) return;
+        waveScrollSyncing = true;
+        syncScrollPositions(origScroll, deScroll);
+        waveScrollSyncing = false;
+    };
+    deScroll.onscroll = () => {
+        if (!waveSyncScroll || waveScrollSyncing) return;
+        waveScrollSyncing = true;
+        syncScrollPositions(deScroll, origScroll);
+        waveScrollSyncing = false;
+    };
+}
+
+// Fokussiert die aktuelle Auswahl oder den Cursor in der Ansicht
+function focusWaveSelection() {
+    let handled = false;
+    const origScroll = document.getElementById('waveOriginalScroll');
+    if (origScroll && editEnBuffer && Math.abs(enSelectEnd - enSelectStart) > 5) {
+        const totalMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+        const start = Math.min(enSelectStart, enSelectEnd);
+        const end = Math.max(enSelectStart, enSelectEnd);
+        centerScrollOnRange(origScroll, start, end, totalMs);
+        handled = true;
+    }
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (deScroll && originalEditBuffer) {
+        if (deSelectionActive) {
+            const start = editStartTrim;
+            const end = editDurationMs - editEndTrim;
+            if (end > start) {
+                centerScrollOnRange(deScroll, start, end, editDurationMs);
+                handled = true;
+            }
+        } else if (!handled && editDurationMs > 0) {
+            const cursor = Math.min(editDeCursor, editDurationMs);
+            centerScrollOnRange(deScroll, cursor - 100, cursor + 100, editDurationMs);
+            handled = true;
+        }
+    }
+    if (!handled) {
+        if (origScroll) origScroll.scrollLeft = 0;
+        if (deScroll) deScroll.scrollLeft = 0;
+    }
+}
+
+// Zeichnet die Zeitmarken für eine Wellenform
+function drawWaveRuler(rulerEl, canvas, buffer) {
+    if (!rulerEl || !canvas || !buffer) return;
+    const totalMs = buffer.length / buffer.sampleRate * 1000;
+    if (!Number.isFinite(totalMs) || totalMs <= 0) {
+        rulerEl.innerHTML = '';
+        return;
+    }
+    const pxPerMs = canvas.width / totalMs;
+    const step = computeRulerStep(totalMs);
+    rulerEl.innerHTML = '';
+    rulerEl.style.width = `${canvas.width}px`;
+    for (let t = 0; t <= totalMs; t += step) {
+        const mark = document.createElement('div');
+        mark.className = 'wave-ruler-mark';
+        mark.style.left = `${t * pxPerMs}px`;
+        const seconds = t / 1000;
+        const decimals = step >= 1000 ? 0 : 1;
+        mark.innerHTML = `<span>${seconds.toFixed(decimals)}s</span>`;
+        rulerEl.appendChild(mark);
+    }
+}
+
+// Wählt einen passenden Schritt für die Zeitmarken abhängig von der Gesamtlänge
+function computeRulerStep(totalMs) {
+    const steps = [100, 200, 250, 500, 1000, 2000, 5000, 10000, 20000, 30000, 60000];
+    for (const step of steps) {
+        if (totalMs / step <= 12) {
+            return step;
+        }
+    }
+    return 120000;
+}
+
+// Aktualisiert beide Lineale basierend auf den aktuellen Canvas-Größen
+function updateWaveRulers() {
+    const origCanvas = document.getElementById('waveOriginal');
+    const origRuler = document.getElementById('waveOriginalRuler');
+    if (origCanvas && origRuler && editEnBuffer) {
+        drawWaveRuler(origRuler, origCanvas, editEnBuffer);
+    }
+    const deCanvas = document.getElementById('waveEdited');
+    const deRuler = document.getElementById('waveEditedRuler');
+    if (deCanvas && deRuler && originalEditBuffer) {
+        drawWaveRuler(deRuler, deCanvas, originalEditBuffer);
+    }
+}
+
+// Initialisiert die Bedienelemente der Wave-Toolbar
+function initWaveToolbar() {
+    updateWaveToolbarDisplays();
+    const zoomRange = document.getElementById('waveZoomRange');
+    if (zoomRange) {
+        zoomRange.oninput = e => {
+            const val = parseFloat(e.target.value);
+            if (!Number.isFinite(val)) return;
+            waveZoomLevel = Math.max(0.8, Math.min(2.5, val));
+            storage.setItem('hla_waveZoomLevel', waveZoomLevel.toFixed(2));
+            updateWaveToolbarDisplays();
+            updateWaveCanvasDimensions();
+            scheduleWaveformUpdate();
+        };
+        zoomRange.onchange = zoomRange.oninput;
+    }
+    const heightRange = document.getElementById('waveHeightRange');
+    if (heightRange) {
+        heightRange.oninput = e => {
+            const val = parseInt(e.target.value, 10);
+            if (!Number.isFinite(val)) return;
+            waveHeightPx = Math.max(60, Math.min(220, val));
+            storage.setItem('hla_waveHeightPx', waveHeightPx.toString());
+            updateWaveToolbarDisplays();
+            updateWaveCanvasDimensions();
+            scheduleWaveformUpdate();
+        };
+        heightRange.onchange = heightRange.oninput;
+    }
+    const syncCheckbox = document.getElementById('waveSyncScroll');
+    if (syncCheckbox) {
+        syncCheckbox.onchange = e => {
+            waveSyncScroll = !!e.target.checked;
+            storage.setItem('hla_waveSyncScroll', waveSyncScroll ? 'true' : 'false');
+            bindWaveScrollSync();
+        };
+    }
+    const fitBtn = document.getElementById('waveFitFullBtn');
+    if (fitBtn) {
+        fitBtn.onclick = () => {
+            resetCanvasZoom(document.getElementById('waveOriginal'));
+            resetCanvasZoom(document.getElementById('waveEdited'));
+            const origScroll = document.getElementById('waveOriginalScroll');
+            const deScroll = document.getElementById('waveEditedScroll');
+            if (origScroll) origScroll.scrollLeft = 0;
+            if (deScroll) deScroll.scrollLeft = 0;
+        };
+    }
+    const focusBtn = document.getElementById('waveFocusSelectionBtn');
+    if (focusBtn) {
+        focusBtn.onclick = () => {
+            focusWaveSelection();
+        };
+    }
+    bindWaveScrollSync();
 }
 
 let draggedElement         = null;
@@ -13266,6 +13507,9 @@ async function openDeEdit(fileId) {
     const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
     const maxSeconds = Math.max(enSeconds, deSeconds);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    currentEnSeconds = enSeconds;
+    currentDeSeconds = deSeconds;
+    maxWaveSeconds = Math.max(maxSeconds, 0.001);
     // Beide Cursor zurücksetzen
     editOrigCursor = 0;
     editDeCursor = 0;
@@ -13548,14 +13792,8 @@ async function openDeEdit(fileId) {
         scheduleWaveformUpdate();
     };
 
-    // Wellenbreite passend zur Länge setzen
-    const enRatio = enSeconds / maxSeconds;
-    const deRatio = deSeconds / maxSeconds;
-    const baseWidth = 500;
-    origCanvas.width = Math.round(baseWidth * enRatio);
-    deCanvas.width  = Math.round(baseWidth * deRatio);
-    origCanvas.style.width = `${enRatio * 100}%`;
-    deCanvas.style.width  = `${deRatio * 100}%`;
+    initWaveToolbar();
+    updateWaveCanvasDimensions();
 
     // Längen in Sekunden anzeigen
     document.getElementById('waveLabelOriginal').textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
@@ -14849,6 +15087,7 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     const eInput = document.getElementById('editEnd');
     if (sInput) sInput.value = deSelectionActive ? Math.round(editStartTrim) : 0;
     if (eInput) eInput.value = deSelectionActive ? Math.round(editDurationMs - editEndTrim) : 0;
+    updateWaveRulers();
     updateLengthInfo();
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
@@ -15177,6 +15416,10 @@ function closeDeEdit() {
         window.removeEventListener('keydown', deEditEscHandler);
         deEditEscHandler = null;
     }
+    const origScroll = document.getElementById('waveOriginalScroll');
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (origScroll) origScroll.onscroll = null;
+    if (deScroll) deScroll.onscroll = null;
     resetCanvasZoom(document.getElementById('waveOriginal'));
     resetCanvasZoom(document.getElementById('waveEdited'));
     deSelectionActive = false;
