@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.388
+* `web/src/main.js` setzt die Canvas-Breite jetzt in Pixeln, damit lange DE-Aufnahmen proportional zur Laufzeit dargestellt und korrekt gescrollt werden können.
+* `web/src/style.css` überlässt die Breite der Wave-Canvas dem Inline-Stil, sodass die neue Pixelbreite nicht mehr überschrieben wird.
+* `README.md` erwähnt die proportional skalierte DE-Wellenform.
+* `CHANGELOG.md` dokumentiert die neue Breitenlogik der Wave-Canvas.
 ## 🛠️ Patch in 1.40.387
 * `web/src/dubbing.js` entfernt den Aufbau der Master-Timeline, bindet die Toolbar-Elemente als gemeinsame Regler und synchronisiert nur noch Zoom- und Positionswerte.
 * `web/src/main.js` verzichtet auf die Timeline-Initialisierung, koppelt die neuen Toolbar-Controls an die bestehenden Callback-Pfade und aktualisiert Scroll- und Zoom-Anzeigen ohne zusätzliche Zeitleiste.

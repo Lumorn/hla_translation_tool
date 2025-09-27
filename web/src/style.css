@@ -1225,7 +1225,7 @@ th:nth-child(8) {
 
         #deEditDialog .wave-canvas {
             display: block;
-            width: 100%;
+            width: auto;
             background: #111;
             border-radius: 8px;
         }

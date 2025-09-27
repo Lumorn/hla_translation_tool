@@ -521,7 +521,8 @@ function updateWaveCanvasDimensions() {
         const widthPx = Math.max(minWidth, Math.round(baseWidth * waveZoomLevel * effectiveRatio));
         canvas.width = widthPx;
         canvas.height = waveHeightPx;
-        canvas.style.width = `${Math.max(1, waveZoomLevel * effectiveRatio) * 100}%`;
+        // Breite jetzt in Pixeln setzen, damit lange DE-Spuren proportional dargestellt werden
+        canvas.style.width = `${widthPx}px`;
         canvas.style.height = `${waveHeightPx}px`;
     });
     updateWaveRulers();
