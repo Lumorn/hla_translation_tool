@@ -512,6 +512,14 @@ let currentEnSeconds      = 0;     // Länge der EN-Datei in Sekunden
 let currentDeSeconds      = 0;     // Länge der DE-Datei in Sekunden
 let maxWaveSeconds        = 0;     // Maximale Länge zur Skalierung
 
+// Sichert Eingabewerte für Trim-Felder gegen Überläufe oberhalb der Gesamtdauer ab
+function setTrimInputValueSafe(input, valueMs, maxDurationMs = editDurationMs) {
+    if (!input) return;
+    const sichereDauer = Number.isFinite(maxDurationMs) && maxDurationMs > 0 ? Math.floor(maxDurationMs) : 0;
+    const kandidat = Number.isFinite(valueMs) ? Math.floor(valueMs) : 0;
+    input.value = Math.max(0, Math.min(kandidat, sichereDauer));
+}
+
 // Normalisiert die Trim-Werte nach Änderungen der Gesamtdauer und hält die Eingabefelder konsistent
 function normalizeDeTrim() {
     // Unerwartete Dauern abfangen und auf 0 begrenzen
@@ -527,13 +535,9 @@ function normalizeDeTrim() {
 
     // Eingabefelder synchronisieren
     const startInput = document.getElementById('editStart');
-    if (startInput) {
-        startInput.value = Math.round(editStartTrim);
-    }
+    setTrimInputValueSafe(startInput, editStartTrim, maxDuration);
     const endInput = document.getElementById('editEnd');
-    if (endInput) {
-        endInput.value = Math.round(maxDuration - editEndTrim);
-    }
+    setTrimInputValueSafe(endInput, maxDuration - editEndTrim, maxDuration);
 
     validateDeSelection();
 }
@@ -13772,8 +13776,8 @@ async function openDeEdit(fileId) {
             startInput.select();
         }
     };
-    document.getElementById('editStart').value = editStartTrim;
-    document.getElementById('editEnd').value = editDurationMs - editEndTrim;
+    setTrimInputValueSafe(document.getElementById('editStart'), editStartTrim);
+    setTrimInputValueSafe(document.getElementById('editEnd'), editDurationMs - editEndTrim);
     document.getElementById('editStart').oninput = e => {
         const val = parseInt(e.target.value) || 0;
         editStartTrim = Math.max(0, Math.min(val, editDurationMs));
@@ -14427,8 +14431,8 @@ async function openDeEdit(fileId) {
         editEndTrim = 0;
         const sField = document.getElementById('editStart');
         const eField = document.getElementById('editEnd');
-        if (sField) sField.value = 0;
-        if (eField) eField.value = Math.round(editDurationMs);
+        setTrimInputValueSafe(sField, 0);
+        setTrimInputValueSafe(eField, editDurationMs);
         resetCanvasZoom(deCanvas);
         validateDeSelection();
         scheduleWaveformUpdate();
@@ -14443,8 +14447,8 @@ async function openDeEdit(fileId) {
             editEndTrim   = editDurationMs - Math.max(deDragStart, time);
             const sField = document.getElementById('editStart');
             const eField = document.getElementById('editEnd');
-            if (sField) sField.value = Math.round(editStartTrim);
-            if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+            setTrimInputValueSafe(sField, editStartTrim);
+            setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
             validateDeSelection();
             scheduleWaveformUpdate();
             return;
@@ -14479,8 +14483,8 @@ async function openDeEdit(fileId) {
         }
         const sField = document.getElementById('editStart');
         const eField = document.getElementById('editEnd');
-        if (sField) sField.value = Math.round(editStartTrim);
-        if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+        setTrimInputValueSafe(sField, editStartTrim);
+        setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
         validateDeSelection();
         scheduleWaveformUpdate();
     };
@@ -14524,8 +14528,8 @@ async function openDeEdit(fileId) {
                 editEndTrim   = dePrevEndTrim;
                 const sField = document.getElementById('editStart');
                 const eField = document.getElementById('editEnd');
-                if (sField) sField.value = Math.round(editStartTrim);
-                if (eField) eField.value = Math.round(editDurationMs - editEndTrim);
+                setTrimInputValueSafe(sField, editStartTrim);
+                setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
                 editDeCursor = start;
                 if (editPlaying === 'de') {
                     const audio = document.getElementById('audioPlayer');
@@ -14559,8 +14563,8 @@ async function openDeEdit(fileId) {
                 editEndTrim = 0;
                 const sField = document.getElementById('editStart');
                 const eField = document.getElementById('editEnd');
-                if (sField) sField.value = 0;
-                if (eField) eField.value = Math.round(editDurationMs);
+                setTrimInputValueSafe(sField, 0);
+                setTrimInputValueSafe(eField, editDurationMs);
                 resetCanvasZoom(deCanvas);
                 validateDeSelection();
                 scheduleWaveformUpdate();
@@ -15318,8 +15322,8 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     }
     const sInput = document.getElementById('editStart');
     const eInput = document.getElementById('editEnd');
-    if (sInput) sInput.value = deSelectionActive ? Math.round(editStartTrim) : 0;
-    if (eInput) eInput.value = deSelectionActive ? Math.round(editDurationMs - editEndTrim) : 0;
+    setTrimInputValueSafe(sInput, deSelectionActive ? editStartTrim : 0);
+    setTrimInputValueSafe(eInput, deSelectionActive ? (editDurationMs - editEndTrim) : 0);
     updateWaveRulers();
     updateLengthInfo();
     updateMasterTimeline();

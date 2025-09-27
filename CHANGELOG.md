@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.400
+* `web/src/main.js` kapselt die Eingaben für Start- und End-Trim in `setTrimInputValueSafe`, deckelt alle Werte auf `editDurationMs` und sorgt dafür, dass `validateDeSelection()` nach Auto-Trim, Tempoabgleich und Speichern stabile Markierungen sieht.
+* `README.md` beschreibt die gedeckelten Trim-Felder sowie die manuelle Prüfung mit Auto-Trim, Tempo und anschließendem Speichern.
+* `CHANGELOG.md` dokumentiert die neue Absicherung der Trim-Felder gegen Überläufe.
 ## 🛠️ Patch in 1.40.399
 * `web/src/main.js` normalisiert nach dem Speichern Start- und End-Trim per `normalizeDeTrim()`, belässt `deSelectionActive` aktiv und hält damit die vollständige Markierung sichtbar, ohne die Eingabefelder auf `0` zurückzusetzen.
 * `README.md` beschreibt die unverändert aktive Markierung samt korrekt befüllter Trim-Felder nach dem Speichern.
