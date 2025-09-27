@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.399
+* `web/src/main.js` normalisiert nach dem Speichern Start- und End-Trim per `normalizeDeTrim()`, belässt `deSelectionActive` aktiv und hält damit die vollständige Markierung sichtbar, ohne die Eingabefelder auf `0` zurückzusetzen.
+* `README.md` beschreibt die unverändert aktive Markierung samt korrekt befüllter Trim-Felder nach dem Speichern.
+* `CHANGELOG.md` dokumentiert die dauerhaft sichtbare Auswahl im DE-Audio-Editor.
 ## 🛠️ Patch in 1.40.398
 * `web/src/main.js` ergänzt `normalizeDeTrim()`, begrenzt Start- und End-Trim nach jeder Laufzeitänderung, synchronisiert die Eingabefelder und ruft anschließend `validateDeSelection()` auf, damit die grüne Markierung aktiv bleibt.
 * `README.md` beschreibt die automatisch stabilisierte Auswahl nach Auto-Tempo, Pausenentfernung und Speichern.
