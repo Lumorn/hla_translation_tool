@@ -878,164 +878,34 @@ function ensureWaveTimelineElements() {
     if (waveTimelineElements && waveTimelineElements.container?.isConnected) {
         return waveTimelineElements;
     }
-    const waveArea = document.querySelector('#deEditDialog .wave-area');
-    if (!waveArea || !waveArea.parentElement) return null;
+    const toolbar = document.querySelector('#deEditDialog #waveToolbar');
+    if (!toolbar) return null;
 
-    const container = document.createElement('div');
-    container.className = 'wave-master-bar';
-
-    const timeline = document.createElement('div');
-    timeline.className = 'wave-timeline';
-
-    const scale = document.createElement('div');
-    scale.className = 'wave-timeline-scale';
-    scale.id = 'waveTimelineScale';
-    timeline.appendChild(scale);
-
-    const markers = document.createElement('div');
-    markers.className = 'wave-timeline-markers';
-    markers.id = 'waveTimelineMarkers';
-    timeline.appendChild(markers);
-
-    const windowIndicator = document.createElement('div');
-    windowIndicator.className = 'wave-timeline-window';
-    windowIndicator.id = 'waveTimelineWindow';
-    timeline.appendChild(windowIndicator);
-
-    container.appendChild(timeline);
-
-    const controls = document.createElement('div');
-    controls.className = 'wave-master-controls';
-    controls.innerHTML = `
-        <div class="wave-master-controls-group">
-            <button type="button" class="wave-master-btn" data-action="zoom-out" title="Zoom verkleinern">−</button>
-            <label>
-                <span>Zoom</span>
-                <input type="range" min="${WAVE_ZOOM_MIN}" max="${WAVE_ZOOM_MAX}" step="${WAVE_ZOOM_STEP}" id="waveTimelineZoom">
-            </label>
-            <button type="button" class="wave-master-btn" data-action="zoom-in" title="Zoom vergrößern">+</button>
-            <span class="wave-master-value" id="waveTimelineZoomDisplay">100%</span>
-        </div>
-        <div class="wave-master-controls-group">
-            <button type="button" class="wave-master-btn" data-action="scroll-left" title="Nach links springen">⟵</button>
-            <label>
-                <span>Position</span>
-                <input type="range" min="0" max="100" step="1" id="waveTimelineScroll">
-            </label>
-            <button type="button" class="wave-master-btn" data-action="scroll-right" title="Nach rechts springen">⟶</button>
-            <span class="wave-master-value" id="waveTimelineScrollDisplay">0%</span>
-        </div>`;
-    container.appendChild(controls);
-
-    waveArea.parentElement.insertBefore(container, waveArea);
+    const query = (id) => document.getElementById(id);
 
     waveTimelineElements = {
-        container,
-        timeline,
-        scale,
-        markers,
-        windowIndicator,
-        controls,
-        zoomInput: controls.querySelector('#waveTimelineZoom'),
-        zoomDisplay: controls.querySelector('#waveTimelineZoomDisplay'),
-        scrollInput: controls.querySelector('#waveTimelineScroll'),
-        scrollDisplay: controls.querySelector('#waveTimelineScrollDisplay'),
-        zoomOutBtn: controls.querySelector('[data-action="zoom-out"]'),
-        zoomInBtn: controls.querySelector('[data-action="zoom-in"]'),
-        scrollLeftBtn: controls.querySelector('[data-action="scroll-left"]'),
-        scrollRightBtn: controls.querySelector('[data-action="scroll-right"]')
+        container: toolbar,
+        controls: toolbar,
+        zoomInput: query('waveZoomRange'),
+        zoomDisplay: query('waveZoomDisplay'),
+        scrollInput: query('waveScrollRange'),
+        scrollDisplay: query('waveScrollDisplay'),
+        zoomOutBtn: query('waveZoomOutBtn'),
+        zoomInBtn: query('waveZoomInBtn'),
+        scrollLeftBtn: query('waveScrollLeftBtn'),
+        scrollRightBtn: query('waveScrollRightBtn')
     };
 
     return waveTimelineElements;
 }
 
-// Zeichnet Sekundenmarkierungen in die Timeline
-function drawTimelineScale(scaleEl, durationMs, canvasWidth) {
-    if (!scaleEl) return;
-    scaleEl.innerHTML = '';
-    if (!Number.isFinite(durationMs) || durationMs <= 0 || !Number.isFinite(canvasWidth) || canvasWidth <= 0) {
-        scaleEl.style.width = '100%';
-        return;
-    }
-    const step = computeTimelineStep(durationMs);
-    scaleEl.style.width = `${canvasWidth}px`;
-    const pxPerMs = canvasWidth / durationMs;
-    for (let t = 0; t <= durationMs + 1; t += step) {
-        const tick = document.createElement('div');
-        tick.className = 'wave-timeline-tick';
-        tick.style.left = `${t * pxPerMs}px`;
-        const seconds = t / 1000;
-        const decimals = step >= 1000 ? 0 : 1;
-        tick.innerHTML = `<span>${seconds.toFixed(decimals)}s</span>`;
-        scaleEl.appendChild(tick);
-    }
-}
-
-// Wählt einen sinnvollen Zeitabstand für Markierungen
-function computeTimelineStep(durationMs) {
-    const steps = [100, 200, 250, 500, 1000, 2000, 5000, 10000, 20000, 30000, 60000, 120000];
-    for (const step of steps) {
-        if (durationMs / step <= 12) {
-            return step;
-        }
-    }
-    return 180000;
-}
-
-// Rendert Markierungen wie Trims oder Ignorierbereiche
-function drawTimelineMarkers(markersEl, markers, canvasWidth, durationMs) {
-    if (!markersEl) return;
-    markersEl.innerHTML = '';
-    if (!Array.isArray(markers) || !Number.isFinite(durationMs) || durationMs <= 0 || !Number.isFinite(canvasWidth) || canvasWidth <= 0) {
-        return;
-    }
-    const pxPerMs = canvasWidth / durationMs;
-    markers.forEach(marker => {
-        if (!marker) return;
-        const el = document.createElement('div');
-        const typeClass = marker.type ? ` wave-timeline-marker--${marker.type}` : '';
-        el.className = `wave-timeline-marker${typeClass}`;
-        if (marker.start != null && marker.end != null) {
-            const start = Math.max(0, Math.min(marker.start, marker.end));
-            const end = Math.min(durationMs, Math.max(marker.start, marker.end));
-            const width = Math.max(2, (end - start) * pxPerMs);
-            el.style.left = `${start * pxPerMs}px`;
-            el.style.width = `${width}px`;
-        } else if (marker.position != null) {
-            const pos = Math.max(0, Math.min(durationMs, marker.position));
-            el.style.left = `${pos * pxPerMs}px`;
-            el.style.width = '3px';
-        }
-        if (marker.label) {
-            const label = document.createElement('span');
-            label.className = 'wave-timeline-marker-label';
-            label.textContent = marker.label;
-            el.appendChild(label);
-        }
-        markersEl.appendChild(el);
-    });
-}
-
-// Aktualisiert den sichtbaren Fensterbereich innerhalb der Timeline
-function updateTimelineWindow(indicatorEl, scrollLeftPx, viewportWidthPx, canvasWidth) {
-    if (!indicatorEl) return;
-    if (!Number.isFinite(canvasWidth) || canvasWidth <= 0 || !Number.isFinite(viewportWidthPx) || viewportWidthPx <= 0) {
-        indicatorEl.style.width = '0';
-        return;
-    }
-    const left = Math.max(0, Math.min(scrollLeftPx, Math.max(0, canvasWidth - viewportWidthPx)));
-    const width = Math.min(viewportWidthPx, canvasWidth);
-    indicatorEl.style.left = `${(left / canvasWidth) * 100}%`;
-    indicatorEl.style.width = `${(width / canvasWidth) * 100}%`;
-}
-
-// Baut die Timeline inklusive Controls auf und bindet Callback-Funktionen
+// Baut die Bedienelemente auf und bindet Callback-Funktionen innerhalb der Toolbar
 function mountWaveTimeline(handlers = {}) {
     const els = ensureWaveTimelineElements();
     if (!els) return null;
     waveTimelineHandlers = handlers;
 
-    const { zoomInput, zoomOutBtn, zoomInBtn, scrollInput, scrollLeftBtn, scrollRightBtn } = els;
+    const { zoomInput, zoomOutBtn, zoomInBtn, scrollInput, scrollLeftBtn, scrollRightBtn, scrollDisplay } = els;
 
     if (zoomInput && !zoomInput.dataset.bound) {
         zoomInput.dataset.bound = 'true';
@@ -1065,6 +935,9 @@ function mountWaveTimeline(handlers = {}) {
             if (!waveTimelineHandlers?.onScrollFractionChange) return;
             const value = parseFloat(ev.target.value);
             if (!Number.isFinite(value)) return;
+            if (scrollDisplay) {
+                scrollDisplay.textContent = `${Math.round(value)}%`;
+            }
             waveTimelineHandlers.onScrollFractionChange(value / 100);
         });
     }
@@ -1093,14 +966,14 @@ function syncWaveTimelineControls(state = {}) {
     const { zoomInput, zoomDisplay, scrollInput, scrollDisplay } = els;
     if (state.zoom != null && zoomInput) {
         const clamped = Math.min(WAVE_ZOOM_MAX, Math.max(WAVE_ZOOM_MIN, state.zoom));
-        zoomInput.value = clamped;
+        zoomInput.value = clamped.toFixed(1);
         if (zoomDisplay) {
             zoomDisplay.textContent = `${Math.round(clamped * 100)}%`;
         }
     }
     if (state.scrollFraction != null && scrollInput) {
         const perc = Math.max(0, Math.min(1, state.scrollFraction)) * 100;
-        scrollInput.value = perc;
+        scrollInput.value = perc.toFixed(0);
         if (scrollDisplay) {
             scrollDisplay.textContent = `${Math.round(perc)}%`;
         }
@@ -1109,20 +982,10 @@ function syncWaveTimelineControls(state = {}) {
 
 // Hauptfunktion zum Aktualisieren der Timeline
 function renderWaveTimeline(state = {}) {
-    const els = ensureWaveTimelineElements();
-    if (!els) return;
-    const { scale, markers, windowIndicator } = els;
-    const duration = state.durationMs || 0;
-    const width = state.canvasWidth || 0;
-    drawTimelineScale(scale, duration, width);
-    drawTimelineMarkers(markers, state.markers || [], width, duration);
-    updateTimelineWindow(windowIndicator, state.scrollLeftPx || 0, state.viewportWidthPx || 0, width);
-    if (state.scrollFraction != null || state.zoom != null) {
-        syncWaveTimelineControls({
-            zoom: state.zoom,
-            scrollFraction: state.scrollFraction
-        });
-    }
+    syncWaveTimelineControls({
+        zoom: state.zoom,
+        scrollFraction: state.scrollFraction
+    });
 }
 // =========================== TIMELINE-UNTERSTÜTZUNG END =======================
 

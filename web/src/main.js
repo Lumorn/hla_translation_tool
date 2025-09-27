@@ -655,8 +655,6 @@ function updateWaveRulers() {
     }
 }
 
-let waveTimelineMounted = false;
-
 // Ermittelt aktuelle Maße der DE-Wellenform für die Timeline
 function gatherWaveViewportMetrics() {
     const deScroll = document.getElementById('waveEditedScroll');
@@ -672,60 +670,6 @@ function gatherWaveViewportMetrics() {
     };
 }
 
-// Sammelt Marker für Trim, Auswahl, Ignorierbereiche und Cursor
-function collectTimelineMarkers() {
-    const markers = [];
-    if (!Number.isFinite(editDurationMs) || editDurationMs <= 0) {
-        return markers;
-    }
-    if (editStartTrim > 0) {
-        const start = 0;
-        const end = Math.min(editDurationMs, editStartTrim);
-        if (end > start) {
-            markers.push({ start, end, type: 'trim', label: 'Trim Anfang' });
-        }
-    }
-    if (editEndTrim > 0) {
-        const start = Math.max(0, editDurationMs - editEndTrim);
-        const end = editDurationMs;
-        if (end > start) {
-            markers.push({ start, end, type: 'trim', label: 'Trim Ende' });
-        }
-    }
-    if (deSelectionActive) {
-        const start = Math.max(0, Math.min(editStartTrim, editDurationMs));
-        const end = Math.max(start, Math.min(editDurationMs, editDurationMs - editEndTrim));
-        if (end > start) {
-            markers.push({ start, end, type: 'selection', label: 'Aktiver Bereich' });
-        }
-    }
-    if (Array.isArray(editIgnoreRanges)) {
-        editIgnoreRanges.forEach(range => {
-            if (!range) return;
-            const start = Math.max(0, Math.min(range.start, range.end));
-            const end = Math.max(start, Math.min(editDurationMs, Math.max(range.start, range.end)));
-            if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
-                markers.push({ start, end, type: 'ignore' });
-            }
-        });
-    }
-    if (Array.isArray(editSilenceRanges)) {
-        editSilenceRanges.forEach(range => {
-            if (!range) return;
-            const start = Math.max(0, Math.min(range.start, range.end));
-            const end = Math.max(start, Math.min(editDurationMs, Math.max(range.start, range.end)));
-            if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
-                markers.push({ start, end, type: 'silence' });
-            }
-        });
-    }
-    if (Number.isFinite(editDeCursor)) {
-        const pos = Math.max(0, Math.min(editDurationMs, editDeCursor));
-        markers.push({ position: pos, type: 'cursor', label: 'Cursor' });
-    }
-    return markers;
-}
-
 // Synchronisiert Sliderwerte der Timeline mit den aktuellen Zuständen
 function syncTimelineWithControls() {
     if (typeof syncWaveTimelineControls !== 'function') return;
@@ -734,50 +678,18 @@ function syncTimelineWithControls() {
     syncWaveTimelineControls({ zoom: waveZoomLevel, scrollFraction: fraction });
 }
 
-// Baut die Timeline bei Bedarf auf
-function ensureWaveTimelineMounted() {
-    if (waveTimelineMounted) return;
-    if (typeof mountWaveTimeline !== 'function') return;
-    const mounted = mountWaveTimeline({
-        onZoomChange: handleTimelineZoomChange,
-        onZoomStep: handleTimelineZoomStep,
-        onScrollStep: handleTimelineScrollStep,
-        onScrollFractionChange: handleTimelineScrollFraction
-    });
-    waveTimelineMounted = !!mounted;
-    if (waveTimelineMounted) {
-        syncTimelineWithControls();
-    }
-}
-
 // Zeichnet Timeline und Marker entsprechend der aktuellen Positionen
 function updateMasterTimeline() {
-    const needsRender = typeof renderWaveTimeline === 'function';
-    const hasControls = typeof syncWaveTimelineControls === 'function';
-    if (!needsRender && !hasControls) return;
-    ensureWaveTimelineMounted();
-    if (!waveTimelineMounted) {
-        syncTimelineWithControls();
-        return;
-    }
     const metrics = gatherWaveViewportMetrics();
-    if (!metrics) {
+    const fraction = metrics ? metrics.scrollFraction : 0;
+    if (typeof renderWaveTimeline === 'function') {
+        renderWaveTimeline({
+            zoom: waveZoomLevel,
+            scrollFraction: fraction
+        });
+    } else {
         syncTimelineWithControls();
-        return;
     }
-    if (!needsRender || !Number.isFinite(editDurationMs) || editDurationMs <= 0) {
-        syncTimelineWithControls();
-        return;
-    }
-    renderWaveTimeline({
-        durationMs: editDurationMs,
-        canvasWidth: metrics.canvasWidth,
-        viewportWidthPx: metrics.viewportWidth,
-        scrollLeftPx: metrics.scrollLeft,
-        scrollFraction: metrics.scrollFraction,
-        zoom: waveZoomLevel,
-        markers: collectTimelineMarkers()
-    });
 }
 
 // Übernimmt einen neuen Zoomwert aus der Timeline
@@ -890,6 +802,15 @@ function initWaveToolbar() {
         };
     }
     bindWaveScrollSync();
+    if (typeof mountWaveTimeline === 'function') {
+        mountWaveTimeline({
+            onZoomChange: handleTimelineZoomChange,
+            onZoomStep: handleTimelineZoomStep,
+            onScrollStep: handleTimelineScrollStep,
+            onScrollFractionChange: handleTimelineScrollFraction
+        });
+        syncTimelineWithControls();
+    }
 }
 
 let draggedElement         = null;
@@ -14004,7 +13925,6 @@ async function openDeEdit(fileId) {
     if (emoTextEl) emoTextEl.textContent = file.emotionalText || '';
 
     updateDeEditWaveforms();
-    ensureWaveTimelineMounted();
     updateMasterTimeline();
     document.getElementById('deEditDialog').classList.remove('hidden');
 

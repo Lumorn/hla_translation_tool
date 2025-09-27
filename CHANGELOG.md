@@ -1,4 +1,11 @@
 # Changelog
+## 🛠️ Patch in 1.40.387
+* `web/src/dubbing.js` entfernt den Aufbau der Master-Timeline, bindet die Toolbar-Elemente als gemeinsame Regler und synchronisiert nur noch Zoom- und Positionswerte.
+* `web/src/main.js` verzichtet auf die Timeline-Initialisierung, koppelt die neuen Toolbar-Controls an die bestehenden Callback-Pfade und aktualisiert Scroll- und Zoom-Anzeigen ohne zusätzliche Zeitleiste.
+* `web/hla_translation_tool.html` verlegt Zoom-Tasten, Positions-Slider und Sprungknöpfe direkt in die Wave-Toolbar.
+* `web/src/style.css` streicht Timeline- und Master-Bar-Stile und gestaltet die kompakten Toolbar-Buttons samt Positionsregler.
+* `README.md` weist auf den Wegfall der Master-Timeline und die verlegten Regler hin.
+* `CHANGELOG.md` dokumentiert die Umstellung auf die Toolbar-Regler ohne Master-Timeline.
 ## 🛠️ Patch in 1.40.386
 * `web/hla_translation_tool.html` ersetzt die alte Effekt-Toolbar durch eine schlanke Fußleiste mit Zurücksetzen und Speichern.
 * `web/src/style.css` entfernt Sticky-Regeln sowie Toolbar-Stile und ergänzt ein kompaktes Layout für `.edit-footer`.
