@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.385
+* `web/hla_translation_tool.html` ersetzt das Kartenraster des Schnellzugriffs durch eine schlanke Toolbar mit kurzen Labels und eindeutigen Aria-Beschreibungen.
+* `web/src/style.css` verschlankt die Schnellzugriffsknöpfe, reduziert Polsterung und Icon-Größen, sorgt für Flex-Layout mit automatischem Umbruch und blendet auf schmalen Displays optional die Texte aus.
+* `README.md` beschreibt die neue Toolbar mit kompakten Icon-Labels.
+* `CHANGELOG.md` dokumentiert die Umstellung auf die schlanke Schnellzugriffsleiste.
 ## 🛠️ Patch in 1.40.384
 * `web/src/main.js` senkt den Standardwert für `waveHeightPx` auf 80 px und erzwingt denselben Fallback, damit frische Sitzungen schlanke Wellenformen nutzen.
 * `web/hla_translation_tool.html` setzt den Startwert des Höhen-Sliders auf 80 px, sodass Regler und Anzeige übereinstimmen.
