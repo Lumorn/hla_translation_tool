@@ -512,6 +512,32 @@ let currentEnSeconds      = 0;     // Länge der EN-Datei in Sekunden
 let currentDeSeconds      = 0;     // Länge der DE-Datei in Sekunden
 let maxWaveSeconds        = 0;     // Maximale Länge zur Skalierung
 
+// Normalisiert die Trim-Werte nach Änderungen der Gesamtdauer und hält die Eingabefelder konsistent
+function normalizeDeTrim() {
+    // Unerwartete Dauern abfangen und auf 0 begrenzen
+    if (!Number.isFinite(editDurationMs) || editDurationMs < 0) {
+        editDurationMs = 0;
+    }
+    const maxDuration = editDurationMs;
+    // Start begrenzen
+    editStartTrim = Math.max(0, Math.min(editStartTrim, maxDuration));
+    // End-Trim darf nicht über die verbleibende Länge hinausgehen
+    const maxEndTrim = Math.max(0, maxDuration - editStartTrim);
+    editEndTrim = Math.max(0, Math.min(editEndTrim, maxEndTrim));
+
+    // Eingabefelder synchronisieren
+    const startInput = document.getElementById('editStart');
+    if (startInput) {
+        startInput.value = Math.round(editStartTrim);
+    }
+    const endInput = document.getElementById('editEnd');
+    if (endInput) {
+        endInput.value = Math.round(maxDuration - editEndTrim);
+    }
+
+    validateDeSelection();
+}
+
 if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
     waveZoomLevel = 1.0;
 } else {
@@ -13705,6 +13731,7 @@ async function openDeEdit(fileId) {
     const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
     const maxSeconds = Math.max(enSeconds, deSeconds);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    normalizeDeTrim();
     currentEnSeconds = enSeconds;
     currentDeSeconds = deSeconds;
     maxWaveSeconds = Math.max(maxSeconds, 0.001);
@@ -13716,6 +13743,7 @@ async function openDeEdit(fileId) {
     if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
     editStartTrim = file.trimStartMs || 0;
     editEndTrim = file.trimEndMs || 0;
+    normalizeDeTrim();
     editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
     manualIgnoreRanges = editIgnoreRanges.map(r => ({start:r.start,end:r.end}));
     editSilenceRanges = Array.isArray(file.silenceRanges) ? file.silenceRanges.map(r => ({start:r.start,end:r.end})) : [];
@@ -14610,6 +14638,7 @@ function insertEnglishSegment() {
     savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
     originalEditBuffer = savedOriginalBuffer;
     editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    normalizeDeTrim();
     updateDeEditWaveforms();
     updateLengthInfo();
     if (typeof showToast === 'function') {
@@ -14716,6 +14745,7 @@ async function recomputeEditBuffer() {
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
     originalEditBuffer = await timeStretchBuffer(trimmed, relFactor);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    normalizeDeTrim();
     updateDeEditWaveforms();
 }
 // =========================== RECOMPUTEEDITBUFFER END =======================
@@ -15720,6 +15750,7 @@ async function resetDeEdit() {
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         markDirty();
         editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+        normalizeDeTrim();
         updateDeEditWaveforms();
         refreshIgnoreList();
         updateStatus('DE-Audio zurückgesetzt');
@@ -15782,6 +15813,7 @@ async function rebuildEnBufferAfterSave() {
     currentDeSeconds = deBuffer.length / deBuffer.sampleRate;
     currentEnSeconds = enBuffer.length / enBuffer.sampleRate;
     editDurationMs = deBuffer.length / deBuffer.sampleRate * 1000;
+    normalizeDeTrim();
     maxWaveSeconds = Math.max(currentDeSeconds, currentEnSeconds, 0.001);
 
     const startField = document.getElementById('enSegStart');
