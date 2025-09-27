@@ -663,7 +663,7 @@ function focusWaveSelection() {
         handled = true;
     }
     const deScroll = document.getElementById('waveEditedScroll');
-    if (deScroll && previewEditBuffer) {
+    if (deScroll && originalEditBuffer) {
         if (deSelectionActive) {
             const start = editStartTrim;
             const end = editDurationMs - editEndTrim;
@@ -726,8 +726,8 @@ function updateWaveRulers() {
     }
     const deCanvas = document.getElementById('waveEdited');
     const deRuler = document.getElementById('waveEditedRuler');
-    if (deCanvas && deRuler && previewEditBuffer) {
-        drawWaveRuler(deRuler, deCanvas, previewEditBuffer);
+    if (deCanvas && deRuler && originalEditBuffer) {
+        drawWaveRuler(deRuler, deCanvas, originalEditBuffer);
     }
 }
 
@@ -13633,7 +13633,6 @@ function bufferToWav(buffer) {
 
 let currentEditFile = null;
 let originalEditBuffer = null;
-let previewEditBuffer = null; // Vorschaubuffer nach allen Bearbeitungen
 let savedOriginalBuffer = null; // Unverändertes DE-Audio
 let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
 let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
@@ -13670,7 +13669,6 @@ async function openDeEdit(fileId) {
         originalEditBuffer = await loadAudioBuffer(backupSrc);
     }
     savedOriginalBuffer = originalEditBuffer;
-    previewEditBuffer = null;
     volumeMatchedBuffer = null;
     isVolumeMatched = false;
     radioEffectBuffer = null;
@@ -14665,13 +14663,6 @@ async function applyVolumeMatch() {
 // Wendet alle Effekte und Schnitte in gleicher Reihenfolge wie beim Speichern an
 async function recomputeEditBuffer() {
     let buf = savedOriginalBuffer;
-    if (!buf) {
-        previewEditBuffer = null;
-        originalEditBuffer = null;
-        editDurationMs = 0;
-        updateDeEditWaveforms();
-        return;
-    }
     if (isVolumeMatched) {
         // Lautstärkeangleichung ggf. zwischenspeichern
         if (!volumeMatchedBuffer) {
@@ -14698,30 +14689,17 @@ async function recomputeEditBuffer() {
         buf = await applyInterferenceEffect(buf);
     }
 
-    // Bearbeitungsgrundlage sichern, damit alle Zeitangaben im ursprünglichen Raster bleiben
-    originalEditBuffer = buf;
-    if (originalEditBuffer) {
-        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-        // Sicherstellen, dass Trim-Werte innerhalb der neuen Dauer liegen
-        editStartTrim = Math.max(0, Math.min(editStartTrim, editDurationMs));
-        const maxEndTrim = Math.max(0, editDurationMs - editStartTrim);
-        editEndTrim = Math.max(0, Math.min(editEndTrim, maxEndTrim));
-    } else {
-        editDurationMs = 0;
-    }
+    // Trimmen und Pausen entfernen, damit die Vorschau exakt dem Endergebnis entspricht
+    let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
+    const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    trimmed = removeRangesFromBuffer(trimmed, adj);
+    const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    trimmed = insertSilenceIntoBuffer(trimmed, pads);
 
-    // Vorschaubuffer inklusive Schnitten, Pausen und Tempo vorbereiten
-    let preview = originalEditBuffer ? trimAndPadBuffer(originalEditBuffer, editStartTrim, editEndTrim) : null;
-    if (preview) {
-        const ignoreRanges = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        preview = removeRangesFromBuffer(preview, ignoreRanges);
-        const silenceRanges = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        preview = insertSilenceIntoBuffer(preview, silenceRanges);
-        const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-        previewEditBuffer = await timeStretchBuffer(preview, relFactor);
-    } else {
-        previewEditBuffer = null;
-    }
+    // Erst danach das Tempo anpassen
+    const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
+    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor);
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     updateDeEditWaveforms();
 }
 // =========================== RECOMPUTEEDITBUFFER END =======================
@@ -15254,66 +15232,7 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     }
 
     const showOrig = progressOrig !== null ? progressOrig : editOrigCursor;
-
-    // Hilfswerte für die Umrechnung auf den Vorschaubuffer ermitteln
-    const tempoScaleRaw = loadedTempoFactor ? tempoFactor / loadedTempoFactor : tempoFactor;
-    const tempoScale = Math.abs(tempoScaleRaw) > 1e-6 ? tempoScaleRaw : 1;
-    const trimmedLength = Math.max(0, editDurationMs - editStartTrim - editEndTrim);
-
-    const toTrimmedRange = (ranges) => normalizeRanges(
-        ranges.map(r => ({
-            start: r.start - editStartTrim,
-            end: r.end - editStartTrim
-        })),
-        trimmedLength
-    );
-
-    const ignoreTrimmed = toTrimmedRange(editIgnoreRanges);
-    const mapTrimmedToAfterIgnore = (ms) => {
-        let adjusted = Math.max(0, Math.min(trimmedLength, ms));
-        for (const r of ignoreTrimmed) {
-            if (ms <= r.start) break;
-            const overlap = Math.min(ms, r.end) - r.start;
-            if (overlap > 0) adjusted -= overlap;
-        }
-        return Math.max(0, adjusted);
-    };
-
-    const trimmedAfterIgnore = mapTrimmedToAfterIgnore(trimmedLength);
-
-    const silenceTrimmed = toTrimmedRange(editSilenceRanges);
-    const silenceAfterIgnore = silenceTrimmed
-        .map(r => ({
-            start: mapTrimmedToAfterIgnore(r.start),
-            end: mapTrimmedToAfterIgnore(r.end)
-        }))
-        .filter(r => r.end > r.start);
-    const silenceNormalized = normalizeRanges(silenceAfterIgnore, trimmedAfterIgnore);
-
-    const silenceOffsetBefore = (ms, includeCurrent = false) => {
-        let offset = 0;
-        for (const r of silenceNormalized) {
-            if (ms < r.start) break;
-            if (!includeCurrent && ms === r.start) break;
-            offset += r.end - r.start;
-        }
-        return offset;
-    };
-
-    const toFinalTimeline = (originalMs, includeCurrentSilence = false) => {
-        const trimmedMs = Math.max(0, Math.min(trimmedLength, originalMs - editStartTrim));
-        const afterIgnore = mapTrimmedToAfterIgnore(trimmedMs);
-        const offset = silenceOffsetBefore(afterIgnore, includeCurrentSilence);
-        return (afterIgnore + offset) / tempoScale;
-    };
-
-    const finalDurationBeforeTempo = trimmedAfterIgnore + silenceOffsetBefore(trimmedAfterIgnore, true);
-    const finalDuration = finalDurationBeforeTempo / tempoScale;
-
-    const showDeOrig = progressDe !== null ? progressDe + editStartTrim : editDeCursor;
-    let showDe = toFinalTimeline(showDeOrig);
-    if (!Number.isFinite(showDe)) showDe = 0;
-    showDe = Math.max(0, Math.min(finalDuration, showDe));
+    const showDe   = progressDe !== null ? progressDe + editStartTrim : editDeCursor;
 
     if (editEnBuffer) {
         const opts = { progress: showOrig };
@@ -15324,36 +15243,14 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
         }
         drawWaveform(document.getElementById('waveOriginal'), editEnBuffer, opts);
     }
-    if (previewEditBuffer) {
-        const selectionStartFinal = toFinalTimeline(editStartTrim);
-        const selectionEndFinal = toFinalTimeline(editDurationMs - editEndTrim, true);
-
-        const ignoreOverlays = ignoreTrimmed
-            .map(r => {
-                const startAfterIgnore = mapTrimmedToAfterIgnore(r.start);
-                const startOffset = silenceOffsetBefore(startAfterIgnore, false);
-                const startFinal = (startAfterIgnore + startOffset) / tempoScale;
-                const span = Math.max(0, r.end - r.start) / tempoScale;
-                return { start: startFinal, end: startFinal + span };
-            })
-            .filter(r => r.end > r.start);
-
-        const silenceOverlays = silenceNormalized
-            .map(r => {
-                const startOffset = silenceOffsetBefore(r.start, false);
-                const startFinal = (r.start + startOffset) / tempoScale;
-                const span = Math.max(0, r.end - r.start) / tempoScale;
-                return { start: startFinal, end: startFinal + span };
-            })
-            .filter(r => r.end > r.start);
-
-        const opts = { progress: showDe };
-        if (ignoreOverlays.length) opts.ignore = ignoreOverlays;
-        if (silenceOverlays.length) opts.silence = silenceOverlays;
-        if (deSelectionActive && selectionEndFinal > selectionStartFinal) {
-            opts.selection = { start: selectionStartFinal, end: selectionEndFinal };
+    if (originalEditBuffer) {
+        const selStart = editStartTrim;
+        const selEnd   = editDurationMs - editEndTrim;
+        const opts = { progress: showDe, ignore: editIgnoreRanges, silence: editSilenceRanges };
+        if (deSelectionActive && selStart < selEnd) {
+            opts.selection = { start: selStart, end: selEnd };
         }
-        drawWaveform(document.getElementById('waveEdited'), previewEditBuffer, opts);
+        drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, opts);
     }
     const sInput = document.getElementById('editStart');
     const eInput = document.getElementById('editEnd');
@@ -15453,43 +15350,16 @@ function adjustSilenceRanges(deltaMs) {
 
 // Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
 function calcFinalLength() {
-    const tempoScaleRaw = loadedTempoFactor ? tempoFactor / loadedTempoFactor : tempoFactor;
-    const tempoScale = Math.abs(tempoScaleRaw) > 1e-6 ? tempoScaleRaw : 1;
-    const trimmedLength = Math.max(0, editDurationMs - editStartTrim - editEndTrim);
-
-    const ignoreTrimmed = normalizeRanges(
-        editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim })),
-        trimmedLength
-    );
-    let afterIgnore = trimmedLength;
-    for (const r of ignoreTrimmed) {
-        afterIgnore -= Math.max(0, r.end - r.start);
+    let len = editDurationMs - editStartTrim - editEndTrim;
+    for (const r of editIgnoreRanges) {
+        len -= Math.max(0, r.end - r.start);
     }
-
-    const mapTrimmedToAfterIgnore = (ms) => {
-        let adjusted = Math.max(0, Math.min(trimmedLength, ms));
-        for (const r of ignoreTrimmed) {
-            if (ms <= r.start) break;
-            const overlap = Math.min(ms, r.end) - r.start;
-            if (overlap > 0) adjusted -= overlap;
-        }
-        return Math.max(0, adjusted);
-    };
-
-    const silenceTrimmed = normalizeRanges(
-        editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim })),
-        trimmedLength
-    );
-    let totalSilence = 0;
-    for (const r of silenceTrimmed) {
-        const start = mapTrimmedToAfterIgnore(r.start);
-        const end = mapTrimmedToAfterIgnore(r.end);
-        if (end > start) {
-            totalSilence += end - start;
-        }
+    for (const r of editSilenceRanges) {
+        len += Math.max(0, r.end - r.start);
     }
-
-    return (afterIgnore + totalSilence) / tempoScale;
+    // Aktuelle Datei ist bereits mit loadedTempoFactor gestretcht
+    const relFactor = tempoFactor / loadedTempoFactor;
+    return len / relFactor;
 }
 
 // Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
@@ -15683,7 +15553,6 @@ function closeDeEdit() {
     currentEditFile = null;
     originalEditBuffer = null;
     savedOriginalBuffer = null;
-    previewEditBuffer = null;
     volumeMatchedBuffer = null;
     isVolumeMatched = false;
     radioEffectBuffer = null;
