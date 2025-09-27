@@ -1079,8 +1079,8 @@ th:nth-child(8) {
         #deEditDialog .wave-area {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 18px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 14px;
             align-items: start;
         }
 
@@ -1094,20 +1094,20 @@ th:nth-child(8) {
         @media (min-width: 1800px) {
             #deEditDialog .wave-area {
                 grid-template-columns: repeat(2, minmax(0, 1fr)); /* Ultra-Wide nutzt weiterhin zwei Spalten */
-                gap: 24px;
+                gap: 18px;
             }
         }
 
         #deEditDialog .wave-toolbar {
             display: flex;
             flex-wrap: wrap;
-            gap: 18px;
+            gap: 10px;
             align-items: center;
             justify-content: flex-start;
             background: #1c1c1c;
             border-radius: 10px;
-            padding: 12px 16px;
-            margin-bottom: 18px;
+            padding: 8px 12px;
+            margin-bottom: 10px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
 
@@ -1310,8 +1310,8 @@ th:nth-child(8) {
 
         #deEditDialog .wave-toolbar .btn {
             font-size: 12px;
-            padding: 6px 12px;
-            height: 30px;
+            padding: 5px 10px;
+            height: 26px;
         }
 
         @media (min-width: 1700px) {
@@ -1319,8 +1319,8 @@ th:nth-child(8) {
                 width: 220px;
             }
             #deEditDialog .wave-toolbar {
-                gap: 22px;
-                padding: 14px 22px;
+                gap: 14px;
+                padding: 10px 18px;
             }
         }
 
