@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.386
+* `web/hla_translation_tool.html` ersetzt die alte Effekt-Toolbar durch eine schlanke Fußleiste mit Zurücksetzen und Speichern.
+* `web/src/style.css` entfernt Sticky-Regeln sowie Toolbar-Stile und ergänzt ein kompaktes Layout für `.edit-footer`.
+* `web/src/main.js` aktualisiert die Effekt-Statuslogik und Schnellaktionen, damit ausschließlich die Buttons in den Feldsets angesprochen werden.
+* `README.md` beschreibt die neue Fußleiste im DE-Audio-Editor und vermerkt den Versionswechsel in der Übersicht.
+* `CHANGELOG.md` dokumentiert die Umstellung auf die platzsparende Fußleiste.
 ## 🛠️ Patch in 1.40.385
 * `web/hla_translation_tool.html` ersetzt das Kartenraster des Schnellzugriffs durch eine schlanke Toolbar mit kurzen Labels und eindeutigen Aria-Beschreibungen.
 * `web/src/style.css` verschlankt die Schnellzugriffsknöpfe, reduziert Polsterung und Icon-Größen, sorgt für Flex-Layout mit automatischem Umbruch und blendet auf schmalen Displays optional die Texte aus.
