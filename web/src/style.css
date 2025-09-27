@@ -1894,6 +1894,24 @@ th:nth-child(8) {
     margin-top: 10px;
 }
 
+/* Kopfbereich mit zusätzlichen Aktionen für die DE-Audio-Bearbeitung */
+.edit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+/* Gruppierung der Buttons im Kopfbereich */
+.edit-header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
 /* Schlanke Fußleiste ohne Sticky-Verhalten */
 .edit-footer {
     display: flex;
@@ -1902,6 +1920,11 @@ th:nth-child(8) {
     margin-top: 20px;
     padding-top: 12px;
     border-top: 1px solid #444;
+}
+
+/* Kein zusätzlicher Abstand unter der Überschrift im Kopfbereich */
+.edit-header h3 {
+    margin: 0;
 }
 
 /* Zeitstempel der letzten Speicherung */
