@@ -91,7 +91,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen nutzen jetzt ein konsistentes Zweispalten-Raster, das auf kleinen Displays automatisch auf eine Spalte reduziert wird und dem Einfügebereich Luft nach oben lässt.
 * **Waveform-Werkzeugleiste für große Monitore:** Zoom- und Höhenregler, synchronisiertes Scrollen sowie Zeitmarken-Lineale sorgen dafür, dass lange Takes auch auf Ultrawide-Displays komfortabel editierbar bleiben.
 * **Feinjustierte Waveform-Werkzeugleiste:** Ein enges Grid mit kleineren Buttons und geringem Padding hält Zoom-, Höhen- und Sync-Regler auch bei kleiner Breite dicht beieinander.
-* **Proportionale DE-Wellenformbreite:** Die DE-Wellenform orientiert sich an der tatsächlichen Audiodauer und nutzt eine passende Pixelbreite, sodass lange Aufnahmen sichtbar länger bleiben als die EN-Spur.
+* **Dynamische DE-Wellenformbreite:** Die DE-Wellenform übernimmt die echte Laufzeit als Pixelbreite, wodurch Scrollleisten, Lineale und Zoom exakt zur Audiodauer passen und lange Takes nachvollziehbar länger bleiben als die EN-Spur.
 * **Master-Timeline entfernt:** Die frühere Zeitleiste oberhalb der Wellen entfällt; Zoom-Tasten, Positions-Slider und Sprungknöpfe sitzen jetzt direkt in der Wave-Toolbar.
 * **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und reduziertes Scroll-Padding rücken Original- und DE-Wellenform noch näher zusammen und verkürzen die Wege zu den Buttons.
 * **Schlankere Standard-Wellenform:** Neu geöffnete Sitzungen starten mit 80 px hohen Wellenformen, der Höhen-Slider zeigt denselben Startwert und die kompakten Buttons bleiben voll erreichbar.
