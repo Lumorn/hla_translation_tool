@@ -753,6 +753,7 @@ Seit Patch 1.40.127 besitzt der DE-Audio-Editor überarbeitete Buttons mit hilfr
 Seit Patch 1.40.242 zeigt der DE-Audio-Editor seine Bedienelemente in zwei Spalten, sodass kein Scrollen mehr nötig ist.
 Seit Patch 1.40.243 ordnet der DE-Audio-Editor Bereiche und Effekte in drei Spalten an. Lange Listen besitzen eigene Scrollleisten, sodass nichts überlappt.
 Seit Patch 1.40.244 bietet der DE-Audio-Editor eine untere Effekt-Toolbar und eigene Anwenden-Knöpfe in den Effekt-Kästen.
+Neu: Nach dem Speichern bleibt der komplette DE-Bereich markiert und der Infotext zeigt direkt die aktuellen DE- und EN-Längen.
 Seit Patch 1.40.245 bleibt diese Effekt-Toolbar als Sticky-Footer sichtbar, und "Speichern" erscheint als primärer Button. "Zurücksetzen" fragt jetzt nach einer Bestätigung.
 Seit Patch 1.40.386 ersetzt eine kompakte Fußleiste ohne Sticky-Verhalten die separate Effekt-Toolbar; Zurücksetzen und Speichern bleiben weiterhin schnell erreichbar.
 Seit Patch 1.40.391 erlaubt der Speichern-Button mehrere Durchläufe hintereinander: Die Puffer werden sofort aktualisiert und nur „Speichern & schließen“ beendet den Dialog ausdrücklich.

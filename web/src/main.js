@@ -15885,7 +15885,15 @@ async function applyDeEdit(param = {}) {
         // Zeitstempel setzen und Erfolg melden
         const now = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
         const info = document.getElementById('deEditSaveInfo');
-        if (info) info.textContent = `Zuletzt gespeichert: ${now}`;
+        if (info) {
+            // Anzeige mit DE- und EN-Länge ergänzen, damit beide Werte nach dem Speichern sichtbar bleiben
+            const teile = [`Zuletzt gespeichert: ${now}`];
+            const deSekunden = finalBuffer ? (finalBuffer.length / finalBuffer.sampleRate) : null;
+            const enSekunden = editEnBuffer ? (editEnBuffer.length / editEnBuffer.sampleRate) : null;
+            if (Number.isFinite(deSekunden)) teile.push(`DE: ${deSekunden.toFixed(2)}s`);
+            if (Number.isFinite(enSekunden)) teile.push(`EN: ${enSekunden.toFixed(2)}s`);
+            info.textContent = teile.join(' • ');
+        }
         if (typeof showToast === 'function') {
             showToast('DE-Audio gespeichert', 'success');
         }
@@ -15897,10 +15905,12 @@ async function applyDeEdit(param = {}) {
         originalEditBuffer = finalBuffer;
         editDurationMs = finalBuffer.length / finalBuffer.sampleRate * 1000;
         loadedTempoFactor = tempoFactor;
-        deSelectionActive = false;
+        // Nach dem Speichern soll die vollständige Datei weiterhin markiert bleiben
+        deSelectionActive = true;
         volumeMatchedBuffer = null;
         refreshSilenceList();
         updateDeEditWaveforms(0, 0);
+        validateDeSelection();
         updateEffectButtons();
         updateStatus('DE-Audio bearbeitet und gespeichert');
         // Sofort speichern, damit die Bearbeitung gesichert ist
