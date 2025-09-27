@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.379
+* `web/src/style.css` vergrößert die DE-Wiedergabeknöpfe auf 44 px, hebt die Symbole auf 18 px an und ordnet sie in einer horizontalen Leiste mit klaren Hover-Kontrasten an.
+* `web/hla_translation_tool.html` ergänzt aussagekräftige `aria-label`-Attribute für die Play- und Stop-Schaltflächen.
+* `README.md` beschreibt die neue, kontraststarke Wiedergabesteuerung im DE-Audio-Editor.
+* `CHANGELOG.md` dokumentiert die überarbeitete Steuerungsleiste.
 ## 🛠️ Patch in 1.40.378
 * `web/src/style.css` stellt das Waveform-Raster auf zwei feste Spalten um, bricht auf kleinen Bildschirmen einspaltig um und schafft mehr Abstand für den EN-Einfügebereich.
 * `README.md` beschreibt die neue Zweispalten-Logik im DE-Audio-Editor und den zusätzlichen Freiraum für den Einfügebereich.
