@@ -14400,7 +14400,7 @@ async function openDeEdit(fileId) {
         const sField = document.getElementById('editStart');
         const eField = document.getElementById('editEnd');
         if (sField) sField.value = 0;
-        if (eField) eField.value = 0;
+        if (eField) eField.value = Math.round(editDurationMs);
         resetCanvasZoom(deCanvas);
         validateDeSelection();
         scheduleWaveformUpdate();
@@ -14525,15 +14525,17 @@ async function openDeEdit(fileId) {
                 if (endField) endField.value = '';
                 resetCanvasZoom(origCanvas);
                 validateEnSelection();
+                scheduleWaveformUpdate();
             } else if (activeWave === 'de') {
                 editStartTrim = 0;
                 editEndTrim = 0;
                 const sField = document.getElementById('editStart');
                 const eField = document.getElementById('editEnd');
                 if (sField) sField.value = 0;
-                if (eField) eField.value = 0;
+                if (eField) eField.value = Math.round(editDurationMs);
                 resetCanvasZoom(deCanvas);
                 validateDeSelection();
+                scheduleWaveformUpdate();
             }
             scheduleWaveformUpdate();
         }
