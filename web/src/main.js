@@ -468,7 +468,8 @@ let editStartTrim          = 0;    // Start-Schnitt in ms
 let editEndTrim            = 0;    // End-Schnitt in ms
 let editDurationMs         = 0;    // Gesamtdauer der Datei in ms
 let editDragging           = null; // "start" oder "end" beim Ziehen
-let editEnBuffer           = null; // AudioBuffer der NE-Datei
+let editEnBuffer           = null; // AudioBuffer der angezeigten EN-Datei
+let rawEnBuffer            = null; // Unveränderte EN-Referenz für erneute Berechnungen
 let editProgressTimer      = null; // Intervall für Fortschrittsanzeige
 let editPlaying            = null; // "orig" oder "de" während Wiedergabe
 let editPaused             = false; // merkt Pausenstatus
@@ -13686,6 +13687,7 @@ async function openDeEdit(fileId) {
     tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
+    rawEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
     const enSeconds = enBuffer.length / enBuffer.sampleRate;
     const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
@@ -15252,6 +15254,24 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
         }
         drawWaveform(document.getElementById('waveEdited'), originalEditBuffer, opts);
     }
+    const enLabel = document.getElementById('waveLabelOriginal');
+    if (enLabel) {
+        if (editEnBuffer) {
+            const seconds = editEnBuffer.length / editEnBuffer.sampleRate;
+            enLabel.textContent = `EN (Original) - ${seconds.toFixed(2)}s`;
+        } else {
+            enLabel.textContent = 'EN (Original)';
+        }
+    }
+    const deLabel = document.getElementById('waveLabelEdited');
+    if (deLabel) {
+        if (originalEditBuffer) {
+            const seconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
+            deLabel.textContent = `DE (bearbeiten) - ${seconds.toFixed(2)}s`;
+        } else {
+            deLabel.textContent = 'DE (bearbeiten)';
+        }
+    }
     const sInput = document.getElementById('editStart');
     const eInput = document.getElementById('editEnd');
     if (sInput) sInput.value = deSelectionActive ? Math.round(editStartTrim) : 0;
@@ -15566,6 +15586,7 @@ function closeDeEdit() {
     tableMicEffectBuffer = null;
     isTableMicEffect = false;
     editEnBuffer = null;
+    rawEnBuffer = null;
     editIgnoreRanges = [];
     ignoreTempStart = null;
     ignoreDragging = null;
@@ -15701,6 +15722,31 @@ async function resetDeEdit() {
 
 // =========================== APPLYDEEDIT START =============================
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
+// Baut nach einem Speichern die EN-Vorschau neu auf, damit Trims und Tempoänderungen sichtbar werden
+async function rebuildEnBufferAfterSave(startTrim, endTrim, ignoreSnapshot, silenceSnapshot, relFactor) {
+    if (!rawEnBuffer) return;
+    let buffer = rawEnBuffer;
+    // Start- und Endwerte auf den EN-Puffer übertragen
+    if (startTrim !== 0 || endTrim !== 0) {
+        buffer = trimAndPadBuffer(buffer, startTrim, endTrim);
+    }
+    // Entfernte Pausen auch in der EN-Anzeige berücksichtigen
+    if (Array.isArray(ignoreSnapshot) && ignoreSnapshot.length > 0) {
+        const adjustedIgnore = ignoreSnapshot.map(r => ({ start: r.start - startTrim, end: r.end - startTrim }));
+        buffer = removeRangesFromBuffer(buffer, adjustedIgnore);
+    }
+    // Eingefügte Stille in der EN-Ansicht nachvollziehen
+    if (Array.isArray(silenceSnapshot) && silenceSnapshot.length > 0) {
+        const adjustedSilence = silenceSnapshot.map(r => ({ start: r.start - startTrim, end: r.end - startTrim }));
+        buffer = insertSilenceIntoBuffer(buffer, adjustedSilence);
+    }
+    const factor = relFactor && isFinite(relFactor) ? relFactor : 1;
+    buffer = await timeStretchBuffer(buffer, factor);
+    editEnBuffer = buffer;
+    rawEnBuffer = buffer;
+    currentEnSeconds = buffer.length / buffer.sampleRate;
+}
+
 async function applyDeEdit(param = {}) {
     if (!currentEditFile || !originalEditBuffer) return;
     const closeAfterSave = typeof param === 'boolean' ? param : !!param.closeAfterSave;
@@ -15715,6 +15761,11 @@ async function applyDeEdit(param = {}) {
     const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
     let finalBuffer = null;
     try {
+        const startTrimSnapshot = editStartTrim;
+        const endTrimSnapshot = editEndTrim;
+        const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+        const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
+        const relFactor = tempoFactor / loadedTempoFactor;
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
             // Sicherstellen, dass ein Backup existiert
@@ -15751,8 +15802,6 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            // Nur den Unterschied zum geladenen Faktor anwenden
-            const relFactor = tempoFactor / loadedTempoFactor;
             newBuffer = await timeStretchBuffer(newBuffer, relFactor);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
@@ -15842,7 +15891,6 @@ async function applyDeEdit(param = {}) {
             refreshIgnoreList();
             updateDeEditWaveforms();
             // Nur den Unterschied zum geladenen Faktor anwenden
-            const relFactor = tempoFactor / loadedTempoFactor;
             newBuffer = await timeStretchBuffer(newBuffer, relFactor);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
@@ -15852,6 +15900,7 @@ async function applyDeEdit(param = {}) {
             await updateHistoryCache(cleanPath);
             finalBuffer = newBuffer;
         }
+        await rebuildEnBufferAfterSave(startTrimSnapshot, endTrimSnapshot, ignoreSnapshot, silenceSnapshot, relFactor);
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.ignoreRanges = editIgnoreRanges;
@@ -15905,6 +15954,10 @@ async function applyDeEdit(param = {}) {
         originalEditBuffer = finalBuffer;
         editDurationMs = finalBuffer.length / finalBuffer.sampleRate * 1000;
         loadedTempoFactor = tempoFactor;
+        currentDeSeconds = finalBuffer.length / finalBuffer.sampleRate;
+        currentEnSeconds = editEnBuffer ? (editEnBuffer.length / editEnBuffer.sampleRate) : 0;
+        maxWaveSeconds = Math.max(currentDeSeconds, currentEnSeconds, 0.001);
+        updateWaveCanvasDimensions();
         // Nach dem Speichern soll die vollständige Datei weiterhin markiert bleiben
         deSelectionActive = true;
         volumeMatchedBuffer = null;
