@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.383
+* `web/src/style.css` stellt Toolbar, Wellenraster und EN-Übernahmeleiste auf engere Gaps, geringeres Padding und kleinere Buttons um, damit der DE-Audio-Editor weniger vertikalen Platz beansprucht.
+* `README.md` beschreibt das feinjustierte Toolbar-Grid, die engeren Wave-Blöcke und die gestraffte EN-Leiste.
+* `CHANGELOG.md` hält die neuesten Layout-Anpassungen am Wave-Editor fest.
 ## 🛠️ Patch in 1.40.382
 * `web/src/style.css` reduziert Padding, Abstände und große-Screen-Aufweitungen im Kopfbereich des DE-Audio-Dialogs, damit Toolbar und Wave-Raster kompakter bleiben.
 * `README.md` beschreibt den verschlankten Kopfbereich mit engerer Überschrift und dichterem Wellen-Layout.

@@ -1079,8 +1079,8 @@ th:nth-child(8) {
         #deEditDialog .wave-area {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 4px;
+            margin-bottom: 6px;
             align-items: start;
         }
 
@@ -1094,28 +1094,27 @@ th:nth-child(8) {
         @media (min-width: 1800px) {
             #deEditDialog .wave-area {
                 grid-template-columns: repeat(2, minmax(0, 1fr)); /* Ultra-Wide nutzt weiterhin zwei Spalten */
-                gap: 8px; /* Deutlich weniger zusätzlicher Abstand auf großen Bildschirmen */
+                gap: 6px; /* Leicht geringerer zusätzlicher Abstand auf großen Bildschirmen */
             }
         }
 
         #deEditDialog .wave-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 2px 6px;
             align-items: center;
-            justify-content: flex-start;
             background: #1c1c1c;
             border-radius: 10px;
-            padding: 4px 8px;
-            margin-bottom: 8px;
+            padding: 3px 6px;
+            margin-bottom: 6px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
 
         #deEditDialog .wave-master-bar {
             display: flex;
             flex-direction: column;
-            gap: 14px;
-            margin-bottom: 18px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         #deEditDialog .wave-timeline {
@@ -1305,13 +1304,13 @@ th:nth-child(8) {
 
         #deEditDialog .wave-toolbar-buttons {
             display: flex;
-            gap: 10px;
+            gap: 6px;
         }
 
         #deEditDialog .wave-toolbar .btn {
             font-size: 12px;
-            padding: 5px 10px;
-            height: 26px;
+            padding: 4px 8px;
+            height: 24px;
         }
 
         @media (min-width: 1700px) {
@@ -1319,7 +1318,8 @@ th:nth-child(8) {
                 width: 220px;
             }
             #deEditDialog .wave-toolbar {
-                gap: 4px; /* Keine zusätzliche Aufweitung auf großen Bildschirmen */
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 3px 8px; /* etwas mehr Luft auf sehr breiten Screens */
                 padding: 4px 8px;
             }
         }
@@ -1327,14 +1327,14 @@ th:nth-child(8) {
         #deEditDialog .wave-block {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
             min-width: 0;
         }
 
         #deEditDialog .wave-controls {
             display: flex;
             align-items: stretch;
-            gap: 8px;
+            gap: 6px;
         }
 
         #deEditDialog .wave-viewport {
@@ -1350,13 +1350,13 @@ th:nth-child(8) {
             overflow-y: hidden;
             background: #111;
             border-radius: 8px;
-            padding: 2px 0 6px;
+            padding: 1px 0 4px;
             position: relative;
             scroll-behavior: smooth;
         }
 
         #deEditDialog .wave-scroll::-webkit-scrollbar {
-            height: 8px;
+            height: 6px;
         }
 
         #deEditDialog .wave-scroll::-webkit-scrollbar-thumb {
@@ -1378,14 +1378,14 @@ th:nth-child(8) {
         #deEditDialog .wave-buttons {
             display: flex;
             flex-direction: row;
-            gap: 12px;
+            gap: 8px;
             justify-content: flex-start;
             align-items: center;
         }
 
         #deEditDialog .wave-buttons button {
-            width: 44px;
-            height: 44px;
+            width: 38px;
+            height: 38px;
         }
 
         #deEditDialog .wave-ruler {
@@ -1722,10 +1722,11 @@ th:nth-child(8) {
 }
 
 /* Bereich zur Übernahme eines EN-Ausschnitts erhält etwas Luft zum Raster */
-.insert-en-section { margin: 12px 0 0; }
+.insert-en-section { margin: 8px 0 0; }
 .insert-en-section .insert-controls {
     display: flex;
-    gap: 10px;
+    gap: 6px;
+    row-gap: 4px;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
