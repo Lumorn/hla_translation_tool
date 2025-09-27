@@ -13791,13 +13791,13 @@ async function openDeEdit(fileId) {
     const quickVolume = document.getElementById('quickVolumeMatch');
     if (quickVolume) quickVolume.onclick = () => {
         applyVolumeMatch();
-        triggerPulse('volumeMatchBtn', '#volumeMatchBoxBtn');
+        triggerPulse('volumeMatchBoxBtn');
     };
 
     const quickRadio = document.getElementById('quickRadioEffect');
     if (quickRadio) quickRadio.onclick = () => {
         applyRadioEffect();
-        triggerPulse('radioEffectBtn', '#radioEffectBoxBtn');
+        triggerPulse('radioEffectBoxBtn');
     };
 
     tempoFactor = file.tempoFactor || 1.0;
@@ -14544,13 +14544,9 @@ async function openDeEdit(fileId) {
 
 // Aktualisiert die Aktiv-Markierung der Effekt-Buttons
 function updateEffectButtons() {
-    const radioBtn = document.getElementById('radioEffectBtn');
     const radioBoxBtn = document.getElementById('radioEffectBoxBtn');
-    if (radioBtn) {
-        // Je nach Status den aktiven Stil setzen oder entfernen
-        radioBtn.classList.toggle('active', isRadioEffect);
-    }
     if (radioBoxBtn) {
+        // Je nach Status den aktiven Stil setzen oder entfernen
         radioBoxBtn.classList.toggle('active', isRadioEffect);
     }
     const hallLabel = document.getElementById('hallToggleLabel');
@@ -14565,20 +14561,12 @@ function updateEffectButtons() {
     if (emiVoiceLabel) {
         emiVoiceLabel.classList.toggle('active', emiVoiceDamp);
     }
-    const emiBtn = document.getElementById('emiEffectBtn');
     const emiBoxBtn = document.getElementById('emiEffectBoxBtn');
-    if (emiBtn) {
-        emiBtn.classList.toggle('active', isEmiEffect);
-    }
     if (emiBoxBtn) {
         emiBoxBtn.classList.toggle('active', isEmiEffect);
     }
-    const neighborBtn = document.getElementById('neighborEffectBtn');
     const neighborLabel = document.getElementById('neighborToggleLabel');
     const neighborToggle = document.getElementById('neighborToggle');
-    if (neighborBtn) {
-        neighborBtn.classList.toggle('active', isNeighborEffect);
-    }
     if (neighborLabel) {
         neighborLabel.classList.toggle('active', isNeighborEffect);
     }
@@ -14586,12 +14574,8 @@ function updateEffectButtons() {
         neighborToggle.checked = isNeighborEffect;
     }
 
-    const tableBtn = document.getElementById('tableMicEffectBtn');
     const tableLabel = document.getElementById('tableMicToggleLabel');
     const tableToggle = document.getElementById('tableMicToggle');
-    if (tableBtn) {
-        tableBtn.classList.toggle('active', isTableMicEffect);
-    }
     if (tableLabel) {
         tableLabel.classList.toggle('active', isTableMicEffect);
     }
