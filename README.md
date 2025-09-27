@@ -747,6 +747,7 @@ Seit Patch 1.40.242 zeigt der DE-Audio-Editor seine Bedienelemente in zwei Spalt
 Seit Patch 1.40.243 ordnet der DE-Audio-Editor Bereiche und Effekte in drei Spalten an. Lange Listen besitzen eigene Scrollleisten, sodass nichts überlappt.
 Seit Patch 1.40.244 bietet der DE-Audio-Editor eine untere Effekt-Toolbar und eigene Anwenden-Knöpfe in den Effekt-Kästen.
 Seit Patch 1.40.245 bleibt diese Effekt-Toolbar als Sticky-Footer sichtbar, und "Speichern" erscheint als primärer Button. "Zurücksetzen" fragt jetzt nach einer Bestätigung.
+Seit Patch 1.40.382 fällt der Kopfbereich des DE-Audio-Editors kompakter aus: Überschrift, Toolbar und Wave-Raster rücken enger zusammen und verlieren übergroße Abstände auf Ultra-Wide-Monitoren.
 Seit Patch 1.40.250 lassen sich Bereiche in EN- und DE-Wellenformen direkt per Ziehen markieren; Start- und Endfelder synchronisieren sich und ungültige Eingaben werden rot hervorgehoben.
 Seit Patch 1.40.194 durchsucht ein neuer Knopf das gesamte Projekt nach passenden Untertiteln und fügt eindeutige Treffer automatisch ein.
 
