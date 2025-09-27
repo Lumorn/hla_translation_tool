@@ -13582,6 +13582,23 @@ let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
 
+// Aktualisiert Laufzeitwerte des aktuellen Bearbeitungspuffers und passt die Canvas-Größen an
+function refreshEditDurations(buffer = originalEditBuffer) {
+    const aktiverBuffer = buffer || originalEditBuffer;
+    if (aktiverBuffer) {
+        const sekunden = aktiverBuffer.length / aktiverBuffer.sampleRate;
+        currentDeSeconds = sekunden;
+        editDurationMs = sekunden * 1000;
+    } else {
+        currentDeSeconds = 0;
+        editDurationMs = 0;
+    }
+    const enSekunden = Number.isFinite(currentEnSeconds) ? currentEnSeconds : 0;
+    const laengsterWert = Math.max(enSekunden, currentDeSeconds, 0.001);
+    maxWaveSeconds = laengsterWert;
+    updateWaveCanvasDimensions();
+}
+
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
 async function openDeEdit(fileId) {
@@ -13622,12 +13639,8 @@ async function openDeEdit(fileId) {
     editEnBuffer = enBuffer;
     // Länge der beiden Dateien in Sekunden bestimmen
     const enSeconds = enBuffer.length / enBuffer.sampleRate;
-    const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
-    const maxSeconds = Math.max(enSeconds, deSeconds);
-    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     currentEnSeconds = enSeconds;
-    currentDeSeconds = deSeconds;
-    maxWaveSeconds = Math.max(maxSeconds, 0.001);
+    refreshEditDurations(originalEditBuffer);
     // Beide Cursor zurücksetzen
     editOrigCursor = 0;
     editDeCursor = 0;
@@ -14527,7 +14540,7 @@ function insertEnglishSegment() {
     const segment = sliceBuffer(editEnBuffer, startMs, endMs);
     savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
     originalEditBuffer = savedOriginalBuffer;
-    editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    refreshEditDurations(originalEditBuffer);
     updateDeEditWaveforms();
     updateLengthInfo();
     if (typeof showToast === 'function') {
@@ -14633,7 +14646,7 @@ async function recomputeEditBuffer() {
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
     originalEditBuffer = await timeStretchBuffer(trimmed, relFactor);
-    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    refreshEditDurations(originalEditBuffer);
     updateDeEditWaveforms();
 }
 // =========================== RECOMPUTEEDITBUFFER END =======================
@@ -15579,6 +15592,8 @@ async function resetDeEdit() {
             deAudioCache[relPath] = fileData;
             originalEditBuffer = await loadAudioBuffer(fileData);
         }
+        savedOriginalBuffer = originalEditBuffer;
+        refreshEditDurations(originalEditBuffer);
         editStartTrim = 0;
         editEndTrim = 0;
         currentEditFile.trimStartMs = 0;
@@ -15618,7 +15633,6 @@ async function resetDeEdit() {
         updateEffectButtons();
         // Projekt als geändert markieren, damit Rücksetzungen gespeichert werden
         markDirty();
-        editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
         updateDeEditWaveforms();
         refreshIgnoreList();
         updateStatus('DE-Audio zurückgesetzt');
@@ -15654,6 +15668,7 @@ async function applyDeEdit() {
         await window.electronAPI.backupDeFile(relPath);
         // Bereits geladene Originaldatei weiterverwenden
         originalEditBuffer = savedOriginalBuffer;
+        refreshEditDurations(originalEditBuffer);
         volumeMatchedBuffer = null;
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
@@ -15746,6 +15761,7 @@ async function applyDeEdit() {
             } catch {}
         }
         originalEditBuffer = savedOriginalBuffer;
+        refreshEditDurations(originalEditBuffer);
         let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
         if (isRadioEffect) {
             baseBuffer = await applyRadioFilter(baseBuffer);
