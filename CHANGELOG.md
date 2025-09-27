@@ -1,9 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.386
-* `web/src/style.css` gestaltet Schnellzugriffspanel und Buttons flacher, reduziert Polsterung und Schatten und definiert kompakte Icon-Kacheln inklusive responsivem Icon-Band.
-* `web/hla_translation_tool.html` weist den Schnellzugriffsknöpfen die neue Klasse `quick-btn--label` zu, damit optionale Untertitel bündig unter den Symbolen stehen.
-* `README.md` dokumentiert das flache Panel, die Icon-Kacheln und das horizontale Scrollband unter 600 px.
-* `CHANGELOG.md` hält die erneute Überarbeitung der Schnellzugriffsleiste fest.
 ## 🛠️ Patch in 1.40.385
 * `web/hla_translation_tool.html` ersetzt das Kartenraster des Schnellzugriffs durch eine schlanke Toolbar mit kurzen Labels und eindeutigen Aria-Beschreibungen.
 * `web/src/style.css` verschlankt die Schnellzugriffsknöpfe, reduziert Polsterung und Icon-Größen, sorgt für Flex-Layout mit automatischem Umbruch und blendet auf schmalen Displays optional die Texte aus.
