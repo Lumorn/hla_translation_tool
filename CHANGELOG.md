@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.378
+* `web/src/style.css` stellt das Waveform-Raster auf zwei feste Spalten um, bricht auf kleinen Bildschirmen einspaltig um und schafft mehr Abstand für den EN-Einfügebereich.
+* `README.md` beschreibt die neue Zweispalten-Logik im DE-Audio-Editor und den zusätzlichen Freiraum für den Einfügebereich.
+* `CHANGELOG.md` hält das aktualisierte Layout der Wave-Area fest.
 ## 🛠️ Patch in 1.40.377
 * `web/src/dubbing.js` erzeugt eine zentrale Timeline-Leiste samt Zoom- und Scroll-Steuerung und stellt Helfer zum Aktualisieren der Marker bereit.
 * `web/src/main.js` bindet die Timeline in den DE-Audio-Editor ein, synchronisiert Zoom/Scroll mit beiden Wellenformen und visualisiert Trim-, Ignorier-, Stille- sowie Cursor-Markierungen.

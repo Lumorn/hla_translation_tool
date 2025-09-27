@@ -1082,18 +1082,25 @@ th:nth-child(8) {
             margin-top: 2px;
         }
 
-        /* Raster für die Wellenformen – reagiert auf verschiedene Monitorbreiten */
+        /* Raster für die Wellenformen – feste Zweispaltigkeit für mehr Konstanz */
         #deEditDialog .wave-area {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
             margin-bottom: 20px;
             align-items: start;
         }
 
+        /* Auf schmalen Bildschirmen nur eine Spalte, damit nichts überlappt */
+        @media (max-width: 1100px) {
+            #deEditDialog .wave-area {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (min-width: 1800px) {
             #deEditDialog .wave-area {
-                grid-template-columns: repeat(auto-fit, minmax(520px, 1fr)); /* Großzügigere Spalten auf Ultra-Wide */
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* Ultra-Wide nutzt weiterhin zwei Spalten */
                 gap: 24px;
             }
         }
@@ -1720,8 +1727,8 @@ th:nth-child(8) {
     color: #ccc;
 }
 
-/* Bereich zur Übernahme eines EN-Ausschnitts */
-.insert-en-section { margin: 0; }
+/* Bereich zur Übernahme eines EN-Ausschnitts erhält etwas Luft zum Raster */
+.insert-en-section { margin: 12px 0 0; }
 .insert-en-section .insert-controls {
     display: flex;
     gap: 10px;
