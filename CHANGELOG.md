@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.398
+* `web/src/main.js` ergänzt `normalizeDeTrim()`, begrenzt Start- und End-Trim nach jeder Laufzeitänderung, synchronisiert die Eingabefelder und ruft anschließend `validateDeSelection()` auf, damit die grüne Markierung aktiv bleibt.
+* `README.md` beschreibt die automatisch stabilisierte Auswahl nach Auto-Tempo, Pausenentfernung und Speichern.
+* `CHANGELOG.md` dokumentiert die neue Normalisierung der Trim-Werte.
 ## 🛠️ Patch in 1.40.397
 * `web/src/main.js` setzt beim Zurücksetzen per Doppelklick oder Esc das Ende sofort auf die gerundete Gesamtlänge, validiert die Eingaben direkt und triggert das erneute Zeichnen der Markierung, damit `start < end` aktiv bleibt.
 * `README.md` dokumentiert den erneuten Aktivierungs-Flow der Markierung nach Doppelklick oder Esc.
