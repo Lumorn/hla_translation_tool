@@ -13186,6 +13186,18 @@ function drawWaveform(canvas, buffer, opts = {}) {
 
 // =========================== TRIMANDBUFFER START ============================
 // Kürzt oder verlängert ein AudioBuffer um die angegebenen Millisekunden
+// Erstellt eine unabhängige Kopie eines AudioBuffers, damit das Original unverändert bleibt
+function cloneAudioBuffer(buffer) {
+    if (!buffer) return null;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const clone = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        clone.getChannelData(ch).set(buffer.getChannelData(ch));
+    }
+    ctx.close();
+    return clone;
+}
+
 function trimAndPadBuffer(buffer, startMs, endMs) {
     const sr = buffer.sampleRate;
     const startSamples = Math.max(0, Math.floor(startMs > 0 ? startMs * sr / 1000 : 0));
@@ -15725,7 +15737,9 @@ async function resetDeEdit() {
 // Baut nach einem Speichern die EN-Vorschau neu auf, damit Trims und Tempoänderungen sichtbar werden
 async function rebuildEnBufferAfterSave(startTrim, endTrim, ignoreSnapshot, silenceSnapshot, relFactor) {
     if (!rawEnBuffer) return;
-    let buffer = rawEnBuffer;
+    const baseBuffer = cloneAudioBuffer(rawEnBuffer);
+    if (!baseBuffer) return;
+    let buffer = baseBuffer;
     // Start- und Endwerte auf den EN-Puffer übertragen
     if (startTrim !== 0 || endTrim !== 0) {
         buffer = trimAndPadBuffer(buffer, startTrim, endTrim);
@@ -15743,7 +15757,6 @@ async function rebuildEnBufferAfterSave(startTrim, endTrim, ignoreSnapshot, sile
     const factor = relFactor && isFinite(relFactor) ? relFactor : 1;
     buffer = await timeStretchBuffer(buffer, factor);
     editEnBuffer = buffer;
-    rawEnBuffer = buffer;
     currentEnSeconds = buffer.length / buffer.sampleRate;
 }
 

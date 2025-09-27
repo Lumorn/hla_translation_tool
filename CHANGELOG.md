@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.395
+* `web/src/main.js` baut die EN-Vorschau nach jedem Speichern aus einer unveränderten Kopie neu auf, damit sie nicht mehr bei mehreren Speichervorgängen zusammenschrumpft.
+* `README.md` erwähnt die frische EN-Kopie und den Wegfall der schleichenden Verkleinerung nach aufeinanderfolgenden Speichervorgängen.
+* `CHANGELOG.md` dokumentiert die regenerierte EN-Anzeige nach dem Speichern.
 ## 🛠️ Patch in 1.40.394
 * `web/src/main.js` gleicht nach jedem Speichern die EN-Wellenform mit Trims, Pausenentfernungen und Tempoanpassungen ab und aktualisiert zugleich die Laufzeitlabels.
 * `README.md` erwähnt die sofort synchronisierte EN-Vorschau nach gespeicherten Änderungen.
