@@ -1,8 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.394
-* `web/src/main.js` gleicht nach jedem Speichern die EN-Wellenform mit Trims, Pausenentfernungen und Tempoanpassungen ab und aktualisiert zugleich die Laufzeitlabels.
-* `README.md` erwähnt die sofort synchronisierte EN-Vorschau nach gespeicherten Änderungen.
-* `CHANGELOG.md` dokumentiert die neue Anpassung der EN-Anzeige.
 ## 🛠️ Patch in 1.40.393
 * `web/src/main.js` belässt nach dem Speichern die Trim-Markierung aktiv und ergänzt den Speichern-Hinweis um DE- und EN-Längen.
 * `README.md` erwähnt den dauerhaft markierten Bereich und die kombinierte Längenanzeige im DE-Audio-Editor.
