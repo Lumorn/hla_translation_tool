@@ -15734,30 +15734,77 @@ async function resetDeEdit() {
 
 // =========================== APPLYDEEDIT START =============================
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
-// Baut nach einem Speichern die EN-Vorschau neu auf, damit Trims und Tempoänderungen sichtbar werden
-async function rebuildEnBufferAfterSave(startTrim, endTrim, ignoreSnapshot, silenceSnapshot, relFactor) {
-    if (!rawEnBuffer) return;
-    const baseBuffer = cloneAudioBuffer(rawEnBuffer);
-    if (!baseBuffer) return;
-    let buffer = baseBuffer;
-    // Start- und Endwerte auf den EN-Puffer übertragen
-    if (startTrim !== 0 || endTrim !== 0) {
-        buffer = trimAndPadBuffer(buffer, startTrim, endTrim);
+// Baut nach einem Speichern beide Wellenformen komplett neu auf, damit sie einem frisch geöffneten Dialog entsprechen
+async function rebuildEnBufferAfterSave() {
+    if (!currentEditFile) {
+        return null;
     }
-    // Entfernte Pausen auch in der EN-Anzeige berücksichtigen
-    if (Array.isArray(ignoreSnapshot) && ignoreSnapshot.length > 0) {
-        const adjustedIgnore = ignoreSnapshot.map(r => ({ start: r.start - startTrim, end: r.end - startTrim }));
-        buffer = removeRangesFromBuffer(buffer, adjustedIgnore);
+
+    // Hilfsfunktion, um einen Cache-Buster für String-Quellen zu ergänzen
+    const withCacheBuster = src => src.includes('?') ? `${src}&v=${Date.now()}` : `${src}?v=${Date.now()}`;
+
+    const relPath = getFullPath(currentEditFile);
+    const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
+    const enSrc = `sounds/EN/${cleanPath}`;
+
+    let deSource = deAudioCache[cleanPath] || deAudioCache[relPath] || `sounds/DE/${cleanPath}`;
+    let deBuffer;
+    try {
+        const src = typeof deSource === 'string' ? withCacheBuster(deSource) : deSource;
+        deBuffer = await loadAudioBuffer(src);
+    } catch (err) {
+        console.warn('Aktualisiertes DE-Audio konnte nicht geladen werden, verwende Backup', err);
+        const fallback = withCacheBuster(`sounds/DE-Backup/${cleanPath}`);
+        deBuffer = await loadAudioBuffer(fallback);
     }
-    // Eingefügte Stille in der EN-Ansicht nachvollziehen
-    if (Array.isArray(silenceSnapshot) && silenceSnapshot.length > 0) {
-        const adjustedSilence = silenceSnapshot.map(r => ({ start: r.start - startTrim, end: r.end - startTrim }));
-        buffer = insertSilenceIntoBuffer(buffer, adjustedSilence);
+
+    const enBuffer = await loadAudioBuffer(withCacheBuster(enSrc));
+
+    // Beide Puffer komplett neu setzen, damit sich die Ansicht wie nach einem erneuten Öffnen verhält
+    savedOriginalBuffer = deBuffer;
+    originalEditBuffer = deBuffer;
+    editEnBuffer = enBuffer;
+    rawEnBuffer = enBuffer;
+
+    editOrigCursor = 0;
+    editDeCursor = 0;
+    editPaused = false;
+    editPlaying = null;
+
+    editStartTrim = 0;
+    editEndTrim = 0;
+    deSelectionActive = true;
+    enSelectStart = 0;
+    enSelectEnd = 0;
+
+    currentDeSeconds = deBuffer.length / deBuffer.sampleRate;
+    currentEnSeconds = enBuffer.length / enBuffer.sampleRate;
+    editDurationMs = deBuffer.length / deBuffer.sampleRate * 1000;
+    maxWaveSeconds = Math.max(currentDeSeconds, currentEnSeconds, 0.001);
+
+    const startField = document.getElementById('enSegStart');
+    const endField = document.getElementById('enSegEnd');
+    if (startField) startField.value = '';
+    if (endField) endField.value = '';
+
+    const tempoRange = document.getElementById('tempoRange');
+    const tempoDisp = document.getElementById('tempoDisplay');
+    if (tempoRange && tempoDisp) {
+        tempoRange.value = tempoFactor.toFixed(2);
+        tempoDisp.textContent = tempoFactor.toFixed(2);
+        tempoDisp.classList.remove('tempo-auto');
     }
-    const factor = relFactor && isFinite(relFactor) ? relFactor : 1;
-    buffer = await timeStretchBuffer(buffer, factor);
-    editEnBuffer = buffer;
-    currentEnSeconds = buffer.length / buffer.sampleRate;
+
+    const origCanvas = document.getElementById('waveOriginal');
+    const deCanvas = document.getElementById('waveEdited');
+    if (origCanvas) resetCanvasZoom(origCanvas);
+    if (deCanvas) resetCanvasZoom(deCanvas);
+
+    updateWaveCanvasDimensions();
+    updateDeEditWaveforms(0, 0);
+    updateMasterTimeline();
+
+    return { deBuffer, enBuffer };
 }
 
 async function applyDeEdit(param = {}) {
@@ -15913,7 +15960,7 @@ async function applyDeEdit(param = {}) {
             await updateHistoryCache(cleanPath);
             finalBuffer = newBuffer;
         }
-        await rebuildEnBufferAfterSave(startTrimSnapshot, endTrimSnapshot, ignoreSnapshot, silenceSnapshot, relFactor);
+        const rebuildResult = await rebuildEnBufferAfterSave();
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.ignoreRanges = editIgnoreRanges;
@@ -15959,23 +16006,16 @@ async function applyDeEdit(param = {}) {
         if (typeof showToast === 'function') {
             showToast('DE-Audio gespeichert', 'success');
         }
+        if (rebuildResult && rebuildResult.deBuffer) {
+            finalBuffer = rebuildResult.deBuffer;
+        }
         if (!finalBuffer) {
             throw new Error('Interner Fehler: finalBuffer wurde nicht gesetzt.');
         }
         // Nach erfolgreichem Speichern Puffer und Anzeige auf den neuen Zustand setzen
-        savedOriginalBuffer = finalBuffer;
-        originalEditBuffer = finalBuffer;
-        editDurationMs = finalBuffer.length / finalBuffer.sampleRate * 1000;
         loadedTempoFactor = tempoFactor;
-        currentDeSeconds = finalBuffer.length / finalBuffer.sampleRate;
-        currentEnSeconds = editEnBuffer ? (editEnBuffer.length / editEnBuffer.sampleRate) : 0;
-        maxWaveSeconds = Math.max(currentDeSeconds, currentEnSeconds, 0.001);
-        updateWaveCanvasDimensions();
-        // Nach dem Speichern soll die vollständige Datei weiterhin markiert bleiben
-        deSelectionActive = true;
         volumeMatchedBuffer = null;
         refreshSilenceList();
-        updateDeEditWaveforms(0, 0);
         validateDeSelection();
         updateEffectButtons();
         updateStatus('DE-Audio bearbeitet und gespeichert');
