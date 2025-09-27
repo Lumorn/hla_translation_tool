@@ -1,8 +1,4 @@
 # Changelog
-## 🔄 Unreleased
-* `web/src/main.js` berechnet nach Eingriffen in den Bearbeitungspuffer Laufzeit und Wave-Canvas automatisch neu und hält dadurch Master-Timeline sowie Cursor-Markierungen synchron.
-* `README.md` erwähnt die automatischen Laufzeit-Updates im DE-Audio-Editor.
-
 ## 🛠️ Patch in 1.40.388
 * `web/src/main.js` setzt die Canvas-Breite jetzt in Pixeln, damit lange DE-Aufnahmen proportional zur Laufzeit dargestellt und korrekt gescrollt werden können.
 * `web/src/style.css` überlässt die Breite der Wave-Canvas dem Inline-Stil, sodass die neue Pixelbreite nicht mehr überschrieben wird.
