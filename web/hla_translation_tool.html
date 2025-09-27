@@ -639,10 +639,19 @@
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
             <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
             <div class="wave-toolbar" id="waveToolbar">
-                <div class="wave-slider">
+                <div class="wave-slider wave-zoom-slider">
+                    <button type="button" class="wave-toolbar-btn" id="waveZoomOutBtn" title="Zoom verkleinern">−</button>
                     <label for="waveZoomRange">Zoom</label>
                     <input type="range" id="waveZoomRange" min="0.8" max="2.5" step="0.1">
                     <span id="waveZoomDisplay">100%</span>
+                    <button type="button" class="wave-toolbar-btn" id="waveZoomInBtn" title="Zoom vergrößern">+</button>
+                </div>
+                <div class="wave-slider wave-position-slider">
+                    <button type="button" class="wave-toolbar-btn" id="waveScrollLeftBtn" title="Nach links springen">⟵</button>
+                    <label for="waveScrollRange">Position</label>
+                    <input type="range" id="waveScrollRange" min="0" max="100" step="1" value="0">
+                    <span id="waveScrollDisplay">0%</span>
+                    <button type="button" class="wave-toolbar-btn" id="waveScrollRightBtn" title="Nach rechts springen">⟶</button>
                 </div>
                 <div class="wave-slider">
                     <label for="waveHeightRange">Höhe</label>

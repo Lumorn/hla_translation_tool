@@ -1110,172 +1110,27 @@ th:nth-child(8) {
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
 
-        #deEditDialog .wave-master-bar {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        #deEditDialog .wave-timeline {
-            position: relative;
-            background: linear-gradient(180deg, #1d1d1d 0%, #151515 100%);
-            border-radius: 10px;
-            padding: 12px 14px 20px;
-            overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-        }
-
-        #deEditDialog .wave-timeline-scale {
-            position: relative;
-            height: 30px;
-            z-index: 3;
-        }
-
-        #deEditDialog .wave-timeline-tick {
-            position: absolute;
-            bottom: 0;
-            width: 1px;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.25);
-        }
-
-        #deEditDialog .wave-timeline-tick span {
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translate(-50%, -4px);
-            font-size: 11px;
-            color: #f1f1f1;
-            background: rgba(0, 0, 0, 0.55);
-            padding: 2px 6px;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-
-        #deEditDialog .wave-timeline-markers {
-            position: relative;
-            height: 12px;
-            margin-top: 10px;
-            z-index: 3;
-        }
-
-        #deEditDialog .wave-timeline-marker {
-            position: absolute;
-            top: 0;
-            height: 100%;
-            background: rgba(52, 152, 219, 0.28);
-            border: 1px solid rgba(52, 152, 219, 0.65);
-            border-radius: 4px;
-        }
-
-        #deEditDialog .wave-timeline-marker--trim {
-            background: rgba(243, 156, 18, 0.32);
-            border-color: rgba(243, 156, 18, 0.85);
-        }
-
-        #deEditDialog .wave-timeline-marker--selection {
-            background: rgba(39, 174, 96, 0.32);
-            border-color: rgba(39, 174, 96, 0.85);
-        }
-
-        #deEditDialog .wave-timeline-marker--ignore {
-            background: rgba(231, 76, 60, 0.32);
-            border-color: rgba(231, 76, 60, 0.75);
-        }
-
-        #deEditDialog .wave-timeline-marker--silence {
-            background: rgba(142, 68, 173, 0.32);
-            border-color: rgba(142, 68, 173, 0.75);
-        }
-
-        #deEditDialog .wave-timeline-marker--cursor {
-            background: rgba(52, 152, 219, 0.85);
-            border-color: rgba(52, 152, 219, 0.9);
-            width: 2px !important;
-        }
-
-        #deEditDialog .wave-timeline-marker-label {
-            position: absolute;
-            top: -18px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
-            color: #fefefe;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 2px 6px;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-
-        #deEditDialog .wave-timeline-window {
-            position: absolute;
-            top: 6px;
-            height: calc(100% - 12px);
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        #deEditDialog .wave-master-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 18px;
-            background: #1c1c1c;
-            border-radius: 10px;
-            padding: 12px 16px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-        }
-
-        #deEditDialog .wave-master-controls-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        #deEditDialog .wave-master-controls-group label {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 12px;
-            color: #d0d0d0;
-        }
-
-        #deEditDialog .wave-master-controls-group input[type="range"] {
-            width: 180px;
-        }
-
-        #deEditDialog .wave-master-btn {
+        #deEditDialog .wave-toolbar-btn {
             background: #2a2a2a;
             color: #f0f0f0;
             border: 1px solid #3a3a3a;
             border-radius: 6px;
-            padding: 4px 10px;
-            font-size: 16px;
+            padding: 4px 8px;
+            font-size: 14px;
             cursor: pointer;
+            line-height: 1;
             transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
 
-        #deEditDialog .wave-master-btn:hover {
+        #deEditDialog .wave-toolbar-btn:hover {
             background: #3a3a3a;
             border-color: #4a90e2;
             color: #ffffff;
         }
 
-        #deEditDialog .wave-master-value {
-            font-size: 12px;
-            font-weight: 600;
-            color: #f0f0f0;
+        #deEditDialog .wave-position-slider input[type="range"] {
+            width: 180px;
         }
-
-        @media (min-width: 1700px) {
-            #deEditDialog .wave-master-controls-group input[type="range"] {
-                width: 240px;
-            }
-        }
-
 
         #deEditDialog .wave-slider {
             display: flex;
