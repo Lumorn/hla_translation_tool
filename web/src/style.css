@@ -151,58 +151,420 @@ th:nth-child(8) {
             overflow: hidden;
         }
 
-        .topbar,
-        .start-bar,
-        .filter-bar {
-            background: #2a2a2a;
-            padding: 15px 20px;
+        .workspace-header {
+            background: #242424;
             border-bottom: 1px solid #333;
+            padding: 16px 24px 18px;
             display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .topbar {
+        .workspace-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .toolbar-group {
+            background: #1f1f1f;
+            border: 1px solid #2d2d2d;
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1 1 260px;
+            min-width: 0;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        }
+
+        .toolbar-group--project { flex: 1 1 320px; }
+        .toolbar-group--tools { flex: 2 1 380px; }
+        .toolbar-group--media { flex: 1 1 280px; }
+        .toolbar-group--system { flex: 1 1 260px; }
+        .toolbar-group--search { flex: 1 1 100%; }
+
+        .group-main {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
-        }
-
-        /* Alte Toolbar-Klasse bleibt für Kompatibilität */
-        .toolbar {
-            background: #2a2a2a;
-            padding: 15px 20px;
-            border-bottom: 1px solid #333;
-            display: flex;
-            gap: 15px;
-            align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .search-container {
-            flex: 1;
-            min-width: 250px;
-            position: relative;
-            display: flex; /* Input und Knopf nebeneinander */
-            align-items: center;
+        .group-title {
+            margin: 0;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #ff7a33;
+            font-weight: 600;
         }
 
-        .search-input {
+        .group-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .group-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .group-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #a8a8a8;
+        }
+
+        .project-inline {
+            display: flex;
+            gap: 8px;
+            align-items: stretch;
+        }
+
+        .project-inline .file-input {
             flex: 1;
-            width: auto;
-            padding: 10px 15px;
-            background: #1a1a1a;
-            border: 1px solid #444;
-            border-radius: 6px;
+            min-height: 36px;
+        }
+
+        .project-inline .btn {
+            align-self: stretch;
+        }
+
+        .workspace-header .btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .workspace-header .btn-secondary {
+            background: #2e2e2e;
+            border: 1px solid #3a3a3a;
+            color: #f1f1f1;
+        }
+
+        .workspace-header .btn-secondary:hover {
+            background: #3a3a3a;
+            border-color: #ff6b1a;
+        }
+
+        .workspace-header .btn-blue {
+            background: #1a73e8;
+            border: none;
+        }
+
+        .btn-tight {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .menu-wrapper {
+            position: relative;
+        }
+
+        .menu-toggle {
+            min-width: 42px;
+        }
+
+        .menu-toggle.menu-toggle-active {
+            background: #ff6b1a;
+            border-color: #ff6b1a;
+            color: #fff;
+        }
+
+        .workspace-dropdown {
+            position: absolute;
+            top: calc(100% + 6px);
+            right: 0;
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 8px 0;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.55);
+            min-width: 220px;
+            display: none;
+            z-index: 1200;
+        }
+
+        .workspace-dropdown.menu-open {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .workspace-dropdown--wide {
+            min-width: 340px;
+            padding: 10px 0;
+        }
+
+        .workspace-dropdown .dropdown-section {
+            padding: 6px 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .workspace-dropdown .dropdown-section:last-child {
+            border-bottom: none;
+            padding-bottom: 14px;
+        }
+
+        .workspace-dropdown .dropdown-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #ff7a33;
+        }
+
+        .workspace-dropdown .dropdown-item,
+        .workspace-dropdown button:not(.btn) {
+            width: 100%;
+            background: none;
+            border: none;
             color: #e0e0e0;
+            text-align: left;
+            padding: 8px 0;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: block;
+        }
+
+        .workspace-dropdown .dropdown-item:hover,
+        .workspace-dropdown button:not(.btn):hover {
+            background: rgba(255, 107, 26, 0.15);
+        }
+
+        .workspace-header select,
+        .workspace-header input[type="text"],
+        .workspace-header textarea {
+            background: #121212;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #e0e0e0;
+            padding: 8px 10px;
             font-size: 14px;
             transition: border-color 0.2s;
         }
 
-        .search-input:focus {
+        .workspace-header textarea {
+            resize: vertical;
+            min-height: 36px;
+        }
+
+        .workspace-header select:focus,
+        .workspace-header input[type="text"]:focus,
+        .workspace-header textarea:focus {
             outline: none;
             border-color: #ff6b1a;
+            box-shadow: 0 0 0 1px rgba(255, 107, 26, 0.3);
         }
-			
+
+        .workspace-header label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #d5d5d5;
+        }
+
+        .workspace-header input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
+        .hla-launch {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .hla-launch__option {
+            white-space: nowrap;
+        }
+
+        .hla-launch select,
+        .hla-launch input[type="text"] {
+            min-width: 100px;
+        }
+
+        .hla-launch input[type="text"] {
+            width: 140px;
+        }
+
+        .hla-launch .start-dropdown {
+            display: flex;
+            align-items: stretch;
+        }
+
+        .storage-compact {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .storage-status {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .storage-monitor {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .storage-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 12px;
+            color: #bdbdbd;
+        }
+
+        .storage-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .migration-status {
+            min-height: 18px;
+            font-size: 12px;
+            color: #9e9e9e;
+        }
+
+        .toolbar-group--search .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .toolbar-group--search .search-input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 13px;
+        }
+
+        .copy-option {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-option input {
+            transform: scale(1.1);
+        }
+
+        .search-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .sort-label {
+            color: #999;
+            margin-right: 6px;
+        }
+
+        .search-progress {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-progress .progress-bar {
+            flex: 1;
+            min-width: 220px;
+            background: #111;
+        }
+
+        .workspace-header .progress-fill {
+            background: linear-gradient(90deg, #ff6b1a, #ff9c4a);
+        }
+
+        @media (max-width: 1200px) {
+            .toolbar-group {
+                flex: 1 1 220px;
+            }
+
+            .project-inline {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .project-inline .btn {
+                width: 100%;
+            }
+
+            .group-main {
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .workspace-header {
+                padding: 14px 16px 18px;
+            }
+
+            .toolbar-group {
+                flex: 1 1 100%;
+            }
+
+            .group-main {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .group-buttons {
+                justify-content: flex-start;
+            }
+
+            .search-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .search-options {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .search-progress {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-progress .progress-bar {
+                min-width: 0;
+            }
+        }
 
         .search-results {
             position: absolute;
@@ -229,7 +591,7 @@ th:nth-child(8) {
         .copy-option {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
 		
 		
@@ -1732,26 +2094,19 @@ th:nth-child(8) {
 
         /* Einstellungen-Menü */
         .settings-container {
-            margin-left: auto;
             position: relative;
         }
 
         .settings-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            border-radius: 6px;
-            padding: 5px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            min-width: 180px;
-            display: none;
-            z-index: 2000;
+            min-width: 220px;
+            border: none;
+            background: #1e1e1e;
+            box-shadow: none;
+            padding: 0;
         }
 
         .settings-item {
-            padding: 10px 15px;
+            padding: 10px 18px;
             cursor: pointer;
             color: #e0e0e0;
             font-size: 14px;
@@ -1759,7 +2114,7 @@ th:nth-child(8) {
         }
 
         .settings-item:hover {
-            background: #333;
+            background: rgba(255, 107, 26, 0.15);
         }
 
         /* Import/Export Dialog */

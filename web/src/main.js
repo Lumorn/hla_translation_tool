@@ -163,6 +163,80 @@ function resetGlobalState() {
     if (typeof projectListClickBound !== 'undefined') projectListClickBound = false;
 }
 
+// Verwaltung der neuen Dropdown-Menüs im Arbeitsbereich
+let activeWorkspaceMenu = null;
+let workspaceMenusInitialized = false;
+
+function handleWorkspaceMenuOutsideClick(event) {
+    if (!activeWorkspaceMenu) return;
+    const { menu, button } = activeWorkspaceMenu;
+    if (menu.contains(event.target) || (button && button.contains(event.target))) {
+        return;
+    }
+    closeWorkspaceMenu();
+}
+
+function closeWorkspaceMenu() {
+    if (!activeWorkspaceMenu) return;
+    const { menu, button } = activeWorkspaceMenu;
+    menu.classList.remove('menu-open');
+    if (button) {
+        button.classList.remove('menu-toggle-active');
+        button.setAttribute('aria-expanded', 'false');
+    }
+    activeWorkspaceMenu = null;
+    document.removeEventListener('click', handleWorkspaceMenuOutsideClick);
+}
+
+function toggleWorkspaceMenu(menuId, buttonId) {
+    const menu = document.getElementById(menuId);
+    if (!menu) return;
+    const button = buttonId ? document.getElementById(buttonId) : null;
+    const isSameMenu = activeWorkspaceMenu && activeWorkspaceMenu.menu === menu;
+    closeWorkspaceMenu();
+    if (!isSameMenu) {
+        menu.classList.add('menu-open');
+        if (button) {
+            button.classList.add('menu-toggle-active');
+            button.setAttribute('aria-expanded', 'true');
+        }
+        activeWorkspaceMenu = { menu, button };
+        document.addEventListener('click', handleWorkspaceMenuOutsideClick);
+    }
+}
+
+function initializeWorkspaceMenus() {
+    if (workspaceMenusInitialized) return;
+    workspaceMenusInitialized = true;
+    const toggles = document.querySelectorAll('[data-menu-toggle]');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const menuId = toggle.getAttribute('data-menu-toggle');
+            toggleWorkspaceMenu(menuId, toggle.id);
+        });
+    });
+
+    const dropdowns = document.querySelectorAll('.workspace-dropdown');
+    dropdowns.forEach(menu => {
+        menu.addEventListener('click', event => {
+            const actionable = event.target.closest('.dropdown-item, .settings-item, button');
+            if (actionable) {
+                closeWorkspaceMenu();
+            }
+        });
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            closeWorkspaceMenu();
+        }
+    });
+}
+
+window.toggleWorkspaceMenu = toggleWorkspaceMenu;
+
 // Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an
 async function visualizeFileStorage(key) {
     // Beide Backends erstellen, ohne den globalen Speicher zu ändern
@@ -268,6 +342,7 @@ window.addEventListener('DOMContentLoaded', () => {
     requestPersistentStorage();
     updateStorageUsage();
     updateLastCleanup();
+    initializeWorkspaceMenus();
     const cleanBtn = document.getElementById('cleanupButton');
     if (cleanBtn) cleanBtn.addEventListener('click', runCleanup);
     initVirtualTable();
@@ -1230,6 +1305,7 @@ function setupToolbarActionButtons() {
         const copyBtn2 = document.getElementById("copyAssistant2Button");
         const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
         const subtitleAllBtn = document.getElementById("subtitleSearchAllButton");
+        const subtitleAllBtnInline = document.getElementById("subtitleSearchAllButtonInline");
 
         // Einzelne Klick-Listener nach Bedarf setzen
         if (gptBtn) {
@@ -1258,6 +1334,14 @@ function setupToolbarActionButtons() {
         }
         if (subtitleAllBtn) {
             subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
+        }
+        if (subtitleAllBtn && subtitleAllBtnInline) {
+            subtitleAllBtnInline.addEventListener("click", event => {
+                // Weiterleitung auf den ursprünglichen Button, damit bestehende Logik greift
+                event.preventDefault();
+                event.stopPropagation();
+                subtitleAllBtn.click();
+            });
         }
 
         // Checkbox für Rest-Modus nach Projektwechsel neu verbinden
@@ -12257,27 +12341,9 @@ async function scanAudioDuplicates() {
 
         // Zeigt oder versteckt das Einstellungen-Menü
         function toggleSettingsMenu() {
-            const menu = document.getElementById('settingsMenu');
-            if (menu.style.display === 'block') {
-                menu.style.display = 'none';
-                document.removeEventListener('click', closeSettingsMenuOnOutside);
-            } else {
-                menu.style.display = 'block';
-                setTimeout(() => {
-                    document.addEventListener('click', closeSettingsMenuOnOutside);
-                }, 0);
-            }
+            toggleWorkspaceMenu('settingsMenu', 'settingsButton');
         }
-
-        // Schließt das Menü, wenn außerhalb geklickt wird
-        function closeSettingsMenuOnOutside(e) {
-            const menu = document.getElementById('settingsMenu');
-            const btn = document.getElementById('settingsButton');
-            if (!menu.contains(e.target) && e.target !== btn) {
-                menu.style.display = 'none';
-                document.removeEventListener('click', closeSettingsMenuOnOutside);
-            }
-        }
+        window.toggleSettingsMenu = toggleSettingsMenu;
 
 
 // =========================== WAEHLEPROJEKTORDNER START =======================

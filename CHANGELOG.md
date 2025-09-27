@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.390
+* `web/hla_translation_tool.html` verwandelt den Kopfbereich in eine kompakte Werkzeugzeile mit Projekt-, Werkzeug-, Medien-, System- und Suchsegment; Speicher- und Migrationsaktionen sitzen jetzt gemeinsam im Verwaltungs-Dropdown.
+* `web/src/style.css` liefert das verschlankte Flex-Layout samt einheitlichen Dropdown-Stilen, schlankeren Buttons und neuen Breakpoints für <1200 px sowie <900 px.
+* `README.md` beschreibt die neue Kopfzeile mit gebündelten Aktionen und verweist auf das Verwaltungs-Dropdown.
+* `CHANGELOG.md` dokumentiert die Überarbeitung des kompakten Headers.
 ## 🛠️ Patch in 1.40.389
 * `web/src/main.js` berechnet die Waveform-Breite direkt aus dem Laufzeitverhältnis und setzt die Pixelbreite inline, damit EN- und DE-Spuren exakt nach Dauer skaliert werden.
 * `web/src/style.css` erlaubt die inline gesetzten Pixelbreiten und sichert mit Mindestmaßen die Bedienbarkeit auch bei sehr kurzen Takes ab.
