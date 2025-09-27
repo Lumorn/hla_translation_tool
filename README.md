@@ -93,6 +93,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feinjustierte Waveform-Werkzeugleiste:** Ein enges Grid mit kleineren Buttons und geringem Padding hält Zoom-, Höhen- und Sync-Regler auch bei kleiner Breite dicht beieinander.
 * **Dynamische DE-Wellenformbreite:** Die DE-Wellenform übernimmt die echte Laufzeit als Pixelbreite, wodurch Scrollleisten, Lineale und Zoom exakt zur Audiodauer passen und lange Takes nachvollziehbar länger bleiben als die EN-Spur.
 * **Frische EN- und DE-Vorschau nach dem Speichern:** Nach dem Speichern lädt der Editor beide Spuren komplett neu, wodurch die EN-Originalspur wieder in voller Länge sichtbar bleibt und nicht mehr zur Miniatur zusammenschrumpft. Gleichzeitig steht die frisch gespeicherte DE-Fassung sofort als neue Arbeitsbasis bereit.
+* **Deckelung der Trim-Eingaben:** Die Start- und Endfelder im DE-Audio-Editor begrenzen sich jetzt strikt auf die reale Laufzeit. Auto-Trim, Tempoabgleich und anschließendes Speichern lassen die Markierung sichtbar und gültig, weil `validateDeSelection()` nur noch mit sicheren Werten arbeitet.
 * **Stabile Trim-Markierung trotz Längenänderungen:** Sobald Auto-Tempo, Pausenentfernung oder Speichern die Gesamtdauer verändern, klemmt der Editor Start- und End-Trim jetzt automatisch auf gültige Werte, synchronisiert die Eingabefelder und hält die grüne Auswahlmarkierung dauerhaft sichtbar.
 * **Aktive DE-Markierung nach dem Speichern:** `applyDeEdit()` setzt Start- und End-Trim nach dem Speichern über `normalizeDeTrim()` auf gültige Werte zurück, lässt `deSelectionActive` bestehen und setzt die Eingabefelder auf die echte Laufzeit statt auf `0`, sodass die Markierung den kompletten Clip weiterhin abbildet.
 * **Master-Timeline entfernt:** Die frühere Zeitleiste oberhalb der Wellen entfällt; Zoom-Tasten, Positions-Slider und Sprungknöpfe sitzen jetzt direkt in der Wave-Toolbar.
@@ -1232,6 +1233,12 @@ verwendet werden, um optionale Downloads zu überspringen.
 
 * Ausgabe erfolgt auf Deutsch.
 * Timing der Sprachausgabe passt zum Original.
+
+### Manuelle Prüfung
+
+* **Auto-Trim + Tempo** – Im DE-Audio-Editor zuerst „Auto-Trim“ auslösen, danach „Tempo automatisch anpassen“.
+* **Werte kontrollieren** – Prüfen, dass Start- und Endfelder die Laufzeit nicht überschreiten.
+* **Speichern** – Mit „Speichern“ bestätigen und sicherstellen, dass die grüne Markierung (`deSelectionActive`) sichtbar bleibt.
 
 ## 🧩 Wichtige Funktionen
 
