@@ -88,7 +88,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Übersichtliche Auswahlzeile:** Die gewählte Zeile wird mit kleinem Abstand unter dem Tabellenkopf positioniert, bleibt vollständig sichtbar und zeigt noch einen Teil der vorherigen Zeile.
 * **Tabellenkopf mit vollem Sichtfenster:** Das Scroll-Padding der Tabelle entspricht jetzt der Höhe des sticky Kopfbereichs, sodass die erste Zeile nicht mehr teilweise verdeckt wird.
 * **Überarbeitetes Timing-Layout:** Der Abschnitt „Timing & Bereiche“ nutzt ein zweispaltiges Kartenraster, das bei schmaler Breite automatisch auf eine Spalte umbricht.
-* **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen reagieren nun auf breite Monitore mit flexiblen Gittern und ordnen sich auf kleineren Displays automatisch übereinander an.
+* **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen nutzen jetzt ein konsistentes Zweispalten-Raster, das auf kleinen Displays automatisch auf eine Spalte reduziert wird und dem Einfügebereich Luft nach oben lässt.
 * **Waveform-Werkzeugleiste für große Monitore:** Zoom- und Höhenregler, synchronisiertes Scrollen sowie Zeitmarken-Lineale sorgen dafür, dass lange Takes auch auf Ultrawide-Displays komfortabel editierbar bleiben.
 * **Tabbasiertes Effekt-Panel:** Die rechte Seitenleiste bündelt Lautstärke- und Funkgerät-Steuerung als „Kernfunktionen“ und verschiebt Hall-, EM-Störungs- sowie Nebenraum-Regler unter „Erweiterte Optionen“ mit klaren Abschnittstiteln.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
