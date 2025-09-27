@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.380
+* `web/src/style.css` reduziert Abstände in Wave-Area und Toolbar, damit der obere Editorbereich kompakter erscheint und Buttons weiterhin gut erreichbar bleiben.
+* `README.md` beschreibt die verschlankte Waveform-Werkzeugleiste mit den neuen Abständen.
+* `CHANGELOG.md` dokumentiert die verdichtete Toolbar und das engere Raster.
 ## 🛠️ Patch in 1.40.379
 * `web/src/style.css` vergrößert die DE-Wiedergabeknöpfe auf 44 px, hebt die Symbole auf 18 px an und ordnet sie in einer horizontalen Leiste mit klaren Hover-Kontrasten an.
 * `web/hla_translation_tool.html` ergänzt aussagekräftige `aria-label`-Attribute für die Play- und Stop-Schaltflächen.
