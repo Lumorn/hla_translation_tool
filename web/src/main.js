@@ -513,11 +513,11 @@ function updateWaveCanvasDimensions() {
         { canvas: document.getElementById('waveEdited'), ratio: maxWaveSeconds ? currentDeSeconds / maxWaveSeconds : 1 }
     ];
     const baseWidth = 640;
-    const minWidth = 420;
+    const minWidth = 60;
     canvases.forEach(entry => {
         const { canvas, ratio } = entry;
         if (!canvas) return;
-        const effectiveRatio = Math.max(0.4, ratio || 1);
+        const effectiveRatio = Number.isFinite(ratio) && ratio > 0 ? ratio : 1;
         const widthPx = Math.max(minWidth, Math.round(baseWidth * waveZoomLevel * effectiveRatio));
         canvas.width = widthPx;
         canvas.height = waveHeightPx;

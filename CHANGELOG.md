@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.389
+* `web/src/main.js` berechnet die Waveform-Breite direkt aus dem Laufzeitverhältnis und setzt die Pixelbreite inline, damit EN- und DE-Spuren exakt nach Dauer skaliert werden.
+* `web/src/style.css` erlaubt die inline gesetzten Pixelbreiten und sichert mit Mindestmaßen die Bedienbarkeit auch bei sehr kurzen Takes ab.
+* `README.md` beschreibt die dynamische Breitenanpassung samt sauber synchronisierten Scrollleisten, Linealen und Zoom-Reglern.
+* `CHANGELOG.md` dokumentiert die dynamische Pixelbreite der Wave-Canvas im DE-Editor.
 ## 🛠️ Patch in 1.40.388
 * `web/src/main.js` setzt die Canvas-Breite jetzt in Pixeln, damit lange DE-Aufnahmen proportional zur Laufzeit dargestellt und korrekt gescrollt werden können.
 * `web/src/style.css` überlässt die Breite der Wave-Canvas dem Inline-Stil, sodass die neue Pixelbreite nicht mehr überschrieben wird.
