@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.396
+* `web/src/main.js` lädt nach jedem Speichern sowohl die DE- als auch die EN-Wellenform komplett neu, damit die Originalspur nicht mehr zur Miniatur schrumpft und der Editor wie ein frisch geöffneter Dialog wirkt.
+* `README.md` beschreibt die neu aufgebaute Doppel-Vorschau und den direkten Zugriff auf die gespeicherte DE-Version.
+* `CHANGELOG.md` hält die vollständige Neuinitialisierung der Wave-Ansicht fest.
 ## 🛠️ Patch in 1.40.395
 * `web/src/main.js` baut die EN-Vorschau nach jedem Speichern aus einer unveränderten Kopie neu auf, damit sie nicht mehr bei mehreren Speichervorgängen zusammenschrumpft.
 * `README.md` erwähnt die frische EN-Kopie und den Wegfall der schleichenden Verkleinerung nach aufeinanderfolgenden Speichervorgängen.
