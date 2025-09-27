@@ -1608,8 +1608,8 @@ th:nth-child(8) {
 }
 
 #deEditDialog .effect-scroll .effect-group {
-    margin: 0; /* Abstände werden über das Raster gesteuert */
-    height: 100%;
+    margin: 0; /* Abstände werden jetzt über den Tab-Inhalt gesteuert */
+    width: 100%;
 }
 
 .effect-separator {
@@ -2165,26 +2165,106 @@ th:nth-child(8) {
 }
 
 #deEditDialog .effect-scroll {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Gitter passt sich flexibel an */
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
     max-height: 70vh;
     overflow-y: auto;
     padding-right: 6px;
-    align-content: flex-start;
+}
+
+#deEditDialog .effect-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#deEditDialog .effect-tablist {
+    display: flex;
+    gap: 10px;
+    background: #131313;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+#deEditDialog .effect-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #bfbfbf;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#deEditDialog .effect-tab:hover,
+#deEditDialog .effect-tab:focus {
+    color: #ffffff;
+    background: #1f1f1f;
+    outline: none;
+}
+
+#deEditDialog .effect-tab.active {
+    background: linear-gradient(135deg, #3f51b5, #2196f3);
+    color: #ffffff;
+    box-shadow: 0 8px 22px rgba(33, 150, 243, 0.35);
+}
+
+#deEditDialog .effect-tabpanels {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#deEditDialog .effect-tabpanel {
+    display: none;
+    flex-direction: column;
+    gap: 18px;
+    background: #101010;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 18px 30px rgba(0, 0, 0, 0.35);
+}
+
+#deEditDialog .effect-tabpanel.active {
+    display: flex;
+}
+
+#deEditDialog .effect-tabpanel-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e3e3e3;
+    letter-spacing: 0.3px;
 }
 
 @media (min-width: 1800px) {
     #deEditDialog .effect-scroll {
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* Auf breiten Monitoren mehr Spalten */
-        gap: 24px;
+        gap: 22px;
+    }
+    #deEditDialog .effect-tabs {
+        gap: 22px;
+    }
+    #deEditDialog .effect-tabpanels {
+        gap: 22px;
     }
 }
 
 @media (max-width: 1200px) {
     #deEditDialog .effect-scroll {
-        grid-template-columns: 1fr; /* Auf kleinen Monitoren einspaltig */
         max-height: none; /* Auf kleinen Monitoren nicht abschneiden */
+        padding-right: 0;
+    }
+    #deEditDialog .effect-tablist {
+        position: static;
     }
 }
 

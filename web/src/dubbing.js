@@ -858,6 +858,117 @@ async function startEmoDubbing(fileId, settings = {}) {
 // =========================== STARTEMODUBBING END ============================
 // =========================== STARTDUBBING END ===============================
 
+// Merker, damit die rechte Seitenleiste nur einmal strukturiert wird
+let effectSidebarOrganized = false;
+
+// Baut die Tabs für Kern- und Expertenfunktionen in der rechten Seitenleiste auf
+function setupRightSidebarTabs() {
+    if (effectSidebarOrganized || typeof document === 'undefined') return;
+    const scroll = document.querySelector('#deEditDialog .effect-scroll');
+    if (!scroll) return;
+
+    const allFieldsets = Array.from(scroll.querySelectorAll('fieldset'));
+    if (!allFieldsets.length) return;
+
+    const assigned = new Set();
+    const collectFieldset = (controlId) => {
+        const ctrl = document.getElementById(controlId);
+        if (!ctrl) return null;
+        const fieldset = ctrl.closest('fieldset');
+        if (!fieldset || assigned.has(fieldset)) return null;
+        assigned.add(fieldset);
+        return fieldset;
+    };
+
+    const coreFieldsets = [];
+    const advancedFieldsets = [];
+
+    const pushIf = (arr, fieldset) => { if (fieldset) arr.push(fieldset); };
+    pushIf(coreFieldsets, collectFieldset('volumeMatchBoxBtn'));
+    pushIf(coreFieldsets, collectFieldset('radioEffectBoxBtn'));
+    pushIf(advancedFieldsets, collectFieldset('hallToggle'));
+    pushIf(advancedFieldsets, collectFieldset('emiVoiceDampToggle'));
+    pushIf(advancedFieldsets, collectFieldset('neighborToggle'));
+
+    for (const fs of allFieldsets) {
+        if (!assigned.has(fs)) {
+            assigned.add(fs);
+            advancedFieldsets.push(fs);
+        }
+    }
+
+    const tabs = [
+        { key: 'core', label: 'Kernfunktionen', nodes: coreFieldsets },
+        { key: 'advanced', label: 'Erweiterte Optionen', nodes: advancedFieldsets }
+    ].filter(tab => tab.nodes.length);
+
+    if (tabs.length <= 1) {
+        effectSidebarOrganized = true;
+        return;
+    }
+
+    const tabContainer = document.createElement('div');
+    tabContainer.className = 'effect-tabs';
+
+    const tabList = document.createElement('div');
+    tabList.className = 'effect-tablist';
+
+    const panelContainer = document.createElement('div');
+    panelContainer.className = 'effect-tabpanels';
+
+    const switchTab = (key) => {
+        tabList.querySelectorAll('.effect-tab').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tabTarget === key);
+        });
+        panelContainer.querySelectorAll('.effect-tabpanel').forEach(panel => {
+            panel.classList.toggle('active', panel.dataset.tab === key);
+        });
+    };
+
+    tabs.forEach((tab, index) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'effect-tab' + (index === 0 ? ' active' : '');
+        btn.dataset.tabTarget = tab.key;
+        btn.textContent = tab.label;
+        btn.addEventListener('click', () => switchTab(tab.key));
+        tabList.appendChild(btn);
+
+        const panel = document.createElement('div');
+        panel.className = 'effect-tabpanel' + (index === 0 ? ' active' : '');
+        panel.dataset.tab = tab.key;
+
+        const title = document.createElement('h4');
+        title.className = 'effect-tabpanel-title';
+        title.textContent = tab.label;
+        panel.appendChild(title);
+
+        tab.nodes.forEach(node => panel.appendChild(node));
+        panelContainer.appendChild(panel);
+    });
+
+    tabContainer.appendChild(tabList);
+    tabContainer.appendChild(panelContainer);
+
+    scroll.textContent = '';
+    scroll.appendChild(tabContainer);
+    scroll.dataset.organized = '1';
+    effectSidebarOrganized = true;
+}
+
+// Initialisiert die Tab-Struktur, sobald das Dokument verfügbar ist
+function initEffectSidebarTabs() {
+    if (typeof document === 'undefined') return;
+    const start = () => setupRightSidebarTabs();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start, { once: true });
+    } else {
+        start();
+    }
+}
+
+initEffectSidebarTabs();
+
 // =========================== ISDUBREADY START ===============================
 // Prüft, ob eine Dub-Datei fertig ist
 async function isDubReady(id, lang = 'de') {
@@ -1136,7 +1247,8 @@ if (typeof module !== 'undefined' && module.exports) {
         openLocalFile,
         startDubAutomation,
         downloadDe,
-        waitDialogFileId
+        waitDialogFileId,
+        setupRightSidebarTabs
     };
 }
 // Funktionen auch im Browser global verfügbar machen

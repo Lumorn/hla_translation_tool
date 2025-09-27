@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.376
+* `web/src/dubbing.js` ordnet die rechte Effekt-Seitenleiste in Tabs für Kernfunktionen und erweiterte Optionen und versieht die Gruppen mit klaren Überschriften.
+* `web/src/style.css` liefert neue Tab-Layouts inklusive Hintergründen, Abständen und responsiver Anpassung für die Abschnittspaneele.
+* README und CHANGELOG dokumentieren die tabbasierte Effekt-Steuerung im DE-Editor.
 ## 🛠️ Patch in 1.40.375
 * `web/hla_translation_tool.html` ergänzt eine Waveform-Werkzeugleiste mit Zoom- und Höhenreglern, Fokusknöpfen sowie eigenen Scrollbereichen für Original- und DE-Wellenform.
 * `web/src/style.css` liefert das Layout für die Toolbar, definiert Scrollleisten, Zeitlineale und sorgt für großzügige Abstände auf Ultrawide-Monitoren.
