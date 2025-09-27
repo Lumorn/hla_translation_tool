@@ -1,8 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.391
-* `web/src/main.js` trennt Bearbeitungszustand und Vorschaubuffer, rechnet Trim-/Ignore-/Stille-Werte im Originalzeitraster und setzt Markierungen sowie Overlays nach Tempoänderungen korrekt auf den abgespielten Puffer um.
-* `README.md` beschreibt die stabilen Bearbeitungsmarkierungen bei Tempoanpassungen im DE-Audio-Editor.
-* `CHANGELOG.md` dokumentiert die neue Vorschaulogik und die präziseren Laufzeitberechnungen.
 ## 🛠️ Patch in 1.40.390
 * `web/hla_translation_tool.html` verwandelt den Kopfbereich in eine kompakte Werkzeugzeile mit Projekt-, Werkzeug-, Medien-, System- und Suchsegment; Speicher- und Migrationsaktionen sitzen jetzt gemeinsam im Verwaltungs-Dropdown.
 * `web/src/style.css` liefert das verschlankte Flex-Layout samt einheitlichen Dropdown-Stilen, schlankeren Buttons und neuen Breakpoints für <1200 px sowie <900 px.
