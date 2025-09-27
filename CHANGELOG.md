@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.392
+* `web/hla_translation_tool.html` ergänzt im Kopfbereich des DE-Audio-Dialogs eine zweite Aktionsleiste mit „Zurücksetzen“, „Speichern“ sowie „Speichern & schließen“.
+* `web/src/style.css` richtet die neue Kopfzeile per Flex-Layout aus und sorgt für passende Abstände und Button-Umbruch.
+* `README.md` weist auf die doppelten Aktionsknöpfe hin, damit die Bedienung oben und unten möglich ist.
 ## 🛠️ Patch in 1.40.391
 * `web/src/main.js` lässt `applyDeEdit` nach dem Speichern offen, aktualisiert die Arbeits-Puffer und schließt den Dialog nur nach ausdrücklicher Anforderung.
 * `web/hla_translation_tool.html` ergänzt neben dem regulären Speichern-Button eine separate Aktion „Speichern & schließen“.

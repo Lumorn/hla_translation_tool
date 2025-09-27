@@ -692,7 +692,15 @@
     <div class="dialog-overlay hidden" id="deEditDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
-            <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
+            <div class="edit-header">
+                <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
+                <!-- Zusätzliche Aktionsleiste im Kopfbereich -->
+                <div class="edit-header-actions">
+                    <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
+                    <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen">Speichern</button>
+                    <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen">Speichern &amp; schließen</button>
+                </div>
+            </div>
             <div class="wave-toolbar" id="waveToolbar">
                 <div class="wave-slider wave-zoom-slider">
                     <button type="button" class="wave-toolbar-btn" id="waveZoomOutBtn" title="Zoom verkleinern">−</button>
