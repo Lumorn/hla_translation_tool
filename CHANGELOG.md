@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.393
+* `web/src/main.js` belässt nach dem Speichern die Trim-Markierung aktiv und ergänzt den Speichern-Hinweis um DE- und EN-Längen.
+* `README.md` erwähnt den dauerhaft markierten Bereich und die kombinierte Längenanzeige im DE-Audio-Editor.
+* `CHANGELOG.md` dokumentiert die sichtbare Markierung und die zusätzliche Infozeile im Speichern-Hinweis.
 ## 🛠️ Patch in 1.40.392
 * `web/hla_translation_tool.html` ergänzt im Kopfbereich des DE-Audio-Dialogs eine zweite Aktionsleiste mit „Zurücksetzen“, „Speichern“ sowie „Speichern & schließen“.
 * `web/src/style.css` richtet die neue Kopfzeile per Flex-Layout aus und sorgt für passende Abstände und Button-Umbruch.
