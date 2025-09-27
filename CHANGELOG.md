@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.397
+* `web/src/main.js` setzt beim Zurücksetzen per Doppelklick oder Esc das Ende sofort auf die gerundete Gesamtlänge, validiert die Eingaben direkt und triggert das erneute Zeichnen der Markierung, damit `start < end` aktiv bleibt.
+* `README.md` dokumentiert den erneuten Aktivierungs-Flow der Markierung nach Doppelklick oder Esc.
+* `CHANGELOG.md` hält die aktualisierte Reset-Logik für den DE-Audio-Editor fest.
 ## 🛠️ Patch in 1.40.396
 * `web/src/main.js` lädt nach jedem Speichern sowohl die DE- als auch die EN-Wellenform komplett neu, damit die Originalspur nicht mehr zur Miniatur schrumpft und der Editor wie ein frisch geöffneter Dialog wirkt.
 * `README.md` beschreibt die neu aufgebaute Doppel-Vorschau und den direkten Zugriff auf die gespeicherte DE-Version.
