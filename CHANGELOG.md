@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.381
+* `web/src/style.css` verdichtet Wave-Area, Toolbar, Blöcke, Steuerleisten und Scrollbereich, sodass beide Wellenformen dichter nebeneinander liegen.
+* `README.md` ergänzt den Hinweis auf das kompaktere Waveform-Raster mit geringeren Abständen.
+* `CHANGELOG.md` hält die neue Verdichtung der Wave-Layouts fest.
 ## 🛠️ Patch in 1.40.380
 * `web/src/style.css` reduziert Abstände in Wave-Area und Toolbar, damit der obere Editorbereich kompakter erscheint und Buttons weiterhin gut erreichbar bleiben.
 * `README.md` beschreibt die verschlankte Waveform-Werkzeugleiste mit den neuen Abständen.

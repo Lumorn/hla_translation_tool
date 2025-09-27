@@ -1079,8 +1079,8 @@ th:nth-child(8) {
         #deEditDialog .wave-area {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 10px;
             align-items: start;
         }
 
@@ -1101,12 +1101,12 @@ th:nth-child(8) {
         #deEditDialog .wave-toolbar {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 6px;
             align-items: center;
             justify-content: flex-start;
             background: #1c1c1c;
             border-radius: 10px;
-            padding: 8px 12px;
+            padding: 6px 10px;
             margin-bottom: 10px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
         }
@@ -1319,22 +1319,22 @@ th:nth-child(8) {
                 width: 220px;
             }
             #deEditDialog .wave-toolbar {
-                gap: 14px;
-                padding: 10px 18px;
+                gap: 10px;
+                padding: 8px 16px;
             }
         }
 
         #deEditDialog .wave-block {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
             min-width: 0;
         }
 
         #deEditDialog .wave-controls {
             display: flex;
             align-items: stretch;
-            gap: 14px;
+            gap: 10px;
         }
 
         #deEditDialog .wave-viewport {
@@ -1350,7 +1350,7 @@ th:nth-child(8) {
             overflow-y: hidden;
             background: #111;
             border-radius: 8px;
-            padding: 8px 0 18px;
+            padding: 4px 0 8px;
             position: relative;
             scroll-behavior: smooth;
         }
