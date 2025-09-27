@@ -429,7 +429,7 @@ const WAVE_ZOOM_MIN       = 0.8;
 const WAVE_ZOOM_MAX       = 2.5;
 const WAVE_ZOOM_STEP      = 0.1;
 let waveZoomLevel         = parseFloat(storage.getItem('hla_waveZoomLevel')) || 1.0; // Basiszoom für große Monitore
-let waveHeightPx          = parseInt(storage.getItem('hla_waveHeightPx'), 10) || 100; // Höhe der Wellenform
+let waveHeightPx          = parseInt(storage.getItem('hla_waveHeightPx'), 10) || 80; // Höhe der Wellenform
 let waveSyncScroll        = storage.getItem('hla_waveSyncScroll') === 'true'; // Gemeinsames Scrollen aktiv?
 let waveScrollSyncing     = false; // Sperre beim synchronen Scrollen
 let currentEnSeconds      = 0;     // Länge der EN-Datei in Sekunden
@@ -442,7 +442,7 @@ if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
     waveZoomLevel = Math.max(WAVE_ZOOM_MIN, Math.min(WAVE_ZOOM_MAX, waveZoomLevel));
 }
 if (!Number.isFinite(waveHeightPx) || waveHeightPx < 60) {
-    waveHeightPx = 100;
+    waveHeightPx = 80;
 }
 
 let deDragStart           = null;  // Startposition beim Ziehen im DE-Wave
