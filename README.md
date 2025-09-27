@@ -385,6 +385,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
 * **Platzsparende Fußleiste:** Unterhalb der Karten sitzt nur noch eine schmale Zeile mit „Zurücksetzen“ und „Speichern“, die ohne Sticky-Verhalten auskommt und den Editor kompakt hält.
+* **Speichern ohne Unterbrechung:** Der reguläre „Speichern“-Knopf lässt das Bearbeitungsfenster geöffnet, aktualisiert sofort alle Puffer und Formularfelder und ermöglicht dadurch mehrere Speichervorgänge hintereinander. Nur der neue Button „Speichern & schließen“ beendet den Dialog bewusst.
 * **Schneller Zugriff:** Die Schnellzugriffsleiste erscheint jetzt als kompakte Toolbar mit kurzen Labels direkt neben den Icons. Trim ✂️, Auto ⚡, Tempo ⏱️, Pegel 🔊 und Funk 📻 lassen sich dadurch schneller erfassen, rücken enger zusammen und lenken beim Klick weiterhin die passende Detailkarte in den Fokus. Unter 1000 px brechen die Buttons automatisch um und auf sehr schmalen Displays zeigen sie nur noch das Icon.
 * **Responsives Layout:** Der Editor nutzt ein zweispaltiges Raster, das sich auf großen Monitoren weit öffnet und bei geringer Breite automatisch in eine Spalte wechselt. Die Effektseite besitzt eine eigene Scrollfläche, wodurch alles sichtbar bleibt.
 * **Timeline & Master-Steuerung:** Eine neue Timeline oberhalb der Wellenformen zeigt Sekundenmarken, Trim-, Ignorier- und Stillenmarker farbig an. Darunter bündeln ein gemeinsamer Zoom-Regler samt +/-‑Buttons und ein Scroll-Slider beide Wellen, markieren den sichtbaren Ausschnitt und halten Zoom-Anzeige sowie Scrollprozente synchron.
@@ -753,6 +754,7 @@ Seit Patch 1.40.243 ordnet der DE-Audio-Editor Bereiche und Effekte in drei Spal
 Seit Patch 1.40.244 bietet der DE-Audio-Editor eine untere Effekt-Toolbar und eigene Anwenden-Knöpfe in den Effekt-Kästen.
 Seit Patch 1.40.245 bleibt diese Effekt-Toolbar als Sticky-Footer sichtbar, und "Speichern" erscheint als primärer Button. "Zurücksetzen" fragt jetzt nach einer Bestätigung.
 Seit Patch 1.40.386 ersetzt eine kompakte Fußleiste ohne Sticky-Verhalten die separate Effekt-Toolbar; Zurücksetzen und Speichern bleiben weiterhin schnell erreichbar.
+Seit Patch 1.40.391 erlaubt der Speichern-Button mehrere Durchläufe hintereinander: Die Puffer werden sofort aktualisiert und nur „Speichern & schließen“ beendet den Dialog ausdrücklich.
 Seit Patch 1.40.382 fällt der Kopfbereich des DE-Audio-Editors kompakter aus: Überschrift, Toolbar und Wave-Raster rücken enger zusammen und verlieren übergroße Abstände auf Ultra-Wide-Monitoren.
 Seit Patch 1.40.250 lassen sich Bereiche in EN- und DE-Wellenformen direkt per Ziehen markieren; Start- und Endfelder synchronisieren sich und ungültige Eingaben werden rot hervorgehoben.
 Seit Patch 1.40.194 durchsucht ein neuer Knopf das gesamte Projekt nach passenden Untertiteln und fügt eindeutige Treffer automatisch ein.

@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.391
+* `web/src/main.js` lässt `applyDeEdit` nach dem Speichern offen, aktualisiert die Arbeits-Puffer und schließt den Dialog nur nach ausdrücklicher Anforderung.
+* `web/hla_translation_tool.html` ergänzt neben dem regulären Speichern-Button eine separate Aktion „Speichern & schließen“.
+* `README.md` beschreibt die Möglichkeit, mehrere Speichervorgänge hintereinander durchzuführen und verweist auf den neuen Button.
+* `CHANGELOG.md` dokumentiert die getrennten Speicher- und Schließen-Aktionen im DE-Audio-Editor.
 ## 🛠️ Patch in 1.40.390
 * `web/hla_translation_tool.html` verwandelt den Kopfbereich in eine kompakte Werkzeugzeile mit Projekt-, Werkzeug-, Medien-, System- und Suchsegment; Speicher- und Migrationsaktionen sitzen jetzt gemeinsam im Verwaltungs-Dropdown.
 * `web/src/style.css` liefert das verschlankte Flex-Layout samt einheitlichen Dropdown-Stilen, schlankeren Buttons und neuen Breakpoints für <1200 px sowie <900 px.
