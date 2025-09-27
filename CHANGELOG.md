@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.382
+* `web/src/style.css` reduziert Padding, Abstände und große-Screen-Aufweitungen im Kopfbereich des DE-Audio-Dialogs, damit Toolbar und Wave-Raster kompakter bleiben.
+* `README.md` beschreibt den verschlankten Kopfbereich mit engerer Überschrift und dichterem Wellen-Layout.
+* `CHANGELOG.md` dokumentiert den entschlackten Wave-Header.
 ## 🛠️ Patch in 1.40.381
 * `web/src/style.css` verdichtet Wave-Area, Toolbar, Blöcke, Steuerleisten und Scrollbereich, sodass beide Wellenformen dichter nebeneinander liegen.
 * `README.md` ergänzt den Hinweis auf das kompaktere Waveform-Raster mit geringeren Abständen.
