@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.384
+* `web/src/main.js` senkt den Standardwert für `waveHeightPx` auf 80 px und erzwingt denselben Fallback, damit frische Sitzungen schlanke Wellenformen nutzen.
+* `web/hla_translation_tool.html` setzt den Startwert des Höhen-Sliders auf 80 px, sodass Regler und Anzeige übereinstimmen.
+* `web/src/style.css` reduziert Padding, Gaps und Button-Größen im DE-Audio-Editor, ohne die Bedienelemente zu überlappen.
+* `README.md` beschreibt die schmalere Standard-Wellenform und den angepassten Slider.
+* `CHANGELOG.md` dokumentiert die neue Standardhöhe und die kompakteren Abstände.
 ## 🛠️ Patch in 1.40.383
 * `web/src/style.css` stellt Toolbar, Wellenraster und EN-Übernahmeleiste auf engere Gaps, geringeres Padding und kleinere Buttons um, damit der DE-Audio-Editor weniger vertikalen Platz beansprucht.
 * `README.md` beschreibt das feinjustierte Toolbar-Grid, die engeren Wave-Blöcke und die gestraffte EN-Leiste.
