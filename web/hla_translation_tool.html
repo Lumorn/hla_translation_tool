@@ -44,83 +44,183 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Projekt-Steuerung & Tools -->
-            <div class="topbar">
-                <div class="project-actions">
-                    <div class="add-files-container">
-                        <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
-                        <button class="btn" onclick="addFiles()">Hinzufügen</button>
-                    </div>
-                    <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
-                    <button class="btn btn-secondary" onclick="showCcImportDialog()">📥 Untertitel importieren</button>
-                    <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner durchsuchen</button>
-                </div>
-                <div class="system-tools">
-                    <button id="randomProjectButton" class="btn btn-secondary">🎲 Zufallsprojekt</button>
-                    <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
-                    <div class="settings-container">
-                        <button id="settingsButton" class="btn btn-secondary" onclick="toggleSettingsMenu()">⚙️ Einstellungen</button>
-                        <div class="settings-menu" id="settingsMenu">
-                            <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
-                            <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
-                            <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
-                            <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
-                            <div class="settings-item" onclick="showGptApiDialog()">💬 ChatGPT API</div>
-                            <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
-                            <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
-                            <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+            <header class="workspace-header">
+                <div class="workspace-toolbar">
+                    <section class="toolbar-group toolbar-group--project" aria-labelledby="toolbarProjectTitle">
+                        <div class="group-main">
+                            <h3 id="toolbarProjectTitle" class="group-title">Projekt</h3>
+                            <div class="group-buttons">
+                                <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
+                                <button class="btn btn-secondary" onclick="showCcImportDialog()">🎬 Untertitel</button>
+                                <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner</button>
+                            </div>
                         </div>
-                    </div>
-                    <button id="devToolsButton" class="btn btn-secondary">🐞 DevTools</button>
-                    <button id="debugReportButton" class="btn btn-secondary">📋 Debug-Bericht</button>
-                    <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
-                    <button class="btn btn-secondary" onclick="startMigration()">Migration starten</button>
-                    <button class="btn btn-secondary" onclick="loadMigration()">Migration laden</button>
-                    <button class="btn btn-secondary" onclick="migrateData()">Daten migrieren</button>
-                    <span id="storageModeIndicator"></span>
-                    <button id="switchStorageButton" class="btn btn-secondary">...</button>
-                    <button id="openStorageFolderButton" class="btn btn-secondary" onclick="openStorageFolder()">📂 Speicherordner</button>
-                    <div id="storageMonitor" style="min-width:150px;">
-                        <div class="progress-bar"><div class="progress-fill" id="storageUsageFill"></div></div>
-                        <div class="storage-info">
-                            <span id="storageUsageLabel"></span>
-                            <span id="lastCleanupLabel"></span>
-                            <button id="cleanupButton" class="btn btn-secondary">Aufräumen</button>
+                        <div class="group-body">
+                            <label for="fileInput" class="group-label">Dateien hinzufügen</label>
+                            <div class="project-inline">
+                                <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
+                                <button class="btn btn-primary" onclick="addFiles()">Hinzufügen</button>
+                            </div>
                         </div>
-                    </div>
-                    <div id="migration-status"></div>
+                    </section>
+                    <section class="toolbar-group toolbar-group--tools" aria-labelledby="toolbarToolsTitle">
+                        <div class="group-main">
+                            <h3 id="toolbarToolsTitle" class="group-title">Werkzeuge</h3>
+                            <div class="group-buttons">
+                                <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
+                                <button id="randomProjectButton" class="btn btn-secondary">🎲 Zufall</button>
+                                <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
+                                <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE)</button>
+                                <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
+                                <div class="menu-wrapper">
+                                    <button id="toolOverflowToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="toolOverflowMenu" aria-haspopup="true" aria-expanded="false">⋯</button>
+                                    <div class="workspace-dropdown" id="toolOverflowMenu" role="menu">
+                                        <button class="dropdown-item" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
+                                        <button class="dropdown-item" onclick="showZipImportDialog()">ZIP importieren</button>
+                                        <button class="dropdown-item" id="copyAssistantButton">Kopierhilfe</button>
+                                        <button class="dropdown-item" id="copyAssistant2Button">Kopierhilfe 2</button>
+                                        <button class="dropdown-item" id="copyAllEmosButton">Emotionen kopieren</button>
+                                        <button class="dropdown-item" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
+                                        <button class="dropdown-item" onclick="openDubbingLog()">📝 Protokoll</button>
+                                        <button class="dropdown-item" id="devToolsButton">🐞 DevTools</button>
+                                        <button class="dropdown-item" id="debugReportButton">📋 Debug-Bericht</button>
+                                    </div>
+                                </div>
+                                <div class="menu-wrapper settings-container">
+                                    <button id="settingsButton" class="btn btn-secondary menu-toggle" onclick="toggleSettingsMenu()" aria-haspopup="true" aria-expanded="false">⚙️ Einstellungen</button>
+                                    <div class="settings-menu workspace-dropdown" id="settingsMenu" role="menu">
+                                        <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
+                                        <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
+                                        <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
+                                        <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
+                                        <div class="settings-item" onclick="showGptApiDialog()">💬 ChatGPT API</div>
+                                        <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
+                                        <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
+                                        <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="toolbar-group toolbar-group--media" aria-labelledby="toolbarMediaTitle">
+                        <div class="group-main">
+                            <h3 id="toolbarMediaTitle" class="group-title">Medien</h3>
+                            <div class="group-buttons">
+                                <button id="openVideoManager" class="btn btn-secondary">🎬 Videos</button>
+                            </div>
+                        </div>
+                        <div class="group-body">
+                            <div class="hla-launch">
+                                <select id="modusSelect">
+                                    <option value="normal">Spiel</option>
+                                    <option value="workshop">Workshop</option>
+                                </select>
+                                <select id="spracheSelect">
+                                    <option value="english">english</option>
+                                    <option value="german">german</option>
+                                </select>
+                                <label class="hla-launch__option">
+                                    <input type="checkbox" id="mapCheckbox"> +map
+                                </label>
+                                <input type="text" id="mapSelect" placeholder="Level">
+                                <div class="start-dropdown">
+                                    <button id="startButton" class="btn btn-secondary" onclick="startHla()" title="">Starten</button>
+                                    <button id="startDropdown" class="btn btn-secondary" onclick="toggleStartMenu()">▼</button>
+                                    <div id="startMenu" class="dropdown-menu">
+                                        <label class="dropdown-item"><input type="checkbox" id="optGod"> Godmode</label>
+                                        <label class="dropdown-item"><input type="checkbox" id="optAmmo"> Unendliche Munition</label>
+                                        <label class="dropdown-item"><input type="checkbox" id="optConsole"> Entwicklerkonsole</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="toolbar-group toolbar-group--system" aria-labelledby="toolbarSystemTitle">
+                        <div class="group-main">
+                            <h3 id="toolbarSystemTitle" class="group-title">System</h3>
+                            <div class="group-buttons">
+                                <div class="menu-wrapper">
+                                    <button id="systemMenuToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="systemMenu" aria-haspopup="true" aria-expanded="false">Verwaltung</button>
+                                    <div class="workspace-dropdown workspace-dropdown--wide" id="systemMenu" role="menu">
+                                        <div class="dropdown-section">
+                                            <h4 class="dropdown-title">Migration</h4>
+                                            <button class="dropdown-item" onclick="startMigration()">Migration starten</button>
+                                            <button class="dropdown-item" onclick="loadMigration()">Migration laden</button>
+                                            <button class="dropdown-item" onclick="migrateData()">Daten migrieren</button>
+                                            <div id="migration-status" class="migration-status"></div>
+                                        </div>
+                                        <div class="dropdown-section">
+                                            <h4 class="dropdown-title">Speicher</h4>
+                                            <div class="storage-compact">
+                                                <div class="storage-status">
+                                                    <span id="storageModeIndicator"></span>
+                                                    <button id="switchStorageButton" class="btn btn-secondary btn-tight">Wechseln</button>
+                                                </div>
+                                                <div id="storageMonitor" class="storage-monitor">
+                                                    <div class="progress-bar"><div class="progress-fill" id="storageUsageFill"></div></div>
+                                                    <div class="storage-info">
+                                                        <span id="storageUsageLabel"></span>
+                                                        <span id="lastCleanupLabel"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="storage-actions">
+                                                    <button id="openStorageFolderButton" class="btn btn-secondary btn-tight" onclick="openStorageFolder()">📂 Speicherordner</button>
+                                                    <button id="cleanupButton" class="btn btn-secondary btn-tight">Aufräumen</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="toolbar-group toolbar-group--search" aria-labelledby="toolbarSearchTitle">
+                        <div class="group-main">
+                            <h3 id="toolbarSearchTitle" class="group-title">Suche &amp; Verlauf</h3>
+                            <button id="subtitleSearchAllButtonInline" class="btn btn-secondary" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
+                        </div>
+                        <div class="group-body">
+                            <div class="search-bar">
+                                <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
+                                <div class="search-results" id="searchResults"></div>
+                            </div>
+                            <div class="search-options copy-options">
+                                <label class="copy-option"><input type="checkbox" id="restTranslationCheckbox"> Reste-Modus</label>
+                                <label class="copy-option"><input type="checkbox" id="copyIncludeTime" checked> Zeit voranstellen</label>
+                                <label class="copy-option"><input type="checkbox" id="copyAddDashes"> --- anhängen</label>
+                                <label class="copy-option"><input type="checkbox" id="copyAddExtremeSpeed"> „extrem schnell reden“ ergänzen</label>
+                            </div>
+                            <div class="search-meta">
+                                <div class="sort-controls">
+                                    <span class="sort-label">Sortierung:</span>
+                                    <button class="sort-btn active" onclick="sortTable('position', event)">Position</button>
+                                    <button class="sort-btn" onclick="sortTable('filename', event)">Dateiname</button>
+                                    <button class="sort-btn" onclick="sortTable('folder', event)">Ordner</button>
+                                    <button class="sort-btn" onclick="sortTable('completion', event)">Fertig</button>
+                                </div>
+                                <div class="progress-info">
+                                    <div class="progress-stat" id="totalProgress">0% vollständig</div>
+                                    <div class="progress-stat" id="folderProgress">0 Ordner</div>
+                                    <div class="progress-stat" id="globalProjectProgress">0% gesamt</div>
+                                    <div class="progress-stat clickable" id="emoProgress" title="Leere und fehlerhafte Emo-Texte neu generieren">🟣 0 | 0 | 0</div>
+                                </div>
+                            </div>
+                            <div class="search-progress">
+                                <div class="progress-bar" id="globalProjectBar">
+                                    <div class="progress-fill" id="globalProjectFill"></div>
+                                </div>
+                                <div class="project-playback">
+                                    <button id="projectPlayPauseBtn" onclick="toggleProjectPlayback()">▶</button>
+                                    <button id="projectStopBtn" onclick="stopProjectPlayback()">⏹</button>
+                                    <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
+                                    <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </div>
+            </header>
 
-            <button id="openVideoManager" class="btn btn-secondary">Videos</button>
-
-            <!-- Spielstart-Leiste -->
-            <div class="start-bar">
-                <div class="hla-launch">
-                    <select id="modusSelect">
-                        <option value="normal">Spiel</option>
-                        <option value="workshop">Workshop</option>
-                    </select>
-                    <select id="spracheSelect">
-                        <option value="english">english</option>
-                        <option value="german">german</option>
-                    </select>
-                    <label>
-                        <input type="checkbox" id="mapCheckbox"> +map
-                    </label>
-                    <input type="text" id="mapSelect" placeholder="Level" style="width:140px">
-                    <div class="start-dropdown">
-                        <button id="startButton" class="btn btn-secondary" onclick="startHla()" title="">Starten</button>
-                        <button id="startDropdown" class="btn btn-secondary" onclick="toggleStartMenu()">▼</button>
-                        <div id="startMenu" class="dropdown-menu">
-                            <label class="dropdown-item"><input type="checkbox" id="optGod"> Godmode</label>
-                            <label class="dropdown-item"><input type="checkbox" id="optAmmo"> Unendliche Munition</label>
-                            <label class="dropdown-item"><input type="checkbox" id="optConsole"> Entwicklerkonsole</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			
 <!-- =========================== PROJECT META BAR START =========================== -->
 <div class="project-meta-bar" id="projectMetaBar" style="display:none;">
     <span class="meta-project" id="metaProjectName"></span>
@@ -133,51 +233,6 @@
 <!-- =========================== PROJECT META BAR END =========================== -->
 
 
-
-            <!-- Filter-Leiste -->
-            <div class="filter-bar">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
-                    <div class="search-results" id="searchResults"></div>
-                </div>
-                <div class="search-btns">
-                    <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
-                    <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE) generieren</button>
-                    <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
-                    <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
-                    <button class="btn btn-secondary" onclick="showZipImportDialog()">ZIP importieren</button>
-                    <button id="copyAssistantButton" class="btn btn-secondary">Kopierhilfe</button>
-                    <button id="copyAssistant2Button" class="btn btn-secondary">Kopierhilfe 2</button>
-                    <button id="copyAllEmosButton" class="btn btn-secondary">Emotionen kopieren</button>
-                    <button id="subtitleSearchAllButton" class="btn btn-secondary" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
-                    <label class="copy-option"><input type="checkbox" id="restTranslationCheckbox"> Reste-Modus</label>
-                    <label class="copy-option"><input type="checkbox" id="copyIncludeTime" checked> Zeit voranstellen</label>
-                    <label class="copy-option"><input type="checkbox" id="copyAddDashes"> --- anhängen</label>
-                    <label class="copy-option"><input type="checkbox" id="copyAddExtremeSpeed"> „extrem schnell reden“ ergänzen</label>
-                </div>
-                <div class="sort-controls">
-                    <span style="color: #999;">Sortierung:</span>
-                    <button class="sort-btn active" onclick="sortTable('position', event)">Position</button>
-                    <button class="sort-btn" onclick="sortTable('filename', event)">Dateiname</button>
-                    <button class="sort-btn" onclick="sortTable('folder', event)">Ordner</button>
-                    <button class="sort-btn" onclick="sortTable('completion', event)">Fertig</button>
-                </div>
-                <div class="progress-info">
-                    <div class="progress-stat" id="totalProgress">0% vollständig</div>
-                    <div class="progress-stat" id="folderProgress">0 Ordner</div>
-                    <div class="progress-stat" id="globalProjectProgress">0% gesamt</div>
-                    <div class="progress-stat clickable" id="emoProgress" title="Leere und fehlerhafte Emo-Texte neu generieren">🟣 0 | 0 | 0</div>
-                </div>
-                <div class="progress-bar" id="globalProjectBar">
-                    <div class="progress-fill" id="globalProjectFill"></div>
-                </div>
-                <div class="project-playback">
-                    <button id="projectPlayPauseBtn" onclick="toggleProjectPlayback()">▶</button>
-                    <button id="projectStopBtn" onclick="stopProjectPlayback()">⏹</button>
-                    <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
-                    <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
-                </div>
-            </div>
 
             <!-- Scan Progress -->
             <div class="scan-progress" id="scanProgress">
@@ -435,12 +490,12 @@
 <!-- =========================== DIALOG CLOSE BTN START =========================== -->
 <button class="dialog-close-btn" onclick="closeFolderBrowser()">×</button>
 <!-- =========================== DIALOG CLOSE BTN END =========================== -->
-	
+    
             <h3 id="folderBrowserTitle">📁 Ordner durchsuchen</h3>
             <p style="margin-bottom: 15px; color: #999;" id="folderBrowserDescription">
                 Durchsuchen Sie alle verfügbaren Ordner aus der Datenbank und fügen Sie Dateien zu Ihrem Projekt hinzu.
             </p>
-			
+            
 <!-- =========================== LEVEL STATS PANEL START =========================== -->
 <details class="level-stats" id="levelStatsPanel">
     <summary>📊 Übersetzungs-Statistiken pro Level</summary>

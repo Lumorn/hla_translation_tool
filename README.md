@@ -812,6 +812,18 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 
 ## 🎮 Bedienung
 
+### Arbeitsbereich-Header
+
+Der Kopfbereich der Weboberfläche ist jetzt als kompakte Werkzeugzeile mit klar getrennten Sektionen aufgebaut:
+
+* **Projekt:** Import, Untertitel und Ordner-Browser liegen direkt neben dem Eingabefeld, das nun in einer schmalen Inline-Zeile mit dem „Hinzufügen“-Knopf sitzt.
+* **Werkzeuge:** GPT-Bewertung, Zufallsprojekt, Wörterliste sowie die beiden Emotionstools bleiben dauerhaft sichtbar; selten genutzte Helfer (Kopierhilfen, ZIP-Import, Audio-Zuordnung, Debug-Bericht usw.) wandern in ein gemeinsames Overflow-Menü (⋯).
+* **Medien:** Video-Manager und Half-Life: Alyx-Launcher teilen sich einen schlanken Block, in dem Modus, Sprache, optionales `+map`-Feld und Cheat-Dropdown direkt neben dem Startknopf angeordnet sind.
+* **System:** Alle Speicher-Anzeigen inklusive Wechsel-Schalter, Ordner-Öffner und Aufräumen sitzen im neuen „Verwaltung“-Dropdown – gemeinsam mit den Migrationsbefehlen und dem Statusmonitor.
+* **Suche & Verlauf:** Live-Suche, UT-Suche-Button, Kopieroptionen, Sortierungen, Fortschrittsstatistiken und Projekt-Playback laufen in einem durchgehenden Abschlusssegment zusammen.
+
+Unter 1200 px ziehen sich die Gruppen enger zusammen, unter 900 px stapeln sich die Abschnitte automatisch untereinander. Dropdowns folgen dem vereinheitlichten Designschema und schließen nach jeder Aktion automatisch.
+
 ### Projekt‑Management
 
 |  Aktion                    |  Bedienung                                          |
@@ -827,7 +839,7 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 | **Schnell-Level**         | Rechtsklick auf Kapitel → Schnell-Level |
 | **Level anpassen**        | Rechtsklick auf Level-Titel → Bearbeiten/Löschen |
 | **Level‑Name kopieren**   | ⧉‑Button in Meta‑Leiste                           |
-| **Half-Life: Alyx starten** | Zentrale Start-Leiste mit Modus‑ und Sprachauswahl, optionalem +map‑Parameter und Cheat-Dropdown |
+| **Half-Life: Alyx starten** | Medienblock im Header mit Modus- und Sprachauswahl, optionalem +map-Parameter und Cheat-Dropdown |
 
 Beim Rechtsklick auf eine Projekt‑Kachel erscheint ein kleines Menü zum Bearbeiten (⚙️) oder Löschen (🗑️) des Projekts.
 Auch Kapitel und Level bieten dieses Rechtsklick-Menü.
