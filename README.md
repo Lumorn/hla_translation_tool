@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.376-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.377-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -380,6 +380,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Verbesserte Buttons:** Die kräftig gefärbten Schalter heben sich im aktiven Zustand blau hervor.
 * **Schneller Zugriff:** Die Schnellzugriffsleiste präsentiert sich als aufgeräumte Kartenansicht mit klaren Titeln und Kurzbeschreibungen. Trimmen ✂️, Auto-Trim ⚡, Tempo angleichen ⏱️, Lautstärke 🔊 und Funkgerät 📻 stehen so nebeneinander bereit und fokussieren beim Klick automatisch die passenden Detailkarten.
 * **Responsives Layout:** Der Editor nutzt ein zweispaltiges Raster, das sich auf großen Monitoren weit öffnet und bei geringer Breite automatisch in eine Spalte wechselt. Die Effektseite besitzt eine eigene Scrollfläche, wodurch alles sichtbar bleibt.
+* **Timeline & Master-Steuerung:** Eine neue Timeline oberhalb der Wellenformen zeigt Sekundenmarken, Trim-, Ignorier- und Stillenmarker farbig an. Darunter bündeln ein gemeinsamer Zoom-Regler samt +/-‑Buttons und ein Scroll-Slider beide Wellen, markieren den sichtbaren Ausschnitt und halten Zoom-Anzeige sowie Scrollprozente synchron.
 * **Standardwerte:** Im Hall- und Störgeräusch-Bereich setzt **⟳ Standardwerte** alle Parameter beziehungsweise die Intensität auf ihre Ausgangswerte zurück. Tooltip und Code-Kommentar erklären übereinstimmend: „Setzt nur diesen Effekt zurück.“
 * **Verbessertes Speichern:** Nach dem Anwenden von Lautstärke angleichen oder Funkgerät‑Effekt bleiben die Änderungen nun zuverlässig erhalten.
 * **Fünf Bearbeitungssymbole:** Der Status neben der Schere zeigt nun bis zu fünf Icons in zwei Reihen für Trimmen, Lautstärkeangleichung, Funkgerät-, Hall- und Störgeräusch-Effekt an.

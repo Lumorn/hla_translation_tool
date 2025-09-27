@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.377
+* `web/src/dubbing.js` erzeugt eine zentrale Timeline-Leiste samt Zoom- und Scroll-Steuerung und stellt Helfer zum Aktualisieren der Marker bereit.
+* `web/src/main.js` bindet die Timeline in den DE-Audio-Editor ein, synchronisiert Zoom/Scroll mit beiden Wellenformen und visualisiert Trim-, Ignorier-, Stille- sowie Cursor-Markierungen.
+* `web/src/style.css` gestaltet Timeline, Marker und Master-Steuerung mit kontrastreichen Hintergründen, Buttons und responsiven Range-Slidern.
+* README und CHANGELOG dokumentieren die neue Master-Timeline samt gemeinsamen Zoom- und Scroll-Reglern.
 ## 🛠️ Patch in 1.40.376
 * `web/src/dubbing.js` ordnet die rechte Effekt-Seitenleiste in Tabs für Kernfunktionen und erweiterte Optionen und versieht die Gruppen mit klaren Überschriften.
 * `web/src/style.css` liefert neue Tab-Layouts inklusive Hintergründen, Abständen und responsiver Anpassung für die Abschnittspaneele.

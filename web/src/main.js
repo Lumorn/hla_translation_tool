@@ -425,6 +425,9 @@ let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
 // Anzeigeeinstellungen für die Wellenformen
+const WAVE_ZOOM_MIN       = 0.8;
+const WAVE_ZOOM_MAX       = 2.5;
+const WAVE_ZOOM_STEP      = 0.1;
 let waveZoomLevel         = parseFloat(storage.getItem('hla_waveZoomLevel')) || 1.0; // Basiszoom für große Monitore
 let waveHeightPx          = parseInt(storage.getItem('hla_waveHeightPx'), 10) || 100; // Höhe der Wellenform
 let waveSyncScroll        = storage.getItem('hla_waveSyncScroll') === 'true'; // Gemeinsames Scrollen aktiv?
@@ -435,6 +438,8 @@ let maxWaveSeconds        = 0;     // Maximale Länge zur Skalierung
 
 if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
     waveZoomLevel = 1.0;
+} else {
+    waveZoomLevel = Math.max(WAVE_ZOOM_MIN, Math.min(WAVE_ZOOM_MAX, waveZoomLevel));
 }
 if (!Number.isFinite(waveHeightPx) || waveHeightPx < 60) {
     waveHeightPx = 100;
@@ -498,6 +503,7 @@ function updateWaveToolbarDisplays() {
     if (syncCheckbox) {
         syncCheckbox.checked = waveSyncScroll;
     }
+    syncTimelineWithControls();
 }
 
 // Aktualisiert die Dimensionen der Wellenform-Canvas entsprechend der aktuellen Einstellungen
@@ -520,6 +526,7 @@ function updateWaveCanvasDimensions() {
     });
     updateWaveRulers();
     bindWaveScrollSync();
+    updateMasterTimeline();
 }
 
 // Zentriert einen Zeitabschnitt innerhalb eines Scroll-Containers
@@ -551,16 +558,20 @@ function bindWaveScrollSync() {
     const deScroll = document.getElementById('waveEditedScroll');
     if (!origScroll || !deScroll) return;
     origScroll.onscroll = () => {
-        if (!waveSyncScroll || waveScrollSyncing) return;
-        waveScrollSyncing = true;
-        syncScrollPositions(origScroll, deScroll);
-        waveScrollSyncing = false;
+        if (waveSyncScroll && !waveScrollSyncing) {
+            waveScrollSyncing = true;
+            syncScrollPositions(origScroll, deScroll);
+            waveScrollSyncing = false;
+        }
+        updateMasterTimeline();
     };
     deScroll.onscroll = () => {
-        if (!waveSyncScroll || waveScrollSyncing) return;
-        waveScrollSyncing = true;
-        syncScrollPositions(deScroll, origScroll);
-        waveScrollSyncing = false;
+        if (waveSyncScroll && !waveScrollSyncing) {
+            waveScrollSyncing = true;
+            syncScrollPositions(deScroll, origScroll);
+            waveScrollSyncing = false;
+        }
+        updateMasterTimeline();
     };
 }
 
@@ -644,6 +655,186 @@ function updateWaveRulers() {
     }
 }
 
+let waveTimelineMounted = false;
+
+// Ermittelt aktuelle Maße der DE-Wellenform für die Timeline
+function gatherWaveViewportMetrics() {
+    const deScroll = document.getElementById('waveEditedScroll');
+    const deCanvas = document.getElementById('waveEdited');
+    if (!deScroll || !deCanvas) return null;
+    const scrollable = Math.max(0, deScroll.scrollWidth - deScroll.clientWidth);
+    const fraction = scrollable > 0 ? deScroll.scrollLeft / scrollable : 0;
+    return {
+        scrollLeft: deScroll.scrollLeft,
+        viewportWidth: deScroll.clientWidth,
+        canvasWidth: deCanvas.width,
+        scrollFraction: fraction
+    };
+}
+
+// Sammelt Marker für Trim, Auswahl, Ignorierbereiche und Cursor
+function collectTimelineMarkers() {
+    const markers = [];
+    if (!Number.isFinite(editDurationMs) || editDurationMs <= 0) {
+        return markers;
+    }
+    if (editStartTrim > 0) {
+        const start = 0;
+        const end = Math.min(editDurationMs, editStartTrim);
+        if (end > start) {
+            markers.push({ start, end, type: 'trim', label: 'Trim Anfang' });
+        }
+    }
+    if (editEndTrim > 0) {
+        const start = Math.max(0, editDurationMs - editEndTrim);
+        const end = editDurationMs;
+        if (end > start) {
+            markers.push({ start, end, type: 'trim', label: 'Trim Ende' });
+        }
+    }
+    if (deSelectionActive) {
+        const start = Math.max(0, Math.min(editStartTrim, editDurationMs));
+        const end = Math.max(start, Math.min(editDurationMs, editDurationMs - editEndTrim));
+        if (end > start) {
+            markers.push({ start, end, type: 'selection', label: 'Aktiver Bereich' });
+        }
+    }
+    if (Array.isArray(editIgnoreRanges)) {
+        editIgnoreRanges.forEach(range => {
+            if (!range) return;
+            const start = Math.max(0, Math.min(range.start, range.end));
+            const end = Math.max(start, Math.min(editDurationMs, Math.max(range.start, range.end)));
+            if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
+                markers.push({ start, end, type: 'ignore' });
+            }
+        });
+    }
+    if (Array.isArray(editSilenceRanges)) {
+        editSilenceRanges.forEach(range => {
+            if (!range) return;
+            const start = Math.max(0, Math.min(range.start, range.end));
+            const end = Math.max(start, Math.min(editDurationMs, Math.max(range.start, range.end)));
+            if (Number.isFinite(start) && Number.isFinite(end) && end > start) {
+                markers.push({ start, end, type: 'silence' });
+            }
+        });
+    }
+    if (Number.isFinite(editDeCursor)) {
+        const pos = Math.max(0, Math.min(editDurationMs, editDeCursor));
+        markers.push({ position: pos, type: 'cursor', label: 'Cursor' });
+    }
+    return markers;
+}
+
+// Synchronisiert Sliderwerte der Timeline mit den aktuellen Zuständen
+function syncTimelineWithControls() {
+    if (typeof syncWaveTimelineControls !== 'function') return;
+    const metrics = gatherWaveViewportMetrics();
+    const fraction = metrics ? metrics.scrollFraction : 0;
+    syncWaveTimelineControls({ zoom: waveZoomLevel, scrollFraction: fraction });
+}
+
+// Baut die Timeline bei Bedarf auf
+function ensureWaveTimelineMounted() {
+    if (waveTimelineMounted) return;
+    if (typeof mountWaveTimeline !== 'function') return;
+    const mounted = mountWaveTimeline({
+        onZoomChange: handleTimelineZoomChange,
+        onZoomStep: handleTimelineZoomStep,
+        onScrollStep: handleTimelineScrollStep,
+        onScrollFractionChange: handleTimelineScrollFraction
+    });
+    waveTimelineMounted = !!mounted;
+    if (waveTimelineMounted) {
+        syncTimelineWithControls();
+    }
+}
+
+// Zeichnet Timeline und Marker entsprechend der aktuellen Positionen
+function updateMasterTimeline() {
+    const needsRender = typeof renderWaveTimeline === 'function';
+    const hasControls = typeof syncWaveTimelineControls === 'function';
+    if (!needsRender && !hasControls) return;
+    ensureWaveTimelineMounted();
+    if (!waveTimelineMounted) {
+        syncTimelineWithControls();
+        return;
+    }
+    const metrics = gatherWaveViewportMetrics();
+    if (!metrics) {
+        syncTimelineWithControls();
+        return;
+    }
+    if (!needsRender || !Number.isFinite(editDurationMs) || editDurationMs <= 0) {
+        syncTimelineWithControls();
+        return;
+    }
+    renderWaveTimeline({
+        durationMs: editDurationMs,
+        canvasWidth: metrics.canvasWidth,
+        viewportWidthPx: metrics.viewportWidth,
+        scrollLeftPx: metrics.scrollLeft,
+        scrollFraction: metrics.scrollFraction,
+        zoom: waveZoomLevel,
+        markers: collectTimelineMarkers()
+    });
+}
+
+// Übernimmt einen neuen Zoomwert aus der Timeline
+function handleTimelineZoomChange(value) {
+    if (!Number.isFinite(value)) return;
+    const clamped = Math.max(WAVE_ZOOM_MIN, Math.min(WAVE_ZOOM_MAX, value));
+    if (Math.abs(clamped - waveZoomLevel) < 0.001) {
+        syncTimelineWithControls();
+        return;
+    }
+    waveZoomLevel = clamped;
+    storage.setItem('hla_waveZoomLevel', waveZoomLevel.toFixed(2));
+    updateWaveToolbarDisplays();
+    updateWaveCanvasDimensions();
+    scheduleWaveformUpdate();
+}
+
+// Schrittweises Zoom-Update aus den Timeline-Knöpfen
+function handleTimelineZoomStep(delta) {
+    handleTimelineZoomChange(waveZoomLevel + delta);
+}
+
+// Setzt die Scrollposition beider Wellenformen synchronisiert
+function setWaveScrollPosition(newScrollLeft) {
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (!deScroll) return;
+    const maxScroll = Math.max(0, deScroll.scrollWidth - deScroll.clientWidth);
+    const clamped = Math.max(0, Math.min(maxScroll, newScrollLeft));
+    waveScrollSyncing = true;
+    deScroll.scrollLeft = clamped;
+    if (waveSyncScroll) {
+        const origScroll = document.getElementById('waveOriginalScroll');
+        if (origScroll) {
+            syncScrollPositions(deScroll, origScroll);
+        }
+    }
+    waveScrollSyncing = false;
+    updateMasterTimeline();
+}
+
+// Scrollt anhand der Knöpfe um einen halben Viewport
+function handleTimelineScrollStep(direction) {
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (!deScroll || !Number.isFinite(direction)) return;
+    const step = deScroll.clientWidth * 0.5;
+    setWaveScrollPosition(deScroll.scrollLeft + direction * step);
+}
+
+// Springt anhand des Positions-Sliders auf einen relativen Anteil
+function handleTimelineScrollFraction(fraction) {
+    const deScroll = document.getElementById('waveEditedScroll');
+    if (!deScroll) return;
+    const clamped = Math.max(0, Math.min(1, Number.isFinite(fraction) ? fraction : 0));
+    const maxScroll = Math.max(0, deScroll.scrollWidth - deScroll.clientWidth);
+    setWaveScrollPosition(maxScroll * clamped);
+}
+
 // Initialisiert die Bedienelemente der Wave-Toolbar
 function initWaveToolbar() {
     updateWaveToolbarDisplays();
@@ -652,7 +843,7 @@ function initWaveToolbar() {
         zoomRange.oninput = e => {
             const val = parseFloat(e.target.value);
             if (!Number.isFinite(val)) return;
-            waveZoomLevel = Math.max(0.8, Math.min(2.5, val));
+            waveZoomLevel = Math.max(WAVE_ZOOM_MIN, Math.min(WAVE_ZOOM_MAX, val));
             storage.setItem('hla_waveZoomLevel', waveZoomLevel.toFixed(2));
             updateWaveToolbarDisplays();
             updateWaveCanvasDimensions();
@@ -964,7 +1155,8 @@ let showDubbingSettings, showEmoDubbingSettings,
     startDubbing, startEmoDubbing, redownloadDubbing, redownloadEmo,
     openDubbingPage, openLocalFile, startDubAutomation,
     showDownloadWaitDialog, copyFolderName, copyDownloadFolder,
-    openStudioAndWait, dubStatusClicked, downloadDe;
+    openStudioAndWait, dubStatusClicked, downloadDe,
+    mountWaveTimeline, renderWaveTimeline, syncWaveTimelineControls;
 let sharedProjectStatsCalculator;
 if (typeof module !== 'undefined' && module.exports) {
     ({ downloadDubbingAudio, renderLanguage, pollRender } = require('../../elevenlabs'));
@@ -973,7 +1165,8 @@ if (typeof module !== 'undefined' && module.exports) {
     ({ showDubbingSettings, createDubbingCSV, validateCsv, msToSeconds, isDubReady,
        startDubbing, redownloadDubbing, openDubbingPage, openLocalFile,
        startDubAutomation, showDownloadWaitDialog, copyFolderName,
-       copyDownloadFolder, openStudioAndWait, dubStatusClicked, downloadDe } = require('./dubbing.js'));
+       copyDownloadFolder, openStudioAndWait, dubStatusClicked, downloadDe,
+       mountWaveTimeline, renderWaveTimeline, syncWaveTimelineControls } = require('./dubbing.js'));
     moduleStatus.dubbing = { loaded: true, source: 'Main' };
 
     ({ repairFileExtensions } = require('../../extensionUtils'));
@@ -1955,6 +2148,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             openStudioAndWait  = dub.openStudioAndWait  || window.openStudioAndWait;
             dubStatusClicked   = dub.dubStatusClicked   || window.dubStatusClicked;
             downloadDe         = dub.downloadDe         || window.downloadDe;
+            mountWaveTimeline  = dub.mountWaveTimeline  || window.mountWaveTimeline;
+            renderWaveTimeline = dub.renderWaveTimeline || window.renderWaveTimeline;
+            syncWaveTimelineControls = dub.syncWaveTimelineControls || window.syncWaveTimelineControls;
             moduleStatus.dubbing = { loaded: true, source: 'Ausgelagert' };
         } catch (e) {
             console.error('Dubbing-Modul konnte nicht geladen werden', e);
@@ -13808,6 +14004,8 @@ async function openDeEdit(fileId) {
     if (emoTextEl) emoTextEl.textContent = file.emotionalText || '';
 
     updateDeEditWaveforms();
+    ensureWaveTimelineMounted();
+    updateMasterTimeline();
     document.getElementById('deEditDialog').classList.remove('hidden');
 
     // Regler für Funk-Effekt initialisieren
@@ -15089,6 +15287,7 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     if (eInput) eInput.value = deSelectionActive ? Math.round(editDurationMs - editEndTrim) : 0;
     updateWaveRulers();
     updateLengthInfo();
+    updateMasterTimeline();
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
 function refreshIgnoreList() {
