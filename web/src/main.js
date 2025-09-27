@@ -15701,8 +15701,9 @@ async function resetDeEdit() {
 
 // =========================== APPLYDEEDIT START =============================
 // Speichert die bearbeitete DE-Datei und legt ein Backup an
-async function applyDeEdit() {
+async function applyDeEdit(param = {}) {
     if (!currentEditFile || !originalEditBuffer) return;
+    const closeAfterSave = typeof param === 'boolean' ? param : !!param.closeAfterSave;
     // Restlänge berechnen und ungültigen Schnitt verhindern
     const restlaenge = editDurationMs - editStartTrim - editEndTrim;
     if (restlaenge <= 0) {
@@ -15712,143 +15713,145 @@ async function applyDeEdit() {
     const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
     // Pfad bereinigen, falls "sounds/DE/" bereits enthalten ist
     const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
-    const ext = relPath.slice(-4).toLowerCase();
+    let finalBuffer = null;
     try {
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
-        // Sicherstellen, dass ein Backup existiert
-        await window.electronAPI.backupDeFile(relPath);
-        // Bereits geladene Originaldatei weiterverwenden
-        originalEditBuffer = savedOriginalBuffer;
-        volumeMatchedBuffer = null;
-        let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
-        if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer);
-        }
-        if (isHallEffect) {
-            baseBuffer = await applyReverbEffect(baseBuffer);
-        } else if (neighborHall) {
-            baseBuffer = await applyReverbEffect(baseBuffer, { room: 0.2, wet: 0.3, delay: 40 });
-        }
-        // Nebenraum-Effekt anwenden, falls aktiv
-        if (isNeighborEffect) {
-            baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
-        }
-        if (isTableMicEffect) {
-            baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
-        }
-        if (isEmiEffect) {
-            baseBuffer = await applyInterferenceEffect(baseBuffer);
-        }
-        let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = removeRangesFromBuffer(newBuffer, adj);
-        const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = insertSilenceIntoBuffer(newBuffer, pads);
-        // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
-        editIgnoreRanges = [];
-        currentEditFile.ignoreRanges = [];
-        refreshIgnoreList();
-        updateDeEditWaveforms();
-        // Nur den Unterschied zum geladenen Faktor anwenden
-        const relFactor = tempoFactor / loadedTempoFactor;
-        newBuffer = await timeStretchBuffer(newBuffer, relFactor);
-        drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = bufferToWav(newBuffer);
-        const buf = await blob.arrayBuffer();
-        const url = URL.createObjectURL(blob);
-        const choice = await handleDuplicateBeforeSave(relPath, buf, url);
-        if (choice === 'old') {
-            URL.revokeObjectURL(url);
-            return;
-        }
-        const dups = await window.electronAPI.getDeDuplicates(relPath);
-        for (const d of dups) {
-            if (d.relPath !== relPath) {
-                await window.electronAPI.deleteDeFile(d.relPath);
-                delete deAudioCache[d.relPath];
+            // Sicherstellen, dass ein Backup existiert
+            await window.electronAPI.backupDeFile(relPath);
+            // Bereits geladene Originaldatei weiterverwenden
+            originalEditBuffer = savedOriginalBuffer;
+            volumeMatchedBuffer = null;
+            let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+            if (isRadioEffect) {
+                baseBuffer = await applyRadioFilter(baseBuffer);
             }
-        }
-        // Pfadbereinigung, da manche Pfade bereits "sounds/DE/" enthalten
-        try {
-            await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
-        } catch (err) {
-            // Speichern fehlgeschlagen -> Toast anzeigen
-            if (typeof showToast === 'function') {
-                showToast('Fehler beim Speichern der DE-Datei', 'error');
+            if (isHallEffect) {
+                baseBuffer = await applyReverbEffect(baseBuffer);
+            } else if (neighborHall) {
+                baseBuffer = await applyReverbEffect(baseBuffer, { room: 0.2, wet: 0.3, delay: 40 });
             }
-            throw err;
-        }
-        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
-        await updateHistoryCache(cleanPath);
-        URL.revokeObjectURL(url);
-    } else {
-        // Backup in Browser-Version
-        if (deOrdnerHandle) {
+            // Nebenraum-Effekt anwenden, falls aktiv
+            if (isNeighborEffect) {
+                baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
+            }
+            if (isTableMicEffect) {
+                baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
+            }
+            if (isEmiEffect) {
+                baseBuffer = await applyInterferenceEffect(baseBuffer);
+            }
+            let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
+            const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+            newBuffer = removeRangesFromBuffer(newBuffer, adj);
+            const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+            newBuffer = insertSilenceIntoBuffer(newBuffer, pads);
+            // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
+            editIgnoreRanges = [];
+            currentEditFile.ignoreRanges = [];
+            refreshIgnoreList();
+            updateDeEditWaveforms();
+            // Nur den Unterschied zum geladenen Faktor anwenden
+            const relFactor = tempoFactor / loadedTempoFactor;
+            newBuffer = await timeStretchBuffer(newBuffer, relFactor);
+            drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
+            const blob = bufferToWav(newBuffer);
+            const buf = await blob.arrayBuffer();
+            const url = URL.createObjectURL(blob);
+            const choice = await handleDuplicateBeforeSave(relPath, buf, url);
+            if (choice === 'old') {
+                URL.revokeObjectURL(url);
+                return;
+            }
+            const dups = await window.electronAPI.getDeDuplicates(relPath);
+            for (const d of dups) {
+                if (d.relPath !== relPath) {
+                    await window.electronAPI.deleteDeFile(d.relPath);
+                    delete deAudioCache[d.relPath];
+                }
+            }
+            // Pfadbereinigung, da manche Pfade bereits "sounds/DE/" enthalten
             try {
-                const teile = relPath.split('/');
-                const name = teile.pop();
-                let ordner = deOrdnerHandle;
-                for (const t of teile) {
-                    ordner = await ordner.getDirectoryHandle(t, { create: true });
+                await window.electronAPI.saveDeFile(cleanPath, new Uint8Array(buf));
+            } catch (err) {
+                // Speichern fehlgeschlagen -> Toast anzeigen
+                if (typeof showToast === 'function') {
+                    showToast('Fehler beim Speichern der DE-Datei', 'error');
                 }
-                const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
-                const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
-                let ziel = backupDir;
-                for (const t of teile) {
-                    ziel = await ziel.getDirectoryHandle(t, { create: true });
-                }
-                const orgFile = await ordner.getFileHandle(name);
-                let existiert = true;
-                try { await ziel.getFileHandle(name); } catch { existiert = false; }
-                if (!existiert) {
-                    const backupFile = await ziel.getFileHandle(name, { create: true });
-                    const orgData = await orgFile.getFile();
-                    const w = await backupFile.createWritable();
-                    await w.write(orgData);
-                    await w.close();
-                }
-            } catch {}
+                throw err;
+            }
+            // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+            deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+            await updateHistoryCache(cleanPath);
+            URL.revokeObjectURL(url);
+            finalBuffer = newBuffer;
+        } else {
+            // Backup in Browser-Version
+            if (deOrdnerHandle) {
+                try {
+                    const teile = relPath.split('/');
+                    const name = teile.pop();
+                    let ordner = deOrdnerHandle;
+                    for (const t of teile) {
+                        ordner = await ordner.getDirectoryHandle(t, { create: true });
+                    }
+                    const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
+                    const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
+                    let ziel = backupDir;
+                    for (const t of teile) {
+                        ziel = await ziel.getDirectoryHandle(t, { create: true });
+                    }
+                    const orgFile = await ordner.getFileHandle(name);
+                    let existiert = true;
+                    try { await ziel.getFileHandle(name); } catch { existiert = false; }
+                    if (!existiert) {
+                        const backupFile = await ziel.getFileHandle(name, { create: true });
+                        const orgData = await orgFile.getFile();
+                        const w = await backupFile.createWritable();
+                        await w.write(orgData);
+                        await w.close();
+                    }
+                } catch {}
+            }
+            originalEditBuffer = savedOriginalBuffer;
+            let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
+            if (isRadioEffect) {
+                baseBuffer = await applyRadioFilter(baseBuffer);
+            }
+            if (isHallEffect) {
+                baseBuffer = await applyReverbEffect(baseBuffer);
+            }
+            // Nebenraum-Effekt anwenden, falls aktiv
+            if (isNeighborEffect) {
+                baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
+            }
+            if (isTableMicEffect) {
+                baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
+            }
+            if (isEmiEffect) {
+                baseBuffer = await applyInterferenceEffect(baseBuffer);
+            }
+            let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
+            const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+            newBuffer = removeRangesFromBuffer(newBuffer, adj);
+            const pads2 = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+            newBuffer = insertSilenceIntoBuffer(newBuffer, pads2);
+            // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
+            editIgnoreRanges = [];
+            currentEditFile.ignoreRanges = [];
+            refreshIgnoreList();
+            updateDeEditWaveforms();
+            // Nur den Unterschied zum geladenen Faktor anwenden
+            const relFactor = tempoFactor / loadedTempoFactor;
+            newBuffer = await timeStretchBuffer(newBuffer, relFactor);
+            drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
+            const blob = bufferToWav(newBuffer);
+            await speichereUebersetzungsDatei(blob, relPath);
+            // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
+            deAudioCache[cleanPath] = blob;
+            await updateHistoryCache(cleanPath);
+            finalBuffer = newBuffer;
         }
-        originalEditBuffer = savedOriginalBuffer;
-        let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
-        if (isRadioEffect) {
-            baseBuffer = await applyRadioFilter(baseBuffer);
-        }
-        if (isHallEffect) {
-            baseBuffer = await applyReverbEffect(baseBuffer);
-        }
-        // Nebenraum-Effekt anwenden, falls aktiv
-        if (isNeighborEffect) {
-            baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
-        }
-        if (isTableMicEffect) {
-            baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
-        }
-        if (isEmiEffect) {
-            baseBuffer = await applyInterferenceEffect(baseBuffer);
-        }
-        let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
-        const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = removeRangesFromBuffer(newBuffer, adj);
-        const pads2 = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-        newBuffer = insertSilenceIntoBuffer(newBuffer, pads2);
-        // Automatisch entfernte Pausen nicht speichern und Anzeige aktualisieren
-        editIgnoreRanges = [];
-        currentEditFile.ignoreRanges = [];
-        refreshIgnoreList();
-        updateDeEditWaveforms();
-        // Nur den Unterschied zum geladenen Faktor anwenden
-        const relFactor = tempoFactor / loadedTempoFactor;
-        newBuffer = await timeStretchBuffer(newBuffer, relFactor);
-        drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-        const blob = bufferToWav(newBuffer);
-        await speichereUebersetzungsDatei(blob, relPath);
-        // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-        deAudioCache[cleanPath] = blob;
-        await updateHistoryCache(cleanPath);
-    }
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.ignoreRanges = editIgnoreRanges;
@@ -15886,10 +15889,26 @@ async function applyDeEdit() {
         if (typeof showToast === 'function') {
             showToast('DE-Audio gespeichert', 'success');
         }
-        closeDeEdit();
+        if (!finalBuffer) {
+            throw new Error('Interner Fehler: finalBuffer wurde nicht gesetzt.');
+        }
+        // Nach erfolgreichem Speichern Puffer und Anzeige auf den neuen Zustand setzen
+        savedOriginalBuffer = finalBuffer;
+        originalEditBuffer = finalBuffer;
+        editDurationMs = finalBuffer.length / finalBuffer.sampleRate * 1000;
+        loadedTempoFactor = tempoFactor;
+        deSelectionActive = false;
+        volumeMatchedBuffer = null;
+        refreshSilenceList();
+        updateDeEditWaveforms(0, 0);
+        updateEffectButtons();
         updateStatus('DE-Audio bearbeitet und gespeichert');
         // Sofort speichern, damit die Bearbeitung gesichert ist
         saveCurrentProject();
+        // Dialog nur schließen, wenn dies ausdrücklich gewünscht ist
+        if (closeAfterSave) {
+            closeDeEdit();
+        }
     } catch (err) {
         // 🟦 Fehlermeldung ausgeben und näher erläutern
         console.error('Fehler beim Speichern', err, err.message);
