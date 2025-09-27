@@ -90,8 +90,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Überarbeitetes Timing-Layout:** Der Abschnitt „Timing & Bereiche“ nutzt ein zweispaltiges Kartenraster, das bei schmaler Breite automatisch auf eine Spalte umbricht.
 * **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen nutzen jetzt ein konsistentes Zweispalten-Raster, das auf kleinen Displays automatisch auf eine Spalte reduziert wird und dem Einfügebereich Luft nach oben lässt.
 * **Waveform-Werkzeugleiste für große Monitore:** Zoom- und Höhenregler, synchronisiertes Scrollen sowie Zeitmarken-Lineale sorgen dafür, dass lange Takes auch auf Ultrawide-Displays komfortabel editierbar bleiben.
-* **Kompaktere Waveform-Werkzeugleiste:** Reduzierte Abstände in Toolbar und Raster lassen den oberen Bereich schlanker wirken, ohne die Bedienflächen zu verkleinern.
-* **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und weniger Scroll-Padding rücken Original- und DE-Wellenform näher zusammen, behalten dabei aber gut greifbare Steuerelemente.
+* **Feinjustierte Waveform-Werkzeugleiste:** Ein enges Grid mit kleineren Buttons und geringem Padding hält Zoom-, Höhen- und Sync-Regler auch bei kleiner Breite dicht beieinander.
+* **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und reduziertes Scroll-Padding rücken Original- und DE-Wellenform noch näher zusammen und verkürzen die Wege zu den Buttons.
+* **Straffer EN-Übernahmebereich:** Die Übernahmeleiste übernimmt kleinere Margins und Gaps, damit sich der Einfügebereich bündig in das Wellenraster einfügt.
 * **Tabbasiertes Effekt-Panel:** Die rechte Seitenleiste bündelt Lautstärke- und Funkgerät-Steuerung als „Kernfunktionen“ und verschiebt Hall-, EM-Störungs- sowie Nebenraum-Regler unter „Erweiterte Optionen“ mit klaren Abschnittstiteln.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.
