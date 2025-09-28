@@ -4461,7 +4461,8 @@ function addFiles() {
             if (isAutoScrolling) return; // Ignoriere Scroll-Events während automatischem Scrollen
             const container = document.querySelector('.table-container');
             if (!container) return;
-            const viewportCenter = window.innerHeight / 2;
+            const containerRect = container.getBoundingClientRect();
+            const viewportCenter = containerRect.top + containerRect.height / 2;
             const rows = container.querySelectorAll('#fileTableBody tr');
             for (const row of rows) {
                 const rect = row.getBoundingClientRect();

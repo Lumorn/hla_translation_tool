@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.418
+* `web/src/main.js` orientiert die Scroll-Erkennung an der Mitte des Tabellencontainers, damit die Auswahl auch bei kleineren Fenstern nicht verrutscht.
+* `README.md` dokumentiert die containerbasierte Mitte für die Scroll-Erkennung in der Dateitabelle.
+
 ## 🛠️ Patch in 1.40.417
 * `electron/main.js` blockiert Mehrfachstarts über eine Einzelinstanz-Sperre, zeigt bei erneuten Startversuchen einen Fehlerdialog und fokussiert das laufende Fenster.
 * `README.md` dokumentiert, dass die Desktop-App absichtlich nur einmal gleichzeitig ausgeführt werden kann.
