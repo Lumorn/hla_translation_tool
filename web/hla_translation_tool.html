@@ -628,9 +628,44 @@
             <button class="dialog-close-btn" onclick="closeGptPromptDialog()">×</button>
             <h3>GPT-Test</h3>
             <div id="gptTestTabs" class="gpt-tabs"></div>
-            <div class="prompt-result-container">
-                <textarea id="gptPromptArea" readonly></textarea>
-                <textarea id="gptResultArea" readonly></textarea>
+            <div class="prompt-result-container gpt-flex-layout">
+                <section class="gpt-column gpt-column--prompt">
+                    <header class="gpt-column-header">Prompt-Vorschau</header>
+                    <textarea id="gptPromptArea" readonly></textarea>
+                </section>
+                <section class="gpt-column gpt-column--progress">
+                    <header class="gpt-column-header">Fortschritt</header>
+                    <div class="gpt-step-list">
+                        <div class="gpt-step gpt-step--idle" data-step="prepare">
+                            <div class="gpt-step-title">Vorbereitung</div>
+                            <div class="gpt-step-state" id="gptStepPrepare">Wartet…</div>
+                        </div>
+                        <div class="gpt-step gpt-step--idle" data-step="send">
+                            <div class="gpt-step-title">Übertragung</div>
+                            <div class="gpt-step-state" id="gptStepSend">Wartet…</div>
+                        </div>
+                        <div class="gpt-step gpt-step--idle" data-step="process">
+                            <div class="gpt-step-title">Auswertung</div>
+                            <div class="gpt-step-state" id="gptStepProcess">Wartet…</div>
+                        </div>
+                        <div class="gpt-step gpt-step--idle" data-step="apply">
+                            <div class="gpt-step-title">Übernahme</div>
+                            <div class="gpt-step-state" id="gptStepApply">Wartet…</div>
+                        </div>
+                    </div>
+                    <div class="gpt-progress-meter">
+                        <div class="progress-bar"><div class="progress-fill" id="gptProgressFill"></div></div>
+                        <div class="gpt-progress-info" id="gptProgressLabel">0 / 0 Zeilen</div>
+                    </div>
+                    <pre id="gptProgressLog" class="gpt-progress-log"></pre>
+                </section>
+                <section class="gpt-column gpt-column--result">
+                    <header class="gpt-column-header">Antwort</header>
+                    <textarea id="gptResultArea" readonly></textarea>
+                </section>
+            </div>
+            <div class="gpt-summary-panel">
+                <header class="gpt-column-header">Zusammenfassung</header>
                 <div class="summary-table-wrapper">
                     <table id="gptSummaryTable">
                         <thead>

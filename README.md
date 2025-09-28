@@ -227,6 +227,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **GPT-Knopf direkt neben der Suche:** Ein Klick öffnet die gespeicherten GPT-Tabs des aktuellen Projekts.
 * **Einfüge-Knopf für gespeicherte Tests:** Beim Wechsel des Tabs wird der Button aktiviert und übernimmt Score und Vorschlag korrekt.
 * **Feste Buttons im GPT-Test:** Das Fenster hat nun eine begrenzte Höhe, Prompt- und Ergebnis-Spalten scrollen separat.
+* **Visualisierter GPT-Fortschritt:** Der GPT-Testdialog zeigt jetzt klar getrennte Bereiche für Prompt, Fortschritt und Antwort. Eine neue Schrittanzeige, ein Live-Log und ein Fortschrittsbalken machen sichtbar, wie weit die Bewertung ist und welche Phase gerade läuft.
 * **Kompakter GPT-Versand:** Doppelte Zeilen werden zusammengefasst. Der Startdialog zeigt an, wie viele Zeilen wirklich übertragen werden.
 * **Schlanker Video-Bereich:** Gespeicherte Links öffnen sich im Browser. Interner Player und OCR wurden entfernt.
 * **Bereinigte Electron-Brücke:** Die frühere `ocrApi` entfällt vollständig; der Preload stellt nur noch die tatsächlich genutzten Schnittstellen bereit.

@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.408
+* `web/hla_translation_tool.html` ordnet den GPT-Testdialog neu in drei Segmente und ergänzt eine Fortschrittsspalte mit Schrittanzeige, Log und Balken.
+* `web/src/style.css` liefert passende Layout- und Farbregeln für die neue GPT-Schrittanzeige, das Live-Log und den Zusammenfassungsbereich.
+* `web/src/main.js` verwaltet die Fortschrittszustände, protokolliert Meldungen mit Zeitstempel und reagiert auf Status-Updates aus dem GPT-Service.
+* `web/src/gptService.js` sendet detaillierte Fortschrittsereignisse an die Oberfläche und nutzt den klassischen Overlay-Dialog nur noch ohne Callback.
+* `README.md` beschreibt den überarbeiteten GPT-Testdialog samt Fortschrittsanzeige.
 ## 🛠️ Patch in 1.40.407
 * `web/src/gptService.js` weist GPT-Antworten gezielt per ID zu, fordert fehlende Zeilen automatisch nach und protokolliert jede Nachforderung im Dialog, bis alle Bewertungen vorliegen oder ein Fehler ausgegeben wird.
 * `tests/gptService.test.js` simuliert Teilantworten und prüft, dass fehlende Zeilen nachgefordert werden und die Anfrage sich auf die offenen IDs konzentriert.

@@ -1546,6 +1546,7 @@ function showGptPromptDialog() {
     area.value = promptText;
     const resultArea = document.getElementById('gptResultArea');
     if (resultArea) resultArea.value = '';
+    resetGptProgressUI(gptPromptData.lines ? gptPromptData.lines.length : 0);
     const summaryBody = document.querySelector('#gptSummaryTable tbody');
     if (summaryBody) summaryBody.innerHTML = '';
     // Einfüge-Knopf deaktivieren und alte Ergebnisse löschen
@@ -1560,25 +1561,100 @@ function closeGptPromptDialog() {
     document.getElementById('gptPromptDialog').classList.add('hidden');
 }
 
+// Setzt alle Fortschrittsanzeigen auf den Ausgangszustand
+function resetGptProgressUI(total = 0) {
+    const steps = ['prepare', 'send', 'process', 'apply'];
+    steps.forEach(step => setGptStepState(step, 'idle', 'Wartet…'));
+    setGptStepState('prepare', total > 0 ? 'done' : 'idle', total > 0 ? 'Prompt erstellt' : 'Wartet…');
+    updateGptProgressMeter(0, total);
+    const logBox = document.getElementById('gptProgressLog');
+    if (logBox) logBox.textContent = '';
+}
+
+// Aktualisiert Text und Füllstand des Fortschrittsbalkens
+function updateGptProgressMeter(done, total) {
+    const label = document.getElementById('gptProgressLabel');
+    const fill = document.getElementById('gptProgressFill');
+    if (label) {
+        const safeTotal = Math.max(total || 0, 0);
+        label.textContent = `${Math.min(done, safeTotal)} / ${safeTotal} Zeilen`;
+    }
+    if (fill) {
+        const pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
+        fill.style.width = `${pct}%`;
+    }
+}
+
+// Wechselt den Status eines Fortschrittschritts
+function setGptStepState(step, state, message) {
+    const container = document.querySelector(`.gpt-step[data-step='${step}']`);
+    if (!container) return;
+    container.classList.remove('gpt-step--idle', 'gpt-step--active', 'gpt-step--done', 'gpt-step--error');
+    const stateClass = state ? `gpt-step--${state}` : 'gpt-step--idle';
+    container.classList.add(stateClass);
+    const label = container.querySelector('.gpt-step-state');
+    if (label && typeof message === 'string') label.textContent = message;
+}
+
+// Hängt eine neue Meldung im Logfeld an
+function appendGptProgressLog(text) {
+    const logBox = document.getElementById('gptProgressLog');
+    if (!logBox || typeof text !== 'string') return;
+    const timestamp = new Date().toLocaleTimeString('de-DE', { hour12: false });
+    logBox.textContent += `[${timestamp}] ${text}\n`;
+    logBox.scrollTop = logBox.scrollHeight;
+}
+
 // Sendet den Prompt an die API und zeigt die Antwort an
 async function sendGptPrompt() {
     const btn = document.getElementById('gptPromptSend');
     const resultArea = document.getElementById('gptResultArea');
     if (!gptPromptData || !btn || !resultArea) return;
     btn.disabled = true;
+    setGptStepState('send', 'active', 'Verbindung wird aufgebaut…');
+    setGptStepState('process', 'idle', 'Wartet…');
+    setGptStepState('apply', 'idle', 'Wartet…');
     resultArea.value = 'Sende...';
     try {
+        appendGptProgressLog('Übertrage Daten an GPT.');
+        const progressHandler = (evt) => {
+            if (!evt) return;
+            if (evt.type === 'start') {
+                setGptStepState('prepare', 'done', 'Doppelte Zeilen bereinigt');
+                updateGptProgressMeter(0, evt.total || 0);
+            } else if (evt.type === 'progress') {
+                updateGptProgressMeter(evt.done || 0, evt.total || 0);
+            } else if (evt.type === 'log') {
+                appendGptProgressLog(evt.message || '');
+            } else if (evt.type === 'stage') {
+                if (evt.stage === 'request') {
+                    const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
+                    setGptStepState('send', status, evt.message || (status === 'done' ? 'Übertragung abgeschlossen' : status === 'error' ? 'Übertragung fehlgeschlagen' : 'Übertragung läuft…'));
+                }
+                if (evt.stage === 'process') {
+                    const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
+                    setGptStepState('process', status, evt.message || (status === 'done' ? 'Antwort ausgewertet' : status === 'error' ? 'Antwort konnte nicht verarbeitet werden' : 'Antwort wird ausgewertet…'));
+                }
+                if (evt.stage === 'merge') {
+                    const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
+                    setGptStepState('apply', status, evt.message || (status === 'done' ? 'Ergebnisse bereit' : status === 'error' ? 'Ergebnisse konnten nicht gespeichert werden' : 'Ergebnisse werden vorbereitet…'));
+                }
+            }
+        };
         const results = await evaluateScene({
             scene: gptPromptData.scene,
             lines: gptPromptData.lines,
             key: openaiApiKey,
             model: openaiModel,
             // projectId sorgt dafür, dass Einfügungen nur im passenden Projekt landen
-            projectId: currentProject?.id
+            projectId: currentProject?.id,
+            onProgress: progressHandler
         });
+        setGptStepState('process', 'done', 'Antwort ausgewertet');
         resultArea.value = JSON.stringify(results, null, 2);
         gptEvaluationResults = results;
         updateGptSummary(results);
+        setGptStepState('apply', 'active', 'Ergebnisse werden gespeichert…');
         const insertBtn = document.getElementById('gptPromptInsert');
         if (insertBtn) insertBtn.disabled = false;
         if (currentProject) {
@@ -1595,8 +1671,14 @@ async function sendGptPrompt() {
             saveCurrentProject();
             renderGptTestTabs();
         }
+        setGptStepState('apply', 'done', 'Ergebnisse gespeichert');
+        appendGptProgressLog('Bewertung erfolgreich abgeschlossen.');
     } catch (e) {
         resultArea.value = String(e);
+        setGptStepState('send', 'error', 'Fehler beim Senden');
+        setGptStepState('process', 'error', 'Fehler bei der Verarbeitung');
+        setGptStepState('apply', 'error', 'Ergebnisse nicht verfügbar');
+        appendGptProgressLog(`Fehler: ${e?.message || e}`);
     }
     btn.disabled = false;
 }
