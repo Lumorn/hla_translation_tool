@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.417
+* `electron/main.js` blockiert Mehrfachstarts über eine Einzelinstanz-Sperre, zeigt bei erneuten Startversuchen einen Fehlerdialog und fokussiert das laufende Fenster.
+* `README.md` dokumentiert, dass die Desktop-App absichtlich nur einmal gleichzeitig ausgeführt werden kann.
 ## 🛠️ Patch in 1.40.416
 * `web/src/main.js` ergänzt den Helfer `replaceProjectList`, der Modul- und Fenster-Referenz auf dieselbe kopierte Projektliste setzt.
 * `web/src/projectHelpers.js` nutzt den neuen Helfer nach Reparaturläufen und verhindert dadurch auseinanderlaufende Projekt-Arrays.

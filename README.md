@@ -536,6 +536,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
    cd electron
    npm start
    ```
+**Hinweis:** Die Desktop-App lässt sich bewusst nur einmal gleichzeitig starten. Ein weiterer Startversuch blendet einen Fehlerdialog ein und bringt das bereits laufende Fenster in den Vordergrund.
 6. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
 7. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
 8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab

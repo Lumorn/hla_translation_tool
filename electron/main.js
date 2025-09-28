@@ -25,6 +25,19 @@ const { isDubReady } = require('../elevenlabs.js');
 const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../soundBackupUtils');
 const { saveSettings, loadSettings } = require('../settingsStore.ts');
 const { TranslationWorkerManager } = require('./translationWorker');
+
+// Einzelinstanz-Sperre setzen, damit die Anwendung nur einmal gestartet werden kann
+const hasSingleInstanceLock = app.requestSingleInstanceLock();
+
+if (!hasSingleInstanceLock) {
+  // Fehlermeldung anzeigen und zweiten Startversuch sofort beenden
+  dialog.showErrorBox(
+    'Bereits gestartet',
+    'Das Half-Life: Alyx Übersetzungstool läuft bereits und kann nicht zweimal geöffnet werden.'
+  );
+  app.quit();
+  process.exit(0);
+}
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
@@ -40,6 +53,20 @@ const { writeDebugReport } = require('../utils/debugReport');
 // Workshop-Start erfolgt über ein Python-Skript mit hlvrcfg.exe
 const pendingDubs = [];
 let mainWindow;
+
+// Bei erneutem Startversuch Hinweis anzeigen und Hauptfenster in den Vordergrund holen
+app.on('second-instance', () => {
+  if (mainWindow) {
+    // Fenster wiederherstellen, falls minimiert
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+  }
+  dialog.showErrorBox(
+    'Bereits gestartet',
+    'Das Half-Life: Alyx Übersetzungstool läuft bereits und kann nicht zweimal geöffnet werden.'
+  );
+});
+
 if (!fs.existsSync(DL_WATCH_PATH)) fs.mkdirSync(DL_WATCH_PATH);
 
 // =========================== USER-DATA-PFAD START ===========================
