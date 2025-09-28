@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.410
+* `web/src/main.js` nimmt vorberechnete Zeilenlisten samt Positions-Lookup entgegen, damit die Sammelgenerierung von Emotionstexten keine wiederholten `map`- und `indexOf`-Durchläufe mehr ausführt.
+* `README.md` beschreibt die optimierten Emotionstext-Läufe mit gemeinsamer Vorberechnung.
+* `CHANGELOG.md` dokumentiert die effizientere Vorbereitung der Emotionstext-Sammelgenerierung.
 ## 🛠️ Patch in 1.40.409
 * `web/hla_translation_tool.html` zeigt alle Werkzeug-Aktionen als direkte Buttons in der Hauptleiste und entfernt das separate Overflow-Menü.
 * `README.md` erläutert, dass sämtliche Werkzeuge ohne 3-Punkte-Menü erreichbar sind und lediglich die Einstellungen im Dropdown bleiben.
