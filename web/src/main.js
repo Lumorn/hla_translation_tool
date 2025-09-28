@@ -4499,6 +4499,7 @@ function addFiles() {
             area.value = '...';
             const file = files.find(f => f.id === rowId);
             if (!file) { btn.disabled = false; btn.classList.remove('loading'); return; }
+            const skipImmediateSave = precomputedLines != null || positionLookup != null;
             try {
                 // Meta-Informationen für den Prompt
                 const meta = {
@@ -4527,7 +4528,7 @@ function addFiles() {
                 area.value = res.text || '';
                 file.emoReason = res.reason || '';
                 file.emoError = false;
-                updateText(file.id, 'emo', area.value, true);
+                updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
                 updateEmoReasonDisplay(file.id);
                 updateStatus(`Emotionen generiert: ${file.filename}`);
             } catch (e) {
@@ -4535,7 +4536,7 @@ function addFiles() {
                 area.value = 'Fehler bei der Generierung';
                 file.emoReason = '';
                 file.emoError = true;
-                updateText(file.id, 'emo', area.value, true);
+                updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
             }
             btn.disabled = false;
             btn.classList.remove('loading');
@@ -4699,6 +4700,10 @@ function addFiles() {
             const workers = [];
             for (let i = 0; i < Math.min(max, queue.length); i++) workers.push(worker());
             await Promise.all(workers);
+            if (typeof saveCurrentProject === 'function') {
+                // Sammeländerungen nach allen Emotionstexten einmalig sichern
+                saveCurrentProject();
+            }
             btn.textContent = 'Emotionen generieren';
             btn.disabled = false;
             updateStatus(`Fertig (${done}/${ids.length})`);
@@ -6709,7 +6714,7 @@ function updateDubStatusIcon(file) {
 }
 
         // Text editing
-function updateText(fileId, lang, value, skipUndo) {
+function updateText(fileId, lang, value, skipUndo, options = {}) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -6740,8 +6745,9 @@ function updateText(fileId, lang, value, skipUndo) {
     }
     
     markDirty();
-    // Geänderte Texte sofort sichern
-    if (typeof saveCurrentProject === 'function') {
+    const { skipImmediateSave = false } = options || {};
+    // Geänderte Texte sofort sichern, sofern nicht bewusst unterdrückt (z. B. Sammelläufe)
+    if (!skipImmediateSave && typeof saveCurrentProject === 'function') {
         saveCurrentProject();
     }
 
