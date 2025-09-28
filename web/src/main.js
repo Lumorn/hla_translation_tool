@@ -125,7 +125,17 @@ async function switchStorage(targetMode) {
 
 // Setzt alle globalen Zustände zurück, um Reste des alten Backends zu vermeiden
 function resetGlobalState() {
-    if (typeof projects !== 'undefined') projects = [];
+    if (typeof projects !== 'undefined') {
+        // Projektliste in-place leeren, damit Fenster-Referenzen erhalten bleiben
+        if (Array.isArray(projects)) {
+            projects.length = 0;
+        } else {
+            projects = [];
+        }
+        if (typeof window !== 'undefined') {
+            window.projects = projects;
+        }
+    }
     if (typeof levelColors !== 'undefined') levelColors = {};
     if (typeof levelOrders !== 'undefined') levelOrders = {};
     if (typeof levelIcons !== 'undefined') levelIcons = {};
@@ -133,8 +143,18 @@ function resetGlobalState() {
     if (typeof currentProjectLock !== 'undefined' && currentProjectLock && typeof currentProjectLock.release === 'function') {
         currentProjectLock.release();
     }
-    if (typeof currentProject !== 'undefined') currentProject = null;
-    if (typeof currentProjectLock !== 'undefined') currentProjectLock = null;
+    if (typeof currentProject !== 'undefined') {
+        currentProject = null;
+        if (typeof window !== 'undefined') {
+            window.currentProject = currentProject;
+        }
+    }
+    if (typeof currentProjectLock !== 'undefined') {
+        currentProjectLock = null;
+        if (typeof window !== 'undefined') {
+            window.currentProjectLock = currentProjectLock;
+        }
+    }
     if (typeof readOnlyMode !== 'undefined') readOnlyMode = false;
     if (typeof files !== 'undefined') files = [];
     if (typeof textDatabase !== 'undefined') textDatabase = {};
