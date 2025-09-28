@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.416
+* `web/src/main.js` ergänzt den Helfer `replaceProjectList`, der Modul- und Fenster-Referenz auf dieselbe kopierte Projektliste setzt.
+* `web/src/projectHelpers.js` nutzt den neuen Helfer nach Reparaturläufen und verhindert dadurch auseinanderlaufende Projekt-Arrays.
+* `tests/repairProjectIntegritySyncsProjects.test.js` prüft, dass Reparaturen sowohl `projects` als auch `window.projects` synchron halten und `selectProject` den Platzhalter laden kann.
+* `README.md` und `CHANGELOG.md` dokumentieren die wieder synchronisierte Projektliste während Reparaturen.
 ## 🛠️ Patch in 1.40.415
 * `web/src/main.js` führt das Flag `projectResetActive` ein, setzt es während `resetGlobalState()`, blockiert `saveProjects()` und verwirft verspätete Übersetzungs-Rückläufer, solange der Reset läuft.
 * `tests/translationCallbackDuringReset.test.js` simuliert einen laufenden Reset und stellt sicher, dass der Übersetzungs-Callback ohne Speicherschreibvorgang endet und das Promise sauber abgeschlossen wird.

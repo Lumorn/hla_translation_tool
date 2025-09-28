@@ -378,6 +378,14 @@ window.addEventListener('DOMContentLoaded', () => {
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];
 window.projects            = projects; // Globale Referenz auf die Projektliste
+// Hilfsfunktion, damit Modul- und Fenster-Referenz stets identisch bleiben
+function replaceProjectList(newList) {
+    const kopie = Array.isArray(newList) ? [...newList] : [];
+    projects = kopie;
+    window.projects = projects;
+    return projects;
+}
+window.replaceProjectList = replaceProjectList;
 let projectResetActive     = false; // Merker, ob ein globaler Reset läuft
 if (typeof window !== 'undefined') {
     window.projectResetActive = projectResetActive;

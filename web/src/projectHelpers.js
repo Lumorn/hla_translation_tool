@@ -194,7 +194,9 @@ async function repairProjectIntegrity(adapter, projectId, ui = {}) {
     writes.push(adapter.setItem(listKey, JSON.stringify(list)));
     changed = true;
     // In-Memory-Projekte sofort aktualisieren, um Race-Conditions zu vermeiden
-    if (Array.isArray(window.projects)) {
+    if (typeof window.replaceProjectList === 'function') {
+      window.replaceProjectList(list);
+    } else if (Array.isArray(window.projects)) {
       window.projects = list;
     }
   }
