@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.412
+* `web/src/main.js` leert `projects` jetzt in-place, hält `window.projects` synchron und aktualisiert `currentProject`-Spiegel nach dem Reset.
+* `tests/resetGlobalStateProjects.test.js` prüft den referenztreuen Reset und den nachfolgenden Reload von `loadProjectData`.
+* `README.md` erwähnt den referenzsicheren Reset der Projektliste vor dem erneuten Laden.
 ## 🛠️ Patch in 1.40.411
 * `web/src/main.js` akzeptiert bei `updateText` eine Optionsstruktur, mit der Sammelläufe das unmittelbare `saveCurrentProject()` überspringen und trotzdem den Dirty-Timer nutzen.
 * `web/src/main.js` setzt die neue Option in `generateEmotionalText` für vorab berechnete Sammeldurchläufe und stößt nach `Promise.all(workers)` eine einmalige Speicherung an.
