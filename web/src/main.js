@@ -985,6 +985,7 @@ let autoRetryDone      = false; // wurde eine fehlgeschlagene Übersetzung nach 
 let translateQueue     = [];
 let translateRunning   = false;
 let translateCounter   = 0;
+let translateCancelled = false;      // merkt, ob ein Abbruch aktiv ist
 let currentTranslateProjectId = null; // merkt das Projekt der aktiven Übersetzung
 let activeTranslateQueue      = null; // aktuell abgearbeitete Dateien
 let activeTranslateIndex      = 0;    // Fortschritt innerhalb der aktiven Warteschlange
@@ -994,6 +995,7 @@ const pendingTranslations = new Map();
 function cancelTranslationQueue(grund = 'Übersetzung abgebrochen') {
     const fehler = grund instanceof Error ? grund : new Error(String(grund || 'Übersetzung abgebrochen'));
 
+    translateCancelled = true;
     translateQueue.length = 0;
     activeTranslateQueue = null;
     activeTranslateIndex = 0;
@@ -6935,7 +6937,21 @@ function updateTranslationQueueDisplay() {
 }
 
 async function processActiveTranslationQueue() {
+    const abbruchAktiv = () => {
+        // Hilfsfunktion: Sobald ein Abbruchsignal gesetzt ist, sauber aussteigen und das Flag zurücksetzen
+        if (!translateCancelled) return false;
+        translateCancelled = false;
+        return true;
+    };
+
+    if (abbruchAktiv()) {
+        return;
+    }
+
     if (!activeTranslateQueue || activeTranslateQueue.length === 0) {
+        if (abbruchAktiv()) {
+            return;
+        }
         saveProjects();
         return;
     }
@@ -6950,7 +6966,10 @@ async function processActiveTranslationQueue() {
         progress.classList.add('active');
     }
 
-    for (let i = 0; i < activeTranslateQueue.length; i++) {
+    for (let i = 0; activeTranslateQueue && i < activeTranslateQueue.length; i++) {
+        if (abbruchAktiv()) {
+            return;
+        }
         const file = activeTranslateQueue[i];
         if (!file) continue;
         const total = activeTranslateQueue.length;
@@ -6962,12 +6981,24 @@ async function processActiveTranslationQueue() {
             updateTranslationQueueDisplay();
         }
         await updateAutoTranslation(file, true, projectId);
+        if (abbruchAktiv()) {
+            return;
+        }
         if (isCurrent && progress && status && fill) {
             const total = activeTranslateQueue.length;
             fill.style.width = `${Math.round(((i + 1) / total) * 100)}%`;
         } else {
             updateTranslationQueueDisplay();
         }
+    }
+
+    if (!activeTranslateQueue) {
+        abbruchAktiv();
+        return;
+    }
+
+    if (abbruchAktiv()) {
+        return;
     }
 
     activeTranslateIndex = activeTranslateQueue.length;
@@ -6989,6 +7020,7 @@ function processNextTranslationQueue() {
         return;
     }
 
+    translateCancelled = false;
     activeTranslateQueue = next.files;
     activeTranslateIndex = 0;
     currentTranslateProjectId = next.projectId;

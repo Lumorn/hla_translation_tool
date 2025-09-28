@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.414
+* `web/src/main.js` führt ein Abbruch-Flag für die Übersetzungswarteschlange ein, das `cancelTranslationQueue()` setzt, laufende Runden früh beendet und nach sauberen Abschlüssen automatisch zurücksetzt.
+* `web/src/main.js` überspringt `saveProjects()` sowie Abschlussmeldungen, sobald der Abbruch aktiv ist, damit keine unveränderten Projekte persistiert oder Erfolgstexte angezeigt werden.
+* `tests/cancelTranslationQueueSkipsSave.test.js` simuliert eine laufende Übersetzung, bricht sie ab und stellt sicher, dass kein zusätzlicher Speichervorgang ausgelöst wird und der Status leer bleibt.
+* `README.md` dokumentiert den bereinigten Abbruch der Übersetzungswarteschlange.
 ## 🛠️ Patch in 1.40.413
 * `web/src/main.js` führt `cancelTranslationQueue()` ein, bricht laufende Übersetzungen inklusive offener Promises sauber ab, setzt den Fortschritt zurück und wird von `resetGlobalState()` vor allen anderen Aufräumarbeiten aufgerufen.
 * `web/src/projectSwitch.js` stoppt beim Projektwechsel die Übersetzungswarteschlange, bevor Speicher und Caches geleert werden, damit keine späten Rückläufer leere Projektdaten speichern.
