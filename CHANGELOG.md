@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.402
+* `web/src/main.js` verlässt sich beim DE-Audio-Lookup ausschließlich auf den gepflegten Index und stößt höchstens einmalig eine abgesicherte Reindizierung an, damit fehlende Dateien keine wiederholten Vollscans auslösen.
+* `web/src/calculateProjectStats.js` verwendet den globalen Lookup-Helfer nur noch, wenn er verfügbar ist, und spart so doppelte Schlüssel-Scans bei Negativtreffern.
+* `tests/calculateProjectStats.test.js` ergänzt einen Spy-gestützten Test, der sicherstellt, dass Serien fehlender Audios keine wiederholten `Object.keys`-Durchläufe mehr erzeugen.
+* `README.md` und `CHANGELOG.md` dokumentieren die optimierte Index-Nutzung beim Fortschrittsabgleich.
 ## 🛠️ Patch in 1.40.401
 * `web/src/main.js` führt einen case-insensitiven Index für `deAudioCache` ein, stellt Hilfsfunktionen zum Setzen/Löschen bereit und überträgt bestehende Einträge beim Cleanup automatisch in die neue Struktur.
 * `web/src/dubbing.js` und `web/src/projectSwitch.js` verwenden die neuen Helfer, damit alle Schreib- und Löschvorgänge den Index aktuell halten.

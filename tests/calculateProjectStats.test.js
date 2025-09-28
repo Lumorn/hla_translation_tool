@@ -3,6 +3,7 @@ const { calculateProjectStats } = require('../web/src/calculateProjectStats.js')
 describe('calculateProjectStats', () => {
     afterEach(() => {
         delete global.deAudioCache;
+        delete global.findDeAudioCacheKeyInsensitive;
     });
     test('empty file list returns 0% stats', () => {
         const result = calculateProjectStats({ files: [] });
@@ -133,6 +134,32 @@ describe('calculateProjectStats', () => {
         });
         expect(result.deAudioPercent).toBe(100);
         expect(result.completedPercent).toBe(100);
+    });
+
+    test('fehlende Audios triggern mit Helper keinen Vollscan pro Datei', () => {
+        const files = [
+            { enText: 'EN', deText: 'DE', fullPath: '/game/missing1.wav' },
+            { enText: 'EN2', deText: 'DE2', fullPath: '/game/missing2.wav' },
+            { enText: 'EN3', deText: 'DE3', fullPath: '/game/missing3.wav' }
+        ];
+        global.deAudioCache = {};
+        const helper = jest.fn(() => null);
+        global.findDeAudioCacheKeyInsensitive = helper;
+        const originalKeys = Object.keys;
+        const keysSpy = jest.spyOn(Object, 'keys').mockImplementation((target) => {
+            if (target === global.deAudioCache) {
+                throw new Error('Unzulässiger Vollscan des Audio-Caches');
+            }
+            return originalKeys(target);
+        });
+        try {
+            const result = calculateProjectStats({ files });
+
+            expect(result.deAudioPercent).toBe(0);
+            expect(helper).toHaveBeenCalled();
+        } finally {
+            keysSpy.mockRestore();
+        }
     });
 
     test('average and minimum gpt score are calculated', () => {

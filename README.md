@@ -314,6 +314,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Level‑Statistik‑Panel** (aufklappbar im Ordner‑Browser)
 * **Projekt‑übergreifende Fortschrittsanzeige:** Dateien und Dashboard zeigen Status über alle Projekte
 * **Case-insensitiver Audio-Abgleich:** Fortschrittsbalken erkennen `.WAV`- und `.MP3`-Dateien jetzt unabhängig von der Groß-/Kleinschreibung der Endung.
+* **Optimierter Audio-Index:** Fehlende DE-Audios greifen zuerst auf den gepflegten Index zu; nur bei Bedarf wird einmalig eine geschützte Reindizierung ausgelöst, wodurch große Projekte ohne wiederholte Vollscans flott bleiben.
 * **Visuelle Gesamtbalken** in der Filter-Leiste zeigen den Fortschritt aller Projekte
 * **Emo-Status-Anzeige:** Ein violettes Feld zählt gefüllte, leere und fehlerhafte Emotional-Texte. Ein Klick darauf generiert fehlende oder fehlerhafte Einträge neu.
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
