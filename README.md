@@ -65,6 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
 * **Hintergrund-Übersetzungswarteschlange:** Automatische Übersetzungen laufen projektübergreifend weiter; beim Wechsel landen neue Projekte hinten in der Warteschlange und starten, sobald die aktuelle Übersetzung abgeschlossen ist.
 * **Abbruchfeste Übersetzungswarteschlange:** Globale Resets und Projektwechsel stoppen laufende Jobs sofort, leeren alle Warteschlangen und blockieren verspätete Rückläufer, damit keine leeren Projektlisten gespeichert werden.
+* **Sauberer Warteschlangen-Abbruch:** Manuelle Abbrüche speichern keine unveränderten Projekte und entfernen Abschlussmeldungen unmittelbar, damit das UI den Stopp klar widerspiegelt.
 * **Fehlerfreie Auto-Übersetzungen nach Projektwechsel:** Die Warteschlange schreibt erkannte Ergebnisse jetzt sofort ins passende Projekt, sodass fertige Texte auch nach einem Wechsel oder Neustart zuverlässig in der Tabelle auftauchen.
 * **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen landen weiterhin sofort im Projekt; Sammelläufe der Emotionstexte bündeln ihre Änderungen und lösen danach ein gemeinsames Speichern aus.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
