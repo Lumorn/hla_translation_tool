@@ -242,7 +242,7 @@ async function fetchWithRetry(url, options, retries = 5) {
 
 // Bewertet eine Szene mit GPT und liefert ein Array
 // [{id, score, comment, suggestion}]
-async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries = 5, projectId }) {
+async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries = 5, projectId, onProgress = null }) {
     await promptReady;
 
     // Doppelte Zeilen zusammenfassen
@@ -277,15 +277,26 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
     let canceled = false;
     let ui = null;
     const maxAttemptsPerLine = 4;
+    const hasExternalProgress = typeof onProgress === 'function';
+    const safeEmit = (payload) => {
+        if (!hasExternalProgress) return;
+        try {
+            onProgress(payload);
+        } catch (err) {
+            console.warn('Fortschritts-Callback meldet einen Fehler:', err);
+        }
+    };
+    safeEmit({ type: 'start', total: uniqueLines.length, uniqueTotal: uniqueLines.length });
 
     // Kleiner Helfer zum Loggen im Fortschrittsdialog und in der Konsole
     const logProgress = (text) => {
         console.log('[GPT STATUS]', text);
         if (ui) appendGptLog(ui, text);
+        safeEmit({ type: 'log', message: text });
     };
 
     // Fortschrittsdialog mit Loganzeige nur im Browser
-    if (typeof document !== 'undefined') {
+    if (!hasExternalProgress && typeof document !== 'undefined') {
         ui = createProgressDialog(uniqueLines.length);
         ui.cancelBtn.onclick = () => { canceled = true; ui.overlay.remove(); };
     }
@@ -298,6 +309,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             pending.set(idStr, { line, attempts: 0 });
         });
         if (ui) updateProgressDialog(ui, i, uniqueLines.length);
+        safeEmit({ type: 'progress', done: i, total: uniqueLines.length });
         const sysBase = restMode
             ? systemPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und stehen nicht in chronologischer Reihenfolge. Behandle jede Zeile unabhängig."
             : systemPrompt;
@@ -323,6 +335,12 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             }
             console.log('[GPT REQUEST]', { endpoint, model, messages });
             if (ui) appendGptLog(ui, '>> ' + reqText);
+            safeEmit({
+                type: 'stage',
+                stage: 'request',
+                status: 'running',
+                message: `Übertrage ${filtered.length} ${filtered.length === 1 ? 'Zeile' : 'Zeilen'}…`
+            });
             let arr;
             try {
                 const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
@@ -330,6 +348,7 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
                 arr = JSON.parse(clean);
             } catch (e) {
                 if (ui) ui.overlay.remove();
+                safeEmit({ type: 'stage', stage: 'request', status: 'error', message: 'Übertragung fehlgeschlagen' });
                 throw new Error('API-Fehler: ' + (e && e.message ? e.message : e));
             }
             const resText = JSON.stringify(arr);
@@ -338,10 +357,23 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             }
             console.log('[GPT RESPONSE]', arr);
             if (ui) appendGptLog(ui, '<< ' + resText);
+            safeEmit({
+                type: 'stage',
+                stage: 'request',
+                status: 'done',
+                message: 'Antwort empfangen'
+            });
             if (!Array.isArray(arr)) {
                 if (ui) ui.overlay.remove();
+                safeEmit({ type: 'stage', stage: 'process', status: 'error', message: 'Antwort konnte nicht gelesen werden' });
                 throw new Error('Ungültige Antwort: GPT hat kein Array zurückgegeben');
             }
+            safeEmit({
+                type: 'stage',
+                stage: 'process',
+                status: 'running',
+                message: `${arr.length} Bewertungen werden ausgewertet…`
+            });
             let newlyStored = 0;
             for (const item of arr) {
                 if (!item || typeof item !== 'object') {
@@ -369,6 +401,12 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             if (newlyStored === 0) {
                 logProgress('⚠️ Diese Antwort enthielt keine neuen Bewertungen.');
             }
+            safeEmit({
+                type: 'stage',
+                stage: 'process',
+                status: 'done',
+                message: `${newlyStored} Bewertungen gespeichert`
+            });
         };
 
         await requestSubset(chunk);
@@ -396,12 +434,18 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
             logProgress(`Fordere ${nextBatch.length === 1 ? 'Zeile' : 'Zeilen'} ${nextBatch.map(l => l.id).join(', ')} erneut an.`);
             await requestSubset(nextBatch);
         }
+        safeEmit({
+            type: 'progress',
+            done: Math.min(i + chunk.length, uniqueLines.length),
+            total: uniqueLines.length
+        });
     }
 
     if (ui) ui.overlay.remove();
     if (canceled) throw new Error('Abgebrochen');
 
     // Ergebnisse auf alle Originalzeilen übertragen
+    safeEmit({ type: 'stage', stage: 'merge', status: 'running', message: 'Übernehme Bewertungen in die Ausgangszeilen…' });
     const expanded = [];
     link.forEach((uIdx, i) => {
         const src = uniqueLines[uIdx];
@@ -412,6 +456,8 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
         // projectId zur Ergebniszeile hinzufügen, damit nur passende Projekte Daten übernehmen
         expanded.push({ ...base, id: lines[i].id, projectId });
     });
+    safeEmit({ type: 'stage', stage: 'merge', status: 'done', message: 'Bewertungen übertragen' });
+    safeEmit({ type: 'done' });
     return expanded;
 }
 
