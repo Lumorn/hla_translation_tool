@@ -4238,6 +4238,13 @@ function addFiles() {
             if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
             const row = getRowByNumber(num);
             if (row) {
+                if (selectedRow !== row) {
+                    if (selectedRow) {
+                        selectedRow.classList.remove('selected-row');
+                    }
+                    selectedRow = row;
+                    selectedRow.classList.add('selected-row');
+                }
                 const container = document.querySelector('.table-container');
                 if (container) {
                     // Scroll-Snap kurz deaktivieren, damit der Tabellenkopf nichts überdeckt
@@ -4279,6 +4286,13 @@ function addFiles() {
                     const cell = row.querySelector('.row-number');
                     if (cell) {
                         const num = parseInt(cell.textContent, 10);
+                        if (selectedRow !== row) {
+                            if (selectedRow) {
+                                selectedRow.classList.remove('selected-row');
+                            }
+                            selectedRow = row;
+                            selectedRow.classList.add('selected-row');
+                        }
                         setActiveRow(row);
                         currentRowNumber = num;
                         if (currentProject) {

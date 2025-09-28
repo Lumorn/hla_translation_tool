@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.403
+* `web/src/main.js` synchronisiert beim Scrollen und bei Nummern-Sprüngen die `selectedRow`-Markierung, damit Pfeiltasten, Nummern-Schaltflächen und manuelles Scrollen dieselbe Zeile hervorheben.
+* `README.md` beschreibt die gemeinsame Hervorhebung der Nummern-Navigation ohne Sprünge.
+* `CHANGELOG.md` dokumentiert die vereinheitlichte Zeilenwahl über alle Navigationswege.
 ## 🛠️ Patch in 1.40.402
 * `web/src/main.js` verlässt sich beim DE-Audio-Lookup ausschließlich auf den gepflegten Index und stößt höchstens einmalig eine abgesicherte Reindizierung an, damit fehlende Dateien keine wiederholten Vollscans auslösen.
 * `web/src/calculateProjectStats.js` verwendet den globalen Lookup-Helfer nur noch, wenn er verfügbar ist, und spart so doppelte Schlüssel-Scans bei Negativtreffern.
