@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.415
+* `web/src/main.js` führt das Flag `projectResetActive` ein, setzt es während `resetGlobalState()`, blockiert `saveProjects()` und verwirft verspätete Übersetzungs-Rückläufer, solange der Reset läuft.
+* `tests/translationCallbackDuringReset.test.js` simuliert einen laufenden Reset und stellt sicher, dass der Übersetzungs-Callback ohne Speicherschreibvorgang endet und das Promise sauber abgeschlossen wird.
+* `README.md` dokumentiert das neue Reset-Flag und verweist auf den Regressionstest.
 ## 🛠️ Patch in 1.40.414
 * `web/src/main.js` führt ein Abbruch-Flag für die Übersetzungswarteschlange ein, das `cancelTranslationQueue()` setzt, laufende Runden früh beendet und nach sauberen Abschlüssen automatisch zurücksetzt.
 * `web/src/main.js` überspringt `saveProjects()` sowie Abschlussmeldungen, sobald der Abbruch aktiv ist, damit keine unveränderten Projekte persistiert oder Erfolgstexte angezeigt werden.
