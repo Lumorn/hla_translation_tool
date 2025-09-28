@@ -175,7 +175,13 @@ async function keysInternal() {
             request.onerror = () => reject(request.error);
         });
         for (const k of keys) {
-            allKeys.push(`${name}:${k}`);
+            if (name === 'misc' && typeof k === 'string' && k.includes(':')) {
+                // Schlüssel aus dem Fallback-Store bereits mit Präfix zurückgeben
+                allKeys.push(k);
+            } else {
+                // Reguläre Einträge weiterhin mit Store-Präfix versehen
+                allKeys.push(`${name}:${k}`);
+            }
         }
     }
     return allKeys;

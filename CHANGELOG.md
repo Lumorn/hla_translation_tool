@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.406
+* `web/src/storage/indexedDbBackend.js` liefert Fallback-Schlüssel unverändert zurück und behält für reguläre `misc:`-Einträge weiterhin das Präfix bei.
+* `tests/indexedDbBackend.test.js` prüft die Schlüsselrekonstruktion sowie das Zusammenspiel mit `syncProjectListWithStorage`.
+* `README.md` dokumentiert die unveränderte Rückgabe von Projekt-Schlüsseln aus dem IndexedDB-Fallback.
+* `CHANGELOG.md` hält die Anpassung an den Schlüssel-Iterator fest.
 ## 🛠️ Patch in 1.40.405
 * `web/src/main.js` stellt beim Laden den vorherigen Projekt- und Levelzustand wieder her und verhindert so ein versehentliches Überschreiben mit einer leeren Liste nach Fehlern.
 * `tests/loadProjectsError.test.js` sichert ab, dass Ladefehler keine Projektdaten mehr löschen oder abspeichern.
