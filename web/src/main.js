@@ -125,6 +125,8 @@ async function switchStorage(targetMode) {
 
 // Setzt alle globalen Zustände zurück, um Reste des alten Backends zu vermeiden
 function resetGlobalState() {
+    // Laufende Übersetzungsprozesse immer zuerst abbrechen, damit kein später Rückläufer mehr speichert
+    cancelTranslationQueue('Globaler Reset');
     if (typeof projects !== 'undefined') {
         // Projektliste in-place leeren, damit Fenster-Referenzen erhalten bleiben
         if (Array.isArray(projects)) {
@@ -987,6 +989,39 @@ let currentTranslateProjectId = null; // merkt das Projekt der aktiven Übersetz
 let activeTranslateQueue      = null; // aktuell abgearbeitete Dateien
 let activeTranslateIndex      = 0;    // Fortschritt innerhalb der aktiven Warteschlange
 const pendingTranslations = new Map();
+
+// Bricht alle offenen Übersetzungsaufträge ab und setzt die Fortschrittsanzeige zurück
+function cancelTranslationQueue(grund = 'Übersetzung abgebrochen') {
+    const fehler = grund instanceof Error ? grund : new Error(String(grund || 'Übersetzung abgebrochen'));
+
+    translateQueue.length = 0;
+    activeTranslateQueue = null;
+    activeTranslateIndex = 0;
+    translateRunning = false;
+    currentTranslateProjectId = null;
+
+    for (const [id, eintrag] of pendingTranslations.entries()) {
+        pendingTranslations.delete(id);
+        if (eintrag && typeof eintrag.reject === 'function') {
+            eintrag.reject(fehler);
+        } else if (eintrag && typeof eintrag.resolve === 'function') {
+            eintrag.resolve();
+        }
+    }
+
+    updateTranslationQueueDisplay();
+
+    const progress = document.getElementById('translateProgress');
+    const status   = document.getElementById('translateStatus');
+    const fill     = document.getElementById('translateFill');
+    if (progress) progress.classList.remove('active');
+    if (fill) fill.style.width = '0%';
+    if (status) status.textContent = '';
+}
+
+if (typeof window !== 'undefined') {
+    window.cancelTranslationQueue = cancelTranslationQueue;
+}
 
 // API-Key für ElevenLabs und hinterlegte Stimmen pro Ordner
 let elevenLabsApiKey   = storage.getItem('hla_elevenLabsApiKey') || '';
@@ -6776,7 +6811,7 @@ function updateText(fileId, lang, value, skipUndo, options = {}) {
 }
 
 function updateAutoTranslation(file, force = false, projectId = currentTranslateProjectId || currentProject?.id) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         if (!window.electronAPI || !window.electronAPI.translateText) { resolve(); return; }
         if (!file.enText) { resolve(); return; }
         if (!force && file.autoSource === file.enText && file.autoTranslation) { resolve(); return; }
@@ -6786,7 +6821,7 @@ function updateAutoTranslation(file, force = false, projectId = currentTranslate
 
         const id = ++translateCounter;
         // Projekt-ID mitsichern, damit wir das Ergebnis auch nach einem Projektwechsel korrekt zuordnen koennen
-        pendingTranslations.set(id, { file, resolve, projectId });
+        pendingTranslations.set(id, { file, resolve, reject, projectId });
         window.electronAPI.translateText(id, file.enText);
     });
 }
@@ -18485,6 +18520,7 @@ if (typeof module !== "undefined" && module.exports) {
         bufferToWav,
         repairFileExtensions,
         updateAutoTranslation,
+        cancelTranslationQueue,
         importClosecaptions,
         stripColorCodes,
         calculateTextSimilarity,

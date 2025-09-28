@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.413
+* `web/src/main.js` führt `cancelTranslationQueue()` ein, bricht laufende Übersetzungen inklusive offener Promises sauber ab, setzt den Fortschritt zurück und wird von `resetGlobalState()` vor allen anderen Aufräumarbeiten aufgerufen.
+* `web/src/projectSwitch.js` stoppt beim Projektwechsel die Übersetzungswarteschlange, bevor Speicher und Caches geleert werden, damit keine späten Rückläufer leere Projektdaten speichern.
+* `tests/resetGlobalStateCancelsTranslation.test.js` simuliert eine laufende Übersetzung, prüft den Abbruch durch `resetGlobalState()` und stellt sicher, dass keine leere Projektliste mehr persistiert wird.
+* `README.md` dokumentiert die abbruchfeste Übersetzungswarteschlange.
 ## 🛠️ Patch in 1.40.412
 * `web/src/main.js` leert `projects` jetzt in-place, hält `window.projects` synchron und aktualisiert `currentProject`-Spiegel nach dem Reset.
 * `tests/resetGlobalStateProjects.test.js` prüft den referenztreuen Reset und den nachfolgenden Reload von `loadProjectData`.
