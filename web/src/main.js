@@ -125,6 +125,10 @@ async function switchStorage(targetMode) {
 
 // Setzt alle globalen Zustände zurück, um Reste des alten Backends zu vermeiden
 function resetGlobalState() {
+    projectResetActive = true;
+    if (typeof window !== 'undefined') {
+        window.projectResetActive = projectResetActive;
+    }
     // Laufende Übersetzungsprozesse immer zuerst abbrechen, damit kein später Rückläufer mehr speichert
     cancelTranslationQueue('Globaler Reset');
     if (typeof projects !== 'undefined') {
@@ -374,6 +378,10 @@ window.addEventListener('DOMContentLoaded', () => {
 // =========================== GLOBAL STATE START ===========================
 let projects               = [];
 window.projects            = projects; // Globale Referenz auf die Projektliste
+let projectResetActive     = false; // Merker, ob ein globaler Reset läuft
+if (typeof window !== 'undefined') {
+    window.projectResetActive = projectResetActive;
+}
 let levelColors            = {}; // ⬅️ NEU: globale Level-Farben
 let levelOrders            = {}; // ⬅️ NEU: Reihenfolge der Level
 let levelIcons             = {}; // ⬅️ NEU: Icon je Level
@@ -2538,9 +2546,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const entry = pendingTranslations.get(id);
                 if (!entry) return;
                 pendingTranslations.delete(id);
-                const { file, resolve, projectId } = entry;
+                const { file, resolve, reject, projectId } = entry;
                 const safeText = typeof text === 'string' ? text : '';
                 const safeError = error ? String(error) : '';
+                if (projectResetActive) {
+                    if (typeof resolve === 'function') {
+                        resolve(safeText);
+                    } else if (typeof reject === 'function') {
+                        reject(new Error('Übersetzung verworfen: Reset aktiv'));
+                    }
+                    updateTranslationQueueDisplay();
+                    return;
+                }
                 if (safeText) {
                     // Erfolgreiche Übersetzung übernehmen
                     file.autoTranslation = safeText;
@@ -3096,14 +3113,21 @@ async function loadProjects(skipSelect = false) {
         levelColorHistory = previousState.levelColorHistory || [];
     }
     window.projects = projects; // Referenz für andere Module aktualisieren
+    projectResetActive = false;
+    if (typeof window !== 'undefined') {
+        window.projectResetActive = projectResetActive;
+    }
 }
 // =========================== LOAD PROJECTS END ===========================
 
 
         function saveProjects() {
+            window.projects = projects; // Referenz für andere Module aktualisieren
+            if (projectResetActive) {
+                return;
+            }
             storage.setItem('hla_projects', JSON.stringify(projects));
             updateGlobalProjectProgress();
-            window.projects = projects; // Referenz für andere Module aktualisieren
         }
 
         function saveTextDatabase() {

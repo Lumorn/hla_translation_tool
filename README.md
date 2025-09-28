@@ -65,6 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
 * **Hintergrund-Übersetzungswarteschlange:** Automatische Übersetzungen laufen projektübergreifend weiter; beim Wechsel landen neue Projekte hinten in der Warteschlange und starten, sobald die aktuelle Übersetzung abgeschlossen ist.
 * **Abbruchfeste Übersetzungswarteschlange:** Globale Resets und Projektwechsel stoppen laufende Jobs sofort, leeren alle Warteschlangen und blockieren verspätete Rückläufer, damit keine leeren Projektlisten gespeichert werden.
+* **Reset-Flag für Übersetzungen:** Während `resetGlobalState()` aktiv ist, verhindert ein globales Flag jede Projektspeicherung und verwirft späte Worker-Rückläufer nach dem Auflösen ihrer Promises, damit keine alten Antworten mehr in der Projektliste landen.
 * **Sauberer Warteschlangen-Abbruch:** Manuelle Abbrüche speichern keine unveränderten Projekte und entfernen Abschlussmeldungen unmittelbar, damit das UI den Stopp klar widerspiegelt.
 * **Fehlerfreie Auto-Übersetzungen nach Projektwechsel:** Die Warteschlange schreibt erkannte Ergebnisse jetzt sofort ins passende Projekt, sodass fertige Texte auch nach einem Wechsel oder Neustart zuverlässig in der Tabelle auftauchen.
 * **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen landen weiterhin sofort im Projekt; Sammelläufe der Emotionstexte bündeln ihre Änderungen und lösen danach ein gemeinsames Speichern aus.
@@ -1226,7 +1227,7 @@ Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, so
    npm test -- tests/saveFormats.test.js --detectOpenHandles
    ```
 
-Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus.
+Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus. Der Regressionstest `translationCallbackDuringReset.test.js` stellt zusätzlich sicher, dass verspätete Übersetzungsantworten während eines globalen Resets keine Projektdaten mehr speichern.
 
 1. **Entwicklungsserver starten**
    ```bash
