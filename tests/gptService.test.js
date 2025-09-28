@@ -13,11 +13,16 @@ afterEach(() => {
 test('teilt lange Anfragen in Blöcke', async () => {
   const { evaluateScene } = require('../web/src/gptService.js');
   const lines = Array.from({ length: 300 }, (_, i) => ({ id: i, character: '', en: 'a', de: 'b' }));
-  const payload = { choices: [{ message: { content: '[]' } }] };
-  jestFetch.mockResolvedValue({
-    ok: true,
-    json: async () => payload,
-    text: async () => JSON.stringify(payload)
+  jestFetch.mockImplementation((url, options) => {
+    const body = JSON.parse(options.body);
+    const linesPayload = JSON.parse(body.messages[1].content).lines;
+    const arr = linesPayload.map(line => ({ id: line.id, score: 0 }));
+    const payload = { choices: [{ message: { content: JSON.stringify(arr) } }] };
+    return Promise.resolve({
+      ok: true,
+      json: async () => payload,
+      text: async () => JSON.stringify(payload)
+    });
   });
   await evaluateScene({ scene: 'scene', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1, projectId: 'p1' });
   expect(jestFetch).toHaveBeenCalledTimes(1);
@@ -103,6 +108,40 @@ test('fasst doppelte Zeilen zusammen', async () => {
     { id: 1, score: 5, projectId: 'p1' },
     { id: 2, score: 5, projectId: 'p1' }
   ]);
+});
+
+test('fordert fehlende Bewertungen erneut an', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  const lines = [
+    { id: 1, character: '', en: 'a', de: 'b' },
+    { id: 2, character: '', en: 'c', de: 'd' }
+  ];
+  const firstPayload = { choices: [{ message: { content: '[{"id":1,"score":7}]' } }] };
+  const secondPayload = { choices: [{ message: { content: '[{"id":2,"score":8}]' } }] };
+  jestFetch
+    .mockResolvedValueOnce({
+      ok: true,
+      json: async () => firstPayload,
+      text: async () => JSON.stringify(firstPayload)
+    })
+    .mockResolvedValueOnce({
+      ok: true,
+      json: async () => secondPayload,
+      text: async () => JSON.stringify(secondPayload)
+    });
+  const res = await evaluateScene({ scene: 'teil', lines, key: 'key', model: 'gpt-3.5-turbo', retries: 1, projectId: 'p42' });
+  expect(res).toEqual([
+    { id: 1, score: 7, projectId: 'p42' },
+    { id: 2, score: 8, projectId: 'p42' }
+  ]);
+  expect(jestFetch).toHaveBeenCalledTimes(2);
+  const firstBody = JSON.parse(jestFetch.mock.calls[0][1].body);
+  const firstLines = JSON.parse(firstBody.messages[1].content).lines;
+  expect(firstLines).toHaveLength(2);
+  const secondBody = JSON.parse(jestFetch.mock.calls[1][1].body);
+  const secondLines = JSON.parse(secondBody.messages[1].content).lines;
+  expect(secondLines).toHaveLength(1);
+  expect(secondLines[0].id).toBe(2);
 });
 
 test('verwendet den Responses-Endpunkt für gpt-5-Modelle', async () => {
