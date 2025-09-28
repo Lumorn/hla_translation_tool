@@ -2765,6 +2765,14 @@ function handleAccessStatusClick() {
 // Lädt Projekte und zugehörige Einstellungen asynchron aus dem Speicher
 // Parameter "skipSelect" verhindert das automatische Öffnen eines Projekts
 async function loadProjects(skipSelect = false) {
+    // Vorherigen Zustand merken, falls das Laden scheitert
+    const previousState = {
+        projects,
+        levelColors,
+        levelOrders,
+        levelIcons,
+        levelColorHistory
+    };
     // Hilfsfunktion für Fehlerhinweise
     const showError = msg => {
         if (window.electronAPI && window.electronAPI.showProjectError) {
@@ -2940,11 +2948,13 @@ async function loadProjects(skipSelect = false) {
             if (first) selectProject(first.id);
         }
     } catch (err) {
-        // Fehler beim Zugriff auf den Speicher melden und zurücksetzen
+        // Fehler melden und ursprünglichen Zustand wiederherstellen
         showError(`Projekte konnten nicht geladen werden: ${err.message}`);
-        projects = [];
-        saveProjects();
-        renderProjects();
+        projects = previousState.projects || [];
+        levelColors = previousState.levelColors || {};
+        levelOrders = previousState.levelOrders || {};
+        levelIcons = previousState.levelIcons || {};
+        levelColorHistory = previousState.levelColorHistory || [];
     }
     window.projects = projects; // Referenz für andere Module aktualisieren
 }

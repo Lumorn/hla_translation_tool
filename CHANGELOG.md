@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.405
+* `web/src/main.js` stellt beim Laden den vorherigen Projekt- und Levelzustand wieder her und verhindert so ein versehentliches Überschreiben mit einer leeren Liste nach Fehlern.
+* `tests/loadProjectsError.test.js` sichert ab, dass Ladefehler keine Projektdaten mehr löschen oder abspeichern.
+* `README.md` erwähnt die unangetastete Projektliste bei Speicherfehlern.
 ## 🛠️ Patch in 1.40.404
 * `translate_text.py` bietet einen `--server`-Modus, der Argos einmal lädt, JSON-Aufträge annimmt und Antworten zeilenweise ausgibt.
 * `electron/main.js` startet beim App-Start einen dauerhaften Übersetzungs-Worker, verwaltet Rückmeldungen pro IPC-Anfrage und setzt Neustarts inklusive Auftrags-Retrys um.
