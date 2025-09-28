@@ -141,6 +141,7 @@ function resetGlobalState() {
     if (typeof filePathDatabase !== 'undefined') filePathDatabase = {};
     if (typeof audioFileCache !== 'undefined') audioFileCache = {};
     if (typeof deAudioCache !== 'undefined') deAudioCache = {};
+    if (typeof deAudioCacheIndex !== 'undefined') deAudioCacheIndex = {};
     if (typeof audioDurationCache !== 'undefined') audioDurationCache = {};
     if (typeof historyPresenceCache !== 'undefined') historyPresenceCache = {};
     if (typeof folderCustomizations !== 'undefined') folderCustomizations = {};
@@ -363,6 +364,7 @@ let textDatabase           = {};
 let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
 let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
+let deAudioCacheIndex      = {}; // Zusätzlicher Index für case-insensitive Zugriffe
 let audioDurationCache    = {}; // Cache für ermittelte Audiodauern
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
@@ -1313,16 +1315,94 @@ if (typeof module !== 'undefined' && module.exports) {
 // =========================== GLOBAL STATE END ===========================
 
 // Entfernt versehentlich falsch gespeicherte Einträge aus dem DE-Cache
+// =========================== DE-AUDIO-CACHE-HILFEN START ===========================
+// Vereinheitlicht Schlüssel für den DE-Audio-Cache
+function normalizeDeAudioCacheKey(key) {
+    if (!key || typeof key !== 'string') return '';
+    return key.replace(/^sounds\/DE\//i, '').toLowerCase();
+}
+
+// Aktualisiert den Index für einen bestimmten Schlüssel
+function updateDeAudioCacheIndex(key) {
+    const norm = normalizeDeAudioCacheKey(key);
+    if (!norm) return;
+    deAudioCacheIndex[norm] = key;
+}
+
+// Entfernt einen Schlüssel vollständig aus dem Index
+function removeDeAudioCacheIndex(key) {
+    const norm = normalizeDeAudioCacheKey(key);
+    if (!norm) return;
+    if (deAudioCacheIndex[norm] === key) {
+        delete deAudioCacheIndex[norm];
+    }
+}
+
+// Baut den kompletten Index neu auf
+function rebuildDeAudioCacheIndex() {
+    deAudioCacheIndex = {};
+    for (const key of Object.keys(deAudioCache)) {
+        updateDeAudioCacheIndex(key);
+    }
+}
+
+// Schreibt einen Eintrag in den Cache und pflegt den Index
+function setDeAudioCacheEntry(key, value) {
+    if (!key) return;
+    deAudioCache[key] = value;
+    updateDeAudioCacheIndex(key);
+}
+
+// Löscht einen Eintrag und den passenden Indexeintrag
+function deleteDeAudioCacheEntry(key) {
+    if (!key) return;
+    if (Object.prototype.hasOwnProperty.call(deAudioCache, key)) {
+        delete deAudioCache[key];
+        removeDeAudioCacheIndex(key);
+    }
+}
+
+// Liefert den tatsächlichen Schlüssel anhand einer case-insensitiven Suche
+function findDeAudioCacheKeyInsensitive(key) {
+    const norm = normalizeDeAudioCacheKey(key);
+    if (!norm) return null;
+    if (Object.prototype.hasOwnProperty.call(deAudioCacheIndex, norm)) {
+        const realKey = deAudioCacheIndex[norm];
+        if (Object.prototype.hasOwnProperty.call(deAudioCache, realKey)) {
+            return realKey;
+        }
+    }
+    for (const candidate of Object.keys(deAudioCache)) {
+        if (normalizeDeAudioCacheKey(candidate) === norm) {
+            updateDeAudioCacheIndex(candidate);
+            return candidate;
+        }
+    }
+    return null;
+}
+
+// Globale Bereitstellung der Helfer, damit andere Module sie nutzen können
+if (typeof window !== 'undefined') {
+    window.setDeAudioCacheEntry = setDeAudioCacheEntry;
+    window.deleteDeAudioCacheEntry = deleteDeAudioCacheEntry;
+    window.rebuildDeAudioCacheIndex = rebuildDeAudioCacheIndex;
+    window.findDeAudioCacheKeyInsensitive = findDeAudioCacheKeyInsensitive;
+}
+// =========================== DE-AUDIO-CACHE-HILFEN END =============================
+
 function cleanupDubCache() {
     for (const key of Object.keys(deAudioCache)) {
         if (key.match(/^sounds\/DE\//i)) {
             const neu = key.replace(/^sounds\/DE\//i, '');
             if (!deAudioCache[neu]) {
-                deAudioCache[neu] = deAudioCache[key];
+                setDeAudioCacheEntry(neu, deAudioCache[key]);
             }
-            delete deAudioCache[key];
+            deleteDeAudioCacheEntry(key);
+        } else {
+            updateDeAudioCacheIndex(key);
         }
     }
+    rebuildDeAudioCacheIndex();
 }
 
 // Bündelt alle Aktionsknöpfe der Toolbar in einer separaten Funktion
@@ -2210,7 +2290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             await verarbeiteGescannteDateien(data.enFiles);
             // DE-Dateien als Pfade merken
             data.deFiles.forEach(file => {
-                deAudioCache[file.fullPath] = `sounds/DE/${file.fullPath}`;
+                setDeAudioCacheEntry(file.fullPath, `sounds/DE/${file.fullPath}`);
             });
             // Nach dem Einlesen Projekte und Zugriffsstatus aktualisieren
             updateAllProjectsAfterScan();
@@ -2246,7 +2326,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const dest = `sounds/DE/${destRel}`;
 
                 await window.electronAPI.moveFile(file, dest);
-                deAudioCache[destRel] = dest;
+                setDeAudioCacheEntry(destRel, dest);
                 await updateHistoryCache(destRel);
                 ziel.dubReady = true;
                 ziel.waitingForManual = false;
@@ -6038,6 +6118,8 @@ function getDeFilePath(file) {
         if (deAudioCache[kandidat]) {
             return kandidat;
         }
+        const realKey = findDeAudioCacheKeyInsensitive(kandidat);
+        if (realKey) return realKey;
     }
     return null;
 }
@@ -7360,7 +7442,7 @@ async function playDeAudio(fileId, onEnded = null, track = false) {
 
     if (!deAudioCache[relPath]) {
         if (window.electronAPI) {
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
         } else {
             try {
                 let handle = deOrdnerHandle;
@@ -7381,7 +7463,7 @@ async function playDeAudio(fileId, onEnded = null, track = false) {
                     } catch {}
                 }
                 if (datei) {
-                    deAudioCache[relPath] = datei;
+                    setDeAudioCacheEntry(relPath, datei);
                 } else {
                     updateStatus('DE-Datei nicht gefunden');
                     return;
@@ -9327,7 +9409,7 @@ async function exportSegmentsToProject() {
             // In der Desktop-Version direkt über den Hauptprozess speichern
             const arr = new Uint8Array(await wavBlob.arrayBuffer());
             await window.electronAPI.saveDeFile(relPath, arr);
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
             await updateHistoryCache(relPath);
         } else {
             await speichereUebersetzungsDatei(wavBlob, relPath);
@@ -11282,7 +11364,7 @@ function checkFileAccess() {
                 return;
             }
             await window.electronAPI.restoreDeHistory(relPath, name);
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
             await updateHistoryCache(relPath);
             renderFileTable();
             loadHistoryList(relPath);
@@ -11667,12 +11749,12 @@ async function scanAudioDuplicates() {
         if (!oldInfo || !newInfo) continue;
         if (pref === 'new') {
             await window.electronAPI.deleteDeFile(oldInfo.relPath);
-            delete deAudioCache[oldInfo.relPath];
+            deleteDeAudioCacheEntry(oldInfo.relPath);
             continue;
         }
         if (pref === 'old') {
             await window.electronAPI.deleteDeFile(newInfo.relPath);
-            delete deAudioCache[newInfo.relPath];
+            deleteDeAudioCacheEntry(newInfo.relPath);
             continue;
         }
         const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
@@ -11680,10 +11762,10 @@ async function scanAudioDuplicates() {
         if (res.remember) storage.setItem('dupPref_' + base, res.choice);
         if (res.choice === 'new') {
             await window.electronAPI.deleteDeFile(oldInfo.relPath);
-            delete deAudioCache[oldInfo.relPath];
+            deleteDeAudioCacheEntry(oldInfo.relPath);
         } else {
             await window.electronAPI.deleteDeFile(newInfo.relPath);
-            delete deAudioCache[newInfo.relPath];
+            deleteDeAudioCacheEntry(newInfo.relPath);
         }
     }
     renderFileTable();
@@ -12397,6 +12479,7 @@ async function waehleProjektOrdner() {
 
         enDateien = [];
         deAudioCache = {};
+        deAudioCacheIndex = {};
 
         // Rekursives Einlesen aller Unterordner
         async function leseOrdner(handle, deHandle, pfad = '') {
@@ -12419,7 +12502,7 @@ async function waehleProjektOrdner() {
                                     } catch {}
                                 }
                                 if (deFile) {
-                                    deAudioCache[pfad + name] = deFile;
+                                    setDeAudioCacheEntry(pfad + name, deFile);
                                 }
                             } catch (e) {
                                 // Keine passende DE-Datei gefunden
@@ -12539,7 +12622,7 @@ async function scanDeOrdner() {
     await traverse(deOrdnerHandle);
     if (gefundeneDateien.length > 0) {
         gefundeneDateien.forEach(d => {
-            deAudioCache[d.fullPath] = d;
+            setDeAudioCacheEntry(d.fullPath, d);
         });
     }
 }
@@ -12635,7 +12718,7 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
     } catch {}
 
     // DE-Audio im Cache aktualisieren
-    deAudioCache[relativerPfad] = blob;
+    setDeAudioCacheEntry(relativerPfad, blob);
 }
 // =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
 
@@ -12727,12 +12810,12 @@ async function resolveDuplicateAfterCopy(relPath) {
     if (!oldInfo || !newInfo) return;
     if (pref === 'new') {
         await window.electronAPI.deleteDeFile(oldInfo.relPath);
-        delete deAudioCache[oldInfo.relPath];
+        deleteDeAudioCacheEntry(oldInfo.relPath);
         return;
     }
     if (pref === 'old') {
         await window.electronAPI.deleteDeFile(newInfo.relPath);
-        delete deAudioCache[newInfo.relPath];
+        deleteDeAudioCacheEntry(newInfo.relPath);
         return;
     }
     const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
@@ -12740,10 +12823,10 @@ async function resolveDuplicateAfterCopy(relPath) {
     if (res.remember) storage.setItem('dupPref_' + base, res.choice);
     if (res.choice === 'new') {
         await window.electronAPI.deleteDeFile(oldInfo.relPath);
-        delete deAudioCache[oldInfo.relPath];
+        deleteDeAudioCacheEntry(oldInfo.relPath);
     } else {
         await window.electronAPI.deleteDeFile(newInfo.relPath);
-        delete deAudioCache[newInfo.relPath];
+        deleteDeAudioCacheEntry(newInfo.relPath);
     }
 }
 // =========================== DUPLICATE-CHECK END ============================
@@ -12770,7 +12853,7 @@ async function handleDeUpload(input) {
         for (const d of dups) {
             if (d.relPath !== aktuellerUploadPfad) {
                 await window.electronAPI.deleteDeFile(d.relPath);
-                delete deAudioCache[d.relPath];
+                deleteDeAudioCacheEntry(d.relPath);
             }
         }
         await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
@@ -12781,7 +12864,7 @@ async function handleDeUpload(input) {
         if (window.electronAPI.backupDeFile) {
             await window.electronAPI.backupDeFile(aktuellerUploadPfad);
         }
-        deAudioCache[aktuellerUploadPfad] = `sounds/DE/${aktuellerUploadPfad}`;
+        setDeAudioCacheEntry(aktuellerUploadPfad, `sounds/DE/${aktuellerUploadPfad}`);
         await updateHistoryCache(aktuellerUploadPfad);
     } else {
         await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
@@ -15689,7 +15772,7 @@ async function resetDeEdit() {
         if (window.electronAPI && window.electronAPI.restoreDeFile) {
             await window.electronAPI.restoreDeFile(relPath);
             await window.electronAPI.deleteDeBackupFile(relPath);
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
             originalEditBuffer = await loadAudioBuffer(deAudioCache[relPath]);
         } else if (deOrdnerHandle) {
             const teile = relPath.split('/');
@@ -15711,7 +15794,7 @@ async function resetDeEdit() {
             await w.write(fileData);
             await w.close();
             await quell.removeEntry(name);
-            deAudioCache[relPath] = fileData;
+            setDeAudioCacheEntry(relPath, fileData);
             originalEditBuffer = await loadAudioBuffer(fileData);
         }
         editStartTrim = 0;
@@ -15914,7 +15997,7 @@ async function applyDeEdit(param = {}) {
             for (const d of dups) {
                 if (d.relPath !== relPath) {
                     await window.electronAPI.deleteDeFile(d.relPath);
-                    delete deAudioCache[d.relPath];
+                    deleteDeAudioCacheEntry(d.relPath);
                 }
             }
             // Pfadbereinigung, da manche Pfade bereits "sounds/DE/" enthalten
@@ -15928,7 +16011,7 @@ async function applyDeEdit(param = {}) {
                 throw err;
             }
             // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-            deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+            setDeAudioCacheEntry(cleanPath, `sounds/DE/${relPath}`);
             await updateHistoryCache(cleanPath);
             URL.revokeObjectURL(url);
             finalBuffer = newBuffer;
@@ -15994,7 +16077,7 @@ async function applyDeEdit(param = {}) {
             const blob = bufferToWav(newBuffer);
             await speichereUebersetzungsDatei(blob, relPath);
             // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-            deAudioCache[cleanPath] = blob;
+            setDeAudioCacheEntry(cleanPath, blob);
             await updateHistoryCache(cleanPath);
             finalBuffer = newBuffer;
         }
@@ -17878,7 +17961,7 @@ function quickAddLevel(chapterName) {
                 if (window.electronAPI.backupDeFile) {
                     await window.electronAPI.backupDeFile(zielPfad);
                 }
-                deAudioCache[zielPfad] = `sounds/DE/${zielPfad}`;
+                setDeAudioCacheEntry(zielPfad, `sounds/DE/${zielPfad}`);
                 await updateHistoryCache(zielPfad);
             } else {
                 await speichereUebersetzungsDatei(datei, zielPfad);
@@ -18068,7 +18151,7 @@ function quickAddLevel(chapterName) {
             const rel = dest.replace(/^sounds\/DE\//i, '');
             // Vorhandene Datei vor Überschreiben prüfen
             const vorhandene = getDeFilePath(file);
-            deAudioCache[rel] = dest;
+            setDeAudioCacheEntry(rel, dest);
             if (lang === 'emo') file.emoDubReady = true; else file.dubReady = true;
             if (vorhandene) {
                 file.version = (file.version || 1) + 1;

@@ -3,6 +3,25 @@ const API = "https://api.elevenlabs.io/v1";
 const storage = window.storage;
 let csvLineEnding = (typeof storage !== "undefined" && storage.getItem("hla_lineEnding")) || (typeof global !== "undefined" && global.csvLineEnding) || "LF";
 
+// Hilfsfunktionen, um den DE-Audio-Cache konsistent zu pflegen
+function writeDeAudioCache(key, value) {
+    if (!key) return;
+    if (typeof setDeAudioCacheEntry === 'function') {
+        setDeAudioCacheEntry(key, value);
+    } else {
+        deAudioCache[key] = value;
+    }
+}
+
+function removeDeAudioCache(key) {
+    if (!key) return;
+    if (typeof deleteDeAudioCacheEntry === 'function') {
+        deleteDeAudioCacheEntry(key);
+    } else {
+        delete deAudioCache[key];
+    }
+}
+
 // =========================== SHOWDUBBINGSETTINGS START ======================
 async function getDefaultVoiceSettings(apiKey) {
     const res = await fetch(`${API}/voices/settings/default`, {
@@ -738,7 +757,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         if (window.electronAPI && window.electronAPI.saveDeFile) {
             const buffer = await dubbedBlob.arrayBuffer();
             await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-            deAudioCache[relPath] = `sounds/DE/${relPath}`;
+            writeDeAudioCache(relPath, `sounds/DE/${relPath}`);
             await updateHistoryCache(relPath);
         } else {
             await speichereUebersetzungsDatei(dubbedBlob, relPath);
@@ -836,7 +855,7 @@ async function startEmoDubbing(fileId, settings = {}) {
 
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
-        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        writeDeAudioCache(cleanPath, `sounds/DE/${relPath}`);
         await updateHistoryCache(cleanPath);
     } else {
         await speichereUebersetzungsDatei(new Blob([buffer]), relPath);
@@ -1166,7 +1185,7 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
         const buffer = await dubbedBlob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
         // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        writeDeAudioCache(cleanPath, `sounds/DE/${relPath}`);
         await updateHistoryCache(cleanPath);
         addDubbingLog('Datei in Desktop-Version gespeichert');
     } else {
@@ -1227,7 +1246,7 @@ async function redownloadEmo(fileId) {
     if (window.electronAPI && window.electronAPI.saveDeFile) {
         const buf = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buf));
-        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        writeDeAudioCache(cleanPath, `sounds/DE/${relPath}`);
         await updateHistoryCache(cleanPath);
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
@@ -1308,7 +1327,7 @@ async function downloadDe(fileId, lang = 'de') {
         const buffer = await blob.arrayBuffer();
         await window.electronAPI.saveDeFile(relPath, new Uint8Array(buffer));
         // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
-        deAudioCache[cleanPath] = `sounds/DE/${relPath}`;
+        writeDeAudioCache(cleanPath, `sounds/DE/${relPath}`);
         await updateHistoryCache(cleanPath);
     } else {
         await speichereUebersetzungsDatei(blob, relPath);
