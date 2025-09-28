@@ -16,18 +16,36 @@ test('loadProjects zeigt Fehlerdialog bei Speicherproblemen', async () => {
     window.updateGlobalProjectProgress = jest.fn();
     window.selectProject = jest.fn();
     window.saveProjects = jest.fn();
+    global.saveProjects = window.saveProjects;
 
-    window.projects = [{ id: 1 }];
-    window.levelColors = {};
-    window.levelOrders = {};
-    window.levelIcons = {};
-    window.levelColorHistory = [];
+    const originalProjects = [{ id: 1, name: 'Alt' }];
+    const originalLevelColors = { foo: '#fff' };
+    const originalLevelOrders = { foo: ['bar'] };
+    const originalLevelIcons = { foo: '🔧' };
+    const originalLevelHistory = ['#fff'];
+
+    window.projects = originalProjects;
+    global.projects = window.projects;
+    window.levelColors = originalLevelColors;
+    global.levelColors = window.levelColors;
+    window.levelOrders = originalLevelOrders;
+    global.levelOrders = window.levelOrders;
+    window.levelIcons = originalLevelIcons;
+    global.levelIcons = window.levelIcons;
+    window.levelColorHistory = originalLevelHistory;
+    global.levelColorHistory = window.levelColorHistory;
     window.textDatabase = {};
     window.filePathDatabase = {};
 
     await loadProjects();
 
     expect(window.electronAPI.showProjectError).toHaveBeenCalled();
-    expect(window.projects).toEqual([]);
-    expect(window.renderProjects).toHaveBeenCalled();
+    expect(window.projects).toBe(originalProjects);
+    expect(projects).toBe(originalProjects);
+    expect(levelColors).toBe(originalLevelColors);
+    expect(levelOrders).toBe(originalLevelOrders);
+    expect(levelIcons).toBe(originalLevelIcons);
+    expect(levelColorHistory).toBe(originalLevelHistory);
+    expect(window.renderProjects).not.toHaveBeenCalled();
+    expect(window.saveProjects).not.toHaveBeenCalled();
 });
