@@ -365,6 +365,7 @@ let filePathDatabase       = {}; // Dateiname → Pfade
 let audioFileCache         = {}; // Zwischenspeicher für Audio-Dateien
 let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let deAudioCacheIndex      = {}; // Zusätzlicher Index für case-insensitive Zugriffe
+let deAudioCacheIndexFallbackTriggered = false; // Merker, ob eine Notfall-Reindizierung durchgeführt wurde
 let audioDurationCache    = {}; // Cache für ermittelte Audiodauern
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
@@ -1344,6 +1345,8 @@ function rebuildDeAudioCacheIndex() {
     for (const key of Object.keys(deAudioCache)) {
         updateDeAudioCacheIndex(key);
     }
+    // Nach einem manuellen Neuaufbau darf der Fallback wieder aktiv werden
+    deAudioCacheIndexFallbackTriggered = false;
 }
 
 // Schreibt einen Eintrag in den Cache und pflegt den Index
@@ -1372,10 +1375,16 @@ function findDeAudioCacheKeyInsensitive(key) {
             return realKey;
         }
     }
-    for (const candidate of Object.keys(deAudioCache)) {
-        if (normalizeDeAudioCacheKey(candidate) === norm) {
-            updateDeAudioCacheIndex(candidate);
-            return candidate;
+    // Nur einmalig eine geschützte Reindizierung anstoßen, um kaputte Indizes zu reparieren
+    if (!deAudioCacheIndexFallbackTriggered) {
+        rebuildDeAudioCacheIndex();
+        // Fallback-Zustand aktiv halten, damit dieser Weg nicht mehrfach genutzt wird
+        deAudioCacheIndexFallbackTriggered = true;
+        if (Object.prototype.hasOwnProperty.call(deAudioCacheIndex, norm)) {
+            const realKey = deAudioCacheIndex[norm];
+            if (Object.prototype.hasOwnProperty.call(deAudioCache, realKey)) {
+                return realKey;
+            }
         }
     }
     return null;

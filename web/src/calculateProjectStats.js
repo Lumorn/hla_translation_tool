@@ -19,11 +19,15 @@ function resolveDeAudioCache(options = {}) {
 function findCacheKeyInsensitive(cache, key) {
     if (!cache || !key) return null;
     if (Object.prototype.hasOwnProperty.call(cache, key)) return key;
-    if (typeof globalScope.findDeAudioCacheKeyInsensitive === 'function') {
-        const mapped = globalScope.findDeAudioCacheKeyInsensitive(key);
+    const helper = typeof globalScope.findDeAudioCacheKeyInsensitive === 'function'
+        ? globalScope.findDeAudioCacheKeyInsensitive
+        : null;
+    if (helper) {
+        const mapped = helper(key);
         if (mapped && Object.prototype.hasOwnProperty.call(cache, mapped)) {
             return mapped;
         }
+        return null;
     }
     const lower = key.toLowerCase();
     for (const existing of Object.keys(cache)) {
