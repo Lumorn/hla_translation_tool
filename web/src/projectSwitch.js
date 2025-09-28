@@ -100,7 +100,11 @@ function switchProjectSafe(projectId) {
         const data = await window.electronAPI.scanFolders();
         await verarbeiteGescannteDateien(data.enFiles);
         data.deFiles.forEach(f => {
-          deAudioCache[f.fullPath] = `sounds/DE/${f.fullPath}`;
+          if (typeof setDeAudioCacheEntry === 'function') {
+            setDeAudioCacheEntry(f.fullPath, `sounds/DE/${f.fullPath}`);
+          } else {
+            deAudioCache[f.fullPath] = `sounds/DE/${f.fullPath}`;
+          }
         });
       } else {
         // Browser-Fallback: lokale Ordner direkt scannen

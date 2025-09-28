@@ -124,6 +124,17 @@ describe('calculateProjectStats', () => {
         });
     });
 
+    test('de audio lookup behandelt Großbuchstaben in Endungen korrekt', () => {
+        global.deAudioCache = { '/game/file1.WAV': true };
+        const result = calculateProjectStats({
+            files: [
+                { enText: 'EN', deText: 'DE', fullPath: '/game/file1.wav' }
+            ]
+        });
+        expect(result.deAudioPercent).toBe(100);
+        expect(result.completedPercent).toBe(100);
+    });
+
     test('average and minimum gpt score are calculated', () => {
         const result = calculateProjectStats({
             files: [

@@ -15,6 +15,25 @@ function resolveDeAudioCache(options = {}) {
     return null;
 }
 
+// Sucht in einem Cache case-insensitiv nach einem Schlüssel
+function findCacheKeyInsensitive(cache, key) {
+    if (!cache || !key) return null;
+    if (Object.prototype.hasOwnProperty.call(cache, key)) return key;
+    if (typeof globalScope.findDeAudioCacheKeyInsensitive === 'function') {
+        const mapped = globalScope.findDeAudioCacheKeyInsensitive(key);
+        if (mapped && Object.prototype.hasOwnProperty.call(cache, mapped)) {
+            return mapped;
+        }
+    }
+    const lower = key.toLowerCase();
+    for (const existing of Object.keys(cache)) {
+        if (typeof existing === 'string' && existing.toLowerCase() === lower) {
+            return existing;
+        }
+    }
+    return null;
+}
+
 // Standardweg, um den Pfad zu einer DE-Audiodatei zu ermitteln
 function defaultGetDeFilePath(file, options = {}) {
     if (!file) return null;
@@ -22,8 +41,11 @@ function defaultGetDeFilePath(file, options = {}) {
     if (file.deAudio) return file.deAudio;
     if (file.hasDeAudio) return true;
     const cache = resolveDeAudioCache(options);
-    if (cache && file.fullPath && cache[file.fullPath]) {
-        return file.fullPath;
+    if (cache && file.fullPath) {
+        const matchedKey = findCacheKeyInsensitive(cache, file.fullPath);
+        if (matchedKey) {
+            return matchedKey;
+        }
     }
     return null;
 }

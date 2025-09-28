@@ -1,4 +1,11 @@
 # Changelog
+## 🛠️ Patch in 1.40.401
+* `web/src/main.js` führt einen case-insensitiven Index für `deAudioCache` ein, stellt Hilfsfunktionen zum Setzen/Löschen bereit und überträgt bestehende Einträge beim Cleanup automatisch in die neue Struktur.
+* `web/src/dubbing.js` und `web/src/projectSwitch.js` verwenden die neuen Helfer, damit alle Schreib- und Löschvorgänge den Index aktuell halten.
+* `web/src/calculateProjectStats.js` nutzt eine case-insensitive Suche, sodass `.WAV`- und `.MP3`-Dateien mit Großbuchstaben im Fortschrittsbalken korrekt erscheinen.
+* `tests/calculateProjectStats.test.js` ergänzt eine Prüfung, die die Erkennung von `.WAV`-Dateien mit Großbuchstaben absichert.
+* `README.md` beschreibt den case-insensitiven Audio-Abgleich für die Fortschrittsanzeige.
+* `CHANGELOG.md` dokumentiert die Umstellung auf den case-insensitiven Audio-Cache und die Auswirkungen auf die Statistiken.
 ## 🛠️ Patch in 1.40.400
 * `web/src/main.js` kapselt die Eingaben für Start- und End-Trim in `setTrimInputValueSafe`, deckelt alle Werte auf `editDurationMs` und sorgt dafür, dass `validateDeSelection()` nach Auto-Trim, Tempoabgleich und Speichern stabile Markierungen sieht.
 * `README.md` beschreibt die gedeckelten Trim-Felder sowie die manuelle Prüfung mit Auto-Trim, Tempo und anschließendem Speichern.
