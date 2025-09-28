@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.411
+* `web/src/main.js` akzeptiert bei `updateText` eine Optionsstruktur, mit der Sammelläufe das unmittelbare `saveCurrentProject()` überspringen und trotzdem den Dirty-Timer nutzen.
+* `web/src/main.js` setzt die neue Option in `generateEmotionalText` für vorab berechnete Sammeldurchläufe und stößt nach `Promise.all(workers)` eine einmalige Speicherung an.
+* `README.md` erklärt das gebündelte Speichern der Emotionstexte nach Sammellauf-Abschlüssen.
+* `CHANGELOG.md` hält die neue Sammelspeicher-Logik fest.
 ## 🛠️ Patch in 1.40.410
 * `web/src/main.js` nimmt vorberechnete Zeilenlisten samt Positions-Lookup entgegen, damit die Sammelgenerierung von Emotionstexten keine wiederholten `map`- und `indexOf`-Durchläufe mehr ausführt.
 * `README.md` beschreibt die optimierten Emotionstext-Läufe mit gemeinsamer Vorberechnung.

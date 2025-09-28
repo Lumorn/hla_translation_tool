@@ -65,7 +65,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
 * **Hintergrund-Übersetzungswarteschlange:** Automatische Übersetzungen laufen projektübergreifend weiter; beim Wechsel landen neue Projekte hinten in der Warteschlange und starten, sobald die aktuelle Übersetzung abgeschlossen ist.
 * **Fehlerfreie Auto-Übersetzungen nach Projektwechsel:** Die Warteschlange schreibt erkannte Ergebnisse jetzt sofort ins passende Projekt, sodass fertige Texte auch nach einem Wechsel oder Neustart zuverlässig in der Tabelle auftauchen.
-* **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen und generierte Emotionstexte werden unmittelbar dauerhaft gesichert.
+* **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen landen weiterhin sofort im Projekt; Sammelläufe der Emotionstexte bündeln ihre Änderungen und lösen danach ein gemeinsames Speichern aus.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
 * **Bereinigter Textvergleich:** Der Helfer `calculateTextSimilarity` verzichtet auf eine ungenutzte Wortmenge und behält alle Funktionen bei.
@@ -352,6 +352,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Copy‑Buttons:** 📋 neben jedem Textfeld für direktes Kopieren
 * **Emotionaler DE‑Text:** Unter jedem deutschen Textfeld befindet sich ein eigenes Feld mit violettem Hintergrund. Der Button „Emotional-Text (DE) generieren“ erstellt den Inhalt nun stets neu; ein 📋‑Knopf kopiert ihn.
 * **Emotionen (DE) generieren:** Der Button oberhalb der Tabelle erstellt jetzt für alle Zeilen neue Emotional-Text-Felder – vorhandene Inhalte werden überschrieben.
+* **Gebündeltes Speichern bei Sammelläufen:** Wenn du den Sammel-Button nutzt, landen alle frisch generierten Emotionstexte nach Abschluss in einem einzigen Speicherdurchlauf; der gewohnte Autosave-Timer bleibt dennoch aktiv.
 * **Anpassen‑Kürzen:** Direkt neben dem Generieren-Knopf passt ein weiterer Button den Emotional-Text auf die Länge der englischen Originalaufnahme an. Bei sehr kurzen EN-Zeilen darf der deutsche Text nun kreativ gekürzt und leicht umformuliert werden, unterschreitet dabei aber nie die Länge des Originals. Die Begründung unter dem violetten Feld erklärt weiterhin kurz, wie der Text auf z. B. "8,57 s" gebracht wurde.
 * **Verbessern:** Ein zusätzlicher Button bewertet die gesamte Übersetzung, zeigt drei verbesserte Fassungen des Emotional-Texts samt Begründung und blendet während der Analyse eine Lade-Animation ein.
 * **Eigenheiten bewahren:** Abgebrochene Sätze oder Fülllaute wie "äh" oder "mh" bleiben auch in gekürzten Emotional-Texten sinngemäß erhalten.
