@@ -2400,16 +2400,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (!entry) return;
                 pendingTranslations.delete(id);
                 const { file, resolve, projectId } = entry;
-                if (text) {
+                const safeText = typeof text === 'string' ? text : '';
+                const safeError = error ? String(error) : '';
+                if (safeText) {
                     // Erfolgreiche Übersetzung übernehmen
-                    file.autoTranslation = text;
+                    file.autoTranslation = safeText;
                 } else {
                     // Bei Fehler einen Hinweis eintragen und die genaue Ursache anzeigen
                     file.autoTranslation = '[Übersetzung fehlgeschlagen]';
-                    if (error) {
-                        console.error('Übersetzung:', error);
+                    if (safeError) {
+                        console.error('Übersetzung:', safeError);
                         if (typeof showToast === 'function') {
-                            showToast('Automatische Übersetzung fehlgeschlagen: ' + error, 'error');
+                            showToast('Automatische Übersetzung fehlgeschlagen: ' + safeError, 'error');
                         }
                     } else if (typeof showToast === 'function') {
                         showToast('Automatische Übersetzung fehlgeschlagen', 'error');
@@ -2434,7 +2436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 updateTranslationDisplay(file.id);
                 // Direkt speichern, damit übersetzte Texte auch nach Projektwechsel sichtbar sind
                 saveProjects();
-                resolve(text);
+                resolve(safeText);
                 updateTranslationQueueDisplay();
             });
         }

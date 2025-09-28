@@ -24,6 +24,7 @@ const { watchDownloadFolder, clearDownloadFolder, pruefeAudiodatei } = require('
 const { isDubReady } = require('../elevenlabs.js');
 const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../soundBackupUtils');
 const { saveSettings, loadSettings } = require('../settingsStore.ts');
+const { TranslationWorkerManager } = require('./translationWorker');
 // Fortschrittsbalken und FFmpeg für MP3->WAV-Konvertierung
 const ProgressBar = require('progress');
 const ffmpeg = require('ffmpeg-static');
@@ -898,30 +899,43 @@ app.whenReady().then(() => {
   });
   // =========================== DUPLICATE-HELPER END ==========================
 
-  // Uebersetzt EN-Text nach DE ueber ein Python-Skript
+  // Persistenter Übersetzungs-Worker für Argos Translate
+  const translationWorker = new TranslationWorkerManager(path.join(__dirname, '..', 'translate_text.py'));
+  translationWorker.on('worker-stderr', msg => console.error('[TranslateWorker]', msg.trim()));
+  translationWorker.on('worker-error', err => console.error('[TranslateWorker]', err));
+  translationWorker.on('worker-exit', (code, signal) => {
+    console.warn(`[TranslateWorker] neu starten (code ${code}, signal ${signal})`);
+  });
+
+  // Uebersetzt EN-Text nach DE über den persistenten Worker
   ipcMain.on('translate-text', (event, { id, text }) => {
+    const sender = event.sender;
+    const destroyListener = () => {
+      // Anfrage verwerfen, falls der Renderer geschlossen wurde
+      translationWorker.dropRequest(id);
+    };
+    sender.once('destroyed', destroyListener);
     try {
-      const proc = spawn(
-        'python',
-        [path.join(__dirname, '..', 'translate_text.py')],
-        { env: { ...process.env, PYTHONIOENCODING: 'utf-8' } }
-      );
-      let out = '';
-      let err = '';
-      // Ausgaben des Skripts sammeln
-      proc.stdout.on('data', d => { out += d.toString(); });
-      // Fehlerausgaben gesondert puffern, um Hinweise geben zu können
-      proc.stderr.on('data', d => { err += d.toString(); });
-      proc.on('close', code => {
-        const result = code === 0 ? out.trim() : '';
-        // Fehlertext ebenfalls mitsenden, damit die Oberfläche ihn anzeigen kann
-        event.sender.send('translate-finished', { id, text: result, error: err.trim() });
+      translationWorker.queueRequest({
+        id,
+        text,
+        handler: ({ text: resultText, error }) => {
+          sender.removeListener('destroyed', destroyListener);
+          if (!sender.isDestroyed()) {
+            sender.send('translate-finished', {
+              id,
+              text: resultText,
+              error: error || '',
+            });
+          }
+        },
       });
-      proc.stdin.write(text);
-      proc.stdin.end();
     } catch (e) {
       console.error('[Translate]', e);
-      event.sender.send('translate-finished', { id, text: '', error: e.message });
+      sender.removeListener('destroyed', destroyListener);
+      if (!sender.isDestroyed()) {
+        sender.send('translate-finished', { id, text: '', error: e.message });
+      }
     }
   });
 
@@ -974,6 +988,7 @@ app.whenReady().then(() => {
   });
 
   mainWindow = createWindow();
+  translationWorker.start();
 
   // Download-Ordner überwachen (automatischer Import)
   watchDownloadFolder(
@@ -1028,7 +1043,14 @@ app.whenReady().then(() => {
   });
 
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) mainWindow = createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) {
+      mainWindow = createWindow();
+    }
+    translationWorker.start();
+  });
+
+  app.on('before-quit', () => {
+    translationWorker.dispose();
   });
 });
 

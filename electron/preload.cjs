@@ -73,7 +73,14 @@ if (typeof require !== 'function') {
     onSaveError: cb => ipcRenderer.on('save-error', (e, msg) => cb(msg)),
     join: (...segments) => path.join(...segments),
     translateText: (id, text) => ipcRenderer.send('translate-text', { id, text }),
-    onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => cb(data)),
+    onTranslateFinished: cb => ipcRenderer.on('translate-finished', (e, data) => {
+      const payload = {
+        id: data?.id,
+        text: typeof data?.text === 'string' ? data.text : '',
+        error: data?.error ? String(data.error) : '',
+      };
+      cb(payload);
+    }),
     // Half-Life: Alyx starten (Modus, Sprache, Map und Cheat-Preset)
     startHla: (mode, lang, map, preset) => ipcRenderer.invoke('start-hla', { mode, lang, map, preset }),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),

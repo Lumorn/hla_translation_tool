@@ -1,4 +1,12 @@
 # Changelog
+## 🛠️ Patch in 1.40.404
+* `translate_text.py` bietet einen `--server`-Modus, der Argos einmal lädt, JSON-Aufträge annimmt und Antworten zeilenweise ausgibt.
+* `electron/main.js` startet beim App-Start einen dauerhaften Übersetzungs-Worker, verwaltet Rückmeldungen pro IPC-Anfrage und setzt Neustarts inklusive Auftrags-Retrys um.
+* `electron/preload.cjs` und `web/src/main.js` normalisieren die Worker-Rückmeldungen, damit `pendingTranslations` auch bei Fehlern konsistente Daten erhalten.
+* `electron/translationWorker.js` kapselt die Verwaltung des Python-Prozesses und stellt eine wiederverwendbare Neustartlogik bereit.
+* `tests/translationWorker.test.js` simuliert Worker-Start und Absturz, prüft den erneuten Versand offener Aufträge.
+* `README.md` dokumentiert den Servermodus, den persistenten Worker und die manuelle QA zum Neustart-Test.
+* `CHANGELOG.md` hält den neuen Servermodus samt Tests fest.
 ## 🛠️ Patch in 1.40.403
 * `web/src/main.js` synchronisiert beim Scrollen und bei Nummern-Sprüngen die `selectedRow`-Markierung, damit Pfeiltasten, Nummern-Schaltflächen und manuelles Scrollen dieselbe Zeile hervorheben.
 * `README.md` beschreibt die gemeinsame Hervorhebung der Nummern-Navigation ohne Sprünge.
