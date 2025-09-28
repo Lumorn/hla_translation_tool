@@ -4487,7 +4487,7 @@ function addFiles() {
         }
 
         // Generiert den Emotional-Text für eine Zeile
-        async function generateEmotionalText(rowId) {
+        async function generateEmotionalText(rowId, { precomputedLines = null, positionLookup = null } = {}) {
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.generate-emotions-btn');
@@ -4508,14 +4508,21 @@ function addFiles() {
                     level: currentProject?.levelName || '',
                     scene: currentProject?.name || ''
                 };
-                // Kompletten Dialogverlauf sammeln
-                const lines = files.map((f, idx) => ({
+                // Vorberechnete Daten nutzen, falls vorhanden, um bei Sammelläufen unnötige Arbeit zu sparen
+                const lines = precomputedLines || files.map((f, idx) => ({
                     position: idx + 1,
                     speaker: f.folder || '',
                     text_en: f.enText || '',
                     text_de: f.deText || ''
                 }));
-                const targetPosition = files.indexOf(file) + 1;
+                let targetPosition = null;
+                if (positionLookup && positionLookup.has(file.id)) {
+                    targetPosition = positionLookup.get(file.id);
+                }
+                if (targetPosition == null) {
+                    const fallbackIndex = files.indexOf(file);
+                    targetPosition = fallbackIndex >= 0 ? fallbackIndex + 1 : 1;
+                }
                 const res = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
                 area.value = res.text || '';
                 file.emoReason = res.reason || '';
@@ -4531,6 +4538,7 @@ function addFiles() {
                 updateText(file.id, 'emo', area.value, true);
             }
             btn.disabled = false;
+            btn.classList.remove('loading');
         }
 
         // Passt den Emotional-Text an die EN-Länge an
@@ -4670,10 +4678,20 @@ function addFiles() {
             let done = 0;
             const max = 3;
             const queue = [...ids];
+            // Vorberechnete Zeilenliste und Positions-Lookup, damit jede Worker-Runde ohne erneutes Mapping auskommt
+            const precomputedLines = files.map((f, idx) => ({
+                position: idx + 1,
+                speaker: f.folder || '',
+                text_en: f.enText || '',
+                text_de: f.deText || ''
+            }));
+            const positionLookup = new Map();
+            files.forEach((f, idx) => positionLookup.set(f.id, idx + 1));
+
             async function worker() {
                 while (queue.length) {
                     const id = queue.shift();
-                    await generateEmotionalText(id);
+                    await generateEmotionalText(id, { precomputedLines, positionLookup });
                     done++;
                     btn.textContent = `Generiere... (${done}/${ids.length})`;
                 }
