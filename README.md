@@ -196,6 +196,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Scores werden korrekt eingefügt, auch wenn ID und Score als Zeichenketten geliefert werden
 * **Robustere Zuordnung:** GPT-Ergebnisse finden jetzt auch dann die richtige Zeile, wenn die ID leicht abweicht
 * **String-Vergleich der IDs:** Datei-IDs werden als Strings abgeglichen, sodass auch Gleitkomma-IDs eindeutig zugeordnet werden
+* **Lückenlose GPT-Bewertung:** Teilantworten werden per ID zugeordnet, fehlende Zeilen automatisch nachgefordert und der Dialog hält den Fortschritt fest, bis alle Zeilen bewertet sind.
 * **Eigenständige Score-Komponente:** Tooltip und Klick sind in `web/src/scoreColumn.js` gekapselt
 * **Einheitliche Score-Klassen:** Die Funktion `scoreClass` vergibt überall die gleichen Farbstufen
 * **Feineres Bewertungsschema:** Ab 95 % wird der Score grün, zwischen 85 % und 94 % gelb

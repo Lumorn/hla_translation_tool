@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.407
+* `web/src/gptService.js` weist GPT-Antworten gezielt per ID zu, fordert fehlende Zeilen automatisch nach und protokolliert jede Nachforderung im Dialog, bis alle Bewertungen vorliegen oder ein Fehler ausgegeben wird.
+* `tests/gptService.test.js` simuliert Teilantworten und prüft, dass fehlende Zeilen nachgefordert werden und die Anfrage sich auf die offenen IDs konzentriert.
+* `README.md` beschreibt die lückenlose Nachforderung der GPT-Bewertungen samt Dialog-Log.
 ## 🛠️ Patch in 1.40.406
 * `web/src/storage/indexedDbBackend.js` liefert Fallback-Schlüssel unverändert zurück und behält für reguläre `misc:`-Einträge weiterhin das Präfix bei.
 * `tests/indexedDbBackend.test.js` prüft die Schlüsselrekonstruktion sowie das Zusammenspiel mit `syncProjectListWithStorage`.

@@ -272,10 +272,17 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
         }
     }
 
-    const results = [];
+    const resultsById = new Map();
     const chunkSize = 250;
     let canceled = false;
     let ui = null;
+    const maxAttemptsPerLine = 4;
+
+    // Kleiner Helfer zum Loggen im Fortschrittsdialog und in der Konsole
+    const logProgress = (text) => {
+        console.log('[GPT STATUS]', text);
+        if (ui) appendGptLog(ui, text);
+    };
 
     // Fortschrittsdialog mit Loganzeige nur im Browser
     if (typeof document !== 'undefined') {
@@ -285,36 +292,109 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
 
     for (let i = 0; i < uniqueLines.length && !canceled; i += chunkSize) {
         const chunk = uniqueLines.slice(i, i + chunkSize);
+        const pending = new Map();
+        chunk.forEach(line => {
+            const idStr = String(line.id);
+            pending.set(idStr, { line, attempts: 0 });
+        });
         if (ui) updateProgressDialog(ui, i, uniqueLines.length);
-        // Bei aktivem Reste-Modus Hinweis anhängen
-        const sys = restMode
+        const sysBase = restMode
             ? systemPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und stehen nicht in chronologischer Reihenfolge. Behandle jede Zeile unabhängig."
             : systemPrompt;
-        const messages = [
-            { role: 'system', content: sys },
-            { role: 'user', content: JSON.stringify({ scene, lines: chunk }) }
-        ];
-        const endpoint = usesResponsesEndpoint(model) ? 'responses' : 'chat';
-        const reqText = JSON.stringify({ endpoint, model, messages });
-        if (typeof window !== 'undefined' && window.debugLog) {
-            window.debugLog('[GPT REQUEST]', reqText);
-        }
-        console.log('[GPT REQUEST]', { endpoint, model, messages });
-        if (ui) appendGptLog(ui, '>> ' + reqText);
-        try {
-            const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
-            const clean = sanitizeJSONResponse(raw);
-            const arr = JSON.parse(clean);
+
+        // Baut eine Anfrage für eine Teilmenge der Zeilen und verarbeitet die Antwort
+        const requestSubset = async (subset) => {
+            const filtered = subset.filter(item => pending.has(String(item.id)));
+            if (filtered.length === 0) {
+                return;
+            }
+            filtered.forEach(item => {
+                const entry = pending.get(String(item.id));
+                if (entry) entry.attempts += 1;
+            });
+            const messages = [
+                { role: 'system', content: sysBase },
+                { role: 'user', content: JSON.stringify({ scene, lines: filtered }) }
+            ];
+            const endpoint = usesResponsesEndpoint(model) ? 'responses' : 'chat';
+            const reqText = JSON.stringify({ endpoint, model, messages });
+            if (typeof window !== 'undefined' && window.debugLog) {
+                window.debugLog('[GPT REQUEST]', reqText);
+            }
+            console.log('[GPT REQUEST]', { endpoint, model, messages });
+            if (ui) appendGptLog(ui, '>> ' + reqText);
+            let arr;
+            try {
+                const raw = await requestAssistantText({ messages, key, model, temperature: 0, retries });
+                const clean = sanitizeJSONResponse(raw);
+                arr = JSON.parse(clean);
+            } catch (e) {
+                if (ui) ui.overlay.remove();
+                throw new Error('API-Fehler: ' + (e && e.message ? e.message : e));
+            }
             const resText = JSON.stringify(arr);
             if (typeof window !== 'undefined' && window.debugLog) {
                 window.debugLog('[GPT RESPONSE]', resText);
             }
             console.log('[GPT RESPONSE]', arr);
             if (ui) appendGptLog(ui, '<< ' + resText);
-            results.push(...arr);
-        } catch (e) {
-            if (ui) ui.overlay.remove();
-            throw new Error('API-Fehler: ' + (e && e.message ? e.message : e));
+            if (!Array.isArray(arr)) {
+                if (ui) ui.overlay.remove();
+                throw new Error('Ungültige Antwort: GPT hat kein Array zurückgegeben');
+            }
+            let newlyStored = 0;
+            for (const item of arr) {
+                if (!item || typeof item !== 'object') {
+                    logProgress('⚠️ Antwort ohne Objektstruktur ignoriert.');
+                    continue;
+                }
+                if (typeof item.id === 'undefined' || item.id === null) {
+                    logProgress('⚠️ Antwort ohne ID ignoriert.');
+                    continue;
+                }
+                const idStr = String(item.id);
+                if (!pending.has(idStr) && !resultsById.has(idStr)) {
+                    logProgress(`⚠️ Antwort mit unbekannter ID ${idStr} übersprungen.`);
+                    continue;
+                }
+                if (!pending.has(idStr)) {
+                    logProgress(`ℹ️ Antwort für ID ${idStr} wurde bereits zuvor gespeichert.`);
+                    continue;
+                }
+                resultsById.set(idStr, { ...item });
+                pending.delete(idStr);
+                newlyStored += 1;
+                logProgress(`✔ Bewertung für Zeile ${idStr} übernommen.`);
+            }
+            if (newlyStored === 0) {
+                logProgress('⚠️ Diese Antwort enthielt keine neuen Bewertungen.');
+            }
+        };
+
+        await requestSubset(chunk);
+        while (pending.size > 0) {
+            const stillMissing = Array.from(pending.keys());
+            logProgress(`Noch offen: ${stillMissing.join(', ')}`);
+            const stalled = stillMissing.filter(id => {
+                const entry = pending.get(id);
+                return entry && entry.attempts >= maxAttemptsPerLine;
+            });
+            if (stalled.length > 0) {
+                if (ui) ui.overlay.remove();
+                throw new Error(`Unvollständige Bewertung: Keine Antwort für Zeilen ${stalled.join(', ')} erhalten.`);
+            }
+            const candidates = Array.from(pending.values());
+            candidates.sort((a, b) => b.attempts - a.attempts);
+            let nextBatch;
+            if (candidates[0].attempts >= 2) {
+                nextBatch = [candidates[0].line];
+            } else if (candidates.length > 5) {
+                nextBatch = candidates.slice(0, 5).map(entry => entry.line);
+            } else {
+                nextBatch = candidates.map(entry => entry.line);
+            }
+            logProgress(`Fordere ${nextBatch.length === 1 ? 'Zeile' : 'Zeilen'} ${nextBatch.map(l => l.id).join(', ')} erneut an.`);
+            await requestSubset(nextBatch);
         }
     }
 
@@ -324,7 +404,11 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
     // Ergebnisse auf alle Originalzeilen übertragen
     const expanded = [];
     link.forEach((uIdx, i) => {
-        const base = results[uIdx] || {};
+        const src = uniqueLines[uIdx];
+        const base = src ? resultsById.get(String(src.id)) : null;
+        if (!base) {
+            throw new Error(`Bewertung für Zeile ${src ? src.id : 'unbekannt'} fehlt.`);
+        }
         // projectId zur Ergebniszeile hinzufügen, damit nur passende Projekte Daten übernehmen
         expanded.push({ ...base, id: lines[i].id, projectId });
     });
