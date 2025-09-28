@@ -55,6 +55,9 @@ function switchProjectSafe(projectId) {
       projectAbort = new AbortController();
       // Event-Listener und Caches zurücksetzen
       detachAllEventListeners();
+      if (typeof window.cancelTranslationQueue === 'function') {
+        window.cancelTranslationQueue('Projektwechsel');
+      }
       clearInMemoryCachesHard();
       // Offenes Projekt schließen
       try { await closeProjectData(); } catch {}
