@@ -1021,6 +1021,10 @@ Startet das Werkzeug bereits im Datei-Modus, wird der LocalStorage auf alte Proj
 
 Wird der Zugriff auf das Origin Private File System blockiert – etwa im `file://`-Kontext mit strengen `worker-src`-Richtlinien –, speichert das IndexedDB-Backend große Dateien automatisch als Base64-Datenblöcke direkt in der Datenbank. Der Indikator zeigt dann **„Datei-Modus (Base64)“** an. Alle Inhalte bleiben damit trotz fehlender OPFS-Rechte zwischen Sitzungen erhalten und der lästige Konsolenfehler verschwindet.
 
+### Schlüssel-Kompatibilität
+
+Das IndexedDB-Backend rekonstruiert Schlüssel aus dem Fallback-Store unverändert und liefert z. B. `project:7:meta` wieder exakt so zurück. Reguläre `misc:`-Einträge behalten weiterhin ihr Präfix, sodass bestehende Aufrufer keine Änderungen benötigen. Die Startprüfung `syncProjectListWithStorage` erkennt dadurch auch nach einer Migration alle Projekt-IDs zuverlässig und ergänzt fehlende Listenplätze.
+
 ### Kontrolle
 
 Über `visualizeFileStorage('schlüssel')` lässt sich prüfen, ob ein bestimmter Eintrag ausschließlich im neuen Speichersystem liegt. Das Ergebnis wird im Statusbereich angezeigt.
