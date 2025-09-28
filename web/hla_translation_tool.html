@@ -72,20 +72,15 @@
                                 <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
                                 <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE)</button>
                                 <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
-                                <div class="menu-wrapper">
-                                    <button id="toolOverflowToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="toolOverflowMenu" aria-haspopup="true" aria-expanded="false">⋯</button>
-                                    <div class="workspace-dropdown" id="toolOverflowMenu" role="menu">
-                                        <button class="dropdown-item" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
-                                        <button class="dropdown-item" onclick="showZipImportDialog()">ZIP importieren</button>
-                                        <button class="dropdown-item" id="copyAssistantButton">Kopierhilfe</button>
-                                        <button class="dropdown-item" id="copyAssistant2Button">Kopierhilfe 2</button>
-                                        <button class="dropdown-item" id="copyAllEmosButton">Emotionen kopieren</button>
-                                        <button class="dropdown-item" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
-                                        <button class="dropdown-item" onclick="openDubbingLog()">📝 Protokoll</button>
-                                        <button class="dropdown-item" id="devToolsButton">🐞 DevTools</button>
-                                        <button class="dropdown-item" id="debugReportButton">📋 Debug-Bericht</button>
-                                    </div>
-                                </div>
+                                <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
+                                <button class="btn btn-secondary" onclick="showZipImportDialog()">ZIP importieren</button>
+                                <button class="btn btn-secondary" id="copyAssistantButton">Kopierhilfe</button>
+                                <button class="btn btn-secondary" id="copyAssistant2Button">Kopierhilfe 2</button>
+                                <button class="btn btn-secondary" id="copyAllEmosButton">Emotionen kopieren</button>
+                                <button class="btn btn-secondary" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
+                                <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                                <button class="btn btn-secondary" id="devToolsButton">🐞 DevTools</button>
+                                <button class="btn btn-secondary" id="debugReportButton">📋 Debug-Bericht</button>
                                 <div class="menu-wrapper settings-container">
                                     <button id="settingsButton" class="btn btn-secondary menu-toggle" onclick="toggleSettingsMenu()" aria-haspopup="true" aria-expanded="false">⚙️ Einstellungen</button>
                                     <div class="settings-menu workspace-dropdown" id="settingsMenu" role="menu">

@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.409
+* `web/hla_translation_tool.html` zeigt alle Werkzeug-Aktionen als direkte Buttons in der Hauptleiste und entfernt das separate Overflow-Menü.
+* `README.md` erläutert, dass sämtliche Werkzeuge ohne 3-Punkte-Menü erreichbar sind und lediglich die Einstellungen im Dropdown bleiben.
+* `CHANGELOG.md` hält die Umstellung auf permanente Werkzeug-Schaltflächen fest.
 ## 🛠️ Patch in 1.40.408
 * `web/hla_translation_tool.html` ordnet den GPT-Testdialog neu in drei Segmente und ergänzt eine Fortschrittsspalte mit Schrittanzeige, Log und Balken.
 * `web/src/style.css` liefert passende Layout- und Farbregeln für die neue GPT-Schrittanzeige, das Live-Log und den Zusammenfassungsbereich.

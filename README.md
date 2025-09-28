@@ -832,7 +832,7 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 Der Kopfbereich der Weboberfläche ist jetzt als kompakte Werkzeugzeile mit klar getrennten Sektionen aufgebaut:
 
 * **Projekt:** Import, Untertitel und Ordner-Browser liegen direkt neben dem Eingabefeld, das nun in einer schmalen Inline-Zeile mit dem „Hinzufügen“-Knopf sitzt.
-* **Werkzeuge:** GPT-Bewertung, Zufallsprojekt, Wörterliste sowie die beiden Emotionstools bleiben dauerhaft sichtbar; selten genutzte Helfer (Kopierhilfen, ZIP-Import, Audio-Zuordnung, Debug-Bericht usw.) wandern in ein gemeinsames Overflow-Menü (⋯).
+* **Werkzeuge:** GPT-Bewertung, Zufallsprojekt, Wörterliste, Emotionstools und sämtliche Spezialhelfer (Kopierhilfen, ZIP-Import, Audio-Zuordnung, Debug-Bericht usw.) stehen als direkte Buttons nebeneinander bereit – nur die Einstellungen liegen weiterhin im Dropdown.
 * **Medien:** Video-Manager und Half-Life: Alyx-Launcher teilen sich einen schlanken Block, in dem Modus, Sprache, optionales `+map`-Feld und Cheat-Dropdown direkt neben dem Startknopf angeordnet sind.
 * **System:** Alle Speicher-Anzeigen inklusive Wechsel-Schalter, Ordner-Öffner und Aufräumen sitzen im neuen „Verwaltung“-Dropdown – gemeinsam mit den Migrationsbefehlen und dem Statusmonitor.
 * **Suche & Verlauf:** Live-Suche, UT-Suche-Button, Kopieroptionen, Sortierungen, Fortschrittsstatistiken und Projekt-Playback laufen in einem durchgehenden Abschlusssegment zusammen.
