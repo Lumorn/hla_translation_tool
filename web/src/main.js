@@ -9445,22 +9445,64 @@ async function timeStretchBuffer(buffer, factor) {
     if (available < expected) {
         let deficit = expected - available;
 
-        // Linken Rand bis zum tatsächlich erkannten Beginn zurücknehmen
-        const reduceStartFull = Math.min(deficit, Math.max(0, start - detectedStart));
-        start -= reduceStartFull;
-        deficit -= reduceStartFull;
+        // Zuerst den rechten Rand bis zum erkannten Ende bzw. bis zum Mindestpolster entspannen
+        const endToDetected = Math.max(detectedEnd, padOutFrames);
+        const reduceEndDetected = Math.min(deficit, Math.max(0, end - endToDetected));
+        end -= reduceEndDetected;
+        deficit -= reduceEndDetected;
 
         if (deficit > 0) {
-            // Rechten Rand bis zum tatsächlich erkannten Ende zurücknehmen
-            const reduceEndFull = Math.min(deficit, Math.max(0, end - detectedEnd));
-            end -= reduceEndFull;
-            deficit -= reduceEndFull;
+            // Zusätzlich bis auf das reine Sicherheits-Polster zurücknehmen
+            const reduceEndPad = Math.min(deficit, Math.max(0, end - padOutFrames));
+            end -= reduceEndPad;
+            deficit -= reduceEndPad;
+        }
+
+        if (deficit > 0) {
+            // Linken Rand bis zum erkannten Beginn bzw. Mindestpolster entspannen
+            const startToDetected = Math.max(detectedStart, padOutFrames);
+            const reduceStartDetected = Math.min(deficit, Math.max(0, start - startToDetected));
+            start -= reduceStartDetected;
+            deficit -= reduceStartDetected;
+        }
+
+        if (deficit > 0) {
+            // Restliche Reserven bis auf das Polster aufbrauchen
+            const reduceStartPad = Math.min(deficit, Math.max(0, start - padOutFrames));
+            start -= reduceStartPad;
+            deficit -= reduceStartPad;
         }
 
         available = Math.max(0, out.length - start - end);
+
+        if (available < expected) {
+            let remaining = expected - available;
+            let startSlack = Math.max(0, start - padOutFrames);
+            let endSlack = Math.max(0, end - padOutFrames);
+
+            while (remaining > 0 && (startSlack > 0 || endSlack > 0)) {
+                if (startSlack > 0) {
+                    const takeStart = Math.min(startSlack, Math.ceil(remaining / 2));
+                    start -= takeStart;
+                    startSlack -= takeStart;
+                    remaining -= takeStart;
+                }
+                if (remaining <= 0) break;
+                if (endSlack > 0) {
+                    const takeEnd = Math.min(endSlack, remaining);
+                    end -= takeEnd;
+                    endSlack -= takeEnd;
+                    remaining -= takeEnd;
+                }
+            }
+
+            available = Math.max(0, out.length - start - end);
+        }
     }
 
-    const needsPadding = available < expected;
+    const slackStart = Math.max(0, start - padOutFrames);
+    const slackEnd = Math.max(0, end - padOutFrames);
+    const needsPadding = available < expected && slackStart === 0 && slackEnd === 0;
 
     let len = available;
     if (len < 0) len = 0;
