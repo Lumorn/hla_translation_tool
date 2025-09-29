@@ -9270,6 +9270,7 @@ async function timeStretchBuffer(buffer, factor) {
     if (buffer.numberOfChannels > 1) {
         out.getChannelData(1).set(Float32Array.from(outR));
     }
+    const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / factor)));
 
     // Tatsächliche Stille mit dynamischem Schwellwert suchen
     const thr = calculateDynamicSilenceThreshold(out);
@@ -9283,10 +9284,10 @@ async function timeStretchBuffer(buffer, factor) {
         if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
     }
     // Mindestens das vorab angehängte Polster entfernen, bevor weitere Sicherheitsgrenzen greifen
-    start = Math.max(start, padFrames);
-    end = Math.max(end, padFrames);
+    start = Math.max(start, padOutFrames);
+    end = Math.max(end, padOutFrames);
 
-    const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padFrames, padFrames);
+    const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padOutFrames, padOutFrames);
     start = limited.start;
     end = limited.end;
     let len = out.length - start - end;
