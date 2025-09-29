@@ -9183,22 +9183,52 @@ function calculateDynamicSilenceThreshold(buffer) {
 }
 
 // Begrenzt das Abschneiden auf echte Stille (>=100 ms) und maximal 10 % der Gesamtdauer
-function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate) {
+function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minStartFrames = 0, minEndFrames = 0) {
     const minSilenceFrames = Math.round(sampleRate * 0.1);
     const maxTrimFrames = Math.round(totalFrames * 0.1);
 
-    let safeStart = startFrames >= minSilenceFrames ? startFrames : 0;
-    let safeEnd = endFrames >= minSilenceFrames ? endFrames : 0;
-    const totalTrim = safeStart + safeEnd;
+    // Mindestabschneidewerte stets berücksichtigen, sie dürfen auch über zehn Prozent hinausgehen
+    const safeMinStart = Math.max(0, Math.min(minStartFrames, totalFrames));
+    const safeMinEnd = Math.max(0, Math.min(minEndFrames, Math.max(0, totalFrames - safeMinStart)));
 
-    if (totalTrim > maxTrimFrames && totalTrim > 0) {
-        const scale = maxTrimFrames / totalTrim;
-        safeStart = Math.floor(safeStart * scale);
-        safeEnd = Math.floor(safeEnd * scale);
+    let extraStart = Math.max(0, startFrames - safeMinStart);
+    let extraEnd = Math.max(0, endFrames - safeMinEnd);
+
+    if (extraStart < minSilenceFrames) extraStart = 0;
+    if (extraEnd < minSilenceFrames) extraEnd = 0;
+
+    let safeStart = safeMinStart + extraStart;
+    let safeEnd = safeMinEnd + extraEnd;
+
+    const minTotal = safeMinStart + safeMinEnd;
+    const totalTrim = safeStart + safeEnd;
+    const adjustableTrim = totalTrim - minTotal;
+    const maxAdjustable = Math.max(0, maxTrimFrames - minTotal);
+
+    if (adjustableTrim > maxAdjustable && adjustableTrim > 0) {
+        const scale = maxAdjustable / adjustableTrim;
+        safeStart = safeMinStart + Math.floor(extraStart * scale);
+        safeEnd = safeMinEnd + Math.floor(extraEnd * scale);
     }
 
-    if (safeStart < minSilenceFrames) safeStart = 0;
-    if (safeEnd < minSilenceFrames) safeEnd = 0;
+    // Sicherstellen, dass Start- und Endwert zusammen nicht über die Gesamtlänge hinausragen
+    if (safeStart + safeEnd > totalFrames) {
+        const overflow = safeStart + safeEnd - totalFrames;
+        if (safeEnd >= overflow) {
+            safeEnd -= overflow;
+        } else {
+            safeStart = Math.max(0, safeStart - (overflow - safeEnd));
+            safeEnd = 0;
+        }
+    }
+
+    // Zusätzliche Abschneidung muss weiterhin mindestens 100 ms Stille umfassen
+    if (safeStart - safeMinStart > 0 && safeStart - safeMinStart < minSilenceFrames) {
+        safeStart = safeMinStart;
+    }
+    if (safeEnd - safeMinEnd > 0 && safeEnd - safeMinEnd < minSilenceFrames) {
+        safeEnd = safeMinEnd;
+    }
 
     return { start: safeStart, end: safeEnd };
 }
@@ -9252,7 +9282,11 @@ async function timeStretchBuffer(buffer, factor) {
     for (; end < chData.length; end++) {
         if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
     }
-    const limited = applyTrimSafety(start, end, out.length, out.sampleRate);
+    // Mindestens das vorab angehängte Polster entfernen, bevor weitere Sicherheitsgrenzen greifen
+    start = Math.max(start, padFrames);
+    end = Math.max(end, padFrames);
+
+    const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padFrames, padFrames);
     start = limited.start;
     end = limited.end;
     let len = out.length - start - end;
@@ -9265,13 +9299,14 @@ async function timeStretchBuffer(buffer, factor) {
 
     // Laenge exakt auf das erwartete Ergebnis anpassen
     const expected = Math.round(buffer.length / factor);
-    if (trimmed.length !== expected) {
-        const exact = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
+    if (trimmed.length < expected) {
+        // Falls der Algorithmus minimal zu kurz wird, mit Stille auffüllen statt echtes Material abzuschneiden
+        const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
             const data = trimmed.getChannelData(ch);
-            exact.getChannelData(ch).set(data.subarray(0, Math.min(expected, data.length)));
+            paddedResult.getChannelData(ch).set(data.subarray(0, data.length));
         }
-        trimmed = exact;
+        trimmed = paddedResult;
     }
     ctx.close();
     return trimmed;
