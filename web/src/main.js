@@ -9421,8 +9421,10 @@ async function timeStretchBuffer(buffer, factor) {
     // Zusätzliche Sicherheitsgrenze: Wir beschneiden höchstens bis zu den erkannten Audio-Grenzen
     // zuzüglich eines kleinen Puffers, damit echte Signale nicht aus Versehen entfernt werden.
     const toleranceFrames = Math.max(0, Math.round(out.sampleRate * 0.01));
-    const startLimit = Math.min(totalFrames, detectedStart + toleranceFrames);
-    const endLimit = Math.min(totalFrames, detectedEnd + toleranceFrames);
+    // Start- und Endbegrenzung respektieren jetzt immer das Tempo-Polster,
+    // damit die spätere Kappung nie unter das gestretchte Sekundenfenster fällt.
+    const startLimit = Math.max(padOutFrames, Math.min(totalFrames, detectedStart + toleranceFrames));
+    const endLimit = Math.max(padOutFrames, Math.min(totalFrames, detectedEnd + toleranceFrames));
     if (start > startLimit) {
         start = Math.max(0, startLimit);
     }
@@ -9430,12 +9432,34 @@ async function timeStretchBuffer(buffer, factor) {
         end = Math.max(0, endLimit);
     }
     if (start + end > totalFrames) {
-        const overflow = start + end - totalFrames;
-        if (end >= overflow) {
-            end -= overflow;
-        } else {
-            start = Math.max(0, start - (overflow - end));
-            end = 0;
+        let overflow = start + end - totalFrames;
+        const minStart = Math.min(padOutFrames, totalFrames);
+        const minEnd = Math.min(padOutFrames, Math.max(0, totalFrames - minStart));
+
+        // Überschüssige Frames zuerst aus den Reserven oberhalb des Polsters entfernen.
+        const endSlack = Math.max(0, end - minEnd);
+        const reduceEnd = Math.min(endSlack, overflow);
+        end -= reduceEnd;
+        overflow -= reduceEnd;
+
+        const startSlack = Math.max(0, start - minStart);
+        const reduceStart = Math.min(startSlack, overflow);
+        start -= reduceStart;
+        overflow -= reduceStart;
+
+        // Verbleibenden Überlauf nur noch auf beide Seiten verteilen, wenn das Mindestpolster
+        // nicht mehr vollständig gehalten werden kann.
+        if (overflow > 0) {
+            if (end >= overflow) {
+                end -= overflow;
+                overflow = 0;
+            } else {
+                overflow -= end;
+                end = 0;
+            }
+        }
+        if (overflow > 0) {
+            start = Math.max(0, start - overflow);
         }
     }
 
