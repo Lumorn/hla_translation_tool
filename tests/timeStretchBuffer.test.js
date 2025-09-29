@@ -137,4 +137,13 @@ describe('timeStretchBuffer-Helfer', () => {
         }
         expect(result.end).toBeLessThanOrEqual(maxTrim);
     });
+
+    test('Trim-Absicherung respektiert übergebene Mindestwerte unabhängig vom Zehn-Prozent-Limit', () => {
+        const sampleRate = 48000;
+        const totalFrames = sampleRate * 5; // 5 Sekunden
+        const minFrames = sampleRate; // Eine Sekunde Stille als Mindestwert
+        const result = helpers.__test_applyTrimSafety(minFrames, minFrames, totalFrames, sampleRate, minFrames, minFrames);
+        expect(result.start).toBe(minFrames);
+        expect(result.end).toBe(minFrames);
+    });
 });

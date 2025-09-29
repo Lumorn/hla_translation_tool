@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.421
+* `web/src/main.js` entfernt beim Time-Stretch mindestens das bekannte Sekundenpolster, bevor die Zehn-Prozent-Grenze greift, und füllt Längendifferenzen nur noch mit Stille auf.
+* `tests/timeStretchBuffer.test.js` prüft die neuen Mindestwerte für den Polstertrimm.
+* `README.md` beschreibt den garantierten Polsterabzug und die stille Nullauffüllung.
 ## 🛠️ Patch in 1.40.420
 * `web/src/main.js` berechnet die finale Laufzeit jetzt aus dem unveränderten Originalpuffer und zieht Trims erst danach ab, sodass Pausenentfernung und Tempo-Auto-Abgleich konsistente Zielwerte erhalten.
 * `README.md` dokumentiert die originalbasierte Laufzeitberechnung für die Längenanzeige im Editor.
