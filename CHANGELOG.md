@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.422
+* `web/src/main.js` skaliert das Stillepolster nach dem Zeitfaktor, entfernt exakt die gestreckte Länge an Start und Ende und übergibt die Werte an die Sicherheitsprüfung.
+* `README.md` erwähnt die faktorbasierte Polster-Skalierung für Auto-Tempo kombiniert mit Pausenentfernung.
+
 ## 🛠️ Patch in 1.40.421
 * `web/src/main.js` entfernt beim Time-Stretch mindestens das bekannte Sekundenpolster, bevor die Zehn-Prozent-Grenze greift, und füllt Längendifferenzen nur noch mit Stille auf.
 * `tests/timeStretchBuffer.test.js` prüft die neuen Mindestwerte für den Polstertrimm.
