@@ -1,6 +1,6 @@
 /** @jest-environment jsdom */
 // Prüft den dynamischen Stille-Schwellwert und die Trim-Absicherung beim Time-Stretching
-const { beforeEach, describe, expect, test } = require('@jest/globals');
+const { afterAll, beforeEach, describe, expect, test } = require('@jest/globals');
 
 jest.mock('../../elevenlabs', () => ({
     downloadDubbingAudio: jest.fn(),
@@ -37,6 +37,12 @@ jest.mock('../web/src/calculateProjectStats.js', () => ({
 }), { virtual: true });
 
 let helpers;
+const originalDocGetElementById = document.getElementById;
+const originalAddEventListener = window.addEventListener;
+const originalRemoveEventListener = window.removeEventListener;
+const originalLocalStorage = window.localStorage;
+const originalAudioContext = window.AudioContext;
+const originalWebkitAudioContext = window.webkitAudioContext;
 
 function createElementStub() {
     return {
@@ -61,8 +67,6 @@ function createElementStub() {
 beforeEach(() => {
     jest.resetModules();
     document.getElementById = jest.fn(() => createElementStub());
-    document.querySelector = jest.fn(() => null);
-    document.querySelectorAll = jest.fn(() => []);
     window.addEventListener = jest.fn();
     window.removeEventListener = jest.fn();
     window.localStorage = {
@@ -88,6 +92,15 @@ beforeEach(() => {
     window.webkitAudioContext = window.AudioContext;
     global.storage = window.storage;
     helpers = require('../web/src/main.js');
+});
+
+afterAll(() => {
+    if (originalDocGetElementById) document.getElementById = originalDocGetElementById;
+    if (originalAddEventListener) window.addEventListener = originalAddEventListener;
+    if (originalRemoveEventListener) window.removeEventListener = originalRemoveEventListener;
+    if (originalLocalStorage) window.localStorage = originalLocalStorage;
+    if (originalAudioContext) window.AudioContext = originalAudioContext;
+    if (originalWebkitAudioContext) window.webkitAudioContext = originalWebkitAudioContext;
 });
 
 function createStubBuffer(channels, sampleRate = 48000) {
@@ -185,5 +198,50 @@ describe('timeStretchBuffer-Helfer', () => {
         const silence = helpers.__test_estimateStretchSilence(buffer);
         expect(silence.start).toBe(0);
         expect(silence.end).toBeLessThan(5);
+    });
+
+    test('Auto-Pausen und Turbo lassen sehr leises Fade-out unangetastet', () => {
+        const sampleRate = 48000;
+        const length = sampleRate * 2; // 2 Sekunden mit langem Ausklang
+        const data = new Float32Array(length);
+        const fadeStart = Math.floor(length * 0.7);
+        for (let i = 0; i < length; i++) {
+            if (i < fadeStart) {
+                data[i] = Math.sin(i / 30) * 0.12;
+            } else {
+                const t = (i - fadeStart) / (length - fadeStart);
+                data[i] = 0.0025 + (1 - t) * 0.006;
+            }
+            if (i % 97 === 0) {
+                data[i] += 0.0002 * (i % 2 === 0 ? 1 : -1);
+            }
+        }
+        const buffer = {
+            numberOfChannels: 1,
+            length,
+            sampleRate,
+            getChannelData: () => data
+        };
+
+        const threshold = helpers.__test_determineAdaptiveSilenceThreshold(buffer);
+        const pauses = helpers.__test_detectPausesInBuffer(buffer, 300, threshold);
+        expect(pauses).toHaveLength(0);
+
+        const trim = helpers.__test_detectSilenceTrim(buffer, threshold);
+        expect(trim.start).toBe(0);
+        expect(trim.end).toBeLessThanOrEqual(1);
+
+        const trimmed = helpers.removeRangesFromBuffer(buffer, pauses);
+        const trimmedData = trimmed.getChannelData(0);
+        const tailSlice = trimmedData.slice(trimmedData.length - Math.floor(sampleRate * 0.1));
+        let maxTail = 0;
+        for (let i = 0; i < tailSlice.length; i++) {
+            const val = Math.abs(tailSlice[i]);
+            if (val > maxTail) maxTail = val;
+        }
+        expect(maxTail).toBeGreaterThan(0.002);
+
+        const turbo = helpers.__test_estimateStretchSilence(trimmed);
+        expect(turbo.end).toBeLessThan(10);
     });
 });
