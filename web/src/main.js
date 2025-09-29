@@ -9241,6 +9241,132 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
     return Math.max(1e-6, threshold);
 }
 
+// Ermittelt sichere Abschneidewerte für ein gepaddetes Signal anhand der aktuellen Schwelle
+function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold) {
+    let start = 0;
+    let end = 0;
+    for (; start < totalFrames; start++) {
+        let above = false;
+        for (const channel of channelData) {
+            if (Math.abs(channel[start]) > threshold) {
+                above = true;
+                break;
+            }
+        }
+        if (above) break;
+    }
+    for (; end < totalFrames; end++) {
+        const idx = totalFrames - 1 - end;
+        let above = false;
+        for (const channel of channelData) {
+            if (Math.abs(channel[idx]) > threshold) {
+                above = true;
+                break;
+            }
+        }
+        if (above) break;
+    }
+
+    const detectedStart = start;
+    const detectedEnd = end;
+
+    start = Math.max(start, padFrames);
+    end = Math.max(end, padFrames);
+
+    const minSilenceWindow = Math.max(1, Math.round(sampleRate * 0.1));
+    if (start > padFrames) {
+        const hasWindow = hasContinuousSilence(channelData, padFrames, start, threshold, minSilenceWindow);
+        if (!hasWindow) {
+            start = padFrames;
+        }
+    }
+    if (end > padFrames) {
+        const tailStart = Math.max(0, totalFrames - end);
+        const tailEnd = Math.min(totalFrames, totalFrames - padFrames);
+        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, threshold, minSilenceWindow);
+        if (!hasWindow) {
+            end = padFrames;
+        }
+    }
+
+    const limited = applyTrimSafety(start, end, totalFrames, sampleRate, padFrames, padFrames);
+    start = limited.start;
+    end = limited.end;
+
+    const toleranceFrames = Math.max(0, Math.round(sampleRate * 0.01));
+    const startLimit = Math.max(padFrames, Math.min(totalFrames, detectedStart + toleranceFrames));
+    const endLimit = Math.max(padFrames, Math.min(totalFrames, detectedEnd + toleranceFrames));
+    if (start > startLimit) {
+        start = Math.max(0, startLimit);
+    }
+    if (end > endLimit) {
+        end = Math.max(0, endLimit);
+    }
+
+    if (start + end > totalFrames) {
+        let overflow = start + end - totalFrames;
+        const minStart = Math.min(padFrames, totalFrames);
+        const minEnd = Math.min(padFrames, Math.max(0, totalFrames - minStart));
+
+        const endSlack = Math.max(0, end - minEnd);
+        const reduceEnd = Math.min(endSlack, overflow);
+        end -= reduceEnd;
+        overflow -= reduceEnd;
+
+        const startSlack = Math.max(0, start - minStart);
+        const reduceStart = Math.min(startSlack, overflow);
+        start -= reduceStart;
+        overflow -= reduceStart;
+
+        if (overflow > 0) {
+            if (end >= overflow) {
+                end -= overflow;
+                overflow = 0;
+            } else {
+                overflow -= end;
+                end = 0;
+            }
+        }
+        if (overflow > 0) {
+            start = Math.max(0, start - overflow);
+        }
+    }
+
+    return { start, end, detectedStart, detectedEnd };
+}
+
+// Schätzt die nutzbare Randstille eines Buffers für das Turbo-Stretching
+function estimateStretchableSilence(buffer) {
+    if (!buffer || !buffer.sampleRate || buffer.length === 0) {
+        return { start: 0, end: 0 };
+    }
+
+    const sr = buffer.sampleRate;
+    const padFrames = Math.round(sr * 1.0);
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, sr);
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const target = padded.getChannelData(ch);
+        target.set(buffer.getChannelData(ch), padFrames);
+    }
+    ctx.close();
+
+    const threshold = calculateDynamicSilenceThreshold(padded, padFrames);
+    const channelData = [];
+    for (let ch = 0; ch < padded.numberOfChannels; ch++) {
+        channelData.push(padded.getChannelData(ch));
+    }
+
+    const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold);
+    const extraStart = Math.max(0, start - padFrames);
+    const extraEnd = Math.max(0, end - padFrames);
+
+    return {
+        start: Math.round(extraStart * 1000 / sr),
+        end: Math.round(extraEnd * 1000 / sr)
+    };
+}
+
 // Prüft, ob in einem Bereich ein ausreichend langes, zusammenhängendes Stillefenster existiert
 function hasContinuousSilence(channelData, startIndex, endIndex, threshold, windowFrames) {
     const rangeLength = Math.max(0, endIndex - startIndex);
@@ -9370,57 +9496,16 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         channelData.push(out.getChannelData(ch));
     }
 
-    let start = 0;
-    let end = 0;
     const totalFrames = out.length;
-    for (; start < totalFrames; start++) {
-        let above = false;
-        for (const channel of channelData) {
-            if (Math.abs(channel[start]) > thr) {
-                above = true;
-                break;
-            }
-        }
-        if (above) break;
-    }
-    for (; end < totalFrames; end++) {
-        const idx = totalFrames - 1 - end;
-        let above = false;
-        for (const channel of channelData) {
-            if (Math.abs(channel[idx]) > thr) {
-                above = true;
-                break;
-            }
-        }
-        if (above) break;
-    }
-
-    const detectedStart = start;
-    const detectedEnd = end;
-
-    // Mindestens das vorab angehängte Polster entfernen, bevor weitere Sicherheitsgrenzen greifen
-    start = Math.max(start, padOutFrames);
-    end = Math.max(end, padOutFrames);
-
-    const minSilenceWindow = Math.max(1, Math.round(out.sampleRate * 0.1));
-    if (start > padOutFrames) {
-        const hasWindow = hasContinuousSilence(channelData, padOutFrames, start, thr, minSilenceWindow);
-        if (!hasWindow) {
-            start = padOutFrames;
-        }
-    }
-    if (end > padOutFrames) {
-        const tailStart = Math.max(0, totalFrames - end);
-        const tailEnd = Math.min(totalFrames, totalFrames - padOutFrames);
-        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, thr, minSilenceWindow);
-        if (!hasWindow) {
-            end = padOutFrames;
-        }
-    }
-
-    const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padOutFrames, padOutFrames);
-    start = limited.start;
-    end = limited.end;
+    const { start: baseStart, end: baseEnd, detectedStart, detectedEnd } = analyzeEdgeTrim(
+        channelData,
+        totalFrames,
+        out.sampleRate,
+        padOutFrames,
+        thr
+    );
+    let start = baseStart;
+    let end = baseEnd;
 
     const maxExtraStartFrames = Number.isFinite(allowedTrimStartMs)
         ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * out.sampleRate / 1000))
@@ -9438,50 +9523,8 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         end = Math.min(end, maxEnd);
     }
 
-    // Zusätzliche Sicherheitsgrenze: Wir beschneiden höchstens bis zu den erkannten Audio-Grenzen
-    // zuzüglich eines kleinen Puffers, damit echte Signale nicht aus Versehen entfernt werden.
-    const toleranceFrames = Math.max(0, Math.round(out.sampleRate * 0.01));
-    // Start- und Endbegrenzung respektieren jetzt immer das Tempo-Polster,
-    // damit die spätere Kappung nie unter das gestretchte Sekundenfenster fällt.
-    const startLimit = Math.max(padOutFrames, Math.min(totalFrames, detectedStart + toleranceFrames));
-    const endLimit = Math.max(padOutFrames, Math.min(totalFrames, detectedEnd + toleranceFrames));
-    if (start > startLimit) {
-        start = Math.max(0, startLimit);
-    }
-    if (end > endLimit) {
-        end = Math.max(0, endLimit);
-    }
-    if (start + end > totalFrames) {
-        let overflow = start + end - totalFrames;
-        const minStart = Math.min(padOutFrames, totalFrames);
-        const minEnd = Math.min(padOutFrames, Math.max(0, totalFrames - minStart));
-
-        // Überschüssige Frames zuerst aus den Reserven oberhalb des Polsters entfernen.
-        const endSlack = Math.max(0, end - minEnd);
-        const reduceEnd = Math.min(endSlack, overflow);
-        end -= reduceEnd;
-        overflow -= reduceEnd;
-
-        const startSlack = Math.max(0, start - minStart);
-        const reduceStart = Math.min(startSlack, overflow);
-        start -= reduceStart;
-        overflow -= reduceStart;
-
-        // Verbleibenden Überlauf nur noch auf beide Seiten verteilen, wenn das Mindestpolster
-        // nicht mehr vollständig gehalten werden kann.
-        if (overflow > 0) {
-            if (end >= overflow) {
-                end -= overflow;
-                overflow = 0;
-            } else {
-                overflow -= end;
-                end = 0;
-            }
-        }
-        if (overflow > 0) {
-            start = Math.max(0, start - overflow);
-        }
-    }
+    // Start- und Endbegrenzung sind durch analyzeEdgeTrim bereits auf die erkannten Grenzen
+    // und das Tempo-Polster begrenzt, sodass hier nur noch die erlaubten Zusatztrims wirken.
 
     const expected = Math.round(buffer.length / safeFactor);
     let available = Math.max(0, out.length - start - end);
@@ -15422,7 +15465,7 @@ async function recomputeEditBuffer() {
 
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    const edgeSilence = detectSilenceTrim(trimmed);
+    const edgeSilence = estimateStretchableSilence(trimmed);
     const stretchOptions = {
         // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
         allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
@@ -16621,7 +16664,7 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            const edgeSilence = detectSilenceTrim(newBuffer);
+            const edgeSilence = estimateStretchableSilence(newBuffer);
             const stretchOptions = {
                 // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
                 allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
@@ -16716,7 +16759,7 @@ async function applyDeEdit(param = {}) {
             refreshIgnoreList();
             updateDeEditWaveforms();
             // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
-            const edgeSilence = detectSilenceTrim(newBuffer);
+            const edgeSilence = estimateStretchableSilence(newBuffer);
             const stretchOptions = {
                 allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
                 allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
@@ -19002,6 +19045,7 @@ if (typeof module !== "undefined" && module.exports) {
         updateGptSummary,
         insertEnglishSegment,
         timeStretchBuffer,
+        __test_estimateStretchSilence: estimateStretchableSilence,
         __test_calculateDynamicSilenceThreshold: calculateDynamicSilenceThreshold,
         __test_applyTrimSafety: applyTrimSafety,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung

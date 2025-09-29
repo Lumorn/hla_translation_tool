@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.433
+* `web/src/main.js` misst die für Turbo-/Auto-Tempo freigegebene Randstille jetzt mit derselben dynamischen Schwelle wie `timeStretchBuffer`, begrenzt die Zusatzkürzung weiterhin auf 120 ms je Seite und bewahrt dadurch auch sehr leise Fade-outs vor dem Abschneiden.
+* `tests/timeStretchBuffer.test.js` verifizieren, dass die Turbo-Freigabe leise Ausklänge unangetastet lässt.
+* `README.md` erwähnt den fade-schonenden Turbo-Abgleich mit gemeinsamer Schwellenbasis.
 ## 🛠️ Patch in 1.40.432
 * `web/src/main.js` begrenzt beim Turbo-/Auto-Tempo-Stretching den zusätzlichen Randbeschnitt auf maximal 120 ms erkannte Stille,
   übergibt die erlaubten Werte explizit an `timeStretchBuffer` und verhindert so, dass beim Beschleunigen echte Inhalte vom

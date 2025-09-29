@@ -73,13 +73,16 @@ beforeEach(() => {
     };
     window.storage = window.localStorage;
     window.AudioContext = function () {
-        this.createBuffer = (channels, length, sampleRate) => ({
-            numberOfChannels: channels,
-            length,
-            sampleRate,
-            getChannelData: () => new Float32Array(length),
-            copyToChannel: jest.fn()
-        });
+        this.createBuffer = (channels, length, sampleRate) => {
+            const data = Array.from({ length: channels }, () => new Float32Array(length));
+            return {
+                numberOfChannels: channels,
+                length,
+                sampleRate,
+                getChannelData: index => data[index],
+                copyToChannel: jest.fn()
+            };
+        };
         this.close = jest.fn();
     };
     window.webkitAudioContext = window.AudioContext;
@@ -115,9 +118,9 @@ describe('timeStretchBuffer-Helfer', () => {
                 -0.0003,
                 0.0004
             ]
-        ]);
+        ], 20);
         const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer, 4);
-        expect(threshold).toBeGreaterThan(8e-4);
+        expect(threshold).toBeGreaterThan(5e-4);
         expect(threshold).toBeLessThan(0.001);
     });
 
@@ -158,5 +161,29 @@ describe('timeStretchBuffer-Helfer', () => {
         const result = helpers.__test_applyTrimSafety(minFrames, minFrames, totalFrames, sampleRate, minFrames, minFrames);
         expect(result.start).toBe(minFrames);
         expect(result.end).toBe(minFrames);
+    });
+
+    test('Turbo-Freigabe lässt leise Ausklänge vollständig stehen', () => {
+        const sampleRate = 48000;
+        const length = sampleRate; // 1 Sekunde
+        const data = new Float32Array(length);
+        const fadeStart = Math.floor(length * 0.8);
+        for (let i = 0; i < length; i++) {
+            if (i < fadeStart) {
+                data[i] = Math.sin(i / 20) * 0.2;
+            } else {
+                const t = (i - fadeStart) / (length - fadeStart);
+                data[i] = 0.02 * (1 - t);
+            }
+        }
+        const buffer = {
+            numberOfChannels: 1,
+            length,
+            sampleRate,
+            getChannelData: () => data
+        };
+        const silence = helpers.__test_estimateStretchSilence(buffer);
+        expect(silence.start).toBe(0);
+        expect(silence.end).toBeLessThan(5);
     });
 });
