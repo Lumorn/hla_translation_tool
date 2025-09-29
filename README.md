@@ -420,6 +420,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Texte unter den Wellenformen:** Unter der EN-Welle erscheint der englische Text und unter der DE-Welle der emotionale deutsche Text.
 * **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen eines Bereichs direkt im DE-Wellenbild setzen; die Felder synchronisieren sich bidirektional.
 * **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Kleine ➖/➕‑Knöpfe erlauben präzise Schritte. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
+* **Signalabhängiger Stillefilter beim Time‑Stretch:** Der Schwellwert richtet sich jetzt nach dem lautesten Sample und besitzt einen Boden von 1e‑6, damit sehr leise Ausklänge nicht versehentlich entfernt werden.
+* **Trim-Absicherung für gestretchte Audios:** Beim Entfernen der zusätzlichen Ränder prüft das Tool, ob mindestens 100 ms echte Stille pro Seite vorhanden sind und höchstens zehn Prozent der Gesamtlänge verschwinden.
 * **Zwei Tempo‑Auto‑Knöpfe:** Der erste setzt den Wert auf 1,00 und markiert ihn gelb. Der zweite erhöht das Tempo automatisch, bis die DE-Länge ungefähr der EN-Zeit entspricht.
 * **EN-Originalzeit neben DE-Zeit:** Rechts neben der DE-Dauer zeigt der Editor nun die englische Originalzeit an.
 * **Sanftere Pausenkürzung:** Beim Entfernen langer Pausen bleiben jetzt 2 ms an jedem Übergang stehen, damit die Schnitte nicht zu hart wirken.

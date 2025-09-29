@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.419
+* `web/src/main.js` berechnet den Stille-Schwellwert dynamisch zum lautesten Sample, setzt einen Mindestwert von 1e‑6 und beschneidet gestretchte Audios nur noch, wenn mindestens 100 ms pro Seite stumm bleiben und höchstens zehn Prozent der Gesamtlänge entfallen.
+* `tests/timeStretchBuffer.test.js` prüft den dynamischen Schwellwert sowie die neue Trim-Absicherung für sehr leise Ausklänge.
+* `README.md` dokumentiert den signalabhängigen Stillefilter und die zusätzliche Begrenzung beim Entfernen gestretchter Ränder.
 ## 🛠️ Patch in 1.40.418
 * `web/src/main.js` orientiert die Scroll-Erkennung an der Mitte des Tabellencontainers, damit die Auswahl auch bei kleineren Fenstern nicht verrutscht.
 * `README.md` dokumentiert die containerbasierte Mitte für die Scroll-Erkennung in der Dateitabelle.

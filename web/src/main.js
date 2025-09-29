@@ -9169,6 +9169,40 @@ function loadSoundTouch() {
     return soundtouchPromise;
 }
 
+// Ermittelt den dynamischen Schwellwert relativ zum lautesten Sample im Buffer
+function calculateDynamicSilenceThreshold(buffer) {
+    let maxAmplitude = 0;
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const data = buffer.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            const sample = Math.abs(data[i]);
+            if (sample > maxAmplitude) maxAmplitude = sample;
+        }
+    }
+    return Math.max(1e-6, maxAmplitude * 0.001);
+}
+
+// Begrenzt das Abschneiden auf echte Stille (>=100 ms) und maximal 10 % der Gesamtdauer
+function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate) {
+    const minSilenceFrames = Math.round(sampleRate * 0.1);
+    const maxTrimFrames = Math.round(totalFrames * 0.1);
+
+    let safeStart = startFrames >= minSilenceFrames ? startFrames : 0;
+    let safeEnd = endFrames >= minSilenceFrames ? endFrames : 0;
+    const totalTrim = safeStart + safeEnd;
+
+    if (totalTrim > maxTrimFrames && totalTrim > 0) {
+        const scale = maxTrimFrames / totalTrim;
+        safeStart = Math.floor(safeStart * scale);
+        safeEnd = Math.floor(safeEnd * scale);
+    }
+
+    if (safeStart < minSilenceFrames) safeStart = 0;
+    if (safeEnd < minSilenceFrames) safeEnd = 0;
+
+    return { start: safeStart, end: safeEnd };
+}
+
 async function timeStretchBuffer(buffer, factor) {
     if (factor <= 1.001 && factor >= 0.999) return buffer;
 
@@ -9207,8 +9241,8 @@ async function timeStretchBuffer(buffer, factor) {
         out.getChannelData(1).set(Float32Array.from(outR));
     }
 
-    // Tatsächliche Stille suchen und entfernen
-    const thr = 1e-4;
+    // Tatsächliche Stille mit dynamischem Schwellwert suchen
+    const thr = calculateDynamicSilenceThreshold(out);
     let start = 0;
     let end = 0;
     const chData = out.getChannelData(0);
@@ -9218,6 +9252,9 @@ async function timeStretchBuffer(buffer, factor) {
     for (; end < chData.length; end++) {
         if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
     }
+    const limited = applyTrimSafety(start, end, out.length, out.sampleRate);
+    start = limited.start;
+    end = limited.end;
     let len = out.length - start - end;
     if (len < 0) len = 0;
     let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
@@ -18613,6 +18650,9 @@ if (typeof module !== "undefined" && module.exports) {
         insertGptResults,
         updateGptSummary,
         insertEnglishSegment,
+        timeStretchBuffer,
+        __test_calculateDynamicSilenceThreshold: calculateDynamicSilenceThreshold,
+        __test_applyTrimSafety: applyTrimSafety,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,
