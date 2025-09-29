@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.432
+* `web/src/main.js` begrenzt beim Turbo-/Auto-Tempo-Stretching den zusätzlichen Randbeschnitt auf maximal 120 ms erkannte Stille,
+  übergibt die erlaubten Werte explizit an `timeStretchBuffer` und verhindert so, dass beim Beschleunigen echte Inhalte vom
+  rechten Rand verschwinden.
+* `README.md` nennt die abgesicherte Turbo-Beschleunigung samt 120-ms-Kappe als Schutz vor versehentlich gekappten Takes.
+* `CHANGELOG.md` dokumentiert die abgesicherte Turbo-Beschleunigung ohne Randverluste.
 ## 🛠️ Patch in 1.40.431
 * `web/src/main.js` lässt Auto-Tempo erkannte Randstille bei der Berechnung außen vor und verhindert so, dass die automatische Anpassung gesprochene Passagen scheinbar wegschneidet.
 * `README.md` erwähnt den randstillefreien Auto-Tempo-Abgleich als zusätzlichen Schutz vor versehentlich gekürzten Clips.
