@@ -9391,6 +9391,9 @@ async function timeStretchBuffer(buffer, factor) {
         if (above) break;
     }
 
+    const detectedStart = start;
+    const detectedEnd = end;
+
     // Mindestens das vorab angehängte Polster entfernen, bevor weitere Sicherheitsgrenzen greifen
     start = Math.max(start, padOutFrames);
     end = Math.max(end, padOutFrames);
@@ -9416,25 +9419,27 @@ async function timeStretchBuffer(buffer, factor) {
     end = limited.end;
 
     const expected = Math.round(buffer.length / factor);
-    let available = out.length - start - end;
+    let available = Math.max(0, out.length - start - end);
 
     if (available < expected) {
         let deficit = expected - available;
 
-        // Linken Rand nur bis zum Sicherheitsabstand verringern
-        const reduceStartFull = Math.min(deficit, Math.max(0, start - padOutFrames));
+        // Linken Rand bis zum tatsächlich erkannten Beginn zurücknehmen
+        const reduceStartFull = Math.min(deficit, Math.max(0, start - detectedStart));
         start -= reduceStartFull;
         deficit -= reduceStartFull;
 
         if (deficit > 0) {
-            // Rechten Rand ebenfalls nur bis zum Sicherheitsabstand verringern
-            const reduceEndFull = Math.min(deficit, Math.max(0, end - padOutFrames));
+            // Rechten Rand bis zum tatsächlich erkannten Ende zurücknehmen
+            const reduceEndFull = Math.min(deficit, Math.max(0, end - detectedEnd));
             end -= reduceEndFull;
             deficit -= reduceEndFull;
         }
 
         available = Math.max(0, out.length - start - end);
     }
+
+    const needsPadding = available < expected;
 
     let len = available;
     if (len < 0) len = 0;
@@ -9445,7 +9450,7 @@ async function timeStretchBuffer(buffer, factor) {
     }
 
     // Laenge exakt auf das erwartete Ergebnis anpassen
-    if (trimmed.length < expected) {
+    if (needsPadding) {
         // Falls trotz Rücknahme minimale Rundungsreste fehlen, mit Stille auffüllen
         const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {

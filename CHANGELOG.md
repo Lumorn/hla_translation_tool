@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.427
+* `web/src/main.js` speichert die erkannten Audio-Grenzen vor der Polsteranhebung und nutzt sie beim Defizitausgleich, sodass fehlende Samples zuerst aus dem echten Inhalt statt aus Stille ergänzt werden.
+* `README.md` weist auf den Erhalt markanter Peaks nach Tempo-Auto hin.
+* `CHANGELOG.md` dokumentiert die Defizit-Rücknahme bis zu den erkannten Audio-Grenzen.
+
 ## 🛠️ Patch in 1.40.426
 * `web/src/main.js` lässt beim Defizitausgleich von Auto-Tempo die Polstergrenze unangetastet, sodass Start- und Endtrims selbst nach Pausenentfernung nicht unter das Sicherheitsfenster fallen und das Ende vollständig erhalten bleibt.
 * `README.md` erläutert, dass die Kombination aus Schnellzugriff → Auto, Pausenentfernung und Tempo Auto den Puffer schützt und fehlende Frames nur innerhalb der Reserve zurückholt.
