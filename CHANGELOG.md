@@ -1,9 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.432
-* `web/src/main.js` führt einen Längensicherungs-Fallback für das Turbo-Tempo ein und erstellt bei zu kurzer Stretch-Länge einen konservativen Zuschnitt aus dem bekannten Sekundenpolster, sodass rechte Passagen nicht mehr verschwinden.
-* `README.md` beschreibt den neuen Sicherungsmodus für Turbo-Tempo.
-* `CHANGELOG.md` dokumentiert den Längensicherungs-Fallback während des Time-Stretchings.
-
 ## 🛠️ Patch in 1.40.431
 * `web/src/main.js` lässt Auto-Tempo erkannte Randstille bei der Berechnung außen vor und verhindert so, dass die automatische Anpassung gesprochene Passagen scheinbar wegschneidet.
 * `README.md` erwähnt den randstillefreien Auto-Tempo-Abgleich als zusätzlichen Schutz vor versehentlich gekürzten Clips.
