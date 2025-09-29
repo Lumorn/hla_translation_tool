@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.420
+* `web/src/main.js` berechnet die finale Laufzeit jetzt aus dem unveränderten Originalpuffer und zieht Trims erst danach ab, sodass Pausenentfernung und Tempo-Auto-Abgleich konsistente Zielwerte erhalten.
+* `README.md` dokumentiert die originalbasierte Laufzeitberechnung für die Längenanzeige im Editor.
 ## 🛠️ Patch in 1.40.419
 * `web/src/main.js` berechnet den Stille-Schwellwert dynamisch zum lautesten Sample, setzt einen Mindestwert von 1e‑6 und beschneidet gestretchte Audios nur noch, wenn mindestens 100 ms pro Seite stumm bleiben und höchstens zehn Prozent der Gesamtlänge entfallen.
 * `tests/timeStretchBuffer.test.js` prüft den dynamischen Schwellwert sowie die neue Trim-Absicherung für sehr leise Ausklänge.
