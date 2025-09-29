@@ -1,8 +1,4 @@
 # Changelog
-## 🛠️ Patch in 1.40.434
-* `web/src/main.js` leitet den Stille-Schwellwert für Segment-, Pausen- und Trim-Erkennung jetzt dynamisch aus dem aktuellen Ruhepegel ab und reicht ihn beim Quick-Auto-Workflow gemeinsam an Auto-Pausen und Tempo-Abgleich weiter, damit echte Fade-outs nicht mehr als Stille markiert werden.
-* `tests/timeStretchBuffer.test.js` ergänzt einen Regressionstest, der Auto-Pausen und Turbo mit einem extrem leisen Ausklang durchläuft und sicherstellt, dass keine Samples verloren gehen.
-* `README.md` führt den gemeinsamen Ruhepegel für Quick-Auto und Tempo-Abgleich als zusätzliche Schutzmaßnahme gegen versehentlich gekappte Fade-outs auf.
 ## 🛠️ Patch in 1.40.433
 * `web/src/main.js` misst die für Turbo-/Auto-Tempo freigegebene Randstille jetzt mit derselben dynamischen Schwelle wie `timeStretchBuffer`, begrenzt die Zusatzkürzung weiterhin auf 120 ms je Seite und bewahrt dadurch auch sehr leise Fade-outs vor dem Abschneiden.
 * `tests/timeStretchBuffer.test.js` verifizieren, dass die Turbo-Freigabe leise Ausklänge unangetastet lässt.

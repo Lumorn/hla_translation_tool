@@ -8864,96 +8864,9 @@ function cleanupOrphanCustomizations() {
 // =========================== CLEANUPORPHANCUSTOMIZATIONS END ===============
 
 // =========================== SEGMENT DIALOG START ==========================
-// Ermittelt einen dynamischen Schwellwert basierend auf dem aktuellen Ruhepegel
-function determineAdaptiveSilenceThreshold(buffer, overrideThreshold, options = {}) {
-    if (typeof overrideThreshold === 'number' && Number.isFinite(overrideThreshold)) {
-        return overrideThreshold;
-    }
-    if (!buffer || !buffer.sampleRate || !buffer.length) {
-        return 1e-6;
-    }
-
-    // Analysefenster und untersuchte Bereiche vorbereiten
-    const windowMs = Math.max(1, options.windowMs || 20);
-    const sr = buffer.sampleRate;
-    const step = Math.max(1, Math.round(sr * windowMs / 1000));
-    const channels = Math.max(1, buffer.numberOfChannels || 1);
-    const focusEdges = options.focusEdges === true;
-    const edgeMs = Math.max(windowMs * 2, options.edgeMs || 600);
-    const edgeFrames = focusEdges ? Math.min(buffer.length, Math.round(sr * edgeMs / 1000)) : buffer.length;
-    const ranges = focusEdges
-        ? [
-            [0, edgeFrames],
-            [Math.max(0, buffer.length - edgeFrames), buffer.length]
-        ]
-        : [[0, buffer.length]];
-
-    const seen = new Set();
-    const values = [];
-
-    // Durchschnittsamplitude jedes Fensters erfassen
-    const collectRange = (startFrame, endFrame) => {
-        const start = Math.max(0, Math.floor(startFrame));
-        const end = Math.min(buffer.length, Math.ceil(endFrame));
-        if (end <= start) return;
-        for (let pos = start; pos < end; pos += step) {
-            const key = focusEdges ? pos : null;
-            if (focusEdges) {
-                if (seen.has(key)) continue;
-                seen.add(key);
-            }
-            let sum = 0;
-            let count = 0;
-            for (let ch = 0; ch < channels; ch++) {
-                const data = buffer.getChannelData(ch);
-                const stop = Math.min(pos + step, data.length);
-                for (let i = pos; i < stop; i++) {
-                    sum += Math.abs(data[i]);
-                }
-                count += stop - pos;
-            }
-            if (count > 0) {
-                values.push(sum / count);
-            }
-        }
-    };
-
-    ranges.forEach(([start, end]) => collectRange(start, end));
-
-    if (values.length === 0) {
-        return 1e-6;
-    }
-
-    values.sort((a, b) => a - b);
-
-    const quietPortion = options.quietPortion
-        ? Math.max(1, Math.floor(values.length * options.quietPortion))
-        : Math.max(1, Math.floor(values.length * 0.35));
-    const quietValues = values.slice(0, quietPortion);
-    const quietMedian = quietValues[Math.floor(quietValues.length / 2)] || 0;
-    const quietMax = quietValues[quietValues.length - 1] || quietMedian || 0;
-    const globalMedian = values[Math.floor(values.length / 2)] || quietMax;
-    const globalP90 = values[Math.floor(values.length * 0.9)] || globalMedian;
-
-    let dynamic = Math.max(
-        quietMedian * 4,
-        quietMax * 1.6
-    );
-
-    dynamic = Math.min(dynamic, globalMedian * 0.75);
-    dynamic = Math.min(dynamic, globalP90 * 0.5);
-
-    if (!Number.isFinite(dynamic) || dynamic <= 0) {
-        dynamic = 1e-6;
-    }
-
-    return Math.max(1e-6, dynamic);
-}
-
 // Hilfsfunktionen zur Audio-Segmentierung direkt hier eingebunden
 // Erkennt Pausen im AudioBuffer und liefert die Segmente zurueck
-function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold, onProgress) {
-    const thr = determineAdaptiveSilenceThreshold(buffer, threshold, { windowMs: 30 });
+function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold = 0.01, onProgress) {
     const data = buffer.getChannelData(0);
     const sr = buffer.sampleRate;
     const windowSize = Math.round(sr * 0.03); // 30 ms
@@ -8970,7 +8883,7 @@ function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold, onProgress) 
         }
         const amp = sum / windowSize;
         const ms = i / sr * 1000;
-        if (amp < thr) {
+        if (amp < threshold) {
             silent += windowSize;
             if (inSound && silent >= silenceSamples) {
                 const end = (i - silent) / sr * 1000;
@@ -8997,11 +8910,7 @@ function detectSegmentsInBuffer(buffer, silenceMs = 300, threshold, onProgress) 
 }
 
 // Variante, die direkt eine Datei laedt
-async function detectSegments(file, silenceMs = 300, threshold, onProgress) {
-    if (typeof threshold === 'function' && typeof onProgress === 'undefined') {
-        onProgress = threshold;
-        threshold = undefined;
-    }
+async function detectSegments(file, silenceMs = 300, threshold = 0.01, onProgress) {
     const buffer = await loadAudioBuffer(file);
     return detectSegmentsInBuffer(buffer, silenceMs, threshold, onProgress);
 }
@@ -9207,9 +9116,8 @@ function playbackToOriginalSilence(ms, ranges) {
 }
 
 // Ermittelt Pausen ueber einer Mindestlaenge und gibt passende Ignorierbereiche zurueck
-function detectPausesInBuffer(buffer, minPauseMs = 400, threshold) {
-    const thr = determineAdaptiveSilenceThreshold(buffer, threshold, { windowMs: Math.min(40, Math.max(15, minPauseMs / 2)) });
-    const { segments } = detectSegmentsInBuffer(buffer, minPauseMs, thr);
+function detectPausesInBuffer(buffer, minPauseMs = 400) {
+    const { segments } = detectSegmentsInBuffer(buffer, minPauseMs, 0.01);
     const ranges = [];
     for (let i = 1; i < segments.length; i++) {
         const gap = segments[i].start - segments[i - 1].end;
@@ -9223,12 +9131,7 @@ function detectPausesInBuffer(buffer, minPauseMs = 400, threshold) {
 // =========================== DETECTSILENCETRIM START ======================
 // Erkennt Stille am Anfang und Ende eines AudioBuffers und
 // liefert die passenden Millisekundenwerte zurück
-function detectSilenceTrim(buffer, threshold, windowMs = 10) {
-    const thr = determineAdaptiveSilenceThreshold(buffer, threshold, {
-        windowMs,
-        focusEdges: true,
-        edgeMs: Math.max(300, windowMs * 30)
-    });
+function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
     const data = buffer.getChannelData(0);
     const sr = buffer.sampleRate;
     const step = Math.max(1, Math.round(sr * windowMs / 1000));
@@ -9238,7 +9141,7 @@ function detectSilenceTrim(buffer, threshold, windowMs = 10) {
         for (let i = start; i < Math.min(start + step, data.length); i++) {
             sum += Math.abs(data[i]);
         }
-        if (sum / step > thr) break;
+        if (sum / step > threshold) break;
         start += step;
     }
     let end = data.length;
@@ -9247,7 +9150,7 @@ function detectSilenceTrim(buffer, threshold, windowMs = 10) {
         for (let i = Math.max(end - step, 0); i < end; i++) {
             sum += Math.abs(data[i]);
         }
-        if (sum / step > thr) break;
+        if (sum / step > threshold) break;
         end -= step;
     }
     return {
@@ -9882,7 +9785,7 @@ async function analyzeSegmentFile(ev) {
     let shown = false;
     const timer = setTimeout(() => { progress.classList.add('active'); shown = true; }, 5000);
     try {
-        segmentInfo = await detectSegments(file, 300, p => {
+        segmentInfo = await detectSegments(file, 300, 0.01, p => {
             fill.style.width = `${Math.round(p * 100)}%`;
         });
         status.textContent = 'Fertig';
@@ -15469,20 +15372,15 @@ async function autoAdjustLength() {
     const chk = document.getElementById('autoIgnoreChk');
     const thr = document.getElementById('autoIgnoreMs');
     const tempoChk = document.getElementById('autoTempoChk');
-    let silenceThreshold = null;
-    if (savedOriginalBuffer && savedOriginalBuffer.sampleRate && ((chk && chk.checked) || (tempoChk && tempoChk.checked))) {
-        // Für Auto-Pausen und Tempo denselben adaptiven Wert nutzen, damit Fade-outs unangetastet bleiben
-        silenceThreshold = determineAdaptiveSilenceThreshold(savedOriginalBuffer, undefined, { windowMs: 20 });
-    }
     if (chk && chk.checked) {
         autoIgnoreMs = parseInt(thr.value) || 400;
-        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs, silenceThreshold);
+        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
         refreshIgnoreList();
     }
     if (tempoChk && tempoChk.checked && editEnBuffer) {
         const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
         // Effektive Länge ohne automatisch erkannte Stille an den Rändern bestimmen
-        let len = calcTempoReferenceLength(silenceThreshold);
+        let len = calcTempoReferenceLength();
         if (len <= 0 || !Number.isFinite(len)) {
             // Sicherheitsnetz: Fallback auf die reguläre Berechnung
             len = calcFinalLength();
@@ -16264,7 +16162,7 @@ function calcFinalLength() {
 }
 
 // Liefert eine für das Auto-Tempo geeignete Referenzlänge ohne zusätzliche Randstille
-function calcTempoReferenceLength(precomputedThreshold) {
+function calcTempoReferenceLength() {
     // Standardmäßig mit der regulären Endlänge arbeiten
     let len = calcFinalLength();
     if (!savedOriginalBuffer || !savedOriginalBuffer.sampleRate) {
@@ -16274,11 +16172,7 @@ function calcTempoReferenceLength(precomputedThreshold) {
     if (!Number.isFinite(totalMs) || totalMs <= 0) {
         return len;
     }
-    let thr = precomputedThreshold;
-    if (typeof thr !== 'number' || !Number.isFinite(thr)) {
-        thr = determineAdaptiveSilenceThreshold(savedOriginalBuffer, undefined, { windowMs: 10, focusEdges: true });
-    }
-    const stilleGrenzen = detectSilenceTrim(savedOriginalBuffer, thr);
+    const stilleGrenzen = detectSilenceTrim(savedOriginalBuffer);
     const stilleLinks = Math.max(0, stilleGrenzen.start - editStartTrim);
     const stilleRechts = Math.max(0, stilleGrenzen.end - editEndTrim);
     const reduzierung = stilleLinks + stilleRechts;
@@ -19162,9 +19056,6 @@ if (typeof module !== "undefined" && module.exports) {
         toggleIgnoreSelectedSegments,
         mergeSegments,
         removeRangesFromBuffer,
-        __test_detectPausesInBuffer: detectPausesInBuffer,
-        __test_detectSilenceTrim: detectSilenceTrim,
-        __test_determineAdaptiveSilenceThreshold: determineAdaptiveSilenceThreshold,
         __setSegmentInfo: info => { segmentInfo = info; },
         __setSegmentAssignments: a => { segmentAssignments = a; },
         __getSegmentInfo: () => segmentInfo,
