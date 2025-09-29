@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.424
+* `web/src/main.js` nimmt bei zu kurzer Stretch-Länge zuerst die trimmbedingten Stillebereiche zurück und greift nur bei unvermeidbaren Resten auf Stille-Padding zurück, damit weich eingeblendete Clips ihren linken Rand behalten.
+* `README.md` dokumentiert die neue Trim-Rücknahme vor dem Stille-Padding bei Auto-Tempo.
+
 ## 🛠️ Patch in 1.40.423
 * `web/src/main.js` ermittelt den Stille-Schwellwert jetzt aus dem gestretchten Ruhepolster und entfernt zusätzliche Frames nur noch nach einem 100-ms-Stillefenster, damit Fade-Ins und Fade-Outs unverändert bleiben.
 * `tests/timeStretchBuffer.test.js` prüfen das polsterbasierte Thresholding und den Mindestwert mit übergebenen Polstergrößen.
