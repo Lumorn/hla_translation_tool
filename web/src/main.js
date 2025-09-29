@@ -15799,7 +15799,14 @@ function adjustSilenceRanges(deltaMs) {
 
 // Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
 function calcFinalLength() {
-    let len = editDurationMs - editStartTrim - editEndTrim;
+    // Ausgangsbasis bevorzugt aus dem unveränderten Original puffern, damit Trim-Anteile jederzeit korrekt sind
+    let basisLaengeMs;
+    if (savedOriginalBuffer && savedOriginalBuffer.sampleRate) {
+        basisLaengeMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    } else {
+        basisLaengeMs = editDurationMs + editStartTrim + editEndTrim;
+    }
+    let len = basisLaengeMs - editStartTrim - editEndTrim;
     for (const r of editIgnoreRanges) {
         len -= Math.max(0, r.end - r.start);
     }
