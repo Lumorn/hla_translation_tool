@@ -9176,25 +9176,45 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
     const ranges = [];
 
     if (padLength > 0) {
-        ranges.push({ start: 0, end: padLength });
+        ranges.push({ start: 0, end: padLength, type: 'head' });
         const tailStart = Math.max(totalFrames - padLength, padLength);
         if (tailStart < totalFrames) {
-            ranges.push({ start: tailStart, end: totalFrames });
+            ranges.push({ start: tailStart, end: totalFrames, type: 'tail' });
         }
     }
 
     if (ranges.length === 0) {
-        ranges.push({ start: 0, end: totalFrames });
+        ranges.push({ start: 0, end: totalFrames, type: 'full' });
     }
 
     const samples = [];
     let sumSquares = 0;
     let maxPadAmplitude = 0;
+    const guardFrames = Math.round(buffer.sampleRate * 0.1);
 
     for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
         const data = buffer.getChannelData(ch);
         for (const range of ranges) {
-            for (let i = range.start; i < range.end; i++) {
+            let start = range.start;
+            let end = range.end;
+
+            if (range.type === 'head' || range.type === 'tail') {
+                const guard = Math.min(guardFrames, end - start);
+                if (guard >= end - start) {
+                    continue;
+                }
+                if (range.type === 'head') {
+                    end -= guard;
+                } else {
+                    start += guard;
+                }
+            }
+
+            if (end <= start) {
+                continue;
+            }
+
+            for (let i = start; i < end; i++) {
                 const value = Math.abs(data[i]);
                 samples.push(value);
                 sumSquares += value * value;

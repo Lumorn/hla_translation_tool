@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.425
+* `web/src/main.js` überspringt bei der Stilleanalyse die letzten 100 ms des vorderen und die ersten 100 ms des hinteren Polsters, damit Crossfade-Samples weder in die Stichprobe noch in die Schwellenwertberechnung einfließen.
+* `README.md` dokumentiert die ausgesparte Crossfade-Zone während der Schwellwertermittlung.
+
 ## 🛠️ Patch in 1.40.424
 * `web/src/main.js` nimmt bei zu kurzer Stretch-Länge zuerst die trimmbedingten Stillebereiche zurück und greift nur bei unvermeidbaren Resten auf Stille-Padding zurück, damit weich eingeblendete Clips ihren linken Rand behalten.
 * `README.md` dokumentiert die neue Trim-Rücknahme vor dem Stille-Padding bei Auto-Tempo.
