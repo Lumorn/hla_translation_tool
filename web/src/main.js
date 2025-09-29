@@ -9162,6 +9162,7 @@ function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
 
 // Hochwertiges Time-Stretching mit SoundTouchJS
 let soundtouchPromise = null;
+const EDGE_TRIM_CAP_MS = 120; // Maximale Freigabe für zusätzliches Abschneiden nach dem Time-Stretch
 function loadSoundTouch() {
     if (!soundtouchPromise) {
         soundtouchPromise = import('./lib/soundtouch.js');
@@ -9320,8 +9321,11 @@ function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minSta
     return { start: safeStart, end: safeEnd };
 }
 
-async function timeStretchBuffer(buffer, factor) {
+async function timeStretchBuffer(buffer, factor, options = {}) {
     if (factor <= 1.001 && factor >= 0.999) return buffer;
+
+    const { allowedTrimStartMs = 0, allowedTrimEndMs = 0 } = options;
+    const safeFactor = Math.max(0.001, Math.abs(factor));
 
     // Großzügiges Stillepolster von einer Sekunde anfügen,
     // damit die Berechnung am Rand nicht auf das Original wirkt.
@@ -9357,7 +9361,7 @@ async function timeStretchBuffer(buffer, factor) {
     if (buffer.numberOfChannels > 1) {
         out.getChannelData(1).set(Float32Array.from(outR));
     }
-    const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / factor)));
+    const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / safeFactor)));
 
     // Tatsächliche Stille mit dynamischem Schwellwert suchen
     const thr = calculateDynamicSilenceThreshold(out, padOutFrames);
@@ -9418,6 +9422,22 @@ async function timeStretchBuffer(buffer, factor) {
     start = limited.start;
     end = limited.end;
 
+    const maxExtraStartFrames = Number.isFinite(allowedTrimStartMs)
+        ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * out.sampleRate / 1000))
+        : Number.POSITIVE_INFINITY;
+    const maxExtraEndFrames = Number.isFinite(allowedTrimEndMs)
+        ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * out.sampleRate / 1000))
+        : Number.POSITIVE_INFINITY;
+
+    if (Number.isFinite(maxExtraStartFrames)) {
+        const maxStart = Math.min(totalFrames, padOutFrames + maxExtraStartFrames);
+        start = Math.min(start, maxStart);
+    }
+    if (Number.isFinite(maxExtraEndFrames)) {
+        const maxEnd = Math.min(totalFrames, padOutFrames + maxExtraEndFrames);
+        end = Math.min(end, maxEnd);
+    }
+
     // Zusätzliche Sicherheitsgrenze: Wir beschneiden höchstens bis zu den erkannten Audio-Grenzen
     // zuzüglich eines kleinen Puffers, damit echte Signale nicht aus Versehen entfernt werden.
     const toleranceFrames = Math.max(0, Math.round(out.sampleRate * 0.01));
@@ -9463,7 +9483,7 @@ async function timeStretchBuffer(buffer, factor) {
         }
     }
 
-    const expected = Math.round(buffer.length / factor);
+    const expected = Math.round(buffer.length / safeFactor);
     let available = Math.max(0, out.length - start - end);
 
     if (available < expected) {
@@ -15402,7 +15422,13 @@ async function recomputeEditBuffer() {
 
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor);
+    const edgeSilence = detectSilenceTrim(trimmed);
+    const stretchOptions = {
+        // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
+        allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
+        allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+    };
+    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor, stretchOptions);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     normalizeDeTrim();
     updateDeEditWaveforms();
@@ -16595,7 +16621,13 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor);
+            const edgeSilence = detectSilenceTrim(newBuffer);
+            const stretchOptions = {
+                // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
+                allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
+                allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+            };
+            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             const buf = await blob.arrayBuffer();
@@ -16683,8 +16715,13 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            // Nur den Unterschied zum geladenen Faktor anwenden
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor);
+            // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
+            const edgeSilence = detectSilenceTrim(newBuffer);
+            const stretchOptions = {
+                allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
+                allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+            };
+            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             await speichereUebersetzungsDatei(blob, relPath);
