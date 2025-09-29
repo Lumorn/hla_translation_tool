@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.423
+* `web/src/main.js` ermittelt den Stille-Schwellwert jetzt aus dem gestretchten Ruhepolster und entfernt zusätzliche Frames nur noch nach einem 100-ms-Stillefenster, damit Fade-Ins und Fade-Outs unverändert bleiben.
+* `tests/timeStretchBuffer.test.js` prüfen das polsterbasierte Thresholding und den Mindestwert mit übergebenen Polstergrößen.
+* `README.md` dokumentiert die dynamische Stilleprüfung für Auto-Tempo samt Schutz vor dem Kürzen leiser Anfänge und Ausklänge.
+
 ## 🛠️ Patch in 1.40.422
 * `web/src/main.js` skaliert das Stillepolster nach dem Zeitfaktor, entfernt exakt die gestreckte Länge an Start und Ende und übergibt die Werte an die Sicherheitsprüfung.
 * `README.md` erwähnt die faktorbasierte Polster-Skalierung für Auto-Tempo kombiniert mit Pausenentfernung.

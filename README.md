@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Pad-Skalierung beim Time-Stretch:** Auto-Tempo entfernt nach dem Strecken exakt das gestauchte Sekundenpolster, sodass weder Anfang noch Ende bei kombinierten Pausen- und Tempo-Automationen verloren gehen.
+* **Dynamische Stilleprüfung für Auto-Tempo:** Der Schwellwert orientiert sich am gestreckten Ruhepolster und entfernt nur dann zusätzliches Material, wenn ein zusammenhängendes 100-ms-Fenster wirklich unterhalb der Schwelle bleibt – Fade-Ins und Fade-Outs bleiben dadurch unangetastet.
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
 * **Bereinigte Abschluss-Logik:** Die früheren UI-Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll` wurden entfernt, weil der Fertig-Status nun vollständig automatisch aus den Projekt- und Dateidaten berechnet wird.
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
