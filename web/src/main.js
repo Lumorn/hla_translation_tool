@@ -9421,35 +9421,19 @@ async function timeStretchBuffer(buffer, factor) {
     if (available < expected) {
         let deficit = expected - available;
 
-        // Zuerst den linken Rand bis zur Polstergrenze zurücknehmen
-        const reducibleStartPad = Math.max(0, start - padOutFrames);
-        const reduceStartPad = Math.min(deficit, reducibleStartPad);
-        start -= reduceStartPad;
-        deficit -= reduceStartPad;
+        // Linken Rand nur bis zum Sicherheitsabstand verringern
+        const reduceStartFull = Math.min(deficit, Math.max(0, start - padOutFrames));
+        start -= reduceStartFull;
+        deficit -= reduceStartFull;
 
         if (deficit > 0) {
-            // Bei Bedarf weiter Richtung 0 ausdehnen
-            const reduceStartFull = Math.min(deficit, start);
-            start -= reduceStartFull;
-            deficit -= reduceStartFull;
+            // Rechten Rand ebenfalls nur bis zum Sicherheitsabstand verringern
+            const reduceEndFull = Math.min(deficit, Math.max(0, end - padOutFrames));
+            end -= reduceEndFull;
+            deficit -= reduceEndFull;
         }
 
-        if (deficit > 0) {
-            // Anschließend den rechten Rand bis zur Polstergrenze zurücknehmen
-            const reducibleEndPad = Math.max(0, end - padOutFrames);
-            const reduceEndPad = Math.min(deficit, reducibleEndPad);
-            end -= reduceEndPad;
-            deficit -= reduceEndPad;
-
-            if (deficit > 0) {
-                // Zuletzt verbleibenden Bedarf bis auf 0 ausdehnen
-                const reduceEndFull = Math.min(deficit, end);
-                end -= reduceEndFull;
-                deficit -= reduceEndFull;
-            }
-        }
-
-        available = out.length - start - end;
+        available = Math.max(0, out.length - start - end);
     }
 
     let len = available;
