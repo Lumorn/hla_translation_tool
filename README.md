@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Pad-Skalierung beim Time-Stretch:** Auto-Tempo entfernt nach dem Strecken exakt das gestauchte Sekundenpolster, sodass weder Anfang noch Ende bei kombinierten Pausen- und Tempo-Automationen verloren gehen.
+* **Sicherungsmodus für Turbo-Tempo:** Erkennt der Editor nach dem Strecken weniger als 95 % der erwarteten Länge, schneidet er konservativ aus dem bekannten Polster und ergänzt fehlende Samples mit Stille – so verschwinden bei Turbo-Beschleunigen keine rechten Passagen mehr beim Speichern.
 * **Tempo-Auto ignoriert Randstille:** Die automatische Tempo-Anpassung berücksichtigt erkannte Leerräume an den Rändern nicht mehr in der Berechnung, damit gesprochene Passagen unverändert bleiben und nichts „abgeschnitten“ wirkt.
 * **Limits bewahren das Tempo-Polster:** Beim Begrenzen von Start und Ende hält Tempo Auto jetzt stets mindestens das gestretchte Sekundenpolster ein, damit die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine Stilleinsprünge mehr hinterlässt.
 * **Dynamische Stilleprüfung für Auto-Tempo:** Der Schwellwert orientiert sich am gestreckten Ruhepolster und entfernt nur dann zusätzliches Material, wenn ein zusammenhängendes 100-ms-Fenster wirklich unterhalb der Schwelle bleibt – Fade-Ins und Fade-Outs bleiben dadurch unangetastet.

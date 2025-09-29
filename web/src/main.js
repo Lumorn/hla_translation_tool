@@ -9546,6 +9546,28 @@ async function timeStretchBuffer(buffer, factor) {
         }
         trimmed = paddedResult;
     }
+
+    // Sicherheitsnetz: Wenn die ermittelte Länge zu stark von der Erwartung abweicht,
+    // greifen wir auf einen konservativen Zuschnitt zurück, damit kein rechter Bereich verloren geht.
+    const toleranceFrames = Math.round(expected * 0.05);
+    if (expected > 0 && trimmed.length + toleranceFrames < expected) {
+        const safeStart = Math.min(out.length, padOutFrames);
+        const safeEnd = Math.min(out.length, safeStart + expected);
+        const fallbackLen = Math.max(0, safeEnd - safeStart);
+        let fallback = ctx.createBuffer(out.numberOfChannels, fallbackLen, out.sampleRate);
+        for (let ch = 0; ch < out.numberOfChannels; ch++) {
+            const segment = out.getChannelData(ch).subarray(safeStart, safeStart + fallbackLen);
+            fallback.getChannelData(ch).set(segment);
+        }
+        if (fallbackLen < expected) {
+            const paddedFallback = ctx.createBuffer(fallback.numberOfChannels, expected, fallback.sampleRate);
+            for (let ch = 0; ch < fallback.numberOfChannels; ch++) {
+                paddedFallback.getChannelData(ch).set(fallback.getChannelData(ch));
+            }
+            fallback = paddedFallback;
+        }
+        trimmed = fallback;
+    }
     ctx.close();
     return trimmed;
 }
