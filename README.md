@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Pad-Skalierung beim Time-Stretch:** Auto-Tempo entfernt nach dem Strecken exakt das gestauchte Sekundenpolster, sodass weder Anfang noch Ende bei kombinierten Pausen- und Tempo-Automationen verloren gehen.
+* **Limits bewahren das Tempo-Polster:** Beim Begrenzen von Start und Ende hält Tempo Auto jetzt stets mindestens das gestretchte Sekundenpolster ein, damit die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine Stilleinsprünge mehr hinterlässt.
 * **Dynamische Stilleprüfung für Auto-Tempo:** Der Schwellwert orientiert sich am gestreckten Ruhepolster und entfernt nur dann zusätzliches Material, wenn ein zusammenhängendes 100-ms-Fenster wirklich unterhalb der Schwelle bleibt – Fade-Ins und Fade-Outs bleiben dadurch unangetastet.
 * **Crossfade-Samples bleiben unangetastet:** Bei der Schwellwertermittlung ignoriert das Tool die letzten 100 ms des Eingangs- und die ersten 100 ms des Ausgangspolsters, damit überblendete Bereiche weder den Schwellenwert anheben noch als Stille gelten.
 * **Trim-Rücknahme bei Auto-Tempo:** Reicht die gestretchte Länge nicht aus, zieht das Tool jetzt zuerst das rechte Trim-Ende bis zur erkannten Audio-Grenze oder wenigstens bis zum Sekundenpolster zurück, bevor es den linken Rand anfasst – weich eingeblendete Clips behalten dadurch auch ihr Fade-out.

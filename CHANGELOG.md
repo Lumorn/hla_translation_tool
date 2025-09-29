@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.430
+* `web/src/main.js` berücksichtigt beim Begrenzen der Trim-Limits jetzt immer das gestretchte Tempo-Polster und löst Überläufe bevorzugt innerhalb der Reserven auf, sodass die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine einseitigen Lücken mehr erzeugt.
+* `README.md` beschreibt die polsterbewahrenden Limits beim Tempo-Stretching.
+* `CHANGELOG.md` dokumentiert die abgesicherte Polsterbehandlung während der Limitberechnung.
+
 ## 🛠️ Patch in 1.40.429
 * `web/src/main.js` zieht fehlende Samples zuerst vom rechten Rand bis zur Audio-Grenze oder zum Polster zurück, verteilt Restdefizite gleichmäßig auf beide Seiten und greift nur dann zu Stille-Padding, wenn keine Originaldaten mehr übrig sind.
 * `README.md` beschreibt die ausgewogene Restkorrektur und das spätere Umschalten auf Stille.
