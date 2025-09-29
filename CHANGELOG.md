@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.429
+* `web/src/main.js` zieht fehlende Samples zuerst vom rechten Rand bis zur Audio-Grenze oder zum Polster zurück, verteilt Restdefizite gleichmäßig auf beide Seiten und greift nur dann zu Stille-Padding, wenn keine Originaldaten mehr übrig sind.
+* `README.md` beschreibt die ausgewogene Restkorrektur und das spätere Umschalten auf Stille.
+* `CHANGELOG.md` dokumentiert die tolerantere Defizitbehandlung beim Tempo-Stretching.
+
 ## 🛠️ Patch in 1.40.428
 * `web/src/main.js` begrenzt das Abschneiden gestretchter Audios auf die erkannten Stillegrenzen plus einen 10-ms-Puffer, damit vorgezogene Einsätze und ausklingende Peaks nicht mehr mit entfernt werden.
 * `README.md` beschreibt die bleeding-sichere Polsterentfernung beim Tempo-Stretching.
