@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.426
+* `web/src/main.js` lässt beim Defizitausgleich von Auto-Tempo die Polstergrenze unangetastet, sodass Start- und Endtrims selbst nach Pausenentfernung nicht unter das Sicherheitsfenster fallen und das Ende vollständig erhalten bleibt.
+* `README.md` erläutert, dass die Kombination aus Schnellzugriff → Auto, Pausenentfernung und Tempo Auto den Puffer schützt und fehlende Frames nur innerhalb der Reserve zurückholt.
+* `CHANGELOG.md` dokumentiert den abgesicherten Defizitausgleich rund um das Sekundenpolster.
+
 ## 🛠️ Patch in 1.40.425
 * `web/src/main.js` überspringt bei der Stilleanalyse die letzten 100 ms des vorderen und die ersten 100 ms des hinteren Polsters, damit Crossfade-Samples weder in die Stichprobe noch in die Schwellenwertberechnung einfließen.
 * `README.md` dokumentiert die ausgesparte Crossfade-Zone während der Schwellwertermittlung.
