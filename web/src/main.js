@@ -9394,7 +9394,45 @@ async function timeStretchBuffer(buffer, factor) {
     const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padOutFrames, padOutFrames);
     start = limited.start;
     end = limited.end;
-    let len = out.length - start - end;
+
+    const expected = Math.round(buffer.length / factor);
+    let available = out.length - start - end;
+
+    if (available < expected) {
+        let deficit = expected - available;
+
+        // Zuerst den linken Rand bis zur Polstergrenze zurücknehmen
+        const reducibleStartPad = Math.max(0, start - padOutFrames);
+        const reduceStartPad = Math.min(deficit, reducibleStartPad);
+        start -= reduceStartPad;
+        deficit -= reduceStartPad;
+
+        if (deficit > 0) {
+            // Bei Bedarf weiter Richtung 0 ausdehnen
+            const reduceStartFull = Math.min(deficit, start);
+            start -= reduceStartFull;
+            deficit -= reduceStartFull;
+        }
+
+        if (deficit > 0) {
+            // Anschließend den rechten Rand bis zur Polstergrenze zurücknehmen
+            const reducibleEndPad = Math.max(0, end - padOutFrames);
+            const reduceEndPad = Math.min(deficit, reducibleEndPad);
+            end -= reduceEndPad;
+            deficit -= reduceEndPad;
+
+            if (deficit > 0) {
+                // Zuletzt verbleibenden Bedarf bis auf 0 ausdehnen
+                const reduceEndFull = Math.min(deficit, end);
+                end -= reduceEndFull;
+                deficit -= reduceEndFull;
+            }
+        }
+
+        available = out.length - start - end;
+    }
+
+    let len = available;
     if (len < 0) len = 0;
     let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
     for (let ch = 0; ch < out.numberOfChannels; ch++) {
@@ -9403,9 +9441,8 @@ async function timeStretchBuffer(buffer, factor) {
     }
 
     // Laenge exakt auf das erwartete Ergebnis anpassen
-    const expected = Math.round(buffer.length / factor);
     if (trimmed.length < expected) {
-        // Falls der Algorithmus minimal zu kurz wird, mit Stille auffüllen statt echtes Material abzuschneiden
+        // Falls trotz Rücknahme minimale Rundungsreste fehlen, mit Stille auffüllen
         const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
             const data = trimmed.getChannelData(ch);
