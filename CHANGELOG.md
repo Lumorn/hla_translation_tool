@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.431
+* `web/src/main.js` lässt Auto-Tempo erkannte Randstille bei der Berechnung außen vor und verhindert so, dass die automatische Anpassung gesprochene Passagen scheinbar wegschneidet.
+* `README.md` erwähnt den randstillefreien Auto-Tempo-Abgleich als zusätzlichen Schutz vor versehentlich gekürzten Clips.
+* `CHANGELOG.md` dokumentiert die stilleignorierende Tempo-Referenz.
+
 ## 🛠️ Patch in 1.40.430
 * `web/src/main.js` berücksichtigt beim Begrenzen der Trim-Limits jetzt immer das gestretchte Tempo-Polster und löst Überläufe bevorzugt innerhalb der Reserven auf, sodass die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine einseitigen Lücken mehr erzeugt.
 * `README.md` beschreibt die polsterbewahrenden Limits beim Tempo-Stretching.

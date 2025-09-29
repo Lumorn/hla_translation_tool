@@ -14545,7 +14545,7 @@ async function openDeEdit(fileId) {
 
             // Erhöht das Tempo so lange, bis DE ungefähr EN entspricht
             const raise = () => {
-                const deMs = calcFinalLength();
+                const deMs = calcTempoReferenceLength();
                 if (deMs <= enMs || tempoFactor >= max) {
                     updateLengthInfo();
                     return;
@@ -15316,14 +15316,15 @@ async function autoAdjustLength() {
     }
     if (tempoChk && tempoChk.checked && editEnBuffer) {
         const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-        // Länge der aktuellen Datei ohne Trim/Pausen
-        let len = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-        len -= editStartTrim + editEndTrim;
-        for (const r of editIgnoreRanges) len -= (r.end - r.start);
-        for (const r of editSilenceRanges) len += (r.end - r.start);
-        // Faktor relativ zum ursprünglichen Wert bestimmen
-        const rel = len / enMs;
-        // Faktor bei 3 begrenzen, damit extreme Werte vermieden werden
+        // Effektive Länge ohne automatisch erkannte Stille an den Rändern bestimmen
+        let len = calcTempoReferenceLength();
+        if (len <= 0 || !Number.isFinite(len)) {
+            // Sicherheitsnetz: Fallback auf die reguläre Berechnung
+            len = calcFinalLength();
+        }
+        // Verhältnis relativ zur EN-Länge bestimmen
+        const rel = len > 0 ? (len / enMs) : 1;
+        // Faktor begrenzen, damit extreme Werte vermieden werden
         tempoFactor = Math.min(Math.max(rel * loadedTempoFactor, 1), 3);
         const tempoRange = document.getElementById('tempoRange');
         const tempoDisp = document.getElementById('tempoDisplay');
@@ -16091,6 +16092,29 @@ function calcFinalLength() {
     return len / relFactor;
 }
 
+// Liefert eine für das Auto-Tempo geeignete Referenzlänge ohne zusätzliche Randstille
+function calcTempoReferenceLength() {
+    // Standardmäßig mit der regulären Endlänge arbeiten
+    let len = calcFinalLength();
+    if (!savedOriginalBuffer || !savedOriginalBuffer.sampleRate) {
+        return len;
+    }
+    const totalMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    if (!Number.isFinite(totalMs) || totalMs <= 0) {
+        return len;
+    }
+    const stilleGrenzen = detectSilenceTrim(savedOriginalBuffer);
+    const stilleLinks = Math.max(0, stilleGrenzen.start - editStartTrim);
+    const stilleRechts = Math.max(0, stilleGrenzen.end - editEndTrim);
+    const reduzierung = stilleLinks + stilleRechts;
+    if (reduzierung <= 0) {
+        return len;
+    }
+    // Nur den Anteil entfernen, der bislang noch als Leerlauf stehen bleibt
+    len = Math.max(0, len - reduzierung);
+    return len;
+}
+
 // Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
 function updateLengthInfo() {
     if (!editEnBuffer) return;
@@ -16107,6 +16131,16 @@ function updateLengthInfo() {
     if (enInfo) enInfo.textContent = `EN: ${(enMs/1000).toFixed(2)}s`;
     lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
     lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
+    const refMs = calcTempoReferenceLength();
+    const stilleDiff = deMs - refMs;
+    if (info) {
+        if (stilleDiff > 50) {
+            // Hinweis für Nutzer:innen, dass Auto-Tempo Leerräume ignoriert
+            info.title = `Auto-Tempo berücksichtigt ${Math.round(stilleDiff)}ms Stille am Rand nicht.`;
+        } else {
+            info.removeAttribute('title');
+        }
+    }
 }
 // Prüft EN-Auswahl und schaltet den Kopier-Button
 function validateEnSelection() {
