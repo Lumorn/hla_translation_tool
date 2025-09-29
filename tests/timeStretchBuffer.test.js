@@ -99,18 +99,31 @@ function createStubBuffer(channels, sampleRate = 48000) {
 }
 
 describe('timeStretchBuffer-Helfer', () => {
-    test('dynamischer Schwellwert folgt dem lautesten Sample', () => {
+    test('dynamischer Schwellwert orientiert sich am Ruhepolster', () => {
         const buffer = createStubBuffer([
-            [0, 0.2, -0.2, 0],
-            [0, 0.05, -0.1, 0]
+            [
+                0,
+                0.0005,
+                -0.0008,
+                0.0005,
+                0.05,
+                0.1,
+                -0.2,
+                0.08,
+                -0.0004,
+                0.0005,
+                -0.0003,
+                0.0004
+            ]
         ]);
-        const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer);
-        expect(threshold).toBeCloseTo(0.0002, 9);
+        const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer, 4);
+        expect(threshold).toBeGreaterThan(8e-4);
+        expect(threshold).toBeLessThan(0.001);
     });
 
     test('dynamischer Schwellwert besitzt einen Mindestwert', () => {
         const buffer = createStubBuffer([[0, 2e-7, -3e-7, 0]]);
-        const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer);
+        const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer, 2);
         expect(threshold).toBeCloseTo(1e-6, 12);
     });
 

@@ -9169,17 +9169,84 @@ function loadSoundTouch() {
     return soundtouchPromise;
 }
 
-// Ermittelt den dynamischen Schwellwert relativ zum lautesten Sample im Buffer
-function calculateDynamicSilenceThreshold(buffer) {
-    let maxAmplitude = 0;
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            const sample = Math.abs(data[i]);
-            if (sample > maxAmplitude) maxAmplitude = sample;
+// Ermittelt den dynamischen Schwellwert anhand des tatsächlichen Ruhepolsters
+function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
+    const totalFrames = buffer.length;
+    const padLength = Math.max(0, Math.min(padFrames, totalFrames));
+    const ranges = [];
+
+    if (padLength > 0) {
+        ranges.push({ start: 0, end: padLength });
+        const tailStart = Math.max(totalFrames - padLength, padLength);
+        if (tailStart < totalFrames) {
+            ranges.push({ start: tailStart, end: totalFrames });
         }
     }
-    return Math.max(1e-6, maxAmplitude * 0.001);
+
+    if (ranges.length === 0) {
+        ranges.push({ start: 0, end: totalFrames });
+    }
+
+    const samples = [];
+    let sumSquares = 0;
+    let maxPadAmplitude = 0;
+
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const data = buffer.getChannelData(ch);
+        for (const range of ranges) {
+            for (let i = range.start; i < range.end; i++) {
+                const value = Math.abs(data[i]);
+                samples.push(value);
+                sumSquares += value * value;
+                if (value > maxPadAmplitude) maxPadAmplitude = value;
+            }
+        }
+    }
+
+    if (samples.length === 0) {
+        return 1e-6;
+    }
+
+    samples.sort((a, b) => a - b);
+    const percentileIndex = Math.max(0, Math.min(samples.length - 1, Math.floor(samples.length * 0.98)));
+    const percentileValue = samples[percentileIndex];
+    const rms = Math.sqrt(sumSquares / samples.length);
+
+    let threshold = Math.max(percentileValue * 1.25, rms * 3);
+    if (maxPadAmplitude > 0) {
+        threshold = Math.min(threshold, maxPadAmplitude * 1.1);
+    }
+
+    return Math.max(1e-6, threshold);
+}
+
+// Prüft, ob in einem Bereich ein ausreichend langes, zusammenhängendes Stillefenster existiert
+function hasContinuousSilence(channelData, startIndex, endIndex, threshold, windowFrames) {
+    const rangeLength = Math.max(0, endIndex - startIndex);
+    if (rangeLength < windowFrames || windowFrames <= 0) {
+        return false;
+    }
+
+    let consecutive = 0;
+    for (let i = startIndex; i < endIndex; i++) {
+        let silent = true;
+        for (const channel of channelData) {
+            if (Math.abs(channel[i]) > threshold) {
+                silent = false;
+                break;
+            }
+        }
+        if (silent) {
+            consecutive++;
+            if (consecutive >= windowFrames) {
+                return true;
+            }
+        } else {
+            consecutive = 0;
+        }
+    }
+
+    return false;
 }
 
 // Begrenzt das Abschneiden auf echte Stille (>=100 ms) und maximal 10 % der Gesamtdauer
@@ -9273,19 +9340,56 @@ async function timeStretchBuffer(buffer, factor) {
     const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / factor)));
 
     // Tatsächliche Stille mit dynamischem Schwellwert suchen
-    const thr = calculateDynamicSilenceThreshold(out);
+    const thr = calculateDynamicSilenceThreshold(out, padOutFrames);
+    const channelData = [];
+    for (let ch = 0; ch < out.numberOfChannels; ch++) {
+        channelData.push(out.getChannelData(ch));
+    }
+
     let start = 0;
     let end = 0;
-    const chData = out.getChannelData(0);
-    for (; start < chData.length; start++) {
-        if (Math.abs(chData[start]) > thr) break;
+    const totalFrames = out.length;
+    for (; start < totalFrames; start++) {
+        let above = false;
+        for (const channel of channelData) {
+            if (Math.abs(channel[start]) > thr) {
+                above = true;
+                break;
+            }
+        }
+        if (above) break;
     }
-    for (; end < chData.length; end++) {
-        if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
+    for (; end < totalFrames; end++) {
+        const idx = totalFrames - 1 - end;
+        let above = false;
+        for (const channel of channelData) {
+            if (Math.abs(channel[idx]) > thr) {
+                above = true;
+                break;
+            }
+        }
+        if (above) break;
     }
+
     // Mindestens das vorab angehängte Polster entfernen, bevor weitere Sicherheitsgrenzen greifen
     start = Math.max(start, padOutFrames);
     end = Math.max(end, padOutFrames);
+
+    const minSilenceWindow = Math.max(1, Math.round(out.sampleRate * 0.1));
+    if (start > padOutFrames) {
+        const hasWindow = hasContinuousSilence(channelData, padOutFrames, start, thr, minSilenceWindow);
+        if (!hasWindow) {
+            start = padOutFrames;
+        }
+    }
+    if (end > padOutFrames) {
+        const tailStart = Math.max(0, totalFrames - end);
+        const tailEnd = Math.min(totalFrames, totalFrames - padOutFrames);
+        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, thr, minSilenceWindow);
+        if (!hasWindow) {
+            end = padOutFrames;
+        }
+    }
 
     const limited = applyTrimSafety(start, end, out.length, out.sampleRate, padOutFrames, padOutFrames);
     start = limited.start;
