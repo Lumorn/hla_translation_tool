@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.428
+* `web/src/main.js` begrenzt das Abschneiden gestretchter Audios auf die erkannten Stillegrenzen plus einen 10-ms-Puffer, damit vorgezogene Einsätze und ausklingende Peaks nicht mehr mit entfernt werden.
+* `README.md` beschreibt die bleeding-sichere Polsterentfernung beim Tempo-Stretching.
+* `CHANGELOG.md` dokumentiert die neue Sicherheitskappe für die Polsterentfernung.
+
 ## 🛠️ Patch in 1.40.427
 * `web/src/main.js` speichert die erkannten Audio-Grenzen vor der Polsteranhebung und nutzt sie beim Defizitausgleich, sodass fehlende Samples zuerst aus dem echten Inhalt statt aus Stille ergänzt werden.
 * `README.md` weist auf den Erhalt markanter Peaks nach Tempo-Auto hin.

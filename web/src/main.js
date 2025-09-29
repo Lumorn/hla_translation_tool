@@ -9418,6 +9418,27 @@ async function timeStretchBuffer(buffer, factor) {
     start = limited.start;
     end = limited.end;
 
+    // Zusätzliche Sicherheitsgrenze: Wir beschneiden höchstens bis zu den erkannten Audio-Grenzen
+    // zuzüglich eines kleinen Puffers, damit echte Signale nicht aus Versehen entfernt werden.
+    const toleranceFrames = Math.max(0, Math.round(out.sampleRate * 0.01));
+    const startLimit = Math.min(totalFrames, detectedStart + toleranceFrames);
+    const endLimit = Math.min(totalFrames, detectedEnd + toleranceFrames);
+    if (start > startLimit) {
+        start = Math.max(0, startLimit);
+    }
+    if (end > endLimit) {
+        end = Math.max(0, endLimit);
+    }
+    if (start + end > totalFrames) {
+        const overflow = start + end - totalFrames;
+        if (end >= overflow) {
+            end -= overflow;
+        } else {
+            start = Math.max(0, start - (overflow - end));
+            end = 0;
+        }
+    }
+
     const expected = Math.round(buffer.length / factor);
     let available = Math.max(0, out.length - start - end);
 
