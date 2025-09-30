@@ -14930,27 +14930,34 @@ async function openDeEdit(fileId) {
         // Zweiter Auto-Knopf gleicht die DE-Zeit an die EN-Zeit an
         const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
         if (tempoAutoMatch) tempoAutoMatch.onclick = () => {
-            // Schrittweite und Zielwerte bestimmen
-            const step = parseFloat(tempoRange.step) || 0.01;
+            const step = parseFloat(tempoRange.step);
+            const min  = parseFloat(tempoRange.min);
             const max  = parseFloat(tempoRange.max);
             const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
 
             tempoDisp.classList.add('tempo-auto');
 
-            // Erhöht das Tempo so lange, bis DE ungefähr EN entspricht
-            const raise = () => {
-                const deMs = calcTempoReferenceLength();
-                if (deMs <= enMs || tempoFactor >= max) {
-                    updateLengthInfo();
-                    return;
-                }
-                tempoFactor = Math.min(tempoFactor + step, max);
-                tempoRange.value = tempoFactor.toFixed(2);
-                tempoDisp.textContent = tempoFactor.toFixed(2);
+            // Neue Zielgeschwindigkeit berechnen, die den Referenzwert auf EN angleicht
+            const deRefMs = calcTempoReferenceLength();
+            const relFactor = tempoFactor / loadedTempoFactor;
+            if (!Number.isFinite(enMs) || enMs <= 0 || !Number.isFinite(deRefMs) || deRefMs <= 0 || !Number.isFinite(relFactor) || relFactor <= 0) {
                 updateLengthInfo();
-                requestAnimationFrame(raise);
-            };
-            requestAnimationFrame(raise);
+                return;
+            }
+
+            // Basislänge ohne aktuelles Tempo ermitteln und auf EN matchen
+            let targetFactor = (deRefMs * tempoFactor) / enMs;
+            if (Number.isFinite(step) && step > 0) {
+                // Auf die Schrittweite des Sliders runden, damit Anzeige und Wert identisch bleiben
+                targetFactor = Math.round(targetFactor / step) * step;
+            }
+            if (Number.isFinite(min)) targetFactor = Math.max(min, targetFactor);
+            if (Number.isFinite(max)) targetFactor = Math.min(max, targetFactor);
+
+            tempoFactor = targetFactor;
+            tempoRange.value = tempoFactor.toFixed(2);
+            tempoDisp.textContent = tempoFactor.toFixed(2);
+            updateLengthInfo();
         };
     }
     const autoChk = document.getElementById('autoIgnoreChk');

@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.448
+* `web/src/main.js` berechnet den Tempo-Abgleich jetzt bidirektional, sodass Auto-Tempo DE-Aufnahmen sowohl beschleunigt als auch verlangsamt, um die EN-Zeit zu treffen.
+* `README.md` erwähnt den beidseitigen Auto-Tempo-Abgleich explizit.
+
 ## 🛠️ Patch in 1.40.447
 * `web/hla_translation_tool.html` ersetzt den Tempo-Debug-Dialog durch eine seitliche Debug-Konsole mit Kopier- und Schließen-Button direkt im DE-Editor.
 * `web/src/style.css` gestaltet das andockbare Debug-Fenster samt Animation und aktiver Button-Markierung.
