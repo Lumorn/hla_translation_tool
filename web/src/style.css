@@ -2859,6 +2859,29 @@ th:nth-child(8) {
     align-items: center;
 }
 
+#deEditDialog .tempo-safety {
+    border-top: 1px solid #2a2a2a;
+    padding-top: 12px;
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#deEditDialog .tempo-safety h5 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #f1f1f1;
+}
+
+#deEditDialog .checkbox-line small {
+    display: block;
+    margin-left: 28px;
+    color: #b3b3b3;
+    line-height: 1.4;
+}
+
 #deEditDialog #tempoInfo {
     margin-left: 10px;
     color: #ccc;
