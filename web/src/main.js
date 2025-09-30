@@ -14649,10 +14649,34 @@ async function openDeEdit(fileId) {
     };
 
     tempoFactor = file.tempoFactor || 1.0;
-    loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln
     autoIgnoreMs = 400;
     const tempoRange = document.getElementById('tempoRange');
     const tempoDisp  = document.getElementById('tempoDisplay');
+    let tempoMin = 1;
+    let tempoMax = 3;
+    if (tempoRange) {
+        const parsedMin = parseFloat(tempoRange.min);
+        if (!Number.isNaN(parsedMin)) tempoMin = parsedMin;
+        const parsedMax = parseFloat(tempoRange.max);
+        if (!Number.isNaN(parsedMax)) tempoMax = parsedMax;
+    }
+    if (!Number.isFinite(tempoFactor)) {
+        tempoFactor = tempoMin;
+    }
+    let tempoBegrenzt = false;
+    if (tempoFactor < tempoMin) {
+        tempoFactor = tempoMin;
+        tempoBegrenzt = true;
+    } else if (tempoFactor > tempoMax) {
+        tempoFactor = tempoMax;
+        tempoBegrenzt = true;
+    }
+    loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln
+    if (tempoBegrenzt && file.tempoFactor !== tempoFactor) {
+        // Ältere Projekte können Tempo-Werte außerhalb des Slider-Bereichs besitzen – auf den erlaubten Bereich trimmen
+        file.tempoFactor = tempoFactor;
+        markDirty();
+    }
     if (tempoRange && tempoDisp) {
         tempoRange.value = tempoFactor.toFixed(2);
         tempoDisp.textContent = tempoFactor.toFixed(2);

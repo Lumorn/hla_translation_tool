@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.446
+* `web/src/main.js` begrenzt beim Öffnen des DE-Editors alte Tempo-Faktoren sofort auf den Sliderbereich, damit historische Werte unterhalb von 1 keine extremen Beschleunigungen mehr auslösen.
+* `README.md` weist auf die automatische Normalisierung historischer Tempo-Werte hin.
+
 ## 🛠️ Patch in 1.40.445
 * `web/src/main.js` vereinfacht die Tempo-Verarbeitung radikal: Alle Randanalysen, Trim-Kürzungen und Defizitausgleiche entfallen, das gestretchte Signal bleibt vollständig erhalten und es wird nur noch der künstliche Sicherheitsrand entfernt.
 * `README.md` beschreibt, dass Tempo ausschließlich den Schutzpuffer kappt und keine Originalsamples mehr löscht.
