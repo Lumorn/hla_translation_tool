@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.439
+* `web/src/main.js` setzt die Tempo-Berechnung komplett neu auf, analysiert das Ruhepolster segmentiert, überspringt laute Randbereiche automatisch und verteilt fehlende Frames mehrstufig, bevor als letztes Mittel Stille angefügt wird.
+* `README.md` beschreibt die neue Tempo-Engine samt segmentierter Schwellenbestimmung und sanfter Restverteilung.
+* `CHANGELOG.md` dokumentiert die neu implementierte Tempo-Funktion in DEE-Audio.
 ## 🛠️ Patch in 1.40.438
 * `web/src/main.js` schreibt `trimAndPadBuffer` komplett neu, schützt originale Audiospuren vor versehentlichem Rechtsbeschnitt und füllt gewünschte Verlängerungen ausschließlich mit Stille auf.
 * `README.md` führt die erneuerte Trim- und Padding-Logik samt garantiertem Erhalt des rechten Rands aus.
