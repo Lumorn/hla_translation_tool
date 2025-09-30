@@ -9172,143 +9172,152 @@ function loadSoundTouch() {
 
 // Ermittelt den dynamischen Schwellwert anhand des tatsächlichen Ruhepolsters
 function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
-    const totalFrames = buffer.length;
-    const padLength = Math.max(0, Math.min(padFrames, totalFrames));
-    const ranges = [];
+    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
+        return 1e-6;
+    }
 
-    if (padLength > 0) {
-        ranges.push({ start: 0, end: padLength, type: 'head' });
-        const tailStart = Math.max(totalFrames - padLength, padLength);
-        if (tailStart < totalFrames) {
-            ranges.push({ start: tailStart, end: totalFrames, type: 'tail' });
+    const totalFrames = buffer.length;
+    const pad = Math.max(0, Math.min(padFrames, totalFrames));
+    const guard = pad > 0 ? Math.min(Math.round(buffer.sampleRate * 0.1), Math.floor(pad / 2)) : 0;
+
+    const segments = [];
+    if (pad > 0) {
+        const headEnd = Math.max(0, pad - guard);
+        if (headEnd > 0) {
+            segments.push({ start: 0, end: headEnd });
+        }
+        const tailStart = Math.max(0, totalFrames - pad);
+        const tailCollectStart = Math.min(totalFrames, tailStart + guard);
+        if (tailCollectStart < totalFrames) {
+            segments.push({ start: tailCollectStart, end: totalFrames });
+        }
+    }
+    if (segments.length === 0) {
+        segments.push({ start: 0, end: totalFrames });
+    }
+
+    let quietSumSquares = 0;
+    let quietCount = 0;
+    let quietPeak = 0;
+    const sampleValues = [];
+    const loudSegments = [];
+
+    for (const segment of segments) {
+        let segmentSumSquares = 0;
+        let segmentCount = 0;
+        let segmentPeak = 0;
+        let loudFrames = 0;
+        const segmentValues = [];
+
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const data = buffer.getChannelData(ch);
+            for (let i = segment.start; i < segment.end; i++) {
+                const value = Math.abs(data[i]);
+                segmentValues.push(value);
+                segmentSumSquares += value * value;
+                segmentCount++;
+                if (value > segmentPeak) segmentPeak = value;
+                if (value > 0.01) loudFrames++;
+            }
+        }
+
+        if (segmentCount === 0) {
+            continue;
+        }
+
+        const loudRatio = loudFrames / segmentCount;
+        if (loudRatio <= 0.1) {
+            quietSumSquares += segmentSumSquares;
+            quietCount += segmentCount;
+            quietPeak = Math.max(quietPeak, segmentPeak);
+            for (const value of segmentValues) {
+                if (sampleValues.length < 16384) {
+                    sampleValues.push(value);
+                }
+            }
+        } else {
+            loudSegments.push(segment);
         }
     }
 
-    if (ranges.length === 0) {
-        ranges.push({ start: 0, end: totalFrames, type: 'full' });
-    }
-
-    const samples = [];
-    let sumSquares = 0;
-    let maxPadAmplitude = 0;
-    const guardFrames = Math.round(buffer.sampleRate * 0.1);
-    const padRanges = ranges.filter(r => r.type !== 'full');
-
-    if (padRanges.length > 0) {
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch);
-            for (const range of padRanges) {
-                for (let i = range.start; i < range.end; i++) {
+    if (quietCount === 0) {
+        quietSumSquares = 0;
+        quietCount = 0;
+        quietPeak = 0;
+        const fallbackSegments = loudSegments.length > 0 ? loudSegments : segments;
+        for (const segment of fallbackSegments) {
+            for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+                const data = buffer.getChannelData(ch);
+                for (let i = segment.start; i < segment.end; i++) {
                     const value = Math.abs(data[i]);
-                    if (value > maxPadAmplitude) {
-                        maxPadAmplitude = value;
+                    quietSumSquares += value * value;
+                    quietCount++;
+                    quietPeak = Math.max(quietPeak, value);
+                    if (sampleValues.length < 16384) {
+                        sampleValues.push(value);
                     }
                 }
             }
         }
     }
 
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch);
-        for (const range of ranges) {
-            let start = range.start;
-            let end = range.end;
-
-            if (range.type === 'head' || range.type === 'tail') {
-                const guard = Math.min(guardFrames, end - start);
-                if (guard >= end - start) {
-                    continue;
-                }
-                if (range.type === 'head') {
-                    end -= guard;
-                } else {
-                    start += guard;
-                }
-            }
-
-            if (end <= start) {
-                continue;
-            }
-
-            for (let i = start; i < end; i++) {
-                const value = Math.abs(data[i]);
-                samples.push(value);
-                sumSquares += value * value;
-                if (value > maxPadAmplitude) maxPadAmplitude = value;
-            }
-        }
-    }
-
-    if (samples.length === 0) {
+    if (quietCount === 0) {
         return 1e-6;
     }
 
-    samples.sort((a, b) => a - b);
-    const percentileIndex = Math.max(0, Math.min(samples.length - 1, Math.floor(samples.length * 0.98)));
-    const percentileValue = samples[percentileIndex];
-    const rms = Math.sqrt(sumSquares / samples.length);
+    const rms = Math.sqrt(quietSumSquares / quietCount);
+    const sorted = sampleValues.slice().sort((a, b) => a - b);
+    const percentileIndex = sorted.length > 0
+        ? Math.max(0, Math.min(sorted.length - 1, Math.floor(sorted.length * 0.9)))
+        : 0;
+    const percentile = sorted.length > 0 ? sorted[percentileIndex] : rms;
 
-    let threshold = Math.max(percentileValue * 1.25, rms * 3);
-    if (maxPadAmplitude > 0) {
-        // Der Schwellwert darf das leiseste gemessene Nutzsignal im Ruhepolster nicht übersteigen
-        threshold = Math.min(threshold, maxPadAmplitude);
-    }
+    let threshold = Math.max(rms * 1.5, percentile * 1.2);
+    const cap = quietPeak > 0 ? quietPeak + 1e-6 : 1e-6;
+    threshold = Math.min(threshold, cap);
 
     return Math.max(1e-6, threshold);
 }
 
-// Ermittelt sichere Abschneidewerte für ein gepaddetes Signal anhand der aktuellen Schwelle
+// Analysiert die Randbereiche eines Signals und bereitet sichere Trim-Werte vor
 function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold) {
-    let start = 0;
-    let end = 0;
-    for (; start < totalFrames; start++) {
-        let above = false;
-        for (const channel of channelData) {
-            if (Math.abs(channel[start]) > threshold) {
-                above = true;
-                break;
-            }
-        }
-        if (above) break;
-    }
-    for (; end < totalFrames; end++) {
-        const idx = totalFrames - 1 - end;
-        let above = false;
-        for (const channel of channelData) {
-            if (Math.abs(channel[idx]) > threshold) {
-                above = true;
-                break;
-            }
-        }
-        if (above) break;
+    const isSilent = index => channelData.every(channel => Math.abs(channel[index]) <= threshold);
+
+    let firstActive = 0;
+    while (firstActive < totalFrames && isSilent(firstActive)) {
+        firstActive++;
     }
 
-    const detectedStart = start;
-    const detectedEnd = end;
+    let lastActive = totalFrames - 1;
+    while (lastActive >= 0 && isSilent(lastActive)) {
+        lastActive--;
+    }
 
-    start = Math.max(start, padFrames);
-    end = Math.max(end, padFrames);
+    const detectedStart = Math.min(totalFrames, Math.max(0, firstActive));
+    const detectedEnd = Math.min(totalFrames, Math.max(0, totalFrames - 1 - lastActive));
 
-    const minSilenceWindow = Math.max(1, Math.round(sampleRate * 0.1));
+    let start = Math.max(padFrames, detectedStart);
+    let end = Math.max(padFrames, detectedEnd);
+    const minWindow = Math.max(1, Math.round(sampleRate * 0.1));
+
     if (start > padFrames) {
         const silentSpan = start - padFrames;
-        const requiredWindow = Math.min(minSilenceWindow, silentSpan);
-        const windowStart = Math.max(padFrames, start - requiredWindow);
-        const hasWindow = hasContinuousSilence(channelData, windowStart, start, threshold, requiredWindow);
-        if (hasWindow) {
+        const windowSize = Math.min(minWindow, silentSpan);
+        const windowStart = Math.max(padFrames, start - windowSize);
+        if (hasContinuousSilence(channelData, windowStart, start, threshold, windowSize)) {
             console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Anfang erkannt', { startFrames: start, padFrames, threshold });
         } else {
             console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Anfang gefunden, Rückfall auf Polster', { startFrames: start, padFrames, threshold });
             start = padFrames;
         }
     }
+
     if (end > padFrames) {
         const silentSpan = end - padFrames;
-        const requiredWindow = Math.min(minSilenceWindow, silentSpan);
-        const tailEnd = Math.min(totalFrames, totalFrames - padFrames);
-        const tailStart = Math.max(0, tailEnd - requiredWindow);
-        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, threshold, requiredWindow);
-        if (hasWindow) {
+        const windowSize = Math.min(minWindow, silentSpan);
+        const tailBoundary = Math.max(0, totalFrames - padFrames);
+        const tailStart = Math.max(0, tailBoundary - windowSize);
+        if (hasContinuousSilence(channelData, tailStart, tailBoundary, threshold, windowSize)) {
             console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Ende erkannt', { endFrames: end, padFrames, threshold });
         } else {
             console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Ende gefunden, Rückfall auf Polster', { endFrames: end, padFrames, threshold });
@@ -9320,42 +9329,24 @@ function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, thresh
     start = limited.start;
     end = limited.end;
 
-    const toleranceFrames = Math.max(0, Math.round(sampleRate * 0.01));
-    const startLimit = Math.max(padFrames, Math.min(totalFrames, detectedStart + toleranceFrames));
-    const endLimit = Math.max(padFrames, Math.min(totalFrames, detectedEnd + toleranceFrames));
-    if (start > startLimit) {
-        start = Math.max(0, startLimit);
-    }
-    if (end > endLimit) {
-        end = Math.max(0, endLimit);
-    }
+    const tolerance = Math.max(0, Math.round(sampleRate * 0.01));
+    const maxStart = Math.max(padFrames, Math.min(totalFrames, detectedStart + tolerance));
+    const maxEnd = Math.max(padFrames, Math.min(totalFrames, detectedEnd + tolerance));
+    start = Math.min(start, maxStart);
+    end = Math.min(end, maxEnd);
 
     if (start + end > totalFrames) {
-        let overflow = start + end - totalFrames;
-        const minStart = Math.min(padFrames, totalFrames);
-        const minEnd = Math.min(padFrames, Math.max(0, totalFrames - minStart));
-
-        const endSlack = Math.max(0, end - minEnd);
-        const reduceEnd = Math.min(endSlack, overflow);
+        const overflow = start + end - totalFrames;
+        const reduceEnd = Math.min(Math.max(0, end - padFrames), overflow);
         end -= reduceEnd;
-        overflow -= reduceEnd;
-
-        const startSlack = Math.max(0, start - minStart);
-        const reduceStart = Math.min(startSlack, overflow);
-        start -= reduceStart;
-        overflow -= reduceStart;
-
-        if (overflow > 0) {
-            if (end >= overflow) {
-                end -= overflow;
-                overflow = 0;
-            } else {
-                overflow -= end;
-                end = 0;
-            }
+        let remaining = overflow - reduceEnd;
+        if (remaining > 0) {
+            const reduceStart = Math.min(Math.max(0, start - padFrames), remaining);
+            start -= reduceStart;
+            remaining -= reduceStart;
         }
-        if (overflow > 0) {
-            start = Math.max(0, start - overflow);
+        if (remaining > 0) {
+            end = Math.max(padFrames, end - remaining);
         }
     }
 
@@ -9371,107 +9362,109 @@ function estimateStretchableSilence(buffer) {
     const sr = buffer.sampleRate;
     const padFrames = Math.round(sr * 1.0);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, sr);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const target = padded.getChannelData(ch);
-        target.set(buffer.getChannelData(ch), padFrames);
+    try {
+        const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, sr);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const target = padded.getChannelData(ch);
+            target.set(buffer.getChannelData(ch), padFrames);
+        }
+
+        const threshold = calculateDynamicSilenceThreshold(padded, padFrames);
+        const channelData = [];
+        for (let ch = 0; ch < padded.numberOfChannels; ch++) {
+            channelData.push(padded.getChannelData(ch));
+        }
+
+        const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold);
+        const extraStart = Math.max(0, start - padFrames);
+        const extraEnd = Math.max(0, end - padFrames);
+
+        return {
+            start: Math.round(extraStart * 1000 / sr),
+            end: Math.round(extraEnd * 1000 / sr)
+        };
+    } finally {
+        ctx.close();
     }
-    ctx.close();
-
-    const threshold = calculateDynamicSilenceThreshold(padded, padFrames);
-    const channelData = [];
-    for (let ch = 0; ch < padded.numberOfChannels; ch++) {
-        channelData.push(padded.getChannelData(ch));
-    }
-
-    const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold);
-    const extraStart = Math.max(0, start - padFrames);
-    const extraEnd = Math.max(0, end - padFrames);
-
-    return {
-        start: Math.round(extraStart * 1000 / sr),
-        end: Math.round(extraEnd * 1000 / sr)
-    };
 }
 
-// Prüft, ob in einem Bereich ein ausreichend langes, zusammenhängendes Stillefenster existiert
+// Prüft, ob sich innerhalb eines Abschnitts ein ausreichend langes Stillfenster befindet
 function hasContinuousSilence(channelData, startIndex, endIndex, threshold, windowFrames) {
     const rangeLength = Math.max(0, endIndex - startIndex);
-    if (rangeLength < windowFrames || windowFrames <= 0) {
+    if (windowFrames <= 0 || rangeLength < windowFrames) {
         return false;
     }
 
     let consecutive = 0;
     for (let i = startIndex; i < endIndex; i++) {
-        let silent = true;
-        for (const channel of channelData) {
-            if (Math.abs(channel[i]) > threshold) {
-                silent = false;
-                break;
-            }
-        }
-        if (silent) {
-            consecutive++;
-            if (consecutive >= windowFrames) {
-                return true;
-            }
-        } else {
-            consecutive = 0;
+        const silent = channelData.every(channel => Math.abs(channel[i]) <= threshold);
+        consecutive = silent ? consecutive + 1 : 0;
+        if (consecutive >= windowFrames) {
+            return true;
         }
     }
 
     return false;
 }
 
-// Begrenzt das Abschneiden auf echte Stille (>=100 ms) und maximal 10 % der Gesamtdauer
+// Begrenzt das Abschneiden auf echte Stille und höchstens zehn Prozent der Gesamtdauer
 function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minStartFrames = 0, minEndFrames = 0) {
     const minSilenceFrames = Math.round(sampleRate * 0.1);
     const maxTrimFrames = Math.round(totalFrames * 0.1);
 
-    // Mindestabschneidewerte stets berücksichtigen, sie dürfen auch über zehn Prozent hinausgehen
-    const safeMinStart = Math.max(0, Math.min(minStartFrames, totalFrames));
-    const safeMinEnd = Math.max(0, Math.min(minEndFrames, Math.max(0, totalFrames - safeMinStart)));
+    const baseStart = Math.max(0, Math.min(minStartFrames, totalFrames));
+    const baseEnd = Math.max(0, Math.min(minEndFrames, Math.max(0, totalFrames - baseStart)));
 
-    let extraStart = Math.max(0, startFrames - safeMinStart);
-    let extraEnd = Math.max(0, endFrames - safeMinEnd);
+    let safeStart = Math.max(baseStart, startFrames);
+    let safeEnd = Math.max(baseEnd, endFrames);
 
-    if (extraStart < minSilenceFrames) extraStart = 0;
-    if (extraEnd < minSilenceFrames) extraEnd = 0;
+    const extraStart = Math.max(0, safeStart - baseStart);
+    const extraEnd = Math.max(0, safeEnd - baseEnd);
 
-    let safeStart = safeMinStart + extraStart;
-    let safeEnd = safeMinEnd + extraEnd;
-
-    const minTotal = safeMinStart + safeMinEnd;
-    const totalTrim = safeStart + safeEnd;
-    const adjustableTrim = totalTrim - minTotal;
-    const maxAdjustable = Math.max(0, maxTrimFrames - minTotal);
-
-    if (adjustableTrim > maxAdjustable && adjustableTrim > 0) {
-        const scale = maxAdjustable / adjustableTrim;
-        safeStart = safeMinStart + Math.floor(extraStart * scale);
-        safeEnd = safeMinEnd + Math.floor(extraEnd * scale);
+    if (extraStart > 0 && extraStart < minSilenceFrames) {
+        safeStart = baseStart;
+    }
+    if (extraEnd > 0 && extraEnd < minSilenceFrames) {
+        safeEnd = baseEnd;
     }
 
-    // Sicherstellen, dass Start- und Endwert zusammen nicht über die Gesamtlänge hinausragen
+    const baseTrim = baseStart + baseEnd;
+    const requestedTrim = safeStart + safeEnd;
+    const adjustable = Math.max(0, requestedTrim - baseTrim);
+    const adjustableLimit = Math.max(0, maxTrimFrames - baseTrim);
+
+    if (adjustable > adjustableLimit && adjustable > 0) {
+        const scale = adjustableLimit / adjustable;
+        safeStart = baseStart + Math.floor((safeStart - baseStart) * scale);
+        safeEnd = baseEnd + Math.floor((safeEnd - baseEnd) * scale);
+    }
+
     if (safeStart + safeEnd > totalFrames) {
         const overflow = safeStart + safeEnd - totalFrames;
-        if (safeEnd >= overflow) {
-            safeEnd -= overflow;
-        } else {
-            safeStart = Math.max(0, safeStart - (overflow - safeEnd));
-            safeEnd = 0;
+        const endReduction = Math.min(Math.max(0, safeEnd - baseEnd), overflow);
+        safeEnd -= endReduction;
+        let remaining = overflow - endReduction;
+        if (remaining > 0) {
+            const startReduction = Math.min(Math.max(0, safeStart - baseStart), remaining);
+            safeStart -= startReduction;
+            remaining -= startReduction;
+        }
+        if (remaining > 0) {
+            safeEnd = Math.max(baseEnd, safeEnd - remaining);
         }
     }
 
-    // Zusätzliche Abschneidung muss weiterhin mindestens 100 ms Stille umfassen
-    if (safeStart - safeMinStart > 0 && safeStart - safeMinStart < minSilenceFrames) {
-        safeStart = safeMinStart;
+    if (safeStart - baseStart > 0 && safeStart - baseStart < minSilenceFrames) {
+        safeStart = baseStart;
     }
-    if (safeEnd - safeMinEnd > 0 && safeEnd - safeMinEnd < minSilenceFrames) {
-        safeEnd = safeMinEnd;
+    if (safeEnd - baseEnd > 0 && safeEnd - baseEnd < minSilenceFrames) {
+        safeEnd = baseEnd;
     }
 
-    return { start: safeStart, end: safeEnd };
+    return {
+        start: Math.max(0, Math.min(totalFrames, safeStart)),
+        end: Math.max(0, Math.min(totalFrames, safeEnd))
+    };
 }
 
 async function timeStretchBuffer(buffer, factor, options = {}) {
@@ -9481,7 +9474,11 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         debug: debugContext = null
     } = options || {};
 
-    const safeFactor = Math.max(0.001, Math.abs(factor));
+    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
+        return buffer;
+    }
+
+    const safeFactor = Math.max(0.001, Math.abs(factor || 0));
     const expected = Math.round(buffer.length / safeFactor);
 
     const debugAdd = debugContext && typeof debugContext.addStep === 'function'
@@ -9494,10 +9491,10 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         }
         : null;
 
-    if (safeFactor >= 0.999 && safeFactor <= 1.001) {
+    if (Math.abs(safeFactor - 1) < 0.001) {
         if (debugAdd) {
             debugAdd('Tempo: Keine Anpassung erforderlich', buffer, {
-                description: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
+                beschreibung: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
                 tempoFactor: safeFactor,
                 expectedSamples: buffer.length,
                 relativeFactor: safeFactor,
@@ -9509,8 +9506,8 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
     }
 
     if (debugAdd) {
-        debugAdd('Tempo: Eingabe vorbereiten', buffer, {
-            description: 'Ausgangspunkt für das Time-Stretching.',
+        debugAdd('Tempo: Eingabe vorbereitet', buffer, {
+            beschreibung: 'Originalsignal wird für das Time-Stretching aufbereitet.',
             tempoFactor: safeFactor,
             expectedSamples: expected,
             relativeFactor: safeFactor,
@@ -9520,219 +9517,205 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
     }
 
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const padFrames = Math.round(buffer.sampleRate * 1.0);
-    const padded = ctx.createBuffer(buffer.numberOfChannels,
-        buffer.length + padFrames * 2,
-        buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        padded.getChannelData(ch).set(buffer.getChannelData(ch), padFrames);
-    }
-
-    if (debugAdd) {
-        debugAdd('Tempo: Randstille gepolstert', padded, {
-            description: 'Eine Sekunde Sicherheitsstille wurde an Anfang und Ende eingefügt.',
-            padFrames,
-            padMs: padFrames / buffer.sampleRate * 1000
-        });
-    }
-
-    const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
-    const st = new SoundTouch();
-    st.tempo = factor;
-    const source = new WebAudioBufferSource(padded);
-    const filter = new SimpleFilter(source, st);
-    const outL = [];
-    const outR = [];
-    const temp = new Float32Array(8192);
-    while (true) {
-        const frames = filter.extract(temp, 4096);
-        if (frames === 0) break;
-        for (let i = 0; i < frames; i++) {
-            outL.push(temp[i * 2]);
-            if (buffer.numberOfChannels > 1) {
-                outR.push(temp[i * 2 + 1]);
-            }
-        }
-    }
-    const out = ctx.createBuffer(buffer.numberOfChannels, outL.length, buffer.sampleRate);
-    out.getChannelData(0).set(Float32Array.from(outL));
-    if (buffer.numberOfChannels > 1) {
-        out.getChannelData(1).set(Float32Array.from(outR));
-    }
-    const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / safeFactor)));
-
-    if (debugAdd) {
-        debugAdd('Tempo: Gestretchtes Rohsignal', out, {
-            description: 'SoundTouch liefert das gedehnte Signal noch inklusive Polstern.',
-            producedSamples: out.length,
-            padOutFrames,
-            padOutMs: padOutFrames / out.sampleRate * 1000
-        });
-    }
-
-    const thr = calculateDynamicSilenceThreshold(out, padOutFrames);
-    const channelData = [];
-    for (let ch = 0; ch < out.numberOfChannels; ch++) {
-        channelData.push(out.getChannelData(ch));
-    }
-
-    const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
-
-    const totalFrames = out.length;
-    const { start: baseStart, end: baseEnd, detectedStart, detectedEnd } = analyzeEdgeTrim(
-        channelData,
-        totalFrames,
-        out.sampleRate,
-        padOutFrames,
-        thr
-    );
-    let start = baseStart;
-    let end = baseEnd;
-
-    const maxExtraStartFrames = Number.isFinite(allowedTrimStartMs)
-        ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * out.sampleRate / 1000))
-        : Number.POSITIVE_INFINITY;
-    const maxExtraEndFrames = Number.isFinite(allowedTrimEndMs)
-        ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * out.sampleRate / 1000))
-        : Number.POSITIVE_INFINITY;
-
-    if (Number.isFinite(maxExtraStartFrames)) {
-        const maxStart = Math.min(totalFrames, padOutFrames + maxExtraStartFrames);
-        start = Math.min(start, maxStart);
-    }
-    if (Number.isFinite(maxExtraEndFrames)) {
-        const maxEnd = Math.min(totalFrames, padOutFrames + maxExtraEndFrames);
-        end = Math.min(end, maxEnd);
-    }
-
-    if (debugAdd) {
-        debugAdd('Tempo: Randanalyse', out, {
-            description: 'Dynamische Schwellenwerte bestimmen die erlaubte Randstille.',
-            baseStartMs: framesToMs(baseStart, out.sampleRate),
-            baseEndMs: framesToMs(baseEnd, out.sampleRate),
-            detectedStartMs: framesToMs(detectedStart, out.sampleRate),
-            detectedEndMs: framesToMs(detectedEnd, out.sampleRate),
-            tempoFactor: safeFactor
-        });
-    }
-
-    let available = Math.max(0, out.length - start - end);
-
-    if (debugAdd) {
-        debugAdd('Tempo: Erste Abschätzung', out, {
-            description: 'Verfügbare Samples nach der Randabschätzung.',
-            startTrimMs: framesToMs(start, out.sampleRate),
-            endTrimMs: framesToMs(end, out.sampleRate),
-            availableSamples: available,
-            expectedSamples: expected
-        });
-    }
-
-    if (available < expected) {
-        let deficit = expected - available;
-
-        const endToDetected = Math.max(detectedEnd, padOutFrames);
-        const reduceEndDetected = Math.min(deficit, Math.max(0, end - endToDetected));
-        end -= reduceEndDetected;
-        deficit -= reduceEndDetected;
-
-        if (deficit > 0) {
-            const reduceEndPad = Math.min(deficit, Math.max(0, end - padOutFrames));
-            end -= reduceEndPad;
-            deficit -= reduceEndPad;
-        }
-
-        if (deficit > 0) {
-            const startToDetected = Math.max(detectedStart, padOutFrames);
-            const reduceStartDetected = Math.min(deficit, Math.max(0, start - startToDetected));
-            start -= reduceStartDetected;
-            deficit -= reduceStartDetected;
-        }
-
-        if (deficit > 0) {
-            const reduceStartPad = Math.min(deficit, Math.max(0, start - padOutFrames));
-            start -= reduceStartPad;
-            deficit -= reduceStartPad;
-        }
-
-        available = Math.max(0, out.length - start - end);
-
-        if (available < expected) {
-            let remaining = expected - available;
-            let startSlack = Math.max(0, start - padOutFrames);
-            let endSlack = Math.max(0, end - padOutFrames);
-
-            while (remaining > 0 && (startSlack > 0 || endSlack > 0)) {
-                if (startSlack > 0) {
-                    const takeStart = Math.min(startSlack, Math.ceil(remaining / 2));
-                    start -= takeStart;
-                    startSlack -= takeStart;
-                    remaining -= takeStart;
-                }
-                if (remaining <= 0) break;
-                if (endSlack > 0) {
-                    const takeEnd = Math.min(endSlack, remaining);
-                    end -= takeEnd;
-                    endSlack -= takeEnd;
-                    remaining -= takeEnd;
-                }
-            }
-
-            available = Math.max(0, out.length - start - end);
+    try {
+        const padFrames = Math.round(buffer.sampleRate * 1.0);
+        const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, buffer.sampleRate);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const target = padded.getChannelData(ch);
+            target.set(buffer.getChannelData(ch), padFrames);
         }
 
         if (debugAdd) {
-            debugAdd('Tempo: Defizitausgleich', out, {
-                description: 'Randtrims wurden gelockert, um fehlende Samples zurückzugewinnen.',
-                startTrimMs: framesToMs(start, out.sampleRate),
-                endTrimMs: framesToMs(end, out.sampleRate),
+            debugAdd('Tempo: Sicherheitsrand gesetzt', padded, {
+                beschreibung: 'Eine Sekunde Puffer schützt den Algorithmus vor abgeschnittenen Transienten.',
+                padFrames,
+                padMs: padFrames / buffer.sampleRate * 1000
+            });
+        }
+
+        const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
+        const st = new SoundTouch();
+        st.tempo = factor;
+        const source = new WebAudioBufferSource(padded);
+        const filter = new SimpleFilter(source, st);
+
+        const channels = padded.numberOfChannels;
+        const frameChunk = 4096;
+        const temp = new Float32Array(frameChunk * channels);
+        const collected = Array.from({ length: channels }, () => []);
+        let producedFrames = 0;
+
+        while (true) {
+            const frames = filter.extract(temp, frameChunk);
+            if (!frames) break;
+            for (let i = 0; i < frames; i++) {
+                for (let ch = 0; ch < channels; ch++) {
+                    collected[ch].push(temp[i * channels + ch]);
+                }
+            }
+            producedFrames += frames;
+        }
+
+        const stretched = ctx.createBuffer(channels, producedFrames, buffer.sampleRate);
+        for (let ch = 0; ch < channels; ch++) {
+            stretched.getChannelData(ch).set(Float32Array.from(collected[ch]));
+        }
+
+        const padOutFrames = Math.min(stretched.length, Math.max(0, Math.round(padFrames / safeFactor)));
+
+        if (debugAdd) {
+            debugAdd('Tempo: Gestretchtes Signal', stretched, {
+                beschreibung: 'SoundTouch hat das Signal auf den gewünschten Faktor gedehnt.',
+                producedSamples: stretched.length,
+                padOutFrames,
+                padOutMs: padOutFrames / stretched.sampleRate * 1000
+            });
+        }
+
+        const threshold = calculateDynamicSilenceThreshold(stretched, padOutFrames);
+        const channelData = [];
+        for (let ch = 0; ch < stretched.numberOfChannels; ch++) {
+            channelData.push(stretched.getChannelData(ch));
+        }
+
+        const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
+        const analysis = analyzeEdgeTrim(channelData, stretched.length, stretched.sampleRate, padOutFrames, threshold);
+
+        let startTrim = Math.max(0, Math.round(analysis.start));
+        let endTrim = Math.max(0, Math.round(analysis.end));
+
+        const allowedStartFrames = Number.isFinite(allowedTrimStartMs)
+            ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * stretched.sampleRate / 1000))
+            : Number.POSITIVE_INFINITY;
+        const allowedEndFrames = Number.isFinite(allowedTrimEndMs)
+            ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * stretched.sampleRate / 1000))
+            : Number.POSITIVE_INFINITY;
+
+        if (Number.isFinite(allowedStartFrames)) {
+            startTrim = Math.min(startTrim, padOutFrames + allowedStartFrames);
+        }
+        if (Number.isFinite(allowedEndFrames)) {
+            endTrim = Math.min(endTrim, padOutFrames + allowedEndFrames);
+        }
+
+        if (debugAdd) {
+            debugAdd('Tempo: Randanalyse abgeschlossen', stretched, {
+                beschreibung: 'Randstille und Sicherheitsabstände wurden neu bewertet.',
+                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
+                endTrimMs: framesToMs(endTrim, stretched.sampleRate),
+                detectedStartMs: framesToMs(analysis.detectedStart, stretched.sampleRate),
+                detectedEndMs: framesToMs(analysis.detectedEnd, stretched.sampleRate),
+                tempoFactor: safeFactor,
+                threshold
+            });
+        }
+
+        let available = Math.max(0, stretched.length - startTrim - endTrim);
+        if (debugAdd) {
+            debugAdd('Tempo: Erste Längenprüfung', stretched, {
+                beschreibung: 'Vergleich zwischen erwarteter Länge und aktueller Abschätzung.',
+                availableSamples: available,
+                expectedSamples: expected,
+                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
+                endTrimMs: framesToMs(endTrim, stretched.sampleRate)
+            });
+        }
+
+        if (available < expected) {
+            let deficit = expected - available;
+            const relaxPlan = [
+                { side: 'end', limit: Math.max(analysis.detectedEnd, padOutFrames) },
+                { side: 'start', limit: Math.max(analysis.detectedStart, padOutFrames) },
+                { side: 'end', limit: padOutFrames },
+                { side: 'start', limit: padOutFrames }
+            ];
+
+            for (const step of relaxPlan) {
+                if (deficit <= 0) break;
+                const current = step.side === 'start' ? startTrim : endTrim;
+                const minLimit = Math.max(0, Math.min(stretched.length, Math.round(step.limit)));
+                const slack = Math.max(0, current - minLimit);
+                if (slack <= 0) continue;
+                const release = Math.min(slack, deficit);
+                if (step.side === 'start') {
+                    startTrim -= release;
+                } else {
+                    endTrim -= release;
+                }
+                deficit -= release;
+            }
+
+            if (deficit > 0) {
+                let startSlack = Math.max(0, startTrim - padOutFrames);
+                let endSlack = Math.max(0, endTrim - padOutFrames);
+                while (deficit > 0 && (startSlack > 0 || endSlack > 0)) {
+                    if (startSlack > 0) {
+                        const take = Math.min(startSlack, Math.ceil(deficit / 2));
+                        startTrim -= take;
+                        startSlack -= take;
+                        deficit -= take;
+                    }
+                    if (deficit <= 0) break;
+                    if (endSlack > 0) {
+                        const take = Math.min(endSlack, deficit);
+                        endTrim -= take;
+                        endSlack -= take;
+                        deficit -= take;
+                    }
+                }
+            }
+
+            available = Math.max(0, stretched.length - startTrim - endTrim);
+
+            if (debugAdd) {
+                debugAdd('Tempo: Defizitausgleich', stretched, {
+                    beschreibung: 'Randtrims wurden gelockert, um fehlende Samples zurückzugewinnen.',
+                    availableSamples: available,
+                    expectedSamples: expected,
+                    startTrimMs: framesToMs(startTrim, stretched.sampleRate),
+                    endTrimMs: framesToMs(endTrim, stretched.sampleRate)
+                });
+            }
+        }
+
+        const needsPadding = available < expected;
+        const trimmedLength = Math.max(0, Math.min(stretched.length, available));
+        const trimmed = ctx.createBuffer(stretched.numberOfChannels, trimmedLength, stretched.sampleRate);
+        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
+            const sourceData = stretched.getChannelData(ch);
+            trimmed.getChannelData(ch).set(sourceData.subarray(startTrim, startTrim + trimmedLength));
+        }
+
+        if (debugAdd) {
+            debugAdd('Tempo: Ergebnis nach Schnitt', trimmed, {
+                beschreibung: 'Randstille wurde entfernt, verbleibende Länge entspricht dem Erwartungswert oder liegt knapp darunter.',
+                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
+                endTrimMs: framesToMs(endTrim, stretched.sampleRate),
                 availableSamples: available,
                 expectedSamples: expected
             });
         }
-    }
 
-    const slackStart = Math.max(0, start - padOutFrames);
-    const slackEnd = Math.max(0, end - padOutFrames);
-    const needsPadding = available < expected && slackStart === 0 && slackEnd === 0;
+        if (!needsPadding) {
+            return trimmed;
+        }
 
-    let len = available;
-    if (len < 0) len = 0;
-    let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
-    for (let ch = 0; ch < out.numberOfChannels; ch++) {
-        const data = out.getChannelData(ch).subarray(start, start + len);
-        trimmed.getChannelData(ch).set(data);
-    }
-
-    if (debugAdd) {
-        debugAdd('Tempo: Ergebnis nach Schnitt', trimmed, {
-            description: 'Randstille wurde entfernt, das Signal entspricht der erwarteten Länge oder ist minimal kürzer.',
-            startTrimMs: framesToMs(start, out.sampleRate),
-            endTrimMs: framesToMs(end, out.sampleRate),
-            availableSamples: available,
-            expectedSamples: expected
-        });
-    }
-
-    if (needsPadding) {
         const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            const data = trimmed.getChannelData(ch);
-            paddedResult.getChannelData(ch).set(data.subarray(0, data.length));
+            paddedResult.getChannelData(ch).set(trimmed.getChannelData(ch));
         }
-        trimmed = paddedResult;
 
         if (debugAdd) {
-            debugAdd('Tempo: Fehlende Samples aufgefüllt', trimmed, {
-                description: 'Restliche Rundungsdifferenz wurde mit Stille aufgefüllt.',
-                needsPadding: true,
+            debugAdd('Tempo: Fehlende Samples aufgefüllt', paddedResult, {
+                beschreibung: 'Restliche Rundungsdifferenzen wurden mit Stille ergänzt.',
                 expectedSamples: expected
             });
         }
-    }
 
-    ctx.close();
-    return trimmed;
+        return paddedResult;
+    } finally {
+        ctx.close();
+    }
 }
 
 function toggleIgnoreSelectedSegments() {
