@@ -9170,10 +9170,13 @@ function resolveAllowedTrimMs(edgeMs, tempoSafety) {
     if (!detectEdgeSilence) {
         return enforceTrimSafety ? 0 : Number.POSITIVE_INFINITY;
     }
-    if (!Number.isFinite(edgeMs)) {
-        return enforceTrimSafety ? EDGE_TRIM_CAP_MS : edgeMs;
+    if (!enforceTrimSafety) {
+        return edgeMs;
     }
-    return enforceTrimSafety ? Math.min(edgeMs, EDGE_TRIM_CAP_MS) : edgeMs;
+    if (!Number.isFinite(edgeMs)) {
+        return EDGE_TRIM_CAP_MS;
+    }
+    return Math.min(edgeMs, EDGE_TRIM_CAP_MS);
 }
 
 // Liefert den effektiv zu nutzenden Randbeschnitt abhängig vom Limit-Schalter
@@ -9677,8 +9680,11 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             }
 
             if (debugAdd) {
+                const beschreibung = enforceTrimSafety
+                    ? 'Randstille und Sicherheitsabstände wurden mit aktivem Sicherheitslimit neu bewertet.'
+                    : 'Randstille wurde neu bewertet; das Sicherheitslimit ist deaktiviert und zusätzliche Kürzungen bleiben unbegrenzt möglich.';
                 debugAdd('Tempo: Randanalyse abgeschlossen', stretched, {
-                    beschreibung: 'Randstille und Sicherheitsabstände wurden neu bewertet.',
+                    beschreibung,
                     startTrimMs: framesToMs(startTrim, stretched.sampleRate),
                     endTrimMs: framesToMs(endTrim, stretched.sampleRate),
                     detectedStartMs: framesToMs(analysis.detectedStart, stretched.sampleRate),
@@ -15726,7 +15732,7 @@ async function recomputeEditBuffer() {
     const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
     const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
     const stretchOptions = {
-        // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
+        // Nur den nachweislich stillen Bereich freigeben; die Kappung greift ausschließlich bei aktivem Limit
         allowedTrimStartMs,
         allowedTrimEndMs,
         usePadding: tempoSafety.usePadding,
@@ -17475,7 +17481,7 @@ async function applyDeEdit(param = {}) {
             const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
             const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
             const stretchOptions = {
-                // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
+                // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben; ohne Limit bleibt die Freigabe unbegrenzt
                 allowedTrimStartMs,
                 allowedTrimEndMs,
                 usePadding: tempoSafety.usePadding,
@@ -17576,6 +17582,7 @@ async function applyDeEdit(param = {}) {
             const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
             const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
             const stretchOptions = {
+                // Bei deaktiviertem Limit werden die analysierten Werte ohne zusätzliche Kappung weitergereicht
                 allowedTrimStartMs,
                 allowedTrimEndMs,
                 usePadding: tempoSafety.usePadding,

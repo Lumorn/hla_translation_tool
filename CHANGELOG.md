@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.444
+* `web/src/main.js` koppelt die 120-ms-Kappung strikt an das aktive Sicherheitslimit, passt Kommentare sowie Debug-Texte an und lässt unbegrenzte Werte ohne Zusatzlogik weiterlaufen.
+* `README.md` betont, dass keine versteckte Deckelung mehr greift, sobald das Trim-Limit deaktiviert ist.
+* `CHANGELOG.md` dokumentiert die feinere Limitverarbeitung samt überarbeiteten Debug-Hinweisen.
 ## 🛠️ Patch in 1.40.443
 * `web/src/main.js` übergibt bei deaktiviertem Trim-Limit jetzt konsequent eine unbegrenzte Freigabe an Vorschau, Tempo-Debug und beide Speicherroutinen, damit kein versteckter 120-ms-Deckel mehr greift.
 * `README.md` stellt klar, dass sämtliche Trim-Pfade die Begrenzung wirklich abschalten und ohne Limit speichern.
