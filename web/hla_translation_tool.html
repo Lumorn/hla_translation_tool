@@ -726,12 +726,23 @@
                 <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
                 <!-- Zusätzliche Aktionsleiste im Kopfbereich -->
                 <div class="edit-header-actions">
-                    <button class="btn btn-secondary" id="tempoDebugBtn" onclick="openTempoDebug()" title="Tempo-Bearbeitung Schritt für Schritt simulieren">Debug</button>
+                    <button class="btn btn-secondary" id="deDebugBtn" onclick="toggleDeDebugPanel()" title="Debug-Protokoll anzeigen">Debug</button>
                     <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
                     <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen">Speichern</button>
                     <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen">Speichern &amp; schließen</button>
                 </div>
             </div>
+            <div class="de-debug-panel" id="deDebugPanel" aria-hidden="true">
+                <div class="de-debug-header">
+                    <h4>Debug-Protokoll</h4>
+                    <div class="de-debug-actions">
+                        <button class="btn btn-secondary" id="deDebugCopyBtn" type="button">Kopieren</button>
+                        <button class="btn btn-secondary" id="deDebugCloseBtn" type="button" onclick="toggleDeDebugPanel(false)">Schließen</button>
+                    </div>
+                </div>
+                <textarea id="deDebugConsole" class="de-debug-console" readonly></textarea>
+            </div>
+            <div class="de-edit-content" id="deEditContent">
             <div class="wave-toolbar" id="waveToolbar">
                 <div class="wave-slider wave-zoom-slider">
                     <button type="button" class="wave-toolbar-btn" id="waveZoomOutBtn" title="Zoom verkleinern">−</button>
@@ -1078,6 +1089,7 @@
                 <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen">Speichern</button>
                 <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen">Speichern &amp; schließen</button>
             </div>
+        </div>
         </div>
     </div>
 

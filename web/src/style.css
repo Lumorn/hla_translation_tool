@@ -2490,6 +2490,79 @@ th:nth-child(8) {
     max-width: 1400px; /* Grundbreite für großzügige Arbeitsfläche */
     width: min(96vw, 1400px);
     padding: 22px 28px; /* Weniger vertikaler Innenabstand für einen kompakteren Kopfbereich */
+    position: relative; /* Für das seitliche Debug-Fenster erforderlich */
+    box-sizing: border-box; /* Verhindert, dass zusätzliche Polsterungen die Gesamtbreite sprengen */
+    overflow: visible; /* Debug-Konsole darf überstehen */
+}
+
+#deEditDialog .de-edit-content {
+    transition: margin-right 0.25s ease; /* Sanftes Ausweichen, wenn die Debug-Konsole eingeblendet wird */
+}
+
+#deEditDialog .dialog.debug-open .de-edit-content {
+    margin-right: 340px; /* Platz für das Debug-Fenster reservieren */
+}
+
+#deEditDialog .de-debug-panel {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 320px;
+    height: calc(100% - 36px);
+    background: #1b1b1b;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    transform: translateX(110%);
+    transition: transform 0.25s ease;
+    z-index: 15;
+}
+
+#deEditDialog .dialog.debug-open .de-debug-panel {
+    transform: translateX(0);
+}
+
+#deEditDialog .de-debug-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+#deEditDialog .de-debug-header h4 {
+    margin: 0;
+    color: #ff9b3f;
+    font-size: 16px;
+}
+
+#deEditDialog .de-debug-actions {
+    display: flex;
+    gap: 8px;
+}
+
+#deEditDialog .de-debug-console {
+    flex: 1;
+    width: 100%;
+    resize: none;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #e6e6e6;
+    font-family: "Fira Code", "Roboto Mono", monospace;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 12px;
+    white-space: pre;
+}
+
+#deDebugBtn.debug-active {
+    background: #ff9b3f;
+    border-color: #ff9b3f;
+    color: #1a1a1a;
 }
 
 #deEditDialog .dialog h3 {
