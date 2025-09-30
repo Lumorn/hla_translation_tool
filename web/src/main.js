@@ -9448,13 +9448,50 @@ function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minSta
 }
 
 async function timeStretchBuffer(buffer, factor, options = {}) {
-    if (factor <= 1.001 && factor >= 0.999) return buffer;
+    const {
+        allowedTrimStartMs = 0,
+        allowedTrimEndMs = 0,
+        debug: debugContext = null
+    } = options || {};
 
-    const { allowedTrimStartMs = 0, allowedTrimEndMs = 0 } = options;
     const safeFactor = Math.max(0.001, Math.abs(factor));
+    const expected = Math.round(buffer.length / safeFactor);
 
-    // Großzügiges Stillepolster von einer Sekunde anfügen,
-    // damit die Berechnung am Rand nicht auf das Original wirkt.
+    const debugAdd = debugContext && typeof debugContext.addStep === 'function'
+        ? (title, buf, meta = {}) => {
+            try {
+                debugContext.addStep(title, buf, meta);
+            } catch (err) {
+                console.warn('Tempo-Debug: Schritt konnte nicht gespeichert werden', err);
+            }
+        }
+        : null;
+
+    if (safeFactor >= 0.999 && safeFactor <= 1.001) {
+        if (debugAdd) {
+            debugAdd('Tempo: Keine Anpassung erforderlich', buffer, {
+                description: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
+                tempoFactor: safeFactor,
+                expectedSamples: buffer.length,
+                relativeFactor: safeFactor,
+                allowedTrimStartMs,
+                allowedTrimEndMs
+            });
+        }
+        return buffer;
+    }
+
+    if (debugAdd) {
+        debugAdd('Tempo: Eingabe vorbereiten', buffer, {
+            description: 'Ausgangspunkt für das Time-Stretching.',
+            tempoFactor: safeFactor,
+            expectedSamples: expected,
+            relativeFactor: safeFactor,
+            allowedTrimStartMs,
+            allowedTrimEndMs
+        });
+    }
+
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const padFrames = Math.round(buffer.sampleRate * 1.0);
     const padded = ctx.createBuffer(buffer.numberOfChannels,
@@ -9462,6 +9499,14 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         buffer.sampleRate);
     for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
         padded.getChannelData(ch).set(buffer.getChannelData(ch), padFrames);
+    }
+
+    if (debugAdd) {
+        debugAdd('Tempo: Randstille gepolstert', padded, {
+            description: 'Eine Sekunde Sicherheitsstille wurde an Anfang und Ende eingefügt.',
+            padFrames,
+            padMs: padFrames / buffer.sampleRate * 1000
+        });
     }
 
     const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
@@ -9489,12 +9534,22 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
     }
     const padOutFrames = Math.min(out.length, Math.max(0, Math.round(padFrames / safeFactor)));
 
-    // Tatsächliche Stille mit dynamischem Schwellwert suchen
+    if (debugAdd) {
+        debugAdd('Tempo: Gestretchtes Rohsignal', out, {
+            description: 'SoundTouch liefert das gedehnte Signal noch inklusive Polstern.',
+            producedSamples: out.length,
+            padOutFrames,
+            padOutMs: padOutFrames / out.sampleRate * 1000
+        });
+    }
+
     const thr = calculateDynamicSilenceThreshold(out, padOutFrames);
     const channelData = [];
     for (let ch = 0; ch < out.numberOfChannels; ch++) {
         channelData.push(out.getChannelData(ch));
     }
+
+    const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
 
     const totalFrames = out.length;
     const { start: baseStart, end: baseEnd, detectedStart, detectedEnd } = analyzeEdgeTrim(
@@ -9523,30 +9578,44 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         end = Math.min(end, maxEnd);
     }
 
-    // Start- und Endbegrenzung sind durch analyzeEdgeTrim bereits auf die erkannten Grenzen
-    // und das Tempo-Polster begrenzt, sodass hier nur noch die erlaubten Zusatztrims wirken.
+    if (debugAdd) {
+        debugAdd('Tempo: Randanalyse', out, {
+            description: 'Dynamische Schwellenwerte bestimmen die erlaubte Randstille.',
+            baseStartMs: framesToMs(baseStart, out.sampleRate),
+            baseEndMs: framesToMs(baseEnd, out.sampleRate),
+            detectedStartMs: framesToMs(detectedStart, out.sampleRate),
+            detectedEndMs: framesToMs(detectedEnd, out.sampleRate),
+            tempoFactor: safeFactor
+        });
+    }
 
-    const expected = Math.round(buffer.length / safeFactor);
     let available = Math.max(0, out.length - start - end);
+
+    if (debugAdd) {
+        debugAdd('Tempo: Erste Abschätzung', out, {
+            description: 'Verfügbare Samples nach der Randabschätzung.',
+            startTrimMs: framesToMs(start, out.sampleRate),
+            endTrimMs: framesToMs(end, out.sampleRate),
+            availableSamples: available,
+            expectedSamples: expected
+        });
+    }
 
     if (available < expected) {
         let deficit = expected - available;
 
-        // Zuerst den rechten Rand bis zum erkannten Ende bzw. bis zum Mindestpolster entspannen
         const endToDetected = Math.max(detectedEnd, padOutFrames);
         const reduceEndDetected = Math.min(deficit, Math.max(0, end - endToDetected));
         end -= reduceEndDetected;
         deficit -= reduceEndDetected;
 
         if (deficit > 0) {
-            // Zusätzlich bis auf das reine Sicherheits-Polster zurücknehmen
             const reduceEndPad = Math.min(deficit, Math.max(0, end - padOutFrames));
             end -= reduceEndPad;
             deficit -= reduceEndPad;
         }
 
         if (deficit > 0) {
-            // Linken Rand bis zum erkannten Beginn bzw. Mindestpolster entspannen
             const startToDetected = Math.max(detectedStart, padOutFrames);
             const reduceStartDetected = Math.min(deficit, Math.max(0, start - startToDetected));
             start -= reduceStartDetected;
@@ -9554,7 +9623,6 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         }
 
         if (deficit > 0) {
-            // Restliche Reserven bis auf das Polster aufbrauchen
             const reduceStartPad = Math.min(deficit, Math.max(0, start - padOutFrames));
             start -= reduceStartPad;
             deficit -= reduceStartPad;
@@ -9585,6 +9653,16 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
 
             available = Math.max(0, out.length - start - end);
         }
+
+        if (debugAdd) {
+            debugAdd('Tempo: Defizitausgleich', out, {
+                description: 'Randtrims wurden gelockert, um fehlende Samples zurückzugewinnen.',
+                startTrimMs: framesToMs(start, out.sampleRate),
+                endTrimMs: framesToMs(end, out.sampleRate),
+                availableSamples: available,
+                expectedSamples: expected
+            });
+        }
     }
 
     const slackStart = Math.max(0, start - padOutFrames);
@@ -9599,16 +9677,33 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         trimmed.getChannelData(ch).set(data);
     }
 
-    // Laenge exakt auf das erwartete Ergebnis anpassen
+    if (debugAdd) {
+        debugAdd('Tempo: Ergebnis nach Schnitt', trimmed, {
+            description: 'Randstille wurde entfernt, das Signal entspricht der erwarteten Länge oder ist minimal kürzer.',
+            startTrimMs: framesToMs(start, out.sampleRate),
+            endTrimMs: framesToMs(end, out.sampleRate),
+            availableSamples: available,
+            expectedSamples: expected
+        });
+    }
+
     if (needsPadding) {
-        // Falls trotz Rücknahme minimale Rundungsreste fehlen, mit Stille auffüllen
         const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
             const data = trimmed.getChannelData(ch);
             paddedResult.getChannelData(ch).set(data.subarray(0, data.length));
         }
         trimmed = paddedResult;
+
+        if (debugAdd) {
+            debugAdd('Tempo: Fehlende Samples aufgefüllt', trimmed, {
+                description: 'Restliche Rundungsdifferenz wurde mit Stille aufgefüllt.',
+                needsPadding: true,
+                expectedSamples: expected
+            });
+        }
     }
+
     ctx.close();
     return trimmed;
 }
@@ -10079,6 +10174,8 @@ if (typeof window !== 'undefined') {
     window.resetSegmentDialog = resetSegmentDialog;
     window.playSegmentFull = playSegmentFull;
     window.toggleIgnoreSelectedSegments = toggleIgnoreSelectedSegments;
+    window.openTempoDebug = openTempoDebug;
+    window.closeTempoDebug = closeTempoDebug;
 }
 // =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
@@ -14408,6 +14505,10 @@ let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
 
+let tempoDebugSteps      = [];    // Gespeicherte Schritte der Tempo-Simulation
+let tempoDebugIndex      = 0;     // Aktuelle Position im Debug-Ablauf
+let tempoDebugLogEntries = [];    // Textprotokoll aller Zwischenschritte
+
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
 async function openDeEdit(fileId) {
@@ -15477,6 +15578,513 @@ async function recomputeEditBuffer() {
     updateDeEditWaveforms();
 }
 // =========================== RECOMPUTEEDITBUFFER END =======================
+
+// =========================== TEMPODEBUG START =============================
+// Hilfsfunktionen und Ablauflogik für den Tempo-Debug-Modus
+function formatTempoNumber(value, fractionDigits = 2) {
+    if (!Number.isFinite(value)) return '–';
+    return value.toLocaleString('de-DE', {
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits
+    });
+}
+
+function formatTempoInt(value) {
+    if (!Number.isFinite(value)) return '–';
+    return value.toLocaleString('de-DE');
+}
+
+function formatTempoMs(ms) {
+    if (!Number.isFinite(ms)) return '–';
+    return `${formatTempoNumber(ms, 2)} ms`;
+}
+
+function formatTempoSeconds(seconds) {
+    if (!Number.isFinite(seconds)) return '–';
+    return `${formatTempoNumber(seconds, 3)} s`;
+}
+
+function createTempoDebugStep(title, buffer, description, meta = {}) {
+    if (!buffer) return null;
+    const sampleRate = buffer.sampleRate || 0;
+    const samples = buffer.length || 0;
+    const durationMs = sampleRate ? samples / sampleRate * 1000 : 0;
+    return {
+        title,
+        description,
+        buffer,
+        meta,
+        metrics: {
+            sampleRate,
+            samples,
+            durationMs
+        }
+    };
+}
+
+function formatTempoMeta(meta = {}) {
+    if (!meta || typeof meta !== 'object') return '';
+    const parts = [];
+    if (meta.active === true) parts.push('Status: angewendet');
+    if (meta.active === false) parts.push('Status: übersprungen');
+    if (meta.effect) parts.push(`Effekt: ${meta.effect}`);
+    if (meta.preset) parts.push(`Preset: ${meta.preset}`);
+    if (meta.note) parts.push(meta.note);
+    if (meta.tempoFactor !== undefined) parts.push(`Tempo-Faktor: ${formatTempoNumber(meta.tempoFactor, 3)}`);
+    if (meta.loadedTempoFactor !== undefined) parts.push(`Geladener Faktor: ${formatTempoNumber(meta.loadedTempoFactor, 3)}`);
+    if (meta.relativeFactor !== undefined) parts.push(`Relativfaktor: ${formatTempoNumber(meta.relativeFactor, 3)}`);
+    if (meta.allowedTrimStartMs !== undefined || meta.allowedTrimEndMs !== undefined) {
+        const start = meta.allowedTrimStartMs !== undefined ? formatTempoMs(meta.allowedTrimStartMs) : '–';
+        const end = meta.allowedTrimEndMs !== undefined ? formatTempoMs(meta.allowedTrimEndMs) : '–';
+        parts.push(`Freigabe Randstille: Start ${start} / Ende ${end}`);
+    }
+    if (meta.trimStartMs !== undefined || meta.trimEndMs !== undefined) {
+        const start = meta.trimStartMs !== undefined ? formatTempoMs(meta.trimStartMs) : '–';
+        const end = meta.trimEndMs !== undefined ? formatTempoMs(meta.trimEndMs) : '–';
+        parts.push(`Trim: Start ${start} / Ende ${end}`);
+    }
+    if (meta.removedCount !== undefined) {
+        parts.push(`Entfernte Bereiche: ${formatTempoInt(meta.removedCount)} (${formatTempoMs(meta.removedTotalMs || 0)})`);
+    }
+    if (meta.insertedCount !== undefined) {
+        parts.push(`Eingefügte Stille: ${formatTempoInt(meta.insertedCount)} (${formatTempoMs(meta.insertedTotalMs || 0)})`);
+    }
+    if (meta.silenceStartMs !== undefined || meta.silenceEndMs !== undefined) {
+        parts.push(`Ermittelte Randstille: Start ${formatTempoMs(meta.silenceStartMs || 0)} / Ende ${formatTempoMs(meta.silenceEndMs || 0)}`);
+    }
+    if (meta.baseStartMs !== undefined || meta.baseEndMs !== undefined) {
+        parts.push(`Analysierte Stille: Start ${formatTempoMs(meta.baseStartMs || 0)} / Ende ${formatTempoMs(meta.baseEndMs || 0)}`);
+    }
+    if (meta.detectedStartMs !== undefined || meta.detectedEndMs !== undefined) {
+        parts.push(`Erkannte Grenzen: Start ${formatTempoMs(meta.detectedStartMs || 0)} / Ende ${formatTempoMs(meta.detectedEndMs || 0)}`);
+    }
+    if (meta.startTrimMs !== undefined || meta.endTrimMs !== undefined) {
+        parts.push(`Randabzug: Start ${formatTempoMs(meta.startTrimMs || 0)} / Ende ${formatTempoMs(meta.endTrimMs || 0)}`);
+    }
+    if (meta.availableSamples !== undefined && meta.expectedSamples !== undefined) {
+        parts.push(`Samples: verfügbar ${formatTempoInt(meta.availableSamples)} / erwartet ${formatTempoInt(meta.expectedSamples)}`);
+    }
+    if (meta.producedSamples !== undefined) {
+        parts.push(`SoundTouch-Ausgabe: ${formatTempoInt(meta.producedSamples)} Samples`);
+    }
+    if (meta.padFrames !== undefined) {
+        parts.push(`Polster: ${formatTempoInt(meta.padFrames)} Samples (${formatTempoMs(meta.padMs || 0)})`);
+    }
+    if (meta.padOutFrames !== undefined) {
+        parts.push(`Streck-Polster: ${formatTempoInt(meta.padOutFrames)} Samples (${formatTempoMs(meta.padOutMs || 0)})`);
+    }
+    if (meta.needsPadding !== undefined) {
+        parts.push(`Restauffüllung: ${meta.needsPadding ? 'ja' : 'nein'}`);
+    }
+    return parts.join(' • ');
+}
+
+function formatTempoMetrics(step) {
+    const duration = formatTempoMs(step.metrics.durationMs);
+    const seconds = formatTempoSeconds(step.metrics.durationMs / 1000);
+    const sampleText = formatTempoInt(step.metrics.samples);
+    const rateText = formatTempoInt(step.metrics.sampleRate);
+    return `Dauer: ${duration} (${seconds}) • Samples: ${sampleText} @ ${rateText} Hz`;
+}
+
+function populateTempoDebugLog(steps) {
+    const list = document.getElementById('tempoDebugLogList');
+    if (!list) return;
+    list.innerHTML = '';
+    steps.forEach((step, idx) => {
+        const li = document.createElement('li');
+        li.dataset.index = String(idx);
+        const title = document.createElement('strong');
+        title.textContent = `${idx + 1}. ${step.title}`;
+        li.appendChild(title);
+        const metrics = document.createElement('div');
+        metrics.className = 'tempo-debug-log-metrics';
+        metrics.textContent = formatTempoMetrics(step);
+        li.appendChild(metrics);
+        if (step.description) {
+            const desc = document.createElement('div');
+            desc.textContent = step.description;
+            li.appendChild(desc);
+        }
+        const metaText = formatTempoMeta(step.meta);
+        if (metaText) {
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'tempo-debug-log-meta';
+            metaDiv.textContent = metaText;
+            li.appendChild(metaDiv);
+        }
+        li.onclick = () => showTempoDebugStep(idx);
+        list.appendChild(li);
+    });
+}
+
+function updateTempoDebugNavigation() {
+    const prevBtn = document.getElementById('tempoDebugPrevBtn');
+    const nextBtn = document.getElementById('tempoDebugNextBtn');
+    const total = tempoDebugSteps.length;
+    if (prevBtn) prevBtn.disabled = total === 0 || tempoDebugIndex <= 0;
+    if (nextBtn) nextBtn.disabled = total === 0 || tempoDebugIndex >= total - 1;
+}
+
+function showTempoDebugStep(index) {
+    if (!Array.isArray(tempoDebugSteps) || tempoDebugSteps.length === 0) {
+        tempoDebugIndex = 0;
+        updateTempoDebugNavigation();
+        return;
+    }
+    if (index < 0) index = 0;
+    if (index >= tempoDebugSteps.length) index = tempoDebugSteps.length - 1;
+    tempoDebugIndex = index;
+    const step = tempoDebugSteps[index];
+    const titleEl = document.getElementById('tempoDebugStepTitle');
+    if (titleEl) {
+        titleEl.textContent = `Schritt ${index + 1} / ${tempoDebugSteps.length}: ${step.title}`;
+    }
+    const descEl = document.getElementById('tempoDebugStepDescription');
+    if (descEl) {
+        descEl.textContent = step.description || 'Kein zusätzlicher Hinweis für diesen Schritt.';
+    }
+    const statusEl = document.getElementById('tempoDebugStatus');
+    if (statusEl) {
+        statusEl.textContent = tempoDebugLogEntries[index] || `Schritt ${index + 1} / ${tempoDebugSteps.length}`;
+    }
+    const metricsEl = document.getElementById('tempoDebugMetrics');
+    if (metricsEl) {
+        const lines = [formatTempoMetrics(step)];
+        const metaLine = formatTempoMeta(step.meta);
+        if (metaLine) lines.push(metaLine);
+        metricsEl.textContent = lines.join('\n');
+    }
+    const canvas = document.getElementById('tempoDebugWave');
+    if (canvas && step.buffer) {
+        const width = canvas.clientWidth || 720;
+        const height = canvas.clientHeight || 200;
+        if (canvas.width !== width) canvas.width = width;
+        if (canvas.height !== height) canvas.height = height;
+        drawWaveform(canvas, step.buffer);
+    }
+    const items = document.querySelectorAll('#tempoDebugLogList li');
+    items.forEach((li, idx) => {
+        if (idx === index) {
+            li.classList.add('active');
+            li.scrollIntoView({ block: 'nearest' });
+        } else {
+            li.classList.remove('active');
+        }
+    });
+    updateTempoDebugNavigation();
+}
+
+async function buildTempoDebugSteps() {
+    if (!currentEditFile || !savedOriginalBuffer) {
+        throw new Error('Kein DE-Audio zum Debuggen geladen.');
+    }
+
+    const steps = [];
+    const logEntries = [];
+    const addStep = (title, buffer, description, meta = {}) => {
+        const step = createTempoDebugStep(title, buffer, description, meta);
+        if (!step) return;
+        steps.push(step);
+        const entryParts = [`${steps.length}. ${step.title}`, formatTempoMetrics(step)];
+        if (description) entryParts.push(description);
+        const metaText = formatTempoMeta(meta);
+        if (metaText) entryParts.push(metaText);
+        logEntries.push(entryParts.join(' — '));
+    };
+
+    const relFactor = tempoFactor / loadedTempoFactor;
+    const fileName = currentEditFile?.filename || currentEditFile?.name || '';
+    const baseInfo = fileName ? `Ausgangsdatei: ${fileName}.` : 'Ausgangsdatei geladen.';
+    addStep('Original laden', savedOriginalBuffer, baseInfo, {
+        tempoFactor,
+        loadedTempoFactor,
+        relativeFactor: relFactor
+    });
+
+    let currentBuffer = savedOriginalBuffer;
+    const startTrimSnapshot = editStartTrim;
+    const endTrimSnapshot = editEndTrim;
+    const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+    const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
+
+    if (isVolumeMatched && editEnBuffer) {
+        currentBuffer = matchVolume(currentBuffer, editEnBuffer);
+        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärke wurde an die EN-Referenz angepasst.', {
+            effect: 'Lautstärke',
+            active: true
+        });
+    } else if (isVolumeMatched) {
+        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärkeabgleich war aktiv, aber die EN-Referenz ist nicht verfügbar.', {
+            effect: 'Lautstärke',
+            active: false
+        });
+    } else {
+        addStep('Lautstärke angleichen', currentBuffer, 'Übersprungen: Lautstärkeabgleich ist nicht aktiv.', {
+            effect: 'Lautstärke',
+            active: false
+        });
+    }
+
+    if (isRadioEffect) {
+        currentBuffer = await applyRadioFilter(currentBuffer);
+        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Funkfilter simuliert die gewählten Einstellungen.', {
+            effect: 'Funk',
+            active: true
+        });
+    } else {
+        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Übersprungen: Funk-Effekt ist deaktiviert.', {
+            effect: 'Funk',
+            active: false
+        });
+    }
+
+    if (isHallEffect) {
+        currentBuffer = await applyReverbEffect(currentBuffer);
+        addStep('Hall-Effekt anwenden', currentBuffer, 'Hall-Preset wurde angewendet.', {
+            effect: 'Hall',
+            active: true
+        });
+        addStep('Optionaler Nebenraum-Hall', currentBuffer,
+            neighborHall
+                ? 'Nebenraum-Hall ist bereits im aktiven Hall-Preset enthalten.'
+                : 'Keine zusätzlichen Hallanteile erforderlich.',
+            {
+                effect: 'Nebenraum-Hall',
+                active: !!neighborHall
+            });
+    } else {
+        addStep('Hall-Effekt anwenden', currentBuffer, 'Übersprungen: Hall ist deaktiviert.', {
+            effect: 'Hall',
+            active: false
+        });
+        if (neighborHall) {
+            currentBuffer = await applyReverbEffect(currentBuffer, { room: 0.2, wet: 0.3, delay: 40 });
+            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Zusätzlicher Raumklang wurde zugemischt.', {
+                effect: 'Nebenraum-Hall',
+                active: true
+            });
+        } else {
+            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Übersprungen: Kein Nebenraum-Hall aktiviert.', {
+                effect: 'Nebenraum-Hall',
+                active: false
+            });
+        }
+    }
+
+    if (isNeighborEffect) {
+        currentBuffer = await applyNeighborRoomEffect(currentBuffer, { hall: neighborHall });
+        addStep('Nebenraum-Effekt anwenden', currentBuffer,
+            neighborHall ? 'Nebenraum-Effekt nutzt den Hall-Anteil.' : 'Nebenraum-Effekt ohne zusätzlichen Hall aktiv.', {
+                effect: 'Nebenraum',
+                active: true
+            });
+    } else {
+        addStep('Nebenraum-Effekt anwenden', currentBuffer, 'Übersprungen: Nebenraum-Effekt ist deaktiviert.', {
+            effect: 'Nebenraum',
+            active: false
+        });
+    }
+
+    if (isTableMicEffect) {
+        const presetName = tableMicRoomType || 'wohnzimmer';
+        currentBuffer = await applyTableMicFilter(currentBuffer, tableMicRoomPresets[presetName]);
+        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, `Preset „${presetName}“ wurde angewendet.`, {
+            effect: 'Tischmikrofon',
+            active: true,
+            preset: presetName
+        });
+    } else {
+        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, 'Übersprungen: Telefon-auf-Tisch-Effekt ist deaktiviert.', {
+            effect: 'Tischmikrofon',
+            active: false
+        });
+    }
+
+    if (isEmiEffect) {
+        currentBuffer = await applyInterferenceEffect(currentBuffer);
+        addStep('Störgeräusch anwenden', currentBuffer, 'EM-Störgeräusch wurde überlagert.', {
+            effect: 'EMI',
+            active: true
+        });
+    } else {
+        addStep('Störgeräusch anwenden', currentBuffer, 'Übersprungen: Kein EM-Störgeräusch aktiv.', {
+            effect: 'EMI',
+            active: false
+        });
+    }
+
+    currentBuffer = trimAndPadBuffer(currentBuffer, startTrimSnapshot, endTrimSnapshot);
+    addStep('Trim anwenden', currentBuffer,
+        (startTrimSnapshot || endTrimSnapshot)
+            ? `Start ${formatTempoMs(startTrimSnapshot)} / Ende ${formatTempoMs(endTrimSnapshot)} entfernt.`
+            : 'Keine Trims aktiv – Länge bleibt unverändert.',
+        {
+            trimStartMs: startTrimSnapshot,
+            trimEndMs: endTrimSnapshot
+        });
+
+    const adjustedIgnore = ignoreSnapshot.map(r => ({
+        start: r.start - startTrimSnapshot,
+        end: r.end - startTrimSnapshot
+    }));
+    let removedTotalMs = 0;
+    adjustedIgnore.forEach(r => { removedTotalMs += Math.max(0, r.end - r.start); });
+    currentBuffer = removeRangesFromBuffer(currentBuffer, adjustedIgnore);
+    addStep('Ignorierbereiche entfernen', currentBuffer,
+        adjustedIgnore.length > 0
+            ? `${formatTempoInt(adjustedIgnore.length)} Bereich(e) mit ${formatTempoMs(removedTotalMs)} entfernt.`
+            : 'Keine Ignorierbereiche aktiv.',
+        {
+            removedCount: adjustedIgnore.length,
+            removedTotalMs,
+            active: adjustedIgnore.length > 0
+        });
+
+    const adjustedSilence = silenceSnapshot.map(r => ({
+        start: r.start - startTrimSnapshot,
+        end: r.end - startTrimSnapshot
+    }));
+    let insertedTotalMs = 0;
+    adjustedSilence.forEach(r => { insertedTotalMs += Math.max(0, r.end - r.start); });
+    currentBuffer = insertSilenceIntoBuffer(currentBuffer, adjustedSilence);
+    addStep('Stillebereiche einfügen', currentBuffer,
+        adjustedSilence.length > 0
+            ? `${formatTempoInt(adjustedSilence.length)} Bereich(e) mit ${formatTempoMs(insertedTotalMs)} hinzugefügt.`
+            : 'Keine Stillebereiche eingefügt.',
+        {
+            insertedCount: adjustedSilence.length,
+            insertedTotalMs,
+            active: adjustedSilence.length > 0
+        });
+
+    const tempoDesc = Math.abs(relFactor - 1) < 0.001
+        ? 'Tempo-Faktor entspricht dem geladenen Wert – es wird keine merkliche Änderung erwartet.'
+        : `Tempo wechselt von ${formatTempoNumber(loadedTempoFactor, 2)} auf ${formatTempoNumber(tempoFactor, 2)} (relativ ${formatTempoNumber(relFactor, 3)}).`;
+    addStep('Tempoeingabe bereit', currentBuffer, tempoDesc, {
+        tempoFactor,
+        loadedTempoFactor,
+        relativeFactor: relFactor
+    });
+
+    const edgeSilence = estimateStretchableSilence(currentBuffer);
+    const allowedStart = Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS);
+    const allowedEnd = Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS);
+    addStep('Randstille ermitteln', currentBuffer,
+        'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.',
+        {
+            silenceStartMs: edgeSilence.start,
+            silenceEndMs: edgeSilence.end,
+            allowedTrimStartMs: allowedStart,
+            allowedTrimEndMs: allowedEnd
+        });
+
+    const stretchDebug = {
+        steps: [],
+        addStep(title, buffer, meta = {}) {
+            this.steps.push({ title, buffer, meta });
+        }
+    };
+    const stretchedBuffer = await timeStretchBuffer(currentBuffer, relFactor, {
+        allowedTrimStartMs: allowedStart,
+        allowedTrimEndMs: allowedEnd,
+        debug: stretchDebug
+    });
+    stretchDebug.steps.forEach(debugStep => {
+        const description = debugStep.meta?.description || '';
+        addStep(debugStep.title, debugStep.buffer, description, debugStep.meta || {});
+    });
+
+    addStep('Tempo-Simulation abgeschlossen', stretchedBuffer,
+        Math.abs(relFactor - 1) < 0.001
+            ? 'Tempo entsprach bereits dem gespeicherten Wert – Ergebnis entspricht dem Eingangssignal.'
+            : 'Tempo-Anpassung abgeschlossen. Ergebnis entspricht dem Speichervorgang.',
+        {
+            tempoFactor,
+            loadedTempoFactor,
+            relativeFactor: relFactor
+        });
+
+    return { steps, logEntries };
+}
+
+async function openTempoDebug() {
+    if (!currentEditFile || !savedOriginalBuffer) {
+        if (typeof showToast === 'function') {
+            showToast('Kein DE-Audio zum Debuggen geöffnet.', 'error');
+        }
+        return;
+    }
+    const overlay = document.getElementById('tempoDebugDialog');
+    if (!overlay) {
+        console.error('Tempo-Debug: Dialog-Element fehlt.');
+        return;
+    }
+    overlay.classList.remove('hidden');
+
+    const status = document.getElementById('tempoDebugStatus');
+    if (status) status.textContent = 'Berechne Tempo-Schritte ...';
+
+    tempoDebugSteps = [];
+    tempoDebugLogEntries = [];
+    tempoDebugIndex = 0;
+    populateTempoDebugLog([]);
+    const titleEl = document.getElementById('tempoDebugStepTitle');
+    if (titleEl) titleEl.textContent = '';
+    const descEl = document.getElementById('tempoDebugStepDescription');
+    if (descEl) descEl.textContent = '';
+    const metricsEl = document.getElementById('tempoDebugMetrics');
+    if (metricsEl) metricsEl.textContent = '';
+    const canvas = document.getElementById('tempoDebugWave');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, canvas.width || 0, canvas.height || 0);
+    }
+
+    const prevBtn = document.getElementById('tempoDebugPrevBtn');
+    const nextBtn = document.getElementById('tempoDebugNextBtn');
+    if (prevBtn) prevBtn.onclick = () => showTempoDebugStep(tempoDebugIndex - 1);
+    if (nextBtn) nextBtn.onclick = () => showTempoDebugStep(tempoDebugIndex + 1);
+    updateTempoDebugNavigation();
+
+    try {
+        const result = await buildTempoDebugSteps();
+        tempoDebugSteps = result.steps;
+        tempoDebugLogEntries = result.logEntries;
+        populateTempoDebugLog(tempoDebugSteps);
+        if (status) {
+            status.textContent = tempoDebugSteps.length > 0
+                ? 'Tempo-Schritte bereit. Navigiere mit Weiter/Zurück oder klicke auf einen Eintrag.'
+                : 'Tempo-Schritte ergaben keine Änderungen.';
+        }
+        if (tempoDebugSteps.length > 0) {
+            showTempoDebugStep(0);
+        } else {
+            updateTempoDebugNavigation();
+        }
+    } catch (err) {
+        console.error('Tempo-Debug fehlgeschlagen', err);
+        if (status) status.textContent = `Fehler beim Debuggen: ${err?.message || err}`;
+        const title = document.getElementById('tempoDebugStepTitle');
+        if (title) title.textContent = 'Fehler beim Tempo-Debug';
+        const desc = document.getElementById('tempoDebugStepDescription');
+        if (desc) desc.textContent = 'Bitte Konsole prüfen oder erneut versuchen.';
+        updateTempoDebugNavigation();
+    }
+}
+
+function closeTempoDebug() {
+    const overlay = document.getElementById('tempoDebugDialog');
+    if (overlay) overlay.classList.add('hidden');
+    tempoDebugSteps = [];
+    tempoDebugLogEntries = [];
+    tempoDebugIndex = 0;
+    const status = document.getElementById('tempoDebugStatus');
+    if (status) status.textContent = 'Debug-Modus bereit – bitte Schrittberechnung starten.';
+    updateTempoDebugNavigation();
+}
+// =========================== TEMPODEBUG END =============================
+
 
 // =========================== APPLYRADIOEFFECT START ========================
 // Wendet den Funkgeräteffekt an und legt bei Erstbenutzung eine History an

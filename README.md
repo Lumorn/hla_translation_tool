@@ -70,6 +70,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Sicherheitsabstand beim Defizitausgleich:** Kombinierst du Schnellzugriff → Auto, Pausenentfernung und Tempo Auto, bleiben Start und Ende mindestens um das bekannte Polster verschont; fehlende Frames holt sich der Abgleich nur innerhalb dieser Reserve und füllt verbleibende Restdefizite erst nach dem vollständigen Ausschöpfen der Originaldaten mit Stille auf.
 * **Echte Peaks bleiben erhalten:** Fehlen nach Tempo-Auto noch Samples, zieht sich das Tool jetzt bis zu den erkannten Audio-Grenzen zurück, bevor überhaupt Stille eingefügt wird – deutliche Ausschläge am Ende bleiben dadurch hörbar.
 * **Bleeding-sichere Polsterentfernung:** Auto-Tempo kappt Start- und Endpolster höchstens bis zu den erkannten Grenzen plus 10 ms Sicherheitsabstand, damit früh einsetzende Signale oder ausklingende Peaks nicht aus Versehen entfernt werden.
+* **Tempo-Debug-Schritte:** Ein neuer Debug-Knopf neben „Zurücksetzen“ simuliert Tempo + Speichern Schritt für Schritt, zeigt jede Zwischenwelle samt Randstille-Analyse und protokolliert alle Eingriffe transparent im rechten Log.
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
 * **Bereinigte Abschluss-Logik:** Die früheren UI-Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll` wurden entfernt, weil der Fertig-Status nun vollständig automatisch aus den Projekt- und Dateidaten berechnet wird.
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
@@ -1234,6 +1235,9 @@ Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Req
 Wer alle optionalen Skripte ausführen möchte, startet vorher manuell `npm ci`.
 Ab Node.js 22 werden unbehandelte Promises standardmäßig als Fehler gewertet und würden die Tests abbrechen.
 Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, sodass solche Fälle nur eine Warnung auslösen.
+Seit der Einführung des Tempo-Debug-Modus sorgt eine gemeinsame Jest-Initialisierung (`tests/jest.setup.js`) dafür,
+dass DOM-, Electron- und Fetch-APIs in allen Tests bereitstehen. Damit lassen sich auch Module wie `web/src/main.js`
+und `web/src/gptService.js` ohne echten Browser-Kontext laden.
 
 1. Tests starten
    ```bash

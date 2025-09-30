@@ -722,10 +722,11 @@
     <div class="dialog-overlay hidden" id="deEditDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
-            <div class="edit-header">
+                <div class="edit-header">
                 <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
                 <!-- Zusätzliche Aktionsleiste im Kopfbereich -->
                 <div class="edit-header-actions">
+                    <button class="btn btn-secondary" id="tempoDebugBtn" onclick="openTempoDebug()" title="Tempo-Bearbeitung Schritt für Schritt simulieren">Debug</button>
                     <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
                     <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen">Speichern</button>
                     <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen">Speichern &amp; schließen</button>
@@ -1076,6 +1077,31 @@
                 <button class="btn btn-secondary" onclick="resetSegmentDialog()">Neu hochladen</button>
                 <button class="btn btn-blue" onclick="exportSegmentsToProject()">Importieren</button>
                 <button class="btn btn-secondary" onclick="closeSegmentDialog()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tempo-Debug Dialog -->
+    <div class="dialog-overlay hidden" id="tempoDebugDialog">
+        <div class="dialog tempo-debug-dialog">
+            <button class="dialog-close-btn" onclick="closeTempoDebug()" title="Debug-Fenster schließen">×</button>
+            <h3>🐞 Tempo-Debug</h3>
+            <p id="tempoDebugStatus" class="tempo-debug-status">Debug-Modus bereit – bitte Schrittberechnung starten.</p>
+            <div class="tempo-debug-body">
+                <div class="tempo-debug-visual">
+                    <canvas id="tempoDebugWave" width="720" height="200"></canvas>
+                    <pre id="tempoDebugMetrics" class="tempo-debug-metrics"></pre>
+                </div>
+                <div class="tempo-debug-info">
+                    <div id="tempoDebugStepTitle" class="tempo-debug-title"></div>
+                    <div id="tempoDebugStepDescription" class="tempo-debug-description"></div>
+                    <ol id="tempoDebugLogList" class="tempo-debug-log"></ol>
+                </div>
+            </div>
+            <div class="dialog-buttons tempo-debug-buttons">
+                <button class="btn btn-secondary" id="tempoDebugPrevBtn">◀ Zurück</button>
+                <button class="btn btn-secondary" id="tempoDebugNextBtn">Weiter ▶</button>
+                <button class="btn btn-danger" onclick="closeTempoDebug()">Schließen</button>
             </div>
         </div>
     </div>
