@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.445
+* `web/src/main.js` vereinfacht die Tempo-Verarbeitung radikal: Alle Randanalysen, Trim-Kürzungen und Defizitausgleiche entfallen, das gestretchte Signal bleibt vollständig erhalten und es wird nur noch der künstliche Sicherheitsrand entfernt.
+* `README.md` beschreibt, dass Tempo ausschließlich den Schutzpuffer kappt und keine Originalsamples mehr löscht.
+* `CHANGELOG.md` dokumentiert den vollständigen Verzicht auf trimmbasierte Tempo-Eingriffe.
 ## 🛠️ Patch in 1.40.444
 * `web/src/main.js` koppelt die 120-ms-Kappung strikt an das aktive Sicherheitslimit, passt Kommentare sowie Debug-Texte an und lässt unbegrenzte Werte ohne Zusatzlogik weiterlaufen.
 * `README.md` betont, dass keine versteckte Deckelung mehr greift, sobald das Trim-Limit deaktiviert ist.

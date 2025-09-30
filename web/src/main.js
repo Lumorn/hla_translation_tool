@@ -9519,12 +9519,8 @@ function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minSta
 
 async function timeStretchBuffer(buffer, factor, options = {}) {
     const {
-        allowedTrimStartMs = 0,
-        allowedTrimEndMs = 0,
         debug: debugContext = null,
-        usePadding = true,
-        useEdgeAnalysis = true,
-        enforceTrimSafety = true
+        usePadding = true
     } = options || {};
 
     if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
@@ -9550,10 +9546,7 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
                 beschreibung: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
                 tempoFactor: safeFactor,
                 expectedSamples: buffer.length,
-                relativeFactor: safeFactor,
-                allowedTrimStartMs,
-                allowedTrimEndMs,
-                trimLimitActive: enforceTrimSafety
+                relativeFactor: safeFactor
             });
         }
         return buffer;
@@ -9564,10 +9557,7 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             beschreibung: 'Originalsignal wird für das Time-Stretching aufbereitet.',
             tempoFactor: safeFactor,
             expectedSamples: expected,
-            relativeFactor: safeFactor,
-            allowedTrimStartMs,
-            allowedTrimEndMs,
-            trimLimitActive: enforceTrimSafety
+            relativeFactor: safeFactor
         });
     }
 
@@ -9637,174 +9627,38 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         }
 
         const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
-        let startTrim = padOutFrames;
-        let endTrim = padOutFrames;
-        let analysis = {
-            start: padOutFrames,
-            end: padOutFrames,
-            detectedStart: padOutFrames,
-            detectedEnd: padOutFrames
-        };
-        let threshold = 0;
+        const trimStart = Math.min(padOutFrames, stretched.length);
+        const trimEnd = Math.min(padOutFrames, Math.max(0, stretched.length - trimStart));
+        const usableLength = Math.max(0, stretched.length - trimStart - trimEnd);
 
-        if (useEdgeAnalysis) {
-            threshold = calculateDynamicSilenceThreshold(stretched, padOutFrames);
-            const channelData = [];
-            for (let ch = 0; ch < stretched.numberOfChannels; ch++) {
-                channelData.push(stretched.getChannelData(ch));
-            }
-
-            analysis = analyzeEdgeTrim(channelData, stretched.length, stretched.sampleRate, padOutFrames, threshold, {
-                enforceTrimSafety
-            });
-
-            startTrim = Math.max(0, Math.round(analysis.start));
-            endTrim = Math.max(0, Math.round(analysis.end));
-
-            // Hilfsumrechnung, damit auch "unbegrenzt" (Infinity) sauber verarbeitet wird
-            const convertAllowedMsToFrames = (valueMs) => {
-                if (!Number.isFinite(valueMs)) {
-                    return Number.POSITIVE_INFINITY;
-                }
-                const frames = (valueMs / safeFactor) * stretched.sampleRate / 1000;
-                return Math.max(0, Math.round(frames));
-            };
-            const allowedStartFrames = convertAllowedMsToFrames(allowedTrimStartMs);
-            const allowedEndFrames = convertAllowedMsToFrames(allowedTrimEndMs);
-
-            if (Number.isFinite(allowedStartFrames)) {
-                startTrim = Math.min(startTrim, padOutFrames + allowedStartFrames);
-            }
-            if (Number.isFinite(allowedEndFrames)) {
-                endTrim = Math.min(endTrim, padOutFrames + allowedEndFrames);
-            }
-
+        if (trimStart === 0 && trimEnd === 0) {
             if (debugAdd) {
-                const beschreibung = enforceTrimSafety
-                    ? 'Randstille und Sicherheitsabstände wurden mit aktivem Sicherheitslimit neu bewertet.'
-                    : 'Randstille wurde neu bewertet; das Sicherheitslimit ist deaktiviert und zusätzliche Kürzungen bleiben unbegrenzt möglich.';
-                debugAdd('Tempo: Randanalyse abgeschlossen', stretched, {
-                    beschreibung,
-                    startTrimMs: framesToMs(startTrim, stretched.sampleRate),
-                    endTrimMs: framesToMs(endTrim, stretched.sampleRate),
-                    detectedStartMs: framesToMs(analysis.detectedStart, stretched.sampleRate),
-                    detectedEndMs: framesToMs(analysis.detectedEnd, stretched.sampleRate),
+                debugAdd('Tempo: Kein Schutzrand entfernt', stretched, {
+                    beschreibung: 'Es wurde kein zuvor hinzugefügter Puffer entfernt.',
                     tempoFactor: safeFactor,
-                    threshold,
-                    enforceTrimSafety,
-                    trimLimitActive: enforceTrimSafety
+                    expectedSamples: expected
                 });
             }
-        } else if (debugAdd) {
-            debugAdd('Tempo: Randanalyse übersprungen', stretched, {
-                beschreibung: 'Es werden keine zusätzlichen Kürzungen anhand erkannter Stille vorgenommen.',
-                tempoFactor: safeFactor
-            });
+            return stretched;
         }
 
-        let available = Math.max(0, stretched.length - startTrim - endTrim);
-        if (debugAdd) {
-            debugAdd('Tempo: Erste Längenprüfung', stretched, {
-                beschreibung: 'Vergleich zwischen erwarteter Länge und aktueller Abschätzung.',
-                availableSamples: available,
-                expectedSamples: expected,
-                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
-                endTrimMs: framesToMs(endTrim, stretched.sampleRate)
-            });
-        }
-
-        if (available < expected) {
-            let deficit = expected - available;
-            const relaxPlan = [
-                { side: 'end', limit: Math.max(analysis.detectedEnd, padOutFrames) },
-                { side: 'start', limit: Math.max(analysis.detectedStart, padOutFrames) },
-                { side: 'end', limit: padOutFrames },
-                { side: 'start', limit: padOutFrames }
-            ];
-
-            for (const step of relaxPlan) {
-                if (deficit <= 0) break;
-                const current = step.side === 'start' ? startTrim : endTrim;
-                const minLimit = Math.max(0, Math.min(stretched.length, Math.round(step.limit)));
-                const slack = Math.max(0, current - minLimit);
-                if (slack <= 0) continue;
-                const release = Math.min(slack, deficit);
-                if (step.side === 'start') {
-                    startTrim -= release;
-                } else {
-                    endTrim -= release;
-                }
-                deficit -= release;
-            }
-
-            if (deficit > 0) {
-                let startSlack = Math.max(0, startTrim - padOutFrames);
-                let endSlack = Math.max(0, endTrim - padOutFrames);
-                while (deficit > 0 && (startSlack > 0 || endSlack > 0)) {
-                    if (startSlack > 0) {
-                        const take = Math.min(startSlack, Math.ceil(deficit / 2));
-                        startTrim -= take;
-                        startSlack -= take;
-                        deficit -= take;
-                    }
-                    if (deficit <= 0) break;
-                    if (endSlack > 0) {
-                        const take = Math.min(endSlack, deficit);
-                        endTrim -= take;
-                        endSlack -= take;
-                        deficit -= take;
-                    }
-                }
-            }
-
-            available = Math.max(0, stretched.length - startTrim - endTrim);
-
-            if (debugAdd) {
-                debugAdd('Tempo: Defizitausgleich', stretched, {
-                    beschreibung: 'Randtrims wurden gelockert, um fehlende Samples zurückzugewinnen.',
-                    availableSamples: available,
-                    expectedSamples: expected,
-                    startTrimMs: framesToMs(startTrim, stretched.sampleRate),
-                    endTrimMs: framesToMs(endTrim, stretched.sampleRate)
-                });
-            }
-        }
-
-        const needsPadding = available < expected;
-        const trimmedLength = Math.max(0, Math.min(stretched.length, available));
-        const trimmed = ctx.createBuffer(stretched.numberOfChannels, trimmedLength, stretched.sampleRate);
+        const trimmed = ctx.createBuffer(stretched.numberOfChannels, usableLength, stretched.sampleRate);
         for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
             const sourceData = stretched.getChannelData(ch);
-            trimmed.getChannelData(ch).set(sourceData.subarray(startTrim, startTrim + trimmedLength));
+            trimmed.getChannelData(ch).set(sourceData.subarray(trimStart, trimStart + usableLength));
         }
 
         if (debugAdd) {
-            debugAdd('Tempo: Ergebnis nach Schnitt', trimmed, {
-                beschreibung: 'Randstille wurde entfernt, verbleibende Länge entspricht dem Erwartungswert oder liegt knapp darunter.',
-                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
-                endTrimMs: framesToMs(endTrim, stretched.sampleRate),
-                availableSamples: available,
+            debugAdd('Tempo: Schutzrand entfernt', trimmed, {
+                beschreibung: 'Nur der künstliche Sicherheitsrand wurde abgeschnitten, das eigentliche Audiosignal bleibt vollständig erhalten.',
+                startTrimMs: framesToMs(trimStart, stretched.sampleRate),
+                endTrimMs: framesToMs(trimEnd, stretched.sampleRate),
+                tempoFactor: safeFactor,
                 expectedSamples: expected
             });
         }
 
-        if (!needsPadding) {
-            return trimmed;
-        }
-
-        const paddedResult = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
-        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            paddedResult.getChannelData(ch).set(trimmed.getChannelData(ch));
-        }
-
-        if (debugAdd) {
-            debugAdd('Tempo: Fehlende Samples aufgefüllt', paddedResult, {
-                beschreibung: 'Restliche Rundungsdifferenzen wurden mit Stille ergänzt.',
-                expectedSamples: expected
-            });
-        }
-
-        return paddedResult;
+        return trimmed;
     } finally {
         ctx.close();
     }
