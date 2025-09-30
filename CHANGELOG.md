@@ -1,4 +1,12 @@
 # Changelog
+## 🛠️ Patch in 1.40.435
+* `jest.config.js` setzt Jest standardmäßig auf die JSDOM-Umgebung und lädt eine gemeinsame Initialisierung für Browser-Stubs.
+* `tests/jest.setup.js` stellt DOM-, Fetch- und Electron-Helfer für die Tests bereit, damit `web/src/main.js` und Tempo-Debug-Routinen ohne echten Browser geladen werden können.
+* `README.md` beschreibt die neue Testinitialisierung samt DOM-Stubs.
+## 🛠️ Patch in 1.40.434
+* `web/hla_translation_tool.html`, `web/src/style.css` und `web/src/main.js` erweitern den DE-Editor um einen Tempo-Debug-Dialog, der Tempo + Speichern simuliert, jede Zwischenwelle anzeigt und alle Eingriffe samt Randstille-Analyse protokolliert.
+* `README.md` beschreibt den neuen Tempo-Debug-Knopf und die Schritt-für-Schritt-Analyse.
+* `CHANGELOG.md` dokumentiert den Tempo-Debug-Modus.
 ## 🛠️ Patch in 1.40.433
 * `web/src/main.js` misst die für Turbo-/Auto-Tempo freigegebene Randstille jetzt mit derselben dynamischen Schwelle wie `timeStretchBuffer`, begrenzt die Zusatzkürzung weiterhin auf 120 ms je Seite und bewahrt dadurch auch sehr leise Fade-outs vor dem Abschneiden.
 * `tests/timeStretchBuffer.test.js` verifizieren, dass die Turbo-Freigabe leise Ausklänge unangetastet lässt.
