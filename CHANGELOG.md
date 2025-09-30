@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.436
+* `web/src/main.js` deckelt den dynamischen Stille-Schwellwert jetzt auf die tatsächlich gemessene Maximalamplitude, damit Auto-Tempo selbst bei sehr lauten Peaks keinen Inhalt mehr abschneidet.
+* `README.md` ergänzt den Hinweis auf die neue Pegel-Deckelung in der Tempo-Sektion.
+* `CHANGELOG.md` dokumentiert die Korrektur der dynamischen Schwellwertbegrenzung.
 ## 🛠️ Patch in 1.40.435
 * `jest.config.js` setzt Jest standardmäßig auf die JSDOM-Umgebung und lädt eine gemeinsame Initialisierung für Browser-Stubs.
 * `tests/jest.setup.js` stellt DOM-, Fetch- und Electron-Helfer für die Tests bereit, damit `web/src/main.js` und Tempo-Debug-Routinen ohne echten Browser geladen werden können.

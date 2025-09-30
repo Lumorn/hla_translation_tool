@@ -9235,7 +9235,7 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
 
     let threshold = Math.max(percentileValue * 1.25, rms * 3);
     if (maxPadAmplitude > 0) {
-        threshold = Math.min(threshold, maxPadAmplitude * 1.1);
+        threshold = Math.min(threshold, maxPadAmplitude);
     }
 
     return Math.max(1e-6, threshold);
