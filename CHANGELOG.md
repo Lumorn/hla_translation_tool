@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.443
+* `web/src/main.js` übergibt bei deaktiviertem Trim-Limit jetzt konsequent eine unbegrenzte Freigabe an Vorschau, Tempo-Debug und beide Speicherroutinen, damit kein versteckter 120-ms-Deckel mehr greift.
+* `README.md` stellt klar, dass sämtliche Trim-Pfade die Begrenzung wirklich abschalten und ohne Limit speichern.
+* `CHANGELOG.md` hält die vollständige Entkoppelung des Trim-Limits fest.
 ## 🛠️ Patch in 1.40.442
 * `web/src/main.js` koppelt die 120-ms-Kappe an `tempoSafety.enforceTrimSafety`, reicht bei deaktiviertem Limit die komplette erkannte Randstille bzw. eine unbegrenzte Freigabe weiter und kennzeichnet das im Tempo-Debug deutlich.
 * `web/hla_translation_tool.html` erläutert im Tooltip, dass bei ausgeschaltetem Trim-Limit keine feste Obergrenze mehr greift.
