@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.438
+* `web/src/main.js` schreibt `trimAndPadBuffer` komplett neu, schützt originale Audiospuren vor versehentlichem Rechtsbeschnitt und füllt gewünschte Verlängerungen ausschließlich mit Stille auf.
+* `README.md` führt die erneuerte Trim- und Padding-Logik samt garantiertem Erhalt des rechten Rands aus.
+* `CHANGELOG.md` dokumentiert die Neufassung der Trimm-/Padding-Funktion.
 ## 🛠️ Patch in 1.40.437
 * `web/src/main.js` begrenzt den dynamischen Stille-Schwellwert strikt auf die im Ruhepolster gemessene Maximalamplitude, protokolliert erkannte Randstille und vermeidet Rückfälle auf das reine Sekundenpolster, solange ein stabiles Stillfenster gefunden wird.
 * `tests/timeStretchBuffer.test.js` ergänzen Abdeckungen für laute Nutzsignale, das gedeckelte Polster und die neuen Randstille-Logs von `analyzeEdgeTrim`.

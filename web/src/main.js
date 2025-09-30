@@ -14070,23 +14070,63 @@ function cloneAudioBuffer(buffer) {
 }
 
 function trimAndPadBuffer(buffer, startMs, endMs) {
-    const sr = buffer.sampleRate;
-    const startSamples = Math.max(0, Math.floor(startMs > 0 ? startMs * sr / 1000 : 0));
-    const endSamples = Math.max(0, Math.floor(endMs > 0 ? endMs * sr / 1000 : 0));
-    const padStart = Math.max(0, Math.floor(startMs < 0 ? -startMs * sr / 1000 : 0));
-    const padEnd = Math.max(0, Math.floor(endMs < 0 ? -endMs * sr / 1000 : 0));
-    // Start- und Endwerte dürfen die Buffermitte nicht überschreiten
-    const effectiveStart = Math.min(startSamples, buffer.length);
-    const effectiveEnd = Math.min(endSamples, buffer.length - effectiveStart);
-    const newLength = Math.max(1, padStart + buffer.length - effectiveStart - effectiveEnd + padEnd);
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const newBuffer = ctx.createBuffer(buffer.numberOfChannels, newLength, sr);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const oldData = buffer.getChannelData(ch);
-        const newData = newBuffer.getChannelData(ch);
-        newData.set(oldData.subarray(effectiveStart, buffer.length - effectiveEnd), padStart);
+    if (!buffer) return null;
+
+    const sampleRate = buffer.sampleRate;
+    const totalSamples = buffer.length;
+
+    const msZuSamples = (ms) => Math.round((ms * sampleRate) / 1000);
+
+    // Positive Werte schneiden Material weg, negative Werte fügen Stille an
+    const trimStartSamples = Math.min(totalSamples, Math.max(0, msZuSamples(Math.max(startMs, 0))));
+    const rohTrimEndSamples = Math.max(0, msZuSamples(Math.max(endMs, 0)));
+    const verbleibendNachStart = Math.max(0, totalSamples - trimStartSamples);
+    const trimEndSamples = Math.min(rohTrimEndSamples, verbleibendNachStart);
+
+    const padStartSamples = Math.max(0, msZuSamples(Math.max(-startMs, 0)));
+    const padEndSamples = Math.max(0, msZuSamples(Math.max(-endMs, 0)));
+
+    const behalteneSamples = Math.max(0, totalSamples - trimStartSamples - trimEndSamples);
+    const neueLaenge = Math.max(1, padStartSamples + behalteneSamples + padEndSamples);
+
+    let hilfsCtx = null;
+    let neuesBufferObjekt;
+
+    // Versuche zuerst, direkt einen AudioBuffer anzulegen
+    if (typeof AudioBuffer === 'function') {
+        try {
+            neuesBufferObjekt = new AudioBuffer({
+                length: neueLaenge,
+                numberOfChannels: buffer.numberOfChannels,
+                sampleRate
+            });
+        } catch (err) {
+            neuesBufferObjekt = null;
+        }
     }
-    return newBuffer;
+
+    // Fallback über einen AudioContext, falls der direkte Weg scheitert
+    if (!neuesBufferObjekt) {
+        hilfsCtx = new (window.AudioContext || window.webkitAudioContext)();
+        neuesBufferObjekt = hilfsCtx.createBuffer(buffer.numberOfChannels, neueLaenge, sampleRate);
+    }
+
+    const quellStart = trimStartSamples;
+    const quellEnde = quellStart + behalteneSamples;
+
+    for (let kanal = 0; kanal < buffer.numberOfChannels; kanal++) {
+        const quelle = buffer.getChannelData(kanal);
+        const ziel = neuesBufferObjekt.getChannelData(kanal);
+
+        // Zieltaktik: erst Stille, dann der übrig gebliebene Ausschnitt
+        if (behalteneSamples > 0) {
+            ziel.set(quelle.subarray(quellStart, quellEnde), padStartSamples);
+        }
+    }
+
+    if (hilfsCtx) hilfsCtx.close();
+
+    return neuesBufferObjekt;
 }
 // =========================== LAUTSTAERKEANGLEICH START =====================
 // Passt die Lautstärke eines Buffers an einen Ziel-Buffer an
