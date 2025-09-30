@@ -838,10 +838,6 @@
                                 <span class="quick-icon" aria-hidden="true">⚡</span>
                                 <span class="quick-text">Auto</span>
                             </button>
-                            <button id="quickTempoMatch" class="quick-btn" type="button" title="Tempo automatisch auf EN-Zeit anpassen" aria-label="Tempo automatisch auf EN-Zeit anpassen">
-                                <span class="quick-icon" aria-hidden="true">⏱️</span>
-                                <span class="quick-text">Tempo</span>
-                            </button>
                             <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen" aria-label="Lautstärke an EN anpassen">
                                 <span class="quick-icon" aria-hidden="true">🔊</span>
                                 <span class="quick-text">Pegel</span>
@@ -909,48 +905,6 @@
                             <label title="Zeitspanne verschmelzen">Bereiche zusammenlegen: <span class="input-unit"><input type="number" id="mergeRangeMs" value="80" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
                             <button class="btn btn-secondary" onclick="mergeSilenceRanges()" title="Überlappende Bereiche vereinen">Bereiche mergen</button>
                         </div>
-                        <!-- Karte Tempo -->
-                        <div class="timing-card tempo-card">
-                            <h4>Tempo</h4>
-                            <label class="checkbox-line" title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
-                            <div class="tempo-row">
-                                <span class="tempo-icon">⏱️</span>
-                                <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
-                                <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
-                                <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
-                                <span id="tempoDisplay" class="tempo-value">1.00</span>
-                            </div>
-                            <div class="tempo-auto">
-                                <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen">Auto</button>
-                                <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen">Auto</button>
-                                <span id="tempoInfo"></span><span id="tempoEnInfo"></span>
-                            </div>
-                            <div class="tempo-safety">
-                                <h5>Tempo-Schutzfunktionen</h5>
-                                <label class="checkbox-line" for="tempoSafetyReference" title="Auto-Tempo zieht erkannte Stille an den Rändern von der Berechnung ab">
-                                    <input type="checkbox" id="tempoSafetyReference" checked>
-                                    Auto-Tempo ohne Randstille berechnen
-                                    <small>Aktiv: Auto-Tempo ignoriert stilles Vor- und Nachlaufband. Deaktiviert: Die gesamte Länge fließt in die Berechnung ein.</small>
-                                </label>
-                                <label class="checkbox-line" for="tempoSafetyPadding" title="Fügt vor dem Time-Stretching einen Sicherheitspuffer hinzu">
-                                    <input type="checkbox" id="tempoSafetyPadding" checked>
-                                    Sicherheitspuffer vor dem Stretching
-                                    <small>Aktiv: Es wird eine Sekunde Stille angefügt, damit Transienten nicht abgeschnitten werden. Deaktiviert: Das Signal wird ohne zusätzlichen Puffer gestretcht.</small>
-                                </label>
-                                <label class="checkbox-line" for="tempoSafetyDetect" title="Ermittelt automatisch, wie viel Randstille beim Stretching gefahrlos entfernt werden darf">
-                                    <input type="checkbox" id="tempoSafetyDetect" checked>
-                                    Randstille automatisch prüfen
-                                    <small>Aktiv: Vor und nach dem Stretching werden stille Bereiche analysiert und nur dort gekürzt. Deaktiviert: Der Puffer wird lediglich entfernt, weitere Schnitte entfallen.</small>
-                                </label>
-                                <label class="checkbox-line" for="tempoSafetyTrimLimit" title="Begrenzt automatische Kürzungen auf nachweislich stille Passagen; deaktiviert lässt die Analyse ohne feste Obergrenze arbeiten">
-                                    <input type="checkbox" id="tempoSafetyTrimLimit" checked>
-                                    Trim-Sicherheitslimit (120&nbsp;ms) anwenden
-                                    <small>Aktiv: Zusätzliche Stille wird höchstens im sicheren Rahmen gekürzt. Deaktiviert: Keine feste Obergrenze&nbsp;– erkannte Randstille darf vollständig entfernt werden.</small>
-                                </label>
-                            </div>
-                        </div>
-                        <!-- Button Anpassen & Anwenden -->
-                        <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
                     </div>
                 </section>
                 <!-- Rechte Seite: Effekte & Optionen -->
@@ -1112,31 +1066,6 @@
                 <button class="btn btn-secondary" onclick="resetSegmentDialog()">Neu hochladen</button>
                 <button class="btn btn-blue" onclick="exportSegmentsToProject()">Importieren</button>
                 <button class="btn btn-secondary" onclick="closeSegmentDialog()">Schließen</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Tempo-Debug Dialog -->
-    <div class="dialog-overlay hidden" id="tempoDebugDialog">
-        <div class="dialog tempo-debug-dialog">
-            <button class="dialog-close-btn" onclick="closeTempoDebug()" title="Debug-Fenster schließen">×</button>
-            <h3>🐞 Tempo-Debug</h3>
-            <p id="tempoDebugStatus" class="tempo-debug-status">Debug-Modus bereit – bitte Schrittberechnung starten.</p>
-            <div class="tempo-debug-body">
-                <div class="tempo-debug-visual">
-                    <canvas id="tempoDebugWave" width="720" height="200"></canvas>
-                    <pre id="tempoDebugMetrics" class="tempo-debug-metrics"></pre>
-                </div>
-                <div class="tempo-debug-info">
-                    <div id="tempoDebugStepTitle" class="tempo-debug-title"></div>
-                    <div id="tempoDebugStepDescription" class="tempo-debug-description"></div>
-                    <ol id="tempoDebugLogList" class="tempo-debug-log"></ol>
-                </div>
-            </div>
-            <div class="dialog-buttons tempo-debug-buttons">
-                <button class="btn btn-secondary" id="tempoDebugPrevBtn">◀ Zurück</button>
-                <button class="btn btn-secondary" id="tempoDebugNextBtn">Weiter ▶</button>
-                <button class="btn btn-danger" onclick="closeTempoDebug()">Schließen</button>
             </div>
         </div>
     </div>

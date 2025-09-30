@@ -537,8 +537,6 @@ let editSilenceRanges     = [];    // Bereiche zum Einfügen von Stille
 let manualSilenceRanges   = [];    // Merker für manuelle Stille
 let silenceTempStart      = null;  // Startpunkt für Stille-Bereich
 let silenceDragging       = null;  // {index, side} beim Ziehen der Stille
-let tempoFactor           = 1.0;   // Faktor für Time-Stretching
-let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
 // Anzeigeeinstellungen für die Wellenformen
@@ -9368,659 +9366,6 @@ function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
 }
 // =========================== DETECTSILENCETRIM END ========================
 
-// Hochwertiges Time-Stretching mit SoundTouchJS
-let soundtouchPromise = null;
-const EDGE_TRIM_CAP_MS = 120; // Maximale Freigabe für zusätzliches Abschneiden nach dem Time-Stretch
-
-// Bestimmt die erlaubte Kürzung in Millisekunden abhängig von Analyse- und Sicherheitsoptionen
-function resolveAllowedTrimMs(edgeMs, tempoSafety) {
-    const { detectEdgeSilence, enforceTrimSafety } = tempoSafety;
-    if (!detectEdgeSilence) {
-        return enforceTrimSafety ? 0 : Number.POSITIVE_INFINITY;
-    }
-    if (!enforceTrimSafety) {
-        return edgeMs;
-    }
-    if (!Number.isFinite(edgeMs)) {
-        return EDGE_TRIM_CAP_MS;
-    }
-    return Math.min(edgeMs, EDGE_TRIM_CAP_MS);
-}
-
-// Liefert den effektiv zu nutzenden Randbeschnitt abhängig vom Limit-Schalter
-function getEffectiveTrimAllowance(edgeMs, tempoSafety) {
-    if (tempoSafety.enforceTrimSafety) {
-        return resolveAllowedTrimMs(edgeMs, tempoSafety);
-    }
-    return tempoSafety.detectEdgeSilence ? edgeMs : Number.POSITIVE_INFINITY;
-}
-
-// Liest den Status einer Tempo-Schutzoption aus der Oberfläche aus
-function isTempoSafetyEnabled(elementId, fallback = true) {
-    const checkbox = document.getElementById(elementId);
-    if (!checkbox) return fallback;
-    return checkbox.checked !== false;
-}
-
-// Fasst alle Tempo-Schutzoptionen für die Verarbeitung zusammen
-function getTempoSafetyConfig() {
-    return {
-        usePadding: isTempoSafetyEnabled('tempoSafetyPadding'),
-        detectEdgeSilence: isTempoSafetyEnabled('tempoSafetyDetect'),
-        enforceTrimSafety: isTempoSafetyEnabled('tempoSafetyTrimLimit'),
-        autoReference: isTempoSafetyEnabled('tempoSafetyReference')
-    };
-}
-function loadSoundTouch() {
-    if (!soundtouchPromise) {
-        soundtouchPromise = import('./lib/soundtouch.js');
-    }
-    return soundtouchPromise;
-}
-
-// Ermittelt den dynamischen Schwellwert anhand des tatsächlichen Ruhepolsters
-function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
-    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
-        return 1e-6;
-    }
-
-    const totalFrames = buffer.length;
-    const pad = Math.max(0, Math.min(padFrames, totalFrames));
-    const guard = pad > 0 ? Math.min(Math.round(buffer.sampleRate * 0.1), Math.floor(pad / 2)) : 0;
-
-    const segments = [];
-    if (pad > 0) {
-        const headEnd = Math.max(0, pad - guard);
-        if (headEnd > 0) {
-            segments.push({ start: 0, end: headEnd });
-        }
-        const tailStart = Math.max(0, totalFrames - pad);
-        const tailCollectStart = Math.min(totalFrames, tailStart + guard);
-        if (tailCollectStart < totalFrames) {
-            segments.push({ start: tailCollectStart, end: totalFrames });
-        }
-    }
-    if (segments.length === 0) {
-        segments.push({ start: 0, end: totalFrames });
-    }
-
-    let quietSumSquares = 0;
-    let quietCount = 0;
-    let quietPeak = 0;
-    const sampleValues = [];
-    const loudSegments = [];
-
-    for (const segment of segments) {
-        let segmentSumSquares = 0;
-        let segmentCount = 0;
-        let segmentPeak = 0;
-        let loudFrames = 0;
-        const segmentValues = [];
-
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch);
-            for (let i = segment.start; i < segment.end; i++) {
-                const value = Math.abs(data[i]);
-                segmentValues.push(value);
-                segmentSumSquares += value * value;
-                segmentCount++;
-                if (value > segmentPeak) segmentPeak = value;
-                if (value > 0.01) loudFrames++;
-            }
-        }
-
-        if (segmentCount === 0) {
-            continue;
-        }
-
-        const loudRatio = loudFrames / segmentCount;
-        if (loudRatio <= 0.1) {
-            quietSumSquares += segmentSumSquares;
-            quietCount += segmentCount;
-            quietPeak = Math.max(quietPeak, segmentPeak);
-            for (const value of segmentValues) {
-                if (sampleValues.length < 16384) {
-                    sampleValues.push(value);
-                }
-            }
-        } else {
-            loudSegments.push(segment);
-        }
-    }
-
-    if (quietCount === 0) {
-        quietSumSquares = 0;
-        quietCount = 0;
-        quietPeak = 0;
-        const fallbackSegments = loudSegments.length > 0 ? loudSegments : segments;
-        for (const segment of fallbackSegments) {
-            for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-                const data = buffer.getChannelData(ch);
-                for (let i = segment.start; i < segment.end; i++) {
-                    const value = Math.abs(data[i]);
-                    quietSumSquares += value * value;
-                    quietCount++;
-                    quietPeak = Math.max(quietPeak, value);
-                    if (sampleValues.length < 16384) {
-                        sampleValues.push(value);
-                    }
-                }
-            }
-        }
-    }
-
-    if (quietCount === 0) {
-        return 1e-6;
-    }
-
-    const rms = Math.sqrt(quietSumSquares / quietCount);
-    const sorted = sampleValues.slice().sort((a, b) => a - b);
-    const percentileIndex = sorted.length > 0
-        ? Math.max(0, Math.min(sorted.length - 1, Math.floor(sorted.length * 0.9)))
-        : 0;
-    const percentile = sorted.length > 0 ? sorted[percentileIndex] : rms;
-
-    let threshold = Math.max(rms * 1.5, percentile * 1.2);
-    const cap = quietPeak > 0 ? quietPeak + 1e-6 : 1e-6;
-    threshold = Math.min(threshold, cap);
-
-    return Math.max(1e-6, threshold);
-}
-
-// Analysiert die Randbereiche eines Signals und bereitet sichere Trim-Werte vor
-function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold, options = {}) {
-    const { enforceTrimSafety = true } = options;
-    const isSilent = index => channelData.every(channel => Math.abs(channel[index]) <= threshold);
-
-    let firstActive = 0;
-    while (firstActive < totalFrames && isSilent(firstActive)) {
-        firstActive++;
-    }
-
-    let lastActive = totalFrames - 1;
-    while (lastActive >= 0 && isSilent(lastActive)) {
-        lastActive--;
-    }
-
-    const detectedStart = Math.min(totalFrames, Math.max(0, firstActive));
-    const detectedEnd = Math.min(totalFrames, Math.max(0, totalFrames - 1 - lastActive));
-
-    let start = Math.max(padFrames, detectedStart);
-    let end = Math.max(padFrames, detectedEnd);
-    const minWindow = Math.max(1, Math.round(sampleRate * 0.1));
-
-    if (start > padFrames) {
-        const silentSpan = start - padFrames;
-        const windowSize = Math.min(minWindow, silentSpan);
-        const windowStart = Math.max(padFrames, start - windowSize);
-        if (hasContinuousSilence(channelData, windowStart, start, threshold, windowSize)) {
-            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Anfang erkannt', { startFrames: start, padFrames, threshold });
-        } else {
-            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Anfang gefunden, Rückfall auf Polster', { startFrames: start, padFrames, threshold });
-            start = padFrames;
-        }
-    }
-
-    if (end > padFrames) {
-        const silentSpan = end - padFrames;
-        const windowSize = Math.min(minWindow, silentSpan);
-        const tailBoundary = Math.max(0, totalFrames - padFrames);
-        const tailStart = Math.max(0, tailBoundary - windowSize);
-        if (hasContinuousSilence(channelData, tailStart, tailBoundary, threshold, windowSize)) {
-            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Ende erkannt', { endFrames: end, padFrames, threshold });
-        } else {
-            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Ende gefunden, Rückfall auf Polster', { endFrames: end, padFrames, threshold });
-            end = padFrames;
-        }
-    }
-
-    if (enforceTrimSafety) {
-        const limited = applyTrimSafety(start, end, totalFrames, sampleRate, padFrames, padFrames);
-        start = limited.start;
-        end = limited.end;
-    }
-
-    const tolerance = Math.max(0, Math.round(sampleRate * 0.01));
-    const maxStart = Math.max(padFrames, Math.min(totalFrames, detectedStart + tolerance));
-    const maxEnd = Math.max(padFrames, Math.min(totalFrames, detectedEnd + tolerance));
-    start = Math.min(start, maxStart);
-    end = Math.min(end, maxEnd);
-
-    if (start + end > totalFrames) {
-        const overflow = start + end - totalFrames;
-        const reduceEnd = Math.min(Math.max(0, end - padFrames), overflow);
-        end -= reduceEnd;
-        let remaining = overflow - reduceEnd;
-        if (remaining > 0) {
-            const reduceStart = Math.min(Math.max(0, start - padFrames), remaining);
-            start -= reduceStart;
-            remaining -= reduceStart;
-        }
-        if (remaining > 0) {
-            end = Math.max(padFrames, end - remaining);
-        }
-    }
-
-    return { start, end, detectedStart, detectedEnd };
-}
-
-// Schätzt die nutzbare Randstille eines Buffers für das Turbo-Stretching
-function estimateStretchableSilence(buffer) {
-    if (!buffer || !buffer.sampleRate || buffer.length === 0) {
-        return { start: 0, end: 0 };
-    }
-
-    const safety = getTempoSafetyConfig();
-    if (!safety.detectEdgeSilence) {
-        return { start: 0, end: 0 };
-    }
-
-    const sr = buffer.sampleRate;
-    const padFrames = Math.round(sr * 1.0);
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, sr);
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const target = padded.getChannelData(ch);
-            target.set(buffer.getChannelData(ch), padFrames);
-        }
-
-        const threshold = calculateDynamicSilenceThreshold(padded, padFrames);
-        const channelData = [];
-        for (let ch = 0; ch < padded.numberOfChannels; ch++) {
-            channelData.push(padded.getChannelData(ch));
-        }
-
-        const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold, {
-            enforceTrimSafety: safety.enforceTrimSafety
-        });
-        const extraStart = Math.max(0, start - padFrames);
-        const extraEnd = Math.max(0, end - padFrames);
-
-        return {
-            start: Math.round(extraStart * 1000 / sr),
-            end: Math.round(extraEnd * 1000 / sr)
-        };
-    } finally {
-        ctx.close();
-    }
-}
-
-// Prüft, ob sich innerhalb eines Abschnitts ein ausreichend langes Stillfenster befindet
-function hasContinuousSilence(channelData, startIndex, endIndex, threshold, windowFrames) {
-    const rangeLength = Math.max(0, endIndex - startIndex);
-    if (windowFrames <= 0 || rangeLength < windowFrames) {
-        return false;
-    }
-
-    let consecutive = 0;
-    for (let i = startIndex; i < endIndex; i++) {
-        const silent = channelData.every(channel => Math.abs(channel[i]) <= threshold);
-        consecutive = silent ? consecutive + 1 : 0;
-        if (consecutive >= windowFrames) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-// Begrenzt das Abschneiden auf echte Stille und höchstens zehn Prozent der Gesamtdauer
-function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minStartFrames = 0, minEndFrames = 0) {
-    const minSilenceFrames = Math.round(sampleRate * 0.1);
-    const maxTrimFrames = Math.round(totalFrames * 0.1);
-
-    const baseStart = Math.max(0, Math.min(minStartFrames, totalFrames));
-    const baseEnd = Math.max(0, Math.min(minEndFrames, Math.max(0, totalFrames - baseStart)));
-
-    let safeStart = Math.max(baseStart, startFrames);
-    let safeEnd = Math.max(baseEnd, endFrames);
-
-    const extraStart = Math.max(0, safeStart - baseStart);
-    const extraEnd = Math.max(0, safeEnd - baseEnd);
-
-    if (extraStart > 0 && extraStart < minSilenceFrames) {
-        safeStart = baseStart;
-    }
-    if (extraEnd > 0 && extraEnd < minSilenceFrames) {
-        safeEnd = baseEnd;
-    }
-
-    const baseTrim = baseStart + baseEnd;
-    const requestedTrim = safeStart + safeEnd;
-    const adjustable = Math.max(0, requestedTrim - baseTrim);
-    const adjustableLimit = Math.max(0, maxTrimFrames - baseTrim);
-
-    if (adjustable > adjustableLimit && adjustable > 0) {
-        const scale = adjustableLimit / adjustable;
-        safeStart = baseStart + Math.floor((safeStart - baseStart) * scale);
-        safeEnd = baseEnd + Math.floor((safeEnd - baseEnd) * scale);
-    }
-
-    if (safeStart + safeEnd > totalFrames) {
-        const overflow = safeStart + safeEnd - totalFrames;
-        const endReduction = Math.min(Math.max(0, safeEnd - baseEnd), overflow);
-        safeEnd -= endReduction;
-        let remaining = overflow - endReduction;
-        if (remaining > 0) {
-            const startReduction = Math.min(Math.max(0, safeStart - baseStart), remaining);
-            safeStart -= startReduction;
-            remaining -= startReduction;
-        }
-        if (remaining > 0) {
-            safeEnd = Math.max(baseEnd, safeEnd - remaining);
-        }
-    }
-
-    if (safeStart - baseStart > 0 && safeStart - baseStart < minSilenceFrames) {
-        safeStart = baseStart;
-    }
-    if (safeEnd - baseEnd > 0 && safeEnd - baseEnd < minSilenceFrames) {
-        safeEnd = baseEnd;
-    }
-
-    return {
-        start: Math.max(0, Math.min(totalFrames, safeStart)),
-        end: Math.max(0, Math.min(totalFrames, safeEnd))
-    };
-}
-
-async function timeStretchBuffer(buffer, factor, options = {}) {
-    const {
-        debug: debugContext = null,
-        usePadding = true
-    } = options || {};
-
-    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
-        return buffer;
-    }
-
-    const safeFactor = Math.max(0.001, Math.abs(factor || 0));
-    const expected = Math.round(buffer.length / safeFactor);
-
-    const debugAdd = debugContext && typeof debugContext.addStep === 'function'
-        ? (title, buf, meta = {}) => {
-            try {
-                debugContext.addStep(title, buf, meta);
-            } catch (err) {
-                console.warn('Tempo-Debug: Schritt konnte nicht gespeichert werden', err);
-            }
-        }
-        : null;
-
-    if (Math.abs(safeFactor - 1) < 0.001) {
-        if (debugAdd) {
-            debugAdd('Tempo: Keine Anpassung erforderlich', buffer, {
-                beschreibung: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
-                tempoFactor: safeFactor,
-                expectedSamples: buffer.length,
-                relativeFactor: safeFactor
-            });
-        }
-        return buffer;
-    }
-
-    if (debugAdd) {
-        debugAdd('Tempo: Eingabe vorbereitet', buffer, {
-            beschreibung: 'Originalsignal wird für das Time-Stretching aufbereitet.',
-            tempoFactor: safeFactor,
-            expectedSamples: expected,
-            relativeFactor: safeFactor
-        });
-    }
-
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        const padFrames = usePadding ? Math.round(buffer.sampleRate * 1.0) : 0;
-        const paddedLength = buffer.length + padFrames * 2;
-        const padded = ctx.createBuffer(buffer.numberOfChannels, paddedLength, buffer.sampleRate);
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const target = padded.getChannelData(ch);
-            target.set(buffer.getChannelData(ch), padFrames);
-        }
-
-        if (debugAdd && usePadding) {
-            debugAdd('Tempo: Sicherheitsrand gesetzt', padded, {
-                beschreibung: 'Eine Sekunde Puffer schützt den Algorithmus vor abgeschnittenen Transienten.',
-                padFrames,
-                padMs: padFrames / buffer.sampleRate * 1000
-            });
-        } else if (debugAdd && !usePadding) {
-            debugAdd('Tempo: Sicherheitsrand übersprungen', padded, {
-                beschreibung: 'Das Stretching verwendet das Rohsignal ohne zusätzlichen Puffer.'
-            });
-        }
-
-        const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
-        const st = new SoundTouch();
-        st.tempo = factor;
-        const source = new WebAudioBufferSource(padded);
-        const filter = new SimpleFilter(source, st);
-
-        const channels = padded.numberOfChannels;
-        // SoundTouch gibt auch bei Mono-Eingaben stets zwei Kanäle zurück, daher wird die Quellpuffergröße auf mindestens Stereo gesetzt.
-        const sourceChannels = Math.max(2, padded.numberOfChannels);
-        const frameChunk = 4096;
-        const temp = new Float32Array(frameChunk * sourceChannels);
-        const collected = Array.from({ length: channels }, () => []);
-        let producedFrames = 0;
-
-        while (true) {
-            const frames = filter.extract(temp, frameChunk);
-            if (!frames) break;
-            for (let i = 0; i < frames; i++) {
-                for (let ch = 0; ch < sourceChannels; ch++) {
-                    if (ch < channels) {
-                        collected[ch].push(temp[i * sourceChannels + ch]);
-                    }
-                }
-            }
-            producedFrames += frames;
-        }
-
-        const stretched = ctx.createBuffer(channels, producedFrames, buffer.sampleRate);
-        for (let ch = 0; ch < channels; ch++) {
-            stretched.getChannelData(ch).set(Float32Array.from(collected[ch]));
-        }
-
-        const padOutFrames = Math.min(stretched.length, Math.max(0, Math.round(padFrames / safeFactor)));
-
-        if (debugAdd) {
-            debugAdd('Tempo: Gestretchtes Signal', stretched, {
-                beschreibung: 'SoundTouch hat das Signal auf den gewünschten Faktor gedehnt.',
-                producedSamples: stretched.length,
-                padOutFrames,
-                padOutMs: padOutFrames / stretched.sampleRate * 1000
-            });
-        }
-
-        const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
-        const trimStart = Math.min(padOutFrames, stretched.length);
-        const trimEnd = Math.min(padOutFrames, Math.max(0, stretched.length - trimStart));
-        const usableLength = Math.max(0, stretched.length - trimStart - trimEnd);
-
-        if (trimStart === 0 && trimEnd === 0) {
-            if (debugAdd) {
-                debugAdd('Tempo: Kein Schutzrand entfernt', stretched, {
-                    beschreibung: 'Es wurde kein zuvor hinzugefügter Puffer entfernt.',
-                    tempoFactor: safeFactor,
-                    expectedSamples: expected
-                });
-            }
-            return stretched;
-        }
-
-        const trimmed = ctx.createBuffer(stretched.numberOfChannels, usableLength, stretched.sampleRate);
-        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            const sourceData = stretched.getChannelData(ch);
-            trimmed.getChannelData(ch).set(sourceData.subarray(trimStart, trimStart + usableLength));
-        }
-
-        if (debugAdd) {
-            debugAdd('Tempo: Schutzrand entfernt', trimmed, {
-                beschreibung: 'Nur der künstliche Sicherheitsrand wurde abgeschnitten, das eigentliche Audiosignal bleibt vollständig erhalten.',
-                startTrimMs: framesToMs(trimStart, stretched.sampleRate),
-                endTrimMs: framesToMs(trimEnd, stretched.sampleRate),
-                tempoFactor: safeFactor,
-                expectedSamples: expected
-            });
-        }
-
-        return trimmed;
-    } finally {
-        ctx.close();
-    }
-}
-
-function toggleIgnoreSelectedSegments() {
-    if (segmentSelection.length === 0) return;
-    segmentSelection.forEach(i => {
-        const num = i + 1;
-        if (ignoredSegments.has(num)) {
-            ignoredSegments.delete(num);
-        } else {
-            ignoredSegments.add(num);
-        }
-    });
-    segmentSelection = [];
-    highlightAssignedSegments();
-    storeSegmentState();
-}
-
-async function openSegmentDialog() {
-    if (!currentProject) {
-        // Ohne aktives Projekt kann keine Datei zugeordnet werden
-        alert('Bitte zuerst ein Projekt auswählen.');
-        return;
-    }
-    const dlg = document.getElementById('segmentDialog');
-    dlg.classList.remove('hidden');
-    const canvas = document.getElementById('segmentWaveform');
-    if (!canvas) {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
-        return;
-    }
-    canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-    const input = document.getElementById('segmentFileInput');
-    if (!input) {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
-        return;
-    }
-    // Listener vorsichtshalber neu setzen, falls der Dialog dynamisch erzeugt wurde
-    input.onchange = analyzeSegmentFile;
-    // Wert leeren, damit auch dieselbe Datei erneut erkannt wird
-    input.value = '';
-    canvas.addEventListener('click', handleSegmentCanvasClick);
-    ignoredSegments = new Set(currentProject.segmentIgnored || []);
-    if (!segmentInfo && currentProject.segmentSegments) {
-        let buf = null;
-        if (currentProject.segmentAudioPath && window.electronAPI && window.electronAPI.fsReadFile) {
-            const info = await window.electronAPI.getDebugInfo();
-            const full = window.electronAPI.join(info.soundsPath, currentProject.segmentAudioPath);
-            
-            // Prüfen, ob die Segment-Datei existiert und laden
-            if (window.electronAPI.fsExists(full)) {
-                        const data = window.electronAPI.fsReadFile(full);
-            const uint = new Uint8Array(data);
-            buf = await loadAudioBuffer(new Blob([uint]));
-        } else {
-                        console.warn('Segment-Datei nicht gefunden:', full);
-        }
-        } else if (currentProject.segmentAudio) {
-            const ab = base64ToArrayBuffer(currentProject.segmentAudio);
-            buf = await loadAudioBuffer(new Blob([ab]));
-        }
-        if (buf) {
-            segmentInfo = { buffer: buf, segments: currentProject.segmentSegments };
-            segmentAssignments = currentProject.segmentAssignments || {};
-        }
-    }
-    if (segmentInfo) {
-        drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
-        populateSegmentList();
-        highlightAssignedSegments();
-    } else if (Object.keys(currentProject.segmentAssignments || {}).length > 0) {
-        segmentAssignments = currentProject.segmentAssignments;
-        populateSegmentList();
-    } else {
-        resetSegmentDialog();
-    }
-}
-
-function closeSegmentDialog() {
-    const dlg = document.getElementById('segmentDialog');
-    if (!dlg) {
-        console.error("Segmentdialog konnte nicht geschlossen werden: Element 'segmentDialog' fehlt.");
-    } else {
-        dlg.classList.add('hidden');
-    }
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        // beim Schließen auch die erzeugte URL freigeben
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    const canvas = document.getElementById('segmentWaveform');
-    if (!canvas) {
-        console.error("Segmentdialog: Element 'segmentWaveform' fehlt.");
-    } else {
-        canvas.removeEventListener('click', handleSegmentCanvasClick);
-    }
-    segmentSelection = [];
-    storeSegmentState();
-}
-
-// Setzt den Dialog zurück und beendet eine laufende Wiedergabe
-// Ist keepStatus=true, bleibt der aktuelle Meldungstext erhalten
-function resetSegmentDialog(keepStatus=false) {
-    const input = document.getElementById('segmentFileInput');
-    if (input) {
-        input.value = '';
-    } else {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
-    }
-    document.getElementById('segmentTextList').innerHTML = '';
-    const canvas = document.getElementById('segmentWaveform');
-    if (canvas) {
-        canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    } else {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
-    }
-    segmentInfo = null;
-    segmentAssignments = {};
-    segmentSelection = [];
-    ignoredSegments.clear();
-    // laufende Wiedergabe stoppen und URL freigeben
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    const progress = document.getElementById('segmentProgress');
-    const fill = document.getElementById('segmentFill');
-    const status = document.getElementById('segmentStatus');
-    // Fortschrittsbalken und Status zurücksetzen
-    progress.classList.remove('active');
-    fill.style.width = '0%';
-    if (!keepStatus) {
-        status.textContent = 'Analysiere...';
-    }
-    currentProject.segmentAudio = null;
-    currentProject.segmentAudioPath = null;
-    currentProject.segmentAssignments = {};
-    currentProject.segmentSegments = null;
-    currentProject.segmentIgnored = [];
-    storeSegmentState();
-}
-
 async function analyzeSegmentFile(ev) {
     const file = ev.target.files[0];
     if (!file) return;
@@ -10338,8 +9683,6 @@ if (typeof window !== 'undefined') {
     window.resetSegmentDialog = resetSegmentDialog;
     window.playSegmentFull = playSegmentFull;
     window.toggleIgnoreSelectedSegments = toggleIgnoreSelectedSegments;
-    window.openTempoDebug = openTempoDebug;
-    window.closeTempoDebug = closeTempoDebug;
 }
 // =========================== SEGMENT DIALOG END ============================
 // =========================== SHOWMISSINGFOLDERSDIALOG END ===================
@@ -13805,17 +13148,8 @@ async function handleDeUpload(input) {
         file.emiEffect = false;
         file.neighborEffect = false;
         file.neighborHall = false;
-        file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
         if (currentEditFile === file) {
-            tempoFactor = 1.0;
-            loadedTempoFactor = 1.0;
-            const tempoRange = document.getElementById('tempoRange');
-            const tempoDisp = document.getElementById('tempoDisplay');
-            if (tempoRange && tempoDisp) {
-                tempoRange.value = '1.00';
-                tempoDisp.textContent = '1.00';
-                tempoDisp.classList.remove('tempo-auto');
-            }
+            normalizeDeTrim();
         }
         // Fertig-Status ergibt sich nun automatisch
     }
@@ -13893,8 +13227,6 @@ async function applyZipImport(zipFiles) {
         if (!window.electronAPI.fsExists(full)) continue;
         const data = window.electronAPI.fsReadFile(full);
         const blob = new Blob([new Uint8Array(data)]);
-        // Tempo-Faktor der Zeile zurücksetzen, damit der Regler nach dem Import auf 1,0 steht
-        files[i].tempoFactor = 1.0;
         await uploadDeFile(blob, rel);
     }
     showToast(`${zipFiles.length} Dateien importiert`);
@@ -14709,9 +14041,6 @@ let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
 
-let tempoDebugSteps      = [];    // Gespeicherte Schritte der Tempo-Simulation
-let tempoDebugIndex      = 0;     // Aktuelle Position im Debug-Ablauf
-let tempoDebugLogEntries = [];    // Textprotokoll aller Zwischenschritte
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -14837,15 +14166,6 @@ async function openDeEdit(fileId) {
         triggerPulse('autoTrimBtn');
     };
 
-    const quickTempoMatch = document.getElementById('quickTempoMatch');
-    if (quickTempoMatch) quickTempoMatch.onclick = () => {
-        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
-        if (tempoAutoMatch) {
-            tempoAutoMatch.click();
-            triggerPulse('tempoAutoMatchBtn', '#tempoRange');
-        }
-    };
-
     const quickVolume = document.getElementById('quickVolumeMatch');
     if (quickVolume) quickVolume.onclick = () => {
         applyVolumeMatch();
@@ -14857,109 +14177,6 @@ async function openDeEdit(fileId) {
         applyRadioEffect();
         triggerPulse('radioEffectBoxBtn');
     };
-
-    tempoFactor = file.tempoFactor || 1.0;
-    autoIgnoreMs = 400;
-    const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp  = document.getElementById('tempoDisplay');
-    let tempoMin = 1;
-    let tempoMax = 3;
-    if (tempoRange) {
-        const parsedMin = parseFloat(tempoRange.min);
-        if (!Number.isNaN(parsedMin)) tempoMin = parsedMin;
-        const parsedMax = parseFloat(tempoRange.max);
-        if (!Number.isNaN(parsedMax)) tempoMax = parsedMax;
-    }
-    if (!Number.isFinite(tempoFactor)) {
-        tempoFactor = tempoMin;
-    }
-    let tempoBegrenzt = false;
-    if (tempoFactor < tempoMin) {
-        tempoFactor = tempoMin;
-        tempoBegrenzt = true;
-    } else if (tempoFactor > tempoMax) {
-        tempoFactor = tempoMax;
-        tempoBegrenzt = true;
-    }
-    loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln
-    if (tempoBegrenzt && file.tempoFactor !== tempoFactor) {
-        // Ältere Projekte können Tempo-Werte außerhalb des Slider-Bereichs besitzen – auf den erlaubten Bereich trimmen
-        file.tempoFactor = tempoFactor;
-        markDirty();
-    }
-    if (tempoRange && tempoDisp) {
-        tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoRange.oninput = async e => {
-            tempoFactor = parseFloat(e.target.value);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        // Minus-Knopf reduziert das Tempo in kleinen Schritten
-        const tempoMinus = document.getElementById('tempoMinusBtn');
-        if (tempoMinus) tempoMinus.onclick = () => {
-            const step = parseFloat(tempoRange.step) || 0.01;
-            const min  = parseFloat(tempoRange.min);
-            tempoFactor = Math.max(min, tempoFactor - step);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        // Plus-Knopf erhöht das Tempo in kleinen Schritten
-        const tempoPlus = document.getElementById('tempoPlusBtn');
-        if (tempoPlus) tempoPlus.onclick = () => {
-            const step = parseFloat(tempoRange.step) || 0.01;
-            const max  = parseFloat(tempoRange.max);
-            tempoFactor = Math.min(max, tempoFactor + step);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        const tempoAuto = document.getElementById('tempoAutoBtn');
-        if (tempoAuto) tempoAuto.onclick = () => {
-            // Setzt den Tempofaktor auf das definierte Minimum
-            tempoFactor = parseFloat(tempoRange.min);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.add('tempo-auto');
-            updateLengthInfo();
-        };
-        // Zweiter Auto-Knopf gleicht die DE-Zeit an die EN-Zeit an
-        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
-        if (tempoAutoMatch) tempoAutoMatch.onclick = () => {
-            const step = parseFloat(tempoRange.step);
-            const min  = parseFloat(tempoRange.min);
-            const max  = parseFloat(tempoRange.max);
-            const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-
-            tempoDisp.classList.add('tempo-auto');
-
-            // Neue Zielgeschwindigkeit berechnen, die den Referenzwert auf EN angleicht
-            const deRefMs = calcTempoReferenceLength();
-            const relFactor = tempoFactor / loadedTempoFactor;
-            if (!Number.isFinite(enMs) || enMs <= 0 || !Number.isFinite(deRefMs) || deRefMs <= 0 || !Number.isFinite(relFactor) || relFactor <= 0) {
-                updateLengthInfo();
-                return;
-            }
-
-            // Basislänge ohne aktuelles Tempo ermitteln und auf EN matchen
-            let targetFactor = (deRefMs * tempoFactor) / enMs;
-            if (Number.isFinite(step) && step > 0) {
-                // Auf die Schrittweite des Sliders runden, damit Anzeige und Wert identisch bleiben
-                targetFactor = Math.round(targetFactor / step) * step;
-            }
-            if (Number.isFinite(min)) targetFactor = Math.max(min, targetFactor);
-            if (Number.isFinite(max)) targetFactor = Math.min(max, targetFactor);
-
-            tempoFactor = targetFactor;
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            updateLengthInfo();
-        };
-    }
     const autoChk = document.getElementById('autoIgnoreChk');
     const autoMs  = document.getElementById('autoIgnoreMs');
     if (autoChk && autoMs) {
@@ -14985,29 +14202,6 @@ async function openDeEdit(fileId) {
             }
         };
     }
-    const autoTempo = document.getElementById('autoTempoChk');
-    if (autoTempo) autoTempo.checked = false;
-    const tempoSafetyIds = [
-        'tempoSafetyReference',
-        'tempoSafetyPadding',
-        'tempoSafetyDetect',
-        'tempoSafetyTrimLimit'
-    ];
-    tempoSafetyIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.checked = true;
-            el.onchange = async () => {
-                updateLengthInfo();
-                if (savedOriginalBuffer) {
-                    await recomputeEditBuffer();
-                    updateLengthInfo();
-                }
-            };
-        }
-    });
-    const autoBtn = document.getElementById('autoAdjustBtn');
-    if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
     refreshIgnoreList();
     refreshSilenceList();
 
@@ -15727,43 +14921,6 @@ function insertEnglishSegment() {
     }
 }
 
-// Kombination aus Pausenkürzung und Tempoanpassung
-async function autoAdjustLength() {
-    const chk = document.getElementById('autoIgnoreChk');
-    const thr = document.getElementById('autoIgnoreMs');
-    const tempoChk = document.getElementById('autoTempoChk');
-    if (chk && chk.checked) {
-        autoIgnoreMs = parseInt(thr.value) || 400;
-        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-        refreshIgnoreList();
-    }
-    if (tempoChk && tempoChk.checked && editEnBuffer) {
-        const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-        // Effektive Länge ohne automatisch erkannte Stille an den Rändern bestimmen
-        let len = calcTempoReferenceLength();
-        if (len <= 0 || !Number.isFinite(len)) {
-            // Sicherheitsnetz: Fallback auf die reguläre Berechnung
-            len = calcFinalLength();
-        }
-        // Verhältnis relativ zur EN-Länge bestimmen
-        const rel = len > 0 ? (len / enMs) : 1;
-        // Faktor begrenzen, damit extreme Werte vermieden werden
-        tempoFactor = Math.min(Math.max(rel * loadedTempoFactor, 1), 3);
-        const tempoRange = document.getElementById('tempoRange');
-        const tempoDisp = document.getElementById('tempoDisplay');
-        if (tempoRange && tempoDisp) {
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-        }
-    }
-    await recomputeEditBuffer();
-    updateLengthInfo();
-    updateDeEditWaveforms();
-    if (typeof showToast === 'function') {
-        showToast('Bereich angewendet', 'success');
-    }
-}
-
 // =========================== APPLYVOLUMEMATCH START =======================
 // Führt den Lautstärkeabgleich einmalig aus
 // Beim ersten Aufruf wird das Original in die Historie geschrieben
@@ -15823,565 +14980,13 @@ async function recomputeEditBuffer() {
     const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
     trimmed = insertSilenceIntoBuffer(trimmed, pads);
 
-    // Erst danach das Tempo anpassen
-    const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    const tempoSafety = getTempoSafetyConfig();
-    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(trimmed) : { start: 0, end: 0 };
-    const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-    const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-    const stretchOptions = {
-        // Nur den nachweislich stillen Bereich freigeben; die Kappung greift ausschließlich bei aktivem Limit
-        allowedTrimStartMs,
-        allowedTrimEndMs,
-        usePadding: tempoSafety.usePadding,
-        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-        enforceTrimSafety: tempoSafety.enforceTrimSafety
-    };
-    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor, stretchOptions);
+    originalEditBuffer = trimmed;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     normalizeDeTrim();
     updateDeEditWaveforms();
 }
 // =========================== RECOMPUTEEDITBUFFER END =======================
 
-// =========================== TEMPODEBUG START =============================
-// Hilfsfunktionen und Ablauflogik für den Tempo-Debug-Modus
-function formatTempoNumber(value, fractionDigits = 2) {
-    if (!Number.isFinite(value)) return '–';
-    return value.toLocaleString('de-DE', {
-        minimumFractionDigits: fractionDigits,
-        maximumFractionDigits: fractionDigits
-    });
-}
-
-function formatTempoInt(value) {
-    if (!Number.isFinite(value)) return '–';
-    return value.toLocaleString('de-DE');
-}
-
-function formatTempoMs(ms) {
-    if (!Number.isFinite(ms)) return '–';
-    return `${formatTempoNumber(ms, 2)} ms`;
-}
-
-function formatTempoSeconds(seconds) {
-    if (!Number.isFinite(seconds)) return '–';
-    return `${formatTempoNumber(seconds, 3)} s`;
-}
-
-function formatTempoLimitMs(ms, limitActive = true) {
-    if (!Number.isFinite(ms)) {
-        return limitActive ? '–' : 'unbegrenzt';
-    }
-    return formatTempoMs(ms);
-}
-
-function createTempoDebugStep(title, buffer, description, meta = {}) {
-    if (!buffer) return null;
-    const sampleRate = buffer.sampleRate || 0;
-    const samples = buffer.length || 0;
-    const durationMs = sampleRate ? samples / sampleRate * 1000 : 0;
-    return {
-        title,
-        description,
-        buffer,
-        meta,
-        metrics: {
-            sampleRate,
-            samples,
-            durationMs
-        }
-    };
-}
-
-function formatTempoMeta(meta = {}) {
-    if (!meta || typeof meta !== 'object') return '';
-    const parts = [];
-    if (meta.active === true) parts.push('Status: angewendet');
-    if (meta.active === false) parts.push('Status: übersprungen');
-    if (meta.effect) parts.push(`Effekt: ${meta.effect}`);
-    if (meta.preset) parts.push(`Preset: ${meta.preset}`);
-    if (meta.note) parts.push(meta.note);
-    if (meta.tempoFactor !== undefined) parts.push(`Tempo-Faktor: ${formatTempoNumber(meta.tempoFactor, 3)}`);
-    if (meta.loadedTempoFactor !== undefined) parts.push(`Geladener Faktor: ${formatTempoNumber(meta.loadedTempoFactor, 3)}`);
-    if (meta.relativeFactor !== undefined) parts.push(`Relativfaktor: ${formatTempoNumber(meta.relativeFactor, 3)}`);
-    if (meta.allowedTrimStartMs !== undefined || meta.allowedTrimEndMs !== undefined) {
-        const limitActive = meta.trimLimitActive ?? meta.enforceTrimSafety ?? true;
-        const start = meta.allowedTrimStartMs !== undefined ? formatTempoLimitMs(meta.allowedTrimStartMs, limitActive) : '–';
-        const end = meta.allowedTrimEndMs !== undefined ? formatTempoLimitMs(meta.allowedTrimEndMs, limitActive) : '–';
-        const label = limitActive ? 'Freigabe Randstille' : 'Freigabe Randstille (Limit aus)';
-        parts.push(`${label}: Start ${start} / Ende ${end}`);
-    }
-    if (meta.trimStartMs !== undefined || meta.trimEndMs !== undefined) {
-        const start = meta.trimStartMs !== undefined ? formatTempoMs(meta.trimStartMs) : '–';
-        const end = meta.trimEndMs !== undefined ? formatTempoMs(meta.trimEndMs) : '–';
-        parts.push(`Trim: Start ${start} / Ende ${end}`);
-    }
-    if (meta.removedCount !== undefined) {
-        parts.push(`Entfernte Bereiche: ${formatTempoInt(meta.removedCount)} (${formatTempoMs(meta.removedTotalMs || 0)})`);
-    }
-    if (meta.insertedCount !== undefined) {
-        parts.push(`Eingefügte Stille: ${formatTempoInt(meta.insertedCount)} (${formatTempoMs(meta.insertedTotalMs || 0)})`);
-    }
-    if (meta.silenceStartMs !== undefined || meta.silenceEndMs !== undefined) {
-        parts.push(`Ermittelte Randstille: Start ${formatTempoMs(meta.silenceStartMs || 0)} / Ende ${formatTempoMs(meta.silenceEndMs || 0)}`);
-    }
-    if (meta.baseStartMs !== undefined || meta.baseEndMs !== undefined) {
-        parts.push(`Analysierte Stille: Start ${formatTempoMs(meta.baseStartMs || 0)} / Ende ${formatTempoMs(meta.baseEndMs || 0)}`);
-    }
-    if (meta.detectedStartMs !== undefined || meta.detectedEndMs !== undefined) {
-        parts.push(`Erkannte Grenzen: Start ${formatTempoMs(meta.detectedStartMs || 0)} / Ende ${formatTempoMs(meta.detectedEndMs || 0)}`);
-    }
-    if (meta.startTrimMs !== undefined || meta.endTrimMs !== undefined) {
-        parts.push(`Randabzug: Start ${formatTempoMs(meta.startTrimMs || 0)} / Ende ${formatTempoMs(meta.endTrimMs || 0)}`);
-    }
-    if (meta.availableSamples !== undefined && meta.expectedSamples !== undefined) {
-        parts.push(`Samples: verfügbar ${formatTempoInt(meta.availableSamples)} / erwartet ${formatTempoInt(meta.expectedSamples)}`);
-    }
-    if (meta.producedSamples !== undefined) {
-        parts.push(`SoundTouch-Ausgabe: ${formatTempoInt(meta.producedSamples)} Samples`);
-    }
-    if (meta.padFrames !== undefined) {
-        parts.push(`Polster: ${formatTempoInt(meta.padFrames)} Samples (${formatTempoMs(meta.padMs || 0)})`);
-    }
-    if (meta.padOutFrames !== undefined) {
-        parts.push(`Streck-Polster: ${formatTempoInt(meta.padOutFrames)} Samples (${formatTempoMs(meta.padOutMs || 0)})`);
-    }
-    if (meta.needsPadding !== undefined) {
-        parts.push(`Restauffüllung: ${meta.needsPadding ? 'ja' : 'nein'}`);
-    }
-    return parts.join(' • ');
-}
-
-function formatTempoMetrics(step) {
-    const duration = formatTempoMs(step.metrics.durationMs);
-    const seconds = formatTempoSeconds(step.metrics.durationMs / 1000);
-    const sampleText = formatTempoInt(step.metrics.samples);
-    const rateText = formatTempoInt(step.metrics.sampleRate);
-    return `Dauer: ${duration} (${seconds}) • Samples: ${sampleText} @ ${rateText} Hz`;
-}
-
-function populateTempoDebugLog(steps) {
-    const list = document.getElementById('tempoDebugLogList');
-    if (!list) return;
-    list.innerHTML = '';
-    steps.forEach((step, idx) => {
-        const li = document.createElement('li');
-        li.dataset.index = String(idx);
-        const title = document.createElement('strong');
-        title.textContent = `${idx + 1}. ${step.title}`;
-        li.appendChild(title);
-        const metrics = document.createElement('div');
-        metrics.className = 'tempo-debug-log-metrics';
-        metrics.textContent = formatTempoMetrics(step);
-        li.appendChild(metrics);
-        if (step.description) {
-            const desc = document.createElement('div');
-            desc.textContent = step.description;
-            li.appendChild(desc);
-        }
-        const metaText = formatTempoMeta(step.meta);
-        if (metaText) {
-            const metaDiv = document.createElement('div');
-            metaDiv.className = 'tempo-debug-log-meta';
-            metaDiv.textContent = metaText;
-            li.appendChild(metaDiv);
-        }
-        li.onclick = () => showTempoDebugStep(idx);
-        list.appendChild(li);
-    });
-}
-
-function updateTempoDebugNavigation() {
-    const prevBtn = document.getElementById('tempoDebugPrevBtn');
-    const nextBtn = document.getElementById('tempoDebugNextBtn');
-    const total = tempoDebugSteps.length;
-    if (prevBtn) prevBtn.disabled = total === 0 || tempoDebugIndex <= 0;
-    if (nextBtn) nextBtn.disabled = total === 0 || tempoDebugIndex >= total - 1;
-}
-
-function showTempoDebugStep(index) {
-    if (!Array.isArray(tempoDebugSteps) || tempoDebugSteps.length === 0) {
-        tempoDebugIndex = 0;
-        updateTempoDebugNavigation();
-        return;
-    }
-    if (index < 0) index = 0;
-    if (index >= tempoDebugSteps.length) index = tempoDebugSteps.length - 1;
-    tempoDebugIndex = index;
-    const step = tempoDebugSteps[index];
-    const titleEl = document.getElementById('tempoDebugStepTitle');
-    if (titleEl) {
-        titleEl.textContent = `Schritt ${index + 1} / ${tempoDebugSteps.length}: ${step.title}`;
-    }
-    const descEl = document.getElementById('tempoDebugStepDescription');
-    if (descEl) {
-        descEl.textContent = step.description || 'Kein zusätzlicher Hinweis für diesen Schritt.';
-    }
-    const statusEl = document.getElementById('tempoDebugStatus');
-    if (statusEl) {
-        statusEl.textContent = tempoDebugLogEntries[index] || `Schritt ${index + 1} / ${tempoDebugSteps.length}`;
-    }
-    const metricsEl = document.getElementById('tempoDebugMetrics');
-    if (metricsEl) {
-        const lines = [formatTempoMetrics(step)];
-        const metaLine = formatTempoMeta(step.meta);
-        if (metaLine) lines.push(metaLine);
-        metricsEl.textContent = lines.join('\n');
-    }
-    const canvas = document.getElementById('tempoDebugWave');
-    if (canvas && step.buffer) {
-        const width = canvas.clientWidth || 720;
-        const height = canvas.clientHeight || 200;
-        if (canvas.width !== width) canvas.width = width;
-        if (canvas.height !== height) canvas.height = height;
-        drawWaveform(canvas, step.buffer);
-    }
-    const items = document.querySelectorAll('#tempoDebugLogList li');
-    items.forEach((li, idx) => {
-        if (idx === index) {
-            li.classList.add('active');
-            li.scrollIntoView({ block: 'nearest' });
-        } else {
-            li.classList.remove('active');
-        }
-    });
-    updateTempoDebugNavigation();
-}
-
-async function buildTempoDebugSteps() {
-    if (!currentEditFile || !savedOriginalBuffer) {
-        throw new Error('Kein DE-Audio zum Debuggen geladen.');
-    }
-
-    const steps = [];
-    const logEntries = [];
-    const addStep = (title, buffer, description, meta = {}) => {
-        const step = createTempoDebugStep(title, buffer, description, meta);
-        if (!step) return;
-        steps.push(step);
-        const entryParts = [`${steps.length}. ${step.title}`, formatTempoMetrics(step)];
-        if (description) entryParts.push(description);
-        const metaText = formatTempoMeta(meta);
-        if (metaText) entryParts.push(metaText);
-        logEntries.push(entryParts.join(' — '));
-    };
-
-    const relFactor = tempoFactor / loadedTempoFactor;
-    const fileName = currentEditFile?.filename || currentEditFile?.name || '';
-    const baseInfo = fileName ? `Ausgangsdatei: ${fileName}.` : 'Ausgangsdatei geladen.';
-    addStep('Original laden', savedOriginalBuffer, baseInfo, {
-        tempoFactor,
-        loadedTempoFactor,
-        relativeFactor: relFactor
-    });
-
-    let currentBuffer = savedOriginalBuffer;
-    const startTrimSnapshot = editStartTrim;
-    const endTrimSnapshot = editEndTrim;
-    const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-    const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
-
-    if (isVolumeMatched && editEnBuffer) {
-        currentBuffer = matchVolume(currentBuffer, editEnBuffer);
-        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärke wurde an die EN-Referenz angepasst.', {
-            effect: 'Lautstärke',
-            active: true
-        });
-    } else if (isVolumeMatched) {
-        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärkeabgleich war aktiv, aber die EN-Referenz ist nicht verfügbar.', {
-            effect: 'Lautstärke',
-            active: false
-        });
-    } else {
-        addStep('Lautstärke angleichen', currentBuffer, 'Übersprungen: Lautstärkeabgleich ist nicht aktiv.', {
-            effect: 'Lautstärke',
-            active: false
-        });
-    }
-
-    if (isRadioEffect) {
-        currentBuffer = await applyRadioFilter(currentBuffer);
-        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Funkfilter simuliert die gewählten Einstellungen.', {
-            effect: 'Funk',
-            active: true
-        });
-    } else {
-        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Übersprungen: Funk-Effekt ist deaktiviert.', {
-            effect: 'Funk',
-            active: false
-        });
-    }
-
-    if (isHallEffect) {
-        currentBuffer = await applyReverbEffect(currentBuffer);
-        addStep('Hall-Effekt anwenden', currentBuffer, 'Hall-Preset wurde angewendet.', {
-            effect: 'Hall',
-            active: true
-        });
-        addStep('Optionaler Nebenraum-Hall', currentBuffer,
-            neighborHall
-                ? 'Nebenraum-Hall ist bereits im aktiven Hall-Preset enthalten.'
-                : 'Keine zusätzlichen Hallanteile erforderlich.',
-            {
-                effect: 'Nebenraum-Hall',
-                active: !!neighborHall
-            });
-    } else {
-        addStep('Hall-Effekt anwenden', currentBuffer, 'Übersprungen: Hall ist deaktiviert.', {
-            effect: 'Hall',
-            active: false
-        });
-        if (neighborHall) {
-            currentBuffer = await applyReverbEffect(currentBuffer, { room: 0.2, wet: 0.3, delay: 40 });
-            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Zusätzlicher Raumklang wurde zugemischt.', {
-                effect: 'Nebenraum-Hall',
-                active: true
-            });
-        } else {
-            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Übersprungen: Kein Nebenraum-Hall aktiviert.', {
-                effect: 'Nebenraum-Hall',
-                active: false
-            });
-        }
-    }
-
-    if (isNeighborEffect) {
-        currentBuffer = await applyNeighborRoomEffect(currentBuffer, { hall: neighborHall });
-        addStep('Nebenraum-Effekt anwenden', currentBuffer,
-            neighborHall ? 'Nebenraum-Effekt nutzt den Hall-Anteil.' : 'Nebenraum-Effekt ohne zusätzlichen Hall aktiv.', {
-                effect: 'Nebenraum',
-                active: true
-            });
-    } else {
-        addStep('Nebenraum-Effekt anwenden', currentBuffer, 'Übersprungen: Nebenraum-Effekt ist deaktiviert.', {
-            effect: 'Nebenraum',
-            active: false
-        });
-    }
-
-    if (isTableMicEffect) {
-        const presetName = tableMicRoomType || 'wohnzimmer';
-        currentBuffer = await applyTableMicFilter(currentBuffer, tableMicRoomPresets[presetName]);
-        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, `Preset „${presetName}“ wurde angewendet.`, {
-            effect: 'Tischmikrofon',
-            active: true,
-            preset: presetName
-        });
-    } else {
-        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, 'Übersprungen: Telefon-auf-Tisch-Effekt ist deaktiviert.', {
-            effect: 'Tischmikrofon',
-            active: false
-        });
-    }
-
-    if (isEmiEffect) {
-        currentBuffer = await applyInterferenceEffect(currentBuffer);
-        addStep('Störgeräusch anwenden', currentBuffer, 'EM-Störgeräusch wurde überlagert.', {
-            effect: 'EMI',
-            active: true
-        });
-    } else {
-        addStep('Störgeräusch anwenden', currentBuffer, 'Übersprungen: Kein EM-Störgeräusch aktiv.', {
-            effect: 'EMI',
-            active: false
-        });
-    }
-
-    currentBuffer = trimAndPadBuffer(currentBuffer, startTrimSnapshot, endTrimSnapshot);
-    addStep('Trim anwenden', currentBuffer,
-        (startTrimSnapshot || endTrimSnapshot)
-            ? `Start ${formatTempoMs(startTrimSnapshot)} / Ende ${formatTempoMs(endTrimSnapshot)} entfernt.`
-            : 'Keine Trims aktiv – Länge bleibt unverändert.',
-        {
-            trimStartMs: startTrimSnapshot,
-            trimEndMs: endTrimSnapshot
-        });
-
-    const adjustedIgnore = ignoreSnapshot.map(r => ({
-        start: r.start - startTrimSnapshot,
-        end: r.end - startTrimSnapshot
-    }));
-    let removedTotalMs = 0;
-    adjustedIgnore.forEach(r => { removedTotalMs += Math.max(0, r.end - r.start); });
-    currentBuffer = removeRangesFromBuffer(currentBuffer, adjustedIgnore);
-    addStep('Ignorierbereiche entfernen', currentBuffer,
-        adjustedIgnore.length > 0
-            ? `${formatTempoInt(adjustedIgnore.length)} Bereich(e) mit ${formatTempoMs(removedTotalMs)} entfernt.`
-            : 'Keine Ignorierbereiche aktiv.',
-        {
-            removedCount: adjustedIgnore.length,
-            removedTotalMs,
-            active: adjustedIgnore.length > 0
-        });
-
-    const adjustedSilence = silenceSnapshot.map(r => ({
-        start: r.start - startTrimSnapshot,
-        end: r.end - startTrimSnapshot
-    }));
-    let insertedTotalMs = 0;
-    adjustedSilence.forEach(r => { insertedTotalMs += Math.max(0, r.end - r.start); });
-    currentBuffer = insertSilenceIntoBuffer(currentBuffer, adjustedSilence);
-    addStep('Stillebereiche einfügen', currentBuffer,
-        adjustedSilence.length > 0
-            ? `${formatTempoInt(adjustedSilence.length)} Bereich(e) mit ${formatTempoMs(insertedTotalMs)} hinzugefügt.`
-            : 'Keine Stillebereiche eingefügt.',
-        {
-            insertedCount: adjustedSilence.length,
-            insertedTotalMs,
-            active: adjustedSilence.length > 0
-        });
-
-    const tempoDesc = Math.abs(relFactor - 1) < 0.001
-        ? 'Tempo-Faktor entspricht dem geladenen Wert – es wird keine merkliche Änderung erwartet.'
-        : `Tempo wechselt von ${formatTempoNumber(loadedTempoFactor, 2)} auf ${formatTempoNumber(tempoFactor, 2)} (relativ ${formatTempoNumber(relFactor, 3)}).`;
-    addStep('Tempoeingabe bereit', currentBuffer, tempoDesc, {
-        tempoFactor,
-        loadedTempoFactor,
-        relativeFactor: relFactor
-    });
-
-    const tempoSafety = getTempoSafetyConfig();
-    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(currentBuffer) : { start: 0, end: 0 };
-    const allowedStart = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-    const allowedEnd = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-    if (tempoSafety.detectEdgeSilence) {
-        const limitText = tempoSafety.enforceTrimSafety
-            ? 'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.'
-            : 'Erkannte Stille darf vollständig entfernt werden, das Sicherheitslimit ist deaktiviert.';
-        addStep('Randstille ermitteln', currentBuffer,
-            limitText,
-            {
-                silenceStartMs: edgeSilence.start,
-                silenceEndMs: edgeSilence.end,
-                allowedTrimStartMs: allowedStart,
-                allowedTrimEndMs: allowedEnd,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety,
-                trimLimitActive: tempoSafety.enforceTrimSafety
-            });
-    } else {
-        const limitText = tempoSafety.enforceTrimSafety
-            ? 'Analyse deaktiviert: Tempo-Stretching arbeitet ohne zusätzliche Randstille-Erkennung.'
-            : 'Analyse deaktiviert: Kein Sicherheitslimit aktiv, zusätzliche Kürzungen sind ungebremst möglich.';
-        addStep('Randstille ermitteln', currentBuffer,
-            limitText,
-            {
-                silenceStartMs: 0,
-                silenceEndMs: 0,
-                allowedTrimStartMs: allowedStart,
-                allowedTrimEndMs: allowedEnd,
-                trimLimitActive: tempoSafety.enforceTrimSafety
-            });
-    }
-
-    const stretchDebug = {
-        steps: [],
-        addStep(title, buffer, meta = {}) {
-            this.steps.push({ title, buffer, meta });
-        }
-    };
-    const stretchedBuffer = await timeStretchBuffer(currentBuffer, relFactor, {
-        allowedTrimStartMs: allowedStart,
-        allowedTrimEndMs: allowedEnd,
-        debug: stretchDebug,
-        usePadding: tempoSafety.usePadding,
-        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-        enforceTrimSafety: tempoSafety.enforceTrimSafety
-    });
-    stretchDebug.steps.forEach(debugStep => {
-        const description = debugStep.meta?.description || '';
-        addStep(debugStep.title, debugStep.buffer, description, debugStep.meta || {});
-    });
-
-    addStep('Tempo-Simulation abgeschlossen', stretchedBuffer,
-        Math.abs(relFactor - 1) < 0.001
-            ? 'Tempo entsprach bereits dem gespeicherten Wert – Ergebnis entspricht dem Eingangssignal.'
-            : 'Tempo-Anpassung abgeschlossen. Ergebnis entspricht dem Speichervorgang.',
-        {
-            tempoFactor,
-            loadedTempoFactor,
-            relativeFactor: relFactor
-        });
-
-    return { steps, logEntries };
-}
-
-async function openTempoDebug() {
-    if (!currentEditFile || !savedOriginalBuffer) {
-        if (typeof showToast === 'function') {
-            showToast('Kein DE-Audio zum Debuggen geöffnet.', 'error');
-        }
-        return;
-    }
-    const overlay = document.getElementById('tempoDebugDialog');
-    if (!overlay) {
-        console.error('Tempo-Debug: Dialog-Element fehlt.');
-        return;
-    }
-    overlay.classList.remove('hidden');
-
-    const status = document.getElementById('tempoDebugStatus');
-    if (status) status.textContent = 'Berechne Tempo-Schritte ...';
-
-    tempoDebugSteps = [];
-    tempoDebugLogEntries = [];
-    tempoDebugIndex = 0;
-    populateTempoDebugLog([]);
-    const titleEl = document.getElementById('tempoDebugStepTitle');
-    if (titleEl) titleEl.textContent = '';
-    const descEl = document.getElementById('tempoDebugStepDescription');
-    if (descEl) descEl.textContent = '';
-    const metricsEl = document.getElementById('tempoDebugMetrics');
-    if (metricsEl) metricsEl.textContent = '';
-    const canvas = document.getElementById('tempoDebugWave');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) ctx.clearRect(0, 0, canvas.width || 0, canvas.height || 0);
-    }
-
-    const prevBtn = document.getElementById('tempoDebugPrevBtn');
-    const nextBtn = document.getElementById('tempoDebugNextBtn');
-    if (prevBtn) prevBtn.onclick = () => showTempoDebugStep(tempoDebugIndex - 1);
-    if (nextBtn) nextBtn.onclick = () => showTempoDebugStep(tempoDebugIndex + 1);
-    updateTempoDebugNavigation();
-
-    try {
-        const result = await buildTempoDebugSteps();
-        tempoDebugSteps = result.steps;
-        tempoDebugLogEntries = result.logEntries;
-        populateTempoDebugLog(tempoDebugSteps);
-        if (status) {
-            status.textContent = tempoDebugSteps.length > 0
-                ? 'Tempo-Schritte bereit. Navigiere mit Weiter/Zurück oder klicke auf einen Eintrag.'
-                : 'Tempo-Schritte ergaben keine Änderungen.';
-        }
-        if (tempoDebugSteps.length > 0) {
-            showTempoDebugStep(0);
-        } else {
-            updateTempoDebugNavigation();
-        }
-    } catch (err) {
-        console.error('Tempo-Debug fehlgeschlagen', err);
-        if (status) status.textContent = `Fehler beim Debuggen: ${err?.message || err}`;
-        const title = document.getElementById('tempoDebugStepTitle');
-        if (title) title.textContent = 'Fehler beim Tempo-Debug';
-        const desc = document.getElementById('tempoDebugStepDescription');
-        if (desc) desc.textContent = 'Bitte Konsole prüfen oder erneut versuchen.';
-        updateTempoDebugNavigation();
-    }
-}
-
-function closeTempoDebug() {
-    const overlay = document.getElementById('tempoDebugDialog');
-    if (overlay) overlay.classList.add('hidden');
-    tempoDebugSteps = [];
-    tempoDebugLogEntries = [];
-    tempoDebugIndex = 0;
-    const status = document.getElementById('tempoDebugStatus');
-    if (status) status.textContent = 'Debug-Modus bereit – bitte Schrittberechnung starten.';
-    updateTempoDebugNavigation();
-}
-// =========================== TEMPODEBUG END =============================
 
 
 // =========================== APPLYRADIOEFFECT START ========================
@@ -17046,7 +15651,7 @@ function adjustSilenceRanges(deltaMs) {
     updateDeEditWaveforms();
 }
 
-// Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
+// Berechnet die finale Länge nach Schnitt, Ignorier- und Stillebereichen
 function calcFinalLength() {
     // Ausgangsbasis bevorzugt aus dem unveränderten Original puffern, damit Trim-Anteile jederzeit korrekt sind
     let basisLaengeMs;
@@ -17062,64 +15667,20 @@ function calcFinalLength() {
     for (const r of editSilenceRanges) {
         len += Math.max(0, r.end - r.start);
     }
-    // Aktuelle Datei ist bereits mit loadedTempoFactor gestretcht
-    const relFactor = tempoFactor / loadedTempoFactor;
-    return len / relFactor;
-}
-
-// Liefert eine für das Auto-Tempo geeignete Referenzlänge ohne zusätzliche Randstille
-function calcTempoReferenceLength() {
-    // Standardmäßig mit der regulären Endlänge arbeiten
-    let len = calcFinalLength();
-    const safety = getTempoSafetyConfig();
-    if (!safety.autoReference) {
-        return len;
-    }
-    if (!savedOriginalBuffer || !savedOriginalBuffer.sampleRate) {
-        return len;
-    }
-    const totalMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    if (!Number.isFinite(totalMs) || totalMs <= 0) {
-        return len;
-    }
-    const stilleGrenzen = detectSilenceTrim(savedOriginalBuffer);
-    const stilleLinks = Math.max(0, stilleGrenzen.start - editStartTrim);
-    const stilleRechts = Math.max(0, stilleGrenzen.end - editEndTrim);
-    const reduzierung = stilleLinks + stilleRechts;
-    if (reduzierung <= 0) {
-        return len;
-    }
-    // Nur den Anteil entfernen, der bislang noch als Leerlauf stehen bleibt
-    len = Math.max(0, len - reduzierung);
     return len;
 }
 
-// Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
+// Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Länge
 function updateLengthInfo() {
     if (!editEnBuffer) return;
     const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
     const deMs = calcFinalLength();
     const diff = deMs - enMs;
     const perc = Math.abs(diff) / enMs * 100;
-    const info = document.getElementById('tempoInfo');
-    const enInfo = document.getElementById('tempoEnInfo');
     const lbl = document.getElementById('waveLabelEdited');
-    if (!info || !lbl) return;
-    info.textContent = `${(deMs/1000).toFixed(2)}s`;
-    // EN-Originalzeit ebenfalls anzeigen
-    if (enInfo) enInfo.textContent = `EN: ${(enMs/1000).toFixed(2)}s`;
+    if (!lbl) return;
     lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
     lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
-    const refMs = calcTempoReferenceLength();
-    const stilleDiff = deMs - refMs;
-    if (info) {
-        if (stilleDiff > 50) {
-            // Hinweis für Nutzer:innen, dass Auto-Tempo Leerräume ignoriert
-            info.title = `Auto-Tempo berücksichtigt ${Math.round(stilleDiff)}ms Stille am Rand nicht.`;
-        } else {
-            info.removeAttribute('title');
-        }
-    }
 }
 // Prüft EN-Auswahl und schaltet den Kopier-Button
 function validateEnSelection() {
@@ -17358,7 +15919,6 @@ async function resetDeEdit() {
     if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push('Trimmen');
     if (currentEditFile.ignoreRanges && currentEditFile.ignoreRanges.length) steps.push('Ignorierbereiche');
     if (currentEditFile.silenceRanges && currentEditFile.silenceRanges.length) steps.push('Stille-Bereiche');
-    if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push('Tempo');
     if (currentEditFile.volumeMatched) steps.push('Lautstärke angleichen');
     if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
     if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push('Hall-Effekt');
@@ -17407,8 +15967,6 @@ async function resetDeEdit() {
         editSilenceRanges = [];
         manualSilenceRanges = [];
         currentEditFile.silenceRanges = [];
-        tempoFactor = 1.0;
-        currentEditFile.tempoFactor = 1.0;
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
@@ -17509,14 +16067,6 @@ async function rebuildEnBufferAfterSave() {
     if (startField) startField.value = '';
     if (endField) endField.value = '';
 
-    const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp = document.getElementById('tempoDisplay');
-    if (tempoRange && tempoDisp) {
-        tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoDisp.classList.remove('tempo-auto');
-    }
-
     const origCanvas = document.getElementById('waveOriginal');
     const deCanvas = document.getElementById('waveEdited');
     if (origCanvas) resetCanvasZoom(origCanvas);
@@ -17548,7 +16098,6 @@ async function applyDeEdit(param = {}) {
         const endTrimSnapshot = editEndTrim;
         const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
         const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
-        const relFactor = tempoFactor / loadedTempoFactor;
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
             // Sicherstellen, dass ein Backup existiert
@@ -17585,19 +16134,6 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            const tempoSafety = getTempoSafetyConfig();
-            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-            const stretchOptions = {
-                // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben; ohne Limit bleibt die Freigabe unbegrenzt
-                allowedTrimStartMs,
-                allowedTrimEndMs,
-                usePadding: tempoSafety.usePadding,
-                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety
-            };
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             const buf = await blob.arrayBuffer();
@@ -17685,20 +16221,6 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
-            const tempoSafety = getTempoSafetyConfig();
-            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-            const stretchOptions = {
-                // Bei deaktiviertem Limit werden die analysierten Werte ohne zusätzliche Kappung weitergereicht
-                allowedTrimStartMs,
-                allowedTrimEndMs,
-                usePadding: tempoSafety.usePadding,
-                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety
-            };
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             await speichereUebersetzungsDatei(blob, relPath);
@@ -17725,7 +16247,6 @@ async function applyDeEdit(param = {}) {
         currentEditFile.neighborHall = neighborHall;
         currentEditFile.tableMicEffect = isTableMicEffect;
         currentEditFile.tableMicRoom = tableMicRoomType;
-        currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern die Markierung auf den vollständigen Clip setzen und Felder normalisieren
         editStartTrim = 0;
         editEndTrim = 0;
@@ -17758,7 +16279,6 @@ async function applyDeEdit(param = {}) {
             throw new Error('Interner Fehler: finalBuffer wurde nicht gesetzt.');
         }
         // Nach erfolgreichem Speichern Puffer und Anzeige auf den neuen Zustand setzen
-        loadedTempoFactor = tempoFactor;
         volumeMatchedBuffer = null;
         refreshSilenceList();
         validateDeSelection();
@@ -19610,8 +18130,6 @@ function quickAddLevel(chapterName) {
                 f.emiEffect = false;
                 f.neighborEffect = false;
                 f.neighborHall = false;
-                // Tempo bei neuem Upload auf Standard zurücksetzen
-                f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
             }
             markDirty();
@@ -19982,11 +18500,6 @@ if (typeof module !== "undefined" && module.exports) {
         insertGptResults,
         updateGptSummary,
         insertEnglishSegment,
-        timeStretchBuffer,
-        __test_estimateStretchSilence: estimateStretchableSilence,
-        __test_calculateDynamicSilenceThreshold: calculateDynamicSilenceThreshold,
-        __test_applyTrimSafety: applyTrimSafety,
-        __test_analyzeEdgeTrim: analyzeEdgeTrim,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,
