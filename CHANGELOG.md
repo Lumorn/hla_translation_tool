@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.449
+* `web/hla_translation_tool.html` entfernt sämtliche Tempo-Steuerelemente inklusive Debug-Dialog aus dem DE-Audio-Editor.
+* `web/src/style.css` räumt alle zugehörigen Tempo-Styles ab, sodass die Oberfläche keine toten Layoutreste mehr enthält.
+* `web/src/main.js` streicht Time-Stretching, Tempo-Variablen und Debug-Logik vollständig und konzentriert `applyDeEdit()` auf Trim-, Pausen- und Effektverarbeitung.
+* `web/src/lib/soundtouch.js` entfällt, weil keine Tempo-Berechnung mehr erfolgt.
+* `README.md` dokumentiert die Entfernung der Tempo-Funktion, `CHANGELOG.md` führt die Änderung auf.
 ## 🛠️ Patch in 1.40.448
 * `web/src/main.js` berechnet den Tempo-Abgleich jetzt bidirektional, sodass Auto-Tempo DE-Aufnahmen sowohl beschleunigt als auch verlangsamt, um die EN-Zeit zu treffen.
 * `README.md` erwähnt den beidseitigen Auto-Tempo-Abgleich explizit.
