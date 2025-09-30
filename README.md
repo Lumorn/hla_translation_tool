@@ -60,7 +60,11 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 ### 🎯 Kernfunktionen
 
-* **Tempo-Funktion entfernt, Kernwerkzeuge bleiben:** Der DE-Editor verzichtet komplett auf Zeitdehnung. Auto-Trim, Auto-Pausenerkennung, Effekte und Speichern arbeiten weiterhin ausschließlich über Trimmen, Pausenentfernung und eingefügte Stille. Eine neue Längenübersicht zeigt die aktuellen EN- und DE-Laufzeiten samt Differenz an.
+* **Tempo ohne Audiokürzung:** Die Tempo-Funktion dehnt das Signal nur noch auf den gewünschten Faktor und entfernt ausschließlich den zuvor hinzugefügten Sicherheitsrand. Automatische Randanalysen, Trim-Reduktionen, Defizitausgleiche und Stille-Padding innerhalb des gestretchten Materials wurden vollständig entfernt, damit kein Originalaudio mehr verloren geht.
+* **Auto-Tempo gleicht beide Richtungen an:** Der automatische EN-Abgleich beschleunigt oder verlangsamt das DE-Audio jetzt je nach Bedarf und orientiert sich an der reinen Referenzlänge ohne das aktuelle Tempo, statt ausschließlich zu beschleunigen.
+* **Tempo-Bereich wird automatisch normalisiert:** Beim Öffnen von DE-Audios korrigiert das Tool historische Tempo-Faktoren außerhalb des Sliderbereichs (z. B. Werte kleiner 1) sofort auf das erlaubte Minimum, sodass neue Beschleunigungen nicht versehentlich ein Drittel der Aufnahme wegkappen.
+* **Mono-Stretch bleibt fehlerfrei:** Beim Zeitdehnen legt das Tool einen Stereo-Puffer an, weil SoundTouch unabhängig vom Eingang immer zwei Kanäle liefert, und übernimmt nur die echten Kanalspuren zurück in die Ausgabe.
+* **Tempo-Sicherungen als reine Anzeige:** Die Häkchen im Tempo-Kasten bleiben zur Dokumentation der gewählten Strategie erhalten, beeinflussen das gestretchte Audiosignal jedoch nicht mehr und dienen nur noch dem Debug-Log.
 * **Seitliche Debug-Konsole im DE-Editor:** Der Debug-Knopf neben „Zurücksetzen“ öffnet ein andockbares Fenster mit Kopier-Button, das jede Aktion samt aktueller EN-/DE-Laufzeit, Funktionsname und Unterfunktion streng protokolliert.
 * **Asynchrones Speichern:** Beim Start werden Level- und Kapitel-Daten jetzt korrekt geladen, auch wenn das neue IndexedDB-System verwendet wird.
 * **Bereinigte Abschluss-Logik:** Die früheren UI-Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll` wurden entfernt, weil der Fertig-Status nun vollständig automatisch aus den Projekt- und Dateidaten berechnet wird.
@@ -100,6 +104,10 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Feinjustierte Waveform-Werkzeugleiste:** Ein enges Grid mit kleineren Buttons und geringem Padding hält Zoom-, Höhen- und Sync-Regler auch bei kleiner Breite dicht beieinander.
 * **Dynamische DE-Wellenformbreite:** Die DE-Wellenform übernimmt die echte Laufzeit als Pixelbreite, wodurch Scrollleisten, Lineale und Zoom exakt zur Audiodauer passen und lange Takes nachvollziehbar länger bleiben als die EN-Spur.
 * **Frische EN- und DE-Vorschau nach dem Speichern:** Nach dem Speichern lädt der Editor beide Spuren komplett neu, wodurch die EN-Originalspur wieder in voller Länge sichtbar bleibt und nicht mehr zur Miniatur zusammenschrumpft. Gleichzeitig steht die frisch gespeicherte DE-Fassung sofort als neue Arbeitsbasis bereit.
+* **Turbo bewahrt Fade-outs vollständig:** Die Turbo-/Auto-Tempo-Beschleunigung misst die erlaubte Randstille jetzt mit derselben dynamischen Schwelle wie der Stretch-Algorithmus, begrenzt sie weiterhin auf 120 ms pro Seite und streicht dadurch nur noch echte Stille statt leiser Ausklänge.
+* **Deckelung der Trim-Eingaben:** Die Start- und Endfelder im DE-Audio-Editor begrenzen sich jetzt strikt auf die reale Laufzeit. Auto-Trim, Tempoabgleich und anschließendes Speichern lassen die Markierung sichtbar und gültig, weil `validateDeSelection()` nur noch mit sicheren Werten arbeitet.
+* **Stabile Trim-Markierung trotz Längenänderungen:** Sobald Auto-Tempo, Pausenentfernung oder Speichern die Gesamtdauer verändern, klemmt der Editor Start- und End-Trim jetzt automatisch auf gültige Werte, synchronisiert die Eingabefelder und hält die grüne Auswahlmarkierung dauerhaft sichtbar.
+* **Originalbasierte Laufzeitberechnung:** Die Laufzeitanzeige verwendet die unveränderte DE-Quelle (`savedOriginalBuffer`) als Grundlage, zieht Trims erst danach ab und liefert so auch nach Auto-Trim, Pausenkürzung und Tempo-Auto-Abgleich exakte Zielzeiten.
 * **Aktive DE-Markierung nach dem Speichern:** `applyDeEdit()` setzt Start- und End-Trim nach dem Speichern über `normalizeDeTrim()` auf gültige Werte zurück, lässt `deSelectionActive` bestehen und setzt die Eingabefelder auf die echte Laufzeit statt auf `0`, sodass die Markierung den kompletten Clip weiterhin abbildet.
 * **Master-Timeline entfernt:** Die frühere Zeitleiste oberhalb der Wellen entfällt; Zoom-Tasten, Positions-Slider und Sprungknöpfe sitzen jetzt direkt in der Wave-Toolbar.
 * **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und reduziertes Scroll-Padding rücken Original- und DE-Wellenform noch näher zusammen und verkürzen die Wege zu den Buttons.
@@ -404,6 +412,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Platzsparende Fußleiste:** Unterhalb der Karten sitzt nur noch eine schmale Zeile mit „Zurücksetzen“ und „Speichern“, die ohne Sticky-Verhalten auskommt und den Editor kompakt hält.
 * **Buttons auch im Kopfbereich:** Die Aktionen „Zurücksetzen“, „Speichern“ und „Speichern & schließen“ stehen zusätzlich oben rechts im Dialog bereit, sodass der Zugriff unabhängig von der Scrollposition möglich ist.
 * **Speichern ohne Unterbrechung:** Der reguläre „Speichern“-Knopf lässt das Bearbeitungsfenster geöffnet, aktualisiert sofort alle Puffer und Formularfelder und ermöglicht dadurch mehrere Speichervorgänge hintereinander. Nur der neue Button „Speichern & schließen“ beendet den Dialog bewusst.
+* **Schneller Zugriff:** Die Schnellzugriffsleiste erscheint jetzt als kompakte Toolbar mit kurzen Labels direkt neben den Icons. Trim ✂️, Auto ⚡, Tempo ⏱️, Pegel 🔊 und Funk 📻 lassen sich dadurch schneller erfassen, rücken enger zusammen und lenken beim Klick weiterhin die passende Detailkarte in den Fokus. Unter 1000 px brechen die Buttons automatisch um und auf sehr schmalen Displays zeigen sie nur noch das Icon.
 * **Responsives Layout:** Der Editor nutzt ein zweispaltiges Raster, das sich auf großen Monitoren weit öffnet und bei geringer Breite automatisch in eine Spalte wechselt. Die Effektseite besitzt eine eigene Scrollfläche, wodurch alles sichtbar bleibt.
 * **Timeline & Master-Steuerung:** Eine neue Timeline oberhalb der Wellenformen zeigt Sekundenmarken, Trim-, Ignorier- und Stillenmarker farbig an. Darunter bündeln ein gemeinsamer Zoom-Regler samt +/-‑Buttons und ein Scroll-Slider beide Wellen, markieren den sichtbaren Ausschnitt und halten Zoom-Anzeige sowie Scrollprozente synchron.
 * **Klare Wiedergabesteuerung:** Play- und Stop-Schaltflächen sitzen jetzt in einer durchgehenden Reihe, nutzen 18 px große Symbole und kontrastieren stärker mit dem dunklen Hintergrund.
@@ -418,20 +427,30 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bessere Anfasser:** Kleine Griffe oben und unten erleichtern das Verschieben von Start- und Endpunkten in EN- und DE-Wellenform.
 * **Texte unter den Wellenformen:** Unter der EN-Welle erscheint der englische Text und unter der DE-Welle der emotionale deutsche Text.
 * **Manuelles Zuschneiden:** Start- und Endzeit lassen sich per Millisekundenfeld oder durch Ziehen eines Bereichs direkt im DE-Wellenbild setzen; die Felder synchronisieren sich bidirektional.
+* **Automatische Pausenkürzung und Time‑Stretching:** Längere Pausen erkennt das Tool auf Wunsch selbst. Mit einem Regler lässt sich das Tempo von 1,00–3,00 anpassen oder automatisch auf die EN-Länge setzen. Kleine ➖/➕‑Knöpfe erlauben präzise Schritte. Ein Button „🎯 Anpassen & Anwenden“ kombiniert beide Schritte und eine farbige Anzeige warnt bei Abweichungen.
 * **Signalabhängiger Stillefilter beim Time‑Stretch:** Der Schwellwert richtet sich jetzt nach dem lautesten Sample und besitzt einen Boden von 1e‑6, damit sehr leise Ausklänge nicht versehentlich entfernt werden.
 * **Trim-Absicherung für gestretchte Audios:** Beim Entfernen der zusätzlichen Ränder prüft das Tool, ob mindestens 100 ms echte Stille pro Seite vorhanden sind und höchstens zehn Prozent der Gesamtlänge verschwinden.
 * **Polstertrimm mit Mindestwert:** Beim automatischen Time‑Stretch wird das bekannte Sekundenpolster vollständig entfernt, bevor das Zehn-Prozent-Limit greift. Der Start klingt dadurch sofort an und das Ende bleibt unangetastet; minimale Rundungsdifferenzen füllt das Tool nur noch mit Stille auf.
+* **Zwei Tempo‑Auto‑Knöpfe:** Der erste setzt den Wert auf 1,00 und markiert ihn gelb. Der zweite erhöht das Tempo automatisch, bis die DE-Länge ungefähr der EN-Zeit entspricht.
 * **EN-Originalzeit neben DE-Zeit:** Rechts neben der DE-Dauer zeigt der Editor nun die englische Originalzeit an.
 * **Sanftere Pausenkürzung:** Beim Entfernen langer Pausen bleiben jetzt 2 ms an jedem Übergang stehen, damit die Schnitte nicht zu hart wirken.
 * **Längenvergleich visualisiert:** Unter der DE-Wellenform zeigt ein Tooltip die neue Dauer. Abweichungen über 5 % werden orange oder rot hervorgehoben.
+* **Effektparameter speicherbar:** Trimmen, Pausenkürzung und Tempo werden im Projekt gesichert und lassen sich über "🔄 Zurücksetzen" rückgängig machen.
 * **Automatisch entfernte Pausen werden nicht gespeichert:** Die Liste der Ignorier-Bereiche wird nach dem Speichern geleert.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
+* **Bugfix:** Die Tempoanpassung nutzte versehentlich "window" als Variablennamen, was einen Fehler auslöste. Jetzt funktioniert das Time‑Stretching wieder.
+* **Verbessertes Time‑Stretching:** Durch Einsatz von SoundTouchJS klingt die automatische Tempoanpassung ohne Roboter-Effekt.
 * **Bugfix:** Beim automatischen Time‑Stretch wird die gepolsterte Stille nun korrekt anhand des Faktors entfernt. Dadurch verschwinden am Ende keine Millisekunden mehr.
 * **Bugfix:** Die zuvor automatisch angehängten 100 ms Stille wurden entfernt. Wer den Beginn kürzen möchte, kann dies nun manuell erledigen.
 * **Bugfix:** Ein ganzes Sekundenpolster vor und nach dem Time‑Stretch wird nun anhand des Pegels wieder entfernt, sodass selbst hohe Tempi nichts mehr abschneiden.
+* **Bugfix:** Die ausgegebene Länge wird jetzt exakt auf das Zeitmaß ohne Polster zugeschnitten, sodass auch bei manueller Tempoanpassung nichts mehr abgeschnitten wird.
+* **Bugfix:** Der manuelle Tempo-Regler entfernt nun 50 ms Sicherheitsstille nach dem Stretch, wodurch weder Anfang noch Ende verloren gehen.
 * **Bugfix:** Die Vorschau folgt jetzt exakt der Reihenfolge Trimmen → Pausen entfernen → Time‑Stretch. Dadurch verschwinden keine Abschnitte mehr beim Speichern.
+* **Bugfix:** Beim erneuten Öffnen und Speichern wird nur noch die Differenz zum gespeicherten Tempo angewendet. Unveränderte Werte schneiden jetzt nichts mehr ab.
 * **Bugfix:** Wird eine Audiodatei stärker gekürzt als ihre Länge, führt dies nicht mehr zu einer DOMException.
 * **Zurücksetzen nach Upload oder Dubbing:** Sowohl beim Hochladen als auch beim erneuten Erzeugen einer deutschen Audiodatei werden Lautstärkeangleichung, Funkgerät‑, Hall‑ und Störgeräusch‑Effekt automatisch deaktiviert.
+* **Tempo-Regler zurückgesetzt:** Nach einem Upload steht der Geschwindigkeitsregler wieder zuverlässig auf 1,00.
+* **Tempo-Regler auch beim ZIP-Import auf 1,00:** Beim Import mehrerer Dateien per ZIP wird der Geschwindigkeitsregler jeder Zeile auf den Standardwert gesetzt.
 * **Backup bleibt beim Speichern erhalten:** Nur ein neuer Upload ersetzt die Sicherung in `DE-Backup`. "🔄 Zurücksetzen" stellt dadurch stets die zuletzt geladene Originaldatei wieder her.
 * **ZIP-Import aktualisiert das Backup:** Auch importierte ZIP-Dateien gelten nun als Original und lassen sich über "🔄 Zurücksetzen" wiederherstellen.
 * **Hall- und Störgeräusch-Effekt werden beim Dubbing zurückgesetzt.**
@@ -604,6 +623,7 @@ Im Einstellungsfenster lassen sich folgende Parameter anpassen:
 * **Stability** – Ausgeglichenheit vs. Lebendigkeit
 * **Similarity-Boost** – Nähe zum Original
 * **Style** – Überzeichnung des Sprechstils
+* **Speed** – Tempo-Faktor
 * **Speaker-Boost** – zusätzliche Ähnlichkeit
 * Die angezeigten Werte aktualisieren sich sofort beim Verschieben der Regler
 
@@ -1266,6 +1286,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 
 ### Manuelle Prüfung
 
+* **Auto-Trim + Tempo** – Im DE-Audio-Editor zuerst „Auto-Trim“ auslösen, danach „Tempo automatisch anpassen“.
 * **Werte kontrollieren** – Prüfen, dass Start- und Endfelder die Laufzeit nicht überschreiten.
 * **Speichern** – Mit „Speichern“ bestätigen und sicherstellen, dass die grüne Markierung (`deSelectionActive`) sichtbar bleibt.
 * **Stille-Analyse prüfen** – Eine besonders leise sowie eine laute Probe-Datei laden und verifizieren, dass Start/Ende nur dann über das Sekundenpolster hinaus gekürzt werden, wenn die Konsole eine erkannte Randstille meldet.
