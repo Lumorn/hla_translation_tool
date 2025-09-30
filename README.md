@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Tempo ohne Audiokürzung:** Die Tempo-Funktion dehnt das Signal nur noch auf den gewünschten Faktor und entfernt ausschließlich den zuvor hinzugefügten Sicherheitsrand. Automatische Randanalysen, Trim-Reduktionen, Defizitausgleiche und Stille-Padding innerhalb des gestretchten Materials wurden vollständig entfernt, damit kein Originalaudio mehr verloren geht.
+* **Auto-Tempo gleicht beide Richtungen an:** Der automatische EN-Abgleich beschleunigt oder verlangsamt das DE-Audio jetzt je nach Bedarf und orientiert sich an der reinen Referenzlänge ohne das aktuelle Tempo, statt ausschließlich zu beschleunigen.
 * **Tempo-Bereich wird automatisch normalisiert:** Beim Öffnen von DE-Audios korrigiert das Tool historische Tempo-Faktoren außerhalb des Sliderbereichs (z. B. Werte kleiner 1) sofort auf das erlaubte Minimum, sodass neue Beschleunigungen nicht versehentlich ein Drittel der Aufnahme wegkappen.
 * **Mono-Stretch bleibt fehlerfrei:** Beim Zeitdehnen legt das Tool einen Stereo-Puffer an, weil SoundTouch unabhängig vom Eingang immer zwei Kanäle liefert, und übernimmt nur die echten Kanalspuren zurück in die Ausgabe.
 * **Tempo-Sicherungen als reine Anzeige:** Die Häkchen im Tempo-Kasten bleiben zur Dokumentation der gewählten Strategie erhalten, beeinflussen das gestretchte Audiosignal jedoch nicht mehr und dienen nur noch dem Debug-Log.
