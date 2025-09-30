@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ### 🎯 Kernfunktionen
 
 * **Pad-Skalierung beim Time-Stretch:** Auto-Tempo entfernt nach dem Strecken exakt das gestauchte Sekundenpolster, sodass weder Anfang noch Ende bei kombinierten Pausen- und Tempo-Automationen verloren gehen.
+* **Mono-Stretch bleibt fehlerfrei:** Beim Zeitdehnen legt das Tool einen Stereo-Puffer an, weil SoundTouch unabhängig vom Eingang immer zwei Kanäle liefert, und übernimmt nur die echten Kanalspuren zurück in die Ausgabe.
 * **Neu aufgesetzte Tempo-Engine:** Die komplett neu geschriebene Time-Stretch-Funktion berechnet den Ruhe-Schwellwert segmentiert, verwirft laute Polsterbereiche automatisch und verteilt fehlende Samples stufenweise zwischen Start- und Endreserve, bevor als letzter Schritt Stille ergänzt wird.
 * **Tempo-Auto ignoriert Randstille:** Die automatische Tempo-Anpassung berücksichtigt erkannte Leerräume an den Rändern nicht mehr in der Berechnung, damit gesprochene Passagen unverändert bleiben und nichts „abgeschnitten“ wirkt.
 * **Limits bewahren das Tempo-Polster:** Beim Begrenzen von Start und Ende hält Tempo Auto jetzt stets mindestens das gestretchte Sekundenpolster ein, damit die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine Stilleinsprünge mehr hinterlässt.

@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.440
+* `web/src/main.js` berücksichtigt den zweikanaligen SoundTouch-Puffer beim Extrahieren, damit Mono-Zeitdehnungen keinen stummen Kanal anhängen und wieder korrekt auf ihre ursprüngliche Spurzahl zurückgeführt werden.
+* `README.md` erwähnt den Stereo-Puffer als Fix für Mono-Zeitdehnungen.
+* `CHANGELOG.md` dokumentiert die SoundTouch-Korrektur für Mono-Stretching.
 ## 🛠️ Patch in 1.40.439
 * `web/src/main.js` setzt die Tempo-Berechnung komplett neu auf, analysiert das Ruhepolster segmentiert, überspringt laute Randbereiche automatisch und verteilt fehlende Frames mehrstufig, bevor als letztes Mittel Stille angefügt wird.
 * `README.md` beschreibt die neue Tempo-Engine samt segmentierter Schwellenbestimmung und sanfter Restverteilung.

@@ -9540,8 +9540,10 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
         const filter = new SimpleFilter(source, st);
 
         const channels = padded.numberOfChannels;
+        // SoundTouch gibt auch bei Mono-Eingaben stets zwei Kanäle zurück, daher wird die Quellpuffergröße auf mindestens Stereo gesetzt.
+        const sourceChannels = Math.max(2, padded.numberOfChannels);
         const frameChunk = 4096;
-        const temp = new Float32Array(frameChunk * channels);
+        const temp = new Float32Array(frameChunk * sourceChannels);
         const collected = Array.from({ length: channels }, () => []);
         let producedFrames = 0;
 
@@ -9549,8 +9551,10 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             const frames = filter.extract(temp, frameChunk);
             if (!frames) break;
             for (let i = 0; i < frames; i++) {
-                for (let ch = 0; ch < channels; ch++) {
-                    collected[ch].push(temp[i * channels + ch]);
+                for (let ch = 0; ch < sourceChannels; ch++) {
+                    if (ch < channels) {
+                        collected[ch].push(temp[i * sourceChannels + ch]);
+                    }
                 }
             }
             producedFrames += frames;
