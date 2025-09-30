@@ -1,4 +1,16 @@
 # Changelog
+## 🛠️ Patch in 1.40.450
+* `web/src/main.js` stellt `openDeEdit`, `autoAdjustLength` und `recomputeEditBuffer` ohne Tempo-Bezug wieder her, damit Auto-Trim, Pausen-Analyse, Effekte und Speichern nach der Tempo-Entfernung weiter funktionieren.
+* `README.md` präzisiert, dass trotz fehlender Tempo-Funktion sämtliche Kernwerkzeuge des DE-Editors aktiv bleiben.
+* `CHANGELOG.md` dokumentiert die Wiederherstellung der DE-Bearbeitung ohne Zeitdehnung.
+
+## 🛠️ Patch in 1.40.449
+* `web/src/main.js` entfernt sämtliche Tempo-Berechnungen aus der DE-Bearbeitung, setzt Speichern und Vorschau nur noch auf Trimmen, Pausen-Entfernung und Effekte und aktualisiert die Länge ohne Zeitdehnung.
+* `web/hla_translation_tool.html` ersetzt Tempo-Regler, Häkchen und Debug-Dialog durch eine kompakte Längenübersicht.
+* `web/src/style.css` räumt alle Tempo-Stile ab und gestaltet die neue Länge-Karte.
+* `README.md` beschreibt die entfernte Tempo-Funktion und verweist auf die neue Längenübersicht.
+* `CHANGELOG.md` dokumentiert die vollständige Entfernung der Tempo-Funktion.
+
 ## 🛠️ Patch in 1.40.448
 * `web/src/main.js` berechnet den Tempo-Abgleich jetzt bidirektional, sodass Auto-Tempo DE-Aufnahmen sowohl beschleunigt als auch verlangsamt, um die EN-Zeit zu treffen.
 * `README.md` erwähnt den beidseitigen Auto-Tempo-Abgleich explizit.

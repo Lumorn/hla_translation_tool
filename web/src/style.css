@@ -1959,17 +1959,34 @@ th:nth-child(8) {
     display: inline-block;
 }
 
-/* Steuerung für den Tempo-Regler mit Plus/Minus-Knöpfen */
-.tempo-control {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+#deEditDialog .length-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 6px;
+    margin-top: 10px;
 }
 
-/* Gelbe Markierung, wenn das Tempo automatisch gesetzt wurde */
-.tempo-auto {
-    color: #ffd700;
-    font-weight: bold;
+#deEditDialog .length-grid div {
+    background: #1f1f1f;
+    padding: 8px 10px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#deEditDialog .length-grid strong {
+    color: #ff6b1a;
+}
+
+#deEditDialog .length-grid span {
+    font-weight: 600;
+}
+
+#deEditDialog .length-hint {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #aaa;
 }
 
 .radio-settings,
@@ -2912,58 +2929,11 @@ th:nth-child(8) {
     margin-top: 2px;
 }
 
-#deEditDialog .tempo-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#deEditDialog .tempo-row .tempo-value {
-    width: 50px;
-    text-align: center;
-    border: 1px solid #444;
-    padding: 2px;
-    border-radius: 4px;
-}
-
-#deEditDialog .tempo-auto {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-#deEditDialog .tempo-safety {
-    border-top: 1px solid #2a2a2a;
-    padding-top: 12px;
-    margin-top: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-#deEditDialog .tempo-safety h5 {
-    margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    color: #f1f1f1;
-}
-
 #deEditDialog .checkbox-line small {
     display: block;
     margin-left: 28px;
     color: #b3b3b3;
     line-height: 1.4;
-}
-
-#deEditDialog #tempoInfo {
-    margin-left: 10px;
-    color: #ccc;
-}
-
-/* EN-Originalzeit rechts neben der DE-Zeit in normaler Schriftfarbe */
-#deEditDialog #tempoEnInfo {
-    color: #ccc;
-    font-weight: normal;
 }
 
 #deEditDialog #autoAdjustBtn {
@@ -4753,135 +4723,4 @@ th:nth-child(8) {
     animation: loadingBar 1s linear infinite;
 }
 
-/* Dialog für den Tempo-Debug-Modus */
-.tempo-debug-dialog {
-    width: 90vw;
-    max-width: 1100px;
-}
 
-.tempo-debug-status {
-    margin-top: 0;
-    margin-bottom: 12px;
-    color: #aaa;
-    font-size: 0.9em;
-}
-
-.tempo-debug-body {
-    display: grid;
-    grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
-    gap: 16px;
-    align-items: start;
-    margin-bottom: 12px;
-}
-
-.tempo-debug-visual {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#tempoDebugWave {
-    width: 100%;
-    height: 220px;
-    background: #111;
-    border: 1px solid #333;
-    border-radius: 6px;
-}
-
-.tempo-debug-metrics {
-    margin: 0;
-    padding: 8px;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 6px;
-    font-size: 0.9em;
-    color: #ddd;
-    max-height: 140px;
-    overflow-y: auto;
-    white-space: pre-wrap;
-}
-
-.tempo-debug-info {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    max-height: 360px;
-}
-
-.tempo-debug-title {
-    font-weight: 600;
-    font-size: 1.05em;
-    color: #fff;
-}
-
-.tempo-debug-description {
-    font-size: 0.95em;
-    color: #ccc;
-    min-height: 48px;
-}
-
-.tempo-debug-log {
-    margin: 0;
-    padding-left: 18px;
-    list-style: decimal inside;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 6px;
-    overflow-y: auto;
-    flex: 1;
-}
-
-.tempo-debug-log li {
-    padding: 8px 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    cursor: pointer;
-}
-
-.tempo-debug-log li:last-child {
-    border-bottom: none;
-}
-
-.tempo-debug-log li.active {
-    background: rgba(255, 107, 26, 0.25);
-    border-left: 3px solid #ff6b1a;
-    padding-left: 7px;
-}
-
-.tempo-debug-log strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.tempo-debug-log .tempo-debug-log-metrics {
-    font-size: 0.85em;
-    color: #aaa;
-    margin-bottom: 2px;
-}
-
-.tempo-debug-log .tempo-debug-log-meta {
-    font-size: 0.85em;
-    color: #8ec07c;
-}
-
-.tempo-debug-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-}
-
-.tempo-debug-buttons .btn-secondary:disabled {
-    opacity: 0.4;
-    cursor: default;
-}
-
-@media (max-width: 980px) {
-    .tempo-debug-body {
-        grid-template-columns: 1fr;
-    }
-    .tempo-debug-info {
-        max-height: unset;
-    }
-    .tempo-debug-log {
-        max-height: 260px;
-    }
-}

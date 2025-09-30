@@ -537,8 +537,6 @@ let editSilenceRanges     = [];    // Bereiche zum Einfügen von Stille
 let manualSilenceRanges   = [];    // Merker für manuelle Stille
 let silenceTempStart      = null;  // Startpunkt für Stille-Bereich
 let silenceDragging       = null;  // {index, side} beim Ziehen der Stille
-let tempoFactor           = 1.0;   // Faktor für Time-Stretching
-let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
 // Anzeigeeinstellungen für die Wellenformen
@@ -631,6 +629,677 @@ function resetDeDebugLog(dateiLabel) {
     const beschreibung = dateiLabel ? `Bearbeitung gestartet für ${dateiLabel}` : 'Bearbeitung gestartet';
     logDeDebug('openDeEdit', 'Initialisierung', beschreibung);
 }
+
+// =========================== OPENDEEDIT START ===============================
+// Öffnet den Bearbeitungsdialog für eine DE-Datei ohne Tempo-Anpassungen
+async function openDeEdit(fileId) {
+    const file = files.find(f => f.id === fileId);
+    if (!file) return;
+    currentEditFile = file;
+    const enSrc = `sounds/EN/${getFullPath(file)}`;
+    const rel = getDeFilePath(file) || getFullPath(file);
+    let deSrc = deAudioCache[rel];
+    if (!deSrc) return;
+    // Aktuelle DE-Datei mit Cache-Buster laden, ansonsten Backup verwenden
+    try {
+        const src = typeof deSrc === 'string' ? `${deSrc}?v=${Date.now()}` : deSrc;
+        originalEditBuffer = await loadAudioBuffer(src);
+    } catch {
+        const backupSrc = `sounds/DE-Backup/${rel}`;
+        originalEditBuffer = await loadAudioBuffer(backupSrc);
+    }
+
+    savedOriginalBuffer = originalEditBuffer;
+    volumeMatchedBuffer = null;
+    isVolumeMatched = false;
+    radioEffectBuffer = null;
+    isRadioEffect = false;
+    hallEffectBuffer = null;
+    isHallEffect = false;
+    emiEffectBuffer = null;
+    isEmiEffect = false;
+    neighborEffectBuffer = null;
+    isNeighborEffect = false;
+    tableMicEffectBuffer = null;
+    isTableMicEffect = false;
+    neighborHall = !!file.neighborHall;
+    tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
+
+    const enBuffer = await loadAudioBuffer(enSrc);
+    editEnBuffer = enBuffer;
+    rawEnBuffer = enBuffer;
+
+    const enSeconds = enBuffer.length / enBuffer.sampleRate;
+    const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
+    const maxSeconds = Math.max(enSeconds, deSeconds);
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    normalizeDeTrim();
+    currentEnSeconds = enSeconds;
+    currentDeSeconds = deSeconds;
+    maxWaveSeconds = Math.max(maxSeconds, 0.001);
+
+    ensureDeDebugPanel();
+    resetDeDebugLog(getFullPath(file));
+
+    editOrigCursor = 0;
+    editDeCursor = 0;
+    editPaused = false;
+    editPlaying = null;
+    if (editBlobUrl) {
+        URL.revokeObjectURL(editBlobUrl);
+        editBlobUrl = null;
+    }
+
+    editStartTrim = file.trimStartMs || 0;
+    editEndTrim = file.trimEndMs || 0;
+    normalizeDeTrim();
+
+    editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({ start: r.start, end: r.end })) : [];
+    manualIgnoreRanges = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+    editSilenceRanges = Array.isArray(file.silenceRanges) ? file.silenceRanges.map(r => ({ start: r.start, end: r.end })) : [];
+    manualSilenceRanges = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
+    ignoreTempStart = null;
+    silenceTempStart = null;
+
+    // Schnelle optische Rückmeldung bei Trigger-Buttons
+    const triggerPulse = (elementId, fallbackSelector) => {
+        const el = document.getElementById(elementId) || (fallbackSelector ? document.querySelector(fallbackSelector) : null);
+        if (!el) return;
+        el.classList.add('trigger-pulse');
+        setTimeout(() => el.classList.remove('trigger-pulse'), 400);
+    };
+
+    const focusTrimCard = () => {
+        const trimCard = document.querySelector('#deEditDialog .trim-card');
+        if (trimCard) {
+            trimCard.classList.add('focused-card');
+            setTimeout(() => trimCard.classList.remove('focused-card'), 800);
+            trimCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        const startInput = document.getElementById('editStart');
+        if (startInput) {
+            startInput.focus();
+            startInput.select();
+        }
+    };
+
+    setTrimInputValueSafe(document.getElementById('editStart'), editStartTrim);
+    setTrimInputValueSafe(document.getElementById('editEnd'), editDurationMs - editEndTrim);
+    document.getElementById('editStart').oninput = e => {
+        const val = parseInt(e.target.value) || 0;
+        editStartTrim = Math.max(0, Math.min(val, editDurationMs));
+        validateDeSelection();
+        scheduleWaveformUpdate();
+    };
+    document.getElementById('editEnd').oninput = e => {
+        const val = parseInt(e.target.value) || 0;
+        const clamped = Math.max(0, Math.min(val, editDurationMs));
+        editEndTrim = Math.max(0, editDurationMs - clamped);
+        validateDeSelection();
+        scheduleWaveformUpdate();
+    };
+    validateDeSelection();
+
+    const runAutoTrim = () => {
+        const vals = detectSilenceTrim(savedOriginalBuffer);
+        editStartTrim = vals.start;
+        editEndTrim = vals.end;
+        updateDeEditWaveforms();
+        validateDeSelection();
+    };
+
+    const autoTrim = document.getElementById('autoTrimBtn');
+    if (autoTrim) autoTrim.onclick = runAutoTrim;
+
+    const quickTrim = document.getElementById('quickFocusTrim');
+    if (quickTrim) quickTrim.onclick = () => {
+        focusTrimCard();
+    };
+
+    const quickAutoTrim = document.getElementById('quickAutoTrim');
+    if (quickAutoTrim) quickAutoTrim.onclick = () => {
+        runAutoTrim();
+        triggerPulse('autoTrimBtn');
+    };
+
+    const quickVolume = document.getElementById('quickVolumeMatch');
+    if (quickVolume) quickVolume.onclick = () => {
+        applyVolumeMatch();
+        triggerPulse('volumeMatchBoxBtn');
+    };
+
+    const quickRadio = document.getElementById('quickRadioEffect');
+    if (quickRadio) quickRadio.onclick = () => {
+        applyRadioEffect();
+        triggerPulse('radioEffectBoxBtn');
+    };
+
+    // Standardwert für die automatische Pausenerkennung setzen
+    autoIgnoreMs = 400;
+
+    const autoChk = document.getElementById('autoIgnoreChk');
+    const autoMs = document.getElementById('autoIgnoreMs');
+    if (autoChk && autoMs) {
+        autoChk.checked = false;
+        autoMs.value = 400;
+        autoChk.onchange = () => {
+            if (autoChk.checked) {
+                manualIgnoreRanges = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+                autoIgnoreMs = parseInt(autoMs.value) || 400;
+                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
+            } else {
+                editIgnoreRanges = manualIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+            }
+            refreshIgnoreList();
+            updateDeEditWaveforms();
+        };
+        autoMs.oninput = () => {
+            if (autoChk.checked) {
+                autoIgnoreMs = parseInt(autoMs.value) || 400;
+                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
+                refreshIgnoreList();
+                updateDeEditWaveforms();
+            }
+        };
+    }
+
+    const autoBtn = document.getElementById('autoAdjustBtn');
+    if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
+
+    refreshIgnoreList();
+    refreshSilenceList();
+
+    const deCanvas = document.getElementById('waveEdited');
+    const origCanvas = document.getElementById('waveOriginal');
+
+    const startField = document.getElementById('enSegStart');
+    const endField = document.getElementById('enSegEnd');
+
+    if (startField) {
+        startField.oninput = () => {
+            enSelectStart = parseInt(startField.value) || 0;
+            validateEnSelection();
+            scheduleWaveformUpdate();
+        };
+        enSelectStart = parseInt(startField.value) || 0;
+    }
+    if (endField) {
+        endField.oninput = () => {
+            enSelectEnd = parseInt(endField.value) || 0;
+            validateEnSelection();
+            scheduleWaveformUpdate();
+        };
+        enSelectEnd = parseInt(endField.value) || 0;
+    }
+
+    origCanvas.onmousedown = e => {
+        if (!editEnBuffer) return;
+        activeWave = 'en';
+        const rect = origCanvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+        const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+        const endX = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
+        const grip = 8;
+        if (enSelectStart !== enSelectEnd && Math.abs(x - startX) <= grip) {
+            enMarkerDragging = 'start';
+            return;
+        }
+        if (enSelectStart !== enSelectEnd && Math.abs(x - endX) <= grip) {
+            enMarkerDragging = 'end';
+            return;
+        }
+        enPrevStart = enSelectStart;
+        enPrevEnd = enSelectEnd;
+        enDragStart = x / origCanvas.width * dur;
+        enSelecting = true;
+    };
+
+    origCanvas.onmousemove = e => {
+        if (enSelecting && editEnBuffer) {
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            enSelectStart = enDragStart;
+            enSelectEnd = x / origCanvas.width * dur;
+            if (startField) startField.value = Math.round(Math.min(enSelectStart, enSelectEnd));
+            if (endField) endField.value = Math.round(Math.max(enSelectStart, enSelectEnd));
+            validateEnSelection();
+            scheduleWaveformUpdate();
+        } else if (enMarkerDragging && editEnBuffer) {
+            const rect = origCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
+            const pos = x / origCanvas.width * dur;
+            if (enMarkerDragging === 'start') {
+                enSelectStart = pos;
+                if (startField) startField.value = Math.round(pos);
+            } else {
+                enSelectEnd = pos;
+                if (endField) endField.value = Math.round(pos);
+            }
+            validateEnSelection();
+            scheduleWaveformUpdate();
+        }
+    };
+
+    origCanvas.ondblclick = () => {
+        enSelectStart = 0;
+        enSelectEnd = 0;
+        if (startField) startField.value = '';
+        if (endField) endField.value = '';
+        resetCanvasZoom(origCanvas);
+        validateEnSelection();
+        scheduleWaveformUpdate();
+    };
+
+    initWaveToolbar();
+    updateWaveCanvasDimensions();
+
+    const waveLabelOriginal = document.getElementById('waveLabelOriginal');
+    if (waveLabelOriginal) waveLabelOriginal.textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
+    const waveLabelEdited = document.getElementById('waveLabelEdited');
+    if (waveLabelEdited) waveLabelEdited.textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
+
+    const enTextEl = document.getElementById('editEnText');
+    if (enTextEl) enTextEl.textContent = file.enText || '';
+    const deTextEl = document.getElementById('editDeText');
+    if (deTextEl) deTextEl.textContent = file.deText || '';
+    const emoTextEl = document.getElementById('editEmoText');
+    if (emoTextEl) emoTextEl.textContent = file.emotionalText || '';
+
+    updateDeEditWaveforms();
+    updateMasterTimeline();
+    document.getElementById('deEditDialog').classList.remove('hidden');
+
+    const rStrength = document.getElementById('radioStrength');
+    const rStrengthDisp = document.getElementById('radioStrengthDisplay');
+    if (rStrength && rStrengthDisp) {
+        rStrength.value = radioEffectStrength;
+        rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+        rStrength.oninput = e => {
+            radioEffectStrength = parseFloat(e.target.value);
+            storage.setItem('hla_radioEffectStrength', radioEffectStrength);
+            rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const rHigh = document.getElementById('radioHighpass');
+    if (rHigh) {
+        rHigh.value = radioHighpass;
+        rHigh.oninput = e => {
+            radioHighpass = parseFloat(e.target.value);
+            storage.setItem('hla_radioHighpass', radioHighpass);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const rLow = document.getElementById('radioLowpass');
+    if (rLow) {
+        rLow.value = radioLowpass;
+        rLow.oninput = e => {
+            radioLowpass = parseFloat(e.target.value);
+            storage.setItem('hla_radioLowpass', radioLowpass);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const rSat = document.getElementById('radioSaturation');
+    const rSatDisp = document.getElementById('radioSaturationDisplay');
+    if (rSat && rSatDisp) {
+        rSat.value = radioSaturation;
+        rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+        rSat.oninput = e => {
+            radioSaturation = parseFloat(e.target.value);
+            storage.setItem('hla_radioSaturation', radioSaturation);
+            rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const rNoise = document.getElementById('radioNoise');
+    if (rNoise) {
+        rNoise.value = radioNoise;
+        rNoise.oninput = e => {
+            radioNoise = parseFloat(e.target.value);
+            storage.setItem('hla_radioNoise', radioNoise);
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const rCrackle = document.getElementById('radioCrackle');
+    const rCrackleDisp = document.getElementById('radioCrackleDisplay');
+    if (rCrackle && rCrackleDisp) {
+        rCrackle.value = radioCrackle;
+        rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
+        rCrackle.oninput = e => {
+            radioCrackle = parseFloat(e.target.value);
+            storage.setItem('hla_radioCrackle', radioCrackle);
+            rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
+            if (isRadioEffect) recomputeEditBuffer();
+        };
+    }
+
+    const hRoom = document.getElementById('hallRoom');
+    if (hRoom) {
+        hRoom.value = hallRoom;
+        hRoom.oninput = e => {
+            hallRoom = parseFloat(e.target.value);
+            storage.setItem('hla_hallRoom', hallRoom);
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+
+    const hAmount = document.getElementById('hallAmount');
+    const hAmountDisp = document.getElementById('hallAmountDisplay');
+    if (hAmount && hAmountDisp) {
+        hAmount.value = hallAmount;
+        hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
+        hAmount.oninput = e => {
+            hallAmount = parseFloat(e.target.value);
+            storage.setItem('hla_hallAmount', hallAmount);
+            hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+
+    const hDelay = document.getElementById('hallDelay');
+    if (hDelay) {
+        hDelay.value = hallDelay;
+        hDelay.oninput = e => {
+            hallDelay = parseFloat(e.target.value);
+            storage.setItem('hla_hallDelay', hallDelay);
+            if (isHallEffect) recomputeEditBuffer();
+        };
+    }
+
+    const hToggle = document.getElementById('hallToggle');
+    if (hToggle) {
+        hToggle.checked = isHallEffect;
+        hToggle.onchange = e => toggleHallEffect(e.target.checked);
+    }
+
+    const nHall = document.getElementById('neighborHallToggle');
+    if (nHall) {
+        nHall.checked = neighborHall;
+        nHall.onchange = e => toggleNeighborHall(e.target.checked);
+    }
+
+    const nToggle = document.getElementById('neighborToggle');
+    if (nToggle) {
+        nToggle.checked = isNeighborEffect;
+        nToggle.onchange = e => toggleNeighborEffect(e.target.checked);
+    }
+
+    const tToggle = document.getElementById('tableMicToggle');
+    if (tToggle) {
+        tToggle.checked = isTableMicEffect;
+        tToggle.onchange = e => toggleTableMicEffect(e.target.checked);
+    }
+
+    const tRoom = document.getElementById('tableMicRoom');
+    if (tRoom) {
+        tRoom.value = tableMicRoomType;
+        tRoom.onchange = e => {
+            tableMicRoomType = e.target.value;
+            if (isTableMicEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiVoice = document.getElementById('emiVoiceDampToggle');
+    if (emiVoice) {
+        emiVoice.checked = emiVoiceDamp;
+        emiVoice.onchange = e => toggleEmiVoiceDamp(e.target.checked);
+    }
+
+    const emiLevelEl = document.getElementById('emiLevel');
+    const emiLevelDisp = document.getElementById('emiLevelDisplay');
+    if (emiLevelEl && emiLevelDisp) {
+        emiLevelEl.value = emiNoiseLevel;
+        emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+        emiLevelEl.oninput = e => {
+            emiNoiseLevel = parseFloat(e.target.value);
+            storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
+            emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiRamp = document.getElementById('emiRamp');
+    const emiRampDisp = document.getElementById('emiRampDisplay');
+    if (emiRamp && emiRampDisp) {
+        emiRamp.value = emiRampPosition;
+        emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
+        emiRamp.oninput = e => {
+            emiRampPosition = parseFloat(e.target.value);
+            storage.setItem('hla_emiRamp', emiRampPosition);
+            emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
+        };
+    }
+
+    const emiModeEl = document.getElementById('emiMode');
+    if (emiModeEl) {
+        emiModeEl.value = emiRampMode;
+        emiModeEl.onchange = e => {
+            emiRampMode = e.target.value;
+            storage.setItem('hla_emiMode', emiRampMode);
+        };
+    }
+
+    const emiDropProb = document.getElementById('emiDropoutProb');
+    const emiDropProbDisp = document.getElementById('emiDropoutProbDisplay');
+    if (emiDropProb && emiDropProbDisp) {
+        emiDropProb.value = emiDropoutProb;
+        emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+        emiDropProb.oninput = e => {
+            emiDropoutProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiDropoutProb', emiDropoutProb);
+            emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
+        };
+    }
+
+    const emiDropDur = document.getElementById('emiDropoutDur');
+    const emiDropDurDisp = document.getElementById('emiDropoutDurDisplay');
+    if (emiDropDur && emiDropDurDisp) {
+        emiDropDur.value = emiDropoutDur;
+        emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+        emiDropDur.oninput = e => {
+            emiDropoutDur = parseFloat(e.target.value);
+            storage.setItem('hla_emiDropoutDur', emiDropoutDur);
+            emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
+        };
+    }
+
+    const emiCrackleProb = document.getElementById('emiCrackleProb');
+    const emiCrackleProbDisp = document.getElementById('emiCrackleProbDisplay');
+    if (emiCrackleProb && emiCrackleProbDisp) {
+        emiCrackleProb.value = emiCrackleProb;
+        emiCrackleProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+        emiCrackleProb.oninput = e => {
+            emiCrackleProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiCrackleProb', emiCrackleProb);
+            emiCrackleProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiCrackleAmp = document.getElementById('emiCrackleAmp');
+    const emiCrackleAmpDisp = document.getElementById('emiCrackleAmpDisplay');
+    if (emiCrackleAmp && emiCrackleAmpDisp) {
+        emiCrackleAmp.value = emiCrackleAmp;
+        emiCrackleAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+        emiCrackleAmp.oninput = e => {
+            emiCrackleAmp = parseFloat(e.target.value);
+            storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
+            emiCrackleAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiSpikeProb = document.getElementById('emiSpikeProb');
+    const emiSpikeProbDisp = document.getElementById('emiSpikeProbDisplay');
+    if (emiSpikeProb && emiSpikeProbDisp) {
+        emiSpikeProb.value = emiSpikeProb;
+        emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+        emiSpikeProb.oninput = e => {
+            emiSpikeProb = parseFloat(e.target.value);
+            storage.setItem('hla_emiSpikeProb', emiSpikeProb);
+            emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiSpikeAmp = document.getElementById('emiSpikeAmp');
+    const emiSpikeAmpDisp = document.getElementById('emiSpikeAmpDisplay');
+    if (emiSpikeAmp && emiSpikeAmpDisp) {
+        emiSpikeAmp.value = emiSpikeAmp;
+        emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
+        emiSpikeAmp.oninput = e => {
+            emiSpikeAmp = parseFloat(e.target.value);
+            storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
+            emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
+            if (isEmiEffect) recomputeEditBuffer();
+        };
+    }
+
+    const emiPresetSelect = document.getElementById('emiPresetSelect');
+    if (emiPresetSelect) {
+        updateEmiPresetList();
+        emiPresetSelect.onchange = e => loadEmiPreset(e.target.value);
+    }
+
+    updateEffectButtons();
+
+    window.onmousemove = e => {
+        if (!deCanvas) return;
+        if (editDragging) {
+            const rect = deCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const time = Math.max(0, Math.min(x / deCanvas.width * editDurationMs, editDurationMs));
+            if (editDragging === 'start') {
+                editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
+            } else if (editDragging === 'end') {
+                editEndTrim = Math.min(editDurationMs - time, editDurationMs - editStartTrim - 1);
+            }
+            const sField = document.getElementById('editStart');
+            const eField = document.getElementById('editEnd');
+            setTrimInputValueSafe(sField, editStartTrim);
+            setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
+            validateDeSelection();
+            scheduleWaveformUpdate();
+            return;
+        }
+        if (ignoreDragging) {
+            const r = editIgnoreRanges[ignoreDragging.index];
+            if (ignoreDragging.side === 'start') {
+                r.start = Math.min(time, r.end - 1);
+            } else {
+                r.end = Math.max(time, r.start + 1);
+            }
+            refreshIgnoreList();
+            scheduleWaveformUpdate();
+            return;
+        }
+        if (silenceDragging) {
+            const r = editSilenceRanges[silenceDragging.index];
+            if (silenceDragging.side === 'start') {
+                r.start = Math.min(time, r.end - 1);
+            } else {
+                r.end = Math.max(time, r.start + 1);
+            }
+            refreshSilenceList();
+            scheduleWaveformUpdate();
+            return;
+        }
+    };
+
+    window.onmouseup = e => {
+        if (enSelecting && editEnBuffer) {
+            enSelecting = false;
+            const start = Math.min(enSelectStart, enSelectEnd);
+            const end = Math.max(enSelectStart, enSelectEnd);
+            if (Math.abs(end - start) < 2) {
+                enSelectStart = enPrevStart;
+                enSelectEnd = enPrevEnd;
+                if (startField) startField.value = Math.round(enSelectStart);
+                if (endField) endField.value = Math.round(enSelectEnd);
+                editOrigCursor = start;
+                if (editPlaying === 'orig') {
+                    const audio = document.getElementById('audioPlayer');
+                    audio.currentTime = Math.min(editOrigCursor, editDurationMs) / 1000;
+                }
+            } else {
+                if (startField) startField.value = Math.round(start);
+                if (endField) endField.value = Math.round(end);
+            }
+            validateEnSelection();
+            updateDeEditWaveforms();
+        } else if (enMarkerDragging && editEnBuffer) {
+            const start = Math.min(enSelectStart, enSelectEnd);
+            const end = Math.max(enSelectStart, enSelectEnd);
+            if (startField) startField.value = Math.round(start);
+            if (endField) endField.value = Math.round(end);
+            validateEnSelection();
+            updateDeEditWaveforms();
+        } else if (deSelecting) {
+            deSelecting = false;
+            const rect = deCanvas.getBoundingClientRect();
+            const finalTime = (e.clientX - rect.left) / rect.width * editDurationMs;
+            const start = Math.min(deDragStart, finalTime);
+            const end = Math.max(deDragStart, finalTime);
+            if (Math.abs(end - start) < 2) {
+                editStartTrim = dePrevStartTrim;
+                editEndTrim = dePrevEndTrim;
+                const sField = document.getElementById('editStart');
+                const eField = document.getElementById('editEnd');
+                setTrimInputValueSafe(sField, editStartTrim);
+                setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
+                editDeCursor = start;
+                if (editPlaying === 'de') {
+                    const audio = document.getElementById('audioPlayer');
+                    const dur = editDurationMs - editStartTrim - editEndTrim;
+                    audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
+                }
+            }
+            validateDeSelection();
+            updateDeEditWaveforms();
+        }
+        enMarkerDragging = null;
+        editDragging = null;
+        ignoreDragging = null;
+        silenceDragging = null;
+    };
+
+    deEditEscHandler = e => {
+        if (e.key === 'Escape') {
+            if (activeWave === 'en') {
+                enSelectStart = 0;
+                enSelectEnd = 0;
+                if (startField) startField.value = '';
+                if (endField) endField.value = '';
+                resetCanvasZoom(origCanvas);
+                validateEnSelection();
+                scheduleWaveformUpdate();
+            } else if (activeWave === 'de') {
+                editStartTrim = 0;
+                editEndTrim = 0;
+                const sField = document.getElementById('editStart');
+                const eField = document.getElementById('editEnd');
+                setTrimInputValueSafe(sField, 0);
+                setTrimInputValueSafe(eField, editDurationMs);
+                resetCanvasZoom(deCanvas);
+                validateDeSelection();
+                scheduleWaveformUpdate();
+            }
+            scheduleWaveformUpdate();
+        }
+    };
+
+    window.addEventListener('keydown', deEditEscHandler);
+    updateEffectButtons();
+}
+// =========================== OPENDEEDIT END ================================
 
 // Liefert einen sprechenden Namen für ausgelöste Funktionen
 function determineDeDebugFunction(target) {
@@ -9368,7024 +10037,6 @@ function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
 }
 // =========================== DETECTSILENCETRIM END ========================
 
-// Hochwertiges Time-Stretching mit SoundTouchJS
-let soundtouchPromise = null;
-const EDGE_TRIM_CAP_MS = 120; // Maximale Freigabe für zusätzliches Abschneiden nach dem Time-Stretch
-
-// Bestimmt die erlaubte Kürzung in Millisekunden abhängig von Analyse- und Sicherheitsoptionen
-function resolveAllowedTrimMs(edgeMs, tempoSafety) {
-    const { detectEdgeSilence, enforceTrimSafety } = tempoSafety;
-    if (!detectEdgeSilence) {
-        return enforceTrimSafety ? 0 : Number.POSITIVE_INFINITY;
-    }
-    if (!enforceTrimSafety) {
-        return edgeMs;
-    }
-    if (!Number.isFinite(edgeMs)) {
-        return EDGE_TRIM_CAP_MS;
-    }
-    return Math.min(edgeMs, EDGE_TRIM_CAP_MS);
-}
-
-// Liefert den effektiv zu nutzenden Randbeschnitt abhängig vom Limit-Schalter
-function getEffectiveTrimAllowance(edgeMs, tempoSafety) {
-    if (tempoSafety.enforceTrimSafety) {
-        return resolveAllowedTrimMs(edgeMs, tempoSafety);
-    }
-    return tempoSafety.detectEdgeSilence ? edgeMs : Number.POSITIVE_INFINITY;
-}
-
-// Liest den Status einer Tempo-Schutzoption aus der Oberfläche aus
-function isTempoSafetyEnabled(elementId, fallback = true) {
-    const checkbox = document.getElementById(elementId);
-    if (!checkbox) return fallback;
-    return checkbox.checked !== false;
-}
-
-// Fasst alle Tempo-Schutzoptionen für die Verarbeitung zusammen
-function getTempoSafetyConfig() {
-    return {
-        usePadding: isTempoSafetyEnabled('tempoSafetyPadding'),
-        detectEdgeSilence: isTempoSafetyEnabled('tempoSafetyDetect'),
-        enforceTrimSafety: isTempoSafetyEnabled('tempoSafetyTrimLimit'),
-        autoReference: isTempoSafetyEnabled('tempoSafetyReference')
-    };
-}
-function loadSoundTouch() {
-    if (!soundtouchPromise) {
-        soundtouchPromise = import('./lib/soundtouch.js');
-    }
-    return soundtouchPromise;
-}
-
-// Ermittelt den dynamischen Schwellwert anhand des tatsächlichen Ruhepolsters
-function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
-    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
-        return 1e-6;
-    }
-
-    const totalFrames = buffer.length;
-    const pad = Math.max(0, Math.min(padFrames, totalFrames));
-    const guard = pad > 0 ? Math.min(Math.round(buffer.sampleRate * 0.1), Math.floor(pad / 2)) : 0;
-
-    const segments = [];
-    if (pad > 0) {
-        const headEnd = Math.max(0, pad - guard);
-        if (headEnd > 0) {
-            segments.push({ start: 0, end: headEnd });
-        }
-        const tailStart = Math.max(0, totalFrames - pad);
-        const tailCollectStart = Math.min(totalFrames, tailStart + guard);
-        if (tailCollectStart < totalFrames) {
-            segments.push({ start: tailCollectStart, end: totalFrames });
-        }
-    }
-    if (segments.length === 0) {
-        segments.push({ start: 0, end: totalFrames });
-    }
-
-    let quietSumSquares = 0;
-    let quietCount = 0;
-    let quietPeak = 0;
-    const sampleValues = [];
-    const loudSegments = [];
-
-    for (const segment of segments) {
-        let segmentSumSquares = 0;
-        let segmentCount = 0;
-        let segmentPeak = 0;
-        let loudFrames = 0;
-        const segmentValues = [];
-
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch);
-            for (let i = segment.start; i < segment.end; i++) {
-                const value = Math.abs(data[i]);
-                segmentValues.push(value);
-                segmentSumSquares += value * value;
-                segmentCount++;
-                if (value > segmentPeak) segmentPeak = value;
-                if (value > 0.01) loudFrames++;
-            }
-        }
-
-        if (segmentCount === 0) {
-            continue;
-        }
-
-        const loudRatio = loudFrames / segmentCount;
-        if (loudRatio <= 0.1) {
-            quietSumSquares += segmentSumSquares;
-            quietCount += segmentCount;
-            quietPeak = Math.max(quietPeak, segmentPeak);
-            for (const value of segmentValues) {
-                if (sampleValues.length < 16384) {
-                    sampleValues.push(value);
-                }
-            }
-        } else {
-            loudSegments.push(segment);
-        }
-    }
-
-    if (quietCount === 0) {
-        quietSumSquares = 0;
-        quietCount = 0;
-        quietPeak = 0;
-        const fallbackSegments = loudSegments.length > 0 ? loudSegments : segments;
-        for (const segment of fallbackSegments) {
-            for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-                const data = buffer.getChannelData(ch);
-                for (let i = segment.start; i < segment.end; i++) {
-                    const value = Math.abs(data[i]);
-                    quietSumSquares += value * value;
-                    quietCount++;
-                    quietPeak = Math.max(quietPeak, value);
-                    if (sampleValues.length < 16384) {
-                        sampleValues.push(value);
-                    }
-                }
-            }
-        }
-    }
-
-    if (quietCount === 0) {
-        return 1e-6;
-    }
-
-    const rms = Math.sqrt(quietSumSquares / quietCount);
-    const sorted = sampleValues.slice().sort((a, b) => a - b);
-    const percentileIndex = sorted.length > 0
-        ? Math.max(0, Math.min(sorted.length - 1, Math.floor(sorted.length * 0.9)))
-        : 0;
-    const percentile = sorted.length > 0 ? sorted[percentileIndex] : rms;
-
-    let threshold = Math.max(rms * 1.5, percentile * 1.2);
-    const cap = quietPeak > 0 ? quietPeak + 1e-6 : 1e-6;
-    threshold = Math.min(threshold, cap);
-
-    return Math.max(1e-6, threshold);
-}
-
-// Analysiert die Randbereiche eines Signals und bereitet sichere Trim-Werte vor
-function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold, options = {}) {
-    const { enforceTrimSafety = true } = options;
-    const isSilent = index => channelData.every(channel => Math.abs(channel[index]) <= threshold);
-
-    let firstActive = 0;
-    while (firstActive < totalFrames && isSilent(firstActive)) {
-        firstActive++;
-    }
-
-    let lastActive = totalFrames - 1;
-    while (lastActive >= 0 && isSilent(lastActive)) {
-        lastActive--;
-    }
-
-    const detectedStart = Math.min(totalFrames, Math.max(0, firstActive));
-    const detectedEnd = Math.min(totalFrames, Math.max(0, totalFrames - 1 - lastActive));
-
-    let start = Math.max(padFrames, detectedStart);
-    let end = Math.max(padFrames, detectedEnd);
-    const minWindow = Math.max(1, Math.round(sampleRate * 0.1));
-
-    if (start > padFrames) {
-        const silentSpan = start - padFrames;
-        const windowSize = Math.min(minWindow, silentSpan);
-        const windowStart = Math.max(padFrames, start - windowSize);
-        if (hasContinuousSilence(channelData, windowStart, start, threshold, windowSize)) {
-            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Anfang erkannt', { startFrames: start, padFrames, threshold });
-        } else {
-            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Anfang gefunden, Rückfall auf Polster', { startFrames: start, padFrames, threshold });
-            start = padFrames;
-        }
-    }
-
-    if (end > padFrames) {
-        const silentSpan = end - padFrames;
-        const windowSize = Math.min(minWindow, silentSpan);
-        const tailBoundary = Math.max(0, totalFrames - padFrames);
-        const tailStart = Math.max(0, tailBoundary - windowSize);
-        if (hasContinuousSilence(channelData, tailStart, tailBoundary, threshold, windowSize)) {
-            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Ende erkannt', { endFrames: end, padFrames, threshold });
-        } else {
-            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Ende gefunden, Rückfall auf Polster', { endFrames: end, padFrames, threshold });
-            end = padFrames;
-        }
-    }
-
-    if (enforceTrimSafety) {
-        const limited = applyTrimSafety(start, end, totalFrames, sampleRate, padFrames, padFrames);
-        start = limited.start;
-        end = limited.end;
-    }
-
-    const tolerance = Math.max(0, Math.round(sampleRate * 0.01));
-    const maxStart = Math.max(padFrames, Math.min(totalFrames, detectedStart + tolerance));
-    const maxEnd = Math.max(padFrames, Math.min(totalFrames, detectedEnd + tolerance));
-    start = Math.min(start, maxStart);
-    end = Math.min(end, maxEnd);
-
-    if (start + end > totalFrames) {
-        const overflow = start + end - totalFrames;
-        const reduceEnd = Math.min(Math.max(0, end - padFrames), overflow);
-        end -= reduceEnd;
-        let remaining = overflow - reduceEnd;
-        if (remaining > 0) {
-            const reduceStart = Math.min(Math.max(0, start - padFrames), remaining);
-            start -= reduceStart;
-            remaining -= reduceStart;
-        }
-        if (remaining > 0) {
-            end = Math.max(padFrames, end - remaining);
-        }
-    }
-
-    return { start, end, detectedStart, detectedEnd };
-}
-
-// Schätzt die nutzbare Randstille eines Buffers für das Turbo-Stretching
-function estimateStretchableSilence(buffer) {
-    if (!buffer || !buffer.sampleRate || buffer.length === 0) {
-        return { start: 0, end: 0 };
-    }
-
-    const safety = getTempoSafetyConfig();
-    if (!safety.detectEdgeSilence) {
-        return { start: 0, end: 0 };
-    }
-
-    const sr = buffer.sampleRate;
-    const padFrames = Math.round(sr * 1.0);
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, sr);
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const target = padded.getChannelData(ch);
-            target.set(buffer.getChannelData(ch), padFrames);
-        }
-
-        const threshold = calculateDynamicSilenceThreshold(padded, padFrames);
-        const channelData = [];
-        for (let ch = 0; ch < padded.numberOfChannels; ch++) {
-            channelData.push(padded.getChannelData(ch));
-        }
-
-        const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold, {
-            enforceTrimSafety: safety.enforceTrimSafety
-        });
-        const extraStart = Math.max(0, start - padFrames);
-        const extraEnd = Math.max(0, end - padFrames);
-
-        return {
-            start: Math.round(extraStart * 1000 / sr),
-            end: Math.round(extraEnd * 1000 / sr)
-        };
-    } finally {
-        ctx.close();
-    }
-}
-
-// Prüft, ob sich innerhalb eines Abschnitts ein ausreichend langes Stillfenster befindet
-function hasContinuousSilence(channelData, startIndex, endIndex, threshold, windowFrames) {
-    const rangeLength = Math.max(0, endIndex - startIndex);
-    if (windowFrames <= 0 || rangeLength < windowFrames) {
-        return false;
-    }
-
-    let consecutive = 0;
-    for (let i = startIndex; i < endIndex; i++) {
-        const silent = channelData.every(channel => Math.abs(channel[i]) <= threshold);
-        consecutive = silent ? consecutive + 1 : 0;
-        if (consecutive >= windowFrames) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-// Begrenzt das Abschneiden auf echte Stille und höchstens zehn Prozent der Gesamtdauer
-function applyTrimSafety(startFrames, endFrames, totalFrames, sampleRate, minStartFrames = 0, minEndFrames = 0) {
-    const minSilenceFrames = Math.round(sampleRate * 0.1);
-    const maxTrimFrames = Math.round(totalFrames * 0.1);
-
-    const baseStart = Math.max(0, Math.min(minStartFrames, totalFrames));
-    const baseEnd = Math.max(0, Math.min(minEndFrames, Math.max(0, totalFrames - baseStart)));
-
-    let safeStart = Math.max(baseStart, startFrames);
-    let safeEnd = Math.max(baseEnd, endFrames);
-
-    const extraStart = Math.max(0, safeStart - baseStart);
-    const extraEnd = Math.max(0, safeEnd - baseEnd);
-
-    if (extraStart > 0 && extraStart < minSilenceFrames) {
-        safeStart = baseStart;
-    }
-    if (extraEnd > 0 && extraEnd < minSilenceFrames) {
-        safeEnd = baseEnd;
-    }
-
-    const baseTrim = baseStart + baseEnd;
-    const requestedTrim = safeStart + safeEnd;
-    const adjustable = Math.max(0, requestedTrim - baseTrim);
-    const adjustableLimit = Math.max(0, maxTrimFrames - baseTrim);
-
-    if (adjustable > adjustableLimit && adjustable > 0) {
-        const scale = adjustableLimit / adjustable;
-        safeStart = baseStart + Math.floor((safeStart - baseStart) * scale);
-        safeEnd = baseEnd + Math.floor((safeEnd - baseEnd) * scale);
-    }
-
-    if (safeStart + safeEnd > totalFrames) {
-        const overflow = safeStart + safeEnd - totalFrames;
-        const endReduction = Math.min(Math.max(0, safeEnd - baseEnd), overflow);
-        safeEnd -= endReduction;
-        let remaining = overflow - endReduction;
-        if (remaining > 0) {
-            const startReduction = Math.min(Math.max(0, safeStart - baseStart), remaining);
-            safeStart -= startReduction;
-            remaining -= startReduction;
-        }
-        if (remaining > 0) {
-            safeEnd = Math.max(baseEnd, safeEnd - remaining);
-        }
-    }
-
-    if (safeStart - baseStart > 0 && safeStart - baseStart < minSilenceFrames) {
-        safeStart = baseStart;
-    }
-    if (safeEnd - baseEnd > 0 && safeEnd - baseEnd < minSilenceFrames) {
-        safeEnd = baseEnd;
-    }
-
-    return {
-        start: Math.max(0, Math.min(totalFrames, safeStart)),
-        end: Math.max(0, Math.min(totalFrames, safeEnd))
-    };
-}
-
-async function timeStretchBuffer(buffer, factor, options = {}) {
-    const {
-        debug: debugContext = null,
-        usePadding = true
-    } = options || {};
-
-    if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
-        return buffer;
-    }
-
-    const safeFactor = Math.max(0.001, Math.abs(factor || 0));
-    const expected = Math.round(buffer.length / safeFactor);
-
-    const debugAdd = debugContext && typeof debugContext.addStep === 'function'
-        ? (title, buf, meta = {}) => {
-            try {
-                debugContext.addStep(title, buf, meta);
-            } catch (err) {
-                console.warn('Tempo-Debug: Schritt konnte nicht gespeichert werden', err);
-            }
-        }
-        : null;
-
-    if (Math.abs(safeFactor - 1) < 0.001) {
-        if (debugAdd) {
-            debugAdd('Tempo: Keine Anpassung erforderlich', buffer, {
-                beschreibung: 'Tempo-Faktor liegt nahezu bei 1, daher bleibt die Länge unverändert.',
-                tempoFactor: safeFactor,
-                expectedSamples: buffer.length,
-                relativeFactor: safeFactor
-            });
-        }
-        return buffer;
-    }
-
-    if (debugAdd) {
-        debugAdd('Tempo: Eingabe vorbereitet', buffer, {
-            beschreibung: 'Originalsignal wird für das Time-Stretching aufbereitet.',
-            tempoFactor: safeFactor,
-            expectedSamples: expected,
-            relativeFactor: safeFactor
-        });
-    }
-
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        const padFrames = usePadding ? Math.round(buffer.sampleRate * 1.0) : 0;
-        const paddedLength = buffer.length + padFrames * 2;
-        const padded = ctx.createBuffer(buffer.numberOfChannels, paddedLength, buffer.sampleRate);
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const target = padded.getChannelData(ch);
-            target.set(buffer.getChannelData(ch), padFrames);
-        }
-
-        if (debugAdd && usePadding) {
-            debugAdd('Tempo: Sicherheitsrand gesetzt', padded, {
-                beschreibung: 'Eine Sekunde Puffer schützt den Algorithmus vor abgeschnittenen Transienten.',
-                padFrames,
-                padMs: padFrames / buffer.sampleRate * 1000
-            });
-        } else if (debugAdd && !usePadding) {
-            debugAdd('Tempo: Sicherheitsrand übersprungen', padded, {
-                beschreibung: 'Das Stretching verwendet das Rohsignal ohne zusätzlichen Puffer.'
-            });
-        }
-
-        const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
-        const st = new SoundTouch();
-        st.tempo = factor;
-        const source = new WebAudioBufferSource(padded);
-        const filter = new SimpleFilter(source, st);
-
-        const channels = padded.numberOfChannels;
-        // SoundTouch gibt auch bei Mono-Eingaben stets zwei Kanäle zurück, daher wird die Quellpuffergröße auf mindestens Stereo gesetzt.
-        const sourceChannels = Math.max(2, padded.numberOfChannels);
-        const frameChunk = 4096;
-        const temp = new Float32Array(frameChunk * sourceChannels);
-        const collected = Array.from({ length: channels }, () => []);
-        let producedFrames = 0;
-
-        while (true) {
-            const frames = filter.extract(temp, frameChunk);
-            if (!frames) break;
-            for (let i = 0; i < frames; i++) {
-                for (let ch = 0; ch < sourceChannels; ch++) {
-                    if (ch < channels) {
-                        collected[ch].push(temp[i * sourceChannels + ch]);
-                    }
-                }
-            }
-            producedFrames += frames;
-        }
-
-        const stretched = ctx.createBuffer(channels, producedFrames, buffer.sampleRate);
-        for (let ch = 0; ch < channels; ch++) {
-            stretched.getChannelData(ch).set(Float32Array.from(collected[ch]));
-        }
-
-        const padOutFrames = Math.min(stretched.length, Math.max(0, Math.round(padFrames / safeFactor)));
-
-        if (debugAdd) {
-            debugAdd('Tempo: Gestretchtes Signal', stretched, {
-                beschreibung: 'SoundTouch hat das Signal auf den gewünschten Faktor gedehnt.',
-                producedSamples: stretched.length,
-                padOutFrames,
-                padOutMs: padOutFrames / stretched.sampleRate * 1000
-            });
-        }
-
-        const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
-        const trimStart = Math.min(padOutFrames, stretched.length);
-        const trimEnd = Math.min(padOutFrames, Math.max(0, stretched.length - trimStart));
-        const usableLength = Math.max(0, stretched.length - trimStart - trimEnd);
-
-        if (trimStart === 0 && trimEnd === 0) {
-            if (debugAdd) {
-                debugAdd('Tempo: Kein Schutzrand entfernt', stretched, {
-                    beschreibung: 'Es wurde kein zuvor hinzugefügter Puffer entfernt.',
-                    tempoFactor: safeFactor,
-                    expectedSamples: expected
-                });
-            }
-            return stretched;
-        }
-
-        const trimmed = ctx.createBuffer(stretched.numberOfChannels, usableLength, stretched.sampleRate);
-        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            const sourceData = stretched.getChannelData(ch);
-            trimmed.getChannelData(ch).set(sourceData.subarray(trimStart, trimStart + usableLength));
-        }
-
-        if (debugAdd) {
-            debugAdd('Tempo: Schutzrand entfernt', trimmed, {
-                beschreibung: 'Nur der künstliche Sicherheitsrand wurde abgeschnitten, das eigentliche Audiosignal bleibt vollständig erhalten.',
-                startTrimMs: framesToMs(trimStart, stretched.sampleRate),
-                endTrimMs: framesToMs(trimEnd, stretched.sampleRate),
-                tempoFactor: safeFactor,
-                expectedSamples: expected
-            });
-        }
-
-        return trimmed;
-    } finally {
-        ctx.close();
-    }
-}
-
-function toggleIgnoreSelectedSegments() {
-    if (segmentSelection.length === 0) return;
-    segmentSelection.forEach(i => {
-        const num = i + 1;
-        if (ignoredSegments.has(num)) {
-            ignoredSegments.delete(num);
-        } else {
-            ignoredSegments.add(num);
-        }
-    });
-    segmentSelection = [];
-    highlightAssignedSegments();
-    storeSegmentState();
-}
-
-async function openSegmentDialog() {
-    if (!currentProject) {
-        // Ohne aktives Projekt kann keine Datei zugeordnet werden
-        alert('Bitte zuerst ein Projekt auswählen.');
-        return;
-    }
-    const dlg = document.getElementById('segmentDialog');
-    dlg.classList.remove('hidden');
-    const canvas = document.getElementById('segmentWaveform');
-    if (!canvas) {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
-        return;
-    }
-    canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-    const input = document.getElementById('segmentFileInput');
-    if (!input) {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
-        return;
-    }
-    // Listener vorsichtshalber neu setzen, falls der Dialog dynamisch erzeugt wurde
-    input.onchange = analyzeSegmentFile;
-    // Wert leeren, damit auch dieselbe Datei erneut erkannt wird
-    input.value = '';
-    canvas.addEventListener('click', handleSegmentCanvasClick);
-    ignoredSegments = new Set(currentProject.segmentIgnored || []);
-    if (!segmentInfo && currentProject.segmentSegments) {
-        let buf = null;
-        if (currentProject.segmentAudioPath && window.electronAPI && window.electronAPI.fsReadFile) {
-            const info = await window.electronAPI.getDebugInfo();
-            const full = window.electronAPI.join(info.soundsPath, currentProject.segmentAudioPath);
-            
-            // Prüfen, ob die Segment-Datei existiert und laden
-            if (window.electronAPI.fsExists(full)) {
-                        const data = window.electronAPI.fsReadFile(full);
-            const uint = new Uint8Array(data);
-            buf = await loadAudioBuffer(new Blob([uint]));
-        } else {
-                        console.warn('Segment-Datei nicht gefunden:', full);
-        }
-        } else if (currentProject.segmentAudio) {
-            const ab = base64ToArrayBuffer(currentProject.segmentAudio);
-            buf = await loadAudioBuffer(new Blob([ab]));
-        }
-        if (buf) {
-            segmentInfo = { buffer: buf, segments: currentProject.segmentSegments };
-            segmentAssignments = currentProject.segmentAssignments || {};
-        }
-    }
-    if (segmentInfo) {
-        drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
-        populateSegmentList();
-        highlightAssignedSegments();
-    } else if (Object.keys(currentProject.segmentAssignments || {}).length > 0) {
-        segmentAssignments = currentProject.segmentAssignments;
-        populateSegmentList();
-    } else {
-        resetSegmentDialog();
-    }
-}
-
-function closeSegmentDialog() {
-    const dlg = document.getElementById('segmentDialog');
-    if (!dlg) {
-        console.error("Segmentdialog konnte nicht geschlossen werden: Element 'segmentDialog' fehlt.");
-    } else {
-        dlg.classList.add('hidden');
-    }
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        // beim Schließen auch die erzeugte URL freigeben
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    const canvas = document.getElementById('segmentWaveform');
-    if (!canvas) {
-        console.error("Segmentdialog: Element 'segmentWaveform' fehlt.");
-    } else {
-        canvas.removeEventListener('click', handleSegmentCanvasClick);
-    }
-    segmentSelection = [];
-    storeSegmentState();
-}
-
-// Setzt den Dialog zurück und beendet eine laufende Wiedergabe
-// Ist keepStatus=true, bleibt der aktuelle Meldungstext erhalten
-function resetSegmentDialog(keepStatus=false) {
-    const input = document.getElementById('segmentFileInput');
-    if (input) {
-        input.value = '';
-    } else {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentFileInput'.");
-    }
-    document.getElementById('segmentTextList').innerHTML = '';
-    const canvas = document.getElementById('segmentWaveform');
-    if (canvas) {
-        canvas.width = canvas.clientWidth; // Canvas-Breite ans Layout anpassen
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    } else {
-        console.error("Segmentdialog ben\xF6tigt ein Element mit der ID 'segmentWaveform'.");
-    }
-    segmentInfo = null;
-    segmentAssignments = {};
-    segmentSelection = [];
-    ignoredSegments.clear();
-    // laufende Wiedergabe stoppen und URL freigeben
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) {
-            URL.revokeObjectURL(segmentPlayerUrl);
-            segmentPlayerUrl = null;
-        }
-        segmentPlayer = null;
-    }
-    const progress = document.getElementById('segmentProgress');
-    const fill = document.getElementById('segmentFill');
-    const status = document.getElementById('segmentStatus');
-    // Fortschrittsbalken und Status zurücksetzen
-    progress.classList.remove('active');
-    fill.style.width = '0%';
-    if (!keepStatus) {
-        status.textContent = 'Analysiere...';
-    }
-    currentProject.segmentAudio = null;
-    currentProject.segmentAudioPath = null;
-    currentProject.segmentAssignments = {};
-    currentProject.segmentSegments = null;
-    currentProject.segmentIgnored = [];
-    storeSegmentState();
-}
-
-async function analyzeSegmentFile(ev) {
-    const file = ev.target.files[0];
-    if (!file) return;
-    segmentAssignments = {};
-    segmentSelection = [];
-    ignoredSegments.clear();
-    const buf = await file.arrayBuffer();
-    if (window.electronAPI && window.electronAPI.saveSegmentFile) {
-        const arr = new Uint8Array(buf);
-        currentProject.segmentAudioPath = await window.electronAPI.saveSegmentFile(currentProject.id, arr);
-        currentProject.segmentAudio = null;
-    } else {
-        // Im Browser als Base64 im Projekt speichern
-        currentProject.segmentAudio = arrayBufferToBase64(buf);
-        currentProject.segmentAudioPath = null;
-    }
-    currentProject.segmentIgnored = [];
-    const progress = document.getElementById('segmentProgress');
-    const fill = document.getElementById('segmentFill');
-    const status = document.getElementById('segmentStatus');
-    let shown = false;
-    const timer = setTimeout(() => { progress.classList.add('active'); shown = true; }, 5000);
-    try {
-        segmentInfo = await detectSegments(file, 300, 0.01, p => {
-            fill.style.width = `${Math.round(p * 100)}%`;
-        });
-        status.textContent = 'Fertig';
-        drawSegments(document.getElementById('segmentWaveform'), segmentInfo.buffer, segmentInfo.segments);
-        populateSegmentList();
-        storeSegmentState();
-    } catch (err) {
-        console.error('Analyse fehlgeschlagen', err);
-        resetSegmentDialog(true);
-        status.textContent = 'Fehler beim Analysieren';
-        storeSegmentState();
-    } finally {
-        clearTimeout(timer);
-        if (shown) {
-            progress.classList.remove('active');
-            fill.style.width = '0%';
-        }
-    }
-}
-
-function populateSegmentList() {
-    const list = document.getElementById('segmentTextList');
-    list.innerHTML = '';
-    files.forEach((f, i) => {
-        const div = document.createElement('div');
-        div.className = 'seg-line';
-        div.dataset.line = i;
-        const playBtn = `<button class="seg-play" data-line="${i}">▶</button>`;
-        const value = segmentAssignments[i] ? segmentAssignments[i].join(',') : '';
-        div.innerHTML = `<span class="seg-label">${i + 1}. ${escapeHtml(f.deText || '')}</span>`+
-                        `<input type="text" data-line="${i}" placeholder="Segmente" value="${value}">`+
-                        playBtn;
-        if (segmentAssignments[i] && segmentAssignments[i].some(n => ignoredSegments.has(n))) {
-            div.classList.add('seg-ignored');
-        }
-        list.appendChild(div);
-    });
-
-    list.querySelectorAll('input').forEach(inp => {
-        inp.addEventListener('input', () => updateSegmentAssignment(inp));
-    });
-    list.querySelectorAll('.seg-play').forEach(btn => {
-        btn.addEventListener('click', () => playSegmentLine(parseInt(btn.dataset.line)));
-    });
-    // Klick auf eine Zeile ordnet aktuelle Segmentauswahl zu
-    list.querySelectorAll('.seg-line').forEach(div => {
-        div.addEventListener('click', ev => {
-            if (ev.target.tagName === 'INPUT' || ev.target.classList.contains('seg-play')) return;
-            if (segmentSelection.length === 0) return;
-            const line = parseInt(div.dataset.line);
-            segmentAssignments[line] = segmentSelection.map(n => n + 1);
-            const inp = div.querySelector('input');
-            inp.value = segmentAssignments[line].join(',');
-            segmentSelection = [];
-            highlightAssignedSegments();
-        });
-    });
-}
-
-// Parst das Eingabefeld und validiert Zahlenbereich
-function parseSegmentInput(val, max) {
-    if (!val) return [];
-    val = val.replace(/\s+/g, '');
-    const parts = val.split(',');
-    let nums = [];
-    for (const p of parts) {
-        if (p.includes('-')) {
-            const [a,b] = p.split('-').map(n => parseInt(n));
-            if (isNaN(a) || isNaN(b) || a>b || a<1 || b>max) return null;
-            for (let n=a;n<=b;n++) nums.push(n);
-        } else {
-            const n = parseInt(p);
-            if (isNaN(n) || n<1 || n>max) return null;
-            nums.push(n);
-        }
-    }
-    return nums;
-}
-
-function updateSegmentAssignment(input) {
-    const line = parseInt(input.dataset.line);
-    const max = segmentInfo ? segmentInfo.segments.length : 0;
-    const nums = parseSegmentInput(input.value, max);
-    if (!nums) {
-        input.classList.add('error');
-        // ungültige Eingabe entfernt die bisherige Zuordnung
-        delete segmentAssignments[line];
-        highlightAssignedSegments();
-        return;
-    }
-    nums.sort((a,b)=>a-b);
-    for (let i=1;i<nums.length;i++) {
-        if (nums[i] !== nums[i-1] + 1) {
-            input.classList.add('error');
-            delete segmentAssignments[line];
-            highlightAssignedSegments();
-            return;
-        }
-    }
-    input.classList.remove('error');
-    segmentAssignments[line] = nums;
-    highlightAssignedSegments();
-    storeSegmentState();
-}
-
-function highlightAssignedSegments() {
-    if (!segmentInfo) return;
-    const canvas = document.getElementById('segmentWaveform');
-    drawSegments(canvas, segmentInfo.buffer, segmentInfo.segments);
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const colors = ['rgba(255,100,100,0.4)','rgba(100,255,100,0.4)','rgba(100,100,255,0.4)','rgba(255,255,100,0.4)','rgba(255,100,255,0.4)'];
-
-    // Zuerst alle Zeilen zurücksetzen
-    document.querySelectorAll('#segmentTextList .seg-line').forEach(div => {
-        div.style.background = '';
-        div.classList.remove('seg-ignored');
-    });
-
-    Object.keys(segmentAssignments).forEach((lineIdx, ci) => {
-        const segNums = segmentAssignments[lineIdx];
-        if (!segNums || segNums.length===0) return;
-        const first = segmentInfo.segments[segNums[0]-1];
-        const last  = segmentInfo.segments[segNums[segNums.length-1]-1];
-        if (!first || !last) return;
-        const color = colors[ci % colors.length];
-        const sx = (first.start / dur) * width;
-        const ex = (last.end / dur) * width;
-        ctx.fillStyle = color;
-        ctx.fillRect(sx,0,ex-sx,height);
-
-        const row = document.querySelector(`#segmentTextList .seg-line[data-line="${lineIdx}"]`);
-        if (row) {
-            row.style.background = color;
-            const hasIgnored = segNums.some(n => ignoredSegments.has(n));
-            row.classList.toggle('seg-ignored', hasIgnored);
-        }
-    });
-
-    highlightSegmentSelection();
-}
-
-function highlightSegmentSelection() {
-    if (!segmentInfo || segmentSelection.length === 0) return;
-    const canvas = document.getElementById('segmentWaveform');
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const first = segmentInfo.segments[segmentSelection[0]];
-    const last = segmentInfo.segments[segmentSelection[segmentSelection.length-1]];
-    if (!first || !last) return;
-    const sx = (first.start / dur) * width;
-    const ex = (last.end / dur) * width;
-    ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.fillRect(sx, 0, ex - sx, height);
-}
-
-// Spielt die aktuell gewaehlten Segmente ab
-function playSelectedSegments() {
-    if (!segmentInfo || segmentSelection.length === 0) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const segs = segmentSelection
-        .filter(i => !ignoredSegments.has(i + 1))
-        .map(i => segmentInfo.segments[i])
-        .filter(Boolean);
-    if (segs.length === 0) return;
-    const buf = mergeSegments(segmentInfo.buffer, segs);
-    const blob = bufferToWav(buf);
-    const url  = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-function handleSegmentCanvasClick(ev) {
-    if (!segmentInfo) return;
-    const canvas = ev.target;
-    const rect = canvas.getBoundingClientRect();
-    const x = ev.clientX - rect.left;
-    const width = canvas.width;
-    const dur = segmentInfo.buffer.length / segmentInfo.buffer.sampleRate * 1000;
-    const ms = (x / width) * dur;
-    const idx = segmentInfo.segments.findIndex(s => ms >= s.start && ms <= s.end);
-    if (idx === -1) return;
-    if (ev.shiftKey && segmentSelection.length > 0) {
-        const min = Math.min(...segmentSelection);
-        const max = Math.max(...segmentSelection);
-        if (idx > max) {
-            for (let i = max + 1; i <= idx; i++) segmentSelection.push(i);
-        } else if (idx < min) {
-            const neu = [];
-            for (let i = idx; i <= max; i++) neu.push(i);
-            segmentSelection = neu;
-        } else {
-            segmentSelection = [idx];
-        }
-    } else {
-        segmentSelection = [idx];
-    }
-    highlightAssignedSegments();
-    playSelectedSegments();
-}
-
-function playSegmentLine(line) {
-    if (!segmentInfo || !segmentAssignments[line]) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const nums = segmentAssignments[line].filter(n => !ignoredSegments.has(n));
-    if (nums.length === 0) return;
-    const segs = nums.map(n => segmentInfo.segments[n-1]).filter(Boolean);
-    if (segs.length === 0) return;
-    const buf = mergeSegments(segmentInfo.buffer, segs);
-    const blob = bufferToWav(buf);
-    const url = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-function playSegmentFull() {
-    if (!segmentInfo) return;
-    if (segmentPlayer) {
-        segmentPlayer.pause();
-        if (segmentPlayerUrl) { URL.revokeObjectURL(segmentPlayerUrl); }
-    }
-    const blob = bufferToWav(segmentInfo.buffer);
-    const url = URL.createObjectURL(blob);
-    segmentPlayerUrl = url;
-    segmentPlayer = new Audio(url);
-    segmentPlayer.onended = () => { URL.revokeObjectURL(url); segmentPlayerUrl = null; };
-    segmentPlayer.play();
-}
-
-async function exportSegmentsToProject() {
-    if (!segmentInfo) return;
-    for (const [lineStr, nums] of Object.entries(segmentAssignments)) {
-        const line = parseInt(lineStr);
-        if (!nums || nums.length===0) continue;
-        const valid = nums.filter(n => !ignoredSegments.has(n)).map(n => segmentInfo.segments[n-1]).filter(Boolean);
-        if (valid.length === 0) continue;
-        const buf = mergeSegments(segmentInfo.buffer, valid);
-        const relPath = getFullPath(files[line]);
-        const wavBlob = bufferToWav(buf);
-        if (window.electronAPI && window.electronAPI.saveDeFile) {
-            // In der Desktop-Version direkt über den Hauptprozess speichern
-            const arr = new Uint8Array(await wavBlob.arrayBuffer());
-            await window.electronAPI.saveDeFile(relPath, arr);
-            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
-            await updateHistoryCache(relPath);
-        } else {
-            await speichereUebersetzungsDatei(wavBlob, relPath);
-        }
-        // Bearbeitungs-Flags zurücksetzen, da die importierte Datei unbearbeitet ist
-        const file = files[line];
-        if (file) {
-            file.trimStartMs = 0;
-            file.trimEndMs = 0;
-            file.volumeMatched = false;
-            file.radioEffect = false;
-            file.hallEffect = false;
-            file.emiEffect = false;
-            file.neighborEffect = false;
-            file.neighborHall = false;
-        }
-    }
-    updateStatus('Segmente importiert');
-    closeSegmentDialog();
-    storeSegmentState();
-    renderFileTable();
-}
-// Nach Auslagerung in einzelne Module sicherstellen, dass die
-// Funktionen weiterhin global verfuegbar sind
-// Diese Funktionen müssen auch im Browser als globale Funktionen verfügbar sein
-// Damit reagiert der Dialog weiterhin korrekt, selbst wenn der Code als Modul
-// geladen wird
-if (typeof window !== 'undefined') {
-    window.openSegmentDialog = openSegmentDialog;
-    window.closeSegmentDialog = closeSegmentDialog;
-    window.analyzeSegmentFile = analyzeSegmentFile;
-    window.exportSegmentsToProject = exportSegmentsToProject;
-    window.resetSegmentDialog = resetSegmentDialog;
-    window.playSegmentFull = playSegmentFull;
-    window.toggleIgnoreSelectedSegments = toggleIgnoreSelectedSegments;
-    window.openTempoDebug = openTempoDebug;
-    window.closeTempoDebug = closeTempoDebug;
-}
-// =========================== SEGMENT DIALOG END ============================
-// =========================== SHOWMISSINGFOLDERSDIALOG END ===================
-
-// =========================== GETBROWSERDEBUGPATHINFO START ===========================
-// Debug-Pfad-Information für Ordner-Browser
-function getBrowserDebugPathInfo(file) {
-    if (!filePathDatabase[file.filename]) {
-        return '❌ Nicht in DB';
-    }
-    
-    const dbPaths = filePathDatabase[file.filename];
-    
-    // Suche passende Pfade für diese spezifische Datei
-    const exactMatches = dbPaths.filter(pathInfo => pathInfo.folder === file.folder);
-    
-    if (exactMatches.length > 0) {
-        const bestPath = exactMatches[0];
-        const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
-        const status = isAudioAvailable ? '✅' : '❌';
-        return `${status} VERFÜGBAR<br><small style="word-break: break-all;">${bestPath.fullPath}</small>`;
-    }
-    
-    // Normalisierte Suche
-    const normalizedMatches = dbPaths.filter(pathInfo => {
-        const normalizedFileFolder = normalizeFolderPath(file.folder);
-        const normalizedDbFolder = normalizeFolderPath(pathInfo.folder);
-        return normalizedFileFolder === normalizedDbFolder;
-    });
-    
-    if (normalizedMatches.length > 0) {
-        const bestPath = normalizedMatches[0];
-        const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
-        const status = isAudioAvailable ? '⚠️' : '❌';
-        return `${status} NORMALISIERT<br><small style="word-break: break-all;">Browser: ${file.folder}<br>DB: ${bestPath.folder}</small>`;
-    }
-    
-    // Keine Matches - zeige verfügbare Ordner
-    const availableFolders = dbPaths.map(p => p.folder).slice(0, 2).join('<br>');
-    const moreCount = dbPaths.length > 2 ? ` (+${dbPaths.length - 2} weitere)` : '';
-    return `❌ KEINE MATCHES<br><small style="word-break: break-all;">Browser: ${file.folder}<br>DB hat:<br>${availableFolders}${moreCount}</small>`;
-}
-// =========================== GETBROWSERDEBUGPATHINFO END ===========================
-
-// =========================== SHOWFOLDERFILES START ===========================
-async function showFolderFiles(folderName) {
-    // Sicherstellen, dass Ignorier-Informationen vorliegen
-    await ignoredFilesLoaded;
-
-    const folderGrid      = document.getElementById('folderGrid');
-    const folderFilesView = document.getElementById('folderFilesView');
-    const folderBackBtn   = document.getElementById('folderBackBtn');
-    const title           = document.getElementById('folderBrowserTitle');
-    const description     = document.getElementById('folderBrowserDescription');
-
-    folderGrid.style.display      = 'none';
-    folderFilesView.style.display = 'block';
-    folderBackBtn.style.display   = 'block';
-
-    const lastFolderName = folderName.split('/').pop() || folderName;
-    const customization  = folderCustomizations[folderName] || {};
-    const folderIcon     = customization.icon || '📁';
-
-    const { completionMap, projectCompletionMap } = getGlobalCompletionStatus();
-    const folderFiles = [];
-
-    // --- aus Datenbank sammeln ---
-    Object.entries(filePathDatabase).forEach(([filename, paths]) => {
-        paths.forEach(pathInfo => {
-            if (pathInfo.folder !== folderName) return;
-
-            const fileKey = `${pathInfo.folder}/${filename}`;
-            const text    = textDatabase[fileKey] || {};
-
-            folderFiles.push({
-                filename,
-                folder: pathInfo.folder,
-                fullPath: pathInfo.fullPath,
-                enText: text.en || '',
-                deText: text.de || '',
-                isCompleted: completionMap.has(fileKey),
-                completedInProjects: projectCompletionMap.get(fileKey) || [],
-                isIgnored: !!ignoredFiles[fileKey]
-            });
-        });
-    });
-
-    // --- Fallback aus Projekt ---
-    if (folderFiles.length === 0) {
-        files.filter(f => f.folder === folderName).forEach(f => {
-            const fileKey = `${f.folder}/${f.filename}`;
-            const text    = textDatabase[fileKey] || {};
-
-            folderFiles.push({
-                filename: f.filename,
-                folder: f.folder,
-                fullPath: f.fullPath,
-                enText: text.en || '',
-                deText: text.de || '',
-                isCompleted: completionMap.has(fileKey),
-                completedInProjects: projectCompletionMap.get(fileKey) || [],
-                isIgnored: !!ignoredFiles[fileKey]
-            });
-        });
-    }
-
-    // --- Übersichts-Text ---
-    const total     = folderFiles.length;
-    const completed = folderFiles.filter(f => f.isCompleted).length;
-    const ignored   = folderFiles.filter(f => f.isIgnored).length;
-
-    title.innerHTML = `${folderIcon} ${lastFolderName} <button class="folder-customize-btn" onclick="showFolderCustomization('${folderName}')">⚙️</button>`;
-    description.innerHTML = `✅ ${completed} übersetzt – 🚫 ${ignored} ignoriert – ⏳ ${total - completed - ignored} offen`;
-
-    aktiveOrdnerDateien = folderFiles;
-    renderFolderFilesList(folderFiles);
-
-    // Knopf zum automatischen Projekt mit fehlenden Dateien einfügen
-    const createBtnWrap = document.createElement('div');
-    createBtnWrap.style.marginBottom = '10px';
-    const createBtn = document.createElement('button');
-    createBtn.className = 'btn btn-secondary';
-    createBtn.textContent = 'Projekt erstellen mit fehlenden Dateien';
-    createBtn.onclick = () => createProjectWithMissingFiles(folderName);
-    createBtnWrap.appendChild(createBtn);
-    document.getElementById('folderFilesView').prepend(createBtnWrap);
-
-    // Suche nach jedem Tastendruck im Ordner aktivieren
-    const searchInput = document.getElementById('folderFileSearchInput');
-    searchInput.value = '';
-    searchInput.addEventListener('input', handleFolderFileSearch);
-}
-// =========================== SHOWFOLDERFILES END ===========================
-
-// =========================== FOLDER FILE SEARCH START =======================
-function renderFolderFilesList(list, query = '') {
-    const folderFilesView = document.getElementById('folderFilesView');
-    const items = list.map(file => {
-        const inProject = files.find(f => f.filename === file.filename && f.folder === file.folder);
-        const debugPathInfo = getBrowserDebugPathInfo(file);
-        return `
-            <div class="folder-file-item ${file.isCompleted ? 'completed' : ''} ${file.isIgnored ? 'ignored' : ''}">
-                <div class="folder-file-info">
-                    <div class="folder-file-name">
-                        ${query ? highlightText(file.filename, query) : file.filename}
-                        ${file.isCompleted ? `<span class="folder-file-badge done"  title="Übersetzt">✅ Übersetzt</span>` : ''}
-                        ${file.isIgnored ? `<span class="folder-file-badge skip">🚫 Ignoriert</span>` : ''}
-                    </div>
-                    <div style="font-size: 10px; color: #666; margin: 4px 0; padding: 4px 8px; background: #1a1a1a; border-radius: 3px; border-left: 3px solid #333;">
-                        <strong>🔍 Pfad:</strong> ${debugPathInfo}
-                    </div>
-                    <div class="folder-file-texts">
-                        <div class="folder-file-text">
-                            <div class="folder-file-text-label">EN</div>
-                            <div class="folder-file-text-content" title="${escapeHtml(file.enText)}">
-                                ${query ? highlightText(file.enText || '(kein Text)', query) : (file.enText || '(kein Text)')}
-                            </div>
-                        </div>
-                        <div class="folder-file-text">
-                            <div class="folder-file-text-label">DE</div>
-                            <div class="folder-file-text-content" title="${escapeHtml(file.deText)}">
-                                ${query ? highlightText(file.deText || '(kein Text)', query) : (file.deText || '(kein Text)')}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="folder-file-actions">
-                    <button class="folder-file-play" onclick="playFolderBrowserAudio('${file.fullPath}', this)">▶</button>
-                    <button class="folder-file-add" ${inProject ? 'disabled' : ''}
-                            onclick="addFileFromFolderBrowser('${file.filename}', '${file.folder}', '${file.fullPath}')">
-                        ${inProject ? '✓ Bereits hinzugefügt' : '+ Hinzufügen'}
-                    </button>
-                    <button class="folder-file-ignore"
-                            onclick="toggleSkipFile('${file.folder}', '${file.filename}')">
-                        ${file.isIgnored ? '↩ Wieder aufnehmen' : '🚫 Ignorieren'}
-                    </button>
-                </div>
-            </div>`;
-    }).join('');
-
-    folderFilesView.innerHTML = `
-        <div class="folder-search-container">
-            <input type="text" class="folder-search-input" id="folderFileSearchInput" placeholder="Text im Ordner suchen..." value="${escapeHtml(query)}">
-        </div>
-        <div id="folderFilesList">${items}</div>`;
-}
-
-function handleFolderFileSearch(e) {
-    // Cursor-Position merken, damit sie nach dem Neuzeichnen erhalten bleibt
-    const cursorPos = e.target.selectionStart;
-
-    // Original eingegebener Text für die Anzeige
-    const originalQuery = e.target.value;
-    // Suchbegriffe für den Vergleich vorbereiten
-    const words = originalQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
-
-    // Dateien filtern: jeder Begriff muss irgendwo vorkommen
-    const filtered = aktiveOrdnerDateien.filter(f =>
-        words.every(w =>
-            f.filename.toLowerCase().includes(w) ||
-            f.enText.toLowerCase().includes(w) ||
-            f.deText.toLowerCase().includes(w)
-        )
-    );
-
-    // Trefferliste neu zeichnen
-    renderFolderFilesList(filtered, originalQuery);
-
-    // Event-Listener nach dem Neuzeichnen erneut binden
-    const input = document.getElementById('folderFileSearchInput');
-    input.addEventListener('input', handleFolderFileSearch);
-
-    // Fokus und Cursor-Position wiederherstellen
-    input.focus();
-    const pos = Math.min(cursorPos, input.value.length);
-    input.setSelectionRange(pos, pos);
-}
-// =========================== FOLDER FILE SEARCH END =========================
-
-// =========================== REFRESHGLOBAL START ===========================
-function refreshGlobalStatsAndGrids() {
-    // Aktuelle Statistiken der Ordner ermitteln
-    const folderStats = calculateFolderCompletionStats();
-
-    // Fortschrittsbalken neu berechnen
-    updateProgressStats();
-
-    // Grid nur neu zeichnen, falls es sichtbar ist
-    if (document.getElementById('folderGrid').style.display !== 'none') {
-        showFolderGrid();
-    }
-}
-// =========================== REFRESHGLOBAL END ===========================
-
-
-
-// =========================== DELETEFOLDERFROMBROWSER START ===========================
-function deleteFolderFromDatabase(folderName) {
-    // Doppelte Sicherheitsprüfung
-    let hasTexts = false;
-    let hasProjectFiles = false;
-    
-    // Prüfe auf Texte
-    Object.entries(textDatabase).forEach(([fileKey, texts]) => {
-        if (fileKey.startsWith(folderName + '/')) {
-            if ((texts.en && texts.en.trim()) || (texts.de && texts.de.trim())) {
-                hasTexts = true;
-            }
-        }
-    });
-    
-    // Prüfe auf Projekt-Dateien
-    projects.forEach(project => {
-        if (project.files && project.files.some(file => file.folder === folderName)) {
-            hasProjectFiles = true;
-        }
-    });
-    
-    const lastFolderName = folderName.split('/').pop() || folderName;
-    
-    // Warnung wenn Texte oder Projekte vorhanden
-    if (hasTexts || hasProjectFiles) {
-        const warnings = [];
-        if (hasTexts) warnings.push('Übersetzungen (EN/DE Texte)');
-        if (hasProjectFiles) warnings.push('Dateien in Projekten');
-        
-        const warningText = warnings.join(' und ');
-        
-        if (!confirm(`⚠️ WARNUNG: Ordner kann nicht sicher gelöscht werden!\n\nDer Ordner "${lastFolderName}" enthält:\n• ${warningText}\n\nDas Löschen würde diese Daten beschädigen.\n\n💡 Empfehlung:\n1. Entfernen Sie zuerst alle Dateien aus Ihren Projekten\n2. Löschen Sie die Übersetzungen manuell\n3. Versuchen Sie dann erneut\n\nTROTZDEM LÖSCHEN? (Nicht empfohlen)`)) {
-            return;
-        }
-    }
-    
-    // Bestätigungsdialog
-    const fileCount = Object.entries(filePathDatabase).reduce((count, [filename, paths]) => {
-        return count + paths.filter(p => p.folder === folderName).length;
-    }, 0);
-    
-    if (!confirm(`🗑️ Ordner endgültig löschen\n\nMöchten Sie den Ordner "${lastFolderName}" wirklich aus der Datenbank löschen?\n\nDies entfernt:\n• ${fileCount} Dateipfade\n• Audio-Cache-Einträge\n• Ordner-Anpassungen\n${hasTexts ? '• Alle Übersetzungen (EN/DE)\n' : ''}${hasProjectFiles ? '• Alle Dateien aus Projekten\n' : ''}\n⚠️ Die Aktion kann NICHT rückgängig gemacht werden!\n\nFortfahren?`)) {
-        return;
-    }
-    
-    let deletedFiles = 0;
-    let deletedAudioCache = 0;
-    let deletedTexts = 0;
-    let removedFromProjects = 0;
-    
-    // 1. Lösche alle Dateien aus diesem Ordner aus filePathDatabase
-    Object.keys(filePathDatabase).forEach(filename => {
-        const originalLength = filePathDatabase[filename].length;
-        filePathDatabase[filename] = filePathDatabase[filename].filter(pathInfo => 
-            pathInfo.folder !== folderName
-        );
-        
-        const deletedFromFile = originalLength - filePathDatabase[filename].length;
-        deletedFiles += deletedFromFile;
-        
-        // Entferne leere Einträge
-        if (filePathDatabase[filename].length === 0) {
-            delete filePathDatabase[filename];
-        }
-    });
-    
-    // 2. Lösche aus audioFileCache
-    Object.keys(audioFileCache).forEach(fullPath => {
-        if (fullPath.includes(folderName)) {
-            delete audioFileCache[fullPath];
-            deletedAudioCache++;
-        }
-    });
-    
-    // 3. Lösche Texte aus textDatabase
-    Object.keys(textDatabase).forEach(fileKey => {
-        if (fileKey.startsWith(folderName + '/')) {
-            delete textDatabase[fileKey];
-            deletedTexts++;
-        }
-    });
-    
-    // 4. Lösche Ordner-Anpassungen
-    const hadCustomization = !!folderCustomizations[folderName];
-    if (folderCustomizations[folderName]) {
-        delete folderCustomizations[folderName];
-    }
-    
-    // 5. Entferne Ordner aus allen Projekten
-    projects.forEach(project => {
-        if (project.files) {
-            const originalLength = project.files.length;
-            project.files = project.files.filter(file => file.folder !== folderName);
-            removedFromProjects += originalLength - project.files.length;
-        }
-    });
-    
-    // 6. Speichere alle Änderungen
-    saveFilePathDatabase();
-    saveTextDatabase();
-    saveFolderCustomizations();
-    
-    if (removedFromProjects > 0) {
-        saveProjects();
-        
-        // Aktualisiere aktuelles Projekt falls betroffen
-        if (currentProject) {
-            const updatedProject = projects.find(p => p.id === currentProject.id);
-            if (updatedProject) {
-                files = updatedProject.files || [];
-                renderFileTable();
-                updateProgressStats();
-                renderProjects();
-            }
-        }
-    }
-    
-    // Erfolgs-Nachricht
-    const successMessage = `✅ Ordner "${lastFolderName}" erfolgreich gelöscht!\n\n` +
-        `📊 Entfernt:\n` +
-        `• ${deletedFiles} Dateipfade\n` +
-        `• ${deletedAudioCache} Audio-Cache-Einträge\n` +
-        `• ${deletedTexts} Übersetzungseinträge\n` +
-        `• ${removedFromProjects} Dateien aus Projekten\n` +
-        `${hadCustomization ? '• Ordner-Anpassungen\n' : ''}` +
-        `\n🎯 Verbleibend:\n` +
-        `• ${Object.keys(filePathDatabase).length} Dateien in Datenbank\n` +
-        `• ${Object.keys(textDatabase).length} Übersetzungseinträge`;
-    
-    alert(successMessage);
-    updateStatus(`Ordner "${lastFolderName}" vollständig aus Datenbank gelöscht`);
-    
-    // Zurück zur Ordner-Übersicht
-    showFolderGrid();
-    
-    debugLog(`[DELETE FOLDER] ${lastFolderName} erfolgreich gelöscht - ${deletedFiles} Dateien, ${deletedTexts} Texte, ${removedFromProjects} Projektdateien entfernt`);
-}
-// =========================== DELETEFOLDERFROMBROWSER END ===========================
-
-        function playFolderBrowserAudio(fullPath, button) {
-            // In Electron nutzen wir den Dateipfad direkt zur Wiedergabe
-            // Check if file is accessible, auto-scan if needed
-            const fakeFile = { fullPath: fullPath, filename: fullPath.split('/').pop() };
-            const scanResult = checkAndAutoScan([fakeFile], 'Ordner-Browser Audio');
-            if (scanResult === true) {
-                // Scan started
-                updateStatus('Ordner-Browser Audio: Warte auf Ordner-Scan...');
-                return;
-            } else if (scanResult === false) {
-                // User cancelled
-                return;
-            }
-            // scanResult === null means file is accessible, continue
-            
-            const audio = document.getElementById('audioPlayer');
-
-            if (currentlyPlaying === fullPath) {
-                stopCurrentPlayback();
-                return;
-            }
-            stopCurrentPlayback();
-            
-            // Try to play from cached File object
-            if (audioFileCache[fullPath]) {
-                const fileObject = audioFileCache[fullPath];
-                let url = null;
-                if (window.electronAPI && typeof fileObject === 'string') {
-                    audio.src = fileObject;
-                } else {
-                    const blob = new Blob([fileObject], { type: fileObject.type });
-                    url = URL.createObjectURL(blob);
-                    audio.src = url;
-                }
-
-                audio.play().then(() => {
-                    button.textContent = '⏸';
-                    button.style.background = '#ff6b1a';
-                    currentlyPlaying = fullPath;
-
-                    audio.onended = () => {
-                        if (url) URL.revokeObjectURL(url);
-                        button.textContent = '▶';
-                        button.style.background = '#444';
-                        currentlyPlaying = null;
-                    };
-                }).catch(err => {
-                    if (err && err.name === 'AbortError') {
-                        // Fehler ignorieren, wenn play() frühzeitig gestoppt wurde
-                        return;
-                    }
-                    console.error('Playback failed:', err);
-                    updateStatus(`Fehler beim Abspielen`);
-                    if (url) URL.revokeObjectURL(url);
-                });
-            } else {
-                // This should not happen after auto-scan check, but just in case
-                updateStatus('Audio nicht verfügbar - Berechtigung fehlt');
-            }
-        }
-
-function addFileFromFolderBrowser(filename, folder, fullPath) {
-    if (files.find(f => f.filename === filename && f.folder === folder)) {
-        updateStatus('Datei bereits im Projekt');
-        return;
-    }
-    
-    const fileKey = `${folder}/${filename}`;
-    const newFile = {
-        id: Date.now() + Math.random(),
-        filename: filename,
-        folder: folder,
-        // fullPath wird NICHT mehr gespeichert - wird dynamisch geladen
-        folderNote: '',
-        enText: textDatabase[fileKey]?.en || '',
-        deText: textDatabase[fileKey]?.de || '',
-        emotionalText: textDatabase[fileKey]?.emo || '',
-        emoReason: '',
-        autoTranslation: '',
-        autoSource: '',
-        // Bewertungsergebnisse von GPT
-        score: null,
-        comment: '',
-        suggestion: '',
-        selected: true,
-        trimStartMs: 0,
-        trimEndMs: 0,
-        volumeMatched: false,
-        radioEffect: false,
-        hallEffect: false,
-        emiEffect: false,
-        neighborEffect: false,
-        neighborHall: false,
-        tableMicEffect: false,
-        tableMicRoom: 'wohnzimmer',
-        version: 1
-    };
-
-    files.push(newFile);
-    pendingSelectId = newFile.id; // neue Datei markieren
-    updateAutoTranslation(newFile, true);
-    updateAutoTranslation(newFile, true);
-    
-    // Update display order for new file
-    displayOrder.push({ file: newFile, originalIndex: files.length - 1 });
-    
-    markDirty();
-    
-    renderFileTable();
-    renderProjects(); // HINZUGEFÜGT für live Update
-    updateStatus(`${filename} zum Projekt hinzugefügt`);
-    updateProgressStats();
-    
-    // Update the button in the folder browser
-    const addButton = event.target;
-    addButton.disabled = true;
-    addButton.textContent = '✓ Bereits hinzugefügt';
-}
-
-/* =========================== CREATE MISSING PROJECT START =========================== */
-
-// Hilfsfunktion: Kapitel "Offene" und zugehöriges Level nur bei Bedarf anlegen
-function ensureOffeneStruktur(levelName) {
-    const chapterName = 'Offene';
-    // Kapitel erst erstellen, wenn es noch nicht existiert
-    if (!chapterColors[chapterName]) {
-        setChapterColor(chapterName, '#54428E');
-        setChapterOrder(chapterName, 9999);
-    } else {
-        setChapterOrder(chapterName, 9999); // Nummer stets fixieren
-    }
-    // Level bei Bedarf erzeugen
-    if (!projects.some(p => p.levelName === levelName)) {
-        setLevelColor(levelName, '#54428E');
-        const maxOrder = Math.max(0, ...Object.values(levelOrders));
-        setLevelOrder(levelName, maxOrder + 1);
-        setLevelIcon(levelName, '📁');
-    }
-    // Level dem Kapitel zuweisen
-    setLevelChapter(levelName, chapterName);
-}
-
-function createProjectWithMissingFiles(folderName) {
-    // Maximale Anzahl Dateien pro Projekt
-    const MAX_FILES = 50;
-
-    // Sammle alle Dateien des Ordners ohne DE-Audio
-    const { completionMap } = getGlobalCompletionStatus();
-    const all = [];
-    Object.entries(filePathDatabase).forEach(([fn, paths]) => {
-        paths.forEach(p => {
-            if (p.folder !== folderName) return;
-            const key = `${p.folder}/${fn}`;
-            if (!completionMap.has(key)) {
-                all.push({ filename: fn, folder: p.folder });
-            }
-        });
-    });
-    if (all.length === 0) {
-        alert('Keine fehlenden Dateien gefunden.');
-        return;
-    }
-    // Numerisch sortieren
-    all.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: 'base' }));
-
-    const levelName = folderName;
-
-    // Prüfen, ob Projekt bereits existiert
-    const existing = projects.find(p => p.levelName === levelName && p.name === folderName);
-    if (existing) {
-        if (confirm('Projekt existiert bereits. Fehlende Dateien hinzufügen?')) {
-            const existingKeys = new Set(existing.files.map(f => `${f.folder}/${f.filename}`));
-            const toAdd = all.filter(f => !existingKeys.has(`${f.folder}/${f.filename}`));
-            if (toAdd.length === 0) {
-                alert('Keine neuen fehlenden Dateien gefunden.');
-                return;
-            }
-            ensureOffeneStruktur(levelName);
-            const totalNew = toAdd.length;
-
-            // Zuerst bestehendes Projekt bis zur Grenze auffüllen
-            const maxAdd = Math.max(0, MAX_FILES - existing.files.length);
-            const firstChunk = toAdd.splice(0, maxAdd);
-            firstChunk.forEach(f => existing.files.push(buildProjectFile(f.filename, f.folder)));
-            existing.files.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: 'base' }));
-
-            // Verbleibende Dateien in neue Projekte aufteilen
-            let nextPart = Math.max(...projects
-                .filter(p => p.levelName === levelName)
-                .map(p => p.levelPart));
-            while (toAdd.length > 0) {
-                const chunk = toAdd.splice(0, MAX_FILES);
-                const prj = {
-                    id: Date.now() + Math.random(),
-                    name: folderName,
-                    levelName,
-                    levelPart: ++nextPart,
-                    files: chunk.map(f => buildProjectFile(f.filename, f.folder)),
-                    icon: getLevelIcon(levelName),
-                    color: getLevelColor(levelName)
-                };
-                projects.push(prj);
-            }
-
-            saveProjects();
-            renderProjects();
-            updateStatus(`${totalNew} Dateien auf Projekte verteilt`);
-        }
-        return;
-    }
-
-    // Neues Projekt anlegen: Kapitel und Level erst jetzt erstellen
-    ensureOffeneStruktur(levelName);
-    const total = all.length;
-    const chunks = [];
-    for (let i = 0; i < total; i += MAX_FILES) {
-        chunks.push(all.slice(i, i + MAX_FILES));
-    }
-    let nextPart = Math.max(0, ...projects.filter(p => p.levelName === levelName).map(p => p.levelPart));
-    chunks.forEach((chunk, idx) => {
-        const prj = {
-            id: Date.now() + idx,
-            name: folderName,
-            levelName,
-            levelPart: nextPart + idx + 1,
-            files: chunk.map(f => buildProjectFile(f.filename, f.folder)),
-            icon: getLevelIcon(levelName),
-            color: getLevelColor(levelName)
-        };
-        projects.push(prj);
-    });
-    saveProjects();
-    renderProjects();
-    updateStatus(`Projekt "${folderName}" erstellt (${total} Dateien in ${chunks.length} Projekten)`);
-}
-
-// Hilfsfunktion zum Erzeugen eines Dateiobjekts
-function buildProjectFile(filename, folder) {
-    const key = `${folder}/${filename}`;
-    return {
-        id: Date.now() + Math.random(),
-        filename,
-        folder,
-        folderNote: '',
-        enText: textDatabase[key]?.en || '',
-        deText: textDatabase[key]?.de || '',
-        emotionalText: textDatabase[key]?.emo || '',
-        emoReason: '',
-        autoTranslation: '',
-        autoSource: '',
-        score: null,
-        comment: '',
-        suggestion: '',
-        selected: true,
-        trimStartMs: 0,
-        trimEndMs: 0,
-        volumeMatched: false,
-        radioEffect: false,
-        hallEffect: false,
-        emiEffect: false,
-        neighborEffect: false,
-        neighborHall: false,
-        tableMicEffect: false,
-        tableMicRoom: 'wohnzimmer',
-        version: 1
-    };
-}
-/* =========================== CREATE MISSING PROJECT END ============================= */
-
-        // Folder customization functions
-        function showFolderCustomization(folderName) {
-            const customization = folderCustomizations[folderName] || {};
-            const lastFolderName = folderName.split('/').pop() || folderName;
-            
-            // Get current values or defaults
-            let currentIcon = customization.icon;
-            let currentColor = customization.color || '#333333';
-            
-            // Get default icon if no custom one set
-            if (!currentIcon) {
-                if (lastFolderName.toLowerCase().includes('gman')) currentIcon = '👤';
-                else if (lastFolderName.toLowerCase().includes('alyx')) currentIcon = '👩';
-                else if (lastFolderName.toLowerCase().includes('russell')) currentIcon = '👨‍🔬';
-                else if (lastFolderName.toLowerCase().includes('eli')) currentIcon = '👨‍🦳';
-                else if (lastFolderName.toLowerCase().includes('vortigaunt')) currentIcon = '👽';
-                else if (lastFolderName.toLowerCase().includes('combine')) currentIcon = '🤖';
-                else if (lastFolderName.toLowerCase().includes('jeff')) currentIcon = '🧟';
-                else if (lastFolderName.toLowerCase().includes('zombie')) currentIcon = '🧟‍♂️';
-                else currentIcon = '📁';
-            }
-            
-            // Create popup
-            const overlay = document.createElement('div');
-            overlay.className = 'customize-popup-overlay';
-            overlay.onclick = () => closeFolderCustomization();
-            
-            const popup = document.createElement('div');
-            popup.className = 'folder-customize-popup';
-            popup.innerHTML = `
-                <h4>⚙️ Ordner anpassen: ${lastFolderName}</h4>
-                
-                <div class="customize-field">
-                    <label>Icon (Emoji):</label>
-                    <input type="text" id="customIcon" value="${currentIcon}" maxlength="2" onInput="updateCustomizationPreview()">
-                    <span class="icon-preview" id="iconPreview">${currentIcon}</span>
-                </div>
-                
-                <div class="customize-field">
-                    <label>Hintergrundfarbe:</label>
-                    <input type="color" id="customColor" value="${currentColor}" onInput="updateCustomizationPreview()">
-                    <span class="color-preview" id="colorPreview" style="background: ${currentColor};"></span>
-                </div>
-
-                <div class="customize-field">
-                    <label>Voice ID:</label>
-                    <input type="text" id="customVoiceId" value="${customization.voiceId || ''}" placeholder="ElevenLabs-ID">
-                </div>
-                
-                <div class="customize-field">
-                    <label>Voreinstellungen:</label>
-                    <select id="presetSelect" onchange="applyPreset('${folderName}')">
-                        <option value="">-- Voreinstellung wählen --</option>
-                        <option value="gman">G-Man (👤, #4a148c)</option>
-                        <option value="alyx">Alyx (👩, #1a237e)</option>
-                        <option value="russell">Russell (👨‍🔬, #00695c)</option>
-                        <option value="eli">Eli (👨‍🦳, #e65100)</option>
-                        <option value="vortigaunt">Vortigaunt (👽, #263238)</option>
-                        <option value="combine">Combine (🤖, #b71c1c)</option>
-                        <option value="jeff">Jeff (🧟, #2e7d32)</option>
-                        <option value="zombie">Zombie (🧟‍♂️, #424242)</option>
-                        <option value="folder">Standard (📁, #333333)</option>
-                    </select>
-                </div>
-                
-                <div class="customize-buttons">
-                    <button class="btn btn-secondary" onclick="resetFolderCustomization('${folderName}')">Zurücksetzen</button>
-                    <button class="btn btn-secondary" onclick="closeFolderCustomization()">Abbrechen</button>
-                    <button class="btn btn-success" onclick="saveFolderCustomization('${folderName}')">Speichern</button>
-                </div>
-            `;
-            
-            popup.onclick = (e) => e.stopPropagation();
-            
-            document.body.appendChild(overlay);
-            document.body.appendChild(popup);
-
-            // Fokussiere das Icon-Feld
-            popup.querySelector('#customIcon').focus();
-        }
-
-        function updateCustomizationPreview() {
-            const iconInput = document.getElementById('customIcon');
-            const colorInput = document.getElementById('customColor');
-            const iconPreview = document.getElementById('iconPreview');
-            const colorPreview = document.getElementById('colorPreview');
-            
-            if (iconInput && iconPreview) {
-                iconPreview.textContent = iconInput.value || '📁';
-            }
-            
-            if (colorInput && colorPreview) {
-                colorPreview.style.background = colorInput.value;
-            }
-        }
-
-        function applyPreset(folderName) {
-            const presetSelect = document.getElementById('presetSelect');
-            const iconInput = document.getElementById('customIcon');
-            const colorInput = document.getElementById('customColor');
-            
-            const presets = {
-                'gman': { icon: '👤', color: '#4a148c' },
-                'alyx': { icon: '👩', color: '#1a237e' },
-                'russell': { icon: '👨‍🔬', color: '#00695c' },
-                'eli': { icon: '👨‍🦳', color: '#e65100' },
-                'vortigaunt': { icon: '👽', color: '#263238' },
-                'combine': { icon: '🤖', color: '#b71c1c' },
-                'jeff': { icon: '🧟', color: '#2e7d32' },
-                'zombie': { icon: '🧟‍♂️', color: '#424242' },
-                'folder': { icon: '📁', color: '#333333' }
-            };
-            
-            const preset = presets[presetSelect.value];
-            if (preset) {
-                iconInput.value = preset.icon;
-                colorInput.value = preset.color;
-                updateCustomizationPreview();
-            }
-        }
-
-        function saveFolderCustomization(folderName) {
-            const iconInput = document.getElementById('customIcon');
-            const colorInput = document.getElementById('customColor');
-            const voiceInput = document.getElementById('customVoiceId');
-
-            folderCustomizations[folderName] = {
-                icon: iconInput.value || '📁',
-                color: colorInput.value || '#333333',
-                voiceId: voiceInput.value.trim()
-            };
-            if (!folderCustomizations[folderName].voiceId) {
-                delete folderCustomizations[folderName].voiceId;
-            }
-            
-            saveFolderCustomizations();
-            closeFolderCustomization();
-            
-            // Refresh the folder view
-            if (document.getElementById('folderGrid').style.display !== 'none') {
-                showFolderGrid();
-            } else {
-                showFolderFiles(folderName);
-            }
-            
-            // Refresh main table to show updated badges
-            renderFileTable();
-            
-            updateStatus('Ordner-Anpassung gespeichert');
-        }
-
-        function resetFolderCustomization(folderName) {
-            if (confirm('Möchten Sie die Anpassungen für diesen Ordner wirklich zurücksetzen?')) {
-                delete folderCustomizations[folderName];
-                saveFolderCustomizations();
-                closeFolderCustomization();
-                
-                // Refresh the folder view
-                if (document.getElementById('folderGrid').style.display !== 'none') {
-                    showFolderGrid();
-                } else {
-                    showFolderFiles(folderName);
-                }
-                
-                // Refresh main table to show updated badges
-                renderFileTable();
-                
-                updateStatus('Ordner-Anpassung zurückgesetzt');
-            }
-        }
-
-        function closeFolderCustomization() {
-            const overlay = document.querySelector('.customize-popup-overlay');
-            const popup = document.querySelector('.folder-customize-popup');
-            
-            if (overlay) overlay.remove();
-            if (popup) popup.remove();
-        }
-
-        // Import/Export functions
-        function showImportDialog() {
-            document.getElementById('importDialog').classList.remove('hidden');
-            document.getElementById('columnSelection').style.display = 'none';
-            document.getElementById('analyzeDataBtn').style.display = 'block';
-            document.getElementById('startImportBtn').style.display = 'none';
-            const field = document.getElementById('importData');
-            field.value = '';
-            field.focus();
-        }
-
-        async function showCcImportDialog() {
-            const enPath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_english.txt') : '../closecaption/closecaption_english.txt';
-            const dePath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_german.txt') : '../closecaption/closecaption_german.txt';
-
-            let enOk = false, deOk = false;
-            if (isElectron) {
-                enOk = window.electronAPI.fsExists(enPath);
-                deOk = window.electronAPI.fsExists(dePath);
-            } else {
-                try { enOk = (await fetch(enPath, { method: 'HEAD' })).ok; } catch (e) { enOk = false; }
-                try { deOk = (await fetch(dePath, { method: 'HEAD' })).ok; } catch (e) { deOk = false; }
-            }
-
-            document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
-            document.getElementById('ccStatusDe').textContent = deOk ? '✅ vorhanden' : '❌ fehlt';
-            document.getElementById('ccImportDialog').classList.remove('hidden');
-        }
-
-        function closeCcImportDialog() {
-            document.getElementById('ccImportDialog').classList.add('hidden');
-        }
-
-        function closeImportDialog() {
-            document.getElementById('importDialog').classList.add('hidden');
-            document.getElementById('importData').value = '';
-            document.getElementById('columnSelection').style.display = 'none';
-            document.getElementById('analyzeDataBtn').style.display = 'block';
-            document.getElementById('startImportBtn').style.display = 'none';
-        }
-
-        let parsedImportData = null;
-        let detectedColumns = null;
-
-        function analyzeImportData() {
-            const data = document.getElementById('importData').value.trim();
-            if (!data) {
-                alert('Bitte fügen Sie erst Daten ein!');
-                return;
-            }
-            
-            try {
-                // Parse the data
-                if (data.includes('{|') && data.includes('|-') && data.includes('|')) {
-                    // Wiki table format
-                    parsedImportData = parseWikiTable(data);
-                } else {
-                    // Try pipe format
-                    parsedImportData = parsePipeFormat(data);
-                }
-                
-                if (!parsedImportData || parsedImportData.length === 0) {
-                    alert('Keine gültigen Daten gefunden!\n\nUnterstützte Formate:\n• Wiki-Tabelle\n• Pipe-Format (Datei|Text|Text)');
-                    return;
-                }
-                
-                // Detect columns
-                detectedColumns = detectColumns(parsedImportData);
-                
-                if (detectedColumns.filenameColumn === -1) {
-                    alert('Keine Dateinamen-Spalte gefunden!\n\nDateinamen sollten erkennbar sein als:\n• Code-Tags: <code>dateiname</code>\n• Dateinamen mit Zahlen: 02_01103\n• Dateinamen mit Erweiterung: datei.mp3');
-                    return;
-                }
-                
-                // Show column selection UI
-                setupColumnSelection();
-                
-            } catch (error) {
-                console.error('Import analysis error:', error);
-                alert('Fehler beim Analysieren der Daten: ' + error.message);
-            }
-        }
-
-        function parseWikiTable(data) {
-            const rows = [];
-            
-            // Split by row separators
-            const lines = data.split('\n');
-            let currentRow = [];
-            let inTableRow = false;
-            
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                
-                // Skip table start/end and headers
-                if (line.startsWith('{|') || line.startsWith('|}') || line.startsWith('!')) {
-                    continue;
-                }
-                
-                // Row separator
-                if (line === '|-') {
-                    if (currentRow.length > 0) {
-                        rows.push([...currentRow]);
-                        currentRow = [];
-                    }
-                    inTableRow = true;
-                    continue;
-                }
-                
-                // Cell content
-                if (line.startsWith('|') && inTableRow) {
-                    let cellContent = line.substring(1).trim();
-                    
-                    // Remove HTML comments
-                    cellContent = cellContent.replace(/<!--.*?-->/g, '').trim();
-                    
-                    // Clean up code tags
-                    cellContent = cellContent.replace(/<\/?code>/g, '');
-                    
-                    // Skip empty cells
-                    if (cellContent && cellContent !== '|') {
-                        currentRow.push(cellContent);
-                    }
-                }
-            }
-            
-            // Add last row if exists
-            if (currentRow.length > 0) {
-                rows.push(currentRow);
-            }
-            
-            // Filter out rows with less than 2 columns
-            return rows.filter(row => row.length >= 2);
-        }
-
-        function parsePipeFormat(data) {
-            const lines = data.split('\n');
-            const rows = [];
-            
-            for (const line of lines) {
-                const trimmed = line.trim();
-                if (trimmed && trimmed.includes('|')) {
-                    const parts = trimmed.split('|').map(p => p.trim()).filter(p => p.length > 0);
-                    if (parts.length >= 2) {
-                        rows.push(parts);
-                    }
-                }
-            }
-            
-            return rows;
-        }
-
-        function detectColumns(rows) {
-            const columnCount = Math.max(...rows.map(row => row.length));
-            
-            // Intelligent filename detection with database comparison
-            let bestFilenameColumn = -1;
-            let bestScore = -1;
-            
-            for (let col = 0; col < columnCount; col++) {
-                let score = 0;
-                let sampleCount = 0;
-                
-                for (const row of rows.slice(0, Math.min(10, rows.length))) {
-                    if (row[col]) {
-                        const cell = row[col].trim();
-                        sampleCount++;
-                        
-                        // Pattern-based scoring
-                        if (/^\d+[_\d]*$/.test(cell)) { // Numbers with underscores (02_01103)
-                            score += 5;
-                        } else if (/^[a-zA-Z0-9_\-]+\.(mp3|wav|ogg)$/i.test(cell)) { // Audio files
-                            score += 8;
-                        } else if (/^[a-zA-Z0-9_\-]{3,15}$/.test(cell)) { // Short alphanumeric codes
-                            score += 2;
-                        } else if (cell.length > 50) { // Long text unlikely to be filename
-                            score -= 3;
-                        } else if (/[.!?,:;]/.test(cell)) { // Punctuation suggests text content
-                            score -= 2;
-                        }
-                        
-                        // Database-based scoring - check if similar files exist
-                        const cleanCell = cell.replace(/\.(mp3|wav|ogg)$/i, '');
-                        for (const dbFilename of Object.keys(filePathDatabase)) {
-                            const dbClean = dbFilename.replace(/\.(mp3|wav|ogg)$/i, '');
-                            if (dbClean.includes(cleanCell) || cleanCell.includes(dbClean)) {
-                                score += 10; // Strong database match
-                                break;
-                            }
-                        }
-                        
-                        // Check for exact database matches
-                        if (filePathDatabase[cell] || 
-                            filePathDatabase[cell + '.mp3'] || 
-                            filePathDatabase[cell + '.wav']) {
-                            score += 15; // Perfect database match
-                        }
-                    }
-                }
-                
-                // Normalize score by sample count
-                const normalizedScore = sampleCount > 0 ? score / sampleCount : -999;
-                
-                if (normalizedScore > bestScore) {
-                    bestScore = normalizedScore;
-                    bestFilenameColumn = col;
-                }
-            }
-            
-            return {
-                suggestedFilenameColumn: bestFilenameColumn,
-                columnCount: columnCount,
-                confidence: bestScore
-            };
-        }
-
-        function setupColumnSelection() {
-            const columnSelection = document.getElementById('columnSelection');
-            const filenameSelect = document.getElementById('filenameColumn');
-            const englishSelect = document.getElementById('englishColumn');
-            const germanSelect = document.getElementById('germanColumn');
-            
-            // Clear previous options
-            filenameSelect.innerHTML = '<option value="">-- Bitte auswählen --</option>';
-            englishSelect.innerHTML = '<option value="">-- Bitte auswählen --</option>';
-            germanSelect.innerHTML = '<option value="">-- Keine / Nicht vorhanden --</option>';
-            
-            // Get column headers/samples for preview
-            const sampleRow = parsedImportData[0] || [];
-            const columnCount = detectedColumns.columnCount;
-            const suggestedFilename = detectedColumns.suggestedFilenameColumn;
-            
-            // Add options for each column to all selects
-            for (let i = 0; i < columnCount; i++) {
-                const sample = sampleRow[i] || '';
-                const preview = sample.length > 30 ? sample.substring(0, 30) + '...' : sample;
-                
-                // Check if this looks like filename content for better labeling
-                const isLikelyFilename = (suggestedFilename === i);
-                const confidence = isLikelyFilename ? detectColumnConfidence(i) : '';
-                
-                const optionText = `Spalte ${i + 1}: ${preview}${confidence}`;
-                
-                // Add to all dropdowns
-                filenameSelect.appendChild(new Option(optionText, i));
-                englishSelect.appendChild(new Option(optionText, i));
-                germanSelect.appendChild(new Option(optionText, i));
-            }
-            
-            // Set intelligent suggestions
-            if (suggestedFilename >= 0) {
-                filenameSelect.value = suggestedFilename;
-                
-                // Auto-suggest English column (first non-filename column)
-                const otherColumns = Array.from({length: columnCount}, (_, i) => i).filter(i => i !== suggestedFilename);
-                if (otherColumns.length > 0) {
-                    englishSelect.value = otherColumns[0];
-                }
-                
-                // If there's a third column, suggest it for German
-                if (otherColumns.length > 1) {
-                    germanSelect.value = otherColumns[1];
-                }
-            } else if (columnCount === 2) {
-                // If no clear detection but only 2 columns, suggest both
-                filenameSelect.value = 0;
-                englishSelect.value = 1;
-            }
-            
-            // Generate preview table
-            generatePreviewTable();
-            
-            // Show column selection
-            columnSelection.style.display = 'block';
-            document.getElementById('analyzeDataBtn').style.display = 'none';
-            document.getElementById('startImportBtn').style.display = 'block';
-            
-            const confidenceMsg = detectedColumns.confidence > 5 ? 
-                'Hohe Konfidenz bei Dateinamen-Erkennung' : 
-                'Niedrige Konfidenz - bitte Auswahl prüfen';
-            updateStatus(`Daten analysiert - ${confidenceMsg}`);
-        }
-
-        function detectColumnConfidence(columnIndex) {
-            if (columnIndex !== detectedColumns.suggestedFilenameColumn) return '';
-            
-            if (detectedColumns.confidence > 10) return ' ✅ (sehr sicher)';
-            else if (detectedColumns.confidence > 5) return ' ✅ (sicher)';
-            else if (detectedColumns.confidence > 0) return ' ⚠️ (unsicher)';
-            else return ' ❓ (geraten)';
-        }
-
-        function updatePreviewHighlighting() {
-            generatePreviewTable();
-        }
-
-        function generatePreviewTable() {
-            const previewTable = document.getElementById('previewTableContent');
-            const previewRows = parsedImportData.slice(0, 3);
-            const columnCount = detectedColumns.columnCount;
-            
-            // Get current selections
-            const selectedFilename = parseInt(document.getElementById('filenameColumn').value);
-            const selectedEnglish = parseInt(document.getElementById('englishColumn').value);
-            const selectedGerman = parseInt(document.getElementById('germanColumn').value);
-            
-            let html = '<thead><tr>';
-            for (let i = 0; i < columnCount; i++) {
-                let bgColor = '#2a2a2a';
-                let label = `Spalte ${i + 1}`;
-                
-                if (i === selectedFilename) {
-                    bgColor = '#4caf50';
-                    label += ' (Dateinamen)';
-                } else if (i === selectedEnglish) {
-                    bgColor = '#2196f3';
-                    label += ' (EN Text)';
-                } else if (i === selectedGerman) {
-                    bgColor = '#ff9800';
-                    label += ' (DE Text)';
-                }
-                
-                html += `<th style="padding: 8px; background: ${bgColor}; color: white; font-size: 11px;">
-                    ${label}
-                </th>`;
-            }
-            html += '</tr></thead><tbody>';
-            
-            previewRows.forEach((row, rowIndex) => {
-                html += '<tr>';
-                for (let i = 0; i < columnCount; i++) {
-                    const cellContent = row[i] || '';
-                    const displayContent = cellContent.length > 50 ? cellContent.substring(0, 50) + '...' : cellContent;
-                    
-                    let bgColor = 'transparent';
-                    if (i === selectedFilename) {
-                        bgColor = 'rgba(76, 175, 80, 0.1)';
-                    } else if (i === selectedEnglish) {
-                        bgColor = 'rgba(33, 150, 243, 0.1)';
-                    } else if (i === selectedGerman) {
-                        bgColor = 'rgba(255, 152, 0, 0.1)';
-                    }
-                    
-                    html += `<td style="padding: 8px; border-bottom: 1px solid #444; background: ${bgColor}; font-size: 11px; max-width: 200px; overflow: hidden;">
-                        ${escapeHtml(displayContent)}
-                    </td>`;
-                }
-                html += '</tr>';
-            });
-            
-            html += '</tbody>';
-            previewTable.innerHTML = html;
-        }
-
-
-
-
-function checkFileAccess() {
-    const totalFiles = files.length;
-    const selectedFiles = files.filter(f => f.selected);
-    let accessibleFiles = 0;
-    let inaccessibleFiles = 0;
-    
-    selectedFiles.forEach(file => {
-        // Dynamisch prüfen ob Datei verfügbar ist
-        let isAccessible = false;
-        
-        if (filePathDatabase[file.filename]) {
-            const matchingPaths = filePathDatabase[file.filename].filter(pathInfo => {
-                // Exakte Ordner-Übereinstimmung
-                if (pathInfo.folder === file.folder) {
-                    return true;
-                }
-                
-                // Normalisierte Ordner-Übereinstimmung
-                const normalizedFileFolder = normalizeFolderPath(file.folder);
-                const normalizedDbFolder = normalizeFolderPath(pathInfo.folder);
-                return normalizedFileFolder === normalizedDbFolder;
-            });
-            
-            if (matchingPaths.length > 0) {
-                const bestPath = matchingPaths[0];
-                if (audioFileCache[bestPath.fullPath]) {
-                    isAccessible = true;
-                }
-            }
-        }
-        
-        if (isAccessible) {
-            accessibleFiles++;
-        } else {
-            inaccessibleFiles++;
-        }
-    });
-    
-    const stats = {
-        totalFiles: totalFiles,
-        selectedFiles: selectedFiles.length,
-        accessibleFiles: accessibleFiles,
-        inaccessibleFiles: inaccessibleFiles
-    };
-    
-    debugLog('File Access Stats:', stats);
-    return stats;
-}
-
-        function updateFileAccessStatus() {
-            const accessStatus = document.getElementById('accessStatus');
-            const stats = checkFileAccess();
-            
-            if (stats.selectedFiles === 0) {
-                accessStatus.textContent = '📂 Keine Auswahl';
-                accessStatus.className = 'access-status none';
-                accessStatus.title = 'Keine Dateien ausgewählt - Klicken für Info';
-            } else if (stats.inaccessibleFiles === 0) {
-                accessStatus.textContent = `✅ ${stats.selectedFiles} verfügbar`;
-                accessStatus.className = 'access-status good';
-                accessStatus.title = 'Alle Dateien verfügbar - Export möglich';
-            } else if (stats.accessibleFiles === 0) {
-                accessStatus.textContent = `❌ ${stats.selectedFiles} blockiert`;
-                accessStatus.className = 'access-status error';
-                accessStatus.title = 'Keine Dateien verfügbar - Klicken zum Scannen';
-            } else {
-                accessStatus.textContent = `⚠️ ${stats.accessibleFiles}/${stats.selectedFiles} verfügbar`;
-                accessStatus.className = 'access-status warning';
-                accessStatus.title = `${stats.inaccessibleFiles} Dateien nicht verfügbar - Klicken zum Scannen`;
-            }
-        }
-
-        // Backup and Restore functionality
-// =========================== CREATEBACKUP START ===========================
-        function createBackup(showMsg = false) {
-            const backup = {
-                version: APP_VERSION,
-                date: new Date().toISOString(),
-                projects: projects,
-                textDatabase: textDatabase,
-                filePathDatabase: filePathDatabase,
-                folderCustomizations: folderCustomizations,
-                levelColors: levelColors,
-                levelOrders: levelOrders,
-                levelIcons: levelIcons,
-                autoBackupInterval: autoBackupInterval,
-                autoBackupLimit: autoBackupLimit,
-                ignoredFiles: ignoredFiles,
-                elevenLabsApiKey: elevenLabsApiKey,
-                currentProjectId: currentProject?.id
-            };
-
-            const json = JSON.stringify(backup, null, 2);
-
-            if (window.electronAPI && window.electronAPI.saveBackup) {
-                window.electronAPI.saveBackup(json).then(() => {
-                    enforceBackupLimit();
-                    if (showMsg) updateStatus('Backup erstellt');
-                    loadBackupList();
-                });
-            } else {
-                let list = JSON.parse(storage.getItem('hla_backups') || '[]');
-                const name = `backup_${new Date().toISOString()}.json`;
-                list.push({ name, data: json });
-                if (list.length > autoBackupLimit) list = list.slice(list.length - autoBackupLimit);
-                storage.setItem('hla_backups', JSON.stringify(list));
-                if (showMsg) updateStatus('Backup erstellt');
-                loadBackupList();
-            }
-        }
-// =========================== CREATEBACKUP END =============================
-
-        // Hilfsfunktion: Datum aus Dateinamen ermitteln
-        function parseBackupDate(name) {
-            const m = /^backup_(.+)\.json$/.exec(name);
-            if (!m) return new Date(0);
-            let ts = m[1];
-            // Alte Backups ersetzen Doppelpunkte und Punkte durch Bindestriche
-            if (/T\d{2}-\d{2}-\d{2}-\d{3}Z$/.test(ts)) {
-                ts = ts.replace(/T(\d{2})-(\d{2})-(\d{2})-(\d{3})Z/, 'T$1:$2:$3.$4Z');
-            }
-            const d = new Date(ts);
-            return isNaN(d) ? new Date(0) : d;
-        }
-
-// =========================== ENFORCEBACKUPLIMIT START =====================
-        async function enforceBackupLimit() {
-            if (window.electronAPI && window.electronAPI.listBackups) {
-                const files = await window.electronAPI.listBackups();
-                if (files.length > autoBackupLimit) {
-                    const remove = files.slice(autoBackupLimit);
-                    for (const f of remove) {
-                        await window.electronAPI.deleteBackup(f);
-                    }
-                }
-            }
-        }
-// =========================== ENFORCEBACKUPLIMIT END =======================
-
-// =========================== SOUNDBACKUP START ============================
-        async function createSoundBackup() {
-            if (!window.electronAPI || !window.electronAPI.createSoundBackup) return;
-            const prog = document.getElementById('soundBackupProgress');
-            const fill = document.getElementById('soundBackupFill');
-            const status = document.getElementById('soundBackupStatus');
-            if (prog) {
-                prog.classList.add('active');
-                fill.style.width = '0%';
-                status.textContent = 'Erstelle Sound-Backup...';
-            }
-            await window.electronAPI.createSoundBackup();
-            if (prog) {
-                prog.classList.remove('active');
-                fill.style.width = '0%';
-                status.textContent = '';
-            }
-            loadSoundBackupList();
-            updateStatus('Sound-Backup erstellt');
-        }
-
-        async function loadSoundBackupList() {
-            const listDiv = document.getElementById('soundBackupList');
-            if (!listDiv) return;
-            listDiv.innerHTML = '';
-            if (!window.electronAPI || !window.electronAPI.listSoundBackups) return;
-            const files = await window.electronAPI.listSoundBackups();
-            files.forEach(({ name, size, mtime }, idx) => {
-                const item = document.createElement('div');
-                item.className = 'backup-item' + (idx === 0 ? ' latest' : '');
-                const label = document.createElement('span');
-                const date = new Date(mtime);
-                const mb = (size / (1024 * 1024)).toFixed(1);
-                label.textContent = `${date.toLocaleString()} – ${mb} MB`;
-                label.title = name;
-                const del = document.createElement('button');
-                del.textContent = 'Löschen';
-                del.onclick = () => { deleteSoundBackup(name); };
-                item.appendChild(label);
-                item.appendChild(del);
-                listDiv.appendChild(item);
-            });
-        }
-
-        async function deleteSoundBackup(name) {
-            if (window.electronAPI && window.electronAPI.deleteSoundBackup) {
-                await window.electronAPI.deleteSoundBackup(name);
-                loadSoundBackupList();
-            }
-        }
-// =========================== SOUNDBACKUP END ==============================
-
-// =========================== LOADBACKUPLIST START ========================
-        async function loadBackupList() {
-            const listDiv = document.getElementById('backupList');
-            listDiv.innerHTML = '';
-            let files = [];
-            if (window.electronAPI && window.electronAPI.listBackups) {
-                files = await window.electronAPI.listBackups();
-            } else {
-                files = (JSON.parse(storage.getItem('hla_backups') || '[]')).map(b => b.name);
-            }
-            // Nach Datum sortieren, neuestes zuerst
-            files.sort((a, b) => parseBackupDate(b) - parseBackupDate(a));
-
-            files.slice(0, 10).forEach((name, idx) => {
-                const item = document.createElement('div');
-                item.className = 'backup-item' + (idx === 0 ? ' latest' : '');
-                const label = document.createElement('span');
-
-                const date = parseBackupDate(name);
-                if (date.getTime() > 0) {
-                    label.textContent = date.toLocaleString();
-                } else {
-                    label.textContent = name;
-                }
-                const restoreBtn = document.createElement('button');
-                restoreBtn.textContent = 'Wiederherstellen';
-                restoreBtn.onclick = () => restoreFromBackup(name);
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Löschen';
-                deleteBtn.onclick = () => { deleteBackup(name); };
-                item.appendChild(label);
-                item.appendChild(restoreBtn);
-                item.appendChild(deleteBtn);
-                listDiv.appendChild(item);
-            });
-            document.getElementById('backupInterval').value = autoBackupInterval;
-            document.getElementById('backupLimit').value = autoBackupLimit;
-        }
-// =========================== LOADBACKUPLIST END ==========================
-
-// =========================== SHOWBACKUPDIALOG START ======================
-        function showBackupDialog() {
-            document.getElementById('backupDialog').classList.remove('hidden');
-            loadBackupList();
-            loadSoundBackupList();
-            document.getElementById('backupInterval').focus();
-            document.getElementById('backupInterval').onchange = () => {
-                autoBackupInterval = parseInt(document.getElementById('backupInterval').value) || 1;
-                storage.setItem('hla_autoBackupInterval', autoBackupInterval);
-                startAutoBackup();
-            };
-            document.getElementById('backupLimit').onchange = () => {
-                autoBackupLimit = parseInt(document.getElementById('backupLimit').value) || 1;
-                storage.setItem('hla_autoBackupLimit', autoBackupLimit);
-                enforceBackupLimit();
-                startAutoBackup();
-            };
-            const sel = document.getElementById('lineEndingSelect');
-            sel.value = csvLineEnding;
-            sel.onchange = () => {
-                csvLineEnding = sel.value;
-                storage.setItem('hla_lineEnding', csvLineEnding);
-            };
-        }
-
-        function closeBackupDialog() {
-            document.getElementById('backupDialog').classList.add('hidden');
-        }
-
-        function openBackupFolder() {
-            if (window.electronAPI && window.electronAPI.openBackupFolder) {
-                window.electronAPI.openBackupFolder();
-            } else {
-                // Fallback fuer Browser-Version: oeffnet den Unterordner "backups" im neuen Tab
-                const url = new URL('backups/', window.location.href).toString();
-                window.open(url, '_blank');
-            }
-        }
-
-        // Backup aus Datei laden
-        function initiateBackupUpload() {
-            document.getElementById('backupUploadInput').click();
-        }
-
-        // Eingelesene Backup-Datei verarbeiten
-        async function handleBackupUpload(input) {
-            const file = input.files[0];
-            if (!file) return;
-            try {
-                const text = await file.text();
-                const backup = JSON.parse(text);
-                applyBackupData(backup);
-            } catch (err) {
-                alert('Fehler beim Importieren: ' + err.message);
-            }
-            input.value = '';
-        }
-
-        // =========================== SHOWAPIDIALOG START ======================
-        async function showApiDialog() {
-            document.getElementById('apiDialog').classList.remove('hidden');
-            document.getElementById('apiKeyInput').value = elevenLabsApiKey;
-
-            await validateApiKey();
-
-            // Vor dem Aufbau verwaiste Anpassungen entfernen
-            cleanupOrphanCustomizations();
-
-            const list = document.getElementById('voiceIdList');
-            list.innerHTML = '';
-
-            // Alle bekannten Ordner sammeln – projektübergreifend
-            const folderSet = new Set();
-            Object.values(filePathDatabase).forEach(paths => {
-                paths.forEach(p => folderSet.add(p.folder));
-            });
-            const folders = Array.from(folderSet).sort();
-
-            const groups = { combine: [], vortigaunt: [], citizen: [], other: [] };
-            folders.forEach(name => {
-                const lower = name.toLowerCase();
-                if (lower.includes('combine')) groups.combine.push(name);
-                else if (lower.includes('vort')) groups.vortigaunt.push(name);
-                else if (lower.includes('citizen') || lower.includes('civilian')) groups.citizen.push(name);
-                else groups.other.push(name);
-            });
-
-            const order = [
-                ['combine', 'Combine'],
-                ['vortigaunt', 'Vortigaunts'],
-                ['citizen', 'Zivilisten'],
-                ['other', 'Sonstige']
-            ];
-
-            order.forEach(([key, label]) => {
-                if (groups[key].length === 0) return;
-                const details = document.createElement('details');
-                const summary = document.createElement('summary');
-                summary.textContent = label;
-                details.appendChild(summary);
-
-                const container = document.createElement('div');
-                container.className = 'voice-group';
-                groups[key].forEach(name => {
-                    const cust = folderCustomizations[name] || {};
-                    const id = cust.voiceId || '';
-                    const row = document.createElement('div');
-                    row.className = 'voice-id-item';
-
-                    const lab = document.createElement('label');
-                    lab.textContent = name;
-                    const select = document.createElement('select');
-                    select.dataset.folder = name;
-                    const empty = document.createElement('option');
-                    empty.value = '';
-                    empty.textContent = '-- wählen --';
-                    select.appendChild(empty);
-                    [...availableVoices, ...customVoices].forEach(v => {
-                        const opt = document.createElement('option');
-                        opt.value = v.voice_id;
-                        opt.textContent = v.name;
-                        select.appendChild(opt);
-                    });
-                    select.value = id;
-                    row.appendChild(lab);
-                    row.appendChild(select);
-                    container.appendChild(row);
-                });
-                details.appendChild(container);
-                list.appendChild(details);
-            });
-
-        const customList = document.getElementById('customVoicesList');
-        customList.innerHTML = '';
-            customVoices.forEach(v => {
-                const item = document.createElement('div');
-                item.className = 'custom-voice-item';
-
-                const idInput = document.createElement('input');
-                idInput.type = 'text';
-                idInput.value = v.voice_id;
-                idInput.className = 'custom-voice-id';
-
-                const nameInput = document.createElement('input');
-                nameInput.type = 'text';
-                nameInput.value = v.name;
-                nameInput.className = 'custom-voice-name';
-
-                const fetchBtn = document.createElement('button');
-                fetchBtn.textContent = '🔄';
-                fetchBtn.onclick = () => fetchVoiceName(fetchBtn);
-
-                const delBtn = document.createElement('button');
-                delBtn.textContent = '🗑';
-                delBtn.onclick = () => item.remove();
-
-                item.appendChild(idInput);
-                item.appendChild(nameInput);
-                item.appendChild(fetchBtn);
-                item.appendChild(delBtn);
-                customList.appendChild(item);
-            });
-
-            updateVoiceSettingsDisplay();
-
-            document.getElementById('apiKeyInput').focus();
-        }
-
-        async function saveApiSettings() {
-            elevenLabsApiKey = document.getElementById('apiKeyInput').value.trim();
-            storage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
-
-            document.querySelectorAll('#voiceIdList select').forEach(sel => {
-                const folder = sel.dataset.folder;
-                const val = sel.value.trim();
-                if (!folderCustomizations[folder]) folderCustomizations[folder] = {};
-                if (val) {
-                    folderCustomizations[folder].voiceId = val;
-                } else {
-                    delete folderCustomizations[folder].voiceId;
-                }
-            });
-            const newVoices = [];
-            document.querySelectorAll('#customVoicesList .custom-voice-item').forEach(item => {
-                const id = item.querySelector('.custom-voice-id').value.trim();
-                if (!id) return;
-                const name = item.querySelector('.custom-voice-name').value.trim() || id;
-                newVoices.push({ voice_id: id, name });
-            });
-            customVoices = newVoices;
-            storage.setItem('hla_customVoices', JSON.stringify(customVoices));
-
-            saveFolderCustomizations();
-            await validateApiKey();
-            closeApiDialog();
-            updateStatus('API-Einstellungen gespeichert');
-        }
-
-        function closeApiDialog() {
-            document.getElementById('apiDialog').classList.add('hidden');
-        }
-        // =========================== SHOWAPIDIALOG END ========================
-        // Prueft den eingegebenen API-Key und laedt die verfuegbaren Stimmen
-        async function validateApiKey() {
-            const status = document.getElementById('apiKeyStatus');
-            status.textContent = '⏳';
-            try {
-                const res = await fetch(`${API}/voices`, {
-                    headers: { 'xi-api-key': document.getElementById('apiKeyInput').value.trim() }
-                });
-                if (!res.ok) throw new Error('Fehler');
-                const data = await res.json();
-                availableVoices = data.voices || [];
-                // Eigene Stimmen anhaengen
-                availableVoices.push(...customVoices);
-                status.textContent = '✔';
-                status.style.color = '#6cc644';
-                return true;
-            } catch (e) {
-                // Bei Fehler nur eigene Stimmen anzeigen
-                availableVoices = [...customVoices];
-                status.textContent = '✖';
-                status.style.color = '#e74c3c';
-                return false;
-            }
-        }
-
-        function testApiKey() {
-            const btn = document.getElementById('testApiKeyBtn');
-            btn.textContent = 'Teste...';
-            btn.disabled = true;
-            validateApiKey().then(ok => {
-                btn.disabled = false;
-                if (ok) {
-                    btn.textContent = 'Alles in Ordnung';
-                    btn.style.background = '#4caf50';
-                } else {
-                    btn.textContent = 'Ungültig';
-                    btn.style.background = '#d32f2f';
-                }
-            });
-        }
-
-        function toggleApiKey() {
-            const input = document.getElementById('apiKeyInput');
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-
-        function clearAllVoiceIds() {
-            document.querySelectorAll('#voiceIdList select').forEach(sel => sel.value = '');
-        }
-
-        async function testVoiceIds() {
-            updateStatus('Teste Stimmen...');
-            for (const sel of document.querySelectorAll('#voiceIdList select')) {
-                const id = sel.value.trim();
-                if (!id) continue;
-                try {
-                    const res = await fetch(`${API}/voices/${id}`, {
-                        headers: { 'xi-api-key': elevenLabsApiKey }
-                    });
-                    if (!res.ok) throw new Error('Fehler');
-                } catch (e) {
-                    updateStatus('Fehler bei Stimme ' + id);
-                    return;
-                }
-            }
-            updateStatus('Alle Stimmen OK');
-        }
-
-        // Fuegt eine eigene Voice-ID hinzu
-        function addCustomVoice() {
-            document.getElementById('newVoiceId').value = '';
-            document.getElementById('newVoiceName').value = '';
-            document.getElementById('addVoiceDialog').classList.remove('hidden');
-            document.getElementById('newVoiceId').focus();
-        }
-
-        function closeAddVoiceDialog() {
-            document.getElementById('addVoiceDialog').classList.add('hidden');
-        }
-
-        // =========================== GPTAPIDIALOG START ======================
-        async function showGptApiDialog() {
-            if (window.electronAPI?.loadOpenaiSettings) {
-                const data = await window.electronAPI.loadOpenaiSettings();
-                openaiApiKey = data.key || '';
-                openaiModel = data.model || '';
-            }
-            const select = document.getElementById('gptModelSelect');
-            const refreshBtn = document.getElementById('refreshModelsBtn');
-            select.innerHTML = '';
-            if (window.electronAPI?.loadOpenaiModels) {
-                const cache = await window.electronAPI.loadOpenaiModels();
-                if (cache && Array.isArray(cache.data)) fillModelSelect(cache.data);
-            }
-            select.value = openaiModel;
-            const disabled = !openaiApiKey;
-            select.disabled = disabled;
-            refreshBtn.disabled = disabled;
-            refreshBtn.onclick = refreshModelList;
-            document.getElementById('openaiKeyInput').value = openaiApiKey;
-            document.getElementById('openaiKeyStatus').textContent = '';
-            document.getElementById('gptApiDialog').classList.remove('hidden');
-            document.getElementById('openaiKeyInput').focus();
-        }
-
-        function closeGptApiDialog() {
-            document.getElementById('gptApiDialog').classList.add('hidden');
-        }
-
-        function toggleOpenaiKey() {
-            const inp = document.getElementById('openaiKeyInput');
-            inp.type = inp.type === 'password' ? 'text' : 'password';
-        }
-
-        async function testGptApiKey() {
-            const btn = document.getElementById('testOpenaiKeyBtn');
-            const status = document.getElementById('openaiKeyStatus');
-            const key = document.getElementById('openaiKeyInput').value.trim();
-            btn.textContent = 'Teste...';
-            btn.disabled = true;
-            status.textContent = '⏳';
-            try {
-                const ok = typeof window.testGptKey === 'function'
-                    ? await window.testGptKey(key)
-                    : false;
-                if (ok) {
-                    status.textContent = '✔';
-                    status.style.color = '#6cc644';
-                    const models = typeof window.fetchGptModels === 'function'
-                        ? await window.fetchGptModels(key)
-                        : [];
-                    fillModelSelect(models);
-                    document.getElementById('gptModelSelect').disabled = false;
-                    document.getElementById('refreshModelsBtn').disabled = false;
-                } else {
-                    status.textContent = '✖';
-                    status.style.color = '#e74c3c';
-                }
-            } catch (e) {
-                status.textContent = '✖';
-                status.style.color = '#e74c3c';
-                if (window.showErrorBanner) window.showErrorBanner(String(e));
-            }
-            btn.disabled = false;
-            btn.textContent = 'Key testen';
-        }
-
-        async function refreshModelList() {
-            const key = document.getElementById('openaiKeyInput').value.trim();
-            if (!key) return;
-            try {
-                const models = typeof window.fetchGptModels === 'function'
-                    ? await window.fetchGptModels(key, true)
-                    : [];
-                fillModelSelect(models);
-            } catch (e) {
-                if (window.showErrorBanner) window.showErrorBanner(String(e));
-            }
-        }
-
-        function fillModelSelect(list) {
-            const select = document.getElementById('gptModelSelect');
-            if (!select) return;
-            select.innerHTML = '';
-            (list || []).sort((a, b) => a.id.localeCompare(b.id)).forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.id;
-                opt.textContent = m.id;
-                select.appendChild(opt);
-            });
-            if (openaiModel) select.value = openaiModel;
-        }
-
-        async function saveGptApiSettings() {
-            openaiApiKey = document.getElementById('openaiKeyInput').value.trim();
-            openaiModel = document.getElementById('gptModelSelect').value;
-            if (window.electronAPI?.saveOpenaiSettings) {
-                await window.electronAPI.saveOpenaiSettings({ key: openaiApiKey, model: openaiModel });
-            }
-            closeGptApiDialog();
-            updateStatus('GPT-Einstellungen gespeichert');
-        }
-        // =========================== GPTAPIDIALOG END ========================
-
-        async function fetchNewVoiceName() {
-            const id = document.getElementById('newVoiceId').value.trim();
-            if (!id || !elevenLabsApiKey) return;
-            try {
-                const res = await fetch(`${API}/voices/${id}`, {
-                    headers: { 'xi-api-key': elevenLabsApiKey }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    document.getElementById('newVoiceName').value = data.name || '';
-                }
-            } catch (e) {}
-        }
-
-        async function fetchVoiceName(btn) {
-            const item = btn.parentElement;
-            const id = item.querySelector('.custom-voice-id').value.trim();
-            const nameInput = item.querySelector('.custom-voice-name');
-            if (!id || !elevenLabsApiKey) return;
-            try {
-                const res = await fetch(`${API}/voices/${id}`, {
-                    headers: { 'xi-api-key': elevenLabsApiKey }
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    nameInput.value = data.name || '';
-                }
-            } catch (e) {}
-        }
-
-        async function confirmAddVoice() {
-            const id = document.getElementById('newVoiceId').value.trim();
-            let name = document.getElementById('newVoiceName').value.trim();
-            if (!id) return;
-            if (!name && elevenLabsApiKey) {
-                try {
-                    const res = await fetch(`${API}/voices/${id}`, {
-                        headers: { 'xi-api-key': elevenLabsApiKey }
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        name = data.name || '';
-                    }
-                } catch (e) {}
-            }
-            if (!name) name = id;
-            const neu = { voice_id: id, name };
-            customVoices.push(neu);
-            storage.setItem('hla_customVoices', JSON.stringify(customVoices));
-            availableVoices.push(neu);
-            closeAddVoiceDialog();
-            showApiDialog();
-        }
-
-        function showHistoryDialog(file) {
-            currentHistoryPath = getFullPath(file);
-            document.getElementById('historyDialog').classList.remove('hidden');
-            loadHistoryList(currentHistoryPath);
-        }
-
-        function closeHistoryDialog() {
-            document.getElementById('historyDialog').classList.add('hidden');
-            currentHistoryPath = null;
-        }
-
-        async function loadHistoryList(relPath) {
-            const listDiv = document.getElementById('historyList');
-            listDiv.innerHTML = '';
-            if (!window.electronAPI || !window.electronAPI.listDeHistory) {
-                listDiv.textContent = 'Nur in der Desktop-Version verfügbar';
-                return;
-            }
-            // Aktuelle Datei anzeigen
-            const currentItem = document.createElement('div');
-            currentItem.className = 'history-item';
-            const curLabel = document.createElement('span');
-            curLabel.textContent = 'Aktuelle Datei';
-            const curPlay = document.createElement('button');
-            curPlay.textContent = '▶';
-            curPlay.onclick = () => playCurrentSample(relPath);
-            currentItem.appendChild(curLabel);
-            currentItem.appendChild(curPlay);
-            listDiv.appendChild(currentItem);
-
-            const files = await window.electronAPI.listDeHistory(relPath);
-            files.forEach(name => {
-                const item = document.createElement('div');
-                item.className = 'history-item';
-                const label = document.createElement('span');
-                label.textContent = name;
-                const playBtn = document.createElement('button');
-                playBtn.textContent = '▶';
-                playBtn.onclick = () => playHistorySample(relPath, name);
-                const restoreBtn = document.createElement('button');
-                restoreBtn.textContent = 'Wiederherstellen';
-                restoreBtn.onclick = () => restoreHistoryVersion(relPath, name);
-                item.appendChild(label);
-                item.appendChild(playBtn);
-                item.appendChild(restoreBtn);
-                listDiv.appendChild(item);
-            });
-        }
-
-        function playHistorySample(relPath, name) {
-            const audio = document.getElementById('audioPlayer');
-            audio.src = `sounds/DE-History/${relPath}/${name}`;
-            audio.play();
-        }
-
-        function playCurrentSample(relPath) {
-            const audio = document.getElementById('audioPlayer');
-            audio.src = `sounds/DE/${relPath}`;
-            audio.play();
-        }
-
-        async function restoreHistoryVersion(relPath, name) {
-            if (!window.electronAPI || !window.electronAPI.restoreDeHistory) {
-                alert('Nur in der Desktop-Version verfügbar');
-                return;
-            }
-            await window.electronAPI.restoreDeHistory(relPath, name);
-            setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
-            await updateHistoryCache(relPath);
-            renderFileTable();
-            loadHistoryList(relPath);
-            updateStatus('Version wiederhergestellt');
-        }
-// =========================== SHOWBACKUPDIALOG END ========================
-
-// =========================== RESTOREFROMBACKUP START =====================
-        async function restoreFromBackup(name) {
-            try {
-                let content;
-                if (window.electronAPI && window.electronAPI.readBackup) {
-                    content = await window.electronAPI.readBackup(name);
-                } else {
-                    const list = JSON.parse(storage.getItem('hla_backups') || '[]');
-                    const entry = list.find(b => b.name === name);
-                    if (!entry) return;
-                    content = entry.data;
-                }
-                const backup = JSON.parse(content);
-                applyBackupData(backup);
-            } catch (err) {
-                alert('Fehler beim Wiederherstellen: ' + err.message);
-            }
-        }
-
-        async function deleteBackup(name) {
-            if (window.electronAPI && window.electronAPI.deleteBackup) {
-                await window.electronAPI.deleteBackup(name);
-            } else {
-                let list = JSON.parse(storage.getItem('hla_backups') || '[]');
-                list = list.filter(b => b.name !== name);
-                storage.setItem('hla_backups', JSON.stringify(list));
-            }
-            loadBackupList();
-        }
-// =========================== RESTOREFROMBACKUP END =======================
-
-// =========================== STARTAUTOBACKUP START =======================
-        function startAutoBackup() {
-            if (autoBackupTimer) clearInterval(autoBackupTimer);
-            autoBackupTimer = setInterval(() => createBackup(false), autoBackupInterval * 60000);
-        }
-// =========================== STARTAUTOBACKUP END =========================
-
-// =========================== APPLYBACKUPDATA START =======================
-        function applyBackupData(backup) {
-            if (!backup.version || !backup.projects) {
-                throw new Error('Ungültiges Backup-Format');
-            }
-            if (!confirm('Dies wird alle aktuellen Daten überschreiben. Fortfahren?')) {
-                return;
-            }
-
-            projects = backup.projects;
-            textDatabase = backup.textDatabase || {};
-            filePathDatabase = backup.filePathDatabase || {};
-            folderCustomizations = backup.folderCustomizations || {};
-            levelColors = backup.levelColors || {};
-            levelOrders = backup.levelOrders || {};
-            levelIcons = backup.levelIcons || {};
-            autoBackupInterval = backup.autoBackupInterval || autoBackupInterval;
-            autoBackupLimit = backup.autoBackupLimit || autoBackupLimit;
-            ignoredFiles = backup.ignoredFiles || {};
-            elevenLabsApiKey = backup.elevenLabsApiKey || elevenLabsApiKey;
-
-            let migrationNeeded = false;
-            projects.forEach(project => {
-                // Icon-Felder aus alten Backups entfernen
-                if (project.hasOwnProperty('icon')) {
-                    delete project.icon;
-                    migrationNeeded = true;
-                }
-                if (!project.hasOwnProperty('color')) {
-                    project.color = '#333333';
-                    migrationNeeded = true;
-                }
-            });
-            if (migrationNeeded) {
-                debugLog('Wiederhergestellte Projekte migriert: Icons und Farben hinzugefügt');
-            }
-
-            saveProjects();
-            saveTextDatabase();
-            saveFilePathDatabase();
-            saveFolderCustomizations();
-            saveLevelColors();
-            saveLevelOrders();
-            saveLevelIcons();
-            saveIgnoredFiles();
-            storage.setItem('hla_elevenLabsApiKey', elevenLabsApiKey);
-            storage.setItem('hla_autoBackupInterval', autoBackupInterval);
-            storage.setItem('hla_autoBackupLimit', autoBackupLimit);
-            startAutoBackup();
-
-            renderProjects();
-
-            if (backup.currentProjectId) {
-                selectProject(backup.currentProjectId);
-            } else if (projects.length > 0) {
-                selectProject(projects[0].id);
-            }
-
-            updateStatus('Backup wiederhergestellt');
-        }
-// =========================== APPLYBACKUPDATA END =========================
-
-
-
-// =========================== FINDDUPLICATES START ===========================
-function findDuplicates() {
-    const allDuplicates = new Map();
-    
-    // Finde Dateien mit mehreren Pfaden in der gleichen Datei-Gruppe
-    Object.entries(filePathDatabase).forEach(([filename, paths]) => {
-        if (paths.length > 1) {
-            // Prüfe ob es echte Duplikate sind (gleicher Ordner) oder nur gleiche Dateinamen in verschiedenen Ordnern
-            const folderGroups = new Map();
-            
-            paths.forEach((pathInfo, index) => {
-                // Ordnername auf Kleinbuchstaben normalisieren, damit die
-                // Duplikatsuche nicht von Groß-/Kleinschreibung abhängt
-                const folder = pathInfo.folder.toLowerCase();
-                if (!folderGroups.has(folder)) {
-                    folderGroups.set(folder, []);
-                }
-                folderGroups.get(folder).push({
-                    filename: filename,
-                    pathInfo: pathInfo,
-                    pathIndex: index,
-                    key: `${pathInfo.folder}/${filename}`,
-                    originalFolder: pathInfo.folder
-                });
-            });
-            
-            // Nur wenn der GLEICHE Ordner mehrere Einträge hat, ist es ein Duplikat
-            folderGroups.forEach((group, folderName) => {
-                if (group.length > 1) {
-                    const duplicateKey = `duplicate_${folderName}/${filename}`;
-                    allDuplicates.set(duplicateKey, group);
-                    debugLog(`Duplikat gefunden: ${filename} in ${folderName} (${group.length} Einträge)`);
-                }
-            });
-        }
-    });
-    
-    debugLog(`Gefunden: ${allDuplicates.size} echte Duplikate`);
-    return allDuplicates;
-}
-// =========================== FINDDUPLICATES END ===========================
-
-        function scoreDuplicateItem(item) {
-            let score = 0;
-            const fileKey = item.key;
-            
-            // Check if has EN text in textDatabase
-            if (textDatabase[fileKey] && textDatabase[fileKey].en) {
-                score += 10;
-            }
-            
-            // Check if is in any project
-            const isInProject = projects.some(project => 
-                project.files && project.files.some(file => 
-                    file.filename === item.filename && file.folder === item.pathInfo.folder
-                )
-            );
-            if (isInProject) {
-                score += 20;
-            }
-            
-            // Check if has audio file cached
-            if (audioFileCache[item.pathInfo.fullPath]) {
-                score += 5;
-            }
-            
-            // Check if has German text
-            if (textDatabase[fileKey] && textDatabase[fileKey].de) {
-                score += 8;
-            }
-            
-            // Tiebreaker: prefer first occurrence (lower pathIndex)
-            score += 1 - (item.pathIndex * 0.1);
-            
-            return score;
-        }
-
-function cleanupDuplicates() {
-            const duplicates = findDuplicates();
-            
-            if (duplicates.size === 0) {
-                alert('✅ Keine Duplikate gefunden!\n\nDie Datenbank ist bereits sauber.');
-                return;
-            }
-            
-            // Calculate scores and determine what to keep/delete
-            const cleanupPlan = [];
-            let totalToDelete = 0;
-            
-            duplicates.forEach((group, key) => {
-                const scoredItems = group.map(item => ({
-                    ...item,
-                    score: scoreDuplicateItem(item)
-                }));
-                
-                // Sort by score (highest first)
-                scoredItems.sort((a, b) => b.score - a.score);
-                
-                // Keep the highest scored item, mark others for deletion
-                const toKeep = scoredItems[0];
-                const toDelete = scoredItems.slice(1);
-                
-                cleanupPlan.push({
-                    key: key,
-                    keep: toKeep,
-                    delete: toDelete
-                });
-                
-                totalToDelete += toDelete.length;
-            });
-            
-            // Show confirmation dialog
-            showCleanupConfirmation(cleanupPlan, totalToDelete);
-        }
-
-        function showCleanupConfirmation(cleanupPlan, totalToDelete) {
-            const duplicateGroups = cleanupPlan.length;
-            
-            const confirmMessage = `🧹 Duplikate-Bereinigung\n\n` +
-                `Gefunden: ${duplicateGroups} Duplikate-Gruppen\n` +
-                `Zu löschen: ${totalToDelete} Einträge\n` +
-                `Zu behalten: ${duplicateGroups} Einträge\n\n` +
-                `Kriterien für das Behalten:\n` +
-                `• In Projekt vorhanden: +20 Punkte\n` +
-                `• Hat EN Text: +10 Punkte\n` +
-                `• Hat DE Text: +8 Punkte\n` +
-                `• Audio verfügbar: +5 Punkte\n\n` +
-                `Möchten Sie fortfahren?`;
-            
-            if (!confirm(confirmMessage)) {
-                return;
-            }
-            
-            // Execute cleanup
-            executeCleanup(cleanupPlan, totalToDelete);
-        }
-
-function executeCleanup(cleanupPlan, totalToDelete) {
-    let deletedCount = 0;
-    let mergedCount = 0;
-    const deletedItems = [];
-    
-    updateStatus('Bereinige Duplikate intelligent...');
-    
-    // Execute cleanup plan with intelligent merging
-    cleanupPlan.forEach(plan => {
-        const filename = plan.keep.filename;
-        
-        if (!filePathDatabase[filename]) {
-            debugLog(`Warning: ${filename} not found in database during cleanup`);
-            return;
-        }
-        
-        // Collect all items to delete and the item to keep
-        const toDelete = plan.delete;
-        const toKeep = plan.keep;
-        
-        // Find the best item to keep (highest score)
-        let bestItem = toKeep;
-        let bestScore = toKeep.score;
-        
-        // Check all items including those marked for deletion to find the absolute best
-        [...plan.delete, plan.keep].forEach(item => {
-            const score = scoreDuplicateItem(item);
-            if (score > bestScore) {
-                bestScore = score;
-                bestItem = item;
-            }
-        });
-        
-        debugLog(`Cleaning up ${filename}: keeping ${bestItem.pathInfo.folder} (score: ${bestScore})`);
-        
-        // Create new paths array with only the best item
-        const newPaths = [{
-            folder: bestItem.pathInfo.folder,
-            fullPath: bestItem.pathInfo.fullPath,
-            fileObject: bestItem.pathInfo.fileObject
-        }];
-        
-        // Count items being removed
-        const originalCount = filePathDatabase[filename].length;
-        const removedCount = originalCount - 1;
-        
-        // Track deleted items for reporting
-        plan.delete.concat(plan.keep).forEach(item => {
-            if (item !== bestItem) {
-                deletedItems.push({
-                    filename: filename,
-                    folder: item.pathInfo.folder,
-                    fullPath: item.pathInfo.fullPath,
-                    score: item.score || scoreDuplicateItem(item)
-                });
-                
-                // Remove from audio cache
-                if (audioFileCache[item.pathInfo.fullPath]) {
-                    delete audioFileCache[item.pathInfo.fullPath];
-                }
-            }
-        });
-        
-        // Update the database with only the best item
-        filePathDatabase[filename] = newPaths;
-        deletedCount += removedCount;
-        mergedCount++;
-        
-        debugLog(`Merged ${originalCount} variants of ${filename} into 1 (removed ${removedCount})`);
-    });
-    
-    // Clean up completely empty entries (shouldn't happen but just in case)
-    Object.keys(filePathDatabase).forEach(filename => {
-        if (filePathDatabase[filename].length === 0) {
-            delete filePathDatabase[filename];
-            debugLog(`Removed empty entry: ${filename}`);
-        }
-    });
-    
-    // Save changes
-    saveFilePathDatabase();
-    
-    // Update status
-    updateStatus(`Intelligente Bereinigung: ${mergedCount} Dateien konsolidiert, ${deletedCount} Duplikate entfernt`);
-    
-    // Show detailed results
-    const resultsMessage = `✅ Intelligente Bereinigung erfolgreich!\n\n` +
-        `📊 Statistik:\n` +
-        `• ${mergedCount} Dateien konsolidiert (mehrere Pfade → ein bester Pfad)\n` +
-        `• ${deletedCount} Duplikate entfernt\n` +
-        `• ${Object.keys(filePathDatabase).length} eindeutige Dateien verbleiben\n\n` +
-        `🎯 Kriterien für beste Pfade:\n` +
-        `• In Projekt vorhanden: +20 Punkte\n` +
-        `• Hat EN Text: +10 Punkte\n` +
-        `• Hat DE Text: +8 Punkte\n` +
-        `• Audio verfügbar: +5 Punkte\n\n` +
-        `🔍 Beispiele konsolidiert:\n` +
-        deletedItems.slice(0, 5).map(item => 
-            `• ${item.filename} (entfernt: ${item.folder.split('/').pop()})`
-        ).join('\n') +
-        (deletedItems.length > 5 ? `\n... und ${deletedItems.length - 5} weitere` : '');
-    
-    setTimeout(() => {
-        alert(resultsMessage);
-        
-        // Refresh folder browser if open
-        const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
-        if (folderBrowserOpen) {
-            showFolderGrid();
-        }
-        
-        // Refresh main table
-        renderFileTable();
-    }, 100);
-}
-
-// Durchsucht den DE-Ordner nach gleichnamigen Dateien mit unterschiedlicher Endung
-async function scanAudioDuplicates() {
-    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) {
-        alert('Nur in der Desktop-Version verfügbar');
-        return;
-    }
-    const groups = {};
-    Object.keys(deAudioCache).forEach(rel => {
-        const base = rel.replace(/\.(mp3|wav|ogg)$/i, '');
-        if (!groups[base]) groups[base] = [];
-        groups[base].push(rel);
-    });
-    for (const base of Object.keys(groups)) {
-        const files = groups[base];
-        if (files.length < 2) continue;
-        const pref = storage.getItem('dupPref_' + base);
-        const info = await window.electronAPI.getDeDuplicates(files[0]);
-        const oldInfo = info.find(i => i.relPath === files[1]);
-        const newInfo = info.find(i => i.relPath === files[0]);
-        if (!oldInfo || !newInfo) continue;
-        if (pref === 'new') {
-            await window.electronAPI.deleteDeFile(oldInfo.relPath);
-            deleteDeAudioCacheEntry(oldInfo.relPath);
-            continue;
-        }
-        if (pref === 'old') {
-            await window.electronAPI.deleteDeFile(newInfo.relPath);
-            deleteDeAudioCacheEntry(newInfo.relPath);
-            continue;
-        }
-        const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
-        const res = await showDupeDialog(oldInfo, url);
-        if (res.remember) storage.setItem('dupPref_' + base, res.choice);
-        if (res.choice === 'new') {
-            await window.electronAPI.deleteDeFile(oldInfo.relPath);
-            deleteDeAudioCacheEntry(oldInfo.relPath);
-        } else {
-            await window.electronAPI.deleteDeFile(newInfo.relPath);
-            deleteDeAudioCacheEntry(newInfo.relPath);
-        }
-    }
-    renderFileTable();
-    updateStatus('Duplikat-Prüfung abgeschlossen');
-}
-
-        function resetFileDatabase() {
-            if (!confirm('Dies löscht die gesamte Datei-Datenbank und alle Ordner-Anpassungen!\nAlle Pfadinformationen und Customizations gehen verloren.\n\nFortfahren?')) {
-                return;
-            }
-            
-            filePathDatabase = {};
-            audioFileCache = {};
-            folderCustomizations = {};
-            saveFilePathDatabase();
-            saveFolderCustomizations();
-            updateStatus('Datei-Datenbank und Ordner-Anpassungen zurückgesetzt. Bitte Ordner neu scannen.');
-        updateFileAccessStatus();
-        }
-
-        // Öffnet die Debug-Konsole und bei der Desktop-Version zusätzlich die DevTools
-        function toggleDevTools() {
-            const wrapper = document.getElementById('debugConsoleWrapper');
-            if (wrapper) {
-                wrapper.style.display = 'block'; // Debug-Konsole sichtbar machen
-                wrapper.open = true; // Zeigt die eingebettete Konsole an
-            }
-            debugLog('Dev-Button aktiviert');
-            if (window.electronAPI) {
-                window.electronAPI.toggleDevTools();
-            }
-            openDebugInfo();
-        }
-        // Funktion global verfügbar machen, damit der Button im HTML immer wirkt
-        window.toggleDevTools = toggleDevTools;
-
-        // Bündelt das Anbinden aller Toolbar-Knöpfe
-        function initToolbarButtons() {
-            // Standard-Knöpfe erneut verbinden
-            if (typeof document !== 'undefined' && document.getElementById) {
-                const devBtn = document.getElementById('devToolsButton');
-                if (devBtn) devBtn.onclick = toggleDevTools;
-                const dbgBtn = document.getElementById('debugReportButton');
-                if (dbgBtn) dbgBtn.onclick = exportDebugReport;
-                const rndBtn = document.getElementById('randomProjectButton');
-                if (rndBtn) rndBtn.onclick = loadRandomProject;
-            }
-
-            // Spezielle Aktionsknöpfe der Toolbar separat einrichten
-            setupToolbarActionButtons();
-
-            // Video-Manager mitsamt Schließen‑Knöpfen vorbereiten
-            const vmState = window.videoManager || {};
-            const videoBtn = vmState.button
-                || ((typeof document !== 'undefined' && document.getElementById)
-                    ? document.getElementById('openVideoManager')
-                    : null);
-            const videoDlg = vmState.dialog
-                || ((typeof document !== 'undefined' && document.getElementById)
-                    ? document.getElementById('videoMgrDialog')
-                    : null);
-            if (videoBtn && videoDlg) {
-                // Öffnet den Dialog zuverlässig und aktualisiert direkt die Tabelle
-                videoBtn.onclick = async () => {
-                    window.initVideoManager?.();
-                    const currentDlg = window.videoManager?.dialog || videoDlg;
-                    if (!currentDlg) return;
-
-                    if (!currentDlg.open) {
-                        if (typeof currentDlg.showModal === 'function') {
-                            currentDlg.showModal();
-                        } else {
-                            currentDlg.setAttribute('open', '');
-                        }
-                    }
-
-                    currentDlg.classList.remove('hidden');
-
-                    const filterField = window.videoManager?.filter
-                        || currentDlg.querySelector('#videoFilter');
-                    if (filterField) filterField.value = '';
-
-                    if (typeof refreshTable === 'function') {
-                        await refreshTable();
-                    } else if (typeof renderFileTable === 'function') {
-                        await renderFileTable();
-                    }
-
-                    currentDlg.querySelector('#videoListSection')?.classList.remove('hidden');
-                };
-
-                const closeBtns = [
-                    document.getElementById('closeVideoDlg'),
-                    document.getElementById('closeVideoDlgSmall')
-                ];
-                closeBtns.forEach(btn => {
-                    if (btn) btn.onclick = () => {
-                        const currentDlg = window.videoManager?.dialog || videoDlg;
-                        if (!currentDlg) return;
-                        currentDlg.classList.add('hidden');
-                        if (typeof currentDlg.close === 'function') {
-                            currentDlg.close();
-                        } else {
-                            currentDlg.removeAttribute('open');
-                        }
-                    };
-                });
-
-                const emoBox = document.getElementById('emoProgress');
-                if (emoBox) emoBox.onclick = regenerateMissingEmos;
-            }
-        }
-
-        // Funktion global verfügbar machen und direkt ausführen
-        window.initToolbarButtons = initToolbarButtons;
-        initToolbarButtons();
-        // F12-Shortcut auch im Renderer abfangen
-        window.addEventListener('keydown', e => {
-            if (e.key === 'F12') {
-                e.preventDefault();
-                toggleDevTools();
-            }
-        });
-
-        // Startet Half-Life: Alyx über die Desktop-Version
-        async function startHla() {
-            const modeSel = document.getElementById('modusSelect');
-            const langSel = document.getElementById('spracheSelect');
-            const mapCb   = document.getElementById('mapCheckbox');
-            const mapSel  = document.getElementById('mapSelect');
-            const godCb   = document.getElementById('optGod');
-            const ammoCb  = document.getElementById('optAmmo');
-            const conCb   = document.getElementById('optConsole');
-
-            const mode = modeSel ? modeSel.value : 'normal';
-            const lang = langSel ? langSel.value : 'english';
-            const map  = mapCb && mapCb.checked && mapSel ? mapSel.value.trim() : '';
-
-            // Ermittelt das gewünschte Cheat-Preset
-            let preset = 'normal';
-            if (godCb?.checked && ammoCb?.checked) {
-                preset = 'both';
-            } else if (godCb?.checked) {
-                preset = 'god';
-            } else if (ammoCb?.checked) {
-                preset = 'ammo';
-            } else if (conCb?.checked) {
-                preset = 'console';
-            }
-
-            if (window.electronAPI && window.electronAPI.startHla) {
-                const ok = await window.electronAPI.startHla(mode, lang, map, preset);
-                if (!ok) showToast('Start fehlgeschlagen', 'error');
-            } else {
-                alert('Nur in der Desktop-Version verfügbar');
-            }
-
-            // Dropdown nach dem Start wieder schließen
-            document.querySelector('.start-dropdown')?.classList.remove('show');
-        }
-        window.startHla = startHla;
-
-        // Zeigt/versteckt das Dropdown-Menü für den Schnellstart
-        function toggleStartMenu() {
-            document.querySelector('.start-dropdown')?.classList.toggle('show');
-        }
-        window.toggleStartMenu = toggleStartMenu;
-
-        // Aktualisiert den Tooltip des Startknopfs mit aktueller Map und Optionen
-        function updateStartTooltips() {
-            const mapSel = document.getElementById('mapSelect');
-            const level = mapSel ? mapSel.value.trim() : '';
-            const mapTxt = level ? ` (Map: ${level})` : '';
-            const god   = document.getElementById('optGod')?.checked;
-            const ammo  = document.getElementById('optAmmo')?.checked;
-            const con   = document.getElementById('optConsole')?.checked;
-
-            let optTxt = '';
-            if (god && ammo) {
-                optTxt = ' mit Godmode und unendlicher Munition';
-            } else if (god) {
-                optTxt = ' mit Godmode';
-            } else if (ammo) {
-                optTxt = ' mit unendlicher Munition';
-            } else if (con) {
-                optTxt = ' mit Entwicklerkonsole';
-            }
-
-            const startBtn = document.getElementById('startButton');
-            if (startBtn) startBtn.title = `Startet HLA${optTxt}${mapTxt}`;
-        }
-        window.updateStartTooltips = updateStartTooltips;
-
-        if (typeof document !== 'undefined' && typeof document.getElementById === 'function') {
-            document.getElementById('mapSelect')?.addEventListener('input', updateStartTooltips);
-            document.getElementById('mapCheckbox')?.addEventListener('change', updateStartTooltips);
-            document.getElementById('optGod')?.addEventListener('change', updateStartTooltips);
-            document.getElementById('optAmmo')?.addEventListener('change', updateStartTooltips);
-            document.getElementById('optConsole')?.addEventListener('change', updateStartTooltips);
-            updateStartTooltips();
-        }
-
-        // Speichert die URL des Videos dauerhaft
-        function saveVideoUrl() {
-            const inp = document.getElementById('videoUrlInput');
-            if (inp) {
-                const url = inp.value.trim();
-                storage.setItem('hla_videoUrl', url);
-                savedVideoUrl = url;
-            }
-        }
-
-        // Öffnet die gespeicherte URL extern und legt bei Bedarf einen Bookmark an
-        async function openVideoUrl() {
-            const url = (document.getElementById('videoUrlInput')?.value || '').trim();
-            if (!url) return;
-            // Mindestformat https:// und ohne Leerzeichen prüfen
-            if (!/^https:\/\/\S+$/.test(url)) {
-                showToast('Ungültige URL – muss mit https:// beginnen und darf keine Leerzeichen enthalten.', 'error');
-                return;
-            }
-
-            let list = [];
-            let index = -1;
-            if (window.videoApi && window.videoApi.loadBookmarks) {
-                list = await window.videoApi.loadBookmarks();
-                index = list.findIndex(b => b.url === url);
-                if (index === -1) {
-                    let title = url;
-                    try {
-                        const res = await fetch('https://www.youtube.com/oembed?url='+encodeURIComponent(url)+'&format=json');
-                        if (res.ok) ({ title } = await res.json());
-                    } catch {}
-                    // Gemeinsamen Zeitstempel-Helper verwenden; im Fehlerfall 0 Sekunden annehmen
-                    const zeitstempel = typeof extractTime === 'function' ? extractTime(url) : 0;
-                    list.push({ url, title, time: zeitstempel });
-                    list.sort((a,b)=>a.title.localeCompare(b.title,'de'));
-                    index = list.findIndex(b => b.url === url);
-                    await window.videoApi.saveBookmarks(list);
-                }
-            }
-            if (window.electronAPI && window.electronAPI.openExternal) {
-                await window.electronAPI.openExternal(url);
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-        window.openVideoUrl = openVideoUrl;
-
-        // Strg+Umschalt+V fügt URL aus der Zwischenablage ein und öffnet sie
-        document.addEventListener('keydown', async e => {
-            if (e.key.toLowerCase() === 'v' && e.ctrlKey && e.shiftKey) {
-                e.preventDefault();
-                try {
-                    const txt = (await navigator.clipboard.readText()).trim();
-                    if (txt) {
-                        const inp = document.getElementById('videoUrlInput');
-                        if (inp) inp.value = txt;
-                        saveVideoUrl();
-                        openVideoUrl();
-                    }
-                } catch {
-                    showToast('Zwischenablage konnte nicht gelesen werden', 'error');
-                }
-            }
-        });
-
-        // Sammelt Informationen über System, Pfade und Browser
-        async function collectDebugInfo() {
-            // Grundobjekt für alle gesammelten Daten
-            let info = {};
-            // User-Agent-Information mit moderner API und Rückfall
-            const browserInfo = navigator.userAgentData
-                ? navigator.userAgentData.brands.map(b => `${b.brand}/${b.version}`).join(', ')
-                : navigator.userAgent;
-            // Plattform-Erkennung mit Fallback für ältere Browser
-            const platformInfo = navigator.userAgentData?.platform || navigator.platform;
-            if (window.electronAPI && window.electronAPI.getDebugInfo) {
-                // Desktop-Version: Anfrage an den Hauptprozess
-                info = await window.electronAPI.getDebugInfo();
-            } else {
-                // Browser-Fallback ohne Electron
-                info = {
-                    Hinweis: 'Browser-Version ohne Electron-API',
-                    appVersion: APP_VERSION,
-                    Browser: browserInfo,
-                    URL: location.href,
-                    Plattform: platformInfo,
-                    Sprache: navigator.language,
-                    'Electron-API vorhanden': isElectron,
-                    'Im Browser gestartet': true
-                };
-
-                // Zusätzliche Node-Informationen, falls vorhanden
-                if (typeof process !== 'undefined') {
-                    info.nodeVersion = process.version;
-                    if (process.versions) {
-                        info.electronVersion = process.versions.electron || 'n/a';
-                        info.chromeVersion = process.versions.chrome || 'n/a';
-                    }
-                    info['Process-Plattform'] = process.platform;
-                    info['CPU-Architektur'] = process.arch;
-
-                    // Renderer-spezifische Flags
-                    if ('type' in process) info['Process-Typ'] = process.type;
-                    if ('contextIsolated' in process) info['Context Isolation'] = String(process.contextIsolated);
-                    if ('sandboxed' in process) info['Sandbox'] = String(process.sandboxed);
-
-                    // Häufige Umgebungsvariablen
-                    if (process.env.NODE_ENV) info['NODE_ENV'] = process.env.NODE_ENV;
-                    if (process.env.ELECTRON_RUN_AS_NODE) info['ELECTRON_RUN_AS_NODE'] = process.env.ELECTRON_RUN_AS_NODE;
-                    if (process.env.ELECTRON_DISABLE_SANDBOX) info['ELECTRON_DISABLE_SANDBOX'] = process.env.ELECTRON_DISABLE_SANDBOX;
-                }
-            }
-
-            // Allgemeine Browserinformationen
-            info['Fenstergröße'] = `${window.innerWidth}x${window.innerHeight}`;
-            info['Bildschirmauflösung'] = `${screen.width}x${screen.height}`;
-            info['Seitenzustand'] = document.readyState;
-            info['Sicherer Kontext'] = window.isSecureContext;
-            info['Protokoll'] = location.protocol;
-            // Einheitlicher Benutzeragent mit moderner API
-            info['Benutzeragent'] = browserInfo;
-            info['Verwendete Sprache'] = navigator.language;
-            info.URL = location.href;
-            info['Electron-API vorhanden'] = isElectron;
-            info['Im Browser gestartet'] = !isElectron;
-
-            // Letzte Zeilen der Debug-Konsole
-            const debugText = document.getElementById('debugConsole')?.textContent || '';
-            if (debugText.trim()) {
-                info['Debug-Konsole'] = debugText.trim().split('\n').slice(-10).join('\n');
-            }
-
-            // setup.log aus dem Hauptprozess umbenennen
-            if (info.setupLog) {
-                info['setup.log'] = info.setupLog;
-                delete info.setupLog;
-            }
-            return info;
-        }
-
-        // Öffnet ein Fenster mit detaillierten Debug-Informationen
-        async function openDebugInfo() {
-            const info = await collectDebugInfo();
-
-            // Versionsinformationen separat sammeln
-            const nodeDefined = typeof process !== 'undefined';
-            const versionInfo = {
-                'App-Version': info.appVersion ?? info['App-Version'] ?? APP_VERSION,
-                'Node-Version': info.nodeVersion ?? info['Node-Version'] ?? (nodeDefined ? process.version : 'n/a'),
-                'Electron-Version': info.electronVersion ?? info['Electron-Version'] ?? (nodeDefined && process.versions ? process.versions.electron || 'n/a' : 'n/a'),
-                'Chrome-Version': info.chromeVersion ?? info['Chrome-Version'] ?? (nodeDefined && process.versions ? process.versions.chrome || 'n/a' : 'n/a'),
-                'V8-Version': info.v8Version ?? info['V8-Version'] ?? (nodeDefined && process.versions ? process.versions.v8 || 'n/a' : 'n/a')
-            };
-            delete info.appVersion; delete info['App-Version'];
-            delete info.nodeVersion; delete info['Node-Version'];
-            delete info.electronVersion; delete info['Electron-Version'];
-            delete info.chromeVersion; delete info['Chrome-Version'];
-            delete info.v8Version; delete info['V8-Version'];
-
-            // Hilfsfunktion zur Anzeige
-            function formatVal(v) {
-                if (v === true) return '✔️';
-                if (v === false) return '✖️';
-                if (v === undefined || v === null || v === '') return '<span class="undefined">Nicht definiert</span>';
-                return escapeHtml(String(v));
-            }
-
-            // Kategorien für eine übersichtliche Darstellung
-            const categories = [
-                { title: 'Programmversionen', data: versionInfo },
-                {
-                    title: 'System & Plattform',
-                    data: {
-                        'Betriebssystem': info.processPlatform,
-                        'CPU-Architektur': info.cpuArch,
-                        'OS-Typ': info.osType,
-                        'OS-Release': info.osRelease,
-                        'CPU-Modell': info.cpuModel,
-                        'CPU-Kerne': info.cpuCount,
-                        'Gesamt RAM (MB)': info.totalMemMB,
-                        'Freier RAM (MB)': info.freeMemMB,
-                        'Prozess-Typ': info.processType,
-                        'Kontext-Isolation': info.contextIsolation,
-                        'Sandbox aktiviert': info.sandbox,
-                        'Adminrechte': info.admin
-                    }
-                },
-                {
-                    title: 'Laufzeit & Ressourcen',
-                    data: {
-                        'Prozess-Uptime (s)': info.uptimeSec,
-                        'RAM-Verbrauch (MB)': info.memoryRssMB
-                    }
-                },
-                {
-                    title: 'Pfade & Ordner',
-                    data: {
-                        'Projekt-Root': info.projectRoot,
-                        'Sounds': `${info.soundsPath} (existiert: ${info.existsSoundsPath ? '✔️' : '✖️'})`,
-                        'Backups': `${info.backupsPath} (existiert: ${info.existsBackupsPath ? '✔️' : '✖️'})`,
-                        'UserData-Pfad': info.userDataPath,
-                        'Backup-Pfad (User)': info.backupPath,
-                        'Download-Pfad': info.downloadWatchPath
-                    }
-                },
-                {
-                    title: 'Ausführungspfade & Scripts',
-                    data: {
-                        'Arbeitsverzeichnis': info.cwd,
-                        'Main Script': info.scriptPath,
-                        'Electron Executable': info.electronExecPath,
-                        'Python Executable': info.pythonExecPath,
-                        'Node Executable': info.nodeExecPath,
-                        'Node Modules Pfad': info.nodeModulesPath,
-                        'package.json Pfad': info.packageJsonPath
-                    }
-                },
-                {
-                    title: 'Module',
-                    data: (function(){
-                        const modInfo = {};
-                        for (const [name, stat] of Object.entries(moduleStatus)) {
-                            const state = (stat.loaded ? '✔️' : '✖️') + ' (' + (stat.source || 'n/a') + ')';
-                            modInfo[name] = state;
-                        }
-                        return modInfo;
-                    })()
-                },
-                {
-                    title: 'Startparameter & Einstellungen',
-                    data: {
-                        'Seitenzustand': info['Seitenzustand'],
-                        'Protokoll': info['Protokoll'],
-                        'URL': info.URL,
-                        'Startargumente': info.startArgs
-                    }
-                },
-                {
-                    title: 'Anzeige- und Browserinformationen',
-                    data: {
-                        'Fenstergröße': info['Fenstergröße'],
-                        'Bildschirmauflösung': info['Bildschirmauflösung'],
-                        'Sicherer Kontext': info['Sicherer Kontext'],
-                        'Sprache': info['Verwendete Sprache'],
-                        'Benutzeragent': info['Benutzeragent'],
-                        'Electron-API vorhanden': info['Electron-API vorhanden'],
-                        'Im Browser gestartet': info['Im Browser gestartet']
-                    }
-                }
-            ];
-
-            // HTML für die Anzeige bauen
-            let html = '<h3>Debug-Informationen</h3>';
-            categories.forEach(cat => {
-                html += `<h4>${cat.title}</h4><ul class="debug-info-list">`;
-                for (const [key, value] of Object.entries(cat.data)) {
-                    html += `<li><span><strong>${escapeHtml(key)}</strong></span><code>${formatVal(value)}</code></li>`;
-                }
-                html += '</ul>';
-            });
-            html += '<button id="copyDebugInfoBtn" class="btn btn-secondary">Kopieren</button>';
-            // Dialog direkt anzeigen, ohne auf window.ui zuzugreifen
-            showModal(html);
-
-            // Kopier-Knopf zum schnellen Übernehmen in die Zwischenablage
-            const copyBtn = document.getElementById('copyDebugInfoBtn');
-            if (copyBtn) {
-                copyBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const allData = {};
-                    categories.forEach(cat => Object.assign(allData, cat.data));
-                    const text = Object.entries(allData)
-                        .map(([k, v]) => `${k}: ${v}`)
-                        .join('\n');
-                    safeCopy(text)
-                        .then(ok => { if (ok) showToast('Debug-Daten kopiert'); })
-                        .catch(err => showToast('Kopieren fehlgeschlagen: ' + err, 'error'));
-                });
-            }
-        }
-
-        // Exportiert einen vollständigen Debug-Bericht als mehrere Dateien
-        async function exportDebugReport() {
-            // Nicht serialisierbare Felder wie fileObject entfernen
-            // Diese Bereinigung verhindert zirkuläre Referenzen beim JSON-Export
-            const sanitize = obj => JSON.parse(JSON.stringify(obj, (k, v) => k === 'fileObject' ? undefined : v));
-
-            // Alle Debug-Daten vorbereiten
-            const reports = [];
-
-            // Allgemeine Informationen sammeln
-            const info = await collectDebugInfo();
-            reports.push({ key: 'info', name: 'Allgemeine Informationen', content: info });
-
-            // Projekte sichern
-            const projData = projects.map(prj => sanitize(prj));
-            reports.push({ key: 'projects', name: 'Projekte', content: projData });
-
-            // Datei-Datenbank ohne fileObject
-            const cleanFilePathDB = {};
-            Object.entries(filePathDatabase).forEach(([fn, paths]) => {
-                cleanFilePathDB[fn] = paths.map(p => ({ folder: p.folder, fullPath: p.fullPath }));
-            });
-            reports.push({ key: 'filePathDatabase', name: 'Datei-Datenbank', content: cleanFilePathDB });
-
-            // Text-Datenbank
-            reports.push({ key: 'textDatabase', name: 'Text-Datenbank', content: textDatabase });
-
-            // localStorage-Inhalte
-            const ls = {};
-            for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if (k) ls[k] = localStorage.getItem(k);
-            }
-            reports.push({ key: 'localStorage', name: 'localStorage', content: ls });
-
-            // Dateigrößen in MB berechnen
-            reports.forEach(r => {
-                const json = JSON.stringify(r.content);
-                r.sizeMB = (new Blob([json]).size / (1024 * 1024)).toFixed(2);
-            });
-
-            // Modal mit exportierbaren Berichten anzeigen
-            let html = '<h3>Debug-Berichte</h3><ul class="debug-info-list">';
-            reports.forEach(r => {
-                html += `<li><span><strong>${escapeHtml(r.name)}</strong></span><span><code>${r.sizeMB} MB</code> <button class="btn btn-secondary" data-report="${r.key}">Exportieren</button></span></li>`;
-            });
-            html += '</ul>';
-            // Dialog direkt anzeigen, ohne auf window.ui zuzugreifen
-            showModal(html);
-
-            // Export-Buttons verbinden
-            document.querySelectorAll('[data-report]').forEach(btn => {
-                btn.addEventListener('click', async e => {
-                    e.stopPropagation();
-                    const key = btn.dataset.report;
-                    const rep = reports.find(x => x.key === key);
-                    if (!rep) return;
-                    try {
-                        if (typeof window.showSaveFilePicker === 'function') {
-                            // Normalfall: Dateidialog öffnen und JSON speichern
-                            const handle = await window.showSaveFilePicker({
-                                suggestedName: `${key}.json`,
-                                types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
-                            });
-                            const writable = await handle.createWritable();
-                            await writable.write(JSON.stringify(rep.content, null, 2));
-                            await writable.close();
-                            showToast('Debug-Datei gespeichert');
-                        } else {
-                            // Fallback: Keine Dateisystem-API – Inhalte direkt in Zwischenablage kopieren
-                            await navigator.clipboard.writeText(JSON.stringify(rep.content, null, 2));
-                            showToast('Dateisystem-API fehlt – Daten in Zwischenablage kopiert');
-                        }
-                    } catch (err) {
-                        // Letzter Fallback: Kopie in die Zwischenablage versuchen
-                        try {
-                            await navigator.clipboard.writeText(JSON.stringify(rep.content, null, 2));
-                            showToast('Speichern fehlgeschlagen – Daten in Zwischenablage kopiert');
-                        } catch {
-                            showToast('Speichern fehlgeschlagen: ' + (err?.message || 'unbekannter Fehler'), 'error');
-                        }
-                    }
-                });
-            });
-        }
-
-        // Lädt ein zufälliges Projekt und schreibt ein Protokoll
-        async function loadRandomProject() {
-            const log = [];
-            log.push('Starte Zufallsprojekt-Ladung');
-            try {
-                if (!Array.isArray(window.projects) || window.projects.length === 0) {
-                    log.push('Keine Projekte vorhanden');
-                    throw new Error('Keine Projekte vorhanden');
-                }
-                const index = Math.floor(Math.random() * window.projects.length);
-                const projekt = window.projects[index];
-                log.push(`Ausgewähltes Projekt: ${projekt.name} (ID: ${projekt.id})`);
-                if (typeof window.loadProjectData === 'function') {
-                    await window.loadProjectData(projekt.id);
-                    log.push('Projekt erfolgreich geladen');
-                } else {
-                    throw new Error('loadProjectData fehlt');
-                }
-            } catch (err) {
-                log.push('Fehler: ' + (err?.message || err));
-            }
-
-            const text = log.join('\n');
-            try {
-                if (typeof window.showSaveFilePicker === 'function') {
-                    const handle = await window.showSaveFilePicker({
-                        suggestedName: 'random_project_log.txt',
-                        types: [{ description: 'Textdatei', accept: { 'text/plain': ['.txt'] } }]
-                    });
-                    const writable = await handle.createWritable();
-                    await writable.write(text);
-                    await writable.close();
-                    showToast('Protokoll gespeichert');
-                } else {
-                    throw new Error('Dateisystem-API fehlt');
-                }
-            } catch {
-                try {
-                    await navigator.clipboard.writeText(text);
-                    showToast('Protokoll in Zwischenablage kopiert');
-                } catch {
-                    showToast('Protokoll konnte nicht gesichert werden', 'error');
-                }
-            }
-        }
-        window.loadRandomProject = loadRandomProject;
-        window.exportDebugReport = exportDebugReport;
-
-        // Exportiert Debug-Daten nur für ein bestimmtes Level
-        async function exportLevelDebug(levelName) {
-            // Nicht serialisierbare Felder wie fileObject entfernen
-            const sanitize = obj => JSON.parse(JSON.stringify(obj, (k, v) => k === 'fileObject' ? undefined : v));
-
-            // Allgemeine Informationen sammeln
-            const info = await collectDebugInfo();
-
-            // Projekte dieses Levels bereinigt übernehmen
-            const levelProjects = projects
-                .filter(p => p.levelName === levelName)
-                .map(p => sanitize(p));
-
-            // Alle betroffenen Dateien einsammeln
-            const fileEntries = [];
-            levelProjects.forEach(p => {
-                (p.files || []).forEach(f => fileEntries.push({ filename: f.filename, folder: f.folder }));
-            });
-
-            // filePathDatabase auf relevante Pfade reduzieren
-            const levelFilePathDB = {};
-            fileEntries.forEach(({ filename, folder }) => {
-                const paths = filePathDatabase[filename];
-                if (paths) {
-                    const matched = paths
-                        .filter(p => p.folder === folder)
-                        .map(p => ({ folder: p.folder, fullPath: p.fullPath }));
-                    if (matched.length) levelFilePathDB[filename] = matched;
-                }
-            });
-
-            // textDatabase auf relevante Einträge beschränken
-            const levelTextDB = {};
-            fileEntries.forEach(({ filename, folder }) => {
-                const key = `${folder}/${filename}`;
-                if (textDatabase[key]) levelTextDB[key] = textDatabase[key];
-            });
-
-            const report = {
-                info,
-                projects: levelProjects,
-                filePathDatabase: levelFilePathDB,
-                textDatabase: levelTextDB
-            };
-
-            try {
-                if (typeof window.showSaveFilePicker === 'function') {
-                    const handle = await window.showSaveFilePicker({
-                        suggestedName: `${levelName}_debug.json`,
-                        types: [{ description: 'JSON', accept: { 'application/json': ['.json'] } }]
-                    });
-                    const writable = await handle.createWritable();
-                    await writable.write(JSON.stringify(report, null, 2));
-                    await writable.close();
-                    showToast('Debug-Datei gespeichert');
-                } else {
-                    await navigator.clipboard.writeText(JSON.stringify(report, null, 2));
-                    showToast('Dateisystem-API fehlt – Daten in Zwischenablage kopiert');
-                }
-            } catch (err) {
-                try {
-                    await navigator.clipboard.writeText(JSON.stringify(report, null, 2));
-                    showToast('Speichern fehlgeschlagen – Daten in Zwischenablage kopiert');
-                } catch {
-                    showToast('Speichern fehlgeschlagen: ' + (err?.message || 'unbekannter Fehler'), 'error');
-                }
-            }
-        }
-
-        // Zeigt oder versteckt das Einstellungen-Menü
-        function toggleSettingsMenu() {
-            toggleWorkspaceMenu('settingsMenu', 'settingsButton');
-        }
-        window.toggleSettingsMenu = toggleSettingsMenu;
-
-
-// =========================== WAEHLEPROJEKTORDNER START =======================
-async function waehleProjektOrdner() {
-    try {
-        // Prüfen, ob die Dateisystem-API verfügbar ist
-        if (!window.isSecureContext || typeof window.showDirectoryPicker !== 'function') {
-            showToast('Dateisystem-API nicht verfügbar', 'error');
-            return;
-        }
-
-        // Nutzer wählt den Wurzelordner aus
-        projektOrdnerHandle = await window.showDirectoryPicker();
-        await saveProjectFolderHandle(projektOrdnerHandle); // Merken des Ordners
-
-        // DE-Ordner anlegen oder öffnen
-        deOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('DE', { create: true });
-        // EN-Ordner anlegen oder öffnen
-        enOrdnerHandle = await projektOrdnerHandle.getDirectoryHandle('EN', { create: true });
-
-        enDateien = [];
-        deAudioCache = {};
-        deAudioCacheIndex = {};
-
-        // Rekursives Einlesen aller Unterordner
-        async function leseOrdner(handle, deHandle, pfad = '') {
-            for await (const [name, child] of handle.entries()) {
-                if (name === 'DE') continue; // DE-Ordner überspringen
-
-                if (child.kind === 'file') {
-                    if (name.match(/\.(mp3|wav|ogg)$/i)) {
-                        enDateien.push({ pfad: pfad + name, handle: child });
-                        if (deHandle) {
-                            try {
-                                const basisName = name.replace(/\.(mp3|wav|ogg)$/i, '');
-                                const endungen = ['.mp3', '.wav', '.ogg'];
-                                let deFile = null;
-                                for (const endung of endungen) {
-                                    try {
-                                        const deFileHandle = await deHandle.getFileHandle(basisName + endung);
-                                        deFile = await deFileHandle.getFile();
-                                        break;
-                                    } catch {}
-                                }
-                                if (deFile) {
-                                    setDeAudioCacheEntry(pfad + name, deFile);
-                                }
-                            } catch (e) {
-                                // Keine passende DE-Datei gefunden
-                            }
-                        }
-                    }
-                } else if (child.kind === 'directory') {
-                    let neuesDe = null;
-                    if (deHandle) {
-                        try {
-                            neuesDe = await deHandle.getDirectoryHandle(name, { create: false });
-                        } catch (e) {
-                            // Ordner existiert noch nicht
-                            neuesDe = null;
-                        }
-                    }
-                    await leseOrdner(child, neuesDe, pfad + name + '/');
-                }
-            }
-        }
-
-        await leseOrdner(enOrdnerHandle, deOrdnerHandle);
-
-        // Automatischer Scan des EN-Ordners nach der Auswahl
-        await scanEnOrdner();
-        // Projekte und Zugriffsstatus nach dem Scan aktualisieren
-        updateAllProjectsAfterScan();
-        if (repairFileExtensions) {
-            const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-            if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
-        }
-        updateFileAccessStatus();
-
-        updateStatus('Projektordner eingelesen und gescannt');
-        updateProjectFolderPathDisplay();
-    } catch (e) {
-        console.error('Ordnerauswahl fehlgeschlagen:', e);
-        if (e.name !== 'AbortError') {
-            // Nutzerfreundliche Fehlermeldung bei verweigertem Zugriff
-            showToast('Browser verweigert den Zugriff auf das Dateisystem', 'error');
-        }
-    }
-}
-// =========================== WAEHLEPROJEKTORDNER END =========================
-
-// =========================== STANDARDORDNERAENDERN START ====================
-// Funktion nicht mehr benötigt – Pfad ist fest definiert
-// =========================== STANDARDORDNERAENDERN END ======================
-
-// =========================== SCANENORDNER START =============================
-async function scanEnOrdner() {
-    if (!enOrdnerHandle) {
-        console.error('EN-Ordner nicht initialisiert');
-        return;
-    }
-
-    const filesToScan = [];
-
-    async function traverse(handle, path = '') {
-        for await (const [name, child] of handle.entries()) {
-            if (name === 'DE') continue;
-
-            if (child.kind === 'file') {
-                if (name.match(/\.(mp3|wav|ogg)$/i)) {
-                    const file = await child.getFile();
-                    file.webkitRelativePath = path + name;
-                    file.fullPath = path + name;
-                    filesToScan.push(file);
-                }
-            } else if (child.kind === 'directory') {
-                await traverse(child, path + name + '/');
-            }
-        }
-    }
-
-    await traverse(enOrdnerHandle);
-    if (filesToScan.length > 0) {
-        await verarbeiteGescannteDateien(filesToScan);
-    }
-
-    // 🟧 Nach dem EN-Scan auch den DE-Ordner durchsuchen
-    await scanDeOrdner();
-
-    // 🟧 Danach Projekt-Statistiken aktualisieren
-    updateAllProjectsAfterScan();
-    if (repairFileExtensions) {
-        const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-        if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
-    }
-    updateFileAccessStatus();
-}
-// =========================== SCANENORDNER END ===============================
-
-// =========================== SCANDEORDNER START =============================
-async function scanDeOrdner() {
-    if (!deOrdnerHandle) {
-        console.error('DE-Ordner nicht initialisiert');
-        return;
-    }
-
-    const gefundeneDateien = [];
-
-    async function traverse(handle, pfad = '') {
-        for await (const [name, child] of handle.entries()) {
-            if (child.kind === 'file') {
-                if (name.match(/\.(mp3|wav|ogg)$/i)) {
-                    const datei = await child.getFile();
-                    datei.fullPath = pfad + name;
-                    gefundeneDateien.push(datei);
-                }
-            } else if (child.kind === 'directory') {
-                await traverse(child, pfad + name + '/');
-            }
-        }
-    }
-
-    await traverse(deOrdnerHandle);
-    if (gefundeneDateien.length > 0) {
-        gefundeneDateien.forEach(d => {
-            setDeAudioCacheEntry(d.fullPath, d);
-        });
-    }
-}
-// =========================== SCANDEORDNER END ===============================
-
-// =========================== VERARBEITEGESCANNTE START =====================
-async function verarbeiteGescannteDateien(dateien) {
-    if (typeof extractRelevantFolder !== 'function') {
-        try {
-            if (pathUtilsPromise) {
-                const mod = await pathUtilsPromise;
-                extractRelevantFolder = mod.extractRelevantFolder;
-            } else {
-                const mod = await import('./pathUtils.mjs');
-                extractRelevantFolder = mod.extractRelevantFolder;
-            }
-        } catch (err) {
-            console.error('Pfad-Utilities konnten nicht geladen werden', err);
-            return;
-        }
-    }
-    for (const file of dateien) {
-        const relPath  = file.fullPath;
-        const parts    = relPath.split('/');
-        const filename = parts.pop();
-        const folder   = extractRelevantFolder(parts);
-
-        if (!filePathDatabase[filename]) filePathDatabase[filename] = [];
-
-        // Vorhandene Einträge mit gleichem Pfad entfernen
-        filePathDatabase[filename] = filePathDatabase[filename].filter(p => p.fullPath !== relPath);
-
-        // Aktuellen Pfad speichern
-        filePathDatabase[filename].push({ folder, fullPath: relPath, fileObject: file });
-
-        // In Electron besitzen wir nur Pfade, im Browser File-Objekte
-        if (window.electronAPI) {
-            audioFileCache[relPath] = `sounds/EN/${relPath}`;
-        } else {
-            audioFileCache[relPath] = file;
-        }
-    }
-
-    saveFilePathDatabase();
-    updateStatus(`${dateien.length} Dateien eingelesen`);
-    updateFileAccessStatus();
-}
-// =========================== VERARBEITEGESCANNTE END =======================
-
-
-// =========================== SPEICHEREUEBERSETZUNGSDATEI START ===============
-async function speichereUebersetzungsDatei(datei, relativerPfad) {
-    if (!deOrdnerHandle) {
-        console.error('DE-Ordner nicht initialisiert');
-        return;
-    }
-
-    const ext = relativerPfad.slice(-4).toLowerCase();
-    let blob = datei;
-    if (typeof AudioBuffer !== 'undefined' && datei instanceof AudioBuffer) {
-        blob = bufferToWav(datei);
-    }
-
-    const teile = relativerPfad.split('/');
-    const dateiname = teile.pop();
-    let zielOrdner = deOrdnerHandle;
-
-    for (const teil of teile) {
-        zielOrdner = await zielOrdner.getDirectoryHandle(teil, { create: true });
-    }
-
-    const fileHandle = await zielOrdner.getFileHandle(dateiname, { create: true });
-    const writable = await fileHandle.createWritable();
-    await writable.write(blob);
-    await writable.close();
-
-    // Beim ersten Speichern eine Sicherungskopie im Backup ablegen
-    try {
-        const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
-        const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
-        let ziel = backupDir;
-        for (const teil of teile) {
-            ziel = await ziel.getDirectoryHandle(teil, { create: true });
-        }
-        let already = true;
-        try { await ziel.getFileHandle(dateiname); } catch { already = false; }
-        if (!already) {
-            const backupFile = await ziel.getFileHandle(dateiname, { create: true });
-            const w = await backupFile.createWritable();
-            await w.write(blob);
-            await w.close();
-        }
-    } catch {}
-
-    // DE-Audio im Cache aktualisieren
-    setDeAudioCacheEntry(relativerPfad, blob);
-}
-// =========================== SPEICHEREUEBERSETZUNGSDATEI END =================
-
-// =========================== INITIATEDEUPLOAD START ==========================
-function initiateDeUpload(fileId) {
-    const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    aktuellerUploadPfad = getFullPath(file);
-    document.getElementById('deUploadInput').click();
-}
-// =========================== INITIATEDEUPLOAD END ============================
-
-// =========================== DUPLICATE-CHECK START ==========================
-async function pruefeAudioPuffer(buf) {
-    if (buf.byteLength < 4) return false;
-    const b = new Uint8Array(buf);
-    const str4 = String.fromCharCode(b[0], b[1], b[2], b[3]);
-    if (str4 === 'RIFF' && String.fromCharCode(b[8], b[9], b[10], b[11]) === 'WAVE') return true;
-    if (str4 === 'OggS') return true;
-    if (str4 === 'ID3') return true;
-    if (b[0] === 0xff && (b[1] & 0xe0) === 0xe0) return true;
-    return false;
-}
-
-async function showDupeDialog(oldInfo, newUrl) {
-    return new Promise(resolve => {
-        const ov = document.createElement('div');
-        ov.className = 'dialog-overlay hidden';
-        const html = `
-            <div class="dialog" style="max-width:600px;">
-                <h3>Doppelte Audiodatei</h3>
-                <p>Es existiert bereits <code>${oldInfo.relPath}</code>.</p>
-                <div style="display:flex;gap:10px;margin:10px 0;">
-                    <div style="flex:1;text-align:center;">
-                        <audio controls src="${deAudioCache[oldInfo.relPath] || 'sounds/DE/' + oldInfo.relPath}"></audio>
-                        <div style="font-size:12px;">Alt (${(oldInfo.size/1024).toFixed(1)} KB)</div>
-                    </div>
-                    <div style="flex:1;text-align:center;">
-                        <audio controls src="${newUrl}"></audio>
-                        <div style="font-size:12px;">Neu</div>
-                    </div>
-                </div>
-                <label style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                    <input type="checkbox" id="dupeRemember"> Entscheidung merken
-                </label>
-                <div class="dialog-buttons">
-                    <button class="btn btn-secondary" id="dupeKeepOld">Alte behalten</button>
-                    <button class="btn btn-success" id="dupeKeepNew">Neue verwenden</button>
-                </div>
-            </div>`;
-        ov.innerHTML = html;
-        document.body.appendChild(ov);
-        ov.classList.remove('hidden');
-        document.getElementById('dupeKeepOld').onclick = () => {
-            const rem = document.getElementById('dupeRemember').checked;
-            ov.remove();
-            resolve({ choice:'old', remember:rem });
-        };
-        document.getElementById('dupeKeepNew').onclick = () => {
-            const rem = document.getElementById('dupeRemember').checked;
-            ov.remove();
-            resolve({ choice:'new', remember:rem });
-        };
-    });
-}
-
-async function handleDuplicateBeforeSave(relPath, buffer, previewUrl) {
-    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) return 'new';
-    const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
-    const duplicates = await window.electronAPI.getDeDuplicates(relPath);
-    const others = duplicates.filter(d => d.relPath !== relPath);
-    if (!others.length) return 'new';
-    const pref = storage.getItem('dupPref_' + base);
-    if (pref) return pref;
-    if (others.some(o => !o.valid)) return 'new';
-    const result = await showDupeDialog(others[0], previewUrl);
-    if (result.remember) storage.setItem('dupPref_' + base, result.choice);
-    return result.choice;
-}
-
-async function resolveDuplicateAfterCopy(relPath) {
-    if (!window.electronAPI || !window.electronAPI.getDeDuplicates) return;
-    const base = relPath.replace(/\.(mp3|wav|ogg)$/i, '');
-    const info = await window.electronAPI.getDeDuplicates(relPath);
-    if (info.length < 2) return;
-    const pref = storage.getItem('dupPref_' + base);
-    const newInfo = info.find(i => i.relPath === relPath);
-    const oldInfo = info.find(i => i.relPath !== relPath);
-    if (!oldInfo || !newInfo) return;
-    if (pref === 'new') {
-        await window.electronAPI.deleteDeFile(oldInfo.relPath);
-        deleteDeAudioCacheEntry(oldInfo.relPath);
-        return;
-    }
-    if (pref === 'old') {
-        await window.electronAPI.deleteDeFile(newInfo.relPath);
-        deleteDeAudioCacheEntry(newInfo.relPath);
-        return;
-    }
-    const url = deAudioCache[newInfo.relPath] || 'sounds/DE/' + newInfo.relPath;
-    const res = await showDupeDialog(oldInfo, url);
-    if (res.remember) storage.setItem('dupPref_' + base, res.choice);
-    if (res.choice === 'new') {
-        await window.electronAPI.deleteDeFile(oldInfo.relPath);
-        deleteDeAudioCacheEntry(oldInfo.relPath);
-    } else {
-        await window.electronAPI.deleteDeFile(newInfo.relPath);
-        deleteDeAudioCacheEntry(newInfo.relPath);
-    }
-}
-// =========================== DUPLICATE-CHECK END ============================
-
-// =========================== HANDLEDEUPLOAD START ============================
-async function handleDeUpload(input) {
-    const datei = input.files[0];
-    if (!datei || !aktuellerUploadPfad) {
-        return;
-    }
-    // Prüfen, ob bereits eine DE-Datei existiert
-    const f = files.find(fl => getFullPath(fl) === aktuellerUploadPfad);
-    const bestehendeDatei = f ? getDeFilePath(f) : null;
-    if (window.electronAPI && window.electronAPI.saveDeFile) {
-        const buffer = await datei.arrayBuffer();
-        const url = URL.createObjectURL(datei);
-        const choice = await handleDuplicateBeforeSave(aktuellerUploadPfad, buffer, url);
-        if (choice === 'old') {
-            aktuellerUploadPfad = null;
-            input.value = '';
-            return;
-        }
-        const dups = await window.electronAPI.getDeDuplicates(aktuellerUploadPfad);
-        for (const d of dups) {
-            if (d.relPath !== aktuellerUploadPfad) {
-                await window.electronAPI.deleteDeFile(d.relPath);
-                deleteDeAudioCacheEntry(d.relPath);
-            }
-        }
-        await window.electronAPI.saveDeFile(aktuellerUploadPfad, new Uint8Array(buffer));
-        // Hochgeladene Datei sofort als Sicherung ablegen
-        if (window.electronAPI.deleteDeBackupFile) {
-            await window.electronAPI.deleteDeBackupFile(aktuellerUploadPfad);
-        }
-        if (window.electronAPI.backupDeFile) {
-            await window.electronAPI.backupDeFile(aktuellerUploadPfad);
-        }
-        setDeAudioCacheEntry(aktuellerUploadPfad, `sounds/DE/${aktuellerUploadPfad}`);
-        await updateHistoryCache(aktuellerUploadPfad);
-    } else {
-        await speichereUebersetzungsDatei(datei, aktuellerUploadPfad);
-        // Backup ohne Electron im Browser speichern
-        if (deOrdnerHandle) {
-            try {
-                const teile = aktuellerUploadPfad.split('/');
-                const name = teile.pop();
-                let ordner = deOrdnerHandle;
-                for (const t of teile) {
-                    ordner = await ordner.getDirectoryHandle(t, { create: true });
-                }
-                const backupRoot = await deOrdnerHandle.getDirectoryHandle('..', {});
-                const backupDir = await backupRoot.getDirectoryHandle('DE-Backup', { create: true });
-                let ziel = backupDir;
-                for (const t of teile) {
-                    ziel = await ziel.getDirectoryHandle(t, { create: true });
-                }
-                try { await ziel.removeEntry(name); } catch {}
-                const orgFile = await ordner.getFileHandle(name);
-                const orgData = await orgFile.getFile();
-                const backupFile = await ziel.getFileHandle(name, { create: true });
-                const w = await backupFile.createWritable();
-                await w.write(orgData);
-                await w.close();
-            } catch {}
-        }
-    }
-
-    // Zugehörige Datei als fertig markieren
-    const file = f;
-    if (file) {
-        // Versionsnummer erhöhen, falls bereits eine Datei vorhanden war
-        if (bestehendeDatei) {
-            file.version = (file.version || 1) + 1;
-        }
-        // Bearbeitungs-Flags zurücksetzen, da die hochgeladene Datei neu ist
-        file.trimStartMs = 0;
-        file.trimEndMs = 0;
-        file.volumeMatched = false;
-        file.radioEffect = false;
-        file.hallEffect = false;
-        file.emiEffect = false;
-        file.neighborEffect = false;
-        file.neighborHall = false;
-        file.tempoFactor = 1.0; // Tempo-Faktor auf Standard zurücksetzen
-        if (currentEditFile === file) {
-            tempoFactor = 1.0;
-            loadedTempoFactor = 1.0;
-            const tempoRange = document.getElementById('tempoRange');
-            const tempoDisp = document.getElementById('tempoDisplay');
-            if (tempoRange && tempoDisp) {
-                tempoRange.value = '1.00';
-                tempoDisp.textContent = '1.00';
-                tempoDisp.classList.remove('tempo-auto');
-            }
-        }
-        // Fertig-Status ergibt sich nun automatisch
-    }
-
-    markDirty();
-
-    aktuellerUploadPfad = null;
-    input.value = '';
-    renderFileTable();
-    updateStatus('DE-Datei gespeichert');
-}
-// =========================== HANDLEDEUPLOAD END ==============================
-
-// =========================== HANDLEZIPIMPORT START ===========================
-function showZipImportDialog() {
-    if (!currentProject) {
-        alert('Bitte zuerst ein Projekt auswählen.');
-        return;
-    }
-    document.getElementById('zipImportInput').click();
-}
-
-// Liest eine ZIP-Datei ein und zeigt eine Zuordnungsvorschau an
-async function handleZipImport(input) {
-    const file = input.files[0];
-    input.value = '';
-    if (!file || !window.electronAPI?.importZip) return;
-    try {
-        // Pfad direkt an Electron uebergeben, vermeidet Groessenprobleme
-        const result = await window.electronAPI.importZip(file.path);
-        if (result?.error) {
-            alert('Fehler beim Entpacken: ' + result.error);
-            return;
-        }
-        if (!result?.files || result.files.length === 0) {
-            alert('Keine Audiodateien gefunden.');
-            return;
-        }
-        showZipPreview(result.files);
-    } catch (err) {
-        alert('Fehler beim Import: ' + err.message);
-    }
-}
-
-// Zeigt Tabelle mit Zuordnung und übernimmt die Dateien bei Bestätigung
-async function showZipPreview(zipFiles) {
-    const countOk = zipFiles.length === files.length;
-    let rows = '';
-    for (let i = 0; i < files.length; i++) {
-        const name = zipFiles[i] || '-';
-        rows += `<tr><td>${i + 1}</td><td>${escapeHtml(files[i].filename)}</td><td>${escapeHtml(name)}</td></tr>`;
-    }
-    const html = `
-        <h3>ZIP-Import</h3>
-        <p>${zipFiles.length} Dateien im Archiv, ${files.length} Zeilen im Projekt.</p>
-        <table class="zip-preview-table"><thead><tr><th>Zeile</th><th>Projektdatei</th><th>ZIP-Datei</th></tr></thead><tbody>${rows}</tbody></table>
-        <div class="dialog-buttons">
-            <button class="btn btn-secondary" id="zipCancel">Abbrechen</button>
-            <button class="btn btn-success" id="zipConfirm" ${countOk ? '' : 'disabled'}>Importieren</button>
-        </div>`;
-    const ov = showModal(html);
-    ov.querySelector('#zipCancel').onclick = () => ov.remove();
-    ov.querySelector('#zipConfirm').onclick = async () => {
-        ov.remove();
-        if (countOk) await applyZipImport(zipFiles);
-    };
-}
-
-async function applyZipImport(zipFiles) {
-    if (!window.electronAPI?.fsReadFile) return;
-    const info = await window.electronAPI.getDebugInfo();
-    for (let i = 0; i < zipFiles.length && i < files.length; i++) {
-        const rel = getFullPath(files[i]);
-        const full = window.electronAPI.join(info.zipImportTempPath, zipFiles[i]);
-        if (!window.electronAPI.fsExists(full)) continue;
-        const data = window.electronAPI.fsReadFile(full);
-        const blob = new Blob([new Uint8Array(data)]);
-        // Tempo-Faktor der Zeile zurücksetzen, damit der Regler nach dem Import auf 1,0 steht
-        files[i].tempoFactor = 1.0;
-        await uploadDeFile(blob, rel);
-    }
-    showToast(`${zipFiles.length} Dateien importiert`);
-    updateStatus('ZIP-Import abgeschlossen');
-}
-// =========================== HANDLEZIPIMPORT END ============================
-
-// =========================== INITIATEDUBBING START ==========================
-function initiateDubbing(fileId, lang = 'de') {
-    if (lang === 'emo') {
-        initiateEmoDubbing(fileId);
-        return;
-    }
-    currentDubLang = lang;
-    const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    const idProp = 'dubbingId';
-    if (file[idProp]) {
-        const html = `
-            <div class="dialog-overlay hidden" id="dubbingActionDialog">
-                <div class="dialog">
-                    <h3>Vorhandenes Dubbing</h3>
-                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file[idProp]}</p>
-                    <div class="dialog-buttons">
-                        <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
-                        <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
-                        <button class="btn btn-success" onclick="proceedRedownload(${fileId})">Erneut herunterladen</button>
-                    </div>
-                </div>
-            </div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
-        document.getElementById('dubbingActionDialog').classList.remove('hidden');
-    } else {
-        chooseDubbingMode(fileId);
-    }
-}
-
-function closeDubbingAction() {
-    const dlg = document.getElementById('dubbingActionDialog');
-    if (dlg) dlg.remove();
-}
-
-function proceedNewDubbing(fileId) {
-    closeDubbingAction();
-    if (currentDubLang === 'emo') {
-        currentDubMode = 'beta';
-        showEmoDubbingSettings(fileId);
-    } else {
-        chooseDubbingMode(fileId);
-    }
-}
-
-// Startet den Auswahl-Dialog für erneutes Herunterladen
-function proceedRedownload(fileId) {
-    closeDubbingAction();
-    if (currentDubLang === 'emo') {
-        redownloadEmo(fileId);
-    } else {
-        chooseRedownloadMode(fileId);
-    }
-}
-
-// Zeigt die Auswahl zwischen Beta und Halbautomatik an
-function chooseRedownloadMode(fileId) {
-    if (currentDubLang === 'emo') {
-        redownloadEmo(fileId);
-        return;
-    }
-    const html = `
-        <div class="dialog-overlay hidden" id="redlModeDialog">
-            <div class="dialog">
-                <h3>Download-Modus wählen</h3>
-                <p>Beta-API nutzen oder halbautomatisch herunterladen?</p>
-                <div class="dialog-buttons">
-                    <button class="btn btn-secondary" onclick="closeRedownloadMode()">Abbrechen</button>
-                    <button class="btn btn-info" onclick="selectRedownloadMode('manual', ${fileId})">Halbautomatisch</button>
-                    <button class="btn btn-success" onclick="selectRedownloadMode('beta', ${fileId})">Beta-API</button>
-                </div>
-            </div>
-        </div>`;
-    document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('redlModeDialog').classList.remove('hidden');
-}
-
-function closeRedownloadMode() {
-    const dlg = document.getElementById('redlModeDialog');
-    if (dlg) dlg.remove();
-}
-
-function selectRedownloadMode(mode, fileId) {
-    closeRedownloadMode();
-    redownloadDubbing(fileId, mode, currentDubLang);
-}
-
-// Fragt den Benutzer nach dem gewünschten Dubbing-Modus
-function chooseDubbingMode(fileId) {
-    if (currentDubLang === 'emo') {
-        currentDubMode = 'beta';
-        showEmoDubbingSettings(fileId);
-        return;
-    }
-    const html = `
-        <div class="dialog-overlay hidden" id="dubModeDialog">
-            <div class="dialog">
-                <h3>Dubbing-Modus wählen</h3>
-                <p>Beta-API nutzen oder halbautomatischen Modus starten?</p>
-                <div class="dialog-buttons">
-                    <button class="btn btn-secondary" onclick="closeDubMode()">Abbrechen</button>
-                    <button class="btn btn-info" onclick="selectDubMode('manual', ${fileId})">Halbautomatisch</button>
-                    <button class="btn btn-success" onclick="selectDubMode('beta', ${fileId})">Beta-API</button>
-                </div>
-            </div>
-        </div>`;
-    document.body.insertAdjacentHTML('beforeend', html);
-    document.getElementById('dubModeDialog').classList.remove('hidden');
-}
-
-function closeDubMode() {
-    const dlg = document.getElementById('dubModeDialog');
-    if (dlg) dlg.remove();
-}
-
-function selectDubMode(mode, fileId) {
-    currentDubMode = mode;
-    closeDubMode();
-    if (currentDubLang === 'emo') {
-        showEmoDubbingSettings(fileId);
-    } else {
-        showDubbingSettings(fileId);
-    }
-}
-// =========================== INITIATEDUBBING END ============================
-
-// =========================== INITIATEEMODUBBING START ========================
-// Startet das emotionale Dubbing ohne Halbautomatik
-function initiateEmoDubbing(fileId) {
-    currentDubLang = 'emo';
-    currentDubMode = 'beta';
-    const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    if (file.emoDubbingId) {
-        const html = `
-            <div class="dialog-overlay hidden" id="dubbingActionDialog">
-                <div class="dialog">
-                    <h3>Vorhandenes Emotional-Dubbing</h3>
-                    <p>Für diese Datei existiert bereits eine Dubbing-ID.<br>ID: ${file.emoDubbingId}</p>
-                    <div class="dialog-buttons">
-                        <button class="btn btn-secondary" onclick="closeDubbingAction()">Abbrechen</button>
-                        <button class="btn btn-warning" onclick="proceedNewDubbing(${fileId})">Neu dubben</button>
-                        <button class="btn btn-success" onclick="proceedRedownload(${fileId})">Erneut herunterladen</button>
-                    </div>
-                </div>
-            </div>`;
-        document.body.insertAdjacentHTML('beforeend', html);
-        document.getElementById('dubbingActionDialog').classList.remove('hidden');
-    } else {
-        showEmoDubbingSettings(fileId);
-    }
-}
-// =========================== INITIATEEMODUBBING END ==========================
-
-
-// =========================== LOADAUDIOBUFFER START ===========================
-// Lädt eine Audiodatei (String-URL oder File) und liefert ein AudioBuffer
-async function loadAudioBuffer(source) {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    try {
-        let arrayBuffer;
-        if (typeof source === 'string') {
-            const resp = await fetch(source);
-            arrayBuffer = await resp.arrayBuffer();
-        } else {
-            arrayBuffer = await source.arrayBuffer();
-        }
-        // Kontext nach dem Dekodieren schließen, um Limits zu vermeiden
-        const buffer = await ctx.decodeAudioData(arrayBuffer);
-        return buffer;
-    } finally {
-        ctx.close();
-    }
-}
-
-// Ermittelt die Länge einer Audiodatei in Sekunden und nutzt einen Cache
-async function getAudioDuration(src) {
-    if (audioDurationCache[src]) return audioDurationCache[src];
-    try {
-        const buffer = await loadAudioBuffer(src);
-        const seconds = buffer.length / buffer.sampleRate;
-        audioDurationCache[src] = seconds;
-        return seconds;
-    } catch (e) {
-        console.warn('Dauer konnte nicht bestimmt werden:', src, e);
-        return null;
-    }
-}
-// fuer Tests austauschbare Funktion
-let getAudioDurationFn = getAudioDuration;
-// =========================== LOADAUDIOBUFFER END =============================
-
-// =========================== DRAWWAVEFORM START =============================
-// Zeichnet ein einfaches Wellenbild in ein Canvas
-function drawWaveform(canvas, buffer, opts = {}) {
-    const ctx = canvas.getContext('2d');
-    const width = canvas.width;
-    const height = canvas.height;
-    ctx.clearRect(0, 0, width, height);
-    ctx.strokeStyle = '#ff6b1a';
-    ctx.beginPath();
-    const data = buffer.getChannelData(0);
-    const step = Math.ceil(data.length / width);
-    for (let i = 0; i < width; i++) {
-        const start = i * step;
-        let min = 1.0;
-        let max = -1.0;
-        for (let j = 0; j < step; j++) {
-            const sample = data[start + j] || 0;
-            if (sample < min) min = sample;
-            if (sample > max) max = sample;
-        }
-        ctx.moveTo(i, (1 + min) * height / 2);
-        ctx.lineTo(i, (1 + max) * height / 2);
-    }
-    ctx.stroke();
-
-    const durationMs = buffer.length / buffer.sampleRate * 1000;
-
-    // Ignorier-Bereiche halbtransparent darstellen
-    if (opts.ignore && Array.isArray(opts.ignore)) {
-        ctx.fillStyle = 'rgba(128,128,128,0.5)';
-        opts.ignore.forEach(r => {
-            const sx = (r.start / durationMs) * width;
-            const ex = (r.end   / durationMs) * width;
-            ctx.fillRect(sx, 0, ex - sx, height);
-        });
-    }
-    if (opts.silence && Array.isArray(opts.silence)) {
-        ctx.fillStyle = 'rgba(0,0,255,0.3)';
-        opts.silence.forEach(r => {
-            const sx = (r.start / durationMs) * width;
-            const ex = (r.end   / durationMs) * width;
-            ctx.fillRect(sx, 0, ex - sx, height);
-        });
-    }
-    if (opts.selection) {
-        const sx = (opts.selection.start / durationMs) * width;
-        const ex = (opts.selection.end / durationMs) * width;
-        ctx.fillStyle = 'rgba(255,255,0,0.2)';
-        ctx.fillRect(sx, 0, ex - sx, height);
-        ctx.strokeStyle = '#0f0';
-        ctx.beginPath();
-        ctx.moveTo(sx, 0);
-        ctx.lineTo(sx, height);
-        ctx.moveTo(ex, 0);
-        ctx.lineTo(ex, height);
-        ctx.stroke();
-        // Griffe oben und unten zeichnen, damit Start- und Endpunkte leichter zu greifen sind
-        const handleW = 10; // Breite der Anfasser
-        const handleH = 6;  // Höhe der Anfasser
-        ctx.fillStyle = '#0f0';
-        // Startgriff oben und unten
-        ctx.fillRect(sx - handleW / 2, 0, handleW, handleH);
-        ctx.fillRect(sx - handleW / 2, height - handleH, handleW, handleH);
-        // Endgriff oben und unten
-        ctx.fillRect(ex - handleW / 2, 0, handleW, handleH);
-        ctx.fillRect(ex - handleW / 2, height - handleH, handleW, handleH);
-    }
-    if (opts.start !== undefined && opts.end !== undefined) {
-        ctx.strokeStyle = '#0f0';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        const startX = (opts.start / durationMs) * width;
-        const endX = (opts.end / durationMs) * width;
-        ctx.moveTo(startX, 0);
-        ctx.lineTo(startX, height);
-        ctx.moveTo(endX, 0);
-        ctx.lineTo(endX, height);
-        ctx.stroke();
-        ctx.lineWidth = 1;
-
-        ctx.fillStyle = '#e0e0e0';
-        ctx.font = '10px sans-serif';
-        ctx.fillText(Math.round(opts.start) + 'ms', startX + 2, 10);
-        ctx.fillText(Math.round(opts.end) + 'ms', endX + 2, 10);
-    }
-    if (opts.progress !== undefined) {
-        ctx.strokeStyle = '#ff0';
-        ctx.lineWidth = 2;
-        const x = (opts.progress / durationMs) * width;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-        ctx.lineWidth = 1;
-    }
-}
-// =========================== DRAWWAVEFORM END ===============================
-
-// =========================== TRIMANDBUFFER START ============================
-// Kürzt oder verlängert ein AudioBuffer um die angegebenen Millisekunden
-// Erstellt eine unabhängige Kopie eines AudioBuffers, damit das Original unverändert bleibt
-function cloneAudioBuffer(buffer) {
-    if (!buffer) return null;
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const clone = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        clone.getChannelData(ch).set(buffer.getChannelData(ch));
-    }
-    ctx.close();
-    return clone;
-}
-
-function trimAndPadBuffer(buffer, startMs, endMs) {
-    if (!buffer) return null;
-
-    const sampleRate = buffer.sampleRate;
-    const totalSamples = buffer.length;
-
-    const msZuSamples = (ms) => Math.round((ms * sampleRate) / 1000);
-
-    // Positive Werte schneiden Material weg, negative Werte fügen Stille an
-    const trimStartSamples = Math.min(totalSamples, Math.max(0, msZuSamples(Math.max(startMs, 0))));
-    const rohTrimEndSamples = Math.max(0, msZuSamples(Math.max(endMs, 0)));
-    const verbleibendNachStart = Math.max(0, totalSamples - trimStartSamples);
-    const trimEndSamples = Math.min(rohTrimEndSamples, verbleibendNachStart);
-
-    const padStartSamples = Math.max(0, msZuSamples(Math.max(-startMs, 0)));
-    const padEndSamples = Math.max(0, msZuSamples(Math.max(-endMs, 0)));
-
-    const behalteneSamples = Math.max(0, totalSamples - trimStartSamples - trimEndSamples);
-    const neueLaenge = Math.max(1, padStartSamples + behalteneSamples + padEndSamples);
-
-    let hilfsCtx = null;
-    let neuesBufferObjekt;
-
-    // Versuche zuerst, direkt einen AudioBuffer anzulegen
-    if (typeof AudioBuffer === 'function') {
-        try {
-            neuesBufferObjekt = new AudioBuffer({
-                length: neueLaenge,
-                numberOfChannels: buffer.numberOfChannels,
-                sampleRate
-            });
-        } catch (err) {
-            neuesBufferObjekt = null;
-        }
-    }
-
-    // Fallback über einen AudioContext, falls der direkte Weg scheitert
-    if (!neuesBufferObjekt) {
-        hilfsCtx = new (window.AudioContext || window.webkitAudioContext)();
-        neuesBufferObjekt = hilfsCtx.createBuffer(buffer.numberOfChannels, neueLaenge, sampleRate);
-    }
-
-    const quellStart = trimStartSamples;
-    const quellEnde = quellStart + behalteneSamples;
-
-    for (let kanal = 0; kanal < buffer.numberOfChannels; kanal++) {
-        const quelle = buffer.getChannelData(kanal);
-        const ziel = neuesBufferObjekt.getChannelData(kanal);
-
-        // Zieltaktik: erst Stille, dann der übrig gebliebene Ausschnitt
-        if (behalteneSamples > 0) {
-            ziel.set(quelle.subarray(quellStart, quellEnde), padStartSamples);
-        }
-    }
-
-    if (hilfsCtx) hilfsCtx.close();
-
-    return neuesBufferObjekt;
-}
-// =========================== LAUTSTAERKEANGLEICH START =====================
-// Passt die Lautstärke eines Buffers an einen Ziel-Buffer an
-function matchVolume(sourceBuffer, targetBuffer) {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-    const rms = bufferRms(sourceBuffer);
-    const targetRms = bufferRms(targetBuffer);
-    if (rms === 0) return sourceBuffer;
-    const gain = targetRms / rms;
-
-    const out = ctx.createBuffer(sourceBuffer.numberOfChannels, sourceBuffer.length, sourceBuffer.sampleRate);
-    for (let ch = 0; ch < sourceBuffer.numberOfChannels; ch++) {
-        const inData = sourceBuffer.getChannelData(ch);
-        const outData = out.getChannelData(ch);
-        for (let i = 0; i < inData.length; i++) {
-            let sample = inData[i] * gain;
-            outData[i] = Math.max(-1, Math.min(1, sample));
-        }
-    }
-    return out;
-}
-
-// Berechnet die RMS-Lautstärke eines Buffers
-function bufferRms(buffer) {
-    let sum = 0;
-    let len = 0;
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            sum += data[i] * data[i];
-        }
-        len += data.length;
-    }
-    return Math.sqrt(sum / len);
-}
-// =========================== LAUTSTAERKEANGLEICH END =======================
-
-// =========================== RADIOFILTER START ==============================
-// Erzeugt einen Funkgeräteklang. Die Parameter werden über ein Objekt gesteuert
-// und dauerhaft in storage gespeichert.
-async function applyRadioFilter(buffer, opts = {}) {
-    const {
-        hp = radioHighpass,
-        lp = radioLowpass,
-        saturation = radioSaturation,
-        noiseDb = radioNoise,
-        crackle = radioCrackle,
-        wet = radioEffectStrength
-    } = opts;
-
-    // Erster Verarbeitungsschritt: Bandpass und Sättigung
-    const ctx1 = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source1 = ctx1.createBufferSource();
-    source1.buffer = buffer;
-
-    const high = ctx1.createBiquadFilter();
-    high.type = 'highpass';
-    high.frequency.value = hp;
-
-    const low = ctx1.createBiquadFilter();
-    low.type = 'lowpass';
-    low.frequency.value = lp;
-
-    const shaper = ctx1.createWaveShaper();
-    const curve = new Float32Array(44100);
-    const k = saturation * 100;
-    for (let i = 0; i < curve.length; i++) {
-        const x = i * 2 / curve.length - 1;
-        curve[i] = (1 + k) * x / (1 + k * Math.abs(x));
-    }
-    shaper.curve = curve;
-    shaper.oversample = '4x';
-
-    source1.connect(high);
-    high.connect(low);
-    low.connect(shaper);
-    shaper.connect(ctx1.destination);
-    source1.start();
-    let processed = await ctx1.startRendering();
-
-    // Zweiter Schritt: Downsampling auf 8 kHz mit 8 Bit
-    const targetRate = 8000;
-    const ctx2 = new OfflineAudioContext(processed.numberOfChannels, Math.ceil(processed.length * targetRate / processed.sampleRate), targetRate);
-    const source2 = ctx2.createBufferSource();
-    source2.buffer = processed;
-    source2.connect(ctx2.destination);
-    source2.start();
-    processed = await ctx2.startRendering();
-    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
-        const data = processed.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.round(data[i] * 127) / 127; // 8 Bit
-        }
-    }
-
-    // Dritter Schritt: Rauschen und Knackser hinzufügen
-    const amp = Math.pow(10, noiseDb / 20);
-    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
-        const data = processed.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            const rnd = (Math.random() * 2 - 1) * amp;
-            data[i] += rnd;
-            if (Math.random() < crackle / 1000) {
-                data[i] += (Math.random() * 2 - 1) * 0.5;
-            }
-        }
-    }
-
-    // Push-to-Talk-Rauschen am Anfang und Ende
-    const fadeSamples = Math.round(0.05 * processed.sampleRate);
-    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
-        const data = processed.getChannelData(ch);
-        for (let i = 0; i < fadeSamples; i++) {
-            const gain = i / fadeSamples;
-            data[i] += (Math.random() * 2 - 1) * amp * (1 - gain);
-            const j = data.length - 1 - i;
-            data[j] += (Math.random() * 2 - 1) * amp * (1 - gain);
-        }
-    }
-
-    // Pegel auf -16 dBFS normalisieren
-    const rms = bufferRms(processed);
-    const target = Math.pow(10, -16 / 20);
-    const gain = target / (rms || 1);
-    for (let ch = 0; ch < processed.numberOfChannels; ch++) {
-        const data = processed.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) {
-            data[i] = Math.max(-1, Math.min(1, data[i] * gain));
-        }
-    }
-
-    // Mischung mit Original
-    const outCtx = new OfflineAudioContext(buffer.numberOfChannels, processed.length, processed.sampleRate);
-    const dry = outCtx.createBufferSource();
-    dry.buffer = buffer;
-    const wetGain = outCtx.createGain();
-    wetGain.gain.value = wet;
-    const dryGain = outCtx.createGain();
-    dryGain.gain.value = 1 - wet;
-    const wetSource = outCtx.createBufferSource();
-    wetSource.buffer = processed;
-    dry.connect(dryGain);
-    wetSource.connect(wetGain);
-    dryGain.connect(outCtx.destination);
-    wetGain.connect(outCtx.destination);
-    dry.start();
-    wetSource.start();
-    return await outCtx.startRendering();
-}
-// =========================== RADIOFILTER END ================================
-// =========================== REVERB START ===================================
-// Einfacher Hall-Effekt mittels Delay-Schleife
-async function applyReverbEffect(buffer, opts = {}) {
-    const {
-        room = hallRoom,
-        wet = hallAmount,
-        delay = hallDelay
-    } = opts;
-
-    const extra = Math.round(buffer.sampleRate * delay / 1000 * 2);
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels,
-        buffer.length + extra, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-
-    const delayNode = ctx.createDelay();
-    delayNode.delayTime.value = delay / 1000;
-    const feedback = ctx.createGain();
-    feedback.gain.value = room;
-    const wetGain = ctx.createGain();
-    wetGain.gain.value = wet;
-    const dryGain = ctx.createGain();
-    dryGain.gain.value = 1 - wet;
-
-    source.connect(delayNode);
-    source.connect(dryGain);
-    delayNode.connect(feedback);
-    feedback.connect(delayNode);
-    delayNode.connect(wetGain);
-
-    dryGain.connect(ctx.destination);
-    wetGain.connect(ctx.destination);
-    source.start();
-    return await ctx.startRendering();
-}
-// =========================== REVERB END =====================================
-
-// =========================== NEBENRAUMEFFEKT START ==========================
-// Simuliert gedämpfte Sprache aus einem Nachbarraum
-async function applyNeighborRoomEffect(buffer, opts = {}) {
-    const { cutoff = 1000, wet = 0.3, hall = false } = opts;
-    // Offline-Kontext für Tiefpass und Pegelabsenkung
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-
-    const low = ctx.createBiquadFilter();
-    low.type = 'lowpass';
-    low.frequency.value = cutoff;
-
-    const gain = ctx.createGain();
-    gain.gain.value = 0.6; // leichte Dämpfung
-
-    source.connect(low);
-    low.connect(gain);
-    gain.connect(ctx.destination);
-    source.start();
-    let processed = await ctx.startRendering();
-
-    // Optionaler Hall für Raumklang
-    if (hall) {
-        processed = await applyReverbEffect(processed, { room: 0.2, wet, delay: 40 });
-    }
-
-    return processed;
-}
-
-// Vordefinierte Raum-Presets für den Telefon-auf-Tisch-Effekt
-const tableMicRoomPresets = {
-    wohnzimmer: { room: 0.3, wet: 0.5,  delay: 60 },
-    buero:      { room: 0.4, wet: 0.55, delay: 70 },
-    halle:      { room: 0.8, wet: 0.7,  delay: 120 },
-    keller:     { room: 0.6, wet: 0.65, delay: 90 }
-};
-
-// Simuliert ein abgelegtes Telefon auf dem Tisch
-async function applyTableMicFilter(buffer, opts = {}) {
-    const { cutoff = 800, room = 0.3, wet = 0.5, delay = 60 } = opts;
-    // Offline-Kontext für starke Dämpfung und Lowpass
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-
-    const low = ctx.createBiquadFilter();
-    low.type = 'lowpass';
-    low.frequency.value = cutoff;
-
-    const gain = ctx.createGain();
-    gain.gain.value = 0.4; // stärkere Dämpfung
-
-    source.connect(low);
-    low.connect(gain);
-    gain.connect(ctx.destination);
-    source.start();
-    let processed = await ctx.startRendering();
-
-    // Hall für räumlichen Klang entsprechend dem gewählten Preset
-    processed = await applyReverbEffect(processed, { room, wet, delay });
-
-    return processed;
-}
-// =========================== NEBENRAUMEFFEKT END ============================
-
-// =========================== EMI NOISE START ===============================
-// Hilfsfunktion: erstellt die Hüllkurve für den Störpegel
-function computeEmiEnvelope(duration, level, ramp, mode) {
-    const rampTime = duration * ramp;
-    switch (mode) {
-        case 'up':
-            return [
-                { time: 0, value: 0 },
-                { time: rampTime, value: 0 },
-                { time: duration, value: level }
-            ];
-        case 'updown':
-            return [
-                { time: 0, value: 0 },
-                { time: rampTime, value: level },
-                { time: duration, value: 0 }
-            ];
-        case 'down':
-            return [
-                { time: 0, value: level },
-                { time: rampTime, value: level },
-                { time: duration, value: 0 }
-            ];
-        default:
-            return [
-                { time: 0, value: level },
-                { time: duration, value: level }
-            ];
-    }
-}
-
-// Zeichnet die berechnete EM-Hüllkurve in ein Canvas
-function drawEmiEnvelope(canvas, env) {
-    const ctx = canvas.getContext('2d');
-    const w = canvas.width;
-    const h = canvas.height;
-    ctx.clearRect(0, 0, w, h);
-    ctx.beginPath();
-    ctx.strokeStyle = '#0f0';
-    env.forEach((p, i) => {
-        const x = (p.time / env[env.length - 1].time) * w;
-        const y = h - p.value * h;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-    });
-    ctx.stroke();
-}
-
-// Erzeugt elektromagnetische Störgeräusche und mischt sie ins Signal
-async function applyInterferenceEffect(buffer, opts = {}) {
-    const {
-        level = emiNoiseLevel,
-        ramp = emiRampPosition,
-        mode = emiRampMode,
-        dropoutProb = emiDropoutProb,
-        dropoutDur = emiDropoutDur,
-        crackleProb = emiCrackleProb,
-        crackleAmp = emiCrackleAmp,
-        spikeProb = emiSpikeProb,
-        spikeAmp = emiSpikeAmp
-    } = opts;
-    const ctx = new OfflineAudioContext(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-
-    // Ereignisse für Aussetzer und Knackser sammeln
-    const events = [];
-
-    // Rauschbuffer mit Aussetzern, Knacksern und Ausreißern füllen
-    const noiseBuffer = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    for (let ch = 0; ch < noiseBuffer.numberOfChannels; ch++) {
-        const data = noiseBuffer.getChannelData(ch);
-        let dropout = 0;
-        for (let i = 0; i < data.length; i++) {
-            if (dropout > 0) { // Verbindungsaussetzer
-                data[i] = 0;
-                dropout--;
-                continue;
-            }
-            if (Math.random() < dropoutProb) {
-                dropout = Math.floor(ctx.sampleRate * dropoutDur);
-                events.push({ type: 'dropout', time: i / ctx.sampleRate, dur: dropout / ctx.sampleRate });
-                data[i] = 0;
-                dropout--;
-                continue;
-            }
-            let sample = (Math.random() * 2 - 1) * 0.02; // Grundrauschen
-            if (Math.random() < crackleProb) {
-                sample += (Math.random() * 2 - 1) * crackleAmp; // kurzer Knackser
-                events.push({ type: 'crackle', time: i / ctx.sampleRate });
-            }
-            if (Math.random() < spikeProb) {
-                sample += (Math.random() * 2 - 1) * spikeAmp; // großer Ausreißer
-            }
-            data[i] = Math.max(-1, Math.min(1, sample));
-        }
-    }
-    const noise = ctx.createBufferSource();
-    noise.buffer = noiseBuffer;
-
-    // Hüllkurve auf Noise-Gain anwenden
-    const noiseGain = ctx.createGain();
-    const duration = buffer.length / buffer.sampleRate;
-    const env = computeEmiEnvelope(duration, level, ramp, mode);
-    env.forEach((p, idx) => {
-        if (idx === 0) noiseGain.gain.setValueAtTime(p.value, p.time);
-        else noiseGain.gain.linearRampToValueAtTime(p.value, p.time);
-    });
-
-    // Optional Sprachdämpfung des Originalsignals
-    if (emiVoiceDamp) {
-        const signalGain = ctx.createGain();
-        signalGain.gain.setValueAtTime(1, 0);
-        events.forEach(ev => {
-            if (ev.type === 'dropout') {
-                signalGain.gain.setValueAtTime(1, ev.time);
-                signalGain.gain.linearRampToValueAtTime(0.1, ev.time + 0.01);
-                signalGain.gain.setValueAtTime(0.1, ev.time + ev.dur);
-                signalGain.gain.linearRampToValueAtTime(1, ev.time + ev.dur + 0.05);
-            } else if (ev.type === 'crackle') {
-                signalGain.gain.setValueAtTime(1, ev.time);
-                signalGain.gain.linearRampToValueAtTime(0.7, ev.time + 0.005);
-                signalGain.gain.linearRampToValueAtTime(1, ev.time + 0.015);
-            }
-        });
-        source.connect(signalGain).connect(ctx.destination);
-    } else {
-        source.connect(ctx.destination);
-    }
-
-    noise.connect(noiseGain).connect(ctx.destination);
-    source.start();
-    noise.start();
-
-    return await ctx.startRendering();
-}
-// =========================== EMI NOISE END ===================================
-// =========================== TRIMANDBUFFER END ==============================
-
-// =========================== BUFFERTOWAV START ==============================
-// Wandelt einen AudioBuffer in einen WAV-Blob um
-function bufferToWav(buffer) {
-    const numOfChan = buffer.numberOfChannels;
-    const length = buffer.length * numOfChan * 2 + 44;
-    const arrBuffer = new ArrayBuffer(length);
-    const view = new DataView(arrBuffer);
-    const writeString = (o, s) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)); };
-    writeString(0, 'RIFF');
-    view.setUint32(4, 36 + buffer.length * numOfChan * 2, true);
-    writeString(8, 'WAVE');
-    writeString(12, 'fmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true);
-    view.setUint16(22, numOfChan, true);
-    view.setUint32(24, buffer.sampleRate, true);
-    view.setUint32(28, buffer.sampleRate * numOfChan * 2, true);
-    view.setUint16(32, numOfChan * 2, true);
-    view.setUint16(34, 16, true);
-    writeString(36, 'data');
-    view.setUint32(40, buffer.length * numOfChan * 2, true);
-    let offset = 44;
-    for (let i = 0; i < buffer.length; i++) {
-        for (let ch = 0; ch < numOfChan; ch++) {
-            let sample = buffer.getChannelData(ch)[i];
-            sample = Math.max(-1, Math.min(1, sample));
-            view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-            offset += 2;
-        }
-    }
-    return new Blob([view], { type: 'audio/wav' });
-}
-// =========================== BUFFERTOWAV END ================================
-
-
-let currentEditFile = null;
-let originalEditBuffer = null;
-let savedOriginalBuffer = null; // Unverändertes DE-Audio
-let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
-let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
-let radioEffectBuffer = null;  // Buffer mit Funkgeräteffekt
-let isRadioEffect = false;     // Merkt, ob der Funkgeräteffekt angewendet wurde
-let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
-let isHallEffect      = false; // Merkt, ob der Hall-Effekt angewendet wurde
-let emiEffectBuffer   = null;  // Buffer mit EM-Störgeräusch
-let isEmiEffect       = false; // Merkt, ob der EM-Störgeräusch-Effekt angewendet wurde
-let neighborEffectBuffer = null;  // Buffer mit Nebenraum-Effekt
-let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet wurde
-let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
-let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
-let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
-
-let tempoDebugSteps      = [];    // Gespeicherte Schritte der Tempo-Simulation
-let tempoDebugIndex      = 0;     // Aktuelle Position im Debug-Ablauf
-let tempoDebugLogEntries = [];    // Textprotokoll aller Zwischenschritte
-
-// =========================== OPENDEEDIT START ===============================
-// Öffnet den Bearbeitungsdialog für eine DE-Datei
-async function openDeEdit(fileId) {
-    const file = files.find(f => f.id === fileId);
-    if (!file) return;
-    currentEditFile = file;
-    const enSrc = `sounds/EN/${getFullPath(file)}`;
-    const rel = getDeFilePath(file) || getFullPath(file);
-    let deSrc = deAudioCache[rel];
-    if (!deSrc) return;
-    // Zuerst versuchen wir, die aktuelle DE-Datei zu laden
-    try {
-        // Cache-Buster anhängen, damit nach Änderungen die aktuelle Datei geladen wird
-        const src = typeof deSrc === 'string' ? `${deSrc}?v=${Date.now()}` : deSrc;
-        originalEditBuffer = await loadAudioBuffer(src);
-    } catch {
-        // Falls das fehlschlägt, greifen wir auf das Backup zurück
-        const backupSrc = `sounds/DE-Backup/${rel}`;
-        originalEditBuffer = await loadAudioBuffer(backupSrc);
-    }
-    savedOriginalBuffer = originalEditBuffer;
-    volumeMatchedBuffer = null;
-    isVolumeMatched = false;
-    radioEffectBuffer = null;
-    isRadioEffect = false;
-    hallEffectBuffer = null;
-    isHallEffect = false;
-    emiEffectBuffer = null;
-    isEmiEffect = false;
-    neighborEffectBuffer = null;
-    isNeighborEffect = false;
-    tableMicEffectBuffer = null;
-    isTableMicEffect = false;
-    // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
-    neighborHall = !!file.neighborHall;
-    tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
-    const enBuffer = await loadAudioBuffer(enSrc);
-    editEnBuffer = enBuffer;
-    rawEnBuffer = enBuffer;
-    // Länge der beiden Dateien in Sekunden bestimmen
-    const enSeconds = enBuffer.length / enBuffer.sampleRate;
-    const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
-    const maxSeconds = Math.max(enSeconds, deSeconds);
-    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-    normalizeDeTrim();
-    currentEnSeconds = enSeconds;
-    currentDeSeconds = deSeconds;
-    maxWaveSeconds = Math.max(maxSeconds, 0.001);
-    ensureDeDebugPanel();
-    resetDeDebugLog(getFullPath(file));
-    // Beide Cursor zurücksetzen
-    editOrigCursor = 0;
-    editDeCursor = 0;
-    editPaused = false;
-    editPlaying = null;
-    if (editBlobUrl) { URL.revokeObjectURL(editBlobUrl); editBlobUrl = null; }
-    editStartTrim = file.trimStartMs || 0;
-    editEndTrim = file.trimEndMs || 0;
-    normalizeDeTrim();
-    editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
-    manualIgnoreRanges = editIgnoreRanges.map(r => ({start:r.start,end:r.end}));
-    editSilenceRanges = Array.isArray(file.silenceRanges) ? file.silenceRanges.map(r => ({start:r.start,end:r.end})) : [];
-    manualSilenceRanges = editSilenceRanges.map(r => ({start:r.start,end:r.end}));
-    ignoreTempStart = null;
-    silenceTempStart = null;
-
-    // Hilfsfunktionen für visuelles Feedback der Schnellzugriffe (Kommentare auf Deutsch gewünscht)
-    const triggerPulse = (elementId, fallbackSelector) => {
-        const el = document.getElementById(elementId) || (fallbackSelector ? document.querySelector(fallbackSelector) : null);
-        if (!el) return;
-        el.classList.add('trigger-pulse');
-        setTimeout(() => el.classList.remove('trigger-pulse'), 400);
-    };
-
-    const focusTrimCard = () => {
-        const trimCard = document.querySelector('#deEditDialog .trim-card');
-        if (trimCard) {
-            trimCard.classList.add('focused-card');
-            setTimeout(() => trimCard.classList.remove('focused-card'), 800);
-            trimCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        const startInput = document.getElementById('editStart');
-        if (startInput) {
-            startInput.focus();
-            startInput.select();
-        }
-    };
-    setTrimInputValueSafe(document.getElementById('editStart'), editStartTrim);
-    setTrimInputValueSafe(document.getElementById('editEnd'), editDurationMs - editEndTrim);
-    document.getElementById('editStart').oninput = e => {
-        const val = parseInt(e.target.value) || 0;
-        editStartTrim = Math.max(0, Math.min(val, editDurationMs));
-        validateDeSelection();
-        scheduleWaveformUpdate();
-    };
-    document.getElementById('editEnd').oninput = e => {
-        const val = parseInt(e.target.value) || 0;
-        const clamped = Math.max(0, Math.min(val, editDurationMs));
-        editEndTrim = Math.max(0, editDurationMs - clamped);
-        validateDeSelection();
-        scheduleWaveformUpdate();
-    };
-    validateDeSelection();
-    const runAutoTrim = () => {
-        const vals = detectSilenceTrim(savedOriginalBuffer);
-        editStartTrim = vals.start;
-        editEndTrim = vals.end;
-        updateDeEditWaveforms();
-        validateDeSelection();
-    };
-    const autoTrim = document.getElementById('autoTrimBtn');
-    if (autoTrim) autoTrim.onclick = runAutoTrim;
-
-    const quickTrim = document.getElementById('quickFocusTrim');
-    if (quickTrim) quickTrim.onclick = () => {
-        focusTrimCard();
-    };
-
-    const quickAutoTrim = document.getElementById('quickAutoTrim');
-    if (quickAutoTrim) quickAutoTrim.onclick = () => {
-        runAutoTrim();
-        triggerPulse('autoTrimBtn');
-    };
-
-    const quickTempoMatch = document.getElementById('quickTempoMatch');
-    if (quickTempoMatch) quickTempoMatch.onclick = () => {
-        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
-        if (tempoAutoMatch) {
-            tempoAutoMatch.click();
-            triggerPulse('tempoAutoMatchBtn', '#tempoRange');
-        }
-    };
-
-    const quickVolume = document.getElementById('quickVolumeMatch');
-    if (quickVolume) quickVolume.onclick = () => {
-        applyVolumeMatch();
-        triggerPulse('volumeMatchBoxBtn');
-    };
-
-    const quickRadio = document.getElementById('quickRadioEffect');
-    if (quickRadio) quickRadio.onclick = () => {
-        applyRadioEffect();
-        triggerPulse('radioEffectBoxBtn');
-    };
-
-    tempoFactor = file.tempoFactor || 1.0;
-    autoIgnoreMs = 400;
-    const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp  = document.getElementById('tempoDisplay');
-    let tempoMin = 1;
-    let tempoMax = 3;
-    if (tempoRange) {
-        const parsedMin = parseFloat(tempoRange.min);
-        if (!Number.isNaN(parsedMin)) tempoMin = parsedMin;
-        const parsedMax = parseFloat(tempoRange.max);
-        if (!Number.isNaN(parsedMax)) tempoMax = parsedMax;
-    }
-    if (!Number.isFinite(tempoFactor)) {
-        tempoFactor = tempoMin;
-    }
-    let tempoBegrenzt = false;
-    if (tempoFactor < tempoMin) {
-        tempoFactor = tempoMin;
-        tempoBegrenzt = true;
-    } else if (tempoFactor > tempoMax) {
-        tempoFactor = tempoMax;
-        tempoBegrenzt = true;
-    }
-    loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln
-    if (tempoBegrenzt && file.tempoFactor !== tempoFactor) {
-        // Ältere Projekte können Tempo-Werte außerhalb des Slider-Bereichs besitzen – auf den erlaubten Bereich trimmen
-        file.tempoFactor = tempoFactor;
-        markDirty();
-    }
-    if (tempoRange && tempoDisp) {
-        tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoRange.oninput = async e => {
-            tempoFactor = parseFloat(e.target.value);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        // Minus-Knopf reduziert das Tempo in kleinen Schritten
-        const tempoMinus = document.getElementById('tempoMinusBtn');
-        if (tempoMinus) tempoMinus.onclick = () => {
-            const step = parseFloat(tempoRange.step) || 0.01;
-            const min  = parseFloat(tempoRange.min);
-            tempoFactor = Math.max(min, tempoFactor - step);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        // Plus-Knopf erhöht das Tempo in kleinen Schritten
-        const tempoPlus = document.getElementById('tempoPlusBtn');
-        if (tempoPlus) tempoPlus.onclick = () => {
-            const step = parseFloat(tempoRange.step) || 0.01;
-            const max  = parseFloat(tempoRange.max);
-            tempoFactor = Math.min(max, tempoFactor + step);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
-            updateLengthInfo();
-        };
-        const tempoAuto = document.getElementById('tempoAutoBtn');
-        if (tempoAuto) tempoAuto.onclick = () => {
-            // Setzt den Tempofaktor auf das definierte Minimum
-            tempoFactor = parseFloat(tempoRange.min);
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.add('tempo-auto');
-            updateLengthInfo();
-        };
-        // Zweiter Auto-Knopf gleicht die DE-Zeit an die EN-Zeit an
-        const tempoAutoMatch = document.getElementById('tempoAutoMatchBtn');
-        if (tempoAutoMatch) tempoAutoMatch.onclick = () => {
-            const step = parseFloat(tempoRange.step);
-            const min  = parseFloat(tempoRange.min);
-            const max  = parseFloat(tempoRange.max);
-            const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-
-            tempoDisp.classList.add('tempo-auto');
-
-            // Neue Zielgeschwindigkeit berechnen, die den Referenzwert auf EN angleicht
-            const deRefMs = calcTempoReferenceLength();
-            const relFactor = tempoFactor / loadedTempoFactor;
-            if (!Number.isFinite(enMs) || enMs <= 0 || !Number.isFinite(deRefMs) || deRefMs <= 0 || !Number.isFinite(relFactor) || relFactor <= 0) {
-                updateLengthInfo();
-                return;
-            }
-
-            // Basislänge ohne aktuelles Tempo ermitteln und auf EN matchen
-            let targetFactor = (deRefMs * tempoFactor) / enMs;
-            if (Number.isFinite(step) && step > 0) {
-                // Auf die Schrittweite des Sliders runden, damit Anzeige und Wert identisch bleiben
-                targetFactor = Math.round(targetFactor / step) * step;
-            }
-            if (Number.isFinite(min)) targetFactor = Math.max(min, targetFactor);
-            if (Number.isFinite(max)) targetFactor = Math.min(max, targetFactor);
-
-            tempoFactor = targetFactor;
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            updateLengthInfo();
-        };
-    }
-    const autoChk = document.getElementById('autoIgnoreChk');
-    const autoMs  = document.getElementById('autoIgnoreMs');
-    if (autoChk && autoMs) {
-        autoChk.checked = false;
-        autoMs.value = 400;
-        autoChk.onchange = () => {
-            if (autoChk.checked) {
-                manualIgnoreRanges = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-                autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-            } else {
-                editIgnoreRanges = manualIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-            }
-            refreshIgnoreList();
-            updateDeEditWaveforms();
-        };
-        autoMs.oninput = () => {
-            if (autoChk.checked) {
-                autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-                refreshIgnoreList();
-                updateDeEditWaveforms();
-            }
-        };
-    }
-    const autoTempo = document.getElementById('autoTempoChk');
-    if (autoTempo) autoTempo.checked = false;
-    const tempoSafetyIds = [
-        'tempoSafetyReference',
-        'tempoSafetyPadding',
-        'tempoSafetyDetect',
-        'tempoSafetyTrimLimit'
-    ];
-    tempoSafetyIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.checked = true;
-            el.onchange = async () => {
-                updateLengthInfo();
-                if (savedOriginalBuffer) {
-                    await recomputeEditBuffer();
-                    updateLengthInfo();
-                }
-            };
-        }
-    });
-    const autoBtn = document.getElementById('autoAdjustBtn');
-    if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
-    refreshIgnoreList();
-    refreshSilenceList();
-
-    const deCanvas = document.getElementById('waveEdited');
-    const origCanvas = document.getElementById('waveOriginal');
-
-    const startField = document.getElementById('enSegStart');
-    const endField   = document.getElementById('enSegEnd');
-
-    // Eingabefelder aktualisieren die Markierung
-    if (startField) {
-        startField.oninput = () => {
-            enSelectStart = parseInt(startField.value) || 0;
-            validateEnSelection();
-            scheduleWaveformUpdate();
-        };
-        enSelectStart = parseInt(startField.value) || 0;
-    }
-    if (endField) {
-        endField.oninput = () => {
-            enSelectEnd = parseInt(endField.value) || 0;
-            validateEnSelection();
-            scheduleWaveformUpdate();
-        };
-        enSelectEnd = parseInt(endField.value) || 0;
-    }
-
-    // Auswahl eines EN-Bereichs per Ziehen
-    origCanvas.onmousedown = e => {
-        if (!editEnBuffer) return;
-        activeWave = 'en';
-        const rect = origCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-        const startX = Math.min(enSelectStart, enSelectEnd) / dur * origCanvas.width;
-        const endX   = Math.max(enSelectStart, enSelectEnd) / dur * origCanvas.width;
-        // Größerer Griffbereich für einfacheres Anfassen der EN-Marker
-        const grip = 8;
-        if (enSelectStart !== enSelectEnd && Math.abs(x - startX) <= grip) {
-            enMarkerDragging = 'start';
-            return;
-        }
-        if (enSelectStart !== enSelectEnd && Math.abs(x - endX) <= grip) {
-            enMarkerDragging = 'end';
-            return;
-        }
-        enPrevStart = enSelectStart;
-        enPrevEnd   = enSelectEnd;
-        enDragStart = x / origCanvas.width * dur;
-        enSelecting = true;
-    };
-    origCanvas.onmousemove = e => {
-        if (enSelecting && editEnBuffer) {
-            const rect = origCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-            enSelectStart = enDragStart;
-            enSelectEnd   = x / origCanvas.width * dur;
-            if (startField) startField.value = Math.round(Math.min(enSelectStart, enSelectEnd));
-            if (endField)   endField.value   = Math.round(Math.max(enSelectStart, enSelectEnd));
-            validateEnSelection();
-            scheduleWaveformUpdate();
-        } else if (enMarkerDragging && editEnBuffer) {
-            const rect = origCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const dur = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-            const pos = x / origCanvas.width * dur;
-            if (enMarkerDragging === 'start') {
-                enSelectStart = pos;
-                if (startField) startField.value = Math.round(pos);
-            } else {
-                enSelectEnd = pos;
-                if (endField) endField.value = Math.round(pos);
-            }
-            validateEnSelection();
-            scheduleWaveformUpdate();
-        }
-    };
-    origCanvas.ondblclick = () => {
-        enSelectStart = 0;
-        enSelectEnd = 0;
-        if (startField) startField.value = '';
-        if (endField) endField.value = '';
-        resetCanvasZoom(origCanvas);
-        validateEnSelection();
-        scheduleWaveformUpdate();
-    };
-
-    initWaveToolbar();
-    updateWaveCanvasDimensions();
-
-    // Längen in Sekunden anzeigen
-    document.getElementById('waveLabelOriginal').textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
-    document.getElementById('waveLabelEdited').textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
-
-    // EN-Text, DE-Text und Emotional-Text unter den Wellen anzeigen
-    const enTextEl = document.getElementById('editEnText');
-    if (enTextEl) enTextEl.textContent = file.enText || '';
-    const deTextEl = document.getElementById('editDeText');
-    if (deTextEl) deTextEl.textContent = file.deText || '';
-    const emoTextEl = document.getElementById('editEmoText');
-    if (emoTextEl) emoTextEl.textContent = file.emotionalText || '';
-
-    updateDeEditWaveforms();
-    updateMasterTimeline();
-    document.getElementById('deEditDialog').classList.remove('hidden');
-
-    // Regler für Funk-Effekt initialisieren
-    const rStrength = document.getElementById('radioStrength');
-    const rStrengthDisp = document.getElementById('radioStrengthDisplay');
-    if (rStrength && rStrengthDisp) {
-        rStrength.value = radioEffectStrength;
-        rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
-        rStrength.oninput = e => {
-            radioEffectStrength = parseFloat(e.target.value);
-            storage.setItem('hla_radioEffectStrength', radioEffectStrength);
-            rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    const rHigh = document.getElementById('radioHighpass');
-    if (rHigh) {
-        rHigh.value = radioHighpass;
-        rHigh.oninput = e => {
-            radioHighpass = parseFloat(e.target.value);
-            storage.setItem('hla_radioHighpass', radioHighpass);
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    const rLow = document.getElementById('radioLowpass');
-    if (rLow) {
-        rLow.value = radioLowpass;
-        rLow.oninput = e => {
-            radioLowpass = parseFloat(e.target.value);
-            storage.setItem('hla_radioLowpass', radioLowpass);
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    const rSat = document.getElementById('radioSaturation');
-    const rSatDisp = document.getElementById('radioSaturationDisplay');
-    if (rSat && rSatDisp) {
-        rSat.value = radioSaturation;
-        rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
-        rSat.oninput = e => {
-            radioSaturation = parseFloat(e.target.value);
-            storage.setItem('hla_radioSaturation', radioSaturation);
-            rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    const rNoise = document.getElementById('radioNoise');
-    if (rNoise) {
-        rNoise.value = radioNoise;
-        rNoise.oninput = e => {
-            radioNoise = parseFloat(e.target.value);
-            storage.setItem('hla_radioNoise', radioNoise);
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    const rCrackle = document.getElementById('radioCrackle');
-    const rCrackleDisp = document.getElementById('radioCrackleDisplay');
-    if (rCrackle && rCrackleDisp) {
-        rCrackle.value = radioCrackle;
-        rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
-        rCrackle.oninput = e => {
-            radioCrackle = parseFloat(e.target.value);
-            storage.setItem('hla_radioCrackle', radioCrackle);
-            rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-
-    // Regler für Hall-Effekt initialisieren
-    const hRoom = document.getElementById('hallRoom');
-    if (hRoom) {
-        hRoom.value = hallRoom;
-        hRoom.oninput = e => {
-            hallRoom = parseFloat(e.target.value);
-            storage.setItem('hla_hallRoom', hallRoom);
-            if (isHallEffect) recomputeEditBuffer();
-        };
-    }
-    const hAmount = document.getElementById('hallAmount');
-    const hAmountDisp = document.getElementById('hallAmountDisplay');
-    if (hAmount && hAmountDisp) {
-        hAmount.value = hallAmount;
-        hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
-        hAmount.oninput = e => {
-            hallAmount = parseFloat(e.target.value);
-            storage.setItem('hla_hallAmount', hallAmount);
-            hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
-            if (isHallEffect) recomputeEditBuffer();
-        };
-    }
-    const hDelay = document.getElementById('hallDelay');
-    if (hDelay) {
-        hDelay.value = hallDelay;
-        hDelay.oninput = e => {
-            hallDelay = parseFloat(e.target.value);
-            storage.setItem('hla_hallDelay', hallDelay);
-            if (isHallEffect) recomputeEditBuffer();
-        };
-    }
-
-    const hToggle = document.getElementById('hallToggle');
-    if (hToggle) {
-        hToggle.checked = isHallEffect;
-        hToggle.onchange = e => toggleHallEffect(e.target.checked);
-    }
-
-    const nHall = document.getElementById('neighborHallToggle');
-    if (nHall) {
-        nHall.checked = neighborHall;
-        nHall.onchange = e => toggleNeighborHall(e.target.checked);
-    }
-    const nToggle = document.getElementById('neighborToggle');
-    if (nToggle) {
-        nToggle.checked = isNeighborEffect;
-        nToggle.onchange = e => toggleNeighborEffect(e.target.checked);
-    }
-    const tToggle = document.getElementById('tableMicToggle');
-    if (tToggle) {
-        tToggle.checked = isTableMicEffect;
-        tToggle.onchange = e => toggleTableMicEffect(e.target.checked);
-    }
-    const tRoom = document.getElementById('tableMicRoom');
-    if (tRoom) {
-        tRoom.value = tableMicRoomType;
-        tRoom.onchange = e => {
-            tableMicRoomType = e.target.value;
-            if (isTableMicEffect) recomputeEditBuffer();
-        };
-    }
-    const emiVoice = document.getElementById('emiVoiceDampToggle');
-    if (emiVoice) {
-        emiVoice.checked = emiVoiceDamp;
-        emiVoice.onchange = e => toggleEmiVoiceDamp(e.target.checked);
-    }
-
-    // Regler für elektromagnetische Störgeräusche initialisieren
-    const emiCanvas = document.getElementById('emiEnvelopeCanvas');
-    const updateEmiEnvelope = () => {
-        if (!emiCanvas) return;
-        const env = computeEmiEnvelope(1, emiNoiseLevel, emiRampPosition, emiRampMode);
-        drawEmiEnvelope(emiCanvas, env);
-    };
-    const emiLevel = document.getElementById('emiLevel');
-    const emiLevelDisp = document.getElementById('emiLevelDisplay');
-    if (emiLevel && emiLevelDisp) {
-        emiLevel.value = emiNoiseLevel;
-        emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
-        emiLevel.oninput = e => {
-            emiNoiseLevel = parseFloat(e.target.value);
-            storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
-            emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-            updateEmiEnvelope();
-        };
-    }
-    const emiRamp = document.getElementById('emiRamp');
-    const emiRampDisp = document.getElementById('emiRampDisplay');
-    if (emiRamp && emiRampDisp) {
-        emiRamp.value = emiRampPosition;
-        emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
-        emiRamp.oninput = e => {
-            emiRampPosition = parseFloat(e.target.value);
-            storage.setItem('hla_emiRamp', emiRampPosition);
-            emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-            updateEmiEnvelope();
-        };
-    }
-    const emiMode = document.getElementById('emiMode');
-    if (emiMode) {
-        emiMode.value = emiRampMode;
-        emiMode.onchange = e => {
-            emiRampMode = e.target.value;
-            storage.setItem('hla_emiMode', emiRampMode);
-            if (isEmiEffect) recomputeEditBuffer();
-            updateEmiEnvelope();
-        };
-    }
-    updateEmiEnvelope();
-
-    // Regler für Aussetzer-Häufigkeit
-    const emiDropProb = document.getElementById('emiDropoutProb');
-    const emiDropProbDisp = document.getElementById('emiDropoutProbDisplay');
-    if (emiDropProb && emiDropProbDisp) {
-        emiDropProb.value = emiDropoutProb;
-        emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
-        emiDropProb.oninput = e => {
-            emiDropoutProb = parseFloat(e.target.value);
-            storage.setItem('hla_emiDropoutProb', emiDropoutProb);
-            emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-    // Regler für Aussetzer-Dauer
-    const emiDropDur = document.getElementById('emiDropoutDur');
-    const emiDropDurDisp = document.getElementById('emiDropoutDurDisplay');
-    if (emiDropDur && emiDropDurDisp) {
-        emiDropDur.value = emiDropoutDur;
-        emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
-        emiDropDur.oninput = e => {
-            emiDropoutDur = parseFloat(e.target.value);
-            storage.setItem('hla_emiDropoutDur', emiDropoutDur);
-            emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-
-    // Regler für Knackser-Häufigkeit
-    const emiCrackProb = document.getElementById('emiCrackleProb');
-    const emiCrackProbDisp = document.getElementById('emiCrackleProbDisplay');
-    if (emiCrackProb && emiCrackProbDisp) {
-        emiCrackProb.value = emiCrackleProb;
-        emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
-        emiCrackProb.oninput = e => {
-            emiCrackleProb = parseFloat(e.target.value);
-            storage.setItem('hla_emiCrackleProb', emiCrackleProb);
-            emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-    // Regler für Knackser-Amplitude
-    const emiCrackAmp = document.getElementById('emiCrackleAmp');
-    const emiCrackAmpDisp = document.getElementById('emiCrackleAmpDisplay');
-    if (emiCrackAmp && emiCrackAmpDisp) {
-        emiCrackAmp.value = emiCrackleAmp;
-        emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
-        emiCrackAmp.oninput = e => {
-            emiCrackleAmp = parseFloat(e.target.value);
-            storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
-            emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-    // Regler für Ausreißer-Häufigkeit
-    const emiSpikeProbEl = document.getElementById('emiSpikeProb');
-    const emiSpikeProbDisp = document.getElementById('emiSpikeProbDisplay');
-    if (emiSpikeProbEl && emiSpikeProbDisp) {
-        emiSpikeProbEl.value = emiSpikeProb;
-        emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
-        emiSpikeProbEl.oninput = e => {
-            emiSpikeProb = parseFloat(e.target.value);
-            storage.setItem('hla_emiSpikeProb', emiSpikeProb);
-            emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-    // Regler für Ausreißer-Amplitude
-    const emiSpikeAmpEl = document.getElementById('emiSpikeAmp');
-    const emiSpikeAmpDisp = document.getElementById('emiSpikeAmpDisplay');
-    if (emiSpikeAmpEl && emiSpikeAmpDisp) {
-        emiSpikeAmpEl.value = emiSpikeAmp;
-        emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
-        emiSpikeAmpEl.oninput = e => {
-            emiSpikeAmp = parseFloat(e.target.value);
-            storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
-            emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-
-    // Preset-Auswahl für EM-Störgeräusch initialisieren
-    updateEmiPresetList();
-    const emiPresetSel  = document.getElementById('emiPresetSelect');
-    const emiPresetSave = document.getElementById('saveEmiPresetBtn');
-    const emiPresetDel  = document.getElementById('deleteEmiPresetBtn');
-    if (emiPresetSel) {
-        const name = file.emiPreset || lastEmiPreset;
-        if (name && emiPresets[name]) {
-            emiPresetSel.value = name;
-            loadEmiPreset(name);
-        }
-        emiPresetSel.onchange = () => {
-            loadEmiPreset(emiPresetSel.value);
-            if (isEmiEffect) recomputeEditBuffer();
-        };
-    }
-    if (emiPresetSave) {
-        // Eingabedialog statt prompt()
-        emiPresetSave.onclick = async () => {
-            const name = await showInputDialog('Preset-Name eingeben:', emiPresetSel?.value || '');
-            if (name) {
-                saveEmiPreset(name);
-                if (emiPresetSel) emiPresetSel.value = name;
-            }
-        };
-    }
-    if (emiPresetDel) {
-        emiPresetDel.onclick = () => {
-            if (emiPresetSel && emiPresetSel.value && confirm('Preset wirklich löschen?')) {
-                deleteEmiPreset(emiPresetSel.value);
-            }
-        };
-    }
-
-    // Preset-Auswahl für Funkgerät-Effekt initialisieren
-    updateRadioPresetList();
-    const presetSel  = document.getElementById('radioPresetSelect');
-    const presetSave = document.getElementById('saveRadioPresetBtn');
-    const presetDel  = document.getElementById('deleteRadioPresetBtn');
-    if (presetSel) {
-        const name = file.radioPreset || lastRadioPreset;
-        if (name && radioPresets[name]) {
-            presetSel.value = name;
-            loadRadioPreset(name);
-        }
-        presetSel.onchange = () => {
-            loadRadioPreset(presetSel.value);
-            if (isRadioEffect) recomputeEditBuffer();
-        };
-    }
-    if (presetSave) {
-        // Eingabedialog anstelle des nicht unterstützten prompt()
-        presetSave.onclick = async () => {
-            const name = await showInputDialog('Preset-Name eingeben:', presetSel?.value || '');
-            if (name) {
-                saveRadioPreset(name);
-                if (presetSel) presetSel.value = name;
-            }
-        };
-    }
-    if (presetDel) {
-        presetDel.onclick = () => {
-            if (presetSel && presetSel.value && confirm('Preset wirklich löschen?')) {
-                deleteRadioPreset(presetSel.value);
-            }
-        };
-    }
-
-    // Klick auf das bearbeitete Wellenbild setzt Cursor oder startet Bereichsauswahl
-    deCanvas.onmousedown = e => {
-        activeWave = 'de';
-        const rect = deCanvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const width = rect.width;
-        const time = (x / width) * editDurationMs;
-
-        if (e.shiftKey) {
-            if (ignoreTempStart === null) {
-                ignoreTempStart = time;
-            } else {
-                const start = Math.min(ignoreTempStart, time);
-                const end = Math.max(ignoreTempStart, time);
-                editIgnoreRanges.push({ start, end });
-                ignoreTempStart = null;
-                refreshIgnoreList();
-            }
-            scheduleWaveformUpdate();
-            return;
-        }
-        if (e.altKey) {
-            if (silenceTempStart === null) {
-                silenceTempStart = time;
-            } else {
-                const start = Math.min(silenceTempStart, time);
-                const end = Math.max(silenceTempStart, time);
-                editSilenceRanges.push({ start, end });
-                silenceTempStart = null;
-                refreshSilenceList();
-            }
-            scheduleWaveformUpdate();
-            return;
-        }
-
-        const startX = (editStartTrim / editDurationMs) * width;
-        const endX = ((editDurationMs - editEndTrim) / editDurationMs) * width;
-        for (let i = 0; i < editIgnoreRanges.length; i++) {
-            const r = editIgnoreRanges[i];
-            const sx = (r.start / editDurationMs) * width;
-            const ex = (r.end / editDurationMs) * width;
-            if (Math.abs(x - sx) < 5) { ignoreDragging = { index: i, side: 'start' }; return; }
-            if (Math.abs(x - ex) < 5) { ignoreDragging = { index: i, side: 'end' }; return; }
-        }
-        for (let i = 0; i < editSilenceRanges.length; i++) {
-            const r = editSilenceRanges[i];
-            const sx = (r.start / editDurationMs) * width;
-            const ex = (r.end / editDurationMs) * width;
-            if (Math.abs(x - sx) < 5) { silenceDragging = { index: i, side: 'start' }; return; }
-            if (Math.abs(x - ex) < 5) { silenceDragging = { index: i, side: 'end' }; return; }
-        }
-        // Breiterer Bereich zum Anfassen der Trimmgrenzen
-        if (Math.abs(x - startX) < 10) { editDragging = 'start'; return; }
-        if (Math.abs(x - endX)   < 10) { editDragging = 'end';   return; }
-
-        dePrevStartTrim = editStartTrim;
-        dePrevEndTrim = editEndTrim;
-        deDragStart = time;
-        deSelecting = true;
-    };
-    deCanvas.ondblclick = () => {
-        editStartTrim = 0;
-        editEndTrim = 0;
-        const sField = document.getElementById('editStart');
-        const eField = document.getElementById('editEnd');
-        setTrimInputValueSafe(sField, 0);
-        setTrimInputValueSafe(eField, editDurationMs);
-        resetCanvasZoom(deCanvas);
-        validateDeSelection();
-        scheduleWaveformUpdate();
-    };
-    window.onmousemove = e => {
-        const rect = deCanvas.getBoundingClientRect();
-        const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
-        const ratio = x / rect.width;
-        const time = ratio * editDurationMs;
-        if (deSelecting) {
-            editStartTrim = Math.min(deDragStart, time);
-            editEndTrim   = editDurationMs - Math.max(deDragStart, time);
-            const sField = document.getElementById('editStart');
-            const eField = document.getElementById('editEnd');
-            setTrimInputValueSafe(sField, editStartTrim);
-            setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
-            validateDeSelection();
-            scheduleWaveformUpdate();
-            return;
-        }
-        if (ignoreDragging) {
-            const r = editIgnoreRanges[ignoreDragging.index];
-            if (ignoreDragging.side === 'start') {
-                r.start = Math.min(time, r.end - 1);
-            } else {
-                r.end = Math.max(time, r.start + 1);
-            }
-            refreshIgnoreList();
-            scheduleWaveformUpdate();
-            return;
-        }
-        if (silenceDragging) {
-            const r = editSilenceRanges[silenceDragging.index];
-            if (silenceDragging.side === 'start') {
-                r.start = Math.min(time, r.end - 1);
-            } else {
-                r.end = Math.max(time, r.start + 1);
-            }
-            refreshSilenceList();
-            scheduleWaveformUpdate();
-            return;
-        }
-        if (!editDragging) return;
-        if (editDragging === 'start') {
-            editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
-        } else if (editDragging === 'end') {
-            editEndTrim = Math.min(editDurationMs - time, editDurationMs - editStartTrim - 1);
-        }
-        const sField = document.getElementById('editStart');
-        const eField = document.getElementById('editEnd');
-        setTrimInputValueSafe(sField, editStartTrim);
-        setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
-        validateDeSelection();
-        scheduleWaveformUpdate();
-    };
-    window.onmouseup = e => {
-        if (enSelecting && editEnBuffer) {
-            enSelecting = false;
-            const start = Math.min(enSelectStart, enSelectEnd);
-            const end = Math.max(enSelectStart, enSelectEnd);
-            if (Math.abs(end - start) < 2) {
-                enSelectStart = enPrevStart;
-                enSelectEnd = enPrevEnd;
-                if (startField) startField.value = Math.round(enSelectStart);
-                if (endField) endField.value = Math.round(enSelectEnd);
-                editOrigCursor = start;
-                if (editPlaying === 'orig') {
-                    const audio = document.getElementById('audioPlayer');
-                    audio.currentTime = Math.min(editOrigCursor, editDurationMs) / 1000;
-                }
-            } else {
-                if (startField) startField.value = Math.round(start);
-                if (endField)   endField.value = Math.round(end);
-                // Zoom der Wellenform wurde entfernt
-                // zoomCanvasToRange(origCanvas, start, end, editEnBuffer.length / editEnBuffer.sampleRate * 1000);
-            }
-            validateEnSelection();
-            updateDeEditWaveforms();
-        } else if (enMarkerDragging && editEnBuffer) {
-            const start = Math.min(enSelectStart, enSelectEnd);
-            const end   = Math.max(enSelectStart, enSelectEnd);
-            if (startField) startField.value = Math.round(start);
-            if (endField) endField.value = Math.round(end);
-            validateEnSelection();
-            updateDeEditWaveforms();
-        } else if (deSelecting) {
-            deSelecting = false;
-            const finalTime = (e.clientX - deCanvas.getBoundingClientRect().left) / deCanvas.getBoundingClientRect().width * editDurationMs;
-            const start = Math.min(deDragStart, finalTime);
-            const end   = Math.max(deDragStart, finalTime);
-            if (Math.abs(end - start) < 2) {
-                editStartTrim = dePrevStartTrim;
-                editEndTrim   = dePrevEndTrim;
-                const sField = document.getElementById('editStart');
-                const eField = document.getElementById('editEnd');
-                setTrimInputValueSafe(sField, editStartTrim);
-                setTrimInputValueSafe(eField, editDurationMs - editEndTrim);
-                editDeCursor = start;
-                if (editPlaying === 'de') {
-                    const audio = document.getElementById('audioPlayer');
-                    const dur = editDurationMs - editStartTrim - editEndTrim;
-                    audio.currentTime = Math.min(Math.max(editDeCursor - editStartTrim, 0), dur) / 1000;
-                }
-            } else {
-                // Zoom der Wellenform wurde entfernt
-                // zoomCanvasToRange(deCanvas, start, end, editDurationMs);
-            }
-            validateDeSelection();
-            updateDeEditWaveforms();
-        }
-        enMarkerDragging = null;
-        editDragging = null;
-        ignoreDragging = null;
-        silenceDragging = null;
-    };
-    deEditEscHandler = e => {
-        if (e.key === 'Escape') {
-            if (activeWave === 'en') {
-                enSelectStart = 0;
-                enSelectEnd = 0;
-                if (startField) startField.value = '';
-                if (endField) endField.value = '';
-                resetCanvasZoom(origCanvas);
-                validateEnSelection();
-                scheduleWaveformUpdate();
-            } else if (activeWave === 'de') {
-                editStartTrim = 0;
-                editEndTrim = 0;
-                const sField = document.getElementById('editStart');
-                const eField = document.getElementById('editEnd');
-                setTrimInputValueSafe(sField, 0);
-                setTrimInputValueSafe(eField, editDurationMs);
-                resetCanvasZoom(deCanvas);
-                validateDeSelection();
-                scheduleWaveformUpdate();
-            }
-            scheduleWaveformUpdate();
-        }
-    };
-    window.addEventListener('keydown', deEditEscHandler);
-    updateEffectButtons();
-}
-// =========================== OPENDEEDIT END ================================
-
-// Aktualisiert die Aktiv-Markierung der Effekt-Buttons
-function updateEffectButtons() {
-    const radioBoxBtn = document.getElementById('radioEffectBoxBtn');
-    if (radioBoxBtn) {
-        // Je nach Status den aktiven Stil setzen oder entfernen
-        radioBoxBtn.classList.toggle('active', isRadioEffect);
-    }
-    const hallLabel = document.getElementById('hallToggleLabel');
-    if (hallLabel) {
-        hallLabel.classList.toggle('active', isHallEffect);
-    }
-    const neighborHallLabel = document.getElementById('neighborHallToggleLabel');
-    if (neighborHallLabel) {
-        neighborHallLabel.classList.toggle('active', neighborHall);
-    }
-    const emiVoiceLabel = document.getElementById('emiVoiceDampToggleLabel');
-    if (emiVoiceLabel) {
-        emiVoiceLabel.classList.toggle('active', emiVoiceDamp);
-    }
-    const emiBoxBtn = document.getElementById('emiEffectBoxBtn');
-    if (emiBoxBtn) {
-        emiBoxBtn.classList.toggle('active', isEmiEffect);
-    }
-    const neighborLabel = document.getElementById('neighborToggleLabel');
-    const neighborToggle = document.getElementById('neighborToggle');
-    if (neighborLabel) {
-        neighborLabel.classList.toggle('active', isNeighborEffect);
-    }
-    if (neighborToggle) {
-        neighborToggle.checked = isNeighborEffect;
-    }
-
-    const tableLabel = document.getElementById('tableMicToggleLabel');
-    const tableToggle = document.getElementById('tableMicToggle');
-    if (tableLabel) {
-        tableLabel.classList.toggle('active', isTableMicEffect);
-    }
-    if (tableToggle) {
-        tableToggle.checked = isTableMicEffect;
-    }
-}
-
-// Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
-function insertEnglishSegment() {
-    if (!editEnBuffer || !savedOriginalBuffer) return;
-    const startField = document.getElementById('enSegStart');
-    const endField   = document.getElementById('enSegEnd');
-    const posField   = document.getElementById('enInsertPos');
-    const segStart = parseInt(startField?.value) || 0;
-    const segEnd   = parseInt(endField?.value) || 0;
-    const startMs = Math.max(0, Math.min(segStart, segEnd));
-    const endMs   = Math.max(segStart, segEnd);
-    logDeDebug('insertEnglishSegment', 'Bereich wird übertragen', `Von ${startMs} ms bis ${endMs} ms`);
-    const deDurMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    let insertPosMs;
-    if (posField?.value === 'start') {
-        insertPosMs = 0;
-    } else if (posField?.value === 'end') {
-        insertPosMs = deDurMs;
-    } else {
-        insertPosMs = editDeCursor;
-    }
-    const segment = sliceBuffer(editEnBuffer, startMs, endMs);
-    savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
-    originalEditBuffer = savedOriginalBuffer;
-    editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    currentDeSeconds = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate;
-    normalizeDeTrim();
-    updateDeEditWaveforms();
-    updateLengthInfo();
-    logDeDebug('insertEnglishSegment', 'Bereich eingefügt', `Neue Länge: ${formatDeDebugSeconds(currentDeSeconds)}`);
-    if (typeof showToast === 'function') {
-        showToast('EN-Bereich kopiert', 'success');
-    }
-}
-
-// Kombination aus Pausenkürzung und Tempoanpassung
-async function autoAdjustLength() {
-    const chk = document.getElementById('autoIgnoreChk');
-    const thr = document.getElementById('autoIgnoreMs');
-    const tempoChk = document.getElementById('autoTempoChk');
-    if (chk && chk.checked) {
-        autoIgnoreMs = parseInt(thr.value) || 400;
-        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
-        refreshIgnoreList();
-    }
-    if (tempoChk && tempoChk.checked && editEnBuffer) {
-        const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
-        // Effektive Länge ohne automatisch erkannte Stille an den Rändern bestimmen
-        let len = calcTempoReferenceLength();
-        if (len <= 0 || !Number.isFinite(len)) {
-            // Sicherheitsnetz: Fallback auf die reguläre Berechnung
-            len = calcFinalLength();
-        }
-        // Verhältnis relativ zur EN-Länge bestimmen
-        const rel = len > 0 ? (len / enMs) : 1;
-        // Faktor begrenzen, damit extreme Werte vermieden werden
-        tempoFactor = Math.min(Math.max(rel * loadedTempoFactor, 1), 3);
-        const tempoRange = document.getElementById('tempoRange');
-        const tempoDisp = document.getElementById('tempoDisplay');
-        if (tempoRange && tempoDisp) {
-            tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-        }
-    }
-    await recomputeEditBuffer();
-    updateLengthInfo();
-    updateDeEditWaveforms();
-    if (typeof showToast === 'function') {
-        showToast('Bereich angewendet', 'success');
-    }
-}
-
-// =========================== APPLYVOLUMEMATCH START =======================
-// Führt den Lautstärkeabgleich einmalig aus
-// Beim ersten Aufruf wird das Original in die Historie geschrieben
-async function applyVolumeMatch() {
-    if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
-        volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
-    }
-    if (volumeMatchedBuffer) {
-        if (!isVolumeMatched && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
-            const relPath = getFullPath(currentEditFile);
-            const blob = bufferToWav(savedOriginalBuffer);
-            const buf = await blob.arrayBuffer();
-            await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
-            await updateHistoryCache(relPath);
-        }
-        isVolumeMatched = true;
-        await recomputeEditBuffer();
-        updateEffectButtons();
-    }
-}
-
-// =========================== RECOMPUTEEDITBUFFER START =====================
-// Wendet aktuelle Effekte auf das Original an und aktualisiert den Buffer
-// Wendet alle Effekte und Schnitte in gleicher Reihenfolge wie beim Speichern an
-async function recomputeEditBuffer() {
-    let buf = savedOriginalBuffer;
-    if (isVolumeMatched) {
-        // Lautstärkeangleichung ggf. zwischenspeichern
-        if (!volumeMatchedBuffer) {
-            volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
-        }
-        buf = volumeMatchedBuffer;
-    }
-    if (isRadioEffect) {
-        buf = await applyRadioFilter(buf);
-    }
-    if (isHallEffect) {
-        buf = await applyReverbEffect(buf);
-    }
-    if (isNeighborEffect) {
-        buf = await applyNeighborRoomEffect(buf, { hall: neighborHall });
-    } else if (neighborHall) {
-        // Nur der Nebenraum-Hall ist aktiv: wende den Raumklang separat an
-        buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
-    }
-    if (isTableMicEffect) {
-        buf = await applyTableMicFilter(buf, tableMicRoomPresets[tableMicRoomType]);
-    }
-    if (isEmiEffect) {
-        buf = await applyInterferenceEffect(buf);
-    }
-
-    // Trimmen und Pausen entfernen, damit die Vorschau exakt dem Endergebnis entspricht
-    let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
-    const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-    trimmed = removeRangesFromBuffer(trimmed, adj);
-    const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
-    trimmed = insertSilenceIntoBuffer(trimmed, pads);
-
-    // Erst danach das Tempo anpassen
-    const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    const tempoSafety = getTempoSafetyConfig();
-    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(trimmed) : { start: 0, end: 0 };
-    const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-    const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-    const stretchOptions = {
-        // Nur den nachweislich stillen Bereich freigeben; die Kappung greift ausschließlich bei aktivem Limit
-        allowedTrimStartMs,
-        allowedTrimEndMs,
-        usePadding: tempoSafety.usePadding,
-        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-        enforceTrimSafety: tempoSafety.enforceTrimSafety
-    };
-    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor, stretchOptions);
-    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
-    normalizeDeTrim();
-    updateDeEditWaveforms();
-}
-// =========================== RECOMPUTEEDITBUFFER END =======================
-
-// =========================== TEMPODEBUG START =============================
-// Hilfsfunktionen und Ablauflogik für den Tempo-Debug-Modus
-function formatTempoNumber(value, fractionDigits = 2) {
-    if (!Number.isFinite(value)) return '–';
-    return value.toLocaleString('de-DE', {
-        minimumFractionDigits: fractionDigits,
-        maximumFractionDigits: fractionDigits
-    });
-}
-
-function formatTempoInt(value) {
-    if (!Number.isFinite(value)) return '–';
-    return value.toLocaleString('de-DE');
-}
-
-function formatTempoMs(ms) {
-    if (!Number.isFinite(ms)) return '–';
-    return `${formatTempoNumber(ms, 2)} ms`;
-}
-
-function formatTempoSeconds(seconds) {
-    if (!Number.isFinite(seconds)) return '–';
-    return `${formatTempoNumber(seconds, 3)} s`;
-}
-
-function formatTempoLimitMs(ms, limitActive = true) {
-    if (!Number.isFinite(ms)) {
-        return limitActive ? '–' : 'unbegrenzt';
-    }
-    return formatTempoMs(ms);
-}
-
-function createTempoDebugStep(title, buffer, description, meta = {}) {
-    if (!buffer) return null;
-    const sampleRate = buffer.sampleRate || 0;
-    const samples = buffer.length || 0;
-    const durationMs = sampleRate ? samples / sampleRate * 1000 : 0;
-    return {
-        title,
-        description,
-        buffer,
-        meta,
-        metrics: {
-            sampleRate,
-            samples,
-            durationMs
-        }
-    };
-}
-
-function formatTempoMeta(meta = {}) {
-    if (!meta || typeof meta !== 'object') return '';
-    const parts = [];
-    if (meta.active === true) parts.push('Status: angewendet');
-    if (meta.active === false) parts.push('Status: übersprungen');
-    if (meta.effect) parts.push(`Effekt: ${meta.effect}`);
-    if (meta.preset) parts.push(`Preset: ${meta.preset}`);
-    if (meta.note) parts.push(meta.note);
-    if (meta.tempoFactor !== undefined) parts.push(`Tempo-Faktor: ${formatTempoNumber(meta.tempoFactor, 3)}`);
-    if (meta.loadedTempoFactor !== undefined) parts.push(`Geladener Faktor: ${formatTempoNumber(meta.loadedTempoFactor, 3)}`);
-    if (meta.relativeFactor !== undefined) parts.push(`Relativfaktor: ${formatTempoNumber(meta.relativeFactor, 3)}`);
-    if (meta.allowedTrimStartMs !== undefined || meta.allowedTrimEndMs !== undefined) {
-        const limitActive = meta.trimLimitActive ?? meta.enforceTrimSafety ?? true;
-        const start = meta.allowedTrimStartMs !== undefined ? formatTempoLimitMs(meta.allowedTrimStartMs, limitActive) : '–';
-        const end = meta.allowedTrimEndMs !== undefined ? formatTempoLimitMs(meta.allowedTrimEndMs, limitActive) : '–';
-        const label = limitActive ? 'Freigabe Randstille' : 'Freigabe Randstille (Limit aus)';
-        parts.push(`${label}: Start ${start} / Ende ${end}`);
-    }
-    if (meta.trimStartMs !== undefined || meta.trimEndMs !== undefined) {
-        const start = meta.trimStartMs !== undefined ? formatTempoMs(meta.trimStartMs) : '–';
-        const end = meta.trimEndMs !== undefined ? formatTempoMs(meta.trimEndMs) : '–';
-        parts.push(`Trim: Start ${start} / Ende ${end}`);
-    }
-    if (meta.removedCount !== undefined) {
-        parts.push(`Entfernte Bereiche: ${formatTempoInt(meta.removedCount)} (${formatTempoMs(meta.removedTotalMs || 0)})`);
-    }
-    if (meta.insertedCount !== undefined) {
-        parts.push(`Eingefügte Stille: ${formatTempoInt(meta.insertedCount)} (${formatTempoMs(meta.insertedTotalMs || 0)})`);
-    }
-    if (meta.silenceStartMs !== undefined || meta.silenceEndMs !== undefined) {
-        parts.push(`Ermittelte Randstille: Start ${formatTempoMs(meta.silenceStartMs || 0)} / Ende ${formatTempoMs(meta.silenceEndMs || 0)}`);
-    }
-    if (meta.baseStartMs !== undefined || meta.baseEndMs !== undefined) {
-        parts.push(`Analysierte Stille: Start ${formatTempoMs(meta.baseStartMs || 0)} / Ende ${formatTempoMs(meta.baseEndMs || 0)}`);
-    }
-    if (meta.detectedStartMs !== undefined || meta.detectedEndMs !== undefined) {
-        parts.push(`Erkannte Grenzen: Start ${formatTempoMs(meta.detectedStartMs || 0)} / Ende ${formatTempoMs(meta.detectedEndMs || 0)}`);
-    }
-    if (meta.startTrimMs !== undefined || meta.endTrimMs !== undefined) {
-        parts.push(`Randabzug: Start ${formatTempoMs(meta.startTrimMs || 0)} / Ende ${formatTempoMs(meta.endTrimMs || 0)}`);
-    }
-    if (meta.availableSamples !== undefined && meta.expectedSamples !== undefined) {
-        parts.push(`Samples: verfügbar ${formatTempoInt(meta.availableSamples)} / erwartet ${formatTempoInt(meta.expectedSamples)}`);
-    }
-    if (meta.producedSamples !== undefined) {
-        parts.push(`SoundTouch-Ausgabe: ${formatTempoInt(meta.producedSamples)} Samples`);
-    }
-    if (meta.padFrames !== undefined) {
-        parts.push(`Polster: ${formatTempoInt(meta.padFrames)} Samples (${formatTempoMs(meta.padMs || 0)})`);
-    }
-    if (meta.padOutFrames !== undefined) {
-        parts.push(`Streck-Polster: ${formatTempoInt(meta.padOutFrames)} Samples (${formatTempoMs(meta.padOutMs || 0)})`);
-    }
-    if (meta.needsPadding !== undefined) {
-        parts.push(`Restauffüllung: ${meta.needsPadding ? 'ja' : 'nein'}`);
-    }
-    return parts.join(' • ');
-}
-
-function formatTempoMetrics(step) {
-    const duration = formatTempoMs(step.metrics.durationMs);
-    const seconds = formatTempoSeconds(step.metrics.durationMs / 1000);
-    const sampleText = formatTempoInt(step.metrics.samples);
-    const rateText = formatTempoInt(step.metrics.sampleRate);
-    return `Dauer: ${duration} (${seconds}) • Samples: ${sampleText} @ ${rateText} Hz`;
-}
-
-function populateTempoDebugLog(steps) {
-    const list = document.getElementById('tempoDebugLogList');
-    if (!list) return;
-    list.innerHTML = '';
-    steps.forEach((step, idx) => {
-        const li = document.createElement('li');
-        li.dataset.index = String(idx);
-        const title = document.createElement('strong');
-        title.textContent = `${idx + 1}. ${step.title}`;
-        li.appendChild(title);
-        const metrics = document.createElement('div');
-        metrics.className = 'tempo-debug-log-metrics';
-        metrics.textContent = formatTempoMetrics(step);
-        li.appendChild(metrics);
-        if (step.description) {
-            const desc = document.createElement('div');
-            desc.textContent = step.description;
-            li.appendChild(desc);
-        }
-        const metaText = formatTempoMeta(step.meta);
-        if (metaText) {
-            const metaDiv = document.createElement('div');
-            metaDiv.className = 'tempo-debug-log-meta';
-            metaDiv.textContent = metaText;
-            li.appendChild(metaDiv);
-        }
-        li.onclick = () => showTempoDebugStep(idx);
-        list.appendChild(li);
-    });
-}
-
-function updateTempoDebugNavigation() {
-    const prevBtn = document.getElementById('tempoDebugPrevBtn');
-    const nextBtn = document.getElementById('tempoDebugNextBtn');
-    const total = tempoDebugSteps.length;
-    if (prevBtn) prevBtn.disabled = total === 0 || tempoDebugIndex <= 0;
-    if (nextBtn) nextBtn.disabled = total === 0 || tempoDebugIndex >= total - 1;
-}
-
-function showTempoDebugStep(index) {
-    if (!Array.isArray(tempoDebugSteps) || tempoDebugSteps.length === 0) {
-        tempoDebugIndex = 0;
-        updateTempoDebugNavigation();
-        return;
-    }
-    if (index < 0) index = 0;
-    if (index >= tempoDebugSteps.length) index = tempoDebugSteps.length - 1;
-    tempoDebugIndex = index;
-    const step = tempoDebugSteps[index];
-    const titleEl = document.getElementById('tempoDebugStepTitle');
-    if (titleEl) {
-        titleEl.textContent = `Schritt ${index + 1} / ${tempoDebugSteps.length}: ${step.title}`;
-    }
-    const descEl = document.getElementById('tempoDebugStepDescription');
-    if (descEl) {
-        descEl.textContent = step.description || 'Kein zusätzlicher Hinweis für diesen Schritt.';
-    }
-    const statusEl = document.getElementById('tempoDebugStatus');
-    if (statusEl) {
-        statusEl.textContent = tempoDebugLogEntries[index] || `Schritt ${index + 1} / ${tempoDebugSteps.length}`;
-    }
-    const metricsEl = document.getElementById('tempoDebugMetrics');
-    if (metricsEl) {
-        const lines = [formatTempoMetrics(step)];
-        const metaLine = formatTempoMeta(step.meta);
-        if (metaLine) lines.push(metaLine);
-        metricsEl.textContent = lines.join('\n');
-    }
-    const canvas = document.getElementById('tempoDebugWave');
-    if (canvas && step.buffer) {
-        const width = canvas.clientWidth || 720;
-        const height = canvas.clientHeight || 200;
-        if (canvas.width !== width) canvas.width = width;
-        if (canvas.height !== height) canvas.height = height;
-        drawWaveform(canvas, step.buffer);
-    }
-    const items = document.querySelectorAll('#tempoDebugLogList li');
-    items.forEach((li, idx) => {
-        if (idx === index) {
-            li.classList.add('active');
-            li.scrollIntoView({ block: 'nearest' });
-        } else {
-            li.classList.remove('active');
-        }
-    });
-    updateTempoDebugNavigation();
-}
-
-async function buildTempoDebugSteps() {
-    if (!currentEditFile || !savedOriginalBuffer) {
-        throw new Error('Kein DE-Audio zum Debuggen geladen.');
-    }
-
-    const steps = [];
-    const logEntries = [];
-    const addStep = (title, buffer, description, meta = {}) => {
-        const step = createTempoDebugStep(title, buffer, description, meta);
-        if (!step) return;
-        steps.push(step);
-        const entryParts = [`${steps.length}. ${step.title}`, formatTempoMetrics(step)];
-        if (description) entryParts.push(description);
-        const metaText = formatTempoMeta(meta);
-        if (metaText) entryParts.push(metaText);
-        logEntries.push(entryParts.join(' — '));
-    };
-
-    const relFactor = tempoFactor / loadedTempoFactor;
-    const fileName = currentEditFile?.filename || currentEditFile?.name || '';
-    const baseInfo = fileName ? `Ausgangsdatei: ${fileName}.` : 'Ausgangsdatei geladen.';
-    addStep('Original laden', savedOriginalBuffer, baseInfo, {
-        tempoFactor,
-        loadedTempoFactor,
-        relativeFactor: relFactor
-    });
-
-    let currentBuffer = savedOriginalBuffer;
-    const startTrimSnapshot = editStartTrim;
-    const endTrimSnapshot = editEndTrim;
-    const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-    const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
-
-    if (isVolumeMatched && editEnBuffer) {
-        currentBuffer = matchVolume(currentBuffer, editEnBuffer);
-        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärke wurde an die EN-Referenz angepasst.', {
-            effect: 'Lautstärke',
-            active: true
-        });
-    } else if (isVolumeMatched) {
-        addStep('Lautstärke angleichen', currentBuffer, 'Lautstärkeabgleich war aktiv, aber die EN-Referenz ist nicht verfügbar.', {
-            effect: 'Lautstärke',
-            active: false
-        });
-    } else {
-        addStep('Lautstärke angleichen', currentBuffer, 'Übersprungen: Lautstärkeabgleich ist nicht aktiv.', {
-            effect: 'Lautstärke',
-            active: false
-        });
-    }
-
-    if (isRadioEffect) {
-        currentBuffer = await applyRadioFilter(currentBuffer);
-        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Funkfilter simuliert die gewählten Einstellungen.', {
-            effect: 'Funk',
-            active: true
-        });
-    } else {
-        addStep('Funkgeräteffekt anwenden', currentBuffer, 'Übersprungen: Funk-Effekt ist deaktiviert.', {
-            effect: 'Funk',
-            active: false
-        });
-    }
-
-    if (isHallEffect) {
-        currentBuffer = await applyReverbEffect(currentBuffer);
-        addStep('Hall-Effekt anwenden', currentBuffer, 'Hall-Preset wurde angewendet.', {
-            effect: 'Hall',
-            active: true
-        });
-        addStep('Optionaler Nebenraum-Hall', currentBuffer,
-            neighborHall
-                ? 'Nebenraum-Hall ist bereits im aktiven Hall-Preset enthalten.'
-                : 'Keine zusätzlichen Hallanteile erforderlich.',
-            {
-                effect: 'Nebenraum-Hall',
-                active: !!neighborHall
-            });
-    } else {
-        addStep('Hall-Effekt anwenden', currentBuffer, 'Übersprungen: Hall ist deaktiviert.', {
-            effect: 'Hall',
-            active: false
-        });
-        if (neighborHall) {
-            currentBuffer = await applyReverbEffect(currentBuffer, { room: 0.2, wet: 0.3, delay: 40 });
-            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Zusätzlicher Raumklang wurde zugemischt.', {
-                effect: 'Nebenraum-Hall',
-                active: true
-            });
-        } else {
-            addStep('Optionaler Nebenraum-Hall', currentBuffer, 'Übersprungen: Kein Nebenraum-Hall aktiviert.', {
-                effect: 'Nebenraum-Hall',
-                active: false
-            });
-        }
-    }
-
-    if (isNeighborEffect) {
-        currentBuffer = await applyNeighborRoomEffect(currentBuffer, { hall: neighborHall });
-        addStep('Nebenraum-Effekt anwenden', currentBuffer,
-            neighborHall ? 'Nebenraum-Effekt nutzt den Hall-Anteil.' : 'Nebenraum-Effekt ohne zusätzlichen Hall aktiv.', {
-                effect: 'Nebenraum',
-                active: true
-            });
-    } else {
-        addStep('Nebenraum-Effekt anwenden', currentBuffer, 'Übersprungen: Nebenraum-Effekt ist deaktiviert.', {
-            effect: 'Nebenraum',
-            active: false
-        });
-    }
-
-    if (isTableMicEffect) {
-        const presetName = tableMicRoomType || 'wohnzimmer';
-        currentBuffer = await applyTableMicFilter(currentBuffer, tableMicRoomPresets[presetName]);
-        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, `Preset „${presetName}“ wurde angewendet.`, {
-            effect: 'Tischmikrofon',
-            active: true,
-            preset: presetName
-        });
-    } else {
-        addStep('Tischmikrofon-Effekt anwenden', currentBuffer, 'Übersprungen: Telefon-auf-Tisch-Effekt ist deaktiviert.', {
-            effect: 'Tischmikrofon',
-            active: false
-        });
-    }
-
-    if (isEmiEffect) {
-        currentBuffer = await applyInterferenceEffect(currentBuffer);
-        addStep('Störgeräusch anwenden', currentBuffer, 'EM-Störgeräusch wurde überlagert.', {
-            effect: 'EMI',
-            active: true
-        });
-    } else {
-        addStep('Störgeräusch anwenden', currentBuffer, 'Übersprungen: Kein EM-Störgeräusch aktiv.', {
-            effect: 'EMI',
-            active: false
-        });
-    }
-
-    currentBuffer = trimAndPadBuffer(currentBuffer, startTrimSnapshot, endTrimSnapshot);
-    addStep('Trim anwenden', currentBuffer,
-        (startTrimSnapshot || endTrimSnapshot)
-            ? `Start ${formatTempoMs(startTrimSnapshot)} / Ende ${formatTempoMs(endTrimSnapshot)} entfernt.`
-            : 'Keine Trims aktiv – Länge bleibt unverändert.',
-        {
-            trimStartMs: startTrimSnapshot,
-            trimEndMs: endTrimSnapshot
-        });
-
-    const adjustedIgnore = ignoreSnapshot.map(r => ({
-        start: r.start - startTrimSnapshot,
-        end: r.end - startTrimSnapshot
-    }));
-    let removedTotalMs = 0;
-    adjustedIgnore.forEach(r => { removedTotalMs += Math.max(0, r.end - r.start); });
-    currentBuffer = removeRangesFromBuffer(currentBuffer, adjustedIgnore);
-    addStep('Ignorierbereiche entfernen', currentBuffer,
-        adjustedIgnore.length > 0
-            ? `${formatTempoInt(adjustedIgnore.length)} Bereich(e) mit ${formatTempoMs(removedTotalMs)} entfernt.`
-            : 'Keine Ignorierbereiche aktiv.',
-        {
-            removedCount: adjustedIgnore.length,
-            removedTotalMs,
-            active: adjustedIgnore.length > 0
-        });
-
-    const adjustedSilence = silenceSnapshot.map(r => ({
-        start: r.start - startTrimSnapshot,
-        end: r.end - startTrimSnapshot
-    }));
-    let insertedTotalMs = 0;
-    adjustedSilence.forEach(r => { insertedTotalMs += Math.max(0, r.end - r.start); });
-    currentBuffer = insertSilenceIntoBuffer(currentBuffer, adjustedSilence);
-    addStep('Stillebereiche einfügen', currentBuffer,
-        adjustedSilence.length > 0
-            ? `${formatTempoInt(adjustedSilence.length)} Bereich(e) mit ${formatTempoMs(insertedTotalMs)} hinzugefügt.`
-            : 'Keine Stillebereiche eingefügt.',
-        {
-            insertedCount: adjustedSilence.length,
-            insertedTotalMs,
-            active: adjustedSilence.length > 0
-        });
-
-    const tempoDesc = Math.abs(relFactor - 1) < 0.001
-        ? 'Tempo-Faktor entspricht dem geladenen Wert – es wird keine merkliche Änderung erwartet.'
-        : `Tempo wechselt von ${formatTempoNumber(loadedTempoFactor, 2)} auf ${formatTempoNumber(tempoFactor, 2)} (relativ ${formatTempoNumber(relFactor, 3)}).`;
-    addStep('Tempoeingabe bereit', currentBuffer, tempoDesc, {
-        tempoFactor,
-        loadedTempoFactor,
-        relativeFactor: relFactor
-    });
-
-    const tempoSafety = getTempoSafetyConfig();
-    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(currentBuffer) : { start: 0, end: 0 };
-    const allowedStart = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-    const allowedEnd = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-    if (tempoSafety.detectEdgeSilence) {
-        const limitText = tempoSafety.enforceTrimSafety
-            ? 'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.'
-            : 'Erkannte Stille darf vollständig entfernt werden, das Sicherheitslimit ist deaktiviert.';
-        addStep('Randstille ermitteln', currentBuffer,
-            limitText,
-            {
-                silenceStartMs: edgeSilence.start,
-                silenceEndMs: edgeSilence.end,
-                allowedTrimStartMs: allowedStart,
-                allowedTrimEndMs: allowedEnd,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety,
-                trimLimitActive: tempoSafety.enforceTrimSafety
-            });
-    } else {
-        const limitText = tempoSafety.enforceTrimSafety
-            ? 'Analyse deaktiviert: Tempo-Stretching arbeitet ohne zusätzliche Randstille-Erkennung.'
-            : 'Analyse deaktiviert: Kein Sicherheitslimit aktiv, zusätzliche Kürzungen sind ungebremst möglich.';
-        addStep('Randstille ermitteln', currentBuffer,
-            limitText,
-            {
-                silenceStartMs: 0,
-                silenceEndMs: 0,
-                allowedTrimStartMs: allowedStart,
-                allowedTrimEndMs: allowedEnd,
-                trimLimitActive: tempoSafety.enforceTrimSafety
-            });
-    }
-
-    const stretchDebug = {
-        steps: [],
-        addStep(title, buffer, meta = {}) {
-            this.steps.push({ title, buffer, meta });
-        }
-    };
-    const stretchedBuffer = await timeStretchBuffer(currentBuffer, relFactor, {
-        allowedTrimStartMs: allowedStart,
-        allowedTrimEndMs: allowedEnd,
-        debug: stretchDebug,
-        usePadding: tempoSafety.usePadding,
-        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-        enforceTrimSafety: tempoSafety.enforceTrimSafety
-    });
-    stretchDebug.steps.forEach(debugStep => {
-        const description = debugStep.meta?.description || '';
-        addStep(debugStep.title, debugStep.buffer, description, debugStep.meta || {});
-    });
-
-    addStep('Tempo-Simulation abgeschlossen', stretchedBuffer,
-        Math.abs(relFactor - 1) < 0.001
-            ? 'Tempo entsprach bereits dem gespeicherten Wert – Ergebnis entspricht dem Eingangssignal.'
-            : 'Tempo-Anpassung abgeschlossen. Ergebnis entspricht dem Speichervorgang.',
-        {
-            tempoFactor,
-            loadedTempoFactor,
-            relativeFactor: relFactor
-        });
-
-    return { steps, logEntries };
-}
-
-async function openTempoDebug() {
-    if (!currentEditFile || !savedOriginalBuffer) {
-        if (typeof showToast === 'function') {
-            showToast('Kein DE-Audio zum Debuggen geöffnet.', 'error');
-        }
-        return;
-    }
-    const overlay = document.getElementById('tempoDebugDialog');
-    if (!overlay) {
-        console.error('Tempo-Debug: Dialog-Element fehlt.');
-        return;
-    }
-    overlay.classList.remove('hidden');
-
-    const status = document.getElementById('tempoDebugStatus');
-    if (status) status.textContent = 'Berechne Tempo-Schritte ...';
-
-    tempoDebugSteps = [];
-    tempoDebugLogEntries = [];
-    tempoDebugIndex = 0;
-    populateTempoDebugLog([]);
-    const titleEl = document.getElementById('tempoDebugStepTitle');
-    if (titleEl) titleEl.textContent = '';
-    const descEl = document.getElementById('tempoDebugStepDescription');
-    if (descEl) descEl.textContent = '';
-    const metricsEl = document.getElementById('tempoDebugMetrics');
-    if (metricsEl) metricsEl.textContent = '';
-    const canvas = document.getElementById('tempoDebugWave');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        if (ctx) ctx.clearRect(0, 0, canvas.width || 0, canvas.height || 0);
-    }
-
-    const prevBtn = document.getElementById('tempoDebugPrevBtn');
-    const nextBtn = document.getElementById('tempoDebugNextBtn');
-    if (prevBtn) prevBtn.onclick = () => showTempoDebugStep(tempoDebugIndex - 1);
-    if (nextBtn) nextBtn.onclick = () => showTempoDebugStep(tempoDebugIndex + 1);
-    updateTempoDebugNavigation();
-
-    try {
-        const result = await buildTempoDebugSteps();
-        tempoDebugSteps = result.steps;
-        tempoDebugLogEntries = result.logEntries;
-        populateTempoDebugLog(tempoDebugSteps);
-        if (status) {
-            status.textContent = tempoDebugSteps.length > 0
-                ? 'Tempo-Schritte bereit. Navigiere mit Weiter/Zurück oder klicke auf einen Eintrag.'
-                : 'Tempo-Schritte ergaben keine Änderungen.';
-        }
-        if (tempoDebugSteps.length > 0) {
-            showTempoDebugStep(0);
-        } else {
-            updateTempoDebugNavigation();
-        }
-    } catch (err) {
-        console.error('Tempo-Debug fehlgeschlagen', err);
-        if (status) status.textContent = `Fehler beim Debuggen: ${err?.message || err}`;
-        const title = document.getElementById('tempoDebugStepTitle');
-        if (title) title.textContent = 'Fehler beim Tempo-Debug';
-        const desc = document.getElementById('tempoDebugStepDescription');
-        if (desc) desc.textContent = 'Bitte Konsole prüfen oder erneut versuchen.';
-        updateTempoDebugNavigation();
-    }
-}
-
-function closeTempoDebug() {
-    const overlay = document.getElementById('tempoDebugDialog');
-    if (overlay) overlay.classList.add('hidden');
-    tempoDebugSteps = [];
-    tempoDebugLogEntries = [];
-    tempoDebugIndex = 0;
-    const status = document.getElementById('tempoDebugStatus');
-    if (status) status.textContent = 'Debug-Modus bereit – bitte Schrittberechnung starten.';
-    updateTempoDebugNavigation();
-}
-// =========================== TEMPODEBUG END =============================
-
-
-// =========================== APPLYRADIOEFFECT START ========================
-// Wendet den Funkgeräteffekt an und legt bei Erstbenutzung eine History an
 async function applyRadioEffect() {
     if (!isRadioEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
@@ -17046,9 +10697,8 @@ function adjustSilenceRanges(deltaMs) {
     updateDeEditWaveforms();
 }
 
-// Berechnet die finale Laenge nach Schnitt, Ignorierbereichen und Tempo
+// Berechnet die finale Länge nach Schnitt, Ignorier- und Stillebereichen
 function calcFinalLength() {
-    // Ausgangsbasis bevorzugt aus dem unveränderten Original puffern, damit Trim-Anteile jederzeit korrekt sind
     let basisLaengeMs;
     if (savedOriginalBuffer && savedOriginalBuffer.sampleRate) {
         basisLaengeMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
@@ -17062,37 +10712,86 @@ function calcFinalLength() {
     for (const r of editSilenceRanges) {
         len += Math.max(0, r.end - r.start);
     }
-    // Aktuelle Datei ist bereits mit loadedTempoFactor gestretcht
-    const relFactor = tempoFactor / loadedTempoFactor;
-    return len / relFactor;
-}
-
-// Liefert eine für das Auto-Tempo geeignete Referenzlänge ohne zusätzliche Randstille
-function calcTempoReferenceLength() {
-    // Standardmäßig mit der regulären Endlänge arbeiten
-    let len = calcFinalLength();
-    const safety = getTempoSafetyConfig();
-    if (!safety.autoReference) {
-        return len;
-    }
-    if (!savedOriginalBuffer || !savedOriginalBuffer.sampleRate) {
-        return len;
-    }
-    const totalMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
-    if (!Number.isFinite(totalMs) || totalMs <= 0) {
-        return len;
-    }
-    const stilleGrenzen = detectSilenceTrim(savedOriginalBuffer);
-    const stilleLinks = Math.max(0, stilleGrenzen.start - editStartTrim);
-    const stilleRechts = Math.max(0, stilleGrenzen.end - editEndTrim);
-    const reduzierung = stilleLinks + stilleRechts;
-    if (reduzierung <= 0) {
-        return len;
-    }
-    // Nur den Anteil entfernen, der bislang noch als Leerlauf stehen bleibt
-    len = Math.max(0, len - reduzierung);
     return len;
 }
+
+// Erkennt automatisch Pausen und aktualisiert die Vorschau
+async function autoAdjustLength() {
+    const chk = document.getElementById('autoIgnoreChk');
+    const thr = document.getElementById('autoIgnoreMs');
+    if (chk && chk.checked) {
+        autoIgnoreMs = parseInt(thr.value) || 400;
+        editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
+        refreshIgnoreList();
+    }
+    await recomputeEditBuffer();
+    updateDeEditWaveforms();
+    if (typeof showToast === 'function') {
+        showToast('Bereich angewendet', 'success');
+    }
+}
+
+// =========================== APPLYVOLUMEMATCH START =======================
+// Führt den Lautstärkeabgleich einmalig aus und merkt den Status
+async function applyVolumeMatch() {
+    if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
+        volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
+    }
+    if (volumeMatchedBuffer) {
+        if (!isVolumeMatched && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+            const relPath = getFullPath(currentEditFile);
+            const blob = bufferToWav(savedOriginalBuffer);
+            const buf = await blob.arrayBuffer();
+            await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+            await updateHistoryCache(relPath);
+        }
+        isVolumeMatched = true;
+        await recomputeEditBuffer();
+        updateEffectButtons();
+    }
+}
+
+// =========================== RECOMPUTEEDITBUFFER START =====================
+// Wendet aktuelle Effekte auf das Original an und aktualisiert die Vorschau
+async function recomputeEditBuffer() {
+    if (!savedOriginalBuffer) return;
+    let buf = savedOriginalBuffer;
+    if (isVolumeMatched) {
+        if (!volumeMatchedBuffer) {
+            volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
+        }
+        buf = volumeMatchedBuffer;
+    }
+    if (isRadioEffect) {
+        buf = await applyRadioFilter(buf);
+    }
+    if (isHallEffect) {
+        buf = await applyReverbEffect(buf);
+    }
+    if (isNeighborEffect) {
+        buf = await applyNeighborRoomEffect(buf, { hall: neighborHall });
+    } else if (neighborHall) {
+        buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
+    }
+    if (isTableMicEffect) {
+        buf = await applyTableMicFilter(buf, tableMicRoomPresets[tableMicRoomType]);
+    }
+    if (isEmiEffect) {
+        buf = await applyInterferenceEffect(buf);
+    }
+
+    let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
+    const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    trimmed = removeRangesFromBuffer(trimmed, adj);
+    const pads = editSilenceRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
+    trimmed = insertSilenceIntoBuffer(trimmed, pads);
+
+    originalEditBuffer = trimmed;
+    editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
+    normalizeDeTrim();
+    updateDeEditWaveforms();
+}
+// =========================== RECOMPUTEEDITBUFFER END =======================
 
 // Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
 function updateLengthInfo() {
@@ -17100,25 +10799,20 @@ function updateLengthInfo() {
     const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
     const deMs = calcFinalLength();
     const diff = deMs - enMs;
-    const perc = Math.abs(diff) / enMs * 100;
-    const info = document.getElementById('tempoInfo');
-    const enInfo = document.getElementById('tempoEnInfo');
+    const perc = enMs > 0 ? Math.abs(diff) / enMs * 100 : 0;
+    const deInfo = document.getElementById('lengthInfoDe');
+    const enInfo = document.getElementById('lengthInfoEn');
+    const diffInfo = document.getElementById('lengthInfoDiff');
     const lbl = document.getElementById('waveLabelEdited');
-    if (!info || !lbl) return;
-    info.textContent = `${(deMs/1000).toFixed(2)}s`;
-    // EN-Originalzeit ebenfalls anzeigen
-    if (enInfo) enInfo.textContent = `EN: ${(enMs/1000).toFixed(2)}s`;
-    lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
-    lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
-    const refMs = calcTempoReferenceLength();
-    const stilleDiff = deMs - refMs;
-    if (info) {
-        if (stilleDiff > 50) {
-            // Hinweis für Nutzer:innen, dass Auto-Tempo Leerräume ignoriert
-            info.title = `Auto-Tempo berücksichtigt ${Math.round(stilleDiff)}ms Stille am Rand nicht.`;
-        } else {
-            info.removeAttribute('title');
-        }
+    if (deInfo) deInfo.textContent = `${(deMs/1000).toFixed(2)}s`;
+    if (enInfo) enInfo.textContent = `${(enMs/1000).toFixed(2)}s`;
+    if (diffInfo) {
+        diffInfo.textContent = `${diff > 0 ? '+' : ''}${Math.round(diff)} ms`;
+        diffInfo.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
+    }
+    if (lbl) {
+        lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
+        lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
     }
 }
 // Prüft EN-Auswahl und schaltet den Kopier-Button
@@ -17358,7 +11052,6 @@ async function resetDeEdit() {
     if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push('Trimmen');
     if (currentEditFile.ignoreRanges && currentEditFile.ignoreRanges.length) steps.push('Ignorierbereiche');
     if (currentEditFile.silenceRanges && currentEditFile.silenceRanges.length) steps.push('Stille-Bereiche');
-    if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push('Tempo');
     if (currentEditFile.volumeMatched) steps.push('Lautstärke angleichen');
     if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
     if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push('Hall-Effekt');
@@ -17407,8 +11100,6 @@ async function resetDeEdit() {
         editSilenceRanges = [];
         manualSilenceRanges = [];
         currentEditFile.silenceRanges = [];
-        tempoFactor = 1.0;
-        currentEditFile.tempoFactor = 1.0;
         currentEditFile.volumeMatched = false;
         currentEditFile.radioEffect = false;
         currentEditFile.hallEffect = false;
@@ -17509,14 +11200,6 @@ async function rebuildEnBufferAfterSave() {
     if (startField) startField.value = '';
     if (endField) endField.value = '';
 
-    const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp = document.getElementById('tempoDisplay');
-    if (tempoRange && tempoDisp) {
-        tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoDisp.classList.remove('tempo-auto');
-    }
-
     const origCanvas = document.getElementById('waveOriginal');
     const deCanvas = document.getElementById('waveEdited');
     if (origCanvas) resetCanvasZoom(origCanvas);
@@ -17548,7 +11231,6 @@ async function applyDeEdit(param = {}) {
         const endTrimSnapshot = editEndTrim;
         const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
         const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
-        const relFactor = tempoFactor / loadedTempoFactor;
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
             // Sicherstellen, dass ein Backup existiert
@@ -17585,19 +11267,6 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            const tempoSafety = getTempoSafetyConfig();
-            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-            const stretchOptions = {
-                // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben; ohne Limit bleibt die Freigabe unbegrenzt
-                allowedTrimStartMs,
-                allowedTrimEndMs,
-                usePadding: tempoSafety.usePadding,
-                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety
-            };
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             const buf = await blob.arrayBuffer();
@@ -17685,20 +11354,6 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
-            const tempoSafety = getTempoSafetyConfig();
-            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
-            const stretchOptions = {
-                // Bei deaktiviertem Limit werden die analysierten Werte ohne zusätzliche Kappung weitergereicht
-                allowedTrimStartMs,
-                allowedTrimEndMs,
-                usePadding: tempoSafety.usePadding,
-                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety
-            };
-            newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
             const blob = bufferToWav(newBuffer);
             await speichereUebersetzungsDatei(blob, relPath);
@@ -17725,7 +11380,6 @@ async function applyDeEdit(param = {}) {
         currentEditFile.neighborHall = neighborHall;
         currentEditFile.tableMicEffect = isTableMicEffect;
         currentEditFile.tableMicRoom = tableMicRoomType;
-        currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern die Markierung auf den vollständigen Clip setzen und Felder normalisieren
         editStartTrim = 0;
         editEndTrim = 0;
@@ -17758,7 +11412,6 @@ async function applyDeEdit(param = {}) {
             throw new Error('Interner Fehler: finalBuffer wurde nicht gesetzt.');
         }
         // Nach erfolgreichem Speichern Puffer und Anzeige auf den neuen Zustand setzen
-        loadedTempoFactor = tempoFactor;
         volumeMatchedBuffer = null;
         refreshSilenceList();
         validateDeSelection();
@@ -19610,8 +13263,6 @@ function quickAddLevel(chapterName) {
                 f.emiEffect = false;
                 f.neighborEffect = false;
                 f.neighborHall = false;
-                // Tempo bei neuem Upload auf Standard zurücksetzen
-                f.tempoFactor = 1.0;
                 // Fertig-Status ergibt sich nun automatisch
             }
             markDirty();
@@ -19982,11 +13633,6 @@ if (typeof module !== "undefined" && module.exports) {
         insertGptResults,
         updateGptSummary,
         insertEnglishSegment,
-        timeStretchBuffer,
-        __test_estimateStretchSilence: estimateStretchableSilence,
-        __test_calculateDynamicSilenceThreshold: calculateDynamicSilenceThreshold,
-        __test_applyTrimSafety: applyTrimSafety,
-        __test_analyzeEdgeTrim: analyzeEdgeTrim,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,
