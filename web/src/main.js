@@ -9192,6 +9192,21 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
     let sumSquares = 0;
     let maxPadAmplitude = 0;
     const guardFrames = Math.round(buffer.sampleRate * 0.1);
+    const padRanges = ranges.filter(r => r.type !== 'full');
+
+    if (padRanges.length > 0) {
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const data = buffer.getChannelData(ch);
+            for (const range of padRanges) {
+                for (let i = range.start; i < range.end; i++) {
+                    const value = Math.abs(data[i]);
+                    if (value > maxPadAmplitude) {
+                        maxPadAmplitude = value;
+                    }
+                }
+            }
+        }
+    }
 
     for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
         const data = buffer.getChannelData(ch);
@@ -9235,6 +9250,7 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
 
     let threshold = Math.max(percentileValue * 1.25, rms * 3);
     if (maxPadAmplitude > 0) {
+        // Der Schwellwert darf das leiseste gemessene Nutzsignal im Ruhepolster nicht übersteigen
         threshold = Math.min(threshold, maxPadAmplitude);
     }
 
@@ -9275,16 +9291,27 @@ function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, thresh
 
     const minSilenceWindow = Math.max(1, Math.round(sampleRate * 0.1));
     if (start > padFrames) {
-        const hasWindow = hasContinuousSilence(channelData, padFrames, start, threshold, minSilenceWindow);
-        if (!hasWindow) {
+        const silentSpan = start - padFrames;
+        const requiredWindow = Math.min(minSilenceWindow, silentSpan);
+        const windowStart = Math.max(padFrames, start - requiredWindow);
+        const hasWindow = hasContinuousSilence(channelData, windowStart, start, threshold, requiredWindow);
+        if (hasWindow) {
+            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Anfang erkannt', { startFrames: start, padFrames, threshold });
+        } else {
+            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Anfang gefunden, Rückfall auf Polster', { startFrames: start, padFrames, threshold });
             start = padFrames;
         }
     }
     if (end > padFrames) {
-        const tailStart = Math.max(0, totalFrames - end);
+        const silentSpan = end - padFrames;
+        const requiredWindow = Math.min(minSilenceWindow, silentSpan);
         const tailEnd = Math.min(totalFrames, totalFrames - padFrames);
-        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, threshold, minSilenceWindow);
-        if (!hasWindow) {
+        const tailStart = Math.max(0, tailEnd - requiredWindow);
+        const hasWindow = hasContinuousSilence(channelData, tailStart, tailEnd, threshold, requiredWindow);
+        if (hasWindow) {
+            console.debug('[analyzeEdgeTrim] Zusätzliche Stille am Ende erkannt', { endFrames: end, padFrames, threshold });
+        } else {
+            console.debug('[analyzeEdgeTrim] Kein stabiles Stillfenster am Ende gefunden, Rückfall auf Polster', { endFrames: end, padFrames, threshold });
             end = padFrames;
         }
     }
@@ -19656,6 +19683,7 @@ if (typeof module !== "undefined" && module.exports) {
         __test_estimateStretchSilence: estimateStretchableSilence,
         __test_calculateDynamicSilenceThreshold: calculateDynamicSilenceThreshold,
         __test_applyTrimSafety: applyTrimSafety,
+        __test_analyzeEdgeTrim: analyzeEdgeTrim,
         // Export der Segmentierungsfunktionen fuer Tests und externe Nutzung
         openSegmentDialog,
         closeSegmentDialog,

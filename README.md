@@ -64,7 +64,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tempo-Auto ignoriert Randstille:** Die automatische Tempo-Anpassung berücksichtigt erkannte Leerräume an den Rändern nicht mehr in der Berechnung, damit gesprochene Passagen unverändert bleiben und nichts „abgeschnitten“ wirkt.
 * **Limits bewahren das Tempo-Polster:** Beim Begrenzen von Start und Ende hält Tempo Auto jetzt stets mindestens das gestretchte Sekundenpolster ein, damit die Kombination aus Schnellzugriff → Auto → Speichern → Tempo Auto keine Stilleinsprünge mehr hinterlässt.
 * **Dynamische Stilleprüfung für Auto-Tempo:** Der Schwellwert orientiert sich am gestreckten Ruhepolster und entfernt nur dann zusätzliches Material, wenn ein zusammenhängendes 100-ms-Fenster wirklich unterhalb der Schwelle bleibt – Fade-Ins und Fade-Outs bleiben dadurch unangetastet.
-* **Schwellwert deckelt sich am Originalpegel:** Die dynamische Stilleerkennung hebt den Schwellwert nicht mehr über die gemessene Maximalamplitude an, damit selbst kurze Peaks lauter Passagen vollständig erhalten bleiben.
+* **Schwellwert deckelt sich am Ruhepolster:** Die dynamische Stilleerkennung begrenzt den Schwellwert strikt auf die höchste im Sekundenpolster gemessene Amplitude und schützt damit kurze Peaks lauter Passagen zuverlässig vor ungewolltem Abschneiden.
+* **Randstille sichtbar machen:** analyzeEdgeTrim protokolliert erkannte Ruhefenster am Start und Ende, und neue Jest-Tests prüfen sowohl leise Polster als auch laute Nutzsignale.
 * **Crossfade-Samples bleiben unangetastet:** Bei der Schwellwertermittlung ignoriert das Tool die letzten 100 ms des Eingangs- und die ersten 100 ms des Ausgangspolsters, damit überblendete Bereiche weder den Schwellenwert anheben noch als Stille gelten.
 * **Trim-Rücknahme bei Auto-Tempo:** Reicht die gestretchte Länge nicht aus, zieht das Tool jetzt zuerst das rechte Trim-Ende bis zur erkannten Audio-Grenze oder wenigstens bis zum Sekundenpolster zurück, bevor es den linken Rand anfasst – weich eingeblendete Clips behalten dadurch auch ihr Fade-out.
 * **Ausgewogener Restabgleich:** Verbleibende Rundungsdefizite werden gleichmäßig zwischen Start- und Endreserve verteilt, solange noch originale Samples im Puffer liegen; erst wenn beide Reserven erschöpft sind, wird auf Stille aufgefüllt.
@@ -1295,6 +1296,7 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **Auto-Trim + Tempo** – Im DE-Audio-Editor zuerst „Auto-Trim“ auslösen, danach „Tempo automatisch anpassen“.
 * **Werte kontrollieren** – Prüfen, dass Start- und Endfelder die Laufzeit nicht überschreiten.
 * **Speichern** – Mit „Speichern“ bestätigen und sicherstellen, dass die grüne Markierung (`deSelectionActive`) sichtbar bleibt.
+* **Stille-Analyse prüfen** – Eine besonders leise sowie eine laute Probe-Datei laden und verifizieren, dass Start/Ende nur dann über das Sekundenpolster hinaus gekürzt werden, wenn die Konsole eine erkannte Randstille meldet.
 
 ## 🧩 Wichtige Funktionen
 
