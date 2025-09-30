@@ -9176,6 +9176,14 @@ function resolveAllowedTrimMs(edgeMs, tempoSafety) {
     return enforceTrimSafety ? Math.min(edgeMs, EDGE_TRIM_CAP_MS) : edgeMs;
 }
 
+// Liefert den effektiv zu nutzenden Randbeschnitt abhängig vom Limit-Schalter
+function getEffectiveTrimAllowance(edgeMs, tempoSafety) {
+    if (tempoSafety.enforceTrimSafety) {
+        return resolveAllowedTrimMs(edgeMs, tempoSafety);
+    }
+    return tempoSafety.detectEdgeSilence ? edgeMs : Number.POSITIVE_INFINITY;
+}
+
 // Liest den Status einer Tempo-Schutzoption aus der Oberfläche aus
 function isTempoSafetyEnabled(elementId, fallback = true) {
     const checkbox = document.getElementById(elementId);
@@ -9650,12 +9658,16 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             startTrim = Math.max(0, Math.round(analysis.start));
             endTrim = Math.max(0, Math.round(analysis.end));
 
-            const allowedStartFrames = Number.isFinite(allowedTrimStartMs)
-                ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * stretched.sampleRate / 1000))
-                : Number.POSITIVE_INFINITY;
-            const allowedEndFrames = Number.isFinite(allowedTrimEndMs)
-                ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * stretched.sampleRate / 1000))
-                : Number.POSITIVE_INFINITY;
+            // Hilfsumrechnung, damit auch "unbegrenzt" (Infinity) sauber verarbeitet wird
+            const convertAllowedMsToFrames = (valueMs) => {
+                if (!Number.isFinite(valueMs)) {
+                    return Number.POSITIVE_INFINITY;
+                }
+                const frames = (valueMs / safeFactor) * stretched.sampleRate / 1000;
+                return Math.max(0, Math.round(frames));
+            };
+            const allowedStartFrames = convertAllowedMsToFrames(allowedTrimStartMs);
+            const allowedEndFrames = convertAllowedMsToFrames(allowedTrimEndMs);
 
             if (Number.isFinite(allowedStartFrames)) {
                 startTrim = Math.min(startTrim, padOutFrames + allowedStartFrames);
@@ -15711,8 +15723,8 @@ async function recomputeEditBuffer() {
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
     const tempoSafety = getTempoSafetyConfig();
     const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(trimmed) : { start: 0, end: 0 };
-    const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
-    const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
+    const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
+    const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
     const stretchOptions = {
         // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
         allowedTrimStartMs,
@@ -16127,8 +16139,8 @@ async function buildTempoDebugSteps() {
 
     const tempoSafety = getTempoSafetyConfig();
     const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(currentBuffer) : { start: 0, end: 0 };
-    const allowedStart = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
-    const allowedEnd = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
+    const allowedStart = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
+    const allowedEnd = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
     if (tempoSafety.detectEdgeSilence) {
         const limitText = tempoSafety.enforceTrimSafety
             ? 'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.'
@@ -17460,8 +17472,8 @@ async function applyDeEdit(param = {}) {
             updateDeEditWaveforms();
             const tempoSafety = getTempoSafetyConfig();
             const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
+            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
+            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
             const stretchOptions = {
                 // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
                 allowedTrimStartMs,
@@ -17561,8 +17573,8 @@ async function applyDeEdit(param = {}) {
             // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
             const tempoSafety = getTempoSafetyConfig();
             const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
-            const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
-            const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
+            const allowedTrimStartMs = getEffectiveTrimAllowance(edgeSilence.start, tempoSafety);
+            const allowedTrimEndMs = getEffectiveTrimAllowance(edgeSilence.end, tempoSafety);
             const stretchOptions = {
                 allowedTrimStartMs,
                 allowedTrimEndMs,
