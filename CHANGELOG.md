@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.442
+* `web/src/main.js` koppelt die 120-ms-Kappe an `tempoSafety.enforceTrimSafety`, reicht bei deaktiviertem Limit die komplette erkannte Randstille bzw. eine unbegrenzte Freigabe weiter und kennzeichnet das im Tempo-Debug deutlich.
+* `web/hla_translation_tool.html` erläutert im Tooltip, dass bei ausgeschaltetem Trim-Limit keine feste Obergrenze mehr greift.
+* `README.md` ergänzt den Hinweis auf das Limit ohne Kappung samt klarer Debug-Ausgabe.
+* `CHANGELOG.md` dokumentiert die verknüpfte Limitsteuerung.
 ## 🛠️ Patch in 1.40.441
 * `web/hla_translation_tool.html` ergänzt vier neue Häkchen unter der Tempo-Karte, mit denen Auto-Tempo-Referenz, Sicherheits-Puffer, Randstille-Analyse und Trim-Limitierung einzeln deaktiviert werden können.
 * `web/src/style.css` formatiert die neue Sicherheitssektion samt erklärenden Hinweistexten.

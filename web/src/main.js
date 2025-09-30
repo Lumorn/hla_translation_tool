@@ -9164,6 +9164,18 @@ function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
 let soundtouchPromise = null;
 const EDGE_TRIM_CAP_MS = 120; // Maximale Freigabe für zusätzliches Abschneiden nach dem Time-Stretch
 
+// Bestimmt die erlaubte Kürzung in Millisekunden abhängig von Analyse- und Sicherheitsoptionen
+function resolveAllowedTrimMs(edgeMs, tempoSafety) {
+    const { detectEdgeSilence, enforceTrimSafety } = tempoSafety;
+    if (!detectEdgeSilence) {
+        return enforceTrimSafety ? 0 : Number.POSITIVE_INFINITY;
+    }
+    if (!Number.isFinite(edgeMs)) {
+        return enforceTrimSafety ? EDGE_TRIM_CAP_MS : edgeMs;
+    }
+    return enforceTrimSafety ? Math.min(edgeMs, EDGE_TRIM_CAP_MS) : edgeMs;
+}
+
 // Liest den Status einer Tempo-Schutzoption aus der Oberfläche aus
 function isTempoSafetyEnabled(elementId, fallback = true) {
     const checkbox = document.getElementById(elementId);
@@ -9529,7 +9541,8 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
                 expectedSamples: buffer.length,
                 relativeFactor: safeFactor,
                 allowedTrimStartMs,
-                allowedTrimEndMs
+                allowedTrimEndMs,
+                trimLimitActive: enforceTrimSafety
             });
         }
         return buffer;
@@ -9542,7 +9555,8 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             expectedSamples: expected,
             relativeFactor: safeFactor,
             allowedTrimStartMs,
-            allowedTrimEndMs
+            allowedTrimEndMs,
+            trimLimitActive: enforceTrimSafety
         });
     }
 
@@ -9659,7 +9673,8 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
                     detectedEndMs: framesToMs(analysis.detectedEnd, stretched.sampleRate),
                     tempoFactor: safeFactor,
                     threshold,
-                    enforceTrimSafety
+                    enforceTrimSafety,
+                    trimLimitActive: enforceTrimSafety
                 });
             }
         } else if (debugAdd) {
@@ -15696,10 +15711,12 @@ async function recomputeEditBuffer() {
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
     const tempoSafety = getTempoSafetyConfig();
     const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(trimmed) : { start: 0, end: 0 };
+    const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
+    const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
     const stretchOptions = {
         // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
-        allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
-        allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+        allowedTrimStartMs,
+        allowedTrimEndMs,
         usePadding: tempoSafety.usePadding,
         useEdgeAnalysis: tempoSafety.detectEdgeSilence,
         enforceTrimSafety: tempoSafety.enforceTrimSafety
@@ -15736,6 +15753,13 @@ function formatTempoSeconds(seconds) {
     return `${formatTempoNumber(seconds, 3)} s`;
 }
 
+function formatTempoLimitMs(ms, limitActive = true) {
+    if (!Number.isFinite(ms)) {
+        return limitActive ? '–' : 'unbegrenzt';
+    }
+    return formatTempoMs(ms);
+}
+
 function createTempoDebugStep(title, buffer, description, meta = {}) {
     if (!buffer) return null;
     const sampleRate = buffer.sampleRate || 0;
@@ -15766,9 +15790,11 @@ function formatTempoMeta(meta = {}) {
     if (meta.loadedTempoFactor !== undefined) parts.push(`Geladener Faktor: ${formatTempoNumber(meta.loadedTempoFactor, 3)}`);
     if (meta.relativeFactor !== undefined) parts.push(`Relativfaktor: ${formatTempoNumber(meta.relativeFactor, 3)}`);
     if (meta.allowedTrimStartMs !== undefined || meta.allowedTrimEndMs !== undefined) {
-        const start = meta.allowedTrimStartMs !== undefined ? formatTempoMs(meta.allowedTrimStartMs) : '–';
-        const end = meta.allowedTrimEndMs !== undefined ? formatTempoMs(meta.allowedTrimEndMs) : '–';
-        parts.push(`Freigabe Randstille: Start ${start} / Ende ${end}`);
+        const limitActive = meta.trimLimitActive ?? meta.enforceTrimSafety ?? true;
+        const start = meta.allowedTrimStartMs !== undefined ? formatTempoLimitMs(meta.allowedTrimStartMs, limitActive) : '–';
+        const end = meta.allowedTrimEndMs !== undefined ? formatTempoLimitMs(meta.allowedTrimEndMs, limitActive) : '–';
+        const label = limitActive ? 'Freigabe Randstille' : 'Freigabe Randstille (Limit aus)';
+        parts.push(`${label}: Start ${start} / Ende ${end}`);
     }
     if (meta.trimStartMs !== undefined || meta.trimEndMs !== undefined) {
         const start = meta.trimStartMs !== undefined ? formatTempoMs(meta.trimStartMs) : '–';
@@ -16101,26 +16127,34 @@ async function buildTempoDebugSteps() {
 
     const tempoSafety = getTempoSafetyConfig();
     const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(currentBuffer) : { start: 0, end: 0 };
-    const allowedStart = tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0;
-    const allowedEnd = tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0;
+    const allowedStart = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
+    const allowedEnd = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
     if (tempoSafety.detectEdgeSilence) {
+        const limitText = tempoSafety.enforceTrimSafety
+            ? 'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.'
+            : 'Erkannte Stille darf vollständig entfernt werden, das Sicherheitslimit ist deaktiviert.';
         addStep('Randstille ermitteln', currentBuffer,
-            'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.',
+            limitText,
             {
                 silenceStartMs: edgeSilence.start,
                 silenceEndMs: edgeSilence.end,
                 allowedTrimStartMs: allowedStart,
                 allowedTrimEndMs: allowedEnd,
-                enforceTrimSafety: tempoSafety.enforceTrimSafety
+                enforceTrimSafety: tempoSafety.enforceTrimSafety,
+                trimLimitActive: tempoSafety.enforceTrimSafety
             });
     } else {
+        const limitText = tempoSafety.enforceTrimSafety
+            ? 'Analyse deaktiviert: Tempo-Stretching arbeitet ohne zusätzliche Randstille-Erkennung.'
+            : 'Analyse deaktiviert: Kein Sicherheitslimit aktiv, zusätzliche Kürzungen sind ungebremst möglich.';
         addStep('Randstille ermitteln', currentBuffer,
-            'Analyse deaktiviert: Tempo-Stretching arbeitet ohne zusätzliche Randstille-Erkennung.',
+            limitText,
             {
                 silenceStartMs: 0,
                 silenceEndMs: 0,
-                allowedTrimStartMs: 0,
-                allowedTrimEndMs: 0
+                allowedTrimStartMs: allowedStart,
+                allowedTrimEndMs: allowedEnd,
+                trimLimitActive: tempoSafety.enforceTrimSafety
             });
     }
 
@@ -17426,10 +17460,12 @@ async function applyDeEdit(param = {}) {
             updateDeEditWaveforms();
             const tempoSafety = getTempoSafetyConfig();
             const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
+            const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
+            const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
             const stretchOptions = {
                 // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
-                allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
-                allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+                allowedTrimStartMs,
+                allowedTrimEndMs,
                 usePadding: tempoSafety.usePadding,
                 useEdgeAnalysis: tempoSafety.detectEdgeSilence,
                 enforceTrimSafety: tempoSafety.enforceTrimSafety
@@ -17525,9 +17561,11 @@ async function applyDeEdit(param = {}) {
             // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
             const tempoSafety = getTempoSafetyConfig();
             const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
+            const allowedTrimStartMs = resolveAllowedTrimMs(edgeSilence.start, tempoSafety);
+            const allowedTrimEndMs = resolveAllowedTrimMs(edgeSilence.end, tempoSafety);
             const stretchOptions = {
-                allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
-                allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+                allowedTrimStartMs,
+                allowedTrimEndMs,
                 usePadding: tempoSafety.usePadding,
                 useEdgeAnalysis: tempoSafety.detectEdgeSilence,
                 enforceTrimSafety: tempoSafety.enforceTrimSafety
