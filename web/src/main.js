@@ -553,6 +553,214 @@ let currentEnSeconds      = 0;     // Länge der EN-Datei in Sekunden
 let currentDeSeconds      = 0;     // Länge der DE-Datei in Sekunden
 let maxWaveSeconds        = 0;     // Maximale Länge zur Skalierung
 
+// Zustandsverwaltung für das neue Debug-Protokoll in der DE-Bearbeitung
+let deDebugEntries        = [];    // Alle protokollierten Meldungen
+let deDebugPanelVisible   = false; // Merker, ob das seitliche Fenster sichtbar ist
+let deDebugSetupDone      = false; // Verhindert mehrfaches Initialisieren der Listener
+let deDebugLastInputLog   = 0;     // Zeitstempel für letzte Live-Protokollierung (Drosselung bei Schiebereglern)
+const MAX_DE_DEBUG_LINES  = 500;   // Obergrenze für gespeicherte Zeilen
+
+// Formatiert Sekundenwerte als mm:ss.mmm für das Debug-Protokoll
+function formatDeDebugSeconds(seconds) {
+    if (!Number.isFinite(seconds) || seconds < 0) {
+        return '00:00.000';
+    }
+    const totalMs = Math.round(seconds * 1000);
+    const minutes = Math.floor(totalMs / 60000);
+    const secs = Math.floor((totalMs % 60000) / 1000);
+    const millis = totalMs % 1000;
+    return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}.${millis.toString().padStart(3, '0')}`;
+}
+
+// Sorgt dafür, dass das Debug-Fenster nur einmal initialisiert wird
+function ensureDeDebugPanel() {
+    if (deDebugSetupDone) return;
+    const dialog = document.querySelector('#deEditDialog .dialog');
+    const panel = document.getElementById('deDebugPanel');
+    if (!dialog || !panel) return;
+
+    const copyBtn = document.getElementById('deDebugCopyBtn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const text = deDebugEntries.join('\n');
+            const kopiert = await safeCopy(text);
+            if (kopiert && typeof showToast === 'function') {
+                showToast('Debug-Protokoll kopiert', 'success');
+            } else if (!kopiert && typeof showToast === 'function') {
+                showToast('Kopieren fehlgeschlagen', 'error');
+            }
+            logDeDebug('safeCopy', 'Debug-Protokoll', kopiert ? 'In Zwischenablage übernommen' : 'Zwischenablage nicht verfügbar');
+        });
+    }
+
+    dialog.addEventListener('click', handleDeDebugClick, true);
+    dialog.addEventListener('change', handleDeDebugChange, true);
+    dialog.addEventListener('input', handleDeDebugInput, true);
+
+    panel.setAttribute('aria-hidden', 'true');
+    deDebugSetupDone = true;
+}
+
+// Aktualisiert die Textfläche mit den gesammelten Meldungen
+function updateDeDebugConsole() {
+    const consoleEl = document.getElementById('deDebugConsole');
+    if (!consoleEl) return;
+    consoleEl.value = deDebugEntries.join('\n');
+    consoleEl.scrollTop = consoleEl.scrollHeight;
+}
+
+// Erstellt eine neue Debug-Zeile und hält die maximale Anzahl ein
+function logDeDebug(functionName, subAction = '', extra = '') {
+    const zeit = new Date().toLocaleTimeString('de-DE', { hour12: false });
+    const enText = formatDeDebugSeconds(currentEnSeconds);
+    const deText = formatDeDebugSeconds(currentDeSeconds);
+    let meldung = `[${zeit}] EN: ${enText} • DE: ${deText} • Funktion: ${functionName}`;
+    if (subAction) meldung += ` • Unterfunktion: ${subAction}`;
+    if (extra) meldung += ` • Hinweis: ${extra}`;
+    deDebugEntries.push(meldung);
+    if (deDebugEntries.length > MAX_DE_DEBUG_LINES) {
+        deDebugEntries = deDebugEntries.slice(-MAX_DE_DEBUG_LINES);
+    }
+    updateDeDebugConsole();
+}
+
+// Setzt das Protokoll für eine neue Datei zurück und dokumentiert den Start
+function resetDeDebugLog(dateiLabel) {
+    deDebugEntries = [];
+    updateDeDebugConsole();
+    const beschreibung = dateiLabel ? `Bearbeitung gestartet für ${dateiLabel}` : 'Bearbeitung gestartet';
+    logDeDebug('openDeEdit', 'Initialisierung', beschreibung);
+}
+
+// Liefert einen sprechenden Namen für ausgelöste Funktionen
+function determineDeDebugFunction(target) {
+    if (!target) return 'Unbekannte Funktion';
+    if (target.dataset && target.dataset.deDebugFunc) return target.dataset.deDebugFunc;
+    const handler = target.onclick || target.onchange || target.oninput;
+    if (typeof handler === 'function' && handler.name) return handler.name;
+    if (target.getAttribute) {
+        const attr = target.getAttribute('onclick') || target.getAttribute('onchange') || target.getAttribute('oninput');
+        const inlineName = extractInlineFunctionName(attr);
+        if (inlineName) return inlineName;
+    }
+    if (target.id) return target.id;
+    if (target.name) return target.name;
+    return target.tagName ? target.tagName.toLowerCase() : 'Unbekannte Funktion';
+}
+
+// Liest Funktionsnamen aus Inline-Handlern
+function extractInlineFunctionName(attr) {
+    if (!attr) return '';
+    const match = attr.match(/^[\s\(]*([\w$.]+)/);
+    return match ? match[1] : '';
+}
+
+// Beschreibt das angeklickte Element für das Protokoll
+function describeDeEditTarget(target) {
+    if (!target) return 'unbekanntes Element';
+    const teile = [];
+    if (target.tagName) teile.push(target.tagName.toLowerCase());
+    if (target.id) teile.push(`#${target.id}`);
+    if (target.name) teile.push(`name=${target.name}`);
+    const label = target.getAttribute ? (target.getAttribute('aria-label') || target.title || '') : '';
+    let text = '';
+    if (!label && target.textContent) {
+        text = target.textContent.trim().replace(/\s+/g, ' ');
+    }
+    const beschriftung = label || text;
+    if (beschriftung) teile.push(`„${beschriftung}”`);
+    return teile.join(' ');
+}
+
+// Reagiert auf alle Klicks innerhalb des Dialogs und protokolliert sie streng
+function handleDeDebugClick(event) {
+    const dialog = document.getElementById('deEditDialog');
+    if (!dialog) return;
+    const rawTarget = event.target.closest('button, input[type="button"], input[type="submit"], input[type="checkbox"], input[type="radio"], label');
+    if (!rawTarget || !dialog.contains(rawTarget)) return;
+    if (rawTarget.id === 'deDebugConsole') return;
+    let target = rawTarget;
+    if (rawTarget.tagName && rawTarget.tagName.toLowerCase() === 'label' && rawTarget.htmlFor) {
+        const related = document.getElementById(rawTarget.htmlFor);
+        if (related) {
+            target = related;
+        }
+    }
+    const funktion = determineDeDebugFunction(target);
+    const zielBeschreibung = target === rawTarget
+        ? describeDeEditTarget(target)
+        : `${describeDeEditTarget(rawTarget)} → ${describeDeEditTarget(target)}`;
+    let extra = '';
+    if (target instanceof HTMLInputElement && (target.type === 'checkbox' || target.type === 'radio')) {
+        extra = target.checked ? 'Status: aktiv' : 'Status: inaktiv';
+    }
+    logDeDebug(funktion, `Klick auf ${zielBeschreibung}`, extra);
+}
+
+// Zeichnet Änderungen an Eingaben und Auswahlelementen auf
+function handleDeDebugChange(event) {
+    const dialog = document.getElementById('deEditDialog');
+    const target = event.target;
+    if (!dialog || !target || !dialog.contains(target) || target.id === 'deDebugConsole') return;
+    if (!(target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement)) return;
+    const funktion = determineDeDebugFunction(target);
+    const beschreibung = describeDeEditTarget(target);
+    let wert = '';
+    if (target instanceof HTMLInputElement) {
+        if (target.type === 'checkbox' || target.type === 'radio') {
+            wert = target.checked ? 'aktiv' : 'inaktiv';
+        } else {
+            wert = target.value;
+        }
+    } else {
+        wert = target.value;
+    }
+    logDeDebug(funktion, `Änderung an ${beschreibung}`, `Wert: ${wert}`);
+}
+
+// Protokolliert kontinuierliche Änderungen an Schiebereglern, ohne zu fluten
+function handleDeDebugInput(event) {
+    const dialog = document.getElementById('deEditDialog');
+    const target = event.target;
+    if (!dialog || !target || !dialog.contains(target)) return;
+    if (!(target instanceof HTMLInputElement) || target.type !== 'range') return;
+    const jetzt = Date.now();
+    if (jetzt - deDebugLastInputLog < 200) return; // Drosselung, damit das Protokoll lesbar bleibt
+    deDebugLastInputLog = jetzt;
+    const funktion = determineDeDebugFunction(target);
+    const beschreibung = describeDeEditTarget(target);
+    logDeDebug(funktion, `Live-Wert an ${beschreibung}`, `Wert: ${target.value}`);
+}
+
+// Blendet das Debug-Fenster ein oder aus
+function toggleDeDebugPanel(forceState, options = {}) {
+    ensureDeDebugPanel();
+    const dialog = document.querySelector('#deEditDialog .dialog');
+    const panel = document.getElementById('deDebugPanel');
+    const button = document.getElementById('deDebugBtn');
+    if (!dialog || !panel) return false;
+    const silent = options && options.silent === true;
+    const show = typeof forceState === 'boolean' ? forceState : !deDebugPanelVisible;
+    deDebugPanelVisible = show;
+    panel.setAttribute('aria-hidden', show ? 'false' : 'true');
+    dialog.classList.toggle('debug-open', show);
+    panel.classList.toggle('visible', show);
+    if (button) {
+        button.classList.toggle('debug-active', show);
+    }
+    if (!silent) {
+        logDeDebug('toggleDeDebugPanel', show ? 'Fenster geöffnet' : 'Fenster geschlossen');
+    }
+    return show;
+}
+
+// Stellt sicher, dass andere Skripte das Toggle ebenfalls nutzen können
+if (typeof window !== 'undefined') {
+    window.toggleDeDebugPanel = toggleDeDebugPanel;
+    window.openDeDebugPanel = () => toggleDeDebugPanel(true);
+    window.closeDeDebugPanel = () => toggleDeDebugPanel(false);
+}
+
 // Sichert Eingabewerte für Trim-Felder gegen Überläufe oberhalb der Gesamtdauer ab
 function setTrimInputValueSafe(input, valueMs, maxDurationMs = editDurationMs) {
     if (!input) return;
@@ -14553,6 +14761,8 @@ async function openDeEdit(fileId) {
     currentEnSeconds = enSeconds;
     currentDeSeconds = deSeconds;
     maxWaveSeconds = Math.max(maxSeconds, 0.001);
+    ensureDeDebugPanel();
+    resetDeDebugLog(getFullPath(file));
     // Beide Cursor zurücksetzen
     editOrigCursor = 0;
     editDeCursor = 0;
@@ -15486,6 +15696,7 @@ function insertEnglishSegment() {
     const segEnd   = parseInt(endField?.value) || 0;
     const startMs = Math.max(0, Math.min(segStart, segEnd));
     const endMs   = Math.max(segStart, segEnd);
+    logDeDebug('insertEnglishSegment', 'Bereich wird übertragen', `Von ${startMs} ms bis ${endMs} ms`);
     const deDurMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
     let insertPosMs;
     if (posField?.value === 'start') {
@@ -15499,9 +15710,11 @@ function insertEnglishSegment() {
     savedOriginalBuffer = insertBufferIntoBuffer(savedOriginalBuffer, segment, insertPosMs);
     originalEditBuffer = savedOriginalBuffer;
     editDurationMs = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate * 1000;
+    currentDeSeconds = savedOriginalBuffer.length / savedOriginalBuffer.sampleRate;
     normalizeDeTrim();
     updateDeEditWaveforms();
     updateLengthInfo();
+    logDeDebug('insertEnglishSegment', 'Bereich eingefügt', `Neue Länge: ${formatDeDebugSeconds(currentDeSeconds)}`);
     if (typeof showToast === 'function') {
         showToast('EN-Bereich kopiert', 'success');
     }
@@ -16934,6 +17147,7 @@ function validateDeSelection() {
 
 // =========================== STOPEDITPLAYBACK START =======================
 function stopEditPlayback() {
+    logDeDebug('stopEditPlayback', 'Wiedergabe gestoppt');
     const audio = document.getElementById('audioPlayer');
     audio.pause();
     audio.currentTime = 0;
@@ -16955,6 +17169,8 @@ function stopEditPlayback() {
 // =========================== PLAYORIGINALPREVIEW START ====================
 function playOriginalPreview() {
     if (!editEnBuffer) return;
+    const status = editPlaying === 'orig' ? (editPaused ? 'Fortsetzung' : 'Pause') : 'Start';
+    logDeDebug('playOriginalPreview', `${status} angefordert`);
     const btn = document.getElementById('playOrigPreview');
     const audio = document.getElementById('audioPlayer');
     if (editPlaying === 'orig') {
@@ -16998,6 +17214,7 @@ function playOriginalPreview() {
     }).catch(err => {
         // Wiedergabe schlug fehl – Nutzer informieren
         console.error('Fehler bei Original-Vorschau', err);
+        logDeDebug('playOriginalPreview', 'Fehler bei der Wiedergabe', err?.message || String(err));
         if (typeof updateStatus === 'function') {
             updateStatus('Fehler beim Abspielen der Originaldatei');
         }
@@ -17008,6 +17225,8 @@ function playOriginalPreview() {
 // =========================== PLAYDEPREVIEW START ==========================
 function playDePreview() {
     if (!originalEditBuffer) return;
+    const status = editPlaying === 'de' ? (editPaused ? 'Fortsetzung' : 'Pause') : 'Start';
+    logDeDebug('playDePreview', `${status} angefordert`);
     const btn = document.getElementById('playDePreview');
     const audio = document.getElementById('audioPlayer');
     if (editPlaying === 'de') {
@@ -17061,6 +17280,7 @@ function playDePreview() {
     }).catch(err => {
         // Wiedergabe schlug fehl – Nutzer informieren
         console.error('Fehler bei DE-Vorschau', err);
+        logDeDebug('playDePreview', 'Fehler bei der Wiedergabe', err?.message || String(err));
         if (typeof updateStatus === 'function') {
             updateStatus('Fehler beim Abspielen der DE-Datei');
         }
@@ -17071,6 +17291,7 @@ function playDePreview() {
 // =========================== CLOSEDEEDIT START =============================
 function closeDeEdit() {
     document.getElementById('deEditDialog').classList.add('hidden');
+    toggleDeDebugPanel(false, { silent: true });
     stopEditPlayback();
     currentEditFile = null;
     originalEditBuffer = null;
@@ -17124,6 +17345,7 @@ function closeDeEdit() {
 // Stellt die letzte gespeicherte Version der DE-Datei aus dem Backup wieder her
 async function resetDeEdit() {
     if (!currentEditFile) return;
+    logDeDebug('resetDeEdit', 'Starte Wiederherstellung');
     // Liste nicht gespeicherter Schritte für Bestätigungsdialog sammeln
     const steps = [];
     if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push('Trimmen');
@@ -17273,6 +17495,7 @@ async function rebuildEnBufferAfterSave() {
     editDurationMs = deBuffer.length / deBuffer.sampleRate * 1000;
     normalizeDeTrim();
     maxWaveSeconds = Math.max(currentDeSeconds, currentEnSeconds, 0.001);
+    logDeDebug('resetDeEdit', 'Wiederherstellung abgeschlossen', 'Datei neu geladen');
 
     const startField = document.getElementById('enSegStart');
     const endField = document.getElementById('enSegEnd');
@@ -17302,6 +17525,7 @@ async function rebuildEnBufferAfterSave() {
 async function applyDeEdit(param = {}) {
     if (!currentEditFile || !originalEditBuffer) return;
     const closeAfterSave = typeof param === 'boolean' ? param : !!param.closeAfterSave;
+    logDeDebug('applyDeEdit', closeAfterSave ? 'Speichern & schließen gestartet' : 'Speichern gestartet', `Trim: Start ${Math.round(editStartTrim)} ms • Ende ${Math.round(editEndTrim)} ms`);
     // Restlänge berechnen und ungültigen Schnitt verhindern
     const restlaenge = editDurationMs - editStartTrim - editEndTrim;
     if (restlaenge <= 0) {
@@ -17533,6 +17757,9 @@ async function applyDeEdit(param = {}) {
         validateDeSelection();
         updateEffectButtons();
         updateStatus('DE-Audio bearbeitet und gespeichert');
+        currentDeSeconds = finalBuffer.length / finalBuffer.sampleRate;
+        editDurationMs = finalBuffer.length / finalBuffer.sampleRate * 1000;
+        logDeDebug('applyDeEdit', closeAfterSave ? 'Speichern & schließen beendet' : 'Speichern beendet', 'Neue DE-Länge übernommen');
         // Sofort speichern, damit die Bearbeitung gesichert ist
         saveCurrentProject();
         // Dialog nur schließen, wenn dies ausdrücklich gewünscht ist
@@ -17542,6 +17769,7 @@ async function applyDeEdit(param = {}) {
     } catch (err) {
         // 🟦 Fehlermeldung ausgeben und näher erläutern
         console.error('Fehler beim Speichern', err, err.message);
+        logDeDebug('applyDeEdit', 'Fehler beim Speichern', err?.message || String(err));
         let hinweis = '';
         if (err.code === 'EACCES' || err.name === 'NotAllowedError') {
             hinweis = 'Kein Schreibzugriff auf den Ordner. Bitte Berechtigungen prüfen.';

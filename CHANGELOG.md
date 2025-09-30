@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.447
+* `web/hla_translation_tool.html` ersetzt den Tempo-Debug-Dialog durch eine seitliche Debug-Konsole mit Kopier- und Schließen-Button direkt im DE-Editor.
+* `web/src/style.css` gestaltet das andockbare Debug-Fenster samt Animation und aktiver Button-Markierung.
+* `web/src/main.js` initialisiert das Protokollfenster, zeichnet jede Aktion inklusive EN-/DE-Laufzeit, Funktions- und Unterfunktionsnamen auf und aktualisiert die Laufzeiten nach Bearbeitungsschritten.
+* `README.md` führt die neue Debug-Konsole in der Funktionsübersicht auf.
+
 ## 🛠️ Patch in 1.40.446
 * `web/src/main.js` begrenzt beim Öffnen des DE-Editors alte Tempo-Faktoren sofort auf den Sliderbereich, damit historische Werte unterhalb von 1 keine extremen Beschleunigungen mehr auslösen.
 * `README.md` weist auf die automatische Normalisierung historischer Tempo-Werte hin.
