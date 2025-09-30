@@ -9163,6 +9163,23 @@ function detectSilenceTrim(buffer, threshold = 0.01, windowMs = 10) {
 // Hochwertiges Time-Stretching mit SoundTouchJS
 let soundtouchPromise = null;
 const EDGE_TRIM_CAP_MS = 120; // Maximale Freigabe für zusätzliches Abschneiden nach dem Time-Stretch
+
+// Liest den Status einer Tempo-Schutzoption aus der Oberfläche aus
+function isTempoSafetyEnabled(elementId, fallback = true) {
+    const checkbox = document.getElementById(elementId);
+    if (!checkbox) return fallback;
+    return checkbox.checked !== false;
+}
+
+// Fasst alle Tempo-Schutzoptionen für die Verarbeitung zusammen
+function getTempoSafetyConfig() {
+    return {
+        usePadding: isTempoSafetyEnabled('tempoSafetyPadding'),
+        detectEdgeSilence: isTempoSafetyEnabled('tempoSafetyDetect'),
+        enforceTrimSafety: isTempoSafetyEnabled('tempoSafetyTrimLimit'),
+        autoReference: isTempoSafetyEnabled('tempoSafetyReference')
+    };
+}
 function loadSoundTouch() {
     if (!soundtouchPromise) {
         soundtouchPromise = import('./lib/soundtouch.js');
@@ -9280,7 +9297,8 @@ function calculateDynamicSilenceThreshold(buffer, padFrames = 0) {
 }
 
 // Analysiert die Randbereiche eines Signals und bereitet sichere Trim-Werte vor
-function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold) {
+function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, threshold, options = {}) {
+    const { enforceTrimSafety = true } = options;
     const isSilent = index => channelData.every(channel => Math.abs(channel[index]) <= threshold);
 
     let firstActive = 0;
@@ -9325,9 +9343,11 @@ function analyzeEdgeTrim(channelData, totalFrames, sampleRate, padFrames, thresh
         }
     }
 
-    const limited = applyTrimSafety(start, end, totalFrames, sampleRate, padFrames, padFrames);
-    start = limited.start;
-    end = limited.end;
+    if (enforceTrimSafety) {
+        const limited = applyTrimSafety(start, end, totalFrames, sampleRate, padFrames, padFrames);
+        start = limited.start;
+        end = limited.end;
+    }
 
     const tolerance = Math.max(0, Math.round(sampleRate * 0.01));
     const maxStart = Math.max(padFrames, Math.min(totalFrames, detectedStart + tolerance));
@@ -9359,6 +9379,11 @@ function estimateStretchableSilence(buffer) {
         return { start: 0, end: 0 };
     }
 
+    const safety = getTempoSafetyConfig();
+    if (!safety.detectEdgeSilence) {
+        return { start: 0, end: 0 };
+    }
+
     const sr = buffer.sampleRate;
     const padFrames = Math.round(sr * 1.0);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -9375,7 +9400,9 @@ function estimateStretchableSilence(buffer) {
             channelData.push(padded.getChannelData(ch));
         }
 
-        const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold);
+        const { start, end } = analyzeEdgeTrim(channelData, padded.length, sr, padFrames, threshold, {
+            enforceTrimSafety: safety.enforceTrimSafety
+        });
         const extraStart = Math.max(0, start - padFrames);
         const extraEnd = Math.max(0, end - padFrames);
 
@@ -9471,7 +9498,10 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
     const {
         allowedTrimStartMs = 0,
         allowedTrimEndMs = 0,
-        debug: debugContext = null
+        debug: debugContext = null,
+        usePadding = true,
+        useEdgeAnalysis = true,
+        enforceTrimSafety = true
     } = options || {};
 
     if (!buffer || !Number.isFinite(buffer.sampleRate) || buffer.length === 0) {
@@ -9518,18 +9548,23 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
 
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     try {
-        const padFrames = Math.round(buffer.sampleRate * 1.0);
-        const padded = ctx.createBuffer(buffer.numberOfChannels, buffer.length + padFrames * 2, buffer.sampleRate);
+        const padFrames = usePadding ? Math.round(buffer.sampleRate * 1.0) : 0;
+        const paddedLength = buffer.length + padFrames * 2;
+        const padded = ctx.createBuffer(buffer.numberOfChannels, paddedLength, buffer.sampleRate);
         for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
             const target = padded.getChannelData(ch);
             target.set(buffer.getChannelData(ch), padFrames);
         }
 
-        if (debugAdd) {
+        if (debugAdd && usePadding) {
             debugAdd('Tempo: Sicherheitsrand gesetzt', padded, {
                 beschreibung: 'Eine Sekunde Puffer schützt den Algorithmus vor abgeschnittenen Transienten.',
                 padFrames,
                 padMs: padFrames / buffer.sampleRate * 1000
+            });
+        } else if (debugAdd && !usePadding) {
+            debugAdd('Tempo: Sicherheitsrand übersprungen', padded, {
+                beschreibung: 'Das Stretching verwendet das Rohsignal ohne zusätzlichen Puffer.'
             });
         }
 
@@ -9576,41 +9611,61 @@ async function timeStretchBuffer(buffer, factor, options = {}) {
             });
         }
 
-        const threshold = calculateDynamicSilenceThreshold(stretched, padOutFrames);
-        const channelData = [];
-        for (let ch = 0; ch < stretched.numberOfChannels; ch++) {
-            channelData.push(stretched.getChannelData(ch));
-        }
-
         const framesToMs = (frames, sampleRate) => sampleRate ? frames / sampleRate * 1000 : 0;
-        const analysis = analyzeEdgeTrim(channelData, stretched.length, stretched.sampleRate, padOutFrames, threshold);
+        let startTrim = padOutFrames;
+        let endTrim = padOutFrames;
+        let analysis = {
+            start: padOutFrames,
+            end: padOutFrames,
+            detectedStart: padOutFrames,
+            detectedEnd: padOutFrames
+        };
+        let threshold = 0;
 
-        let startTrim = Math.max(0, Math.round(analysis.start));
-        let endTrim = Math.max(0, Math.round(analysis.end));
+        if (useEdgeAnalysis) {
+            threshold = calculateDynamicSilenceThreshold(stretched, padOutFrames);
+            const channelData = [];
+            for (let ch = 0; ch < stretched.numberOfChannels; ch++) {
+                channelData.push(stretched.getChannelData(ch));
+            }
 
-        const allowedStartFrames = Number.isFinite(allowedTrimStartMs)
-            ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * stretched.sampleRate / 1000))
-            : Number.POSITIVE_INFINITY;
-        const allowedEndFrames = Number.isFinite(allowedTrimEndMs)
-            ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * stretched.sampleRate / 1000))
-            : Number.POSITIVE_INFINITY;
+            analysis = analyzeEdgeTrim(channelData, stretched.length, stretched.sampleRate, padOutFrames, threshold, {
+                enforceTrimSafety
+            });
 
-        if (Number.isFinite(allowedStartFrames)) {
-            startTrim = Math.min(startTrim, padOutFrames + allowedStartFrames);
-        }
-        if (Number.isFinite(allowedEndFrames)) {
-            endTrim = Math.min(endTrim, padOutFrames + allowedEndFrames);
-        }
+            startTrim = Math.max(0, Math.round(analysis.start));
+            endTrim = Math.max(0, Math.round(analysis.end));
 
-        if (debugAdd) {
-            debugAdd('Tempo: Randanalyse abgeschlossen', stretched, {
-                beschreibung: 'Randstille und Sicherheitsabstände wurden neu bewertet.',
-                startTrimMs: framesToMs(startTrim, stretched.sampleRate),
-                endTrimMs: framesToMs(endTrim, stretched.sampleRate),
-                detectedStartMs: framesToMs(analysis.detectedStart, stretched.sampleRate),
-                detectedEndMs: framesToMs(analysis.detectedEnd, stretched.sampleRate),
-                tempoFactor: safeFactor,
-                threshold
+            const allowedStartFrames = Number.isFinite(allowedTrimStartMs)
+                ? Math.max(0, Math.round((allowedTrimStartMs / safeFactor) * stretched.sampleRate / 1000))
+                : Number.POSITIVE_INFINITY;
+            const allowedEndFrames = Number.isFinite(allowedTrimEndMs)
+                ? Math.max(0, Math.round((allowedTrimEndMs / safeFactor) * stretched.sampleRate / 1000))
+                : Number.POSITIVE_INFINITY;
+
+            if (Number.isFinite(allowedStartFrames)) {
+                startTrim = Math.min(startTrim, padOutFrames + allowedStartFrames);
+            }
+            if (Number.isFinite(allowedEndFrames)) {
+                endTrim = Math.min(endTrim, padOutFrames + allowedEndFrames);
+            }
+
+            if (debugAdd) {
+                debugAdd('Tempo: Randanalyse abgeschlossen', stretched, {
+                    beschreibung: 'Randstille und Sicherheitsabstände wurden neu bewertet.',
+                    startTrimMs: framesToMs(startTrim, stretched.sampleRate),
+                    endTrimMs: framesToMs(endTrim, stretched.sampleRate),
+                    detectedStartMs: framesToMs(analysis.detectedStart, stretched.sampleRate),
+                    detectedEndMs: framesToMs(analysis.detectedEnd, stretched.sampleRate),
+                    tempoFactor: safeFactor,
+                    threshold,
+                    enforceTrimSafety
+                });
+            }
+        } else if (debugAdd) {
+            debugAdd('Tempo: Randanalyse übersprungen', stretched, {
+                beschreibung: 'Es werden keine zusätzlichen Kürzungen anhand erkannter Stille vorgenommen.',
+                tempoFactor: safeFactor
             });
         }
 
@@ -14804,6 +14859,25 @@ async function openDeEdit(fileId) {
     }
     const autoTempo = document.getElementById('autoTempoChk');
     if (autoTempo) autoTempo.checked = false;
+    const tempoSafetyIds = [
+        'tempoSafetyReference',
+        'tempoSafetyPadding',
+        'tempoSafetyDetect',
+        'tempoSafetyTrimLimit'
+    ];
+    tempoSafetyIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.checked = true;
+            el.onchange = async () => {
+                updateLengthInfo();
+                if (savedOriginalBuffer) {
+                    await recomputeEditBuffer();
+                    updateLengthInfo();
+                }
+            };
+        }
+    });
     const autoBtn = document.getElementById('autoAdjustBtn');
     if (autoBtn) autoBtn.onclick = () => autoAdjustLength();
     refreshIgnoreList();
@@ -15620,11 +15694,15 @@ async function recomputeEditBuffer() {
 
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    const edgeSilence = estimateStretchableSilence(trimmed);
+    const tempoSafety = getTempoSafetyConfig();
+    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(trimmed) : { start: 0, end: 0 };
     const stretchOptions = {
         // Nur den nachweislich stillen Bereich freigeben und dabei eine kleine Sicherheitskappe setzen
-        allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
-        allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+        allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
+        allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+        usePadding: tempoSafety.usePadding,
+        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
+        enforceTrimSafety: tempoSafety.enforceTrimSafety
     };
     originalEditBuffer = await timeStretchBuffer(trimmed, relFactor, stretchOptions);
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
@@ -16021,17 +16099,30 @@ async function buildTempoDebugSteps() {
         relativeFactor: relFactor
     });
 
-    const edgeSilence = estimateStretchableSilence(currentBuffer);
-    const allowedStart = Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS);
-    const allowedEnd = Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS);
-    addStep('Randstille ermitteln', currentBuffer,
-        'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.',
-        {
-            silenceStartMs: edgeSilence.start,
-            silenceEndMs: edgeSilence.end,
-            allowedTrimStartMs: allowedStart,
-            allowedTrimEndMs: allowedEnd
-        });
+    const tempoSafety = getTempoSafetyConfig();
+    const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(currentBuffer) : { start: 0, end: 0 };
+    const allowedStart = tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0;
+    const allowedEnd = tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0;
+    if (tempoSafety.detectEdgeSilence) {
+        addStep('Randstille ermitteln', currentBuffer,
+            'Erkannte Stille definiert den Sicherheitsrahmen für das Tempo-Stretching.',
+            {
+                silenceStartMs: edgeSilence.start,
+                silenceEndMs: edgeSilence.end,
+                allowedTrimStartMs: allowedStart,
+                allowedTrimEndMs: allowedEnd,
+                enforceTrimSafety: tempoSafety.enforceTrimSafety
+            });
+    } else {
+        addStep('Randstille ermitteln', currentBuffer,
+            'Analyse deaktiviert: Tempo-Stretching arbeitet ohne zusätzliche Randstille-Erkennung.',
+            {
+                silenceStartMs: 0,
+                silenceEndMs: 0,
+                allowedTrimStartMs: 0,
+                allowedTrimEndMs: 0
+            });
+    }
 
     const stretchDebug = {
         steps: [],
@@ -16042,7 +16133,10 @@ async function buildTempoDebugSteps() {
     const stretchedBuffer = await timeStretchBuffer(currentBuffer, relFactor, {
         allowedTrimStartMs: allowedStart,
         allowedTrimEndMs: allowedEnd,
-        debug: stretchDebug
+        debug: stretchDebug,
+        usePadding: tempoSafety.usePadding,
+        useEdgeAnalysis: tempoSafety.detectEdgeSilence,
+        enforceTrimSafety: tempoSafety.enforceTrimSafety
     });
     stretchDebug.steps.forEach(debugStep => {
         const description = debugStep.meta?.description || '';
@@ -16827,6 +16921,10 @@ function calcFinalLength() {
 function calcTempoReferenceLength() {
     // Standardmäßig mit der regulären Endlänge arbeiten
     let len = calcFinalLength();
+    const safety = getTempoSafetyConfig();
+    if (!safety.autoReference) {
+        return len;
+    }
     if (!savedOriginalBuffer || !savedOriginalBuffer.sampleRate) {
         return len;
     }
@@ -17326,11 +17424,15 @@ async function applyDeEdit(param = {}) {
             currentEditFile.ignoreRanges = [];
             refreshIgnoreList();
             updateDeEditWaveforms();
-            const edgeSilence = estimateStretchableSilence(newBuffer);
+            const tempoSafety = getTempoSafetyConfig();
+            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
             const stretchOptions = {
                 // Sicherheit: höchstens den klar erkannten Stillenanteil freigeben
-                allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
-                allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+                allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
+                allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+                usePadding: tempoSafety.usePadding,
+                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
+                enforceTrimSafety: tempoSafety.enforceTrimSafety
             };
             newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
@@ -17421,10 +17523,14 @@ async function applyDeEdit(param = {}) {
             refreshIgnoreList();
             updateDeEditWaveforms();
             // Nur den Unterschied zum geladenen Faktor anwenden und harte Schnitte am Ende vermeiden
-            const edgeSilence = estimateStretchableSilence(newBuffer);
+            const tempoSafety = getTempoSafetyConfig();
+            const edgeSilence = tempoSafety.detectEdgeSilence ? estimateStretchableSilence(newBuffer) : { start: 0, end: 0 };
             const stretchOptions = {
-                allowedTrimStartMs: Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS),
-                allowedTrimEndMs: Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS)
+                allowedTrimStartMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.start, EDGE_TRIM_CAP_MS) : 0,
+                allowedTrimEndMs: tempoSafety.detectEdgeSilence ? Math.min(edgeSilence.end, EDGE_TRIM_CAP_MS) : 0,
+                usePadding: tempoSafety.usePadding,
+                useEdgeAnalysis: tempoSafety.detectEdgeSilence,
+                enforceTrimSafety: tempoSafety.enforceTrimSafety
             };
             newBuffer = await timeStretchBuffer(newBuffer, relFactor, stretchOptions);
             drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });

@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.441
+* `web/hla_translation_tool.html` ergänzt vier neue Häkchen unter der Tempo-Karte, mit denen Auto-Tempo-Referenz, Sicherheits-Puffer, Randstille-Analyse und Trim-Limitierung einzeln deaktiviert werden können.
+* `web/src/style.css` formatiert die neue Sicherheitssektion samt erklärenden Hinweistexten.
+* `web/src/main.js` wertet die neuen Schalter aus, reicht sie an `timeStretchBuffer` weiter und überspringt Analyse- sowie Trim-Schritte gezielt, wenn Nutzer:innen sie abwählen.
+* `README.md` beschreibt die neuen Tempo-Schutzfunktionen und ihre Auswirkungen.
+* `CHANGELOG.md` hält die optionalen Tempo-Sicherungen fest.
 ## 🛠️ Patch in 1.40.440
 * `web/src/main.js` berücksichtigt den zweikanaligen SoundTouch-Puffer beim Extrahieren, damit Mono-Zeitdehnungen keinen stummen Kanal anhängen und wieder korrekt auf ihre ursprüngliche Spurzahl zurückgeführt werden.
 * `README.md` erwähnt den Stereo-Puffer als Fix für Mono-Zeitdehnungen.

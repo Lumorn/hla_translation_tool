@@ -914,6 +914,29 @@
                                 <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen">Auto</button>
                                 <span id="tempoInfo"></span><span id="tempoEnInfo"></span>
                             </div>
+                            <div class="tempo-safety">
+                                <h5>Tempo-Schutzfunktionen</h5>
+                                <label class="checkbox-line" for="tempoSafetyReference" title="Auto-Tempo zieht erkannte Stille an den Rändern von der Berechnung ab">
+                                    <input type="checkbox" id="tempoSafetyReference" checked>
+                                    Auto-Tempo ohne Randstille berechnen
+                                    <small>Aktiv: Auto-Tempo ignoriert stilles Vor- und Nachlaufband. Deaktiviert: Die gesamte Länge fließt in die Berechnung ein.</small>
+                                </label>
+                                <label class="checkbox-line" for="tempoSafetyPadding" title="Fügt vor dem Time-Stretching einen Sicherheitspuffer hinzu">
+                                    <input type="checkbox" id="tempoSafetyPadding" checked>
+                                    Sicherheitspuffer vor dem Stretching
+                                    <small>Aktiv: Es wird eine Sekunde Stille angefügt, damit Transienten nicht abgeschnitten werden. Deaktiviert: Das Signal wird ohne zusätzlichen Puffer gestretcht.</small>
+                                </label>
+                                <label class="checkbox-line" for="tempoSafetyDetect" title="Ermittelt automatisch, wie viel Randstille beim Stretching gefahrlos entfernt werden darf">
+                                    <input type="checkbox" id="tempoSafetyDetect" checked>
+                                    Randstille automatisch prüfen
+                                    <small>Aktiv: Vor und nach dem Stretching werden stille Bereiche analysiert und nur dort gekürzt. Deaktiviert: Der Puffer wird lediglich entfernt, weitere Schnitte entfallen.</small>
+                                </label>
+                                <label class="checkbox-line" for="tempoSafetyTrimLimit" title="Begrenzt automatische Kürzungen auf nachweislich stille Passagen">
+                                    <input type="checkbox" id="tempoSafetyTrimLimit" checked>
+                                    Trim-Sicherheitslimit anwenden
+                                    <small>Aktiv: Zusätzliche Stille wird höchstens im sicheren Rahmen gekürzt. Deaktiviert: Die Randanalyse darf ihre volle Länge entfernen.</small>
+                                </label>
+                            </div>
                         </div>
                         <!-- Button Anpassen & Anwenden -->
                         <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
