@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.437
+* `web/src/main.js` begrenzt den dynamischen Stille-Schwellwert strikt auf die im Ruhepolster gemessene Maximalamplitude, protokolliert erkannte Randstille und vermeidet Rückfälle auf das reine Sekundenpolster, solange ein stabiles Stillfenster gefunden wird.
+* `tests/timeStretchBuffer.test.js` ergänzen Abdeckungen für laute Nutzsignale, das gedeckelte Polster und die neuen Randstille-Logs von `analyzeEdgeTrim`.
+* `README.md` beschreibt die gedeckelte Schwelle, die sichtbaren Logs und die manuelle Prüfung mit leisen sowie lauten Samples.
+* `CHANGELOG.md` hält die Erweiterung der Stilleanalyse fest.
 ## 🛠️ Patch in 1.40.436
 * `web/src/main.js` deckelt den dynamischen Stille-Schwellwert jetzt auf die tatsächlich gemessene Maximalamplitude, damit Auto-Tempo selbst bei sehr lauten Peaks keinen Inhalt mehr abschneidet.
 * `README.md` ergänzt den Hinweis auf die neue Pegel-Deckelung in der Tempo-Sektion.

@@ -87,6 +87,7 @@ beforeEach(() => {
     };
     window.webkitAudioContext = window.AudioContext;
     global.storage = window.storage;
+    console.debug = jest.fn();
     helpers = require('../web/src/main.js');
 });
 
@@ -128,6 +129,22 @@ describe('timeStretchBuffer-Helfer', () => {
         const buffer = createStubBuffer([[0, 2e-7, -3e-7, 0]]);
         const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer, 2);
         expect(threshold).toBeCloseTo(1e-6, 12);
+    });
+
+    test('dynamischer Schwellwert überschreitet nicht die maximale Polsteramplitude', () => {
+        const buffer = createStubBuffer([
+            [
+                0.002,
+                -0.004,
+                0.003,
+                -0.005,
+                0.5,
+                -0.4,
+                0.6
+            ]
+        ], 48000);
+        const threshold = helpers.__test_calculateDynamicSilenceThreshold(buffer, 4);
+        expect(threshold).toBeLessThanOrEqual(0.005);
     });
 
     test('Trim-Absicherung lässt nur Stille mit mindestens 100 ms zu', () => {
@@ -185,5 +202,31 @@ describe('timeStretchBuffer-Helfer', () => {
         const silence = helpers.__test_estimateStretchSilence(buffer);
         expect(silence.start).toBe(0);
         expect(silence.end).toBeLessThan(5);
+    });
+
+    test('analyzeEdgeTrim erkennt zusätzliche Stille an beiden Seiten', () => {
+        const sampleRate = 1000;
+        const totalFrames = 4000;
+        const padFrames = 100;
+        const threshold = 0.001;
+        const headOffset = 100;
+        const tailOffset = 100;
+        const channel = new Float32Array(totalFrames);
+
+        for (let i = padFrames + headOffset; i < totalFrames - (padFrames + tailOffset); i++) {
+            channel[i] = 0.2;
+        }
+
+        const result = helpers.__test_analyzeEdgeTrim([channel], totalFrames, sampleRate, padFrames, threshold);
+        expect(result.start).toBe(padFrames + headOffset);
+        expect(result.end).toBe(padFrames + tailOffset);
+        expect(console.debug).toHaveBeenCalledWith(
+            expect.stringContaining('Zusätzliche Stille am Anfang erkannt'),
+            expect.objectContaining({ padFrames })
+        );
+        expect(console.debug).toHaveBeenCalledWith(
+            expect.stringContaining('Zusätzliche Stille am Ende erkannt'),
+            expect.objectContaining({ padFrames })
+        );
     });
 });
