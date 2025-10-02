@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.419
+* `web/src/main.js` puffert verspätete Übersetzungs-Rückläufer pro Datei, spielt sie nach dem erneuten Laden der Projektliste ein und verhindert dadurch, dass während eines Wechsels leere Projektlisten gespeichert werden.
+* `tests/translationCallbackDuringReset.test.js` prüft den neuen Puffer, leert ihn nach einem simulierten Reload und stellt sicher, dass die Übersetzung anschließend im Projekt landet.
+* `README.md` erwähnt den Zwischenspeicher für Auto-Übersetzungen, der beschädigte Datensätze beim Projektwechsel verhindert.
 ## 🛠️ Patch in 1.40.418
 * `web/src/main.js` orientiert die Scroll-Erkennung an der Mitte des Tabellencontainers, damit die Auswahl auch bei kleineren Fenstern nicht verrutscht.
 * `README.md` dokumentiert die containerbasierte Mitte für die Scroll-Erkennung in der Dateitabelle.

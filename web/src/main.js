@@ -1006,6 +1006,62 @@ let currentTranslateProjectId = null; // merkt das Projekt der aktiven Übersetz
 let activeTranslateQueue      = null; // aktuell abgearbeitete Dateien
 let activeTranslateIndex      = 0;    // Fortschritt innerhalb der aktiven Warteschlange
 const pendingTranslations = new Map();
+// Merker für Übersetzungsergebnisse, die während eines Resets eingetroffen sind
+const delayedTranslationResults = new Map();
+
+// Speichert einen verspäteten Übersetzungsrückläufer zwischen, bis die Projektliste wieder geladen ist
+function rememberDelayedTranslationResult(projectId, fileId, autoSource, autoTranslation) {
+    if (!projectId && projectId !== 0) return;
+    if (fileId === undefined || fileId === null) return;
+    const key = `${projectId}::${fileId}`;
+    delayedTranslationResults.set(key, {
+        projectId: String(projectId),
+        fileId: String(fileId),
+        autoSource: typeof autoSource === 'string' ? autoSource : '',
+        autoTranslation: typeof autoTranslation === 'string' ? autoTranslation : ''
+    });
+}
+
+// Versucht zwischengespeicherte Übersetzungsergebnisse erneut anzuwenden
+function applyDelayedTranslations() {
+    if (delayedTranslationResults.size === 0) return false;
+    if (!Array.isArray(projects) || projects.length === 0) return false;
+
+    let applied = false;
+    for (const [key, info] of Array.from(delayedTranslationResults.entries())) {
+        const targetProject = projects.find(p => String(p.id) === info.projectId);
+        if (!targetProject || !Array.isArray(targetProject.files)) {
+            continue;
+        }
+        const storedFile = targetProject.files.find(f => String(f.id) === info.fileId);
+        if (!storedFile) {
+            continue;
+        }
+
+        storedFile.autoTranslation = info.autoTranslation;
+        storedFile.autoSource = info.autoSource;
+        delayedTranslationResults.delete(key);
+        applied = true;
+
+        if (currentProject && String(currentProject.id) === info.projectId) {
+            const liveFile = files.find(f => String(f.id) === info.fileId);
+            if (liveFile) {
+                liveFile.autoTranslation = info.autoTranslation;
+                liveFile.autoSource = info.autoSource;
+                const displayId = liveFile.id !== undefined ? liveFile.id : info.fileId;
+                updateTranslationDisplay(displayId);
+            }
+        }
+    }
+
+    return applied;
+}
+
+if (typeof window !== 'undefined') {
+    // Für Tests und Debugging verfügbar machen
+    window.applyDelayedTranslations = applyDelayedTranslations;
+    window.__testGetDelayedTranslations = () => delayedTranslationResults;
+}
 
 // Bricht alle offenen Übersetzungsaufträge ab und setzt die Fortschrittsanzeige zurück
 function cancelTranslationQueue(grund = 'Übersetzung abgebrochen') {
@@ -2558,6 +2614,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const safeText = typeof text === 'string' ? text : '';
                 const safeError = error ? String(error) : '';
                 if (projectResetActive) {
+                    if (projectId && file) {
+                        const fallbackText = safeText || (safeError ? '[Übersetzung fehlgeschlagen]' : '');
+                        rememberDelayedTranslationResult(projectId, file.id, file.enText, fallbackText);
+                    }
                     if (typeof resolve === 'function') {
                         resolve(safeText);
                     } else if (typeof reject === 'function') {
@@ -2583,23 +2643,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 // Quelle merken, damit nicht erneut automatisch übersetzt wird
                 file.autoSource = file.enText;
+                let storedInProject = false;
                 if (projectId) {
                     // Sicherstellen, dass die Projektdaten auch bei offenen anderen Projekten aktualisiert werden
-                    const targetProject = projects.find(p => p.id === projectId);
+                    const targetProject = projects.find(p => String(p.id) === String(projectId));
                     if (targetProject?.files) {
-                        const storedFile = targetProject.files.find(f => f.id === file.id);
-                        if (storedFile && storedFile !== file) {
-                            Object.assign(storedFile, {
-                                autoTranslation: file.autoTranslation,
-                                autoSource: file.autoSource,
-                            });
+                        const storedFile = targetProject.files.find(f => String(f.id) === String(file.id));
+                        if (storedFile) {
+                            if (storedFile !== file) {
+                                storedFile.autoTranslation = file.autoTranslation;
+                                storedFile.autoSource = file.autoSource;
+                            }
+                            storedInProject = true;
                         }
                     }
+                    if (!storedInProject && file) {
+                        rememberDelayedTranslationResult(projectId, file.id, file.autoSource, file.autoTranslation);
+                    }
                 }
-                markDirty();
-                updateTranslationDisplay(file.id);
-                // Direkt speichern, damit übersetzte Texte auch nach Projektwechsel sichtbar sind
-                saveProjects();
+                if (storedInProject) {
+                    markDirty();
+                    updateTranslationDisplay(file.id);
+                    // Direkt speichern, damit übersetzte Texte auch nach Projektwechsel sichtbar sind
+                    saveProjects();
+                }
                 resolve(safeText);
                 updateTranslationQueueDisplay();
             });
@@ -2937,6 +3004,7 @@ async function loadProjects(skipSelect = false) {
         levelIcons,
         levelColorHistory
     };
+    let delayedApplied = false; // merkt, ob zwischengespeicherte Übersetzungen eingespielt wurden
     // Hilfsfunktion für Fehlerhinweise
     const showError = msg => {
         if (window.electronAPI && window.electronAPI.showProjectError) {
@@ -3096,6 +3164,7 @@ async function loadProjects(skipSelect = false) {
         ];
         saveProjects();
     }
+        delayedApplied = applyDelayedTranslations() || delayedApplied;
         // Text- & Pfaddatenbanken laden (unverändert)
         const savedDB  = await storage.getItem('hla_textDatabase');
         if (savedDB)  textDatabase = JSON.parse(savedDB);
@@ -3119,11 +3188,15 @@ async function loadProjects(skipSelect = false) {
         levelOrders = previousState.levelOrders || {};
         levelIcons = previousState.levelIcons || {};
         levelColorHistory = previousState.levelColorHistory || [];
+        delayedApplied = applyDelayedTranslations() || delayedApplied;
     }
     window.projects = projects; // Referenz für andere Module aktualisieren
     projectResetActive = false;
     if (typeof window !== 'undefined') {
         window.projectResetActive = projectResetActive;
+    }
+    if (delayedApplied) {
+        saveProjects();
     }
 }
 // =========================== LOAD PROJECTS END ===========================

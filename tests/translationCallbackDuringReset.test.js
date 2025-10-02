@@ -149,5 +149,18 @@ describe('Übersetzungs-Rückläufer während Reset', () => {
     const nachher = storageMock.setItem.mock.calls.filter(([key]) => key === 'hla_projects').length;
     expect(nachher).toBe(vorher);
     expect(datei.autoTranslation).toBeUndefined();
+
+    const delayed = window.__testGetDelayedTranslations();
+    expect(delayed.size).toBe(1);
+    const queued = Array.from(delayed.values())[0];
+    expect(queued.projectId).toBe(String(projekt.id));
+    expect(queued.fileId).toBe(String(datei.id));
+    expect(queued.autoTranslation).toBe('Fertige Übersetzung');
+
+    window.__testSetProjects([projekt]);
+    const applied = window.applyDelayedTranslations();
+    expect(applied).toBe(true);
+    expect(window.__testGetDelayedTranslations().size).toBe(0);
+    expect(projekt.files[0].autoTranslation).toBe('Fertige Übersetzung');
   });
 });
