@@ -1,6 +1,6 @@
 # Changelog
 ## 🛠️ Patch in 1.40.430
-* `web/src/main.js` entfernt ungenutzte Helfer (`handleTextChange`, `getDebugPathInfo`, `loadProjectFolderHandle`, `checkFileAccessWithAutoScan`, `cloneAudioBuffer`, `pruefeAudioPuffer`, `originalToPlaybackSilence`, `playbackToOriginalSilence`, `applyProjectPreset`, `saveProjectCustomization`, `resetProjectCustomization`) und reduziert so Altlasten im Hauptskript.
+* `web/src/main.js` entfernt ungenutzte Helfer (`handleTextChange`, `getDebugPathInfo`, `loadProjectFolderHandle`, `checkFileAccessWithAutoScan`, `cloneAudioBuffer`, `pruefeAudioPuffer`, `originalToPlaybackSilence`, `playbackToOriginalSilence`, `applyProjectPreset`, `saveProjectCustomization`, `resetProjectCustomization`, `updateProjectCustomizationPreview`, `closeProjectCustomization`) und reduziert so Altlasten im Hauptskript.
 * `README.md` dokumentiert die Bereinigung der überflüssigen Funktionen.
 * `CHANGELOG.md` vermerkt die Aufräumarbeiten an den veralteten Helfern.
 ## 🛠️ Patch in 1.40.429
