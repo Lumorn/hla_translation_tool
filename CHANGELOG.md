@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.420
+* `web/hla_translation_tool.html` ergänzt einen 🇬🇧-Button unterhalb der Projekt-Wiedergabe, der den neuen EN-Review-Dialog mit eigener Handler-Funktion öffnet.
+* `web/hla_translation_tool.html` liefert ein Dialog-Overlay mit aktuellem Dateiüberblick, EN/DE-Textbereichen, Nachbarlisten und Steuerknöpfen inklusive Aria-Attributen.
+* `web/src/style.css` definiert Layout, Zustandsklassen und Responsive-Regeln für die EN-Review-Ansicht sowie abgestimmte Button-Stile.
+* `README.md` beschreibt den neuen EN-Review-Dialog samt Steuer-Button im Fortschrittsbereich.
 ## 🛠️ Patch in 1.40.419
 * `web/src/main.js` puffert verspätete Übersetzungs-Rückläufer pro Datei, spielt sie nach dem erneuten Laden der Projektliste ein und verhindert dadurch, dass während eines Wechsels leere Projektlisten gespeichert werden.
 * `tests/translationCallbackDuringReset.test.js` prüft den neuen Puffer, leert ihn nach einem simulierten Reload und stellt sicher, dass die Übersetzung anschließend im Projekt landet.
