@@ -133,6 +133,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Live-Suche nach Projektwechsel funktionsfähig:** `switchProjectSafe` ruft `initializeEventListeners` erneut auf
 * **Fallback ohne `switchProjectSafe`:** Sollte das Skript fehlen, öffnen Klicks Projekte direkt über `selectProject`
 * **Synchronisierte Projektreparatur:** `repairProjectIntegrity` wartet auf alle Speicherzugriffe und aktualisiert den In-Memory-Cache sofort
+* **Verschlankter DE-Audio-Cache:** Der frühere Helfer `removeDeAudioCache` entfällt; Löschroutinen greifen direkt auf `deleteDeAudioCacheEntry` oder den lokalen Cache zu und sparen doppelten Wartungscode
 * **Gemeinsame Projektlisten-Aktualisierung:** Der neue Helfer `replaceProjectList` hält `projects` und `window.projects` identisch, sodass Reparaturläufe keine Platzhalter verlieren und `selectProject` sofort wieder funktioniert
 * **Projektliste ohne Auto-Auswahl:** `loadProjects` nimmt optional `skipSelect` entgegen; `reloadProjectList` lädt dadurch nur die Liste und öffnet kein altes Projekt
 * **Fehlerfreier Projektwechsel:** `switchProjectSafe` lädt vor dem Öffnen die Projektliste neu und vermeidet so die Meldung „Projekte konnten nicht geladen werden“
