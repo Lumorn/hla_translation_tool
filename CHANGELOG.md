@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.422
+* `web/src/main.js` scrollt beim Starten der EN-Review-Wiedergabe und bei manuellen Zurück/Weiter-Schritten automatisch zur passenden Tabellenzeile, bevor die Markierung gesetzt wird.
+* `README.md` erwähnt das automatische Mitscrollen der EN-Review sowohl bei Wiedergabe als auch bei manueller Navigation.
 ## 🛠️ Patch in 1.40.421
 * `web/src/main.js` ergänzt eigene Statusvariablen und Wiedergabefunktionen für den EN-Review, aktualisiert den Dialog-Inhalt dynamisch, stoppt Projekt-Wiedergaben beim Start der Review und macht alle neuen Helfer für UI und Tests verfügbar.
 * `web/hla_translation_tool.html` erweitert den EN-Review-Dialog um eine Fortschrittsanzeige sowie einen Button zum direkten Scrollen auf die aktuelle Tabellenzeile.

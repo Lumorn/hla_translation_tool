@@ -8017,6 +8017,7 @@ function playCurrentEnglishReviewFile() {
 
     const position = getFilePosition(file.id);
     if (position > 0) {
+        scrollToNumber(position);
         highlightProjectRow(file.id);
         enReviewHighlightedId = file.id;
     }
@@ -8190,6 +8191,7 @@ function englishReviewPrev() {
         if (file) {
             const position = getFilePosition(file.id);
             if (position > 0) {
+                scrollToNumber(position);
                 highlightProjectRow(file.id);
                 enReviewHighlightedId = file.id;
             }
@@ -8214,6 +8216,7 @@ function englishReviewNext() {
         if (file) {
             const position = getFilePosition(file.id);
             if (position > 0) {
+                scrollToNumber(position);
                 highlightProjectRow(file.id);
                 enReviewHighlightedId = file.id;
             }
