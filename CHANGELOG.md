@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.421
+* `web/src/main.js` ergänzt eigene Statusvariablen und Wiedergabefunktionen für den EN-Review, aktualisiert den Dialog-Inhalt dynamisch, stoppt Projekt-Wiedergaben beim Start der Review und macht alle neuen Helfer für UI und Tests verfügbar.
+* `web/hla_translation_tool.html` erweitert den EN-Review-Dialog um eine Fortschrittsanzeige sowie einen Button zum direkten Scrollen auf die aktuelle Tabellenzeile.
+* `web/src/style.css` liefert die passenden Stilregeln für Fortschritt, Dateilinks und responsive Ausrichtung der EN-Review-Steuerung.
+* `README.md` beschreibt die erweiterte EN-Review-Wiedergabe mit Fortschrittsanzeige und direktem Tabellen-Sprung.
 ## 🛠️ Patch in 1.40.420
 * `web/hla_translation_tool.html` ergänzt einen 🇬🇧-Button unterhalb der Projekt-Wiedergabe, der den neuen EN-Review-Dialog mit eigener Handler-Funktion öffnet.
 * `web/hla_translation_tool.html` liefert ein Dialog-Overlay mit aktuellem Dateiüberblick, EN/DE-Textbereichen, Nachbarlisten und Steuerknöpfen inklusive Aria-Attributen.
