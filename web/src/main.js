@@ -3254,15 +3254,6 @@ async function loadProjects(skipSelect = false) {
             });
         }
 
-        async function loadProjectFolderHandle() {
-            const db = await openOrdnerHandleDB();
-            const tx = db.transaction('handles', 'readonly');
-            const req = tx.objectStore('handles').get('project');
-            return new Promise((res) => {
-                req.onsuccess = () => res(req.result);
-                req.onerror = () => res(null);
-            });
-        }
         // =========================== HANDLE-DATENBANK END =======================
 
 /* =========================== RENDER PROJECTS START =========================== */
@@ -3904,22 +3895,6 @@ function renderLevelStats() {
     debugLog('[LEVEL STATS] Statistiken aktualisiert:', rows.length, 'Level');
 }
 /* =========================== LEVEL STATS FUNCTIONS END =========================== */
-
-/* =========================== HANDLE TEXT CHANGE START =========================== */
-function handleTextChange(file, field, value) {
-    file[field] = value;
-    markDirty();
-    const key = `${file.folder}/${file.filename}`;
-    if (!textDatabase[key]) textDatabase[key] = { en: '', de: '' };
-    textDatabase[key][field === 'enText' ? 'en' : 'de'] = value;
-
-    saveTextDatabase();
-    updateGlobalTextStats();   // neue Kachel sofort aktualisieren
-    updateProgressStats();
-    renderLevelStats();
-}
-/* =========================== HANDLE TEXT CHANGE END =========================== */
-
 
 function copyLevelName(){
     if(!currentProject||!currentProject.levelName) return;
@@ -6224,41 +6199,6 @@ function closeFileExchangeDialog() {
 // =========================== CLOSE FILE EXCHANGE DIALOG END ===========================
 
 // =========================== FILE EXCHANGE FUNCTIONALITY END ===========================
-
-// Debug: Zeige aufgelösten Pfad für Datei
-function getDebugPathInfo(file) {
-    if (!filePathDatabase[file.filename]) {
-        return '❌ Nicht in DB';
-    }
-    
-    const dbPaths = filePathDatabase[file.filename];
-    
-    // Suche passende Pfade
-    const exactMatches = dbPaths.filter(pathInfo => pathInfo.folder === file.folder);
-    const normalizedMatches = dbPaths.filter(pathInfo => {
-        const normalizedFileFolder = normalizeFolderPath(file.folder);
-        const normalizedDbFolder = normalizeFolderPath(pathInfo.folder);
-        return normalizedFileFolder === normalizedDbFolder;
-    });
-    
-    if (exactMatches.length > 0) {
-        const bestPath = exactMatches[0];
-        const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
-        const status = isAudioAvailable ? '✅' : '❌';
-        return `${status} EXAKT<span class="path-detail"><br><small>${bestPath.fullPath}</small></span>`;
-    }
-    
-    if (normalizedMatches.length > 0) {
-        const bestPath = normalizedMatches[0];
-        const isAudioAvailable = !!audioFileCache[bestPath.fullPath];
-        const status = isAudioAvailable ? '✅' : '⚠️';
-        return `${status} NORMALISIERT<span class="path-detail"><br><small>Projekt: ${file.folder}<br>DB: ${bestPath.folder}</small></span>`;
-    }
-    
-    // Keine Matches - zeige was verfügbar ist
-    const availableFolders = dbPaths.map(p => p.folder).join('<br>');
-    return `❌ KEINE MATCHES<span class="path-detail"><br><small>Projekt: ${file.folder}<br>DB hat:<br>${availableFolders}</small></span>`;
-}
 
 // Repariere Ordnernamen in allen Projekten basierend auf Database
 function repairProjectFolders() {
@@ -8799,22 +8739,6 @@ function copyFolderReport() {
             return null; // Kein Scan notwendig
         }
 
-        // Enhanced file access check with auto-scan
-        function checkFileAccessWithAutoScan(functionName = 'Funktion') {
-            const stats = checkFileAccess();
-            
-            if (stats.selectedFiles === 0) {
-                alert(`ℹ️ ${functionName}\n\nKeine Dateien ausgewählt.\n\nBitte wählen Sie erst Dateien aus.`);
-                return false;
-            }
-            
-            if (stats.inaccessibleFiles > 0) {
-                return checkAndAutoScan(files.filter(f => f.selected), functionName) === null;
-            }
-            
-            return true; // All good
-        }
-
         function closeFolderBrowser() {
             document.getElementById('folderBrowserDialog').classList.add('hidden');
         }
@@ -9566,34 +9490,6 @@ function playbackToOriginal(ms, ranges, duration) {
         offset += r.end - r.start;
     }
     return ms + offset;
-}
-
-// Rechnet Originalzeit auf Wiedergabezeit um, wenn Stille eingefügt wurde
-function originalToPlaybackSilence(ms, ranges) {
-    const valid = (ranges || [])
-        .map(r => ({ start: Math.max(0, r.start), end: Math.max(r.start, r.end) }))
-        .filter(r => r.end > r.start)
-        .sort((a, b) => a.start - b.start);
-    let offset = 0;
-    for (const r of valid) {
-        if (ms < r.start + offset) break;
-        offset += r.end - r.start;
-    }
-    return ms + offset;
-}
-
-// Rechnet Wiedergabezeit zurück auf Originalzeit bei eingefügter Stille
-function playbackToOriginalSilence(ms, ranges) {
-    const valid = (ranges || [])
-        .map(r => ({ start: Math.max(0, r.start), end: Math.max(r.start, r.end) }))
-        .filter(r => r.end > r.start)
-        .sort((a, b) => a.start - b.start);
-    let offset = 0;
-    for (const r of valid) {
-        if (ms < r.start + offset) break;
-        offset += r.end - r.start;
-    }
-    return ms - offset;
 }
 
 // Ermittelt Pausen ueber einer Mindestlaenge und gibt passende Ignorierbereiche zurueck
@@ -13473,18 +13369,6 @@ function initiateDeUpload(fileId) {
 }
 // =========================== INITIATEDEUPLOAD END ============================
 
-// =========================== DUPLICATE-CHECK START ==========================
-async function pruefeAudioPuffer(buf) {
-    if (buf.byteLength < 4) return false;
-    const b = new Uint8Array(buf);
-    const str4 = String.fromCharCode(b[0], b[1], b[2], b[3]);
-    if (str4 === 'RIFF' && String.fromCharCode(b[8], b[9], b[10], b[11]) === 'WAVE') return true;
-    if (str4 === 'OggS') return true;
-    if (str4 === 'ID3') return true;
-    if (b[0] === 0xff && (b[1] & 0xe0) === 0xe0) return true;
-    return false;
-}
-
 async function showDupeDialog(oldInfo, newUrl) {
     return new Promise(resolve => {
         const ov = document.createElement('div');
@@ -13571,7 +13455,6 @@ async function resolveDuplicateAfterCopy(relPath) {
         deleteDeAudioCacheEntry(newInfo.relPath);
     }
 }
-// =========================== DUPLICATE-CHECK END ============================
 
 // =========================== HANDLEDEUPLOAD START ============================
 async function handleDeUpload(input) {
@@ -14040,19 +13923,6 @@ function drawWaveform(canvas, buffer, opts = {}) {
 // =========================== DRAWWAVEFORM END ===============================
 
 // =========================== TRIMANDBUFFER START ============================
-// Kürzt oder verlängert ein AudioBuffer um die angegebenen Millisekunden
-// Erstellt eine unabhängige Kopie eines AudioBuffers, damit das Original unverändert bleibt
-function cloneAudioBuffer(buffer) {
-    if (!buffer) return null;
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const clone = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        clone.getChannelData(ch).set(buffer.getChannelData(ch));
-    }
-    ctx.close();
-    return clone;
-}
-
 function trimAndPadBuffer(buffer, startMs, endMs) {
     const sr = buffer.sampleRate;
     const startSamples = Math.max(0, Math.floor(startMs > 0 ? startMs * sr / 1000 : 0));
@@ -18457,69 +18327,6 @@ function quickAddLevel(chapterName) {
         }
 		
 		
-
-        function applyProjectPreset(projectId) {
-            const presetSelect = document.getElementById('projectPresetSelect');
-            const colorInput = document.getElementById('customProjectColor');
-            
-            const presets = {
-                'game': { icon: '🎮', color: '#ff6b1a' },
-                'work': { icon: '💼', color: '#1976d2' },
-                'personal': { icon: '👤', color: '#388e3c' },
-                'translation': { icon: '🌐', color: '#7b1fa2' },
-                'audio': { icon: '🎵', color: '#d32f2f' },
-                'archive': { icon: '📦', color: '#616161' },
-                'test': { icon: '🧪', color: '#f57c00' },
-                'backup': { icon: '💾', color: '#2e7d32' },
-                'folder': { icon: '🗂️', color: '#333333' }
-            };
-            
-            const preset = presets[presetSelect.value];
-            if (preset) {
-                colorInput.value = preset.color;
-                updateProjectCustomizationPreview();
-            }
-        }
-
-        function saveProjectCustomization(projectId) {
-            const colorInput = document.getElementById('customProjectColor');
-
-            const project = projects.find(p => p.id === projectId);
-            if (project) {
-                project.color = colorInput.value || '#333333';
-                
-                saveProjects();
-                renderProjects();
-                
-                // Maintain active selection
-                document.querySelectorAll('.project-item').forEach(item => {
-                    item.classList.toggle('active', item.dataset.projectId == currentProject?.id);
-                });
-                
-                closeProjectCustomization();
-                updateStatus('Projekt-Anpassung gespeichert');
-            }
-        }
-
-        function resetProjectCustomization(projectId) {
-            if (confirm('Möchten Sie die Anpassungen für dieses Projekt wirklich zurücksetzen?')) {
-                const project = projects.find(p => p.id === projectId);
-                if (project) {
-                    project.color = '#333333';
-                    
-                    saveProjects();
-                    renderProjects();
-                    
-                    // Maintain active selection
-                    document.querySelectorAll('.project-item').forEach(item => {
-                        item.classList.toggle('active', item.dataset.projectId == currentProject?.id);
-                    });
-                    
-                    closeProjectCustomization();
-                    updateStatus('Projekt-Anpassung zurückgesetzt');
-                }
-            }
-        }
 
         function closeProjectCustomization() {
             const overlay = document.querySelector('.customize-popup-overlay');
