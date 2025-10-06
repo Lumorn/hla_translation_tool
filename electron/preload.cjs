@@ -104,8 +104,6 @@ if (typeof require !== 'function') {
   contextBridge.exposeInMainWorld('videoApi', {
     loadBookmarks: () => ipcRenderer.invoke('load-bookmarks'),
     saveBookmarks: list => ipcRenderer.invoke('save-bookmarks', list),
-    // einzelnen Bookmark per Index löschen
-    deleteBookmark: idx => ipcRenderer.invoke('delete-bookmark', idx),
     // Holt ein Vorschaubild über den Hauptprozess
     getFrame: info => ipcRenderer.invoke('get-video-frame', info)
   });

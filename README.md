@@ -316,7 +316,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Einheitliche Größenberechnung:** Auch `adjustVideoPlayerSize()` prüft nun freie Breite und Höhe und wählt automatisch das größere Maß.
 * **Immer sichtbarer Player:** Eine Mindestgröße von 320×180 verhindert, dass der eingebettete Player verschwindet.
 * **Screenshot per IPC:** Der Kanal `capture-frame` liefert einen sofortigen Screenshot des Hauptfensters.
-* **Video-API im Preload:** Über `window.videoApi` stehen `loadBookmarks`, `saveBookmarks`, `deleteBookmark` und `getFrame` sicher im Renderer zur Verfügung.
+* **Video-API im Preload:** Über `window.videoApi` stehen `loadBookmarks`, `saveBookmarks` und `getFrame` sicher im Renderer zur Verfügung.
 * **Desktop-Capturer entfernt:** Die API `desktopCapturer.getSources` steht nicht mehr zur Verfügung.
 </details>
 

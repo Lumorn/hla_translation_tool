@@ -585,16 +585,6 @@ app.whenReady().then(() => {
     return true;
   });
 
-  // einzelnen Bookmark anhand des Index entfernen
-  ipcMain.handle('delete-bookmark', (event, idx) => {
-    const list = readBookmarks();
-    if (typeof idx === 'number' && idx >= 0 && idx < list.length) {
-      list.splice(idx, 1);
-      saveBookmarks(list);
-    }
-    return true;
-  });
-
   // Ignorierte Dateien laden und speichern
   ipcMain.handle('load-ignored-files', () => readIgnoredFiles());
   ipcMain.handle('save-ignored-files', (event, data) => {

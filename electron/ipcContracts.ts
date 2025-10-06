@@ -67,6 +67,5 @@ export type IpcChannels =
   | 'start-hla'
   | 'load-bookmarks'
   | 'save-bookmarks'
-  | 'delete-bookmark'
   | 'open-external'
   | 'open-path';
