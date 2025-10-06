@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.426
+* `historyUtils.js` entfernt den Helfer `restoreVersion` und verweist ausschließlich auf `switchVersion` zum Wiederherstellen von Dateien.
+* `tests/historyFunctions.test.js` ersetzen die Wiederherstellungsprüfung durch `switchVersion` und prüfen den leeren Verlauf nach dem Tausch.
+* `README.md` und `CHANGELOG.md` dokumentieren den Wegfall von `restoreVersion` zugunsten von `switchVersion`.
+
 ## 🛠️ Patch in 1.40.425
 * `web/hla_translation_tool.html` ergänzt im EN-Review-Dialog eine Radiogruppe für EN- und DE-Audio, die EN standardmäßig aktiviert.
 * `web/src/main.js` verwaltet die neue Review-Sprache, reagiert auf Umschalter, lädt DE-Audios über Cache und Dateisystem nach und meldet fehlende Dateien pro Sprache.

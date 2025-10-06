@@ -57,15 +57,6 @@ function listVersions(historyRoot, relPath) {
     return fs.readdirSync(historyDir).filter(f => !fs.statSync(path.join(historyDir, f)).isDirectory()).sort().reverse();
 }
 
-// Stellt eine Version wieder im Zielordner her
-function restoreVersion(historyRoot, relPath, name, targetRoot) {
-    const source = path.join(historyRoot, relPath, name);
-    const target = path.join(targetRoot, relPath);
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.copyFileSync(source, target);
-    return target;
-}
-
 // Tauscht die aktuelle Datei mit einer History-Version aus und aktualisiert die Historie
 function switchVersion(historyRoot, relPath, name, targetRoot, limit = 10) {
     const source = path.join(historyRoot, relPath, name);
@@ -81,4 +72,4 @@ function switchVersion(historyRoot, relPath, name, targetRoot, limit = 10) {
     return target;
 }
 
-module.exports = { saveVersion, listVersions, restoreVersion, switchVersion, saveBufferVersion };
+module.exports = { saveVersion, listVersions, switchVersion, saveBufferVersion };

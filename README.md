@@ -1292,6 +1292,8 @@ verwendet werden, um optionale Downloads zu überspringen.
 * **`list-sound-backups()`** – listet vorhandene ZIP-Sicherungen auf.
 * **`delete-sound-backup(name)`** – entfernt ein ZIP-Backup.
 * **`saveDeHistoryBuffer(relPath, data)`** – legt einen Buffer als neue History-Version ab.
+* **`switchVersion(historyRoot, relPath, name, targetRoot, limit)`** – stellt eine gespeicherte Version im Zielordner bereit, verschiebt vorher die aktuelle Datei in die Historie und entfernt den genutzten Eintrag.
+* **Entfernt:** Der frühere Helfer `restoreVersion` entfällt zugunsten von `switchVersion`.
 * **`chooseExisting(base, names)`** – liefert den ersten existierenden Ordnernamen und wirft einen Fehler bei leerer Liste.
 * **`copyDubbedFile(originalPath, tempDubPath)`** – verschiebt eine heruntergeladene Dub-Datei in den deutschen Ordnerbaum.
 * **`extractRelevantFolder(parts)`** – gibt den relevanten Abschnitt eines Dateipfades ab "vo" oder ohne führendes "sounds" zurück (siehe `web/src/pathUtils.js`). Der frühere zweite Parameter mit dem vollständigen Pfad entfällt; das Array der Ordnerteile reicht aus.
