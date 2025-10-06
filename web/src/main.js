@@ -185,7 +185,6 @@ function resetGlobalState() {
         segmentPlayerUrl = null;
     }
     if (typeof ignoredSegments !== 'undefined' && ignoredSegments.clear) ignoredSegments.clear();
-    if (typeof projectIndex !== 'undefined') projectIndex = null;
     // Click-Listener für die Projektliste zurücksetzen, damit er neu gebunden wird
     if (typeof projectListClickBound !== 'undefined') projectListClickBound = false;
 }
@@ -327,24 +326,6 @@ async function runCleanup() {
     }
 }
 
-// Lokaler Suchindex
-let projectIndex = null;
-
-// Baut den Index für ein gegebenes Projekt neu auf
-async function rebuildProjectIndex(project) {
-    const { LocalIndex } = await import('./localIndex.js');
-    projectIndex = new LocalIndex();
-    (project.files || []).forEach(f => {
-        if (f.text) projectIndex.add(f.id, f.text);
-    });
-}
-
-// Durchsucht den lokalen Index
-function searchLocal(term) {
-    if (!projectIndex) return [];
-    return projectIndex.search(term);
-}
-
 // Virtuelle Tabelle vorbereiten (Platzhalter)
 let virtualTable = null;
 async function initVirtualTable() {
@@ -359,8 +340,6 @@ window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
 window.visualizeFileStorage = visualizeFileStorage;
 window.openStorageFolder = openStorageFolder;
-window.rebuildProjectIndex = rebuildProjectIndex;
-window.searchLocal = searchLocal;
 window.addEventListener('DOMContentLoaded', () => {
     const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     updateStorageIndicator(mode);

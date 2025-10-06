@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.431
+* `web/src/main.js` entfernt den lokalen Suchindex samt globalem Reset, da die Projektübersicht keine Volltextsuche mehr anbietet.
+* `web/src/localIndex.js` entfällt vollständig; der eigenständige Index wird nicht mehr gebündelt.
+* `README.md` und `CHANGELOG.md` führen den Wegfall von `LocalIndex`, `rebuildProjectIndex` und `searchLocal` auf.
 ## 🛠️ Patch in 1.40.430
 * `web/src/main.js` entfernt ungenutzte Helfer (`handleTextChange`, `getDebugPathInfo`, `loadProjectFolderHandle`, `checkFileAccessWithAutoScan`, `cloneAudioBuffer`, `pruefeAudioPuffer`, `originalToPlaybackSilence`, `playbackToOriginalSilence`, `applyProjectPreset`, `saveProjectCustomization`, `resetProjectCustomization`, `updateProjectCustomizationPreview`, `closeProjectCustomization`) und reduziert so Altlasten im Hauptskript.
 * `README.md` dokumentiert die Bereinigung der überflüssigen Funktionen.

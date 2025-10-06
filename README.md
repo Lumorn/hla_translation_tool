@@ -1322,5 +1322,5 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`validateProjectManifest(data)`** – prüft `project.json` gegen ein Zod-Schema und stellt sicher, dass `schemaVersion` und Name vorhanden sind.
   * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab, leert GPT-Zustände und repariert Verweise.
   * **`switchStorage(targetMode)`** – wechselt das Speichersystem ohne Migration, setzt globale Zustände zurück und lädt Projektliste und Wörterbuch neu.
-  * **`LocalIndex`** – kleiner invertierter Index für lokale Volltextsuchen innerhalb eines Projekts; bietet `add(id, text)` zum Aufbau sowie `search(term)` für Trefferlisten. Beim Entfernen von Dateien wird der Index derzeit komplett neu aufgebaut, eine separate `remove`-Methode existiert nicht mehr.
+  * **Entfernt:** Der frühere lokale Suchindex `LocalIndex` mit den Methoden `add` und `search` wurde gestrichen und steht nicht mehr zur Verfügung.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.
