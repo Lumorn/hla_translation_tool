@@ -18315,27 +18315,6 @@ function quickAddLevel(chapterName) {
 }
 /* =========================== QUICK ADD LEVEL END =========================== */
 
-
-
-        function updateProjectCustomizationPreview() {
-            const colorInput = document.getElementById('customProjectColor');
-            const colorPreview = document.getElementById('projectColorPreview');
-
-            if (colorInput && colorPreview) {
-                colorPreview.style.background = colorInput.value;
-            }
-        }
-		
-		
-
-        function closeProjectCustomization() {
-            const overlay = document.querySelector('.customize-popup-overlay');
-            const popup = document.querySelector('.folder-customize-popup');
-            
-            if (overlay) overlay.remove();
-            if (popup) popup.remove();
-        }
-
         function handleRowDragOver(e) {
             if (e.preventDefault) {
                 e.preventDefault();
