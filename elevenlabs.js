@@ -3,53 +3,6 @@ const fs = require('fs');
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
 
-// =========================== CREATEDUBBING START ===========================
-/**
- * Startet einen Dubbing-Auftrag bei ElevenLabs und gibt die Antwort zurueck.
- * @param {string} apiKey - Eigener API-Schluessel.
- * @param {string} audioPath - Pfad zur englischen Audiodatei.
- * @param {string} [voiceId=''] - Optionale Stimme.
- *
- * `target_lang` und `target_languages` werden immer auf `de` gesetzt.
- * @returns {Promise<object>} Antwort der API als Objekt.
- */
-// Erstellt einen Dubbing-Job bei ElevenLabs
-async function createDubbing({ audioFile, csvContent, voiceId = '', apiKey }, logger = () => {}) {
-    if (!fs.existsSync(audioFile)) {
-        throw new Error('Audio-Datei nicht gefunden: ' + audioFile);
-    }
-
-    const form = new FormData();
-    form.append('file', fs.createReadStream(audioFile));
-    form.append('csv_file', new Blob([csvContent], { type: 'text/csv' }), 'script.csv');
-    const lang = 'de';
-    form.append('target_lang', lang);
-    form.append('target_languages', JSON.stringify([lang]));
-    form.append('mode', 'manual');
-    form.append('dubbing_studio', 'true');
-
-    if (voiceId) {
-        form.append('voice_id', voiceId);
-    } else {
-        form.append('disable_voice_cloning', 'true');
-    }
-
-    logger(`POST ${API}/dubbing`);
-    const response = await fetch(`${API}/dubbing`, {
-        method: 'POST',
-        headers: { 'xi-api-key': apiKey },
-        body: form
-    });
-    const text = await response.text();
-    logger(`Antwort (${response.status}): ${text}`);
-
-    if (!response.ok) {
-        throw new Error(`Create dubbing failed: ${response.status} ${text}`);
-    }
-    return JSON.parse(text);
-}
-// =========================== CREATEDUBBING END =============================
-
 // =========================== WAITFORDUBBING START ==========================
 /**
  * Wartet so lange, bis die API den Status "complete" liefert.
@@ -235,7 +188,6 @@ async function downloadFromUrl(url, targetPath, existingResponse = null) {
 // =========================== DOWNLOADFROMURL END ========================
 
 module.exports = {
-    createDubbing,
     downloadDubbingAudio,
     waitForDubbing,
     isDubReady,
