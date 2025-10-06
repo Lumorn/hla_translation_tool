@@ -8034,8 +8034,20 @@ function playCurrentEnglishReviewFile() {
     }
     enReviewObjectUrl = objectUrl;
 
-    const previousEnded = audio.onended;
-    audio.onended = () => {
+    const existingOnEnded = audio.onended;
+    const previousEnded = (typeof existingOnEnded === 'function' && !existingOnEnded.__enReviewHandler)
+        ? existingOnEnded
+        : null;
+
+    // Sicherstellen, dass alte Review-Handler entfernt werden, damit sie nicht mehrfach ausgelöst werden
+    audio.onended = null;
+
+    let reviewHandled = false;
+    const reviewEndedHandler = () => {
+        if (reviewHandled) {
+            return;
+        }
+        reviewHandled = true;
         releaseEnglishReviewObjectUrl();
         if (typeof currentlyPlaying === 'string' && currentlyPlaying.startsWith('en-review-')) {
             currentlyPlaying = null;
@@ -8058,6 +8070,8 @@ function playCurrentEnglishReviewFile() {
             }
         }
     };
+    reviewEndedHandler.__enReviewHandler = true;
+    audio.onended = reviewEndedHandler;
 
     audio.play().then(() => {
         currentlyPlaying = `en-review-${file.id}`;

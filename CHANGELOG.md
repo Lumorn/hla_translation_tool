@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.423
+* `web/src/main.js` entfernt alte Review-Handler vor dem Neusetzen, schützt den EN-Review-Callback vor Mehrfachausführung und erhöht den Index nach jedem Track nur genau einmal, bevor automatisch weitergespielt oder sauber gestoppt wird.
+* `README.md` beschreibt die abgesicherte EN-Review-Wiedergabe mit eindeutigem Index-Fortschritt.
 ## 🛠️ Patch in 1.40.422
 * `web/src/main.js` scrollt beim Starten der EN-Review-Wiedergabe und bei manuellen Zurück/Weiter-Schritten automatisch zur passenden Tabellenzeile, bevor die Markierung gesetzt wird.
 * `README.md` erwähnt das automatische Mitscrollen der EN-Review sowohl bei Wiedergabe als auch bei manueller Navigation.
