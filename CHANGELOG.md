@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.433
+* `web/src/main.js` entfernt die vorbereitete virtuelle Tabellenansicht inklusive Initialisierung.
+* `web/src/virtualList.js` entfällt vollständig, weil kein Modul mehr darauf zugreift.
+* `README.md` und `CHANGELOG.md` dokumentieren das Entfernen der nie aktivierten virtuellen Tabellenansicht.
 ## 🛠️ Patch in 1.40.432
 * `web/src/dubbing.js` entfernt den nicht mehr verwendeten Studio-Hinweis (`showStudioOverlay`/`closeStudioOverlay`) samt `window`-Exporten.
 * `README.md` und `CHANGELOG.md` vermerken den Wegfall des separaten Studio-Overlays.

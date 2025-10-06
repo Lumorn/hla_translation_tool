@@ -1183,6 +1183,8 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 
 Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
+> ℹ️ Hinweis: Die zuvor vorbereitete, aber nie aktivierte virtuelle Tabellenansicht wurde entfernt und taucht daher nicht mehr in der Oberfläche oder Dokumentation auf.
+
 ## 💡 Tipps & Best Practices
 
 ### Projekt‑Organisation
@@ -1205,7 +1207,6 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 * **🧹 Duplikate bereinigen** bei großen Datenbanken
 * **🚫 Unnötige Dateien ignorieren** für bessere Übersicht
 * **📊 Level‑Statistiken nutzen** für Fortschritts‑Übersicht
-* **🪟 Virtuelle Listen** für sehr lange Tabellen
 * **🔎 Lokale Suchindizes** je Projekt
 * **💽 Speicher‑Monitor** mit Aufräumen‑Knopf
 * **🛈 Klare Anzeige des Speichermodus** in Toolbar und Statusleiste

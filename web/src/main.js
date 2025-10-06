@@ -326,15 +326,6 @@ async function runCleanup() {
     }
 }
 
-// Virtuelle Tabelle vorbereiten (Platzhalter)
-let virtualTable = null;
-async function initVirtualTable() {
-    const container = document.querySelector('.table-container');
-    if (!container) return;
-    const { createVirtualList } = await import('./virtualList.js');
-    virtualTable = createVirtualList(container, 40, () => document.createElement('div'));
-}
-
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
@@ -351,7 +342,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initializeWorkspaceMenus();
     const cleanBtn = document.getElementById('cleanupButton');
     if (cleanBtn) cleanBtn.addEventListener('click', runCleanup);
-    initVirtualTable();
 });
 
 // =========================== GLOBAL STATE START ===========================
