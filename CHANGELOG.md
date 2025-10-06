@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.427
+* `elevenlabs.js` entfernt den Helper `createDubbing` samt Export und konzentriert sich auf Status- und Download-Funktionen.
+* `tests/elevenlabs.test.js` prüfen nur noch `downloadDubbingAudio`, `waitForDubbing` und `isDubReady`.
+* `README.md` und `CHANGELOG.md` beschreiben den Wegfall von `createDubbing` und verweisen auf die verbleibenden Helfer.
+
 ## 🛠️ Patch in 1.40.426
 * `historyUtils.js` entfernt den Helfer `restoreVersion` und verweist ausschließlich auf `switchVersion` zum Wiederherstellen von Dateien.
 * `tests/historyFunctions.test.js` ersetzen die Wiederherstellungsprüfung durch `switchVersion` und prüfen den leeren Verlauf nach dem Tausch.

@@ -5,70 +5,16 @@ const path = require('path');
 // Tests dürfen länger dauern, da Downloads bis zu 10 Versuche brauchen
 jest.setTimeout(30000);
 
-const { createDubbing, downloadDubbingAudio, waitForDubbing, isDubReady } = require('../elevenlabs');
+const { downloadDubbingAudio, waitForDubbing, isDubReady } = require('../elevenlabs');
 
 // Basis-URL der API
 const API = 'https://api.elevenlabs.io/v1';
-
-// Temporäre Audiodatei für die Tests
-const tempAudio = path.join(__dirname, 'temp.mp3');
-
-beforeAll(() => {
-    fs.writeFileSync(tempAudio, 'dummy');
-});
-
-afterAll(() => {
-    // Datei nur löschen, wenn sie tatsächlich existiert
-    if (fs.existsSync(tempAudio)) {
-        fs.unlinkSync(tempAudio);
-    }
-});
 
 afterEach(() => {
     nock.cleanAll();
 });
 
 describe('ElevenLabs API', () => {
-    test('erfolgreicher Dubbing-Auftrag ohne Voice-ID', async () => {
-        nock(API)
-            .post('/dubbing', body => body.includes('disable_voice_cloning') &&
-                                     body.includes('name="target_lang"') &&
-                                     body.includes('de') &&
-                                     !body.includes('fr'))
-            .reply(200, { dubbing_id: '123', expected_duration_sec: 1 });
-
-        const result = await createDubbing({
-            audioFile: tempAudio,
-            csvContent: 'speaker,start_time,end_time,transcription,translation\n',
-            targetLang: 'fr',
-            apiKey: 'key'
-        });
-        expect(result).toEqual({ dubbing_id: '123', expected_duration_sec: 1 });
-    });
-
-    test('Dubbing mit Voice-ID übermittelt voice_id', async () => {
-        nock(API)
-            .post('/dubbing', body => body.includes('voice_id') &&
-                                     !body.includes('disable_voice_cloning'))
-            .reply(200, { dubbing_id: '124', expected_duration_sec: 1 });
-
-        const result = await createDubbing({
-            audioFile: tempAudio,
-            csvContent: 'speaker,start_time,end_time,transcription,translation\n',
-            voiceId: 'abc',
-            apiKey: 'key'
-        });
-        expect(result).toEqual({ dubbing_id: '124', expected_duration_sec: 1 });
-    });
-
-    test('fehlerhafte Antwort bei createDubbing', async () => {
-        nock(API)
-            .post('/dubbing')
-            .reply(500, 'Fehler');
-
-        await expect(createDubbing({ audioFile: tempAudio, csvContent: '', apiKey: 'key' })).rejects.toThrow('Create dubbing failed');
-    });
-
     test('Download-Fehler', async () => {
         nock(API)
             .get('/dubbing/abc')
