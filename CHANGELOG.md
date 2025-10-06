@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.436
+* `web/src/main.js` entfernt den obsoleten Canvas-Zoom-Helfer `zoomCanvasToRange` aus dem Wellenformbereich.
+* `README.md` und `CHANGELOG.md` erwähnen, dass der frühere Canvas-Zoom-Helfer nicht mehr bereitsteht.
 ## 🛠️ Patch in 1.40.435
 * `web/src/main.js` entfernt den ungenutzten UI-Helfer `hideErrorBanner` und exportiert nur noch `showErrorBanner` für Wiederholungsaktionen.
 * `README.md` und `CHANGELOG.md` dokumentieren, dass das Ausblenden-Banner nicht mehr separat verfügbar ist.

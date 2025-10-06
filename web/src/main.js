@@ -579,19 +579,6 @@ function scheduleWaveformUpdate() {
     }, 120);
 }
 
-// Zoomt eine Canvas auf den angegebenen Bereich
-function zoomCanvasToRange(canvas, startMs, endMs, totalMs) {
-    if (!canvas) return;
-    const ratio = (endMs - startMs) / totalMs;
-    const scale = Math.min(10, 1 / ratio);
-    const selWidth = canvas.width * ratio * scale;
-    const container = canvas.parentElement;
-    const cWidth = container ? container.clientWidth : canvas.width;
-    const offset = -startMs / totalMs * canvas.width * scale + (cWidth - selWidth) / 2;
-    canvas.style.transformOrigin = '0 0';
-    canvas.style.transform = `translateX(${offset}px) scaleX(${scale})`;
-}
-
 // Setzt den Zoom einer Canvas zurück
 function resetCanvasZoom(canvas) {
     if (canvas) canvas.style.transform = '';
