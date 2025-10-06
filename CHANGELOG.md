@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.435
+* `web/src/main.js` entfernt den ungenutzten UI-Helfer `hideErrorBanner` und exportiert nur noch `showErrorBanner` für Wiederholungsaktionen.
+* `README.md` und `CHANGELOG.md` dokumentieren, dass das Ausblenden-Banner nicht mehr separat verfügbar ist.
 ## 🛠️ Patch in 1.40.434
 * `electron/preload.cjs` entfernt den nicht mehr genutzten `deleteBookmark`-Bridge-Aufruf aus der Video-API.
 * `electron/main.js` streicht den IPC-Handler `delete-bookmark`, da das Löschen clientseitig erfolgt.
