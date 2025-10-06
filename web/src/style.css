@@ -703,11 +703,16 @@ th:nth-child(8) {
 
         .project-playback {
             display: flex;
-            gap: 5px;
             align-items: center;
+            gap: 10px;
         }
 
-        .project-playback button {
+        .project-number-nav {
+            display: flex;
+            gap: 5px;
+        }
+
+        .project-number-nav button {
             background: #444;
             border: none;
             color: #e0e0e0;
@@ -718,7 +723,7 @@ th:nth-child(8) {
             transition: all 0.2s;
         }
 
-        .project-playback button:hover {
+        .project-number-nav button:hover {
             background: #ff6b1a;
             color: white;
         }
@@ -4589,13 +4594,6 @@ th:nth-child(8) {
 #segmentWaveform { cursor:pointer; }
 #copyAssistantDialog .dialog { max-width: 500px; }
 #copyAssistant2Dialog .dialog { max-width: 500px; }
-#playbackListDialog .dialog { max-width: 400px; }
-.playback-list { list-style: none; padding: 0; margin: 0 0 15px; max-height: 200px; overflow-y: auto; }
-.playback-list li { padding: 2px 4px; border-bottom: 1px solid #444; }
-.playback-list li.current { background: #333; }
-.playback-list li small { color: #999; }
-.playback-list li .icon { margin-right: 4px; }
-.playback-protocol { background:#111; color:#eee; padding:4px; max-height:100px; overflow-y:auto; }
 .project-review-btn { padding: 8px 16px; }
 .english-review-dialog { max-width: 680px; width: min(680px, 92vw); display: flex; flex-direction: column; gap: 16px; }
 .english-review-content { display: flex; flex-direction: column; gap: 16px; }

@@ -1,4 +1,11 @@
 # Changelog
+## 🛠️ Patch in 1.40.424
+* `web/hla_translation_tool.html` entfernt die Projekt-Wiedergabe-Schaltflächen, führt Nummern-Navigation und 🇬🇧-Review-Button in einem flexiblen Block zusammen und vermeidet dadurch Leerräume.
+* `web/src/main.js` streicht alle Projekt-Player-Variablen samt Hilfsfunktionen, vereinfacht `playDeAudio()` und belässt den Fokus auf der EN-Review ohne gegenseitige Stopps.
+* `web/src/style.css` räumt veraltete Player-Stile auf und richtet die neue Nummern-Navigation neben dem Review-Knopf aus.
+* `tests/ensurePlaybackOrder.test.js` prüft nur noch die Reihenfolgen-Logik, die veralteten Projekt-Player-Tests (`projectPlaybackOrder`, `playbackProtocol`) wurden entfernt.
+* `README.md` und `CHANGELOG.md` dokumentieren den Wegfall des Projekt-Players und den Schwerpunkt auf den Review-Dialog.
+
 ## 🛠️ Patch in 1.40.423
 * `web/src/main.js` entfernt alte Review-Handler vor dem Neusetzen, schützt den EN-Review-Callback vor Mehrfachausführung und erhöht den Index nach jedem Track nur genau einmal, bevor automatisch weitergespielt oder sauber gestoppt wird.
 * `README.md` beschreibt die abgesicherte EN-Review-Wiedergabe mit eindeutigem Index-Fortschritt.
