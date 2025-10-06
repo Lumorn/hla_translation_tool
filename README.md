@@ -1309,6 +1309,7 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`importLocalStorageFromOpfs()`** – liest die Datei `hla_daten.json` aus dem OPFS, ersetzt den aktuellen LocalStorage und gibt die Anzahl der geladenen Einträge zurück.
   * **`loadMigration()`** – UI-Helfer, der den Import startet und Statusmeldungen anzeigt.
   * **Entfernt:** Der frühere UI-Helfer `switchStorageDirection` entfällt; Speichermodus-Wechsel erfolgen direkt über `switchStorage`.
+  * **Entfernt:** Der UI-Helfer `hideErrorBanner` steht nicht mehr zur Verfügung; Fehlversuche lassen das Banner nach dem Wiederholungsversuch automatisch ausgeblendet.
   * **`cleanupProject.js`** – nutzt `removeUnknownFileIds`, um Datei-IDs mit einer Liste aus der Oberfläche abzugleichen und unbekannte Einträge zu entfernen. Aufruf: `node utils/cleanupProject.js <projekt.json> <ids.json>`.
   * **`removeUnknownFileIds(project, ids, logFn)`** – Hilfsfunktion, die alle Dateien mit unbekannter ID entfernt und jede Entfernung protokolliert.
   * **Entfernt:** Die frühere Hilfsfunktion `syncProjectData` steht nicht mehr zur Verfügung, da ihre Aufgaben vollständig von `repairFileExtensions` abgedeckt werden.

@@ -18490,11 +18490,6 @@ function quickAddLevel(chapterName) {
             banner.classList.remove('hidden');
         }
 
-        function hideErrorBanner() {
-            const banner = document.getElementById('errorBanner');
-            if (banner) banner.classList.add('hidden');
-        }
-
         // Zeigt ein modales Dialogfenster mit HTML-Inhalt an
         function showModal(html) {
             const ov = document.createElement('div');
@@ -18610,7 +18605,7 @@ function quickAddLevel(chapterName) {
             saveCurrentProject();
         }
 
-        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, hideErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport };
+        window.ui = { getActiveDubItem, markDubAsReady, notify: showToast, showModal, showInputDialog, setActiveDubItem, showErrorBanner, toggleEmoCompletion, showZipImportDialog, handleZipImport };
 
         function updateCounts() {
             const fileCount = document.getElementById('fileCount');
