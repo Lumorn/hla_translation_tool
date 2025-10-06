@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.425
+* `web/hla_translation_tool.html` ergänzt im EN-Review-Dialog eine Radiogruppe für EN- und DE-Audio, die EN standardmäßig aktiviert.
+* `web/src/main.js` verwaltet die neue Review-Sprache, reagiert auf Umschalter, lädt DE-Audios über Cache und Dateisystem nach und meldet fehlende Dateien pro Sprache.
+* `README.md` beschreibt den Sprachumschalter im 🇬🇧-Dialog und erklärt den Wechsel zwischen EN- und DE-Audio.
+* `CHANGELOG.md` dokumentiert den neuen Umschalter für die EN-Review.
+
 ## 🛠️ Patch in 1.40.424
 * `web/hla_translation_tool.html` entfernt die Projekt-Wiedergabe-Schaltflächen, führt Nummern-Navigation und 🇬🇧-Review-Button in einem flexiblen Block zusammen und vermeidet dadurch Leerräume.
 * `web/src/main.js` streicht alle Projekt-Player-Variablen samt Hilfsfunktionen, vereinfacht `playDeAudio()` und belässt den Fokus auf der EN-Review ohne gegenseitige Stopps.
