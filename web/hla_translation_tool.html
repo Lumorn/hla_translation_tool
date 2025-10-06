@@ -210,6 +210,7 @@
                                     <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
                                     <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
                                 </div>
+                                <button id="openEnglishReviewBtn" class="btn btn-secondary project-review-btn" onclick="openEnglishReview()" title="Öffnet die EN-Review-Ansicht" aria-haspopup="dialog" aria-controls="englishReviewDialog">🇬🇧 Review</button>
                             </div>
                         </div>
                     </section>
@@ -1207,6 +1208,47 @@
             <div class="dialog-buttons">
                 <button class="btn" id="playbackPlayBtn" onclick="toggleProjectPlayback()">▶</button>
                 <button class="btn btn-secondary" onclick="closePlaybackList()">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- EN-Review-Dialog -->
+    <div class="dialog-overlay hidden" id="englishReviewDialog" role="dialog" aria-modal="true" aria-labelledby="englishReviewTitle">
+        <div class="dialog english-review-dialog">
+            <button class="dialog-close-btn" type="button" onclick="closeEnglishReview()" aria-label="Dialog schließen">×</button>
+            <h3 id="englishReviewTitle">🇬🇧 EN-Review</h3>
+            <div class="english-review-content">
+                <section class="english-review-current" aria-labelledby="englishReviewCurrentLabel">
+                    <h4 id="englishReviewCurrentLabel">Aktuelle Datei</h4>
+                    <div class="english-review-current-file" id="englishReviewCurrentFile"></div>
+                    <div class="english-review-texts">
+                        <article class="english-review-text-block" aria-labelledby="englishReviewEnLabel">
+                            <h5 id="englishReviewEnLabel">EN-Text</h5>
+                            <p id="englishReviewEnText"></p>
+                        </article>
+                        <article class="english-review-text-block" aria-labelledby="englishReviewDeLabel">
+                            <h5 id="englishReviewDeLabel">DE-Text</h5>
+                            <p id="englishReviewDeText"></p>
+                        </article>
+                    </div>
+                </section>
+                <div class="english-review-neighbours">
+                    <section class="english-review-list" aria-labelledby="englishReviewPreviousLabel">
+                        <h4 id="englishReviewPreviousLabel">Zuletzt</h4>
+                        <ul id="englishReviewPreviousList" class="english-review-items" aria-live="polite"></ul>
+                    </section>
+                    <section class="english-review-list" aria-labelledby="englishReviewNextLabel">
+                        <h4 id="englishReviewNextLabel">Als Nächstes</h4>
+                        <ul id="englishReviewNextList" class="english-review-items" aria-live="polite"></ul>
+                    </section>
+                </div>
+            </div>
+            <div class="dialog-buttons english-review-controls">
+                <button class="btn btn-secondary" id="englishReviewPrevBtn" type="button" onclick="englishReviewPrev()" title="Vorherige Datei" aria-label="Vorherige Datei">⏮</button>
+                <button class="btn btn-secondary" id="englishReviewPlayBtn" type="button" onclick="englishReviewPlay()" title="Wiedergabe starten" aria-label="Wiedergabe starten">▶</button>
+                <button class="btn btn-secondary" id="englishReviewPauseBtn" type="button" onclick="englishReviewPause()" title="Wiedergabe anhalten" aria-label="Wiedergabe anhalten">⏸</button>
+                <button class="btn btn-secondary" id="englishReviewNextBtn" type="button" onclick="englishReviewNext()" title="Nächste Datei" aria-label="Nächste Datei">⏭</button>
+                <button class="btn btn-secondary" id="englishReviewCloseBtn" type="button" onclick="closeEnglishReview()" title="Dialog schließen" aria-label="Dialog schließen">Schließen</button>
             </div>
         </div>
     </div>
