@@ -985,6 +985,7 @@ let autoScrollTimeout     = null;  // Timer zum Zurücksetzen von isAutoScrollin
 // Status für Projekt-Wiedergabe
 // Status für die EN-Review
 let enReviewState          = 'closed';   // 'playing', 'paused', 'stopped', 'closed'
+let enReviewLanguage       = 'en';       // Aktuelle Audio-Sprache im EN-Review ('en' | 'de')
 let enReviewIndex          = 0;          // Aktuelle Position innerhalb der Review-Liste
 let enReviewFiles          = [];         // Dateien des aktuellen Projekts in Review-Reihenfolge
 let enReviewMode           = 'sequential'; // Merkt den gewählten Review-Modus (für spätere Erweiterungen)
@@ -7956,7 +7957,7 @@ function stopEnglishReview() {
     updateEnglishReviewDialog();
 }
 
-function playCurrentEnglishReviewFile() {
+async function playCurrentEnglishReviewFile() {
     if (enReviewFiles.length === 0) {
         stopEnglishReview();
         return;
@@ -7977,25 +7978,13 @@ function playCurrentEnglishReviewFile() {
     stopCurrentPlayback();
     releaseEnglishReviewObjectUrl();
 
-    updateEnglishReviewDialog();
-
-    const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
-    if (!audioInfo) {
-        updateStatus(`EN-Review: Keine EN-Datei gefunden (${file.filename}).`);
-        if (enReviewState === 'playing') {
-            enReviewIndex++;
-            playCurrentEnglishReviewFile();
-        } else {
-            updateEnglishReviewDialog();
-        }
-        return;
-    }
-
     const audio = document.getElementById('audioPlayer');
     if (!audio) {
         updateStatus('Kein Audio-Player verfügbar.');
         return;
     }
+
+    updateEnglishReviewDialog();
 
     const position = getFilePosition(file.id);
     if (position > 0) {
@@ -8005,14 +7994,113 @@ function playCurrentEnglishReviewFile() {
     }
 
     let objectUrl = null;
-    if (window.electronAPI && typeof audioInfo.audioFile === 'string') {
-        audio.src = audioInfo.audioFile;
+    const language = enReviewLanguage === 'de' ? 'de' : 'en';
+
+    if (language === 'de') {
+        // DE-Audio bevorzugt laden und bei Bedarf über den Cache nachziehen
+        let relPath = getDeFilePath(file) || getFullPath(file);
+        if (!relPath) {
+            updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+            if (enReviewState === 'playing') {
+                enReviewIndex++;
+                await playCurrentEnglishReviewFile();
+            } else {
+                updateEnglishReviewDialog();
+            }
+            return;
+        }
+
+        if (!deAudioCache[relPath]) {
+            if (window.electronAPI) {
+                setDeAudioCacheEntry(relPath, `sounds/DE/${relPath}`);
+            } else {
+                try {
+                    if (!deOrdnerHandle) {
+                        throw new Error('Kein DE-Ordner verfügbar');
+                    }
+                    let handle = deOrdnerHandle;
+                    const parts = (file.folder || '').split('/');
+                    for (const part of parts) {
+                        if (part) {
+                            handle = await handle.getDirectoryHandle(part);
+                        }
+                    }
+                    const basisName = file.filename.replace(/\.(mp3|wav|ogg)$/i, '');
+                    const endungen = ['.mp3', '.wav', '.ogg'];
+                    let datei = null;
+                    let gefundenerPfad = relPath;
+                    const prefix = file.folder ? `${file.folder}/` : '';
+                    for (const endung of endungen) {
+                        try {
+                            const fh = await handle.getFileHandle(basisName + endung);
+                            datei = await fh.getFile();
+                            gefundenerPfad = `${prefix}${basisName}${endung}`;
+                            break;
+                        } catch {}
+                    }
+                    if (!datei) {
+                        throw new Error('Datei nicht gefunden');
+                    }
+                    relPath = gefundenerPfad;
+                    setDeAudioCacheEntry(relPath, datei);
+                } catch (err) {
+                    console.error('EN-Review: DE-Audio konnte nicht geladen werden', err);
+                    updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+                    if (enReviewState === 'playing') {
+                        enReviewIndex++;
+                        await playCurrentEnglishReviewFile();
+                    } else {
+                        updateEnglishReviewDialog();
+                    }
+                    return;
+                }
+            }
+        }
+
+        const cacheEntry = deAudioCache[relPath];
+        if (!cacheEntry) {
+            updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+            if (enReviewState === 'playing') {
+                enReviewIndex++;
+                await playCurrentEnglishReviewFile();
+            } else {
+                updateEnglishReviewDialog();
+            }
+            return;
+        }
+
+        if (window.electronAPI && typeof cacheEntry === 'string') {
+            audio.src = `${cacheEntry}?v=${Date.now()}`;
+        } else {
+            const blob = cacheEntry instanceof Blob
+                ? cacheEntry
+                : new Blob([cacheEntry], { type: cacheEntry?.type || 'audio/mpeg' });
+            objectUrl = URL.createObjectURL(blob);
+            audio.src = objectUrl;
+        }
     } else {
-        const blob = audioInfo.audioFile instanceof Blob
-            ? audioInfo.audioFile
-            : new Blob([audioInfo.audioFile], { type: audioInfo.audioFile?.type || 'audio/mpeg' });
-        objectUrl = URL.createObjectURL(blob);
-        audio.src = objectUrl;
+        // EN-Audio aus dem bestehenden Cache ziehen
+        const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
+        if (!audioInfo) {
+            updateStatus(`EN-Review: Keine EN-Datei gefunden (${file.filename}).`);
+            if (enReviewState === 'playing') {
+                enReviewIndex++;
+                await playCurrentEnglishReviewFile();
+            } else {
+                updateEnglishReviewDialog();
+            }
+            return;
+        }
+
+        if (window.electronAPI && typeof audioInfo.audioFile === 'string') {
+            audio.src = audioInfo.audioFile;
+        } else {
+            const blob = audioInfo.audioFile instanceof Blob
+                ? audioInfo.audioFile
+                : new Blob([audioInfo.audioFile], { type: audioInfo.audioFile?.type || 'audio/mpeg' });
+            objectUrl = URL.createObjectURL(blob);
+            audio.src = objectUrl;
+        }
     }
     enReviewObjectUrl = objectUrl;
 
@@ -8055,18 +8143,19 @@ function playCurrentEnglishReviewFile() {
     reviewEndedHandler.__enReviewHandler = true;
     audio.onended = reviewEndedHandler;
 
-    audio.play().then(() => {
+    try {
+        await audio.play();
         currentlyPlaying = `en-review-${file.id}`;
         enReviewState = 'playing';
         updateEnglishReviewDialog();
-    }).catch(err => {
+    } catch (err) {
         console.error('EN-Review: Wiedergabe fehlgeschlagen', err);
         updateStatus(`EN-Review: Wiedergabe nicht möglich (${file.filename}).`);
         releaseEnglishReviewObjectUrl();
         currentlyPlaying = null;
         enReviewState = 'stopped';
         updateEnglishReviewDialog();
-    });
+    }
 }
 
 function createEnglishReviewListItem(list, file, cssModifier) {
@@ -8100,6 +8189,25 @@ function createEnglishReviewListItem(list, file, cssModifier) {
     list.appendChild(li);
 }
 
+// Reagiert auf einen Sprachwechsel im EN-Review und lädt bei Bedarf das aktuelle Audio neu
+function switchEnglishReviewLanguage(lang) {
+    const target = lang === 'de' ? 'de' : 'en';
+    if (enReviewLanguage === target) {
+        updateEnglishReviewDialog();
+        return;
+    }
+    enReviewLanguage = target;
+    updateEnglishReviewDialog();
+    if (enReviewState === 'playing' || enReviewState === 'paused') {
+        const reloadPromise = playCurrentEnglishReviewFile();
+        if (reloadPromise && typeof reloadPromise.catch === 'function') {
+            reloadPromise.catch(err => {
+                console.error('EN-Review: Fehler beim Sprachwechsel', err);
+            });
+        }
+    }
+}
+
 function updateEnglishReviewDialog() {
     const currentFileElem = document.getElementById('englishReviewCurrentFile');
     const enTextElem = document.getElementById('englishReviewEnText');
@@ -8112,6 +8220,26 @@ function updateEnglishReviewDialog() {
     const prevBtn = document.getElementById('englishReviewPrevBtn');
     const nextBtn = document.getElementById('englishReviewNextBtn');
     const scrollBtn = document.getElementById('englishReviewScrollBtn');
+    const langEnRadio = document.getElementById('englishReviewLangEn');
+    const langDeRadio = document.getElementById('englishReviewLangDe');
+    const languageOptions = document.querySelectorAll('.english-review-language-option');
+
+    if (langEnRadio && !langEnRadio.__enReviewBound) {
+        langEnRadio.addEventListener('change', () => {
+            if (langEnRadio.checked) {
+                switchEnglishReviewLanguage('en');
+            }
+        });
+        langEnRadio.__enReviewBound = true;
+    }
+    if (langDeRadio && !langDeRadio.__enReviewBound) {
+        langDeRadio.addEventListener('change', () => {
+            if (langDeRadio.checked) {
+                switchEnglishReviewLanguage('de');
+            }
+        });
+        langDeRadio.__enReviewBound = true;
+    }
 
     if (!currentFileElem || !enTextElem || !deTextElem || !prevList || !nextList) {
         return;
@@ -8121,12 +8249,42 @@ function updateEnglishReviewDialog() {
     nextList.innerHTML = '';
 
     const hasFiles = enReviewFiles.length > 0 && enReviewIndex >= 0 && enReviewIndex < enReviewFiles.length;
+    const currentFile = hasFiles ? enReviewFiles[enReviewIndex] : null;
+
+    let hasDeAudio = false;
+    if (currentFile) {
+        const dePath = getDeFilePath(currentFile);
+        hasDeAudio = !!dePath;
+    }
+
+    if (!hasFiles && enReviewLanguage !== 'en') {
+        enReviewLanguage = 'en';
+    }
+    if (currentFile && !hasDeAudio && enReviewLanguage === 'de') {
+        enReviewLanguage = 'en';
+    }
+
+    if (langEnRadio) {
+        langEnRadio.checked = enReviewLanguage !== 'de';
+        langEnRadio.disabled = !hasFiles;
+    }
+    if (langDeRadio) {
+        langDeRadio.checked = enReviewLanguage === 'de';
+        langDeRadio.disabled = !hasFiles || !hasDeAudio;
+    }
+    languageOptions.forEach(option => {
+        const input = option.querySelector('input[type="radio"]');
+        if (!input) return;
+        option.classList.toggle('active', !!input.checked);
+        option.classList.toggle('disabled', !!input.disabled);
+    });
+
     if (!hasFiles) {
         currentFileElem.textContent = 'Keine Dateien im aktuellen Projekt.';
         enTextElem.textContent = '—';
         deTextElem.textContent = '—';
-    } else {
-        const file = enReviewFiles[enReviewIndex];
+    } else if (currentFile) {
+        const file = currentFile;
         const position = getFilePosition(file.id);
 
         currentFileElem.innerHTML = '';

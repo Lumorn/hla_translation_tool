@@ -147,6 +147,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **EN-Review-Überblick:** Der 🇬🇧-Dialog bietet jetzt eine eigene Wiedergabe mit Fortschrittsanzeige, zeigt EN/DE-Text der aktuellen Zeile, blendet zwei vergangene und zwei kommende Dateien ein und scrollt sowohl bei der automatischen Wiedergabe als auch beim manuellen Zurück/Weiter-Schritt direkt zur passenden Tabellenzeile.
+* **EN/DE-Audio-Umschalter im Review:** Im 🇬🇧-Dialog wählst du per Radiogruppe zwischen EN- und DE-Audio; EN ist voreingestellt und DE wird automatisch deaktiviert, wenn für die Datei kein deutsches Audio existiert.
 * **Projekt-Player entfernt:** Die frühere Projekt-Wiedergabeliste samt Play/Pause/Stop-Schaltflächen ist gestrichen; die Nummern-Navigation sitzt nun direkt neben dem 🇬🇧-Review-Knopf, der als zentrale Kontrollstelle dient.
 * **Stabile EN-Review-Läufe:** Der Audio-Player entfernt alte Review-Handler vor dem nächsten Start, erhöht den Index nach jedem Track nur einmal und setzt danach entweder automatisch zur nächsten Datei über oder stoppt die Wiedergabe sauber am Ende der Liste.
 * **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
@@ -891,6 +892,7 @@ Ignorierte Einträge merkt sich der Ordner-Browser jetzt dauerhaft – unabhäng
 | -------------------------- | ----------------------------------------------- |
 | **Audio abspielen**       | ▶ Button oder Leertaste (bei ausgewaehlter Zeile) |
 | **Projekt-Playback**      | ▶/⏸/⏹ spielt vorhandene DE-Dateien der Reihe nach |
+| **Review-Sprache wechseln** | 🇬🇧 Review öffnen → Umschalter EN-Audio / DE-Audio nutzen (DE deaktiviert sich bei fehlender Datei) |
 | **Zur nächsten Nummer**   | ▲/▼ neben ▶/⏹ springen eine Zeile weiter oder zurück und halten Nummer, Dateiname und Ordner direkt unter dem Tabellenkopf sichtbar; das Mausrad markiert nur die Zeile in der Bildschirmmitte, ohne die Position zu verändern. Schnelle Klicks funktionieren weiterhin zuverlässig |
 | **Audio im Textfeld**     | `Ctrl + Leertaste` |
 | **Text kopieren**         | 📋 Button neben Textfeld |

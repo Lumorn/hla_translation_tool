@@ -1203,6 +1203,17 @@
         <div class="dialog english-review-dialog">
             <button class="dialog-close-btn" type="button" onclick="closeEnglishReview()" aria-label="Dialog schließen">×</button>
             <h3 id="englishReviewTitle">🇬🇧 EN-Review</h3>
+            <div class="english-review-language-toggle" role="radiogroup" aria-label="Audio-Auswahl">
+                <span class="english-review-language-label">Audio:</span>
+                <label class="english-review-language-option" for="englishReviewLangEn">
+                    <input type="radio" name="englishReviewLanguage" id="englishReviewLangEn" value="en" checked>
+                    EN-Audio
+                </label>
+                <label class="english-review-language-option" for="englishReviewLangDe">
+                    <input type="radio" name="englishReviewLanguage" id="englishReviewLangDe" value="de">
+                    DE-Audio
+                </label>
+            </div>
             <div class="english-review-content">
                 <section class="english-review-current" aria-labelledby="englishReviewCurrentLabel">
                     <h4 id="englishReviewCurrentLabel">Aktuelle Datei</h4>
