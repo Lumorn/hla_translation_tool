@@ -3,22 +3,12 @@ const API = "https://api.elevenlabs.io/v1";
 const storage = window.storage;
 let csvLineEnding = (typeof storage !== "undefined" && storage.getItem("hla_lineEnding")) || (typeof global !== "undefined" && global.csvLineEnding) || "LF";
 
-// Hilfsfunktionen, um den DE-Audio-Cache konsistent zu pflegen
 function writeDeAudioCache(key, value) {
     if (!key) return;
     if (typeof setDeAudioCacheEntry === 'function') {
         setDeAudioCacheEntry(key, value);
     } else {
         deAudioCache[key] = value;
-    }
-}
-
-function removeDeAudioCache(key) {
-    if (!key) return;
-    if (typeof deleteDeAudioCacheEntry === 'function') {
-        deleteDeAudioCacheEntry(key);
-    } else {
-        delete deAudioCache[key];
     }
 }
 

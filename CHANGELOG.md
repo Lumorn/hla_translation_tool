@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.429
+* `web/src/dubbing.js` entfernt den Helfer `removeDeAudioCache`, sodass alle Löschroutinen direkt auf die bestehenden Cache-APIs zugreifen.
+* `README.md` und `CHANGELOG.md` erwähnen die Bereinigung des DE-Audio-Caches ohne den zusätzlichen Wrapper.
 ## 🛠️ Patch in 1.40.428
 * `web/src/main.js` entfernt den Ordner-Umbenennungs-Workflow inklusive Datenbankanpassung und verlässt sich wieder auf Dateisystem-Umbenennungen.
 * `README.md` und `CHANGELOG.md` vermerken den Wegfall des speziellen Ordner-Umbenennungs-Dialogs.
