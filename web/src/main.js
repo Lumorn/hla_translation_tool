@@ -983,12 +983,6 @@ let isAutoScrolling       = false; // Wahr, solange ein automatischer Scroll lä
 let autoScrollTimeout     = null;  // Timer zum Zurücksetzen von isAutoScrolling
 
 // Status für Projekt-Wiedergabe
-let projectPlayState       = 'stopped'; // 'playing', 'paused'
-let projectPlayIndex       = 0;        // Aktuelle Datei im Projekt
-let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiedergabe
-let playbackStatus         = {};       // Merkt Existenz, Reihenfolge und Abspiel-Erfolg
-let playbackProtocol       = '';       // Protokoll der Wiedergabe
-
 // Status für die EN-Review
 let enReviewState          = 'closed';   // 'playing', 'paused', 'stopped', 'closed'
 let enReviewIndex          = 0;          // Aktuelle Position innerhalb der Review-Liste
@@ -2502,7 +2496,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };
         }
     }
-    updateProjectPlaybackButtons();
     // Beim Start alte, falsch gespeicherte Cache-Einträge entfernen
     cleanupDubCache();
     if (window.electronAPI && window.electronAPI.getDebugInfo) {
@@ -3674,7 +3667,6 @@ function selectProject(id){
     console.log('[DEBUG] selectProject gestartet', { id, projektAnzahl: projects.length });
 
     stopEnglishReview();
-    stopProjectPlayback();
     saveCurrentProject(); // Aktuelles Projekt sichern, bevor der GPT-Zustand gelöscht wird
     storeSegmentState(); // Segmentzustand vor dem Reset speichern
     clearGptState(); // GPT-Zustand anschließend bereinigen
@@ -7775,7 +7767,7 @@ function playAudio(fileId) {
 // Spielt die vorhandene DE-Datei ab und erlaubt einen optionalen Callback
 // der nach dem Ende ausgeführt wird (z.B. für Projekt-Wiedergabe)
 // Spielt die vorhandene DE-Datei ab und merkt optional den Erfolg
-async function playDeAudio(fileId, onEnded = null, track = false) {
+async function playDeAudio(fileId, onEnded = null) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
 
@@ -7843,24 +7835,16 @@ async function playDeAudio(fileId, onEnded = null, track = false) {
             if (url) URL.revokeObjectURL(url);
             if (playBtn) { playBtn.classList.remove('playing'); playBtn.textContent = '▶'; }
             currentlyPlaying = null;
-            if (track && playbackStatus[fileId]) {
-                playbackStatus[fileId].success = true;
-                updatePlaybackList();
-            }
-            if (onEnded) onEnded();
-            if (previousEnded) previousEnded();
-        };
-    }).catch(err => {
+        if (onEnded) onEnded();
+        if (previousEnded) previousEnded();
+    };
+}).catch(err => {
         if (err && err.name === 'AbortError') {
             // Wird play() durch pause() unterbrochen, ignorieren wir den Fehler
             return;
         }
         console.error('DE-Playback fehlgeschlagen', err);
         updateStatus('Fehler beim Abspielen der DE-Datei');
-        if (track && playbackStatus[fileId]) {
-            playbackStatus[fileId].success = false;
-            updatePlaybackList();
-        }
         if (url) URL.revokeObjectURL(url);
     });
 
@@ -7895,7 +7879,6 @@ function openEnglishReview(mode = 'sequential') {
         return;
     }
 
-    stopProjectPlayback();
     enReviewMode = mode || 'sequential';
     enReviewFiles = getEnglishReviewOrderedFiles();
     const dialog = document.getElementById('englishReviewDialog');
@@ -7932,7 +7915,6 @@ function startEnglishReviewPlayback() {
         updateStatus('EN-Review: Keine Dateien zum Abspielen gefunden.');
         return;
     }
-    stopProjectPlayback();
     enReviewState = 'playing';
     playCurrentEnglishReviewFile();
     updateEnglishReviewDialog();
@@ -8282,63 +8264,9 @@ if (typeof window !== 'undefined') {
     window.englishReviewScrollToCurrent = englishReviewScrollToCurrent;
 }
 // =========================== ENGLISH REVIEW END ==============================
-// =========================== PROJEKT-WIEDERGABE START ========================
-function updateProjectPlaybackButtons() {
-    const playPauseBtn = document.getElementById('projectPlayPauseBtn');
-    const listPlayBtn = document.getElementById('playbackPlayBtn');
-    if (!playPauseBtn) return;
-    if (projectPlayState === 'playing') {
-        playPauseBtn.textContent = '⏸';
-        if (listPlayBtn) listPlayBtn.textContent = '⏸';
-    } else {
-        playPauseBtn.textContent = '▶';
-        if (listPlayBtn) listPlayBtn.textContent = '▶';
-    }
-}
-
-function openPlaybackList() {
-    updatePlaybackList();
-    document.getElementById('playbackListDialog')?.classList.remove('hidden');
-}
-
-function closePlaybackList() {
-    document.getElementById('playbackListDialog')?.classList.add('hidden');
-}
-
 // Gibt die aktuelle Positionsnummer einer Datei zurück
 function getFilePosition(fileId) {
     return files.findIndex(f => f.id === fileId) + 1;
-}
-
-function updatePlaybackList() {
-    const list = document.getElementById('playbackList');
-    if (!list) return;
-    // Zeige Positionsnummer, Dateiname und Pfade der gefundenen Audiodateien an
-    list.innerHTML = playbackFiles.map((f, idx) => {
-        const dePath = getDeFilePath(f);
-        const fullPath = getFullPath(f);
-        const pathInfo = `${escapeHtml(fullPath)} ➜ ${dePath ? escapeHtml(dePath) : 'kein DE-Audio'}`;
-        const status = playbackStatus[f.id] || {};
-        const existIcon = status.exists ? '✅' : '❌';
-        let playIcon = '⏳';
-        if (status.success === true) playIcon = '✅';
-        else if (status.success === false) playIcon = '❌';
-        const orderIcon = status.orderOk ? '✅' : '❌';
-        return `<li class="${idx === projectPlayIndex ? 'current' : ''}"><span class="icon">${existIcon}</span><span class="icon">${playIcon}</span><span class="icon">${orderIcon}</span>${getFilePosition(f.id)}. ${escapeHtml(f.filename)}<br><small>${pathInfo}</small></li>`;
-    }).join('');
-    const protocol = document.getElementById('playbackProtocol');
-    if (protocol) protocol.textContent = playbackProtocol;
-    updateProjectPlaybackButtons();
-}
-
-// Fügt dem Protokoll eine Zeile hinzu und aktualisiert die Anzeige
-function addPlaybackLog(text) {
-    playbackProtocol += text + '\n';
-    const pre = document.getElementById('playbackProtocol');
-    if (pre) {
-        pre.textContent = playbackProtocol;
-        pre.scrollTop = pre.scrollHeight;
-    }
 }
 
 function highlightProjectRow(fileId) {
@@ -8359,113 +8287,6 @@ function ensurePlaybackOrder() {
         displayOrder = files.map((file, index) => ({ file, originalIndex: index }));
     }
 }
-
-// Gibt alle Dateien mit vorhandener DE-Version in Positionsreihenfolge zurück
-function getProjectPlaybackList() {
-    ensurePlaybackOrder();
-    // Wenn eine Sortierung aktiv ist, enthält displayOrder die Originalreihenfolge
-    if (displayOrder.length === files.length) {
-        return [...displayOrder]
-            .sort((a, b) => a.originalIndex - b.originalIndex)
-            .map(item => item.file)
-            .filter(f => getDeFilePath(f));
-    }
-    // Ohne Sortierung ist die Reihenfolge der files bereits korrekt
-    return files.filter(f => getDeFilePath(f));
-}
-
-// Spielt die aktuelle Datei im Projekt ab
-function playCurrentProjectFile() {
-    if (projectPlayIndex >= playbackFiles.length) { stopProjectPlayback(); return; }
-    const file = playbackFiles[projectPlayIndex];
-    addPlaybackLog(`${projectPlayIndex + 1}. ${file.filename}`);
-    // Wenn keine DE-Datei existiert, überspringen wir diese Datei
-    if (!getDeFilePath(file)) {
-        if (playbackStatus[file.id]) playbackStatus[file.id].success = null;
-        projectPlayIndex++;
-        if (projectPlayState === 'playing') {
-            playCurrentProjectFile();
-        }
-        updatePlaybackList();
-        return;
-    }
-
-    highlightProjectRow(file.id);
-    updatePlaybackList();
-    // Deutsche Version abspielen und danach ggf. naechste Datei starten
-    playDeAudio(file.id, () => {
-        clearProjectRowHighlight();
-        projectPlayIndex++;
-        if (projectPlayState === 'playing') {
-            playCurrentProjectFile();
-        }
-        updatePlaybackList();
-    }, true);
-}
-
-function startProjectPlayback() {
-    stopEnglishReview();
-    playbackFiles = getProjectPlaybackList();
-    playbackStatus = {};
-    playbackFiles.forEach((f, idx) => {
-        playbackStatus[f.id] = {
-            exists: !!getDeFilePath(f),
-            orderOk: getFilePosition(f.id) === idx + 1,
-            success: null
-        };
-    });
-    playbackProtocol = 'Erwartete Reihenfolge:\n' +
-        playbackFiles.map((f, idx) => `${idx + 1}. ${f.filename}`).join('\n') +
-        '\nAbspielreihenfolge:\n';
-    projectPlayIndex = 0;
-    projectPlayState = 'playing';
-    updateProjectPlaybackButtons();
-    openPlaybackList();
-    playCurrentProjectFile();
-}
-
-function pauseProjectPlayback() {
-    const audio = document.getElementById('audioPlayer');
-    audio.pause();
-    projectPlayState = 'paused';
-    updateProjectPlaybackButtons();
-    updatePlaybackList();
-}
-
-function resumeProjectPlayback() {
-    const audio = document.getElementById('audioPlayer');
-    audio.play();
-    projectPlayState = 'playing';
-    updateProjectPlaybackButtons();
-    updatePlaybackList();
-}
-
-function stopProjectPlayback() {
-    const wasActive = projectPlayState === 'playing' || projectPlayState === 'paused';
-    stopEnglishReview();
-    projectPlayState = 'stopped';
-    projectPlayIndex = 0;
-    playbackFiles = [];
-    playbackStatus = {};
-    if (wasActive) {
-        addPlaybackLog('--- Ende ---');
-    }
-    clearProjectRowHighlight();
-    stopCurrentPlayback();
-    updateProjectPlaybackButtons();
-    updatePlaybackList();
-}
-
-function toggleProjectPlayback() {
-    if (projectPlayState === 'playing') {
-        pauseProjectPlayback();
-    } else if (projectPlayState === 'paused') {
-        resumeProjectPlayback();
-    } else {
-        startProjectPlayback();
-    }
-}
-// =========================== PROJEKT-WIEDERGABE END ==========================
 
 // Bereinigung: Entferne fullPath aus allen Projekten
 function updateAllFilePaths() {
@@ -19078,7 +18899,6 @@ if (typeof module !== "undefined" && module.exports) {
         updateDubStatusForFiles,
         markDubAsReady,
         cleanupDubCache,
-        getProjectPlaybackList,
         ensurePlaybackOrder,
         applyDeEdit,
         speichereUebersetzungsDatei,
@@ -19140,11 +18960,6 @@ if (typeof module !== "undefined" && module.exports) {
         deleteEmiPreset,
         __setEmiPresets: obj => { emiPresets = obj; },
         __getEmiPresets: () => emiPresets,
-        startProjectPlayback,
-        stopProjectPlayback,
-        openPlaybackList,
-        closePlaybackList,
-        __getPlaybackProtocol: () => playbackProtocol,
         // Testzugriff auf die Berechnung der EM-Hüllkurve
         __computeEmiEnvelope: computeEmiEnvelope,
         openEnglishReview,

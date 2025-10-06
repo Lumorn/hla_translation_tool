@@ -205,12 +205,12 @@
                                     <div class="progress-fill" id="globalProjectFill"></div>
                                 </div>
                                 <div class="project-playback">
-                                    <button id="projectPlayPauseBtn" onclick="toggleProjectPlayback()">▶</button>
-                                    <button id="projectStopBtn" onclick="stopProjectPlayback()">⏹</button>
-                                    <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
-                                    <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
+                                    <div class="project-number-nav">
+                                        <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
+                                        <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
+                                    </div>
+                                    <button id="openEnglishReviewBtn" class="btn btn-secondary project-review-btn" onclick="openEnglishReview()" title="Öffnet die EN-Review-Ansicht" aria-haspopup="dialog" aria-controls="englishReviewDialog">🇬🇧 Review</button>
                                 </div>
-                                <button id="openEnglishReviewBtn" class="btn btn-secondary project-review-btn" onclick="openEnglishReview()" title="Öffnet die EN-Review-Ansicht" aria-haspopup="dialog" aria-controls="englishReviewDialog">🇬🇧 Review</button>
                             </div>
                         </div>
                     </section>
@@ -1194,20 +1194,6 @@
                 <button class="btn btn-secondary" onclick="closeCopyAssistant2()">Abbrechen</button>
                 <button class="btn btn-secondary" onclick="copyAssist2Prev()">Zurück</button>
                 <button class="btn btn-success" onclick="copyAssist2Next()">Weiter</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Projekt-Wiedergabe Liste -->
-    <div class="dialog-overlay hidden" id="playbackListDialog">
-        <div class="dialog playback-dialog">
-            <button class="dialog-close-btn" onclick="closePlaybackList()">×</button>
-            <h3>🔊 Wiedergabeliste</h3>
-            <ul id="playbackList" class="playback-list"></ul>
-            <pre id="playbackProtocol" class="playback-protocol"></pre>
-            <div class="dialog-buttons">
-                <button class="btn" id="playbackPlayBtn" onclick="toggleProjectPlayback()">▶</button>
-                <button class="btn btn-secondary" onclick="closePlaybackList()">Schließen</button>
             </div>
         </div>
     </div>

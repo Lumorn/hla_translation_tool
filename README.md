@@ -147,6 +147,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **EN-Review-Überblick:** Der 🇬🇧-Dialog bietet jetzt eine eigene Wiedergabe mit Fortschrittsanzeige, zeigt EN/DE-Text der aktuellen Zeile, blendet zwei vergangene und zwei kommende Dateien ein und scrollt sowohl bei der automatischen Wiedergabe als auch beim manuellen Zurück/Weiter-Schritt direkt zur passenden Tabellenzeile.
+* **Projekt-Player entfernt:** Die frühere Projekt-Wiedergabeliste samt Play/Pause/Stop-Schaltflächen ist gestrichen; die Nummern-Navigation sitzt nun direkt neben dem 🇬🇧-Review-Knopf, der als zentrale Kontrollstelle dient.
 * **Stabile EN-Review-Läufe:** Der Audio-Player entfernt alte Review-Handler vor dem nächsten Start, erhöht den Index nach jedem Track nur einmal und setzt danach entweder automatisch zur nächsten Datei über oder stoppt die Wiedergabe sauber am Ende der Liste.
 * **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
