@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.432
+* `web/src/dubbing.js` entfernt den nicht mehr verwendeten Studio-Hinweis (`showStudioOverlay`/`closeStudioOverlay`) samt `window`-Exporten.
+* `README.md` und `CHANGELOG.md` vermerken den Wegfall des separaten Studio-Overlays.
 ## 🛠️ Patch in 1.40.431
 * `web/src/main.js` entfernt den lokalen Suchindex samt globalem Reset, da die Projektübersicht keine Volltextsuche mehr anbietet.
 * `web/src/localIndex.js` entfällt vollständig; der eigenständige Index wird nicht mehr gebündelt.

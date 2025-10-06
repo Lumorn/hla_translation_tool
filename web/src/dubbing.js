@@ -309,30 +309,6 @@ async function playDubPreview() {
     audio.play();
 }
 
-// Zeigt einen Hinweis an, dass das Studio geöffnet wurde
-function showStudioOverlay() {
-    const ov = document.createElement('div');
-    ov.className = 'dialog-overlay hidden';
-    ov.id = 'studioNoticeDialog';
-    ov.innerHTML = `
-        <div class="dialog">
-            <h3>🎧 ElevenLabs Studio</h3>
-            <p>Das Studio ist in einem neuen Tab geöffnet.<br>
-               Klicken Sie dort auf „Generate Audio" und danach auf OK.</p>
-            <div class="dialog-buttons">
-                <button class="btn btn-success" onclick="closeStudioOverlay()">OK</button>
-            </div>
-        </div>`;
-    document.body.appendChild(ov);
-    ov.classList.remove('hidden');
-}
-
-// Schließt den Studio-Hinweis
-function closeStudioOverlay() {
-    const ov = document.getElementById('studioNoticeDialog');
-    if (ov) ov.remove();
-}
-
 // Zeigt ein Dialogfenster, das auf die manuelle Datei wartet
 // und blendet dabei Ordnername sowie EN- und DE-Text ein
 // ID der Datei, auf deren Download gewartet wird
@@ -1362,8 +1338,6 @@ if (typeof module !== 'undefined' && module.exports) {
         closeDubTooltip,
         escCloseDubTooltip,
         playDubPreview,
-        showStudioOverlay,
-        closeStudioOverlay,
         showDownloadWaitDialog,
         updateDownloadWaitDialog,
         closeDownloadWaitDialog,
@@ -1407,8 +1381,6 @@ if (typeof window !== 'undefined') {
     window.closeDubTooltip = closeDubTooltip;
     window.escCloseDubTooltip = escCloseDubTooltip;
     window.playDubPreview = playDubPreview;
-    window.showStudioOverlay = showStudioOverlay;
-    window.closeStudioOverlay = closeStudioOverlay;
     window.showDownloadWaitDialog = showDownloadWaitDialog;
     window.updateDownloadWaitDialog = updateDownloadWaitDialog;
     window.closeDownloadWaitDialog = closeDownloadWaitDialog;

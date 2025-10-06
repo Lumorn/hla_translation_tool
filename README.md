@@ -744,7 +744,7 @@ Seit Patch 1.40.89 verhindert der Dateiwchter einen Abbruch, wenn die Datei kurz
 Seit Patch 1.40.90 prüft das Tool nach dem Schließen des "Alles gesendet"-Fensters automatisch, ob neue Dub-Dateien erkannt wurden. So erscheint der grüne Haken auch dann, wenn der Dateiwächter bereits vorher reagiert hat.
 Seit Patch 1.40.91 löst der Dateiwächter den manuellen Import nur noch aus, wenn keine Zuordnung zu offenen Jobs möglich ist.
 Seit Patch 1.40.92 bricht der Dateiwächter nach 10 s ohne stabile Datei mit einer Fehlermeldung ab.
-Seit Patch 1.40.93 schließen sich nach erfolgreichem Import das Fenster „Alles gesendet“, der Studio-Hinweis und das Dubbing-Protokoll automatisch.
+Seit Patch 1.40.93 schließen sich nach erfolgreichem Import das Fenster „Alles gesendet“, der Studio-Hinweis und das Dubbing-Protokoll automatisch. Seit Version 1.40.432 entfällt der separate Studio-Hinweis vollständig, weil die ElevenLabs-Seite ohne zusätzliches Overlay geöffnet wird.
 Seit Patch 1.40.94 funktioniert die Untertitel-Suche über die Lupe wieder korrekt.
 Seit Patch 1.40.95 lädt die OT-Suche fehlende Text-Utilities automatisch nach.
 Seit Patch 1.40.96 meldet die Untertitel-Suche nun fehlende Text-Utilities.
