@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { saveVersion, listVersions, restoreVersion, switchVersion, saveBufferVersion } = require('../historyUtils');
+const { saveVersion, listVersions, switchVersion, saveBufferVersion } = require('../historyUtils');
 
 describe('history utils', () => {
     test('keeps maximal zehn Versionen', () => {
@@ -17,7 +17,7 @@ describe('history utils', () => {
         expect(list.length).toBe(10);
     });
 
-    test('restores a version correctly', () => {
+    test('switchVersion stellt eine gespeicherte Version wieder her', () => {
         const historyRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'hist-'));
         const targetRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'de-'));
         const source = path.join(historyRoot, 'src.wav');
@@ -25,9 +25,11 @@ describe('history utils', () => {
         const relPath = 'a/b.wav';
         saveVersion(historyRoot, relPath, source, 10);
         const name = listVersions(historyRoot, relPath)[0];
-        restoreVersion(historyRoot, relPath, name, targetRoot);
+        switchVersion(historyRoot, relPath, name, targetRoot);
         const restored = fs.readFileSync(path.join(targetRoot, relPath), 'utf8');
         expect(restored).toBe('abc');
+        const remainingHistory = listVersions(historyRoot, relPath);
+        expect(remainingHistory.length).toBe(0);
     });
 
     test('switchVersion tauscht Dateien und aktualisiert die Historie', () => {
