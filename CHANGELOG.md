@@ -1,4 +1,9 @@
 # Changelog
+## 🛠️ Patch in 1.40.434
+* `electron/preload.cjs` entfernt den nicht mehr genutzten `deleteBookmark`-Bridge-Aufruf aus der Video-API.
+* `electron/main.js` streicht den IPC-Handler `delete-bookmark`, da das Löschen clientseitig erfolgt.
+* `electron/ipcContracts.ts` bereinigt den Kanal-Typ um `delete-bookmark`.
+* `README.md` und `CHANGELOG.md` erwähnen nur noch die aktiven Video-API-Funktionen.
 ## 🛠️ Patch in 1.40.433
 * `web/src/main.js` entfernt die vorbereitete virtuelle Tabellenansicht inklusive Initialisierung.
 * `web/src/virtualList.js` entfällt vollständig, weil kein Modul mehr darauf zugreift.
