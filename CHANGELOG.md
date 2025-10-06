@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.428
+* `web/src/main.js` entfernt den Ordner-Umbenennungs-Workflow inklusive Datenbankanpassung und verlässt sich wieder auf Dateisystem-Umbenennungen.
+* `README.md` und `CHANGELOG.md` vermerken den Wegfall des speziellen Ordner-Umbenennungs-Dialogs.
 ## 🛠️ Patch in 1.40.427
 * `elevenlabs.js` entfernt den Helper `createDubbing` samt Export und konzentriert sich auf Status- und Download-Funktionen.
 * `tests/elevenlabs.test.js` prüfen nur noch `downloadDubbingAudio`, `waitForDubbing` und `isDubReady`.

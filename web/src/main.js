@@ -16906,63 +16906,6 @@ async function applyDeEdit(param = {}) {
 // =========================== APPLYDEEDIT END ===============================
 
 
-// =========================== RENAMEFOLDER START ==============================
-async function renameFolder(oldName, newName, parentHandle) {
-    const src = await parentHandle.getDirectoryHandle(oldName);
-    const dest = await parentHandle.getDirectoryHandle(newName, { create: true });
-
-    // Kopiere alle Inhalte rekursiv
-    async function kopiere(srcHandle, destHandle, pfad = '') {
-        for await (const [name, child] of srcHandle.entries()) {
-            if (child.kind === 'file') {
-                const file = await child.getFile();
-                const fh = await destHandle.getFileHandle(name, { create: true });
-                const w = await fh.createWritable();
-                await w.write(file);
-                await w.close();
-            } else if (child.kind === 'directory') {
-                const newDir = await destHandle.getDirectoryHandle(name, { create: true });
-                await kopiere(child, newDir, pfad + name + '/');
-            }
-        }
-    }
-
-    await kopiere(src, dest);
-    await parentHandle.removeEntry(oldName, { recursive: true });
-
-    aktualisiereDBNachRename(oldName, newName);
-}
-// =========================== RENAMEFOLDER END ================================
-
-
-// =========================== AKTUALISIEREDBNACHRENAME START ==================
-function aktualisiereDBNachRename(altOrdner, neuOrdner) {
-    for (const [filename, paths] of Object.entries(filePathDatabase)) {
-        paths.forEach(p => {
-            if (p.folder.startsWith(altOrdner)) {
-                p.folder = p.folder.replace(altOrdner, neuOrdner);
-                p.fullPath = p.fullPath.replace(altOrdner, neuOrdner);
-            }
-        });
-    }
-
-    const neuesTextDB = {};
-    for (const [key, val] of Object.entries(textDatabase)) {
-        if (key.startsWith(altOrdner + '/')) {
-            const neuerKey = neuOrdner + key.slice(altOrdner.length);
-            neuesTextDB[neuerKey] = val;
-            delete textDatabase[key];
-        }
-    }
-    Object.assign(textDatabase, neuesTextDB);
-
-    saveFilePathDatabase();
-    saveTextDatabase();
-}
-// =========================== AKTUALISIEREDBNACHRENAME END ====================
-
-
-
 // =========================== IMPROVED IMPORT PROCESS START ===========================
 async function startImportProcess() {
     const filenameColumn = parseInt(document.getElementById('filenameColumn').value);
