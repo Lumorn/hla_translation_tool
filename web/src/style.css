@@ -4615,12 +4615,18 @@ th:nth-child(8) {
 .english-review-item.review-item--previous { border-color: rgba(255, 255, 255, 0.08); opacity: 0.85; }
 .english-review-item.review-item--active { border-color: #ff6b1a; background: rgba(255, 107, 26, 0.15); color: #fff; }
 .english-review-item.review-item--upcoming { border-style: dashed; }
+.english-review-progress { text-align: right; color: #bbb; font-size: 13px; }
+.english-review-link { background: none; border: none; color: #ffb347; cursor: pointer; text-align: left; padding: 0; font-weight: 600; font-size: 13px; }
+.english-review-link:hover, .english-review-link:focus { text-decoration: underline; color: #ffd08a; }
+.english-review-link:disabled { color: #555; cursor: default; text-decoration: none; }
+.english-review-link--current { font-size: 15px; }
 .english-review-controls { justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .english-review-controls .btn { min-width: 44px; text-align: center; }
 @media (max-width: 720px) {
     .english-review-texts { grid-template-columns: 1fr; }
     .english-review-neighbours { flex-direction: column; }
     .english-review-controls { justify-content: center; }
+    .english-review-progress { text-align: center; }
 }
 
 /* Tabelle für den ZIP-Import */

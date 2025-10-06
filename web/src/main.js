@@ -989,6 +989,14 @@ let playbackFiles          = [];       // Gefilterte Liste fuer Projekt-Wiederga
 let playbackStatus         = {};       // Merkt Existenz, Reihenfolge und Abspiel-Erfolg
 let playbackProtocol       = '';       // Protokoll der Wiedergabe
 
+// Status für die EN-Review
+let enReviewState          = 'closed';   // 'playing', 'paused', 'stopped', 'closed'
+let enReviewIndex          = 0;          // Aktuelle Position innerhalb der Review-Liste
+let enReviewFiles          = [];         // Dateien des aktuellen Projekts in Review-Reihenfolge
+let enReviewMode           = 'sequential'; // Merkt den gewählten Review-Modus (für spätere Erweiterungen)
+let enReviewObjectUrl      = null;       // Temporärer Blob-Pfad für die Wiedergabe
+let enReviewHighlightedId  = null;       // Zuletzt markierte Zeile durch die Review
+
 // Automatische Backup-Einstellungen
 let autoBackupInterval = parseInt(storage.getItem('hla_autoBackupInterval')) || 10; // Minuten
 let autoBackupLimit    = parseInt(storage.getItem('hla_autoBackupLimit')) || 10;
@@ -3665,6 +3673,7 @@ function selectProject(id){
     // Debug-Ausgabe: Start der Projektwahl
     console.log('[DEBUG] selectProject gestartet', { id, projektAnzahl: projects.length });
 
+    stopEnglishReview();
     stopProjectPlayback();
     saveCurrentProject(); // Aktuelles Projekt sichern, bevor der GPT-Zustand gelöscht wird
     storeSegmentState(); // Segmentzustand vor dem Reset speichern
@@ -7858,6 +7867,404 @@ async function playDeAudio(fileId, onEnded = null, track = false) {
 }
 // =========================== PLAYDEAUDIO END ========================
 
+// =========================== ENGLISH REVIEW START ============================
+function getEnglishReviewOrderedFiles() {
+    ensurePlaybackOrder();
+    if (displayOrder.length === files.length) {
+        return [...displayOrder]
+            .sort((a, b) => a.originalIndex - b.originalIndex)
+            .map(item => item.file);
+    }
+    return [...files];
+}
+
+function releaseEnglishReviewObjectUrl() {
+    if (enReviewObjectUrl) {
+        try {
+            URL.revokeObjectURL(enReviewObjectUrl);
+        } catch (err) {
+            console.error('EN-Review: Blob-URL konnte nicht freigegeben werden', err);
+        }
+        enReviewObjectUrl = null;
+    }
+}
+
+function openEnglishReview(mode = 'sequential') {
+    if (!currentProject) {
+        updateStatus('Kein Projekt aktiv – EN-Review nicht möglich.');
+        return;
+    }
+
+    stopProjectPlayback();
+    enReviewMode = mode || 'sequential';
+    enReviewFiles = getEnglishReviewOrderedFiles();
+    const dialog = document.getElementById('englishReviewDialog');
+    if (!dialog) return;
+
+    if (enReviewFiles.length === 0) {
+        enReviewIndex = 0;
+        enReviewState = 'stopped';
+        dialog.classList.remove('hidden');
+        updateEnglishReviewDialog();
+        updateStatus('Keine Dateien für die EN-Review vorhanden.');
+        return;
+    }
+
+    const desiredIndex = Number.isFinite(currentRowNumber)
+        ? Math.min(Math.max(Number(currentRowNumber) - 1, 0), enReviewFiles.length - 1)
+        : 0;
+    enReviewIndex = desiredIndex;
+    enReviewState = 'stopped';
+    dialog.classList.remove('hidden');
+    updateEnglishReviewDialog();
+}
+
+function closeEnglishReview() {
+    stopEnglishReview();
+    enReviewState = 'closed';
+    const dialog = document.getElementById('englishReviewDialog');
+    if (dialog) dialog.classList.add('hidden');
+    updateEnglishReviewDialog();
+}
+
+function startEnglishReviewPlayback() {
+    if (enReviewFiles.length === 0) {
+        updateStatus('EN-Review: Keine Dateien zum Abspielen gefunden.');
+        return;
+    }
+    stopProjectPlayback();
+    enReviewState = 'playing';
+    playCurrentEnglishReviewFile();
+    updateEnglishReviewDialog();
+}
+
+function pauseEnglishReview() {
+    const audio = document.getElementById('audioPlayer');
+    if (!audio || enReviewState !== 'playing') return;
+    audio.pause();
+    enReviewState = 'paused';
+    updateEnglishReviewDialog();
+}
+
+function resumeEnglishReview() {
+    const audio = document.getElementById('audioPlayer');
+    if (!audio || enReviewState !== 'paused') return;
+    audio.play().then(() => {
+        enReviewState = 'playing';
+        updateEnglishReviewDialog();
+    }).catch(err => {
+        console.error('EN-Review: Wiederaufnahme fehlgeschlagen', err);
+        updateStatus('EN-Review: Wiedergabe konnte nicht fortgesetzt werden.');
+    });
+}
+
+function stopEnglishReview() {
+    const wasReviewPlayback = typeof currentlyPlaying === 'string' && currentlyPlaying.startsWith('en-review-');
+    if (wasReviewPlayback) {
+        stopCurrentPlayback();
+    }
+    releaseEnglishReviewObjectUrl();
+    if (wasReviewPlayback || enReviewState === 'playing' || enReviewState === 'paused' || enReviewHighlightedId !== null) {
+        clearProjectRowHighlight();
+        enReviewHighlightedId = null;
+    }
+    if (enReviewState !== 'closed') {
+        enReviewState = 'stopped';
+    }
+    updateEnglishReviewDialog();
+}
+
+function playCurrentEnglishReviewFile() {
+    if (enReviewFiles.length === 0) {
+        stopEnglishReview();
+        return;
+    }
+
+    if (enReviewIndex < 0) enReviewIndex = 0;
+    if (enReviewIndex >= enReviewFiles.length) {
+        stopEnglishReview();
+        return;
+    }
+
+    const file = enReviewFiles[enReviewIndex];
+    if (!file) {
+        stopEnglishReview();
+        return;
+    }
+
+    stopCurrentPlayback();
+    releaseEnglishReviewObjectUrl();
+
+    updateEnglishReviewDialog();
+
+    const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
+    if (!audioInfo) {
+        updateStatus(`EN-Review: Keine EN-Datei gefunden (${file.filename}).`);
+        if (enReviewState === 'playing') {
+            enReviewIndex++;
+            playCurrentEnglishReviewFile();
+        } else {
+            updateEnglishReviewDialog();
+        }
+        return;
+    }
+
+    const audio = document.getElementById('audioPlayer');
+    if (!audio) {
+        updateStatus('Kein Audio-Player verfügbar.');
+        return;
+    }
+
+    const position = getFilePosition(file.id);
+    if (position > 0) {
+        highlightProjectRow(file.id);
+        enReviewHighlightedId = file.id;
+    }
+
+    let objectUrl = null;
+    if (window.electronAPI && typeof audioInfo.audioFile === 'string') {
+        audio.src = audioInfo.audioFile;
+    } else {
+        const blob = audioInfo.audioFile instanceof Blob
+            ? audioInfo.audioFile
+            : new Blob([audioInfo.audioFile], { type: audioInfo.audioFile?.type || 'audio/mpeg' });
+        objectUrl = URL.createObjectURL(blob);
+        audio.src = objectUrl;
+    }
+    enReviewObjectUrl = objectUrl;
+
+    const previousEnded = audio.onended;
+    audio.onended = () => {
+        releaseEnglishReviewObjectUrl();
+        if (typeof currentlyPlaying === 'string' && currentlyPlaying.startsWith('en-review-')) {
+            currentlyPlaying = null;
+        }
+        if (enReviewState === 'playing') {
+            enReviewIndex++;
+            if (enReviewIndex < enReviewFiles.length) {
+                playCurrentEnglishReviewFile();
+            } else {
+                stopEnglishReview();
+            }
+        } else {
+            updateEnglishReviewDialog();
+        }
+        if (typeof previousEnded === 'function') {
+            try {
+                previousEnded();
+            } catch (err) {
+                console.error('EN-Review: Fehler im vorherigen onended-Handler', err);
+            }
+        }
+    };
+
+    audio.play().then(() => {
+        currentlyPlaying = `en-review-${file.id}`;
+        enReviewState = 'playing';
+        updateEnglishReviewDialog();
+    }).catch(err => {
+        console.error('EN-Review: Wiedergabe fehlgeschlagen', err);
+        updateStatus(`EN-Review: Wiedergabe nicht möglich (${file.filename}).`);
+        releaseEnglishReviewObjectUrl();
+        currentlyPlaying = null;
+        enReviewState = 'stopped';
+        updateEnglishReviewDialog();
+    });
+}
+
+function createEnglishReviewListItem(list, file, cssModifier) {
+    if (!list || !file) return;
+    const li = document.createElement('li');
+    li.className = `english-review-item review-item--${cssModifier}`;
+
+    const position = getFilePosition(file.id);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'english-review-link';
+    button.textContent = `${position}. ${file.filename}`;
+    button.onclick = () => {
+        if (position > 0) {
+            scrollToNumber(position);
+            highlightProjectRow(file.id);
+            enReviewHighlightedId = file.id;
+        }
+    };
+
+    const preview = document.createElement('small');
+    const text = (file.enText || '').replace(/\s+/g, ' ').trim();
+    if (text.length > 0) {
+        preview.textContent = text.length > 90 ? `${text.slice(0, 87)}…` : text;
+    } else {
+        preview.textContent = 'Kein EN-Text hinterlegt';
+    }
+
+    li.appendChild(button);
+    li.appendChild(preview);
+    list.appendChild(li);
+}
+
+function updateEnglishReviewDialog() {
+    const currentFileElem = document.getElementById('englishReviewCurrentFile');
+    const enTextElem = document.getElementById('englishReviewEnText');
+    const deTextElem = document.getElementById('englishReviewDeText');
+    const prevList = document.getElementById('englishReviewPreviousList');
+    const nextList = document.getElementById('englishReviewNextList');
+    const progressElem = document.getElementById('englishReviewProgress');
+    const playBtn = document.getElementById('englishReviewPlayBtn');
+    const pauseBtn = document.getElementById('englishReviewPauseBtn');
+    const prevBtn = document.getElementById('englishReviewPrevBtn');
+    const nextBtn = document.getElementById('englishReviewNextBtn');
+    const scrollBtn = document.getElementById('englishReviewScrollBtn');
+
+    if (!currentFileElem || !enTextElem || !deTextElem || !prevList || !nextList) {
+        return;
+    }
+
+    prevList.innerHTML = '';
+    nextList.innerHTML = '';
+
+    const hasFiles = enReviewFiles.length > 0 && enReviewIndex >= 0 && enReviewIndex < enReviewFiles.length;
+    if (!hasFiles) {
+        currentFileElem.textContent = 'Keine Dateien im aktuellen Projekt.';
+        enTextElem.textContent = '—';
+        deTextElem.textContent = '—';
+    } else {
+        const file = enReviewFiles[enReviewIndex];
+        const position = getFilePosition(file.id);
+
+        currentFileElem.innerHTML = '';
+        const nameBtn = document.createElement('button');
+        nameBtn.type = 'button';
+        nameBtn.className = 'english-review-link english-review-link--current';
+        nameBtn.textContent = `${position}. ${file.filename}`;
+        nameBtn.onclick = () => {
+            if (position > 0) {
+                scrollToNumber(position);
+                highlightProjectRow(file.id);
+                enReviewHighlightedId = file.id;
+            }
+        };
+
+        const folderInfo = document.createElement('small');
+        folderInfo.textContent = file.folder || '';
+
+        currentFileElem.appendChild(nameBtn);
+        currentFileElem.appendChild(folderInfo);
+
+        enTextElem.textContent = file.enText || '—';
+        deTextElem.textContent = file.deText || '—';
+
+        const previousItems = enReviewFiles.slice(Math.max(0, enReviewIndex - 2), enReviewIndex);
+        previousItems.forEach(f => createEnglishReviewListItem(prevList, f, 'previous'));
+
+        const upcomingItems = enReviewFiles.slice(enReviewIndex + 1, enReviewIndex + 3);
+        upcomingItems.forEach(f => createEnglishReviewListItem(nextList, f, 'upcoming'));
+    }
+
+    if (progressElem) {
+        if (!hasFiles) {
+            progressElem.textContent = 'Fortschritt: 0 / 0 (0%)';
+        } else {
+            const current = enReviewIndex + 1;
+            const total = enReviewFiles.length;
+            const percent = total > 0 ? Math.round((current / total) * 100) : 0;
+            progressElem.textContent = `Fortschritt: ${current} / ${total} (${percent}%)`;
+        }
+    }
+
+    if (playBtn) playBtn.disabled = !hasFiles || enReviewState === 'playing';
+    if (pauseBtn) pauseBtn.disabled = !hasFiles || enReviewState !== 'playing';
+    if (prevBtn) prevBtn.disabled = !hasFiles || enReviewIndex === 0;
+    if (nextBtn) nextBtn.disabled = !hasFiles || enReviewIndex >= enReviewFiles.length - 1;
+    if (scrollBtn) scrollBtn.disabled = !hasFiles;
+}
+
+function englishReviewPrev() {
+    if (enReviewFiles.length === 0) return;
+    if (enReviewIndex === 0) return;
+    enReviewIndex--;
+    if (enReviewState === 'playing' || enReviewState === 'paused') {
+        playCurrentEnglishReviewFile();
+    } else {
+        const file = enReviewFiles[enReviewIndex];
+        if (file) {
+            const position = getFilePosition(file.id);
+            if (position > 0) {
+                highlightProjectRow(file.id);
+                enReviewHighlightedId = file.id;
+            }
+        }
+        updateEnglishReviewDialog();
+    }
+}
+
+function englishReviewNext() {
+    if (enReviewFiles.length === 0) return;
+    if (enReviewIndex >= enReviewFiles.length - 1) {
+        if (enReviewState === 'playing') {
+            stopEnglishReview();
+        }
+        return;
+    }
+    enReviewIndex++;
+    if (enReviewState === 'playing' || enReviewState === 'paused') {
+        playCurrentEnglishReviewFile();
+    } else {
+        const file = enReviewFiles[enReviewIndex];
+        if (file) {
+            const position = getFilePosition(file.id);
+            if (position > 0) {
+                highlightProjectRow(file.id);
+                enReviewHighlightedId = file.id;
+            }
+        }
+        updateEnglishReviewDialog();
+    }
+}
+
+function englishReviewPlay() {
+    if (enReviewState === 'playing') return;
+    if (enReviewState === 'paused') {
+        resumeEnglishReview();
+    } else {
+        startEnglishReviewPlayback();
+    }
+}
+
+function englishReviewPause() {
+    if (enReviewState !== 'playing') return;
+    pauseEnglishReview();
+}
+
+function englishReviewScrollToCurrent() {
+    if (enReviewFiles.length === 0) return;
+    if (enReviewIndex < 0 || enReviewIndex >= enReviewFiles.length) return;
+    const file = enReviewFiles[enReviewIndex];
+    if (!file) return;
+    const position = getFilePosition(file.id);
+    if (position > 0) {
+        scrollToNumber(position);
+        highlightProjectRow(file.id);
+        enReviewHighlightedId = file.id;
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.openEnglishReview = openEnglishReview;
+    window.closeEnglishReview = closeEnglishReview;
+    window.startEnglishReviewPlayback = startEnglishReviewPlayback;
+    window.pauseEnglishReview = pauseEnglishReview;
+    window.resumeEnglishReview = resumeEnglishReview;
+    window.stopEnglishReview = stopEnglishReview;
+    window.playCurrentEnglishReviewFile = playCurrentEnglishReviewFile;
+    window.updateEnglishReviewDialog = updateEnglishReviewDialog;
+    window.englishReviewPrev = englishReviewPrev;
+    window.englishReviewNext = englishReviewNext;
+    window.englishReviewPlay = englishReviewPlay;
+    window.englishReviewPause = englishReviewPause;
+    window.englishReviewScrollToCurrent = englishReviewScrollToCurrent;
+}
+// =========================== ENGLISH REVIEW END ==============================
 // =========================== PROJEKT-WIEDERGABE START ========================
 function updateProjectPlaybackButtons() {
     const playPauseBtn = document.getElementById('projectPlayPauseBtn');
@@ -7980,6 +8387,7 @@ function playCurrentProjectFile() {
 }
 
 function startProjectPlayback() {
+    stopEnglishReview();
     playbackFiles = getProjectPlaybackList();
     playbackStatus = {};
     playbackFiles.forEach((f, idx) => {
@@ -8016,11 +8424,15 @@ function resumeProjectPlayback() {
 }
 
 function stopProjectPlayback() {
+    const wasActive = projectPlayState === 'playing' || projectPlayState === 'paused';
+    stopEnglishReview();
     projectPlayState = 'stopped';
     projectPlayIndex = 0;
     playbackFiles = [];
     playbackStatus = {};
-    addPlaybackLog('--- Ende ---');
+    if (wasActive) {
+        addPlaybackLog('--- Ende ---');
+    }
     clearProjectRowHighlight();
     stopCurrentPlayback();
     updateProjectPlaybackButtons();
@@ -18717,7 +19129,25 @@ if (typeof module !== "undefined" && module.exports) {
         closePlaybackList,
         __getPlaybackProtocol: () => playbackProtocol,
         // Testzugriff auf die Berechnung der EM-Hüllkurve
-        __computeEmiEnvelope: computeEmiEnvelope
+        __computeEmiEnvelope: computeEmiEnvelope,
+        openEnglishReview,
+        closeEnglishReview,
+        startEnglishReviewPlayback,
+        pauseEnglishReview,
+        resumeEnglishReview,
+        stopEnglishReview,
+        playCurrentEnglishReviewFile,
+        updateEnglishReviewDialog,
+        englishReviewPrev,
+        englishReviewNext,
+        englishReviewPlay,
+        englishReviewPause,
+        englishReviewScrollToCurrent,
+        __getEnglishReviewState: () => ({
+            state: enReviewState,
+            index: enReviewIndex,
+            files: [...enReviewFiles]
+        })
     };
 }
 

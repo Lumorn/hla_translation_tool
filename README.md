@@ -146,7 +146,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Kapitelwahl beim Erstellen:** Neue oder bestehende Kapitel direkt auswählen
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
-* **EN-Review-Überblick:** Ein zusätzlicher Dialog zeigt aktuelle Datei samt EN/DE-Text, zwei vorherige und zwei folgende Dateinamen und lässt sich über einen eigenen 🇬🇧-Button im Fortschrittsbereich komfortabel steuern.
+* **EN-Review-Überblick:** Der 🇬🇧-Dialog bietet jetzt eine eigene Wiedergabe mit Fortschrittsanzeige, zeigt EN/DE-Text der aktuellen Zeile, blendet zwei vergangene und zwei kommende Dateien ein und erlaubt über Zurück/Weiter sowie „Zur Zeile“-Sprung einen direkten Abgleich mit der Tabelle.
 * **Automatische MP3-Konvertierung** beim Start (Originale in `Backups/mp3`)
 * **Automatische Prüfung geänderter Endungen** passt Datenbank und Projekte an
 * **Live‑Statistiken:** EN‑%, DE‑%, Completion‑%, Globale Textzahlen (EN/DE/BEIDE/∑)
