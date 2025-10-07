@@ -197,6 +197,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Prompt-Vorschau:** Vor dem eigentlichen Versand zeigt ein Dialog den kompletten Prompt an. Erst nach Klick auf "Senden" wird die Anfrage gestellt und die Antwort im selben Fenster angezeigt
 * **Bewertung per Einfügen-Knopf:** Nach dem Versand erscheint ein zusätzlicher Knopf, der Score, Kommentar und Vorschlag in die Tabelle übernimmt
 * **Vorab-Dialog für GPT:** Vor dem Start zeigt ein Fenster, wie viele Zeilen und Sprecher enthalten sind
+* **Sprecher ersetzen mit Web-Speech-Fallback:** Der Mikrofon-Knopf prüft sichere Kontexte sowie Browser-Unterstützung und blendet bei fehlender Web-Speech-API einen deutschen Hinweis samt Toast ein, statt unkontrolliert zu scheitern.
 * **Unbewertete Zeilen:** Noch nicht bewertete Zeilen zeigen eine graue 0
 * **Score-Spalte nach Version:** Die farbige Bewertung steht direkt vor dem EN-Text
 * **Anpassbarer Bewertungs-Prompt:** Der Text liegt in `prompts/gpt_score.txt`; jede Bewertung liefert nun immer auch einen Verbesserungsvorschlag
