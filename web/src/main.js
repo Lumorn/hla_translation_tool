@@ -1265,7 +1265,6 @@ let extractRelevantFolder;
 let pathUtilsPromise;
 let evaluateScene;
 let applyEvaluationResults;
-let scoreVisibleLines;
 let scoreCellTemplate, attachScoreHandlers, scoreClass, getContrastingTextColor, SCORE_COLORS;
 // Platzhalter für Dubbing-Funktionen
 let showDubbingSettings, showEmoDubbingSettings,
@@ -1330,9 +1329,6 @@ if (typeof module !== 'undefined' && module.exports) {
         applyEvaluationResults = mod.applyEvaluationResults ||
                                 (mod.default && mod.default.applyEvaluationResults) ||
                                 window.applyEvaluationResults;
-        scoreVisibleLines = mod.scoreVisibleLines ||
-                           (mod.default && mod.default.scoreVisibleLines) ||
-                           window.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Main' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Main' }; });
 } else {
@@ -1393,9 +1389,6 @@ if (typeof module !== 'undefined' && module.exports) {
         applyEvaluationResults = mod.applyEvaluationResults ||
                                 (mod.default && mod.default.applyEvaluationResults) ||
                                 window.applyEvaluationResults;
-        scoreVisibleLines = mod.scoreVisibleLines ||
-                           (mod.default && mod.default.scoreVisibleLines) ||
-                           window.scoreVisibleLines;
         moduleStatus.projectEvaluate = { loaded: true, source: 'Ausgelagert' };
     }).catch(() => { moduleStatus.projectEvaluate = { loaded: false, source: 'Ausgelagert' }; });
     moduleStatus.dubbing = { loaded: false, source: 'Ausgelagert' };

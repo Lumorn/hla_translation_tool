@@ -1062,7 +1062,7 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **web/src/colorUtils.js** – Farb-Hilfsfunktionen wie `getVersionColor`
 * **web/src/fileUtils.mjs** – Wrapper, der die Textfunktionen sowohl im Browser als auch unter Node bereitstellt
 * **web/src/gptService.js** – Anbindung an die ChatGPT-API. Stellt `evaluateScene`, `testKey`, `fetchModels`, `getSystemPrompt`, `generateEmotionText`, `adjustEmotionText`, `improveEmotionText`, `sanitizeJSONResponse`, `fetchWithRetry`, `queuedFetch`, `cancelGptRequests` und `setRestMode` bereit; der frühere Helfer `getEmotionPrompt` entfällt und das Emotion-Prompt bleibt intern verwaltet.
-* **web/src/actions/projectEvaluate.js** – Bewertet sichtbare Zeilen und aktualisiert die Tabelle
+* **web/src/actions/projectEvaluate.js** – Übernimmt GPT-Ergebnisse in die Tabelle und stellt den JSON-Parser bereit
 
 ---
 
