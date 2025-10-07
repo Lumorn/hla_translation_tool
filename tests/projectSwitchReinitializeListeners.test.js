@@ -2,10 +2,11 @@
 // Stellt sicher, dass switchProjectSafe Event-Listener neu setzt
 const fs = require('fs');
 const path = require('path');
+const { setupProjectLoadingOverlay } = require('./testHelpers');
 
 test('switchProjectSafe initialisiert Listener neu', async () => {
   // Platzhalter für Overlay
-  document.body.innerHTML = '<div id="projectLoadingOverlay" class="hidden"></div>';
+  setupProjectLoadingOverlay();
 
   // Benötigte Helferfunktionen bereitstellen
   window.pauseAutosave = jest.fn(async () => {});

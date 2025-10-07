@@ -336,6 +336,9 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Grüne Rahmen** für **100 %**‑Projekte & vollständig übersetzte Ordner
 * **Grüne Haken** für abgeschlossene Kapitel
 * **Dateizeilen‑Badges:** Übersetzt / Ignoriert / Offen
+* **Schrittweiser Projektwechsel:** Das Ladeoverlay listet alle Teilschritte mit Statussymbolen und Laufzeit auf, damit klar ist, welcher Abschnitt gerade arbeitet oder bereits abgeschlossen ist.
+
+> ℹ️ **Hinweis:** Während ein Projekt lädt, bleibt die Liste sichtbar und zeigt laufende (⏳) sowie fertige (✔️) Schritte samt Dauer. Sobald der Wechsel fertig ist, verschwindet das Overlay wieder und die Liste wird automatisch geleert.
 
 </details>
 

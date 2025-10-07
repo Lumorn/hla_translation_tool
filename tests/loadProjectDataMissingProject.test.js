@@ -2,10 +2,11 @@
 // Prüft, ob loadProjectData bei fehlendem Projekt mit Fehlermeldung abbricht
 const fs = require('fs');
 const path = require('path');
+const { getProjectLoadingOverlayMarkup } = require('./testHelpers');
 
 test('loadProjectData bricht bei fehlendem Projekt ab', async () => {
   // Overlay simulieren, um Spinner zu prüfen
-  document.body.innerHTML = '<div id="projectLoadingOverlay"></div>';
+  document.body.innerHTML = getProjectLoadingOverlayMarkup({ hidden: false });
 
   // Projekte sind leer, Nachladen bringt nichts
   window.projects = [];

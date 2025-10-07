@@ -1,4 +1,10 @@
 # Changelog
+## 🛠️ Patch in 1.40.439
+* `web/hla_translation_tool.html` zeigt unter dem Ladebalken eine strukturierte Schritt-Liste für Projektwechsel an.
+* `web/src/style.css` gestaltet die neue Fortschrittsliste mit Statusfarben, Symbolspalte und Zeitstempeln.
+* `web/src/projectSwitch.js` führt eine Fortschrittsverwaltung ein, misst jeden Ladeschritt mit `performance.now()` und räumt die Liste nach Abschluss wieder leer.
+* `tests/testHelpers.js` stellt DOM-Hilfen für das Overlay bereit und alle Projektwechsel-Tests passen sich an die erweiterte Struktur an.
+* `README.md` dokumentiert den schrittweisen Projektwechsel inklusive Nutzerhinweis, `CHANGELOG.md` vermerkt die neue Anzeige.
 ## 🛠️ Patch in 1.40.438
 * `web/src/main.js` schützt den Sprecher-Ersetzen-Button vor unsicheren Kontexten, prüft die Web-Speech-Unterstützung und fängt Startfehler der Spracherkennung mit aussagekräftigen Logs sowie Toasts ab.
 * `README.md` und `CHANGELOG.md` dokumentieren den abgesicherten Web-Speech-Fallback für „Sprecher ersetzen“.

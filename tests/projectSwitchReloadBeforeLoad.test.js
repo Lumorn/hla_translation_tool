@@ -2,10 +2,11 @@
 // Testet, dass beim Projektwechsel die Liste vor dem Öffnen aktualisiert wird
 const fs = require('fs');
 const path = require('path');
+const { setupProjectLoadingOverlay } = require('./testHelpers');
 
 test('switchProjectSafe lädt Liste vor dem Projekt ohne Fehler', async () => {
   // Overlay für den Ladebalken bereitstellen
-  document.body.innerHTML = '<div id="projectLoadingOverlay" class="hidden"></div>';
+  setupProjectLoadingOverlay();
 
   const aufrufReihenfolge = [];
 
@@ -21,6 +22,9 @@ test('switchProjectSafe lädt Liste vor dem Projekt ohne Fehler', async () => {
   window.cancelGptRequests = jest.fn();
   window.clearGptState = jest.fn();
   window.loadProjectData = jest.fn(async () => { aufrufReihenfolge.push('loadProjectData'); });
+  window.scanEnOrdner = jest.fn(async () => {});
+  window.updateAllProjectsAfterScan = jest.fn();
+  window.updateFileAccessStatus = jest.fn();
 
   // loadProjects wirft Fehler, falls skipSelect nicht true ist
   window.loadProjects = jest.fn(async (skipSelect) => {

@@ -2,9 +2,10 @@
 // Prüft, ob bei dauerhaft fehlendem Projekt die Liste erneut geladen wird
 const fs = require('fs');
 const path = require('path');
+const { setupProjectLoadingOverlay } = require('./testHelpers');
 
 test('switchProjectSafe lädt Liste bei dauerhaft fehlendem Projekt erneut', async () => {
-  document.body.innerHTML = '<div id="projectLoadingOverlay" class="hidden"></div>';
+  setupProjectLoadingOverlay();
 
   window.pauseAutosave = jest.fn(async () => {});
   window.flushPendingWrites = jest.fn(async () => {});
@@ -18,6 +19,9 @@ test('switchProjectSafe lädt Liste bei dauerhaft fehlendem Projekt erneut', asy
   window.resumeAutosave = jest.fn(async () => {});
   window.cancelGptRequests = jest.fn();
   window.clearGptState = jest.fn();
+  window.scanEnOrdner = jest.fn(async () => {});
+  window.updateAllProjectsAfterScan = jest.fn();
+  window.updateFileAccessStatus = jest.fn();
 
   const psCode = fs.readFileSync(path.join(__dirname, '../web/src/projectSwitch.js'), 'utf8');
   eval(psCode);

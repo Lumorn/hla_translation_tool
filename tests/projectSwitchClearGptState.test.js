@@ -2,10 +2,11 @@
 // Testet, ob beim Projektwechsel der GPT-Zustand geleert wird
 const fs = require('fs');
 const path = require('path');
+const { setupProjectLoadingOverlay } = require('./testHelpers');
 
 test('switchProjectSafe setzt gptEvaluationResults auf null', async () => {
     // Overlay für den Ladebalken bereitstellen
-    document.body.innerHTML = '<div id="projectLoadingOverlay" class="hidden"></div>';
+    setupProjectLoadingOverlay();
 
     // GPT-Zustand und Reset-Funktion simulieren
     gptEvaluationResults = { score: 99 };
@@ -25,6 +26,9 @@ test('switchProjectSafe setzt gptEvaluationResults auf null', async () => {
     window.resumeAutosave = jest.fn(async () => {});
     window.cancelGptRequests = jest.fn();
     window.reloadProjectList = jest.fn(async () => {});
+    window.scanEnOrdner = jest.fn(async () => {});
+    window.updateAllProjectsAfterScan = jest.fn();
+    window.updateFileAccessStatus = jest.fn();
 
     // switchProjectSafe aus projectSwitch.js laden
     const psCode = fs.readFileSync(path.join(__dirname, '../web/src/projectSwitch.js'), 'utf8');

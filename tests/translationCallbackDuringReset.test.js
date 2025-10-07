@@ -2,6 +2,7 @@
 // Prüft, dass verspätete Übersetzungsrückläufer während eines Resets keine Projekte speichern
 const fs = require('fs');
 const path = require('path');
+const { getProjectLoadingOverlayMarkup } = require('./testHelpers');
 
 describe('Übersetzungs-Rückläufer während Reset', () => {
   let storageMock;
@@ -38,7 +39,7 @@ describe('Übersetzungs-Rückläufer während Reset', () => {
       <div id="folderProgress"></div>
       <div id="emoProgress"></div>
       <div id="folderGrid" style="display: none"></div>
-      <div id="projectLoadingOverlay" class="hidden"></div>
+      ${getProjectLoadingOverlayMarkup()}
     `;
 
     window.showToast = jest.fn();
