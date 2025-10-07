@@ -1,4 +1,7 @@
 # Changelog
+## 🛠️ Patch in 1.40.438
+* `web/src/main.js` schützt den Sprecher-Ersetzen-Button vor unsicheren Kontexten, prüft die Web-Speech-Unterstützung und fängt Startfehler der Spracherkennung mit aussagekräftigen Logs sowie Toasts ab.
+* `README.md` und `CHANGELOG.md` dokumentieren den abgesicherten Web-Speech-Fallback für „Sprecher ersetzen“.
 ## 🛠️ Patch in 1.40.437
 * `web/src/actions/projectEvaluate.js` entfernt den Aufruf `scoreVisibleLines` und konzentriert sich auf das Übernehmen vorhandener GPT-Ergebnisse.
 * `web/src/main.js` streicht die dynamische Initialisierung von `scoreVisibleLines` und lädt nur noch `applyEvaluationResults` nach.

@@ -1505,6 +1505,7 @@ function setupToolbarActionButtons() {
         const copyBtn = document.getElementById("copyAssistantButton");
         const copyBtn2 = document.getElementById("copyAssistant2Button");
         const copyAllEmosBtn = document.getElementById("copyAllEmosButton"); // sammelt alle Emotionstexte
+        const replaceSpeakerBtn = document.getElementById("replaceSpeakerButton");
         const subtitleAllBtn = document.getElementById("subtitleSearchAllButton");
         const subtitleAllBtnInline = document.getElementById("subtitleSearchAllButtonInline");
 
@@ -1542,6 +1543,77 @@ function setupToolbarActionButtons() {
                 event.preventDefault();
                 event.stopPropagation();
                 subtitleAllBtn.click();
+            });
+        }
+
+        if (replaceSpeakerBtn) {
+            replaceSpeakerBtn.addEventListener("click", () => {
+                // Web-Speech-API benötigt HTTPS/localhost und Browser-Unterstützung
+                if (!window.isSecureContext) {
+                    console.warn("Sprecher ersetzen: Spracherkennung benötigt einen sicheren Kontext (HTTPS oder localhost).");
+                    showToast("Die Sprecher-Ersetzen-Funktion benötigt einen sicheren Kontext (HTTPS oder localhost).");
+                    return;
+                }
+
+                const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognitionCtor) {
+                    console.warn("Sprecher ersetzen: Keine Web-Speech-API im aktuellen Browser verfügbar.");
+                    showToast("Dein Browser unterstützt die Web-Spracherkennung nicht – Sprecher ersetzen per Mikrofon ist hier nicht möglich.");
+                    return;
+                }
+
+                const recognition = new SpeechRecognitionCtor();
+                recognition.lang = "de-DE";
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.addEventListener("result", event => {
+                    const transcript = event?.results?.[0]?.[0]?.transcript?.trim();
+                    if (!transcript) {
+                        showToast("Es wurde keine Sprache erkannt. Bitte erneut versuchen.");
+                        return;
+                    }
+
+                    let handled = false;
+                    if (typeof window.applySpeakerReplacement === "function") {
+                        try {
+                            window.applySpeakerReplacement(transcript);
+                            handled = true;
+                        } catch (handlerError) {
+                            console.error("Sprecher ersetzen: Fehler beim Anwenden des erkannten Namens", handlerError);
+                        }
+                    }
+
+                    try {
+                        const voiceEvent = new CustomEvent("speakerReplacementVoiceResult", {
+                            detail: { transcript, source: "web-speech" },
+                            cancelable: true
+                        });
+                        const prevented = !document.dispatchEvent(voiceEvent);
+                        handled = handled || prevented;
+                    } catch (eventError) {
+                        console.error("Sprecher ersetzen: Ereignisverarbeitung für Spracherkennung fehlgeschlagen", eventError);
+                    }
+
+                    if (!handled) {
+                        showToast(`Erkannter Sprecher: ${transcript}`);
+                    }
+                });
+
+                recognition.addEventListener("error", recognitionError => {
+                    console.error("Sprecher ersetzen: Spracherkennung meldet einen Fehler", recognitionError);
+                    const detail = recognitionError?.error || recognitionError?.message;
+                    showToast(detail
+                        ? `Spracherkennung fehlgeschlagen: ${detail}`
+                        : "Spracherkennung fehlgeschlagen – bitte erneut versuchen.");
+                });
+
+                try {
+                    recognition.start();
+                } catch (error) {
+                    console.error(`Sprecher ersetzen: Spracherkennung konnte nicht gestartet werden (${error?.message || error}).`, error);
+                    showToast(`Spracherkennung konnte nicht gestartet werden: ${error?.message || error}`);
+                }
             });
         }
 
