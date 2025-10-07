@@ -1,4 +1,8 @@
 # Changelog
+## 🛠️ Patch in 1.40.437
+* `web/src/actions/projectEvaluate.js` entfernt den Aufruf `scoreVisibleLines` und konzentriert sich auf das Übernehmen vorhandener GPT-Ergebnisse.
+* `web/src/main.js` streicht die dynamische Initialisierung von `scoreVisibleLines` und lädt nur noch `applyEvaluationResults` nach.
+* `README.md` und `CHANGELOG.md` dokumentieren den Wegfall des direkten Bewertungsaufrufs.
 ## 🛠️ Patch in 1.40.436
 * `web/src/main.js` entfernt den obsoleten Canvas-Zoom-Helfer `zoomCanvasToRange` aus dem Wellenformbereich.
 * `README.md` und `CHANGELOG.md` erwähnen, dass der frühere Canvas-Zoom-Helfer nicht mehr bereitsteht.

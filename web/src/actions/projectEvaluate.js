@@ -1,25 +1,14 @@
-// Sammele sichtbare Zeilen, rufe den GPT-Service auf und aktualisiere die Tabelle
-// GPT-Service importieren – je nach Umgebung
-let evaluateScene;
+// Verwaltet das Übertragen von GPT-Ergebnissen in die Tabelle
 let autoApplySuggestion = false;
-let attachScoreHandlers;
 let markDirty;
 let saveCurrentProject;
 if (typeof require !== 'undefined') {
     try {
-        ({ evaluateScene } = require('../gptService.js'));
         ({ autoApplySuggestion, markDirty, saveCurrentProject } = require('../main.js'));
-        ({ attachScoreHandlers } = require('../scoreColumn.js'));
     } catch {}
-}
-if (typeof window !== 'undefined' && window.evaluateScene) {
-    evaluateScene = window.evaluateScene;
 }
 if (typeof window !== 'undefined' && window.autoApplySuggestion !== undefined) {
     autoApplySuggestion = window.autoApplySuggestion;
-}
-if (typeof window !== 'undefined' && window.attachScoreHandlers) {
-    attachScoreHandlers = window.attachScoreHandlers;
 }
 if (typeof window !== 'undefined' && window.markDirty) {
     markDirty = window.markDirty;
@@ -69,55 +58,11 @@ function parseEvaluationResults(text) {
     }
 }
 
-async function scoreVisibleLines(opts) {
-    const { displayOrder, files, currentProject, apiKey, gptModel, renderTable,
-            updateStatus, showErrorBanner, showToast } = opts;
-    if (!apiKey) {
-        if (showToast) showToast('Kein GPT-Key gespeichert', 'error');
-        return;
-    }
-
-    const visible = displayOrder.filter(item => {
-        const row = document.querySelector(`tr[data-id='${item.file.id}']`);
-        return row && row.offsetParent !== null;
-    });
-    const lines = visible.map(({ file }) => ({
-        id: String(file.id), // ID als String serialisieren
-        // Charakter entspricht dem Ordnernamen
-        character: file.character || file.folder || '',
-        en: file.enText || '',
-        de: file.deText || ''
-    }));
-    const scene = currentProject?.levelName || '';
-    let results = [];
-    try {
-        // projectId wird an den Service übergeben, damit die Ergebnisse zugeordnet werden können
-        results = await evaluateScene({ scene, lines, key: apiKey, model: gptModel, projectId: currentProject?.id });
-    } catch (e) {
-        if (showErrorBanner) {
-            showErrorBanner(String(e), () => scoreVisibleLines({ ...opts, autoApplySuggestion }));
-        }
-        return;
-    }
-    applyEvaluationResults(results, files, currentProject);
-    // Tabelle mit den aktualisierten Dateien neu aufbauen
-    await renderTable(displayOrder.map(d => d.file));
-    if (typeof attachScoreHandlers === 'function' && typeof document !== 'undefined') {
-        const tbody = document.getElementById('fileTableBody');
-        if (tbody) {
-            // Nach dem Aufbau die Score-Klassen erneut binden
-            attachScoreHandlers(tbody, files);
-        }
-    }
-    if (updateStatus) updateStatus('GPT-Bewertung abgeschlossen');
-}
-
 // Kompatibilität für CommonJS
 if (typeof module !== 'undefined') {
-    module.exports = { scoreVisibleLines, applyEvaluationResults, parseEvaluationResults };
+    module.exports = { applyEvaluationResults, parseEvaluationResults };
 }
 if (typeof window !== 'undefined') {
-    window.scoreVisibleLines = scoreVisibleLines;
     window.applyEvaluationResults = applyEvaluationResults;
     window.parseEvaluationResults = parseEvaluationResults;
 }
