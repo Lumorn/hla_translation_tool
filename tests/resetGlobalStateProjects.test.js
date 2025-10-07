@@ -2,6 +2,7 @@
 // Prüft, dass resetGlobalState die Projektliste in-place leert und Fenster-Referenzen behält
 const fs = require('fs');
 const path = require('path');
+const { getProjectLoadingOverlayMarkup } = require('./testHelpers');
 
 describe('resetGlobalState synchronisiert projects', () => {
   beforeEach(() => {
@@ -11,7 +12,7 @@ describe('resetGlobalState synchronisiert projects', () => {
       <div id="folderProgress"></div>
       <div id="emoProgress"></div>
       <div id="folderGrid" style="display: none"></div>
-      <div id="projectLoadingOverlay" class="hidden"></div>
+      ${getProjectLoadingOverlayMarkup()}
     `;
     window.storage = window.localStorage;
     window.showToast = jest.fn();
