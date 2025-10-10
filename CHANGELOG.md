@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.452
+* `start_tool_v2.py` startet ausschließlich die V2-Vorschau, prüft Node/npm und aktualisiert bei Bedarf die V2-Abhängigkeiten.
+* `README.md` erwähnt das neue Skript und grenzt den schlanken V2-Start vom klassischen Setup ab.
+
 # 🛠️ Patch in 1.40.451
 * `README.md` verweist auf eine detaillierte Platzhalter-Ansicht der geladenen V1-Oberfläche, damit der Bildschirmzustand nachvollziehbar bleibt.
 * `docs/screenshots/v1-ui-demo-detailed.png` beschreibt Aufbau und Status der V1-UI textuell als Screenshot-Ersatz.
