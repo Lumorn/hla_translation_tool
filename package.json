@@ -15,7 +15,10 @@
   "scripts": {
     "pretest": "npm ci --ignore-scripts",
     "test": "node --experimental-vm-modules --unhandled-rejections=warn node_modules/jest/bin/jest.js",
-    "update-version": "node updateVersion.js"
+    "update-version": "node updateVersion.js",
+    "build:v2": "npm run --prefix v2 build",
+    "start:v2": "npm run --prefix v2 start",
+    "demo:v2": "npm run build:v2 && node v2/scripts/serveDemoRenderer.js"
   },
   "dependencies": {
     "7zip-bin": "^5.2.0",

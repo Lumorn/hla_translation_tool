@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.shared.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "./dist/renderer",
+    "rootDir": "./renderer",
+    "lib": ["DOM", "ES2020"],
+    "composite": true
+  },
+  "include": ["renderer/**/*.ts"],
+  "references": [
+    { "path": "./tsconfig.backend.json" },
+    { "path": "./tsconfig.importer.json" }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.shared.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./dist/importer",
+    "rootDir": "./importer",
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["importer/**/*.ts"],
+  "references": [
+    { "path": "./tsconfig.backend.json" }
+  ]
+}

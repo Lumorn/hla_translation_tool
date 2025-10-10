@@ -1,4 +1,66 @@
 # Changelog
+# 🛠️ Patch in 1.40.451
+* `README.md` verweist auf eine detaillierte Platzhalter-Ansicht der geladenen V1-Oberfläche, damit der Bildschirmzustand nachvollziehbar bleibt.
+* `docs/screenshots/v1-ui-demo-detailed.png` beschreibt Aufbau und Status der V1-UI textuell als Screenshot-Ersatz.
+
+# 🛠️ Patch in 1.40.450
+* `README.md` ergänzt eine dedizierte Referenz zur geladenen V1-Oberfläche inklusive Platzhalter-Beschreibung.
+* `docs/screenshots/v1-ui-demo-live.png` liefert eine textuelle Darstellung der aktuellen V1-Ansicht, ohne Binärdatei einzusetzen.
+
+# 🛠️ Patch in 1.40.449
+* `README.md` bindet ein aktualisiertes Demo-Screenshot-Platzhalterbild für die geladene V2-Oberfläche ein.
+* `docs/screenshots/v2-ui-demo-live.png` beschreibt die aktuelle Ansicht textuell und ersetzt so eine Binärdatei.
+
+# 🛠️ Patch in 1.40.448
+* `README.md` vergleicht die V1- und V2-Oberflächen bei geladenem Projekt und verweist auf Platzhalter-Screenshots.
+* `docs/screenshots/v1-ui-demo.png` und `docs/screenshots/v2-ui-demo.png` beschreiben die jeweiligen Ansichten textuell, damit keine Binärdateien eingecheckt werden.
+
+# 🛠️ Patch in 1.40.447
+* `README.md` beschreibt das Layout des V2-Demo-Bildschirms, sodass der Aufbau bei geöffnetem Projekt nachvollziehbar bleibt.
+
+# 🛠️ Patch in 1.40.446
+* `v2/shared/appPaths.js` definiert `v2/projects` als Standardbibliothek und erlaubt über `HLA_V2_PROJECTS_ROOT` einen alternativen Speicherort.
+* `v2/backend/projectStore.ts` ergänzt Bibliotheksfunktionen zum Anlegen, Auflisten und Benennen neuer Projektordner innerhalb der festen Ablage.
+* `v2/electron/main-v2.js` und `v2/electron/preload-v2.js` reichen die neue Projektbibliothek per IPC an den Renderer weiter.
+* `v2/renderer/index.html` und `v2/renderer/main.ts` listen alle Projekte der Bibliothek, erlauben das Anlegen neuer Einträge und blockieren gesperrte Ordner mit `.project.lock`.
+* `v2/scripts/createDemoProject.js` spiegelt das Demo-Projekt zusätzlich in die Bibliothek; `README.md` erklärt die feste Ablagestruktur.
+* `v2/.gitignore` schließt den Projektbibliotheksordner von Commits aus.
+
+## 🛠️ Patch in 1.40.445
+* `package.json` erhält das neue Skript `demo:v2`, das den Build startet und den Renderer im Browser-Only-Demo-Modus ausliefert.
+* `v2/scripts/serveDemoRenderer.js` stellt einen kleinen statischen HTTP-Server bereit, um die Demo ohne Electron aufzurufen.
+* `README.md` beschreibt den neuen Demo-Server und verweist direkt auf die URL `http://localhost:4173/renderer/index.html#demo`.
+## 🛠️ Patch in 1.40.444
+* `v2/backend/projectStore.ts` ergänzt Audio-Schnappschüsse inklusive Listen-, Wiederherstellungs- und Löschfunktionen sowie den neuen Pfad `audio-backups/`.
+* `v2/electron/main-v2.js` und `v2/electron/preload-v2.js` reichen die Audio-Schnappschüsse über IPC an den Renderer weiter.
+* `v2/renderer/main.ts` und `v2/renderer/index.html` erhalten einen Audio-Bereich, akzeptieren einen Demo-Modus (`#demo`) und öffnen Beispielprojekte automatisch.
+* `v2/scripts/createDemoProject.js` erzeugt einen Demo-Projektordner als Grundlage für Präsentationen und Tests.
+* `README.md` und `CHANGELOG.md` dokumentieren Audio-Schnappschüsse, das Demo-Skript und den Browser-Demomodus.
+## 🛠️ Patch in 1.40.443
+* `v2/backend/projectStore.ts` liefert Backups nun als strukturierte Objekte, listet vorhandene Sicherungen auf und ermöglicht deren Wiederherstellung sowie Löschung.
+* `v2/electron/main-v2.js` und `v2/electron/preload-v2.js` erweitern die IPC-Brücke um die neuen Backup-Funktionen.
+* `v2/renderer/index.html` und `v2/renderer/main.ts` ergänzen eine Backup-Übersicht mit Aktionen für Erstellen, Aktualisieren, Wiederherstellen und Entfernen.
+* `README.md` und `CHANGELOG.md` dokumentieren die V2-Backup-Verwaltung mit Funktionsparität zu V1.
+## 🛠️ Patch in 1.40.442
+* `v2/importer/importWizard.ts` führt einen sechsstufigen Import-Workflow ein, liest V1-Daten nur lesend, ordnet Audio-Dateien zu, kopiert bestätigte Dateien ins Projekt, schreibt `data.json` mit relativen Pfaden und erstellt einen detaillierten Abschlussbericht.
+* `v2/electron/main-v2.js` registriert IPC-Handler für den Import-Assistenten, verwaltet Sitzungen pro Projekt, liefert die UI-Vorlage aus und räumt Import-Sitzungen beim Schließen auf.
+* `v2/electron/preload-v2.js` stellt den Import-Assistenten im Renderer bereit.
+* `v2/renderer/index.html`, `v2/renderer/main.ts` und `v2/renderer/importWizard.vue` bieten eine geführte Oberfläche zum Quell-Scan, zur Konfliktentscheidung („trotzdem importieren“/„überspringen“) und zur Anzeige des Abschlussberichts.
+* `v2/tsconfig.json`, `v2/tsconfig.renderer.json` und das neue `v2/tsconfig.importer.json` bauen den Import getrennt und stellen Typen für den Renderer bereit.
+* `README.md` und `CHANGELOG.md` dokumentieren den Import-Assistenten der V2-Vorschau.
+## 🛠️ Patch in 1.40.441
+* `v2/backend/projectStore.ts` legt Projekte mit allen benötigten Dateien und Ordnern an, nutzt `.project.lock` für Exklusivzugriffe, schreibt `data.json` transaktionssicher und erzeugt Ordner-Backups mit Logeinträgen.
+* `v2/electron/main-v2.js` registriert IPC-Handler für die Projektverwaltung, verhindert parallele Öffnungen und räumt Sperren beim Beenden automatisch auf.
+* `v2/electron/preload-v2.js` stellt die Projektfunktionen im Renderer bereit; `v2/renderer/index.html` und `v2/renderer/main.ts` prüfen die Bridge und zeigen den Status an.
+* `v2/tsconfig.json`, `v2/tsconfig.backend.json`, `v2/tsconfig.renderer.json` und `v2/tsconfig.shared.json` teilen die Builds in Renderer- und Backend-Ziele auf; `v2/package.json` ergänzt `@types/node` und nutzt `tsc --build`.
+* `README.md` und `CHANGELOG.md` beschreiben die neue Dateisystem-basierte Projektverwaltung.
+## 🛠️ Patch in 1.40.440
+* `v2/electron/main-v2.js` startet eine eigenständige Electron-Vorschau, lädt nur V2-Assets und nutzt eine neue Preload-Bridge.
+* `v2/electron/preload-v2.js` reicht Laufzeitinformationen sicher in den Renderer durch.
+* `v2/renderer/index.html` und `v2/renderer/main.ts` bilden die neue Oberfläche, inklusive Laufzeitprüfung für Electron-Aufrufe.
+* `v2/shared/appPaths.js`, `v2/package.json`, `v2/tsconfig.json` und `v2/.gitignore` kapseln Hilfslogik, Build-Konfiguration sowie Node-Setup für V2.
+* `package.json` erhält die Skripte `build:v2` und `start:v2`, um die neue Vorschau direkt zu starten.
+* `README.md` beschreibt den neuen V2-Workflow, `CHANGELOG.md` dokumentiert die Ergänzungen.
 ## 🛠️ Patch in 1.40.439
 * `web/hla_translation_tool.html` zeigt unter dem Ladebalken eine strukturierte Schritt-Liste für Projektwechsel an.
 * `web/src/style.css` gestaltet die neue Fortschrittsliste mit Statusfarben, Symbolspalte und Zeitstempeln.

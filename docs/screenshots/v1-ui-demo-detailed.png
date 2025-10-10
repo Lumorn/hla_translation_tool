@@ -1,0 +1,21 @@
+Platzhalter-Bild: Detaillierte Ansicht der V1-Oberfläche mit geladenem Projekt.
+
+Layout (von links nach rechts):
+- Linker Navigationsbereich (320 px):
+  - Kopfzeile mit Suchfeld und Button „+ Neues Projekt“.
+  - Projektliste mit aktiver Auswahl (blauer Balken) und Fortschrittsbadges (EN/DE/Audio in grün/blau/grau).
+- Mittlere Haupttabelle:
+  - Fixierte Kopfzeile mit Spalten: Nr., Kapitel, Sprecher, EN-Text, DE-Text, Status-Icons.
+  - Zeilen mit wechselndem Hintergrund, selektierte Zeile leicht hervorgehoben.
+  - Kontextleiste oberhalb der Tabelle mit Filtern, Suchfeld und Aktionen (Import, Werkzeuge, Medien, Tests, ElevenLabs).
+- Rechte Seitenleiste (ca. 280 px):
+  - Abschnitt „Projektüberblick“ mit Fortschrittskreis und Statistiken (EN %, DE %, Audio %).
+  - Abschnitt „Letzte Aktionen“ mit Logliste und Zeitstempeln.
+  - Abschnitt „Backups“ mit Buttons „Backup erstellen“, „Backup wiederherstellen“, „Backup löschen“.
+
+Zustand:
+- Projekt „City17 Main“ ist geöffnet, Fortschritt: EN 92 %, DE 68 %, Audio 54 %.
+- Tabellenzeile 042 („alyx_line_0042“) ist ausgewählt, zeigt EN/DE-Texte und Audio-Symbol grün (vorhanden).
+- Benachrichtigungsbanner oben rechts: „Automatisches Speichern aktiv“.
+
+Hinweis: Dieses Textdokument ersetzt einen echten Screenshot, damit keine Binärdateien eingecheckt werden.
