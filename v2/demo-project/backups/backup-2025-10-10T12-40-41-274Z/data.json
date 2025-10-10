@@ -1,0 +1,22 @@
+{
+  "segments": [
+    {
+      "id": "demo_line_001",
+      "text": "Das ist eine Beispielzeile für das neue Projekt.",
+      "translation": "This is a sample line for the new project.",
+      "audio": "demo_line_001.txt",
+      "status": "translated"
+    },
+    {
+      "id": "demo_line_002",
+      "text": "Hier könnte Ihre Übersetzung stehen.",
+      "translation": "Your translation could be here.",
+      "audio": "demo_line_002.txt",
+      "status": "pending"
+    }
+  ],
+  "meta": {
+    "description": "Demo-Projekt für das Electron-Frontend der zweiten Generation.",
+    "createdBy": "createDemoProject.js"
+  }
+}

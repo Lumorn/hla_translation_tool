@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.shared.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "outDir": "./dist/backend",
+    "rootDir": "./backend",
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["backend/**/*.ts"]
+}

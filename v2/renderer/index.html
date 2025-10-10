@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Half-Life: Alyx Übersetzungstool V2</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        margin: 0;
+        background: #0f172a;
+        color: #f8fafc;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 48px 0;
+      }
+
+      main {
+        background: rgba(15, 23, 42, 0.88);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 16px;
+        padding: 32px 40px 48px;
+        max-width: 760px;
+        width: calc(100% - 48px);
+        box-shadow: 0 25px 45px rgba(15, 23, 42, 0.35);
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-size: 1.9rem;
+      }
+
+      h2 {
+        margin-top: 32px;
+        margin-bottom: 12px;
+        font-size: 1.4rem;
+      }
+
+      p {
+        margin-top: 0;
+        line-height: 1.5;
+      }
+
+      .version-hint {
+        margin-top: 24px;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .storage-status {
+        margin-top: 16px;
+        font-size: 0.95rem;
+        color: rgba(129, 230, 217, 0.9);
+      }
+
+      .project-control {
+        margin-top: 32px;
+        padding: 24px;
+        border-radius: 12px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .project-control form {
+        display: grid;
+        gap: 12px;
+      }
+
+      .project-library__location {
+        margin-top: 16px;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .project-library {
+        margin-top: 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(15, 23, 42, 0.55);
+        padding: 16px 18px;
+      }
+
+      .project-library__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .project-library__title {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      .project-library__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .project-library__item {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 10px;
+        overflow: hidden;
+        background: rgba(15, 23, 42, 0.6);
+      }
+
+      .project-library__item.is-selected {
+        border-color: rgba(56, 189, 248, 0.8);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35);
+      }
+
+      .project-library__item.is-locked .project-library__select {
+        cursor: not-allowed;
+        opacity: 0.85;
+      }
+
+      .project-library__item--empty {
+        padding: 14px 16px;
+        text-align: center;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .project-library__select {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 14px 16px;
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .project-library__name {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      .project-library__meta {
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .project-library__badge {
+        margin-top: 4px;
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        background: rgba(248, 113, 113, 0.25);
+        color: #fecaca;
+      }
+
+      .project-create {
+        margin-top: 20px;
+      }
+
+      .project-control label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.95rem;
+      }
+
+      input[type='text'],
+      textarea {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(15, 23, 42, 0.85);
+        color: #f8fafc;
+        font: inherit;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        padding: 10px 18px;
+        border-radius: 999px;
+        border: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        background: #38bdf8;
+        color: #0f172a;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: rgba(148, 163, 184, 0.25);
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .project-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .project-info {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .backup-section {
+        margin-top: 24px;
+        padding: 24px;
+        border-radius: 12px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .backup-section header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .backup-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .backup-info {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      table.backup-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+        font-size: 0.9rem;
+      }
+
+      table.backup-table th,
+      table.backup-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+        text-align: left;
+      }
+
+      table.backup-table tbody tr:hover {
+        background: rgba(148, 163, 184, 0.1);
+      }
+
+      .backup-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .backup-actions button {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+      }
+
+      .wizard-root {
+        margin-top: 32px;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .wizard {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+      }
+
+      .wizard__intro {
+        font-size: 0.95rem;
+        color: rgba(226, 232, 240, 0.85);
+      }
+
+      .wizard__form fieldset {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 12px;
+        padding: 16px;
+        display: grid;
+        gap: 16px;
+      }
+
+      .wizard__label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 0.95rem;
+      }
+
+      .wizard__buttons {
+        display: flex;
+        gap: 12px;
+      }
+
+      .wizard__progress,
+      .wizard__conflicts,
+      .wizard__report {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 12px;
+        padding: 16px;
+        background: rgba(15, 23, 42, 0.45);
+      }
+
+      .wizard__progress dl {
+        margin: 0;
+        display: grid;
+        gap: 8px;
+      }
+
+      .wizard__progress dt {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .wizard__progress dd {
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      table.wizard__table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+
+      table.wizard__table th,
+      table.wizard__table td {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        padding: 8px 6px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.wizard__table th {
+        font-weight: 600;
+        color: rgba(226, 232, 240, 0.9);
+      }
+
+      table.wizard__table tr:last-child th,
+      table.wizard__table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .badge.warning {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+      }
+
+      .badge.error {
+        background: rgba(248, 113, 113, 0.15);
+        color: #f87171;
+      }
+
+      .wizard__actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .wizard__report ul {
+        margin: 12px 0 0;
+        padding-left: 20px;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.85);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Half-Life: Alyx Übersetzungstool V2</h1>
+      <p id="status">Initialisiere Renderer-Laufzeit …</p>
+      <p class="storage-status" id="storage-status">Prüfe Projektverwaltung …</p>
+      <p class="version-hint" id="version-hint"></p>
+
+      <section class="project-control" aria-labelledby="project-control-headline">
+        <h2 id="project-control-headline">Projektverwaltung</h2>
+        <p id="project-library-location" class="project-library__location">Projektbibliothek wird geladen …</p>
+        <div class="project-library" aria-live="polite">
+          <div class="project-library__header">
+            <h3 class="project-library__title">Verfügbare Projekte</h3>
+            <button type="button" id="refresh-library-button" class="secondary">Aktualisieren</button>
+          </div>
+          <ul id="project-library-entries" class="project-library__list"></ul>
+        </div>
+        <form id="project-create-form" class="project-create">
+          <label>
+            Neuer Projektname
+            <input type="text" name="projectName" required placeholder="Arbeitsname für das Projekt" />
+          </label>
+          <div class="project-buttons">
+            <button type="submit" id="create-project-button">Projekt anlegen</button>
+          </div>
+        </form>
+        <form id="project-open-form">
+          <input type="hidden" name="projectPath" />
+          <div class="project-buttons">
+            <button type="submit" id="open-project-button" disabled>Ausgewähltes Projekt öffnen</button>
+            <button type="button" id="close-project-button" class="secondary" disabled>Projekt schließen</button>
+          </div>
+        </form>
+        <p id="project-info" class="project-info"></p>
+      </section>
+
+      <section class="backup-section hidden" id="backup-section" aria-labelledby="backup-headline">
+        <header>
+          <h2 id="backup-headline">Backups</h2>
+          <div class="backup-buttons">
+            <button type="button" id="create-backup-button">Backup erstellen</button>
+            <button type="button" id="refresh-backups-button" class="secondary">Aktualisieren</button>
+          </div>
+        </header>
+        <p class="backup-info" id="backup-info">Kein Projekt ausgewählt.</p>
+        <table class="backup-table" aria-describedby="backup-info">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Geändert</th>
+              <th scope="col">Größe</th>
+              <th scope="col">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="backup-table-body"></tbody>
+        </table>
+      </section>
+
+      <section class="backup-section hidden" id="audio-backup-section" aria-labelledby="audio-backup-headline">
+        <header>
+          <h2 id="audio-backup-headline">Audio-Schnappschüsse</h2>
+          <div class="backup-buttons">
+            <button type="button" id="create-audio-snapshot-button">Audio-Ordner sichern</button>
+            <button type="button" id="refresh-audio-snapshots-button" class="secondary">Aktualisieren</button>
+          </div>
+        </header>
+        <p class="backup-info" id="audio-backup-info">Kein Projekt ausgewählt.</p>
+        <table class="backup-table" aria-describedby="audio-backup-info">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Geändert</th>
+              <th scope="col">Größe</th>
+              <th scope="col">Aktionen</th>
+            </tr>
+          </thead>
+          <tbody id="audio-backup-table-body"></tbody>
+        </table>
+      </section>
+
+      <div id="import-wizard-root" class="wizard-root hidden"></div>
+    </main>
+    <script>
+      // Demobetrieb vorbereiten, falls die Seite mit "#demo" geöffnet wurde.
+      (function setupDemoMode() {
+        if (window.location.hash !== '#demo') {
+          return;
+        }
+
+        const demoRoot = new URL('../demo-project/', window.location.href);
+        const normalizedRoot = decodeURIComponent(demoRoot.pathname.replace(/\/$/, ''));
+        const buildPath = (relative) =>
+          decodeURIComponent(new URL(relative.replace(/^\/+/, ''), demoRoot).pathname.replace(/\/$/, ''));
+        const sessionId = 'demo-session';
+        let manifestCache = null;
+        let settingsCache = null;
+        let dataCache = null;
+        let backupStore = [
+          {
+            name: 'backup-demo-002',
+            createdAt: '2024-09-18T09:15:00.000Z',
+            size: 5242880,
+            path: buildPath('backups/backup-demo-002'),
+          },
+          {
+            name: 'backup-demo-001',
+            createdAt: '2024-09-15T14:45:00.000Z',
+            size: 3145728,
+            path: buildPath('backups/backup-demo-001'),
+          },
+        ];
+        let audioSnapshotStore = [
+          {
+            name: 'audio-snapshot-demo-001',
+            createdAt: '2024-09-17T11:30:00.000Z',
+            size: 2097152,
+            path: buildPath('audio-backups/audio-snapshot-demo-001'),
+          },
+        ];
+
+        const basePaths = {
+          root: normalizedRoot,
+          manifestFile: buildPath('project.json'),
+          settingsFile: buildPath('settings.json'),
+          dataFile: buildPath('data.json'),
+          audioDir: buildPath('audio'),
+          logsDir: buildPath('logs'),
+          backupsDir: buildPath('backups'),
+          audioBackupsDir: buildPath('audio-backups'),
+          lockFile: buildPath('.project.lock'),
+          logFile: buildPath('logs/events.log'),
+        };
+
+        let libraryEntries = [
+          {
+            folderName: 'demo-projekt',
+            path: normalizedRoot,
+            manifest: null,
+            hasLock: false,
+          },
+        ];
+
+        const clone = (value) => JSON.parse(JSON.stringify(value));
+
+        function updateLibraryManifest(manifest) {
+          libraryEntries = [
+            {
+              folderName: 'demo-projekt',
+              path: normalizedRoot,
+              manifest: clone(manifest),
+              hasLock: libraryEntries[0]?.hasLock ?? false,
+            },
+          ];
+        }
+
+        function setLibraryLock(locked) {
+          libraryEntries = libraryEntries.map((entry) => ({
+            ...entry,
+            hasLock: locked,
+          }));
+        }
+
+        async function loadCoreFiles() {
+          const [manifest, settings, data] = await Promise.all([
+            fetch(new URL('project.json', demoRoot)).then((response) => response.json()),
+            fetch(new URL('settings.json', demoRoot)).then((response) => response.json()),
+            fetch(new URL('data.json', demoRoot)).then((response) => response.json()),
+          ]);
+          manifestCache = manifest;
+          settingsCache = settings;
+          dataCache = data;
+          updateLibraryManifest(manifest);
+          return { manifest, settings, data };
+        }
+
+        function createIncrementalName(prefix, store) {
+          const nextNumber = String(store.length + 1).padStart(3, '0');
+          return `${prefix}${nextNumber}`;
+        }
+
+        window.__HLA_DEMO__ = true;
+        window.runtimeInfo = {
+          isElectron: true,
+          versions: {
+            electron: 'Demo',
+            chrome: 'Demo',
+            node: 'Demo',
+          },
+        };
+        window.process = {
+          versions: {
+            electron: 'Demo',
+          },
+        };
+
+        window.projectLibrary = {
+          getRoot: async () => normalizedRoot || 'demo-project',
+          list: async () => {
+            if (!manifestCache) {
+              const { manifest } = await loadCoreFiles();
+              updateLibraryManifest(manifest);
+            }
+            return libraryEntries.map((entry) => ({
+              folderName: entry.folderName,
+              path: entry.path,
+              manifest: clone(entry.manifest ?? manifestCache),
+              hasLock: entry.hasLock,
+            }));
+          },
+          create: async (name) => {
+            if (!manifestCache) {
+              const { manifest } = await loadCoreFiles();
+              updateLibraryManifest(manifest);
+            }
+            const manifest = clone(manifestCache);
+            manifest.name = name;
+            updateLibraryManifest(manifest);
+            return {
+              folderName: libraryEntries[0].folderName,
+              path: libraryEntries[0].path,
+              manifest: clone(manifest),
+              paths: basePaths,
+            };
+          },
+        };
+
+        window.projectStore = {
+          createProject: async () => basePaths,
+          openProject: async () => {
+            const { manifest, settings, data } = await loadCoreFiles();
+            setLibraryLock(true);
+            updateLibraryManifest(manifest);
+            return {
+              sessionId,
+              paths: basePaths,
+              manifest: clone(manifest),
+              settings: clone(settings),
+              data: clone(data),
+            };
+          },
+          closeProject: async () => {
+            setLibraryLock(false);
+            return true;
+          },
+          readManifest: async () => clone(manifestCache ?? (await loadCoreFiles()).manifest),
+          readSettings: async () => clone(settingsCache ?? (await loadCoreFiles()).settings),
+          writeSettings: async (_sessionId, settings) => {
+            settingsCache = clone(settings);
+            return true;
+          },
+          readData: async () => clone(dataCache ?? (await loadCoreFiles()).data),
+          writeData: async (_sessionId, data) => {
+            dataCache = clone(data);
+            return true;
+          },
+          createBackup: async () => {
+            const name = createIncrementalName('backup-demo-', backupStore);
+            const entry = {
+              name,
+              createdAt: new Date().toISOString(),
+              size: 4194304,
+              path: buildPath(`backups/${name}`),
+            };
+            backupStore = [entry, ...backupStore];
+            return entry;
+          },
+          listBackups: async () => backupStore.map((entry) => ({ ...entry })),
+          restoreBackup: async () => true,
+          deleteBackup: async (_sessionId, backupName) => {
+            backupStore = backupStore.filter((entry) => entry.name !== backupName);
+            return true;
+          },
+          createAudioSnapshot: async () => {
+            const name = createIncrementalName('audio-snapshot-demo-', audioSnapshotStore);
+            const entry = {
+              name,
+              createdAt: new Date().toISOString(),
+              size: 2621440,
+              path: buildPath(`audio-backups/${name}`),
+            };
+            audioSnapshotStore = [entry, ...audioSnapshotStore];
+            return entry;
+          },
+          listAudioSnapshots: async () => audioSnapshotStore.map((entry) => ({ ...entry })),
+          restoreAudioSnapshot: async () => true,
+          deleteAudioSnapshot: async (_sessionId, snapshotName) => {
+            audioSnapshotStore = audioSnapshotStore.filter((entry) => entry.name !== snapshotName);
+            return true;
+          },
+        };
+
+        const wizardTemplate = {
+          selection: {
+            root: 'D:/V1-Projekt',
+            dataFiles: ['exports/project.json'],
+            audioDirectories: ['exports/audio'],
+          },
+          scan: {
+            totalRecords: 24,
+            dataFiles: 2,
+            audioFiles: 22,
+            sample: {
+              id: 'demo_line_001',
+              sourceFile: 'exports/project.json',
+              sourceIndex: 0,
+              raw: {},
+              audioHint: 'exports/audio/demo_line_001.wav',
+            },
+          },
+          audit: {
+            readyRecords: 20,
+            conflicts: [
+              {
+                key: 'demo_line_005',
+                type: 'missing-audio',
+                severity: 'warning',
+                message: 'Es wurde keine passende Audiodatei gefunden.',
+                record: {
+                  id: 'demo_line_005',
+                  sourceFile: 'exports/project.json',
+                  sourceIndex: 5,
+                  raw: {},
+                  audioHint: 'exports/audio/demo_line_005.wav',
+                },
+              },
+            ],
+          },
+          resolution: {
+            toImport: 20,
+            toSkip: 4,
+          },
+          copy: {
+            writtenRecords: 20,
+            copiedFiles: ['audio/demo_line_001.wav', 'audio/demo_line_002.wav'],
+            dataFile: buildPath('data.json'),
+          },
+          report: {
+            imported: 20,
+            skipped: 4,
+            missingAudio: 1,
+            copiedFiles: ['audio/demo_line_001.wav', 'audio/demo_line_002.wav'],
+            dataFile: buildPath('data.json'),
+            logFile: buildPath('logs/events.log'),
+            details: [
+              { id: 'demo_line_001', action: 'imported', message: 'Datensatz übernommen.' },
+              { id: 'demo_line_005', action: 'missing-audio', message: 'Audiodatei fehlte, Datensatz übersprungen.' },
+            ],
+          },
+          errors: [],
+        };
+
+        function wizardStateFor(step) {
+          const state = clone(wizardTemplate);
+          state.step = step;
+          if (step === 'sources-selected') {
+            delete state.audit;
+            delete state.resolution;
+            delete state.copy;
+            delete state.report;
+          } else if (step === 'scan-complete') {
+            delete state.resolution;
+            delete state.copy;
+            delete state.report;
+          } else if (step === 'audit-complete') {
+            delete state.copy;
+            delete state.report;
+          } else if (step === 'conflicts-resolved') {
+            delete state.report;
+          }
+          return state;
+        }
+
+        let wizardStep = 'idle';
+
+        window.importWizard = {
+          start: async () => {
+            wizardStep = 'sources-selected';
+            return wizardStateFor(wizardStep);
+          },
+          scan: async () => {
+            wizardStep = 'scan-complete';
+            return wizardStateFor(wizardStep);
+          },
+          audit: async () => {
+            wizardStep = 'audit-complete';
+            return wizardStateFor(wizardStep);
+          },
+          resolve: async () => {
+            wizardStep = 'conflicts-resolved';
+            return wizardStateFor(wizardStep);
+          },
+          execute: async () => {
+            wizardStep = 'copy-complete';
+            return wizardStateFor(wizardStep);
+          },
+          report: async () => {
+            wizardStep = 'report-ready';
+            return wizardStateFor(wizardStep);
+          },
+          cancel: async () => {
+            wizardStep = 'idle';
+            return true;
+          },
+          loadTemplate: async (templateName) => {
+            const url = new URL(templateName, window.location.href);
+            const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`Vorlage ${templateName} konnte nicht geladen werden (${response.status}).`);
+            }
+            return response.text();
+          },
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const form = document.getElementById('project-open-form');
+          if (form) {
+            setTimeout(() => {
+              form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            }, 400);
+          }
+        });
+      })();
+    </script>
+    <script type="module" src="../dist/renderer/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+Platzhalter-Bild: Aktuelle V2-Oberfläche mit geladenem Projekt im Demo-Modus.
+
+Beschreibung:
+- Linke Seitenleiste listet Projektbibliothek inklusive Demo-Eintrag und Sperrhinweisen.
+- Hauptbereich zeigt Karten für Projektinformationen, Backups, Audio-Schnappschüsse und Import-Assistent.
+- Untere Statuszeile blendet Logmeldungen zum zuletzt ausgeführten Vorgang ein.
+- Header enthält Titel, Pfadangabe und Steuerung für das geöffnete Projekt.

@@ -1,0 +1,15 @@
+{
+  "name": "hla-translation-tool-v2",
+  "version": "0.0.1",
+  "private": true,
+  "main": "electron/main-v2.js",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "start": "npm run build && electron ./electron/main-v2.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "electron": "^28.2.0",
+    "typescript": "^5.6.3"
+  }
+}

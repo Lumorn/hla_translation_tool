@@ -546,8 +546,86 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
    ```bash
    cd electron
    npm start
+```
+
+#### V2-Preview ohne V1-Abhängigkeiten
+
+1. `npm install --prefix v2` ausführen, damit Electron und TypeScript für die neue Vorschau installiert werden
+2. `npm run start:v2` baut den Renderer automatisch über `npm run build:v2` und startet anschließend `v2/electron/main-v2.js`
+
+   ```bash
+   npm run start:v2
    ```
+
+   Der V2-Einstiegspunkt lädt ausschließlich Dateien aus `v2/` und erzeugt ein eigenständiges Fenster. Wird `v2/renderer/index.html` direkt im Browser geöffnet, bricht die integrierte Laufzeitprüfung mit einem deutlichen Hinweis ab und verweist auf den Electron-Start.
+
+   Die Vorschau bringt außerdem eine neue, komplett Dateisystem-basierte Projektverwaltung mit:
+
+   * `v2/backend/projectStore.ts` legt beim Anlegen eines Projekts die erwartete Struktur an (`project.json`, `settings.json`, `data.json`, `audio/`, `logs/`, `backups/`) und nutzt dabei ausschließlich `fs.promises`.
+   * Beim Öffnen sorgt eine `.project.lock`-Datei dafür, dass derselbe Projektordner nicht mehrfach geladen werden kann. Die Sperre wird beim Schließen automatisch entfernt – auch beim Beenden der App.
+   * Schreibzugriffe auf `data.json` und `settings.json` erfolgen über eine temporäre Datei plus `rename`, sodass auch bei Abstürzen keine Teildaten zurückbleiben. Jede Änderung landet zusätzlich im Log (`logs/events.log`).
+   * Backups werden ohne ZIP-Paketierung erstellt: Die Projektverwaltung kopiert den kompletten Ordner in `backups/backup-<Zeitstempel>/`, protokolliert den Vorgang und stellt jetzt auch Funktionen zum Auflisten, Wiederherstellen und Löschen bereit.
+   * Für Parität zur ersten Generation existieren zusätzlich Audio-Schnappschüsse: `projectStore.createAudioSnapshot`, `listAudioSnapshots`, `restoreAudioSnapshot` und `deleteAudioSnapshot` sichern und verwalten den Ordner `audio/` getrennt von den Projekt-Backups.
+   * Alle V2-Projekte landen gesammelt in einer festen Bibliothek (`v2/projects` oder einem eigenen Pfad via `HLA_V2_PROJECTS_ROOT`). Die Oberfläche listet die vorhandenen Ordner, lässt neue Projekte mit sprechenden Namen anlegen und warnt vor gesperrten Verzeichnissen, bevor ein Öffnen versucht wird.
+   * `v2/importer/importWizard.ts` orchestriert einen sechsstufigen Import (Quellen wählen, scannen, prüfen, Konflikte entscheiden, kopieren, Bericht) und liest V1-JSONs sowie Audio-Ordner strikt schreibgeschützt ein.
+   * Der Renderer lädt `v2/renderer/importWizard.vue` als Oberfläche, zeigt Konflikte mit den Optionen „trotzdem importieren“ oder „überspringen“ an und protokolliert den Ergebnisbericht gemeinsam mit den kopierten Audios im aktiven Projekt.
+   * `v2/renderer/index.html` ergänzt eine Backup-Übersicht inklusive Aktionstasten, sodass vorhandene Sicherungen direkt aus V2 erstellt, aktualisiert, wiederhergestellt oder gelöscht werden können. Ein zweiter Bereich verwaltet Audio-Schnappschüsse analog zur V1-Oberfläche.
+  * Mit `node v2/scripts/createDemoProject.js` entsteht ein vollständig befüllter Demo-Ordner, der zusätzlich in der Projektbibliothek gespiegelt wird. Anschließend kann die Oberfläche über `v2/renderer/index.html#demo` im Browser nachvollzogen werden; der Hash aktiviert einen Demo-Modus, der die Electron-Bridge simuliert und automatisch das Beispielprojekt öffnet.
+  * Für schnelle Tests steht `npm run demo:v2` bereit: Das Skript kompiliert den Renderer, startet einen kleinen statischen Server (`v2/scripts/serveDemoRenderer.js`) und serviert die Demo direkt unter `http://localhost:4173/renderer/index.html#demo`.
+
+#### Layout bei geöffnetem Projekt (V2-Demo)
+
+Der Demo-Modus lädt automatisch das Beispielprojekt und zeigt damit den regulären Arbeitsbildschirm der V2-Oberfläche:
+
+![V2-Oberfläche mit geladenem Demo-Projekt (aktueller Stand)](docs/screenshots/v2-ui-demo-live.png)
+
+* **Linke Spalte – Projektbibliothek:** Alle lokal gefundenen Projekte werden inklusive Sperrstatus angezeigt. Über die Schaltfläche „Neues Projekt“ lässt sich direkt aus der Oberfläche ein weiterer Ordner erstellen.
+* **Hauptbereich – Projektübersicht:** Oben erscheinen Metadaten wie Projektname, Speicherort und aktueller Lock-Status. Darunter folgen Karten für Backup-Verwaltung, Audio-Schnappschüsse und den Import-Assistenten.
+* **Backup-Karte:** Listet vorhandene Ordnersicherungen, erlaubt neue Sicherungen, Wiederherstellungen sowie das Entfernen alter Stände. Fortschritt und Rückmeldungen werden in einer Statusleiste dokumentiert.
+* **Audio-Schnappschüsse:** Bietet dieselben Aktionen gezielt für den Ordner `audio/`, damit Sprachaufnahmen getrennt von den Projektdaten abgelegt werden können.
+* **Import-Assistent:** Startet den sechsphasigen Workflow zum Einlesen von V1-Daten. Bereits importierte Elemente, Konflikte und Abschlussberichte sind hier nachvollziehbar.
+
+Über `npm run demo:v2` lässt sich diese Oberfläche jederzeit lokal aufrufen, ohne Electron zu starten. Der Hash `#demo` stellt sicher, dass keine Dateisystembefehle ausgeführt werden und stattdessen Mock-Daten zum Einsatz kommen.
+
 **Hinweis:** Die Desktop-App lässt sich bewusst nur einmal gleichzeitig starten. Ein weiterer Startversuch blendet einen Fehlerdialog ein und bringt das bereits laufende Fenster in den Vordergrund.
+
+#### Referenzansicht V1 mit geladenem Projekt
+
+Die klassische Oberfläche bleibt für bestehende Übersetzungsworkflows verfügbar. Das folgende Platzhalter-Bild beschreibt den Zustand, sobald ein Projekt aktiv ist:
+
+![V1-Oberfläche mit geladenem Projekt (aktueller Stand)](docs/screenshots/v1-ui-demo-live.png)
+
+* **Projektleiste links:** Listet alle gespeicherten Projekte inklusive Suchfeld und Schaltfläche „+ Neues Projekt“.
+* **Werkzeugleiste oben:** Tabs für Import, Werkzeuge, Medien, Tests, ElevenLabs sowie Startparameter bündeln alle Aktionen.
+* **Tabellenkernbereich:** Zeilen mit englischer und deutscher Spalte, Fortschrittsindikatoren, Filter und Statushinweise.
+* **Rechte Informationsspalte:** Zeigt Projektzusammenfassung, Log-Auszüge sowie Backup- und Exportfunktionen.
+
+##### Detailansicht (textueller Screenshot-Ersatz)
+
+Um die Platzhalter-Visualisierung konkreter zu machen, beschreibt folgende Datei Aufbau und Zustand eines geöffneten Projekts im Detail:
+
+![V1-Oberfläche – Detailansicht mit geladenem Projekt](docs/screenshots/v1-ui-demo-detailed.png)
+
+#### Vergleich der Arbeitsoberflächen: V1 vs. V2 mit Projekt
+
+Der direkte Vergleich hilft beim Umstieg: Beide Generationen öffnen Projekte vollständig lokal, unterscheiden sich aber im Aufbau und in den Schwerpunkten.
+
+![V1-Oberfläche mit geladenem Projekt](docs/screenshots/v1-ui-demo.png)
+
+![V2-Oberfläche mit geladenem Demo-Projekt](docs/screenshots/v2-ui-demo.png)
+
+> **Hinweis:** Die Dateien unter `docs/screenshots/` sind Platzhalter mit textueller Beschreibung, da keine Binärdateien eingecheckt werden dürfen.
+
+| Bereich | V1 (Browser & Electron) | V2 (Electron-Vorschau) |
+| --- | --- | --- |
+| Projektzugriff | Seitenleiste listet Projekte aus LocalStorage bzw. OPFS, zusätzliche Buttons öffnen Import- und Speicher-Dialoge. | Linke Bibliothek mit festen Ordnerpfaden (`v2/projects` oder `HLA_V2_PROJECTS_ROOT`), Sperren werden prominent markiert. |
+| Projektstart | Projekte werden direkt nach dem Klick geladen; ein globaler Ladebalken zeigt alle Schritte. | Öffnen legt eine `.project.lock`-Datei an, Statuszeile meldet Fortschritt; Demo-Modus simuliert Dateioperationen. |
+| Werkzeugleiste | Umfangreiche Toolbar mit Import, GPT-Bewertungen, Emotionstags, ElevenLabs, Video-Verwaltung, Suche und Startparametern für das Spiel. | Fokus auf Verwaltung: Karten für Backups, Audio-Schnappschüsse und Import-Assistent ersetzen die verstreute Toolbar. |
+| Datenansicht | Zentrale Tabelle mit englischem und deutschem Text, Suchleiste, Sortierung sowie Fortschrittsanzeigen je Ordner und global. | Kartenbasierte Oberfläche ohne Tabelle; Import-Ergebnisse erscheinen im Wizard, Übersetzungsdaten liegen in `data.json` und werden projektweise verwaltet. |
+| Backups | Dialog über Einstellungen → Backup; V1 erzeugt ZIP-Dateien oder nutzt Browser-Speicher. | Direkt im Hauptbereich: Ordnersicherungen sowie Audio-Schnappschüsse mit Erstellen, Wiederherstellen, Löschen. |
+| Protokolle | Debug- und Dubbing-Logs im Werkzeugbereich, zusätzliche Toasts melden Aktionen. | `logs/events.log` erhält Einträge für alle Operationen, Renderer zeigt den Verlauf im Statuspanel. |
+
+So lässt sich V1 weiter für Übersetzungsarbeit mit der bekannten Tabelle einsetzen, während V2 den Fokus auf projektbasierte Dateiverwaltung, Backups und die Migration legt. Wer beide Versionen parallel nutzt, kann V1-Projekte mit dem Import-Assistenten in die neue Bibliothek kopieren und anschließend vollständig in V2 weiterbearbeiten.
 6. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
 7. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
 8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
