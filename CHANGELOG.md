@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.453
+* `start_tool_v2.py` führt `npm ci` jetzt mit aktivierten Skripten aus, prüft die Electron-Binärdatei und repariert sie bei Bedarf mit `npm rebuild electron`.
+* `README.md` beschreibt die automatische Electron-Prüfung und verweist auf die vollständige Installation über `npm ci --prefix v2`.
+
 # 🛠️ Patch in 1.40.452
 * `start_tool_v2.py` startet ausschließlich die V2-Vorschau, prüft Node/npm und aktualisiert bei Bedarf die V2-Abhängigkeiten.
 * `README.md` erwähnt das neue Skript und grenzt den schlanken V2-Start vom klassischen Setup ab.

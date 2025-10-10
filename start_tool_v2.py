@@ -117,6 +117,39 @@ def write_dependency_hash() -> None:
         stamp_file.write(current_hash)
 
 
+def find_electron_binary() -> Optional[str]:
+    """Sucht nach der ausführbaren Electron-Datei in den installierten Modulen."""
+    dist_dir = os.path.join(V2_NODE_MODULES, "electron", "dist")
+    candidates = [
+        os.path.join(dist_dir, "electron"),
+        os.path.join(dist_dir, "electron.exe"),
+        os.path.join(dist_dir, "Electron.app", "Contents", "MacOS", "Electron"),
+    ]
+    for candidate in candidates:
+        if os.path.isfile(candidate) and os.access(candidate, os.X_OK):
+            return candidate
+    return None
+
+
+def ensure_electron_ready(npm_exe: str) -> None:
+    """Prüft die Verfügbarkeit von Electron und führt bei Bedarf ein Reparaturkommando aus."""
+    if find_electron_binary():
+        return
+    log("Electron-Binärdatei fehlt – starte npm rebuild electron ...")
+    try:
+        run([npm_exe, "rebuild", "electron", "--prefix", V2_DIR])
+    except subprocess.CalledProcessError:
+        print(
+            "[Fehler] Electron konnte nicht automatisch repariert werden. Bitte `node_modules/electron` löschen und das Setup erneut ausführen."
+        )
+        sys.exit(1)
+    if not find_electron_binary():
+        print(
+            "[Fehler] Electron fehlt weiterhin. Entfernen Sie `v2/node_modules` und führen Sie anschließend `npm ci --prefix v2` aus."
+        )
+        sys.exit(1)
+
+
 # =======================
 # Hauptablauf
 # =======================
@@ -129,10 +162,12 @@ def main() -> None:
 
     if needs_dependency_install():
         log("Installiere V2-Abhängigkeiten über npm ci...")
-        run([npm_exe, "ci", "--prefix", V2_DIR, "--ignore-scripts"])
+        run([npm_exe, "ci", "--prefix", V2_DIR])
         write_dependency_hash()
     else:
         log("V2-Abhängigkeiten sind bereits aktuell.")
+
+    ensure_electron_ready(npm_exe)
 
     env = os.environ.copy()
     uid = getattr(os, "geteuid", lambda: None)()

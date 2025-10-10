@@ -550,7 +550,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 
 #### V2-Preview ohne V1-Abhängigkeiten
 
-1. `npm install --prefix v2` ausführen, damit Electron und TypeScript für die neue Vorschau installiert werden
+1. `npm ci --prefix v2` ausführen, damit Electron und TypeScript für die neue Vorschau inklusive ihrer Postinstall-Skripte installiert werden
 2. `npm run start:v2` baut den Renderer automatisch über `npm run build:v2` und startet anschließend `v2/electron/main-v2.js`
 
    ```bash
@@ -627,7 +627,7 @@ Der direkte Vergleich hilft beim Umstieg: Beide Generationen öffnen Projekte vo
 
 So lässt sich V1 weiter für Übersetzungsarbeit mit der bekannten Tabelle einsetzen, während V2 den Fokus auf projektbasierte Dateiverwaltung, Backups und die Migration legt. Wer beide Versionen parallel nutzt, kann V1-Projekte mit dem Import-Assistenten in die neue Bibliothek kopieren und anschließend vollständig in V2 weiterbearbeiten.
 6. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
-   * Wer ausschließlich die neue Electron-Vorschau nutzen möchte, kann alternativ `python start_tool_v2.py` ausführen. Dieses Skript installiert nur die V2-Abhängigkeiten und startet direkt `npm run --prefix v2 start`.
+   * Wer ausschließlich die neue Electron-Vorschau nutzen möchte, kann alternativ `python start_tool_v2.py` ausführen. Dieses Skript installiert die V2-Abhängigkeiten mit aktivierten Installationsskripten, prüft die Electron-Binärdatei und startet erst danach `npm run --prefix v2 start`.
 7. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
 8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
 9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
