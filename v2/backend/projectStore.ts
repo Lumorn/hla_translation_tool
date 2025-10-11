@@ -2,6 +2,7 @@ import { promises as fs, constants as fsConstants } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { tmpdir } from 'node:os';
+import { calculateProjectStats, type ProjectStatistics } from '../shared/calculateProjectStats';
 
 /**
  * Beschreibt die Projekt-Metadaten aus der `project.json`.
@@ -12,6 +13,28 @@ export interface ProjectManifest {
   createdAt: string;
   updatedAt: string;
   version: number;
+  chapter?: string;
+  chapterOrder?: number;
+  level?: string;
+  levelOrder?: number;
+  levelPart?: number;
+  progress?: ProjectProgressSnapshot;
+  enReviewEnabled?: boolean;
+  enReviewLanguage?: 'en' | 'de';
+}
+
+/**
+ * Fortschrittsschnappschuss für ein Projekt.
+ */
+export interface ProjectProgressSnapshot {
+  enPercent: number;
+  dePercent: number;
+  audioPercent: number;
+  completedPercent: number;
+  scoreAverage: number;
+  scoreMinimum: number;
+  totalSegments: number;
+  updatedAt: string;
 }
 
 /**
@@ -135,12 +158,31 @@ const PROJECT_FALLBACK_PREFIX = 'projekt';
 /**
  * Standardwerte für neue Projekte, damit jede Datei valide JSON-Strukturen enthält.
  */
+const DEFAULT_PROGRESS: ProjectProgressSnapshot = {
+  enPercent: 0,
+  dePercent: 0,
+  audioPercent: 0,
+  completedPercent: 0,
+  scoreAverage: 0,
+  scoreMinimum: 0,
+  totalSegments: 0,
+  updatedAt: new Date(0).toISOString(),
+};
+
 const DEFAULT_MANIFEST: ProjectManifest = {
   id: '',
   name: 'Neues Projekt',
   createdAt: new Date(0).toISOString(),
   updatedAt: new Date(0).toISOString(),
   version: 1,
+  chapter: '',
+  chapterOrder: 0,
+  level: '',
+  levelOrder: 0,
+  levelPart: 1,
+  progress: { ...DEFAULT_PROGRESS },
+  enReviewEnabled: false,
+  enReviewLanguage: 'en',
 };
 
 const DEFAULT_SETTINGS: ProjectSettings = {
@@ -151,6 +193,54 @@ const DEFAULT_SETTINGS: ProjectSettings = {
 const DEFAULT_DATA: ProjectData = {
   segments: [],
 };
+
+function ensureProgressSnapshot(progress?: ProjectProgressSnapshot | null): ProjectProgressSnapshot {
+  const safe = progress ?? { ...DEFAULT_PROGRESS };
+  return {
+    enPercent: Number.isFinite(safe.enPercent) ? safe.enPercent : 0,
+    dePercent: Number.isFinite(safe.dePercent) ? safe.dePercent : 0,
+    audioPercent: Number.isFinite(safe.audioPercent) ? safe.audioPercent : 0,
+    completedPercent: Number.isFinite(safe.completedPercent) ? safe.completedPercent : 0,
+    scoreAverage: Number.isFinite(safe.scoreAverage) ? safe.scoreAverage : 0,
+    scoreMinimum: Number.isFinite(safe.scoreMinimum) ? safe.scoreMinimum : 0,
+    totalSegments: Number.isFinite(safe.totalSegments) ? safe.totalSegments : 0,
+    updatedAt: safe.updatedAt ?? new Date(0).toISOString(),
+  };
+}
+
+function normalizeManifest(manifest: ProjectManifest): { normalized: ProjectManifest; changed: boolean } {
+  const normalized: ProjectManifest = {
+    ...DEFAULT_MANIFEST,
+    ...manifest,
+    progress: ensureProgressSnapshot(manifest.progress),
+  };
+
+  const changed =
+    normalized.chapter !== manifest.chapter ||
+    normalized.chapterOrder !== manifest.chapterOrder ||
+    normalized.level !== manifest.level ||
+    normalized.levelOrder !== manifest.levelOrder ||
+    normalized.levelPart !== manifest.levelPart ||
+    normalized.enReviewEnabled !== manifest.enReviewEnabled ||
+    normalized.enReviewLanguage !== manifest.enReviewLanguage ||
+    JSON.stringify(normalized.progress) !== JSON.stringify(manifest.progress ?? {});
+
+  return { normalized, changed };
+}
+
+function buildProgressSnapshotFromStatistics(stats: ProjectStatistics): ProjectProgressSnapshot {
+  const now = new Date().toISOString();
+  return {
+    enPercent: stats.enPercent,
+    dePercent: stats.dePercent,
+    audioPercent: stats.audioPercent,
+    completedPercent: stats.completedPercent,
+    scoreAverage: stats.scoreAverage,
+    scoreMinimum: stats.scoreMinimum,
+    totalSegments: stats.totalSegments,
+    updatedAt: now,
+  };
+}
 
 /**
  * Prüft, ob ein Pfad existiert.
@@ -466,7 +556,15 @@ export async function closeProject(session: ProjectSessionSnapshot): Promise<voi
  * Liest die Manifest-Datei eines Projekts.
  */
 export async function readManifest(paths: ProjectPaths): Promise<ProjectManifest> {
-  return readJsonFile<ProjectManifest>(paths.manifestFile);
+  const manifest = await readJsonFile<ProjectManifest>(paths.manifestFile);
+  const { normalized, changed } = normalizeManifest(manifest);
+
+  if (changed) {
+    await writeJsonAtomic(paths.manifestFile, normalized);
+    await appendLog(paths.logFile, 'Manifest wurde auf das aktuelle Schema migriert.');
+  }
+
+  return normalized;
 }
 
 /**
@@ -481,7 +579,7 @@ export async function readSettings(paths: ProjectPaths): Promise<ProjectSettings
  */
 export async function writeSettings(paths: ProjectPaths, settings: ProjectSettings): Promise<void> {
   await writeJsonAtomic(paths.settingsFile, settings);
-  await touchManifest(paths, 'Einstellungen geändert');
+  await updateManifest(paths, undefined, 'Einstellungen geändert');
   await appendLog(paths.logFile, 'Einstellungen wurden gespeichert.');
 }
 
@@ -495,9 +593,20 @@ export async function readData(paths: ProjectPaths): Promise<ProjectData> {
 /**
  * Schreibt neue Projektdaten transaktionssicher.
  */
-export async function writeData(paths: ProjectPaths, data: ProjectData, logMessage = 'Daten wurden aktualisiert.'): Promise<void> {
+export async function writeData(
+  paths: ProjectPaths,
+  data: ProjectData,
+  logMessage = 'Daten wurden aktualisiert.',
+): Promise<void> {
   await writeJsonAtomic(paths.dataFile, data);
-  await touchManifest(paths, 'Daten aktualisiert');
+  const stats = calculateProjectStats(data);
+  await updateManifest(
+    paths,
+    (manifest) => {
+      manifest.progress = buildProgressSnapshotFromStatistics(stats);
+    },
+    'Daten aktualisiert',
+  );
   await appendLog(paths.logFile, logMessage);
 }
 
@@ -773,9 +882,21 @@ export function resolveProjectPaths(root: string): ProjectPaths {
 /**
  * Aktualisiert den Änderungszeitstempel der Manifest-Datei.
  */
-async function touchManifest(paths: ProjectPaths, reason: string): Promise<void> {
-  const manifest = await readManifest(paths);
-  manifest.updatedAt = new Date().toISOString();
-  await writeJsonAtomic(paths.manifestFile, manifest);
+async function updateManifest(
+  paths: ProjectPaths,
+  updater: ((manifest: ProjectManifest) => ProjectManifest | void) | undefined,
+  reason: string,
+): Promise<ProjectManifest> {
+  const current = await readManifest(paths);
+  const draft: ProjectManifest = { ...current, progress: ensureProgressSnapshot(current.progress) };
+  const result = updater ? updater(draft) ?? draft : draft;
+  result.updatedAt = new Date().toISOString();
+  const { normalized } = normalizeManifest(result);
+  await writeJsonAtomic(paths.manifestFile, normalized);
   await appendLog(paths.logFile, `Manifest aktualisiert (${reason}).`);
+  return normalized;
+}
+
+async function touchManifest(paths: ProjectPaths, reason: string): Promise<void> {
+  await updateManifest(paths, undefined, reason);
 }

@@ -3,10 +3,10 @@
   "compilerOptions": {
     "module": "CommonJS",
     "outDir": "./dist/backend",
-    "rootDir": "./backend",
+    "rootDir": ".",
     "lib": ["ES2020"],
     "types": ["node"],
     "composite": true
   },
-  "include": ["backend/**/*.ts"]
+  "include": ["backend/**/*.ts", "shared/**/*.ts"]
 }

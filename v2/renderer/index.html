@@ -105,6 +105,259 @@
         gap: 10px;
       }
 
+      .dashboard {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .dashboard__metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .dashboard__metric {
+        flex: 1 1 160px;
+        min-width: 160px;
+        background: rgba(30, 41, 59, 0.65);
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        border-radius: 10px;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .dashboard__metric-title {
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .dashboard__metric-value {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .dashboard__metric-bar {
+        position: relative;
+        width: 100%;
+        height: 8px;
+        background: rgba(148, 163, 184, 0.2);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+
+      .dashboard__metric-bar-fill {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        background: linear-gradient(90deg, #38bdf8, #22d3ee);
+      }
+
+      .dashboard__controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .dashboard__controls label {
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.75);
+      }
+
+      .dashboard__controls input[type='search'] {
+        min-width: 220px;
+      }
+
+      .dashboard__controls button {
+        padding: 8px 14px;
+        font-size: 0.9rem;
+      }
+
+      .dashboard__chapters {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+
+      .dashboard__chapter {
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.55);
+      }
+
+      .dashboard__chapter.is-collapsed .dashboard__level-list {
+        display: none;
+      }
+
+      .dashboard__chapter-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        cursor: default;
+      }
+
+      .dashboard__chapter-title {
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .dashboard__chapter-progress {
+        width: 120px;
+      }
+
+      .dashboard__level-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 14px 16px 18px;
+      }
+
+      .dashboard__level {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 10px;
+        padding: 12px 14px;
+        background: rgba(30, 41, 59, 0.6);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .dashboard__level.is-collapsed .dashboard__projects {
+        display: none;
+      }
+
+      .dashboard__level-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .dashboard__level-title {
+        font-weight: 500;
+        font-size: 1rem;
+      }
+
+      .dashboard__projects {
+        display: grid;
+        gap: 10px;
+      }
+
+      .dashboard__project {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 10px;
+        padding: 10px 12px;
+        background: rgba(15, 23, 42, 0.6);
+        display: grid;
+        gap: 8px;
+      }
+
+      .dashboard__project-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-weight: 500;
+      }
+
+      .dashboard__badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 0.8rem;
+      }
+
+      .dashboard__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.2);
+      }
+
+      .dashboard__project:hover {
+        border-color: rgba(56, 189, 248, 0.45);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25);
+      }
+
+      .dashboard__project.is-selected {
+        border-color: rgba(56, 189, 248, 0.85);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.45);
+      }
+
+      .dashboard__project.is-drop-target {
+        border-color: rgba(94, 234, 212, 0.85);
+        box-shadow: 0 0 0 1px rgba(94, 234, 212, 0.45);
+      }
+
+      .dashboard__context-menu {
+        position: fixed;
+        z-index: 9999;
+        min-width: 180px;
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 10px;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.35);
+        padding: 6px 0;
+        display: none;
+      }
+
+      .dashboard__context-item {
+        padding: 8px 14px;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      .dashboard__context-item:hover {
+        background: rgba(56, 189, 248, 0.2);
+      }
+
+      .dashboard__context-item.danger {
+        color: #fecaca;
+      }
+
+      .dashboard__dialog-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.75);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9998;
+      }
+
+      .dashboard__dialog {
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 14px;
+        padding: 24px;
+        max-width: 560px;
+        width: calc(100% - 48px);
+        max-height: 80vh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .dashboard__dialog h3 {
+        margin: 0;
+      }
+
+      .dashboard__dialog-close {
+        align-self: flex-end;
+      }
+
       .project-library__item {
         border: 1px solid rgba(148, 163, 184, 0.25);
         border-radius: 10px;
@@ -557,8 +810,43 @@
         <p id="project-library-location" class="project-library__location">Projektbibliothek wird geladen …</p>
         <div class="project-library" aria-live="polite">
           <div class="project-library__header">
-            <h3 class="project-library__title">Verfügbare Projekte</h3>
-            <button type="button" id="refresh-library-button" class="secondary">Aktualisieren</button>
+            <h3 class="project-library__title">Projektübersicht</h3>
+            <div class="project-buttons">
+              <button type="button" id="refresh-library-button" class="secondary">Aktualisieren</button>
+              <button type="button" id="open-editor-button" class="secondary" disabled>Editor öffnen</button>
+            </div>
+          </div>
+          <div class="dashboard" id="project-dashboard">
+            <div class="dashboard__metrics">
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-title">Projekte gesamt</span>
+                <span class="dashboard__metric-value" id="dashboard-total-projects">0</span>
+                <div class="dashboard__metric-title">Gefilterte Ansicht: <span id="dashboard-visible-projects">0</span></div>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-title">Gesamtfortschritt</span>
+                <span class="dashboard__metric-value" id="dashboard-progress-label">0%</span>
+                <div class="dashboard__metric-bar">
+                  <div class="dashboard__metric-bar-fill" id="dashboard-progress-fill"></div>
+                </div>
+              </div>
+              <div class="dashboard__metric">
+                <span class="dashboard__metric-title">Bewertung (Minimum)</span>
+                <span class="dashboard__metric-value" id="dashboard-score-label">★ 0</span>
+                <div class="dashboard__metric-title">Durchschnitt ★ <span id="dashboard-score-average">0</span></div>
+              </div>
+            </div>
+            <div class="dashboard__controls">
+              <label for="dashboard-filter">Filter</label>
+              <input type="search" id="dashboard-filter" placeholder="Kapitel, Level oder Projekt…" />
+              <label><input type="checkbox" id="dashboard-only-open" /> Nur offene Projekte</label>
+              <button type="button" id="dashboard-random-button">🎲 Zufallsprojekt</button>
+              <button type="button" id="dashboard-random-open-button">🎯 Offenes Zufallsprojekt</button>
+              <button type="button" id="dashboard-level-stats-button">📊 Level-Statistiken</button>
+              <button type="button" id="dashboard-note-overview-button">📝 Notizübersicht</button>
+              <button type="button" id="dashboard-en-review-button">🎧 EN-Review</button>
+            </div>
+            <div class="dashboard__chapters" id="project-dashboard-chapters"></div>
           </div>
           <ul id="project-library-entries" class="project-library__list"></ul>
         </div>
@@ -575,7 +863,6 @@
           <input type="hidden" name="projectPath" />
           <div class="project-buttons">
             <button type="submit" id="open-project-button" disabled>Ausgewähltes Projekt öffnen</button>
-            <button type="button" id="open-editor-button" class="secondary" disabled>Projekt bearbeiten</button>
             <button type="button" id="close-project-button" class="secondary" disabled>Projekt schließen</button>
           </div>
         </form>
@@ -662,6 +949,28 @@
           <option value="wartet_auf_audio"></option>
         </datalist>
       </section>
+
+      <div class="dashboard__context-menu" id="dashboard-project-menu">
+        <div class="dashboard__context-item" data-action="open">Projekt öffnen</div>
+        <div class="dashboard__context-item" data-action="stats">Fortschritt anzeigen</div>
+        <div class="dashboard__context-item" data-action="review">EN-Review starten</div>
+        <div class="dashboard__context-item danger" data-action="remove">Projekt entfernen</div>
+      </div>
+      <div class="dashboard__context-menu" id="dashboard-level-menu">
+        <div class="dashboard__context-item" data-action="stats">Level-Statistiken</div>
+        <div class="dashboard__context-item" data-action="notes">Notizübersicht</div>
+        <div class="dashboard__context-item" data-action="random">Zufallsprojekt im Level</div>
+      </div>
+      <div class="dashboard__context-menu" id="dashboard-chapter-menu">
+        <div class="dashboard__context-item" data-action="collapse">Kapitel ein-/ausklappen</div>
+        <div class="dashboard__context-item" data-action="random">Zufallsprojekt im Kapitel</div>
+      </div>
+      <div class="dashboard__dialog-backdrop" id="dashboard-dialog-backdrop">
+        <div class="dashboard__dialog" role="dialog" aria-modal="true">
+          <button type="button" class="dashboard__dialog-close secondary" id="dashboard-dialog-close">Schließen</button>
+          <div id="dashboard-dialog-content"></div>
+        </div>
+      </div>
 
       <div id="import-wizard-root" class="wizard-root hidden"></div>
     </main>
