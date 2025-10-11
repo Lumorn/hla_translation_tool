@@ -7,6 +7,11 @@ import type {
   ProjectPaths,
   ProjectSettings,
 } from '../backend/projectStore';
+import type {
+  AudioProcessingRequest,
+  AudioProcessingResult,
+  AudioWaveformPreview,
+} from '../backend/audioProcessing';
 import type { ImportDecision, ImportSourceSelection, ImportWizardState } from '../importer/importWizard';
 
 export interface ProjectOpenResult {
@@ -72,6 +77,16 @@ export interface ProjectEditorBridge {
   close: (sessionId: string) => Promise<unknown>;
 }
 
+export interface AudioProcessingBridge {
+  loadWaveform: (
+    sessionId: string,
+    fileName: string,
+    options?: { maxPeaks?: number; targetSampleRate?: number }
+  ) => Promise<AudioWaveformPreview>;
+  processClip: (sessionId: string, request: AudioProcessingRequest) => Promise<AudioProcessingResult>;
+  duplicateClip: (sessionId: string, sourceFile: string, label: string) => Promise<string>;
+}
+
 declare global {
   interface Window {
     runtimeInfo?: {
@@ -85,6 +100,7 @@ declare global {
     projectLibrary?: ProjectLibraryBridge;
     importWizard?: ImportWizardBridge;
     projectEditor?: ProjectEditorBridge;
+    audioProcessing?: AudioProcessingBridge;
     __HLA_DEMO__?: boolean;
     __HLA_DEMO_AUTO_OPEN__?: string;
   }

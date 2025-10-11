@@ -1,4 +1,12 @@
 # Changelog
+# 🛠️ Patch in 1.40.455
+* `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
+* `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.
+* `v2/electron/main-v2.js` und `v2/electron/preload-v2.js` stellen eine dedizierte Audio-Bridge bereit, die Wellenformdaten lädt und Bearbeitungen aus dem Renderer entgegennimmt.
+* `v2/renderer/audioEditor.ts`, `v2/renderer/editor.html` und `v2/renderer/editor.ts` visualisieren Audiosegmente auf Canvas, bieten Zoom, Lineale, Undo und Effektregler sowie synchronisierte Vorher/Nachher-Wiedergabe.
+* `v2/renderer/bridgeTypes.ts` ergänzt den neuen `audioProcessing`-Kanal für den Renderer.
+* `v2/package.json` und `v2/package-lock.json` installieren `fluent-ffmpeg`, `ffmpeg-static` und `ffprobe-static` samt Typdefinitionen für den neuen Arbeitsablauf.
+* `README.md` und `CHANGELOG.md` dokumentieren den erweiterten Audio-Editor der V2-Oberfläche.
 # 🛠️ Patch in 1.40.454
 * `v2/backend/projectStore.ts` führt den Typ `ProjectSegment` ein, sodass der Renderer strukturierte Segmentdaten mit ID, Text, Übersetzung, Audio-Hinweis und Status verarbeiten kann.
 * `v2/electron/main-v2.js` registriert neue IPC-Kanäle, erstellt bei Bedarf ein zweites Fenster für den Segment-Editor und sorgt dafür, dass Editoren beim Schließen von Projekten automatisch beendet werden.

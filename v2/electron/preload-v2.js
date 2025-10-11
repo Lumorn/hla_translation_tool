@@ -52,3 +52,11 @@ contextBridge.exposeInMainWorld('projectEditor', {
   open: (sessionId, projectName) => ipcRenderer.invoke('projectEditor:open', sessionId, projectName),
   close: (sessionId) => ipcRenderer.invoke('projectEditor:close', sessionId),
 });
+
+contextBridge.exposeInMainWorld('audioProcessing', {
+  loadWaveform: (sessionId, fileName, options) =>
+    ipcRenderer.invoke('audio:loadWaveform', sessionId, fileName, options),
+  processClip: (sessionId, request) => ipcRenderer.invoke('audio:processClip', sessionId, request),
+  duplicateClip: (sessionId, sourceFile, label) =>
+    ipcRenderer.invoke('audio:duplicateClip', sessionId, sourceFile, label),
+});

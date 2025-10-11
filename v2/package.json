@@ -8,8 +8,14 @@
     "start": "npm run build && electron ./electron/main-v2.js"
   },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.24",
     "@types/node": "^22.8.1",
     "electron": "^28.2.0",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0",
+    "ffprobe-static": "^3.0.2",
+    "fluent-ffmpeg": "^2.1.2"
   }
 }

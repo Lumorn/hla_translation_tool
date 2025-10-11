@@ -4,6 +4,7 @@ const path = require('node:path');
 const fs = require('node:fs/promises');
 const { resolveRenderer, resolveProjectsRoot } = require('../shared/appPaths');
 const projectStore = require('../dist/backend/projectStore.js');
+const audioProcessing = require('../dist/backend/audioProcessing.js');
 const { ImportWizardSession } = require('../dist/importer/importWizard.js');
 
 // Merkt sich aktive Sitzungen, um Sperren sauber aufzulösen
@@ -177,6 +178,21 @@ function registerProjectIpc() {
     const session = requireSession(sessionId);
     await projectStore.deleteAudioSnapshot(session.paths, snapshotName);
     return true;
+  });
+
+  ipcMain.handle('audio:loadWaveform', async (_event, sessionId, fileName, options) => {
+    const session = requireSession(sessionId);
+    return audioProcessing.loadWaveformPreview(session.paths, fileName, options);
+  });
+
+  ipcMain.handle('audio:processClip', async (_event, sessionId, request) => {
+    const session = requireSession(sessionId);
+    return audioProcessing.processAudioClip(session.paths, request);
+  });
+
+  ipcMain.handle('audio:duplicateClip', async (_event, sessionId, sourceFile, label) => {
+    const session = requireSession(sessionId);
+    return audioProcessing.duplicateForComparison(session.paths, sourceFile, label);
   });
 
   ipcMain.handle('projectLibrary:getRoot', async () => {
