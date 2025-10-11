@@ -9,6 +9,7 @@
   },
   "include": ["renderer/**/*.ts"],
   "references": [
+    { "path": "./tsconfig.shared-lib.json" },
     { "path": "./tsconfig.backend.json" },
     { "path": "./tsconfig.importer.json" }
   ]
