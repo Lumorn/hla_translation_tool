@@ -1,7 +1,6 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.shared-lib.json" },
     { "path": "./tsconfig.renderer.json" },
     { "path": "./tsconfig.backend.json" },
     { "path": "./tsconfig.importer.json" }

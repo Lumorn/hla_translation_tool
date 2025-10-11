@@ -6,7 +6,6 @@ import type {
   ProjectManifest,
   ProjectPaths,
   ProjectSettings,
-  ProjectManifestUpdate,
 } from '../backend/projectStore';
 import type {
   AudioProcessingRequest,
@@ -32,7 +31,6 @@ export interface ProjectStoreBridge {
   writeSettings: (sessionId: string, settings: ProjectSettings) => Promise<boolean>;
   readData: (sessionId: string) => Promise<ProjectData>;
   writeData: (sessionId: string, data: ProjectData, logMessage?: string) => Promise<boolean>;
-  updateMetadata: (projectPath: string, updates: ProjectManifestUpdate) => Promise<ProjectManifest>;
   createBackup: (sessionId: string) => Promise<ProjectBackupInfo>;
   listBackups: (sessionId: string) => Promise<ProjectBackupInfo[]>;
   restoreBackup: (sessionId: string, backupName: string) => Promise<boolean>;
@@ -47,7 +45,6 @@ export interface ProjectLibraryBridge {
   getRoot: () => Promise<string>;
   list: () => Promise<ProjectLibraryEntry[]>;
   create: (projectName: string, options?: CreateProjectOptions) => Promise<ProjectLibraryCreateResult>;
-  update: (projectPath: string, updates: ProjectManifestUpdate) => Promise<ProjectManifest>;
 }
 
 export interface ProjectLibraryEntry {

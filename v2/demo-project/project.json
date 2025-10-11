@@ -3,24 +3,5 @@
   "name": "V2 Demo-Projekt",
   "createdAt": "2025-10-10T12:40:41.259Z",
   "updatedAt": "2025-10-10T12:40:41.304Z",
-  "version": 1,
-  "chapter": "Unsortiert",
-  "level": "Allgemein",
-  "progress": {
-    "totalSegments": 2,
-    "translatedSegments": 2,
-    "audioSegments": 2,
-    "completedSegments": 2,
-    "translationPercent": 100,
-    "audioPercent": 100,
-    "completedPercent": 100,
-    "pendingReviewSegments": 0,
-    "rating": 5,
-    "statusCounts": {
-      "translated": 2
-    },
-    "noteCounts": {},
-    "notesTotal": 0,
-    "updatedAt": "2025-10-10T12:40:41.304Z"
-  }
+  "version": 1
 }

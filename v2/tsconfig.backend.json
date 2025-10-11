@@ -8,6 +8,5 @@
     "types": ["node"],
     "composite": true
   },
-  "include": ["backend/**/*.ts"],
-  "references": [{ "path": "./tsconfig.shared-lib.json" }]
+  "include": ["backend/**/*.ts"]
 }
