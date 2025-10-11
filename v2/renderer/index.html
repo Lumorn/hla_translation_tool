@@ -175,6 +175,7 @@
       }
 
       input[type='text'],
+      input[type='search'],
       textarea {
         padding: 10px 12px;
         border-radius: 8px;
@@ -275,6 +276,136 @@
       .backup-actions button {
         font-size: 0.85rem;
         padding: 6px 12px;
+      }
+
+      .segment-section {
+        margin-top: 32px;
+        padding: 24px;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .segment-section__header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .segment-section__title {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .segment-section__meta {
+        margin: 4px 0 0;
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .segment-section__filter {
+        min-width: 220px;
+      }
+
+      .segment-status {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: rgba(148, 163, 184, 0.1);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        color: rgba(226, 232, 240, 0.85);
+      }
+
+      .segment-status--success {
+        border-color: rgba(34, 197, 94, 0.5);
+        background: rgba(34, 197, 94, 0.15);
+        color: #bbf7d0;
+      }
+
+      .segment-status--warning {
+        border-color: rgba(251, 191, 36, 0.5);
+        background: rgba(251, 191, 36, 0.15);
+        color: #fcd34d;
+      }
+
+      .segment-status--error {
+        border-color: rgba(248, 113, 113, 0.5);
+        background: rgba(248, 113, 113, 0.15);
+        color: #fecaca;
+      }
+
+      .segment-table-wrapper {
+        overflow-x: auto;
+      }
+
+      table.segment-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+        min-width: 640px;
+      }
+
+      table.segment-table th,
+      table.segment-table td {
+        border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+        padding: 10px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      table.segment-table th {
+        font-weight: 600;
+        color: rgba(226, 232, 240, 0.85);
+      }
+
+      table.segment-table tbody tr.is-dirty {
+        background: rgba(56, 189, 248, 0.08);
+      }
+
+      table.segment-table tbody tr:hover {
+        background: rgba(148, 163, 184, 0.08);
+      }
+
+      table.segment-table td textarea {
+        width: 100%;
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      table.segment-table td input[data-field='status'] {
+        width: 100%;
+      }
+
+      .segment-table__empty {
+        text-align: center;
+        padding: 18px 12px;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .segment-text {
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .segment-text--source {
+        font-weight: 500;
+      }
+
+      .segment-text__meta {
+        margin-top: 6px;
+        font-size: 0.8rem;
+        color: rgba(226, 232, 240, 0.65);
+      }
+
+      .segment-hint {
+        margin: 0;
+        font-size: 0.8rem;
+        color: rgba(226, 232, 240, 0.6);
       }
 
       .wizard-root {
@@ -444,6 +575,7 @@
           <input type="hidden" name="projectPath" />
           <div class="project-buttons">
             <button type="submit" id="open-project-button" disabled>Ausgewähltes Projekt öffnen</button>
+            <button type="button" id="open-editor-button" class="secondary" disabled>Projekt bearbeiten</button>
             <button type="button" id="close-project-button" class="secondary" disabled>Projekt schließen</button>
           </div>
         </form>
@@ -492,6 +624,43 @@
           </thead>
           <tbody id="audio-backup-table-body"></tbody>
         </table>
+      </section>
+
+      <section class="segment-section hidden" id="segments-section" aria-labelledby="segments-headline">
+        <div class="segment-section__header">
+          <div>
+            <h2 class="segment-section__title" id="segments-headline">Segment-Übersicht</h2>
+            <p class="segment-section__meta">
+              <span id="segment-visible-count">0</span> / <span id="segment-count">0</span> Segmente ·
+              <span id="segment-translated-count">0</span> übersetzt (<span id="segment-coverage">0&nbsp;%</span>)
+            </p>
+          </div>
+          <label class="segment-section__filter">
+            Segmentfilter
+            <input type="search" id="segment-filter" placeholder="ID, Text oder Status durchsuchen" />
+          </label>
+        </div>
+        <div class="segment-status" id="segment-status">Kein Projekt geöffnet.</div>
+        <div class="segment-table-wrapper">
+          <table class="segment-table" aria-describedby="segment-status">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Originaltext</th>
+                <th scope="col">Übersetzung</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="segment-table-body"></tbody>
+          </table>
+        </div>
+        <p class="segment-hint">Änderungen werden automatisch gespeichert.</p>
+        <datalist id="segment-status-options">
+          <option value="offen"></option>
+          <option value="in_bearbeitung"></option>
+          <option value="übersetzt"></option>
+          <option value="wartet_auf_audio"></option>
+        </datalist>
       </section>
 
       <div id="import-wizard-root" class="wizard-root hidden"></div>

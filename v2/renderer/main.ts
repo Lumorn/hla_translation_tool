@@ -3,78 +3,21 @@ import type {
   ProjectBackupInfo,
   ProjectAudioBackupInfo,
   ProjectData,
+  ProjectSegment,
   ProjectManifest,
   ProjectPaths,
   ProjectSettings,
+} from '../backend/projectStore';
+import type { ImportDecision, ImportSourceSelection, ImportWizardState } from '../importer/importWizard';
+import type {
+  ProjectOpenResult,
+  ProjectStoreBridge,
+  ProjectLibraryBridge,
+  ProjectEditorBridge,
   ProjectLibraryEntry,
   ProjectLibraryCreateResult,
-} from '../backend/projectStore';
-import type {
-  ImportDecision,
-  ImportSourceSelection,
-  ImportWizardState,
-} from '../importer/importWizard';
-
-declare global {
-  interface Window {
-    runtimeInfo?: {
-      isElectron?: boolean;
-      versions?: Record<string, string>;
-    };
-    process?: {
-      versions?: Record<string, string | undefined>;
-    };
-    projectStore?: ProjectStoreBridge;
-    projectLibrary?: ProjectLibraryBridge;
-    importWizard?: ImportWizardBridge;
-    __HLA_DEMO__?: boolean;
-    __HLA_DEMO_AUTO_OPEN__?: string;
-  }
-}
-
-interface ProjectOpenResult {
-  sessionId: string;
-  paths: ProjectPaths;
-  manifest: ProjectManifest;
-  settings: ProjectSettings;
-  data: ProjectData;
-}
-
-interface ProjectStoreBridge {
-  createProject: (projectPath: string, options?: CreateProjectOptions) => Promise<ProjectPaths>;
-  openProject: (projectPath: string) => Promise<ProjectOpenResult>;
-  closeProject: (sessionId: string) => Promise<boolean>;
-  readManifest: (sessionId: string) => Promise<ProjectManifest>;
-  readSettings: (sessionId: string) => Promise<ProjectSettings>;
-  writeSettings: (sessionId: string, settings: ProjectSettings) => Promise<boolean>;
-  readData: (sessionId: string) => Promise<ProjectData>;
-  writeData: (sessionId: string, data: ProjectData, logMessage?: string) => Promise<boolean>;
-  createBackup: (sessionId: string) => Promise<ProjectBackupInfo>;
-  listBackups: (sessionId: string) => Promise<ProjectBackupInfo[]>;
-  restoreBackup: (sessionId: string, backupName: string) => Promise<boolean>;
-  deleteBackup: (sessionId: string, backupName: string) => Promise<boolean>;
-  createAudioSnapshot: (sessionId: string) => Promise<ProjectAudioBackupInfo>;
-  listAudioSnapshots: (sessionId: string) => Promise<ProjectAudioBackupInfo[]>;
-  restoreAudioSnapshot: (sessionId: string, snapshotName: string) => Promise<boolean>;
-  deleteAudioSnapshot: (sessionId: string, snapshotName: string) => Promise<boolean>;
-}
-
-interface ProjectLibraryBridge {
-  getRoot: () => Promise<string>;
-  list: () => Promise<ProjectLibraryEntry[]>;
-  create: (projectName: string, options?: CreateProjectOptions) => Promise<ProjectLibraryCreateResult>;
-}
-
-interface ImportWizardBridge {
-  start: (sessionId: string, selection: ImportSourceSelection) => Promise<ImportWizardState>;
-  scan: (sessionId: string) => Promise<ImportWizardState>;
-  audit: (sessionId: string) => Promise<ImportWizardState>;
-  resolve: (sessionId: string, decisions: Record<string, ImportDecision>) => Promise<ImportWizardState>;
-  execute: (sessionId: string) => Promise<ImportWizardState>;
-  report: (sessionId: string) => Promise<ImportWizardState>;
-  cancel: (sessionId: string) => Promise<boolean>;
-  loadTemplate: (templateName: string) => Promise<string>;
-}
+  ImportWizardBridge,
+} from './bridgeTypes';
 
 const statusElement = document.getElementById('status');
 const versionHintElement = document.getElementById('version-hint');
@@ -101,6 +44,15 @@ const audioTableBody = document.getElementById('audio-backup-table-body') as HTM
 const createAudioSnapshotButton = document.getElementById('create-audio-snapshot-button') as HTMLButtonElement | null;
 const refreshAudioSnapshotsButton = document.getElementById('refresh-audio-snapshots-button') as HTMLButtonElement | null;
 const wizardRoot = document.getElementById('import-wizard-root');
+const segmentsSection = document.getElementById('segments-section');
+const segmentTableBody = document.getElementById('segment-table-body') as HTMLTableSectionElement | null;
+const segmentStatusElement = document.getElementById('segment-status');
+const segmentCountElement = document.getElementById('segment-count');
+const segmentTranslatedCountElement = document.getElementById('segment-translated-count');
+const segmentCoverageElement = document.getElementById('segment-coverage');
+const segmentVisibleCountElement = document.getElementById('segment-visible-count');
+const segmentFilterInput = document.getElementById('segment-filter') as HTMLInputElement | null;
+const openEditorButton = document.getElementById('open-editor-button') as HTMLButtonElement | null;
 
 let activeProject: ProjectOpenResult | undefined;
 let currentImportState: ImportWizardState | undefined;
@@ -109,6 +61,15 @@ const conflictDecisions = new Map<string, ImportDecision>();
 let projectLibraryEntries: ProjectLibraryEntry[] = [];
 let selectedProjectPath: string | undefined;
 let projectLibraryRoot: string | undefined;
+let editableSegments: ProjectSegment[] = [];
+const segmentRowElements = new Map<string, HTMLTableRowElement>();
+const dirtySegmentIds = new Set<string>();
+let segmentFilterText = '';
+let segmentFilterRaw = '';
+let segmentSaveTimeout: number | undefined;
+let isSavingSegments = false;
+const SEGMENT_SAVE_DELAY = 750;
+type SegmentStatusTone = 'info' | 'success' | 'warning' | 'error';
 
 const wizardElements: {
   form: HTMLFormElement | null;
@@ -483,6 +444,9 @@ function toggleProjectControls(disabled: boolean): void {
     const isLocked = entry?.hasLock ?? false;
     openProjectButton.disabled = disabled || Boolean(activeProject) || !selectedProjectPath || isLocked;
   }
+  if (openEditorButton) {
+    openEditorButton.disabled = disabled || !activeProject;
+  }
   toggleBackupControls(disabled || !activeProject);
   toggleAudioControls(disabled || !activeProject);
 }
@@ -518,6 +482,338 @@ function toggleAudioSection(visible: boolean): void {
 function setAudioInfo(message: string): void {
   if (audioInfoElement) {
     audioInfoElement.textContent = message;
+  }
+}
+
+function toggleSegmentsSection(visible: boolean): void {
+  if (!segmentsSection) {
+    return;
+  }
+  if (visible) {
+    segmentsSection.classList.remove('hidden');
+  } else {
+    segmentsSection.classList.add('hidden');
+  }
+}
+
+function setSegmentStatus(message: string, tone: SegmentStatusTone = 'info'): void {
+  if (!segmentStatusElement) {
+    return;
+  }
+  segmentStatusElement.textContent = message;
+  segmentStatusElement.className = 'segment-status';
+  if (tone !== 'info') {
+    segmentStatusElement.classList.add(`segment-status--${tone}`);
+  }
+}
+
+function updateSegmentSummary(visibleCount: number): void {
+  if (!segmentCountElement || !segmentTranslatedCountElement || !segmentCoverageElement || !segmentVisibleCountElement) {
+    return;
+  }
+
+  const total = editableSegments.length;
+  const translated = editableSegments.reduce((sum, segment) => {
+    const text = typeof segment.translation === 'string' ? segment.translation.trim() : '';
+    return text.length > 0 ? sum + 1 : sum;
+  }, 0);
+
+  segmentCountElement.textContent = String(total);
+  segmentTranslatedCountElement.textContent = String(translated);
+  segmentVisibleCountElement.textContent = String(visibleCount);
+
+  const coverage = total > 0 ? (translated / total) * 100 : 0;
+  const coverageText = `${coverage.toLocaleString('de-DE', {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  })} %`;
+  segmentCoverageElement.textContent = coverageText;
+}
+
+function getFilteredSegments(): ProjectSegment[] {
+  if (!segmentFilterText) {
+    return editableSegments;
+  }
+
+  const normalizedFilter = segmentFilterText;
+  return editableSegments.filter((segment) => {
+    const parts = [segment.id, segment.text, segment.translation, segment.status, segment.audio]
+      .filter((value): value is string => typeof value === 'string')
+      .join(' ')
+      .toLowerCase();
+    return parts.includes(normalizedFilter);
+  });
+}
+
+function renderSegmentsTable(): void {
+  if (!segmentTableBody) {
+    return;
+  }
+
+  segmentRowElements.clear();
+  segmentTableBody.innerHTML = '';
+
+  const segmentsToRender = getFilteredSegments();
+
+  if (segmentsToRender.length === 0) {
+    const emptyRow = document.createElement('tr');
+    const emptyCell = document.createElement('td');
+    emptyCell.colSpan = 4;
+    emptyCell.className = 'segment-table__empty';
+    emptyCell.textContent =
+      editableSegments.length === 0
+        ? 'Dieses Projekt enthält noch keine Segmente.'
+        : 'Der aktuelle Filter liefert keine Treffer.';
+    emptyRow.appendChild(emptyCell);
+    segmentTableBody.appendChild(emptyRow);
+    updateSegmentSummary(0);
+    return;
+  }
+
+  for (const segment of segmentsToRender) {
+    const row = document.createElement('tr');
+    row.dataset.id = segment.id;
+
+    if (dirtySegmentIds.has(segment.id)) {
+      row.classList.add('is-dirty');
+    }
+
+    const idCell = document.createElement('td');
+    idCell.textContent = segment.id;
+    row.appendChild(idCell);
+
+    const textCell = document.createElement('td');
+    const sourceParagraph = document.createElement('p');
+    sourceParagraph.className = 'segment-text segment-text--source';
+    sourceParagraph.textContent = segment.text ?? '—';
+    textCell.appendChild(sourceParagraph);
+    if (segment.audio) {
+      const metaParagraph = document.createElement('p');
+      metaParagraph.className = 'segment-text__meta';
+      metaParagraph.textContent = `Audio: ${segment.audio}`;
+      textCell.appendChild(metaParagraph);
+    }
+    row.appendChild(textCell);
+
+    const translationCell = document.createElement('td');
+    const translationArea = document.createElement('textarea');
+    translationArea.dataset.field = 'translation';
+    translationArea.value = segment.translation ?? '';
+    translationArea.placeholder = 'Übersetzung eingeben';
+    translationCell.appendChild(translationArea);
+    row.appendChild(translationCell);
+
+    const statusCell = document.createElement('td');
+    const statusInput = document.createElement('input');
+    statusInput.type = 'text';
+    statusInput.dataset.field = 'status';
+    statusInput.value = segment.status ?? '';
+    statusInput.placeholder = 'Status festlegen';
+    statusInput.setAttribute('list', 'segment-status-options');
+    statusCell.appendChild(statusInput);
+    row.appendChild(statusCell);
+
+    segmentTableBody.appendChild(row);
+    segmentRowElements.set(segment.id, row);
+  }
+
+  updateSegmentSummary(segmentsToRender.length);
+}
+
+function refreshSegmentStatus(): void {
+  if (isSavingSegments || dirtySegmentIds.size > 0) {
+    return;
+  }
+
+  if (editableSegments.length === 0) {
+    setSegmentStatus('Dieses Projekt enthält noch keine Segmente.');
+    return;
+  }
+
+  const visible = getFilteredSegments().length;
+  if (visible === 0 && segmentFilterText) {
+    setSegmentStatus('Der aktuelle Filter liefert keine Treffer.');
+    return;
+  }
+
+  if (segmentFilterText) {
+    setSegmentStatus(`Filter aktiv – ${visible} von ${editableSegments.length} Segmenten sichtbar.`);
+    return;
+  }
+
+  setSegmentStatus('Segmentdaten geladen.');
+}
+
+function initializeSegments(data: ProjectData, options: { resetFilter?: boolean; statusMessage?: string } = {}): void {
+  editableSegments = Array.isArray(data.segments)
+    ? data.segments.map((segment) => ({ ...segment }))
+    : [];
+  dirtySegmentIds.clear();
+  segmentRowElements.clear();
+
+  if (options.resetFilter ?? false) {
+    segmentFilterText = '';
+    segmentFilterRaw = '';
+  }
+
+  if (segmentFilterInput) {
+    segmentFilterInput.value = segmentFilterRaw;
+  }
+
+  renderSegmentsTable();
+
+  if (options.statusMessage) {
+    setSegmentStatus(options.statusMessage);
+  } else {
+    refreshSegmentStatus();
+  }
+}
+
+function resetSegments(): void {
+  editableSegments = [];
+  segmentRowElements.clear();
+  dirtySegmentIds.clear();
+  segmentFilterText = '';
+  segmentFilterRaw = '';
+  if (segmentSaveTimeout !== undefined) {
+    window.clearTimeout(segmentSaveTimeout);
+    segmentSaveTimeout = undefined;
+  }
+  isSavingSegments = false;
+  if (segmentTableBody) {
+    segmentTableBody.innerHTML = '';
+  }
+  if (segmentFilterInput) {
+    segmentFilterInput.value = '';
+  }
+  updateSegmentSummary(0);
+  setSegmentStatus('Kein Projekt geöffnet.');
+}
+
+function updateSegmentRowDirtyState(segmentId: string, dirty: boolean): void {
+  const row = segmentRowElements.get(segmentId);
+  if (row) {
+    row.classList.toggle('is-dirty', dirty);
+  }
+}
+
+function markSegmentDirty(segmentId: string): void {
+  dirtySegmentIds.add(segmentId);
+  updateSegmentRowDirtyState(segmentId, true);
+  setSegmentStatus('Änderungen noch nicht gespeichert.', 'warning');
+  queueSegmentSave();
+}
+
+function queueSegmentSave(): void {
+  if (segmentSaveTimeout !== undefined) {
+    window.clearTimeout(segmentSaveTimeout);
+  }
+  segmentSaveTimeout = window.setTimeout(() => {
+    void persistSegmentChanges();
+  }, SEGMENT_SAVE_DELAY);
+}
+
+async function persistSegmentChanges(): Promise<void> {
+  if (!activeProject || !window.projectStore) {
+    return;
+  }
+
+  if (dirtySegmentIds.size === 0) {
+    return;
+  }
+
+  if (segmentSaveTimeout !== undefined) {
+    window.clearTimeout(segmentSaveTimeout);
+    segmentSaveTimeout = undefined;
+  }
+
+  isSavingSegments = true;
+  setSegmentStatus('Änderungen werden gespeichert …');
+
+  const updatedData: ProjectData = {
+    ...activeProject.data,
+    segments: editableSegments.map((segment) => ({ ...segment })),
+  };
+
+  try {
+    await window.projectStore.writeData(activeProject.sessionId, updatedData, 'Segmente aktualisiert.');
+    activeProject.data = updatedData;
+    const cleaned = Array.from(dirtySegmentIds);
+    dirtySegmentIds.clear();
+    cleaned.forEach((id) => updateSegmentRowDirtyState(id, false));
+    setSegmentStatus('Änderungen gespeichert.', 'success');
+    updateSegmentSummary(getFilteredSegments().length);
+    await loadProjectLibrary();
+  } catch (error) {
+    console.error('Segmente konnten nicht gespeichert werden:', error);
+    setSegmentStatus(`Speichern fehlgeschlagen: ${(error as Error).message}`, 'error');
+  } finally {
+    isSavingSegments = false;
+  }
+}
+
+function handleSegmentTableInteraction(event: Event): void {
+  const target = event.target;
+  if (!(target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const field = target.dataset.field;
+  if (field !== 'translation' && field !== 'status') {
+    return;
+  }
+
+  const row = target.closest<HTMLTableRowElement>('tr[data-id]');
+  if (!row) {
+    return;
+  }
+
+  const segmentId = row.dataset.id;
+  if (!segmentId) {
+    return;
+  }
+
+  const segment = editableSegments.find((item) => item.id === segmentId);
+  if (!segment) {
+    return;
+  }
+
+  if (target instanceof HTMLTextAreaElement && field === 'translation') {
+    if ((segment.translation ?? '') !== target.value) {
+      segment.translation = target.value;
+      markSegmentDirty(segmentId);
+    }
+    return;
+  }
+
+  if (target instanceof HTMLInputElement && field === 'status') {
+    const normalized = target.value.trim();
+    if ((segment.status ?? '') !== normalized) {
+      segment.status = normalized;
+      markSegmentDirty(segmentId);
+    }
+  }
+}
+
+function applySegmentFilter(value: string): void {
+  segmentFilterRaw = value;
+  segmentFilterText = value.trim().toLowerCase();
+  renderSegmentsTable();
+  refreshSegmentStatus();
+}
+
+async function reloadActiveProjectData(statusMessage?: string): Promise<void> {
+  if (!activeProject || !window.projectStore) {
+    return;
+  }
+
+  try {
+    const freshData = await window.projectStore.readData(activeProject.sessionId);
+    activeProject.data = freshData;
+    initializeSegments(freshData, { statusMessage });
+  } catch (error) {
+    console.error('Projektdaten konnten nicht neu geladen werden:', error);
+    setSegmentStatus(`Neu laden fehlgeschlagen: ${(error as Error).message}`, 'error');
   }
 }
 
@@ -715,6 +1011,7 @@ async function handleBackupTableClick(event: Event): Promise<void> {
     if (action === 'restore') {
       await window.projectStore.restoreBackup(activeProject.sessionId, backupName);
       setBackupInfo(`Backup "${backupName}" erfolgreich wiederhergestellt.`);
+      await reloadActiveProjectData('Backup wiederhergestellt – Segmente neu geladen.');
     } else if (action === 'delete') {
       await window.projectStore.deleteBackup(activeProject.sessionId, backupName);
       setBackupInfo(`Backup "${backupName}" gelöscht.`);
@@ -772,6 +1069,19 @@ async function handleAudioTableClick(event: Event): Promise<void> {
   }
 }
 
+async function openProjectEditor(sessionId: string, projectName: string): Promise<void> {
+  if (!window.projectEditor) {
+    return;
+  }
+
+  try {
+    await window.projectEditor.open(sessionId, projectName);
+  } catch (error) {
+    console.error('Editorfenster konnte nicht geöffnet werden:', error);
+    setProjectInfo(`Editor konnte nicht geöffnet werden: ${(error as Error).message}`);
+  }
+}
+
 async function handleProjectOpen(event: Event): Promise<void> {
   event.preventDefault();
   if (!window.projectStore || !projectForm) {
@@ -795,11 +1105,15 @@ async function handleProjectOpen(event: Event): Promise<void> {
 
   toggleProjectControls(true);
   setProjectInfo('Öffne Projekt …');
+  toggleSegmentsSection(false);
+  resetSegments();
 
   try {
     const opened = await window.projectStore.openProject(projectPath);
     activeProject = opened;
     closeProjectButton && (closeProjectButton.disabled = false);
+    toggleSegmentsSection(true);
+    initializeSegments(opened.data, { resetFilter: true });
     await setupImportWizardUI();
     await loadBackups();
     await loadAudioBackups();
@@ -810,6 +1124,7 @@ async function handleProjectOpen(event: Event): Promise<void> {
         'de-DE'
       )}.`
     );
+    void openProjectEditor(opened.sessionId, opened.manifest.name);
   } catch (error) {
     console.error(error);
     setProjectInfo(`Projekt konnte nicht geöffnet werden: ${(error as Error).message}`);
@@ -818,7 +1133,12 @@ async function handleProjectOpen(event: Event): Promise<void> {
     setBackupInfo('Kein Projekt ausgewählt.');
     toggleAudioSection(false);
     setAudioInfo('Kein Projekt ausgewählt.');
+    toggleSegmentsSection(false);
+    resetSegments();
     await loadProjectLibrary();
+    if (openEditorButton) {
+      openEditorButton.disabled = true;
+    }
   }
 }
 
@@ -832,6 +1152,13 @@ async function handleProjectClose(): Promise<void> {
   setProjectInfo('Schließe Projekt …');
 
   try {
+    if (window.projectEditor) {
+      try {
+        await window.projectEditor.close(sessionId);
+      } catch (editorError) {
+        console.warn('Editorfenster konnte nicht automatisch geschlossen werden:', editorError);
+      }
+    }
     await window.projectStore.closeProject(sessionId);
     await window.importWizard?.cancel(sessionId);
     activeProject = undefined;
@@ -841,6 +1168,8 @@ async function handleProjectClose(): Promise<void> {
     setBackupInfo('Kein Projekt ausgewählt.');
     toggleAudioSection(false);
     setAudioInfo('Kein Projekt ausgewählt.');
+    toggleSegmentsSection(false);
+    resetSegments();
     hideImportWizard();
     await loadProjectLibrary();
   } catch (error) {
@@ -848,6 +1177,20 @@ async function handleProjectClose(): Promise<void> {
     setProjectInfo(`Projekt konnte nicht geschlossen werden: ${(error as Error).message}`);
     closeProjectButton && (closeProjectButton.disabled = false);
   }
+}
+
+async function handleEditorOpen(): Promise<void> {
+  if (!activeProject) {
+    setProjectInfo('Bitte öffne zuerst ein Projekt.');
+    return;
+  }
+
+  if (!window.projectEditor) {
+    setProjectInfo('Der Editor steht nur in der Electron-Vorschau zur Verfügung.');
+    return;
+  }
+
+  await openProjectEditor(activeProject.sessionId, activeProject.manifest.name);
 }
 
 async function handleImportStart(event: Event): Promise<void> {
@@ -921,6 +1264,7 @@ async function handleImportExecution(): Promise<void> {
 
     const reportState = await window.importWizard.report(activeProject.sessionId);
     renderImportState(reportState, 'Import abgeschlossen.');
+    await reloadActiveProjectData('Import abgeschlossen – Segmente neu geladen.');
   } catch (error) {
     console.error(error);
     showWizardError(`Import fehlgeschlagen: ${(error as Error).message}`);
@@ -1220,6 +1564,10 @@ window.addEventListener('DOMContentLoaded', () => {
     closeProjectButton.addEventListener('click', () => void handleProjectClose());
   }
 
+  if (openEditorButton) {
+    openEditorButton.addEventListener('click', () => void handleEditorOpen());
+  }
+
   if (createBackupButton) {
     createBackupButton.addEventListener('click', () => void handleCreateBackup());
   }
@@ -1243,6 +1591,21 @@ window.addEventListener('DOMContentLoaded', () => {
   if (audioTableBody) {
     audioTableBody.addEventListener('click', (event) => void handleAudioTableClick(event));
   }
+
+  if (segmentTableBody) {
+    segmentTableBody.addEventListener('input', (event) => handleSegmentTableInteraction(event));
+    segmentTableBody.addEventListener('change', (event) => handleSegmentTableInteraction(event));
+  }
+
+  if (segmentFilterInput) {
+    segmentFilterInput.addEventListener('input', (event) => {
+      const value = (event.target as HTMLInputElement).value;
+      applySegmentFilter(value);
+    });
+  }
+
+  toggleSegmentsSection(false);
+  resetSegments();
 
   toggleProjectControls(false);
   setProjectInfo('Kein Projekt geöffnet.');

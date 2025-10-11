@@ -46,3 +46,9 @@ contextBridge.exposeInMainWorld('importWizard', {
   cancel: (sessionId) => ipcRenderer.invoke('importWizard:cancel', sessionId),
   loadTemplate: (templateName) => ipcRenderer.invoke('importWizard:loadTemplate', templateName),
 });
+
+// Schnittstelle zum Öffnen der Bearbeitungsansicht bereitstellen
+contextBridge.exposeInMainWorld('projectEditor', {
+  open: (sessionId, projectName) => ipcRenderer.invoke('projectEditor:open', sessionId, projectName),
+  close: (sessionId) => ipcRenderer.invoke('projectEditor:close', sessionId),
+});
