@@ -221,6 +221,140 @@
         font-size: 1rem;
       }
 
+      .audio-editor {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        background: rgba(15, 23, 42, 0.6);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 12px;
+        padding: 16px;
+      }
+
+      .audio-editor__status {
+        padding: 8px 12px;
+        border-radius: 10px;
+        background: rgba(148, 163, 184, 0.12);
+        color: rgba(226, 232, 240, 0.85);
+        font-size: 0.9rem;
+      }
+
+      .audio-editor__status--success {
+        background: rgba(74, 222, 128, 0.18);
+        color: #4ade80;
+      }
+
+      .audio-editor__status--warning {
+        background: rgba(251, 191, 36, 0.18);
+        color: #fbbf24;
+      }
+
+      .audio-editor__status--error {
+        background: rgba(248, 113, 113, 0.2);
+        color: #f87171;
+      }
+
+      .audio-editor__row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .audio-editor__column {
+        flex: 1 1 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .audio-editor__label {
+        font-size: 0.8rem;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .audio-editor__players {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+      }
+
+      .audio-editor__controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .audio-editor__controls label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.8);
+      }
+
+      .audio-editor__controls input[type='range'],
+      .audio-editor__controls input[type='number'] {
+        width: 100%;
+      }
+
+      .audio-editor__waveforms {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+      }
+
+      .audio-editor__wave {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .audio-editor__wave header {
+        font-size: 0.85rem;
+        color: rgba(226, 232, 240, 0.7);
+      }
+
+      .audio-editor__ruler {
+        position: relative;
+        height: 24px;
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .audio-editor__ruler-mark {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: rgba(148, 163, 184, 0.35);
+      }
+
+      .audio-editor__ruler-mark span {
+        position: absolute;
+        bottom: 2px;
+        left: 4px;
+        font-size: 0.7rem;
+        color: rgba(226, 232, 240, 0.7);
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      .audio-editor__scroll {
+        overflow-x: auto;
+        overflow-y: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 8px;
+        background: rgba(10, 17, 30, 0.8);
+      }
+
+      .audio-editor__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
       .segment-card__text {
         margin: 0;
         line-height: 1.5;
@@ -315,6 +449,99 @@
                 placeholder="Status festlegen"
                 disabled
               />
+            </section>
+            <section class="segment-card__section">
+              <h3>Audio-Bearbeitung</h3>
+              <div class="audio-editor">
+                <div class="audio-editor__status" id="audio-status">Keine Audiodatei geladen.</div>
+                <div class="audio-editor__row">
+                  <div class="audio-editor__column">
+                    <span class="audio-editor__label">Originaldatei</span>
+                    <strong id="audio-source-name">—</strong>
+                  </div>
+                  <div class="audio-editor__column">
+                    <span class="audio-editor__label">Bearbeitete Version</span>
+                    <strong id="audio-edited-name">—</strong>
+                  </div>
+                </div>
+                <div class="audio-editor__players">
+                  <label>
+                    <span class="audio-editor__label">Vorher</span>
+                    <audio id="audio-player-original" controls preload="metadata"></audio>
+                  </label>
+                  <label>
+                    <span class="audio-editor__label">Nachher</span>
+                    <audio id="audio-player-edited" controls preload="metadata"></audio>
+                  </label>
+                </div>
+                <div class="audio-editor__controls">
+                  <label>
+                    Zoom
+                    <input type="range" id="audio-zoom" min="0.5" max="5" step="0.1" value="1" />
+                  </label>
+                  <label>
+                    Höhe (px)
+                    <input type="number" id="audio-height" min="40" max="400" value="140" />
+                  </label>
+                  <label>
+                    Trimm-Start (ms)
+                    <input type="number" id="audio-trim-start" min="0" value="0" />
+                  </label>
+                  <label>
+                    Trimm-Ende (ms)
+                    <input type="number" id="audio-trim-end" min="0" placeholder="Automatisch" />
+                  </label>
+                  <label>
+                    Tempo-Faktor
+                    <input type="number" id="audio-tempo" min="0.1" step="0.05" value="1" />
+                  </label>
+                  <label>
+                    Lautstärke (dB)
+                    <input type="number" id="audio-gain" step="0.5" value="0" />
+                  </label>
+                  <label>
+                    Fade-in (ms)
+                    <input type="number" id="audio-fade-in" min="0" step="50" value="0" />
+                  </label>
+                  <label>
+                    Fade-out (ms)
+                    <input type="number" id="audio-fade-out" min="0" step="50" value="0" />
+                  </label>
+                  <label>
+                    <span class="audio-editor__label">Rollen synchronisieren</span>
+                    <input type="checkbox" id="audio-sync" checked />
+                  </label>
+                  <label>
+                    <span class="audio-editor__label">Normalisieren</span>
+                    <input type="checkbox" id="audio-normalize" />
+                  </label>
+                  <label>
+                    <span class="audio-editor__label">Umkehren</span>
+                    <input type="checkbox" id="audio-reverse" />
+                  </label>
+                </div>
+                <div class="audio-editor__actions">
+                  <button type="button" id="audio-apply">Änderungen anwenden</button>
+                  <button type="button" id="audio-undo" class="secondary">Letzte Änderung zurücknehmen</button>
+                  <button type="button" id="audio-reload" class="secondary">Wellenform neu laden</button>
+                </div>
+                <div class="audio-editor__waveforms">
+                  <div class="audio-editor__wave">
+                    <header>Original</header>
+                    <div class="audio-editor__ruler" id="wave-ruler-original"></div>
+                    <div class="audio-editor__scroll" id="wave-scroll-original">
+                      <canvas id="wave-canvas-original" height="140"></canvas>
+                    </div>
+                  </div>
+                  <div class="audio-editor__wave">
+                    <header>Bearbeitet</header>
+                    <div class="audio-editor__ruler" id="wave-ruler-processed"></div>
+                    <div class="audio-editor__scroll" id="wave-scroll-processed">
+                      <canvas id="wave-canvas-processed" height="140"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
           </article>
         </section>
