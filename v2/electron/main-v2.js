@@ -135,10 +135,6 @@ function registerProjectIpc() {
     return true;
   });
 
-  ipcMain.handle('projectStore:updateMetadata', async (_event, projectPath, updates) => {
-    return projectStore.updateProjectMetadata(projectPath, updates ?? {});
-  });
-
   ipcMain.handle('projectStore:createBackup', async (_event, sessionId) => {
     const session = requireSession(sessionId);
     const backupPath = await projectStore.createBackup(session.paths);
@@ -211,10 +207,6 @@ function registerProjectIpc() {
   ipcMain.handle('projectLibrary:create', async (_event, projectName, options) => {
     const root = await getProjectsLibraryRoot();
     return projectStore.createProjectInLibrary(root, projectName, options);
-  });
-
-  ipcMain.handle('projectLibrary:update', async (_event, projectPath, updates) => {
-    return projectStore.updateProjectMetadata(projectPath, updates ?? {});
   });
 
   ipcMain.handle('importWizard:start', async (_event, sessionId, selection) => {

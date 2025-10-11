@@ -16,7 +16,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
-* Neues Projekt-Dashboard in der V2-Vorschau gruppiert Projekte nach Kapitel und Level, zeigt Fortschrittsbalken, Bewertungssymbole, globale Kennzahlen sowie Filter- und Zufallsauswahl-Buttons.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
@@ -569,8 +568,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
    * Backups werden ohne ZIP-Paketierung erstellt: Die Projektverwaltung kopiert den kompletten Ordner in `backups/backup-<Zeitstempel>/`, protokolliert den Vorgang und stellt jetzt auch Funktionen zum Auflisten, Wiederherstellen und Löschen bereit.
    * Für Parität zur ersten Generation existieren zusätzlich Audio-Schnappschüsse: `projectStore.createAudioSnapshot`, `listAudioSnapshots`, `restoreAudioSnapshot` und `deleteAudioSnapshot` sichern und verwalten den Ordner `audio/` getrennt von den Projekt-Backups.
    * Alle V2-Projekte landen gesammelt in einer festen Bibliothek (`v2/projects` oder einem eigenen Pfad via `HLA_V2_PROJECTS_ROOT`). Die Oberfläche listet die vorhandenen Ordner, lässt neue Projekte mit sprechenden Namen anlegen und warnt vor gesperrten Verzeichnissen, bevor ein Öffnen versucht wird.
-   * Das neue Dashboard gruppiert die Bibliothek nach Kapitel und Level, blendet Fortschrittsbalken, Bewertungssterne und Review-Indikatoren ein und erlaubt Drag-&-Drop zum Verschieben von Projekten zwischen Levels.
-   * Filter- und Zufallsschaltflächen sowie Kontextmenüs für Projekte und Level greifen auf die gemeinsamen Statistik-Helfer (`v2/shared/projectStats.ts`) zu und zeigen Notiz- sowie Review-Dialoge direkt im Renderer an.
    * `v2/importer/importWizard.ts` orchestriert einen sechsstufigen Import (Quellen wählen, scannen, prüfen, Konflikte entscheiden, kopieren, Bericht) und liest V1-JSONs sowie Audio-Ordner strikt schreibgeschützt ein.
    * Der Renderer lädt `v2/renderer/importWizard.vue` als Oberfläche, zeigt Konflikte mit den Optionen „trotzdem importieren“ oder „überspringen“ an und protokolliert den Ergebnisbericht gemeinsam mit den kopierten Audios im aktiven Projekt.
    * `v2/renderer/index.html` ergänzt eine Backup-Übersicht inklusive Aktionstasten, sodass vorhandene Sicherungen direkt aus V2 erstellt, aktualisiert, wiederhergestellt oder gelöscht werden können. Ein zweiter Bereich verwaltet Audio-Schnappschüsse analog zur V1-Oberfläche.

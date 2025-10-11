@@ -1,9 +1,4 @@
 # Changelog
-# 🛠️ Patch in 1.40.456
-* `v2/renderer/main.ts` vervollständigt das Kapitel-/Level-Dashboard, wertet Projektdaten über die gemeinsamen Statistik-Helfer aus, bindet Filter- und Zufallsaktionen an, zeigt Review- sowie Notizdialoge und erlaubt Drag-&-Drop zwischen Levels samt Kontextmenüs.
-* `README.md` beschreibt das neue Dashboard der V2-Vorschau inklusive Statistikknöpfen, Kontextmenüs und Zufallsfunktionen.
-* `CHANGELOG.md` dokumentiert die Dashboard-Erweiterungen und die aktualisierte Dokumentation.
-
 # 🛠️ Patch in 1.40.455
 * `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
 * `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.
