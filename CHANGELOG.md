@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.456
+* `v2/backend/projectStore.ts` erweitert das Manifest um Kapitel-, Level- und Fortschrittsfelder, migriert bestehende Projekte automatisch und schreibt Fortschrittsschnappschüsse beim Speichern.
+* `v2/shared/calculateProjectStats.ts` portiert die Statistik-Helfer nach TypeScript und stellt eine gemeinsame Basis für Renderer und Backend bereit.
+* `v2/renderer/index.html` und `v2/renderer/main.ts` liefern ein neues Kapitel-/Level-Dashboard mit Filtern, Zufallswahl, Kontextmenüs, Dialogen und EN-Review-Verknüpfung.
+* `README.md` und `CHANGELOG.md` dokumentieren die neuen Dashboard-Funktionen sowie die erweiterten Manifestfelder.
 # 🛠️ Patch in 1.40.455
 * `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
 * `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.

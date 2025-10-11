@@ -3,6 +3,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import type { Readable } from 'node:stream';
 import ffmpeg from 'fluent-ffmpeg';
+import type { FfprobeData, FfprobeStream } from 'fluent-ffmpeg';
 import ffmpegStatic from 'ffmpeg-static';
 import ffprobeStatic from 'ffprobe-static';
 import type { ProjectPaths } from './projectStore';
@@ -64,12 +65,12 @@ async function appendLog(paths: ProjectPaths, message: string): Promise<void> {
 
 async function probeAudio(filePath: string): Promise<AudioProbeInfo> {
   return new Promise((resolve, reject) => {
-    ffmpeg.ffprobe(filePath, (error, metadata) => {
+    ffmpeg.ffprobe(filePath, (error: Error | null, metadata: FfprobeData) => {
       if (error) {
         reject(error);
         return;
       }
-      const stream = metadata.streams?.find((entry) => entry.codec_type === 'audio');
+      const stream = metadata.streams?.find((entry: FfprobeStream) => entry.codec_type === 'audio');
       const durationRaw =
         typeof metadata.format?.duration === 'number'
           ? metadata.format.duration
@@ -270,7 +271,10 @@ export async function processAudioClip(
     }
     command = command.output(targetPath);
     command.on('end', () => resolve());
-    command.on('error', (error) => reject(error));
+    command.on('error', (error: unknown) => {
+      const normalized = error instanceof Error ? error : new Error(String(error));
+      reject(normalized);
+    });
     command.run();
   });
 

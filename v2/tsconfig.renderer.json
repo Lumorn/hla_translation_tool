@@ -3,11 +3,11 @@
   "compilerOptions": {
     "module": "ESNext",
     "outDir": "./dist/renderer",
-    "rootDir": "./renderer",
+    "rootDir": ".",
     "lib": ["DOM", "ES2020"],
     "composite": true
   },
-  "include": ["renderer/**/*.ts"],
+  "include": ["renderer/**/*.ts", "shared/**/*.ts"],
   "references": [
     { "path": "./tsconfig.backend.json" },
     { "path": "./tsconfig.importer.json" }

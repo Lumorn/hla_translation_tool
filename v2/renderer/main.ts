@@ -5,6 +5,7 @@ import type {
   ProjectData,
   ProjectSegment,
   ProjectManifest,
+  ProjectProgressSnapshot,
   ProjectPaths,
   ProjectSettings,
 } from '../backend/projectStore';
@@ -18,6 +19,7 @@ import type {
   ProjectLibraryCreateResult,
   ImportWizardBridge,
 } from './bridgeTypes';
+import { calculateProjectStats } from '../shared/calculateProjectStats';
 
 const statusElement = document.getElementById('status');
 const versionHintElement = document.getElementById('version-hint');
@@ -44,6 +46,27 @@ const audioTableBody = document.getElementById('audio-backup-table-body') as HTM
 const createAudioSnapshotButton = document.getElementById('create-audio-snapshot-button') as HTMLButtonElement | null;
 const refreshAudioSnapshotsButton = document.getElementById('refresh-audio-snapshots-button') as HTMLButtonElement | null;
 const wizardRoot = document.getElementById('import-wizard-root');
+const dashboardRoot = document.getElementById('project-dashboard');
+const dashboardChapterContainer = document.getElementById('project-dashboard-chapters');
+const dashboardTotalProjectsElement = document.getElementById('dashboard-total-projects');
+const dashboardVisibleProjectsElement = document.getElementById('dashboard-visible-projects');
+const dashboardProgressLabelElement = document.getElementById('dashboard-progress-label');
+const dashboardProgressFillElement = document.getElementById('dashboard-progress-fill');
+const dashboardScoreLabelElement = document.getElementById('dashboard-score-label');
+const dashboardScoreAverageElement = document.getElementById('dashboard-score-average');
+const dashboardFilterInput = document.getElementById('dashboard-filter') as HTMLInputElement | null;
+const dashboardOnlyOpenCheckbox = document.getElementById('dashboard-only-open') as HTMLInputElement | null;
+const dashboardRandomButton = document.getElementById('dashboard-random-button') as HTMLButtonElement | null;
+const dashboardRandomOpenButton = document.getElementById('dashboard-random-open-button') as HTMLButtonElement | null;
+const dashboardLevelStatsButton = document.getElementById('dashboard-level-stats-button') as HTMLButtonElement | null;
+const dashboardNoteOverviewButton = document.getElementById('dashboard-note-overview-button') as HTMLButtonElement | null;
+const dashboardEnReviewButton = document.getElementById('dashboard-en-review-button') as HTMLButtonElement | null;
+const dashboardProjectMenu = document.getElementById('dashboard-project-menu');
+const dashboardLevelMenu = document.getElementById('dashboard-level-menu');
+const dashboardChapterMenu = document.getElementById('dashboard-chapter-menu');
+const dashboardDialogBackdrop = document.getElementById('dashboard-dialog-backdrop');
+const dashboardDialogContent = document.getElementById('dashboard-dialog-content');
+const dashboardDialogClose = document.getElementById('dashboard-dialog-close') as HTMLButtonElement | null;
 const segmentsSection = document.getElementById('segments-section');
 const segmentTableBody = document.getElementById('segment-table-body') as HTMLTableSectionElement | null;
 const segmentStatusElement = document.getElementById('segment-status');
@@ -70,6 +93,28 @@ let segmentSaveTimeout: number | undefined;
 let isSavingSegments = false;
 const SEGMENT_SAVE_DELAY = 750;
 type SegmentStatusTone = 'info' | 'success' | 'warning' | 'error';
+let dashboardFilterText = '';
+let dashboardOnlyOpen = false;
+const collapsedChapters = new Set<string>();
+const expandedLevels = new Set<string>();
+let activeDashboardContext:
+  | { type: 'project'; entry: ProjectLibraryEntry }
+  | { type: 'level'; chapter: string; level: string }
+  | { type: 'chapter'; chapter: string }
+  | null = null;
+let draggedProjectPath: string | undefined;
+const DASHBOARD_PROGRESS_FALLBACK: ProjectProgressSnapshot = {
+  enPercent: 0,
+  dePercent: 0,
+  audioPercent: 0,
+  completedPercent: 0,
+  scoreAverage: 0,
+  scoreMinimum: 0,
+  totalSegments: 0,
+  updatedAt: new Date(0).toISOString(),
+};
+const DASHBOARD_DEFAULT_CHAPTER = 'Unsortiert';
+const DASHBOARD_DEFAULT_LEVEL = 'Unbekanntes Level';
 
 const wizardElements: {
   form: HTMLFormElement | null;
@@ -258,6 +303,8 @@ function updateLibraryLocation(location: string): void {
 }
 
 function renderProjectLibrary(): void {
+  renderProjectDashboard();
+
   if (!libraryListElement) {
     return;
   }
@@ -295,6 +342,734 @@ function renderProjectLibrary(): void {
     .join('');
 
   libraryListElement.innerHTML = items;
+}
+
+interface DashboardLevelView {
+  name: string;
+  order: number;
+  projects: ProjectLibraryEntry[];
+  progress: {
+    completedPercent: number;
+    scoreMinimum: number;
+    scoreAverage: number;
+  };
+  isCompleted: boolean;
+}
+
+interface DashboardChapterView {
+  name: string;
+  order: number;
+  levels: DashboardLevelView[];
+  progress: {
+    completedPercent: number;
+    scoreMinimum: number;
+    scoreAverage: number;
+  };
+  isCompleted: boolean;
+}
+
+function getManifestProgress(manifest?: ProjectManifest): ProjectProgressSnapshot {
+  if (!manifest) {
+    return { ...DASHBOARD_PROGRESS_FALLBACK };
+  }
+
+  const snapshot = manifest.progress ?? DASHBOARD_PROGRESS_FALLBACK;
+  return {
+    enPercent: Number.isFinite(snapshot.enPercent) ? snapshot.enPercent : 0,
+    dePercent: Number.isFinite(snapshot.dePercent) ? snapshot.dePercent : 0,
+    audioPercent: Number.isFinite(snapshot.audioPercent) ? snapshot.audioPercent : 0,
+    completedPercent: Number.isFinite(snapshot.completedPercent) ? snapshot.completedPercent : 0,
+    scoreAverage: Number.isFinite(snapshot.scoreAverage) ? snapshot.scoreAverage : 0,
+    scoreMinimum: Number.isFinite(snapshot.scoreMinimum) ? snapshot.scoreMinimum : 0,
+    totalSegments: Number.isFinite(snapshot.totalSegments) ? snapshot.totalSegments : 0,
+    updatedAt: snapshot.updatedAt ?? new Date(0).toISOString(),
+  };
+}
+
+function projectIsCompleted(entry: ProjectLibraryEntry): boolean {
+  return getManifestProgress(entry.manifest).completedPercent >= 100;
+}
+
+function projectMatchesDashboardFilters(entry: ProjectLibraryEntry): boolean {
+  if (dashboardFilterText) {
+    const haystack = [
+      entry.manifest.name ?? '',
+      entry.folderName,
+      entry.manifest.chapter ?? '',
+      entry.manifest.level ?? '',
+      String(entry.manifest.levelPart ?? ''),
+    ]
+      .join(' ')
+      .toLowerCase();
+
+    if (!haystack.includes(dashboardFilterText)) {
+      return false;
+    }
+  }
+
+  if (dashboardOnlyOpen && projectIsCompleted(entry)) {
+    return false;
+  }
+
+  return true;
+}
+
+function aggregateProgress(entries: ProjectLibraryEntry[]): {
+  completedPercent: number;
+  scoreMinimum: number;
+  scoreAverage: number;
+  totalSegments: number;
+} {
+  let totalSegments = 0;
+  let completedSegments = 0;
+  let scoreSum = 0;
+  let scoreCount = 0;
+  let minScore = Number.POSITIVE_INFINITY;
+
+  for (const entry of entries) {
+    const progress = getManifestProgress(entry.manifest);
+    const segments = Math.max(0, progress.totalSegments ?? 0);
+    totalSegments += segments;
+    if (segments > 0) {
+      completedSegments += Math.round((progress.completedPercent / 100) * segments);
+    }
+    if (Number.isFinite(progress.scoreAverage)) {
+      scoreSum += progress.scoreAverage;
+      scoreCount += 1;
+    }
+    if (Number.isFinite(progress.scoreMinimum)) {
+      minScore = Math.min(minScore, progress.scoreMinimum);
+    }
+  }
+
+  const completedPercent = totalSegments > 0 ? Math.round((completedSegments / totalSegments) * 100) : 0;
+  const scoreAverage = scoreCount > 0 ? Math.round(scoreSum / scoreCount) : 0;
+  const scoreMinimum = Number.isFinite(minScore) ? minScore : 0;
+
+  return { completedPercent, scoreMinimum, scoreAverage, totalSegments };
+}
+
+function updateLibraryEntryProgress(path: string, stats: ReturnType<typeof calculateProjectStats>): void {
+  const entry = projectLibraryEntries.find((item) => item.path === path);
+  if (!entry) {
+    return;
+  }
+
+  entry.manifest.progress = {
+    enPercent: stats.enPercent,
+    dePercent: stats.dePercent,
+    audioPercent: stats.audioPercent,
+    completedPercent: stats.completedPercent,
+    scoreAverage: stats.scoreAverage,
+    scoreMinimum: stats.scoreMinimum,
+    totalSegments: stats.totalSegments,
+    updatedAt: new Date().toISOString(),
+  };
+
+  renderProjectDashboard();
+}
+
+function buildChapterGroups(entries: ProjectLibraryEntry[]): DashboardChapterView[] {
+  const chapterMap = new Map<string, { order: number; levels: Map<string, { order: number; projects: ProjectLibraryEntry[] }> }>();
+
+  for (const entry of entries) {
+    const chapterName = (entry.manifest.chapter ?? DASHBOARD_DEFAULT_CHAPTER).trim() || DASHBOARD_DEFAULT_CHAPTER;
+    const levelName = (entry.manifest.level ?? DASHBOARD_DEFAULT_LEVEL).trim() || DASHBOARD_DEFAULT_LEVEL;
+    const chapterOrder = Number.isFinite(entry.manifest.chapterOrder) ? entry.manifest.chapterOrder ?? 0 : 0;
+    const levelOrder = Number.isFinite(entry.manifest.levelOrder) ? entry.manifest.levelOrder ?? 0 : 0;
+
+    if (!chapterMap.has(chapterName)) {
+      chapterMap.set(chapterName, { order: chapterOrder, levels: new Map() });
+    }
+
+    const chapterEntry = chapterMap.get(chapterName)!;
+    if (!chapterEntry.levels.has(levelName)) {
+      chapterEntry.levels.set(levelName, { order: levelOrder, projects: [] });
+    }
+
+    const levelEntry = chapterEntry.levels.get(levelName)!;
+    levelEntry.projects.push(entry);
+  }
+
+  const chapters: DashboardChapterView[] = [];
+
+  for (const [chapterName, chapterData] of chapterMap.entries()) {
+    const levels: DashboardLevelView[] = [];
+
+    for (const [levelName, levelData] of chapterData.levels.entries()) {
+      levelData.projects.sort((a, b) => {
+        const partA = Number.isFinite(a.manifest.levelPart) ? a.manifest.levelPart ?? 0 : 0;
+        const partB = Number.isFinite(b.manifest.levelPart) ? b.manifest.levelPart ?? 0 : 0;
+        if (partA !== partB) {
+          return partA - partB;
+        }
+        return (a.manifest.name ?? a.folderName).localeCompare(b.manifest.name ?? b.folderName, 'de');
+      });
+
+      const progress = aggregateProgress(levelData.projects);
+      levels.push({
+        name: levelName,
+        order: levelData.order,
+        projects: levelData.projects,
+        progress: {
+          completedPercent: progress.completedPercent,
+          scoreMinimum: progress.scoreMinimum,
+          scoreAverage: progress.scoreAverage,
+        },
+        isCompleted: levelData.projects.every(projectIsCompleted),
+      });
+    }
+
+    levels.sort((a, b) => {
+      if (a.order !== b.order) {
+        return a.order - b.order;
+      }
+      return a.name.localeCompare(b.name, 'de');
+    });
+
+    const chapterProgress = aggregateProgress(levels.flatMap((level) => level.projects));
+    chapters.push({
+      name: chapterName,
+      order: chapterData.order,
+      levels,
+      progress: {
+        completedPercent: chapterProgress.completedPercent,
+        scoreMinimum: chapterProgress.scoreMinimum,
+        scoreAverage: chapterProgress.scoreAverage,
+      },
+      isCompleted: levels.every((level) => level.isCompleted),
+    });
+  }
+
+  chapters.sort((a, b) => {
+    if (a.order !== b.order) {
+      return a.order - b.order;
+    }
+    return a.name.localeCompare(b.name, 'de');
+  });
+
+  return chapters;
+}
+
+function updateDashboardMetrics(
+  allEntries: ProjectLibraryEntry[],
+  visibleEntries: ProjectLibraryEntry[],
+): void {
+  if (dashboardTotalProjectsElement) {
+    dashboardTotalProjectsElement.textContent = String(allEntries.length);
+  }
+  if (dashboardVisibleProjectsElement) {
+    dashboardVisibleProjectsElement.textContent = String(visibleEntries.length);
+  }
+
+  if (!dashboardProgressLabelElement || !dashboardProgressFillElement || !dashboardScoreLabelElement) {
+    return;
+  }
+
+  const progress = aggregateProgress(visibleEntries);
+  const percent = progress.completedPercent;
+  dashboardProgressLabelElement.textContent = `${percent}%`;
+  dashboardProgressFillElement.style.width = `${percent}%`;
+  dashboardScoreLabelElement.textContent = `★ ${progress.scoreMinimum}`;
+  if (dashboardScoreAverageElement) {
+    dashboardScoreAverageElement.textContent = String(progress.scoreAverage);
+  }
+}
+
+function renderProjectDashboard(): void {
+  if (!dashboardRoot || !dashboardChapterContainer) {
+    return;
+  }
+
+  if (projectLibraryEntries.length === 0) {
+    updateDashboardMetrics([], []);
+    dashboardChapterContainer.innerHTML =
+      '<p class="project-library__item project-library__item--empty">Noch keine Projekte vorhanden.</p>';
+    return;
+  }
+
+  const visibleEntries = projectLibraryEntries.filter(projectMatchesDashboardFilters);
+  updateDashboardMetrics(projectLibraryEntries, visibleEntries);
+
+  if (visibleEntries.length === 0) {
+    dashboardChapterContainer.innerHTML =
+      '<p class="project-library__item project-library__item--empty">Keine Projekte entsprechen dem Filter.</p>';
+    return;
+  }
+
+  const chapters = buildChapterGroups(visibleEntries);
+  dashboardChapterContainer.innerHTML = '';
+
+  for (const chapter of chapters) {
+    dashboardChapterContainer.appendChild(createChapterElement(chapter));
+  }
+
+  hideDashboardMenus();
+}
+
+function createChapterElement(chapter: DashboardChapterView): HTMLElement {
+  const section = document.createElement('section');
+  section.className = 'dashboard__chapter';
+  section.dataset.chapter = chapter.name;
+  if (collapsedChapters.has(chapter.name)) {
+    section.classList.add('is-collapsed');
+  }
+
+  const header = document.createElement('div');
+  header.className = 'dashboard__chapter-header';
+  header.innerHTML = `
+    <span class="dashboard__chapter-title">${escapeHtml(chapter.name)}</span>
+    <div class="dashboard__metric-bar dashboard__chapter-progress"><div class="dashboard__metric-bar-fill" style="width:${chapter.progress.completedPercent}%"></div></div>
+    <span class="dashboard__badge">★ ${chapter.progress.scoreMinimum}</span>
+  `;
+  header.addEventListener('click', () => {
+    if (collapsedChapters.has(chapter.name)) {
+      collapsedChapters.delete(chapter.name);
+    } else {
+      collapsedChapters.add(chapter.name);
+    }
+    renderProjectDashboard();
+  });
+  header.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    activeDashboardContext = { type: 'chapter', chapter: chapter.name };
+    showDashboardMenu(dashboardChapterMenu, event);
+  });
+  section.appendChild(header);
+
+  const levelList = document.createElement('div');
+  levelList.className = 'dashboard__level-list';
+
+  for (const level of chapter.levels) {
+    levelList.appendChild(createLevelElement(chapter.name, level));
+  }
+
+  section.appendChild(levelList);
+  return section;
+}
+
+function createLevelElement(chapterName: string, level: DashboardLevelView): HTMLElement {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'dashboard__level';
+  const levelKey = `${chapterName}::${level.name}`;
+  if (!expandedLevels.has(levelKey)) {
+    wrapper.classList.add('is-collapsed');
+  }
+
+  const header = document.createElement('div');
+  header.className = 'dashboard__level-header';
+  header.innerHTML = `
+    <span class="dashboard__level-title">${escapeHtml(level.name)}</span>
+    <div class="dashboard__metric-bar"><div class="dashboard__metric-bar-fill" style="width:${level.progress.completedPercent}%"></div></div>
+    <span class="dashboard__badge">★ ${level.progress.scoreMinimum}</span>
+  `;
+  header.addEventListener('click', () => {
+    if (expandedLevels.has(levelKey)) {
+      expandedLevels.delete(levelKey);
+    } else {
+      expandedLevels.add(levelKey);
+    }
+    renderProjectDashboard();
+  });
+  header.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    activeDashboardContext = { type: 'level', chapter: chapterName, level: level.name };
+    showDashboardMenu(dashboardLevelMenu, event);
+  });
+  wrapper.appendChild(header);
+
+  const projectsContainer = document.createElement('div');
+  projectsContainer.className = 'dashboard__projects';
+
+  for (const project of level.projects) {
+    projectsContainer.appendChild(createProjectCard(project, chapterName, level.name));
+  }
+
+  wrapper.appendChild(projectsContainer);
+  return wrapper;
+}
+
+function createProjectCard(entry: ProjectLibraryEntry, chapterName: string, levelName: string): HTMLElement {
+  const card = document.createElement('div');
+  card.className = 'dashboard__project';
+  if (entry.path === selectedProjectPath) {
+    card.classList.add('is-selected');
+  }
+  card.dataset.path = entry.path;
+  card.dataset.chapter = chapterName;
+  card.dataset.level = levelName;
+  card.draggable = true;
+
+  const progress = getManifestProgress(entry.manifest);
+  const badges = [
+    `<span class="dashboard__badge">EN ${progress.enPercent}%</span>`,
+    `<span class="dashboard__badge">DE ${progress.dePercent}%</span>`,
+    `<span class="dashboard__badge">🔊 ${progress.audioPercent}%</span>`,
+  ].join('');
+
+  card.innerHTML = `
+    <div class="dashboard__project-header">
+      <span>${escapeHtml(entry.manifest.name ?? entry.folderName)}</span>
+      <span>★ ${progress.scoreMinimum}</span>
+    </div>
+    <div class="dashboard__metric-bar"><div class="dashboard__metric-bar-fill" style="width:${progress.completedPercent}%"></div></div>
+    <div class="dashboard__badges">${badges}</div>
+  `;
+
+  card.addEventListener('click', () => {
+    setSelectedProject(entry.path, entry);
+  });
+  card.addEventListener('contextmenu', (event) => {
+    event.preventDefault();
+    activeDashboardContext = { type: 'project', entry };
+    showDashboardMenu(dashboardProjectMenu, event);
+  });
+  card.addEventListener('dragstart', (event) => handleDashboardDragStart(event, entry.path));
+  card.addEventListener('dragover', (event) => handleDashboardDragOver(event, card));
+  card.addEventListener('dragleave', () => handleDashboardDragLeave(card));
+  card.addEventListener('drop', (event) => handleDashboardDrop(event, entry.path));
+  card.addEventListener('dragend', handleDashboardDragEnd);
+
+  return card;
+}
+
+function showDashboardMenu(menu: HTMLElement | null, event: MouseEvent): void {
+  hideDashboardMenus();
+  if (!menu) {
+    return;
+  }
+
+  menu.style.display = 'block';
+  const { clientX, clientY } = event;
+  menu.style.left = `${clientX}px`;
+  menu.style.top = `${clientY}px`;
+}
+
+function hideDashboardMenus(): void {
+  for (const menu of [dashboardProjectMenu, dashboardLevelMenu, dashboardChapterMenu]) {
+    if (menu) {
+      menu.style.display = 'none';
+    }
+  }
+  activeDashboardContext = null;
+}
+
+function handleDashboardDragStart(event: DragEvent, path: string): void {
+  draggedProjectPath = path;
+  if (event.dataTransfer) {
+    event.dataTransfer.setData('text/plain', path);
+    event.dataTransfer.effectAllowed = 'move';
+  }
+}
+
+function handleDashboardDragOver(event: DragEvent, card: HTMLElement): void {
+  if (!draggedProjectPath) {
+    return;
+  }
+  event.preventDefault();
+  if (card.dataset.path !== draggedProjectPath) {
+    card.classList.add('is-drop-target');
+  }
+}
+
+function handleDashboardDragLeave(card: HTMLElement): void {
+  card.classList.remove('is-drop-target');
+}
+
+function handleDashboardDrop(event: DragEvent, targetPath: string): void {
+  event.preventDefault();
+  const sourcePath = draggedProjectPath;
+  draggedProjectPath = undefined;
+  const card = event.currentTarget as HTMLElement | null;
+  if (card) {
+    card.classList.remove('is-drop-target');
+  }
+  if (!sourcePath || sourcePath === targetPath) {
+    return;
+  }
+
+  reorderProjectEntries(sourcePath, targetPath);
+  renderProjectLibrary();
+}
+
+function handleDashboardDragEnd(): void {
+  draggedProjectPath = undefined;
+  const cards = dashboardChapterContainer?.querySelectorAll('.dashboard__project.is-drop-target');
+  cards?.forEach((element) => element.classList.remove('is-drop-target'));
+}
+
+function reorderProjectEntries(sourcePath: string, targetPath: string): void {
+  const sourceIndex = projectLibraryEntries.findIndex((entry) => entry.path === sourcePath);
+  const targetIndex = projectLibraryEntries.findIndex((entry) => entry.path === targetPath);
+  if (sourceIndex === -1 || targetIndex === -1) {
+    return;
+  }
+
+  const [item] = projectLibraryEntries.splice(sourceIndex, 1);
+  projectLibraryEntries.splice(targetIndex, 0, item);
+}
+
+function handleDashboardMenuClick(event: MouseEvent): void {
+  const target = event.target as HTMLElement | null;
+  if (!target?.dataset.action || !activeDashboardContext) {
+    hideDashboardMenus();
+    return;
+  }
+
+  const action = target.dataset.action;
+
+  if (activeDashboardContext.type === 'project') {
+    handleProjectContextAction(activeDashboardContext.entry, action);
+  } else if (activeDashboardContext.type === 'level') {
+    handleLevelContextAction(activeDashboardContext.chapter, activeDashboardContext.level, action);
+  } else if (activeDashboardContext.type === 'chapter') {
+    handleChapterContextAction(activeDashboardContext.chapter, action);
+  }
+
+  hideDashboardMenus();
+}
+
+function handleProjectContextAction(entry: ProjectLibraryEntry, action: string): void {
+  switch (action) {
+    case 'open':
+      setSelectedProject(entry.path, entry);
+      if (projectPathInput && projectForm) {
+        projectForm.requestSubmit();
+      }
+      break;
+    case 'stats':
+      showProjectStatsDialog(entry);
+      break;
+    case 'review':
+      void handleDashboardEnReview(entry);
+      break;
+    case 'remove':
+      openDashboardDialog(
+        `<h3>${escapeHtml(entry.manifest.name ?? entry.folderName)}</h3><p>Das Entfernen von Projekten erfolgt derzeit weiterhin über den Datei-Explorer oder die klassische V1-Oberfläche.</p>`,
+      );
+      break;
+    default:
+      break;
+  }
+}
+
+function handleLevelContextAction(chapter: string, level: string, action: string): void {
+  switch (action) {
+    case 'stats':
+      showLevelStatsDialog(chapter, level);
+      break;
+    case 'notes':
+      showNoteOverviewDialog(chapter, level);
+      break;
+    case 'random':
+      pickRandomProject({ chapter, level });
+      break;
+    default:
+      break;
+  }
+}
+
+function handleChapterContextAction(chapter: string, action: string): void {
+  switch (action) {
+    case 'collapse':
+      if (collapsedChapters.has(chapter)) {
+        collapsedChapters.delete(chapter);
+      } else {
+        collapsedChapters.add(chapter);
+      }
+      renderProjectDashboard();
+      break;
+    case 'random':
+      pickRandomProject({ chapter });
+      break;
+    default:
+      break;
+  }
+}
+
+function openDashboardDialog(html: string): void {
+  if (!dashboardDialogBackdrop || !dashboardDialogContent) {
+    return;
+  }
+  dashboardDialogContent.innerHTML = html;
+  dashboardDialogBackdrop.style.display = 'flex';
+}
+
+function closeDashboardDialog(): void {
+  if (!dashboardDialogBackdrop || !dashboardDialogContent) {
+    return;
+  }
+  dashboardDialogContent.innerHTML = '';
+  dashboardDialogBackdrop.style.display = 'none';
+}
+
+function showProjectStatsDialog(entry: ProjectLibraryEntry): void {
+  if (activeProject && activeProject.paths.root === entry.path) {
+    const liveStats = calculateProjectStats(activeProject.data);
+    entry.manifest.progress = {
+      enPercent: liveStats.enPercent,
+      dePercent: liveStats.dePercent,
+      audioPercent: liveStats.audioPercent,
+      completedPercent: liveStats.completedPercent,
+      scoreAverage: liveStats.scoreAverage,
+      scoreMinimum: liveStats.scoreMinimum,
+      totalSegments: liveStats.totalSegments,
+      updatedAt: new Date().toISOString(),
+    };
+    renderProjectDashboard();
+  }
+
+  const progress = getManifestProgress(entry.manifest);
+  const html = `
+    <h3>${escapeHtml(entry.manifest.name ?? entry.folderName)}</h3>
+    <p><strong>Kapitel:</strong> ${escapeHtml(entry.manifest.chapter ?? DASHBOARD_DEFAULT_CHAPTER)} · <strong>Level:</strong> ${escapeHtml(entry.manifest.level ?? DASHBOARD_DEFAULT_LEVEL)}</p>
+    <ul>
+      <li>Fertigstellung: ${progress.completedPercent}% (${progress.totalSegments} Segmente)</li>
+      <li>EN ${progress.enPercent}% · DE ${progress.dePercent}% · 🔊 ${progress.audioPercent}%</li>
+      <li>Bewertung: Minimum ★ ${progress.scoreMinimum} · Durchschnitt ★ ${progress.scoreAverage}</li>
+      <li>Zuletzt aktualisiert: ${new Date(progress.updatedAt).toLocaleString('de-DE')}</li>
+    </ul>
+  `;
+  openDashboardDialog(html);
+}
+
+function showGlobalLevelStats(): void {
+  const chapters = buildChapterGroups(projectLibraryEntries);
+  const items = chapters
+    .flatMap((chapter) =>
+      chapter.levels.map(
+        (level) =>
+          `<li><strong>${escapeHtml(chapter.name)}</strong> · ${escapeHtml(level.name)} – ${level.progress.completedPercent}% · ★ ${level.progress.scoreMinimum}</li>`,
+      ),
+    )
+    .join('');
+
+  const html = `
+    <h3>Level-Statistiken</h3>
+    <p>Kapitel insgesamt: ${chapters.length}</p>
+    <ul>${items || '<li>Keine Projekte verfügbar.</li>'}</ul>
+  `;
+  openDashboardDialog(html);
+}
+
+function showLevelStatsDialog(chapter: string, level: string): void {
+  const projects = projectLibraryEntries.filter((entry) => {
+    const chapterName = (entry.manifest.chapter ?? DASHBOARD_DEFAULT_CHAPTER).trim() || DASHBOARD_DEFAULT_CHAPTER;
+    const levelName = (entry.manifest.level ?? DASHBOARD_DEFAULT_LEVEL).trim() || DASHBOARD_DEFAULT_LEVEL;
+    return chapterName === chapter && levelName === level;
+  });
+
+  const progress = aggregateProgress(projects);
+  const items = projects
+    .map((entry) => {
+      const snap = getManifestProgress(entry.manifest);
+      return `<li>${escapeHtml(entry.manifest.name ?? entry.folderName)} – ${snap.completedPercent}% · ★ ${snap.scoreMinimum}</li>`;
+    })
+    .join('');
+
+  const html = `
+    <h3>Statistik: ${escapeHtml(level)} (${escapeHtml(chapter)})</h3>
+    <p>Fortschritt: ${progress.completedPercent}% · Bewertung (Minimum): ★ ${progress.scoreMinimum} · Durchschnitt: ★ ${progress.scoreAverage}</p>
+    <ul>${items || '<li>Keine Projekte vorhanden.</li>'}</ul>
+  `;
+  openDashboardDialog(html);
+}
+
+function showGlobalNoteOverview(): void {
+  const chapters = buildChapterGroups(projectLibraryEntries);
+  const items = chapters
+    .map((chapter) => {
+      const levels = chapter.levels
+        .map((level) => `<li>${escapeHtml(level.name)} – ${level.progress.completedPercent}%</li>`)
+        .join('');
+      return `<li><strong>${escapeHtml(chapter.name)}</strong><ul>${levels || '<li>Keine Level vorhanden.</li>'}</ul></li>`;
+    })
+    .join('');
+
+  const html = `
+    <h3>Notizübersicht</h3>
+    <p>Nutze die einzelnen Kapitel- und Levelkontextmenüs, um gezielt in Projekte zu springen. Detailnotizen stehen im Editor zur Verfügung.</p>
+    <ul>${items || '<li>Keine Projekte verfügbar.</li>'}</ul>
+  `;
+  openDashboardDialog(html);
+}
+
+function showNoteOverviewDialog(chapter: string, level: string): void {
+  const projects = projectLibraryEntries.filter((entry) => {
+    const chapterName = (entry.manifest.chapter ?? DASHBOARD_DEFAULT_CHAPTER).trim() || DASHBOARD_DEFAULT_CHAPTER;
+    const levelName = (entry.manifest.level ?? DASHBOARD_DEFAULT_LEVEL).trim() || DASHBOARD_DEFAULT_LEVEL;
+    return chapterName === chapter && levelName === level;
+  });
+
+  const html = `
+    <h3>Notizübersicht: ${escapeHtml(level)} (${escapeHtml(chapter)})</h3>
+    <p>Die detaillierte Notizansicht wird aktuell über den Editor bereitgestellt. Wähle eines der folgenden Projekte aus und öffne es im Editor, um Notizen und Kommentare einzusehen.</p>
+    <ul>${projects
+      .map((entry) => `<li>${escapeHtml(entry.manifest.name ?? entry.folderName)}</li>`)
+      .join('') || '<li>Keine Projekte zugeordnet.</li>'}</ul>
+  `;
+  openDashboardDialog(html);
+}
+
+function pickRandomProject(filter: { chapter?: string; level?: string; openOnly?: boolean } = {}): void {
+  let candidates = projectLibraryEntries.filter((entry) => {
+    if (filter.chapter) {
+      const chapterName = (entry.manifest.chapter ?? DASHBOARD_DEFAULT_CHAPTER).trim() || DASHBOARD_DEFAULT_CHAPTER;
+      if (chapterName !== filter.chapter) {
+        return false;
+      }
+    }
+    if (filter.level) {
+      const levelName = (entry.manifest.level ?? DASHBOARD_DEFAULT_LEVEL).trim() || DASHBOARD_DEFAULT_LEVEL;
+      if (levelName !== filter.level) {
+        return false;
+      }
+    }
+    if (filter.openOnly && projectIsCompleted(entry)) {
+      return false;
+    }
+    if (!filter.chapter && !filter.level) {
+      return projectMatchesDashboardFilters(entry);
+    }
+    return true;
+  });
+
+  if (filter.openOnly && !filter.chapter && !filter.level) {
+    candidates = candidates.filter((entry) => projectIsCompleted(entry) === false);
+  }
+
+  if (candidates.length === 0) {
+    openDashboardDialog('<h3>Keine Auswahl möglich</h3><p>Es wurden keine passenden Projekte gefunden.</p>');
+    return;
+  }
+
+  const randomEntry = candidates[Math.floor(Math.random() * candidates.length)];
+  setSelectedProject(randomEntry.path, randomEntry);
+  scrollProjectIntoView(randomEntry.path);
+  setProjectInfo(`Zufallsauswahl: ${randomEntry.manifest.name ?? randomEntry.folderName}`);
+}
+
+function scrollProjectIntoView(path: string): void {
+  if (!dashboardChapterContainer) {
+    return;
+  }
+  const cards = Array.from(dashboardChapterContainer.querySelectorAll<HTMLElement>('.dashboard__project'));
+  const card = cards.find((element) => element.dataset.path === path);
+  card?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+async function handleDashboardEnReview(entry?: ProjectLibraryEntry): Promise<void> {
+  if (entry) {
+    setSelectedProject(entry.path, entry);
+  }
+
+  if (!activeProject) {
+    openDashboardDialog('<h3>EN-Review</h3><p>Bitte öffne zunächst ein Projekt. Danach kannst du den Editor starten, um die EN-Review durchzuführen.</p>');
+    return;
+  }
+
+  await handleEditorOpen();
+  openDashboardDialog('<h3>EN-Review</h3><p>Der Editor wurde geöffnet. Nutze dort die EN-Review-Steuerung, um die Dateien abzuhören.</p>');
 }
 
 function setSelectedProject(path?: string, entry?: ProjectLibraryEntry): void {
@@ -1118,6 +1893,7 @@ async function handleProjectOpen(event: Event): Promise<void> {
     await loadBackups();
     await loadAudioBackups();
     await loadProjectLibrary();
+    updateLibraryEntryProgress(opened.paths.root, calculateProjectStats(opened.data));
     toggleProjectControls(false);
     setProjectInfo(
       `Projekt "${opened.manifest.name}" geöffnet. Aktualisiert am ${new Date(opened.manifest.updatedAt).toLocaleString(
@@ -1555,6 +2331,79 @@ window.addEventListener('DOMContentLoaded', () => {
   if (refreshLibraryButton) {
     refreshLibraryButton.addEventListener('click', () => void loadProjectLibrary());
   }
+
+  if (dashboardFilterInput) {
+    dashboardFilterInput.addEventListener('input', (event) => {
+      const value = (event.target as HTMLInputElement).value.trim().toLowerCase();
+      dashboardFilterText = value;
+      renderProjectDashboard();
+    });
+  }
+
+  if (dashboardOnlyOpenCheckbox) {
+    dashboardOnlyOpenCheckbox.addEventListener('change', (event) => {
+      dashboardOnlyOpen = (event.target as HTMLInputElement).checked;
+      renderProjectDashboard();
+    });
+  }
+
+  if (dashboardRandomButton) {
+    dashboardRandomButton.addEventListener('click', () => pickRandomProject());
+  }
+
+  if (dashboardRandomOpenButton) {
+    dashboardRandomOpenButton.addEventListener('click', () => pickRandomProject({ openOnly: true }));
+  }
+
+  if (dashboardLevelStatsButton) {
+    dashboardLevelStatsButton.addEventListener('click', () => showGlobalLevelStats());
+  }
+
+  if (dashboardNoteOverviewButton) {
+    dashboardNoteOverviewButton.addEventListener('click', () => showGlobalNoteOverview());
+  }
+
+  if (dashboardEnReviewButton) {
+    dashboardEnReviewButton.addEventListener('click', () => void handleDashboardEnReview());
+  }
+
+  if (dashboardProjectMenu) {
+    dashboardProjectMenu.addEventListener('click', (event) => handleDashboardMenuClick(event));
+  }
+
+  if (dashboardLevelMenu) {
+    dashboardLevelMenu.addEventListener('click', (event) => handleDashboardMenuClick(event));
+  }
+
+  if (dashboardChapterMenu) {
+    dashboardChapterMenu.addEventListener('click', (event) => handleDashboardMenuClick(event));
+  }
+
+  if (dashboardDialogClose) {
+    dashboardDialogClose.addEventListener('click', () => closeDashboardDialog());
+  }
+
+  if (dashboardDialogBackdrop) {
+    dashboardDialogBackdrop.addEventListener('click', (event) => {
+      if (event.target === dashboardDialogBackdrop) {
+        closeDashboardDialog();
+      }
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement | null;
+    if (!target?.closest('.dashboard__context-menu')) {
+      hideDashboardMenus();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      hideDashboardMenus();
+      closeDashboardDialog();
+    }
+  });
 
   if (createProjectForm) {
     createProjectForm.addEventListener('submit', (event) => void handleProjectCreate(event));

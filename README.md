@@ -17,6 +17,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
+* Kapitel- & Level-Dashboard in der V2-Oberfläche mit Fortschrittsbalken, Bewertungssternen und Kontextmenüs.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
 ## 🧭 Inhaltsnavigator
@@ -72,6 +73,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Sofortspeichern nach GPT- und Emotions-Einträgen:** Übernommene Bewertungen landen weiterhin sofort im Projekt; Sammelläufe der Emotionstexte bündeln ihre Änderungen und lösen danach ein gemeinsames Speichern aus.
 * **Gemeinsame Projektliste:** `window.projects` stellt sicher, dass alle Module auf dieselbe Projektreferenz zugreifen.
 * **Überarbeitete Lade-Mechanik:** Projekte werden wieder zuverlässig geöffnet und laufende Ladevorgänge blockieren sich nicht mehr gegenseitig.
+* **Neues V2-Dashboard:** Kapitel- und Level-Ansichten gruppieren Projekte inklusive Drag-&-Drop, Zufallswahl, Kontextmenüs und EN-Review-Kurzstart.
 * **Bereinigter Textvergleich:** Der Helfer `calculateTextSimilarity` verzichtet auf eine ungenutzte Wortmenge und behält alle Funktionen bei.
 * **Stabiles Projektladen:** Fehler beim Lesen aus dem Speicher werden abgefangen und als Hinweis angezeigt.
 * **Fehlerresistente Projektliste:** Tritt beim Laden ein Speicherfehler auf, bleibt die vorhandene Projektliste unverändert und es erscheint ausschließlich ein Hinweisdialog.
@@ -1151,6 +1153,13 @@ Die wichtigsten JavaScript-Dateien sind nun thematisch gegliedert:
 * **web/src/fileUtils.mjs** – Wrapper, der die Textfunktionen sowohl im Browser als auch unter Node bereitstellt
 * **web/src/gptService.js** – Anbindung an die ChatGPT-API. Stellt `evaluateScene`, `testKey`, `fetchModels`, `getSystemPrompt`, `generateEmotionText`, `adjustEmotionText`, `improveEmotionText`, `sanitizeJSONResponse`, `fetchWithRetry`, `queuedFetch`, `cancelGptRequests` und `setRestMode` bereit; der frühere Helfer `getEmotionPrompt` entfällt und das Emotion-Prompt bleibt intern verwaltet.
 * **web/src/actions/projectEvaluate.js** – Übernimmt GPT-Ergebnisse in die Tabelle und stellt den JSON-Parser bereit
+
+### Manifest-Erweiterungen für V2
+
+* **Kapitel & Level:** `project.json` enthält jetzt optionale Felder `chapter`, `chapterOrder`, `level`, `levelOrder` und `levelPart` zur strukturierten Zuordnung.
+* **Fortschrittsschnappschuss:** Das Feld `progress` speichert EN/DE/Audio-Prozente, Gesamtsegmente sowie Mindest- und Durchschnittsbewertungen pro Projekt.
+* **EN-Review-Schalter:** `enReviewEnabled` und `enReviewLanguage` definieren, ob das Projekt sofort für die EN-Review vorbereitet ist.
+* Bestehende Projekte werden beim Öffnen automatisch migriert und erhalten fehlende Werte ohne manuelle Nacharbeit.
 
 ---
 

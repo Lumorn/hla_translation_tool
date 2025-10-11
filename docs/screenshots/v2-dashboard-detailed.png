@@ -1,0 +1,8 @@
+Platzhalter-Bild: Neues Kapitel- und Level-Dashboard der V2-Oberfläche.
+
+Beschreibung:
+- Obere Metrik-Karten zeigen Projektanzahl, Gesamtfortschritt mit Balken und Sternbewertung.
+- Filterleiste bietet Suchfeld, Checkbox „Nur offene Projekte“ sowie Buttons für Zufallswahl, Level-Statistiken, Notizübersicht und EN-Review.
+- Darunter gruppiert die Ansicht Projekte nach Kapiteln; jede Kapitelkarte besitzt einen Fortschrittsbalken und Kontextmenü.
+- Level-Blöcke lassen sich ausklappen, zeigen einen eigenen Fortschrittsbalken und listen die zugehörigen Projekte mit Sternen- und Prozent-Badges auf.
+- Rechtsklick öffnet Kontextmenüs für Kapitel, Level oder Projekt; Karten lassen sich per Drag-&-Drop neu anordnen.
