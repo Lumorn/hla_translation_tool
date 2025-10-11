@@ -2,6 +2,19 @@ import { promises as fs, constants as fsConstants } from 'node:fs';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { tmpdir } from 'node:os';
+import {
+  buildProgressSnapshot,
+  calculateProjectStats,
+  createEmptyStats,
+  type ProjectProgressSnapshot as SharedProjectProgressSnapshot,
+  type ProjectSegmentLike,
+  type ProjectDataLike,
+} from '../shared/projectStats';
+
+/**
+ * Beschreibt die Projekt-Metadaten aus der `project.json`.
+ */
+export interface ProjectProgressSnapshot extends SharedProjectProgressSnapshot {}
 
 /**
  * Beschreibt die Projekt-Metadaten aus der `project.json`.
@@ -12,6 +25,9 @@ export interface ProjectManifest {
   createdAt: string;
   updatedAt: string;
   version: number;
+  chapter: string;
+  level: string;
+  progress: ProjectProgressSnapshot;
 }
 
 /**
@@ -26,7 +42,7 @@ export interface ProjectSettings {
 /**
  * Beschreibt einen einzelnen Dialog- oder Textabschnitt innerhalb eines Projekts.
  */
-export interface ProjectSegment {
+export interface ProjectSegment extends ProjectSegmentLike {
   id: string;
   text?: string;
   translation?: string;
@@ -38,7 +54,7 @@ export interface ProjectSegment {
 /**
  * Formale Struktur des Datencontainers (`data.json`).
  */
-export interface ProjectData {
+export interface ProjectData extends ProjectDataLike {
   segments: ProjectSegment[];
   [key: string]: unknown;
 }
@@ -46,8 +62,18 @@ export interface ProjectData {
 /**
  * Optionen, die beim Anlegen eines Projekts überschrieben werden können.
  */
+export type ProjectManifestInput = Partial<Omit<ProjectManifest, 'progress'>> & {
+  progress?: Partial<ProjectProgressSnapshot>;
+};
+
+export interface ProjectManifestUpdate {
+  chapter?: string;
+  level?: string;
+  rating?: number;
+}
+
 export interface CreateProjectOptions {
-  manifest?: Partial<ProjectManifest>;
+  manifest?: ProjectManifestInput;
   settings?: Partial<ProjectSettings>;
   data?: Partial<ProjectData>;
 }
@@ -135,12 +161,39 @@ const PROJECT_FALLBACK_PREFIX = 'projekt';
 /**
  * Standardwerte für neue Projekte, damit jede Datei valide JSON-Strukturen enthält.
  */
-const DEFAULT_MANIFEST: ProjectManifest = {
+const DEFAULT_PROGRESS: ProjectProgressSnapshot = {
+  totalSegments: 0,
+  translatedSegments: 0,
+  audioSegments: 0,
+  completedSegments: 0,
+  translationPercent: 0,
+  audioPercent: 0,
+  completedPercent: 0,
+  pendingReviewSegments: 0,
+  rating: 0,
+  statusCounts: {},
+  noteCounts: {},
+  notesTotal: 0,
+  updatedAt: new Date(0).toISOString(),
+};
+
+const DEFAULT_MANIFEST_BASE: Omit<ProjectManifest, 'progress'> = {
   id: '',
   name: 'Neues Projekt',
   createdAt: new Date(0).toISOString(),
   updatedAt: new Date(0).toISOString(),
   version: 1,
+  chapter: 'Unsortiert',
+  level: 'Allgemein',
+};
+
+const DEFAULT_MANIFEST: ProjectManifest = {
+  ...DEFAULT_MANIFEST_BASE,
+  progress: {
+    ...DEFAULT_PROGRESS,
+    statusCounts: {},
+    noteCounts: {},
+  },
 };
 
 const DEFAULT_SETTINGS: ProjectSettings = {
@@ -151,6 +204,133 @@ const DEFAULT_SETTINGS: ProjectSettings = {
 const DEFAULT_DATA: ProjectData = {
   segments: [],
 };
+
+function clampRating(value: number): number {
+  if (!Number.isFinite(value)) {
+    return DEFAULT_PROGRESS.rating;
+  }
+  return Math.max(0, Math.min(5, Math.round(value)));
+}
+
+function sanitizeText(value: unknown, fallback: string): string {
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed.length > 0) {
+      return trimmed;
+    }
+  }
+  return fallback;
+}
+
+function sanitizeDate(value: unknown, fallback: string): string {
+  if (typeof value === 'string') {
+    const parsed = Date.parse(value);
+    if (!Number.isNaN(parsed)) {
+      return new Date(parsed).toISOString();
+    }
+  }
+  return fallback;
+}
+
+function sanitizeChapter(value: unknown): string {
+  return sanitizeText(value, DEFAULT_MANIFEST_BASE.chapter);
+}
+
+function sanitizeLevel(value: unknown): string {
+  return sanitizeText(value, DEFAULT_MANIFEST_BASE.level);
+}
+
+function normalizeProgress(progress?: Partial<ProjectProgressSnapshot>): ProjectProgressSnapshot {
+  const target = progress ?? {};
+  const rating = clampRating(typeof target.rating === 'number' ? target.rating : DEFAULT_PROGRESS.rating);
+  const updatedAt = sanitizeDate(target.updatedAt, DEFAULT_PROGRESS.updatedAt);
+
+  const statusCounts: Record<string, number> = {};
+  if (target.statusCounts && typeof target.statusCounts === 'object') {
+    for (const [key, value] of Object.entries(target.statusCounts)) {
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        statusCounts[key] = Math.max(0, Math.round(value));
+      }
+    }
+  }
+
+  const noteCounts: Record<string, number> = {};
+  if (target.noteCounts && typeof target.noteCounts === 'object') {
+    for (const [key, value] of Object.entries(target.noteCounts)) {
+      if (typeof value === 'number' && Number.isFinite(value)) {
+        noteCounts[key] = Math.max(0, Math.round(value));
+      }
+    }
+  }
+
+  return {
+    totalSegments: Number.isFinite(target.totalSegments) ? Math.max(0, Math.round(target.totalSegments!)) : 0,
+    translatedSegments: Number.isFinite(target.translatedSegments)
+      ? Math.max(0, Math.round(target.translatedSegments!))
+      : 0,
+    audioSegments: Number.isFinite(target.audioSegments) ? Math.max(0, Math.round(target.audioSegments!)) : 0,
+    completedSegments: Number.isFinite(target.completedSegments)
+      ? Math.max(0, Math.round(target.completedSegments!))
+      : 0,
+    translationPercent: Number.isFinite(target.translationPercent)
+      ? Math.max(0, Math.min(100, Math.round(target.translationPercent!)))
+      : 0,
+    audioPercent: Number.isFinite(target.audioPercent)
+      ? Math.max(0, Math.min(100, Math.round(target.audioPercent!)))
+      : 0,
+    completedPercent: Number.isFinite(target.completedPercent)
+      ? Math.max(0, Math.min(100, Math.round(target.completedPercent!)))
+      : 0,
+    pendingReviewSegments: Number.isFinite(target.pendingReviewSegments)
+      ? Math.max(0, Math.round(target.pendingReviewSegments!))
+      : 0,
+    rating,
+    statusCounts,
+    noteCounts,
+    notesTotal: Number.isFinite(target.notesTotal) ? Math.max(0, Math.round(target.notesTotal!)) : 0,
+    updatedAt,
+  };
+}
+
+function normalizeManifest(manifest?: ProjectManifestInput | Partial<ProjectManifest>): ProjectManifest {
+  const source = manifest ?? {};
+  const id = sanitizeText(source.id, '') || randomUUID();
+  const name = sanitizeText(source.name, DEFAULT_MANIFEST_BASE.name);
+  const createdAt = sanitizeDate(source.createdAt, new Date().toISOString());
+  const updatedAt = sanitizeDate(source.updatedAt, new Date().toISOString());
+  const version = Number.isFinite(source.version) ? Number(source.version) : DEFAULT_MANIFEST_BASE.version;
+  const chapter = sanitizeChapter(source.chapter);
+  const level = sanitizeLevel(source.level);
+  const progress = normalizeProgress(source.progress);
+
+  return {
+    id,
+    name,
+    createdAt,
+    updatedAt,
+    version,
+    chapter,
+    level,
+    progress,
+  };
+}
+
+function toStableJson(value: unknown): string {
+  return JSON.stringify(
+    value,
+    (_key, current) => {
+      if (current && typeof current === 'object' && !Array.isArray(current)) {
+        const sorted: Record<string, unknown> = {};
+        for (const key of Object.keys(current).sort()) {
+          sorted[key] = (current as Record<string, unknown>)[key];
+        }
+        return sorted;
+      }
+      return current;
+    },
+    2
+  );
+}
 
 /**
  * Prüft, ob ein Pfad existiert.
@@ -285,14 +465,20 @@ export async function createProject(targetDirectory: string, options: CreateProj
   await ensureDirectory(paths.audioBackupsDir);
 
   const now = new Date().toISOString();
-  const manifest: ProjectManifest = {
-    ...DEFAULT_MANIFEST,
+  const manifestInput: ProjectManifestInput = {
+    ...options.manifest,
     id: options.manifest?.id ?? randomUUID(),
     name: options.manifest?.name ?? path.basename(resolvedRoot),
     createdAt: options.manifest?.createdAt ?? now,
     updatedAt: now,
-    version: options.manifest?.version ?? DEFAULT_MANIFEST.version,
+    version: options.manifest?.version ?? DEFAULT_MANIFEST_BASE.version,
+    chapter: options.manifest?.chapter ?? DEFAULT_MANIFEST_BASE.chapter,
+    level: options.manifest?.level ?? DEFAULT_MANIFEST_BASE.level,
+    progress:
+      options.manifest?.progress ??
+      buildProgressSnapshot(createEmptyStats(), { rating: DEFAULT_PROGRESS.rating, updatedAt: now }),
   };
+  const manifest = normalizeManifest(manifestInput);
 
   const settings: ProjectSettings = {
     ...DEFAULT_SETTINGS,
@@ -466,7 +652,36 @@ export async function closeProject(session: ProjectSessionSnapshot): Promise<voi
  * Liest die Manifest-Datei eines Projekts.
  */
 export async function readManifest(paths: ProjectPaths): Promise<ProjectManifest> {
-  return readJsonFile<ProjectManifest>(paths.manifestFile);
+  const raw = await readJsonFile<Partial<ProjectManifest>>(paths.manifestFile);
+  let manifest = normalizeManifest(raw);
+
+  let changed = toStableJson(raw) !== toStableJson(manifest);
+
+  const requiresProgressMigration =
+    manifest.progress.updatedAt === DEFAULT_PROGRESS.updatedAt && (await pathExists(paths.dataFile));
+
+  if (requiresProgressMigration) {
+    try {
+      const data = await readJsonFile<ProjectData>(paths.dataFile);
+      const stats = calculateProjectStats(data);
+      const snapshot = buildProgressSnapshot(stats, manifest.progress);
+      manifest = {
+        ...manifest,
+        progress: snapshot,
+        updatedAt: new Date().toISOString(),
+      };
+      changed = true;
+    } catch (error) {
+      console.warn('Fortschritt konnte beim Lesen des Manifests nicht berechnet werden:', error);
+    }
+  }
+
+  if (changed) {
+    await writeJsonAtomic(paths.manifestFile, manifest);
+    await appendLog(paths.logFile, 'Manifest migriert und aktualisiert.');
+  }
+
+  return manifest;
 }
 
 /**
@@ -497,8 +712,74 @@ export async function readData(paths: ProjectPaths): Promise<ProjectData> {
  */
 export async function writeData(paths: ProjectPaths, data: ProjectData, logMessage = 'Daten wurden aktualisiert.'): Promise<void> {
   await writeJsonAtomic(paths.dataFile, data);
-  await touchManifest(paths, 'Daten aktualisiert');
+
+  const stats = calculateProjectStats(data);
+  const manifest = await readManifest(paths);
+  const snapshot = buildProgressSnapshot(stats, manifest.progress);
+  const updatedManifest: ProjectManifest = {
+    ...manifest,
+    progress: snapshot,
+    updatedAt: new Date().toISOString(),
+  };
+
+  await writeJsonAtomic(paths.manifestFile, updatedManifest);
   await appendLog(paths.logFile, logMessage);
+  await appendLog(paths.logFile, 'Fortschritt wurde neu berechnet.');
+}
+
+/**
+ * Aktualisiert Kapitel, Level oder Bewertung eines Projekts.
+ */
+export async function updateProjectMetadata(
+  projectRoot: string,
+  updates: ProjectManifestUpdate
+): Promise<ProjectManifest> {
+  const normalizedRoot = path.resolve(projectRoot);
+  const paths = resolveProjectPaths(normalizedRoot);
+
+  if (!(await pathExists(paths.manifestFile))) {
+    throw new ProjectStoreError('Für den angegebenen Pfad wurde kein Projekt gefunden.');
+  }
+
+  let manifest = await readManifest(paths);
+  let changed = false;
+
+  if (typeof updates.chapter === 'string') {
+    const chapter = sanitizeChapter(updates.chapter);
+    if (chapter !== manifest.chapter) {
+      manifest = { ...manifest, chapter };
+      changed = true;
+    }
+  }
+
+  if (typeof updates.level === 'string') {
+    const level = sanitizeLevel(updates.level);
+    if (level !== manifest.level) {
+      manifest = { ...manifest, level };
+      changed = true;
+    }
+  }
+
+  if (typeof updates.rating === 'number') {
+    const rating = clampRating(updates.rating);
+    if (rating !== manifest.progress.rating) {
+      manifest = {
+        ...manifest,
+        progress: { ...manifest.progress, rating },
+      };
+      changed = true;
+    }
+  }
+
+  if (!changed) {
+    return manifest;
+  }
+
+  manifest = { ...manifest, updatedAt: new Date().toISOString() };
+  await writeJsonAtomic(paths.manifestFile, manifest);
+  await appendLog(paths.logFile, 'Projektmetadaten wurden angepasst.');
+
+  return manifest;
 }
 
 /**

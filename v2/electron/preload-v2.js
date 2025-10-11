@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('projectStore', {
   writeSettings: (sessionId, settings) => ipcRenderer.invoke('projectStore:writeSettings', sessionId, settings),
   readData: (sessionId) => ipcRenderer.invoke('projectStore:readData', sessionId),
   writeData: (sessionId, data, logMessage) => ipcRenderer.invoke('projectStore:writeData', sessionId, data, logMessage),
+  updateMetadata: (projectPath, updates) => ipcRenderer.invoke('projectStore:updateMetadata', projectPath, updates),
   createBackup: (sessionId) => ipcRenderer.invoke('projectStore:createBackup', sessionId),
   listBackups: (sessionId) => ipcRenderer.invoke('projectStore:listBackups', sessionId),
   restoreBackup: (sessionId, backupName) => ipcRenderer.invoke('projectStore:restoreBackup', sessionId, backupName),
@@ -33,6 +34,7 @@ contextBridge.exposeInMainWorld('projectLibrary', {
   getRoot: () => ipcRenderer.invoke('projectLibrary:getRoot'),
   list: () => ipcRenderer.invoke('projectLibrary:list'),
   create: (projectName, options) => ipcRenderer.invoke('projectLibrary:create', projectName, options),
+  update: (projectPath, updates) => ipcRenderer.invoke('projectLibrary:update', projectPath, updates),
 });
 
 // Stellt Funktionen des Import-Wizards bereit
