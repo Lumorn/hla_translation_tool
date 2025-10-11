@@ -24,10 +24,22 @@ export interface ProjectSettings {
 }
 
 /**
+ * Beschreibt einen einzelnen Dialog- oder Textabschnitt innerhalb eines Projekts.
+ */
+export interface ProjectSegment {
+  id: string;
+  text?: string;
+  translation?: string;
+  audio?: string;
+  status?: string;
+  [key: string]: unknown;
+}
+
+/**
  * Formale Struktur des Datencontainers (`data.json`).
  */
 export interface ProjectData {
-  segments: unknown[];
+  segments: ProjectSegment[];
   [key: string]: unknown;
 }
 

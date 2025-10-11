@@ -1,4 +1,13 @@
 # Changelog
+# 🛠️ Patch in 1.40.454
+* `v2/backend/projectStore.ts` führt den Typ `ProjectSegment` ein, sodass der Renderer strukturierte Segmentdaten mit ID, Text, Übersetzung, Audio-Hinweis und Status verarbeiten kann.
+* `v2/electron/main-v2.js` registriert neue IPC-Kanäle, erstellt bei Bedarf ein zweites Fenster für den Segment-Editor und sorgt dafür, dass Editoren beim Schließen von Projekten automatisch beendet werden.
+* `v2/electron/preload-v2.js` stellt die Brücke `projectEditor` bereit, damit der Renderer das Editorfenster öffnen und wieder schließen kann.
+* `v2/renderer/index.html` ergänzt neben der Projekt-Schaltfläche einen Button „Projekt bearbeiten“, der den Editor startet.
+* `v2/renderer/main.ts` öffnet das Bearbeitungsfenster automatisch nach dem Laden, schließt es beim Projektwechsel und stellt die Schaltfläche zur erneuten Aktivierung bereit.
+* `v2/renderer/editor.html` liefert das neue Fensterlayout im V1-Stil mit Segmentliste, Detailbereich und Statusleiste.
+* `v2/renderer/editor.ts` liest Segmente über die Bridge, erlaubt Filtern, Navigation und Bearbeitung mit automatischem Speichern im neuen Fenster.
+* `README.md` beschreibt den zusätzlichen Editor und verweist auf das separate Fenster innerhalb der V2-Vorschau.
 # 🛠️ Patch in 1.40.453
 * `start_tool_v2.py` führt `npm ci` jetzt mit aktivierten Skripten aus, prüft die Electron-Binärdatei und repariert sie bei Bedarf mit `npm rebuild electron`.
 * `README.md` beschreibt die automatische Electron-Prüfung und verweist auf die vollständige Installation über `npm ci --prefix v2`.

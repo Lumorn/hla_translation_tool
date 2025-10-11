@@ -10,6 +10,7 @@ const { ImportWizardSession } = require('../dist/importer/importWizard.js');
 const activeSessions = new Map();
 const sessionByPath = new Map();
 const importSessions = new Map();
+const editorWindows = new Map();
 let projectLibraryRoot;
 
 // Hilfsfunktion zum Aufräumen aller offenen Sitzungen
@@ -18,6 +19,12 @@ async function releaseAllSessions() {
   activeSessions.clear();
   sessionByPath.clear();
   importSessions.clear();
+  editorWindows.forEach((win) => {
+    if (win && !win.isDestroyed()) {
+      win.close();
+    }
+  });
+  editorWindows.clear();
 
   await Promise.all(
     sessions.map((session) =>
@@ -88,6 +95,11 @@ function registerProjectIpc() {
 
   ipcMain.handle('projectStore:close', async (_event, sessionId) => {
     const session = requireSession(sessionId);
+    const editor = editorWindows.get(sessionId);
+    if (editor && !editor.isDestroyed()) {
+      editor.close();
+    }
+    editorWindows.delete(sessionId);
     activeSessions.delete(sessionId);
     sessionByPath.delete(session.paths.root);
     importSessions.delete(sessionId);
@@ -232,6 +244,33 @@ function registerProjectIpc() {
 
 registerProjectIpc();
 
+// Öffnet oder fokussiert das Bearbeitungsfenster für ein Projekt
+ipcMain.handle('projectEditor:open', async (_event, sessionId, projectName) => {
+  const session = requireSession(sessionId);
+  const existing = editorWindows.get(sessionId);
+  if (existing && !existing.isDestroyed()) {
+    existing.focus();
+    return { opened: false, focused: true };
+  }
+
+  const editorWindow = createEditorWindow(session, projectName);
+  editorWindows.set(sessionId, editorWindow);
+  editorWindow.on('closed', () => {
+    editorWindows.delete(sessionId);
+  });
+  return { opened: true, focused: true };
+});
+
+// Schließt das Bearbeitungsfenster eines Projekts
+ipcMain.handle('projectEditor:close', async (_event, sessionId) => {
+  const existing = editorWindows.get(sessionId);
+  if (existing && !existing.isDestroyed()) {
+    existing.close();
+  }
+  editorWindows.delete(sessionId);
+  return true;
+});
+
 let isShuttingDown = false;
 
 // Stellt sicher, dass Sperren vor dem Beenden entfernt werden
@@ -276,6 +315,32 @@ function createMainWindow() {
   mainWindow.loadFile(resolveRenderer('index.html'));
 
   return mainWindow;
+}
+
+function createEditorWindow(session, projectName) {
+  const title = projectName ? `Projekt bearbeiten – ${projectName}` : 'Projekt bearbeiten';
+  const editorWindow = new BrowserWindow({
+    width: 1400,
+    height: 900,
+    show: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-v2.js'),
+      contextIsolation: true,
+    },
+  });
+
+  editorWindow.once('ready-to-show', () => {
+    editorWindow.show();
+  });
+
+  editorWindow.setTitle(title);
+  const search = new URLSearchParams({
+    sessionId: session.sessionId,
+    projectName: projectName ?? '',
+    projectRoot: session.paths.root,
+  }).toString();
+  editorWindow.loadFile(resolveRenderer('editor.html'), { search: `?${search}` });
+  return editorWindow;
 }
 
 // Startpunkt der Electron-App mit üblichem Lebenszyklus für Windows/Linux/macOS
