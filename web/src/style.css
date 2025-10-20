@@ -211,6 +211,52 @@ th:nth-child(8) {
             justify-content: flex-end;
         }
 
+        .group-buttons.primary-tools {
+            justify-content: flex-start;
+        }
+
+        .btn-more {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-more.btn-more--active {
+            background: #3a3a3a;
+            border-color: #ff6b1a;
+        }
+
+        /* Dropdown-Bereich für ausgelagerte Werkzeuge */
+        .tools-overflow {
+            position: relative;
+            margin-top: 12px;
+            padding: 14px;
+            background: #1c1c1c;
+            border: 1px solid #2d2d2d;
+            border-radius: 10px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+            display: none;
+            z-index: 30;
+        }
+
+        .tools-overflow.tools-overflow--open {
+            display: block;
+        }
+
+        .tools-overflow[hidden] {
+            display: none !important;
+        }
+
+        .tools-overflow__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 10px;
+        }
+
+        .tools-overflow .menu-wrapper {
+            width: 100%;
+        }
+
         .group-body {
             display: flex;
             flex-direction: column;
@@ -544,6 +590,10 @@ th:nth-child(8) {
                 justify-content: flex-start;
             }
 
+            .tools-overflow {
+                margin-top: 6px;
+            }
+
             .search-meta {
                 flex-direction: column;
                 align-items: flex-start;
@@ -563,6 +613,24 @@ th:nth-child(8) {
 
             .search-progress .progress-bar {
                 min-width: 0;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .tools-overflow__grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+
+        @media (max-width: 720px) {
+            .tools-overflow__grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        @media (max-width: 540px) {
+            .tools-overflow__grid {
+                grid-template-columns: 1fr;
             }
         }
 

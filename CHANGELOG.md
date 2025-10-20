@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.456
+* `web/hla_translation_tool.html` sortiert die Werkzeug-Gruppe neu, belässt die Kernaktionen in einer Primärzeile und verlagert alle weiteren Buttons in ein Mehr-Menü.
+* `web/src/style.css` ergänzt das responsive Grid-Layout für `.tools-overflow`, inklusive aktiver Zustände und Breakpoints.
+* `web/src/main.js` liefert den Mehr-Button mitsamt Outside-Klick-, Escape- und Reinitialisierungslogik für die Werkzeugaktionen.
+* `README.md` beschreibt die aufgeräumte Werkzeugleiste samt Mehr-Menü.
+* `CHANGELOG.md` dokumentiert das neue Overflow-Menü der Werkzeugleiste.
 # 🛠️ Patch in 1.40.455
 * `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
 * `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.
