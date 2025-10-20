@@ -263,32 +263,6 @@ function initializeWorkspaceMenus() {
 
 window.toggleWorkspaceMenu = toggleWorkspaceMenu;
 
-// Kümmert sich um die Ein- und Ausklapp-Logik der Werkzeuggruppen
-function initializeToolbarToggles() {
-    const groups = document.querySelectorAll('.toolbar-group');
-    groups.forEach((group, index) => {
-        const content = group.querySelector('.toolbar-group-content');
-        const toggle = group.querySelector('.toolbar-toggle');
-        if (!content || !toggle) {
-            return;
-        }
-        const groupId = group.dataset.toolbarGroup || `group-${index}`;
-        const storageKey = `toolbarCollapsed:${groupId}`;
-        const applyState = (collapsed) => {
-            group.classList.toggle('is-collapsed', collapsed);
-            toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-            content.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
-        };
-        const stored = window.localStorage.getItem(storageKey) === 'true';
-        applyState(stored);
-        toggle.addEventListener('click', () => {
-            const nextState = !group.classList.contains('is-collapsed');
-            applyState(nextState);
-            window.localStorage.setItem(storageKey, nextState ? 'true' : 'false');
-        });
-    });
-}
-
 // Prüft, in welchem Speichersystem ein Schlüssel liegt und zeigt den Status an
 async function visualizeFileStorage(key) {
     // Beide Backends erstellen, ohne den globalen Speicher zu ändern
@@ -366,7 +340,6 @@ window.addEventListener('DOMContentLoaded', () => {
     updateStorageUsage();
     updateLastCleanup();
     initializeWorkspaceMenus();
-    initializeToolbarToggles();
     const cleanBtn = document.getElementById('cleanupButton');
     if (cleanBtn) cleanBtn.addEventListener('click', runCleanup);
 });
