@@ -78,6 +78,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Bugfix:** Nach einem Projektwechsel funktionieren alle Toolbar‑Schaltflächen wieder zuverlässig.
 * **Registerkarten im Kopfbereich:** Projekt-, Werkzeug-, Medien-, System- sowie Suchfunktionen teilen sich jetzt fünf Tabs. Dadurch bleibt der sichtbare Bereich kompakt, alle Buttons bleiben verfügbar und die zuletzt genutzte Registerkarte wird gespeichert.
+* **Dynamisch kompakte Registerleiste:** Die Tab-Panels nutzen ein responsives Grid, das Werkzeuggruppen nur noch so hoch rendert wie nötig und Buttons automatisch umbricht – freie Flächen verschwinden damit auch auf sehr breiten Monitoren.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.
 * **Integritätsprüfung beim Start:** Alle gespeicherten Projektschlüssel werden mit der Liste abgeglichen und fehlende Einträge ergänzt.
 * **Verzögerte Fehlermeldungen:** Warnhinweise erscheinen erst, wenn ein Reparaturversuch scheitert.

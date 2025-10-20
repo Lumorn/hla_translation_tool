@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.457
+* `web/src/style.css` ordnet die Kopf-Register per CSS-Grid neu, reduziert den Leerraum der Werkzeugleiste und lässt Buttons flexibel umbrechen.
+* `README.md` dokumentiert die kompaktere Registerleiste im Kopfbereich.
 # 🛠️ Patch in 1.40.456
 * `web/hla_translation_tool.html` fasst den Kopfbereich in fünf Registerkarten zusammen, sodass Projekt-, Werkzeug-, Medien-, System- sowie Suchfunktionen platzsparend erreichbar bleiben.
 * `web/src/style.css` liefert die kompakten Register-Styles und reduziert den benötigten vertikalen Raum des Kopfbereichs.
