@@ -77,6 +77,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerresistente Projektliste:** Tritt beim Laden ein Speicherfehler auf, bleibt die vorhandene Projektliste unverändert und es erscheint ausschließlich ein Hinweisdialog.
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Bugfix:** Nach einem Projektwechsel funktionieren alle Toolbar‑Schaltflächen wieder zuverlässig.
+* **Registerkarten im Kopfbereich:** Projekt-, Werkzeug-, Medien-, System- sowie Suchfunktionen teilen sich jetzt fünf Tabs. Dadurch bleibt der sichtbare Bereich kompakt, alle Buttons bleiben verfügbar und die zuletzt genutzte Registerkarte wird gespeichert.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.
 * **Integritätsprüfung beim Start:** Alle gespeicherten Projektschlüssel werden mit der Liste abgeglichen und fehlende Einträge ergänzt.
 * **Verzögerte Fehlermeldungen:** Warnhinweise erscheinen erst, wenn ein Reparaturversuch scheitert.
@@ -601,7 +602,7 @@ Die klassische Oberfläche bleibt für bestehende Übersetzungsworkflows verfüg
 ![V1-Oberfläche mit geladenem Projekt (aktueller Stand)](docs/screenshots/v1-ui-demo-live.png)
 
 * **Projektleiste links:** Listet alle gespeicherten Projekte inklusive Suchfeld und Schaltfläche „+ Neues Projekt“.
-* **Werkzeugleiste oben:** Tabs für Import, Werkzeuge, Medien, Tests, ElevenLabs sowie Startparameter bündeln alle Aktionen.
+* **Werkzeugleiste oben:** Registerkarten für Projekt, Werkzeuge, Medien, System sowie Suche &amp; Verlauf bündeln alle Aktionen und merken sich die letzte Auswahl.
 * **Tabellenkernbereich:** Zeilen mit englischer und deutscher Spalte, Fortschrittsindikatoren, Filter und Statushinweise.
 * **Rechte Informationsspalte:** Zeigt Projektzusammenfassung, Log-Auszüge sowie Backup- und Exportfunktionen.
 
@@ -625,7 +626,7 @@ Der direkte Vergleich hilft beim Umstieg: Beide Generationen öffnen Projekte vo
 | --- | --- | --- |
 | Projektzugriff | Seitenleiste listet Projekte aus LocalStorage bzw. OPFS, zusätzliche Buttons öffnen Import- und Speicher-Dialoge. | Linke Bibliothek mit festen Ordnerpfaden (`v2/projects` oder `HLA_V2_PROJECTS_ROOT`), Sperren werden prominent markiert. |
 | Projektstart | Projekte werden direkt nach dem Klick geladen; ein globaler Ladebalken zeigt alle Schritte. | Öffnen legt eine `.project.lock`-Datei an, Statuszeile meldet Fortschritt; Demo-Modus simuliert Dateioperationen. |
-| Werkzeugleiste | Umfangreiche Toolbar mit Import, GPT-Bewertungen, Emotionstags, ElevenLabs, Video-Verwaltung, Suche und Startparametern für das Spiel. | Fokus auf Verwaltung: Karten für Backups, Audio-Schnappschüsse und Import-Assistent ersetzen die verstreute Toolbar. |
+| Werkzeugleiste | Registerkarten (Projekt, Werkzeuge, Medien, System, Suche &amp; Verlauf) bündeln Import, GPT-Bewertungen, Emotionstags, ElevenLabs, Video-Verwaltung, Suche und Startparameter kompakt mit gespeicherter Auswahl. | Fokus auf Verwaltung: Karten für Backups, Audio-Schnappschüsse und Import-Assistent ersetzen die verstreute Toolbar. |
 | Datenansicht | Zentrale Tabelle mit englischem und deutschem Text, Suchleiste, Sortierung sowie Fortschrittsanzeigen je Ordner und global. | Kartenbasierte Oberfläche ohne Tabelle; Import-Ergebnisse erscheinen im Wizard, Übersetzungsdaten liegen in `data.json` und werden projektweise verwaltet. |
 | Backups | Dialog über Einstellungen → Backup; V1 erzeugt ZIP-Dateien oder nutzt Browser-Speicher. | Direkt im Hauptbereich: Ordnersicherungen sowie Audio-Schnappschüsse mit Erstellen, Wiederherstellen, Löschen. |
 | Protokolle | Debug- und Dubbing-Logs im Werkzeugbereich, zusätzliche Toasts melden Aktionen. | `logs/events.log` erhält Einträge für alle Operationen, Renderer zeigt den Verlauf im Statuspanel. |
