@@ -67,17 +67,12 @@
                     <section class="toolbar-group toolbar-group--tools" aria-labelledby="toolbarToolsTitle">
                         <div class="group-main">
                             <h3 id="toolbarToolsTitle" class="group-title">Werkzeuge</h3>
-                            <div class="group-buttons primary-tools">
+                            <div class="group-buttons">
                                 <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
                                 <button id="randomProjectButton" class="btn btn-secondary">🎲 Zufall</button>
                                 <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
                                 <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE)</button>
                                 <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
-                                <button id="toolsOverflowToggle" class="btn btn-secondary btn-more" aria-haspopup="true" aria-expanded="false">⋯ Mehr</button>
-                            </div>
-                        </div>
-                        <div class="tools-overflow" id="toolsOverflow" aria-hidden="true">
-                            <div class="tools-overflow__grid">
                                 <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
                                 <button class="btn btn-secondary" onclick="showZipImportDialog()">ZIP importieren</button>
                                 <button class="btn btn-secondary" id="copyAssistantButton">Kopierhilfe</button>
