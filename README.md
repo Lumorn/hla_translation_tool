@@ -926,12 +926,6 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 
 ## 🎮 Bedienung
 
-### Benutzeroberfläche
-
-* Die Toolbar-Gruppen im Kopfbereich besitzen jetzt jeweils einen kleinen Pfeil-Button rechts neben den vorhandenen Aktionen.
-* Ein Klick klappt die Sektion ein oder aus; im eingeklappten Zustand bleibt nur der Kopf sichtbar und der restliche Inhalt wird sauber verborgen.
-* Das Tool merkt sich den Zustand jeder Gruppe dauerhaft in `localStorage` (`toolbarCollapsed:<gruppe>`), sodass persönliche Präferenzen beim nächsten Start automatisch wiederhergestellt werden.
-
 ### Arbeitsbereich-Header
 
 Der Kopfbereich der Weboberfläche ist jetzt als kompakte Werkzeugzeile mit klar getrennten Sektionen aufgebaut:
