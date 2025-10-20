@@ -84,6 +84,9 @@ function initWorkspaceTabs() {
     }
 }
 
+// Stellt die Initialisierung global bereit, damit Projektwechsel sie neu setzen können
+window.initWorkspaceTabs = initWorkspaceTabs;
+
 document.addEventListener('DOMContentLoaded', initWorkspaceTabs);
 // =========================== ARBEITSBEREICH-TABS END =============================
 
