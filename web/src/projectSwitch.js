@@ -225,6 +225,7 @@ function switchProjectSafe(projectId) {
         window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut
         window.initVideoManager?.(); // richtet den Video-Manager nach jedem Wechsel neu ein
         window.initWorkspaceTabs?.(); // setzt die Kopf-Register nach dem Klonen der DOM-Elemente erneut
+        window.initializeSystemControls?.(); // verbindet System-Schaltflächen und Menüs erneut
       });
       // Event-Listener wie die Live-Suche neu setzen
       await verfolgeSchritt('Event-Listener reinitialisieren', async () => {

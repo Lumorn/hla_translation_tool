@@ -191,7 +191,6 @@ function resetGlobalState() {
 
 // Verwaltung der neuen Dropdown-Menüs im Arbeitsbereich
 let activeWorkspaceMenu = null;
-let workspaceMenusInitialized = false;
 
 function handleWorkspaceMenuOutsideClick(event) {
     if (!activeWorkspaceMenu) return;
@@ -231,34 +230,42 @@ function toggleWorkspaceMenu(menuId, buttonId) {
     }
 }
 
+function handleWorkspaceToggleClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const toggle = event.currentTarget;
+    const menuId = toggle.getAttribute('data-menu-toggle');
+    toggleWorkspaceMenu(menuId, toggle.id);
+}
+
+function handleWorkspaceMenuClick(event) {
+    const actionable = event.target.closest('.dropdown-item, .settings-item, button');
+    if (actionable) {
+        closeWorkspaceMenu();
+    }
+}
+
+function handleWorkspaceEscape(event) {
+    if (event.key === 'Escape') {
+        closeWorkspaceMenu();
+    }
+}
+
 function initializeWorkspaceMenus() {
-    if (workspaceMenusInitialized) return;
-    workspaceMenusInitialized = true;
     const toggles = document.querySelectorAll('[data-menu-toggle]');
     toggles.forEach(toggle => {
-        toggle.addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            const menuId = toggle.getAttribute('data-menu-toggle');
-            toggleWorkspaceMenu(menuId, toggle.id);
-        });
+        toggle.removeEventListener('click', handleWorkspaceToggleClick);
+        toggle.addEventListener('click', handleWorkspaceToggleClick);
     });
 
     const dropdowns = document.querySelectorAll('.workspace-dropdown');
     dropdowns.forEach(menu => {
-        menu.addEventListener('click', event => {
-            const actionable = event.target.closest('.dropdown-item, .settings-item, button');
-            if (actionable) {
-                closeWorkspaceMenu();
-            }
-        });
+        menu.removeEventListener('click', handleWorkspaceMenuClick);
+        menu.addEventListener('click', handleWorkspaceMenuClick);
     });
 
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-            closeWorkspaceMenu();
-        }
-    });
+    document.removeEventListener('keydown', handleWorkspaceEscape);
+    document.addEventListener('keydown', handleWorkspaceEscape);
 }
 
 window.toggleWorkspaceMenu = toggleWorkspaceMenu;
@@ -326,22 +333,49 @@ async function runCleanup() {
     }
 }
 
+// Handler für die Schaltfläche zum Umschalten des Speichers
+function handleSwitchStorageClick(event) {
+    if (event) event.preventDefault();
+    switchStorage();
+}
+
+// Handler für die Schaltfläche zur Speicherbereinigung
+function handleCleanupClick(event) {
+    if (event) event.preventDefault();
+    runCleanup();
+}
+
+// Initialisiert alle Bedienelemente des Systembereichs erneut
+function initializeSystemControls() {
+    const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
+    updateStorageIndicator(mode);
+
+    const switchButton = document.getElementById('switchStorageButton');
+    if (switchButton) {
+        switchButton.removeEventListener('click', handleSwitchStorageClick);
+        switchButton.addEventListener('click', handleSwitchStorageClick);
+    }
+
+    requestPersistentStorage();
+    updateStorageUsage();
+    updateLastCleanup();
+    initializeWorkspaceMenus();
+
+    const cleanBtn = document.getElementById('cleanupButton');
+    if (cleanBtn) {
+        cleanBtn.removeEventListener('click', handleCleanupClick);
+        cleanBtn.addEventListener('click', handleCleanupClick);
+    }
+}
+
 // Globale Bereitstellung und Initialisierung nach DOM-Ladevorgang
 window.updateStorageIndicator = updateStorageIndicator;
 window.switchStorage = switchStorage;
 window.visualizeFileStorage = visualizeFileStorage;
 window.openStorageFolder = openStorageFolder;
+window.initializeSystemControls = initializeSystemControls;
 window.addEventListener('DOMContentLoaded', () => {
-    const mode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
-    updateStorageIndicator(mode);
-    const btn = document.getElementById('switchStorageButton');
-    if (btn) btn.addEventListener('click', () => switchStorage());
-    requestPersistentStorage();
-    updateStorageUsage();
-    updateLastCleanup();
-    initializeWorkspaceMenus();
-    const cleanBtn = document.getElementById('cleanupButton');
-    if (cleanBtn) cleanBtn.addEventListener('click', runCleanup);
+    initializeSystemControls();
 });
 
 // =========================== GLOBAL STATE START ===========================
