@@ -4,6 +4,89 @@
 // Zugriff auf den globalen Speicher
 const storage = window.storage;
 
+// =========================== ARBEITSBEREICH-TABS START ===========================
+/**
+ * Richtet die Registerkarten im Kopfbereich ein, damit die Werkzeugleisten
+ * weniger Platz einnehmen und trotzdem vollständig erreichbar bleiben.
+ */
+function initWorkspaceTabs() {
+    const tabButtons = Array.from(document.querySelectorAll('.toolbar-tab'));
+    const panels = Array.from(document.querySelectorAll('.toolbar-panel'));
+    if (!tabButtons.length || !panels.length) {
+        return;
+    }
+
+    const storageKey = 'workspaceToolbarTab';
+    const buttonByPanel = new Map(tabButtons.map(btn => [btn.dataset.panel, btn]));
+
+    /**
+     * Aktiviert die gewünschte Registerkarte und speichert die Wahl.
+     * @param {string} panelId - Kennung des Ziel-Panels
+     * @param {boolean} focusTab - Fokus nach der Umschaltung setzen
+     */
+    function activate(panelId, focusTab = false) {
+        for (const btn of tabButtons) {
+            const isActive = btn.dataset.panel === panelId;
+            btn.classList.toggle('is-active', isActive);
+            btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            btn.setAttribute('tabindex', isActive ? '0' : '-1');
+        }
+
+        for (const panel of panels) {
+            const isActive = panel.dataset.panel === panelId;
+            panel.classList.toggle('is-active', isActive);
+            panel.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+        }
+
+        try {
+            window.localStorage?.setItem(storageKey, panelId);
+        } catch (error) {
+            console.warn('Tab-Auswahl konnte nicht gespeichert werden:', error);
+        }
+
+        if (focusTab) {
+            const target = buttonByPanel.get(panelId);
+            target?.focus();
+        }
+    }
+
+    tabButtons.forEach((btn, index) => {
+        btn.addEventListener('click', () => activate(btn.dataset.panel));
+        btn.addEventListener('keydown', event => {
+            if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') {
+                return;
+            }
+            event.preventDefault();
+            const direction = event.key === 'ArrowRight' ? 1 : -1;
+            const nextIndex = (index + direction + tabButtons.length) % tabButtons.length;
+            const nextBtn = tabButtons[nextIndex];
+            if (nextBtn) {
+                activate(nextBtn.dataset.panel, true);
+            }
+        });
+    });
+
+    const storedPanel = (() => {
+        try {
+            return window.localStorage?.getItem(storageKey) || null;
+        } catch {
+            return null;
+        }
+    })();
+
+    if (storedPanel && buttonByPanel.has(storedPanel)) {
+        activate(storedPanel);
+    } else {
+        const defaultPanel = tabButtons[0]?.dataset.panel;
+        if (defaultPanel) {
+            activate(defaultPanel);
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', initWorkspaceTabs);
+// =========================== ARBEITSBEREICH-TABS END =============================
+
 let urlInput;
 let addBtn;
 let openMgr;

@@ -2,6 +2,6 @@ Platzhalter-Bild: Live-Ansicht der V1-Oberfläche mit geöffnetem Projekt.
 Beschreibung:
 - Browserfenster mit hellem Layout und voller Tabellenansicht.
 - Linke Seitenleiste listet vorhandene Projekte samt Suchfeld und „+ Neues Projekt“.
-- Obere Toolbar mit Tabs für Import, Werkzeuge, Medien, Tests und ElevenLabs.
+- Obere Registerleiste mit Tabs für Projekt, Werkzeuge, Medien, System sowie Suche & Verlauf; die letzte Auswahl bleibt aktiv.
 - Haupttabelle mit englischen/deutschen Textspalten, Fortschritts-Icons und Statusfiltern.
 - Rechte Seitenleiste mit Projektzusammenfassung, Log-Auszug und Backup-Schaltflächen.

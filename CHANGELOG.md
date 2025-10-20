@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.456
+* `web/hla_translation_tool.html` fasst den Kopfbereich in fünf Registerkarten zusammen, sodass Projekt-, Werkzeug-, Medien-, System- sowie Suchfunktionen platzsparend erreichbar bleiben.
+* `web/src/style.css` liefert die kompakten Register-Styles und reduziert den benötigten vertikalen Raum des Kopfbereichs.
+* `web/renderer.js` steuert die Tab-Umschaltung, unterstützt Pfeiltasten und merkt sich die zuletzt verwendete Registerkarte.
+* `README.md` und `docs/screenshots/v1-ui-demo-live.png` beschreiben die neue Registerleiste; `CHANGELOG.md` dokumentiert den Umbau.
 # 🛠️ Patch in 1.40.455
 * `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
 * `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.
