@@ -192,10 +192,6 @@ function resetGlobalState() {
 // Verwaltung der neuen Dropdown-Menüs im Arbeitsbereich
 let activeWorkspaceMenu = null;
 let workspaceMenusInitialized = false;
-let toolsOverflowToggleButton = null;
-let toolsOverflowContainer = null;
-let toolsOverflowOutsideHandler = null;
-let toolsOverflowKeyHandler = null;
 
 function handleWorkspaceMenuOutsideClick(event) {
     if (!activeWorkspaceMenu) return;
@@ -223,7 +219,6 @@ function toggleWorkspaceMenu(menuId, buttonId) {
     if (!menu) return;
     const button = buttonId ? document.getElementById(buttonId) : null;
     const isSameMenu = activeWorkspaceMenu && activeWorkspaceMenu.menu === menu;
-    closeToolsOverflowMenu();
     closeWorkspaceMenu();
     if (!isSameMenu) {
         menu.classList.add('menu-open');
@@ -264,80 +259,6 @@ function initializeWorkspaceMenus() {
             closeWorkspaceMenu();
         }
     });
-}
-
-function handleToolsOverflowOutsideClick(event) {
-    if (!toolsOverflowContainer || !toolsOverflowToggleButton) return;
-    if (toolsOverflowContainer.contains(event.target) || toolsOverflowToggleButton.contains(event.target)) {
-        return;
-    }
-    closeToolsOverflowMenu();
-}
-
-function handleToolsOverflowKeydown(event) {
-    if (event.key === 'Escape') {
-        closeToolsOverflowMenu();
-        toolsOverflowToggleButton?.focus();
-    }
-}
-
-function closeToolsOverflowMenu() {
-    if (!toolsOverflowContainer) return;
-    toolsOverflowContainer.classList.remove('tools-overflow--open');
-    toolsOverflowContainer.setAttribute('aria-hidden', 'true');
-    toolsOverflowContainer.hidden = true;
-    if (toolsOverflowToggleButton) {
-        toolsOverflowToggleButton.setAttribute('aria-expanded', 'false');
-        toolsOverflowToggleButton.classList.remove('btn-more--active');
-    }
-    document.removeEventListener('click', toolsOverflowOutsideHandler);
-    document.removeEventListener('keydown', toolsOverflowKeyHandler);
-    toolsOverflowOutsideHandler = null;
-    toolsOverflowKeyHandler = null;
-}
-
-function toggleToolsOverflowMenu(forceState) {
-    if (!toolsOverflowContainer || !toolsOverflowToggleButton) return;
-    const isOpen = toolsOverflowContainer.classList.contains('tools-overflow--open');
-    const shouldOpen = typeof forceState === 'boolean' ? forceState : !isOpen;
-    if (shouldOpen && !isOpen) {
-        closeWorkspaceMenu();
-        toolsOverflowContainer.hidden = false;
-        toolsOverflowContainer.classList.add('tools-overflow--open');
-        toolsOverflowContainer.setAttribute('aria-hidden', 'false');
-        toolsOverflowToggleButton.setAttribute('aria-expanded', 'true');
-        toolsOverflowToggleButton.classList.add('btn-more--active');
-        // Listener für Außenklicks und Escape nur einmalig erzeugen
-        toolsOverflowOutsideHandler = event => handleToolsOverflowOutsideClick(event);
-        toolsOverflowKeyHandler = event => handleToolsOverflowKeydown(event);
-        document.addEventListener('click', toolsOverflowOutsideHandler);
-        document.addEventListener('keydown', toolsOverflowKeyHandler);
-        // Sicherstellen, dass alle Aktionen erreichbar bleiben
-        setupToolbarActionButtons();
-    } else if (!shouldOpen && isOpen) {
-        closeToolsOverflowMenu();
-    }
-}
-
-function initToolsOverflowMenu() {
-    toolsOverflowToggleButton = document.getElementById('toolsOverflowToggle');
-    toolsOverflowContainer = document.getElementById('toolsOverflow');
-    if (!toolsOverflowToggleButton || !toolsOverflowContainer) {
-        return;
-    }
-
-    // Menü initial verbergen, damit keine flackernde Anzeige entsteht
-    toolsOverflowContainer.hidden = true;
-    toolsOverflowContainer.setAttribute('aria-hidden', 'true');
-
-    if (!toolsOverflowToggleButton.dataset.bound) {
-        toolsOverflowToggleButton.addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            toggleToolsOverflowMenu();
-        });
-        toolsOverflowToggleButton.dataset.bound = 'true';
-    }
 }
 
 window.toggleWorkspaceMenu = toggleWorkspaceMenu;
@@ -1590,39 +1511,39 @@ function setupToolbarActionButtons() {
 
         // Einzelne Klick-Listener nach Bedarf setzen
         if (gptBtn) {
-            gptBtn.onclick = () => {
+            gptBtn.addEventListener("click", () => {
                 if (currentProject?.gptTests?.length) {
                     openSavedGptTests();
                 } else {
                     showGptStartDialog();
                 }
-            };
+            });
         }
         if (emoBtn) {
-            emoBtn.onclick = generateEmotionsForAll;
+            emoBtn.addEventListener("click", generateEmotionsForAll);
         }
         if (sendBtn) {
-            sendBtn.onclick = sendEmoTextsToApi;
+            sendBtn.addEventListener("click", sendEmoTextsToApi);
         }
         if (copyBtn) {
-            copyBtn.onclick = openCopyAssistant;
+            copyBtn.addEventListener("click", openCopyAssistant);
         }
         if (copyBtn2) {
-            copyBtn2.onclick = openCopyAssistant2;
+            copyBtn2.addEventListener("click", openCopyAssistant2);
         }
         if (copyAllEmosBtn) {
-            copyAllEmosBtn.onclick = copyAllEmotionsToClipboard;
+            copyAllEmosBtn.addEventListener("click", copyAllEmotionsToClipboard);
         }
         if (subtitleAllBtn) {
-            subtitleAllBtn.onclick = runGlobalSubtitleSearch;
+            subtitleAllBtn.addEventListener("click", runGlobalSubtitleSearch);
         }
         if (subtitleAllBtn && subtitleAllBtnInline) {
-            subtitleAllBtnInline.onclick = event => {
+            subtitleAllBtnInline.addEventListener("click", event => {
                 // Weiterleitung auf den ursprünglichen Button, damit bestehende Logik greift
                 event.preventDefault();
                 event.stopPropagation();
                 subtitleAllBtn.click();
-            };
+            });
         }
 
         if (replaceSpeakerBtn) {
@@ -12554,7 +12475,6 @@ async function scanAudioDuplicates() {
 
             // Spezielle Aktionsknöpfe der Toolbar separat einrichten
             setupToolbarActionButtons();
-            initToolsOverflowMenu();
 
             // Video-Manager mitsamt Schließen‑Knöpfen vorbereiten
             const vmState = window.videoManager || {};
