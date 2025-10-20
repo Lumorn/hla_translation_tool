@@ -199,12 +199,13 @@ th:nth-child(8) {
 
         .toolbar-panel {
             display: none;
-            flex-direction: column;
             gap: 14px;
         }
 
         .toolbar-panel.is-active {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            align-items: start;
         }
 
         .toolbar-panel .toolbar-group {
@@ -226,20 +227,22 @@ th:nth-child(8) {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            flex: 1 1 260px;
             min-width: 0;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
         }
 
-        .toolbar-group--project { flex: 1 1 320px; }
-        .toolbar-group--tools { flex: 2 1 380px; }
-        .toolbar-group--media { flex: 1 1 280px; }
-        .toolbar-group--system { flex: 1 1 260px; }
-        .toolbar-group--search { flex: 1 1 100%; }
+        .toolbar-group--project { min-width: 320px; }
+        .toolbar-group--tools { min-width: 380px; }
+        .toolbar-group--media { min-width: 280px; }
+        .toolbar-group--system { min-width: 260px; }
+        .toolbar-group--search {
+            min-width: 100%;
+            grid-column: 1 / -1;
+        }
 
         .group-main {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
             flex-wrap: wrap;
@@ -259,7 +262,8 @@ th:nth-child(8) {
             flex-wrap: wrap;
             gap: 8px;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: flex-start;
+            width: 100%;
         }
 
         .group-body {
@@ -558,8 +562,8 @@ th:nth-child(8) {
         }
 
         @media (max-width: 1200px) {
-            .toolbar-group {
-                flex: 1 1 220px;
+            .toolbar-panel.is-active {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             }
 
             .project-inline {
@@ -581,8 +585,8 @@ th:nth-child(8) {
                 padding: 14px 16px 18px;
             }
 
-            .toolbar-group {
-                flex: 1 1 100%;
+            .toolbar-panel.is-active {
+                grid-template-columns: 1fr;
             }
 
             .group-main {
