@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.459
+* `web/src/main.js` fasst die Speicher- und Verwaltungssteuerung in `initializeSystemControls` zusammen, bindet die Schaltflächen wiederverwendbar und initialisiert die Arbeitsbereichs-Menüs bei jedem Aufruf neu.
+* `web/src/projectSwitch.js` ruft die neue Initialisierung nach dem Projektwechsel auf, damit Speicherwechsel, Aufräumen und Verwaltungsmenüs aktiv bleiben.
+* `README.md` und `CHANGELOG.md` dokumentieren die wiederholbare Systeminitialisierung.
 # 🛠️ Patch in 1.40.458
 * `web/renderer.js` exportiert die Register-Initialisierung, damit Projektwechsel die Kopf-Register nach dem Klonen der DOM-Elemente wieder aktivieren können.
 * `web/src/projectSwitch.js` ruft die Register-Initialisierung während des „Toolbar neu verbinden“-Schritts auf, sodass Projekt-, Werkzeug-, Medien-, System- und Such-Tab nach einem Wechsel wieder klickbar sind.
