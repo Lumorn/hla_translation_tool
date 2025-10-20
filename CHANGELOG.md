@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.456
+* `web/hla_translation_tool.html` ergänzt für jede Toolbar-Gruppe einen eigenen Toggle-Knopf samt Content-Wrapper und speichert eindeutige Kennungen.
+* `web/src/style.css` liefert neue Ein-/Ausklapp-Stile, fokussierbare Toggle-Schaltflächen sowie eine Screenreader-Hilfsklasse.
+* `web/src/main.js` initialisiert die Toggles, synchronisiert `aria`-Attribute und merkt sich den Zustand je Gruppe im `localStorage`.
+* `README.md` und `CHANGELOG.md` dokumentieren die einklappbaren Toolbar-Bereiche samt Persistenz.
 # 🛠️ Patch in 1.40.455
 * `v2/backend/audioProcessing.ts` bündelt ffmpeg-basierte Audio-Operationen, erzeugt Wellenformdaten und protokolliert neue Dateien im Projektlog.
 * `v2/backend/ffprobe-static.d.ts` liefert die fehlende Typdeklaration, damit der Build das ffprobe-Binary referenzieren kann.
