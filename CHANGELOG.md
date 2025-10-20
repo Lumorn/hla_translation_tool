@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.458
+* `web/renderer.js` exportiert die Register-Initialisierung, damit Projektwechsel die Kopf-Register nach dem Klonen der DOM-Elemente wieder aktivieren können.
+* `web/src/projectSwitch.js` ruft die Register-Initialisierung während des „Toolbar neu verbinden“-Schritts auf, sodass Projekt-, Werkzeug-, Medien-, System- und Such-Tab nach einem Wechsel wieder klickbar sind.
+* `README.md` und `CHANGELOG.md` dokumentieren den Bugfix für die Registerleiste.
 # 🛠️ Patch in 1.40.457
 * `web/src/style.css` ordnet die Kopf-Register per CSS-Grid neu, reduziert den Leerraum der Werkzeugleiste und lässt Buttons flexibel umbrechen.
 * `README.md` dokumentiert die kompaktere Registerleiste im Kopfbereich.

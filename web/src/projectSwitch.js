@@ -224,6 +224,7 @@ function switchProjectSafe(projectId) {
       await verfolgeSchritt('Toolbar neu verbinden', async () => {
         window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut
         window.initVideoManager?.(); // richtet den Video-Manager nach jedem Wechsel neu ein
+        window.initWorkspaceTabs?.(); // setzt die Kopf-Register nach dem Klonen der DOM-Elemente erneut
       });
       // Event-Listener wie die Live-Suche neu setzen
       await verfolgeSchritt('Event-Listener reinitialisieren', async () => {
