@@ -9,6 +9,19 @@
             display: none !important;
         }
 
+        /* Für Screenreader reservierte Hilfsklasse */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         /* Fehlerhafte Eingabefelder rot umranden */
         .input-invalid {
             border: 1px solid red;
@@ -178,6 +191,14 @@ th:nth-child(8) {
             flex: 1 1 260px;
             min-width: 0;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .toolbar-group-content {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: max-height 0.25s ease, padding-bottom 0.25s ease, gap 0.25s ease;
         }
 
         .toolbar-group--project { flex: 1 1 320px; }
@@ -189,9 +210,66 @@ th:nth-child(8) {
         .group-main {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-start;
             gap: 12px;
             flex-wrap: wrap;
+        }
+
+        .group-main .group-buttons,
+        #subtitleSearchAllButtonInline {
+            margin-left: auto;
+        }
+
+        .toolbar-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid #3a3a3a;
+            background: #2a2a2a;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+            margin-left: 8px;
+        }
+
+        .toolbar-toggle:hover,
+        .toolbar-toggle:focus-visible {
+            background: #333333;
+            border-color: #ff6b1a;
+            color: #ff6b1a;
+        }
+
+        .toolbar-toggle:focus-visible {
+            outline: 2px solid #ff6b1a;
+            outline-offset: 2px;
+        }
+
+        .toolbar-toggle-icon {
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+
+        .group-body {
+            transition: opacity 0.2s ease;
+        }
+
+        .toolbar-group.is-collapsed .toolbar-group-content {
+            max-height: 11rem;
+            overflow: hidden;
+            padding-bottom: 4px;
+            gap: 0;
+        }
+
+        .toolbar-group.is-collapsed .group-body {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .toolbar-group.is-collapsed .toolbar-toggle-icon {
+            transform: rotate(-90deg);
         }
 
         .group-title {
