@@ -8631,6 +8631,7 @@ function updateAllProjectsAfterScan() {
     }
     
     debugLog('=== Projekt-Aktualisierung abgeschlossen ===');
+    renderProjects();
 }
 
 
