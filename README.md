@@ -143,6 +143,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Fehlerfreier Projektwechsel:** `switchProjectSafe` lädt vor dem Öffnen die Projektliste neu und vermeidet so die Meldung „Projekte konnten nicht geladen werden“
 * **Zentrierter Projektfokus:** Nach einem Projektwechsel scrollt die linke Projektleiste automatisch zum aktiven Eintrag und zentriert ihn
 * **Proaktive Listen-Synchronisierung:** Beim Start und nach einem Speichermodus-Wechsel gleicht `reloadProjectList` alle `project:<id>`-Schlüssel mit `hla_projects` ab und ergänzt fehlende Projekte automatisch
+* **Sofortige Projektübersicht nach Ordnerscans:** `updateAllProjectsAfterScan()` rendert nach jedem Lauf die Projektliste neu, sodass Fortschritts-Badges wie der gelbe DE-Audio-Indikator sofort die neuen Prozentwerte anzeigen
 * **Gesicherte Dateien vor GPT-Reset:** Beim Projektwechsel werden Dateien zuerst gespeichert und erst danach der GPT-Zustand bereinigt
 * **Leere Zeilenreihenfolge beim Projektwechsel:** Neben den GPT-Daten wird auch die Anzeige-Reihenfolge gelöscht
 * **Automatischer Ordnerscan beim Projektwechsel:** Nach dem Laden werden Audio-Ordner durchsucht, damit Dateien sofort verfügbar sind

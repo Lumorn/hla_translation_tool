@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.460
+* `web/src/main.js` rendert nach `updateAllProjectsAfterScan()` die Projektliste erneut, damit Fortschritts-Badges direkt nach einem Ordnerscan die aktuellen Werte zeigen.
+* `README.md` und `CHANGELOG.md` dokumentieren die sofortige Aktualisierung der Projektübersicht.
 # 🛠️ Patch in 1.40.459
 * `web/src/main.js` fasst die Speicher- und Verwaltungssteuerung in `initializeSystemControls` zusammen, bindet die Schaltflächen wiederverwendbar und initialisiert die Arbeitsbereichs-Menüs bei jedem Aufruf neu.
 * `web/src/projectSwitch.js` ruft die neue Initialisierung nach dem Projektwechsel auf, damit Speicherwechsel, Aufräumen und Verwaltungsmenüs aktiv bleiben.
