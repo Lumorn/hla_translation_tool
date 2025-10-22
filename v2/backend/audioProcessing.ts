@@ -219,9 +219,12 @@ export async function processAudioClip(
   await ensureAudioDirectory(paths);
   const sourcePath = path.join(paths.audioDir, request.sourceFile);
   await fs.access(sourcePath);
+  const sourceProbe = await probeAudio(sourcePath);
+  const originalDurationSec = sourceProbe.durationMs / 1000;
   const targetName = request.targetFile ?? getDefaultTargetName(request.sourceFile);
   const targetPath = path.join(paths.audioDir, targetName);
-  const trimStartSec = request.trimStartMs ? Math.max(0, request.trimStartMs) / 1000 : 0;
+  const trimStartSecRaw = request.trimStartMs ? Math.max(0, request.trimStartMs) / 1000 : 0;
+  const trimStartSec = Math.min(trimStartSecRaw, originalDurationSec);
   let trimEndSec: number | undefined;
   if (typeof request.trimEndMs === 'number') {
     const rawEnd = Math.max(request.trimEndMs, 0) / 1000;
@@ -229,17 +232,33 @@ export async function processAudioClip(
       trimEndSec = rawEnd;
     }
   }
+  if (typeof trimEndSec === 'number') {
+    trimEndSec = Math.max(trimStartSec, Math.min(trimEndSec, originalDurationSec));
+  }
+
+  const clipDurationBeforeTempoSec =
+    typeof trimEndSec === 'number'
+      ? Math.max(0, trimEndSec - trimStartSec)
+      : Math.max(0, originalDurationSec - trimStartSec);
+  const rawTempoRatio = request.effects?.tempoRatio;
+  const tempoRatioForDuration =
+    typeof rawTempoRatio === 'number' && rawTempoRatio > 0 ? rawTempoRatio : 1;
+  const effectiveClipDurationSec =
+    tempoRatioForDuration !== 0
+      ? clipDurationBeforeTempoSec / tempoRatioForDuration
+      : clipDurationBeforeTempoSec;
 
   const filters: string[] = [];
   if (request.normalize) {
     filters.push('dynaudnorm');
   }
   if (request.effects) {
-    const { gainDb, reverse, fadeInMs, fadeOutMs, tempoRatio } = request.effects;
+    const { gainDb, reverse, fadeInMs, fadeOutMs } = request.effects;
     if (typeof gainDb === 'number' && Math.abs(gainDb) > 0.001) {
       filters.push(`volume=${gainDb}dB`);
     }
-    buildTempoFilters(tempoRatio).forEach((filter) => filters.push(filter));
+    // Die berechnete Dauer berücksichtigt bereits das Tempo, daher nutzen wir den bereinigten Faktor.
+    buildTempoFilters(tempoRatioForDuration).forEach((filter) => filters.push(filter));
     if (reverse) {
       filters.push('areverse');
     }
@@ -247,13 +266,11 @@ export async function processAudioClip(
       filters.push(`afade=t=in:st=0:d=${(fadeInMs / 1000).toFixed(3)}`);
     }
     if (fadeOutMs && fadeOutMs > 0) {
-      const durationSec = trimEndSec ? trimEndSec - trimStartSec : undefined;
-      if (durationSec && durationSec > 0) {
-        const start = Math.max(0, durationSec - fadeOutMs / 1000);
-        filters.push(`afade=t=out:st=${start.toFixed(3)}:d=${(fadeOutMs / 1000).toFixed(3)}`);
-      } else {
-        filters.push(`afade=t=out:st=0:d=${(fadeOutMs / 1000).toFixed(3)}`);
-      }
+      const fadeDurationSec = fadeOutMs / 1000;
+      const fadeStartSec = Math.max(0, effectiveClipDurationSec - fadeDurationSec);
+      filters.push(
+        `afade=t=out:st=${fadeStartSec.toFixed(3)}:d=${fadeDurationSec.toFixed(3)}`
+      );
     }
   }
 
