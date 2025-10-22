@@ -105,6 +105,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Deckelung der Trim-Eingaben:** Die Start- und Endfelder im DE-Audio-Editor begrenzen sich jetzt strikt auf die reale Laufzeit. Auto-Trim, Tempoabgleich und anschließendes Speichern lassen die Markierung sichtbar und gültig, weil `validateDeSelection()` nur noch mit sicheren Werten arbeitet.
 * **Stabile Trim-Markierung trotz Längenänderungen:** Sobald Auto-Tempo, Pausenentfernung oder Speichern die Gesamtdauer verändern, klemmt der Editor Start- und End-Trim jetzt automatisch auf gültige Werte, synchronisiert die Eingabefelder und hält die grüne Auswahlmarkierung dauerhaft sichtbar.
 * **Aktive DE-Markierung nach dem Speichern:** `applyDeEdit()` setzt Start- und End-Trim nach dem Speichern über `normalizeDeTrim()` auf gültige Werte zurück, lässt `deSelectionActive` bestehen und setzt die Eingabefelder auf die echte Laufzeit statt auf `0`, sodass die Markierung den kompletten Clip weiterhin abbildet.
+* **Exaktes Fade-Out ohne Trim-Ende:** Der Audio-Editor bestimmt die effektive Clipdauer inklusive Trim und Tempoanpassung und setzt `afade=t=out` erst am wirklichen Clipende, selbst wenn kein `trimEndMs` gesetzt ist.
 * **Master-Timeline entfernt:** Die frühere Zeitleiste oberhalb der Wellen entfällt; Zoom-Tasten, Positions-Slider und Sprungknöpfe sitzen jetzt direkt in der Wave-Toolbar.
 * **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und reduziertes Scroll-Padding rücken Original- und DE-Wellenform noch näher zusammen und verkürzen die Wege zu den Buttons.
 * **Schlankere Standard-Wellenform:** Neu geöffnete Sitzungen starten mit 80 px hohen Wellenformen, der Höhen-Slider zeigt denselben Startwert und die kompakten Buttons bleiben voll erreichbar.
@@ -1352,6 +1353,18 @@ Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktione
    ```
    Der Hauptprozess protokolliert nun einen automatischen Neustart.
 5. **Antworten verifizieren** – die zuvor gestartete Übersetzung wird nach dem Neustart fertiggestellt und im UI angezeigt. Neue Übersetzungsaufträge laufen ohne manuellen Eingriff weiter.
+
+### Manuelle QA: Fade-Out ohne Trim-Ende
+
+1. **V2-Renderer starten**
+   ```bash
+   npm run start:v2
+   ```
+2. **Demo-Projekt laden** – im Browser-Renderer das Demo-Projekt öffnen und einen Clip im DE-Audio-Editor wählen.
+3. **Trim konfigurieren** – `Trim Start` auf einen Wert innerhalb des Clips setzen, `Trim End` leer lassen und die Änderung übernehmen.
+4. **Tempo variieren** – den Tempo-Regler z. B. auf `1.25` stellen, um die Laufzeit zu verändern.
+5. **Fade-Out setzen** – `Fade Out` auf ca. `1000 ms` einstellen und den Clip speichern.
+6. **Audio prüfen** – die erzeugte Datei im integrierten Player oder per `ffplay <Dateiname>` anhören; das Fade-Out startet erst am hörbaren Clipende, der restliche Inhalt bleibt unverändert laut.
 
 ### Tests ausführen
 

@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.461
+* `v2/backend/audioProcessing.ts` ermittelt vor dem Filteraufbau die reale Clipdauer (Trim, Tempo) und setzt das Fade-Out exakt am Clipende, auch ohne `trimEndMs`.
+* `README.md` dokumentiert den präzisen Fade-Out und ergänzt eine manuelle QA-Anleitung für Clips ohne Endtrim.
+* `CHANGELOG.md` führt die exakte Fade-Out-Berechnung als neuen Patch.
 # 🛠️ Patch in 1.40.460
 * `web/src/main.js` rendert nach `updateAllProjectsAfterScan()` die Projektliste erneut, damit Fortschritts-Badges direkt nach einem Ordnerscan die aktuellen Werte zeigen.
 * `README.md` und `CHANGELOG.md` dokumentieren die sofortige Aktualisierung der Projektübersicht.
