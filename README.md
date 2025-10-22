@@ -443,6 +443,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Längenvergleich visualisiert:** Unter der DE-Wellenform zeigt ein Tooltip die neue Dauer. Abweichungen über 5 % werden orange oder rot hervorgehoben.
 * **Effektparameter speicherbar:** Trimmen, Pausenkürzung und Tempo werden im Projekt gesichert und lassen sich über "🔄 Zurücksetzen" rückgängig machen.
 * **Automatisch entfernte Pausen werden nicht gespeichert:** Die Liste der Ignorier-Bereiche wird nach dem Speichern geleert.
+* **Stille-Bereiche bleiben konsistent:** Eingefügte Stille wird nach einem erfolgreichen Speichern komplett zurückgesetzt, UI-Listen und Wellenform zeigen sofort den bereinigten Zustand. Fehlschläge oder Abbrüche stellen die vorherigen Stille-Markierungen automatisch wieder her.
 * **Bugfix beim Ziehen:** Ein versehentlicher Drag ohne den Griff löst keine Fehlermeldung mehr aus.
 * **Bugfix:** Die Tempoanpassung nutzte versehentlich "window" als Variablennamen, was einen Fehler auslöste. Jetzt funktioniert das Time‑Stretching wieder.
 * **Verbessertes Time‑Stretching:** Durch Einsatz von SoundTouchJS klingt die automatische Tempoanpassung ohne Roboter-Effekt.

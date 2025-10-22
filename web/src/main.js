@@ -16614,6 +16614,12 @@ async function rebuildEnBufferAfterSave() {
     if (deCanvas) resetCanvasZoom(deCanvas);
 
     updateWaveCanvasDimensions();
+    editSilenceRanges = [];
+    manualSilenceRanges = [];
+    if (currentEditFile) {
+        currentEditFile.silenceRanges = [];
+    }
+    refreshSilenceList();
     updateDeEditWaveforms(0, 0);
     updateMasterTimeline();
 
@@ -16633,11 +16639,19 @@ async function applyDeEdit(param = {}) {
     // Pfad bereinigen, falls "sounds/DE/" bereits enthalten ist
     const cleanPath = relPath.replace(/^([\\/]*sounds[\\/])?de[\\/]/i, '');
     let finalBuffer = null;
+    const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
+    let saveSucceeded = false;
+    const cloneSilenceSnapshot = () => silenceSnapshot.map(r => ({ start: r.start, end: r.end }));
+    const restoreSilenceState = () => {
+        editSilenceRanges = cloneSilenceSnapshot();
+        manualSilenceRanges = cloneSilenceSnapshot();
+        if (currentEditFile) {
+            currentEditFile.silenceRanges = cloneSilenceSnapshot();
+        }
+        refreshSilenceList();
+        updateDeEditWaveforms();
+    };
     try {
-        const startTrimSnapshot = editStartTrim;
-        const endTrimSnapshot = editEndTrim;
-        const ignoreSnapshot = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
-        const silenceSnapshot = editSilenceRanges.map(r => ({ start: r.start, end: r.end }));
         const relFactor = tempoFactor / loadedTempoFactor;
         // Aktuellen Status des Lautstärkeabgleichs nutzen
         if (window.electronAPI && window.electronAPI.backupDeFile) {
@@ -16683,6 +16697,7 @@ async function applyDeEdit(param = {}) {
             const choice = await handleDuplicateBeforeSave(relPath, buf, url);
             if (choice === 'old') {
                 URL.revokeObjectURL(url);
+                restoreSilenceState();
                 return;
             }
             const dups = await window.electronAPI.getDeDuplicates(relPath);
@@ -16777,7 +16792,7 @@ async function applyDeEdit(param = {}) {
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
         currentEditFile.ignoreRanges = editIgnoreRanges;
-        currentEditFile.silenceRanges = editSilenceRanges;
+        currentEditFile.silenceRanges = [];
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
         const sel = document.getElementById('radioPresetSelect');
@@ -16799,6 +16814,10 @@ async function applyDeEdit(param = {}) {
         normalizeDeTrim();
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
+        editSilenceRanges = [];
+        manualSilenceRanges = [];
+        refreshSilenceList();
+        updateDeEditWaveforms();
         // Änderungen sichern
         markDirty();
         renderFileTable();
@@ -16826,7 +16845,6 @@ async function applyDeEdit(param = {}) {
         // Nach erfolgreichem Speichern Puffer und Anzeige auf den neuen Zustand setzen
         loadedTempoFactor = tempoFactor;
         volumeMatchedBuffer = null;
-        refreshSilenceList();
         validateDeSelection();
         updateEffectButtons();
         updateStatus('DE-Audio bearbeitet und gespeichert');
@@ -16836,9 +16854,13 @@ async function applyDeEdit(param = {}) {
         if (closeAfterSave) {
             closeDeEdit();
         }
+        saveSucceeded = true;
     } catch (err) {
         // 🟦 Fehlermeldung ausgeben und näher erläutern
         console.error('Fehler beim Speichern', err, err.message);
+        if (!saveSucceeded) {
+            restoreSilenceState();
+        }
         let hinweis = '';
         if (err.code === 'EACCES' || err.name === 'NotAllowedError') {
             hinweis = 'Kein Schreibzugriff auf den Ordner. Bitte Berechtigungen prüfen.';
