@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.463
+* `web/src/main.js` setzt eingefügte Stille bei Abbruch oder Fehlern wieder auf den vorherigen Zustand, leert die Bereiche nach einem erfolgreichen Speichern und aktualisiert Wellenformen sowie Listen sofort.
+* `rebuildEnBufferAfterSave` entfernt alte Stille-Markierungen beim Neuaufbau der Puffer, damit der Editor wie nach einem frischen Öffnen startet.
+* `README.md` und `CHANGELOG.md` dokumentieren die konsistente Behandlung der Stille-Bereiche im Editor.
 # 🛠️ Patch in 1.40.462
 * `web/src/main.js` schließt temporäre WebAudio-Kontexte jetzt innerhalb von `finally`-Blöcken, damit Browser keine `NotSupportedError`-Warnungen wegen zu vieler offener `AudioContext`-Instanzen mehr ausgeben.
 * `README.md` und `CHANGELOG.md` dokumentieren die abgesicherte AudioContext-Verwaltung.
