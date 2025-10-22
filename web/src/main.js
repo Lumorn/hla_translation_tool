@@ -9401,14 +9401,17 @@ function sliceBuffer(buffer, startMs, endMs) {
     const start = Math.max(0, Math.floor(startMs * sr / 1000));
     const end = Math.min(buffer.length, Math.floor(endMs * sr / 1000));
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const newBuf = ctx.createBuffer(buffer.numberOfChannels, end - start, sr);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch).subarray(start, end);
-        newBuf.copyToChannel(data, ch);
+    try {
+        const newBuf = ctx.createBuffer(buffer.numberOfChannels, end - start, sr);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const data = buffer.getChannelData(ch).subarray(start, end);
+            newBuf.copyToChannel(data, ch);
+        }
+        return newBuf;
+    } finally {
+        // AudioContext immer schließen, um Browser-Limit zu vermeiden
+        ctx.close();
     }
-    // AudioContext wieder schließen, um Browser-Limit zu vermeiden
-    ctx.close();
-    return newBuf;
 }
 
 // Fuegt mehrere Segmente hintereinander zu einem neuen Buffer zusammen
@@ -9426,19 +9429,22 @@ function mergeSegments(buffer, segments) {
 
     const total = infos.reduce((sum, s) => sum + s.length, 0);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const newBuf = ctx.createBuffer(buffer.numberOfChannels, total, sr);
-    let offset = 0;
+    try {
+        const newBuf = ctx.createBuffer(buffer.numberOfChannels, total, sr);
+        let offset = 0;
 
-    infos.forEach(seg => {
-        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch).subarray(seg.start, seg.end);
-            newBuf.getChannelData(ch).set(data, offset);
-        }
-        offset += seg.length;
-    });
-    // AudioContext wieder schliessen, um Ressourcen freizugeben
-    ctx.close();
-    return newBuf;
+        infos.forEach(seg => {
+            for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+                const data = buffer.getChannelData(ch).subarray(seg.start, seg.end);
+                newBuf.getChannelData(ch).set(data, offset);
+            }
+            offset += seg.length;
+        });
+        return newBuf;
+    } finally {
+        // AudioContext wieder schließen, um Ressourcen freizugeben
+        ctx.close();
+    }
 }
 
 // Entfernt mehrere Bereiche aus einem Buffer
@@ -9485,27 +9491,30 @@ function insertSilenceIntoBuffer(buffer, ranges) {
 
     const totalSamples = valid.reduce((sum, r) => sum + Math.round((r.end - r.start) * sr / 1000), 0) + buffer.length;
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const out = ctx.createBuffer(buffer.numberOfChannels, totalSamples, sr);
+    try {
+        const out = ctx.createBuffer(buffer.numberOfChannels, totalSamples, sr);
 
-    let inPos = 0; // Position im Original
-    let outPos = 0; // Position im Ergebnis
-    valid.forEach(r => {
-        const startSamples = Math.round(r.start * sr / 1000);
-        const silenceSamples = Math.round((r.end - r.start) * sr / 1000);
-        const copyLen = Math.min(startSamples, buffer.length) - inPos;
+        let inPos = 0; // Position im Original
+        let outPos = 0; // Position im Ergebnis
+        valid.forEach(r => {
+            const startSamples = Math.round(r.start * sr / 1000);
+            const silenceSamples = Math.round((r.end - r.start) * sr / 1000);
+            const copyLen = Math.min(startSamples, buffer.length) - inPos;
+            for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+                const data = buffer.getChannelData(ch).subarray(inPos, inPos + copyLen);
+                out.getChannelData(ch).set(data, outPos);
+            }
+            inPos += copyLen;
+            outPos += copyLen + silenceSamples; // Stille ist bereits mit Nullen gefüllt
+        });
         for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-            const data = buffer.getChannelData(ch).subarray(inPos, inPos + copyLen);
+            const data = buffer.getChannelData(ch).subarray(inPos);
             out.getChannelData(ch).set(data, outPos);
         }
-        inPos += copyLen;
-        outPos += copyLen + silenceSamples; // Stille ist bereits mit Nullen gefüllt
-    });
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const data = buffer.getChannelData(ch).subarray(inPos);
-        out.getChannelData(ch).set(data, outPos);
+        return out;
+    } finally {
+        ctx.close();
     }
-    ctx.close();
-    return out;
 }
 
 // Fügt einen Buffer an einer bestimmten Position in einen anderen ein
@@ -9513,16 +9522,19 @@ function insertBufferIntoBuffer(target, insert, posMs) {
     const sr = target.sampleRate;
     const pos = Math.round(Math.max(0, posMs) * sr / 1000);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const out = ctx.createBuffer(target.numberOfChannels, target.length + insert.length, sr);
-    for (let ch = 0; ch < target.numberOfChannels; ch++) {
-        const outData = out.getChannelData(ch);
-        const tData = target.getChannelData(ch);
-        outData.set(tData.subarray(0, pos), 0);
-        outData.set(insert.getChannelData(ch), pos);
-        outData.set(tData.subarray(pos), pos + insert.length);
+    try {
+        const out = ctx.createBuffer(target.numberOfChannels, target.length + insert.length, sr);
+        for (let ch = 0; ch < target.numberOfChannels; ch++) {
+            const outData = out.getChannelData(ch);
+            const tData = target.getChannelData(ch);
+            outData.set(tData.subarray(0, pos), 0);
+            outData.set(insert.getChannelData(ch), pos);
+            outData.set(tData.subarray(pos), pos + insert.length);
+        }
+        return out;
+    } finally {
+        ctx.close();
     }
-    ctx.close();
-    return out;
 }
 
 // Rechnet Originalposition auf Abspielposition um (nach Entfernen der Bereiche)
@@ -9608,69 +9620,72 @@ async function timeStretchBuffer(buffer, factor) {
     // Großzügiges Stillepolster von einer Sekunde anfügen,
     // damit die Berechnung am Rand nicht auf das Original wirkt.
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const padFrames = Math.round(buffer.sampleRate * 1.0);
-    const padded = ctx.createBuffer(buffer.numberOfChannels,
-        buffer.length + padFrames * 2,
-        buffer.sampleRate);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        padded.getChannelData(ch).set(buffer.getChannelData(ch), padFrames);
-    }
+    try {
+        const padFrames = Math.round(buffer.sampleRate * 1.0);
+        const padded = ctx.createBuffer(buffer.numberOfChannels,
+            buffer.length + padFrames * 2,
+            buffer.sampleRate);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            padded.getChannelData(ch).set(buffer.getChannelData(ch), padFrames);
+        }
 
-    const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
-    const st = new SoundTouch();
-    st.tempo = factor;
-    const source = new WebAudioBufferSource(padded);
-    const filter = new SimpleFilter(source, st);
-    const outL = [];
-    const outR = [];
-    const temp = new Float32Array(8192);
-    while (true) {
-        const frames = filter.extract(temp, 4096);
-        if (frames === 0) break;
-        for (let i = 0; i < frames; i++) {
-            outL.push(temp[i * 2]);
-            if (buffer.numberOfChannels > 1) {
-                outR.push(temp[i * 2 + 1]);
+        const { SoundTouch, SimpleFilter, WebAudioBufferSource } = await loadSoundTouch();
+        const st = new SoundTouch();
+        st.tempo = factor;
+        const source = new WebAudioBufferSource(padded);
+        const filter = new SimpleFilter(source, st);
+        const outL = [];
+        const outR = [];
+        const temp = new Float32Array(8192);
+        while (true) {
+            const frames = filter.extract(temp, 4096);
+            if (frames === 0) break;
+            for (let i = 0; i < frames; i++) {
+                outL.push(temp[i * 2]);
+                if (buffer.numberOfChannels > 1) {
+                    outR.push(temp[i * 2 + 1]);
+                }
             }
         }
-    }
-    const out = ctx.createBuffer(buffer.numberOfChannels, outL.length, buffer.sampleRate);
-    out.getChannelData(0).set(Float32Array.from(outL));
-    if (buffer.numberOfChannels > 1) {
-        out.getChannelData(1).set(Float32Array.from(outR));
-    }
-
-    // Tatsächliche Stille suchen und entfernen
-    const thr = 1e-4;
-    let start = 0;
-    let end = 0;
-    const chData = out.getChannelData(0);
-    for (; start < chData.length; start++) {
-        if (Math.abs(chData[start]) > thr) break;
-    }
-    for (; end < chData.length; end++) {
-        if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
-    }
-    let len = out.length - start - end;
-    if (len < 0) len = 0;
-    let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
-    for (let ch = 0; ch < out.numberOfChannels; ch++) {
-        const data = out.getChannelData(ch).subarray(start, start + len);
-        trimmed.getChannelData(ch).set(data);
-    }
-
-    // Laenge exakt auf das erwartete Ergebnis anpassen
-    const expected = Math.round(buffer.length / factor);
-    if (trimmed.length !== expected) {
-        const exact = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
-        for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
-            const data = trimmed.getChannelData(ch);
-            exact.getChannelData(ch).set(data.subarray(0, Math.min(expected, data.length)));
+        const out = ctx.createBuffer(buffer.numberOfChannels, outL.length, buffer.sampleRate);
+        out.getChannelData(0).set(Float32Array.from(outL));
+        if (buffer.numberOfChannels > 1) {
+            out.getChannelData(1).set(Float32Array.from(outR));
         }
-        trimmed = exact;
+
+        // Tatsächliche Stille suchen und entfernen
+        const thr = 1e-4;
+        let start = 0;
+        let end = 0;
+        const chData = out.getChannelData(0);
+        for (; start < chData.length; start++) {
+            if (Math.abs(chData[start]) > thr) break;
+        }
+        for (; end < chData.length; end++) {
+            if (Math.abs(chData[chData.length - 1 - end]) > thr) break;
+        }
+        let len = out.length - start - end;
+        if (len < 0) len = 0;
+        let trimmed = ctx.createBuffer(out.numberOfChannels, len, out.sampleRate);
+        for (let ch = 0; ch < out.numberOfChannels; ch++) {
+            const data = out.getChannelData(ch).subarray(start, start + len);
+            trimmed.getChannelData(ch).set(data);
+        }
+
+        // Laenge exakt auf das erwartete Ergebnis anpassen
+        const expected = Math.round(buffer.length / factor);
+        if (trimmed.length !== expected) {
+            const exact = ctx.createBuffer(trimmed.numberOfChannels, expected, trimmed.sampleRate);
+            for (let ch = 0; ch < trimmed.numberOfChannels; ch++) {
+                const data = trimmed.getChannelData(ch);
+                exact.getChannelData(ch).set(data.subarray(0, Math.min(expected, data.length)));
+            }
+            trimmed = exact;
+        }
+        return trimmed;
+    } finally {
+        ctx.close();
     }
-    ctx.close();
-    return trimmed;
 }
 
 function toggleIgnoreSelectedSegments() {
@@ -13990,34 +14005,43 @@ function trimAndPadBuffer(buffer, startMs, endMs) {
     const effectiveEnd = Math.min(endSamples, buffer.length - effectiveStart);
     const newLength = Math.max(1, padStart + buffer.length - effectiveStart - effectiveEnd + padEnd);
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const newBuffer = ctx.createBuffer(buffer.numberOfChannels, newLength, sr);
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-        const oldData = buffer.getChannelData(ch);
-        const newData = newBuffer.getChannelData(ch);
-        newData.set(oldData.subarray(effectiveStart, buffer.length - effectiveEnd), padStart);
+    try {
+        const newBuffer = ctx.createBuffer(buffer.numberOfChannels, newLength, sr);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const oldData = buffer.getChannelData(ch);
+            const newData = newBuffer.getChannelData(ch);
+            newData.set(oldData.subarray(effectiveStart, buffer.length - effectiveEnd), padStart);
+        }
+        return newBuffer;
+    } finally {
+        // AudioContext konsequent schließen, um Browser-Limits zu respektieren
+        ctx.close();
     }
-    return newBuffer;
 }
 // =========================== LAUTSTAERKEANGLEICH START =====================
 // Passt die Lautstärke eines Buffers an einen Ziel-Buffer an
 function matchVolume(sourceBuffer, targetBuffer) {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    try {
+        const rms = bufferRms(sourceBuffer);
+        const targetRms = bufferRms(targetBuffer);
+        if (rms === 0) return sourceBuffer;
+        const gain = targetRms / rms;
 
-    const rms = bufferRms(sourceBuffer);
-    const targetRms = bufferRms(targetBuffer);
-    if (rms === 0) return sourceBuffer;
-    const gain = targetRms / rms;
-
-    const out = ctx.createBuffer(sourceBuffer.numberOfChannels, sourceBuffer.length, sourceBuffer.sampleRate);
-    for (let ch = 0; ch < sourceBuffer.numberOfChannels; ch++) {
-        const inData = sourceBuffer.getChannelData(ch);
-        const outData = out.getChannelData(ch);
-        for (let i = 0; i < inData.length; i++) {
-            let sample = inData[i] * gain;
-            outData[i] = Math.max(-1, Math.min(1, sample));
+        const out = ctx.createBuffer(sourceBuffer.numberOfChannels, sourceBuffer.length, sourceBuffer.sampleRate);
+        for (let ch = 0; ch < sourceBuffer.numberOfChannels; ch++) {
+            const inData = sourceBuffer.getChannelData(ch);
+            const outData = out.getChannelData(ch);
+            for (let i = 0; i < inData.length; i++) {
+                let sample = inData[i] * gain;
+                outData[i] = Math.max(-1, Math.min(1, sample));
+            }
         }
+        return out;
+    } finally {
+        // AudioContext konsequent schließen, um Browser-Limits zu respektieren
+        ctx.close();
     }
-    return out;
 }
 
 // Berechnet die RMS-Lautstärke eines Buffers
