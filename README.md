@@ -103,6 +103,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Dynamische DE-Wellenformbreite:** Die DE-Wellenform übernimmt die echte Laufzeit als Pixelbreite, wodurch Scrollleisten, Lineale und Zoom exakt zur Audiodauer passen und lange Takes nachvollziehbar länger bleiben als die EN-Spur.
 * **Frische EN- und DE-Vorschau nach dem Speichern:** Nach dem Speichern lädt der Editor beide Spuren komplett neu, wodurch die EN-Originalspur wieder in voller Länge sichtbar bleibt und nicht mehr zur Miniatur zusammenschrumpft. Gleichzeitig steht die frisch gespeicherte DE-Fassung sofort als neue Arbeitsbasis bereit.
 * **Zuverlässige AudioContext-Aufräumung:** Alle Audio-Helfer schließen ihre temporären WebAudio-Kontexte konsequent in `finally`-Blöcken, wodurch Browser die Obergrenze offener `AudioContext`-Instanzen nicht mehr erreichen.
+* **Funkgeräte-Effekt in voller Qualität:** `applyRadioFilter` resampelt das bearbeitete Signal nach dem 8 kHz-Downsampling zurück auf die Original-Sample-Rate und mischt den Effekt anschließend wieder mit 48 kHz, sodass gespeicherte WAV-Dateien unverändert in Studioqualität vorliegen.
 * **Deckelung der Trim-Eingaben:** Die Start- und Endfelder im DE-Audio-Editor begrenzen sich jetzt strikt auf die reale Laufzeit. Auto-Trim, Tempoabgleich und anschließendes Speichern lassen die Markierung sichtbar und gültig, weil `validateDeSelection()` nur noch mit sicheren Werten arbeitet.
 * **Stabile Trim-Markierung trotz Längenänderungen:** Sobald Auto-Tempo, Pausenentfernung oder Speichern die Gesamtdauer verändern, klemmt der Editor Start- und End-Trim jetzt automatisch auf gültige Werte, synchronisiert die Eingabefelder und hält die grüne Auswahlmarkierung dauerhaft sichtbar.
 * **Aktive DE-Markierung nach dem Speichern:** `applyDeEdit()` setzt Start- und End-Trim nach dem Speichern über `normalizeDeTrim()` auf gültige Werte zurück, lässt `deSelectionActive` bestehen und setzt die Eingabefelder auf die echte Laufzeit statt auf `0`, sodass die Markierung den kompletten Clip weiterhin abbildet.
@@ -1328,7 +1329,7 @@ Das Test-Skript ruft deshalb Jest mit `node --unhandled-rejections=warn` auf, so
    npm test -- tests/saveFormats.test.js --detectOpenHandles
    ```
 
-Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus. Der Regressionstest `translationCallbackDuringReset.test.js` stellt zusätzlich sicher, dass verspätete Übersetzungsantworten während eines globalen Resets keine Projektdaten mehr speichern.
+Die wichtigsten Tests befinden sich im Ordner `tests/` und prüfen die Funktionen `calculateProjectStats`, die ElevenLabs‑Anbindung und den Datei‑Watcher. Ein GitHub‑Workflow führt sie automatisch mit Node 18–22 aus. Der Regressionstest `translationCallbackDuringReset.test.js` stellt zusätzlich sicher, dass verspätete Übersetzungsantworten während eines globalen Resets keine Projektdaten mehr speichern. Der automatisierte Audio-Check `radioFilterSampleRate.test.js` startet Chromium per Playwright, verarbeitet einen Beispielclip mit `applyRadioFilter` und bestätigt, dass der Effekt bei 48 kHz Eingang mit unverändertem Trockenanteil wieder 48 kHz WAVs erzeugt.
 
 1. **Entwicklungsserver starten**
    ```bash

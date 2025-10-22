@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.463
+* `web/src/main.js` resampelt den Funkgeräte-Effekt nach dem 8 kHz-Schritt zurück auf die Original-Sample-Rate und mischt das Ergebnis in einem 48 kHz-Offline-Kontext, sodass exportierte WAV-Dateien wieder in voller Qualität vorliegen.
+* `tests/radioFilterSampleRate.test.js` führt einen Playwright-basierten Beispielclip aus, prüft die 48 kHz-Ausgabe und stellt sicher, dass der trockene Anteil unverändert bleibt.
+* `README.md` dokumentiert den Radiofilter-Fix und verweist im Testabschnitt auf den neuen automatisierten Audio-Check.
+* `CHANGELOG.md` vermerkt den Sample-Rate-Fix samt Testabdeckung.
 # 🛠️ Patch in 1.40.462
 * `web/src/main.js` schließt temporäre WebAudio-Kontexte jetzt innerhalb von `finally`-Blöcken, damit Browser keine `NotSupportedError`-Warnungen wegen zu vieler offener `AudioContext`-Instanzen mehr ausgeben.
 * `README.md` und `CHANGELOG.md` dokumentieren die abgesicherte AudioContext-Verwaltung.
