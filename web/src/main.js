@@ -14117,17 +14117,6 @@ async function applyRadioFilter(buffer, opts = {}) {
         }
     }
 
-    // Hochsampling zurück auf die ursprüngliche Abtastrate, damit der Mischpuffer wieder 48 kHz liefert
-    if (processed.sampleRate !== buffer.sampleRate) {
-        const upLength = Math.max(buffer.length, Math.ceil(processed.length * buffer.sampleRate / processed.sampleRate));
-        const ctx3 = new OfflineAudioContext(processed.numberOfChannels, upLength, buffer.sampleRate);
-        const source3 = ctx3.createBufferSource();
-        source3.buffer = processed;
-        source3.connect(ctx3.destination);
-        source3.start();
-        processed = await ctx3.startRendering();
-    }
-
     // Dritter Schritt: Rauschen und Knackser hinzufügen
     const amp = Math.pow(10, noiseDb / 20);
     for (let ch = 0; ch < processed.numberOfChannels; ch++) {
@@ -14164,9 +14153,8 @@ async function applyRadioFilter(buffer, opts = {}) {
         }
     }
 
-    // Mischung mit Original in voller Abtastrate
-    const mixLength = Math.max(buffer.length, processed.length);
-    const outCtx = new OfflineAudioContext(buffer.numberOfChannels, mixLength, buffer.sampleRate);
+    // Mischung mit Original
+    const outCtx = new OfflineAudioContext(buffer.numberOfChannels, processed.length, processed.sampleRate);
     const dry = outCtx.createBufferSource();
     dry.buffer = buffer;
     const wetGain = outCtx.createGain();
