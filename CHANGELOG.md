@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.462
+* `web/src/main.js` schließt temporäre WebAudio-Kontexte jetzt innerhalb von `finally`-Blöcken, damit Browser keine `NotSupportedError`-Warnungen wegen zu vieler offener `AudioContext`-Instanzen mehr ausgeben.
+* `README.md` und `CHANGELOG.md` dokumentieren die abgesicherte AudioContext-Verwaltung.
 # 🛠️ Patch in 1.40.461
 * `v2/backend/audioProcessing.ts` ermittelt vor dem Filteraufbau die reale Clipdauer (Trim, Tempo) und setzt das Fade-Out exakt am Clipende, auch ohne `trimEndMs`.
 * `README.md` dokumentiert den präzisen Fade-Out und ergänzt eine manuelle QA-Anleitung für Clips ohne Endtrim.
