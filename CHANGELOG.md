@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.464
+* `web/src/main.js` verhindert parallele Speichervorgänge über das neue Flag `deSaveInProgress`, blockiert Effekt-Trigger während des Speicherns und setzt den Status auch bei Fehlern zuverlässig zurück.
+* `README.md` und `CHANGELOG.md` dokumentieren die abgesicherte Speicherlogik im DE-Editor.
 # 🛠️ Patch in 1.40.463
 * `web/src/main.js` setzt eingefügte Stille bei Abbruch oder Fehlern wieder auf den vorherigen Zustand, leert die Bereiche nach einem erfolgreichen Speichern und aktualisiert Wellenformen sowie Listen sofort.
 * `rebuildEnBufferAfterSave` entfernt alte Stille-Markierungen beim Neuaufbau der Puffer, damit der Editor wie nach einem frischen Öffnen startet.
