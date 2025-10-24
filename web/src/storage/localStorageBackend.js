@@ -9,10 +9,14 @@ export const localStorageBackend = {
     // Speichert einen Wert unter einem Schlüssel
     setItem(key, value) {
         window.localStorage.setItem(key, value);
+        // Explizit undefined zurückgeben, damit Promise.resolve(...) sofort erfüllt wird
+        return undefined;
     },
     // Entfernt einen Eintrag
     removeItem(key) {
         window.localStorage.removeItem(key);
+        // Explizit undefined zurückgeben, damit Promise.resolve(...) sofort erfüllt wird
+        return undefined;
     },
     // Leert den gesamten Speicher
     clear() {

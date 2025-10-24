@@ -22,22 +22,49 @@ async function resumeAutosave() {
 
 // Wartet, bis ausstehende Schreibvorgänge abgeschlossen sind
 async function flushPendingWrites(ms = 0) {
-  await new Promise(resolve => setTimeout(resolve, ms));
+  const timeoutMs = Number(ms) > 0 ? Number(ms) : 0;
+  const warteFunktion = typeof window !== 'undefined' && typeof window.waitForPendingWrites === 'function'
+    ? () => window.waitForPendingWrites()
+    : () => Promise.resolve();
+  const warten = warteFunktion();
+
+  if (timeoutMs === 0) {
+    await warten;
+    return;
+  }
+
+  let timeoutId;
+  const timeoutPromise = new Promise(resolve => {
+    timeoutId = setTimeout(() => resolve(true), timeoutMs);
+  });
+
+  const ergebnis = await Promise.race([
+    warten.then(() => false),
+    timeoutPromise
+  ]);
+
+  if (ergebnis === false) {
+    clearTimeout(timeoutId);
+    return;
+  }
+
+  clearTimeout(timeoutId);
+  // Fallback: einmal kurz die Event-Schleife freigeben
+  await new Promise(resolve => setTimeout(resolve, 16));
 }
 
-// Entfernt alle dynamisch registrierten Event-Listener durch Klonen der Elemente
+// Entfernt alle bekannten Event-Listener über das Registry-Modul
 function detachAllEventListeners() {
-  document.querySelectorAll('*').forEach(el => {
-    if (el.tagName === 'SCRIPT') return; // Skripte nicht anfassen
-    const clone = el.cloneNode(true);
-    // Inline-Event-Handler erhalten
-    for (const attr of el.getAttributeNames()) {
-      if (attr.startsWith('on')) {
-        clone[attr] = el[attr];
-      }
-    }
-    el.replaceWith(clone);
-  });
+  let resetFn = null;
+  if (typeof resetRegisteredListeners !== 'undefined') {
+    resetFn = resetRegisteredListeners;
+  } else if (typeof window !== 'undefined' && typeof window.resetRegisteredListeners === 'function') {
+    resetFn = window.resetRegisteredListeners;
+  }
+  if (typeof resetFn === 'function') {
+    // Über das Registry werden sämtliche Listener zuverlässig entfernt
+    resetFn();
+  }
 }
 
 // Leert In-Memory-Caches durch Aufruf des globalen Reset
