@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.465
+* `web/src/main.js` wendet Trimmen, Pausenpflege und Time-Stretching nun vor allen Effekten an, damit Funkfilter, Hall und Störgeräusche auf dem tempo-korrigierten Signal arbeiten und keine Längenabweichungen erzeugen.
+* `README.md` und `CHANGELOG.md` dokumentieren die neue Reihenfolge der Audiobearbeitung im DE-Editor.
 # 🛠️ Patch in 1.40.464
 * `web/src/main.js` verhindert parallele Speichervorgänge über das neue Flag `deSaveInProgress`, blockiert Effekt-Trigger während des Speicherns und setzt den Status auch bei Fehlern zuverlässig zurück.
 * `README.md` und `CHANGELOG.md` dokumentieren die abgesicherte Speicherlogik im DE-Editor.
