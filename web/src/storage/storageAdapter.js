@@ -5,42 +5,6 @@
 import { localStorageBackend } from './localStorageBackend.js';
 import { createIndexedDbBackend } from './indexedDbBackend.js';
 
-// Merker für alle laufenden Schreibvorgänge, damit Tests und Fallbacks warten können
-const pendingWrites = new Set();
-
-// Registriert Rückgabewerte als Promises und entfernt sie nach Abschluss wieder aus dem Set
-function trackPendingWrite(result) {
-    const promise = Promise.resolve(result);
-    pendingWrites.add(promise);
-    const cleanup = () => pendingWrites.delete(promise);
-    promise.then(cleanup, cleanup);
-    return result;
-}
-
-// Wartet so lange, bis keine registrierten Schreibvorgänge mehr aktiv sind
-export async function waitForPendingWrites() {
-    while (pendingWrites.size > 0) {
-        const laufende = Array.from(pendingWrites);
-        await Promise.allSettled(laufende);
-    }
-}
-
-if (typeof window !== 'undefined') {
-    // Für bestehende Skripte als globale Hilfsfunktion verfügbar machen
-    window.waitForPendingWrites = waitForPendingWrites;
-}
-
-// Hilfsfunktion zum Einwickeln von Schreibmethoden, ohne den Rückgabewert zu verändern
-function wrapWriteMethod(target, source, methodName) {
-    if (typeof source[methodName] !== 'function') return;
-    const original = source[methodName].bind(source);
-    target[methodName] = function (...args) {
-        const result = original(...args);
-        trackPendingWrite(result);
-        return result;
-    };
-}
-
 /**
  * Liefert je nach Typ das passende Speicher-Backend.
  * @param {string} type – gewünschter Backend-Typ
@@ -64,9 +28,6 @@ export function createStorage(type) {
         // Standard-Fähigkeiten festlegen, falls das Backend keine angibt
         capabilities: backend.capabilities || { blobs: 'none', atomicWrite: false }
     };
-
-    wrapWriteMethod(result, backend, 'setItem');
-    wrapWriteMethod(result, backend, 'removeItem');
     if (!backend.runTransaction) {
         /**
          * Führt mehrere Schreiboperationen als Einheit aus.
@@ -85,13 +46,9 @@ export function createStorage(type) {
                 await fn(tx);
                 for (const op of ops) {
                     if (op.type === 'set') {
-                        const write = backend.setItem(op.key, op.value);
-                        trackPendingWrite(write);
-                        await Promise.resolve(write);
+                        await backend.setItem(op.key, op.value);
                     } else {
-                        const write = backend.removeItem(op.key);
-                        trackPendingWrite(write);
-                        await Promise.resolve(write);
+                        await backend.removeItem(op.key);
                     }
                 }
             } catch (err) {
@@ -99,9 +56,6 @@ export function createStorage(type) {
                 throw err;
             }
         };
-        wrapWriteMethod(result, result, 'runTransaction');
-    } else if (backend.runTransaction) {
-        wrapWriteMethod(result, backend, 'runTransaction');
     }
     return result;
 }

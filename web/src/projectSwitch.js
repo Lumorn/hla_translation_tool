@@ -9,9 +9,6 @@ let currentSession = 0;
 let projectAbort = null;
 // Merker, ob das automatische Speichern pausiert wurde
 let autosavePaused = false;
-// Sequenzielle Planung für Hintergrund-Scans
-let scanQueue = Promise.resolve();
-let activeScanPromise = null;
 
 // Einfache UI-Hilfen zum Protokollieren
 const ui = {
@@ -117,219 +114,6 @@ async function verfolgeSchritt(titel, aktion, { ignoriereFehler = false } = {}) 
   }
 }
 
-// Ermittelt eine Signatur der relevanten Ordner, um unnötige Scans zu vermeiden
-async function ermittleAktuelleScanSignatur(projectId) {
-  if (typeof window.getFolderScanSignature === 'function') {
-    try {
-      const wert = await window.getFolderScanSignature(projectId);
-      if (wert !== undefined && wert !== null) return String(wert);
-    } catch (err) {
-      console.warn('getFolderScanSignature fehlgeschlagen', err);
-    }
-  }
-  if (typeof window.__testNextScanSignature !== 'undefined') {
-    return String(window.__testNextScanSignature);
-  }
-  if (typeof window.__folderChangeMarker !== 'undefined') {
-    return String(window.__folderChangeMarker);
-  }
-  const enCount = window.audioFileCache ? Object.keys(window.audioFileCache).length : 0;
-  const deCount = window.deAudioCache ? Object.keys(window.deAudioCache).length : 0;
-  const historyCount = window.deAudioCacheIndex ? Object.keys(window.deAudioCacheIndex).length : 0;
-  return `${enCount}:${deCount}:${historyCount}`;
-}
-
-function aktualisiereLokaleScanSignatur(projectId, signature) {
-  const idStr = String(projectId);
-  if (Array.isArray(window.projects)) {
-    const eintrag = window.projects.find(p => String(p.id) === idStr);
-    if (eintrag) eintrag.lastScanSignature = signature;
-  }
-  if (window.currentProject && String(window.currentProject.id) === idStr) {
-    window.currentProject.lastScanSignature = signature;
-  }
-}
-
-async function leseProjektScanSignatur(projectId) {
-  const idStr = String(projectId);
-  if (window.currentProject && String(window.currentProject.id) === idStr && window.currentProject.lastScanSignature) {
-    return window.currentProject.lastScanSignature;
-  }
-  if (Array.isArray(window.projects)) {
-    const eintrag = window.projects.find(p => String(p.id) === idStr && p.lastScanSignature);
-    if (eintrag && eintrag.lastScanSignature) {
-      return eintrag.lastScanSignature;
-    }
-  }
-  const adapter = typeof getStorageAdapter === 'function' ? getStorageAdapter('current') : null;
-  if (!adapter || typeof adapter.getItem !== 'function') {
-    return null;
-  }
-  const metaKey = `project:${projectId}:meta`;
-  try {
-    const raw = await adapter.getItem(metaKey);
-    if (!raw) return null;
-    const meta = JSON.parse(raw);
-    return meta && typeof meta === 'object' ? meta.lastScanSignature || null : null;
-  } catch (err) {
-    console.warn('Projekt-Metadaten konnten nicht gelesen werden', err);
-    return null;
-  }
-}
-
-async function schreibeProjektScanSignatur(projectId, signature) {
-  if (!signature) return;
-  aktualisiereLokaleScanSignatur(projectId, signature);
-  const adapter = typeof getStorageAdapter === 'function' ? getStorageAdapter('current') : null;
-  if (!adapter || typeof adapter.setItem !== 'function') {
-    return;
-  }
-  const metaKey = `project:${projectId}:meta`;
-  let meta = {};
-  try {
-    const raw = await adapter.getItem(metaKey);
-    if (raw) {
-      meta = JSON.parse(raw) || {};
-    }
-  } catch (err) {
-    console.warn('Projekt-Metadaten konnten nicht gelesen werden', err);
-    meta = {};
-  }
-  if (!meta || typeof meta !== 'object') meta = {};
-  if (meta.lastScanSignature === signature) {
-    return;
-  }
-  meta.lastScanSignature = signature;
-  try {
-    await adapter.setItem(metaKey, JSON.stringify(meta));
-  } catch (err) {
-    console.warn('Projekt-Metadaten konnten nicht gespeichert werden', err);
-  }
-}
-
-function scheduleFolderScan({ projectId = window.currentProject?.id, reason = 'Projektwechsel', force = false, waitForCompletion = false } = {}) {
-  const zielProjektId = projectId;
-  if (!zielProjektId) {
-    return Promise.resolve({ skipped: true });
-  }
-
-  const job = async () => {
-    const signaturen = await verfolgeSchritt('Ordner-Scan prüfen', async () => {
-      const [currentSignature, lastSignature] = await Promise.all([
-        ermittleAktuelleScanSignatur(zielProjektId),
-        leseProjektScanSignatur(zielProjektId)
-      ]);
-      return { currentSignature, lastSignature };
-    }, { ignoriereFehler: true }) || {};
-
-    const aktuelleSignatur = signaturen.currentSignature || null;
-    const letzteSignatur = signaturen.lastSignature || null;
-
-    if (!force && aktuelleSignatur && letzteSignatur && aktuelleSignatur === letzteSignatur) {
-      await verfolgeSchritt('Ordner-Scan übersprungen', async () => {});
-      return { skipped: true, signature: aktuelleSignatur };
-    }
-
-    const stopScan = window.folderScanState && typeof window.folderScanState.start === 'function'
-      ? window.folderScanState.start(`Ordner-Scan für Projekt ${zielProjektId}`)
-      : () => {};
-
-    try {
-      if (window.electronAPI?.scanFolders) {
-        const data = await verfolgeSchritt('Ordner scannen (Electron)', () => window.electronAPI.scanFolders());
-        const enFiles = Array.isArray(data?.enFiles) ? data.enFiles : [];
-        const deFiles = Array.isArray(data?.deFiles) ? data.deFiles : [];
-        if (typeof verarbeiteGescannteDateien === 'function') {
-          await verfolgeSchritt('EN-Dateien verarbeiten', () => verarbeiteGescannteDateien(enFiles, { background: true, updateAccess: false }));
-        }
-        deFiles.forEach(f => {
-          try {
-            if (typeof setDeAudioCacheEntry === 'function') {
-              setDeAudioCacheEntry(f.fullPath, `sounds/DE/${f.fullPath}`);
-            } else if (window.deAudioCache) {
-              window.deAudioCache[f.fullPath] = `sounds/DE/${f.fullPath}`;
-            }
-          } catch (err) {
-            console.warn('DE-Cache konnte nicht aktualisiert werden', err);
-          }
-        });
-      } else {
-        await verfolgeSchritt('EN-Ordner scannen', () => scanEnOrdner({
-          background: true,
-          includeDeScan: false,
-          updateStatusAfter: false,
-          reason: `${reason}: EN`
-        }));
-        if (typeof scanDeOrdner === 'function') {
-          await verfolgeSchritt('DE-Ordner scannen', () => scanDeOrdner({
-            background: true,
-            reason: `${reason}: DE`
-          }));
-        }
-      }
-
-      await verfolgeSchritt('Projektstatus aktualisieren', async () => {
-        try {
-          if (typeof updateAllProjectsAfterScan === 'function') updateAllProjectsAfterScan();
-        } catch (err) {
-          console.warn('updateAllProjectsAfterScan fehlgeschlagen', err);
-        }
-        try {
-          if (typeof window.repairFileExtensions === 'function') {
-            const result = window.repairFileExtensions(window.projects || [], window.filePathDatabase || {}, window.textDatabase || {});
-            if (result > 0 && typeof window.debugLog === 'function') {
-              window.debugLog('Dateiendungen aktualisiert:', result);
-            }
-          }
-        } catch (err) {
-          console.warn('repairFileExtensions konnte nicht ausgeführt werden', err);
-        }
-        try {
-          if (typeof updateFileAccessStatus === 'function') updateFileAccessStatus();
-        } catch (err) {
-          console.warn('updateFileAccessStatus fehlgeschlagen', err);
-        }
-      });
-    } finally {
-      try { stopScan(); } catch {}
-    }
-
-    const finaleSignatur = await ermittleAktuelleScanSignatur(zielProjektId);
-    const persistierteSignatur = finaleSignatur || aktuelleSignatur || String(Date.now());
-    await schreibeProjektScanSignatur(zielProjektId, persistierteSignatur);
-    return { skipped: false, signature: persistierteSignatur };
-  };
-
-  const jobPromise = scanQueue.then(() => new Promise((resolve, reject) => {
-    queueMicrotask(() => {
-      job().then(resolve).catch(reject);
-    });
-  }));
-
-  const trackedPromise = jobPromise.then(
-    wert => {
-      if (activeScanPromise === trackedPromise) {
-        activeScanPromise = null;
-      }
-      return wert;
-    },
-    err => {
-      if (activeScanPromise === trackedPromise) {
-        activeScanPromise = null;
-      }
-      console.error('Ordner-Scan fehlgeschlagen', err);
-      throw err;
-    }
-  );
-
-  scanQueue = trackedPromise.catch(() => {});
-  activeScanPromise = trackedPromise;
-  return waitForCompletion ? trackedPromise : trackedPromise;
-}
-
-scheduleFolderScan.waitForIdle = () => activeScanPromise ? activeScanPromise.catch(() => {}) : Promise.resolve({ skipped: true });
-window.scheduleFolderScan = scheduleFolderScan;
-
 /**
  * Blendet einen globalen Ladebalken ein oder aus,
  * um weitere Projektwechsel während des Ladens zu verhindern.
@@ -412,10 +196,30 @@ function switchProjectSafe(projectId) {
         await verfolgeSchritt('Projekt laden', () => loadProjectData(projectId, { signal: projectAbort.signal }));
         if (currentSession !== mySession) return;
       }
-      // Nach erfolgreichem Laden Ordner-Scans im Hintergrund anstoßen
-      await verfolgeSchritt('Ordner-Scan planen', async () => {
-        scheduleFolderScan({ projectId, reason: 'Projektwechsel' });
-      }, { ignoriereFehler: true });
+      // Nach erfolgreichem Laden alle relevanten Ordner scannen
+      if (window.electronAPI?.scanFolders) {
+        // Electron-Umgebung: Scan über die Hauptanwendung
+        const data = await verfolgeSchritt('Ordner scannen (Electron)', () => window.electronAPI.scanFolders());
+        await verfolgeSchritt('EN-Dateien verarbeiten', () => verarbeiteGescannteDateien(data.enFiles));
+        data.deFiles.forEach(f => {
+          if (typeof setDeAudioCacheEntry === 'function') {
+            setDeAudioCacheEntry(f.fullPath, `sounds/DE/${f.fullPath}`);
+          } else {
+            deAudioCache[f.fullPath] = `sounds/DE/${f.fullPath}`;
+          }
+        });
+      } else {
+        // Browser-Fallback: lokale Ordner direkt scannen
+        await verfolgeSchritt('EN-Ordner scannen', () => scanEnOrdner());
+        if (typeof scanDeOrdner === 'function') {
+          await verfolgeSchritt('DE-Ordner scannen', () => scanDeOrdner());
+        }
+      }
+      // Anschließend Projekte und Zugriffsstatus aktualisieren
+      await verfolgeSchritt('Projektstatus aktualisieren', async () => {
+        updateAllProjectsAfterScan();
+        updateFileAccessStatus();
+      });
       // Nach dem Laden Toolbar-Knöpfe neu verbinden
       await verfolgeSchritt('Toolbar neu verbinden', async () => {
         window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut

@@ -78,7 +78,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bugfix:** Nach dem Laden eines Projekts reagierte die Oberfläche nicht mehr auf Klicks.
 * **Bugfix:** Nach einem Projektwechsel initialisiert das Tool die Kopf-Register (Projekt/Werkzeuge/Medien/System/Suche) erneut, sodass alle Toolbar‑Schaltflächen zuverlässig reagieren.
 * **Systemschalter bleiben aktiv:** `initializeSystemControls` verbindet Speicherwechsel, Bereinigung und Verwaltungsmenüs nach jedem Projektwechsel erneut und verhindert doppelte Listener.
-* **Zentrales Listener-Tracking:** Ein Registry-Modul hakt sich global in `addEventListener`/`removeEventListener` ein, erlaubt einen vollständigen Reset beim Projektwechsel und sorgt dafür, dass UI-Handler nicht doppelt registriert werden.
 * **Registerkarten im Kopfbereich:** Projekt-, Werkzeug-, Medien-, System- sowie Suchfunktionen teilen sich jetzt fünf Tabs. Dadurch bleibt der sichtbare Bereich kompakt, alle Buttons bleiben verfügbar und die zuletzt genutzte Registerkarte wird gespeichert.
 * **Dynamisch kompakte Registerleiste:** Die Tab-Panels nutzen ein responsives Grid, das Werkzeuggruppen nur noch so hoch rendert wie nötig und Buttons automatisch umbricht – freie Flächen verschwinden damit auch auf sehr breiten Monitoren.
 * **Automatische Projektreparatur:** Wird ein Projekt nicht gefunden, legt das Tool eine leere Struktur an, ergänzt die Projektliste und lädt alles direkt erneut.
@@ -124,7 +123,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Ladebalken beim Projektwechsel:** blockiert weitere Wechsel, bis das Projekt vollständig geladen ist
 * **Vollständig asynchroner Projektwechsel:** Wartet auf `selectProject`, bevor Folgearbeiten starten
 * **Sicherer Projektwechsel:** `pauseAutosave`, `flushPendingWrites` und weitere Helfer räumen Speicher und Listener auf
-* **Warten auf echte Speicherzugriffe:** `waitForPendingWrites()` verfolgt alle Schreibpromises und `flushPendingWrites` gibt sofort frei, wenn nichts mehr offen ist
 * **Direktes Speichern bei Texteingaben:** Änderungen in Textfeldern werden ohne Verzögerung automatisch gesichert
 * **Sauberer GPT-Reset beim Projektwechsel:** Beendet laufende Bewertungen, entfernt Vorschlagsboxen und verhindert dadurch Fehlermeldungen
 * **Abbrechbare GPT-Bewertungen:** Beim Projekt- oder Speicherwechsel werden laufende und wartende Jobs verworfen und im Log vermerkt
@@ -132,7 +130,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Automatischer Neustart bei fehlenden Projekten:** Schlägt das Laden mit „Projekt nicht gefunden“ fehl, lädt `switchProjectSafe` die Liste neu und versucht den Wechsel erneut
 * **Reparatur vor erneutem Laden:** Fehlt ein Projekt, führt `switchProjectSafe` zuerst `repairProjectIntegrity` aus und legt fehlende Strukturen automatisch an
 * **Fehlende Projekte werden als Platzhalter geladen:** Bleibt ein Projekt auch danach unauffindbar, lädt `switchProjectSafe` einen leeren Platzhalter und setzt den Wechsel fort
-* **Hintergrundscan statt Wartezeit:** Nach dem Laden stößt `switchProjectSafe` die neue Helferfunktion `scheduleFolderScan` an. Sie vergleicht eine gespeicherte `lastScanSignature` mit der aktuellen Ordner-Signatur, startet nur bei Änderungen einen Scan und gibt den Wechsel sofort frei.
 * **Fehlendes Ausgangsprojekt blockiert den Wechsel nicht mehr:** Ist das vorherige Projekt verschwunden, gibt `switchProjectSafe` nur eine Warnung aus und `reloadProjectList` indiziert die Liste neu
 * **Englische Fehlermeldung erkannt:** Meldungen wie „Project not found“ werden ebenfalls erkannt und die Projektliste neu geladen
 * **Robuster Projektaufruf:** Doppelklicks werden ignoriert, fehlende Listen werden nachgeladen und nicht gefundene Projekte melden einen klaren Fehler
@@ -1434,8 +1431,6 @@ verwendet werden, um optionale Downloads zu überspringen.
     Die Browser-Variante kümmert sich weiterhin um Journale; eine Blob-Aufräumroutine existiert derzeit nicht mehr.
   * **`validateProjectManifest(data)`** – prüft `project.json` gegen ein Zod-Schema und stellt sicher, dass `schemaVersion` und Name vorhanden sind.
   * **`switchProjectSafe(id)`** – wechselt Projekte atomar, bricht laufende Vorgänge ab, leert GPT-Zustände und repariert Verweise.
-  * **`scheduleFolderScan({ projectId, reason, force })`** – stößt einen Ordner-Scan asynchron an, vergleicht zuvor die gespeicherte `lastScanSignature` mit der aktuellen Signatur und aktualisiert sie nach erfolgreichem Scan. `scheduleFolderScan.waitForIdle()` liefert eine Promise, die auf laufende Scans wartet.
-  * **`folderScanState` / `waitForFolderScan()`** – globaler Sperrzustand für laufende Ordner-Scans; Upload-Funktionen prüfen `folderScanState.running` und warten bei Bedarf mit `waitForFolderScan()` auf frische Daten.
   * **`switchStorage(targetMode)`** – wechselt das Speichersystem ohne Migration, setzt globale Zustände zurück und lädt Projektliste und Wörterbuch neu.
   * **Entfernt:** Der frühere lokale Suchindex `LocalIndex` mit den Methoden `add` und `search` wurde gestrichen und steht nicht mehr zur Verfügung.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.
