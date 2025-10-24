@@ -15518,25 +15518,6 @@ async function recomputeEditBuffer() {
         }
         buf = volumeMatchedBuffer;
     }
-    if (isRadioEffect) {
-        buf = await applyRadioFilter(buf);
-    }
-    if (isHallEffect) {
-        buf = await applyReverbEffect(buf);
-    }
-    if (isNeighborEffect) {
-        buf = await applyNeighborRoomEffect(buf, { hall: neighborHall });
-    } else if (neighborHall) {
-        // Nur der Nebenraum-Hall ist aktiv: wende den Raumklang separat an
-        buf = await applyReverbEffect(buf, { room: 0.2, wet: 0.3, delay: 40 });
-    }
-    if (isTableMicEffect) {
-        buf = await applyTableMicFilter(buf, tableMicRoomPresets[tableMicRoomType]);
-    }
-    if (isEmiEffect) {
-        buf = await applyInterferenceEffect(buf);
-    }
-
     // Trimmen und Pausen entfernen, damit die Vorschau exakt dem Endergebnis entspricht
     let trimmed = trimAndPadBuffer(buf, editStartTrim, editEndTrim);
     const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
@@ -15546,7 +15527,29 @@ async function recomputeEditBuffer() {
 
     // Erst danach das Tempo anpassen
     const relFactor = tempoFactor / loadedTempoFactor; // nur Differenz anwenden
-    originalEditBuffer = await timeStretchBuffer(trimmed, relFactor);
+    let processed = await timeStretchBuffer(trimmed, relFactor);
+
+    // Effekte nun auf das bereits tempo-korrigierte Signal anwenden
+    if (isRadioEffect) {
+        processed = await applyRadioFilter(processed);
+    }
+    if (isHallEffect) {
+        processed = await applyReverbEffect(processed);
+    }
+    if (isNeighborEffect) {
+        processed = await applyNeighborRoomEffect(processed, { hall: neighborHall });
+    } else if (neighborHall) {
+        // Nur der Nebenraum-Hall ist aktiv: wende den Raumklang separat an
+        processed = await applyReverbEffect(processed, { room: 0.2, wet: 0.3, delay: 40 });
+    }
+    if (isTableMicEffect) {
+        processed = await applyTableMicFilter(processed, tableMicRoomPresets[tableMicRoomType]);
+    }
+    if (isEmiEffect) {
+        processed = await applyInterferenceEffect(processed);
+    }
+
+    originalEditBuffer = processed;
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     normalizeDeTrim();
     updateDeEditWaveforms();
@@ -16701,24 +16704,6 @@ async function applyDeEdit(param = {}) {
             originalEditBuffer = savedOriginalBuffer;
             volumeMatchedBuffer = null;
             let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
-            if (isRadioEffect) {
-                baseBuffer = await applyRadioFilter(baseBuffer);
-            }
-            if (isHallEffect) {
-                baseBuffer = await applyReverbEffect(baseBuffer);
-            } else if (neighborHall) {
-                baseBuffer = await applyReverbEffect(baseBuffer, { room: 0.2, wet: 0.3, delay: 40 });
-            }
-            // Nebenraum-Effekt anwenden, falls aktiv
-            if (isNeighborEffect) {
-                baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
-            }
-            if (isTableMicEffect) {
-                baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
-            }
-            if (isEmiEffect) {
-                baseBuffer = await applyInterferenceEffect(baseBuffer);
-            }
             let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
             const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
             newBuffer = removeRangesFromBuffer(newBuffer, adj);
@@ -16730,8 +16715,29 @@ async function applyDeEdit(param = {}) {
             refreshIgnoreList();
             updateDeEditWaveforms();
             newBuffer = await timeStretchBuffer(newBuffer, relFactor);
-            drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-            const blob = bufferToWav(newBuffer);
+
+            // Effekte nach der Tempo-Anpassung anwenden
+            let processedBuffer = newBuffer;
+            if (isRadioEffect) {
+                processedBuffer = await applyRadioFilter(processedBuffer);
+            }
+            if (isHallEffect) {
+                processedBuffer = await applyReverbEffect(processedBuffer);
+            } else if (neighborHall) {
+                processedBuffer = await applyReverbEffect(processedBuffer, { room: 0.2, wet: 0.3, delay: 40 });
+            }
+            if (isNeighborEffect) {
+                processedBuffer = await applyNeighborRoomEffect(processedBuffer, { hall: neighborHall });
+            }
+            if (isTableMicEffect) {
+                processedBuffer = await applyTableMicFilter(processedBuffer, tableMicRoomPresets[tableMicRoomType]);
+            }
+            if (isEmiEffect) {
+                processedBuffer = await applyInterferenceEffect(processedBuffer);
+            }
+
+            drawWaveform(document.getElementById('waveEdited'), processedBuffer, { start: 0, end: processedBuffer.length / processedBuffer.sampleRate * 1000 });
+            const blob = bufferToWav(processedBuffer);
             const buf = await blob.arrayBuffer();
             const url = URL.createObjectURL(blob);
             const choice = await handleDuplicateBeforeSave(relPath, buf, url);
@@ -16761,7 +16767,7 @@ async function applyDeEdit(param = {}) {
             setDeAudioCacheEntry(cleanPath, `sounds/DE/${relPath}`);
             await updateHistoryCache(cleanPath);
             URL.revokeObjectURL(url);
-            finalBuffer = newBuffer;
+            finalBuffer = processedBuffer;
         } else {
             // Backup in Browser-Version
             if (deOrdnerHandle) {
@@ -16792,22 +16798,6 @@ async function applyDeEdit(param = {}) {
             }
             originalEditBuffer = savedOriginalBuffer;
             let baseBuffer = isVolumeMatched ? matchVolume(savedOriginalBuffer, editEnBuffer) : savedOriginalBuffer;
-            if (isRadioEffect) {
-                baseBuffer = await applyRadioFilter(baseBuffer);
-            }
-            if (isHallEffect) {
-                baseBuffer = await applyReverbEffect(baseBuffer);
-            }
-            // Nebenraum-Effekt anwenden, falls aktiv
-            if (isNeighborEffect) {
-                baseBuffer = await applyNeighborRoomEffect(baseBuffer, { hall: neighborHall });
-            }
-            if (isTableMicEffect) {
-                baseBuffer = await applyTableMicFilter(baseBuffer, tableMicRoomPresets[tableMicRoomType]);
-            }
-            if (isEmiEffect) {
-                baseBuffer = await applyInterferenceEffect(baseBuffer);
-            }
             let newBuffer = trimAndPadBuffer(baseBuffer, editStartTrim, editEndTrim);
             const adj = editIgnoreRanges.map(r => ({ start: r.start - editStartTrim, end: r.end - editStartTrim }));
             newBuffer = removeRangesFromBuffer(newBuffer, adj);
@@ -16820,13 +16810,34 @@ async function applyDeEdit(param = {}) {
             updateDeEditWaveforms();
             // Nur den Unterschied zum geladenen Faktor anwenden
             newBuffer = await timeStretchBuffer(newBuffer, relFactor);
-            drawWaveform(document.getElementById('waveEdited'), newBuffer, { start: 0, end: newBuffer.length / newBuffer.sampleRate * 1000 });
-            const blob = bufferToWav(newBuffer);
+
+            // Effekte nach der Tempo-Anpassung anwenden
+            let processedBuffer = newBuffer;
+            if (isRadioEffect) {
+                processedBuffer = await applyRadioFilter(processedBuffer);
+            }
+            if (isHallEffect) {
+                processedBuffer = await applyReverbEffect(processedBuffer);
+            } else if (neighborHall) {
+                processedBuffer = await applyReverbEffect(processedBuffer, { room: 0.2, wet: 0.3, delay: 40 });
+            }
+            if (isNeighborEffect) {
+                processedBuffer = await applyNeighborRoomEffect(processedBuffer, { hall: neighborHall });
+            }
+            if (isTableMicEffect) {
+                processedBuffer = await applyTableMicFilter(processedBuffer, tableMicRoomPresets[tableMicRoomType]);
+            }
+            if (isEmiEffect) {
+                processedBuffer = await applyInterferenceEffect(processedBuffer);
+            }
+
+            drawWaveform(document.getElementById('waveEdited'), processedBuffer, { start: 0, end: processedBuffer.length / processedBuffer.sampleRate * 1000 });
+            const blob = bufferToWav(processedBuffer);
             await speichereUebersetzungsDatei(blob, relPath);
             // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
             setDeAudioCacheEntry(cleanPath, blob);
             await updateHistoryCache(cleanPath);
-            finalBuffer = newBuffer;
+            finalBuffer = processedBuffer;
         }
         const rebuildResult = await rebuildEnBufferAfterSave();
         currentEditFile.trimStartMs = editStartTrim;
