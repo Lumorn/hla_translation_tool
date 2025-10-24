@@ -14465,6 +14465,7 @@ let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet w
 let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
+let deSaveInProgress     = false;        // Sperrflagge, solange ein DE-Speichervorgang läuft
 
 // =========================== OPENDEEDIT START ===============================
 // Öffnet den Bearbeitungsdialog für eine DE-Datei
@@ -14823,6 +14824,7 @@ async function openDeEdit(fileId) {
         rStrength.value = radioEffectStrength;
         rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
         rStrength.oninput = e => {
+            if (deSaveInProgress) return;
             radioEffectStrength = parseFloat(e.target.value);
             storage.setItem('hla_radioEffectStrength', radioEffectStrength);
             rStrengthDisp.textContent = Math.round(radioEffectStrength * 100) + '%';
@@ -14833,6 +14835,7 @@ async function openDeEdit(fileId) {
     if (rHigh) {
         rHigh.value = radioHighpass;
         rHigh.oninput = e => {
+            if (deSaveInProgress) return;
             radioHighpass = parseFloat(e.target.value);
             storage.setItem('hla_radioHighpass', radioHighpass);
             if (isRadioEffect) recomputeEditBuffer();
@@ -14842,6 +14845,7 @@ async function openDeEdit(fileId) {
     if (rLow) {
         rLow.value = radioLowpass;
         rLow.oninput = e => {
+            if (deSaveInProgress) return;
             radioLowpass = parseFloat(e.target.value);
             storage.setItem('hla_radioLowpass', radioLowpass);
             if (isRadioEffect) recomputeEditBuffer();
@@ -14853,6 +14857,7 @@ async function openDeEdit(fileId) {
         rSat.value = radioSaturation;
         rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
         rSat.oninput = e => {
+            if (deSaveInProgress) return;
             radioSaturation = parseFloat(e.target.value);
             storage.setItem('hla_radioSaturation', radioSaturation);
             rSatDisp.textContent = Math.round(radioSaturation * 100) + '%';
@@ -14863,6 +14868,7 @@ async function openDeEdit(fileId) {
     if (rNoise) {
         rNoise.value = radioNoise;
         rNoise.oninput = e => {
+            if (deSaveInProgress) return;
             radioNoise = parseFloat(e.target.value);
             storage.setItem('hla_radioNoise', radioNoise);
             if (isRadioEffect) recomputeEditBuffer();
@@ -14874,6 +14880,7 @@ async function openDeEdit(fileId) {
         rCrackle.value = radioCrackle;
         rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
         rCrackle.oninput = e => {
+            if (deSaveInProgress) return;
             radioCrackle = parseFloat(e.target.value);
             storage.setItem('hla_radioCrackle', radioCrackle);
             rCrackleDisp.textContent = Math.round(radioCrackle * 100) + '%';
@@ -14886,6 +14893,7 @@ async function openDeEdit(fileId) {
     if (hRoom) {
         hRoom.value = hallRoom;
         hRoom.oninput = e => {
+            if (deSaveInProgress) return;
             hallRoom = parseFloat(e.target.value);
             storage.setItem('hla_hallRoom', hallRoom);
             if (isHallEffect) recomputeEditBuffer();
@@ -14897,6 +14905,7 @@ async function openDeEdit(fileId) {
         hAmount.value = hallAmount;
         hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
         hAmount.oninput = e => {
+            if (deSaveInProgress) return;
             hallAmount = parseFloat(e.target.value);
             storage.setItem('hla_hallAmount', hallAmount);
             hAmountDisp.textContent = Math.round(hallAmount * 100) + '%';
@@ -14907,6 +14916,7 @@ async function openDeEdit(fileId) {
     if (hDelay) {
         hDelay.value = hallDelay;
         hDelay.oninput = e => {
+            if (deSaveInProgress) return;
             hallDelay = parseFloat(e.target.value);
             storage.setItem('hla_hallDelay', hallDelay);
             if (isHallEffect) recomputeEditBuffer();
@@ -14938,6 +14948,7 @@ async function openDeEdit(fileId) {
     if (tRoom) {
         tRoom.value = tableMicRoomType;
         tRoom.onchange = e => {
+            if (deSaveInProgress) return;
             tableMicRoomType = e.target.value;
             if (isTableMicEffect) recomputeEditBuffer();
         };
@@ -14961,6 +14972,7 @@ async function openDeEdit(fileId) {
         emiLevel.value = emiNoiseLevel;
         emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
         emiLevel.oninput = e => {
+            if (deSaveInProgress) return;
             emiNoiseLevel = parseFloat(e.target.value);
             storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
             emiLevelDisp.textContent = Math.round(emiNoiseLevel * 100) + '%';
@@ -14974,6 +14986,7 @@ async function openDeEdit(fileId) {
         emiRamp.value = emiRampPosition;
         emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
         emiRamp.oninput = e => {
+            if (deSaveInProgress) return;
             emiRampPosition = parseFloat(e.target.value);
             storage.setItem('hla_emiRamp', emiRampPosition);
             emiRampDisp.textContent = Math.round(emiRampPosition * 100) + '%';
@@ -14985,6 +14998,7 @@ async function openDeEdit(fileId) {
     if (emiMode) {
         emiMode.value = emiRampMode;
         emiMode.onchange = e => {
+            if (deSaveInProgress) return;
             emiRampMode = e.target.value;
             storage.setItem('hla_emiMode', emiRampMode);
             if (isEmiEffect) recomputeEditBuffer();
@@ -15000,6 +15014,7 @@ async function openDeEdit(fileId) {
         emiDropProb.value = emiDropoutProb;
         emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
         emiDropProb.oninput = e => {
+            if (deSaveInProgress) return;
             emiDropoutProb = parseFloat(e.target.value);
             storage.setItem('hla_emiDropoutProb', emiDropoutProb);
             emiDropProbDisp.textContent = (emiDropoutProb * 100).toFixed(2) + '%';
@@ -15013,6 +15028,7 @@ async function openDeEdit(fileId) {
         emiDropDur.value = emiDropoutDur;
         emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
         emiDropDur.oninput = e => {
+            if (deSaveInProgress) return;
             emiDropoutDur = parseFloat(e.target.value);
             storage.setItem('hla_emiDropoutDur', emiDropoutDur);
             emiDropDurDisp.textContent = Math.round(emiDropoutDur * 1000) + ' ms';
@@ -15027,6 +15043,7 @@ async function openDeEdit(fileId) {
         emiCrackProb.value = emiCrackleProb;
         emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
         emiCrackProb.oninput = e => {
+            if (deSaveInProgress) return;
             emiCrackleProb = parseFloat(e.target.value);
             storage.setItem('hla_emiCrackleProb', emiCrackleProb);
             emiCrackProbDisp.textContent = (emiCrackleProb * 100).toFixed(2) + '%';
@@ -15040,6 +15057,7 @@ async function openDeEdit(fileId) {
         emiCrackAmp.value = emiCrackleAmp;
         emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
         emiCrackAmp.oninput = e => {
+            if (deSaveInProgress) return;
             emiCrackleAmp = parseFloat(e.target.value);
             storage.setItem('hla_emiCrackleAmp', emiCrackleAmp);
             emiCrackAmpDisp.textContent = Math.round(emiCrackleAmp * 100) + '%';
@@ -15053,6 +15071,7 @@ async function openDeEdit(fileId) {
         emiSpikeProbEl.value = emiSpikeProb;
         emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
         emiSpikeProbEl.oninput = e => {
+            if (deSaveInProgress) return;
             emiSpikeProb = parseFloat(e.target.value);
             storage.setItem('hla_emiSpikeProb', emiSpikeProb);
             emiSpikeProbDisp.textContent = (emiSpikeProb * 100).toFixed(2) + '%';
@@ -15066,6 +15085,7 @@ async function openDeEdit(fileId) {
         emiSpikeAmpEl.value = emiSpikeAmp;
         emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
         emiSpikeAmpEl.oninput = e => {
+            if (deSaveInProgress) return;
             emiSpikeAmp = parseFloat(e.target.value);
             storage.setItem('hla_emiSpikeAmp', emiSpikeAmp);
             emiSpikeAmpDisp.textContent = Math.round(emiSpikeAmp * 100) + '%';
@@ -15085,6 +15105,7 @@ async function openDeEdit(fileId) {
             loadEmiPreset(name);
         }
         emiPresetSel.onchange = () => {
+            if (deSaveInProgress) return;
             loadEmiPreset(emiPresetSel.value);
             if (isEmiEffect) recomputeEditBuffer();
         };
@@ -15119,6 +15140,7 @@ async function openDeEdit(fileId) {
             loadRadioPreset(name);
         }
         presetSel.onchange = () => {
+            if (deSaveInProgress) return;
             loadRadioPreset(presetSel.value);
             if (isRadioEffect) recomputeEditBuffer();
         };
@@ -15427,6 +15449,7 @@ function insertEnglishSegment() {
 
 // Kombination aus Pausenkürzung und Tempoanpassung
 async function autoAdjustLength() {
+    if (deSaveInProgress) return;
     const chk = document.getElementById('autoIgnoreChk');
     const thr = document.getElementById('autoIgnoreMs');
     const tempoChk = document.getElementById('autoTempoChk');
@@ -15465,6 +15488,7 @@ async function autoAdjustLength() {
 // Führt den Lautstärkeabgleich einmalig aus
 // Beim ersten Aufruf wird das Original in die Historie geschrieben
 async function applyVolumeMatch() {
+    if (deSaveInProgress) return;
     if (!volumeMatchedBuffer && savedOriginalBuffer && editEnBuffer) {
         volumeMatchedBuffer = matchVolume(savedOriginalBuffer, editEnBuffer);
     }
@@ -15532,6 +15556,7 @@ async function recomputeEditBuffer() {
 // =========================== APPLYRADIOEFFECT START ========================
 // Wendet den Funkgeräteffekt an und legt bei Erstbenutzung eine History an
 async function applyRadioEffect() {
+    if (deSaveInProgress) return;
     if (!isRadioEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
         const blob = bufferToWav(savedOriginalBuffer);
@@ -15548,6 +15573,7 @@ async function applyRadioEffect() {
 // =========================== APPLYHALLEFFECT START ==========================
 // Aktiviert den Hall-Effekt und legt bei Erstnutzung eine History an
 async function applyHallEffect() {
+    if (deSaveInProgress) return;
     if (!isHallEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
         const blob = bufferToWav(savedOriginalBuffer);
@@ -15560,6 +15586,7 @@ async function applyHallEffect() {
 }
 // Schaltet den Hall-Effekt abhängig vom Kontrollkästchen ein oder aus
 function toggleHallEffect(active) {
+    if (deSaveInProgress) return;
     if (active) {
         applyHallEffect();
     } else {
@@ -15573,6 +15600,7 @@ function toggleHallEffect(active) {
 // =========================== APPLYNEIGHBOREFFECT START ======================
 // Aktiviert den Nebenraum-Effekt und legt bei Erstnutzung eine History an
 async function applyNeighborEffect() {
+    if (deSaveInProgress) return;
     if (!isNeighborEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
         const blob = bufferToWav(savedOriginalBuffer);
@@ -15588,6 +15616,7 @@ async function applyNeighborEffect() {
 
 // Schaltet den Nebenraum-Effekt abhängig vom Kontrollkästchen ein oder aus
 function toggleNeighborEffect(active) {
+    if (deSaveInProgress) return;
     if (active) {
         applyNeighborEffect();
     } else {
@@ -15599,6 +15628,7 @@ function toggleNeighborEffect(active) {
 
 // Schaltet den optionalen Hall für den Nebenraum-Effekt oder als alleinstehenden Raumklang
 function toggleNeighborHall(active) {
+    if (deSaveInProgress) return;
     neighborHall = active;
     storage.setItem('hla_neighborHall', active ? '1' : '0');
     recomputeEditBuffer();
@@ -15607,6 +15637,7 @@ function toggleNeighborHall(active) {
 
 // Aktiviert den Telefon-auf-Tisch-Effekt und legt bei Erstnutzung eine History an
 async function applyTableMicEffect() {
+    if (deSaveInProgress) return;
     if (!isTableMicEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
         const blob = bufferToWav(savedOriginalBuffer);
@@ -15621,6 +15652,7 @@ async function applyTableMicEffect() {
 
 // Schaltet den Telefon-auf-Tisch-Effekt abhängig vom Kontrollkästchen ein oder aus
 function toggleTableMicEffect(active) {
+    if (deSaveInProgress) return;
     if (active) {
         applyTableMicEffect();
     } else {
@@ -15632,6 +15664,7 @@ function toggleTableMicEffect(active) {
 
 // Schaltet die Sprachdämpfung bei EM-Störungen
 function toggleEmiVoiceDamp(active) {
+    if (deSaveInProgress) return;
     emiVoiceDamp = active;
     storage.setItem('hla_emiVoiceDamp', active ? '1' : '0');
     if (isEmiEffect) recomputeEditBuffer();
@@ -15641,6 +15674,7 @@ function toggleEmiVoiceDamp(active) {
 // =========================== APPLYEMIEFFECT START ===========================
 // Aktiviert elektromagnetische Störgeräusche und legt bei Erstnutzung eine History an
 async function applyEmiEffect() {
+    if (deSaveInProgress) return;
     if (!isEmiEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
         const relPath = getFullPath(currentEditFile);
         const blob = bufferToWav(savedOriginalBuffer);
@@ -15789,6 +15823,7 @@ function refreshEmiControls() {
 // =========================== RESETRADIOSETTINGS START =====================
 // Setzt alle Funk-Effektwerte auf Standard zurück
 function resetRadioSettings() {
+    if (deSaveInProgress) return;
     // Globale Standardwerte setzen
     radioEffectStrength = 0.85;
     radioHighpass = 300;
@@ -15928,6 +15963,7 @@ function deleteRadioPreset(name) {
 // =========================== RESETHALLSETTINGS START =====================
 // Setzt alle Hall-Parameter auf Standardwerte
 function resetHallSettings() {
+    if (deSaveInProgress) return;
     // Globale Vorgaben
     hallRoom   = 0.5;
     hallAmount = 0.5;
@@ -15957,6 +15993,7 @@ function resetHallSettings() {
 
 // =========================== RESETEMISETTINGS START =====================
 function resetEmiSettings() {
+    if (deSaveInProgress) return;
     // Standardwert für Störgeräusche setzen
     emiNoiseLevel = 0.5;
     storage.setItem('hla_emiNoiseLevel', emiNoiseLevel);
@@ -16627,12 +16664,15 @@ async function rebuildEnBufferAfterSave() {
 }
 
 async function applyDeEdit(param = {}) {
+    if (deSaveInProgress) return;
     if (!currentEditFile || !originalEditBuffer) return;
+    deSaveInProgress = true;
     const closeAfterSave = typeof param === 'boolean' ? param : !!param.closeAfterSave;
     // Restlänge berechnen und ungültigen Schnitt verhindern
     const restlaenge = editDurationMs - editStartTrim - editEndTrim;
     if (restlaenge <= 0) {
         showToast('Ungültiger Schnittbereich – Datei wurde nicht gespeichert', 'error');
+        deSaveInProgress = false;
         return;
     }
     const relPath = getFullPath(currentEditFile); // Aktuellen Pfad ermitteln
@@ -16873,6 +16913,8 @@ async function applyDeEdit(param = {}) {
                                 : 'Fehler beim Speichern des DE-Audios';
             showToast(msg, 'error');
         }
+    } finally {
+        deSaveInProgress = false;
     }
 }
 // =========================== APPLYDEEDIT END ===============================
