@@ -1,13 +1,4 @@
 # Changelog
-# 🛠️ Patch in 1.40.464
-* `web/src/utils/listenerRegistry.js` registriert alle `addEventListener`-/`removeEventListener`-Aufrufe, hält offene Listener in einem Set nach und stellt mit `resetRegisteredListeners()` einen kompletten Reset bereit.
-* `web/src/main.js` importiert das Registry frühzeitig, sodass sämtliche späteren Event-Registrierungen automatisch überwacht werden.
-* `web/src/projectHelpers.js` nutzt das Registry für das Aufräumen während `switchProjectSafe`, und `tests/projectSwitchFlushFast.test.js` prüft, dass nach einem Projektwechsel keine doppelten Listener aktiv bleiben.
-* `web/src/projectSwitch.js` führt `scheduleFolderScan` ein, prüft eine gespeicherte `lastScanSignature` und stößt Ordnerscans künftig im Hintergrund an.
-* `web/src/main.js` verwaltet mit `folderScanState` laufende Scans, blockiert Uploads während des Durchlaufs und erlaubt über `waitForFolderScan()` gezielt zu warten.
-* `tests/projectSwitchFlushFast.test.js` sowie der neue Fall `tests/projectSwitchBackgroundScan.test.js` sichern, dass unveränderte Ordner keinen Scan auslösen und geänderte Signaturen eine Aktualisierung inkl. Meta-Speicherung starten.
-* `README.md` und `CHANGELOG.md` dokumentieren das Signatur-basierte Hintergrund-Scanning.
-* `README.md` dokumentiert das Listener-Tracking samt bereinigtem Projektwechsel.
 # 🛠️ Patch in 1.40.463
 * `web/src/main.js` setzt eingefügte Stille bei Abbruch oder Fehlern wieder auf den vorherigen Zustand, leert die Bereiche nach einem erfolgreichen Speichern und aktualisiert Wellenformen sowie Listen sofort.
 * `rebuildEnBufferAfterSave` entfernt alte Stille-Markierungen beim Neuaufbau der Puffer, damit der Editor wie nach einem frischen Öffnen startet.
@@ -563,10 +554,6 @@
 ## 🛠️ Patch in 1.40.335
 * Node-Modul `elevenlabs.js` entfernt die Exporte `getDubbingStatus` und `getDefaultVoiceSettings`; Statusprüfungen laufen über `waitForDubbing`.
 * Test-Suite bereinigt veraltete Szenarien und Dokumentation listet nur noch die aktiven ElevenLabs-Exporte.
-## 🛠️ Patch in 1.40.336
-* Speicheradapter verfolgt alle Schreibvorgänge als Promises und stellt `waitForPendingWrites()` bereit.
-* `flushPendingWrites` wartet bis zu einem Timeout auf offene Schreibpromises und fällt danach auf einen kurzen Tick zurück.
-* Tests prüfen, dass `switchProjectSafe` ohne offene Schreibpromises nicht mehr unnötig wartet.
 ## 🛠️ Patch in 1.40.334
 * Browser-Modul `web/src/elevenlabs.js` entfernt `waitForDubbing` und nutzt ausschließlich `isDubReady` für Statusabfragen.
 ## 🛠️ Patch in 1.40.333
