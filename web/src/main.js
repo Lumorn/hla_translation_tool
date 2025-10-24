@@ -1,3 +1,5 @@
+import './utils/listenerRegistry.js';
+
 // =========================== SPEICHERINITIALISIERUNG START ===========================
 // Standardmäßig auf LocalStorage zurückgreifen
 let storage = window.localStorage;
@@ -13262,13 +13264,66 @@ async function waehleProjektOrdner() {
 // =========================== STANDARDORDNERAENDERN END ======================
 
 // =========================== SCANENORDNER START =============================
-async function scanEnOrdner() {
+// Steuert den Status laufender Ordner-Scans, damit sensible Funktionen gesperrt werden können
+const folderScanState = window.folderScanState || {
+    running: false,
+    activeCalls: 0,
+    reason: '',
+    waiters: [],
+    start(reason = 'Ordner-Scan') {
+        this.activeCalls += 1;
+        if (!this.running) {
+            this.running = true;
+            this.reason = reason;
+            try {
+                document.body?.classList?.add?.('scan-running');
+            } catch {}
+        }
+        let closed = false;
+        return () => {
+            if (closed) return;
+            closed = true;
+            this.activeCalls = Math.max(0, this.activeCalls - 1);
+            if (this.activeCalls === 0) {
+                this.running = false;
+                this.reason = '';
+                try {
+                    document.body?.classList?.remove?.('scan-running');
+                } catch {}
+                const resolvers = this.waiters;
+                this.waiters = [];
+                resolvers.forEach(resolve => {
+                    try { resolve(); } catch {}
+                });
+            }
+        };
+    },
+    wait() {
+        if (!this.running) return Promise.resolve();
+        return new Promise(resolve => {
+            this.waiters.push(resolve);
+        });
+    }
+};
+
+window.folderScanState = folderScanState;
+window.waitForFolderScan = () => folderScanState.wait();
+
+async function scanEnOrdner(options = {}) {
+    const includeDeScan = options.includeDeScan ?? true;
+    const updateStatusAfter = options.updateStatusAfter ?? true;
+    const background = !!options.background;
+    const reason = options.reason || (background ? 'Hintergrundscan EN' : 'EN-Ordner scannen');
     if (!enOrdnerHandle) {
         console.error('EN-Ordner nicht initialisiert');
         return;
     }
 
     const filesToScan = [];
+
+    const leave = typeof folderScanState.start === 'function'
+        ? folderScanState.start(reason)
+        : () => {};
 
     async function traverse(handle, path = '') {
         for await (const [name, child] of handle.entries()) {
@@ -13287,32 +13342,53 @@ async function scanEnOrdner() {
         }
     }
 
-    await traverse(enOrdnerHandle);
-    if (filesToScan.length > 0) {
-        await verarbeiteGescannteDateien(filesToScan);
+    try {
+        await traverse(enOrdnerHandle);
+        if (filesToScan.length > 0) {
+            await verarbeiteGescannteDateien(filesToScan, {
+                background,
+                updateAccess: updateStatusAfter
+            });
+        }
+    } finally {
+        try { leave(); } catch {}
     }
 
-    // 🟧 Nach dem EN-Scan auch den DE-Ordner durchsuchen
-    await scanDeOrdner();
-
-    // 🟧 Danach Projekt-Statistiken aktualisieren
-    updateAllProjectsAfterScan();
-    if (repairFileExtensions) {
-        const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
-        if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
+    if (includeDeScan && typeof scanDeOrdner === 'function') {
+        await scanDeOrdner({
+            ...options,
+            includeDeScan: false,
+            updateStatusAfter: false,
+            background,
+            reason: options.deReason || (background ? 'Hintergrundscan DE' : 'DE-Ordner scannen')
+        });
     }
-    updateFileAccessStatus();
+
+    if (updateStatusAfter) {
+        updateAllProjectsAfterScan();
+        if (repairFileExtensions) {
+            const count = repairFileExtensions(projects, filePathDatabase, textDatabase);
+            if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
+        }
+        updateFileAccessStatus();
+    }
 }
 // =========================== SCANENORDNER END ===============================
 
 // =========================== SCANDEORDNER START =============================
-async function scanDeOrdner() {
+async function scanDeOrdner(options = {}) {
+    const background = !!options.background;
+    const reason = options.reason || (background ? 'Hintergrundscan DE' : 'DE-Ordner scannen');
     if (!deOrdnerHandle) {
         console.error('DE-Ordner nicht initialisiert');
         return;
     }
 
     const gefundeneDateien = [];
+
+    const leave = typeof folderScanState.start === 'function'
+        ? folderScanState.start(reason)
+        : () => {};
 
     async function traverse(handle, pfad = '') {
         for await (const [name, child] of handle.entries()) {
@@ -13328,17 +13404,23 @@ async function scanDeOrdner() {
         }
     }
 
-    await traverse(deOrdnerHandle);
-    if (gefundeneDateien.length > 0) {
-        gefundeneDateien.forEach(d => {
-            setDeAudioCacheEntry(d.fullPath, d);
-        });
+    try {
+        await traverse(deOrdnerHandle);
+        if (gefundeneDateien.length > 0) {
+            gefundeneDateien.forEach(d => {
+                setDeAudioCacheEntry(d.fullPath, d);
+            });
+        }
+    } finally {
+        try { leave(); } catch {}
     }
 }
 // =========================== SCANDEORDNER END ===============================
 
 // =========================== VERARBEITEGESCANNTE START =====================
-async function verarbeiteGescannteDateien(dateien) {
+async function verarbeiteGescannteDateien(dateien, options = {}) {
+    const background = !!options.background;
+    const updateAccess = options.updateAccess !== false;
     if (typeof extractRelevantFolder !== 'function') {
         try {
             if (pathUtilsPromise) {
@@ -13376,8 +13458,14 @@ async function verarbeiteGescannteDateien(dateien) {
     }
 
     saveFilePathDatabase();
-    updateStatus(`${dateien.length} Dateien eingelesen`);
-    updateFileAccessStatus();
+    if (!background) {
+        updateStatus(`${dateien.length} Dateien eingelesen`);
+    } else if (typeof debugLog === 'function') {
+        debugLog(`[Ordner-Scan] ${dateien.length} Dateien im Hintergrund aktualisiert`);
+    }
+    if (updateAccess && typeof updateFileAccessStatus === 'function') {
+        updateFileAccessStatus();
+    }
 }
 // =========================== VERARBEITEGESCANNTE END =======================
 
@@ -13433,6 +13521,15 @@ async function speichereUebersetzungsDatei(datei, relativerPfad) {
 
 // =========================== INITIATEDEUPLOAD START ==========================
 function initiateDeUpload(fileId) {
+    if (window.folderScanState?.running) {
+        const hinweis = window.folderScanState.reason
+            ? `Ordner-Scan läuft noch (${window.folderScanState.reason})`
+            : 'Ordner-Scan läuft noch';
+        if (typeof showToast === 'function') {
+            showToast(`${hinweis}. Bitte kurz warten.`, 'info');
+        }
+        return;
+    }
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     aktuellerUploadPfad = getFullPath(file);
