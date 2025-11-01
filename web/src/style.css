@@ -1965,10 +1965,52 @@ th:nth-child(8) {
 }
 
 .audio-info-panel {
+    margin: 12px 0 18px;
+    border: 1px solid #2d2d2d;
+    border-radius: 8px;
+    background: #141414;
+    overflow: hidden;
+}
+
+.audio-info-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    color: #f0f0f0;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.audio-info-toggle:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.audio-info-toggle:focus-visible {
+    outline: 2px solid #2d65ff;
+    outline-offset: 2px;
+}
+
+.audio-info-toggle-icon {
+    font-size: 16px;
+}
+
+.audio-info-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
-    margin: 12px 0 18px;
+    padding: 12px 14px 14px;
+    border-top: 1px solid #2d2d2d;
+}
+
+.audio-info-panel.collapsed .audio-info-content {
+    display: none;
 }
 
 .audio-info-card {

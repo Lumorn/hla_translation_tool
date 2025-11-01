@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.467
+* `web/hla_translation_tool.html` markiert den Audio-Info-Bereich standardmäßig als eingeklappt.
+* `web/src/main.js` richtet das neue Toggle-Layout ein, verwaltet den Zustand und rendert die Karten im Inhaltselement.
+* `web/src/style.css` gestaltet Button sowie Container und blendet die technischen Details im eingeklappten Zustand aus.
+* `README.md` beschreibt die einklappbare Audio-Zusammenfassung im DE-Audio-Editor.
+* `CHANGELOG.md` dokumentiert das neue Verhalten.
 # 🛠️ Patch in 1.40.466
 * `web/hla_translation_tool.html` ergänzt im DE-Audio-Editor einen Info-Bereich direkt unter der Kopfzeile, der technische Kennzahlen zu EN-, DE- und Backup-Datei anzeigt.
 * `web/src/style.css` gestaltet die neue Audio-Info-Karte mit Grid-Layout, Abzeichen und dezenten Hinweistexten.
