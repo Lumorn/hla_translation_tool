@@ -14060,9 +14060,55 @@ function renderAudioInfoEntry(entry) {
     `;
 }
 
+// Synchronisiert Beschriftung, Pfeilsymbol und Sichtbarkeit des Audio-Info-Bereichs.
+function syncAudioInfoPanelState(panel) {
+    const toggle = panel.querySelector('.audio-info-toggle');
+    const label = panel.querySelector('.audio-info-toggle-label');
+    const icon = panel.querySelector('.audio-info-toggle-icon');
+    const content = panel.querySelector('.audio-info-content');
+    if (!toggle || !label || !icon || !content) return;
+    const collapsed = panel.classList.contains('collapsed');
+    toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    label.textContent = collapsed ? 'Audio-Infos anzeigen' : 'Audio-Infos ausblenden';
+    icon.textContent = collapsed ? '▸' : '▾';
+    if (collapsed) {
+        content.setAttribute('hidden', '');
+    } else {
+        content.removeAttribute('hidden');
+    }
+}
+
+// Stellt sicher, dass der Audio-Info-Bereich genau einmal das Toggle-Layout erhält.
+function ensureAudioInfoPanelStructure(panel) {
+    if (!panel) return null;
+    if (!panel.dataset.audioInfoReady) {
+        panel.dataset.audioInfoReady = 'true';
+        panel.classList.add('collapsed');
+        const contentId = `${panel.id || 'audioInfoPanel'}Content`;
+        panel.innerHTML = `
+            <button type="button" class="audio-info-toggle" aria-expanded="false" aria-controls="${contentId}">
+                <span class="audio-info-toggle-label"></span>
+                <span class="audio-info-toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div class="audio-info-content" id="${contentId}"></div>
+        `;
+        const toggle = panel.querySelector('.audio-info-toggle');
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                panel.classList.toggle('collapsed');
+                syncAudioInfoPanelState(panel);
+            });
+        }
+    }
+    syncAudioInfoPanelState(panel);
+    return panel.querySelector('.audio-info-content');
+}
+
 async function updateAudioInfoPanel({ enSrc, deSource, deBuffer, backupSrc, usedBackup }) {
     const panel = document.getElementById('audioInfoPanel');
     if (!panel) return;
+    const content = ensureAudioInfoPanelStructure(panel);
+    if (!content) return;
     const entries = [];
 
     const enInfo = enSrc ? await ensureAudioInfo(enSrc) : null;
@@ -14099,7 +14145,8 @@ async function updateAudioInfoPanel({ enSrc, deSource, deBuffer, backupSrc, used
     }
     entries.push(createAudioInfoEntry('DE (Backup)', backupSrc, backupInfo, backupOptions));
 
-    panel.innerHTML = entries.map(renderAudioInfoEntry).join('');
+    content.innerHTML = entries.map(renderAudioInfoEntry).join('');
+    syncAudioInfoPanelState(panel);
 }
 
 
