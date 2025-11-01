@@ -98,6 +98,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Tabellenkopf mit vollem Sichtfenster:** Das Scroll-Padding der Tabelle entspricht jetzt der Höhe des sticky Kopfbereichs, sodass die erste Zeile nicht mehr teilweise verdeckt wird.
 * **Überarbeitetes Timing-Layout:** Der Abschnitt „Timing & Bereiche“ nutzt ein zweispaltiges Kartenraster, das bei schmaler Breite automatisch auf eine Spalte umbricht.
 * **Adaptive DE-Audio-Ansicht:** Wellenformen, Kopierbereich und Effektgruppen nutzen jetzt ein konsistentes Zweispalten-Raster, das auf kleinen Displays automatisch auf eine Spalte reduziert wird und dem Einfügebereich Luft nach oben lässt.
+* **Technische Audio-Zusammenfassung:** Direkt unter der Kopfzeile bündelt ein Infofenster Laufzeit, Samplerate, Kanäle, Bitrate und Dateigröße für EN-Original, aktuelle DE-Bearbeitung und das gesicherte Backup.
 * **Waveform-Werkzeugleiste für große Monitore:** Zoom- und Höhenregler, synchronisiertes Scrollen sowie Zeitmarken-Lineale sorgen dafür, dass lange Takes auch auf Ultrawide-Displays komfortabel editierbar bleiben.
 * **Feinjustierte Waveform-Werkzeugleiste:** Ein enges Grid mit kleineren Buttons und geringem Padding hält Zoom-, Höhen- und Sync-Regler auch bei kleiner Breite dicht beieinander.
 * **Dynamische DE-Wellenformbreite:** Die DE-Wellenform übernimmt die echte Laufzeit als Pixelbreite, wodurch Scrollleisten, Lineale und Zoom exakt zur Audiodauer passen und lange Takes nachvollziehbar länger bleiben als die EN-Spur.

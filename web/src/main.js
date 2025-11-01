@@ -408,6 +408,8 @@ let deAudioCache           = {}; // Zwischenspeicher für DE-Audios
 let deAudioCacheIndex      = {}; // Zusätzlicher Index für case-insensitive Zugriffe
 let deAudioCacheIndexFallbackTriggered = false; // Merker, ob eine Notfall-Reindizierung durchgeführt wurde
 let audioDurationCache    = {}; // Cache für ermittelte Audiodauern
+let audioFileInfoCache    = {}; // Technische Kennzahlen zu Audiodateien nach Quelle
+const audioBlobInfoMap    = new WeakMap(); // Merkt Metadaten zu Blob- oder Datei-Quellen
 let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false; // Merker für ungespeicherte Änderungen
@@ -13864,14 +13866,36 @@ async function loadAudioBuffer(source) {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     try {
         let arrayBuffer;
+        let cacheKey = null;
+        let blobSource = null;
         if (typeof source === 'string') {
+            cacheKey = source.split('?')[0];
             const resp = await fetch(source);
+            if (!resp.ok) {
+                throw new Error(`Audio konnte nicht geladen werden: ${resp.status} ${resp.statusText}`);
+            }
             arrayBuffer = await resp.arrayBuffer();
-        } else {
+        } else if (source && typeof source.arrayBuffer === 'function') {
+            // Für Datei- oder Blob-Quellen merken wir uns das Objekt, um die Infos später abrufen zu können
+            blobSource = source;
             arrayBuffer = await source.arrayBuffer();
+        } else {
+            // Fallback mit aussagekräftiger Fehlermeldung, damit die Aufrufer schnell reagieren können
+            throw new Error('Unbekannter Audiotyp für loadAudioBuffer');
         }
         // Kontext nach dem Dekodieren schließen, um Limits zu vermeiden
         const buffer = await ctx.decodeAudioData(arrayBuffer);
+        const info = {
+            byteLength: arrayBuffer.byteLength,
+            sampleRate: buffer.sampleRate,
+            channels: buffer.numberOfChannels,
+            duration: buffer.length / buffer.sampleRate
+        };
+        if (cacheKey) {
+            audioFileInfoCache[cacheKey] = info;
+        } else if (blobSource) {
+            audioBlobInfoMap.set(blobSource, info);
+        }
         return buffer;
     } finally {
         ctx.close();
@@ -13894,6 +13918,190 @@ async function getAudioDuration(src) {
 // fuer Tests austauschbare Funktion
 let getAudioDurationFn = getAudioDuration;
 // =========================== LOADAUDIOBUFFER END =============================
+
+function formatAudioFileSize(bytes) {
+    if (!Number.isFinite(bytes) || bytes <= 0) return '–';
+    const einheiten = ['B', 'KB', 'MB', 'GB'];
+    let wert = bytes;
+    let index = 0;
+    while (wert >= 1024 && index < einheiten.length - 1) {
+        wert /= 1024;
+        index++;
+    }
+    const praezision = wert >= 10 || index === 0 ? 0 : 1;
+    return `${wert.toFixed(praezision)} ${einheiten[index]}`;
+}
+
+function formatAudioBitrate(bps) {
+    if (!Number.isFinite(bps) || bps <= 0) return '–';
+    if (bps >= 1000) {
+        const kbps = bps / 1000;
+        const praezision = kbps >= 10 ? 0 : 1;
+        return `${kbps.toFixed(praezision)} kbps`;
+    }
+    return `${bps.toFixed(0)} bps`;
+}
+
+function formatAudioDuration(seconds) {
+    if (!Number.isFinite(seconds) || seconds <= 0) return '–';
+    const gesamtMs = Math.round(seconds * 1000);
+    const minuten = Math.floor(gesamtMs / 60000);
+    const sekunden = Math.floor((gesamtMs % 60000) / 1000);
+    const millis = gesamtMs % 1000;
+    const sekundenText = String(sekunden).padStart(2, '0');
+    const millisText = String(millis).padStart(3, '0');
+    return `${minuten}:${sekundenText}.${millisText}`;
+}
+
+function formatAudioSampleRate(sampleRate) {
+    if (!Number.isFinite(sampleRate) || sampleRate <= 0) return '–';
+    if (sampleRate >= 1000) {
+        const kilo = sampleRate / 1000;
+        const praezision = sampleRate % 1000 === 0 ? 0 : 1;
+        return `${kilo.toFixed(praezision)} kHz`;
+    }
+    return `${sampleRate.toFixed(0)} Hz`;
+}
+
+function describeAudioChannels(channels) {
+    if (!Number.isFinite(channels) || channels <= 0) return '–';
+    if (channels === 1) return 'Mono';
+    if (channels === 2) return 'Stereo';
+    return `${channels} Kanäle`;
+}
+
+function formatAudioPath(source) {
+    if (!source) return '–';
+    if (typeof source === 'string') {
+        const clean = source.split('?')[0];
+        return clean.startsWith('sounds/') ? clean.substring(7) : clean;
+    }
+    if (source && typeof source.name === 'string') {
+        return source.name;
+    }
+    return 'Temporäre Quelle';
+}
+
+function getCachedAudioInfo(source) {
+    if (!source) return null;
+    if (typeof source === 'string') {
+        const key = source.split('?')[0];
+        return audioFileInfoCache[key] || null;
+    }
+    if (audioBlobInfoMap.has(source)) {
+        return audioBlobInfoMap.get(source);
+    }
+    return null;
+}
+
+async function ensureAudioInfo(source) {
+    if (!source) return null;
+    const cached = getCachedAudioInfo(source);
+    if (cached) return cached;
+    try {
+        await loadAudioBuffer(source);
+        return getCachedAudioInfo(source);
+    } catch (err) {
+        console.warn('Audio-Infos konnten nicht geladen werden:', source, err);
+        return null;
+    }
+}
+
+function buildBufferInfo(buffer, byteLength) {
+    if (!buffer) return null;
+    return {
+        byteLength: Number.isFinite(byteLength) ? byteLength : undefined,
+        sampleRate: buffer.sampleRate,
+        channels: buffer.numberOfChannels,
+        duration: buffer.length / buffer.sampleRate
+    };
+}
+
+function createAudioInfoEntry(title, source, info, options = {}) {
+    return {
+        title,
+        path: options.path || formatAudioPath(source),
+        info: info || null,
+        badge: options.badge || null,
+        note: options.note || null,
+        error: options.error || null
+    };
+}
+
+function renderAudioInfoEntry(entry) {
+    const info = entry.info || {};
+    const durationText = formatAudioDuration(info.duration);
+    const sampleRateText = formatAudioSampleRate(info.sampleRate);
+    const channelText = describeAudioChannels(info.channels);
+    const bitrate = info.duration && info.byteLength ? (info.byteLength * 8) / info.duration : null;
+    const bitrateText = formatAudioBitrate(bitrate);
+    const sizeText = Number.isFinite(info.byteLength) ? formatAudioFileSize(info.byteLength) : '–';
+    const parts = [
+        `<dt>Pfad</dt><dd>${escapeHtml(entry.path)}</dd>`,
+        `<dt>Laufzeit</dt><dd>${escapeHtml(durationText)}</dd>`,
+        `<dt>Samplerate</dt><dd>${escapeHtml(sampleRateText)}</dd>`,
+        `<dt>Kanäle</dt><dd>${escapeHtml(channelText)}</dd>`,
+        `<dt>Bitrate</dt><dd>${escapeHtml(bitrateText)}</dd>`,
+        `<dt>Dateigröße</dt><dd>${escapeHtml(sizeText)}</dd>`
+    ];
+    const badge = entry.badge ? `<span class="audio-info-badge">${escapeHtml(entry.badge)}</span>` : '';
+    const note = entry.note ? `<p class="audio-info-note">${escapeHtml(entry.note)}</p>` : '';
+    const error = entry.error ? `<p class="audio-info-note audio-info-error">${escapeHtml(entry.error)}</p>` : '';
+    return `
+        <section class="audio-info-card">
+            <header>
+                <h4>${escapeHtml(entry.title)}</h4>
+                ${badge}
+            </header>
+            <dl class="audio-info-list">${parts.join('')}</dl>
+            ${note}
+            ${error}
+        </section>
+    `;
+}
+
+async function updateAudioInfoPanel({ enSrc, deSource, deBuffer, backupSrc, usedBackup }) {
+    const panel = document.getElementById('audioInfoPanel');
+    if (!panel) return;
+    const entries = [];
+
+    const enInfo = enSrc ? await ensureAudioInfo(enSrc) : null;
+    entries.push(createAudioInfoEntry('EN (Original)', enSrc, enInfo, {
+        error: enSrc && !enInfo ? 'Original konnte nicht analysiert werden.' : null
+    }));
+
+    let deInfo = deSource ? await ensureAudioInfo(deSource) : null;
+    if (!deInfo && deBuffer) {
+        const fallbackBytes = deSource ? getCachedAudioInfo(deSource)?.byteLength : undefined;
+        deInfo = buildBufferInfo(deBuffer, fallbackBytes);
+    }
+    const deOptions = {};
+    if (usedBackup) {
+        deOptions.badge = 'Backup aktiv';
+        deOptions.note = 'Die Bearbeitung nutzt aktuell die gesicherte DE-Datei.';
+    }
+    if (!deSource) {
+        deOptions.error = 'Keine DE-Datei geladen.';
+    } else if (!deInfo) {
+        deOptions.error = 'Technische Daten zur DE-Datei fehlen.';
+    }
+    entries.push(createAudioInfoEntry('DE (Bearbeitung)', deSource, deInfo, deOptions));
+
+    const backupInfo = backupSrc ? await ensureAudioInfo(backupSrc) : null;
+    const backupOptions = {};
+    if (usedBackup && backupInfo) {
+        backupOptions.badge = 'Aktuelle Quelle';
+    }
+    if (!backupSrc) {
+        backupOptions.error = 'Kein Backup verfügbar.';
+    } else if (!backupInfo) {
+        backupOptions.error = 'Backup konnte nicht geladen werden.';
+    }
+    entries.push(createAudioInfoEntry('DE (Backup)', backupSrc, backupInfo, backupOptions));
+
+    panel.innerHTML = entries.map(renderAudioInfoEntry).join('');
+}
+
 
 // =========================== DRAWWAVEFORM START =============================
 // Zeichnet ein einfaches Wellenbild in ein Canvas
@@ -14477,6 +14685,9 @@ async function openDeEdit(fileId) {
     const rel = getDeFilePath(file) || getFullPath(file);
     let deSrc = deAudioCache[rel];
     if (!deSrc) return;
+    const backupSrc = `sounds/DE-Backup/${rel}`;
+    let activeDeSource = typeof deSrc === 'string' ? deSrc : deSrc;
+    let usedBackup = false;
     // Zuerst versuchen wir, die aktuelle DE-Datei zu laden
     try {
         // Cache-Buster anhängen, damit nach Änderungen die aktuelle Datei geladen wird
@@ -14484,8 +14695,10 @@ async function openDeEdit(fileId) {
         originalEditBuffer = await loadAudioBuffer(src);
     } catch {
         // Falls das fehlschlägt, greifen wir auf das Backup zurück
-        const backupSrc = `sounds/DE-Backup/${rel}`;
-        originalEditBuffer = await loadAudioBuffer(backupSrc);
+        const backupUrl = `${backupSrc}?v=${Date.now()}`;
+        originalEditBuffer = await loadAudioBuffer(backupUrl);
+        activeDeSource = backupSrc;
+        usedBackup = true;
     }
     savedOriginalBuffer = originalEditBuffer;
     volumeMatchedBuffer = null;
@@ -14506,6 +14719,7 @@ async function openDeEdit(fileId) {
     const enBuffer = await loadAudioBuffer(enSrc);
     editEnBuffer = enBuffer;
     rawEnBuffer = enBuffer;
+    await updateAudioInfoPanel({ enSrc, deSource: activeDeSource, deBuffer: originalEditBuffer, backupSrc, usedBackup });
     // Länge der beiden Dateien in Sekunden bestimmen
     const enSeconds = enBuffer.length / enBuffer.sampleRate;
     const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
