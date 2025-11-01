@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.466
+* `web/hla_translation_tool.html` ergänzt im DE-Audio-Editor einen Info-Bereich direkt unter der Kopfzeile, der technische Kennzahlen zu EN-, DE- und Backup-Datei anzeigt.
+* `web/src/style.css` gestaltet die neue Audio-Info-Karte mit Grid-Layout, Abzeichen und dezenten Hinweistexten.
+* `web/src/main.js` speichert Dateigröße, Kanäle, Samplerate und Laufzeit beim Laden, bereitet sie für das Infofenster auf und aktualisiert die Anzeige beim Öffnen des Editors.
+* `README.md` beschreibt die technische Audio-Zusammenfassung im Editor.
+* `CHANGELOG.md` dokumentiert den neuen Überblick.
 # 🛠️ Patch in 1.40.465
 * `web/src/main.js` wendet Trimmen, Pausenpflege und Time-Stretching nun vor allen Effekten an, damit Funkfilter, Hall und Störgeräusche auf dem tempo-korrigierten Signal arbeiten und keine Längenabweichungen erzeugen.
 * `README.md` und `CHANGELOG.md` dokumentieren die neue Reihenfolge der Audiobearbeitung im DE-Editor.
