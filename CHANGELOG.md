@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.469
+* `web/src/projectHelpers.js` setzt beim Entfernen aller Listener das Flag `effectSidebarOrganized` zurück und löscht das `data-bound`-Attribut der Effekt-Register, damit geklonte Buttons ihren fehlenden Listener sichtbar machen.
+* `README.md` beschreibt den erneuten Listener-Aufbau nach einem Reset.
+* `CHANGELOG.md` dokumentiert die zusätzliche Absicherung der Effekt-Register.
 # 🛠️ Patch in 1.40.468
 * `web/src/dubbing.js` überprüft die vorhandene Tab-Struktur im Effektbereich und baut sie bei fehlenden Elementen oder Listenern automatisch neu auf.
 * `web/src/main.js` ruft den Tab-Aufbau nach dem Öffnen des DE-Dialogs erneut auf und setzt das Flag beim Schließen zurück, damit neue Inhalte direkt funktionieren.

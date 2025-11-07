@@ -117,6 +117,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Straffer EN-Übernahmebereich:** Die Übernahmeleiste übernimmt kleinere Margins und Gaps, damit sich der Einfügebereich bündig in das Wellenraster einfügt.
 * **Tabbasiertes Effekt-Panel:** Die rechte Seitenleiste bündelt Lautstärke- und Funkgerät-Steuerung als „Kernfunktionen“ und verschiebt Hall-, EM-Störungs- sowie Nebenraum-Regler unter „Erweiterte Optionen“ mit klaren Abschnittstiteln.
 * **Selbstheilende Effekt-Register:** Beim Öffnen des DE-Audio-Dialogs prüft das Tool die Tabs, setzt fehlende Listener nach und organisiert die Panels automatisch neu, falls ein Re-Render die Struktur ersetzt hat.
+* **Robuste Tab-Umschaltung nach Listener-Reset:** `detachAllEventListeners()` setzt das Flag `effectSidebarOrganized` zurück und entfernt geklonnten Effekt-Schaltflächen das `data-bound`-Attribut, damit „Kernfunktionen“ und „Erweiterte Optionen“ nach Projektwechseln zuverlässig neu gebunden werden.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.
 * **Zufallsprojekt-Knopf:** Lädt ein zufälliges Projekt und speichert ein Protokoll als Datei oder in die Zwischenablage.
