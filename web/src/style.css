@@ -2863,7 +2863,7 @@ th:nth-child(8) {
 #deEditDialog .quick-tempo-block {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 2px;
     flex: 0 1 150px;
     min-width: 0;
     align-items: stretch;
@@ -2878,24 +2878,27 @@ th:nth-child(8) {
 #deEditDialog .quick-tempo-inline {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 6px 8px;
+    gap: 2px;
+    padding: 2px 4px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(12, 12, 12, 0.7);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     width: 100%;
     align-self: stretch; /* Hält die Zusatzsteuerung bündig unter dem Tempo-Button */
+    font-size: 11px;
+    max-height: 44px;
 }
 
 #deEditDialog .quick-tempo-row {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     width: 100%;
 }
 
 #deEditDialog .quick-tempo-steppers {
     align-items: center;
+    gap: 3px;
 }
 
 #deEditDialog .quick-tempo-steppers .quick-tempo-display {
@@ -2905,6 +2908,7 @@ th:nth-child(8) {
 
 #deEditDialog .quick-tempo-presets {
     flex-direction: column;
+    gap: 3px;
 }
 
 #deEditDialog .quick-tempo-presets .quick-tempo-preset {
@@ -2916,15 +2920,16 @@ th:nth-child(8) {
     border: 1px solid #555;
     border-radius: 6px;
     color: #f5f5f5;
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 1px 5px;
+    font-size: 11px;
+    line-height: 1.2;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 32px;
-    min-height: 28px;
+    min-width: 26px;
+    min-height: 18px;
 }
 
 #deEditDialog .quick-mini-btn:hover {
@@ -2941,13 +2946,15 @@ th:nth-child(8) {
     align-items: center;
     justify-content: center;
     font-variant-numeric: tabular-nums;
-    padding: 4px 10px;
+    padding: 1px 7px;
     border-radius: 6px;
     border: 1px solid rgba(255, 255, 255, 0.16);
     background: rgba(0, 0, 0, 0.35);
     color: #f5f5f5;
-    min-width: 58px;
+    min-width: 48px;
     text-align: center;
+    font-size: 12px;
+    line-height: 1.2;
 }
 
 #deEditDialog .quick-tempo-steppers .quick-mini-btn {
@@ -2956,7 +2963,11 @@ th:nth-child(8) {
 
 #deEditDialog .quick-tempo-inline .quick-tempo-preset {
     font-variant-numeric: tabular-nums;
-    min-width: 48px;
+    min-width: 44px;
+}
+
+#deEditDialog .quick-tempo-inline .quick-tempo-row {
+    gap: 2px;
 }
 
 #deEditDialog .quick-btn {
