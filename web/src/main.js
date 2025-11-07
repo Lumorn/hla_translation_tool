@@ -588,6 +588,45 @@ function normalizeDeTrim() {
     validateDeSelection();
 }
 
+// Formatiert den Tempowert mit optionalem Komma für die schnelle Anzeige
+function formatTempoValue(value, useComma = false) {
+    const numeric = Number.isFinite(value) ? value : 0;
+    const fixed = numeric.toFixed(2);
+    return useComma ? fixed.replace('.', ',') : fixed;
+}
+
+// Synchronisiert alle Tempowert-Anzeigen und übernimmt Statusklassen
+function updateTempoDisplays(autoMode = false) {
+    const mainDisplay = document.getElementById('tempoDisplay');
+    const quickDisplay = document.getElementById('quickTempoDisplay');
+    const extraClasses = [];
+
+    if (mainDisplay) {
+        mainDisplay.textContent = formatTempoValue(tempoFactor);
+        mainDisplay.classList.toggle('tempo-auto', autoMode);
+        for (const cls of mainDisplay.classList) {
+            if (cls.startsWith('tempo-') && cls !== 'tempo-auto' && cls !== 'tempo-value') {
+                extraClasses.push(cls);
+            }
+        }
+    }
+
+    if (quickDisplay) {
+        quickDisplay.textContent = formatTempoValue(tempoFactor, true);
+        quickDisplay.classList.toggle('tempo-auto', autoMode);
+        const removable = Array.from(quickDisplay.classList).filter(cls => cls.startsWith('tempo-') && cls !== 'tempo-auto' && cls !== 'tempo-value');
+        removable.forEach(cls => quickDisplay.classList.remove(cls));
+        extraClasses.forEach(cls => quickDisplay.classList.add(cls));
+        if (mainDisplay) {
+            quickDisplay.style.color = mainDisplay.style.color || '';
+            quickDisplay.style.background = mainDisplay.style.background || '';
+        } else if (!autoMode) {
+            quickDisplay.style.color = '';
+            quickDisplay.style.background = '';
+        }
+    }
+}
+
 if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
     waveZoomLevel = 1.0;
 } else {
@@ -13613,12 +13652,8 @@ async function handleDeUpload(input) {
             tempoFactor = 1.0;
             loadedTempoFactor = 1.0;
             const tempoRange = document.getElementById('tempoRange');
-            const tempoDisp = document.getElementById('tempoDisplay');
-            if (tempoRange && tempoDisp) {
-                tempoRange.value = '1.00';
-                tempoDisp.textContent = '1.00';
-                tempoDisp.classList.remove('tempo-auto');
-            }
+            if (tempoRange) tempoRange.value = '1.00';
+            updateTempoDisplays(false);
         }
         // Fertig-Status ergibt sich nun automatisch
     }
@@ -14875,14 +14910,14 @@ async function openDeEdit(fileId) {
     loadedTempoFactor = tempoFactor; // Faktor merken, um später Differenzen zu ermitteln
     autoIgnoreMs = 400;
     const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp  = document.getElementById('tempoDisplay');
-    if (tempoRange && tempoDisp) {
+    if (tempoRange) {
         tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
+    }
+    updateTempoDisplays(false);
+    if (tempoRange) {
         tempoRange.oninput = async e => {
             tempoFactor = parseFloat(e.target.value);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
+            updateTempoDisplays(false);
             updateLengthInfo();
         };
         // Minus-Knopf reduziert das Tempo in kleinen Schritten
@@ -14892,8 +14927,7 @@ async function openDeEdit(fileId) {
             const min  = parseFloat(tempoRange.min);
             tempoFactor = Math.max(min, tempoFactor - step);
             tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
+            updateTempoDisplays(false);
             updateLengthInfo();
         };
         // Plus-Knopf erhöht das Tempo in kleinen Schritten
@@ -14903,8 +14937,7 @@ async function openDeEdit(fileId) {
             const max  = parseFloat(tempoRange.max);
             tempoFactor = Math.min(max, tempoFactor + step);
             tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.remove('tempo-auto');
+            updateTempoDisplays(false);
             updateLengthInfo();
         };
         const tempoAuto = document.getElementById('tempoAutoBtn');
@@ -14912,8 +14945,7 @@ async function openDeEdit(fileId) {
             // Setzt den Tempofaktor auf das definierte Minimum
             tempoFactor = parseFloat(tempoRange.min);
             tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
-            tempoDisp.classList.add('tempo-auto');
+            updateTempoDisplays(true);
             updateLengthInfo();
         };
         // Zweiter Auto-Knopf gleicht die DE-Zeit an die EN-Zeit an
@@ -14924,7 +14956,7 @@ async function openDeEdit(fileId) {
             const max  = parseFloat(tempoRange.max);
             const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
 
-            tempoDisp.classList.add('tempo-auto');
+            updateTempoDisplays(true);
 
             // Erhöht das Tempo so lange, bis DE ungefähr EN entspricht
             const raise = () => {
@@ -14935,13 +14967,42 @@ async function openDeEdit(fileId) {
                 }
                 tempoFactor = Math.min(tempoFactor + step, max);
                 tempoRange.value = tempoFactor.toFixed(2);
-                tempoDisp.textContent = tempoFactor.toFixed(2);
+                updateTempoDisplays(true);
                 updateLengthInfo();
                 requestAnimationFrame(raise);
             };
             requestAnimationFrame(raise);
         };
     }
+
+    const quickTempoMinus = document.getElementById('quickTempoMinus');
+    if (quickTempoMinus) quickTempoMinus.onclick = () => {
+        const tempoMinusBtn = document.getElementById('tempoMinusBtn');
+        if (tempoMinusBtn) tempoMinusBtn.click();
+    };
+
+    const quickTempoPlus = document.getElementById('quickTempoPlus');
+    if (quickTempoPlus) quickTempoPlus.onclick = () => {
+        const tempoPlusBtn = document.getElementById('tempoPlusBtn');
+        if (tempoPlusBtn) tempoPlusBtn.click();
+    };
+
+    const applyQuickTempoPreset = targetValue => {
+        const tempoRangeEl = document.getElementById('tempoRange');
+        if (!tempoRangeEl) return;
+        const min = parseFloat(tempoRangeEl.min);
+        const max = parseFloat(tempoRangeEl.max);
+        tempoFactor = Math.min(Math.max(targetValue, min), max);
+        tempoRangeEl.value = tempoFactor.toFixed(2);
+        updateTempoDisplays(false);
+        updateLengthInfo();
+    };
+
+    const quickTempoSet120 = document.getElementById('quickTempoSet120');
+    if (quickTempoSet120) quickTempoSet120.onclick = () => applyQuickTempoPreset(1.2);
+
+    const quickTempoSet130 = document.getElementById('quickTempoSet130');
+    if (quickTempoSet130) quickTempoSet130.onclick = () => applyQuickTempoPreset(1.3);
     const autoChk = document.getElementById('autoIgnoreChk');
     const autoMs  = document.getElementById('autoIgnoreMs');
     if (autoChk && autoMs) {
@@ -15738,11 +15799,10 @@ async function autoAdjustLength() {
         // Faktor bei 3 begrenzen, damit extreme Werte vermieden werden
         tempoFactor = Math.min(Math.max(rel * loadedTempoFactor, 1), 3);
         const tempoRange = document.getElementById('tempoRange');
-        const tempoDisp = document.getElementById('tempoDisplay');
-        if (tempoRange && tempoDisp) {
+        if (tempoRange) {
             tempoRange.value = tempoFactor.toFixed(2);
-            tempoDisp.textContent = tempoFactor.toFixed(2);
         }
+        updateTempoDisplays(false);
     }
     await recomputeEditBuffer();
     updateLengthInfo();
@@ -16913,12 +16973,10 @@ async function rebuildEnBufferAfterSave() {
     if (endField) endField.value = '';
 
     const tempoRange = document.getElementById('tempoRange');
-    const tempoDisp = document.getElementById('tempoDisplay');
-    if (tempoRange && tempoDisp) {
+    if (tempoRange) {
         tempoRange.value = tempoFactor.toFixed(2);
-        tempoDisp.textContent = tempoFactor.toFixed(2);
-        tempoDisp.classList.remove('tempo-auto');
     }
+    updateTempoDisplays(false);
 
     const origCanvas = document.getElementById('waveOriginal');
     const deCanvas = document.getElementById('waveEdited');

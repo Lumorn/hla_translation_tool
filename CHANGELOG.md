@@ -1,4 +1,23 @@
 # Changelog
+# 🛠️ Patch in 1.40.472
+* `web/hla_translation_tool.html` schrumpft die Turbo-Steuerung zu einer schmalen Icon-Leiste direkt unter dem Tempo-Knopf und ordnet Minus, Anzeige, Plus sowie die Presets 1,20×/1,30× nebeneinander an.
+* `web/src/style.css` richtet die Schnellzugriffsknöpfe wieder gleich groß aus und gestaltet die kompakte Turbo-Leiste mit dezenter Rahmenoptik.
+* `README.md` beschreibt die neue schlanke Schnellsteuerung unter dem Tempo-Button.
+* `docs/screenshots/de-audio-turbo.txt` verweist auf den aktualisierten Screenshot der kompakten Turbo-Leiste.
+* `CHANGELOG.md` hält die Überarbeitung der Turbo-Schnellsteuerung fest.
+
+# 🛠️ Patch in 1.40.471
+* `web/hla_translation_tool.html` dockt das Turbo-Panel direkt unter dem Tempo-Schnellzugriff an und bündelt Anzeige, Schritt- sowie Preset-Knöpfe in einem kompakten Block.
+* `web/src/style.css` gestaltet das neue Turbo-Panel im Kartenstil des Tempo-Bereichs, sorgt für zweispaltige Presets und zentrierte Wertanzeige.
+* `README.md` beschreibt das fest angekoppelte Turbo-Panel mit zweigeteilter Bedienzeile.
+* `docs/screenshots/de-audio-turbo.txt` verweist auf den aktuellen Screenshot der neu positionierten Turbo-Steuerung.
+* `CHANGELOG.md` dokumentiert die überarbeitete Schnellzugriffs-Anordnung.
+# 🛠️ Patch in 1.40.470
+* `web/hla_translation_tool.html` ergänzt unter den Schnellzugriffen eine Turbo-Leiste mit aktueller Beschleunigungsanzeige, Minus/Plus und direkten 1,20×/1,30×-Presets.
+* `web/src/style.css` gestaltet die neue Turbo-Leiste, generalisiert die Tempo-Anzeige und sorgt für konsistente Abstände.
+* `web/src/main.js` synchronisiert alle Tempo-Anzeigen, bindet die neuen Quick-Buttons an und übernimmt die Werte auch bei automatischen Anpassungen.
+* `README.md` beschreibt die Turbo-Feinsteuerung in der Schnellzugriffsleiste.
+* `CHANGELOG.md` dokumentiert die Erweiterung der Turbo-Steuerung.
 # 🛠️ Patch in 1.40.469
 * `web/src/projectHelpers.js` setzt beim Entfernen aller Listener das Flag `effectSidebarOrganized` zurück und löscht das `data-bound`-Attribut der Effekt-Register, damit geklonte Buttons ihren fehlenden Listener sichtbar machen.
 * `README.md` beschreibt den erneuten Listener-Aufbau nach einem Reset.
