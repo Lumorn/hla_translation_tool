@@ -1,4 +1,13 @@
 # Changelog
+# 🛠️ Patch in 1.40.477
+* `docs/screenshots/de-audio-turbo.txt` verweist jetzt auf das Artefakt `de-audio-quick-actions-focus.png`, das die kompakte Tempo-Schnellleiste zeigt.
+* `README.md` ergänzt einen Hinweis auf den aktuellen Screenshot der Tempo-Schnellsteuerung.
+
+# 🛠️ Patch in 1.40.476
+* `web/src/style.css` verkleinert die Tempo-Sonderknöpfe samt Abständen, begrenzt den Zusatzblock auf Button-Höhe und sorgt so für eine bündige Schnellzugriffsleiste.
+* `README.md` erwähnt die geschrumpfte Turbo-Leiste im Schnellzugriff.
+* `docs/screenshots/de-audio-turbo.txt` beschreibt den neuen Screenshot mit Mini-Buttons und flachem Zusatzblock.
+
 # 🛠️ Patch in 1.40.475
 * `web/src/style.css` deaktiviert im Tempo-Block die 150px-Flexbasis, damit der Tempo-Schnellzugriff die gleiche Höhe wie die übrigen orangefarbenen Buttons behält.
 * `README.md` vermerkt die angeglichene Höhe des Tempo-Knopfs in der Schnellzugriffsleiste.
