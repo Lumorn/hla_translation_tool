@@ -1,1 +1,1 @@
-Screenshot der kompakten Turbo-Leiste direkt unter dem Tempo-Schnellzugriff: siehe Artefakt `de_audio_turbo_inline.png` aus diesem Auftrag.
+Screenshot der Quick-Actions im DE-Audio-Editor mit schmaler Tempo-Zusatzzeile: Minus/Anzeige/Plus teilen sich eine obere Reihe in Tempo-Breite, die Presets 1,20×/1,30× stehen direkt darunter. Der orange Tempo-Knopf ist wieder exakt so hoch wie Trim, Auto, Pegel und Funk. Siehe Artefakt `de-audio-quick-actions.png` aus diesem Auftrag.

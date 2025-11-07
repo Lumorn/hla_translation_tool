@@ -1,4 +1,21 @@
 # Changelog
+# 🛠️ Patch in 1.40.475
+* `web/src/style.css` deaktiviert im Tempo-Block die 150px-Flexbasis, damit der Tempo-Schnellzugriff die gleiche Höhe wie die übrigen orangefarbenen Buttons behält.
+* `README.md` vermerkt die angeglichene Höhe des Tempo-Knopfs in der Schnellzugriffsleiste.
+* `docs/screenshots/de-audio-turbo.txt` beschreibt den aktualisierten Screenshot mit gleich hohen Buttons und gestapelter Tempo-Zusatzzeile.
+
+# 🛠️ Patch in 1.40.474
+* `web/hla_translation_tool.html` stapelt die Tempo-Sonderknöpfe in zwei Reihen, damit der Zusatzblock exakt die Breite des Tempo-Schnellzugriffs behält.
+* `web/src/style.css` richtet den Tempo-Block auf volle Button-Breite aus, lässt Minus/Plus neben der Anzeige laufen und setzt die Presets darunter als eigene Reihe.
+* `README.md` beschreibt die neue Staffelung der Tempo-Schnellsteuerung in zwei Zeilen.
+* `docs/screenshots/de-audio-turbo.txt` aktualisiert den Screenshot-Hinweis auf die gestapelte Darstellung.
+* `CHANGELOG.md` dokumentiert die Anpassung der Tempo-Zusatzzeile.
+# 🛠️ Patch in 1.40.473
+* `web/src/style.css` stellt die Schnellzugriffs-Buttons wieder auf ihre kompakte Höhe ein und platziert die Tempo-Feinsteuerung sauber unter dem Tempo-Knopf.
+* `README.md` beschreibt die getrennte Ausrichtung der orangen Schnellzugriffsknöpfe und der Tempo-Zusatzzeile.
+* `docs/screenshots/de-audio-turbo.txt` vermerkt den aktuellen Screenshot der Quick-Actions mit Tempo-Zusatzzeile.
+* `CHANGELOG.md` dokumentiert die Korrektur am Schnellzugriff.
+
 # 🛠️ Patch in 1.40.472
 * `web/hla_translation_tool.html` schrumpft die Turbo-Steuerung zu einer schmalen Icon-Leiste direkt unter dem Tempo-Knopf und ordnet Minus, Anzeige, Plus sowie die Presets 1,20×/1,30× nebeneinander an.
 * `web/src/style.css` richtet die Schnellzugriffsknöpfe wieder gleich groß aus und gestaltet die kompakte Turbo-Leiste mit dezenter Rahmenoptik.

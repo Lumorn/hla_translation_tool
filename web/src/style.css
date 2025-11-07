@@ -2856,7 +2856,7 @@ th:nth-child(8) {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    align-items: stretch;
+    align-items: flex-start; /* Verhindert, dass die orangenen Buttons durch den Tempo-Block in der Höhe wachsen */
     justify-content: flex-start;
 }
 
@@ -2866,23 +2866,48 @@ th:nth-child(8) {
     gap: 6px;
     flex: 0 1 150px;
     min-width: 0;
-    align-items: center;
+    align-items: stretch;
+    align-self: flex-start; /* Sorgt dafür, dass der Block wie die anderen Schnellzugriffs-Elemente oben ausgerichtet bleibt */
 }
 
 #deEditDialog .quick-tempo-block .quick-btn {
     width: 100%;
+    flex: 0 0 auto; /* Im Tempo-Block darf der Hauptbutton nicht auf 150px Höhe wachsen */
 }
 
 #deEditDialog .quick-tempo-inline {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     gap: 6px;
     padding: 6px 8px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(12, 12, 12, 0.7);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    width: 100%;
+    align-self: stretch; /* Hält die Zusatzsteuerung bündig unter dem Tempo-Button */
+}
+
+#deEditDialog .quick-tempo-row {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+#deEditDialog .quick-tempo-steppers {
+    align-items: center;
+}
+
+#deEditDialog .quick-tempo-steppers .quick-tempo-display {
+    flex: 1 1 auto;
+    justify-content: center;
+}
+
+#deEditDialog .quick-tempo-presets {
+    flex-direction: column;
+}
+
+#deEditDialog .quick-tempo-presets .quick-tempo-preset {
     width: 100%;
 }
 
@@ -2912,6 +2937,9 @@ th:nth-child(8) {
 }
 
 #deEditDialog .quick-tempo-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-variant-numeric: tabular-nums;
     padding: 4px 10px;
     border-radius: 6px;
@@ -2920,6 +2948,10 @@ th:nth-child(8) {
     color: #f5f5f5;
     min-width: 58px;
     text-align: center;
+}
+
+#deEditDialog .quick-tempo-steppers .quick-mini-btn {
+    flex: 0 0 auto;
 }
 
 #deEditDialog .quick-tempo-inline .quick-tempo-preset {
