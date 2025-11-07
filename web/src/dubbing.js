@@ -976,9 +976,21 @@ function renderWaveTimeline(state = {}) {
 
 // Baut die Tabs für Kern- und Expertenfunktionen in der rechten Seitenleiste auf
 function setupRightSidebarTabs() {
-    if (effectSidebarOrganized || typeof document === 'undefined') return;
+    if (typeof document === 'undefined') return;
     const scroll = document.querySelector('#deEditDialog .effect-scroll');
     if (!scroll) return;
+
+    // Prüfen, ob bereits eine funktionsfähige Tab-Struktur vorhanden ist
+    const tabButtons = scroll.querySelectorAll('.effect-tab');
+    const tabPanels = scroll.querySelectorAll('.effect-tabpanel');
+    const missingListeners = Array.from(tabButtons).some(btn => btn.dataset.bound !== 'true');
+    const needsRebuild = !tabButtons.length || !tabPanels.length || missingListeners;
+
+    if (effectSidebarOrganized && !needsRebuild) {
+        return;
+    }
+
+    effectSidebarOrganized = false;
 
     const allFieldsets = Array.from(scroll.querySelectorAll('fieldset'));
     if (!allFieldsets.length) return;
@@ -1045,6 +1057,7 @@ function setupRightSidebarTabs() {
         btn.dataset.tabTarget = tab.key;
         btn.textContent = tab.label;
         btn.addEventListener('click', () => switchTab(tab.key));
+        btn.dataset.bound = 'true';
         tabList.appendChild(btn);
 
         const panel = document.createElement('div');
