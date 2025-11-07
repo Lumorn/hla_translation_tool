@@ -15631,6 +15631,13 @@ async function openDeEdit(fileId) {
         }
     };
     window.addEventListener('keydown', deEditEscHandler);
+    if (typeof setupRightSidebarTabs === 'function') {
+        // Nach dem Aufbau des Dialogs sicherstellen, dass die Tabs bereitstehen
+        setupRightSidebarTabs();
+    } else if (typeof effectSidebarOrganized !== 'undefined') {
+        // Falls die Tab-Funktion nicht verfügbar ist, erneuten Aufbau beim nächsten Öffnen erzwingen
+        effectSidebarOrganized = false;
+    }
     updateEffectButtons();
 }
 // =========================== OPENDEEDIT END ================================
@@ -16739,6 +16746,10 @@ function closeDeEdit() {
     resetCanvasZoom(document.getElementById('waveEdited'));
     deSelectionActive = false;
     updateEffectButtons();
+    if (typeof effectSidebarOrganized !== 'undefined') {
+        // Beim Schließen neu aufbauen lassen, damit die nächste Öffnung sauber startet
+        effectSidebarOrganized = false;
+    }
 }
 // =========================== CLOSEDEEDIT END ===============================
 

@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.468
+* `web/src/dubbing.js` überprüft die vorhandene Tab-Struktur im Effektbereich und baut sie bei fehlenden Elementen oder Listenern automatisch neu auf.
+* `web/src/main.js` ruft den Tab-Aufbau nach dem Öffnen des DE-Dialogs erneut auf und setzt das Flag beim Schließen zurück, damit neue Inhalte direkt funktionieren.
+* `README.md` erwähnt die selbstheilenden Effekt-Register im DE-Audio-Editor.
+* `CHANGELOG.md` dokumentiert die robustere Tab-Initialisierung.
 # 🛠️ Patch in 1.40.467
 * `web/hla_translation_tool.html` markiert den Audio-Info-Bereich standardmäßig als eingeklappt.
 * `web/src/main.js` richtet das neue Toggle-Layout ein, verwaltet den Zustand und rendert die Karten im Inhaltselement.
