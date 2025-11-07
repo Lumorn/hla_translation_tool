@@ -38,6 +38,11 @@ function detachAllEventListeners() {
     }
     el.replaceWith(clone);
   });
+  // Guard für das Flag der Effekt-Seitenleiste, damit geklonte Buttons ihren Status verlieren
+  if (typeof effectSidebarOrganized !== 'undefined') {
+    effectSidebarOrganized = false;
+  }
+  document.querySelectorAll('#deEditDialog .effect-tab').forEach(btn => btn.removeAttribute('data-bound'));
 }
 
 // Leert In-Memory-Caches durch Aufruf des globalen Reset
