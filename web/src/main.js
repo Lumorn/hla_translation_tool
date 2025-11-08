@@ -17727,6 +17727,8 @@ async function applyDeEdit(param = {}) {
         manualSilenceRanges = [];
         refreshSilenceList();
         updateDeEditWaveforms();
+        // Segment-Vorschläge nach erfolgreichem Speichern komplett zurücksetzen
+        clearSegmentSuggestions();
         // Änderungen sichern
         markDirty();
         renderFileTable();

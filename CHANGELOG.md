@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.480
+* `web/src/main.js` leert nach einem erfolgreichen Speichern sämtliche Segment-Vorschläge und stößt die Aktualisierung von Liste sowie Timeline automatisch an.
+* `README.md` dokumentiert das automatische Zurücksetzen der Segment-Vorschläge nach dem Speichern.
+
 # 🛠️ Patch in 1.40.479
 * `tests/segmentSuggestionLogic.test.js` prüft Pufferung, Sortierung und die Übernahme der automatischen Lücken in `editIgnoreRanges`.
 * `web/src/main.js` exportiert zusätzliche Test-Hilfsfunktionen, damit die Segment-Vorschlagslogik isoliert gesteuert werden kann.
