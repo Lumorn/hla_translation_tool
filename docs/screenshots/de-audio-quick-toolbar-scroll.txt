@@ -1,1 +1,0 @@
-Platzhalter für den Screenshot „de-audio-quick-toolbar-scroll.png“: Zeigt die DE-Schnellzugriffsleiste in einer einzigen horizontalen Reihe mit sichtbarem Scrollbalken und aktivierten Scroll-Snap-Markierungen.

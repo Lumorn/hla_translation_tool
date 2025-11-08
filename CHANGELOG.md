@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.482
+* `web/src/style.css` entfernt das horizontale Scrollen der Schnellzugriffsleiste, verteilt alle sechs Hauptbuttons über `flex: 1 1 calc((100% - GAP) / 6)` und staffelt `min-width`-/`max-width`-Grenzen für 1200 px, 1000 px und 600 px.
+* `README.md` beschreibt die dynamisch skalierende Schnellzugriffsleiste ohne Scrollbalken und verweist auf den neuen Screenshot-Platzhalter.
+* `CHANGELOG.md` dokumentiert die scrollbarfreie Toolbar samt gestaffelter Breakpoints.
+* `docs/screenshots/de-audio-quick-toolbar-responsive.txt` ersetzt den früheren Scroll-Platzhalter und schildert die flexible Buttonbreite ohne Scrollbalken.
+
 # 🛠️ Patch in 1.40.481
 * `web/src/style.css` hält die Schnellzugriffsleiste standardmäßig einreihig, sorgt für horizontales Scrollen samt Scroll-Snap und gibt allen sechs Hauptbuttons eine identische Flex-Breite von 160 px.
 * `README.md` beschreibt die einreihige Schnellzugriffsleiste mit horizontalem Scrollen und den gleichmäßigen Abständen über `gap`.
