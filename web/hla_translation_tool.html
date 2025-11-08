@@ -777,6 +777,7 @@
                     <button id="waveFocusSelectionBtn" class="btn btn-secondary" type="button" title="Auswahl in den Fokus holen">🎯 Auswahl</button>
                 </div>
             </div>
+            <div class="wave-timeline-preview" id="waveTimelinePreview" aria-hidden="true"></div>
             <div class="wave-area">
                 <div class="wave-block wave-block-original">
                     <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
@@ -846,6 +847,10 @@
                                 <span class="quick-icon" aria-hidden="true">⚡</span>
                                 <span class="quick-text">Auto</span>
                             </button>
+                            <button id="quickAutoSegment" class="quick-btn quick-btn--segment" type="button" title="Segmente automatisch vorschlagen" aria-label="Segmente automatisch vorschlagen">
+                                <span class="quick-icon" aria-hidden="true">🎯</span>
+                                <span class="quick-text">Segmente</span>
+                            </button>
                             <div class="quick-tempo-block">
                                 <button id="quickTempoMatch" class="quick-btn" type="button" title="Tempo automatisch auf EN-Zeit anpassen" aria-label="Tempo automatisch auf EN-Zeit anpassen">
                                     <span class="quick-icon" aria-hidden="true">⏱️</span>
@@ -897,6 +902,23 @@
                                 <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
                                 <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
                             </div>
+                        </div>
+                        <!-- Karte Segment-Vorschläge -->
+                        <div class="timing-card segment-card">
+                            <div class="segment-card-header">
+                                <h4>Segment-Vorschläge</h4>
+                                <button id="segmentRunDetection" class="btn btn-secondary" type="button" title="Neue Segmentierung berechnen">Neu erkennen</button>
+                            </div>
+                            <p class="segment-card-hint">Automatische Vorschläge können als „behalten“ oder „löschen“ markiert und direkt in die Ignorierbereiche übernommen werden.</p>
+                            <div class="segment-controls">
+                                <label class="segment-padding-label" for="segmentPaddingInput">Sicherheits-Puffer (ms)</label>
+                                <input id="segmentPaddingInput" type="number" value="80" step="10" min="0" class="segment-padding-input">
+                                <div class="segment-toggle-group">
+                                    <button id="segmentKeepAll" class="segment-toggle-all" type="button">Alle behalten</button>
+                                    <button id="segmentDropAll" class="segment-toggle-all segment-toggle-all--danger" type="button">Alle löschen</button>
+                                </div>
+                            </div>
+                            <div id="segmentSuggestionList" class="segment-list" aria-live="polite"></div>
                         </div>
                         <!-- Karte Pausen entfernen -->
                         <div class="timing-card pause-card">
