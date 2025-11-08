@@ -2892,17 +2892,19 @@ th:nth-child(8) {
 
 #deEditDialog .quick-toolbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
     align-items: flex-start; /* Verhindert, dass die orangenen Buttons durch den Tempo-Block in der Höhe wachsen */
     justify-content: flex-start;
+    overflow-x: auto; /* Sorgt auf kleineren Ansichten für horizontales Scrollen statt einer zweiten Zeile */
+    scrollbar-width: thin;
 }
 
 #deEditDialog .quick-tempo-block {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 0 1 150px;
+    flex: 0 0 160px;
     min-width: 0;
     align-items: stretch;
     align-self: flex-start; /* Sorgt dafür, dass der Block wie die anderen Schnellzugriffs-Elemente oben ausgerichtet bleibt */
@@ -3023,7 +3025,7 @@ th:nth-child(8) {
     gap: 8px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
     box-shadow: 0 8px 18px rgba(255, 123, 57, 0.28);
-    flex: 0 1 150px;
+    flex: 0 0 160px;
     min-width: 0;
 }
 
@@ -3057,7 +3059,7 @@ th:nth-child(8) {
 
 @media (max-width: 1200px) {
     #deEditDialog .quick-btn {
-        flex: 1 1 180px;
+        flex: 0 0 clamp(150px, 18vw, 180px);
     }
 }
 
@@ -3067,21 +3069,21 @@ th:nth-child(8) {
     }
 
     #deEditDialog .quick-btn {
-        flex: 1 1 calc(50% - 8px);
+        flex: 0 0 160px;
         min-width: 0;
     }
 }
 
 @media (max-width: 600px) {
     #deEditDialog .quick-toolbar {
-        flex-wrap: nowrap;
-        overflow-x: auto;
+        scroll-snap-type: x mandatory; /* Unterstützt gleichmäßiges Scrollen bei sehr kleinen Displays */
     }
 
     #deEditDialog .quick-btn {
-        flex: 0 0 auto;
+        flex: 0 0 clamp(140px, 60vw, 170px);
         padding: 8px;
         min-width: 0;
+        scroll-snap-align: start; /* Hält jeden Button beim Scrollen sauber im Fokus */
     }
 
     #deEditDialog .quick-text {
