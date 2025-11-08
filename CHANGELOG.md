@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.481
+* `web/src/style.css` hält die Schnellzugriffsleiste standardmäßig einreihig, sorgt für horizontales Scrollen samt Scroll-Snap und gibt allen sechs Hauptbuttons eine identische Flex-Breite von 160 px.
+* `README.md` beschreibt die einreihige Schnellzugriffsleiste mit horizontalem Scrollen und den gleichmäßigen Abständen über `gap`.
+* `docs/screenshots/de-audio-quick-toolbar-scroll.txt` dokumentiert den Platzhalter für den aktualisierten Toolbar-Screenshot.
+
 # 🛠️ Patch in 1.40.480
 * `web/src/main.js` leert nach einem erfolgreichen Speichern sämtliche Segment-Vorschläge und stößt die Aktualisierung von Liste sowie Timeline automatisch an.
 * `README.md` dokumentiert das automatische Zurücksetzen der Segment-Vorschläge nach dem Speichern.
