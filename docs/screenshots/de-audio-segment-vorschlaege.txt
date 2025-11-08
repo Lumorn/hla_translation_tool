@@ -1,0 +1,1 @@
+Platzhalter-Bild: Segment-Vorschlagskarte im DE-Audio-Editor mit aktiver Analyse. Sichtbar sind der neue Schnellzugriff „Segmente“, die farbig markierten Vorschläge in der Wellenform, die Status-Toggles der Liste sowie die Timeline-Vorschau mit grünen, roten und grauen Balken. Das reale Artefakt heißt `de-audio-segment-vorschlaege.png`.

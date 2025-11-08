@@ -1,4 +1,16 @@
 # Changelog
+# 🛠️ Patch in 1.40.479
+* `tests/segmentSuggestionLogic.test.js` prüft Pufferung, Sortierung und die Übernahme der automatischen Lücken in `editIgnoreRanges`.
+* `web/src/main.js` exportiert zusätzliche Test-Hilfsfunktionen, damit die Segment-Vorschlagslogik isoliert gesteuert werden kann.
+* `README.md` ergänzt einen Hinweis auf die neuen Segment-Tests.
+
+# 🛠️ Patch in 1.40.478
+* `web/hla_translation_tool.html` ergänzt einen Schnellzugriff „Segmente“, eine neue Karte mit Vorschlagsliste samt Puffer-Eingabe und eine Vorschau-Leiste oberhalb der Wellenformen.
+* `web/src/style.css` gestaltet die Segment-Schaltflächen, die Vorschlagskarte inklusive Statusfarben und die Timeline-Bänder und schützt automatisch erzeugte Ignorierbereiche vor Direktbearbeitung.
+* `web/src/main.js` führt Segmentzustände, automatische Stille-Lücken, die Funktion `runAutoSegmentDetection()`, Listen-Refresh sowie Canvas-Interaktionen mit Dragging/Toggling ein und überträgt Entscheidungen sofort in `editIgnoreRanges` und die Master-Timeline.
+* `README.md` beschreibt die neuen Segment-Vorschläge im DE-Editor und verlinkt das zugehörige Screenshot-Platzhalterartefakt.
+* `docs/screenshots/de-audio-segment-vorschlaege.txt` dokumentiert den neuen UI-Platzhalter mit Analysekarte, farbigen Overlays und Timeline-Bändern.
+
 # 🛠️ Patch in 1.40.477
 * `docs/screenshots/de-audio-turbo.txt` verweist jetzt auf das Artefakt `de-audio-quick-actions-focus.png`, das die kompakte Tempo-Schnellleiste zeigt.
 * `README.md` ergänzt einen Hinweis auf den aktuellen Screenshot der Tempo-Schnellsteuerung.

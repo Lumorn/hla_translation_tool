@@ -185,6 +185,12 @@ function resetGlobalState() {
         segmentPlayerUrl = null;
     }
     if (typeof ignoredSegments !== 'undefined' && ignoredSegments.clear) ignoredSegments.clear();
+    if (typeof autoSegments !== 'undefined') autoSegments = [];
+    if (typeof segmentOverrides !== 'undefined') segmentOverrides = [];
+    if (typeof segmentDecisions !== 'undefined') segmentDecisions = [];
+    if (typeof autoSilenceGaps !== 'undefined') autoSilenceGaps = [];
+    if (typeof segmentHoverIndex !== 'undefined') segmentHoverIndex = null;
+    if (typeof segmentDragging !== 'undefined') segmentDragging = null;
     // Click-Listener für die Projektliste zurücksetzen, damit er neu gebunden wird
     if (typeof projectListClickBound !== 'undefined') projectListClickBound = false;
 }
@@ -546,6 +552,15 @@ let tempoFactor           = 1.0;   // Faktor für Time-Stretching
 let loadedTempoFactor     = 1.0;   // Ursprünglicher Faktor beim Öffnen
 let autoIgnoreMs          = 400;   // Schwelle für Pausen in ms
 
+// Vorschlagslogik für automatische Segmente
+let autoSegments         = [];     // Roh-Segmente aus der Analyse
+let segmentOverrides     = [];     // Manuelle Anpassungen der Segmentgrenzen
+let segmentDecisions     = [];     // Entscheidung pro Segment („keep“ oder „drop“)
+let autoSilenceGaps      = [];     // Automatisch erkannte Lücken zwischen Segmenten
+let segmentPaddingMs     = parseInt(storage.getItem('hla_segmentPaddingMs'), 10) || 80; // Sicherheits-Puffer
+let segmentHoverIndex    = null;   // Index für Hover in Liste oder Waveform
+let segmentDragging      = null;   // Aktiver Drag an einem Segmentrand
+
 // Anzeigeeinstellungen für die Wellenformen
 const WAVE_ZOOM_MIN       = 0.8;
 const WAVE_ZOOM_MAX       = 2.5;
@@ -626,6 +641,152 @@ function updateTempoDisplays(autoMode = false) {
         }
     }
 }
+
+// =========================== SEGMENT-HILFSFUNKTIONEN START ==================
+// Formatiert Millisekunden in ein mm:ss,mmm-Format für Listen und Tooltips
+function formatMsCompact(ms) {
+    const sichereMs = Math.max(0, Math.round(Number.isFinite(ms) ? ms : 0));
+    const minuten = Math.floor(sichereMs / 60000);
+    const sekunden = Math.floor((sichereMs % 60000) / 1000);
+    const millis = sichereMs % 1000;
+    return `${String(minuten).padStart(2, '0')}:${String(sekunden).padStart(2, '0')},${String(millis).padStart(3, '0')}`;
+}
+
+// Kopiert einen Bereich und behält auf Wunsch Zusatzinformationen wie Quelle
+function cloneRange(range, includeMeta = true) {
+    if (!range) return { start: 0, end: 0 };
+    const kopie = {
+        start: Number.isFinite(range.start) ? range.start : 0,
+        end: Number.isFinite(range.end) ? range.end : 0
+    };
+    if (includeMeta) {
+        if (range.source) kopie.source = range.source;
+        if (typeof range.segmentIndex === 'number') kopie.segmentIndex = range.segmentIndex;
+    }
+    return kopie;
+}
+
+// Entfernt Metadaten aus einem Bereich, damit nur Start und Ende übrig bleiben
+function stripRangeMeta(range) {
+    return {
+        start: Number.isFinite(range?.start) ? range.start : 0,
+        end: Number.isFinite(range?.end) ? range.end : 0
+    };
+}
+
+// Liefert nur die manuell gepflegten Ignorierbereiche zurück
+function getManualIgnoreRanges() {
+    return editIgnoreRanges.filter(r => !r.source || (r.source !== 'segment-auto' && r.source !== 'segment-gap'));
+}
+
+// Aktualisiert den Zwischenspeicher für manuelle Bereiche
+function updateManualIgnoreCache() {
+    manualIgnoreRanges = getManualIgnoreRanges().map(r => cloneRange(r));
+}
+
+// Setzt alle Segmentvorschläge zurück, z. B. beim Schließen des Dialogs
+function clearSegmentSuggestions() {
+    autoSegments = [];
+    segmentOverrides = [];
+    segmentDecisions = [];
+    autoSilenceGaps = [];
+    segmentHoverIndex = null;
+    segmentDragging = null;
+    refreshSegmentSuggestionList();
+    updateSegmentTimelinePreview();
+}
+
+// Ermittelt das unveränderte Start-/Ende-Paar eines Segments
+function getSegmentRawBounds(index) {
+    const basis = autoSegments[index];
+    if (!basis) return null;
+    const override = segmentOverrides[index];
+    const start = Number.isFinite(override?.start) ? override.start : basis.start;
+    const end = Number.isFinite(override?.end) ? override.end : basis.end;
+    return { start, end };
+}
+
+// Wandelt Rohgrenzen in finale Vorschlagsgrenzen inklusive Puffer um
+function getSegmentFinalBounds(index) {
+    const raw = getSegmentRawBounds(index);
+    if (!raw) return null;
+    const pad = Math.max(0, segmentPaddingMs);
+    let start = Math.max(0, raw.start - pad);
+    let end = Math.min(editDurationMs || (originalEditBuffer ? originalEditBuffer.length / originalEditBuffer.sampleRate * 1000 : 0), raw.end + pad);
+    if (end <= start) {
+        const mitte = (raw.start + raw.end) / 2;
+        start = Math.max(0, mitte - 5);
+        end = Math.min(editDurationMs, mitte + 5);
+    }
+    return { start, end, rawStart: raw.start, rawEnd: raw.end };
+}
+
+// Erstellt eine sortierte Liste aller finalen Segmente mitsamt Status
+function collectFinalSegments() {
+    const liste = [];
+    for (let i = 0; i < autoSegments.length; i++) {
+        const bounds = getSegmentFinalBounds(i);
+        if (!bounds) continue;
+        liste.push({
+            index: i,
+            start: bounds.start,
+            end: bounds.end,
+            rawStart: bounds.rawStart,
+            rawEnd: bounds.rawEnd,
+            decision: segmentDecisions[i] || 'keep'
+        });
+    }
+    liste.sort((a, b) => a.start - b.start);
+    return liste;
+}
+
+// Überträgt Entscheidungen und Lücken in die Ignorierliste
+function applySegmentDecisionsToIgnoreRanges(options = {}) {
+    const { skipRefresh = false } = options;
+    const manuell = getManualIgnoreRanges().map(r => cloneRange(r));
+    const gaps = autoSilenceGaps.map(r => ({ start: r.start, end: r.end, source: 'segment-gap' }));
+    const drops = [];
+    for (let i = 0; i < autoSegments.length; i++) {
+        if (segmentDecisions[i] !== 'drop') continue;
+        const finale = getSegmentFinalBounds(i);
+        if (!finale) continue;
+        drops.push({ start: finale.start, end: finale.end, source: 'segment-auto', segmentIndex: i });
+    }
+    editIgnoreRanges = [...manuell, ...gaps, ...drops];
+    updateManualIgnoreCache();
+    if (!skipRefresh) {
+        refreshIgnoreList();
+        updateLengthInfo();
+    }
+}
+
+// Berechnet die Lücken zwischen den Segmenten neu und aktualisiert Folgeansichten
+function rebuildSegmentStructures() {
+    const finaleSegmente = collectFinalSegments();
+    const neueGaps = [];
+    const MIN_GAP_MS = 60;
+    const dauer = editDurationMs || (originalEditBuffer ? originalEditBuffer.length / originalEditBuffer.sampleRate * 1000 : 0);
+    if (finaleSegmente.length) {
+        let cursor = 0;
+        for (const seg of finaleSegmente) {
+            if (seg.start - cursor >= MIN_GAP_MS) {
+                neueGaps.push({ start: cursor, end: seg.start });
+            }
+            cursor = Math.max(cursor, seg.end);
+        }
+        if (dauer - cursor >= MIN_GAP_MS) {
+            neueGaps.push({ start: cursor, end: dauer });
+        }
+    } else if (dauer > MIN_GAP_MS) {
+        neueGaps.push({ start: 0, end: dauer });
+    }
+    autoSilenceGaps = neueGaps;
+    applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+    refreshIgnoreList();
+    updateSegmentTimelinePreview();
+}
+
+// =========================== SEGMENT-HILFSFUNKTIONEN END ====================
 
 if (!Number.isFinite(waveZoomLevel) || waveZoomLevel <= 0) {
     waveZoomLevel = 1.0;
@@ -14229,6 +14390,21 @@ function drawWaveform(canvas, buffer, opts = {}) {
             ctx.fillRect(sx, 0, ex - sx, height);
         });
     }
+    if (opts.segmentSuggestions && Array.isArray(opts.segmentSuggestions)) {
+        opts.segmentSuggestions.forEach(seg => {
+            const sx = (seg.start / durationMs) * width;
+            const ex = (seg.end / durationMs) * width;
+            const farbe = seg.state === 'drop' ? 'rgba(222, 76, 76, 0.45)' : 'rgba(76, 196, 132, 0.35)';
+            ctx.fillStyle = farbe;
+            ctx.fillRect(sx, 0, Math.max(1, ex - sx), height);
+            if (seg.highlight) {
+                ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(sx, 0, Math.max(1, ex - sx), height);
+                ctx.lineWidth = 1;
+            }
+        });
+    }
     if (opts.selection) {
         const sx = (opts.selection.start / durationMs) * width;
         const ex = (opts.selection.end / durationMs) * width;
@@ -14820,12 +14996,16 @@ async function openDeEdit(fileId) {
     editStartTrim = file.trimStartMs || 0;
     editEndTrim = file.trimEndMs || 0;
     normalizeDeTrim();
-    editIgnoreRanges = Array.isArray(file.ignoreRanges) ? file.ignoreRanges.map(r => ({start:r.start,end:r.end})) : [];
-    manualIgnoreRanges = editIgnoreRanges.map(r => ({start:r.start,end:r.end}));
+    editIgnoreRanges = Array.isArray(file.ignoreRanges)
+        ? file.ignoreRanges.map(r => ({ start: r.start || 0, end: r.end || 0, source: 'manual' }))
+        : [];
+    manualIgnoreRanges = editIgnoreRanges.map(r => cloneRange(r));
     editSilenceRanges = Array.isArray(file.silenceRanges) ? file.silenceRanges.map(r => ({start:r.start,end:r.end})) : [];
     manualSilenceRanges = editSilenceRanges.map(r => ({start:r.start,end:r.end}));
     ignoreTempStart = null;
     silenceTempStart = null;
+    clearSegmentSuggestions();
+    refreshSegmentSuggestionList();
 
     // Hilfsfunktionen für visuelles Feedback der Schnellzugriffe (Kommentare auf Deutsch gewünscht)
     const triggerPulse = (elementId, fallbackSelector) => {
@@ -14884,6 +15064,42 @@ async function openDeEdit(fileId) {
         runAutoTrim();
         triggerPulse('autoTrimBtn');
     };
+
+    const quickAutoSegment = document.getElementById('quickAutoSegment');
+    if (quickAutoSegment) quickAutoSegment.onclick = () => {
+        runAutoSegmentDetection();
+        triggerPulse('segmentRunDetection', '#segmentSuggestionList');
+    };
+
+    const segmentRunBtn = document.getElementById('segmentRunDetection');
+    if (segmentRunBtn) segmentRunBtn.onclick = () => runAutoSegmentDetection();
+    const segmentKeepAll = document.getElementById('segmentKeepAll');
+    if (segmentKeepAll) segmentKeepAll.onclick = () => {
+        if (!autoSegments.length) return;
+        segmentDecisions = autoSegments.map(() => 'keep');
+        applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+        refreshIgnoreList();
+        refreshSegmentSuggestionList();
+        updateSegmentTimelinePreview();
+        updateDeEditWaveforms();
+        updateLengthInfo();
+    };
+    const segmentDropAll = document.getElementById('segmentDropAll');
+    if (segmentDropAll) segmentDropAll.onclick = () => {
+        if (!autoSegments.length) return;
+        segmentDecisions = autoSegments.map(() => 'drop');
+        applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+        refreshIgnoreList();
+        refreshSegmentSuggestionList();
+        updateSegmentTimelinePreview();
+        updateDeEditWaveforms();
+        updateLengthInfo();
+    };
+    const paddingInput = document.getElementById('segmentPaddingInput');
+    if (paddingInput) {
+        paddingInput.value = segmentPaddingMs;
+        paddingInput.oninput = ev => updateSegmentPadding(ev.target.value);
+    }
 
     const quickTempoMatch = document.getElementById('quickTempoMatch');
     if (quickTempoMatch) quickTempoMatch.onclick = () => {
@@ -15010,20 +15226,29 @@ async function openDeEdit(fileId) {
         autoMs.value = 400;
         autoChk.onchange = () => {
             if (autoChk.checked) {
-                manualIgnoreRanges = editIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+                manualIgnoreRanges = getManualIgnoreRanges().map(r => cloneRange(r));
                 autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
+                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs)
+                    .map(r => ({ start: r.start, end: r.end, source: 'manual' }));
+                applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+                refreshIgnoreList();
+                updateSegmentTimelinePreview();
             } else {
-                editIgnoreRanges = manualIgnoreRanges.map(r => ({ start: r.start, end: r.end }));
+                editIgnoreRanges = manualIgnoreRanges.map(r => ({ start: r.start, end: r.end, source: 'manual' }));
+                applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+                refreshIgnoreList();
+                updateSegmentTimelinePreview();
             }
-            refreshIgnoreList();
             updateDeEditWaveforms();
         };
         autoMs.oninput = () => {
             if (autoChk.checked) {
                 autoIgnoreMs = parseInt(autoMs.value) || 400;
-                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs);
+                editIgnoreRanges = detectPausesInBuffer(savedOriginalBuffer, autoIgnoreMs)
+                    .map(r => ({ start: r.start, end: r.end, source: 'manual' }));
+                applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
                 refreshIgnoreList();
+                updateSegmentTimelinePreview();
                 updateDeEditWaveforms();
             }
         };
@@ -15499,8 +15724,9 @@ async function openDeEdit(fileId) {
             } else {
                 const start = Math.min(ignoreTempStart, time);
                 const end = Math.max(ignoreTempStart, time);
-                editIgnoreRanges.push({ start, end });
+                editIgnoreRanges.push({ start, end, source: 'manual' });
                 ignoreTempStart = null;
+                updateManualIgnoreCache();
                 refreshIgnoreList();
             }
             scheduleWaveformUpdate();
@@ -15518,6 +15744,48 @@ async function openDeEdit(fileId) {
             }
             scheduleWaveformUpdate();
             return;
+        }
+
+        if (autoSegments.length && editDurationMs > 0) {
+            const segmente = collectFinalSegments();
+            const tolerance = 6;
+            for (const seg of segmente) {
+                const sxSeg = (seg.start / editDurationMs) * width;
+                const exSeg = (seg.end / editDurationMs) * width;
+                if (Math.abs(x - sxSeg) <= tolerance) {
+                    if (!segmentOverrides[seg.index]) {
+                        const raw = getSegmentRawBounds(seg.index);
+                        segmentOverrides[seg.index] = { start: raw.start, end: raw.end };
+                    }
+                    segmentHoverIndex = seg.index;
+                    refreshSegmentSuggestionList();
+                    updateSegmentTimelinePreview();
+                    updateDeEditWaveforms();
+                    segmentDragging = { index: seg.index, edge: 'start' };
+                    return;
+                }
+                if (Math.abs(x - exSeg) <= tolerance) {
+                    if (!segmentOverrides[seg.index]) {
+                        const raw = getSegmentRawBounds(seg.index);
+                        segmentOverrides[seg.index] = { start: raw.start, end: raw.end };
+                    }
+                    segmentHoverIndex = seg.index;
+                    refreshSegmentSuggestionList();
+                    updateSegmentTimelinePreview();
+                    updateDeEditWaveforms();
+                    segmentDragging = { index: seg.index, edge: 'end' };
+                    return;
+                }
+            }
+            const innerhalb = segmente.find(seg => x >= (seg.start / editDurationMs) * width && x <= (seg.end / editDurationMs) * width);
+            if (innerhalb) {
+                const aktueller = segmentDecisions[innerhalb.index] === 'drop' ? 'keep' : 'drop';
+                setSegmentDecision(innerhalb.index, aktueller);
+                segmentHoverIndex = innerhalb.index;
+                updateSegmentTimelinePreview();
+                updateDeEditWaveforms();
+                return;
+            }
         }
 
         const startX = (editStartTrim / editDurationMs) * width;
@@ -15556,11 +15824,48 @@ async function openDeEdit(fileId) {
         validateDeSelection();
         scheduleWaveformUpdate();
     };
+    deCanvas.onmouseleave = () => {
+        if (segmentHoverIndex != null) {
+            segmentHoverIndex = null;
+            updateDeEditWaveforms();
+        }
+    };
     window.onmousemove = e => {
         const rect = deCanvas.getBoundingClientRect();
         const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
         const ratio = x / rect.width;
         const time = ratio * editDurationMs;
+        if (segmentDragging && autoSegments.length) {
+            const idx = segmentDragging.index;
+            if (!segmentOverrides[idx]) {
+                const raw = getSegmentRawBounds(idx);
+                segmentOverrides[idx] = { start: raw.start, end: raw.end };
+            }
+            const pad = Math.max(0, segmentPaddingMs);
+            const override = segmentOverrides[idx];
+            if (segmentDragging.edge === 'start') {
+                const maxEnd = override.end - 5;
+                let neuerStart = Math.min(maxEnd, time + pad);
+                neuerStart = Math.max(0, neuerStart);
+                if (override.start !== neuerStart) {
+                    override.start = neuerStart;
+                    rebuildSegmentStructures();
+                    refreshSegmentSuggestionList();
+                    updateDeEditWaveforms();
+                }
+            } else if (segmentDragging.edge === 'end') {
+                const minStart = override.start + 5;
+                let neuesEnde = Math.max(minStart, time - pad);
+                neuesEnde = Math.min(editDurationMs, neuesEnde);
+                if (override.end !== neuesEnde) {
+                    override.end = neuesEnde;
+                    rebuildSegmentStructures();
+                    refreshSegmentSuggestionList();
+                    updateDeEditWaveforms();
+                }
+            }
+            return;
+        }
         if (deSelecting) {
             editStartTrim = Math.min(deDragStart, time);
             editEndTrim   = editDurationMs - Math.max(deDragStart, time);
@@ -15594,6 +15899,15 @@ async function openDeEdit(fileId) {
             scheduleWaveformUpdate();
             return;
         }
+        if (autoSegments.length && editDurationMs > 0) {
+            const segmente = collectFinalSegments();
+            const hover = segmente.find(seg => x >= (seg.start / editDurationMs) * rect.width && x <= (seg.end / editDurationMs) * rect.width);
+            const neuerIndex = hover ? hover.index : null;
+            if (segmentHoverIndex !== neuerIndex) {
+                segmentHoverIndex = neuerIndex;
+                updateDeEditWaveforms();
+            }
+        }
         if (!editDragging) return;
         if (editDragging === 'start') {
             editStartTrim = Math.min(time, editDurationMs - editEndTrim - 1);
@@ -15608,6 +15922,13 @@ async function openDeEdit(fileId) {
         scheduleWaveformUpdate();
     };
     window.onmouseup = e => {
+        if (segmentDragging) {
+            segmentDragging = null;
+            refreshSegmentSuggestionList();
+            updateSegmentTimelinePreview();
+            updateDeEditWaveforms();
+            return;
+        }
         if (enSelecting && editEnBuffer) {
             enSelecting = false;
             const start = Math.min(enSelectStart, enSelectEnd);
@@ -16440,6 +16761,15 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
         const selStart = editStartTrim;
         const selEnd   = editDurationMs - editEndTrim;
         const opts = { progress: showDe, ignore: editIgnoreRanges, silence: editSilenceRanges };
+        if (autoSegments.length) {
+            const segOverlay = collectFinalSegments().map(seg => ({
+                start: seg.start,
+                end: seg.end,
+                state: seg.decision,
+                highlight: seg.index === segmentHoverIndex
+            }));
+            opts.segmentSuggestions = segOverlay;
+        }
         if (deSelectionActive && selStart < selEnd) {
             opts.selection = { start: selStart, end: selEnd };
         }
@@ -16469,6 +16799,7 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     setTrimInputValueSafe(eInput, deSelectionActive ? (editDurationMs - editEndTrim) : 0);
     updateWaveRulers();
     updateLengthInfo();
+    updateSegmentTimelinePreview();
     updateMasterTimeline();
 }
 // Aktualisiert die Liste der Ignorier-Bereiche
@@ -16483,19 +16814,33 @@ function refreshIgnoreList() {
             `<input type="number" value="${Math.round(r.start)}" step="100" class="ignore-start">` +
             `<input type="number" value="${Math.round(r.end)}" step="100" class="ignore-end">` +
             `<button class="btn btn-secondary">🗑️</button>`;
-        row.querySelector('.ignore-start').oninput = e => {
-            r.start = parseInt(e.target.value) || 0;
-            updateDeEditWaveforms();
-        };
-        row.querySelector('.ignore-end').oninput = e => {
-            r.end = parseInt(e.target.value) || 0;
-            updateDeEditWaveforms();
-        };
-        row.querySelector('button').onclick = () => {
-            editIgnoreRanges.splice(idx, 1);
-            refreshIgnoreList();
-            updateDeEditWaveforms();
-        };
+        const startInput = row.querySelector('.ignore-start');
+        const endInput = row.querySelector('.ignore-end');
+        const deleteBtn = row.querySelector('button');
+        const isAuto = r.source && r.source.startsWith('segment-');
+        if (isAuto) {
+            row.classList.add('is-auto');
+            startInput.disabled = true;
+            endInput.disabled = true;
+            deleteBtn.disabled = true;
+        } else {
+            startInput.oninput = e => {
+                r.start = parseInt(e.target.value) || 0;
+                updateManualIgnoreCache();
+                updateDeEditWaveforms();
+            };
+            endInput.oninput = e => {
+                r.end = parseInt(e.target.value) || 0;
+                updateManualIgnoreCache();
+                updateDeEditWaveforms();
+            };
+            deleteBtn.onclick = () => {
+                editIgnoreRanges.splice(idx, 1);
+                updateManualIgnoreCache();
+                refreshIgnoreList();
+                updateDeEditWaveforms();
+            };
+        }
         container.appendChild(row);
     });
 }
@@ -16529,9 +16874,189 @@ function refreshSilenceList() {
     });
 }
 
+// Aktualisiert die Liste der Segment-Vorschläge samt Statusknöpfen
+function refreshSegmentSuggestionList() {
+    const container = document.getElementById('segmentSuggestionList');
+    if (!container) return;
+    container.innerHTML = '';
+    if (!autoSegments.length) {
+        const hint = document.createElement('div');
+        hint.className = 'segment-empty';
+        hint.textContent = 'Noch keine Segment-Vorschläge berechnet.';
+        container.appendChild(hint);
+        return;
+    }
+    const segmente = collectFinalSegments();
+    if (!segmente.length) {
+        const hint = document.createElement('div');
+        hint.className = 'segment-empty';
+        hint.textContent = 'Keine aktiven Segmente vorhanden.';
+        container.appendChild(hint);
+        return;
+    }
+    segmente.forEach((seg, position) => {
+        const row = document.createElement('div');
+        row.className = 'segment-row';
+        row.dataset.index = String(seg.index);
+        row.classList.add(seg.decision === 'drop' ? 'segment-drop' : 'segment-keep');
+        if (seg.index === segmentHoverIndex) {
+            row.classList.add('segment-hover');
+        }
+
+        const label = document.createElement('span');
+        label.className = 'segment-index';
+        label.textContent = `#${position + 1}`;
+
+        const times = document.createElement('div');
+        times.className = 'segment-times';
+        const startLabel = document.createElement('span');
+        startLabel.textContent = `Start: ${formatMsCompact(seg.start)}`;
+        const endLabel = document.createElement('span');
+        endLabel.textContent = `Ende: ${formatMsCompact(seg.end)}`;
+        const lenLabel = document.createElement('span');
+        lenLabel.className = 'segment-length';
+        lenLabel.textContent = `Länge: ${(seg.end - seg.start).toFixed(0)} ms`;
+        times.appendChild(startLabel);
+        times.appendChild(endLabel);
+        times.appendChild(lenLabel);
+
+        const controls = document.createElement('div');
+        controls.className = 'segment-controls-inline';
+        const keepBtn = document.createElement('button');
+        keepBtn.type = 'button';
+        keepBtn.className = 'segment-toggle';
+        keepBtn.textContent = 'Behalten';
+        keepBtn.classList.toggle('is-active', seg.decision !== 'drop');
+        keepBtn.onclick = ev => {
+            ev.stopPropagation();
+            setSegmentDecision(seg.index, 'keep');
+        };
+
+        const dropBtn = document.createElement('button');
+        dropBtn.type = 'button';
+        dropBtn.className = 'segment-toggle';
+        dropBtn.textContent = 'Löschen';
+        dropBtn.classList.toggle('is-active', seg.decision === 'drop');
+        dropBtn.onclick = ev => {
+            ev.stopPropagation();
+            setSegmentDecision(seg.index, 'drop');
+        };
+
+        controls.appendChild(keepBtn);
+        controls.appendChild(dropBtn);
+
+        row.appendChild(label);
+        row.appendChild(times);
+        row.appendChild(controls);
+
+        row.onmouseenter = () => {
+            if (segmentHoverIndex !== seg.index) {
+                segmentHoverIndex = seg.index;
+                updateSegmentTimelinePreview();
+                updateDeEditWaveforms();
+            }
+        };
+        row.onmouseleave = () => {
+            if (segmentHoverIndex === seg.index) {
+                segmentHoverIndex = null;
+                updateSegmentTimelinePreview();
+                updateDeEditWaveforms();
+            }
+        };
+        row.onclick = () => {
+            const next = segmentDecisions[seg.index] === 'drop' ? 'keep' : 'drop';
+            setSegmentDecision(seg.index, next);
+        };
+
+        container.appendChild(row);
+    });
+}
+
+// Schreibt die Entscheidung für ein Segment und aktualisiert Anzeige und Ignorierliste
+function setSegmentDecision(index, decision) {
+    if (!autoSegments[index]) return;
+    const neueEntscheidung = decision === 'drop' ? 'drop' : 'keep';
+    if (segmentDecisions[index] === neueEntscheidung) return;
+    segmentDecisions[index] = neueEntscheidung;
+    applySegmentDecisionsToIgnoreRanges({ skipRefresh: true });
+    refreshIgnoreList();
+    refreshSegmentSuggestionList();
+    updateSegmentTimelinePreview();
+    updateDeEditWaveforms();
+    updateLengthInfo();
+}
+
+// Passt den Sicherheits-Puffer an und berechnet Lücken und Vorschläge neu
+function updateSegmentPadding(value) {
+    const neueMs = Math.max(0, Math.round(Number(value) || 0));
+    segmentPaddingMs = neueMs;
+    storage.setItem('hla_segmentPaddingMs', String(neueMs));
+    if (!autoSegments.length) return;
+    rebuildSegmentStructures();
+    refreshSegmentSuggestionList();
+    updateDeEditWaveforms();
+}
+
+// Führt die Segment-Erkennung im aktuellen Bearbeitungsbuffer aus
+function runAutoSegmentDetection() {
+    if (!originalEditBuffer) {
+        if (typeof showToast === 'function') {
+            showToast('Keine DE-Datei geladen – Segmenterkennung nicht möglich.', 'error');
+        }
+        return;
+    }
+    try {
+        const analyse = detectSegmentsInBuffer(originalEditBuffer, autoIgnoreMs, 0.01);
+        autoSegments = analyse.segments.map(seg => ({ start: seg.start, end: seg.end }));
+        segmentOverrides = new Array(autoSegments.length).fill(null);
+        segmentDecisions = autoSegments.map(() => 'keep');
+        segmentHoverIndex = null;
+        rebuildSegmentStructures();
+        refreshSegmentSuggestionList();
+        updateDeEditWaveforms();
+        if (typeof showToast === 'function') {
+            showToast(`Segment-Vorschläge aktualisiert (${autoSegments.length})`, 'success');
+        }
+    } catch (err) {
+        console.error('Segmenterkennung fehlgeschlagen', err);
+        if (typeof showToast === 'function') {
+            showToast('Segmenterkennung fehlgeschlagen – siehe Konsole.', 'error');
+        }
+    }
+}
+
+// Rendert eine Mini-Vorschau der Segmente oberhalb der Wellenformen
+function updateSegmentTimelinePreview() {
+    const preview = document.getElementById('waveTimelinePreview');
+    if (!preview) return;
+    preview.innerHTML = '';
+    const dauer = editDurationMs || (originalEditBuffer ? originalEditBuffer.length / originalEditBuffer.sampleRate * 1000 : 0);
+    if (!Number.isFinite(dauer) || dauer <= 0) return;
+    const segmente = collectFinalSegments();
+    const gaps = autoSilenceGaps || [];
+    const createBand = (start, end, klasse, idx = null) => {
+        if (end <= start) return;
+        const band = document.createElement('div');
+        band.className = `segment-band ${klasse}`;
+        const left = Math.max(0, Math.min(100, (start / dauer) * 100));
+        const width = Math.max(0.5, ((end - start) / dauer) * 100);
+        band.style.left = `${left}%`;
+        band.style.width = `${width}%`;
+        if (idx != null && segmentHoverIndex === idx) {
+            band.style.boxShadow = '0 0 6px rgba(255, 255, 255, 0.85)';
+        }
+        preview.appendChild(band);
+    };
+    gaps.forEach(gap => createBand(gap.start, gap.end, 'gap'));
+    segmente.forEach(seg => {
+        createBand(seg.start, seg.end, seg.decision === 'drop' ? 'drop' : 'keep', seg.index);
+    });
+}
+
 // Verschiebt alle Ignorier-Bereiche symmetrisch
 function adjustIgnoreRanges(deltaMs) {
     for (const r of editIgnoreRanges) {
+        if (r.source && r.source.startsWith('segment-')) continue;
         r.start = Math.max(0, r.start - deltaMs);
         r.end   = Math.min(editDurationMs, r.end + deltaMs);
         if (r.start >= r.end) {
@@ -16540,6 +17065,7 @@ function adjustIgnoreRanges(deltaMs) {
             r.end   = Math.min(editDurationMs, m + 1);
         }
     }
+    updateManualIgnoreCache();
     refreshIgnoreList();
     updateDeEditWaveforms();
 }
@@ -16805,6 +17331,7 @@ function closeDeEdit() {
     resetCanvasZoom(document.getElementById('waveOriginal'));
     resetCanvasZoom(document.getElementById('waveEdited'));
     deSelectionActive = false;
+    clearSegmentSuggestions();
     updateEffectButtons();
     if (typeof effectSidebarOrganized !== 'undefined') {
         // Beim Schließen neu aufbauen lassen, damit die nächste Öffnung sauber startet
@@ -16871,6 +17398,7 @@ async function resetDeEdit() {
         editSilenceRanges = [];
         manualSilenceRanges = [];
         currentEditFile.silenceRanges = [];
+        clearSegmentSuggestions();
         tempoFactor = 1.0;
         currentEditFile.tempoFactor = 1.0;
         currentEditFile.volumeMatched = false;
@@ -17172,7 +17700,7 @@ async function applyDeEdit(param = {}) {
         const rebuildResult = await rebuildEnBufferAfterSave();
         currentEditFile.trimStartMs = editStartTrim;
         currentEditFile.trimEndMs = editEndTrim;
-        currentEditFile.ignoreRanges = editIgnoreRanges;
+        currentEditFile.ignoreRanges = editIgnoreRanges.map(stripRangeMeta);
         currentEditFile.silenceRanges = [];
         currentEditFile.volumeMatched = isVolumeMatched;
         currentEditFile.radioEffect = isRadioEffect;
@@ -19316,6 +19844,57 @@ if (typeof module !== "undefined" && module.exports) {
         __getSegmentAssignments: () => segmentAssignments,
         __setIgnoredSegments: arr => { ignoredSegments = new Set(arr); },
         __getIgnoredSegments: () => Array.from(ignoredSegments),
+        // Test-Hilfen für die Segment-Vorschläge
+        __setAutoSegments: segs => {
+            autoSegments = Array.isArray(segs) ? segs.map(seg => ({
+                start: Number(seg?.start) || 0,
+                end: Number(seg?.end) || 0
+            })) : [];
+        },
+        __getAutoSegments: () => autoSegments.map(seg => cloneRange(seg, false)),
+        __setSegmentOverrides: overrides => {
+            segmentOverrides = Array.isArray(overrides)
+                ? overrides.map(ov => (ov ? {
+                    start: Number(ov.start) || 0,
+                    end: Number(ov.end) || 0
+                } : null))
+                : [];
+        },
+        __getSegmentOverrides: () => segmentOverrides.map(ov => (ov ? cloneRange(ov, false) : null)),
+        __setSegmentDecisions: decisions => {
+            segmentDecisions = Array.isArray(decisions) ? decisions.map(dec => (dec === 'drop' ? 'drop' : 'keep')) : [];
+        },
+        __getSegmentDecisions: () => segmentDecisions.slice(),
+        __setSegmentPaddingMs: value => {
+            segmentPaddingMs = Math.max(0, Math.round(Number(value) || 0));
+        },
+        __getSegmentPaddingMs: () => segmentPaddingMs,
+        __setEditDurationMs: value => {
+            editDurationMs = Math.max(0, Number(value) || 0);
+        },
+        __setOriginalEditBufferMeta: meta => {
+            if (!meta) {
+                originalEditBuffer = null;
+                return;
+            }
+            originalEditBuffer = {
+                length: Number(meta.length) || 0,
+                sampleRate: Number(meta.sampleRate) || 44100
+            };
+        },
+        __setEditIgnoreRanges: ranges => {
+            editIgnoreRanges = Array.isArray(ranges)
+                ? ranges.map(range => cloneRange(range, true))
+                : [];
+            updateManualIgnoreCache();
+        },
+        __getEditIgnoreRanges: () => editIgnoreRanges.map(range => cloneRange(range, true)),
+        __collectFinalSegments: collectFinalSegments,
+        __getSegmentFinalBounds: getSegmentFinalBounds,
+        __applySegmentDecisionsToIgnoreRanges: applySegmentDecisionsToIgnoreRanges,
+        __rebuildSegmentStructures: rebuildSegmentStructures,
+        __getAutoSilenceGaps: () => autoSilenceGaps.map(range => cloneRange(range, false)),
+        __clearSegmentSuggestions: () => clearSegmentSuggestions(),
         // Preset-Funktionen fuer Tests
         saveRadioPreset,
         loadRadioPreset,
