@@ -425,6 +425,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Hall-Effekt wird auch ohne Nebenraum-Effekt gespeichert:** Beim Speichern bleibt der Hall erhalten, selbst wenn der Nebenraum-Effekt deaktiviert ist.
 * **Telefon-auf-Tisch-Effekt:** Simuliert ein abgelegtes Mikrofon, das entfernte Gespräche im Raum aufnimmt; wählbare Raum-Presets wie Wohnzimmer, Büro oder Halle erlauben eine Feinabstimmung.
 * **Zoo-Lautsprecher-Effekt:** Formt deutsche Sprachaufnahmen zu einer halligen Durchsage über betagte Betonhallen-Lautsprecher – inklusive steilem Bandpass, Mittenbetonung, sanfter Sättigung und dunklem Raumhall.
+* **Gezielter Zoo-Lautsprecher-Ton:** Höhere Hochpass-Schwellen (≈430–440 Hz), ein engerer Mitten-Boost um 1,6 kHz sowie etwas mehr Sättigung lassen Sprecher*innen jetzt deutlich kälter, dünner und aggressiver klingen.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.

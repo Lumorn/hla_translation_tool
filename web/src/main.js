@@ -14675,13 +14675,13 @@ async function applyZooSpeakerFilter(buffer) {
 
     const hp1 = speakerCtx.createBiquadFilter();
     hp1.type = 'highpass';
-    hp1.frequency.value = 350;
-    hp1.Q.value = 0.9;
+    hp1.frequency.value = 430;
+    hp1.Q.value = 1.05;
 
     const hp2 = speakerCtx.createBiquadFilter();
     hp2.type = 'highpass';
-    hp2.frequency.value = 350;
-    hp2.Q.value = 0.7;
+    hp2.frequency.value = 440;
+    hp2.Q.value = 0.85;
 
     const lp1 = speakerCtx.createBiquadFilter();
     lp1.type = 'lowpass';
@@ -14695,14 +14695,14 @@ async function applyZooSpeakerFilter(buffer) {
 
     const mids = speakerCtx.createBiquadFilter();
     mids.type = 'peaking';
-    mids.frequency.value = 1500;
-    mids.gain.value = 3;
-    mids.Q.value = 1;
+    mids.frequency.value = 1600;
+    mids.gain.value = 3.5;
+    mids.Q.value = 1.5;
 
     const shaper = speakerCtx.createWaveShaper();
     const curveSize = 65536;
     const curve = new Float32Array(curveSize);
-    const drive = 1.4;
+    const drive = 1.55;
     for (let i = 0; i < curveSize; i++) {
         const x = i * 2 / curveSize - 1;
         curve[i] = Math.tanh(drive * x);
