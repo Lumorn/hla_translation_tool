@@ -1,0 +1,2 @@
+Screenshot-Platzhalter: Darstellung des neuen Zoo-Lautsprecher-Effekts im DE-Audio-Editor.
+Gezeigt werden der neue Effekte-Block mit Beschreibungstexten sowie der Aktivierungsschalter.

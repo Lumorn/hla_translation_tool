@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.483
+* `web/src/main.js` ergänzt den Zoo-Lautsprecher-Effekt mit Bandpass, Soft-Clipping, Kompression und einer betonhalligen Impulsantwort inklusive Cache.
+* `web/hla_translation_tool.html` stellt einen Zoo-Lautsprecher-Schalter samt erklärender Hinweise im Effekte-Panel bereit.
+* `web/src/style.css` liefert eine dezente Hinweisformatierung für Effektbeschreibungen.
+* `README.md` führt den Zoo-Lautsprecher-Effekt im Funktionsarchiv auf.
+* `CHANGELOG.md` dokumentiert den neuen Zoo-Lautsprecher-Effekt.
 # 🛠️ Patch in 1.40.482
 * `web/src/style.css` entfernt das horizontale Scrollen der Schnellzugriffsleiste, verteilt alle sechs Hauptbuttons über `flex: 1 1 calc((100% - GAP) / 6)` und staffelt `min-width`-/`max-width`-Grenzen für 1200 px, 1000 px und 600 px.
 * `README.md` beschreibt die dynamisch skalierende Schnellzugriffsleiste ohne Scrollbalken und verweist auf den neuen Screenshot-Platzhalter.
