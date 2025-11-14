@@ -14683,6 +14683,23 @@ async function applyZooSpeakerFilter(buffer) {
     const src = speakerCtx.createBufferSource();
     src.buffer = monoBuffer;
 
+    const shaper = speakerCtx.createWaveShaper();
+    const curveSize = 65536;
+    const curve = new Float32Array(curveSize);
+    const drive = 1.45;
+    for (let i = 0; i < curveSize; i++) {
+        const x = i * 2 / curveSize - 1;
+        curve[i] = Math.tanh(drive * x);
+    }
+    shaper.curve = curve;
+    shaper.oversample = '4x';
+
+    const preEmphasis = speakerCtx.createBiquadFilter();
+    preEmphasis.type = 'highshelf';
+    preEmphasis.frequency.value = 1800;
+    preEmphasis.gain.value = 1.8;
+    preEmphasis.Q.value = 0.7;
+
     const hp1 = speakerCtx.createBiquadFilter();
     hp1.type = 'highpass';
     hp1.frequency.value = 430;
@@ -14709,31 +14726,22 @@ async function applyZooSpeakerFilter(buffer) {
     mids.gain.value = 3.5;
     mids.Q.value = 1.5;
 
-    const shaper = speakerCtx.createWaveShaper();
-    const curveSize = 65536;
-    const curve = new Float32Array(curveSize);
-    const drive = 1.55;
-    for (let i = 0; i < curveSize; i++) {
-        const x = i * 2 / curveSize - 1;
-        curve[i] = Math.tanh(drive * x);
-    }
-    shaper.curve = curve;
-    shaper.oversample = '4x';
-
     const comp = speakerCtx.createDynamicsCompressor();
-    comp.threshold.value = -20;
-    comp.knee.value = 3;
-    comp.ratio.value = 2.8;
-    comp.attack.value = 0.02;
-    comp.release.value = 0.12;
+    comp.threshold.value = -22;
+    comp.knee.value = 3.5;
+    comp.ratio.value = 3.1;
+    comp.attack.value = 0.018;
+    comp.release.value = 0.14;
 
-    src.connect(hp1);
+    // Neue Signalkette: Monoquelle -> (leichte Vorbetonung) -> WaveShaper -> Hochpässe -> Tiefpässe -> Mittenboost -> Kompressor -> Ausgang
+    src.connect(preEmphasis);
+    preEmphasis.connect(shaper);
+    shaper.connect(hp1);
     hp1.connect(hp2);
     hp2.connect(lp1);
     lp1.connect(lp2);
     lp2.connect(mids);
-    mids.connect(shaper);
-    shaper.connect(comp);
+    mids.connect(comp);
     comp.connect(speakerCtx.destination);
     src.start();
     const speakerProcessed = await speakerCtx.startRendering();
