@@ -14737,6 +14737,11 @@ async function applyZooSpeakerFilter(buffer) {
     const convolver = hallCtx.createConvolver();
     convolver.buffer = impulse;
 
+    const rumbleCut = hallCtx.createBiquadFilter();
+    rumbleCut.type = 'highpass';
+    rumbleCut.frequency.value = 270; // Tiefenanteile <≈270 Hz dämpfen
+    rumbleCut.Q.value = Math.SQRT1_2;
+
     const wetGain = hallCtx.createGain();
     wetGain.gain.value = 0.28; // ca. 28 % Hall
     const dryGain = hallCtx.createGain();
@@ -14744,7 +14749,8 @@ async function applyZooSpeakerFilter(buffer) {
 
     hallSrc.connect(dryGain);
     hallSrc.connect(convolver);
-    convolver.connect(wetGain);
+    convolver.connect(rumbleCut);
+    rumbleCut.connect(wetGain);
     dryGain.connect(hallCtx.destination);
     wetGain.connect(hallCtx.destination);
     hallSrc.start();
@@ -14806,6 +14812,23 @@ async function getZooImpulseResponse(sampleRate) {
         const envelope = Math.pow(0.001, t / rt60);
         const noise = (Math.random() * 2 - 1) * 0.6;
         data[i] += noise * envelope;
+    }
+
+    if (data.length > 1) {
+        // Hochpass dämpft das Impulsrauschen unterhalb von ca. 260 Hz deutlich
+        const hpCutoff = 260;
+        const rc = 1 / (2 * Math.PI * hpCutoff);
+        const dt = 1 / sampleRate;
+        const alpha = rc / (rc + dt);
+        let prevIn = data[0];
+        let prevOut = data[0];
+        for (let i = 0; i < data.length; i++) {
+            const x = data[i];
+            const y = alpha * (prevOut + x - prevIn);
+            data[i] = y;
+            prevOut = y;
+            prevIn = x;
+        }
     }
 
     const cutoff = 1800;
