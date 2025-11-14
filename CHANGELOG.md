@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.484
+* `web/src/main.js` hebt die Hochpass-Frequenzen des Zoo-Lautsprechers auf rund 430–440 Hz an, zieht die Güte straffer, verschiebt den Mitten-Boost auf 1,6 kHz und erhöht Sättigung sowie Boost, damit der Effekt kälter und mittiger klingt.
+* `README.md` vermerkt den verschärften Zoo-Lautsprecher-Ton mit stärkeren Hochpassfiltern und engerem Mittenband.
+* `CHANGELOG.md` dokumentiert die klangliche Nachschärfung des Zoo-Lautsprecher-Effekts.
 # 🛠️ Patch in 1.40.483
 * `web/src/main.js` ergänzt den Zoo-Lautsprecher-Effekt mit Bandpass, Soft-Clipping, Kompression und einer betonhalligen Impulsantwort inklusive Cache.
 * `web/hla_translation_tool.html` stellt einen Zoo-Lautsprecher-Schalter samt erklärender Hinweise im Effekte-Panel bereit.
