@@ -3986,6 +3986,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('neighborHall')){f.neighborHall=false;migrated=true;}
         if(!f.hasOwnProperty('tableMicEffect')){f.tableMicEffect=false;migrated=true;}
         if(!f.hasOwnProperty('tableMicRoom')){f.tableMicRoom='wohnzimmer';migrated=true;}
+        if(!f.hasOwnProperty('zooSpeakerEffect')){f.zooSpeakerEffect=false;migrated=true;}
         if(!f.hasOwnProperty('autoTranslation')){f.autoTranslation='';}
         if(!f.hasOwnProperty('autoSource')){f.autoSource='';}
         if(!f.hasOwnProperty('emotionalText')){f.emotionalText='';}
@@ -5827,6 +5828,7 @@ return `
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
                         ${file.neighborEffect ? '<span class="edit-status-icon" title="Nebenraum-Effekt">🚪</span>' : ''}
                         ${file.tableMicEffect ? '<span class="edit-status-icon" title="Telefon-auf-Tisch-Effekt">📱</span>' : ''}
+                        ${file.zooSpeakerEffect ? '<span class="edit-status-icon" title="Zoo-Lautsprecher">🦁</span>' : ''}
                     </div>
                     ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
                 </div>
@@ -10825,8 +10827,9 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         emiEffect: false,
         neighborEffect: false,
         neighborHall: false,
-        tableMicEffect: false,
-        tableMicRoom: 'wohnzimmer',
+                tableMicEffect: false,
+                tableMicRoom: 'wohnzimmer',
+                zooSpeakerEffect: false,
         version: 1
     };
 
@@ -10996,6 +10999,7 @@ function buildProjectFile(filename, folder) {
         neighborHall: false,
         tableMicEffect: false,
         tableMicRoom: 'wohnzimmer',
+        zooSpeakerEffect: false,
         version: 1
     };
 }
@@ -14638,6 +14642,196 @@ async function applyRadioFilter(buffer, opts = {}) {
     return await outCtx.startRendering();
 }
 // =========================== RADIOFILTER END ================================
+
+// =========================== ZOO-SPEAKER FILTER START =======================
+// Erzeugt den Zoo-Lautsprecher-Sound inklusive Bandbegrenzung, Sättigung und Hall
+async function applyZooSpeakerFilter(buffer) {
+    const createBuffer = (channels, length, sampleRate) => {
+        if (typeof AudioBuffer === 'function') {
+            return new AudioBuffer({ length, numberOfChannels: channels, sampleRate });
+        }
+        const helperCtx = new OfflineAudioContext(channels, length, sampleRate);
+        return helperCtx.createBuffer(channels, length, sampleRate);
+    };
+
+    // Mono-Mix vorbereiten, damit der Lautsprecher wie eine einzelne Quelle klingt
+    const monoBuffer = createBuffer(1, buffer.length, buffer.sampleRate);
+    const monoData = monoBuffer.getChannelData(0);
+    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+        const source = buffer.getChannelData(ch);
+        for (let i = 0; i < source.length; i++) {
+            monoData[i] += source[i];
+        }
+    }
+    const mixScale = buffer.numberOfChannels ? 1 / buffer.numberOfChannels : 1;
+    for (let i = 0; i < monoData.length; i++) {
+        monoData[i] *= mixScale;
+    }
+
+    // Lautsprecher-Simulation: steiler Bandpass, Mittenanhebung und Soft-Clipping
+    const speakerCtx = new OfflineAudioContext(1, monoBuffer.length, monoBuffer.sampleRate);
+    const src = speakerCtx.createBufferSource();
+    src.buffer = monoBuffer;
+
+    const hp1 = speakerCtx.createBiquadFilter();
+    hp1.type = 'highpass';
+    hp1.frequency.value = 350;
+    hp1.Q.value = 0.9;
+
+    const hp2 = speakerCtx.createBiquadFilter();
+    hp2.type = 'highpass';
+    hp2.frequency.value = 350;
+    hp2.Q.value = 0.7;
+
+    const lp1 = speakerCtx.createBiquadFilter();
+    lp1.type = 'lowpass';
+    lp1.frequency.value = 3500;
+    lp1.Q.value = 0.8;
+
+    const lp2 = speakerCtx.createBiquadFilter();
+    lp2.type = 'lowpass';
+    lp2.frequency.value = 3500;
+    lp2.Q.value = 0.6;
+
+    const mids = speakerCtx.createBiquadFilter();
+    mids.type = 'peaking';
+    mids.frequency.value = 1500;
+    mids.gain.value = 3;
+    mids.Q.value = 1;
+
+    const shaper = speakerCtx.createWaveShaper();
+    const curveSize = 65536;
+    const curve = new Float32Array(curveSize);
+    const drive = 1.4;
+    for (let i = 0; i < curveSize; i++) {
+        const x = i * 2 / curveSize - 1;
+        curve[i] = Math.tanh(drive * x);
+    }
+    shaper.curve = curve;
+    shaper.oversample = '4x';
+
+    const comp = speakerCtx.createDynamicsCompressor();
+    comp.threshold.value = -20;
+    comp.knee.value = 3;
+    comp.ratio.value = 2.8;
+    comp.attack.value = 0.02;
+    comp.release.value = 0.12;
+
+    src.connect(hp1);
+    hp1.connect(hp2);
+    hp2.connect(lp1);
+    lp1.connect(lp2);
+    lp2.connect(mids);
+    mids.connect(shaper);
+    shaper.connect(comp);
+    comp.connect(speakerCtx.destination);
+    src.start();
+    const speakerProcessed = await speakerCtx.startRendering();
+
+    // Betonhalle: dichter Nachhall mit kurzer Vorverzögerung
+    const impulse = await getZooImpulseResponse(speakerProcessed.sampleRate);
+    const hallCtx = new OfflineAudioContext(1, speakerProcessed.length + impulse.length, speakerProcessed.sampleRate);
+    const hallSrc = hallCtx.createBufferSource();
+    hallSrc.buffer = speakerProcessed;
+
+    const convolver = hallCtx.createConvolver();
+    convolver.buffer = impulse;
+
+    const wetGain = hallCtx.createGain();
+    wetGain.gain.value = 0.28; // ca. 28 % Hall
+    const dryGain = hallCtx.createGain();
+    dryGain.gain.value = 0.72; // ca. 72 % Direktsignal
+
+    hallSrc.connect(dryGain);
+    hallSrc.connect(convolver);
+    convolver.connect(wetGain);
+    dryGain.connect(hallCtx.destination);
+    wetGain.connect(hallCtx.destination);
+    hallSrc.start();
+    const reverbed = await hallCtx.startRendering();
+
+    // Ergebnis wieder auf die ursprüngliche Kanalanzahl verteilen
+    const out = createBuffer(buffer.numberOfChannels, reverbed.length, buffer.sampleRate);
+    const monoOut = reverbed.getChannelData(0);
+    for (let ch = 0; ch < out.numberOfChannels; ch++) {
+        out.getChannelData(ch).set(monoOut);
+    }
+
+    const target = Math.pow(10, -15 / 20);
+    const rms = bufferRms(out) || 1e-6;
+    const gain = Math.min(target / rms, 2.5);
+    for (let ch = 0; ch < out.numberOfChannels; ch++) {
+        const data = out.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) {
+            const value = data[i] * gain;
+            data[i] = Math.max(-1, Math.min(1, value));
+        }
+    }
+
+    zooSpeakerEffectBuffer = out;
+    return out;
+}
+
+// Erstellt eine diffuse Impulsantwort mit dunklem Hall-Tail für die Zoo-Halle
+async function getZooImpulseResponse(sampleRate) {
+    if (zooImpulseCache && zooImpulseSampleRate === sampleRate) {
+        return zooImpulseCache;
+    }
+
+    const rt60 = 1.8;
+    const preDelay = 0.003;
+    const totalDuration = rt60 * 1.3 + preDelay;
+    const totalSamples = Math.round(totalDuration * sampleRate);
+    const ctx = new OfflineAudioContext(1, totalSamples, sampleRate);
+    const impulse = ctx.createBuffer(1, totalSamples, sampleRate);
+    const data = impulse.getChannelData(0);
+
+    const preDelaySamples = Math.round(preDelay * sampleRate);
+    const reflections = [
+        { time: 0.012, amp: 0.9 },
+        { time: 0.027, amp: 0.7 },
+        { time: 0.041, amp: 0.55 },
+        { time: 0.059, amp: 0.45 },
+        { time: 0.083, amp: 0.35 }
+    ];
+    reflections.forEach(ref => {
+        const idx = preDelaySamples + Math.round(ref.time * sampleRate);
+        if (idx < data.length) {
+            data[idx] += ref.amp;
+        }
+    });
+
+    for (let i = preDelaySamples; i < data.length; i++) {
+        const t = (i - preDelaySamples) / sampleRate;
+        const envelope = Math.pow(0.001, t / rt60);
+        const noise = (Math.random() * 2 - 1) * 0.6;
+        data[i] += noise * envelope;
+    }
+
+    const cutoff = 1800;
+    const damp = Math.exp(-2 * Math.PI * cutoff / sampleRate);
+    let prev = 0;
+    for (let i = 0; i < data.length; i++) {
+        prev = prev * damp + data[i] * (1 - damp);
+        data[i] = prev;
+    }
+
+    let peak = 0;
+    for (let i = 0; i < data.length; i++) {
+        peak = Math.max(peak, Math.abs(data[i]));
+    }
+    if (peak > 0) {
+        const scale = 1 / peak;
+        for (let i = 0; i < data.length; i++) {
+            data[i] *= scale;
+        }
+    }
+
+    zooImpulseCache = impulse;
+    zooImpulseSampleRate = sampleRate;
+    return impulse;
+}
+// =========================== ZOO-SPEAKER FILTER END =========================
 // =========================== REVERB START ===================================
 // Einfacher Hall-Effekt mittels Delay-Schleife
 async function applyReverbEffect(buffer, opts = {}) {
@@ -14931,6 +15125,10 @@ let isNeighborEffect     = false; // Merkt, ob der Nebenraum-Effekt angewendet w
 let tableMicEffectBuffer = null;  // Buffer mit Telefon-auf-Tisch-Effekt
 let isTableMicEffect     = false; // Merkt, ob der Telefon-auf-Tisch-Effekt angewendet wurde
 let tableMicRoomType     = 'wohnzimmer'; // Gewähltes Raum-Preset für den Telefon-Effekt
+let zooSpeakerEffectBuffer = null; // Buffer mit Zoo-Lautsprecher-Effekt
+let isZooSpeakerEffect     = false; // Merkt, ob der Zoo-Lautsprecher aktiv ist
+let zooImpulseCache        = null;  // Zwischenspeicher für die Zoo-Impulsantwort
+let zooImpulseSampleRate   = 0;     // Sample-Rate der zwischengespeicherten Impulsantwort
 let deSaveInProgress     = false;        // Sperrflagge, solange ein DE-Speichervorgang läuft
 
 // =========================== OPENDEEDIT START ===============================
@@ -14971,6 +15169,8 @@ async function openDeEdit(fileId) {
     isNeighborEffect = false;
     tableMicEffectBuffer = null;
     isTableMicEffect = false;
+    zooSpeakerEffectBuffer = null;
+    isZooSpeakerEffect = false;
     // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
     neighborHall = !!file.neighborHall;
     tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
@@ -15490,6 +15690,11 @@ async function openDeEdit(fileId) {
     if (tToggle) {
         tToggle.checked = isTableMicEffect;
         tToggle.onchange = e => toggleTableMicEffect(e.target.checked);
+    }
+    const zooToggle = document.getElementById('zooSpeakerToggle');
+    if (zooToggle) {
+        zooToggle.checked = isZooSpeakerEffect;
+        zooToggle.onchange = e => toggleZooSpeakerEffect(e.target.checked);
     }
     const tRoom = document.getElementById('tableMicRoom');
     if (tRoom) {
@@ -16064,6 +16269,15 @@ function updateEffectButtons() {
     if (tableToggle) {
         tableToggle.checked = isTableMicEffect;
     }
+
+    const zooLabel = document.getElementById('zooSpeakerToggleLabel');
+    const zooToggle = document.getElementById('zooSpeakerToggle');
+    if (zooLabel) {
+        zooLabel.classList.toggle('active', isZooSpeakerEffect);
+    }
+    if (zooToggle) {
+        zooToggle.checked = isZooSpeakerEffect;
+    }
 }
 
 // Überträgt einen markierten EN-Bereich an eine gewünschte Position im DE-Audio
@@ -16182,6 +16396,9 @@ async function recomputeEditBuffer() {
     if (isRadioEffect) {
         processed = await applyRadioFilter(processed);
     }
+    if (isZooSpeakerEffect) {
+        processed = await applyZooSpeakerFilter(processed);
+    }
     if (isHallEffect) {
         processed = await applyReverbEffect(processed);
     }
@@ -16221,6 +16438,36 @@ async function applyRadioEffect() {
     updateEffectButtons();
 }
 // =========================== APPLYRADIOEFFECT END ==========================
+
+// =========================== APPLYZOOSPEAKEREFFECT START ====================
+// Aktiviert den Zoo-Lautsprecher und legt bei Erstnutzung eine History an
+async function applyZooSpeakerEffect() {
+    if (deSaveInProgress) return;
+    if (!isZooSpeakerEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isZooSpeakerEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+
+// Schaltet den Zoo-Lautsprecher abhängig vom Kontrollkästchen ein oder aus
+function toggleZooSpeakerEffect(active) {
+    if (deSaveInProgress) return;
+    if (active) {
+        applyZooSpeakerEffect();
+    } else {
+        isZooSpeakerEffect = false;
+        zooSpeakerEffectBuffer = null;
+        recomputeEditBuffer();
+        updateEffectButtons();
+    }
+}
+// =========================== APPLYZOOSPEAKEREFFECT END =====================
 
 // =========================== APPLYHALLEFFECT START ==========================
 // Aktiviert den Hall-Effekt und legt bei Erstnutzung eine History an
@@ -17356,6 +17603,7 @@ async function resetDeEdit() {
     if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
     if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
     if (currentEditFile.tableMicEffect) steps.push('Telefon-auf-Tisch-Effekt');
+    if (currentEditFile.zooSpeakerEffect) steps.push('Zoo-Lautsprecher');
     const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
     if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
     const relPath = getFullPath(currentEditFile);
@@ -17408,6 +17656,7 @@ async function resetDeEdit() {
         currentEditFile.neighborEffect = false;
         currentEditFile.neighborHall = false;
         currentEditFile.tableMicEffect = false;
+        currentEditFile.zooSpeakerEffect = false;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -17423,6 +17672,8 @@ async function resetDeEdit() {
         isTableMicEffect = false;
         tableMicRoomType = 'wohnzimmer';
         currentEditFile.tableMicRoom = 'wohnzimmer';
+        zooSpeakerEffectBuffer = null;
+        isZooSpeakerEffect = false;
         const tRoom = document.getElementById('tableMicRoom');
         if (tRoom) tRoom.value = tableMicRoomType;
         updateEffectButtons();
@@ -17579,6 +17830,9 @@ async function applyDeEdit(param = {}) {
             if (isRadioEffect) {
                 processedBuffer = await applyRadioFilter(processedBuffer);
             }
+            if (isZooSpeakerEffect) {
+                processedBuffer = await applyZooSpeakerFilter(processedBuffer);
+            }
             if (isHallEffect) {
                 processedBuffer = await applyReverbEffect(processedBuffer);
             } else if (neighborHall) {
@@ -17674,6 +17928,9 @@ async function applyDeEdit(param = {}) {
             if (isRadioEffect) {
                 processedBuffer = await applyRadioFilter(processedBuffer);
             }
+            if (isZooSpeakerEffect) {
+                processedBuffer = await applyZooSpeakerFilter(processedBuffer);
+            }
             if (isHallEffect) {
                 processedBuffer = await applyReverbEffect(processedBuffer);
             } else if (neighborHall) {
@@ -17715,6 +17972,7 @@ async function applyDeEdit(param = {}) {
         currentEditFile.neighborHall = neighborHall;
         currentEditFile.tableMicEffect = isTableMicEffect;
         currentEditFile.tableMicRoom = tableMicRoomType;
+        currentEditFile.zooSpeakerEffect = isZooSpeakerEffect;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern die Markierung auf den vollständigen Clip setzen und Felder normalisieren
         editStartTrim = 0;

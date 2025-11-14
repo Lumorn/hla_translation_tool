@@ -424,6 +424,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Hall-Effekt im Nebenraum-Dialog separat nutzbar:** Der Hall des Nebenraums kann nun auch ohne aktivierten Nebenraum-Effekt verwendet werden.
 * **Hall-Effekt wird auch ohne Nebenraum-Effekt gespeichert:** Beim Speichern bleibt der Hall erhalten, selbst wenn der Nebenraum-Effekt deaktiviert ist.
 * **Telefon-auf-Tisch-Effekt:** Simuliert ein abgelegtes Mikrofon, das entfernte Gespräche im Raum aufnimmt; wählbare Raum-Presets wie Wohnzimmer, Büro oder Halle erlauben eine Feinabstimmung.
+* **Zoo-Lautsprecher-Effekt:** Formt deutsche Sprachaufnahmen zu einer halligen Durchsage über betagte Betonhallen-Lautsprecher – inklusive steilem Bandpass, Mittenbetonung, sanfter Sättigung und dunklem Raumhall.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.

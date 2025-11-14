@@ -2216,6 +2216,12 @@ th:nth-child(8) {
     font-weight: bold;
 }
 
+.effect-note {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+    color: #4a4a4a;
+}
+
 /* Kleiner Button für Standardwerte rechts oben */
 .btn-reset-settings {
     background: #333;
