@@ -14643,6 +14643,16 @@ async function applyRadioFilter(buffer, opts = {}) {
 }
 // =========================== RADIOFILTER END ================================
 
+// Globale Regler für den Zoo-Lautsprecher-Hiss, um später eine UI anbinden zu können
+const zooSpeakerNoiseLevel = {
+    aktiviert: true,
+    gainDb: -40,
+    brumm50HzDb: -52,
+    brumm60HzDb: -56,
+    lowcutHz: 140,
+    highcutHz: 7000
+};
+
 // =========================== ZOO-SPEAKER FILTER START =======================
 // Erzeugt den Zoo-Lautsprecher-Sound inklusive Bandbegrenzung, Sättigung und Hall
 async function applyZooSpeakerFilter(buffer) {
@@ -14728,6 +14738,67 @@ async function applyZooSpeakerFilter(buffer) {
     src.start();
     const speakerProcessed = await speakerCtx.startRendering();
 
+    // Zusätzlicher Offline-Render für Hiss und Brummen
+    let noiseRender = null;
+    const noiseSettings = zooSpeakerNoiseLevel || {};
+    if (noiseSettings.aktiviert !== false && speakerProcessed.length > 0) {
+        const noiseCtx = new OfflineAudioContext(1, speakerProcessed.length, speakerProcessed.sampleRate);
+        const rawNoise = noiseCtx.createBuffer(1, speakerProcessed.length, speakerProcessed.sampleRate);
+        const rawData = rawNoise.getChannelData(0);
+        let last = 0;
+        for (let i = 0; i < rawData.length; i++) {
+            const white = Math.random() * 2 - 1;
+            last = 0.97 * last + 0.03 * white;
+            rawData[i] = last * 0.6;
+        }
+
+        const noiseSource = noiseCtx.createBufferSource();
+        noiseSource.buffer = rawNoise;
+
+        const noiseHighpass = noiseCtx.createBiquadFilter();
+        noiseHighpass.type = 'highpass';
+        noiseHighpass.frequency.value = noiseSettings.lowcutHz || 140;
+        noiseHighpass.Q.value = Math.SQRT1_2;
+
+        const noiseLowpass = noiseCtx.createBiquadFilter();
+        noiseLowpass.type = 'lowpass';
+        noiseLowpass.frequency.value = noiseSettings.highcutHz || 7000;
+        noiseLowpass.Q.value = 0.7;
+
+        const noiseBus = noiseCtx.createGain();
+        noiseBus.gain.value = 1;
+
+        noiseSource.connect(noiseHighpass);
+        noiseHighpass.connect(noiseLowpass);
+        noiseLowpass.connect(noiseBus);
+
+        const duration = speakerProcessed.length / speakerProcessed.sampleRate;
+        if (typeof noiseSettings.brumm50HzDb === 'number') {
+            const hum50 = noiseCtx.createOscillator();
+            hum50.frequency.value = 50;
+            const hum50Gain = noiseCtx.createGain();
+            hum50Gain.gain.value = Math.pow(10, noiseSettings.brumm50HzDb / 20);
+            hum50.connect(hum50Gain);
+            hum50Gain.connect(noiseBus);
+            hum50.start(0);
+            hum50.stop(duration);
+        }
+        if (typeof noiseSettings.brumm60HzDb === 'number') {
+            const hum60 = noiseCtx.createOscillator();
+            hum60.frequency.value = 60;
+            const hum60Gain = noiseCtx.createGain();
+            hum60Gain.gain.value = Math.pow(10, noiseSettings.brumm60HzDb / 20);
+            hum60.connect(hum60Gain);
+            hum60Gain.connect(noiseBus);
+            hum60.start(0);
+            hum60.stop(duration);
+        }
+
+        noiseBus.connect(noiseCtx.destination);
+        noiseSource.start();
+        noiseRender = await noiseCtx.startRendering();
+    }
+
     // Betonhalle: dichter Nachhall mit kurzer Vorverzögerung
     const impulse = await getZooImpulseResponse(speakerProcessed.sampleRate);
     const hallCtx = new OfflineAudioContext(1, speakerProcessed.length + impulse.length, speakerProcessed.sampleRate);
@@ -14751,6 +14822,18 @@ async function applyZooSpeakerFilter(buffer) {
     hallSrc.connect(convolver);
     convolver.connect(rumbleCut);
     rumbleCut.connect(wetGain);
+
+    if (noiseRender) {
+        const noiseSrc = hallCtx.createBufferSource();
+        noiseSrc.buffer = noiseRender;
+        const noiseGain = hallCtx.createGain();
+        const noiseDb = typeof noiseSettings.gainDb === 'number' ? noiseSettings.gainDb : -40;
+        noiseGain.gain.value = Math.pow(10, noiseDb / 20);
+        noiseSrc.connect(noiseGain);
+        noiseGain.connect(wetGain);
+        noiseSrc.start();
+    }
+
     dryGain.connect(hallCtx.destination);
     wetGain.connect(hallCtx.destination);
     hallSrc.start();

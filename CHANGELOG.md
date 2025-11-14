@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.486
+* `web/src/main.js` generiert ein bandbegrenztes Rausch-/Brummbett über einen separaten OfflineAudioContext, mischt es mit fein regelbarem Gain in den Wet-Zweig des Zoo-Lautsprechers und stellt dafür das Parameterobjekt `zooSpeakerNoiseLevel` bereit.
+* `README.md` dokumentiert den neuen Hiss-/Brumm-Mix samt Einstellobjekt für künftige UI-Regler.
+* `CHANGELOG.md` vermerkt den zusätzlichen Noise-Zweig im Zoo-Lautsprecher.
 # 🛠️ Patch in 1.40.485
 * `web/src/main.js` ergänzt einen Hochpass im Hallzweig des Zoo-Lautsprechers und filtert die Impulsantwort selbst unterhalb von ca. 260 Hz, damit der Effekt deutlich weniger Rumpeln erzeugt.
 * `README.md` vermerkt die kältere Zoo-Hall ohne Dröhnen durch die zusätzliche Tiefenabsenkung.

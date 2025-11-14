@@ -427,6 +427,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Zoo-Lautsprecher-Effekt:** Formt deutsche Sprachaufnahmen zu einer halligen Durchsage über betagte Betonhallen-Lautsprecher – inklusive steilem Bandpass, Mittenbetonung, sanfter Sättigung und dunklem Raumhall.
 * **Gezielter Zoo-Lautsprecher-Ton:** Höhere Hochpass-Schwellen (≈430–440 Hz), ein engerer Mitten-Boost um 1,6 kHz sowie etwas mehr Sättigung lassen Sprecher*innen jetzt deutlich kälter, dünner und aggressiver klingen.
 * **Kälte ohne Rumpeln:** Ein zusätzlicher Hochpass in Impulsantwort und Effektkette kappt alle Hallanteile unterhalb von etwa 260–270 Hz, wodurch das tieffrequente Dröhnen verschwindet, ohne den Raumklang zu verlieren.
+* **Hiss & Brumm steuerbar:** Der Zoo-Lautsprecher mischt ein bandbegrenztes Rauschbett plus optionale 50/60 Hz-Sinusanteile per zusätzlichem OfflineAudioContext hinzu; Low-/Highcut und Pegel (z. B. −40 dB) lassen sich über das Parameterobjekt `zooSpeakerNoiseLevel` für künftige UI-Regler anpassen.
 * **Presets für Funkgeräte-Effekt:** Beliebige Einstellungen lassen sich unter eigenem Namen speichern und später wieder laden.
 * **Neues Dialogfeld beim Speichern eines Funkgeräte-Presets:** Die Namenseingabe erfolgt jetzt in einem eigenen Fenster.
 * **Getrennte Effektbereiche:** Funkgerät-, Hall- und Störgeräusch-Einstellungen liegen nun in eigenen Abschnitten des Dialogs.
