@@ -3,6 +3,9 @@
 * `web/src/main.js` ordnet den Zoo-Lautsprecher neu: WaveShaper direkt nach der Monoquelle (mit leichter Vorbetonung), danach Hoch- und Tiefpässe sowie Mitten-Peak, bevor der straffere Kompressor Pegelspitzen einfängt.
 * `README.md` dokumentiert die neue Signalreihenfolge und den kontrollierten Clipping-Charakter des Zoo-Lautsprechers.
 * `CHANGELOG.md` vermerkt die aktualisierte Signalkette des Zoo-Lautsprechers.
+* Klangliche Stichpunkte:
+  * Vor-Sättigung vor den Filtern: Pegelspitzen laufen zuerst durch den WaveShaper und halten den Kompressor im kontrollierten Arbeitsbereich.
+  * Definierter Noise-Floor: Das hinzugefügte Rauschbett landet mit den Standardwerten bei rund −74 dBFS in Signalpausen und bleibt über `zooSpeakerNoiseLevel` reproduzierbar.
 # 🛠️ Patch in 1.40.486
 * `web/src/main.js` generiert ein bandbegrenztes Rausch-/Brummbett über einen separaten OfflineAudioContext, mischt es mit fein regelbarem Gain in den Wet-Zweig des Zoo-Lautsprechers und stellt dafür das Parameterobjekt `zooSpeakerNoiseLevel` bereit.
 * `README.md` dokumentiert den neuen Hiss-/Brumm-Mix samt Einstellobjekt für künftige UI-Regler.
