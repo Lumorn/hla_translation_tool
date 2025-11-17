@@ -4,6 +4,7 @@ const path = require('path');
 const http = require('http');
 const https = require('https');
 const { WebSocket } = require('ws');
+const crypto = require('crypto');
 
 const LOGFILE = path.join(__dirname, 'setup.log');
 
@@ -15,6 +16,30 @@ function log(msg) {
 function run(cmd, options = {}) {
   log(`Führe aus: ${cmd}`);
   return execSync(cmd, { stdio: 'inherit', ...options });
+}
+
+// Berechnet den Hash einer Datei, um Lockfiles mit dem node_modules-Stand abzugleichen
+function calculateHash(file) {
+  return crypto.createHash('sha1').update(fs.readFileSync(file)).digest('hex');
+}
+
+// Prüft, ob eine npm-Installation nötig ist (kein node_modules oder Hash stimmt nicht)
+function needsNpmCi(lockfile, modulesDir) {
+  if (!fs.existsSync(modulesDir)) {
+    return true;
+  }
+  const stamp = path.join(modulesDir, '.modules_hash');
+  const currentHash = calculateHash(lockfile);
+  if (!fs.existsSync(stamp)) {
+    return true;
+  }
+  return fs.readFileSync(stamp, 'utf8').trim() !== currentHash;
+}
+
+// Schreibt den aktuellen Lockfile-Hash als Marker für zukünftige Schnellpfade
+function writeNpmHash(lockfile, modulesDir) {
+  fs.mkdirSync(modulesDir, { recursive: true });
+  fs.writeFileSync(path.join(modulesDir, '.modules_hash'), calculateHash(lockfile));
 }
 
 // Holt JSON von einer URL und bricht nach 5 Sekunden mit Fehler ab
@@ -85,8 +110,15 @@ function fetchJson(url) {
   }
 
   try {
-    log('Installiere Abhängigkeiten im Hauptverzeichnis');
-    run('npm ci');
+    const rootLock = path.join(__dirname, 'package-lock.json');
+    const rootModules = path.join(__dirname, 'node_modules');
+    if (needsNpmCi(rootLock, rootModules)) {
+      log('Installiere Abhängigkeiten im Hauptverzeichnis');
+      run('npm ci');
+      writeNpmHash(rootLock, rootModules);
+    } else {
+      log('Überspringe npm ci im Hauptverzeichnis, node_modules passt zum Lockfile.');
+    }
   } catch (err) {
     log('npm ci im Hauptverzeichnis fehlgeschlagen');
     log(err.toString());
@@ -94,10 +126,18 @@ function fetchJson(url) {
   }
 
   try {
-    log('Installiere Abhängigkeiten im electron-Ordner');
-    run('npm ci', { cwd: path.join(__dirname, 'electron') });
+    const electronDir = path.join(__dirname, 'electron');
+    const electronLock = path.join(electronDir, 'package-lock.json');
+    const electronModules = path.join(electronDir, 'node_modules');
+    if (needsNpmCi(electronLock, electronModules)) {
+      log('Installiere Abhängigkeiten im electron-Ordner');
+      run('npm ci', { cwd: electronDir });
+      writeNpmHash(electronLock, electronModules);
+    } else {
+      log('Überspringe npm ci im electron-Ordner, node_modules passt zum Lockfile.');
+    }
     // Nach der Installation prüfen, ob das Electron-Modul vorhanden ist
-    const electronPath = path.join(__dirname, 'electron', 'node_modules', 'electron');
+    const electronPath = path.join(electronDir, 'node_modules', 'electron');
     if (!fs.existsSync(electronPath)) {
       console.log('Electron-Modul fehlt, wird nachinstalliert...');
       log('Electron-Modul fehlt - versuche "npm install electron"');
