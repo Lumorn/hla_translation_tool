@@ -81,6 +81,98 @@ async function requestPersistentStorage() {
     showToast(`Lokaler Speicher gesichert, verfügbar: ${frei} MB`);
 }
 
+// Richtet die Sprachumschaltung samt Übersetzungszielen ein
+function setupLanguageControls() {
+    if (!window.i18n) return;
+
+    const staticTargets = [
+        { selector: '#projectLoadingText', key: 'loading.project' },
+        { selector: '#errorBannerRetry', key: 'loading.retry' },
+        { selector: '.sidebar-header h2', key: 'sidebar.projects' },
+        { selector: '.add-project-btn', key: 'project.add' },
+        { selector: '#tab-project', key: 'tab.project' },
+        { selector: '#tab-tools', key: 'tab.tools' },
+        { selector: '#tab-media', key: 'tab.media' },
+        { selector: '#tab-system', key: 'tab.system' },
+        { selector: '#tab-search', key: 'tab.search' },
+        { selector: '#toolbarProjectTitle', key: 'toolbar.project.title' },
+        { selector: '#toolbarToolsTitle', key: 'toolbar.tools.title' },
+        { selector: '#toolbarMediaTitle', key: 'toolbar.media.title' },
+        { selector: '#toolbarSystemTitle', key: 'toolbar.system.title' },
+        { selector: '#toolbarSearchTitle', key: 'toolbar.search.title' },
+        { selector: '#gptScoreButton', key: 'button.gptScore' },
+        { selector: '#randomProjectButton', key: 'button.randomProject' },
+        { selector: '#wordListButton', key: 'button.wordList' },
+        { selector: '#generateEmotionsButton', key: 'button.generateEmotions' },
+        { selector: '#sendTextV2Button', key: 'button.sendElevenLabs' },
+        { selector: '#openDubbingLog', key: 'button.dubbingLog' },
+        { selector: '#subtitleSearchAllButton', key: 'button.subtitleSearchAll' },
+        { selector: '#subtitleSearchAllButtonInline', key: 'button.subtitleSearchAll' },
+        { selector: '#settingsButton', key: 'settings.title' },
+        { selector: '.language-label', key: 'settings.language' },
+        { selector: '#languageSelect option[value="de"]', key: 'language.german' },
+        { selector: '#languageSelect option[value="en"]', key: 'language.english' },
+        { selector: '#openVideoManager', key: 'toolbar.media.videos' },
+        { selector: 'label[for="fileInput"]', key: 'label.addFiles' },
+        { selector: '#fileInput', key: 'placeholder.addFiles', attribute: 'placeholder' },
+        { selector: '#mapSelect', key: 'placeholder.level', attribute: 'placeholder' },
+        { selector: '#startButton', key: 'button.start' },
+        { selector: '#optGod', key: 'option.godmode', attribute: 'title' },
+        { selector: '#optAmmo', key: 'option.ammo', attribute: 'title' },
+        { selector: '#optConsole', key: 'option.console', attribute: 'title' },
+        { selector: '#systemMenuToggle', key: 'system.menu' },
+        { selector: '#searchInput', key: 'search.placeholder', attribute: 'placeholder' },
+        { selector: '#totalProgress', key: 'progress.total' },
+        { selector: '#folderProgress', key: 'progress.folders' },
+        { selector: '#globalProjectProgress', key: 'progress.global' },
+        { selector: '#scanStatus', key: 'loading.scan' },
+        { selector: '#translateStatus', key: 'loading.translate' },
+        { selector: '#subtitleSearchStatus', key: 'loading.subtitle' },
+        { selector: '#emptyState h3', key: 'empty.title' },
+        { selector: '#emptyState p:first-of-type', key: 'empty.hint' },
+        { selector: '#emptyState p:last-of-type', key: 'empty.tips', html: true },
+        { selector: '.status-message #statusText', key: 'status.ready' },
+        { selector: '#fileCount', key: 'status.files' },
+        { selector: '#selectedCount', key: 'status.selected' },
+        { selector: '#projectFolderPath', key: 'status.folder' },
+        { selector: '#accessStatus', key: 'status.access' },
+        { selector: '#contextPlay', key: 'context.play' },
+        { selector: '#contextCopyEn', key: 'context.copyEn' },
+        { selector: '#contextCopyDe', key: 'context.copyDe' },
+        { selector: '#contextPasteEn', key: 'context.pasteEn' },
+        { selector: '#contextPasteDe', key: 'context.pasteDe' },
+        { selector: '#contextUploadDe', key: 'context.uploadDe' },
+        { selector: '#contextHistory', key: 'context.history' },
+        { selector: '#contextOpenFolder', key: 'context.openFolder' },
+        { selector: '#contextDelete', key: 'context.delete' },
+        { selector: '#autoTransLine', key: 'auto.trans.line' },
+        { selector: '#autoTransAll', key: 'auto.trans.all' },
+        { selector: '#projectMenuEdit', key: 'project.menu.edit' },
+        { selector: '#projectMenuAnalyze', key: 'project.menu.analyze' },
+        { selector: '#projectMenuDelete', key: 'project.menu.delete' }
+    ];
+
+    window.i18n.registerTranslationTargets(staticTargets);
+
+    window.i18n.onLanguageChange(lang => {
+        const select = document.getElementById('languageSelect');
+        if (select) {
+            select.value = lang;
+        }
+        document.title = window.i18n.t('app.title');
+    });
+
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.addEventListener('change', ev => window.i18n.setLanguage(ev.target.value));
+    }
+
+    window.i18n.initializeLanguage();
+    document.title = window.i18n.t('app.title');
+}
+
+window.addEventListener('DOMContentLoaded', setupLanguageControls);
+
 // Wechselt das Speichersystem ohne automatische Migration der Daten
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';

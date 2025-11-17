@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.493
+* `web/src/i18n.js` bündelt alle UI-Texte in Deutsch und Englisch, stellt eine zentrale Übersetzungsfunktion bereit und setzt das `lang`-Attribut passend.
+* `web/hla_translation_tool.html` ergänzt den 🌐-Sprachwahlschalter im Einstellungsmenü, markiert Kontextmenüs für Übersetzungen und bindet das i18n-Modul ein.
+* `web/src/main.js` registriert die wichtigsten UI-Beschriftungen für dynamische Übersetzungen und setzt die Sprachwahl automatisch aus dem gespeicherten Nutzerwunsch.
+* `web/src/migrationUI.js` nutzt die neue Übersetzungsfunktion für Statusmeldungen im Migrationsdialog.
+* `README.md` beschreibt die neue zweisprachige Oberfläche und die Speicherung der bevorzugten Sprache.
 # 🛠️ Patch in 1.40.492
 * `package.json` und `package-lock.json` tragen jetzt die Zielversion **1.40.492**, passend zum Changelog.
 * `README.md` zeigt das Versions-Badge ebenfalls mit **1.40.492**.

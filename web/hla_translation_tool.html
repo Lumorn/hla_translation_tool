@@ -19,6 +19,7 @@
                    media-src 'self' blob:;">
     <!-- Für oEmbed-Anfragen an YouTube -->
     <link rel="stylesheet" href="src/style.css">
+    <script src="src/i18n.js"></script>
 </head>
 <body>
     <!-- Globaler Ladebalken für Projektwechsel -->
@@ -89,7 +90,7 @@
                                     <button class="btn btn-secondary" id="copyAssistant2Button">Kopierhilfe 2</button>
                                     <button class="btn btn-secondary" id="copyAllEmosButton">Emotionen kopieren</button>
                                     <button class="btn btn-secondary" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
-                                    <button class="btn btn-secondary" onclick="openDubbingLog()">📝 Protokoll</button>
+                                    <button class="btn btn-secondary" id="openDubbingLog" onclick="openDubbingLog()">📝 Protokoll</button>
                                     <button class="btn btn-secondary" id="devToolsButton">🐞 DevTools</button>
                                     <button class="btn btn-secondary" id="debugReportButton">📋 Debug-Bericht</button>
                                     <div class="menu-wrapper settings-container">
@@ -103,6 +104,13 @@
                                             <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
                                             <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
                                             <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+                                            <div class="settings-item language-item">
+                                                <label for="languageSelect" class="language-label">🌐 Sprache</label>
+                                                <select id="languageSelect">
+                                                    <option value="de">Deutsch</option>
+                                                    <option value="en">English</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -341,56 +349,56 @@
 
     <!-- Context Menu -->
     <div class="context-menu" id="contextMenu">
-        <div class="context-menu-item" onclick="contextMenuAction('play')">
+        <div class="context-menu-item" id="contextPlay" onclick="contextMenuAction('play')">
             <span>▶</span> Audio abspielen
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('copyEN')">
+        <div class="context-menu-item" id="contextCopyEn" onclick="contextMenuAction('copyEN')">
             <span>📄</span> EN Text kopieren
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('copyDE')">
+        <div class="context-menu-item" id="contextCopyDe" onclick="contextMenuAction('copyDE')">
             <span>📄</span> DE Text kopieren
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('pasteEN')">
+        <div class="context-menu-item" id="contextPasteEn" onclick="contextMenuAction('pasteEN')">
             <span>📋</span> In EN Text einfügen
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('pasteDE')">
+        <div class="context-menu-item" id="contextPasteDe" onclick="contextMenuAction('pasteDE')">
             <span>📋</span> In DE Text einfügen
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('uploadDE')">
+        <div class="context-menu-item" id="contextUploadDe" onclick="contextMenuAction('uploadDE')">
             <span>⬆️</span> DE-Datei hochladen
         </div>
-        <div class="context-menu-item" onclick="contextMenuAction('history')">
+        <div class="context-menu-item" id="contextHistory" onclick="contextMenuAction('history')">
             <span>🕒</span> Historie
         </div>
         <div class="context-menu-divider"></div>
-        <div class="context-menu-item" onclick="contextMenuAction('openFolder')">
+        <div class="context-menu-item" id="contextOpenFolder" onclick="contextMenuAction('openFolder')">
             <span>📁</span> In Ordner-Browser öffnen
         </div>
         <div class="context-menu-divider"></div>
-        <div class="context-menu-item danger" onclick="contextMenuAction('delete')">
+        <div class="context-menu-item danger" id="contextDelete" onclick="contextMenuAction('delete')">
             <span>🗑️</span> Datei löschen
         </div>
     </div>
 
     <!-- Auto-Übersetzungs-Menü -->
     <div class="context-menu" id="autoTransMenu">
-        <div class="context-menu-item" onclick="autoTransMenuAction('line')">
+        <div class="context-menu-item" id="autoTransLine" onclick="autoTransMenuAction('line')">
             <span>🔁</span> Übersetzung für diese Zeile
         </div>
-        <div class="context-menu-item" onclick="autoTransMenuAction('all')">
+        <div class="context-menu-item" id="autoTransAll" onclick="autoTransMenuAction('all')">
             <span>🔁</span> Übersetzung für alle Zeilen
         </div>
     </div>
 
     <!-- Project Context Menu -->
     <div class="context-menu" id="projectContextMenu">
-        <div class="context-menu-item" onclick="projectMenuAction('edit')">
+        <div class="context-menu-item" id="projectMenuEdit" onclick="projectMenuAction('edit')">
             <span>⚙️</span> Projekt bearbeiten
         </div>
-        <div class="context-menu-item" onclick="projectMenuAction('analyze')">
+        <div class="context-menu-item" id="projectMenuAnalyze" onclick="projectMenuAction('analyze')">
             <span>🔍</span> Projekt analysieren
         </div>
-        <div class="context-menu-item danger" onclick="projectMenuAction('delete')">
+        <div class="context-menu-item danger" id="projectMenuDelete" onclick="projectMenuAction('delete')">
             <span>🗑️</span> Projekt löschen
         </div>
     </div>

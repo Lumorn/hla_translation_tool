@@ -16,6 +16,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
+* Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
@@ -953,6 +954,12 @@ Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das S
 ---
 
 ## 🎮 Bedienung
+
+### Mehrsprachige Oberfläche
+
+* Über das Einstellungsmenü (⚙️ → 🌐) wählst du zwischen **Deutsch** und **Englisch**.
+* Die gewählte Sprache wird im aktuellen Speicher (LocalStorage oder der konfigurierte Adapter) gesichert und beim nächsten Start automatisch gesetzt.
+* Alle statischen UI-Beschriftungen und Tooltips aktualisieren sich direkt nach dem Umschalten, inklusive `<html lang="…">`.
 
 ### Arbeitsbereich-Header
 
