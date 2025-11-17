@@ -17,6 +17,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
+* Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
