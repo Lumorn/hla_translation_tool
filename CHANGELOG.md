@@ -1,5 +1,7 @@
 # Changelog
 # 🛠️ Patch in 1.40.492
+* `package.json` und `package-lock.json` tragen jetzt die Zielversion **1.40.492**, passend zum Changelog.
+* `README.md` zeigt das Versions-Badge ebenfalls mit **1.40.492**.
 * `package.json` vereinheitlicht die Test-Abhängigkeiten auf **Jest 30** mit passender `jest-environment-jsdom`‑ und `jsdom`‑Version für einen konsistenten Test-Runner.
 * `package-lock.json` übernimmt die aktualisierten Versionen nach `npm install`.
 * `README.md` weist im Testkapitel auf die gemeinsame Jest-/jsdom‑Major-Version hin.
