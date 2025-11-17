@@ -1,6 +1,6 @@
 {
   "name": "hla_translation_tool",
-  "version": "1.40.149",
+  "version": "1.40.492",
   "devDependencies": {
     "fake-indexeddb": "^6.2.0",
     "jest": "^30.0.0",
