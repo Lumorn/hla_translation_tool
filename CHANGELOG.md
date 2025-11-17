@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.495
+* `web/src/main.js` verschiebt Speichermodus-Dialog, Indikator-Beschriftung sowie alle zugehörigen Toasts und Statusmeldungen ins i18n-Set und aktualisiert sie nach einem Sprachwechsel sofort.
+* `web/src/i18n.js` ergänzt neue Speicher-Schlüssel für beide Sprachen inklusive Platzhaltern für Modusnamen, Speicherquoten und Datumsangaben.
+* `README.md` hebt die i18n-Anbindung der Speicher-UI hervor und trägt die neue Patch-Version **1.40.495**.
 # 🛠️ Patch in 1.40.494
 * `web/src/main.js` registriert zusätzliche Übersetzungsziele für Buttons, Platzhalter, Sortier- und Speichermenüs sowie Tabellenspalten und Meta-Leisten, damit statische UI-Texte dynamisch übersetzt werden.
 * `web/src/i18n.js` ergänzt einen Schlüssel für den +map-Schalter und nutzt ihn in beiden Sprachpaketen.
