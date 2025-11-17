@@ -26,11 +26,12 @@ if (typeof module === 'undefined' || !module.exports) {
         // Beim ersten Start Auswahl anbieten
         if (!storageMode) {
             window.addEventListener('DOMContentLoaded', () => {
-                const html = `<h3>Speichermodus wählen</h3>
-                    <p>Bitte Speichersystem auswählen:</p>
+                const t = window.i18n?.t || (value => value);
+                const html = `<h3>${t('storage.dialog.title')}</h3>
+                    <p>${t('storage.dialog.description')}</p>
                     <div class="dialog-buttons">
-                        <button id="chooseLocal" class="btn btn-secondary">LocalStorage</button>
-                        <button id="chooseNew" class="btn btn-primary">Neues System</button>
+                        <button id="chooseLocal" class="btn btn-secondary">${t('storage.dialog.local')}</button>
+                        <button id="chooseNew" class="btn btn-primary">${t('storage.dialog.indexed')}</button>
                     </div>`;
                 const ov = showModal(html);
                 const dlg = ov.querySelector('.dialog');
@@ -58,14 +59,15 @@ function updateStorageIndicator(mode) {
     const button = document.getElementById('switchStorageButton');
     if (!indicator || !button) return;
     // Klarer Text für beide Modi
-    let text = mode === 'indexedDB' ? 'Datei-Modus (OPFS)' : 'LocalStorage';
+    const t = window.i18n?.t || (value => value);
+    let text = mode === 'indexedDB' ? t('storage.mode.fileOpfs') : t('storage.mode.local');
     // Zusatzhinweis, falls das IndexedDB-Backend auf den Base64-Fallback ausweicht
     const caps = window.storage && window.storage.capabilities;
     if (mode === 'indexedDB' && caps) {
-        text = caps.blobs === 'opfs' ? 'Datei-Modus (OPFS)' : 'Datei-Modus (Base64)';
+        text = caps.blobs === 'opfs' ? t('storage.mode.fileOpfs') : t('storage.mode.fileBase64');
     }
     indicator.textContent = text;
-    button.textContent = mode === 'indexedDB' ? 'Wechsel zu LocalStorage' : 'Wechsel zu Datei-Modus';
+    button.textContent = mode === 'indexedDB' ? t('storage.switch.toLocal') : t('storage.switch.toFile');
 }
 
 // Fordert persistenten Speicher an und zeigt die verfügbare Menge an
@@ -73,12 +75,13 @@ async function requestPersistentStorage() {
     if (!(navigator.storage && navigator.storage.persist)) return;
     const ok = await navigator.storage.persist();
     if (!ok) {
-        showToast('Persistenter Speicher wurde nicht gewährt');
+        showToast((window.i18n?.t || (value => value))('storage.persist.denied'));
         return;
     }
     const { quota, usage } = await navigator.storage.estimate();
     const frei = ((quota - usage) / (1024 * 1024)).toFixed(1);
-    showToast(`Lokaler Speicher gesichert, verfügbar: ${frei} MB`);
+    const t = window.i18n?.t || (value => value);
+    showToast(t('storage.persist.granted').replace('{free}', frei));
 }
 
 // Richtet die Sprachumschaltung samt Übersetzungszielen ein
@@ -213,6 +216,10 @@ function setupLanguageControls() {
             select.value = lang;
         }
         document.title = window.i18n.t('app.title');
+        const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
+        updateStorageIndicator(currentMode);
+        updateStorageUsage();
+        updateLastCleanup();
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -230,10 +237,11 @@ window.addEventListener('DOMContentLoaded', setupLanguageControls);
 async function switchStorage(targetMode) {
     const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
     const newMode = targetMode || (currentMode === 'localStorage' ? 'indexedDB' : 'localStorage');
-    const zielLabel = newMode === 'indexedDB' ? 'Datei-Modus' : 'LocalStorage';
+    const t = window.i18n?.t || (value => value);
+    const zielLabel = newMode === 'indexedDB' ? t('storage.mode.file') : t('storage.mode.local');
     // Hinweis auf den bevorstehenden Wechsel anzeigen
-    updateStatus(`Lade ${zielLabel}...`);
-    showToast(`Wechsle zu ${zielLabel} (ohne Kopieren der Daten)`);
+    updateStatus(t('storage.switch.loading').replace('{mode}', zielLabel));
+    showToast(t('storage.switch.toast').replace('{mode}', zielLabel));
     const newBackend = window.createStorage(newMode);
     // Beim Wechsel werden keine Daten übertragen
     resetGlobalState();
@@ -258,8 +266,8 @@ async function switchStorage(targetMode) {
     }
     updateStorageIndicator(newMode);
     // Abschlussmeldung ausgeben
-    updateStatus(`${zielLabel} geladen`);
-    showToast(`Jetzt im ${zielLabel}`);
+    updateStatus(t('storage.switch.loaded').replace('{mode}', zielLabel));
+    showToast(t('storage.switch.now').replace('{mode}', zielLabel));
     // Projektliste nach Speichermodus-Wechsel vollständig neu laden
     if (typeof reloadProjectList === 'function') {
         await reloadProjectList(false);
@@ -435,15 +443,16 @@ async function visualizeFileStorage(key) {
     const indexed = window.createStorage('indexedDB');
     const localValue = await local.getItem(key);
     const indexedValue = await indexed.getItem(key);
+    const t = window.i18n?.t || (value => value);
     let message;
     if (indexedValue && !localValue) {
-        message = `„${key}“ liegt im neuen Speichersystem.`;
+        message = t('storage.visualize.indexedOnly').replace('{key}', key);
     } else if (!indexedValue && localValue) {
-        message = `„${key}“ liegt noch im LocalStorage.`;
+        message = t('storage.visualize.localOnly').replace('{key}', key);
     } else if (indexedValue && localValue) {
-        message = `„${key}“ existiert in beiden Speichersystemen.`;
+        message = t('storage.visualize.both').replace('{key}', key);
     } else {
-        message = `„${key}“ wurde in keinem Speichersystem gefunden.`;
+        message = t('storage.visualize.none').replace('{key}', key);
     }
     updateStatus(message);
     return { local: !!localValue, indexedDB: !!indexedValue };
@@ -452,7 +461,7 @@ async function visualizeFileStorage(key) {
 // Öffnet den Ordner des neuen Speichersystems im Dateimanager
 async function openStorageFolder() {
     if (!debugInfo.userDataPath || !window.electronAPI) {
-        showToast('Pfad zum neuen Speichersystem ist nicht verfügbar');
+        showToast((window.i18n?.t || (value => value))('storage.folder.unavailable'));
         return;
     }
     const pfad = window.electronAPI.join(debugInfo.userDataPath, 'IndexedDB');
@@ -469,7 +478,12 @@ async function updateStorageUsage() {
     const fill = document.getElementById('storageUsageFill');
     const label = document.getElementById('storageUsageLabel');
     if (fill) fill.style.width = percent.toFixed(1) + '%';
-    if (label) label.textContent = `${usedMb} MB von ${quotaMb} MB`;
+    if (label) {
+        const t = window.i18n?.t || (value => value);
+        label.textContent = t('storage.usage.label')
+            .replace('{used}', usedMb)
+            .replace('{quota}', quotaMb);
+    }
 }
 
 // Zeigt das Datum der letzten Bereinigung an
@@ -477,7 +491,10 @@ function updateLastCleanup() {
     const label = document.getElementById('lastCleanupLabel');
     if (!label) return;
     const ts = window.localStorage.getItem('hla_lastCleanup');
-    label.textContent = ts ? `Zuletzt bereinigt am ${new Date(ts).toLocaleString()}` : 'Noch nie bereinigt';
+    const t = window.i18n?.t || (value => value);
+    label.textContent = ts
+        ? t('storage.cleanup.last').replace('{date}', new Date(ts).toLocaleString())
+        : t('storage.cleanup.never');
 }
 
 // Startet die Garbage-Collection des Speichers
@@ -487,7 +504,7 @@ async function runCleanup() {
         window.localStorage.setItem('hla_lastCleanup', new Date().toISOString());
         updateLastCleanup();
         updateStorageUsage();
-        showToast('Speicher bereinigt');
+        showToast((window.i18n?.t || (value => value))('storage.cleanup.toast'));
     }
 }
 
