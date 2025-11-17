@@ -1332,7 +1332,7 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 
 ## 🧪 Tests
 
-Diese Repository nutzt **Jest** als Test Runner. Um die Tests auszuführen:
+Diese Repository nutzt **Jest 30** mit der passenden **`jest-environment-jsdom` 30** und **jsdom 22**, damit Test Runner und DOM-Simulation dieselbe Major-Version teilen. Um die Tests auszuführen:
 Ein neuer GitHub-Workflow (`node-test.yml`) führt nach jedem Push oder Pull Request automatisch `npm ci` und `npm test` mit Node 18 bis 22 aus.
 
 `npm test` installiert dank eines `pretest`-Skripts automatisch alle Abhängigkeiten per `npm ci --ignore-scripts`.
