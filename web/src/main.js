@@ -130,7 +130,14 @@ function resetGlobalState() {
         window.projectResetActive = projectResetActive;
     }
     // Laufende Übersetzungsprozesse immer zuerst abbrechen, damit kein später Rückläufer mehr speichert
-    cancelTranslationQueue('Globaler Reset');
+    const cancelQueueFn = typeof cancelTranslationQueue === 'function'
+        ? cancelTranslationQueue
+        : (typeof window !== 'undefined' && typeof window.cancelTranslationQueue === 'function'
+            ? window.cancelTranslationQueue
+            : null);
+    if (cancelQueueFn) {
+        cancelQueueFn('Globaler Reset');
+    }
     if (typeof projects !== 'undefined') {
         // Projektliste in-place leeren, damit Fenster-Referenzen erhalten bleiben
         if (Array.isArray(projects)) {
@@ -1418,6 +1425,10 @@ let emiCrackleAmp  = parseFloat(storage.getItem('hla_emiCrackleAmp')  || '0.3');
 // Häufigkeit großer Ausreißer und deren Amplitude
 let emiSpikeProb   = parseFloat(storage.getItem('hla_emiSpikeProb')   || '0.001');
 let emiSpikeAmp    = parseFloat(storage.getItem('hla_emiSpikeAmp')    || '1.0');
+// Grenzen für den manuellen Lautstärke-Booster (in dB)
+const VOLUME_GAIN_MIN_DB = -12;
+const VOLUME_GAIN_MAX_DB = 12;
+const VOLUME_GAIN_NEUTRAL_DB = 0;
 
 // Dämpfung des Originalsignals bei Störereignissen
 let emiVoiceDamp = storage.getItem('hla_emiVoiceDamp') === '1';
@@ -3423,7 +3434,14 @@ async function loadProjects(skipSelect = false) {
         ];
         saveProjects();
     }
-        delayedApplied = applyDelayedTranslations() || delayedApplied;
+        const applyDelayedFn = typeof applyDelayedTranslations === 'function'
+            ? applyDelayedTranslations
+            : (typeof window !== 'undefined' && typeof window.applyDelayedTranslations === 'function'
+                ? window.applyDelayedTranslations
+                : null);
+        if (applyDelayedFn) {
+            delayedApplied = applyDelayedFn() || delayedApplied;
+        }
         // Text- & Pfaddatenbanken laden (unverändert)
         const savedDB  = await storage.getItem('hla_textDatabase');
         if (savedDB)  textDatabase = JSON.parse(savedDB);
@@ -3447,7 +3465,14 @@ async function loadProjects(skipSelect = false) {
         levelOrders = previousState.levelOrders || {};
         levelIcons = previousState.levelIcons || {};
         levelColorHistory = previousState.levelColorHistory || [];
-        delayedApplied = applyDelayedTranslations() || delayedApplied;
+        const applyDelayedFn = typeof applyDelayedTranslations === 'function'
+            ? applyDelayedTranslations
+            : (typeof window !== 'undefined' && typeof window.applyDelayedTranslations === 'function'
+                ? window.applyDelayedTranslations
+                : null);
+        if (applyDelayedFn) {
+            delayedApplied = applyDelayedFn() || delayedApplied;
+        }
     }
     window.projects = projects; // Referenz für andere Module aktualisieren
     projectResetActive = false;
@@ -3915,7 +3940,15 @@ function selectProject(id){
     // Debug-Ausgabe: Start der Projektwahl
     console.log('[DEBUG] selectProject gestartet', { id, projektAnzahl: projects.length });
 
-    stopEnglishReview();
+    const stopReviewFn = typeof stopEnglishReview === 'function'
+        ? stopEnglishReview
+        : (typeof window !== 'undefined' && typeof window.stopEnglishReview === 'function'
+            ? window.stopEnglishReview
+            : null);
+    if (stopReviewFn) {
+        // Tests ohne vollständigen DOM dürfen `stopEnglishReview` auslassen
+        stopReviewFn();
+    }
     saveCurrentProject(); // Aktuelles Projekt sichern, bevor der GPT-Zustand gelöscht wird
     storeSegmentState(); // Segmentzustand vor dem Reset speichern
     clearGptState(); // GPT-Zustand anschließend bereinigen
@@ -3977,6 +4010,8 @@ function selectProject(id){
     files.forEach(f=>{
         if(!f.hasOwnProperty('completed')){f.completed=false;migrated=true;}
         if(!f.hasOwnProperty('volumeMatched')){f.volumeMatched=false;migrated=true;}
+        if(!f.hasOwnProperty('volumeGainActive')){f.volumeGainActive=false;migrated=true;}
+        if(!f.hasOwnProperty('volumeGainDb')){f.volumeGainDb=VOLUME_GAIN_NEUTRAL_DB;migrated=true;}
         if(!f.hasOwnProperty('radioEffect')){f.radioEffect=false;migrated=true;}
         if(!f.hasOwnProperty('radioPreset')){f.radioPreset='';}
         if(!f.hasOwnProperty('hallEffect')){f.hallEffect=false;migrated=true;}
@@ -4224,6 +4259,8 @@ function addFiles() {
                 trimEndMs: 0,
                 ignoreRanges: [],
                 volumeMatched: false,
+                volumeGainActive: false,
+                volumeGainDb: VOLUME_GAIN_NEUTRAL_DB,
                 radioEffect: false,
                 hallEffect: false,
                 emiEffect: false,
@@ -5823,6 +5860,7 @@ return `
                     <div class="edit-column">
                         ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon" title="Audio gekürzt">✂️</span>' : ''}
                         ${file.volumeMatched ? '<span class="edit-status-icon" title="Lautstärke angepasst">🔊</span>' : ''}
+                        ${file.volumeGainActive ? '<span class="edit-status-icon" title="Lautstärke-Booster">📢</span>' : ''}
                         ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
                         ${(file.hallEffect || file.neighborHall) ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
                         ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
@@ -10333,6 +10371,8 @@ async function exportSegmentsToProject() {
             file.trimStartMs = 0;
             file.trimEndMs = 0;
             file.volumeMatched = false;
+            file.volumeGainActive = false;
+            file.volumeGainDb = VOLUME_GAIN_NEUTRAL_DB;
             file.radioEffect = false;
             file.hallEffect = false;
             file.emiEffect = false;
@@ -10822,6 +10862,8 @@ function addFileFromFolderBrowser(filename, folder, fullPath) {
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false,
+        volumeGainActive: false,
+        volumeGainDb: VOLUME_GAIN_NEUTRAL_DB,
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
@@ -10992,6 +11034,8 @@ function buildProjectFile(filename, folder) {
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false,
+        volumeGainActive: false,
+        volumeGainDb: VOLUME_GAIN_NEUTRAL_DB,
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,
@@ -13807,6 +13851,8 @@ async function handleDeUpload(input) {
         file.trimStartMs = 0;
         file.trimEndMs = 0;
         file.volumeMatched = false;
+        file.volumeGainActive = false;
+        file.volumeGainDb = VOLUME_GAIN_NEUTRAL_DB;
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
@@ -14529,6 +14575,76 @@ function bufferRms(buffer) {
 }
 // =========================== LAUTSTAERKEANGLEICH END =======================
 
+// =========================== MANUALGAIN START ==============================
+// Klemmt Eingaben auf den erlaubten dB-Bereich
+function clampVolumeGainDb(db) {
+    if (!Number.isFinite(db)) return VOLUME_GAIN_NEUTRAL_DB;
+    return Math.min(VOLUME_GAIN_MAX_DB, Math.max(VOLUME_GAIN_MIN_DB, db));
+}
+
+// Formatiert den aktuellen dB-Wert als Text mit deutschem Dezimaltrennzeichen
+function formatVolumeGainDb(db) {
+    const rounded = Math.round(db * 10) / 10;
+    const text = `${rounded >= 0 ? '+' : ''}${rounded.toFixed(1).replace('.', ',')} dB`;
+    return Math.abs(rounded) < 0.05 ? '0,0 dB (neutral)' : text;
+}
+
+// Wendet einen festen Verstärkungsfaktor auf einen Buffer an
+function applyManualGainToBuffer(buffer, gainDb) {
+    const clamped = clampVolumeGainDb(gainDb);
+    if (!buffer || Math.abs(clamped) < 0.05) return buffer;
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    try {
+        const gain = Math.pow(10, clamped / 20);
+        const out = ctx.createBuffer(buffer.numberOfChannels, buffer.length, buffer.sampleRate);
+        for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+            const inData = buffer.getChannelData(ch);
+            const outData = out.getChannelData(ch);
+            for (let i = 0; i < inData.length; i++) {
+                outData[i] = Math.max(-1, Math.min(1, inData[i] * gain));
+            }
+        }
+        return out;
+    } finally {
+        ctx.close();
+    }
+}
+
+// Aktualisiert Anzeige und Slider des Boosters
+function refreshVolumeGainControls(opts = {}) {
+    const display = document.getElementById('volumeGainDisplay');
+    if (display) {
+        display.textContent = formatVolumeGainDb(volumeGainDb);
+    }
+    if (!opts.skipRange) {
+        const range = document.getElementById('volumeGainRange');
+        if (range) {
+            range.value = volumeGainDb;
+        }
+    }
+}
+
+// Setzt den dB-Wert und aktualisiert optional sofort die Vorschau
+function setVolumeGainDb(db, opts = {}) {
+    volumeGainDb = clampVolumeGainDb(db);
+    refreshVolumeGainControls({ skipRange: opts.skipRange });
+    if (!opts.skipRecompute && isVolumeGainEffect && !deSaveInProgress) {
+        recomputeEditBuffer();
+    }
+}
+
+// Aktiviert den Booster automatisch, falls ein signifikanter Wert eingestellt ist
+function ensureVolumeGainIsActive() {
+    if (isVolumeGainEffect) return;
+    if (Math.abs(volumeGainDb) < 0.05) return;
+    const toggle = document.getElementById('volumeGainToggle');
+    if (toggle) {
+        toggle.checked = true;
+    }
+    applyVolumeGainEffect();
+}
+// =========================== MANUALGAIN END ================================
+
 // =========================== RADIOFILTER START ==============================
 // Erzeugt einen Funkgeräteklang. Die Parameter werden über ein Objekt gesteuert
 // und dauerhaft in storage gespeichert.
@@ -15228,6 +15344,8 @@ let originalEditBuffer = null;
 let savedOriginalBuffer = null; // Unverändertes DE-Audio
 let volumeMatchedBuffer = null; // Lautstärke an EN angepasst
 let isVolumeMatched = false;   // Merkt, ob der Lautstärkeabgleich ausgeführt wurde
+let volumeGainDb = VOLUME_GAIN_NEUTRAL_DB; // Manueller Lautstärke-Booster
+let isVolumeGainEffect = false;           // Merkt, ob der Booster aktiv ist
 let radioEffectBuffer = null;  // Buffer mit Funkgeräteffekt
 let isRadioEffect = false;     // Merkt, ob der Funkgeräteffekt angewendet wurde
 let hallEffectBuffer  = null;  // Buffer mit Hall-Effekt
@@ -15285,6 +15403,8 @@ async function openDeEdit(fileId) {
     isTableMicEffect = false;
     zooSpeakerEffectBuffer = null;
     isZooSpeakerEffect = false;
+    volumeGainDb = clampVolumeGainDb(typeof file.volumeGainDb === 'number' ? file.volumeGainDb : VOLUME_GAIN_NEUTRAL_DB);
+    isVolumeGainEffect = !!file.volumeGainActive;
     // Hall-Einstellung des Nebenraum-Effekts aus der Datei laden
     neighborHall = !!file.neighborHall;
     tableMicRoomType = file.tableMicRoom || 'wohnzimmer';
@@ -15748,6 +15868,49 @@ async function openDeEdit(fileId) {
             if (isRadioEffect) recomputeEditBuffer();
         };
     }
+
+    // Regler für den manuellen Lautstärke-Booster initialisieren
+    const gainToggle = document.getElementById('volumeGainToggle');
+    if (gainToggle) {
+        gainToggle.checked = isVolumeGainEffect;
+        gainToggle.onchange = e => toggleVolumeGainEffect(e.target.checked);
+    }
+    const gainRange = document.getElementById('volumeGainRange');
+    if (gainRange) {
+        gainRange.min = VOLUME_GAIN_MIN_DB;
+        gainRange.max = VOLUME_GAIN_MAX_DB;
+        gainRange.value = volumeGainDb;
+        gainRange.oninput = e => {
+            if (deSaveInProgress) return;
+            setVolumeGainDb(parseFloat(e.target.value) || 0, { skipRange: true });
+        };
+        gainRange.onchange = () => {
+            if (deSaveInProgress) return;
+            ensureVolumeGainIsActive();
+        };
+    }
+    const gainReset = document.getElementById('volumeGainResetBtn');
+    if (gainReset) {
+        gainReset.onclick = () => {
+            if (deSaveInProgress) return;
+            setVolumeGainDb(VOLUME_GAIN_NEUTRAL_DB);
+            if (isVolumeGainEffect) {
+                toggleVolumeGainEffect(false);
+            } else {
+                refreshVolumeGainControls();
+            }
+        };
+    }
+    const gainPresets = document.querySelectorAll('#volumeGainPresets button[data-gain]');
+    gainPresets.forEach(btn => {
+        btn.onclick = () => {
+            if (deSaveInProgress) return;
+            const val = parseFloat(btn.dataset.gain);
+            setVolumeGainDb(val);
+            ensureVolumeGainIsActive();
+        };
+    });
+    refreshVolumeGainControls();
 
     // Regler für Hall-Effekt initialisieren
     const hRoom = document.getElementById('hallRoom');
@@ -16366,6 +16529,14 @@ function updateEffectButtons() {
     if (emiBoxBtn) {
         emiBoxBtn.classList.toggle('active', isEmiEffect);
     }
+    const gainLabel = document.getElementById('volumeGainToggleLabel');
+    const gainToggle = document.getElementById('volumeGainToggle');
+    if (gainLabel) {
+        gainLabel.classList.toggle('active', isVolumeGainEffect);
+    }
+    if (gainToggle) {
+        gainToggle.checked = isVolumeGainEffect;
+    }
     const neighborLabel = document.getElementById('neighborToggleLabel');
     const neighborToggle = document.getElementById('neighborToggle');
     if (neighborLabel) {
@@ -16483,6 +16654,33 @@ async function applyVolumeMatch() {
     }
 }
 
+// Aktiviert den manuellen Lautstärke-Booster und legt bei Bedarf eine History an
+async function applyVolumeGainEffect() {
+    if (deSaveInProgress) return;
+    if (!isVolumeGainEffect && window.electronAPI && window.electronAPI.saveDeHistoryBuffer) {
+        const relPath = getFullPath(currentEditFile);
+        const blob = bufferToWav(savedOriginalBuffer);
+        const buf = await blob.arrayBuffer();
+        await window.electronAPI.saveDeHistoryBuffer(relPath, new Uint8Array(buf));
+        await updateHistoryCache(relPath);
+    }
+    isVolumeGainEffect = true;
+    await recomputeEditBuffer();
+    updateEffectButtons();
+}
+
+// Schaltet den Booster über das Kontrollkästchen ein oder aus
+async function toggleVolumeGainEffect(active) {
+    if (deSaveInProgress) return;
+    if (active) {
+        await applyVolumeGainEffect();
+    } else {
+        isVolumeGainEffect = false;
+        await recomputeEditBuffer();
+        updateEffectButtons();
+    }
+}
+
 // =========================== RECOMPUTEEDITBUFFER START =====================
 // Wendet aktuelle Effekte auf das Original an und aktualisiert den Buffer
 // Wendet alle Effekte und Schnitte in gleicher Reihenfolge wie beim Speichern an
@@ -16527,6 +16725,9 @@ async function recomputeEditBuffer() {
     }
     if (isEmiEffect) {
         processed = await applyInterferenceEffect(processed);
+    }
+    if (isVolumeGainEffect) {
+        processed = applyManualGainToBuffer(processed, volumeGainDb);
     }
 
     originalEditBuffer = processed;
@@ -17663,6 +17864,8 @@ function closeDeEdit() {
     isNeighborEffect = false;
     tableMicEffectBuffer = null;
     isTableMicEffect = false;
+    volumeGainDb = VOLUME_GAIN_NEUTRAL_DB;
+    isVolumeGainEffect = false;
     editEnBuffer = null;
     rawEnBuffer = null;
     editIgnoreRanges = [];
@@ -17718,6 +17921,7 @@ async function resetDeEdit() {
     if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
     if (currentEditFile.tableMicEffect) steps.push('Telefon-auf-Tisch-Effekt');
     if (currentEditFile.zooSpeakerEffect) steps.push('Zoo-Lautsprecher');
+    if (currentEditFile.volumeGainActive) steps.push('Lautstärke-Booster');
     const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
     if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
     const relPath = getFullPath(currentEditFile);
@@ -17771,6 +17975,8 @@ async function resetDeEdit() {
         currentEditFile.neighborHall = false;
         currentEditFile.tableMicEffect = false;
         currentEditFile.zooSpeakerEffect = false;
+        currentEditFile.volumeGainActive = false;
+        currentEditFile.volumeGainDb = VOLUME_GAIN_NEUTRAL_DB;
         volumeMatchedBuffer = null;
         isVolumeMatched = false;
         radioEffectBuffer = null;
@@ -17788,6 +17994,8 @@ async function resetDeEdit() {
         currentEditFile.tableMicRoom = 'wohnzimmer';
         zooSpeakerEffectBuffer = null;
         isZooSpeakerEffect = false;
+        volumeGainDb = VOLUME_GAIN_NEUTRAL_DB;
+        isVolumeGainEffect = false;
         const tRoom = document.getElementById('tableMicRoom');
         if (tRoom) tRoom.value = tableMicRoomType;
         updateEffectButtons();
@@ -17961,6 +18169,9 @@ async function applyDeEdit(param = {}) {
             if (isEmiEffect) {
                 processedBuffer = await applyInterferenceEffect(processedBuffer);
             }
+            if (isVolumeGainEffect) {
+                processedBuffer = applyManualGainToBuffer(processedBuffer, volumeGainDb);
+            }
 
             drawWaveform(document.getElementById('waveEdited'), processedBuffer, { start: 0, end: processedBuffer.length / processedBuffer.sampleRate * 1000 });
             const blob = bufferToWav(processedBuffer);
@@ -18059,6 +18270,9 @@ async function applyDeEdit(param = {}) {
             if (isEmiEffect) {
                 processedBuffer = await applyInterferenceEffect(processedBuffer);
             }
+            if (isVolumeGainEffect) {
+                processedBuffer = applyManualGainToBuffer(processedBuffer, volumeGainDb);
+            }
 
             drawWaveform(document.getElementById('waveEdited'), processedBuffer, { start: 0, end: processedBuffer.length / processedBuffer.sampleRate * 1000 });
             const blob = bufferToWav(processedBuffer);
@@ -18087,6 +18301,8 @@ async function applyDeEdit(param = {}) {
         currentEditFile.tableMicEffect = isTableMicEffect;
         currentEditFile.tableMicRoom = tableMicRoomType;
         currentEditFile.zooSpeakerEffect = isZooSpeakerEffect;
+        currentEditFile.volumeGainActive = isVolumeGainEffect;
+        currentEditFile.volumeGainDb = volumeGainDb;
         currentEditFile.tempoFactor = tempoFactor;
         // Nach dem Speichern die Markierung auf den vollständigen Clip setzen und Felder normalisieren
         editStartTrim = 0;
@@ -18977,6 +19193,8 @@ function addFileToProject(filename, folder) {
         trimStartMs: 0,
         trimEndMs: 0,
         volumeMatched: false,
+        volumeGainActive: false,
+        volumeGainDb: VOLUME_GAIN_NEUTRAL_DB,
         radioEffect: false,
         hallEffect: false,
         emiEffect: false,

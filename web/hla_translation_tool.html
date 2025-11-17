@@ -979,6 +979,19 @@
                         <fieldset class="effect-group">
                             <legend>🔊 Lautstärke angleichen</legend>
                             <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen">Lautstärke angleichen</button>
+                            <div class="volume-gain-controls">
+                                <p class="volume-gain-note">Booster oder Absenker für schwierige Aufnahmen.</p>
+                                <label id="volumeGainToggleLabel" class="effect-toggle" title="Manuellen Booster ein- oder ausschalten"><input type="checkbox" id="volumeGainToggle"> Booster aktivieren</label>
+                                <label for="volumeGainRange" title="Manuelle Verstärkung in dB">Verstärkung: <span id="volumeGainDisplay"></span></label>
+                                <input type="range" id="volumeGainRange" min="-12" max="12" step="0.5" value="0" title="Manuellen Pegel anpassen">
+                                <div class="volume-gain-presets" id="volumeGainPresets">
+                                    <button type="button" class="btn btn-secondary" data-gain="-6">-6 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="-3">-3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="3">+3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="6">+6 dB</button>
+                                </div>
+                                <button type="button" id="volumeGainResetBtn" class="btn-reset-settings" title="Booster auf Neutralwert zurücksetzen">Neutral (0 dB)</button>
+                            </div>
                         </fieldset>
 
                         <fieldset class="effect-group">

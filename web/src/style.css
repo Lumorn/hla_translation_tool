@@ -2199,6 +2199,32 @@ th:nth-child(8) {
     gap: 12px;
 }
 
+/* Layout für den manuellen Lautstärke-Booster */
+.volume-gain-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid #555;
+    padding-top: 8px;
+}
+
+.volume-gain-note {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.volume-gain-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.volume-gain-presets .btn {
+    flex: 1;
+    min-width: 70px;
+}
+
 #deEditDialog .effect-scroll .effect-group {
     margin: 0; /* Abstände werden jetzt über den Tab-Inhalt gesteuert */
     width: 100%;
