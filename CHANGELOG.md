@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.491
+* `verify_environment.py` installiert im Reparaturmodus nur noch verpflichtende Python-Pakete und meldet optionale Abhängigkeiten lediglich im Bericht.
+* `tests/test_verify_environment.py` stellt mit einem Unit-Test sicher, dass optionale Pakete im Fix-Modus nicht mehr angefasst werden.
+* `README.md` beschreibt die neue Behandlung optionaler Pakete in der Umgebungsprüfung.
 # 🛠️ Patch in 1.40.490
 * `check_environment.js` nutzt jetzt die `.modules_hash`‑Marker aus den Lockfiles und überspringt `npm ci`, wenn `node_modules` bereits passt – im Hauptverzeichnis ebenso wie in `electron/`.
 * `README.md` beschreibt den neuen Schnellpfad der Umgebungsprüfung.

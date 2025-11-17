@@ -316,14 +316,14 @@ def check_python_packages(retry: bool = False) -> bool:
                     else:
                         falsch.append((req_str, info))
 
-    if fehlend or falsch or fehlend_optional or falsch_optional:
-        if FIX_MODE and not retry:
-            for req_str in fehlend + [f[0] for f in falsch] + fehlend_optional + [f[0] for f in falsch_optional]:
-                ensure_package(req_str)
-            if FAIL:
-                report("Python-Pakete", False, ", ".join(FAIL))
-                return False
-            return check_python_packages(True)
+    # Nur Pflichtpakete im Reparaturmodus installieren, optionale Pakete werden lediglich gemeldet
+    if FIX_MODE and not retry and (fehlend or falsch):
+        for req_str in fehlend + [f[0] for f in falsch]:
+            ensure_package(req_str)
+        if FAIL:
+            report("Python-Pakete", False, ", ".join(FAIL))
+            return False
+        return check_python_packages(True)
 
     if fehlend or falsch:
         teile: list[str] = []
