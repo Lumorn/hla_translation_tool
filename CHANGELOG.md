@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.497
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für Status-Fallbacks und lokalisiert die Modusbezeichnungen für Statusmeldungen.
+* `web/src/main.js` nutzt die neuen Übersetzungen für Statusleiste und Speicherhinweise, ergänzt den Modus über i18n und rendert den Status beim Sprachwechsel neu.
+* `README.md` trägt Version **1.40.497** und erwähnt die lokalisierte Statusleiste.
 # 🛠️ Patch in 1.40.496
 * `web/src/main.js` lässt Formularelemente in Workspace-Dropdowns offen und verhindert, dass der Sprachwahlschalter das Menü vorzeitig schließt.
 * `README.md` führt die stabileren Dropdowns an und trägt die Patch-Version **1.40.496**.

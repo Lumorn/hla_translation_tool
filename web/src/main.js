@@ -220,6 +220,7 @@ function setupLanguageControls() {
         updateStorageIndicator(currentMode);
         updateStorageUsage();
         updateLastCleanup();
+        updateStatus();
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -20251,23 +20252,30 @@ function quickAddLevel(chapterName) {
         // Status updates
         function updateStatus(message) {
             const statusText = document.getElementById('statusText');
+            const t = window.i18n?.t || (value => value);
+            if (!statusText) return;
+
+            // Aktiven Speichermodus lokalisiert bestimmen
+            let modeKey = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'storage.mode.file' : 'storage.mode.local';
+            if (modeKey === 'storage.mode.file') {
+                const caps = window.storage && window.storage.capabilities;
+                modeKey = (caps && caps.blobs !== 'opfs') ? 'storage.mode.fileBase64' : 'storage.mode.fileOpfs';
+            }
+            const modeLabel = t(modeKey);
+
+            // Bei Speicherhinweisen den Modus ergänzen
             if (message) {
-                // Aktiven Speichermodus ermitteln
-                let mode = window.localStorage.getItem('hla_storageMode') === 'indexedDB' ? 'Datei-Modus' : 'LocalStorage';
-                if (mode === 'Datei-Modus') {
-                    const caps = window.storage && window.storage.capabilities;
-                    mode = (caps && caps.blobs !== 'opfs') ? 'Datei-Modus (Base64)' : 'Datei-Modus (OPFS)';
-                }
-                // Bei Speicherhinweisen den Modus ergänzen
-                if (message.toLowerCase().includes('gespeichert')) {
-                    message += ` (im ${mode})`;
-                }
-                statusText.textContent = message;
+                const savedKeyword = t('status.savedKeyword');
+                const needsMode = savedKeyword && message.toLowerCase().includes(savedKeyword.toLowerCase());
+                const localizedMessage = needsMode
+                    ? `${message} ${t('status.saved.append').replace('{mode}', modeLabel)}`
+                    : message;
+                statusText.textContent = localizedMessage;
                 setTimeout(() => {
-                    statusText.textContent = isDirty ? 'Ungespeicherte Änderungen' : 'Bereit';
+                    statusText.textContent = isDirty ? t('status.unsaved') : t('status.ready');
                 }, 3000);
             } else {
-                statusText.textContent = isDirty ? 'Ungespeicherte Änderungen' : 'Bereit';
+                statusText.textContent = isDirty ? t('status.unsaved') : t('status.ready');
             }
         }
 
