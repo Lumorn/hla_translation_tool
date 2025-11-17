@@ -405,6 +405,12 @@ function handleWorkspaceToggleClick(event) {
 }
 
 function handleWorkspaceMenuClick(event) {
+    const formElement = event.target.closest('select, option, input, textarea, label');
+    // Formularelemente sollen das Menü offen lassen, damit Nutzende ihre Auswahl in Ruhe treffen können.
+    if (formElement) {
+        return;
+    }
+
     const actionable = event.target.closest('.dropdown-item, .settings-item, button');
     if (actionable) {
         closeWorkspaceMenu();

@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.496
+* `web/src/main.js` lässt Formularelemente in Workspace-Dropdowns offen und verhindert, dass der Sprachwahlschalter das Menü vorzeitig schließt.
+* `README.md` führt die stabileren Dropdowns an und trägt die Patch-Version **1.40.496**.
 # 🛠️ Patch in 1.40.495
 * `web/src/main.js` verschiebt Speichermodus-Dialog, Indikator-Beschriftung sowie alle zugehörigen Toasts und Statusmeldungen ins i18n-Set und aktualisiert sie nach einem Sprachwechsel sofort.
 * `web/src/i18n.js` ergänzt neue Speicher-Schlüssel für beide Sprachen inklusive Platzhaltern für Modusnamen, Speicherquoten und Datumsangaben.
