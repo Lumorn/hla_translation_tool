@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.492
+* `package.json` vereinheitlicht die Test-Abhängigkeiten auf **Jest 30** mit passender `jest-environment-jsdom`‑ und `jsdom`‑Version für einen konsistenten Test-Runner.
+* `package-lock.json` übernimmt die aktualisierten Versionen nach `npm install`.
+* `README.md` weist im Testkapitel auf die gemeinsame Jest-/jsdom‑Major-Version hin.
 # 🛠️ Patch in 1.40.491
 * `verify_environment.py` installiert im Reparaturmodus nur noch verpflichtende Python-Pakete und meldet optionale Abhängigkeiten lediglich im Bericht.
 * `tests/test_verify_environment.py` stellt mit einem Unit-Test sicher, dass optionale Pakete im Fix-Modus nicht mehr angefasst werden.
