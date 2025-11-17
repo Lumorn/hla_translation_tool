@@ -1,4 +1,17 @@
 # Changelog
+# 🛠️ Patch in 1.40.489
+* `web/src/main.js` schützt `selectProject`, `resetGlobalState` und `loadProjects` gegen fehlende Helfer wie `stopEnglishReview`, `cancelTranslationQueue` oder `applyDelayedTranslations`, damit Tests mit Teilimports nicht mehr abstürzen.
+* `web/src/dubbing.js` überspringt den Tab-Aufbau, wenn Testumgebungen kein vollwertiges `document` bereitstellen.
+* `README.md` beschreibt die zusätzlichen Fallbacks und den DOM-Check.
+* `CHANGELOG.md` dokumentiert die Stabilitätsverbesserungen.
+# 🛠️ Patch in 1.40.488
+* `web/hla_translation_tool.html` erweitert den Lautstärke-Abschnitt um Booster-Toggle, dB-Slider, Presets und einen Neutral-Button.
+* `web/src/style.css` liefert ein passendes Layout mit kompakten Abständen und flexiblen Preset-Buttons.
+* `web/src/main.js` führt den manuellen Booster samt History-Sicherung, State-Migration, Speicherroutine, Icon und automatischem Aktivieren ein.
+* `web/src/dubbing.js` setzt Booster-Flags bei neuen Downloads und Segment-Imports konsequent zurück.
+* `tests/*.test.js` decken die neuen Reset-Logiken sowie das Speichern des Boosters mit einem eigenen Flag-Test ab.
+* `README.md` führt den manuellen Booster im Funktionsarchiv auf.
+* `CHANGELOG.md` beschreibt den neuen Lautstärke-Booster.
 # 🛠️ Patch in 1.40.487
 * `web/src/main.js` ordnet den Zoo-Lautsprecher neu: WaveShaper direkt nach der Monoquelle (mit leichter Vorbetonung), danach Hoch- und Tiefpässe sowie Mitten-Peak, bevor der straffere Kompressor Pegelspitzen einfängt.
 * `README.md` dokumentiert die neue Signalreihenfolge und den kontrollierten Clipping-Charakter des Zoo-Lautsprechers.

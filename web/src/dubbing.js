@@ -741,6 +741,8 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         file.trimStartMs = 0;
         file.trimEndMs = 0;
         file.volumeMatched = false;
+        file.volumeGainActive = false;
+        file.volumeGainDb = 0;
         file.radioEffect = false;
         file.hallEffect = false;
         file.emiEffect = false;
@@ -830,8 +832,10 @@ async function startEmoDubbing(fileId, settings = {}) {
     file.emoDubbingId = id;
     file.emoDubReady = true;
     file.trimStartMs = 0;
-    file.trimEndMs = 0;
+   file.trimEndMs = 0;
     file.volumeMatched = false;
+    file.volumeGainActive = false;
+    file.volumeGainDb = 0;
     file.radioEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
@@ -977,6 +981,8 @@ function renderWaveTimeline(state = {}) {
 // Baut die Tabs für Kern- und Expertenfunktionen in der rechten Seitenleiste auf
 function setupRightSidebarTabs() {
     if (typeof document === 'undefined') return;
+    if (typeof document.querySelector !== 'function') return;
+    if (typeof document.createElement !== 'function') return;
     const scroll = document.querySelector('#deEditDialog .effect-scroll');
     if (!scroll) return;
 
@@ -1184,6 +1190,8 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     file.trimStartMs = 0;
     file.trimEndMs = 0;
     file.volumeMatched = false;
+    file.volumeGainActive = false;
+    file.volumeGainDb = 0;
     file.radioEffect = false;
     file.hallEffect = false;
     file.emiEffect = false;
@@ -1235,6 +1243,8 @@ async function redownloadEmo(fileId) {
     file.trimStartMs = 0;
     file.trimEndMs = 0;
     file.volumeMatched = false;
+    file.volumeGainActive = false;
+    file.volumeGainDb = 0;
     file.radioEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
@@ -1323,6 +1333,8 @@ async function downloadDe(fileId, lang = 'de') {
     file.trimStartMs = 0;
     file.trimEndMs = 0;
     file.volumeMatched = false;
+    file.volumeGainActive = false;
+    file.volumeGainDb = 0;
     file.radioEffect = false;
     file.hallEffect = false;
     file.emiEffect = false;
