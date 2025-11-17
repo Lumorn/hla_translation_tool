@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.490
+* `check_environment.js` nutzt jetzt die `.modules_hash`‑Marker aus den Lockfiles und überspringt `npm ci`, wenn `node_modules` bereits passt – im Hauptverzeichnis ebenso wie in `electron/`.
+* `README.md` beschreibt den neuen Schnellpfad der Umgebungsprüfung.
+* `CHANGELOG.md` dokumentiert den npm‑Schnellpfad in der Umgebungsprüfung.
 # 🛠️ Patch in 1.40.489
 * `web/src/main.js` schützt `selectProject`, `resetGlobalState` und `loadProjects` gegen fehlende Helfer wie `stopEnglishReview`, `cancelTranslationQueue` oder `applyDelayedTranslations`, damit Tests mit Teilimports nicht mehr abstürzen.
 * `web/src/dubbing.js` überspringt den Tab-Aufbau, wenn Testumgebungen kein vollwertiges `document` bereitstellen.
