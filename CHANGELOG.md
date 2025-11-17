@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.494
+* `web/src/main.js` registriert zusätzliche Übersetzungsziele für Buttons, Platzhalter, Sortier- und Speichermenüs sowie Tabellenspalten und Meta-Leisten, damit statische UI-Texte dynamisch übersetzt werden.
+* `web/src/i18n.js` ergänzt einen Schlüssel für den +map-Schalter und nutzt ihn in beiden Sprachpaketen.
+* `README.md` erwähnt die ausgebauten Übersetzungsziele für die Web-Oberfläche.
 # 🛠️ Patch in 1.40.493
 * `web/src/i18n.js` bündelt alle UI-Texte in Deutsch und Englisch, stellt eine zentrale Übersetzungsfunktion bereit und setzt das `lang`-Attribut passend.
 * `web/hla_translation_tool.html` ergänzt den 🌐-Sprachwahlschalter im Einstellungsmenü, markiert Kontextmenüs für Übersetzungen und bindet das i18n-Modul ein.
