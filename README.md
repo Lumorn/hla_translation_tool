@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.537-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.539-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -28,6 +28,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Neuer Struktur-Export/-Import erstellt einen Blueprint nur mit Kapiteln, Leveln, Dateinamen und EN-Texten – ohne DE-Übersetzungen oder Audio-Pfade – damit externe Übersetzer:innen mit einer sauberen Ausgangsbasis arbeiten können.
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
+* Toolbar, Tabellenköpfe, Kontextmenüs und Launcher-Buttons im HTML beziehen Texte, Tooltips und Platzhalter konsequent aus den i18n-Ressourcen; neue `data-i18n`-Ziele werden automatisch registriert und bei Sprachwechseln sofort aktualisiert.
 * Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels, greifen auf lokalisierte Wahr/Falsch-Werte zurück und zeigen im Leerzustand übersetzte Hinweise an.
 * Emo-Dubbing nutzt i18n-Schlüssel für Abschlussstatus und Logeinträge und aktualisiert die Rückmeldungen damit beim Sprachwechsel automatisch.
 * DE-Audio-Aktionszeile inklusive Upload-, Dubbing- und Schnitt-Schaltflächen sowie Status-Tooltips nutzt i18n-Schlüssel und zeigt Beschriftungen konsistent in Deutsch und Englisch an.

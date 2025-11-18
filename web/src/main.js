@@ -113,10 +113,55 @@ function setupLanguageControls() {
     // Fallback-Übersetzer bereitstellen, falls i18n temporär fehlt
     const t = window.i18n?.t || (value => value);
 
-        const staticTargets = [
-            { selector: '#projectLoadingText', key: 'loading.project' },
-            { selector: '#errorBannerRetry', key: 'loading.retry' },
-            { selector: '.sidebar-header h2', key: 'sidebar.projects' },
+    function camelToAttribute(key) {
+        return key
+            .replace(/^[A-Z]/, letter => letter.toLowerCase())
+            .replace(/([A-Z])/g, '-$1')
+            .toLowerCase();
+    }
+
+    function collectDataI18nTargets() {
+        const elements = document.querySelectorAll('[data-i18n], [data-i18n-title], [data-i18n-aria-label], [data-i18n-placeholder], [data-i18n-html]');
+        const targets = [];
+
+        elements.forEach(el => {
+            const { dataset } = el;
+            if (dataset.i18n) {
+                targets.push({ element: el, key: dataset.i18n, html: dataset.i18nHtml === 'true' });
+            }
+
+            Object.entries(dataset).forEach(([dataKey, value]) => {
+                if (dataKey === 'i18n' || dataKey === 'i18nHtml') return;
+                if (dataKey.startsWith('i18n')) {
+                    const attribute = camelToAttribute(dataKey.slice(4));
+                    targets.push({ element: el, key: value, attribute });
+                }
+            });
+        });
+
+        return targets;
+    }
+
+    function updateVersionMenuLabels() {
+        const translator = window.i18n;
+        if (!translator) return;
+        const format = translator.format || ((key, replacements = {}) => {
+            const template = translator.t ? translator.t(key) : key;
+            return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), template);
+        });
+
+        document.querySelectorAll('#versionMenu .context-menu-item').forEach(item => {
+            const number = item.dataset.versionNumber;
+            if (number) {
+                item.textContent = format('version.menu.item', { number });
+            }
+        });
+    }
+
+    const staticTargets = [
+        { selector: '#projectLoadingText', key: 'loading.project' },
+        { selector: '#errorBannerRetry', key: 'loading.retry' },
+        { selector: '.sidebar-header h2', key: 'sidebar.projects' },
             { selector: '.add-project-btn', key: 'project.add' },
             { selector: '#tab-project', key: 'tab.project' },
         { selector: '#tab-tools', key: 'tab.tools' },
@@ -176,13 +221,13 @@ function setupLanguageControls() {
         { selector: '#settingsMenu .settings-item:nth-of-type(7)', key: 'settings.cleanupProjects' },
         { selector: '#settingsMenu .settings-item:nth-of-type(8)', key: 'settings.repairFolders' },
         { selector: '.language-label', key: 'settings.language' },
-        { selector: '#languageSelect option[value="de"]', key: 'language.german' },
-        { selector: '#languageSelect option[value="en"]', key: 'language.english' },
+        { selector: '#languageSelect option[value="de"]', key: 'language.de' },
+        { selector: '#languageSelect option[value="en"]', key: 'language.en' },
         { selector: '#openVideoManager', key: 'toolbar.media.videos' },
         { selector: '#modusSelect option[value="normal"]', key: 'label.mode' },
         { selector: '#modusSelect option[value="workshop"]', key: 'label.workshop' },
-        { selector: '#spracheSelect option[value="english"]', key: 'language.english' },
-        { selector: '#spracheSelect option[value="german"]', key: 'language.german' },
+        { selector: '#spracheSelect option[value="english"]', key: 'option.language.english' },
+        { selector: '#spracheSelect option[value="german"]', key: 'option.language.german' },
         { selector: 'label[for="mapCheckbox"]', key: 'label.mapToggle' },
         { selector: 'label[for="fileInput"]', key: 'label.addFiles' },
         { selector: '#fileInput', key: 'placeholder.addFiles', attribute: 'placeholder' },
@@ -213,9 +258,9 @@ function setupLanguageControls() {
         { selector: '#totalProgress', key: 'progress.total' },
         { selector: '#folderProgress', key: 'progress.folders' },
         { selector: '#globalProjectProgress', key: 'progress.global' },
-        { selector: '#scanStatus', key: 'loading.scan' },
-        { selector: '#translateStatus', key: 'loading.translate' },
-        { selector: '#subtitleSearchStatus', key: 'loading.subtitle' },
+        { selector: '#scanStatus', key: 'scan.status' },
+        { selector: '#translateStatus', key: 'translate.status' },
+        { selector: '#subtitleSearchStatus', key: 'subtitle.search' },
         { selector: '#emptyState h3', key: 'empty.title' },
         { selector: '#emptyState p:first-of-type', key: 'empty.hint' },
         { selector: '#emptyState p:last-of-type', key: 'empty.tips', html: true },
@@ -270,7 +315,10 @@ function setupLanguageControls() {
         { selector: '#copyEnBtn', key: 'deAudio.insert.copyTitle', attribute: 'title' }
     ];
 
-    window.i18n.registerTranslationTargets(staticTargets);
+    const dataTargets = collectDataI18nTargets();
+
+    window.i18n.registerTranslationTargets([...staticTargets, ...dataTargets]);
+    updateVersionMenuLabels();
 
     window.i18n.onLanguageChange(lang => {
         const select = document.getElementById('languageSelect');
@@ -302,6 +350,8 @@ function setupLanguageControls() {
                 showFolderGrid();
             }
         }
+
+        updateVersionMenuLabels();
     });
 
     const languageSelect = document.getElementById('languageSelect');
