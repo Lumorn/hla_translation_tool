@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.511-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.512-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -26,7 +26,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Kopierhilfe-Status, Dateizähler und Schrittangabe liegen jetzt vollständig als i18n-Schlüssel mit Platzhaltern vor und werden beim Sprachwechsel direkt über `i18n.t(...)`/`i18n.format(...)` neu gerendert.
 * Tooltip-Bausteine der Projektkarten (Level, Teil, EN/DE/DE-Audio, Fertig-Prozent, GPT, Dateien) lesen ihre Beschriftungen komplett aus i18n und schalten mit Platzhaltern nahtlos zwischen Deutsch und Englisch.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
-* Level-Statistik-Panel nutzt übersetzte Überschriften und Hinweistexte aus dem i18n-Set und rendert sie nach einem Sprachwechsel automatisch neu.
+* Level-Statistik-Panel holt leere Hinweise sowie Spaltenüberschriften (Level, Teile, EN/DE/BEIDE/∑, Fertig-%) über i18n-Schlüssel und baut sie nach einem Sprachwechsel automatisch neu auf.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 

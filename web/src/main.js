@@ -4361,8 +4361,18 @@ function renderLevelStats() {
     const rows = Object.entries(map)
         // Nach Level-Nummer sortieren
         .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]));
+
+    const labels = {
+        empty: t('levelStats.empty'),
+        emptyHint: t('levelStats.empty.hint'),
+        level: t('levelStats.table.header.level'),
+        parts: t('levelStats.table.header.parts'),
+        languages: t('levelStats.table.header.languages'),
+        completion: t('levelStats.table.header.completion')
+    };
+
     if (!rows.length) {
-        panel.innerHTML = `<em style="color:#666;">${t('levelStats.empty')}</em>`;
+        panel.innerHTML = `<em style="color:#666;">${labels.empty}</em><div style="margin-top:6px;color:#666;">${labels.emptyHint}</div>`;
         return;
     }
 
@@ -4370,10 +4380,10 @@ function renderLevelStats() {
     let html = `
         <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;">
             <tr>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:left;">${t('levelStats.header.level')}</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.parts')}</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.languages')}</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.completion')}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:left;">${labels.level}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${labels.parts}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${labels.languages}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${labels.completion}</th>
             </tr>
     `;
     

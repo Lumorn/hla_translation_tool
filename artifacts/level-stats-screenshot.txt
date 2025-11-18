@@ -1,0 +1,1 @@
+Platzhalter-Screenshot: Level-Statistik mit übersetzten Überschriften und leerem Hinweistext über i18n gerendert. Ein echter Screenshot wird hier nicht erstellt.
