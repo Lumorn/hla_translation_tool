@@ -2291,6 +2291,18 @@ function setupToolbarActionButtons() {
     }
 }
 
+// Liefert Übersetzungshilfen für den GPT-Bereich
+function getGptTranslator() {
+    const translator = window.i18n;
+    const fallback = value => value;
+    const t = translator?.t || fallback;
+    const format = translator?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), template);
+    });
+    return { t, format };
+}
+
 // Öffnet die gespeicherten GPT-Tabs ohne neue Bewertung
 function openSavedGptTests() {
     renderGptTestTabs();
@@ -2303,6 +2315,7 @@ function openSavedGptTests() {
 
 // Öffnet einen Dialog mit Zeilenzahl und Sprechern
 function showGptStartDialog() {
+    const { format } = getGptTranslator();
     const visible = displayOrder.filter(item => {
         const row = document.querySelector(`tr[data-id='${item.file.id}']`);
         return row && row.offsetParent !== null;
@@ -2315,8 +2328,8 @@ function showGptStartDialog() {
     const dup = lines.length - unique;
     if (info) {
         info.textContent = dup > 0
-            ? `${lines.length} Zeilen, ${unique} werden übertragen (${dup} doppelt).`
-            : `${lines.length} Zeilen werden übertragen.`;
+            ? format('gpt.start.info.withDuplicates', { lines: lines.length, unique, duplicates: dup })
+            : format('gpt.start.info.all', { lines: lines.length });
     }
     if (list) list.innerHTML = speakers.map(s => `<li>${s}</li>`).join('');
     document.getElementById('gptStartDialog').classList.remove('hidden');
@@ -2372,9 +2385,10 @@ function closeGptPromptDialog() {
 
 // Setzt alle Fortschrittsanzeigen auf den Ausgangszustand
 function resetGptProgressUI(total = 0) {
+    const { t } = getGptTranslator();
     const steps = ['prepare', 'send', 'process', 'apply'];
-    steps.forEach(step => setGptStepState(step, 'idle', 'Wartet…'));
-    setGptStepState('prepare', total > 0 ? 'done' : 'idle', total > 0 ? 'Prompt erstellt' : 'Wartet…');
+    steps.forEach(step => setGptStepState(step, 'idle', t('gpt.prompt.step.state.waiting')));
+    setGptStepState('prepare', total > 0 ? 'done' : 'idle', total > 0 ? t('gpt.prompt.step.prepare.created') : t('gpt.prompt.step.state.waiting'));
     updateGptProgressMeter(0, total);
     const logBox = document.getElementById('gptProgressLog');
     if (logBox) logBox.textContent = '';
@@ -2382,11 +2396,12 @@ function resetGptProgressUI(total = 0) {
 
 // Aktualisiert Text und Füllstand des Fortschrittsbalkens
 function updateGptProgressMeter(done, total) {
+    const { format } = getGptTranslator();
     const label = document.getElementById('gptProgressLabel');
     const fill = document.getElementById('gptProgressFill');
     if (label) {
         const safeTotal = Math.max(total || 0, 0);
-        label.textContent = `${Math.min(done, safeTotal)} / ${safeTotal} Zeilen`;
+        label.textContent = format('gpt.prompt.progress.label', { done: Math.min(done, safeTotal), total: safeTotal });
     }
     if (fill) {
         const pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
@@ -2416,37 +2431,53 @@ function appendGptProgressLog(text) {
 
 // Sendet den Prompt an die API und zeigt die Antwort an
 async function sendGptPrompt() {
+    const { t, format } = getGptTranslator();
     const btn = document.getElementById('gptPromptSend');
     const resultArea = document.getElementById('gptResultArea');
     if (!gptPromptData || !btn || !resultArea) return;
     btn.disabled = true;
-    setGptStepState('send', 'active', 'Verbindung wird aufgebaut…');
-    setGptStepState('process', 'idle', 'Wartet…');
-    setGptStepState('apply', 'idle', 'Wartet…');
-    resultArea.value = 'Sende...';
+    setGptStepState('send', 'active', t('gpt.prompt.step.send.connecting'));
+    setGptStepState('process', 'idle', t('gpt.prompt.step.state.waiting'));
+    setGptStepState('apply', 'idle', t('gpt.prompt.step.state.waiting'));
+    resultArea.value = t('gpt.prompt.result.sending');
     try {
-        appendGptProgressLog('Übertrage Daten an GPT.');
+        appendGptProgressLog(t('gpt.prompt.log.sending'));
         const progressHandler = (evt) => {
             if (!evt) return;
             if (evt.type === 'start') {
-                setGptStepState('prepare', 'done', 'Doppelte Zeilen bereinigt');
+                setGptStepState('prepare', 'done', t('gpt.prompt.step.prepare.cleaned'));
                 updateGptProgressMeter(0, evt.total || 0);
             } else if (evt.type === 'progress') {
                 updateGptProgressMeter(evt.done || 0, evt.total || 0);
             } else if (evt.type === 'log') {
                 appendGptProgressLog(evt.message || '');
             } else if (evt.type === 'stage') {
+                const sendMessages = {
+                    done: t('gpt.prompt.step.send.done'),
+                    error: t('gpt.prompt.step.send.error'),
+                    active: t('gpt.prompt.step.send.running')
+                };
+                const processMessages = {
+                    done: t('gpt.prompt.step.process.done'),
+                    error: t('gpt.prompt.step.process.error'),
+                    active: t('gpt.prompt.step.process.running')
+                };
+                const applyMessages = {
+                    done: t('gpt.prompt.step.apply.ready'),
+                    error: t('gpt.prompt.step.apply.error'),
+                    active: t('gpt.prompt.step.apply.preparing')
+                };
                 if (evt.stage === 'request') {
                     const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
-                    setGptStepState('send', status, evt.message || (status === 'done' ? 'Übertragung abgeschlossen' : status === 'error' ? 'Übertragung fehlgeschlagen' : 'Übertragung läuft…'));
+                    setGptStepState('send', status, evt.message || sendMessages[status]);
                 }
                 if (evt.stage === 'process') {
                     const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
-                    setGptStepState('process', status, evt.message || (status === 'done' ? 'Antwort ausgewertet' : status === 'error' ? 'Antwort konnte nicht verarbeitet werden' : 'Antwort wird ausgewertet…'));
+                    setGptStepState('process', status, evt.message || processMessages[status]);
                 }
                 if (evt.stage === 'merge') {
                     const status = evt.status === 'done' ? 'done' : (evt.status === 'error' ? 'error' : 'active');
-                    setGptStepState('apply', status, evt.message || (status === 'done' ? 'Ergebnisse bereit' : status === 'error' ? 'Ergebnisse konnten nicht gespeichert werden' : 'Ergebnisse werden vorbereitet…'));
+                    setGptStepState('apply', status, evt.message || applyMessages[status]);
                 }
             }
         };
@@ -2459,11 +2490,11 @@ async function sendGptPrompt() {
             projectId: currentProject?.id,
             onProgress: progressHandler
         });
-        setGptStepState('process', 'done', 'Antwort ausgewertet');
+        setGptStepState('process', 'done', t('gpt.prompt.step.process.done'));
         resultArea.value = JSON.stringify(results, null, 2);
         gptEvaluationResults = results;
         updateGptSummary(results);
-        setGptStepState('apply', 'active', 'Ergebnisse werden gespeichert…');
+        setGptStepState('apply', 'active', t('gpt.prompt.step.apply.saving'));
         const insertBtn = document.getElementById('gptPromptInsert');
         if (insertBtn) insertBtn.disabled = false;
         if (currentProject) {
@@ -2480,14 +2511,14 @@ async function sendGptPrompt() {
             saveCurrentProject();
             renderGptTestTabs();
         }
-        setGptStepState('apply', 'done', 'Ergebnisse gespeichert');
-        appendGptProgressLog('Bewertung erfolgreich abgeschlossen.');
+        setGptStepState('apply', 'done', t('gpt.prompt.step.apply.done'));
+        appendGptProgressLog(t('gpt.prompt.log.success'));
     } catch (e) {
         resultArea.value = String(e);
-        setGptStepState('send', 'error', 'Fehler beim Senden');
-        setGptStepState('process', 'error', 'Fehler bei der Verarbeitung');
-        setGptStepState('apply', 'error', 'Ergebnisse nicht verfügbar');
-        appendGptProgressLog(`Fehler: ${e?.message || e}`);
+        setGptStepState('send', 'error', t('gpt.prompt.error.send'));
+        setGptStepState('process', 'error', t('gpt.prompt.error.process'));
+        setGptStepState('apply', 'error', t('gpt.prompt.error.apply'));
+        appendGptProgressLog(format('gpt.prompt.log.error', { message: e?.message || e }));
     }
     btn.disabled = false;
 }
@@ -2561,6 +2592,7 @@ function updateGptSummary(results) {
 
 // Zeichnet die Tabs des GPT-Tests neu
 function renderGptTestTabs() {
+    const { format } = getGptTranslator();
     const container = document.getElementById('gptTestTabs');
     if (!container || !currentProject) return;
     const list = currentProject.gptTests || [];
@@ -2569,7 +2601,7 @@ function renderGptTestTabs() {
     list.forEach((_, idx) => {
         const tab = document.createElement('div');
         tab.className = 'gpt-tab' + (idx === active ? ' active' : '');
-        tab.textContent = `#${idx + 1}`;
+        tab.textContent = format('gpt.prompt.tabLabel', { index: idx + 1 });
         tab.onclick = () => selectGptTestTab(idx);
         const x = document.createElement('span');
         x.textContent = '×';

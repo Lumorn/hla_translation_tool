@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.548
+* `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für den GPT-Start- und Test-Dialog inklusive Platzhalter für Fortschritt, Duplikate, Tabs und Statusmeldungen.
+* `web/hla_translation_tool.html` versieht alle GPT-Dialog-Titel, Buttons, Fortschrittsstufen und Zusammenfassungs-Spalten mit `data-i18n`, damit die UI vollständig aus den Sprachressourcen gerendert wird.
+* `web/src/main.js` nutzt `i18n.t/format` für GPT-Status, Fortschrittslabel, Logs und Tab-Beschriftungen, sodass dynamische Meldungen sprachabhängig aktualisiert werden.
+* `README.md` hebt Version **1.40.548** hervor und beschreibt die lokalisierten GPT-Dialoge.
 # 🛠️ Patch in 1.40.547
 * `web/hla_translation_tool.html` führt einen eigenen Tab **Alt** ein, der Zufallsauswahl, ElevenLabs-Sammelsendungen, Kopierhilfen, Debug-Bericht, Protokoll und die Einstellungen bündelt, damit die Werkzeugleiste schlanker bleibt.
 * `web/src/i18n.js`, `web/src/main.js` und `web/src/style.css` liefern Beschriftungen, i18n-Ziele sowie Layoutbreite für den neuen Alt-Reiter nach.
