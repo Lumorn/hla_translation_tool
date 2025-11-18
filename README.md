@@ -23,7 +23,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels und zeigen auch im Leerzustand übersetzte Hinweise an.
 * Emo-Dubbing nutzt i18n-Schlüssel für Abschlussstatus und Logeinträge und aktualisiert die Rückmeldungen damit beim Sprachwechsel automatisch.
 * Emo-Generierung, Fortschrittsbutton, Fehlermeldungen zum fehlenden GPT-Key und Statusmeldungen greifen auf i18n-Schlüssel mit Zähler-Platzhaltern zurück und lassen sich vollständig zwischen Deutsch und Englisch umschalten.
-* Kopierhilfe-Status, Dateizähler und Schrittangabe liegen jetzt vollständig als i18n-Schlüssel mit Platzhaltern vor und werden beim Sprachwechsel direkt über `i18n.t(...)`/`i18n.format(...)` neu gerendert.
+* Kopierhilfe-Status, Datei- und Schrittzähler liegen vollständig als i18n-Schlüssel mit Platzhaltern vor und werden über `i18n.t(...)`/`i18n.format(...)` beim Sprachwechsel automatisch zwischen Deutsch und Englisch umgeschaltet.
 * Tooltip-Bausteine der Projektkarten (Level, Teil, EN/DE/DE-Audio, Fertig-Prozent, GPT, Dateien) lesen ihre Beschriftungen komplett aus i18n und schalten mit Platzhaltern nahtlos zwischen Deutsch und Englisch.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
 * Level-Statistik-Panel holt leere Hinweise sowie Spaltenüberschriften (Level, Teile, EN/DE/BEIDE/∑, Fertig-%) über i18n-Schlüssel und baut sie nach einem Sprachwechsel automatisch neu auf.
