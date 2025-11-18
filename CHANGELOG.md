@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.519
+* `web/src/i18n.js` ergänzt Übersetzungen für leere Segmentlisten im DE-Editor und deckt sowohl fehlende Vorschläge als auch fehlende aktive Segmente in beiden Sprachen ab.
+* `web/src/main.js` setzt die leeren Hinweistexte der Segment-Vorschlagsliste über `i18n.t(...)`, damit Sprachwechsel sofort wirken.
+* `README.md` hebt Version **1.40.519** hervor und nennt die lokalisierten Leerhinweise der Segmentlisten.
 # 🛠️ Patch in 1.40.518
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für die Wellenform-Beschriftungen und EN-Zeitangaben im DE-Audio-Editor in Deutsch und Englisch.
 * `web/src/main.js` nutzt `i18n.t(...)`/`i18n.format(...)` für die Wellenform-Labels samt Sekundenangabe sowie die EN-Längenanzeige und rendert sie bei Sprachwechseln neu.
