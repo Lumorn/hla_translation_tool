@@ -1995,3 +1995,4 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 ## Unreleased
 - Neue mehrsprachige Schlüssel für den DE-Audio-Dialog hinzugefügt.
 - Untertitel-Import erlaubt die Auswahl einer alternativen Zielsprache (statt Deutsch) und hebt die aktive Wahl im Dialog hervor.
+- Struktur-Blueprint-Export fängt blockierte `showSaveFilePicker`-Aufrufe ab und startet automatisch den Download-Fallback mit Statushinweis.
