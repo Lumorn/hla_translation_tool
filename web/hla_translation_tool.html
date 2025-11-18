@@ -1380,15 +1380,15 @@
     <dialog id="videoMgrDialog" class="video-dialog">
         <div class="video-grid">
             <aside id="videoListSection" class="video-bookmarks">
-                <h2>📼 Gespeicherte Videos</h2>
+                <h2 data-i18n="videoManager.title">📼 Gespeicherte Videos</h2>
                 <div class="video-toolbar">
                     <div class="video-search">
-                        <input id="videoFilter" placeholder="Suche …" />
+                        <input id="videoFilter" placeholder="Suche …" data-i18n-placeholder="videoManager.searchPlaceholder" />
                         <button id="closeVideoDlgSmall" class="btn btn-danger close-icon">❌</button>
                     </div>
                     <div class="video-url">
-                        <input type="text" id="videoUrlInput" placeholder="YouTube-Link mit Startzeit …">
-                        <button id="addVideoBtn" class="btn">+ Hinzufügen</button>
+                        <input type="text" id="videoUrlInput" placeholder="YouTube-Link mit Startzeit …" data-i18n-placeholder="videoManager.urlPlaceholder">
+                        <button id="addVideoBtn" class="btn" data-i18n="videoManager.addButton">+ Hinzufügen</button>
                     </div>
                 </div>
                 <div id="videoTableWrapper">

@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.541
+* `web/renderer.js` zieht Refresh-, Aktualisieren- und Lösch-Schaltflächen sowie Fehlermeldungen des Bookmark-Managers über `t()` und reagiert per Sprachlistener mit neu gerenderten Beschriftungen.
+* `web/hla_translation_tool.html` markiert Titel, Platzhalter und Buttons des Video-Managers mit `data-i18n`, damit der Bereich sprachabhängig gerendert wird.
+* `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für den Bookmark-Manager inklusive Schaltflächen, Platzhaltern und Validierungs-Alerts.
+* `README.md` hebt Version **1.40.541** sowie den lokalisierten Bookmark-Manager hervor.
+* `artifacts/bookmark-manager-i18n-placeholder.txt` dokumentiert als Text-Platzhalter die lokalisierten Bedienelemente des Video-Managers.
 # 🛠️ Patch in 1.40.540
 * `web/src/main.js` ersetzt den Untertitel-Fallback "Deutsch" durch lokalisierte i18n-Schlüssel, zeigt Badge/Hinweise aus dem Übersetzer an und protokolliert unbekannte Sprachcodes mit lokalisierter Warnung.
 * `web/src/i18n.js` hinterlegt die neuen Untertitel- und Import-Schlüssel in Deutsch und Englisch, inklusive Hinweistexten und Spaltenzusammenfassung.
