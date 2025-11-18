@@ -660,12 +660,12 @@
     <div class="dialog-overlay hidden" id="gptStartDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeGptStartDialog()">×</button>
-            <h3>Bewerten (GPT)</h3>
+            <h3 data-i18n="gpt.start.title">Bewerten (GPT)</h3>
             <p id="gptStartInfo"></p>
             <ul id="gptStartSpeakers" class="debug-info-list"></ul>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeGptStartDialog()">Abbrechen</button>
-                <button class="btn btn-success" onclick="startGptScoring()">Start</button>
+                <button class="btn btn-secondary" onclick="closeGptStartDialog()" data-i18n="gpt.start.button.cancel">Abbrechen</button>
+                <button class="btn btn-success" onclick="startGptScoring()" data-i18n="gpt.start.button.start">Start</button>
             </div>
         </div>
     </div>
@@ -674,56 +674,56 @@
     <div class="dialog-overlay hidden" id="gptPromptDialog">
         <div class="dialog gpt-test-dialog">
             <button class="dialog-close-btn" onclick="closeGptPromptDialog()">×</button>
-            <h3>GPT-Test</h3>
+            <h3 data-i18n="gpt.prompt.title">GPT-Test</h3>
             <div id="gptTestTabs" class="gpt-tabs"></div>
             <div class="prompt-result-container gpt-flex-layout">
                 <section class="gpt-column gpt-column--prompt">
-                    <header class="gpt-column-header">Prompt-Vorschau</header>
+                    <header class="gpt-column-header" data-i18n="gpt.prompt.preview.title">Prompt-Vorschau</header>
                     <textarea id="gptPromptArea" readonly></textarea>
                 </section>
                 <section class="gpt-column gpt-column--progress">
-                    <header class="gpt-column-header">Fortschritt</header>
+                    <header class="gpt-column-header" data-i18n="gpt.prompt.progress.title">Fortschritt</header>
                     <div class="gpt-step-list">
                         <div class="gpt-step gpt-step--idle" data-step="prepare">
-                            <div class="gpt-step-title">Vorbereitung</div>
-                            <div class="gpt-step-state" id="gptStepPrepare">Wartet…</div>
+                            <div class="gpt-step-title" data-i18n="gpt.prompt.step.prepare.title">Vorbereitung</div>
+                            <div class="gpt-step-state" id="gptStepPrepare" data-i18n="gpt.prompt.step.state.waiting">Wartet…</div>
                         </div>
                         <div class="gpt-step gpt-step--idle" data-step="send">
-                            <div class="gpt-step-title">Übertragung</div>
-                            <div class="gpt-step-state" id="gptStepSend">Wartet…</div>
+                            <div class="gpt-step-title" data-i18n="gpt.prompt.step.send.title">Übertragung</div>
+                            <div class="gpt-step-state" id="gptStepSend" data-i18n="gpt.prompt.step.state.waiting">Wartet…</div>
                         </div>
                         <div class="gpt-step gpt-step--idle" data-step="process">
-                            <div class="gpt-step-title">Auswertung</div>
-                            <div class="gpt-step-state" id="gptStepProcess">Wartet…</div>
+                            <div class="gpt-step-title" data-i18n="gpt.prompt.step.process.title">Auswertung</div>
+                            <div class="gpt-step-state" id="gptStepProcess" data-i18n="gpt.prompt.step.state.waiting">Wartet…</div>
                         </div>
                         <div class="gpt-step gpt-step--idle" data-step="apply">
-                            <div class="gpt-step-title">Übernahme</div>
-                            <div class="gpt-step-state" id="gptStepApply">Wartet…</div>
+                            <div class="gpt-step-title" data-i18n="gpt.prompt.step.apply.title">Übernahme</div>
+                            <div class="gpt-step-state" id="gptStepApply" data-i18n="gpt.prompt.step.state.waiting">Wartet…</div>
                         </div>
                     </div>
                     <div class="gpt-progress-meter">
                         <div class="progress-bar"><div class="progress-fill" id="gptProgressFill"></div></div>
-                        <div class="gpt-progress-info" id="gptProgressLabel">0 / 0 Zeilen</div>
+                        <div class="gpt-progress-info" id="gptProgressLabel" data-i18n="gpt.prompt.progress.label">0 / 0 Zeilen</div>
                     </div>
                     <pre id="gptProgressLog" class="gpt-progress-log"></pre>
                 </section>
                 <section class="gpt-column gpt-column--result">
-                    <header class="gpt-column-header">Antwort</header>
+                    <header class="gpt-column-header" data-i18n="gpt.prompt.result.title">Antwort</header>
                     <textarea id="gptResultArea" readonly></textarea>
                 </section>
             </div>
             <div class="gpt-summary-panel">
-                <header class="gpt-column-header">Zusammenfassung</header>
+                <header class="gpt-column-header" data-i18n="gpt.prompt.summary.title">Zusammenfassung</header>
                 <div class="summary-table-wrapper">
                     <table id="gptSummaryTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Datei</th>
-                                <th>Ordner</th>
-                                <th>Bewertung</th>
-                                <th>Vorschlag</th>
-                                <th>Kommentar</th>
+                                <th data-i18n="gpt.prompt.summary.header.id">ID</th>
+                                <th data-i18n="gpt.prompt.summary.header.file">Datei</th>
+                                <th data-i18n="gpt.prompt.summary.header.folder">Ordner</th>
+                                <th data-i18n="gpt.prompt.summary.header.score">Bewertung</th>
+                                <th data-i18n="gpt.prompt.summary.header.suggestion">Vorschlag</th>
+                                <th data-i18n="gpt.prompt.summary.header.comment">Kommentar</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -731,9 +731,9 @@
                 </div>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeGptPromptDialog()">Schließen</button>
-                <button class="btn btn-success" id="gptPromptSend" onclick="sendGptPrompt()">Senden</button>
-                <button class="btn btn-blue" id="gptPromptInsert" onclick="insertGptResults()" disabled>Einfügen</button>
+                <button class="btn btn-secondary" onclick="closeGptPromptDialog()" data-i18n="gpt.prompt.buttons.close">Schließen</button>
+                <button class="btn btn-success" id="gptPromptSend" onclick="sendGptPrompt()" data-i18n="gpt.prompt.buttons.send">Senden</button>
+                <button class="btn btn-blue" id="gptPromptInsert" onclick="insertGptResults()" disabled data-i18n="gpt.prompt.buttons.insert">Einfügen</button>
             </div>
         </div>
     </div>
