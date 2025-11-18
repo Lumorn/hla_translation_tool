@@ -892,96 +892,96 @@
                     <div class="timing-grid">
                         <!-- Karte Trimmen -->
                         <div class="timing-card trim-card">
-                            <h4>Trimmen</h4>
+                            <h4 data-i18n="deAudio.timing.trim.title">Trimmen</h4>
                             <div class="trim-fields">
                                 <div class="field">
-                                    <label for="editStart">Start (ms)</label>
+                                    <label for="editStart" data-i18n="deAudio.timing.trim.start">Start (ms)</label>
                                     <div class="input-unit"><input type="number" id="editStart" value="0" step="100"><span class="unit">ms</span></div>
                                 </div>
                                 <div class="field">
-                                    <label for="editEnd">Ende (ms)</label>
+                                    <label for="editEnd" data-i18n="deAudio.timing.trim.end">Ende (ms)</label>
                                     <div class="input-unit"><input type="number" id="editEnd" value="0" step="100"><span class="unit">ms</span></div>
                                 </div>
                             </div>
-                            <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen">Auto</button>
+                            <button id="autoTrimBtn" class="copy-btn" title="Stille automatisch erkennen" aria-label="Stille automatisch erkennen" data-i18n="deAudio.timing.trim.auto" data-i18n-title="deAudio.timing.trim.autoTitle" data-i18n-aria-label="deAudio.timing.trim.autoTitle">Auto</button>
                         </div>
                         <!-- Karte Ignorierbereiche -->
                         <div class="timing-card ignore-card">
-                            <h4>Ignorierbereiche</h4>
+                            <h4 data-i18n="deAudio.timing.ignore.title">Ignorierbereiche</h4>
                             <div id="ignoreList"></div>
                             <div class="ignore-buttons">
-                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen">◀ Kürzer</button>
-                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern">Länger ▶</button>
+                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(-50)" title="Ignorierbereich verkürzen" aria-label="Ignorierbereich verkürzen" data-i18n="deAudio.timing.ignore.shorter" data-i18n-title="deAudio.timing.ignore.shorter" data-i18n-aria-label="deAudio.timing.ignore.shorter">◀ Kürzer</button>
+                                <button class="btn btn-secondary" onclick="adjustIgnoreRanges(50)" title="Ignorierbereich verlängern" aria-label="Ignorierbereich verlängern" data-i18n="deAudio.timing.ignore.longer" data-i18n-title="deAudio.timing.ignore.longer" data-i18n-aria-label="deAudio.timing.ignore.longer">Länger ▶</button>
                             </div>
                         </div>
                         <!-- Karte Segment-Vorschläge -->
                         <div class="timing-card segment-card">
                             <div class="segment-card-header">
-                                <h4>Segment-Vorschläge</h4>
-                                <button id="segmentRunDetection" class="btn btn-secondary" type="button" title="Neue Segmentierung berechnen">Neu erkennen</button>
+                                <h4 data-i18n="deAudio.timing.segment.title">Segment-Vorschläge</h4>
+                                <button id="segmentRunDetection" class="btn btn-secondary" type="button" title="Neue Segmentierung berechnen" aria-label="Neue Segmentierung berechnen" data-i18n="deAudio.timing.segment.detect" data-i18n-title="deAudio.timing.segment.detect" data-i18n-aria-label="deAudio.timing.segment.detect">Neu erkennen</button>
                             </div>
-                            <p class="segment-card-hint">Automatische Vorschläge können als „behalten“ oder „löschen“ markiert und direkt in die Ignorierbereiche übernommen werden.</p>
+                            <p class="segment-card-hint" data-i18n="deAudio.timing.segment.hint">Automatische Vorschläge können als „behalten“ oder „löschen“ markiert und direkt in die Ignorierbereiche übernommen werden.</p>
                             <div class="segment-controls">
-                                <label class="segment-padding-label" for="segmentPaddingInput">Sicherheits-Puffer (ms)</label>
+                                <label class="segment-padding-label" for="segmentPaddingInput" data-i18n="deAudio.timing.segment.padding">Sicherheits-Puffer (ms)</label>
                                 <input id="segmentPaddingInput" type="number" value="80" step="10" min="0" class="segment-padding-input">
                                 <div class="segment-toggle-group">
-                                    <button id="segmentKeepAll" class="segment-toggle-all" type="button">Alle behalten</button>
-                                    <button id="segmentDropAll" class="segment-toggle-all segment-toggle-all--danger" type="button">Alle löschen</button>
+                                    <button id="segmentKeepAll" class="segment-toggle-all" type="button" data-i18n="deAudio.timing.segment.keepAll">Alle behalten</button>
+                                    <button id="segmentDropAll" class="segment-toggle-all segment-toggle-all--danger" type="button" data-i18n="deAudio.timing.segment.dropAll">Alle löschen</button>
                                 </div>
                             </div>
                             <div id="segmentSuggestionList" class="segment-list" aria-live="polite"></div>
                         </div>
                         <!-- Karte Pausen entfernen -->
                         <div class="timing-card pause-card">
-                            <h4>Pausen entfernen</h4>
-                            <label class="checkbox-line" title="Längere Pausen automatisch entfernen"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <span class="input-unit"><input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"><span class="unit">ms</span></span> entfernen</label>
+                            <h4 data-i18n="deAudio.timing.pause.title">Pausen entfernen</h4>
+                            <label class="checkbox-line" title="Längere Pausen automatisch entfernen" data-i18n="deAudio.timing.pause.auto" data-i18n-title="deAudio.timing.pause.auto"><input type="checkbox" id="autoIgnoreChk"> Pausen &gt; <span class="input-unit"><input type="number" id="autoIgnoreMs" value="400" step="100" style="width:70px;"><span class="unit">ms</span></span> entfernen</label>
                         </div>
                         <!-- Karte Stille-Bereiche -->
                         <div class="timing-card silence-card">
-                            <h4>Stille-Bereiche</h4>
+                            <h4 data-i18n="deAudio.timing.silence.title">Stille-Bereiche</h4>
                             <div id="silenceList"></div>
                             <div class="silence-buttons">
-                                <button class="btn btn-secondary" onclick="markSilenceRange('start')" title="Startpunkt setzen">Start</button>
-                                <button class="btn btn-secondary" onclick="markSilenceRange('end')" title="Endpunkt setzen">Ende</button>
-                                <button class="btn btn-danger" onclick="clearSilenceTemp()" title="Markierung aufheben">⟲</button>
+                                <button class="btn btn-secondary" onclick="markSilenceRange('start')" title="Startpunkt setzen" aria-label="Startpunkt setzen" data-i18n="deAudio.timing.silence.start" data-i18n-title="deAudio.timing.silence.start" data-i18n-aria-label="deAudio.timing.silence.start">Start</button>
+                                <button class="btn btn-secondary" onclick="markSilenceRange('end')" title="Endpunkt setzen" aria-label="Endpunkt setzen" data-i18n="deAudio.timing.silence.end" data-i18n-title="deAudio.timing.silence.end" data-i18n-aria-label="deAudio.timing.silence.end">Ende</button>
+                                <button class="btn btn-danger" onclick="clearSilenceTemp()" title="Markierung aufheben" aria-label="Markierung aufheben" data-i18n="deAudio.timing.silence.reset" data-i18n-title="deAudio.timing.silence.reset" data-i18n-aria-label="deAudio.timing.silence.reset">⟲</button>
                             </div>
                             <div class="silence-buttons">
-                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen">◀ Kürzer</button>
-                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern">Länger ▶</button>
+                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(-50)" title="Stillebereich verkürzen" aria-label="Stillebereich verkürzen" data-i18n="deAudio.timing.silence.shorter" data-i18n-title="deAudio.timing.silence.shorter" data-i18n-aria-label="deAudio.timing.silence.shorter">◀ Kürzer</button>
+                                <button class="btn btn-secondary" onclick="adjustSilenceRanges(50)" title="Stillebereich verlängern" aria-label="Stillebereich verlängern" data-i18n="deAudio.timing.silence.longer" data-i18n-title="deAudio.timing.silence.longer" data-i18n-aria-label="deAudio.timing.silence.longer">Länger ▶</button>
                             </div>
-                            <label title="Markierung übernehmen">Übernehmen nach: <span class="input-unit"><input type="number" id="silenceApplyDelay" value="0" step="100" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <label title="Markierung übernehmen" data-i18n="deAudio.timing.silence.applyAfter" data-i18n-title="deAudio.timing.silence.applyAfter">Übernehmen nach: <span class="input-unit"><input type="number" id="silenceApplyDelay" value="0" step="100" style="width:70px;"><span class="unit">ms</span></span></label>
                             <div class="silence-actions">
-                                <button class="btn btn-secondary" onclick="applySilenceRange()" title="Bereich übernehmen">Übernehmen</button>
-                                <button class="btn btn-danger" onclick="deleteSilenceRange()" title="Letzten Bereich löschen">Löschen</button>
+                                <button class="btn btn-secondary" onclick="applySilenceRange()" title="Bereich übernehmen" aria-label="Bereich übernehmen" data-i18n="deAudio.timing.silence.apply" data-i18n-title="deAudio.timing.silence.apply" data-i18n-aria-label="deAudio.timing.silence.apply">Übernehmen</button>
+                                <button class="btn btn-danger" onclick="deleteSilenceRange()" title="Letzten Bereich löschen" aria-label="Letzten Bereich löschen" data-i18n="deAudio.timing.silence.delete" data-i18n-title="deAudio.timing.silence.delete" data-i18n-aria-label="deAudio.timing.silence.delete">Löschen</button>
                             </div>
                         </div>
                         <!-- Karte Bereiche verschmelzen -->
                         <div class="timing-card merge-card">
-                            <h4>Bereiche verschmelzen</h4>
-                            <label title="Bereiche verschmelzen, wenn Abstand kleiner ist">Abstand &lt; <span class="input-unit"><input type="number" id="mergeGapMs" value="120" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
-                            <label title="Bereiche verschmelzen, wenn Gesamtzeit kleiner ist">Gesamt &lt; <span class="input-unit"><input type="number" id="mergeTotalMs" value="500" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
-                            <label title="Zeitspanne verschmelzen">Bereiche zusammenlegen: <span class="input-unit"><input type="number" id="mergeRangeMs" value="80" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
-                            <button class="btn btn-secondary" onclick="mergeSilenceRanges()" title="Überlappende Bereiche vereinen">Bereiche mergen</button>
+                            <h4 data-i18n="deAudio.timing.merge.title">Bereiche verschmelzen</h4>
+                            <label title="Bereiche verschmelzen, wenn Abstand kleiner ist" data-i18n="deAudio.timing.merge.gap" data-i18n-title="deAudio.timing.merge.gap">Abstand &lt; <span class="input-unit"><input type="number" id="mergeGapMs" value="120" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <label title="Bereiche verschmelzen, wenn Gesamtzeit kleiner ist" data-i18n="deAudio.timing.merge.total" data-i18n-title="deAudio.timing.merge.total">Gesamt &lt; <span class="input-unit"><input type="number" id="mergeTotalMs" value="500" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <label title="Zeitspanne verschmelzen" data-i18n="deAudio.timing.merge.range" data-i18n-title="deAudio.timing.merge.range">Bereiche zusammenlegen: <span class="input-unit"><input type="number" id="mergeRangeMs" value="80" step="10" style="width:70px;"><span class="unit">ms</span></span></label>
+                            <button class="btn btn-secondary" onclick="mergeSilenceRanges()" title="Überlappende Bereiche vereinen" aria-label="Überlappende Bereiche vereinen" data-i18n="deAudio.timing.merge.action" data-i18n-title="deAudio.timing.merge.action" data-i18n-aria-label="deAudio.timing.merge.action">Bereiche mergen</button>
                         </div>
                         <!-- Karte Tempo -->
                         <div class="timing-card tempo-card">
-                            <h4>Tempo</h4>
-                            <label class="checkbox-line" title="Passt die Geschwindigkeit des DE-Audios an"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
+                            <h4 data-i18n="deAudio.timing.tempo.title">Tempo</h4>
+                            <label class="checkbox-line" title="Passt die Geschwindigkeit des DE-Audios an" data-i18n="deAudio.timing.tempo.auto" data-i18n-title="deAudio.timing.tempo.auto"><input type="checkbox" id="autoTempoChk"> Tempo automatisch an EN anpassen</label>
                             <div class="tempo-row">
                                 <span class="tempo-icon">⏱️</span>
-                                <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern">➖</button>
-                                <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo">
-                                <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen">➕</button>
+                                <button id="tempoMinusBtn" class="copy-btn" title="Tempo in kleinen Schritten verringern" aria-label="Tempo in kleinen Schritten verringern" data-i18n-title="deAudio.timing.tempo.decrease" data-i18n-aria-label="deAudio.timing.tempo.decrease">➖</button>
+                                <input type="range" id="tempoRange" min="1" max="3" step="0.01" value="1" title="Aktuelles Wiedergabetempo" data-i18n-title="deAudio.timing.tempo.slider">
+                                <button id="tempoPlusBtn" class="copy-btn" title="Tempo in kleinen Schritten erhöhen" aria-label="Tempo in kleinen Schritten erhöhen" data-i18n-title="deAudio.timing.tempo.increase" data-i18n-aria-label="deAudio.timing.tempo.increase">➕</button>
                                 <span id="tempoDisplay" class="tempo-value">1.00</span>
                             </div>
                             <div class="tempo-auto">
-                                <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen">Auto</button>
-                                <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen">Auto</button>
+                                <button id="tempoAutoBtn" class="copy-btn" title="Tempo auf Minimum setzen" aria-label="Tempo auf Minimum setzen" data-i18n="deAudio.timing.tempo.autoMin" data-i18n-title="deAudio.timing.tempo.autoMin" data-i18n-aria-label="deAudio.timing.tempo.autoMin">Auto</button>
+                                <button id="tempoAutoMatchBtn" class="copy-btn" title="Tempo automatisch auf EN-Zeit anpassen" aria-label="Tempo automatisch auf EN-Zeit anpassen" data-i18n="deAudio.timing.tempo.autoMatch" data-i18n-title="deAudio.timing.tempo.autoMatch" data-i18n-aria-label="deAudio.timing.tempo.autoMatch">Auto</button>
                                 <span id="tempoInfo"></span><span id="tempoEnInfo"></span>
                             </div>
                         </div>
                         <!-- Button Anpassen & Anwenden -->
-                        <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen">🎯 Anpassen &amp; Anwenden</button>
+                        <button class="btn btn-secondary" id="autoAdjustBtn" title="Pausen kürzen und Tempo angleichen" aria-label="Pausen kürzen und Tempo angleichen" data-i18n="deAudio.timing.apply" data-i18n-title="deAudio.timing.apply" data-i18n-aria-label="deAudio.timing.apply">🎯 Anpassen &amp; Anwenden</button>
                     </div>
                 </section>
                 <!-- Rechte Seite: Effekte & Optionen -->

@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.528
+* `web/hla_translation_tool.html` stattet alle Timing-Karten (Trimmen, Ignorierbereiche, Segment-Vorschläge, Pausen, Stille, Verschmelzen, Tempo, Anwenden) mit konsistenten `data-i18n`-Schlüsseln für Überschriften, Labels, Tooltips und ARIA-Beschriftungen aus.
+* `README.md` führt Version **1.40.528** ein und beschreibt die erweiterten i18n-Ziele in den Timing-Karten des DE-Audio-Editors.
 # 🛠️ Patch in 1.40.527
 * `web/hla_translation_tool.html` versieht den DE-Audio-Dialog samt Kopfzeile, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Leiste und Schnellzugriff-Buttons mit `data-i18n`-Attributen für Text, Titel und Aria-Labels.
 * `web/src/i18n.js` hinterlegt neue `deAudio.*`-Schlüssel mit den bisherigen deutschen Standardtexten als Fallback, damit der Dialog weiterhin vollständig bedienbar bleibt.
