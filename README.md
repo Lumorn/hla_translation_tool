@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.544-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.545-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -15,6 +15,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ## 🔍 Schnellüberblick
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
+* Datei-Lade- und Schema-Dialoge im Datei-Speicher setzen ihre Bestätigungs- und Abbruchtexte auf i18n-Schlüssel mit Platzhaltern.
 * Dialoge im Electron-Hauptprozess ziehen Titel, Meldungen und Buttons nun aus i18n-Schlüsseln, lassen sich per IPC auf die Renderer-Sprache setzen und fallen ohne Paket automatisch auf Englisch zurück.
 * Migrations-Export, Import und Transferstatus setzen durchgängig auf i18n-Schlüssel mit Platzhaltern und werden bei Sprachwechsel sofort neu gerendert.
 * Der Start der automatischen Übersetzung sitzt nun als System-Schaltfläche direkt in der oberen Werkzeugleiste und hält den Fortschrittsbereich schlank.

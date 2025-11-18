@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.545
+* `web/src/fileStorage.js` lokalisiert Datei-Lade-, JSON- und Schema-Dialoge über i18n-Schlüssel und behält die Fallback-Logik bei, inklusive Platzhalter für Fehlermeldungen.
+* `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für Datei-Lesefehler, ungültige Inhalte und Schema-Prüfungen.
+* `README.md` hebt Version **1.40.545** sowie die lokalisierten Datei-Speicher-Dialoge hervor.
 # 🛠️ Patch in 1.40.544
 * `web/src/dubbing.js` ersetzt Dubbing-Alerts, Statusmeldungen und Protokolle durch i18n-Schlüssel mit Platzhaltern und zeigt automatische/neue Download-Hinweise als Toast an.
 * `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für Dubbing-Status, Fehler, Logeinträge und manuelle Studio-Hinweise.
