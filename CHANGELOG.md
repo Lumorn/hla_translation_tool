@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.517
+* `web/src/main.js` nutzt i18n-Schlüssel für die DE-Audio-Aktionszeile (Upload, Dubbing, Bearbeitung) inklusive Status-Tooltips und Downloadtitel, sodass Beschriftungen beim Sprachwechsel konsistent bleiben.
+* `web/src/i18n.js` ergänzt die neuen Schlüssel für Schaltflächen, Statussymbole sowie Dubbing-Anzeigen in Deutsch und Englisch.
+* `README.md` hebt Version **1.40.517** sowie die lokalisierten DE-Audio-Aktionsbeschriftungen hervor.
 # 🛠️ Patch in 1.40.516
 * `web/src/i18n.js` ergänzt Voice-Schlüssel für den Leerzustand sowie die Labels Stability, Similarity Boost, Style, Speed und Speaker-Boost inklusive lokalisierter Wahr/Falsch-Werte.
 * `web/src/main.js` rendert die Voice-Einstellungen mit `i18n.t(...)`, damit leere Zustände, Feldbeschriftungen und Wahr/Falsch-Werte sprachabhängig angezeigt werden.
