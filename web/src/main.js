@@ -5148,11 +5148,16 @@ function addFiles() {
             const btn  = row?.querySelector('button.generate-emotions-btn');
             if (!row || !area || !btn) return;
             // Bisherigen Inhalt immer verwerfen
-            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
             btn.classList.add('loading');
-            area.value = '...';
             const file = files.find(f => f.id === rowId);
+            const totalLines = files.length;
+            const currentPositionRaw = positionLookup && positionLookup.has(rowId) ? positionLookup.get(rowId) : null;
+            const fallbackIndex = file ? files.indexOf(file) : -1;
+            const currentPosition = currentPositionRaw != null ? currentPositionRaw : (fallbackIndex >= 0 ? fallbackIndex + 1 : 1);
+            btn.textContent = i18n.format('emo.generate.button.progressSingle', { current: currentPosition, total: totalLines });
+            area.value = i18n.t('emo.generate.placeholder');
             if (!file) { btn.disabled = false; btn.classList.remove('loading'); return; }
             const skipImmediateSave = precomputedLines != null || positionLookup != null;
             try {
@@ -5185,16 +5190,17 @@ function addFiles() {
                 file.emoError = false;
                 updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
                 updateEmoReasonDisplay(file.id);
-                updateStatus(`Emotionen generiert: ${file.filename}`);
+                updateStatus(i18n.format('emo.generate.status.single', { filename: file.filename || '' }));
             } catch (e) {
                 console.error('Emotionen fehlgeschlagen', e);
-                area.value = 'Fehler bei der Generierung';
+                area.value = i18n.t('emo.generate.status.error');
                 file.emoReason = '';
                 file.emoError = true;
                 updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
             }
             btn.disabled = false;
             btn.classList.remove('loading');
+            btn.textContent = i18n.t('emo.generate.button.label');
         }
 
         // Passt den Emotional-Text an die EN-Länge an
@@ -5203,9 +5209,9 @@ function addFiles() {
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.adjust-emotions-btn');
             if (!row || !area || !btn) return;
-            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
-            area.value = '...';
+            area.value = i18n.t('emo.generate.placeholder');
             const file = files.find(f => f.id === rowId);
             if (!file) { btn.disabled = false; return; }
             try {
@@ -5231,10 +5237,10 @@ function addFiles() {
                 file.emoError = false;
                 updateText(file.id, 'emo', area.value, true);
                 updateEmoReasonDisplay(file.id);
-                updateStatus(`Text angepasst: ${file.filename}`);
+                updateStatus(i18n.format('emo.adjust.status.single', { filename: file.filename || '' }));
             } catch (e) {
                 console.error('Anpassen fehlgeschlagen', e);
-                area.value = 'Fehler bei der Anpassung';
+                area.value = i18n.t('emo.adjust.status.error');
                 file.emoReason = '';
                 file.emoError = true;
                 updateText(file.id, 'emo', area.value, true);
@@ -5248,7 +5254,7 @@ function addFiles() {
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.improve-emotions-btn');
             if (!row || !area || !btn) return;
-            if (!openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
             btn.classList.add('loading');
             const file = files.find(f => f.id === rowId);
@@ -5277,13 +5283,13 @@ function addFiles() {
                     file.emoError = false;
                     updateText(file.id, 'emo', area.value, true);
                     updateEmoReasonDisplay(file.id);
-                    updateStatus(`Text verbessert: ${file.filename}`);
+                    updateStatus(i18n.format('emo.improve.status.single', { filename: file.filename || '' }));
                 } else {
-                    updateStatus('Verbesserung abgebrochen');
+                    updateStatus(i18n.t('emo.improve.status.cancel'));
                 }
             } catch (e) {
                 console.error('Verbesserung fehlgeschlagen', e);
-                updateStatus('Verbesserung fehlgeschlagen');
+                updateStatus(i18n.t('emo.improve.status.error'));
             }
             btn.disabled = false;
             btn.classList.remove('loading');

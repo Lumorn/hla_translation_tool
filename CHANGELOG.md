@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.513
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für Fortschrittsbutton, Abschlussstatus sowie die Fehlermeldung bei fehlendem GPT-Key mit Platzhaltern in Deutsch und Englisch.
+* `web/src/main.js` ersetzt alle hart codierten Emo-Status- und Fehlermeldungen durch `i18n.t(...)`/`i18n.format(...)` inklusive Zähler-Platzhaltern pro Zeile.
+* `README.md` hebt Version **1.40.513** hervor und beschreibt die nun lokalisierten Emo-Hinweise samt GPT-Key-Warnung.
 # 🛠️ Patch in 1.40.512
 * `web/src/i18n.js` ergänzt separate i18n-Schlüssel für den leeren Hinweistext und alle Spaltenüberschriften der Level-Statistiken in Deutsch und Englisch.
 * `web/src/main.js` baut die Level-Statistiken mit den neuen i18n-Labels auf, damit leere Zustände und Tabellenköpfe beim Sprachwechsel frisch übersetzt werden.
