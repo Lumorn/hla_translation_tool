@@ -1485,3 +1485,4 @@ verwendet werden, um optionale Downloads zu überspringen.
   * **`switchStorage(targetMode)`** – wechselt das Speichersystem ohne Migration, setzt globale Zustände zurück und lädt Projektliste und Wörterbuch neu.
   * **Entfernt:** Der frühere lokale Suchindex `LocalIndex` mit den Methoden `add` und `search` wurde gestrichen und steht nicht mehr zur Verfügung.
   * **Beim Start** wird jetzt `navigator.storage.persist()` ausgeführt; zusammen mit `navigator.storage.estimate()` zeigt die Oberfläche an, wie viel lokaler Speicher verfügbar bleibt.
+\n## Änderungen\n- DE-Audio-Dialog komplett mit i18n-Schlüsseln für Steuerungen, Timing und Hinweise versehen.
