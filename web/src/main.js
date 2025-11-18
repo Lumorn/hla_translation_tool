@@ -11405,7 +11405,52 @@ function buildProjectFile(filename, folder) {
             document.getElementById('startImportBtn').style.display = 'none';
             const field = document.getElementById('importData');
             field.value = '';
+            const fileLabel = document.getElementById('importFileName');
+            const fileInput = document.getElementById('importFileInput');
+            if (fileLabel) fileLabel.textContent = 'Keine Datei ausgewählt';
+            if (fileInput) fileInput.value = '';
             field.focus();
+        }
+
+        // Öffnet den Dateidialog, damit Anwender eine Textdatei auswählen können
+        function triggerImportFile() {
+            const fileInput = document.getElementById('importFileInput');
+            if (!fileInput) return;
+
+            // Zurücksetzen, damit der gleiche Dateiname mehrfach eingelesen werden kann
+            fileInput.value = '';
+            fileInput.click();
+        }
+
+        // Liest den Inhalt der ausgewählten Datei ein und füllt das Textfeld
+        function handleImportFile(event) {
+            const file = event?.target?.files?.[0];
+            const label = document.getElementById('importFileName');
+
+            if (!file) {
+                if (label) label.textContent = 'Keine Datei ausgewählt';
+                return;
+            }
+
+            if (label) label.textContent = `Lade ${file.name}...`;
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                const content = typeof reader.result === 'string' ? reader.result : '';
+                document.getElementById('importData').value = content;
+                if (label) {
+                    label.textContent = `${file.name} (${content.length} Zeichen)`;
+                }
+                updateStatus(`Datei "${file.name}" geladen`);
+            };
+
+            reader.onerror = () => {
+                alert('Fehler beim Lesen der Datei. Bitte erneut versuchen.');
+                if (label) label.textContent = 'Fehler beim Laden der Datei';
+            };
+
+            reader.readAsText(file);
         }
 
         async function showCcImportDialog() {

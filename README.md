@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.498-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.499-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -1081,6 +1081,7 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 * **📥 Daten importieren**
   * **Wiki‑Tabellen:** Automatische Spalten‑Erkennung
   * **Pipe‑Format:** `Dateiname|EN Text|DE Text`
+  * **Datei‑Upload:** Importdaten können als Textdatei ausgewählt werden, kein Copy & Paste nötig
   * **Intelligente Zuordnung:** Dateinamen‑Spalte wird automatisch erkannt
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
