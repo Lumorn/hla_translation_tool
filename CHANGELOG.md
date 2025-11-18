@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.521
+* `web/src/main.js` ruft beim Sprachwechsel im geöffneten DE-Editor jetzt auch `refreshSegmentSuggestionList()` auf, sofern die Segmentliste im Dialog sichtbar ist, damit Labels und Toggle-Schalter sofort in der gewählten Sprache erscheinen.
+* `README.md` hebt die Version **1.40.521** hervor und erwähnt die aktualisierte Segment-Vorschlagsliste beim Sprachwechsel.
 # 🛠️ Patch in 1.40.520
 * `web/src/i18n.js` führt i18n-Schlüssel für Segment-Indizes, Start-/Ende-/Längen-Texte mit Millisekunden-Vorlagen sowie die Behalten-/Löschen-Schalter ein.
 * `web/src/main.js` nutzt die neuen Schlüssel in `refreshSegmentSuggestionList()`, sodass Beschriftungen und Toggle-Buttons beim Sprachwechsel neu gerendert werden.
