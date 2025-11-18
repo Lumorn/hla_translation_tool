@@ -17747,6 +17747,13 @@ function refreshSilenceList() {
 
 // Aktualisiert die Liste der Segment-Vorschläge samt Statusknöpfen
 function refreshSegmentSuggestionList() {
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        // Platzhalter auch ohne i18n.format ersetzen
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, t(key));
+    });
     const container = document.getElementById('segmentSuggestionList');
     if (!container) return;
     container.innerHTML = '';
