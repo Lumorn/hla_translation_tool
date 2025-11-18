@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.532
+* `web/src/main.js` ergänzt Level-Reihenfolgen im Blueprint-Export und baut beim Import ein neues `levelOrders`-Mapping aus den Blueprint-Einträgen auf, wobei bestehende Kapitel-Reihenfolgen erhalten bleiben und fehlende Level-Orders per Import-Index gesetzt werden.
+* `README.md` erläutert die exportierte Level-Reihenfolge im Struktur-Blueprint sowie die Übernahme der Sortierung beim Import.
 # 🛠️ Patch in 1.40.531
 * `web/src/main.js` führt einen schlanken Struktur-Blueprint ein, der nur Kapitel, Level, Dateinamen und EN-Texte exportiert, die deutsche Übersetzung entfernt und Audiopfad-Daten aussortiert.
 * `web/hla_translation_tool.html` ergänzt passende Buttons und einen Datei-Importer im Backup-Dialog, um die neue Struktur-Export/Import-Funktion auszulösen.
