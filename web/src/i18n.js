@@ -32,6 +32,7 @@
             'button.importZip': 'ZIP importieren',
             'button.copyAssistant': 'Kopierhilfe',
             'button.copyAssistant2': 'Kopierhilfe 2',
+            // Übersetzungen für die Kopierhilfe inkl. Platzhalter
             'copyAssistant.status.complete': 'Fertig',
             'copyAssistant.progress.files': 'Datei {current} von {total}',
             'copyAssistant.progress.steps': 'Schritt {current} / {total}',
@@ -194,6 +195,7 @@
             'button.importZip': 'Import ZIP',
             'button.copyAssistant': 'Copy helper',
             'button.copyAssistant2': 'Copy helper 2',
+            // Copy assistant translations with placeholders
             'copyAssistant.status.complete': 'Done',
             'copyAssistant.progress.files': 'File {current} of {total}',
             'copyAssistant.progress.steps': 'Step {current} / {total}',
@@ -380,6 +382,14 @@
         });
     }
 
+    // Ersetzt Platzhalter in Übersetzungen, z.B. {current} oder {total}
+    function format(key, replacements = {}) {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, template);
+    }
+
     function setLanguage(lang) {
         const nextLang = resources[lang] ? lang : defaultLanguage;
         currentLanguage = nextLang;
@@ -413,6 +423,7 @@
         t,
         setLanguage,
         getLanguage,
+        format,
         registerTranslationTargets,
         onLanguageChange,
         initializeLanguage
