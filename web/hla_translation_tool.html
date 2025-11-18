@@ -532,9 +532,7 @@
 
             
             <!-- Back button (hidden initially) -->
-            <button class="folder-back-btn" id="folderBackBtn" onclick="showFolderGrid()" style="display: none;">
-                ← Zurück zur Ordnerübersicht
-            </button>
+            <button class="folder-back-btn" id="folderBackBtn" onclick="showFolderGrid()" style="display: none;"></button>
             
             <!-- Folder Grid -->
             <div class="folder-grid" id="folderGrid"></div>
@@ -543,8 +541,8 @@
             <div class="folder-files-view" id="folderFilesView"></div>
             
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="copyFolderReport()">Bericht</button>
-                <button class="btn btn-secondary" onclick="closeFolderBrowser()">Schließen</button>
+                <button class="btn btn-secondary" id="folderBrowserReport" onclick="copyFolderReport()">Bericht</button>
+                <button class="btn btn-secondary" id="folderBrowserClose" onclick="closeFolderBrowser()">Schließen</button>
             </div>
         </div>
     </div>
@@ -1187,13 +1185,13 @@
     <div class="dialog-overlay hidden" id="missingFoldersDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeMissingFoldersDialog()">×</button>
-            <h3>🚫 Fehlende Ordner</h3>
+            <h3 id="missingFoldersTitle">🚫 Fehlende Ordner</h3>
             <div id="missingFoldersList" style="margin-bottom:15px;"></div>
-            <h4>📁 Ordner in der Datenbank</h4>
+            <h4 id="databaseFoldersTitle">📁 Ordner in der Datenbank</h4>
             <div id="databaseFoldersList" style="margin-bottom:15px;"></div>
             <div class="dialog-buttons">
                 <button class="btn btn-danger" id="deleteAllMissingBtn">Alle löschen</button>
-                <button class="btn btn-secondary" onclick="closeMissingFoldersDialog()">Schließen</button>
+                <button class="btn btn-secondary" id="missingFoldersClose" onclick="closeMissingFoldersDialog()">Schließen</button>
             </div>
         </div>
     </div>

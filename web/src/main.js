@@ -138,9 +138,13 @@ function setupLanguageControls() {
             { selector: '#importCancelButton', key: 'import.buttons.cancel' },
             { selector: '#analyzeDataBtn', key: 'import.buttons.analyze' },
             { selector: '#startImportBtn', key: 'import.buttons.start' },
-            { selector: '#subtitleSearchAllButton', key: 'button.subtitleSearchAll' },
-            { selector: '#subtitleSearchAllButtonInline', key: 'button.subtitleSearchAll' },
-            { selector: '#settingsButton', key: 'settings.title' },
+        { selector: '#subtitleSearchAllButton', key: 'button.subtitleSearchAll' },
+        { selector: '#subtitleSearchAllButtonInline', key: 'button.subtitleSearchAll' },
+        { selector: '#settingsButton', key: 'settings.title' },
+        { selector: '#folderBackBtn', key: 'folderBrowser.back' },
+        { selector: '#folderBrowserTitle', key: 'folderBrowser.title' },
+        { selector: '#folderBrowserReport', key: 'folderBrowser.report' },
+        { selector: '#folderBrowserClose', key: 'folderBrowser.close' },
         { selector: '#settingsMenu .settings-item:nth-of-type(1)', key: 'settings.cleanupDuplicates' },
         { selector: '#settingsMenu .settings-item:nth-of-type(2)', key: 'settings.audioDuplicates' },
         { selector: '#settingsMenu .settings-item:nth-of-type(3)', key: 'settings.backup' },
@@ -248,6 +252,15 @@ function setupLanguageControls() {
         const deDialog = document.getElementById('deEditDialog');
         if (deDialog && !deDialog.classList.contains('hidden')) {
             updateDeEditWaveforms();
+        }
+        // Ordner-Browser neu aufbauen, falls er sichtbar ist
+        const folderDialog = document.getElementById('folderBrowserDialog');
+        if (folderDialog && !folderDialog.classList.contains('hidden')) {
+            if (currentFolderBrowserFolder) {
+                showFolderFiles(currentFolderBrowserFolder);
+            } else {
+                showFolderGrid();
+            }
         }
     });
 
@@ -624,6 +637,7 @@ let historyPresenceCache   = {}; // Merkt vorhandene History-Dateien
 let folderCustomizations   = {}; // Speichert Icons/Farben pro Ordner
 let isDirty                = false; // Merker für ungespeicherte Änderungen
 let saveDelayTimer         = null;  // Timer für verzögertes Speichern
+let currentFolderBrowserFolder = null; // Merker für aktuell geöffneten Ordner im Ordner-Browser
 
 // Merkt Änderungen und löst nach kurzer Zeit automatisch das Speichern aus
 function markDirty() {
@@ -9248,6 +9262,13 @@ function calculateFolderCompletionStats() {
 
 /* =========================== FOLDER REPORT START =========================== */
 function copyFolderReport() {
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) =>
+            acc.replaceAll(`{${placeholder}}`, value), template);
+    });
+
     // Statistiken pro Ordner ermitteln
     const folderStats = calculateFolderCompletionStats();
 
@@ -9262,24 +9283,35 @@ function copyFolderReport() {
             totalFiles += stats.total;
             totalCompleted += stats.completed;
             const open = stats.total - stats.completed;
-            lines.push(`${stats.folderName}: ${stats.total} Dateien, ${stats.completed} übersetzt, ${open} offen, ${stats.percentage}%`);
+            lines.push(format('folderBrowser.report.line', {
+                folder: stats.folderName,
+                total: stats.total,
+                done: stats.completed,
+                open,
+                percent: stats.percentage
+            }));
         });
 
     const openTotal = totalFiles - totalCompleted;
     const percent = totalFiles > 0 ? Math.round((totalCompleted / totalFiles) * 100) : 0;
 
     const reportText = [
-        `Gesamt: ${totalFiles} Dateien, ${totalCompleted} übersetzt, ${openTotal} offen, ${percent}%`,
+        format('folderBrowser.report.total', {
+            total: totalFiles,
+            done: totalCompleted,
+            open: openTotal,
+            percent
+        }),
         '',
         ...lines
     ].join('\n');
 
     // Text in die Zwischenablage kopieren
     navigator.clipboard.writeText(reportText)
-        .then(() => updateStatus('📋 Bericht kopiert'))
+        .then(() => updateStatus(t('folderBrowser.report.copied')))
         .catch(err => {
             console.error('Clipboard-Fehler', err);
-            alert('Bericht konnte nicht kopiert werden.');
+            alert(t('folderBrowser.report.copyError'));
         });
 }
 /* =========================== FOLDER REPORT END =========================== */
@@ -9335,12 +9367,21 @@ function copyFolderReport() {
 
         function closeFolderBrowser() {
             document.getElementById('folderBrowserDialog').classList.add('hidden');
+            currentFolderBrowserFolder = null;
         }
 
 
 
 // =========================== SHOWFOLDERGRID WITH DELETE START ===========================
 function showFolderGrid() {
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) =>
+            acc.replaceAll(`{${placeholder}}`, value), template);
+    });
+
+    currentFolderBrowserFolder = null;
     const folderGrid = document.getElementById('folderGrid');
     const folderFilesView = document.getElementById('folderFilesView');
     const folderBackBtn = document.getElementById('folderBackBtn');
@@ -9351,8 +9392,9 @@ function showFolderGrid() {
     folderGrid.style.display = 'grid';
     folderFilesView.style.display = 'none';
     folderBackBtn.style.display = 'none';
-    
-    title.textContent = '📁 Ordner durchsuchen';
+    folderBackBtn.textContent = t('folderBrowser.back');
+
+    title.textContent = t('folderBrowser.title');
     
     // Calculate global completion stats
     const folderStats = calculateFolderCompletionStats();
@@ -9367,41 +9409,41 @@ function showFolderGrid() {
     // Update description with stats and cleanup button
     description.innerHTML = `
         <div class="folder-stats">
-            <h4>📊 Globale Übersetzungsstatistiken</h4>
+            <h4>${t('folderBrowser.stats.title')}</h4>
             <div class="folder-stats-grid">
                 <div class="folder-stat-item">
                     <div class="folder-stat-number ${overallPercentage === 100 ? 'complete' : overallPercentage > 0 ? 'partial' : 'none'}">
                         ${overallPercentage}%
                     </div>
-                    <div class="folder-stat-label">Gesamt-Fortschritt</div>
+                    <div class="folder-stat-label">${t('folderBrowser.stats.overall')}</div>
                 </div>
                 <div class="folder-stat-item">
                     <div class="folder-stat-number ${completedFiles > 0 ? 'complete' : 'none'}">
                         ${completedFiles}/${totalFiles}
                     </div>
-                    <div class="folder-stat-label">Dateien übersetzt</div>
+                    <div class="folder-stat-label">${t('folderBrowser.stats.translatedFiles')}</div>
                 </div>
                 <div class="folder-stat-item">
                     <div class="folder-stat-number ${completedFolders > 0 ? 'complete' : 'none'}">
                         ${completedFolders}/${totalFolders}
                     </div>
-                    <div class="folder-stat-label">Ordner komplett</div>
+                    <div class="folder-stat-label">${t('folderBrowser.stats.completedFolders')}</div>
                 </div>
                 <div class="folder-stat-item">
                     <div class="folder-stat-number ${globalBoth === globalTotal && globalTotal > 0 ? 'complete' : globalBoth > 0 ? 'partial' : 'none'}" id="globalTextStatsValue">
                         ${globalEN} / ${globalDE} / ${globalBoth} / ${globalTotal}
                     </div>
-                    <div class="folder-stat-label">EN / DE / BEIDE / ∑</div>
+                    <div class="folder-stat-label">${t('folderBrowser.stats.textSummary')}</div>
                 </div>
             </div>
         </div>
         <div style="display: flex; gap: 10px; margin: 15px 0; align-items: center;">
-            <p style="color: #999; flex: 1;">Durchsuchen Sie alle verfügbaren Ordner. Grüne Ordner sind vollständig übersetzt.</p>
-            <button class="btn btn-secondary" onclick="cleanupIncorrectFolderNames()" title="Bereinigt falsche Ordnernamen in der Datenbank">
-                🧹 Ordnernamen bereinigen
+            <p style="color: #999; flex: 1;">${t('folderBrowser.stats.hint')}</p>
+            <button class="btn btn-secondary" onclick="cleanupIncorrectFolderNames()" title="${t('folderBrowser.cleanup.hint')}">
+                ${t('folderBrowser.cleanup.button')}
             </button>
-            <button class="btn btn-secondary" onclick="showMissingFoldersDialog()" title="Listet nicht mehr existierende Ordner auf">
-                ❓ Fehlende Ordner
+            <button class="btn btn-secondary" onclick="showMissingFoldersDialog()" title="${t('folderBrowser.missing.hint')}">
+                ${t('folderBrowser.missing.button')}
             </button>
         </div>
     `;
@@ -9488,12 +9530,11 @@ function showFolderGrid() {
         folderGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #999;">
                 <div style="font-size: 48px; margin-bottom: 20px;">🔄</div>
-                <h3 style="color: #ff6b1a; margin-bottom: 10px;">Automatischer Ordner-Scan</h3>
+                <h3 style="color: #ff6b1a; margin-bottom: 10px;">${t('folderBrowser.empty.title')}</h3>
                 <p style="margin-bottom: 20px;">
-                    Keine Ordner gefunden. Starte automatischen Scan...<br>
-                    Bitte wählen Sie einen Ordner mit Audio-Dateien aus.
+                    ${t('folderBrowser.empty.message')}
                 </p>
-                <div style="animation: pulse-auto-scan 2s infinite;">📁 Ordner-Dialog wird geöffnet...</div>
+                <div style="animation: pulse-auto-scan 2s infinite;">${t('folderBrowser.empty.openDialog')}</div>
             </div>
         `;
         return;
@@ -9547,27 +9588,27 @@ function showFolderGrid() {
                 <!-- Anpassungs-Button oben links -->
                 <button class="folder-customize-btn"
                         onclick="event.stopPropagation(); showFolderCustomization('${folder.name}')"
-                        title="Ordner anpassen"
+                        title="${t('folderBrowser.customize.title')}"
                         style="position: absolute; top: 8px; left: 8px;">
                     ⚙️
                 </button>
                 <!-- Lösch-Button oben rechts -->
                 <button class="folder-delete-btn"
                         onclick="event.stopPropagation(); deleteFolderFromDatabase('${folder.name}')"
-                        title="Ordner aus Datenbank löschen"
+                        title="${t('folderBrowser.delete.title')}"
                         style="position: absolute; top: 8px; right: 8px; background: rgba(244,67,54,0.8); border: none; color: white; width: 24px; height: 24px; border-radius: 12px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
                         onmouseover="this.style.background='#f44336'"
                         onmouseout="this.style.background='rgba(244,67,54,0.8)'">×</button>
-                
+
                 <!-- Ordner-Inhalt (klickbar) -->
                 <div onclick="showFolderFiles('${folder.name}')" style="cursor: pointer; padding: 15px;">
                     <div class="folder-card-icon">${folderIcon}</div>
                     <div class="folder-card-name">${lastFolderName}</div>
-                    <div class="folder-card-count">${stats.total} Dateien</div>
+                    <div class="folder-card-count">${format('folderBrowser.card.files', { count: stats.total })}</div>
                     <!-- Neue Zeile: zeigt übersetzte und offene Dateien an -->
-                    <div class="folder-card-details">${stats.completed} übersetzt · ${stats.total - stats.completed} offen</div>
+                    <div class="folder-card-details">${format('folderBrowser.card.translatedOpen', { done: stats.completed, open: stats.total - stats.completed })}</div>
                     <div class="folder-card-completion ${stats.isComplete ? 'complete' : stats.percentage > 0 ? 'partial' : 'none'}" style="color: ${completionColor};">
-                        ${stats.percentage}% übersetzt
+                        ${format('folderBrowser.card.progress', { percent: stats.percentage })}
                         ${stats.isComplete ? ' ✅' : stats.percentage > 0 ? ' 🔄' : ' ⏳'}
                     </div>
                 </div>
@@ -9763,11 +9804,21 @@ function showFolderDebug() {
 // =========================== SHOWMISSINGFOLDERSDIALOG START =================
 // Öffnet ein Dialogfenster mit allen Ordnern, die keine vorhandenen Dateien mehr besitzen
 function showMissingFoldersDialog() {
+    const t = window.i18n?.t || (value => value);
     const dialog  = document.getElementById('missingFoldersDialog');
     const listDiv = document.getElementById('missingFoldersList');
     const dbDiv   = document.getElementById('databaseFoldersList');
     listDiv.innerHTML = '';
     dbDiv.innerHTML   = '';
+
+    const titleEl = document.getElementById('missingFoldersTitle');
+    const dbTitleEl = document.getElementById('databaseFoldersTitle');
+    const deleteAllBtn = document.getElementById('deleteAllMissingBtn');
+    const closeBtn = document.getElementById('missingFoldersClose');
+    if (titleEl) titleEl.textContent = t('missingFolders.title');
+    if (dbTitleEl) dbTitleEl.textContent = t('missingFolders.databaseTitle');
+    if (deleteAllBtn) deleteAllBtn.textContent = t('missingFolders.deleteAll');
+    if (closeBtn) closeBtn.textContent = t('missingFolders.close');
 
     const folderMap = {};
     Object.values(filePathDatabase).forEach(paths => {
@@ -9787,7 +9838,7 @@ function showMissingFoldersDialog() {
         .sort();
 
     if (missing.length === 0) {
-        listDiv.textContent = 'Alle Ordner existieren noch.';
+        listDiv.textContent = t('missingFolders.none');
         document.getElementById('deleteAllMissingBtn').onclick = null;
     } else {
         const ul = document.createElement('ul');
@@ -9800,7 +9851,7 @@ function showMissingFoldersDialog() {
             li.textContent = folder;
 
             const btn = document.createElement('button');
-            btn.textContent = 'Löschen';
+            btn.textContent = t('missingFolders.delete');
             btn.className = 'btn btn-danger';
             btn.style.marginLeft = '10px';
             btn.onclick = () => { deleteFolderFromDatabase(folder); li.remove(); };
@@ -9819,7 +9870,7 @@ function showMissingFoldersDialog() {
 
     // Zweite Liste mit allen Ordnern und erstem Pfad anzeigen
     if (allFolders.length === 0) {
-        dbDiv.textContent = 'Keine Ordner in der Datenbank.';
+        dbDiv.textContent = t('missingFolders.databaseNone');
     } else {
         const dbUl = document.createElement('ul');
         dbUl.style.listStyle = 'none';
@@ -10740,8 +10791,17 @@ function getBrowserDebugPathInfo(file) {
 
 // =========================== SHOWFOLDERFILES START ===========================
 async function showFolderFiles(folderName) {
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) =>
+            acc.replaceAll(`{${placeholder}}`, value), template);
+    });
+
     // Sicherstellen, dass Ignorier-Informationen vorliegen
     await ignoredFilesLoaded;
+
+    currentFolderBrowserFolder = folderName;
 
     const folderGrid      = document.getElementById('folderGrid');
     const folderFilesView = document.getElementById('folderFilesView');
@@ -10806,7 +10866,11 @@ async function showFolderFiles(folderName) {
     const ignored   = folderFiles.filter(f => f.isIgnored).length;
 
     title.innerHTML = `${folderIcon} ${lastFolderName} <button class="folder-customize-btn" onclick="showFolderCustomization('${folderName}')">⚙️</button>`;
-    description.innerHTML = `✅ ${completed} übersetzt – 🚫 ${ignored} ignoriert – ⏳ ${total - completed - ignored} offen`;
+    description.innerHTML = format('folderFiles.summary', {
+        done: completed,
+        ignored,
+        open: total - completed - ignored
+    });
 
     aktiveOrdnerDateien = folderFiles;
     renderFolderFilesList(folderFiles);
@@ -10816,7 +10880,7 @@ async function showFolderFiles(folderName) {
     createBtnWrap.style.marginBottom = '10px';
     const createBtn = document.createElement('button');
     createBtn.className = 'btn btn-secondary';
-    createBtn.textContent = 'Projekt erstellen mit fehlenden Dateien';
+    createBtn.textContent = t('folderFiles.createProject');
     createBtn.onclick = () => createProjectWithMissingFiles(folderName);
     createBtnWrap.appendChild(createBtn);
     document.getElementById('folderFilesView').prepend(createBtnWrap);
@@ -10830,6 +10894,8 @@ async function showFolderFiles(folderName) {
 
 // =========================== FOLDER FILE SEARCH START =======================
 function renderFolderFilesList(list, query = '') {
+    const t = window.i18n?.t || (value => value);
+
     const folderFilesView = document.getElementById('folderFilesView');
     const items = list.map(file => {
         const inProject = files.find(f => f.filename === file.filename && f.folder === file.folder);
@@ -10839,23 +10905,23 @@ function renderFolderFilesList(list, query = '') {
                 <div class="folder-file-info">
                     <div class="folder-file-name">
                         ${query ? highlightText(file.filename, query) : file.filename}
-                        ${file.isCompleted ? `<span class="folder-file-badge done"  title="Übersetzt">✅ Übersetzt</span>` : ''}
-                        ${file.isIgnored ? `<span class="folder-file-badge skip">🚫 Ignoriert</span>` : ''}
+                        ${file.isCompleted ? `<span class="folder-file-badge done"  title="${t('folderFiles.badge.done')}">✅ ${t('folderFiles.badge.done')}</span>` : ''}
+                        ${file.isIgnored ? `<span class="folder-file-badge skip">🚫 ${t('folderFiles.badge.ignored')}</span>` : ''}
                     </div>
                     <div style="font-size: 10px; color: #666; margin: 4px 0; padding: 4px 8px; background: #1a1a1a; border-radius: 3px; border-left: 3px solid #333;">
-                        <strong>🔍 Pfad:</strong> ${debugPathInfo}
+                        <strong>🔍 ${t('folderFiles.path')}:</strong> ${debugPathInfo}
                     </div>
                     <div class="folder-file-texts">
                         <div class="folder-file-text">
                             <div class="folder-file-text-label">EN</div>
                             <div class="folder-file-text-content" title="${escapeHtml(file.enText)}">
-                                ${query ? highlightText(file.enText || '(kein Text)', query) : (file.enText || '(kein Text)')}
+                                ${query ? highlightText(file.enText || t('folderFiles.noText'), query) : (file.enText || t('folderFiles.noText'))}
                             </div>
                         </div>
                         <div class="folder-file-text">
                             <div class="folder-file-text-label">DE</div>
                             <div class="folder-file-text-content" title="${escapeHtml(file.deText)}">
-                                ${query ? highlightText(file.deText || '(kein Text)', query) : (file.deText || '(kein Text)')}
+                                ${query ? highlightText(file.deText || t('folderFiles.noText'), query) : (file.deText || t('folderFiles.noText'))}
                             </div>
                         </div>
                     </div>
@@ -10864,11 +10930,11 @@ function renderFolderFilesList(list, query = '') {
                     <button class="folder-file-play" onclick="playFolderBrowserAudio('${file.fullPath}', this)">▶</button>
                     <button class="folder-file-add" ${inProject ? 'disabled' : ''}
                             onclick="addFileFromFolderBrowser('${file.filename}', '${file.folder}', '${file.fullPath}')">
-                        ${inProject ? '✓ Bereits hinzugefügt' : '+ Hinzufügen'}
+                        ${inProject ? t('folderFiles.added') : t('folderFiles.add')}
                     </button>
                     <button class="folder-file-ignore"
                             onclick="toggleSkipFile('${file.folder}', '${file.filename}')">
-                        ${file.isIgnored ? '↩ Wieder aufnehmen' : '🚫 Ignorieren'}
+                        ${file.isIgnored ? t('folderFiles.resume') : t('folderFiles.ignore')}
                     </button>
                 </div>
             </div>`;
@@ -10876,7 +10942,7 @@ function renderFolderFilesList(list, query = '') {
 
     folderFilesView.innerHTML = `
         <div class="folder-search-container">
-            <input type="text" class="folder-search-input" id="folderFileSearchInput" placeholder="Text im Ordner suchen..." value="${escapeHtml(query)}">
+            <input type="text" class="folder-search-input" id="folderFileSearchInput" placeholder="${t('folderFiles.search.placeholder')}" value="${escapeHtml(query)}">
         </div>
         <div id="folderFilesList">${items}</div>`;
 }
