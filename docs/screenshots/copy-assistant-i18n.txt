@@ -1,0 +1,3 @@
+Platzhalter fuer Screenshot: Kopierhilfe zeigt i18n-Status.
+Szene: Dialog der Kopierhilfe mit Dateizaehler "Datei 3 von 12" und Schrittanzeige "Schritt 1 / 2" in deutscher Sprache.
+Hinweis: Dieser Text steht stellvertretend fuer einen Screenshot, keine Binärdatei.

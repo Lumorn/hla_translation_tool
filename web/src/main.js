@@ -2720,8 +2720,9 @@ function showCopyAssistant() {
     const countSpan = document.getElementById('copyAssistCount');
     const stepSpan = document.getElementById('copyAssistStep');
     const prog = document.getElementById('copyAssistProgress');
+    const translator = window.i18n;
     if (!file) {
-        countSpan.textContent = 'Fertig';
+        countSpan.textContent = translator ? translator.t('copyAssistant.complete') : 'Fertig';
         stepSpan.textContent = '';
         prog.style.width = '100%';
         return;
@@ -2737,9 +2738,20 @@ function showCopyAssistant() {
     document.getElementById('copyEn').textContent = file.enText || '';
     document.getElementById('copyDe').textContent = file.deText || '';
     document.getElementById('copyEmo').textContent = file.emotionalText || '';
-    countSpan.textContent = `Datei ${copyAssistIndex + 1} von ${total}`;
-    stepSpan.textContent = `Schritt ${copyAssistStep + 1} / 2`;
-    prog.style.width = `${(copyAssistIndex / total) * 100}%`;
+    const countText = translator
+        ? translator.t('copyAssistant.fileProgress')
+            .replace('{current}', copyAssistIndex + 1)
+            .replace('{total}', total)
+        : `Datei ${copyAssistIndex + 1} von ${total}`;
+    const stepText = translator
+        ? translator.t('copyAssistant.stepProgress')
+            .replace('{current}', copyAssistStep + 1)
+            .replace('{total}', 2)
+        : `Schritt ${copyAssistStep + 1} / 2`;
+    countSpan.textContent = countText;
+    stepSpan.textContent = stepText;
+    const progressPercent = total > 0 ? (copyAssistIndex / total) * 100 : 100;
+    prog.style.width = `${progressPercent}%`;
     verifyCopyAssistClipboard();
 }
 // =========================== COPY ASSISTANT END ============================
