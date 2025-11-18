@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.506
+* `web/src/i18n.js` trägt die Kopierhilfe-Schlüssel für Fertig-Status, Datei-Zähler und Schrittangabe explizit im Sprachpaket ein.
+* `web/src/main.js` rendert die Kopierhilfe-Labels über `i18n.t(...)` beziehungsweise `i18n.format(...)` und reagiert damit direkt auf Sprachwechsel.
+* `README.md` führt Version **1.40.506** und beschreibt die sprachadaptive Kopierhilfe mit Platzhalter-Übersetzungen.
 # 🛠️ Patch in 1.40.505
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für Emo-Dubbing-Abschlussstatus und den Abschluss-Logeintrag in Deutsch und Englisch.
 * `web/src/dubbing.js` ruft Status- und Logmeldung beim erfolgreichen Emo-Dubbing über die neuen Übersetzungen ab, damit Sprachwechsel live greifen.
