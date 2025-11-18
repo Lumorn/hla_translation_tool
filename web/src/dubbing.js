@@ -323,7 +323,7 @@ async function showDownloadWaitDialog(fileId, dubId) {
         try {
             const baseFolder = file.folder.split(/[\\/]/).pop();
             if (await safeCopy(baseFolder)) {
-                updateStatus('Ordner kopiert: ' + baseFolder);
+                updateStatus(i18n.t('dubbing.folderCopied', { folder: baseFolder }));
             }
         } catch (err) {
             console.error('Kopieren fehlgeschlagen:', err);
@@ -398,7 +398,7 @@ async function copyFolderName(folder) {
     try {
         const base = folder.split(/[\\/]/).pop();
         if (await safeCopy(base)) {
-            updateStatus('Ordner kopiert: ' + base);
+            updateStatus(i18n.t('dubbing.folderCopied', { folder: base }));
         }
     } catch (err) {
         console.error('Kopieren fehlgeschlagen:', err);
@@ -475,7 +475,7 @@ function createDubbingCSV(file, durationMs, lang = 'de') {
     if (lang === 'emo') translation = file.emotionalText;
     else translation = file[`${lang}Text`] || file.deText;
     if (!file.enText || !translation) {
-        addDubbingLog('Übersetzung fehlt');
+        addDubbingLog(i18n.t('dubbing.translationMissing'));
         return null;
     }
     // Kopfzeile wird immer vorangestellt
@@ -564,17 +564,17 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Starte Dubbing für ${file.filename}`);
+    addDubbingLog(i18n.t('dubbing.starting', { filename: file.filename }));
     if (!elevenLabsApiKey) {
-        updateStatus('API-Key fehlt');
-        addDubbingLog('API-Key fehlt');
+        updateStatus(i18n.t('dubbing.apiKeyMissing'));
+        addDubbingLog(i18n.t('dubbing.apiKeyMissing'));
         return;
     }
 
     const audioInfo = findAudioInFilePathCache(file.filename, file.folder);
     if (!audioInfo) {
-        updateStatus('EN-Datei nicht gefunden');
-        addDubbingLog('EN-Datei nicht gefunden');
+        updateStatus(i18n.t('dubbing.enFileMissing'));
+        addDubbingLog(i18n.t('dubbing.enFileMissing'));
         return;
     }
 
@@ -584,20 +584,20 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
             const resp = await fetch(audioInfo.audioFile);
             if (!resp.ok) {
                 const errText = await resp.text();
-                updateStatus('EN-Datei nicht ladbar');
-                addDubbingLog(`EN-Datei nicht ladbar: ${resp.status} ${errText}`);
+                updateStatus(i18n.t('dubbing.enFileLoadFailed'));
+                addDubbingLog(i18n.t('dubbing.enFileLoadFailedDetail', { status: resp.status, message: errText }));
                 return;
             }
             audioBlob = await resp.blob();
-            addDubbingLog('EN-Datei geladen');
+            addDubbingLog(i18n.t('dubbing.enFileLoaded'));
         } catch (e) {
-            addDubbingLog('Fehler: ' + e.message);
-            updateStatus('EN-Datei nicht ladbar');
+            addDubbingLog(i18n.t('dubbing.errorMessage', { message: e.message }));
+            updateStatus(i18n.t('dubbing.enFileLoadFailed'));
             return;
         }
     } else {
         audioBlob = audioInfo.audioFile;
-        addDubbingLog('EN-Datei aus Cache geladen');
+        addDubbingLog(i18n.t('dubbing.enFileLoadedCache'));
     }
 
     // Dauer der Audiodatei bestimmen
@@ -614,16 +614,16 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     form.append('dubbing_studio', 'true');
     const csvBlob = createDubbingCSV(file, durationMs, targetLang);
     if (!csvBlob) {
-        updateStatus('Übersetzung fehlt');
-        addDubbingLog('Übersetzung fehlt');
+        updateStatus(i18n.t('dubbing.translationMissing'));
+        addDubbingLog(i18n.t('dubbing.translationMissing'));
         return;
     }
     // CSV-Text für Log und Fehlerausgabe zwischenspeichern
     const csvText = await csvBlob.text();
-    addDubbingLog('CSV-Text: ' + csvText);
+    addDubbingLog(i18n.t('dubbing.csvLog', { csvText }));
     // Vor dem Upload die CSV-Struktur prüfen
     if (!validateCsv(csvText)) {
-        addDubbingLog('Ungültige CSV');
+        addDubbingLog(i18n.t('dubbing.csvInvalid'));
         return;
     }
     form.append('csv_file', csvBlob, 'input.csv');
@@ -638,7 +638,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         form.append('disable_voice_cloning', 'true');
     }
 
-    addDubbingLog(`POST ${API}/dubbing`);
+    addDubbingLog(i18n.t('dubbing.postRequest', { url: `${API}/dubbing` }));
     let res;
     try {
         res = await fetch(`${API}/dubbing`, {
@@ -648,12 +648,12 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         });
         logApiCall('POST', `${API}/dubbing`, res.status);
     } catch (e) {
-        addDubbingLog('Fehler: ' + e.message);
-        updateStatus('Dubbing fehlgeschlagen');
+        addDubbingLog(i18n.t('dubbing.errorMessage', { message: e.message }));
+        updateStatus(i18n.t('dubbing.dubbingFailed'));
         return;
     }
     const resText = await res.text();
-    addDubbingLog(`Antwort (${res.status}): ${resText}`);
+    addDubbingLog(i18n.t('dubbing.responseLog', { status: res.status, text: resText }));
     if (!res.ok) {
         let errorMsg = resText;
         try {
@@ -662,27 +662,27 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
                 errorMsg = js.detail.message;
             }
         } catch {}
-        addDubbingLog(`Fehler: ${errorMsg}`);
-        updateStatus('Dubbing fehlgeschlagen');
-        showToast(errorMsg, 'error');
-        addDubbingLog(`Dubbing fehlgeschlagen: ${res.status} ${resText}`);
+        addDubbingLog(i18n.t('dubbing.errorMessage', { message: errorMsg }));
+        updateStatus(i18n.t('dubbing.dubbingFailed'));
+        showToast(i18n.t('dubbing.dubbingFailed'), 'error');
+        addDubbingLog(i18n.t('dubbing.dubbingFailedDetail', { status: res.status, text: resText }));
         // Bei HTTP 400 den Anfang der CSV ausgeben
         if (res.status === 400) {
-            addDubbingLog('CSV-Ausschnitt: ' + csvText.slice(0, 200));
+            addDubbingLog(i18n.t('dubbing.csvSnippet', { snippet: csvText.slice(0, 200) }));
         }
         return;
     }
     const data = JSON.parse(resText);
     // Vollständige Server-Antwort ausgeben
-    addDubbingLog('Server-Antwort: ' + JSON.stringify(data));
+    addDubbingLog(i18n.t('dubbing.serverResponse', { response: JSON.stringify(data) }));
     const id = data.dubbing_id || data.id;
     if (!id) {
-        updateStatus('Keine Dubbing-ID erhalten');
-        addDubbingLog('Keine Dubbing-ID erhalten');
+        updateStatus(i18n.t('dubbing.noDubbingId'));
+        addDubbingLog(i18n.t('dubbing.noDubbingId'));
         return;
     }
 
-    addDubbingLog(`Dubbing-ID erhalten: ${id}`);
+    addDubbingLog(i18n.t('dubbing.dubbingIdReceived', { id }));
 
     // Dubbing-ID sofort merken und anzeigen
     if (useEmo) {
@@ -702,7 +702,7 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
     }
 
     if (mode === 'manual') {
-        showToast('Alles gesendet. Bitte Datei in Download legen.');
+        showToast(i18n.t('dubbing.manualGenerationHint'));
         const currentItem = file;
         currentItem.waitingForManual = true;
         ui.setActiveDubItem(currentItem);
@@ -747,17 +747,17 @@ async function startDubbing(fileId, settings = {}, targetLang = 'de', mode = 'be
         file.hallEffect = false;
         file.emiEffect = false;
         file.neighborEffect = false;
-        updateStatus('Download abgeschlossen');
-        showToast('Auto-Download erfolgreich.');
-        addDubbingLog('Auto-Download erfolgreich');
+        updateStatus(i18n.t('dubbing.downloadComplete'));
+        showToast(i18n.t('dubbing.autoDownloadSuccess'));
+        addDubbingLog(i18n.t('dubbing.autoDownloadSuccess'));
         renderFileTable();
     } catch (e) {
         if (e.message === 'BETA_LOCKED') {
-            showToast('Kein Beta-Zugang – bitte Studio nutzen & Datei in Download-Ordner legen.');
+            showToast(i18n.t('dubbing.betaLocked'), 'warning');
             await openStudioAndWait(id);
         } else {
-            addDubbingLog('Fehler: ' + e.message);
-            showToast('Fehler beim Auto-Download: ' + e.message, 'error');
+            addDubbingLog(i18n.t('dubbing.errorMessage', { message: e.message }));
+            showToast(i18n.t('dubbing.autoDownloadError', { message: e.message }), 'error');
         }
     }
 }
@@ -768,20 +768,20 @@ async function startEmoDubbing(fileId, settings = {}) {
     const file = files.find(f => f.id === fileId);
     if (!file) return;
     if (!elevenLabsApiKey) {
-        updateStatus('API-Key fehlt');
+        updateStatus(i18n.t('dubbing.apiKeyMissing'));
         return;
     }
     const voiceId = folderCustomizations[file.folder]?.voiceId;
     const text = (file.emotionalText || '').trim();
     if (!voiceId || !text) {
-        updateStatus('Voice oder Text fehlt');
+        updateStatus(i18n.t('dubbing.voiceOrTextMissing'));
         return;
     }
     dubbingLogMessages = [];
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Starte Emo-Dubbing für ${file.filename}`);
+    addDubbingLog(i18n.t('dubbing.emo.starting', { filename: file.filename }));
 
     const body = {
         text,
@@ -790,7 +790,7 @@ async function startEmoDubbing(fileId, settings = {}) {
         voice_settings: settings
     };
 
-    addDubbingLog(`POST ${API}/text-to-speech/${voiceId}/stream`);
+    addDubbingLog(i18n.t('dubbing.postRequest', { url: `${API}/text-to-speech/${voiceId}/stream` }));
     let res;
     try {
         res = await fetch(`${API}/text-to-speech/${voiceId}/stream`, {
@@ -804,14 +804,14 @@ async function startEmoDubbing(fileId, settings = {}) {
         });
         logApiCall('POST', `${API}/text-to-speech/${voiceId}/stream`, res.status);
     } catch (err) {
-        addDubbingLog('Fehler: ' + err.message);
-        updateStatus('Emo-Dubbing fehlgeschlagen');
+        addDubbingLog(i18n.t('dubbing.errorMessage', { message: err.message }));
+        updateStatus(i18n.t('dubbing.emo.failed'));
         return;
     }
     if (!res.ok) {
         const txt = await res.text();
         addDubbingLog(txt);
-        updateStatus('Emo-Dubbing fehlgeschlagen');
+        updateStatus(i18n.t('dubbing.emo.failed'));
         return;
     }
 
@@ -1129,22 +1129,22 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Lade Dubbing ${dubId} erneut`);
+    addDubbingLog(i18n.t('dubbing.redownloadLog', { id: dubId }));
     if (mode === 'manual') {
-        showToast('Bitte Spur manuell generieren und in den Download-Ordner legen.');
+        showToast(i18n.t('dubbing.manualRedownloadHint'));
         await openStudioAndWait(dubId);
         await showDownloadWaitDialog(file.id, dubId);
         return;
     }
 
     if (!elevenLabsApiKey) {
-        updateStatus('API-Key fehlt');
-        addDubbingLog('API-Key fehlt');
+        updateStatus(i18n.t('dubbing.apiKeyMissing'));
+        addDubbingLog(i18n.t('dubbing.apiKeyMissing'));
         return;
     }
 
     if (!(await isDubReady(dubId))) {
-        alert('Deutsch noch nicht fertig – erst im Studio generieren!');
+        showToast(i18n.t('dubbing.notReady'), 'warning');
         return;
     }
 
@@ -1154,10 +1154,10 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     logApiCall('GET', `${API}/dubbing/${dubId}/audio/de`, audioRes.status);
     if (!audioRes.ok) {
         const errText = await audioRes.text();
-        updateStatus('Download fehlgeschlagen');
-        addDubbingLog(errText);
+        updateStatus(i18n.t('dubbing.downloadFailed'));
+        addDubbingLog(i18n.t('dubbing.errorMessage', { message: errText }));
         if (errText.includes('dubbing_not_found')) {
-            const msg = 'Spur manuell generieren oder Beta freischalten';
+            const msg = i18n.t('dubbing.manualGenerationMissing');
             showToast(msg, 'error');
             addDubbingLog(msg);
         }
@@ -1173,10 +1173,10 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
         // Bereinigter Pfad vermeidet doppelte Schlüssel im Cache
         writeDeAudioCache(cleanPath, `sounds/DE/${relPath}`);
         await updateHistoryCache(cleanPath);
-        addDubbingLog('Datei in Desktop-Version gespeichert');
+        addDubbingLog(i18n.t('dubbing.desktopSave'));
     } else {
         await speichereUebersetzungsDatei(dubbedBlob, relPath);
-        addDubbingLog('Datei im Browser gespeichert');
+        addDubbingLog(i18n.t('dubbing.browserSave'));
     }
     // Versionsnummer erhöhen, falls die alte Datei ersetzt wurde
     if (vorhandene) {
@@ -1197,8 +1197,8 @@ async function redownloadDubbing(fileId, mode = 'beta', lang = 'de') {
     file.hallEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
-    updateStatus('Download abgeschlossen');
-    addDubbingLog('Fertig.');
+    updateStatus(i18n.t('dubbing.downloadComplete'));
+    addDubbingLog(i18n.t('dubbing.finished'));
     renderFileTable();
     saveCurrentProject();
 }
@@ -1209,14 +1209,14 @@ async function redownloadEmo(fileId) {
     const file = files.find(f => f.id === fileId);
     if (!file || !file.emoDubbingId) return;
     if (!elevenLabsApiKey) {
-        updateStatus('API-Key fehlt');
+        updateStatus(i18n.t('dubbing.apiKeyMissing'));
         return;
     }
     dubbingLogMessages = [];
     const logPre = document.getElementById('dubbingLog');
     if (logPre) logPre.textContent = '';
     openDubbingLog();
-    addDubbingLog(`Lade Emo-Dubbing ${file.emoDubbingId} erneut`);
+    addDubbingLog(i18n.t('dubbing.redownloadEmoLog', { id: file.emoDubbingId }));
     const res = await fetch(`${API}/history/${file.emoDubbingId}/audio`, {
         headers: { 'xi-api-key': elevenLabsApiKey }
     });
@@ -1224,7 +1224,7 @@ async function redownloadEmo(fileId) {
     if (!res.ok) {
         const txt = await res.text();
         addDubbingLog(txt);
-        updateStatus('Download fehlgeschlagen');
+        updateStatus(i18n.t('dubbing.downloadFailed'));
         return;
     }
     const blob = await res.blob();
@@ -1249,8 +1249,8 @@ async function redownloadEmo(fileId) {
     file.radioEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
-    updateStatus('Download abgeschlossen');
-    addDubbingLog('Fertig.');
+    updateStatus(i18n.t('dubbing.downloadComplete'));
+    addDubbingLog(i18n.t('dubbing.finished'));
     renderFileTable();
     saveCurrentProject();
 }
@@ -1302,11 +1302,11 @@ async function downloadDe(fileId, lang = 'de') {
     const dubId = useEmo ? file.emoDubbingId : file.dubbingId;
     if (!file || !dubId) return;
     if (!elevenLabsApiKey) {
-        updateStatus('API-Key fehlt');
+        updateStatus(i18n.t('dubbing.apiKeyMissing'));
         return;
     }
     if (!(await isDubReady(dubId))) {
-        alert('Deutsch noch nicht fertig – erst im Studio generieren!');
+        showToast(i18n.t('dubbing.notReady'), 'warning');
         return;
     }
     const blob = await downloadDubbingAudio(elevenLabsApiKey, dubId, 'de');
@@ -1340,7 +1340,7 @@ async function downloadDe(fileId, lang = 'de') {
     file.hallEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
-    updateStatus('Deutsche Audiodatei gespeichert.');
+    updateStatus(i18n.t('dubbing.deSaved'));
     renderFileTable();
     saveCurrentProject();
 }
