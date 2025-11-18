@@ -233,6 +233,7 @@ th:nth-child(8) {
 
         .toolbar-group--project { min-width: 320px; }
         .toolbar-group--tools { min-width: 380px; }
+        .toolbar-group--legacy { min-width: 380px; }
         .toolbar-group--media { min-width: 280px; }
         .toolbar-group--system { min-width: 260px; }
         .toolbar-group--search {

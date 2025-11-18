@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.547
+* `web/hla_translation_tool.html` führt einen eigenen Tab **Alt** ein, der Zufallsauswahl, ElevenLabs-Sammelsendungen, Kopierhilfen, Debug-Bericht, Protokoll und die Einstellungen bündelt, damit die Werkzeugleiste schlanker bleibt.
+* `web/src/i18n.js`, `web/src/main.js` und `web/src/style.css` liefern Beschriftungen, i18n-Ziele sowie Layoutbreite für den neuen Alt-Reiter nach.
+* `README.md` hebt Version **1.40.547** hervor und beschreibt den neuen Tab für selten genutzte Werkzeuge und das Einstellungsmenü.
 # 🛠️ Patch in 1.40.546
 * `web/src/main.js` bindet den Sprachwechsel-Listener nach jedem Render der Toolbar/Projektliste erneut und entfernt alte Handler, damit die Sprachwahl auch nach Projektwechseln zuverlässig reagiert.
 * `README.md` hebt Version **1.40.546** sowie das stabile Rebinding des Sprach-Dropdowns hervor.
