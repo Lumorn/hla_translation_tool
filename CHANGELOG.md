@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.539
+* `web/hla_translation_tool.html` ersetzt sichtbare Texte, Platzhalter und Tooltips durch `data-i18n`-Schlüssel und referenziert Dropdown-Optionen für Modus-, Sprach- und Versionswahl aus den Sprachressourcen.
+* `web/src/main.js` registriert automatisch alle `data-i18n`-Ziele, lokalisiert Versions-Menüeinträge dynamisch und aktualisiert Tooltips/Platzhalter nach jedem Sprachwechsel.
+* `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für Tooltips, Statusleisten, Metaleiste, Versionseinträge sowie Launcher- und Kontextmenütexte.
+* `README.md` hebt die durchgängig lokalisierten HTML-Elemente und die automatische Registrierung der Übersetzungsziele hervor.
+
 # 🛠️ Patch in 1.40.538
 * `translate_text.py` lädt Fehlermeldungen über ein neues i18n-Template-Modul, wählt die Sprache per CLI-Flag/Umgebungsvariable und fällt standardmäßig auf Englisch zurück.
 * `translate_text_i18n.py` bündelt die englischen und deutschen Textbausteine für Installations- und JSON-Fehlerhinweise des Übersetzungsskripts.
