@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.516
+* `web/src/i18n.js` ergänzt Voice-Schlüssel für den Leerzustand sowie die Labels Stability, Similarity Boost, Style, Speed und Speaker-Boost inklusive lokalisierter Wahr/Falsch-Werte.
+* `web/src/main.js` rendert die Voice-Einstellungen mit `i18n.t(...)`, damit leere Zustände, Feldbeschriftungen und Wahr/Falsch-Werte sprachabhängig angezeigt werden.
+* `README.md` trägt Version **1.40.516** ein und beschreibt die lokalisierten Voice-Einstellungen mit übersetzten Wahr/Falsch-Werten.
 # 🛠️ Patch in 1.40.515
 * `web/src/i18n.js` schärft die Kopierhilfe-Schlüssel für Abschlussstatus, Datei- und Schrittzähler mit klaren Platzhaltern in beiden Sprachen.
 * `web/src/main.js` rendert die Kopierhilfe-Zähler konsequent über `i18n.t(...)`/`i18n.format(...)`, sodass die Anzeige beim Sprachwechsel direkt umschaltet.

@@ -1540,22 +1540,26 @@ function updateVoiceSettingsDisplay() {
     list.innerHTML = '';
     const t = window.i18n?.t || (value => value);
     if (!storedVoiceSettings || Object.keys(storedVoiceSettings).length === 0) {
-        list.textContent = t('dubbing.saved.empty');
+        list.textContent = t('voiceSettings.empty');
         return;
     }
     const entries = [
-        [t('dubbing.label.stability'), storedVoiceSettings.stability],
-        [t('dubbing.label.similarityBoost'), storedVoiceSettings.similarity_boost],
-        [t('dubbing.label.style'), storedVoiceSettings.style],
-        [t('dubbing.label.speed'), storedVoiceSettings.speed],
-        [t('dubbing.label.speakerBoost'), storedVoiceSettings.use_speaker_boost]
+        ['voiceSettings.label.stability', storedVoiceSettings.stability],
+        ['voiceSettings.label.similarityBoost', storedVoiceSettings.similarity_boost],
+        ['voiceSettings.label.style', storedVoiceSettings.style],
+        ['voiceSettings.label.speed', storedVoiceSettings.speed],
+        ['voiceSettings.label.speakerBoost', storedVoiceSettings.use_speaker_boost]
     ];
     const template = t('dubbing.param.entry');
-    entries.forEach(([label, val]) => {
+    entries.forEach(([labelKey, val]) => {
         const li = document.createElement('li');
-        const valueText = typeof val === 'boolean' ? (val ? 'true' : 'false') : val;
+        const valueText = (val === undefined || val === null)
+            ? t('voiceSettings.value.missing')
+            : typeof val === 'boolean'
+                ? t(`voiceSettings.boolean.${val ? 'true' : 'false'}`)
+                : val;
         li.textContent = template
-            .replace('{label}', label)
+            .replace('{label}', t(labelKey))
             .replace('{value}', valueText);
         list.appendChild(li);
     });
