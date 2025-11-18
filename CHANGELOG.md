@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.531
+* `web/src/main.js` führt einen schlanken Struktur-Blueprint ein, der nur Kapitel, Level, Dateinamen und EN-Texte exportiert, die deutsche Übersetzung entfernt und Audiopfad-Daten aussortiert.
+* `web/hla_translation_tool.html` ergänzt passende Buttons und einen Datei-Importer im Backup-Dialog, um die neue Struktur-Export/Import-Funktion auszulösen.
+* `README.md` beschreibt den Blueprint-Export für Übersetzer:innen und verweist auf die bereinigte DE/Audio-freie Struktur.
 # 🛠️ Patch in 1.40.530
 * `web/hla_translation_tool.html` markiert die EN-Einfügefelder, Playback-Buttons und Wellenform-Labels im DE-Audio-Dialog mit i18n-Attributen und eindeutigen IDs für Titel und Aria-Beschriftungen.
 * `web/src/main.js` registriert die neuen Dialog-Elemente als Übersetzungsziele, sodass Titel, Labels und Optionen bei Sprachwechseln automatisch gesetzt werden.

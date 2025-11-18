@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.530-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.531-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -21,6 +21,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
 * Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.
 * Der Datei-Import-Dialog nutzt i18n-Schlüssel für Titel, Hinweise, Buttons und Statusmeldungen und wechselt damit vollständig auf Englisch bei Sprachumschaltung.
+* Neuer Struktur-Export/-Import erstellt einen Blueprint nur mit Kapiteln, Leveln, Dateinamen und EN-Texten – ohne DE-Übersetzungen oder Audio-Pfade – damit externe Übersetzer:innen mit einer sauberen Ausgangsbasis arbeiten können.
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
 * Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels, greifen auf lokalisierte Wahr/Falsch-Werte zurück und zeigen im Leerzustand übersetzte Hinweise an.
@@ -1115,6 +1116,10 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 
 Mit diesem Import liest das Tool die Dateien `closecaption_english.txt` und eine frei wählbare Zieldatei wie `closecaption_german.txt`, `closecaption_french.txt` oder `closecaption_koreana.txt` aus dem Ordner `closecaption/` ein. Eine Utility-Funktion `loadClosecaptions()` verarbeitet beide Dateien und liefert ein Array aller Zeilen. Die Einträge werden über ihre ID zusammengeführt und mit der Datenbank abgeglichen. Bei eindeutiger Übereinstimmung wird der ausgewählte Zieltext automatisch zugeordnet. Sind mehrere Dateien möglich, erscheint eine Auswahl, um den passenden Ordner festzulegen oder den Eintrag zu überspringen.
 Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und Ziel-Texte des jeweiligen Ordners an. Die gleiche Funktion wird auch für die neue Untertitel-Suche verwendet, inklusive Anzeige der aktiven Zielsprache.
+
+### Struktur-Blueprint für Übersetzer:innen
+
+Über den Backup-Dialog kannst du jetzt einen **Struktur-Blueprint** exportieren: Die Funktion sammelt nur Kapitel, Level, Dateinamen und EN-Texte, entfernt sämtliche DE-Einträge sowie Audiopfad-Informationen und speichert das Ergebnis als schlanke JSON-Datei. Die Import-Schaltfläche lädt diesen Blueprint wieder ein, überschreibt die aktuellen Projekte und legt eine leere, DE-freie Arbeitsgrundlage an.
 
 ## 📁 Ordner‑Management
 

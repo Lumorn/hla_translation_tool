@@ -12437,6 +12437,182 @@ function checkFileAccess() {
             }
         }
 
+        // Exportiert nur die Struktur (Kapitel, Level, Dateien) sowie EN-Texte
+        const BLUEPRINT_SCHEMA_VERSION = 1;
+
+        function buildTranslationBlueprint() {
+            const chapters = {};
+            // Kapitel- und Level-Struktur aufbauen
+            projects.forEach(project => {
+                const chapterName = getLevelChapter(project.levelName) || '–';
+                if (!chapters[chapterName]) {
+                    chapters[chapterName] = { order: getChapterOrder(chapterName), levels: {} };
+                }
+                if (!chapters[chapterName].levels[project.levelName]) {
+                    chapters[chapterName].levels[project.levelName] = [];
+                }
+                const cleanFiles = (project.files || []).map((file, idx) => {
+                    const fileKey = `${file.folder || ''}/${file.filename || ''}`.replace(/^\/+/, '');
+                    const enText = textDatabase[fileKey]?.en || file.enText || '';
+                    return {
+                        id: file.id ?? idx,
+                        filename: file.filename || '',
+                        folder: file.folder || '',
+                        order: typeof file.order === 'number' ? file.order : (typeof file.position === 'number' ? file.position : idx),
+                        enText
+                    };
+                });
+
+                chapters[chapterName].levels[project.levelName].push({
+                    projectId: project.id,
+                    projectName: project.name,
+                    levelPart: project.levelPart || 1,
+                    files: cleanFiles
+                });
+            });
+
+            return {
+                schemaVersion: BLUEPRINT_SCHEMA_VERSION,
+                exportedAt: new Date().toISOString(),
+                chapters: Object.entries(chapters).map(([chapterName, data]) => ({
+                    name: chapterName,
+                    order: data.order,
+                    levels: Object.entries(data.levels).map(([levelName, levelProjects]) => ({
+                        name: levelName,
+                        projects: levelProjects
+                    }))
+                }))
+            };
+        }
+
+        async function exportTranslationBlueprint() {
+            try {
+                const blueprint = buildTranslationBlueprint();
+                const fileName = `hla_translation_blueprint_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+
+                if (window.showSaveFilePicker) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: fileName,
+                        types: [{ description: 'JSON-Datei', accept: { 'application/json': ['.json'] } }]
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(JSON.stringify(blueprint, null, 2));
+                    await writable.close();
+                } else {
+                    // Fallback: Download-Link erzeugen
+                    const blob = new Blob([JSON.stringify(blueprint, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+
+                updateStatus('Struktur-Blueprint exportiert');
+            } catch (err) {
+                console.error('Blueprint-Export fehlgeschlagen:', err);
+                alert('Fehler beim Struktur-Export: ' + err.message);
+            }
+        }
+
+        function sanitizeBlueprintFile(file, fallbackId) {
+            return {
+                id: file.id ?? fallbackId,
+                filename: file.filename || '',
+                folder: file.folder || '',
+                enText: file.enText || '',
+                deText: '',
+                emotionalText: '',
+                completed: false,
+                selected: false,
+                volumeMatched: false
+            };
+        }
+
+        function applyTranslationBlueprint(blueprint, sourceName = 'Blueprint') {
+            if (!blueprint || blueprint.schemaVersion !== BLUEPRINT_SCHEMA_VERSION) {
+                throw new Error('Ungültiges Blueprint-Format oder falsche Versionsnummer');
+            }
+            if (!Array.isArray(blueprint.chapters)) {
+                throw new Error('Blueprint enthält keine Kapitel-Liste');
+            }
+            if (!confirm(`${sourceName} importieren? Aktuelle Projekte werden überschrieben.`)) return;
+
+            const newProjects = [];
+            const newLevelChapters = {};
+            const newChapterOrders = {};
+            const newTextDatabase = {};
+
+            blueprint.chapters.forEach((chapter, chapterIndex) => {
+                const chapterName = chapter?.name || `Kapitel ${chapterIndex + 1}`;
+                newChapterOrders[chapterName] = typeof chapter.order === 'number' ? chapter.order : chapterIndex + 1;
+
+                (chapter.levels || []).forEach((level, levelIndex) => {
+                    const levelName = level?.name || `Level_${chapterIndex + 1}_${levelIndex + 1}`;
+                    newLevelChapters[levelName] = chapterName;
+
+                    (level.projects || []).forEach((proj, projIndex) => {
+                        const sanitizedFiles = (proj.files || []).map((f, idx) => sanitizeBlueprintFile(f, idx));
+
+                        sanitizedFiles.forEach(f => {
+                            const key = `${f.folder}/${f.filename}`.replace(/^\/+/, '');
+                            newTextDatabase[key] = { en: f.enText || '' };
+                        });
+
+                        newProjects.push({
+                            id: Date.now() + newProjects.length,
+                            name: proj.projectName || levelName,
+                            levelName,
+                            levelPart: proj.levelPart || 1,
+                            files: sanitizedFiles,
+                            color: '#333333',
+                            restTranslation: false,
+                            gptTests: [],
+                            gptTabIndex: 0,
+                            segmentAssignments: {},
+                            segmentSegments: null,
+                            segmentAudio: null,
+                            segmentAudioPath: null,
+                            segmentIgnored: []
+                        });
+                    });
+                });
+            });
+
+            projects = replaceProjectList(newProjects);
+            textDatabase = newTextDatabase;
+            levelChapters = newLevelChapters;
+            chapterOrders = newChapterOrders;
+            filePathDatabase = {}; // Audio-Pfade bewusst verwerfen
+
+            saveProjects();
+            saveTextDatabase();
+            saveLevelChapters();
+            saveChapterOrders();
+            saveFilePathDatabase();
+
+            renderProjects();
+            if (projects.length > 0) {
+                selectProject(projects[0].id);
+            }
+
+            updateStatus(`Struktur aus "${sourceName}" importiert`);
+        }
+
+        async function triggerTranslationBlueprintImport(input) {
+            const file = input?.files?.[0];
+            if (!file) return;
+            try {
+                const blueprint = JSON.parse(await file.text());
+                applyTranslationBlueprint(blueprint, file.name);
+            } catch (err) {
+                console.error('Blueprint-Import fehlgeschlagen:', err);
+                alert('Fehler beim Struktur-Import: ' + err.message);
+            }
+            input.value = '';
+        }
+
         // Backup aus Datei laden
         function initiateBackupUpload() {
             document.getElementById('backupUploadInput').click();

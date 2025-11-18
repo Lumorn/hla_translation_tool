@@ -582,6 +582,10 @@
                 </label>
             </div>
             <div class="dialog-buttons">
+                <button class="btn btn-secondary" onclick="exportTranslationBlueprint()">Struktur exportieren</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('blueprintImportInput').click()">Struktur importieren</button>
+            </div>
+            <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
                 <button class="btn btn-secondary" onclick="createSoundBackup()">Sound-Backup erstellen</button>
                 <button class="btn btn-secondary" onclick="initiateBackupUpload()">Backup hochladen</button>
@@ -1357,6 +1361,7 @@
     <input type="file" id="deUploadInput" style="display:none" accept=".mp3,.wav,.ogg" onchange="handleDeUpload(this)">
     <input type="file" id="zipImportInput" style="display:none" accept=".zip" onchange="handleZipImport(this)">
     <input type="file" id="backupUploadInput" style="display:none" accept=".json" onchange="handleBackupUpload(this)">
+    <input type="file" id="blueprintImportInput" style="display:none" accept=".json" onchange="triggerTranslationBlueprintImport(this)">
 
     <!-- Umschaltbare Debug-Konsole (standardmäßig versteckt) -->
     <details id="debugConsoleWrapper" style="margin:10px 0; display:none;">
