@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.529
+* `web/src/main.js` ersetzt Reset-Dialoge, Statusmeldungen, Konsolenhinweise und Toasts rund um das DE-Audio durch `window.i18n.t(...)`-Aufrufe und vermeidet damit hartkodierte Texte.
+* `web/src/i18n.js` hinterlegt neue `deAudio.*`-Schlüssel für Effektbezeichnungen, Reset-Hinweise, Fehlermeldungen und Speichertoasts in Deutsch und Englisch.
+* `README.md` hebt Version **1.40.529** hervor und nennt die lokalisierten DE-Audio-Meldungen.
 # 🛠️ Patch in 1.40.528
 * `web/hla_translation_tool.html` stattet alle Timing-Karten (Trimmen, Ignorierbereiche, Segment-Vorschläge, Pausen, Stille, Verschmelzen, Tempo, Anwenden) mit konsistenten `data-i18n`-Schlüsseln für Überschriften, Labels, Tooltips und ARIA-Beschriftungen aus.
 * `README.md` führt Version **1.40.528** ein und beschreibt die erweiterten i18n-Ziele in den Timing-Karten des DE-Audio-Editors.
