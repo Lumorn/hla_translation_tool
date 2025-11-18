@@ -2726,22 +2726,17 @@ function showCopyAssistant() {
     // Abbrechen, falls der Dialog noch nicht aufgebaut ist
     if (!countSpan || !stepSpan || !prog) return;
     const translator = window.i18n;
-    const fallbackTemplates = {
-        'copyAssistant.status.complete': 'Fertig',
-        'copyAssistant.progress.files': 'Datei {current} von {total}',
-        'copyAssistant.progress.steps': 'Schritt {current} / {total}'
-    };
-    // Übersetzungen mit Platzhaltern über i18n oder lokale Fallbacks ersetzen
+    // Übersetzungen mit Platzhaltern über i18n ersetzen, inklusive Fallback
     const formatTranslation = (key, replacements = {}) => {
         if (translator?.format) {
             return translator.format(key, replacements);
         }
-        const template = fallbackTemplates[key] || key;
+        const template = translator?.t ? translator.t(key) : key;
         return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
             return acc.replaceAll(`{${placeholder}}`, value);
         }, template);
     };
-    const translateSimple = key => (translator?.t ? translator.t(key) : fallbackTemplates[key] || key);
+    const translateSimple = key => (translator?.t ? translator.t(key) : key);
     if (!file) {
         countSpan.textContent = translateSimple('copyAssistant.status.complete');
         stepSpan.textContent = '';
