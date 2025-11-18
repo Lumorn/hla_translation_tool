@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.546
+* `web/src/main.js` bindet den Sprachwechsel-Listener nach jedem Render der Toolbar/Projektliste erneut und entfernt alte Handler, damit die Sprachwahl auch nach Projektwechseln zuverlässig reagiert.
+* `README.md` hebt Version **1.40.546** sowie das stabile Rebinding des Sprach-Dropdowns hervor.
 # 🛠️ Patch in 1.40.545
 * `web/src/fileStorage.js` lokalisiert Datei-Lade-, JSON- und Schema-Dialoge über i18n-Schlüssel und behält die Fallback-Logik bei, inklusive Platzhalter für Fehlermeldungen.
 * `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für Datei-Lesefehler, ungültige Inhalte und Schema-Prüfungen.
