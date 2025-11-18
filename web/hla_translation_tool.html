@@ -503,7 +503,15 @@
         <div class="dialog">
             <h3>📥 Untertitel importieren</h3>
             <p>closecaption_english.txt: <span id="ccStatusEn"></span></p>
-            <p>closecaption_german.txt: <span id="ccStatusDe"></span></p>
+            <div class="cc-language-row">
+                <label for="ccLanguageSelect">Ziel-Sprache (ersetzt Deutsch):</label>
+                <select id="ccLanguageSelect"></select>
+            </div>
+            <p id="ccLanguageStatus">Zieldatei: <span id="ccStatusTarget"></span></p>
+            <div class="subtitle-language-selection">
+                <span class="subtitle-language-badge" id="ccLanguageBadge">Deutsch</span>
+                <small class="subtitle-language-hint" id="ccLanguageHint">Standard: Deutsch wird importiert.</small>
+            </div>
             <div class="dialog-buttons">
                 <button class="btn btn-secondary" onclick="closeCcImportDialog()">Abbrechen</button>
                 <button class="btn btn-success" onclick="importClosecaptions()">Import starten</button>

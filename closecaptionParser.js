@@ -9,8 +9,10 @@ function parseClosecaptionFile(content) {
     return map;
 }
 
-// Liest beide Untertitel-Dateien ein und gibt ein Array mit EN- und DE-Text zurück
-async function loadClosecaptions(basePath) {
+// Liest beide Untertitel-Dateien ein und gibt ein Array mit EN- und Ziel-Text zurück
+// Der Ziel-Text kann über den Parameter targetLanguage auf eine beliebige vorhandene closecaption_*.txt Datei gesetzt werden.
+// Hinweis: Kommentare bleiben bewusst auf Deutsch, damit die Wartung konsistent bleibt.
+async function loadClosecaptions(basePath, targetLanguage = 'german') {
     let enContent = '';
     let deContent = '';
 
@@ -25,15 +27,15 @@ async function loadClosecaptions(basePath) {
         const isElectron = !!window.electronAPI;
         const join = isElectron ? window.electronAPI.join : (p, f) => `${p}/${f}`;
         const enPath = join(basePath, 'closecaption_english.txt');
-        const dePath = join(basePath, 'closecaption_german.txt');
+        const targetPath = join(basePath, `closecaption_${targetLanguage}.txt`);
 
         try {
             if (isElectron) {
                 enContent = new TextDecoder().decode(window.electronAPI.fsReadFile(enPath));
-                deContent = new TextDecoder().decode(window.electronAPI.fsReadFile(dePath));
+                deContent = new TextDecoder().decode(window.electronAPI.fsReadFile(targetPath));
             } else {
                 enContent = await (await fetch(enPath)).text();
-                deContent = await (await fetch(dePath)).text();
+                deContent = await (await fetch(targetPath)).text();
             }
         } catch {
             return null;
@@ -44,7 +46,7 @@ async function loadClosecaptions(basePath) {
         const path = require('path');
         try {
             enContent = fs.readFileSync(path.join(basePath, 'closecaption_english.txt'), 'utf8');
-            deContent = fs.readFileSync(path.join(basePath, 'closecaption_german.txt'), 'utf8');
+            deContent = fs.readFileSync(path.join(basePath, `closecaption_${targetLanguage}.txt`), 'utf8');
         } catch {
             return null;
         }
@@ -53,7 +55,10 @@ async function loadClosecaptions(basePath) {
     const enMap = parseClosecaptionFile(enContent);
     const deMap = parseClosecaptionFile(deContent);
 
-    return Array.from(enMap.entries()).map(([id, enText]) => ({ id, enText, deText: deMap.get(id) || '' }));
+    return Array.from(enMap.entries()).map(([id, enText]) => {
+        const targetText = deMap.get(id) || '';
+        return { id, enText, deText: targetText, targetText, targetLanguage };
+    });
 }
 
 if (typeof module !== 'undefined' && module.exports) {

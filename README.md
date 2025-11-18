@@ -1105,7 +1105,7 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
   * **Intelligente Zuordnung:** Dateinamen‑Spalte wird automatisch erkannt
   * **Multi‑Ordner‑Support:** Auswahl bei mehrdeutigen Dateien
   * **Database‑Matching:** Vergleich mit vorhandenen Audiodateien
-  * **Untertitel-Import:** liest `closecaption_english.txt` und `closecaption_german.txt`, verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
+  * **Untertitel-Import:** liest `closecaption_english.txt` plus eine wählbare Ziel-Sprache (z. B. Deutsch, Französisch, Koreanisch), verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
   * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text; der gesuchte EN-Text wird angezeigt, `<clr:...>`-Farbcodes werden entfernt, `<HEADSET>`, `<cr>` sowie `<sb>`-Markierungen werden durch Leerzeichen ersetzt
   * **Globale Untertitel-Suche:** ein zusätzlicher Knopf durchsucht das gesamte Projekt nach fehlenden DE-Texten und fügt eindeutige 100%-Treffer automatisch ein; bei mehreren Treffern wird nachgefragt
 
@@ -1113,8 +1113,8 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
 
 ### Untertitel-Import
 
-Mit diesem Import liest das Tool die Dateien `closecaption_english.txt` und `closecaption_german.txt` aus dem Ordner `closecaption/` ein. Eine Utility-Funktion `loadClosecaptions()` verarbeitet beide Dateien und liefert ein Array aller Zeilen. Die Einträge werden über ihre ID zusammengeführt und mit der Datenbank abgeglichen. Bei eindeutiger Übereinstimmung wird der deutsche Text automatisch zugeordnet. Sind mehrere Dateien möglich, erscheint eine Auswahl, um den passenden Ordner festzulegen oder den Eintrag zu überspringen.
-Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und DE-Texte des jeweiligen Ordners an. Die gleiche Funktion wird auch für die neue Untertitel-Suche verwendet.
+Mit diesem Import liest das Tool die Dateien `closecaption_english.txt` und eine frei wählbare Zieldatei wie `closecaption_german.txt`, `closecaption_french.txt` oder `closecaption_koreana.txt` aus dem Ordner `closecaption/` ein. Eine Utility-Funktion `loadClosecaptions()` verarbeitet beide Dateien und liefert ein Array aller Zeilen. Die Einträge werden über ihre ID zusammengeführt und mit der Datenbank abgeglichen. Bei eindeutiger Übereinstimmung wird der ausgewählte Zieltext automatisch zugeordnet. Sind mehrere Dateien möglich, erscheint eine Auswahl, um den passenden Ordner festzulegen oder den Eintrag zu überspringen.
+Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und Ziel-Texte des jeweiligen Ordners an. Die gleiche Funktion wird auch für die neue Untertitel-Suche verwendet, inklusive Anzeige der aktiven Zielsprache.
 
 ## 📁 Ordner‑Management
 
