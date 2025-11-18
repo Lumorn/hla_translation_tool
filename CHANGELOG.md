@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.518
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für die Wellenform-Beschriftungen und EN-Zeitangaben im DE-Audio-Editor in Deutsch und Englisch.
+* `web/src/main.js` nutzt `i18n.t(...)`/`i18n.format(...)` für die Wellenform-Labels samt Sekundenangabe sowie die EN-Längenanzeige und rendert sie bei Sprachwechseln neu.
+* `README.md` trägt Version **1.40.518** nach und beschreibt die lokalisierten Wellenform-Beschriftungen im DE-Audio-Editor.
 # 🛠️ Patch in 1.40.517
 * `web/src/main.js` nutzt i18n-Schlüssel für die DE-Audio-Aktionszeile (Upload, Dubbing, Bearbeitung) inklusive Status-Tooltips und Downloadtitel, sodass Beschriftungen beim Sprachwechsel konsistent bleiben.
 * `web/src/i18n.js` ergänzt die neuen Schlüssel für Schaltflächen, Statussymbole sowie Dubbing-Anzeigen in Deutsch und Englisch.

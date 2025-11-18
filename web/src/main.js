@@ -226,6 +226,11 @@ function setupLanguageControls() {
         showCopyAssistant();
         // Level-Statistiken neu aufbauen, damit Übersetzungen aktualisiert werden
         renderLevelStats();
+        // DE-Editor-Beschriftungen neu zeichnen, falls geöffnet
+        const deDialog = document.getElementById('deEditDialog');
+        if (deDialog && !deDialog.classList.contains('hidden')) {
+            updateDeEditWaveforms();
+        }
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -15702,6 +15707,13 @@ async function openDeEdit(fileId) {
     const enSeconds = enBuffer.length / enBuffer.sampleRate;
     const deSeconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
     const maxSeconds = Math.max(enSeconds, deSeconds);
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        // Platzhalter auch ohne i18n.format ersetzen
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, t(key));
+    });
     editDurationMs = originalEditBuffer.length / originalEditBuffer.sampleRate * 1000;
     normalizeDeTrim();
     currentEnSeconds = enSeconds;
@@ -16069,8 +16081,8 @@ async function openDeEdit(fileId) {
     updateWaveCanvasDimensions();
 
     // Längen in Sekunden anzeigen
-    document.getElementById('waveLabelOriginal').textContent = `EN (Original) - ${enSeconds.toFixed(2)}s`;
-    document.getElementById('waveLabelEdited').textContent = `DE (bearbeiten) - ${deSeconds.toFixed(2)}s`;
+    document.getElementById('waveLabelOriginal').textContent = format('deEdit.waveLabel.originalWithSeconds', { seconds: enSeconds.toFixed(2) });
+    document.getElementById('waveLabelEdited').textContent = format('deEdit.waveLabel.editedWithSeconds', { seconds: deSeconds.toFixed(2) });
 
     // EN-Text, DE-Text und Emotional-Text unter den Wellen anzeigen
     const enTextEl = document.getElementById('editEnText');
@@ -17585,6 +17597,12 @@ function resetEmiSettings() {
 
 // =========================== UPDATEDEEDITWAVEFORMS START ==================
 function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, t(key));
+    });
     // Cursor aktualisieren, falls neue Positionen mitgegeben werden
     if (progressOrig !== null) {
         editOrigCursor = progressOrig;
@@ -17627,18 +17645,18 @@ function updateDeEditWaveforms(progressOrig = null, progressDe = null) {
     if (enLabel) {
         if (editEnBuffer) {
             const seconds = editEnBuffer.length / editEnBuffer.sampleRate;
-            enLabel.textContent = `EN (Original) - ${seconds.toFixed(2)}s`;
+            enLabel.textContent = format('deEdit.waveLabel.originalWithSeconds', { seconds: seconds.toFixed(2) });
         } else {
-            enLabel.textContent = 'EN (Original)';
+            enLabel.textContent = t('deEdit.waveLabel.original');
         }
     }
     const deLabel = document.getElementById('waveLabelEdited');
     if (deLabel) {
         if (originalEditBuffer) {
             const seconds = originalEditBuffer.length / originalEditBuffer.sampleRate;
-            deLabel.textContent = `DE (bearbeiten) - ${seconds.toFixed(2)}s`;
+            deLabel.textContent = format('deEdit.waveLabel.editedWithSeconds', { seconds: seconds.toFixed(2) });
         } else {
-            deLabel.textContent = 'DE (bearbeiten)';
+            deLabel.textContent = t('deEdit.waveLabel.edited');
         }
     }
     const sInput = document.getElementById('editStart');
@@ -17950,6 +17968,12 @@ function calcFinalLength() {
 // Aktualisiert Anzeige und Farbe je nach Abweichung zur EN-Laenge
 function updateLengthInfo() {
     if (!editEnBuffer) return;
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, t(key));
+    });
     const enMs = editEnBuffer.length / editEnBuffer.sampleRate * 1000;
     const deMs = calcFinalLength();
     const diff = deMs - enMs;
@@ -17960,7 +17984,7 @@ function updateLengthInfo() {
     if (!info || !lbl) return;
     info.textContent = `${(deMs/1000).toFixed(2)}s`;
     // EN-Originalzeit ebenfalls anzeigen
-    if (enInfo) enInfo.textContent = `EN: ${(enMs/1000).toFixed(2)}s`;
+    if (enInfo) enInfo.textContent = format('deEdit.waveInfo.enSeconds', { seconds: (enMs/1000).toFixed(2) });
     lbl.title = (diff > 0 ? '+' : '') + Math.round(diff) + 'ms';
     lbl.style.color = perc > 10 ? 'red' : (perc > 5 ? '#ff8800' : '');
 }
