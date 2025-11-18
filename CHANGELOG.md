@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.543
+* `web/src/main.js` ersetzt fest verdrahtete Tooltips und Platzhalter der Dateitabelle durch i18n-Schlüssel und formatiert Ordnernamen per Platzhalter.
+* `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für Positionshinweise, Ordner-Titel, Kopier-Buttons sowie Emo-Text-Steuerungen.
+* `README.md` hebt Version **1.40.543** sowie die lokalisierten `renderFiles`-Tooltips hervor.
 # 🛠️ Patch in 1.40.542
 * `web/src/main.js` versieht das Statistik-Icon im Level-Header mit lokalisierten `title`- und `aria-label`-Texten über `t('level.header.statsTooltip')`.
 * `web/src/i18n.js` hinterlegt den neuen Schlüssel `level.header.statsTooltip` in Deutsch und Englisch.
