@@ -5325,12 +5325,12 @@ function addFiles() {
         // Generiert die Emotional-Texte für alle Zeilen im Projekt
         async function generateEmotionsForAll() {
             const btn = document.getElementById('generateEmotionsButton');
-            if (!btn || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            if (!btn || !openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
             // IDs aller Dateien sammeln – vorhandener Text wird überschrieben
             const ids = files.map(f => f.id);
             if (ids.length === 0) return;
             btn.disabled = true;
-            btn.textContent = 'Generiere...';
+            btn.textContent = i18n.t('emo.generate.button.start');
             let done = 0;
             const max = 3;
             const queue = [...ids];
@@ -5349,7 +5349,7 @@ function addFiles() {
                     const id = queue.shift();
                     await generateEmotionalText(id, { precomputedLines, positionLookup });
                     done++;
-                    btn.textContent = `Generiere... (${done}/${ids.length})`;
+                    btn.textContent = i18n.format('emo.generate.button.progress', { done, total: ids.length });
                 }
             }
             const workers = [];
@@ -5359,20 +5359,20 @@ function addFiles() {
                 // Sammeländerungen nach allen Emotionstexten einmalig sichern
                 saveCurrentProject();
             }
-            btn.textContent = 'Emotionen generieren';
+            btn.textContent = i18n.t('emo.generate.button.label');
             btn.disabled = false;
-            updateStatus(`Fertig (${done}/${ids.length})`);
+            updateStatus(i18n.format('emo.generate.status.complete', { done, total: ids.length }));
         }
 
         // Generiert alle leeren oder fehlerhaften Emotional-Texte erneut
         async function regenerateMissingEmos() {
             const box = document.getElementById('emoProgress');
-            if (!box || !openaiApiKey) { updateStatus('GPT-Key fehlt'); return; }
+            if (!box || !openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
             const ids = files
                 .filter(f => !f.emotionalText || !f.emotionalText.trim() || f.emoError)
                 .map(f => f.id);
             if (ids.length === 0) return;
-            box.textContent = '🟣 ...';
+            box.textContent = i18n.t('emo.progress.placeholder');
             let done = 0;
             const max = 3;
             const queue = [...ids];
@@ -5381,14 +5381,14 @@ function addFiles() {
                     const id = queue.shift();
                     await generateEmotionalText(id);
                     done++;
-                    box.textContent = `🟣 ${done}/${ids.length}`;
+                    box.textContent = i18n.format('emo.progress.counter', { current: done, total: ids.length });
                 }
             }
             const workers = [];
             for (let i = 0; i < Math.min(max, queue.length); i++) workers.push(worker());
             await Promise.all(workers);
-            box.textContent = '🟣 fertig';
-            updateStatus(`Emotional-Texte aktualisiert (${done})`);
+            box.textContent = i18n.t('emo.progress.done');
+            updateStatus(i18n.format('emo.status.updated', { count: done }));
         }
 
         // Sendet alle Emotional-Texte in der Projektreihenfolge an ElevenLabs
