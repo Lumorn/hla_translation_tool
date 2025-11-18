@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.545-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.546-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -31,6 +31,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
 * Toolbar, Tabellenköpfe, Kontextmenüs und Launcher-Buttons im HTML beziehen Texte, Tooltips und Platzhalter konsequent aus den i18n-Ressourcen; neue `data-i18n`-Ziele werden automatisch registriert und bei Sprachwechseln sofort aktualisiert.
+* Die Sprachwahl im Einstellungsmenü bindet ihren Listener nach jedem Render der Toolbar und Projektliste erneut, damit der Wechsel auch nach Projektwechseln zuverlässig greift.
 * Level-Header ziehen das Statistik-Icon inklusive `title`- und `aria-label`-Texten aus i18n und bleiben damit in beiden Sprachen konsistent.
 * Der Bookmark-Manager für gespeicherte YouTube-Videos nutzt i18n-Schlüssel für Titel, Platzhalter, Buttons und Fehlermeldungen, sodass Refresh-, Aktualisieren- und Löschen-Aktionen sprachabhängig gerendert werden.
 * Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels, greifen auf lokalisierte Wahr/Falsch-Werte zurück und zeigen im Leerzustand übersetzte Hinweise an.

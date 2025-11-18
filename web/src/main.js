@@ -113,6 +113,25 @@ async function requestPersistentStorage() {
     showToast(t('storage.persist.granted').replace('{free}', frei));
 }
 
+let languageSelectChangeHandler = null;
+
+// Bindet den Sprachwechsel-Listener stabil an das Dropdown an
+function bindLanguageSelectListener() {
+    const languageSelect = document.getElementById('languageSelect');
+
+    if (!languageSelect) {
+        return;
+    }
+
+    // Sicherstellen, dass der Listener nicht doppelt registriert wird
+    if (!languageSelectChangeHandler) {
+        languageSelectChangeHandler = ev => window.i18n.setLanguage(ev.target.value);
+    }
+
+    languageSelect.removeEventListener('change', languageSelectChangeHandler);
+    languageSelect.addEventListener('change', languageSelectChangeHandler, { once: false });
+}
+
 // Richtet die Sprachumschaltung samt Übersetzungszielen ein
 function setupLanguageControls() {
     if (!window.i18n) return;
@@ -361,10 +380,7 @@ function setupLanguageControls() {
         updateVersionMenuLabels();
     });
 
-    const languageSelect = document.getElementById('languageSelect');
-    if (languageSelect) {
-        languageSelect.addEventListener('change', ev => window.i18n.setLanguage(ev.target.value));
-    }
+    bindLanguageSelectListener();
 
     window.i18n.initializeLanguage();
     document.title = t('app.title');
@@ -4203,6 +4219,9 @@ function renderProjects() {
         chGroup.appendChild(levelWrap);
         list.appendChild(chGroup);
     });
+
+    // Sprach-Dropdown nach jedem Render sicher anbinden
+    bindLanguageSelectListener();
 }
 /* =========================== RENDER PROJECTS END =========================== */
 
