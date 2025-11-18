@@ -5882,6 +5882,11 @@ async function renderFileTableWithOrder(sortedFiles) {
     const tbody = document.getElementById('fileTableBody');
     const table = document.getElementById('fileTable');
     const emptyState = document.getElementById('emptyState');
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), template);
+    });
     
     if (sortedFiles.length === 0) {
         table.style.display = 'none';
@@ -5897,6 +5902,12 @@ async function renderFileTableWithOrder(sortedFiles) {
         const dePath = getDeFilePath(file);
         const hasDeAudio = !!dePath;
         const hasHistory = await checkHistoryAvailable(file);
+        const dubbingStatusTitle = !file.dubbingId
+            ? t('dubbing.status.none')
+            : (file.dubReady ? t('dubbing.status.done') : t('dubbing.status.pending'));
+        const emoDubbingStatusTitle = !file.emoDubbingId
+            ? t('dubbing.status.none')
+            : (file.emoDubReady ? t('dubbing.status.done') : t('dubbing.status.pending'));
         // Symbole und Farben für Längenvergleich vorbereiten
         let lengthIndicatorOrig = '';
         let lengthClassOrig = '';
@@ -6054,54 +6065,54 @@ return `
         </td>
         <!-- Untertitel-Suche Knopf -->
         <td><div class="btn-column">
-            <button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="Ähnlichen Untertitel suchen">🔍</button>
-            ${textContainsWord(file.deText) ? `<button class="word-indicator" onclick="openWordList()" title="Wörterbuch öffnen">📖</button>` : ''}
+            <button class="subtitle-search-btn" onclick="openSubtitleSearch(${file.id})" title="${t('file.subtitle.searchTooltip')}">🔍</button>
+            ${textContainsWord(file.deText) ? `<button class="word-indicator" onclick="openWordList()" title="${t('file.wordList.open')}">📖</button>` : ''}
         </div></td>
         <td class="path-cell" style="font-size: 11px; color: #666; word-break: break-all;">
             <div class="btn-column">
-                <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="Pfad der EN-Datei">EN</span>
-                <span class="path-btn ${dePath ? 'exists' : 'missing'}" title="Pfad der DE-Datei">DE</span>
+                <span class="path-btn ${audioFileCache[relPath] ? 'exists' : 'missing'}" title="${t('file.path.en')}">EN</span>
+                <span class="path-btn ${dePath ? 'exists' : 'missing'}" title="${t('file.path.de')}">DE</span>
             </div>
-            <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : 'fehlend'}</span>
+            <span class="path-detail">EN: sounds/EN/${relPath}<br>DE: ${dePath ? `sounds/DE/${dePath}` : t('file.path.missing')}</span>
         </td>
         <td>
-            <span class="length-diff ${lengthClassOrig}" title="Original">${lengthIndicatorOrig}</span>
-            <span class="length-diff ${lengthClassEdit}" title="Bearbeitet">${lengthIndicatorEdit}</span>
+            <span class="length-diff ${lengthClassOrig}" title="${t('file.length.original')}">${lengthIndicatorOrig}</span>
+            <span class="length-diff ${lengthClassEdit}" title="${t('file.length.edited')}">${lengthIndicatorEdit}</span>
         </td>
         <td>
             <!-- Vertikal gruppierte Aktionsknöpfe -->
             <div class="action-toolbar">
                 <div class="action-row action-block">
-                    <button class="icon-btn upload-btn" onclick="initiateDeUpload(${file.id})" title="DE-Audio hochladen">⬆️</button>
-                    ${hasHistory ? `<button class="icon-btn history-btn" onclick="openHistory(${file.id})" title="Historie anzeigen">🕒</button>` : ''}
+                    <button class="icon-btn upload-btn" onclick="initiateDeUpload(${file.id})" title="${t('file.actions.de.upload')}">⬆️</button>
+                    ${hasHistory ? `<button class="icon-btn history-btn" onclick="openHistory(${file.id})" title="${t('file.actions.history')}">🕒</button>` : ''}
                 </div>
                 <div class="action-row action-block">
                     <div class="dubbing-cell">
-                        <button class="icon-btn dubbing-btn" onclick="initiateDubbing(${file.id})" title="Dubbing starten">🔈</button>
-                        ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn dubbing-btn emo" onclick="initiateEmoDubbing(${file.id})" title="Emotionales Dubbing starten">🟣</button>` : ''}
-                        <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${!file.dubbingId ? 'kein Dubbing' : (file.dubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
-                        ${file.dubbingId ? `<button class="icon-btn download-de-btn" data-file-id="${file.id}" title="Dubbing herunterladen (ID: ${file.dubbingId})" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
-                        ${file.emotionalText && file.emotionalText.trim() ? `<span class="emo-dub-status ${!file.emoDubbingId ? 'none' : (file.emoDubReady ? 'done' : 'pending')}" title="${!file.emoDubbingId ? 'kein Dubbing' : (file.emoDubReady ? 'fertig' : 'Studio generiert noch')}" ${(!file.emoDubbingId || file.emoDubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>` : ''}
-                        ${file.emoDubbingId ? `<button class="icon-btn download-emo-btn" data-file-id="${file.id}" title="Emo-Dubbing herunterladen (ID: ${file.emoDubbingId})" onclick="openDubbingPage(${file.id}, 'emo')">⬇️</button>` : ''}
+                        <button class="icon-btn dubbing-btn" onclick="initiateDubbing(${file.id})" title="${t('file.actions.dubbing.start')}">🔈</button>
+                        ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn dubbing-btn emo" onclick="initiateEmoDubbing(${file.id})" title="${t('file.actions.dubbing.emotional')}">🟣</button>` : ''}
+                        <span class="dub-status ${!file.dubbingId ? 'none' : (file.dubReady ? 'done' : 'pending')}" title="${dubbingStatusTitle}" ${(!file.dubbingId || file.dubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>
+                        ${file.dubbingId ? `<button class="icon-btn download-de-btn" data-file-id="${file.id}" title="${format('file.actions.dubbing.download', { id: file.dubbingId })}" onclick="openDubbingPage(${file.id})">⬇️</button>` : ''}
+                        ${file.emotionalText && file.emotionalText.trim() ? `<span class="emo-dub-status ${!file.emoDubbingId ? 'none' : (file.emoDubReady ? 'done' : 'pending')}" title="${emoDubbingStatusTitle}" ${(!file.emoDubbingId || file.emoDubReady) ? '' : `onclick=\"dubStatusClicked(${file.id})\"`}>●</span>` : ''}
+                        ${file.emoDubbingId ? `<button class="icon-btn download-emo-btn" data-file-id="${file.id}" title="${format('file.actions.dubbing.downloadEmo', { id: file.emoDubbingId })}" onclick="openDubbingPage(${file.id}, 'emo')">⬇️</button>` : ''}
                     </div>
                 </div>
                 <div class="action-row action-block">
-                    <button class="icon-btn edit-audio-btn" onclick="openDeEdit(${file.id})" title="DE-Audio bearbeiten">✂️</button>
+                    <button class="icon-btn edit-audio-btn" onclick="openDeEdit(${file.id})" title="${t('file.actions.de.edit')}">✂️</button>
                     <div class="edit-column">
-                        ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? '<span class="edit-status-icon" title="Audio gekürzt">✂️</span>' : ''}
-                        ${file.volumeMatched ? '<span class="edit-status-icon" title="Lautstärke angepasst">🔊</span>' : ''}
-                        ${file.volumeGainActive ? '<span class="edit-status-icon" title="Lautstärke-Booster">📢</span>' : ''}
-                        ${file.radioEffect ? '<span class="edit-status-icon" title="Funkgerät-Effekt">📻</span>' : ''}
-                        ${(file.hallEffect || file.neighborHall) ? '<span class="edit-status-icon" title="Hall-Effekt">🏛️</span>' : ''}
-                        ${file.emiEffect ? '<span class="edit-status-icon" title="EM-Störgeräusch">⚡</span>' : ''}
-                        ${file.neighborEffect ? '<span class="edit-status-icon" title="Nebenraum-Effekt">🚪</span>' : ''}
-                        ${file.tableMicEffect ? '<span class="edit-status-icon" title="Telefon-auf-Tisch-Effekt">📱</span>' : ''}
-                        ${file.zooSpeakerEffect ? '<span class="edit-status-icon" title="Zoo-Lautsprecher">🦁</span>' : ''}
+                        ${file.trimStartMs !== 0 || file.trimEndMs !== 0 ? `<span class="edit-status-icon" title="${t('file.actions.de.status.trimmed')}">✂️</span>` : ''}
+                        ${file.volumeMatched ? `<span class="edit-status-icon" title="${t('file.actions.de.status.volumeMatched')}">🔊</span>` : ''}
+                        ${file.volumeGainActive ? `<span class="edit-status-icon" title="${t('file.actions.de.status.volumeBoost')}">📢</span>` : ''}
+                        ${file.radioEffect ? `<span class="edit-status-icon" title="${t('file.actions.de.status.radio')}">📻</span>` : ''}
+                        ${(file.hallEffect || file.neighborHall) ? `<span class="edit-status-icon" title="${t('file.actions.de.status.hall')}">🏛️</span>` : ''}
+                        ${file.emiEffect ? `<span class="edit-status-icon" title="${t('file.actions.de.status.emi')}">⚡</span>` : ''}
+                        ${file.neighborEffect ? `<span class="edit-status-icon" title="${t('file.actions.de.status.neighbor')}">🚪</span>` : ''}
+                        ${file.tableMicEffect ? `<span class="edit-status-icon" title="${t('file.actions.de.status.tableMic')}">📱</span>` : ''}
+                        ${file.zooSpeakerEffect ? `<span class="edit-status-icon" title="${t('file.actions.de.status.zoo')}">🦁</span>` : ''}
                     </div>
-                    ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="Zeile fertig vertont">✅</button>` : ''}
+                    ${file.emotionalText && file.emotionalText.trim() ? `<button class="icon-btn emo-done-btn" onclick="toggleEmoCompletion(${file.id})" title="${t('file.actions.de.emoDone')}">✅</button>` : ''}
                 </div>
                 <div class="action-row delete-row action-block">
-                    <button class="icon-btn delete-row-btn" onclick="deleteFile(${file.id})" title="Zeile löschen">🗑️</button>
+                    <button class="icon-btn delete-row-btn" onclick="deleteFile(${file.id})" title="${t('file.actions.row.delete')}">🗑️</button>
                 </div>
             </div>
         </td>
