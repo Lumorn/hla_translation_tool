@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.502
+* `web/src/i18n.js` ergänzt neue Schlüssel für leere Dubbing-Defaults und die einzelnen Parameterlabels in beiden Sprachen.
+* `web/src/main.js` holt die Fallback-Texte und Feldbezeichnungen über `i18n.t(...)` und rendert die Liste beim Sprachwechsel neu.
+* `README.md` trägt Version **1.40.502** und beschreibt die übersetzten Hinweise für leere Dubbing-Parameter.
 # 🛠️ Patch in 1.40.501
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für Abschlussstatus und Fortschrittsanzeige des Kopierassistenten.
 * `web/src/main.js` nutzt die i18n-Texte in `showCopyAssistant()` inklusive Platzhalterersetzung für Dateizähler und Schritte.
