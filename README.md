@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.528-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.529-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -27,7 +27,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Emo-Dubbing nutzt i18n-Schlüssel für Abschlussstatus und Logeinträge und aktualisiert die Rückmeldungen damit beim Sprachwechsel automatisch.
 * DE-Audio-Aktionszeile inklusive Upload-, Dubbing- und Schnitt-Schaltflächen sowie Status-Tooltips nutzt i18n-Schlüssel und zeigt Beschriftungen konsistent in Deutsch und Englisch an.
 * Wellenform-Beschriftungen im DE-Audio-Editor ziehen die Sekundenlabels nun aus i18n-Schlüsseln und spiegeln Sprachwechsel sofort wider.
-* Header, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Steuerungen und Schnellzugriff im DE-Audio-Dialog tragen data-i18n-Schlüssel für Text, Titel und Aria-Labels und behalten vorerst die deutschen Standardwerte bei.
+* Header, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Steuerungen, Schnellzugriff sowie Lautstärke- und Funk-Effektgruppen im DE-Audio-Dialog tragen data-i18n-Schlüssel für Text, Titel und ARIA-Labels und behalten vorerst die deutschen Standardwerte bei.
+* Lautstärkeangleichung, Booster-Regler und Funkgerät-Presets sind mit i18n-Schlüsseln (Legenden, Buttons, Presets, Tooltips) hinterlegt und werden beim Öffnen oder Sprachwechsel des DE-Audio-Dialogs automatisch neu beschriftet.
 * Timing-Karten im DE-Audio-Editor (Trimmen, Ignorierbereiche, Segment-Vorschläge, Pausen, Stille-Bereiche, Verschmelzen, Tempo, Anwenden) erhalten durchgängige `data-i18n`-Schlüssel für Überschriften, Labels, Tooltips und ARIA-Texte.
 * Fallback-Übersetzer sichern Seitentitel, Projekt-Tooltips und Emo-Generatoren ab, sodass die DE-Audiobearbeitung auch beim Sprachwechsel ohne geladenes i18n stabil bleibt.
 * Emo-Generierung, Fortschrittsbutton, Fehlermeldungen zum fehlenden GPT-Key und Statusmeldungen greifen auf i18n-Schlüssel mit Zähler-Platzhaltern zurück und lassen sich vollständig zwischen Deutsch und Englisch umschalten.
