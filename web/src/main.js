@@ -221,6 +221,7 @@ function setupLanguageControls() {
         updateStorageUsage();
         updateLastCleanup();
         updateStatus();
+        updateVoiceSettingsDisplay();
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -1534,16 +1535,16 @@ function updateVoiceSettingsDisplay() {
     if (!list) return;
     list.innerHTML = '';
     const t = window.i18n?.t || (value => value);
-    if (!storedVoiceSettings) {
-        list.textContent = t('dubbing.saved.none');
+    if (!storedVoiceSettings || Object.keys(storedVoiceSettings).length === 0) {
+        list.textContent = t('dubbing.saved.empty');
         return;
     }
     const entries = [
-        [t('dubbing.param.stability'), storedVoiceSettings.stability],
-        [t('dubbing.param.similarityBoost'), storedVoiceSettings.similarity_boost],
-        [t('dubbing.param.style'), storedVoiceSettings.style],
-        [t('dubbing.param.speed'), storedVoiceSettings.speed],
-        [t('dubbing.param.speakerBoost'), storedVoiceSettings.use_speaker_boost]
+        [t('dubbing.label.stability'), storedVoiceSettings.stability],
+        [t('dubbing.label.similarityBoost'), storedVoiceSettings.similarity_boost],
+        [t('dubbing.label.style'), storedVoiceSettings.style],
+        [t('dubbing.label.speed'), storedVoiceSettings.speed],
+        [t('dubbing.label.speakerBoost'), storedVoiceSettings.use_speaker_boost]
     ];
     const template = t('dubbing.param.entry');
     entries.forEach(([label, val]) => {
