@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.510
+* `web/src/i18n.js` führt die Kopierhilfe-Schlüssel für Abschlussstatus sowie Datei- und Schrittzähler mit Platzhaltern in beiden Sprachen weiter aus.
+* `web/src/main.js` ersetzt die hart kodierten Kopierhilfe-Texte durch `i18n.t(...)`/`i18n.format(...)` und hängt die Anzeige an die Sprachumschaltung.
+* `README.md` hebt Version **1.40.510** hervor und nennt die lokalisierte Kopierhilfe mit Platzhaltern.
 # 🛠️ Patch in 1.40.509
 * `web/src/i18n.js` trägt Emo-Schlüssel für Fortschrittsbutton, Abschlussstatus und Fehlermeldung mit Platzhaltern in Deutsch und Englisch ein.
 * `web/src/main.js` ruft die Emo-Generierungstexte über `i18n.t(...)` und `i18n.format(...)` ab und ersetzt alle hart kodierten Statusanzeigen inklusive Zählern.
