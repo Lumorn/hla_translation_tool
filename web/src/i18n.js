@@ -33,7 +33,7 @@
             'button.copyAssistant': 'Kopierhilfe',
             'button.copyAssistant2': 'Kopierhilfe 2',
             // Übersetzungen für die Kopierhilfe inkl. Platzhalter
-            'copyAssistant.status.complete': 'Fertig',
+            'copyAssistant.status.complete': 'Kopierassistent abgeschlossen',
             'copyAssistant.progress.files': 'Datei {current} von {total}',
             'copyAssistant.progress.steps': 'Schritt {current} / {total}',
             'button.copyEmotions': 'Emotionen kopieren',
@@ -218,7 +218,7 @@
             'button.copyAssistant': 'Copy helper',
             'button.copyAssistant2': 'Copy helper 2',
             // Copy assistant translations with placeholders
-            'copyAssistant.status.complete': 'Done',
+            'copyAssistant.status.complete': 'Copy assistant completed',
             'copyAssistant.progress.files': 'File {current} of {total}',
             'copyAssistant.progress.steps': 'Step {current} / {total}',
             'button.copyEmotions': 'Copy emotions',
