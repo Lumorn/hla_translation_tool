@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.514
+* `web/src/i18n.js` schärft die Emo-Dubbing-Schlüssel für Abschlussstatus und Logtext in beiden Sprachen, damit die Meldungen den tatsächlichen Dubbing-Vorgang widerspiegeln.
+* `web/src/dubbing.js` setzt Erfolgsstatus und Logeintrag über `i18n.t(...)`, sodass Sprachwechsel die Rückmeldungen sofort aktualisieren.
+* `README.md` trägt Version **1.40.514** ein und verweist auf die lokalisierten Emo-Dubbing-Meldungen.
 # 🛠️ Patch in 1.40.513
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für Fortschrittsbutton, Abschlussstatus sowie die Fehlermeldung bei fehlendem GPT-Key mit Platzhaltern in Deutsch und Englisch.
 * `web/src/main.js` ersetzt alle hart codierten Emo-Status- und Fehlermeldungen durch `i18n.t(...)`/`i18n.format(...)` inklusive Zähler-Platzhaltern pro Zeile.

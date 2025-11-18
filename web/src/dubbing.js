@@ -839,7 +839,8 @@ async function startEmoDubbing(fileId, settings = {}) {
     file.radioEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
-    updateStatus(i18n.t('dubbing.emo.completeStatus'));
+    const emoDubbingStatus = i18n.t('dubbing.emo.completeStatus');
+    updateStatus(emoDubbingStatus);
     renderFileTable();
     saveCurrentProject();
     addDubbingLog(i18n.t('dubbing.emo.logComplete'));
