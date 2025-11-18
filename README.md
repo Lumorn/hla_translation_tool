@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.497-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.498-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -666,8 +666,8 @@ Der direkte Vergleich hilft beim Umstieg: Beide Generationen öffnen Projekte vo
 So lässt sich V1 weiter für Übersetzungsarbeit mit der bekannten Tabelle einsetzen, während V2 den Fokus auf projektbasierte Dateiverwaltung, Backups und die Migration legt. Wer beide Versionen parallel nutzt, kann V1-Projekte mit dem Import-Assistenten in die neue Bibliothek kopieren und anschließend vollständig in V2 weiterbearbeiten.
 6. Das Projekt lässt sich plattformübergreifend mit `python start_tool.py` starten. Fehlt das Repository, wird es automatisch geklont; andernfalls werden die neuesten Änderungen geladen und die Desktop-App gestartet. `start_tool.py` erkennt dabei automatisch, ob es im Repository oder davor gestartet wurde.
    * Wer ausschließlich die neue Electron-Vorschau nutzen möchte, kann alternativ `python start_tool_v2.py` ausführen. Dieses Skript installiert die V2-Abhängigkeiten mit aktivierten Installationsskripten, prüft die Electron-Binärdatei und startet erst danach `npm run --prefix v2 start`.
-7. Beim Start werden die Ordner `web/sounds/EN` und `web/sounds/DE` automatisch erstellt und eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
-8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab
+7. Beim Start prüft die App die vorhandenen Audio-Ordner. Die Verzeichnisse `web/sounds/EN` und `web/sounds/DE` sind bereits im Repository angelegt (inklusive kurzer README-Platzhalter) und werden beim Start eingelesen. Liegen die Ordner außerhalb des `web`-Verzeichnisses, erkennt das Tool sie nun ebenfalls.
+8. Kopieren Sie Ihre Originaldateien in `web/sounds/EN` (oder den gefundenen Ordner) und legen Sie Übersetzungen in `web/sounds/DE` ab. Die beigefügten README-Dateien erinnern an die Zweckbestimmung der Ordner, damit die Struktur im Repo sichtbar bleibt.
 9. Während des Setups erzeugt `start_tool.py` die Logdatei `setup.log`, in der alle Schritte gespeichert werden. Bei Fehlern weist die Konsole nun explizit auf diese Datei hin. Sowohl die Logdatei, `.last_head` als auch die automatisch erzeugten `.modules_hash`‑Dateien werden vom Repository ausgeschlossen (`.gitignore`).
 10. Die Skripte verwerfen lokale Änderungen, **ohne** den Ordner `web/sounds` anzutasten – Projektdaten bleiben somit erhalten
 11. `node check_environment.js` prueft Node- und npm-Version, installiert Abhaengigkeiten und startet einen kurzen Electron-Test. Netzwerkabfragen brechen nach fünf Sekunden mit einer verständlichen Fehlermeldung ab. Mit `--tool-check` fuehrt das Skript zusaetzlich `python start_tool.py --check` aus, um die Desktop-App kurz zu testen. Ergebnisse stehen in `setup.log`. Stimmen die `.modules_hash`‑Marker mit den Lockfiles überein, überspringt das Skript `npm ci` sowohl im Hauptverzeichnis als auch in `electron/` und startet direkt die Prüfung.

@@ -3,9 +3,6 @@ electron/node_modules/
 .env.local
 
 # Lokale Ordner in der Web-App
-web/sounds/
-web/backups/
-web/Download/
 
 setup.log
 .last_head
