@@ -2667,13 +2667,48 @@ th:nth-child(8) {
             margin: 20px;
         }
 
-        .translate-progress.active {
+        .translate-progress.visible {
+            display: block;
+        }
+
+        .translate-progress .progress-bar {
+            display: none;
+        }
+
+        .translate-progress.active .progress-bar {
             display: block;
         }
 
         .translate-status {
             font-size: 14px;
             color: #999;
+        }
+
+        .translate-actions {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .translate-action-btn {
+            padding: 8px 14px;
+            background: #2d6cdf;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .translate-action-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        .translate-action-btn:not(:disabled):hover {
+            background: #3b7cff;
         }
 
         /* Fortschrittsanzeige für die globale Untertitel-Suche */

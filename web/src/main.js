@@ -1462,6 +1462,43 @@ const pendingTranslations = new Map();
 // Merker für Übersetzungsergebnisse, die während eines Resets eingetroffen sind
 const delayedTranslationResults = new Map();
 
+// Sammelt alle Zeilen ohne gültige automatische Übersetzung
+function collectTranslationCandidates(markRetryHandled = false) {
+    if (!Array.isArray(files) || files.length === 0) return [];
+
+    const seen = new Set();
+    const candidates = [];
+
+    const addCandidate = (entry) => {
+        if (!entry || entry.id === undefined || entry.id === null) return;
+        if (seen.has(entry.id)) return;
+        candidates.push(entry);
+        seen.add(entry.id);
+    };
+
+    files.forEach(file => {
+        if (!file?.enText) return;
+        if (!file.autoTranslation || file.autoSource !== file.enText) {
+            addCandidate(file);
+        }
+    });
+
+    const shouldIncludeFailed = (!autoRetryDone) || markRetryHandled;
+    if (shouldIncludeFailed) {
+        files.forEach(file => {
+            if (!file?.enText) return;
+            if (file.autoTranslation === '[Übersetzung fehlgeschlagen]') {
+                addCandidate(file);
+            }
+        });
+        if (markRetryHandled) {
+            autoRetryDone = true;
+        }
+    }
+
+    return candidates;
+}
+
 // Speichert einen verspäteten Übersetzungsrückläufer zwischen, bis die Projektliste wieder geladen ist
 function rememberDelayedTranslationResult(projectId, fileId, autoSource, autoTranslation) {
     if (!projectId && projectId !== 0) return;
@@ -3087,6 +3124,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // Beim Start alte, falsch gespeicherte Cache-Einträge entfernen
     cleanupDubCache();
+
+    // Manuellen Start der automatischen Übersetzung vorbereiten
+    const startTranslateButton = document.getElementById('startTranslateButton');
+    if (startTranslateButton) {
+        startTranslateButton.addEventListener('click', () => {
+            if (!currentProject) {
+                updateStatus('Bitte zuerst ein Projekt auswählen.');
+                return;
+            }
+
+            const candidates = collectTranslationCandidates(true);
+            if (candidates.length === 0) {
+                updateStatus('Keine offenen Zeilen für die automatische Übersetzung.');
+                return;
+            }
+
+            runTranslationQueue(candidates, currentProject.id);
+            updateTranslationQueueDisplay();
+            updateStatus('Automatische Übersetzung gestartet.');
+        });
+    }
+
+    // Fortschrittsbereich initial auffrischen, damit der Startknopf sichtbar ist
+    updateTranslationQueueDisplay();
     if (window.electronAPI && window.electronAPI.getDebugInfo) {
         debugInfo = await window.electronAPI.getDebugInfo();
     }
@@ -4362,20 +4423,7 @@ function selectProject(id){
         if(!f.hasOwnProperty('version')){f.version=1;migrated=true;}
     });
     if(migrated) markDirty();
-let needTrans = files.filter(f => f.enText && (!f.autoTranslation || f.autoSource !== f.enText));
-
-    // Nach Neustart fehlgeschlagene Übersetzungen einmalig automatisch neu versuchen
-    if (!autoRetryDone) {
-        const failed = files.filter(f => f.enText && f.autoTranslation === '[Übersetzung fehlgeschlagen]');
-        if (failed.length > 0) {
-            const set = new Set(needTrans);
-            failed.forEach(f => set.add(f));
-            needTrans = Array.from(set);
-        }
-        autoRetryDone = true;
-    }
-
-    runTranslationQueue(needTrans, currentProject?.id);
+    autoRetryDone = false;
 
     renderFileTable();
 
@@ -7629,13 +7677,30 @@ function updateTranslationQueueDisplay() {
     const progress = document.getElementById('translateProgress');
     const status   = document.getElementById('translateStatus');
     const fill     = document.getElementById('translateFill');
+    const startBtn = document.getElementById('startTranslateButton');
     if (!progress || !status || !fill) return;
+
+    progress.classList.add('visible');
+    const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject?.id);
+    const pending = collectTranslationCandidates();
 
     if (!currentProject) {
         progress.classList.remove('active');
         fill.style.width = '0%';
-        status.textContent = '';
+        status.textContent = 'Keine Projekt-Auswahl für automatische Übersetzung.';
+        if (startBtn) {
+            startBtn.disabled = true;
+            startBtn.textContent = 'Automatische Übersetzung starten';
+        }
         return;
+    }
+
+    if (startBtn) {
+        const label = pending.length > 0
+            ? `Automatische Übersetzung starten (${pending.length})`
+            : 'Keine offenen Zeilen';
+        startBtn.textContent = label;
+        startBtn.disabled = translateRunning || waitingIndex >= 0 || pending.length === 0;
     }
 
     if (translateRunning) {
@@ -7654,7 +7719,6 @@ function updateTranslationQueueDisplay() {
         } else {
             progress.classList.add('active');
             fill.style.width = '0%';
-            const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject.id);
             if (waitingIndex >= 0) {
                 status.textContent = waitingIndex === 0
                     ? 'Übersetzung startet, sobald das aktuelle Projekt fertig ist.'
@@ -7666,7 +7730,6 @@ function updateTranslationQueueDisplay() {
             }
         }
     } else {
-        const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject.id);
         if (waitingIndex >= 0) {
             progress.classList.add('active');
             fill.style.width = '0%';
@@ -7676,7 +7739,14 @@ function updateTranslationQueueDisplay() {
         } else {
             progress.classList.remove('active');
             fill.style.width = '0%';
-            status.textContent = '';
+            if (pending.length > 0) {
+                const suffix = pending.length === 1
+                    ? 'wartet auf eine automatische Übersetzung.'
+                    : 'warten auf eine automatische Übersetzung.';
+                status.textContent = `${pending.length} Zeilen ${suffix}`;
+            } else {
+                status.textContent = 'Alle Zeilen haben bereits eine automatische Übersetzung.';
+            }
         }
     }
 }
