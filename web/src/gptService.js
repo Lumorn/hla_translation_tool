@@ -1,6 +1,11 @@
 let systemPrompt = '';
+let systemPromptLanguage = 'german';
 let emotionPrompt = '';
 let promptReady;
+// Cache für bereits geladene Prompts pro Sprache
+const promptCache = new Map();
+// Standarddatei für den Score-Prompt
+const defaultScorePrompt = 'gpt_score.txt';
 // Merker, ob die Zeilen innerhalb eines Projekts fragmentiert sind
 let restMode = false;
 // Zwischenspeicher, um zu erkennen, welche Modelle den neuen Responses-Endpunkt benötigen
@@ -125,39 +130,116 @@ async function requestAssistantText({ messages, key, model, temperature = 0, ret
     return extractAssistantText(data);
 }
 
+// Hilfsfunktion: merkt, welche Sprache aus dem Speicher geladen wurde
+function detectStoredPromptLanguage() {
+    if (typeof localStorage === 'undefined') return 'german';
+    const stored = localStorage.getItem('hla_gptPromptLanguage');
+    return typeof stored === 'string' && stored.trim() ? stored : 'german';
+}
+
 // Liefert den geladenen System-Prompt
 function getSystemPrompt() {
     return systemPrompt;
 }
 
+// Liefert die aktuell gesetzte Prompt-Sprache
+function getSystemPromptLanguage() {
+    return systemPromptLanguage;
+}
+
+// Pfad-Helfer für die Score-Prompts
+function getScorePromptNames(langCode) {
+    const names = [];
+    if (langCode) names.push(`gpt_score_${langCode}.txt`);
+    names.push(defaultScorePrompt);
+    return names;
+}
+
+// Liest einen Prompt aus dem Dateisystem oder via Fetch
+async function readPromptFile(fileNames) {
+    const names = Array.isArray(fileNames) ? fileNames : [String(fileNames || defaultScorePrompt)];
+    let lastError = null;
+    if (typeof window !== 'undefined' && typeof fetch === 'function') {
+        for (const name of names) {
+            const url = `../prompts/${name}`;
+            try {
+                const res = await fetch(url);
+                if (res.ok) {
+                    return await res.text();
+                }
+            } catch (e) {
+                lastError = e;
+            }
+        }
+    } else {
+        const fs = require('fs');
+        const path = require('path');
+        for (const name of names) {
+            try {
+                const localPath = path.join(__dirname, '..', 'prompts', name);
+                const rootPath  = path.join(__dirname, '..', '..', 'prompts', name);
+                const filePath  = fs.existsSync(localPath) ? localPath : rootPath;
+                if (fs.existsSync(filePath)) {
+                    return fs.readFileSync(filePath, 'utf8');
+                }
+            } catch (e) {
+                lastError = e;
+            }
+        }
+    }
+    if (lastError) {
+        console.error('Prompt konnte nicht geladen werden', lastError);
+    }
+    return '';
+}
+
+// Lädt den Score-Prompt für eine Sprache und merkt ihn im Cache
+async function loadSystemPrompt(langCode = 'german') {
+    const code = langCode || 'german';
+    if (promptCache.has(code)) {
+        systemPrompt = promptCache.get(code) || '';
+        systemPromptLanguage = code;
+        return systemPrompt;
+    }
+    const content = await readPromptFile(getScorePromptNames(code));
+    systemPrompt = (content || '').trim();
+    systemPromptLanguage = code;
+    promptCache.set(code, systemPrompt);
+    return systemPrompt;
+}
+
+// Setzt die gewünschte Prompt-Sprache und lädt den passenden Score-Prompt
+async function setSystemPromptLanguage(langCode = 'german') {
+    const language = langCode || 'german';
+    promptReady = Promise.all([
+        loadSystemPrompt(language),
+        loadEmotionPrompt()
+    ]);
+    await promptReady;
+    return systemPrompt;
+}
+
+// Lädt den Emotion-Prompt einmalig
+async function loadEmotionPrompt() {
+    if (emotionPrompt) return emotionPrompt;
+    const content = await readPromptFile('gpt_emotions.txt');
+    emotionPrompt = (content || '').trim();
+    return emotionPrompt;
+}
+
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
     // Im Browser: Prompts per Fetch laden
-    const urlScore = '../prompts/gpt_score.txt';
-    const urlEmo   = '../prompts/gpt_emotions.txt';
+    const storedLanguage = detectStoredPromptLanguage();
     promptReady = Promise.all([
-        fetch(urlScore).then(r => r.ok ? r.text() : ''),
-        fetch(urlEmo).then(r => r.ok ? r.text() : '')
-    ]).then(([score, emo]) => {
-        systemPrompt  = score.trim();
-        emotionPrompt = emo.trim();
-    }).catch(() => { systemPrompt = ''; emotionPrompt = ''; });
+        loadSystemPrompt(storedLanguage),
+        loadEmotionPrompt()
+    ]);
 } else {
     // Unter Node: Prompts direkt von der Festplatte lesen
-    const fs = require('fs');
-    const path = require('path');
-    try {
-        const scoreLocal = path.join(__dirname, '..', 'prompts', 'gpt_score.txt');
-        const scoreRoot  = path.join(__dirname, '..', '..', 'prompts', 'gpt_score.txt');
-        const emoLocal   = path.join(__dirname, '..', 'prompts', 'gpt_emotions.txt');
-        const emoRoot    = path.join(__dirname, '..', '..', 'prompts', 'gpt_emotions.txt');
-        const scorePath  = fs.existsSync(scoreLocal) ? scoreLocal : scoreRoot;
-        const emoPath    = fs.existsSync(emoLocal) ? emoLocal : emoRoot;
-        systemPrompt  = fs.readFileSync(scorePath, 'utf8').trim();
-        emotionPrompt = fs.readFileSync(emoPath, 'utf8').trim();
-    } catch (e) {
-        console.error('Prompt konnte nicht geladen werden', e);
-    }
-    promptReady = Promise.resolve();
+    promptReady = Promise.all([
+        loadSystemPrompt(detectStoredPromptLanguage()),
+        loadEmotionPrompt()
+    ]);
 }
 
 // *** Einfache Warteschlange, um API-Aufrufe zu drosseln ***
@@ -610,6 +692,8 @@ if (typeof module !== 'undefined') {
         testKey,
         fetchModels,
         getSystemPrompt,
+        getSystemPromptLanguage,
+        setSystemPromptLanguage,
         generateEmotionText,
         adjustEmotionText,
         improveEmotionText,
@@ -625,6 +709,8 @@ if (typeof window !== 'undefined') {
     window.testGptKey = testKey;
     window.fetchGptModels = fetchModels;
     window.getSystemPrompt = getSystemPrompt;
+    window.getSystemPromptLanguage = getSystemPromptLanguage;
+    window.setSystemPromptLanguage = setSystemPromptLanguage;
     window.generateEmotionText = generateEmotionText;
     window.adjustEmotionText = adjustEmotionText;
     window.improveEmotionText = improveEmotionText;

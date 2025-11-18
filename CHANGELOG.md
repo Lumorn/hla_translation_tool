@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.549
+* `web/hla_translation_tool.html`, `web/src/main.js` und `web/src/style.css` bringen ein Sprach-Dropdown in den GPT-Test, laden den passenden Prompt pro Closecaption-Sprache und speichern die Auswahl dauerhaft.
+* `web/src/gptService.js` lädt Score-Prompts je Sprache aus dem Cache oder von der Platte, setzt `setSystemPromptLanguage`/`getSystemPromptLanguage` und koppelt `promptReady` daran.
+* `prompts/gpt_score_*.txt` enthalten für jede Closecaption-Sprache einen eigenen GPT-Test-Prompt **in der jeweiligen Zielsprache** statt nur in Deutsch.
+* `README.md` hebt Version **1.40.549** und die wählbare Prompt-Sprache im GPT-Test hervor.
 # 🛠️ Patch in 1.40.548
 * `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für den GPT-Start- und Test-Dialog inklusive Platzhalter für Fortschritt, Duplikate, Tabs und Statusmeldungen.
 * `web/hla_translation_tool.html` versieht alle GPT-Dialog-Titel, Buttons, Fortschrittsstufen und Zusammenfassungs-Spalten mit `data-i18n`, damit die UI vollständig aus den Sprachressourcen gerendert wird.
