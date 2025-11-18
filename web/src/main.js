@@ -15662,9 +15662,14 @@ async function openDeEdit(fileId) {
     currentEditFile = file;
     const enSrc = `sounds/EN/${getFullPath(file)}`;
     const rel = getDeFilePath(file) || getFullPath(file);
-    let deSrc = deAudioCache[rel];
-    if (!deSrc) return;
-    const backupSrc = `sounds/DE-Backup/${rel}`;
+    const cacheKey = findDeAudioCacheKeyInsensitive(rel) || rel;
+    let deSrc = deAudioCache[cacheKey];
+    // Fallback: Wenn der Cache leer oder nur als Flag befüllt ist, nutze den Standardpfad
+    if (!deSrc || deSrc === true) {
+        deSrc = `sounds/DE/${cacheKey}`;
+        setDeAudioCacheEntry(cacheKey, deSrc);
+    }
+    const backupSrc = `sounds/DE-Backup/${cacheKey}`;
     let activeDeSource = typeof deSrc === 'string' ? deSrc : deSrc;
     let usedBackup = false;
     // Zuerst versuchen wir, die aktuelle DE-Datei zu laden
