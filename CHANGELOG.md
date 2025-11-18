@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.536
+* `electron/main.js` nutzt i18n-Schlüssel für Start-Sperre und Debug-Report-Dialoge, setzt Dialogtitel/Buttons aus dem Übersetzer und stellt IPC-Helfer für die Sprachwahl bereit.
+* `electron/mainI18n.js` lädt Sprachdateien aus `electron/locales/main/`, cached sie mit englischem Fallback und ersetzt Platzhalter sicher.
+* `electron/locales/main/*.json` liefern die englischen und deutschen Texte für Start-Sperre, Fehlerabfrage und Speicherbestätigung im Hauptprozess.
+* `README.md` hebt Version **1.40.536** hervor und nennt die lokalisierten Hauptprozess-Dialoge mit IPC-gestützter Sprachwahl und englischem Fallback.
 # 🛠️ Patch in 1.40.535
 * `web/src/main.js` blendet im Leerlauf Wartetexte und Fortschrittsbalken der automatischen Übersetzung aus und entfernt den Warteschlangen-Zähler aus dem Startknopf.
 * `README.md` hebt Version **1.40.535** hervor und beschreibt die bereinigte Anzeige ohne wartende Übersetzungen.

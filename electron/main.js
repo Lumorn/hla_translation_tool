@@ -25,6 +25,10 @@ const { isDubReady } = require('../elevenlabs.js');
 const { createSoundBackup, listSoundBackups, deleteSoundBackup } = require('../soundBackupUtils');
 const { saveSettings, loadSettings } = require('../settingsStore.ts');
 const { TranslationWorkerManager } = require('./translationWorker');
+const mainI18n = require('./mainI18n');
+
+// Sprache frühzeitig anhand der Systemvorgabe setzen und bei fehlenden Dateien auf Englisch zurückfallen
+mainI18n.setLanguage((app.getLocale && app.getLocale().split('-')[0]) || mainI18n.defaultLanguage);
 
 // Einzelinstanz-Sperre setzen, damit die Anwendung nur einmal gestartet werden kann
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
@@ -32,8 +36,8 @@ const hasSingleInstanceLock = app.requestSingleInstanceLock();
 if (!hasSingleInstanceLock) {
   // Fehlermeldung anzeigen und zweiten Startversuch sofort beenden
   dialog.showErrorBox(
-    'Bereits gestartet',
-    'Das Half-Life: Alyx Übersetzungstool läuft bereits und kann nicht zweimal geöffnet werden.'
+    mainI18n.t('startup.alreadyRunning.title'),
+    mainI18n.t('startup.alreadyRunning.message')
   );
   app.quit();
   process.exit(0);
@@ -62,8 +66,8 @@ app.on('second-instance', () => {
     mainWindow.focus();
   }
   dialog.showErrorBox(
-    'Bereits gestartet',
-    'Das Half-Life: Alyx Übersetzungstool läuft bereits und kann nicht zweimal geöffnet werden.'
+    mainI18n.t('startup.alreadyRunning.title'),
+    mainI18n.t('startup.alreadyRunning.message')
   );
 });
 
@@ -130,9 +134,9 @@ function offerDebugReport(err) {
   // Benutzer fragen, ob ein Bericht gespeichert werden soll
   const choice = dialog.showMessageBoxSync({
     type: 'error',
-    title: 'Fehler',
-    message: `Es ist ein Fehler aufgetreten:\n${err?.message}\nSoll ein Debug-Bericht gespeichert werden?`,
-    buttons: ['Ja', 'Nein'],
+    title: mainI18n.t('debug.offer.title'),
+    message: mainI18n.t('debug.offer.message', { error: err?.message ?? String(err) }),
+    buttons: [mainI18n.t('debug.offer.button.yes'), mainI18n.t('debug.offer.button.no')],
     defaultId: 0,
     cancelId: 1,
   });
@@ -141,8 +145,9 @@ function offerDebugReport(err) {
     const file = writeDebugReport(err instanceof Error ? err : new Error(String(err)), debugReportDir);
     dialog.showMessageBoxSync({
       type: 'info',
-      title: 'Bericht gespeichert',
-      message: `Debug-Bericht gespeichert unter:\n${file}`,
+      title: mainI18n.t('debug.saved.title'),
+      message: mainI18n.t('debug.saved.message', { path: file }),
+      buttons: [mainI18n.t('dialog.ok')],
     });
   }
 }
@@ -347,6 +352,14 @@ app.whenReady().then(() => {
   // MP3-Dateien zu WAV konvertieren
   convertMp3Dir(enPath);
   convertMp3Dir(dePath);
+
+  // Sprache vom Renderer entgegennehmen und optional zurückmelden
+  ipcMain.handle('main-set-language', (event, lang) => {
+    // Renderer kann die gewünschte Sprache setzen, Fallback bleibt Englisch
+    return mainI18n.setLanguage(lang);
+  });
+
+  ipcMain.handle('main-get-language', () => mainI18n.getLanguage());
 
   ipcMain.handle('scan-folders', () => {
     return {

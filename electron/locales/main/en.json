@@ -1,0 +1,11 @@
+{
+  "startup.alreadyRunning.title": "Already running",
+  "startup.alreadyRunning.message": "The Half-Life: Alyx Translation Tool is already running and cannot be opened twice.",
+  "debug.offer.title": "Unexpected error",
+  "debug.offer.message": "An error occurred:\n{error}\nDo you want to save a debug report?",
+  "debug.offer.button.yes": "Yes",
+  "debug.offer.button.no": "No",
+  "debug.saved.title": "Report saved",
+  "debug.saved.message": "Debug report saved to:\n{path}",
+  "dialog.ok": "OK"
+}
