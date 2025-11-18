@@ -839,10 +839,10 @@ async function startEmoDubbing(fileId, settings = {}) {
     file.radioEffect = false;
     file.emiEffect = false;
     file.neighborEffect = false;
-    updateStatus('Emo-Download abgeschlossen');
+    updateStatus(i18n.t('dubbing.emo.completeStatus'));
     renderFileTable();
     saveCurrentProject();
-    addDubbingLog('Fertig.');
+    addDubbingLog(i18n.t('dubbing.emo.logComplete'));
 }
 // =========================== STARTEMODUBBING END ============================
 // =========================== STARTDUBBING END ===============================
