@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.527
+* `web/hla_translation_tool.html` versieht den DE-Audio-Dialog samt Kopfzeile, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Leiste und Schnellzugriff-Buttons mit `data-i18n`-Attributen für Text, Titel und Aria-Labels.
+* `web/src/i18n.js` hinterlegt neue `deAudio.*`-Schlüssel mit den bisherigen deutschen Standardtexten als Fallback, damit der Dialog weiterhin vollständig bedienbar bleibt.
+* `README.md` dokumentiert die erweiterten i18n-Markierungen im DE-Audio-Dialog.
 # 🛠️ Patch in 1.40.526
 * `web/src/main.js` lokalisiert den kompletten Ordner-Browser mit Statistiken, Karten, Dateiaktionen, Berichten und dem Fehlende-Ordner-Dialog anhand der gewählten Sprache.
 * `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für Ordner-Browser, fehlende Ordner, Fortschrittsberichte sowie Such- und Aktionsbuttons.

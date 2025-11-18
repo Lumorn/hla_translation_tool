@@ -751,41 +751,41 @@
     <!-- DE Edit Dialog -->
     <div class="dialog-overlay hidden" id="deEditDialog">
         <div class="dialog">
-<button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen">×</button>
+<button class="dialog-close-btn" onclick="closeDeEdit()" title="Fenster schließen" aria-label="Fenster schließen" data-i18n-title="deAudio.dialog.close" data-i18n-aria-label="deAudio.dialog.close">×</button>
             <div class="edit-header">
-                <h3>✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
+                <h3 data-i18n="deAudio.dialog.header">✂️ DE-Audio bearbeiten <span id="deEditSaveInfo" class="save-info"></span></h3>
                 <!-- Zusätzliche Aktionsleiste im Kopfbereich -->
                 <div class="edit-header-actions">
-                    <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen">Zurücksetzen</button>
-                    <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen">Speichern</button>
-                    <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen">Speichern &amp; schließen</button>
+                    <button class="btn btn-secondary" onclick="resetDeEdit()" title="Letzte Speicherung wiederherstellen" data-i18n="deAudio.dialog.reset" data-i18n-title="deAudio.dialog.reset">Zurücksetzen</button>
+                    <button class="btn btn-blue" onclick="applyDeEdit()" title="Bearbeitung speichern und geöffnet lassen" data-i18n="deAudio.dialog.save" data-i18n-title="deAudio.dialog.save">Speichern</button>
+                    <button class="btn btn-primary" onclick="applyDeEdit(true)" title="Speichern und den Dialog schließen" data-i18n="deAudio.dialog.saveClose" data-i18n-title="deAudio.dialog.saveClose">Speichern &amp; schließen</button>
                 </div>
             </div>
             <div class="audio-info-panel collapsed" id="audioInfoPanel" aria-live="polite"></div>
             <div class="wave-toolbar" id="waveToolbar">
                 <div class="wave-slider wave-zoom-slider">
-                    <button type="button" class="wave-toolbar-btn" id="waveZoomOutBtn" title="Zoom verkleinern">−</button>
-                    <label for="waveZoomRange">Zoom</label>
+                    <button type="button" class="wave-toolbar-btn" id="waveZoomOutBtn" title="Zoom verkleinern" aria-label="Zoom verkleinern" data-i18n-title="deAudio.controls.zoom.out" data-i18n-aria-label="deAudio.controls.zoom.out">−</button>
+                    <label for="waveZoomRange" data-i18n="deAudio.controls.zoom.label">Zoom</label>
                     <input type="range" id="waveZoomRange" min="0.8" max="2.5" step="0.1">
                     <span id="waveZoomDisplay">100%</span>
-                    <button type="button" class="wave-toolbar-btn" id="waveZoomInBtn" title="Zoom vergrößern">+</button>
+                    <button type="button" class="wave-toolbar-btn" id="waveZoomInBtn" title="Zoom vergrößern" aria-label="Zoom vergrößern" data-i18n-title="deAudio.controls.zoom.in" data-i18n-aria-label="deAudio.controls.zoom.in">+</button>
                 </div>
                 <div class="wave-slider wave-position-slider">
-                    <button type="button" class="wave-toolbar-btn" id="waveScrollLeftBtn" title="Nach links springen">⟵</button>
-                    <label for="waveScrollRange">Position</label>
+                    <button type="button" class="wave-toolbar-btn" id="waveScrollLeftBtn" title="Nach links springen" aria-label="Nach links springen" data-i18n-title="deAudio.controls.scroll.left" data-i18n-aria-label="deAudio.controls.scroll.left">⟵</button>
+                    <label for="waveScrollRange" data-i18n="deAudio.controls.scroll.label">Position</label>
                     <input type="range" id="waveScrollRange" min="0" max="100" step="1" value="0">
                     <span id="waveScrollDisplay">0%</span>
-                    <button type="button" class="wave-toolbar-btn" id="waveScrollRightBtn" title="Nach rechts springen">⟶</button>
+                    <button type="button" class="wave-toolbar-btn" id="waveScrollRightBtn" title="Nach rechts springen" aria-label="Nach rechts springen" data-i18n-title="deAudio.controls.scroll.right" data-i18n-aria-label="deAudio.controls.scroll.right">⟶</button>
                 </div>
                 <div class="wave-slider">
-                    <label for="waveHeightRange">Höhe</label>
+                    <label for="waveHeightRange" data-i18n="deAudio.controls.height.label">Höhe</label>
                     <input type="range" id="waveHeightRange" min="60" max="200" step="10" value="80">
                     <span id="waveHeightDisplay">80px</span>
                 </div>
-                <label class="wave-sync-label"><input type="checkbox" id="waveSyncScroll"> Scroll koppeln</label>
+                <label class="wave-sync-label" data-i18n="deAudio.controls.syncScroll"><input type="checkbox" id="waveSyncScroll"> Scroll koppeln</label>
                 <div class="wave-toolbar-buttons">
-                    <button id="waveFitFullBtn" class="btn btn-secondary" type="button" title="Gesamtes Audio einpassen">↔ Alles zeigen</button>
-                    <button id="waveFocusSelectionBtn" class="btn btn-secondary" type="button" title="Auswahl in den Fokus holen">🎯 Auswahl</button>
+                    <button id="waveFitFullBtn" class="btn btn-secondary" type="button" title="Gesamtes Audio einpassen" data-i18n="deAudio.controls.fitAll" data-i18n-title="deAudio.controls.fitAll">↔ Alles zeigen</button>
+                    <button id="waveFocusSelectionBtn" class="btn btn-secondary" type="button" title="Auswahl in den Fokus holen" data-i18n="deAudio.controls.focusSelection" data-i18n-title="deAudio.controls.focusSelection">🎯 Auswahl</button>
                 </div>
             </div>
             <div class="wave-timeline-preview" id="waveTimelinePreview" aria-hidden="true"></div>
@@ -846,46 +846,46 @@
                 <section class="timing-section">
                     <div class="quick-actions" aria-label="Schnellzugriff auf häufige Werkzeuge">
                         <div class="quick-header">
-                            <h4 class="section-headline">Schnellzugriff</h4>
-                            <p class="quick-subheadline">Die wichtigsten Schritte stehen als kompakte Buttons bereit und markieren beim Klick die passenden Detailbereiche.</p>
+                            <h4 class="section-headline" data-i18n="deAudio.quick.header">Schnellzugriff</h4>
+                            <p class="quick-subheadline" data-i18n="deAudio.quick.subheadline">Die wichtigsten Schritte stehen als kompakte Buttons bereit und markieren beim Klick die passenden Detailbereiche.</p>
                         </div>
                         <div class="quick-toolbar" role="toolbar" aria-label="Schnellzugriffswerkzeuge">
-                            <button id="quickFocusTrim" class="quick-btn" type="button" title="Trimmbereiche bearbeiten" aria-label="Trimmbereiche bearbeiten">
+                            <button id="quickFocusTrim" class="quick-btn" type="button" title="Trimmbereiche bearbeiten" aria-label="Trimmbereiche bearbeiten" data-i18n-title="deAudio.quick.trim" data-i18n-aria-label="deAudio.quick.trim">
                                 <span class="quick-icon" aria-hidden="true">✂️</span>
-                                <span class="quick-text">Trim</span>
+                                <span class="quick-text" data-i18n="deAudio.quick.trim">Trim</span>
                             </button>
-                            <button id="quickAutoTrim" class="quick-btn" type="button" title="Stille automatisch erkennen" aria-label="Stille automatisch erkennen">
+                            <button id="quickAutoTrim" class="quick-btn" type="button" title="Stille automatisch erkennen" aria-label="Stille automatisch erkennen" data-i18n-title="deAudio.quick.auto" data-i18n-aria-label="deAudio.quick.auto">
                                 <span class="quick-icon" aria-hidden="true">⚡</span>
-                                <span class="quick-text">Auto</span>
+                                <span class="quick-text" data-i18n="deAudio.quick.auto">Auto</span>
                             </button>
-                            <button id="quickAutoSegment" class="quick-btn quick-btn--segment" type="button" title="Segmente automatisch vorschlagen" aria-label="Segmente automatisch vorschlagen">
+                            <button id="quickAutoSegment" class="quick-btn quick-btn--segment" type="button" title="Segmente automatisch vorschlagen" aria-label="Segmente automatisch vorschlagen" data-i18n-title="deAudio.quick.segment" data-i18n-aria-label="deAudio.quick.segment">
                                 <span class="quick-icon" aria-hidden="true">🎯</span>
-                                <span class="quick-text">Segmente</span>
+                                <span class="quick-text" data-i18n="deAudio.quick.segment">Segmente</span>
                             </button>
                             <div class="quick-tempo-block">
-                                <button id="quickTempoMatch" class="quick-btn" type="button" title="Tempo automatisch auf EN-Zeit anpassen" aria-label="Tempo automatisch auf EN-Zeit anpassen">
+                                <button id="quickTempoMatch" class="quick-btn" type="button" title="Tempo automatisch auf EN-Zeit anpassen" aria-label="Tempo automatisch auf EN-Zeit anpassen" data-i18n-title="deAudio.quick.tempo" data-i18n-aria-label="deAudio.quick.tempo">
                                     <span class="quick-icon" aria-hidden="true">⏱️</span>
-                                    <span class="quick-text">Tempo</span>
+                                    <span class="quick-text" data-i18n="deAudio.quick.tempo">Tempo</span>
                                 </button>
                                 <div class="quick-tempo-inline" role="group" aria-label="Turbo Tempo-Schnellsteuerung">
                                     <div class="quick-tempo-row quick-tempo-steppers">
-                                        <button id="quickTempoMinus" class="quick-mini-btn" type="button" title="Tempo schrittweise verringern" aria-label="Tempo schrittweise verringern">➖</button>
+                                        <button id="quickTempoMinus" class="quick-mini-btn" type="button" title="Tempo schrittweise verringern" aria-label="Tempo schrittweise verringern" data-i18n-title="deAudio.quick.tempoMinus" data-i18n-aria-label="deAudio.quick.tempoMinus">➖</button>
                                         <span id="quickTempoDisplay" class="tempo-value quick-tempo-display" aria-live="polite">1,00</span>
-                                        <button id="quickTempoPlus" class="quick-mini-btn" type="button" title="Tempo schrittweise erhöhen" aria-label="Tempo schrittweise erhöhen">➕</button>
+                                        <button id="quickTempoPlus" class="quick-mini-btn" type="button" title="Tempo schrittweise erhöhen" aria-label="Tempo schrittweise erhöhen" data-i18n-title="deAudio.quick.tempoPlus" data-i18n-aria-label="deAudio.quick.tempoPlus">➕</button>
                                     </div>
                                     <div class="quick-tempo-row quick-tempo-presets">
-                                        <button id="quickTempoSet120" class="quick-mini-btn quick-tempo-preset" type="button" title="Tempo direkt auf 1,20 setzen" aria-label="Tempo direkt auf 1,20 setzen">1,20×</button>
-                                        <button id="quickTempoSet130" class="quick-mini-btn quick-tempo-preset" type="button" title="Tempo direkt auf 1,30 setzen" aria-label="Tempo direkt auf 1,30 setzen">1,30×</button>
+                                        <button id="quickTempoSet120" class="quick-mini-btn quick-tempo-preset" type="button" title="Tempo direkt auf 1,20 setzen" aria-label="Tempo direkt auf 1,20 setzen" data-i18n="deAudio.quick.tempo120" data-i18n-title="deAudio.quick.tempo120" data-i18n-aria-label="deAudio.quick.tempo120">1,20×</button>
+                                        <button id="quickTempoSet130" class="quick-mini-btn quick-tempo-preset" type="button" title="Tempo direkt auf 1,30 setzen" aria-label="Tempo direkt auf 1,30 setzen" data-i18n="deAudio.quick.tempo130" data-i18n-title="deAudio.quick.tempo130" data-i18n-aria-label="deAudio.quick.tempo130">1,30×</button>
                                     </div>
                                 </div>
                             </div>
-                            <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen" aria-label="Lautstärke an EN anpassen">
+                            <button id="quickVolumeMatch" class="quick-btn" type="button" title="Lautstärke an EN anpassen" aria-label="Lautstärke an EN anpassen" data-i18n-title="deAudio.quick.volume" data-i18n-aria-label="deAudio.quick.volume">
                                 <span class="quick-icon" aria-hidden="true">🔊</span>
-                                <span class="quick-text">Pegel</span>
+                                <span class="quick-text" data-i18n="deAudio.quick.volume">Pegel</span>
                             </button>
-                            <button id="quickRadioEffect" class="quick-btn" type="button" title="Funkgerät-Effekt anwenden" aria-label="Funkgerät-Effekt anwenden">
+                            <button id="quickRadioEffect" class="quick-btn" type="button" title="Funkgerät-Effekt anwenden" aria-label="Funkgerät-Effekt anwenden" data-i18n-title="deAudio.quick.radio" data-i18n-aria-label="deAudio.quick.radio">
                                 <span class="quick-icon" aria-hidden="true">📻</span>
-                                <span class="quick-text">Funk</span>
+                                <span class="quick-text" data-i18n="deAudio.quick.radio">Funk</span>
                             </button>
                         </div>
                     </div>
