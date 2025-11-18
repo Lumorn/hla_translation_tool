@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.533-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.534-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -15,6 +15,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ## 🔍 Schnellüberblick
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
+* Der Start der automatischen Übersetzung sitzt nun als System-Schaltfläche direkt in der oberen Werkzeugleiste und hält den Fortschrittsbereich schlank.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Der Ordner-Auswahldialog für mehrdeutige Dateien ist vollständig lokalisiert und folgt der gewählten Sprache bei Titeln, Hilfen und Buttons.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.

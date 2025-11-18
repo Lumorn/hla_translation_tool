@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.534
+* `web/hla_translation_tool.html` verschiebt den Startknopf für die automatische Übersetzung in den System-Tab und macht den Fortschrittsbereich kompakter.
+* `README.md` hebt die neue Position des Übersetzungs-Buttons hervor und passt die Versionsplakette auf **1.40.534** an.
 # 🛠️ Patch in 1.40.533
 * `web/src/main.js` stellt die automatische Übersetzung auf einen manuellen Startknopf um, sammelt offene Zeilen pro Projekt und aktiviert die Warteschlange erst nach Klick.
 * `web/hla_translation_tool.html` ergänzt den neuen Start-Button im Übersetzungsfortschritt.
