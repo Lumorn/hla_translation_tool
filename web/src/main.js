@@ -8327,6 +8327,11 @@ function showLevelStats(levelName) {
         });
     });
 
+    const t = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), t(key));
+    });
+
     let content = '';
     const rows = Object.values(levelNotes);
     if (rows.length) {
@@ -8337,7 +8342,7 @@ function showLevelStats(levelName) {
         });
         content += '</table>';
     } else {
-        content = '<p style="margin-top:10px;">Keine Notizen in diesem Level.</p>';
+        content = `<p style="margin-top:10px;">${t('levelStats.dialog.emptyNotes')}</p>`;
     }
 
     const ov = document.createElement('div');
@@ -8345,7 +8350,7 @@ function showLevelStats(levelName) {
     const dialog = document.createElement('div');
     dialog.className = 'dialog';
     dialog.style.maxWidth = '400px';
-    dialog.innerHTML = `<h3>Level-Statistiken: ${escapeHtml(levelName)}</h3>${content}<div class="dialog-buttons"><button onclick="this.closest('.dialog-overlay').remove()">Schließen</button></div>`;
+    dialog.innerHTML = `<h3>${format('levelStats.dialog.title', { level: escapeHtml(levelName) })}</h3>${content}<div class="dialog-buttons"><button onclick="this.closest('.dialog-overlay').remove()">${t('dialog.close')}</button></div>`;
     ov.appendChild(dialog);
     ov.onclick = () => ov.remove();
     dialog.onclick = e => e.stopPropagation();
