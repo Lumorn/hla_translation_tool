@@ -8542,12 +8542,13 @@ async function playCurrentEnglishReviewFile() {
 
     let objectUrl = null;
     const language = enReviewLanguage === 'de' ? 'de' : 'en';
+    const t = window.i18n?.t || (value => value);
 
     if (language === 'de') {
         // DE-Audio bevorzugt laden und bei Bedarf über den Cache nachziehen
         let relPath = getDeFilePath(file) || getFullPath(file);
         if (!relPath) {
-            updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+            updateStatus(t('deAudio.review.missingFile').replace('{filename}', file.filename));
             if (enReviewState === 'playing') {
                 enReviewIndex++;
                 await playCurrentEnglishReviewFile();
@@ -8563,7 +8564,7 @@ async function playCurrentEnglishReviewFile() {
             } else {
                 try {
                     if (!deOrdnerHandle) {
-                        throw new Error('Kein DE-Ordner verfügbar');
+                        throw new Error(t('deAudio.review.noFolder'));
                     }
                     let handle = deOrdnerHandle;
                     const parts = (file.folder || '').split('/');
@@ -8586,13 +8587,13 @@ async function playCurrentEnglishReviewFile() {
                         } catch {}
                     }
                     if (!datei) {
-                        throw new Error('Datei nicht gefunden');
+                        throw new Error(t('deAudio.review.fileNotFound'));
                     }
                     relPath = gefundenerPfad;
                     setDeAudioCacheEntry(relPath, datei);
                 } catch (err) {
-                    console.error('EN-Review: DE-Audio konnte nicht geladen werden', err);
-                    updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+                    console.error(t('deAudio.review.loadError'), err);
+                    updateStatus(t('deAudio.review.missingFile').replace('{filename}', file.filename));
                     if (enReviewState === 'playing') {
                         enReviewIndex++;
                         await playCurrentEnglishReviewFile();
@@ -8606,7 +8607,7 @@ async function playCurrentEnglishReviewFile() {
 
         const cacheEntry = deAudioCache[relPath];
         if (!cacheEntry) {
-            updateStatus(`EN-Review: Keine DE-Datei gefunden (${file.filename}).`);
+            updateStatus(t('deAudio.review.missingFile').replace('{filename}', file.filename));
             if (enReviewState === 'playing') {
                 enReviewIndex++;
                 await playCurrentEnglishReviewFile();
@@ -18361,22 +18362,23 @@ function closeDeEdit() {
 // Stellt die letzte gespeicherte Version der DE-Datei aus dem Backup wieder her
 async function resetDeEdit() {
     if (!currentEditFile) return;
+    const t = window.i18n?.t || (value => value);
     // Liste nicht gespeicherter Schritte für Bestätigungsdialog sammeln
     const steps = [];
-    if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push('Trimmen');
-    if (currentEditFile.ignoreRanges && currentEditFile.ignoreRanges.length) steps.push('Ignorierbereiche');
-    if (currentEditFile.silenceRanges && currentEditFile.silenceRanges.length) steps.push('Stille-Bereiche');
-    if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push('Tempo');
-    if (currentEditFile.volumeMatched) steps.push('Lautstärke angleichen');
-    if (currentEditFile.radioEffect) steps.push('Funkgerät-Effekt');
-    if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push('Hall-Effekt');
-    if (currentEditFile.emiEffect) steps.push('EM-Störgeräusch');
-    if (currentEditFile.neighborEffect) steps.push('Nebenraum-Effekt');
-    if (currentEditFile.tableMicEffect) steps.push('Telefon-auf-Tisch-Effekt');
-    if (currentEditFile.zooSpeakerEffect) steps.push('Zoo-Lautsprecher');
-    if (currentEditFile.volumeGainActive) steps.push('Lautstärke-Booster');
-    const msg = steps.length ? `Folgende Schritte gehen verloren:\n• ${steps.join('\n• ')}` : 'Keine ungespeicherten Schritte.';
-    if (!confirm(`DE-Audio zurücksetzen?\n${msg}`)) return;
+    if (currentEditFile.trimStartMs || currentEditFile.trimEndMs) steps.push(t('deAudio.reset.step.trim'));
+    if (currentEditFile.ignoreRanges && currentEditFile.ignoreRanges.length) steps.push(t('deAudio.reset.step.ignore'));
+    if (currentEditFile.silenceRanges && currentEditFile.silenceRanges.length) steps.push(t('deAudio.reset.step.silence'));
+    if (currentEditFile.tempoFactor && currentEditFile.tempoFactor !== 1) steps.push(t('deAudio.reset.step.tempo'));
+    if (currentEditFile.volumeMatched) steps.push(t('deAudio.reset.step.volumeMatch'));
+    if (currentEditFile.radioEffect) steps.push(t('deAudio.reset.step.radio'));
+    if (currentEditFile.hallEffect || currentEditFile.neighborHall) steps.push(t('deAudio.reset.step.hall'));
+    if (currentEditFile.emiEffect) steps.push(t('deAudio.reset.step.emi'));
+    if (currentEditFile.neighborEffect) steps.push(t('deAudio.reset.step.neighbor'));
+    if (currentEditFile.tableMicEffect) steps.push(t('deAudio.reset.step.tableMic'));
+    if (currentEditFile.zooSpeakerEffect) steps.push(t('deAudio.reset.step.zoo'));
+    if (currentEditFile.volumeGainActive) steps.push(t('deAudio.reset.step.volumeGain'));
+    const msg = steps.length ? t('deAudio.reset.stepsLost').replace('{steps}', steps.join('\n• ')) : t('deAudio.reset.noSteps');
+    if (!confirm(t('deAudio.reset.confirm').replace('{details}', msg))) return;
     const relPath = getFullPath(currentEditFile);
     try {
         if (window.electronAPI && window.electronAPI.restoreDeFile) {
@@ -18458,14 +18460,14 @@ async function resetDeEdit() {
         normalizeDeTrim();
         updateDeEditWaveforms();
         refreshIgnoreList();
-        updateStatus('DE-Audio zurückgesetzt');
+        updateStatus(t('deAudio.reset.done'));
         // Tabelle neu zeichnen, damit der Play-Button die aktuelle Datei nutzt
         renderFileTable();
         // Bearbeitungsfenster schließen
         closeDeEdit();
     } catch (err) {
         console.error('Fehler beim Zurücksetzen', err);
-        updateStatus('Fehler beim Zurücksetzen');
+        updateStatus(t('deAudio.reset.error'));
     }
 }
 // =========================== RESETDEEDIT END ===============================
@@ -18477,6 +18479,8 @@ async function rebuildEnBufferAfterSave() {
     if (!currentEditFile) {
         return null;
     }
+
+    const t = window.i18n?.t || (value => value);
 
     // Hilfsfunktion, um einen Cache-Buster für String-Quellen zu ergänzen
     const withCacheBuster = src => src.includes('?') ? `${src}&v=${Date.now()}` : `${src}?v=${Date.now()}`;
@@ -18491,7 +18495,7 @@ async function rebuildEnBufferAfterSave() {
         const src = typeof deSource === 'string' ? withCacheBuster(deSource) : deSource;
         deBuffer = await loadAudioBuffer(src);
     } catch (err) {
-        console.warn('Aktualisiertes DE-Audio konnte nicht geladen werden, verwende Backup', err);
+        console.warn(t('deAudio.save.reloadWarning'), err);
         const fallback = withCacheBuster(`sounds/DE-Backup/${cleanPath}`);
         deBuffer = await loadAudioBuffer(fallback);
     }
@@ -18786,7 +18790,7 @@ async function applyDeEdit(param = {}) {
             info.textContent = teile.join(' • ');
         }
         if (typeof showToast === 'function') {
-            showToast('DE-Audio gespeichert', 'success');
+            showToast(t('deAudio.save.toast'), 'success');
         }
         if (rebuildResult && rebuildResult.deBuffer) {
             finalBuffer = rebuildResult.deBuffer;
@@ -18799,7 +18803,7 @@ async function applyDeEdit(param = {}) {
         volumeMatchedBuffer = null;
         validateDeSelection();
         updateEffectButtons();
-        updateStatus('DE-Audio bearbeitet und gespeichert');
+        updateStatus(t('deAudio.save.statusDone'));
         // Sofort speichern, damit die Bearbeitung gesichert ist
         saveCurrentProject();
         // Dialog nur schließen, wenn dies ausdrücklich gewünscht ist
@@ -18821,8 +18825,8 @@ async function applyDeEdit(param = {}) {
         }
         updateStatus('Fehler beim Speichern: ' + err.message);
         if (typeof showToast === 'function') {
-            const msg = hinweis ? `Fehler beim Speichern des DE-Audios: ${hinweis}`
-                                : 'Fehler beim Speichern des DE-Audios';
+            const msg = hinweis ? t('deAudio.save.errorWithHint').replace('{hint}', hinweis)
+                                : t('deAudio.save.error');
             showToast(msg, 'error');
         }
     } finally {
