@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.525
+* `web/src/main.js` ersetzt den Ordner-Auswahldialog für mehrdeutige Dateien durch i18n-Schlüssel für Titel, Hinweise, Hilfetexte und Buttons.
+* `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für den Dialog inklusive Auto-Übertragungs- und Überspringen-Hinweisen.
+* `README.md` erwähnt die lokalisierte Ordner-Auswahl für mehrdeutige Dateien.
 # 🛠️ Patch in 1.40.524
 * `web/hla_translation_tool.html` versieht den Datei-Import-Dialog mit IDs und Klassen für i18n-Ziele und hält Platzhalter für Übersetzungen bereit.
 * `web/src/main.js` übersetzt Dateiauswahl, Hinweise, Spaltenzuordnung, Vorschautabellen und Statusmeldungen des Import-Dialogs abhängig von der gewählten Sprache.

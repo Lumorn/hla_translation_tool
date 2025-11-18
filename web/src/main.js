@@ -18981,6 +18981,7 @@ async function startImportProcess() {
 // =========================== FOLDER SELECTION DIALOG START ===========================
 function showFolderSelectionDialog(ambiguousFiles) {
     return new Promise((resolve) => {
+        const t = window.i18n?.t || (value => value);
         const overlay = document.createElement('div');
         overlay.className = 'dialog-overlay hidden';
         
@@ -18991,25 +18992,27 @@ function showFolderSelectionDialog(ambiguousFiles) {
         dialog.style.overflow = 'auto';
         
         const selections = new Array(ambiguousFiles.length).fill(null).map(() => ({ selectedIndex: -1 }));
-        
+
         dialog.innerHTML = `
-            <h3>📁 Ordner-Auswahl für mehrdeutige Dateien</h3>
+            <h3>${t('folderSelection.title')}</h3>
+            <p style="margin-bottom: 8px; color: #999;">
+                ${t('folderSelection.description')}
+            </p>
             <p style="margin-bottom: 20px; color: #999;">
-                Die folgenden Dateien wurden in mehreren Ordnern gefunden. 
-                Bitte wählen Sie den passenden Ordner für jede Datei aus:
+                ${t('folderSelection.hint')}
             </p>
             
             <!-- NEUE OPTION: Auswahl übertragen -->
             <div style="background: #2a2a2a; padding: 15px; margin: 0 0 20px 0; border-radius: 6px; border: 2px solid #ff6b1a;">
                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                     <input type="checkbox" id="applyToAll" style="width: 18px; height: 18px;">
-                    <strong style="color: #ff6b1a;">🔄 Erste Auswahl auf alle folgenden Dateien übertragen</strong>
+                    <strong style="color: #ff6b1a;">${t('folderSelection.applyToAll')}</strong>
                 </label>
                 <p style="margin: 8px 0 0 28px; font-size: 12px; color: #999;">
-                    Wenn aktiviert, wird die erste Ordner-Auswahl automatisch für alle weiteren Dateien verwendet.
+                    ${t('folderSelection.applyToAllHint')}
                 </p>
             </div>
-            
+
             <div id="folderSelectionList" style="max-height: 400px; overflow-y: auto;">
                 ${ambiguousFiles.map((item, index) => `
                     <div id="fileItem_${index}" style="background: #1a1a1a; border: 1px solid #444; border-radius: 6px; padding: 15px; margin: 10px 0;">
@@ -19018,14 +19021,14 @@ function showFolderSelectionDialog(ambiguousFiles) {
                                 📄 ${item.originalFilename}
                             </div>
                             <div id="autoApplied_${index}" style="display: none; background: #4caf50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">
-                                ✅ Auto-übertragen
+                                ${t('folderSelection.autoApplied')}
                             </div>
                         </div>
                         <div style="color: #999; font-size: 12px; margin-bottom: 15px;">
                             EN: ${item.englishText.length > 60 ? item.englishText.substring(0, 60) + '...' : item.englishText}
                         </div>
                         <div style="margin-bottom: 10px;">
-                            <strong>Gefunden in ${item.foundPaths.length} Ordnern:</strong>
+                            <strong>${t('folderSelection.foundIn').replace('{count}', item.foundPaths.length)}</strong>
                         </div>
                         ${item.foundPaths.map((path, pathIndex) => {
                             const folderName = path.folder.split('/').pop() || path.folder;
@@ -19042,29 +19045,29 @@ function showFolderSelectionDialog(ambiguousFiles) {
                                     <small style="color: #666; margin-left: 25px;">${path.folder}</small>
                                     ${dbEn ? `<br><small style="color: #999; margin-left: 25px;">DB EN: ${dbEn.length > 60 ? dbEn.substring(0,60) + '...' : dbEn}</small>` : ''}
                                     ${dbDe ? `<br><small style="color: #999; margin-left: 25px;">DB DE: ${dbDe.length > 60 ? dbDe.substring(0,60) + '...' : dbDe}</small>` : ''}
-                                    ${!hasAudio ? '<br><small style="color: #f44336; margin-left: 25px;">⚠️ Audio nicht im Cache</small>' : ''}
+                                    ${!hasAudio ? `<br><small style="color: #f44336; margin-left: 25px;">${t('folderSelection.missingAudio')}</small>` : ''}
                                 </label>
                             `;
                         }).join('')}
-                        <label id="skipOption_${index}" style="display: block; padding: 8px; margin: 5px 0; background: #333; border-radius: 4px; cursor: pointer; border: 1px solid #666;" 
+                        <label id="skipOption_${index}" style="display: block; padding: 8px; margin: 5px 0; background: #333; border-radius: 4px; cursor: pointer; border: 1px solid #666;"
                                onclick="selectFolder(${index}, -1)">
                             <input type="radio" name="folder_${index}" value="-1" style="margin-right: 10px;">
-                            <span style="color: #f44336;">❌ Überspringen</span>
+                            <span style="color: #f44336;">${t('folderSelection.skip')}</span>
                         </label>
                     </div>
                 `).join('')}
             </div>
             <div style="background: #2a2a2a; padding: 15px; margin: 20px 0; border-radius: 6px;">
-                <strong>🎯 Auswahlhilfen:</strong><br>
-                • 🎵 = Audio-Datei ist verfügbar<br>
-                • ❓ = Audio-Datei nicht im Cache<br>
-                • 🔄 = Auswahl wurde automatisch übertragen<br>
-                • Wählen Sie den Ordner, der zum Kontext des Textes passt<br>
-                • "Überspringen" ignoriert diese Datei beim Import
+                <strong>${t('folderSelection.help.title')}</strong><br>
+                • ${t('folderSelection.help.audioAvailable')}<br>
+                • ${t('folderSelection.help.audioMissing')}<br>
+                • ${t('folderSelection.help.autoApplied')}<br>
+                • ${t('folderSelection.help.contextAdvice')}<br>
+                • ${t('folderSelection.help.skipAdvice')}
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="cancelFolderSelection()">Alle überspringen</button>
-                <button class="btn btn-success" onclick="confirmFolderSelection()">Auswahl bestätigen</button>
+                <button class="btn btn-secondary" onclick="cancelFolderSelection()">${t('folderSelection.skipAll')}</button>
+                <button class="btn btn-success" onclick="confirmFolderSelection()">${t('folderSelection.confirm')}</button>
             </div>
         `;
         
@@ -19169,10 +19172,13 @@ function showFolderSelectionDialog(ambiguousFiles) {
                 }
                 
                 // Zeige Erfolgsmeldung
-                const message = pathIndex >= 0 ? 
-                    `✅ Ordner "${ambiguousFiles[0].foundPaths[pathIndex].folder}" wurde auf alle ${ambiguousFiles.length - 1} weiteren Dateien übertragen.` :
-                    `❌ "Überspringen" wurde auf alle ${ambiguousFiles.length - 1} weiteren Dateien übertragen.`;
-                
+                const message = pathIndex >= 0 ?
+                    t('folderSelection.applyToAllSuccess')
+                        .replace('{folder}', ambiguousFiles[0].foundPaths[pathIndex].folder)
+                        .replace('{count}', ambiguousFiles.length - 1) :
+                    t('folderSelection.applyToAllSkipped')
+                        .replace('{count}', ambiguousFiles.length - 1);
+
                 const msgDiv = document.createElement('div');
                 msgDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 15px 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 3000;';
                 msgDiv.textContent = message;
@@ -19194,9 +19200,9 @@ function showFolderSelectionDialog(ambiguousFiles) {
             const selectedCount = selections.filter(s => s.selectedIndex >= 0).length;
             const skippedCount = selections.filter(s => s.selectedIndex === -1).length;
             const unselectedCount = selections.filter(s => s.selectedIndex < -1).length;
-            
+
             if (unselectedCount > 0) {
-                if (!confirm(`${unselectedCount} Dateien haben keine Auswahl.\nDiese werden übersprungen.\n\nFortfahren?`)) {
+                if (!confirm(t('folderSelection.unselectedConfirm').replace('{count}', unselectedCount))) {
                     return;
                 }
                 // Setze unausgewählte auf "überspringen"
