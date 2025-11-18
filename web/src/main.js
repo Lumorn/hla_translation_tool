@@ -227,7 +227,25 @@ function setupLanguageControls() {
         { selector: '#autoTransAll', key: 'auto.trans.all' },
         { selector: '#projectMenuEdit', key: 'project.menu.edit' },
         { selector: '#projectMenuAnalyze', key: 'project.menu.analyze' },
-        { selector: '#projectMenuDelete', key: 'project.menu.delete' }
+        { selector: '#projectMenuDelete', key: 'project.menu.delete' },
+        { selector: '#waveLabelOriginal', key: 'deEdit.waveLabel.original' },
+        { selector: '#waveLabelEdited', key: 'deEdit.waveLabel.edited' },
+        { selector: '#playOrigPreview', key: 'deAudio.play.original', attribute: 'title' },
+        { selector: '#playOrigPreview', key: 'deAudio.play.original', attribute: 'aria-label' },
+        { selector: '#playDePreview', key: 'deAudio.play.preview', attribute: 'title' },
+        { selector: '#playDePreview', key: 'deAudio.play.preview', attribute: 'aria-label' },
+        { selector: '#stopOrigPreview', key: 'deAudio.play.stop', attribute: 'title' },
+        { selector: '#stopOrigPreview', key: 'deAudio.play.stop', attribute: 'aria-label' },
+        { selector: '#stopDePreview', key: 'deAudio.play.stop', attribute: 'title' },
+        { selector: '#stopDePreview', key: 'deAudio.play.stop', attribute: 'aria-label' },
+        { selector: '#enSegStartLabel', key: 'deAudio.insert.start' },
+        { selector: '#enSegEndLabel', key: 'deAudio.insert.end' },
+        { selector: '#enInsertPosLabel', key: 'deAudio.insert.position' },
+        { selector: '#enInsertPos option[value="cursor"]', key: 'deAudio.insert.pos.cursor' },
+        { selector: '#enInsertPos option[value="start"]', key: 'deAudio.insert.pos.start' },
+        { selector: '#enInsertPos option[value="end"]', key: 'deAudio.insert.pos.end' },
+        { selector: '#copyEnBtn', key: 'deAudio.insert.copy' },
+        { selector: '#copyEnBtn', key: 'deAudio.insert.copyTitle', attribute: 'title' }
     ];
 
     window.i18n.registerTranslationTargets(staticTargets);
