@@ -84,6 +84,27 @@ async function requestPersistentStorage() {
     showToast(t('storage.persist.granted').replace('{free}', frei));
 }
 
+// Aktualisiert Beschriftungen und Titel im DE-Audio-Dialog anhand der hinterlegten data-i18n-Attribute
+function refreshDeAudioDialogTranslations() {
+    const translator = window.i18n;
+    if (!translator) return;
+    const dialog = document.getElementById('deEditDialog');
+    if (!dialog) return;
+    const t = translator.t || (value => value);
+    dialog.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+    dialog.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.setAttribute('title', t(el.dataset.i18nTitle));
+    });
+    dialog.querySelectorAll('[data-i18n-aria-label]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAriaLabel));
+    });
+    dialog.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder));
+    });
+}
+
 // Richtet die Sprachumschaltung samt Übersetzungszielen ein
 function setupLanguageControls() {
     if (!window.i18n) return;
@@ -251,6 +272,7 @@ function setupLanguageControls() {
         // DE-Editor-Beschriftungen neu zeichnen, falls geöffnet
         const deDialog = document.getElementById('deEditDialog');
         if (deDialog && !deDialog.classList.contains('hidden')) {
+            refreshDeAudioDialogTranslations();
             updateDeEditWaveforms();
         }
         // Ordner-Browser neu aufbauen, falls er sichtbar ist
@@ -16231,6 +16253,7 @@ async function openDeEdit(fileId) {
     updateDeEditWaveforms();
     updateMasterTimeline();
     document.getElementById('deEditDialog').classList.remove('hidden');
+    refreshDeAudioDialogTranslations();
 
     // Regler für Funk-Effekt initialisieren
     const rStrength = document.getElementById('radioStrength');

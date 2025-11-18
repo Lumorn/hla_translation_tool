@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.529
+* `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für Lautstärkeangleichung, Booster-Regler und Funkgerät-Einstellungen im DE-Audio-Dialog inklusive Presets und Tooltips.
+* `web/hla_translation_tool.html` hinterlegt die Effektgruppen (Legenden, Buttons, Labels, Presets) der Lautstärke- und Funksektion mit `data-i18n`-Attributen.
+* `web/src/main.js` aktualisiert die Effektbeschriftungen beim Öffnen und nach Sprachwechsel über einen gezielten Übersetzungs-Refresh für den DE-Audio-Dialog.
+* `README.md` weist Version **1.40.529** aus und beschreibt die lokalisierten Lautstärke- und Funk-Effekte im DE-Audio-Editor.
 # 🛠️ Patch in 1.40.528
 * `web/hla_translation_tool.html` stattet alle Timing-Karten (Trimmen, Ignorierbereiche, Segment-Vorschläge, Pausen, Stille, Verschmelzen, Tempo, Anwenden) mit konsistenten `data-i18n`-Schlüsseln für Überschriften, Labels, Tooltips und ARIA-Beschriftungen aus.
 * `README.md` führt Version **1.40.528** ein und beschreibt die erweiterten i18n-Ziele in den Timing-Karten des DE-Audio-Editors.

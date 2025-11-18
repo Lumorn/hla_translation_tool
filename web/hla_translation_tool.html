@@ -988,54 +988,54 @@
                 <section class="effects-section">
                     <div class="effect-scroll">
                         <fieldset class="effect-group">
-                            <legend>🔊 Lautstärke angleichen</legend>
-                            <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen">Lautstärke angleichen</button>
+                            <legend data-i18n="deAudio.effects.volume.legend">🔊 Lautstärke angleichen</legend>
+                            <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" data-i18n="deAudio.effects.volume.button" data-i18n-title="deAudio.effects.volume.buttonTitle" title="Pegel an EN anpassen">Lautstärke angleichen</button>
                             <div class="volume-gain-controls">
-                                <p class="volume-gain-note">Booster oder Absenker für schwierige Aufnahmen.</p>
-                                <label id="volumeGainToggleLabel" class="effect-toggle" title="Manuellen Booster ein- oder ausschalten"><input type="checkbox" id="volumeGainToggle"> Booster aktivieren</label>
-                                <label for="volumeGainRange" title="Manuelle Verstärkung in dB">Verstärkung: <span id="volumeGainDisplay"></span></label>
-                                <input type="range" id="volumeGainRange" min="-12" max="12" step="0.5" value="0" title="Manuellen Pegel anpassen">
+                                <p class="volume-gain-note" data-i18n="deAudio.effects.volume.note">Booster oder Absenker für schwierige Aufnahmen.</p>
+                                <label id="volumeGainToggleLabel" class="effect-toggle" data-i18n-title="deAudio.effects.boost.toggleTitle" title="Manuellen Booster ein- oder ausschalten"><input type="checkbox" id="volumeGainToggle"> <span data-i18n="deAudio.effects.boost.toggle">Booster aktivieren</span></label>
+                                <label for="volumeGainRange" data-i18n-title="deAudio.effects.boost.gainTitle" title="Manuelle Verstärkung in dB"><span data-i18n="deAudio.effects.boost.gainLabel">Verstärkung:</span> <span id="volumeGainDisplay"></span></label>
+                                <input type="range" id="volumeGainRange" min="-12" max="12" step="0.5" value="0" data-i18n-title="deAudio.effects.boost.sliderTitle" title="Manuellen Pegel anpassen">
                                 <div class="volume-gain-presets" id="volumeGainPresets">
-                                    <button type="button" class="btn btn-secondary" data-gain="-6">-6 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="-3">-3 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="3">+3 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="6">+6 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="-6" data-i18n="deAudio.effects.boost.preset.minus6">-6 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="-3" data-i18n="deAudio.effects.boost.preset.minus3">-3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="3" data-i18n="deAudio.effects.boost.preset.plus3">+3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="6" data-i18n="deAudio.effects.boost.preset.plus6">+6 dB</button>
                                 </div>
-                                <button type="button" id="volumeGainResetBtn" class="btn-reset-settings" title="Booster auf Neutralwert zurücksetzen">Neutral (0 dB)</button>
+                                <button type="button" id="volumeGainResetBtn" class="btn-reset-settings" data-i18n="deAudio.effects.boost.reset" data-i18n-title="deAudio.effects.boost.resetTitle" title="Booster auf Neutralwert zurücksetzen">Neutral (0 dB)</button>
                             </div>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>📡 Funkgerät-Effekt</legend>
+                            <legend data-i18n="deAudio.effects.radio.legend">📡 Funkgerät-Effekt</legend>
                             <div class="radio-settings">
-                                <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
+                                <label data-i18n-title="deAudio.effects.radio.mixTitle" title="Mischverhältnis"><span data-i18n="deAudio.effects.radio.mixLabel">Wet:</span> <span id="radioStrengthDisplay"></span>
                                     <input type="range" id="radioStrength" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Hochpassfrequenz">Highpass (Hz):
+                                <label data-i18n-title="deAudio.effects.radio.highpassTitle" title="Hochpassfrequenz"><span data-i18n="deAudio.effects.radio.highpassLabel">Highpass (Hz):</span>
                                     <input type="number" id="radioHighpass" min="0" max="1000" step="50">
                                 </label>
-                                <label title="Tiefpassfrequenz">Lowpass (Hz):
+                                <label data-i18n-title="deAudio.effects.radio.lowpassTitle" title="Tiefpassfrequenz"><span data-i18n="deAudio.effects.radio.lowpassLabel">Lowpass (Hz):</span>
                                     <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
                                 </label>
-                                <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
+                                <label data-i18n-title="deAudio.effects.radio.saturationTitle" title="Sättigungsgrad"><span data-i18n="deAudio.effects.radio.saturationLabel">Sättigung:</span> <span id="radioSaturationDisplay"></span>
                                     <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Rauschpegel in dBFS">Rauschen (dB):
+                                <label data-i18n-title="deAudio.effects.radio.noiseTitle" title="Rauschpegel in dBFS"><span data-i18n="deAudio.effects.radio.noiseLabel">Rauschen (dB):</span>
                                     <input type="number" id="radioNoise" min="-60" max="0" step="1">
                                 </label>
-                                <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
+                                <label data-i18n-title="deAudio.effects.radio.crackleTitle" title="Häufigkeit der Knackser"><span data-i18n="deAudio.effects.radio.crackleLabel">Knackser:</span> <span id="radioCrackleDisplay"></span>
                                     <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
                                 </label>
                                 <div class="radio-preset">
-                                    <select id="radioPresetSelect" title="Gespeicherte Presets"></select>
-                                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
-                                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
+                                    <select id="radioPresetSelect" data-i18n-title="deAudio.effects.radio.presetSelect" title="Gespeicherte Presets"></select>
+                                    <button id="saveRadioPresetBtn" type="button" data-i18n="deAudio.effects.radio.presetSave" data-i18n-title="deAudio.effects.radio.presetSaveTitle" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
+                                    <button id="deleteRadioPresetBtn" type="button" data-i18n="deAudio.effects.radio.presetDelete" data-i18n-title="deAudio.effects.radio.presetDeleteTitle" title="Gewähltes Preset löschen">🗑 Löschen</button>
                                 </div>
                             </div>
                             <div class="effect-actions">
-                                <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">Funkgerät-Effekt anwenden</button>
+                                <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" data-i18n="deAudio.effects.radio.apply" data-i18n-title="deAudio.effects.radio.applyTitle" title="Funkgerät-Effekt anwenden">Funkgerät-Effekt anwenden</button>
                                 <!-- Setzt nur diesen Effekt zurück -->
-                                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                                <button class="btn-reset-settings" onclick="resetRadioSettings()" data-i18n="deAudio.effects.radio.reset" data-i18n-title="deAudio.effects.radio.resetTitle" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
                             </div>
                         </fieldset>
 
