@@ -222,6 +222,8 @@ function setupLanguageControls() {
         updateLastCleanup();
         updateStatus();
         updateVoiceSettingsDisplay();
+        // Fortschrittsanzeige der Kopierhilfe direkt neu rendern
+        showCopyAssistant();
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -2721,21 +2723,27 @@ function showCopyAssistant() {
     const countSpan = document.getElementById('copyAssistCount');
     const stepSpan = document.getElementById('copyAssistStep');
     const prog = document.getElementById('copyAssistProgress');
+    // Abbrechen, falls der Dialog noch nicht aufgebaut ist
+    if (!countSpan || !stepSpan || !prog) return;
     const translator = window.i18n;
-    // Hilfsfunktion, um Platzhalter in Übersetzungen zu ersetzen
+    const fallbackTemplates = {
+        'copyAssistant.status.complete': 'Fertig',
+        'copyAssistant.progress.files': 'Datei {current} von {total}',
+        'copyAssistant.progress.steps': 'Schritt {current} / {total}'
+    };
+    // Übersetzungen mit Platzhaltern über i18n oder lokale Fallbacks ersetzen
     const formatTranslation = (key, replacements = {}) => {
-        const fallbackTemplates = {
-            'copyAssistant.status.complete': 'Fertig',
-            'copyAssistant.progress.files': 'Datei {current} von {total}',
-            'copyAssistant.progress.steps': 'Schritt {current} / {total}'
-        };
-        const template = translator ? translator.t(key) : fallbackTemplates[key] || '';
+        if (translator?.format) {
+            return translator.format(key, replacements);
+        }
+        const template = fallbackTemplates[key] || key;
         return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
             return acc.replaceAll(`{${placeholder}}`, value);
         }, template);
     };
+    const translateSimple = key => (translator?.t ? translator.t(key) : fallbackTemplates[key] || key);
     if (!file) {
-        countSpan.textContent = formatTranslation('copyAssistant.status.complete');
+        countSpan.textContent = translateSimple('copyAssistant.status.complete');
         stepSpan.textContent = '';
         prog.style.width = '100%';
         return;

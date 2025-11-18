@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.504
+* `web/src/i18n.js` erweitert das Modul um eine Format-Funktion für Platzhalter und dokumentiert die Kopierhilfe-Schlüssel direkt im Sprachpaket.
+* `web/src/main.js` ersetzt den Kopierhilfe-Status durch i18n-Formatierung, entfernt die hartkodierten Texte und rendert die Anzeige nach einem Sprachwechsel neu.
+* `README.md` trägt Version **1.40.504** und hebt die sprachsichere Kopierhilfe mit zentraler Platzhalterauflösung hervor.
 # 🛠️ Patch in 1.40.503
 * `web/src/i18n.js` ergänzt klar benannte Schlüssel für Abschlussstatus sowie Datei- und Schrittzähler des Kopierassistenten in beiden Sprachen.
 * `web/src/main.js` nutzt die neuen i18n-Platzhalter in `showCopyAssistant()` und ersetzt die vorher fest codierten Fortschrittstexte.
