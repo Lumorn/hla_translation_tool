@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.548-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.549-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -297,6 +297,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Dritte Spalte im GPT-Test als Tabelle:** Rechts zeigt jetzt eine übersichtliche Tabelle mit ID, Dateiname, Ordner, Bewertung, Vorschlag und Kommentar alle Ergebnisse an
 * **Speicherfunktion für GPT-Test:** Jeder Versand erzeugt einen neuen Tab mit Prompt, Antwort und Tabelle. Tabs lassen sich wechseln und löschen.
 * **GPT-Tabs pro Projekt:** Geöffnete Tests bleiben gespeichert und erscheinen beim nächsten Öffnen wieder.
+* **Prompt-Sprache im GPT-Test:** Ein Dropdown bietet alle Closecaption-Sprachen, lädt den passenden Prompt pro Sprache **in der jeweiligen Zielsprache** und merkt die Auswahl dauerhaft (Standard: Deutsch).
 * **GPT-Knopf direkt neben der Suche:** Ein Klick öffnet die gespeicherten GPT-Tabs des aktuellen Projekts.
 * **Einfüge-Knopf für gespeicherte Tests:** Beim Wechsel des Tabs wird der Button aktiviert und übernimmt Score und Vorschlag korrekt.
 * **Feste Buttons im GPT-Test:** Das Fenster hat nun eine begrenzte Höhe, Prompt- und Ergebnis-Spalten scrollen separat.

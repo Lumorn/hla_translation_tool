@@ -676,6 +676,10 @@
             <button class="dialog-close-btn" onclick="closeGptPromptDialog()">×</button>
             <h3 data-i18n="gpt.prompt.title">GPT-Test</h3>
             <div id="gptTestTabs" class="gpt-tabs"></div>
+            <div class="gpt-language-row">
+                <label for="gptPromptLanguageSelect">Prompt-Sprache:</label>
+                <select id="gptPromptLanguageSelect" onchange="onGptPromptLanguageChanged(event)"></select>
+            </div>
             <div class="prompt-result-container gpt-flex-layout">
                 <section class="gpt-column gpt-column--prompt">
                     <header class="gpt-column-header" data-i18n="gpt.prompt.preview.title">Prompt-Vorschau</header>

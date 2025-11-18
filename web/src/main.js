@@ -1669,6 +1669,42 @@ let openaiApiKey       = '';
 let openaiModel        = '';
 // Merkt Szene und Zeilen für den GPT-Testdialog
 let gptPromptData      = null;
+// Merkt die ausgewählte Prompt-Sprache für den GPT-Test
+let gptPromptLanguage  = storage.getItem('hla_gptPromptLanguage') || 'german';
+// Unterstützte Prompt-Sprachen für den GPT-Test (basierend auf den Closecaption-Dateien)
+const gptPromptLanguageOptions = [
+    { code: 'german',     label: 'Deutsch',                    file: 'closecaption_german.txt' },
+    { code: 'english',    label: 'Englisch',                   file: 'closecaption_english.txt' },
+    { code: 'brazilian',  label: 'Brasilianisch',              file: 'closecaption_brazilian.txt' },
+    { code: 'bulgarian',  label: 'Bulgarisch',                 file: 'closecaption_bulgarian.txt' },
+    { code: 'czech',      label: 'Tschechisch',                file: 'closecaption_czech.txt' },
+    { code: 'danish',     label: 'Dänisch',                    file: 'closecaption_danish.txt' },
+    { code: 'dutch',      label: 'Niederländisch',             file: 'closecaption_dutch.txt' },
+    { code: 'finnish',    label: 'Finnisch',                   file: 'closecaption_finnish.txt' },
+    { code: 'french',     label: 'Französisch',                file: 'closecaption_french.txt' },
+    { code: 'greek',      label: 'Griechisch',                 file: 'closecaption_greek.txt' },
+    { code: 'hungarian',  label: 'Ungarisch',                  file: 'closecaption_hungarian.txt' },
+    { code: 'italian',    label: 'Italienisch',                file: 'closecaption_italian.txt' },
+    { code: 'japanese',   label: 'Japanisch',                  file: 'closecaption_japanese.txt' },
+    { code: 'koreana',    label: 'Koreanisch',                 file: 'closecaption_koreana.txt' },
+    { code: 'latam',      label: 'Spanisch (LatAm)',           file: 'closecaption_latam.txt' },
+    { code: 'norwegian',  label: 'Norwegisch',                 file: 'closecaption_norwegian.txt' },
+    { code: 'polish',     label: 'Polnisch',                   file: 'closecaption_polish.txt' },
+    { code: 'portuguese', label: 'Portugiesisch',              file: 'closecaption_portuguese.txt' },
+    { code: 'romanian',   label: 'Rumänisch',                  file: 'closecaption_romanian.txt' },
+    { code: 'russian',    label: 'Russisch',                   file: 'closecaption_russian.txt' },
+    { code: 'schinese',   label: 'Chinesisch (vereinfacht)',   file: 'closecaption_schinese.txt' },
+    { code: 'spanish',    label: 'Spanisch',                   file: 'closecaption_spanish.txt' },
+    { code: 'swedish',    label: 'Schwedisch',                 file: 'closecaption_swedish.txt' },
+    { code: 'tchinese',   label: 'Chinesisch (traditionell)',  file: 'closecaption_tchinese.txt' },
+    { code: 'thai',       label: 'Thai',                       file: 'closecaption_thai.txt' },
+    { code: 'turkish',    label: 'Türkisch',                   file: 'closecaption_turkish.txt' },
+    { code: 'ukrainian',  label: 'Ukrainisch',                 file: 'closecaption_ukrainian.txt' },
+    { code: 'vietnamese', label: 'Vietnamesisch',              file: 'closecaption_vietnamese.txt' }
+];
+if (!gptPromptLanguageOptions.some(opt => opt.code === gptPromptLanguage)) {
+    gptPromptLanguage = 'german';
+}
 // Speichert die Ergebnisse der letzten GPT-Bewertung
 let gptEvaluationResults = null;
 // Soll der GPT-Vorschlag sofort übernommen werden?
@@ -2303,8 +2339,57 @@ function getGptTranslator() {
     return { t, format };
 }
 
+// Setzt die Prompt-Sprache und aktualisiert den gespeicherten Wert
+async function setGptPromptLanguage(code) {
+    const candidate = code || 'german';
+    const validCode = gptPromptLanguageOptions.some(opt => opt.code === candidate) ? candidate : 'german';
+    gptPromptLanguage = validCode;
+    storage.setItem('hla_gptPromptLanguage', gptPromptLanguage);
+    if (typeof window.setSystemPromptLanguage === 'function') {
+        await window.setSystemPromptLanguage(gptPromptLanguage);
+    }
+    renderGptPromptLanguageSelect();
+    await updateGptPromptPreview();
+}
+
+// Baut das Dropdown für die Prompt-Sprache neu auf
+function renderGptPromptLanguageSelect() {
+    const select = document.getElementById('gptPromptLanguageSelect');
+    if (!select) return;
+    select.innerHTML = '';
+    gptPromptLanguageOptions.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.code;
+        option.textContent = `${opt.label} (${opt.file})`;
+        if (opt.code === gptPromptLanguage) option.selected = true;
+        select.appendChild(option);
+    });
+}
+
+// Aktualisiert den sichtbaren Prompt basierend auf Sprache und aktuellem Inhalt
+async function updateGptPromptPreview() {
+    const area = document.getElementById('gptPromptArea');
+    if (!area || !gptPromptData) return;
+    let sys = '';
+    if (typeof window.getSystemPrompt === 'function') {
+        sys = window.getSystemPrompt() || '';
+    }
+    if (!sys && typeof window.setSystemPromptLanguage === 'function') {
+        sys = await window.setSystemPromptLanguage(gptPromptLanguage) || '';
+    }
+    const promptText = `System:\n${sys}\n\nUser:\n${JSON.stringify(gptPromptData, null, 2)}`;
+    area.value = promptText;
+}
+
+// Event-Handler für Änderungen an der Prompt-Sprache
+function onGptPromptLanguageChanged(event) {
+    const value = event?.target?.value || 'german';
+    setGptPromptLanguage(value).catch(err => console.error('Prompt-Sprache konnte nicht gesetzt werden', err));
+}
+
 // Öffnet die gespeicherten GPT-Tabs ohne neue Bewertung
 function openSavedGptTests() {
+    renderGptPromptLanguageSelect();
     renderGptTestTabs();
     if (currentProject && currentProject.gptTests?.length) {
         const idx = currentProject.gptTabIndex ?? 0;
@@ -2355,17 +2440,15 @@ function startGptScoring() {
     }));
     const scene = currentProject?.levelName || '';
     gptPromptData = { scene, lines };
-    showGptPromptDialog();
+    showGptPromptDialog().catch(err => console.error('GPT-Test konnte nicht geöffnet werden', err));
 }
 
 // Zeigt den Testdialog mit dem kompletten Prompt
-function showGptPromptDialog() {
+async function showGptPromptDialog() {
     const area = document.getElementById('gptPromptArea');
     if (!area || !gptPromptData) return;
-    const sys = typeof window.getSystemPrompt === 'function'
-        ? window.getSystemPrompt() : '';
-    const promptText = `System:\n${sys}\n\nUser:\n${JSON.stringify(gptPromptData, null, 2)}`;
-    area.value = promptText;
+    renderGptPromptLanguageSelect();
+    await setGptPromptLanguage(gptPromptLanguage);
     const resultArea = document.getElementById('gptResultArea');
     if (resultArea) resultArea.value = '';
     resetGptProgressUI(gptPromptData.lines ? gptPromptData.lines.length : 0);
