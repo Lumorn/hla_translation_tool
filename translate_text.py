@@ -2,12 +2,17 @@
 import sys
 import argparse
 import json
+import re
 
 from translate_text_i18n import LANG_ENV_VAR, DEFAULT_LANGUAGE, format_message, resolve_language
 
 package = None
 translate = None
 selected_language = DEFAULT_LANGUAGE
+
+
+# Erkennung von führenden Sprecherpräfixen oder Anführungszeichen
+PREFIX_PATTERN = re.compile(r"^\s*(?:[A-ZÄÖÜ][\wäöüß-]{1,30}\s?:|[\"“”„«»‚‘’‟])\s*")
 
 
 def ensure_argostranslate(lang: str) -> None:
@@ -80,6 +85,30 @@ def ensure_package(
     package.install_from_path(pkg.download())
 
 
+def _has_leading_prefix(text: str) -> bool:
+    """Prüft, ob ein Text bereits ein Sprecherpräfix enthält."""
+
+    return bool(PREFIX_PATTERN.match(text))
+
+
+def _strip_unwanted_prefix(
+    original: str, translated: str, log_fn=None
+) -> tuple[str, bool]:
+    """Entfernt führende Sprecherpräfixe aus der Übersetzung, wenn nötig."""
+
+    if _has_leading_prefix(original):
+        return translated, False
+
+    match = PREFIX_PATTERN.match(translated)
+    if not match:
+        return translated, False
+
+    cleaned = translated[match.end() :].lstrip()
+    if log_fn:
+        log_fn(f"Führendes Präfix entfernt: '{match.group(0).strip()}'")
+    return cleaned, True
+
+
 def _find_translator(from_code: str, to_code: str):
     """Sucht einen passenden Translator in den geladenen Sprachen."""
     languages = translate.load_installed_languages()
@@ -136,6 +165,9 @@ def run_server(allow_download: bool, language: str) -> None:
         text = payload.get("text", "")
         try:
             translated = translator.translate(text)
+            translated, _removed_prefix = _strip_unwanted_prefix(
+                text, translated, log_fn=lambda msg: sys.stderr.write(msg + "\n")
+            )
             response = {"id": job_id, "text": translated, "error": ""}
         except Exception as exc:  # pragma: no cover - hängt von argostranslate ab
             # Übersetzungsfehler verständlich melden
@@ -187,6 +219,9 @@ def main() -> None:
         FROM_CODE, TO_CODE, allow_download=allow_download, language=selected_language
     )
     translated = translate.translate(text, FROM_CODE, TO_CODE)
+    translated, _removed_prefix = _strip_unwanted_prefix(
+        text, translated, log_fn=lambda msg: sys.stderr.write(msg + "\n")
+    )
     print(translated)
 
 
