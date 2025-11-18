@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.526
+* `web/src/main.js` lokalisiert den kompletten Ordner-Browser mit Statistiken, Karten, Dateiaktionen, Berichten und dem Fehlende-Ordner-Dialog anhand der gewählten Sprache.
+* `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für Ordner-Browser, fehlende Ordner, Fortschrittsberichte sowie Such- und Aktionsbuttons.
+* `web/hla_translation_tool.html` versieht Ordner-Browser- und Fehlende-Ordner-Buttons mit IDs für i18n-Ziele.
+* `README.md` hebt Version **1.40.526** und den vollständig lokalisierten Ordner-Browser hervor.
 # 🛠️ Patch in 1.40.525
 * `web/src/main.js` ersetzt den Ordner-Auswahldialog für mehrdeutige Dateien durch i18n-Schlüssel für Titel, Hinweise, Hilfetexte und Buttons.
 * `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für den Dialog inklusive Auto-Übertragungs- und Überspringen-Hinweisen.
