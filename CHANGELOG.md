@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.498
+* `.gitignore` lässt die Ordner `web/sounds/`, `web/backups/` und `web/Download/` wieder versionieren, damit Platzhalter für Audio- und Download-Pfade im Repository sichtbar bleiben.
+* `web/sounds/DE/README.txt` und `web/sounds/EN/README.txt` dokumentieren direkt in den Ordnern, welche Dateien dort abgelegt werden sollen.
+* `README.md` hebt die mitgelieferten Audio-Ordner hervor und trägt die neue Version **1.40.498**.
 # 🛠️ Patch in 1.40.497
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für Status-Fallbacks und lokalisiert die Modusbezeichnungen für Statusmeldungen.
 * `web/src/main.js` nutzt die neuen Übersetzungen für Statusleiste und Speicherhinweise, ergänzt den Modus über i18n und rendert den Status beim Sprachwechsel neu.
