@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.502-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.503-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -21,7 +21,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
 * Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels und zeigen auch im Leerzustand übersetzte Hinweise an.
-* Kopierhilfe-Status, Dateizähler und Fortschrittsanzeige greifen auf i18n-Schlüssel zu und passen sich der aktiven Sprache an.
+* Kopierhilfe-Status sowie Datei- und Schrittzähler greifen auf i18n-Schlüssel mit Platzhaltern zu und passen sich der aktiven Sprache an.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.

@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.503
+* `web/src/i18n.js` ergänzt klar benannte Schlüssel für Abschlussstatus sowie Datei- und Schrittzähler des Kopierassistenten in beiden Sprachen.
+* `web/src/main.js` nutzt die neuen i18n-Platzhalter in `showCopyAssistant()` und ersetzt die vorher fest codierten Fortschrittstexte.
+* `README.md` trägt Version **1.40.503** und nennt die lokalisierten Platzhalter der Kopierhilfe.
 # 🛠️ Patch in 1.40.502
 * `web/src/i18n.js` ergänzt neue Schlüssel für leere Dubbing-Defaults und die einzelnen Parameterlabels in beiden Sprachen.
 * `web/src/main.js` holt die Fallback-Texte und Feldbezeichnungen über `i18n.t(...)` und rendert die Liste beim Sprachwechsel neu.
