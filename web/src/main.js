@@ -230,10 +230,6 @@ function setupLanguageControls() {
         const deDialog = document.getElementById('deEditDialog');
         if (deDialog && !deDialog.classList.contains('hidden')) {
             updateDeEditWaveforms();
-            // Segment-Vorschlagsliste nur aktualisieren, wenn der Dialog sichtbar ist
-            if (deDialog.querySelector('#segmentSuggestionList')) {
-                refreshSegmentSuggestionList();
-            }
         }
     });
 

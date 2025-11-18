@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.521-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.520-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -31,7 +31,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Level-Statistik-Panel holt leere Hinweise sowie Spaltenüberschriften (Level, Teile, EN/DE/BEIDE/∑, Fertig-%) über i18n-Schlüssel und baut sie nach einem Sprachwechsel automatisch neu auf.
 * Segment-Vorschlagslisten zeigen ihre leeren Hinweise (keine Vorschläge, keine aktiven Segmente) über i18n-Schlüssel an und schalten dadurch direkt beim Sprachwechsel um.
 * Segment-Zeilen im DE-Audio-Editor ziehen Index-Label, Start-/Ende-/Längen-Text samt Millisekunden-Vorlagen sowie die Behalten-/Löschen-Schalter aus dem i18n-Set und aktualisieren sie sofort beim Sprachwechsel.
-* Sprachwechsel im geöffneten DE-Editor aktualisieren zusätzlich die Segment-Vorschlagsliste, sodass Labels und Toggle-Schalter sofort in der gewählten Sprache erscheinen.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
