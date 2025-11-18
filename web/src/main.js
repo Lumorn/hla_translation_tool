@@ -17771,17 +17771,17 @@ function refreshSegmentSuggestionList() {
 
         const label = document.createElement('span');
         label.className = 'segment-index';
-        label.textContent = `#${position + 1}`;
+        label.textContent = format('deEdit.segment.indexLabel', { position: position + 1 });
 
         const times = document.createElement('div');
         times.className = 'segment-times';
         const startLabel = document.createElement('span');
-        startLabel.textContent = `Start: ${formatMsCompact(seg.start)}`;
+        startLabel.textContent = format('deEdit.segment.start', { time: formatMsCompact(seg.start) });
         const endLabel = document.createElement('span');
-        endLabel.textContent = `Ende: ${formatMsCompact(seg.end)}`;
+        endLabel.textContent = format('deEdit.segment.end', { time: formatMsCompact(seg.end) });
         const lenLabel = document.createElement('span');
         lenLabel.className = 'segment-length';
-        lenLabel.textContent = `Länge: ${(seg.end - seg.start).toFixed(0)} ms`;
+        lenLabel.textContent = format('deEdit.segment.length', { ms: (seg.end - seg.start).toFixed(0) });
         times.appendChild(startLabel);
         times.appendChild(endLabel);
         times.appendChild(lenLabel);
@@ -17791,7 +17791,7 @@ function refreshSegmentSuggestionList() {
         const keepBtn = document.createElement('button');
         keepBtn.type = 'button';
         keepBtn.className = 'segment-toggle';
-        keepBtn.textContent = 'Behalten';
+        keepBtn.textContent = t('deEdit.segment.keep');
         keepBtn.classList.toggle('is-active', seg.decision !== 'drop');
         keepBtn.onclick = ev => {
             ev.stopPropagation();
@@ -17801,7 +17801,7 @@ function refreshSegmentSuggestionList() {
         const dropBtn = document.createElement('button');
         dropBtn.type = 'button';
         dropBtn.className = 'segment-toggle';
-        dropBtn.textContent = 'Löschen';
+        dropBtn.textContent = t('deEdit.segment.drop');
         dropBtn.classList.toggle('is-active', seg.decision === 'drop');
         dropBtn.onclick = ev => {
             ev.stopPropagation();
