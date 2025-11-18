@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.509
+* `web/src/i18n.js` trägt Emo-Schlüssel für Fortschrittsbutton, Abschlussstatus und Fehlermeldung mit Platzhaltern in Deutsch und Englisch ein.
+* `web/src/main.js` ruft die Emo-Generierungstexte über `i18n.t(...)` und `i18n.format(...)` ab und ersetzt alle hart kodierten Statusanzeigen inklusive Zählern.
+* `README.md` hebt Version **1.40.509** hervor und beschreibt die lokalisierten Emo-Fortschritts- und Statusmeldungen.
 # 🛠️ Patch in 1.40.508
 * `web/src/i18n.js` ergänzt i18n-Schlüssel für den Hinweistext ohne Level sowie die Tabellenüberschriften der Level-Statistik in beiden Sprachen.
 * `web/src/main.js` baut die Level-Statistik mit `i18n.t(...)` auf und setzt die Beschriftungen bei Sprachwechsel automatisch neu.
