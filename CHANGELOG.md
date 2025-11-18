@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.520
+* `web/src/i18n.js` führt i18n-Schlüssel für Segment-Indizes, Start-/Ende-/Längen-Texte mit Millisekunden-Vorlagen sowie die Behalten-/Löschen-Schalter ein.
+* `web/src/main.js` nutzt die neuen Schlüssel in `refreshSegmentSuggestionList()`, sodass Beschriftungen und Toggle-Buttons beim Sprachwechsel neu gerendert werden.
+* `README.md` trägt Version **1.40.520** nach und beschreibt die lokalisierten Segment-Zeilen im DE-Audio-Editor.
 # 🛠️ Patch in 1.40.519
 * `web/src/i18n.js` ergänzt Übersetzungen für leere Segmentlisten im DE-Editor und deckt sowohl fehlende Vorschläge als auch fehlende aktive Segmente in beiden Sprachen ab.
 * `web/src/main.js` setzt die leeren Hinweistexte der Segment-Vorschlagsliste über `i18n.t(...)`, damit Sprachwechsel sofort wirken.
