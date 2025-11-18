@@ -45,6 +45,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Tooltip-Bausteine der Projektkarten (Level, Teil, EN/DE/DE-Audio, Fertig-Prozent, GPT, Dateien) lesen ihre Beschriftungen komplett aus i18n und schalten mit Platzhaltern nahtlos zwischen Deutsch und Englisch.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
 * Level-Statistik-Panel holt leere Hinweise sowie Spaltenüberschriften (Level, Teile, EN/DE/BEIDE/∑, Fertig-%) über i18n-Schlüssel und baut sie nach einem Sprachwechsel automatisch neu auf.
+* Der Level-Statistik-Dialog zieht Titel, Hinweistext für fehlende Notizen und den Schließen-Button aus i18n und passt sich damit direkt der gewählten Sprache an.
 * Segment-Vorschlagslisten zeigen ihre leeren Hinweise (keine Vorschläge, keine aktiven Segmente) über i18n-Schlüssel an und schalten dadurch direkt beim Sprachwechsel um.
 * Segment-Zeilen im DE-Audio-Editor ziehen Index-Label, Start-/Ende-/Längen-Text samt Millisekunden-Vorlagen sowie die Behalten-/Löschen-Schalter aus dem i18n-Set und aktualisieren sie sofort beim Sprachwechsel.
 * Segment-Helfer im DE-Audio-Editor bringen eigene Fallbacks für Übersetzungen und Platzhalter mit, sodass die Vorschlagsliste auch ohne geladenes i18n sofort lesbare Hinweise und Labels zeigt.
