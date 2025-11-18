@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.524
+* `web/hla_translation_tool.html` versieht den Datei-Import-Dialog mit IDs und Klassen für i18n-Ziele und hält Platzhalter für Übersetzungen bereit.
+* `web/src/main.js` übersetzt Dateiauswahl, Hinweise, Spaltenzuordnung, Vorschautabellen und Statusmeldungen des Import-Dialogs abhängig von der gewählten Sprache.
+* `web/src/i18n.js` ergänzt Deutsch/Englisch-Schlüssel für alle Import-Dialogtexte inklusive Fehlermeldungen und Konfidenzhinweisen.
+* `README.md` hebt Version **1.40.524** hervor und nennt den vollständig lokalisierten Import-Dialog.
 # 🛠️ Patch in 1.40.523
 * `web/src/main.js` ergänzt Fallback-Übersetzer für Seitentitel, Projekt-Tooltips und die Emo-Generatoren, damit Sprachwechsel ohne geladenes i18n nicht mehr zu Abstürzen führen.
 * `README.md` trägt Version **1.40.523** nach und beschreibt die stabilere DE-Audiobearbeitung beim Sprachwechsel.
