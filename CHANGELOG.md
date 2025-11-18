@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.540
+* `web/src/main.js` ersetzt den Untertitel-Fallback "Deutsch" durch lokalisierte i18n-Schlüssel, zeigt Badge/Hinweise aus dem Übersetzer an und protokolliert unbekannte Sprachcodes mit lokalisierter Warnung.
+* `web/src/i18n.js` hinterlegt die neuen Untertitel- und Import-Schlüssel in Deutsch und Englisch, inklusive Hinweistexten und Spaltenzusammenfassung.
+* `README.md` hebt die lokalisierten Untertitel-Fallbacks hervor und aktualisiert die Version auf **1.40.540**.
+
 # 🛠️ Patch in 1.40.539
 * `web/hla_translation_tool.html` ersetzt sichtbare Texte, Platzhalter und Tooltips durch `data-i18n`-Schlüssel und referenziert Dropdown-Optionen für Modus-, Sprach- und Versionswahl aus den Sprachressourcen.
 * `web/src/main.js` registriert automatisch alle `data-i18n`-Ziele, lokalisiert Versions-Menüeinträge dynamisch und aktualisiert Tooltips/Platzhalter nach jedem Sprachwechsel.

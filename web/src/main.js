@@ -55,13 +55,20 @@ if (typeof module === 'undefined' || !module.exports) {
 
 // Liefert die Datenstruktur für die aktuell ausgewählte Untertitel-Sprache
 function getSubtitleLanguageOption(code = subtitleImportLanguage) {
-    return subtitleLanguageOptions.find(opt => opt.code === code) || subtitleLanguageOptions[0];
+    const opt = subtitleLanguageOptions.find(opt => opt.code === code);
+    if (!opt && subtitleLanguageOptions.length > 0) {
+        const t = window.i18n?.t || (value => value);
+        console.warn(t('subtitle.language.unknown').replace('{code}', code || ''));
+        return subtitleLanguageOptions[0];
+    }
+    return opt || subtitleLanguageOptions[0];
 }
 
 // Leserlicher Anzeigename der Untertitel-Sprache
 function getSubtitleLanguageLabel(code = subtitleImportLanguage) {
     const opt = getSubtitleLanguageOption(code);
-    return opt ? opt.label : 'Deutsch';
+    const t = window.i18n?.t || (value => value);
+    return opt ? opt.label : t('subtitle.language.default');
 }
 
 // Speichert die gewählte Untertitel-Sprache dauerhaft und leert den Cache
@@ -11917,6 +11924,7 @@ function buildProjectFile(filename, folder) {
         function updateSubtitleLanguageBadge() {
             const badge = document.getElementById('ccLanguageBadge');
             const hint = document.getElementById('ccLanguageHint');
+            const t = window.i18n?.t || (value => value);
             const label = getSubtitleLanguageLabel();
 
             if (badge) {
@@ -11926,9 +11934,9 @@ function buildProjectFile(filename, folder) {
 
             if (hint) {
                 if (subtitleImportLanguage === 'german') {
-                    hint.textContent = 'Standard: Deutsch wird importiert.';
+                    hint.textContent = t('subtitle.import.defaultHint');
                 } else {
-                    hint.textContent = `${label} ersetzt Deutsch beim Import.`;
+                    hint.textContent = t('subtitle.import.replacementHint').replace('{label}', label);
                 }
                 hint.classList.toggle('subtitle-language-hint--alt', subtitleImportLanguage !== 'german');
             }
@@ -19306,6 +19314,7 @@ async function startImportProcess() {
     const filenameColumn = parseInt(document.getElementById('filenameColumn').value);
     const englishColumn = parseInt(document.getElementById('englishColumn').value);
     const germanColumn = document.getElementById('germanColumn').value ? parseInt(document.getElementById('germanColumn').value) : -1;
+    const t = window.i18n?.t || (value => value);
     
     if (isNaN(filenameColumn)) {
         alert('Bitte wählen Sie die Spalte für die Dateinamen aus!');
@@ -19487,7 +19496,7 @@ async function startImportProcess() {
         summaryMessage += `\n🎯 Spalten-Zuordnung:\n` +
             `• Dateinamen: Spalte ${filenameColumn + 1}\n` +
             `• Englisch: Spalte ${englishColumn + 1}\n` +
-            `• Deutsch: ${germanColumn >= 0 ? `Spalte ${germanColumn + 1}` : 'Nicht verwendet'}`;
+            `• ${t('import.summary.germanColumn')}: ${germanColumn >= 0 ? t('import.summary.germanColumn.used').replace('{column}', germanColumn + 1) : t('import.summary.germanColumn.unused')}`;
         
         if (multipleFound.length > 0) {
             summaryMessage += `\n\n🎯 Ordner-Auswahlen:\n` +
