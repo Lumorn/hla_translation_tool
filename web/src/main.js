@@ -224,6 +224,8 @@ function setupLanguageControls() {
         updateVoiceSettingsDisplay();
         // Fortschrittsanzeige der Kopierhilfe direkt neu rendern
         showCopyAssistant();
+        // Level-Statistiken neu aufbauen, damit Übersetzungen aktualisiert werden
+        renderLevelStats();
     });
 
     const languageSelect = document.getElementById('languageSelect');
@@ -4327,6 +4329,8 @@ function renderLevelStats() {
         return;
     }
 
+    const t = window.i18n?.t || (value => value);
+
     /* Daten sammeln */
     const map = {};   // lvl => { parts:Set, en,de,both,total,complete }
 
@@ -4368,7 +4372,7 @@ function renderLevelStats() {
         // Nach Level-Nummer sortieren
         .sort((a, b) => getLevelOrder(a[0]) - getLevelOrder(b[0]));
     if (!rows.length) {
-        panel.innerHTML = '<em style="color:#666;">Noch keine Level eingetragen.</em>';
+        panel.innerHTML = `<em style="color:#666;">${t('levelStats.empty')}</em>`;
         return;
     }
 
@@ -4376,10 +4380,10 @@ function renderLevelStats() {
     let html = `
         <table style="width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;">
             <tr>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:left;">Level</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">Teile</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">EN / DE / BEIDE / ∑</th>
-                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">Fertig-%</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:left;">${t('levelStats.header.level')}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.parts')}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.languages')}</th>
+                <th style="padding:6px 8px;border-bottom:1px solid #333;text-align:center;">${t('levelStats.header.completion')}</th>
             </tr>
     `;
     
