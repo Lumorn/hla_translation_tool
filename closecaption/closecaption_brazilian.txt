@@ -1,0 +1,4234 @@
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Como está tudo aí em cima?<I>
+Alyx: <clr:255,190,255>Tudo bem, pai. A atividade da polícia municipal está normal.<cr>O mesmo vale para as patrulhas da Combine.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Como vão as coisas no armazém?
+Eli: <clr:255,208,172><I>Um minirreator da Combine de um lote de 4 mil.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Eles nunca vão dar falta dele.<cr>Veja com os seus próprios olhos.<I>
+Russell: <clr:255,255,138><I>E tem mais:<cr>alguém hackeou a rede de construção da Combine.<I>
+Alyx: <clr:255,190,255>Nada de ganância, pessoal.<cr>Não temos muito tempo.
+Russell: <clr:255,255,138><I>Só mais um minuto, e saio.<cr>Prometo.<I>
+Alyx: <clr:255,190,255>Ah! Tem outra
+Vi a Combine levando suprimentos para a Zona de Quarentena.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Aquele lugar está deserto há anos!
+Eli: <clr:255,208,172><I>Hum. Isso é estranho MESMO.<cr>Bem, investiguemos isso quando voltarmos.<I>
+Russell: <clr:255,255,138><I>O
+que
+?<I>
+Russell: <clr:255,255,138><I>O que É isto?<I>
+Eli: <clr:255,208,172><I>A gente se encontra no abrigo, querida.<cr>Chegaremos lá em breve.<I>
+Russell: <clr:255,255,138><I>Isto parece
+<I>
+Alyx: <clr:255,190,255>O que vocês
+Alyx: <clr:255,190,255>Ótimo.
+Psiu
+Alyx! Alyx!
+Correu tudo bem?
+<clr:255,190,255>Sim. Eles pegaram o reator fácil, fácil.
+<clr:255,190,255>Estou voltando para o abrigo para me encontrar com o meu pai.
+<clr:255,190,255>Vá! A gente se fala depois.
+Cuide-se.
+<clr:18,199,226>Vamos.
+<clr:18,199,226>Vamos!
+<clr:18,199,226>Você.<sb>Andando.
+<clr:18,199,226>Andando.
+<clr:18,199,226>Saia da rua AGORA.
+<clr:18,199,226>Volte para a sua quadra residencial.<sb>AGORA.
+<clr:18,199,226>Vamos! Vamos!
+<clr:18,199,226>Você. Andando.
+<clr:18,199,226>Volte para a sua quadra residencial AGORA.
+<clr:18,199,226>Venha.
+<clr:18,199,226>Pode passar.<sb>Venha.
+<clr:18,199,226>Pode passar. Venha.
+Alyx, aqui!
+<clr:255,190,255>O que foi?
+Não parece ser uma inspeção de rotina. Você tem certeza de que correu tudo bem?
+<clr:255,190,255>Absoluta.
+Alguma coisa deixou a PC agitada.
+<clr:255,190,255>Tenha cuidado e não chame atenção.
+<clr:18,199,226>Entrem.
+<clr:18,199,226>Entrem no camburão.
+<clr:18,199,226>Pegamos eles.
+<clr:18,199,226>Atrás de você!
+<clr:18,199,226><force>Mãos ao alto! Não se mexa!
+<clr:18,199,226>Parada! PARADA!
+<clr:255,190,255>Ei, ei, ei! Calma, calma!<cr>Eu só moro aqui!
+<clr:18,199,226>Provável anticidadão.<sb>Chame uma sonda.
+<clr:255,190,255>Calma, calma! Não atirem!
+<clr:18,199,226>Parada! Para TRÁS!
+<clr:18,199,226>Mãos longe do botão!
+<clr:18,199,226>Não toque no botão!
+<clr:18,199,226><force>Mãos ao alto!
+<clr:18,199,226><force>Mãos para o alto!
+<clr:255,208,172><sfx:1>[Gemendo de dor]
+<clr:255,208,172>Nós não roubamos nada!
+<clr:255,208,172>Ninguém! Não vi ninguém!
+<clr:255,208,172>Ah!
+<clr:255,190,255>PAI!
+<clr:255,190,255>Ei! Calma! Não, não, não
+<clr:255,190,255>Ah
+Para onde
+?<sb>Para onde vocês estão me levando?<sb>Cadê o meu pai?
+<clr:255,190,255>Olá?!
+<clr:255,190,255>Droga! Cadê o meu pai?!
+<clr:255,190,255>Abram essa maldita janela!
+<clr:18,199,226>Fique calada.
+<clr:18,199,226>Fale para ela ficar quieta lá atrás.
+<clr:18,199,226>Fique quieta.
+<clr:18,199,226>O que é aquilo?
+<clr:18,199,226>CUIDADO!
+<clr:18,199,226>O quê?
+<clr:18,199,226>GRANADA!
+<clr:18,199,226>Pegue!
+<clr:18,199,226>Não estou achando!
+<clr:18,199,226>Debaixo do assento!
+<clr:18,199,226>Estou procurando, estou procurando!
+<clr:18,199,226>Pegue, pegue, pegue!
+<clr:18,199,226>Peguei!
+<clr:18,199,226>Jogue de volta, jogue
+<clr:18,199,226>Estou jogando
+VOCÊ-TEVE-UM-ACIDENTE.
+PEGUE-O-HEADSET.
+COLOQUE-O-HEADSEAT.
+<HEADSET><clr:255,255,138>Coloque o headset!
+<HEADSET><clr:255,255,138>Alyx! Coloque o headset!
+<HEADSET><clr:255,255,138>Alyx! Coloque
+Alyx! Coloque o headset!
+<HEADSET><clr:255,255,138>Alyx! Se ainda estiver viva, coloque o headset.
+<HEADSET><clr:255,255,138>Estou vendo você aí! Não tem por que você não colocar o headset! Alyx!
+<HEADSET><clr:255,255,138>Não é uma armadilha! É o Russell, entendeu? O colega de trabalho do seu pai! Da Resistência!
+<HEADSET><clr:255,255,138>Não é uma armadilha, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Você está aí?<cr>Você tem que sair daí.
+<clr:255,190,255>Russell?
+<clr:255,190,255>Tive um acidente.
+<HEADSET><clr:255,255,138>Eu sei! Fui eu que causei!<sb>Tecnicamente, nem foi um acidente.<cr>Saia logo daí.
+<clr:255,190,255>Calma aí. Cadê o meu pai?
+<HEADSET><clr:255,255,138>Ele está bem. Siga o drone.
+<HEADSET><clr:255,255,138>Você tem que sair daí!
+<HEADSET><clr:255,255,138>Vamos, Alyx.
+<HEADSET><clr:255,255,138>Alyx, você tem que sair daí. Agora.
+<clr:255,190,255>Está bem, entendi.
+<clr:255,190,255>Então
+O meu pai está <I>bem<I>, né?
+<HEADSET><clr:255,255,138>Sim. Digo, não.<cr>Para ser sincero, ele está em apuros.
+<clr:255,190,255>Mas
+<HEADSET><clr:255,255,138>Ele ainda está preso.<cr>Ele estava em outro camburão.
+<clr:255,190,255>E você escolheu me salvar?
+<HEADSET><clr:255,255,138>Bem, sim.<sb>Eu não tinha como saber quem estava em qual camburão.<sb>Então
+Sim.<cr>O resultado foi que salvei VOCÊ.
+<clr:255,190,255>Você sabe para onde o estão levando?
+<HEADSET><clr:255,255,138>Para o centro de detenção.<sb>E, quando perceberem que ele é o Eli Vance
+Nova Prospekt.
+<HEADSET><clr:255,255,138>Mas já estou preparando um plano para resgatá-lo.
+<HEADSET><clr:255,255,138>Você está perto do meu laboratório.<sb>Continue seguindo o drone!<cr>Vamos pensar no que fazer.
+<HEADSET><clr:255,255,138>Alyx, a conexão falhou por um momento!<sb>Perdi o sinal de vídeo do headset.<sb>Sabe onde está o meu drone?<sb>Ele está bem?
+<clr:255,190,255>Ah, claro. Sim.<cr>Devo chegar em um minuto.
+<clr:255,190,255>Russell
+<cr>O que vocês <I>encontraram<I> lá?
+<HEADSET><clr:255,255,138>Isso é o mais estranho, não faço ideia! Só
+fotos borradas de um
+prédio.
+<clr:255,190,255>Da Fortaleza?
+<HEADSET><clr:255,255,138>Não, de outro prédio.<sb>Seja lá o que for, eles vão matar quem quer que tenha visto e quem quer que conheça alguém que tenha visto.<sb>Ou seja, nós
+e o seu pai.
+<clr:255,190,255>Russell?<cr>Aguente firme, estou quase chegando.
+<clr:255,255,138>Alyx, ótimo.<cr>OK, vamos
+espere.<cr>O meu drone está bem, certo?
+<clr:255,190,255>Não. Ele explodiu.<cr>Mas eu estou bem, caso queira saber.
+<clr:255,255,138>Certo. Ótimo, isso é
+<cr>Isso é o que importa
+<clr:255,190,255>Russell. Eles pegaram o meu pai.
+<clr:255,255,138>Eu sei. Isso
+não é bom.<sb>Eles vão descobrir o que ele sabe e depois
+<cr>vão matá-lo.
+<clr:255,190,255>Meu Deus
+<clr:255,255,138>Mas
+<sb>a boa notícia é que temos uma coisa que eles não têm!
+<clr:255,190,255>Que coisa
+<clr:255,255,138>O meu plano de resgate!
+<clr:255,190,255>Ótimo. Conte aí.
+<clr:255,255,138>Então
+<sb>Eles vão logo perceber que o seu pai não vai entregar o jogo.<sb>E quando ISSO acontecer, vão sugar o seu cérebro.
+<clr:255,190,255>Russell.
+<clr:255,255,138>Possivelmente.<sb>Talvez não.<cr>Digo, ele
+eles podem perfurar
+<clr:255,190,255>Chega.
+<clr:255,255,138>Ah, claro. É o seu pai.<sb>Verdade.<cr>Bem, o que eles VÃO fazer é levá-lo de trem DAQUI
+<clr:255,255,138>
+aqui está o Eli
+até Nova Prospekt.
+<clr:255,190,255>Se ele entrar no trem
+<cr>Aí já era, né?
+<clr:255,255,138>Não necessariamente.<cr>Pegue alguma coisa para representar a gente.
+<clr:255,255,138>Qualquer coisa serve.
+<clr:255,255,138>Pegue qualquer coisa.
+<clr:255,255,138>Ótimo. Agora coloque no mapa.
+<clr:255,255,138>Deixe para lá, eu ponho.
+<clr:255,255,138>OK, isso é você.
+<clr:255,190,255>Achei que você tivesse dito "a gente".
+<clr:255,255,138>Bem, UM de nós
+eu
+terá que ficar aqui para que o plano funcione.
+<clr:255,190,255>Está bem, faz sentido.
+<clr:255,255,138>Aqui fora, há um segundo trem que também parte da Cidade 17 e que passa pela Zona de Quarentena.
+<clr:255,190,255>OK.
+<clr:255,255,138>Os dois trens passam por aqui, pelo Cruzamento Belavista.<sb>Você pega o seu trem, chega lá antes do trem dele e hackeia os controles.<sb>Assim, posso controlar o sistema.
+<clr:255,255,138>O trem para.<sb>Você lida com os soldados da Combine.<sb>E resgatamos o seu pai.
+<clr:255,190,255>Combinado.<cr>Onde está o trem que eu tenho que pegar?
+<clr:255,255,138>Pelo pátio dos fundos.<sb>Está fora de serviço, mas acho que consigo hackear os controles.
+<clr:255,255,138>Ah, e não se esqueça de vestir um par de "Russells" antes de sair.
+<clr:255,190,255>"Russells"?
+<clr:255,255,138>As luvas, Alyx.<sb>Você sabe, as luvas de gravidade.<sb>Tenho alguns pares guardados ali.<sb>Você pode calibrá-las lá fora.
+<clr:255,190,255>Entendido.
+<clr:255,255,138>Nós vamos conseguir, Alyx.<sb>Ouviu o que eu disse?<sb>Que nós vamos conseguir?<sb>Porque nós vamos conseguir.
+<clr:255,190,255>É, vamos, sim
+<HEADSET><clr:255,255,138>Eu estarei contigo para o que der e vier.
+<HEADSET><clr:255,255,138>OK, você já sabe como é.<sb>Deve ter um monte de tralha aí embaixo.<sb>Aponte para algo com a mão aberta.
+<HEADSET><clr:255,255,138>Aponte com a mão para qualquer coisa.
+<HEADSET><clr:255,255,138>Essas luvas não vão se calibrar sozinhas.<sb>Mas provavelmente deveriam.<sb>Essa á uma das coisas que eu ainda não
+resolvi.
+<clr:255,190,255>Pronta.
+<HEADSET><clr:255,255,138>Agora, feche a mão e puxe para trás.
+<HEADSET><clr:255,255,138>Só uma puxadinha com o pulso.
+<HEADSET><clr:255,255,138>Você está puxando? Não consigo ver bem.
+<HEADSET><clr:255,255,138>Feche a mão e puxe.
+<HEADSET><clr:255,255,138>Feche
+<HEADSET><clr:255,255,138>
+e puxe.
+<clr:255,190,255>Humm. Não funcionou.
+<HEADSET><clr:255,255,138>OK, o sensor de referência está completamente descalibrado.
+<HEADSET><clr:255,255,138>Tente outra vez.<sb>Escolha um alvo e aponte para ele de mão aberta.
+<clr:255,190,255>Continua sem funcionar.
+<HEADSET><clr:255,255,138>Hum.
+<clr:255,190,255>Aham.
+<HEADSET><clr:255,255,138>Tente outra vez.
+<clr:255,190,255>Nadinha.
+<HEADSET><clr:255,255,138>Mais uma vez.
+<HEADSET><clr:255,255,138>Escolha um alvo e aponte para ele de mão aberta.
+<HEADSET><clr:255,255,138>Excelente! Agora feche a mão.
+<HEADSET><clr:255,255,138>OK, feche a mão.
+<clr:255,190,255>Que tal?
+<HEADSET><clr:255,255,138>Escolhido.<sb>Agora puxe com o pulso para puxá-lo.
+<HEADSET><clr:255,255,138>Quase lá.<sb>Tente de novo, mas agora pegue o objeto.
+<HEADSET><clr:255,255,138>Puxe-o novamente e tente pegá-lo.
+<HEADSET><clr:255,255,138>Isso aí.
+<HEADSET><clr:255,255,138>Você conseguiu.
+<HEADSET><clr:255,255,138>Muito bem.
+<HEADSET><clr:255,255,138>Você já pegou o jeito.
+<HEADSET><clr:255,255,138>Na mira.
+<HEADSET><clr:255,255,138>Alvo escolhido.
+<HEADSET><clr:255,255,138>Isso, alvo escolhido.
+<HEADSET><clr:255,255,138>Feche a mão.
+<HEADSET><clr:255,255,138>Agora, feche a mão.
+<HEADSET><clr:255,255,138>Ótimo.
+<HEADSET><clr:255,255,138>Isso.
+<HEADSET><clr:255,255,138>Isso mesmo.
+<HEADSET><clr:255,255,138>Perfeito.
+<HEADSET><clr:255,255,138>Outra vez, mas agora pegue.
+<HEADSET><clr:255,255,138>Mas pegue.
+<HEADSET><clr:255,255,138>Agora, pegue.
+<HEADSET><clr:255,255,138>Tente pegar.
+<HEADSET><clr:255,255,138>Pegue.
+<HEADSET><clr:255,255,138>Alyx, imagine que há um
+Uma espécie de gatilho
+nas "Russells."
+<HEADSET><clr:255,255,138>Agora aponte com a mão
+<HEADSET><clr:255,255,138>Aperte o gatilho
+<HEADSET><clr:255,255,138>E é isso.
+<HEADSET><clr:255,255,138>Alyx, deve ter um pequeno gatilho perto do dedo indicador em cada uma das Russells.
+<HEADSET><clr:255,255,138>Perfeito. Isso é tudo.<sb>Ah! Ah, espere! Quase esqueci.
+<clr:255,255,138>Alyx! Aqui em cima!
+<clr:255,255,138>Você vai precisar de uma arma!
+<clr:255,255,138>Não se preocupe, ela está descarregada!
+<clr:255,255,138>Agora está descarregada!
+<clr:255,255,138>Você viu onde ela caiu?
+<clr:255,255,138>Acho que caiu no capô desse carro aí.
+<clr:255,255,138>Ah, quase esqueci, armas precisam de munição.
+<clr:255,255,138>Aqui vai!
+<clr:255,255,138>Deve ter caído aí no chão.
+<HEADSET><clr:255,255,138>Acho que caiu no capô desse carro aí.
+<clr:255,255,138>Beleza! Estou voltando à sala de comunicação.
+<clr:255,190,255>Russell! Estou sem munição.
+<clr:255,190,255>Ei, Russell! Eu
+estou sem munição de novo.
+<clr:255,255,138>Cuidado!
+<clr:255,190,255>Russell! Estou sem munição. De novo.
+<clr:255,255,138>Tudo bem, tenho mais munição.
+<clr:255,255,138>Mas, só avisando
+não tenho infinitos pentes aqui. Está bem? É só que
+não custa avisar, né?
+<HEADSET><clr:255,255,138>Ei, é a minha janela! Cuidado!
+<HEADSET><clr:255,255,138>Ah, você arrombou o cadeado.<sb>OK, ótimo.<sb>Eu tinha a chave dele.<sb>Mas devia ter entregado a você, então
+<sb>a culpa é minha.
+<HEADSET><clr:255,255,138>Aí está o trem, Alyx.<sb>Veja se consegue abrir a porta.<sb>Estou quase conseguindo ligar o trem.
+<HEADSET><clr:255,255,138>Há algum jeito de abrir a porta do trem?
+<HEADSET><clr:255,255,138>Veja se consegue abrir a porta.
+<HEADSET><clr:255,255,138>Muito bem! Aqui vamos nós.<sb>Próxima estação: Cruzamento Belavista.
+<clr:255,190,255>Valeu, Russell.
+<HEADSET><clr:255,255,138>E boa sorte, Alyx.<sb>Adeus.
+<HEADSET><clr:255,255,138>Só para você saber, é claro que ainda estou aqui.
+<clr:255,190,255>Eu sei.
+<HEADSET><clr:255,255,138>Alô, Alyx? TALVEZ tenhamos um problema.<cr>Não deve ser nada sério, mas
+<clr:255,190,255>Eita!
+<HEADSET><clr:255,255,138>O trem parou?<cr>Parou, não parou?
+<clr:255,190,255>Parou, sim. O que houve?
+<HEADSET><clr:255,255,138>Está bloqueado.<cr>A Combine deve ter reforçado a segurança quando fechou a Zona de Quarentena.
+<clr:255,190,255>Ou seja
+<HEADSET><clr:255,255,138>Você está bem longe do Cruzamento Belavista.<cr>Você está próxima da ZQ.
+<HEADSET><clr:255,255,138>E é AQUI
+a nossa última estação.
+<clr:255,190,255>Já estou indo a pé.
+<clr:255,190,255>Então vou a pé.
+<HEADSET><clr:255,255,138>Ótimo. Vou ver se acho outro jeito de você entrar.
+<clr:255,190,255>Achei um zumbi morto.<sb>A Combine não tinha isolado a ZQ?
+<HEADSET><clr:255,255,138>Ah, este deve ter fugido.<sb>Ouvi dizer que tiveram problemas com esporos de cracas fora da área de contenção,<sb>mas não com zumbis como esse aí.
+<clr:255,190,255>Não deve ser o único então.
+<HEADSET><clr:255,255,138>Duvido que seja.
+<HEADSET><clr:255,255,138>Ahh
+olhe só para isso. Resina.
+<HEADSET><clr:255,255,138>E onde tem resina, também tem um fabricador da Combine.<sb>Fique de olho, pode ser que consigamos aprimorar o seu armamento.
+Alguma hora, eu VOU ficar sem munição.
+<HEADSET><clr:255,255,138>Bem, fique atenta.<sb>O que mais tem é cadáver por essas bandas, e, verdade seja dita, eles não precisam mais de munição.
+<clr:255,190,255>Acho que consigo redirecionar com a minha multiferramenta.
+<HEADSET><clr:255,255,138>A sua o quê?
+<clr:255,190,255>É uma ferramenta com múltiplas funções.<sb>Por isso, chamo de multiferramenta.
+<HEADSET><clr:255,255,138>Alyx, esse troço é incrível!<sb>Você precisa dar um nome dos bons!<sb>Algo que faça vender!
+<clr:255,190,255>Para quem eu vou vender?
+<HEADSET><clr:255,255,138>A Combine não vai ficar aqui para sempre.<sb>Você tem que pensar no futuro, Alyx!
+<clr:255,190,255>Que tal chamá-la de "Alyx"?
+<HEADSET><clr:255,255,138>Um pouco inspirado nas "Russells," mas
+<sb>Por enquanto, o nome "Alyx" deve servir, sim.
+<clr:255,190,255>É, a "Alyx".
+<HEADSET><clr:255,255,138>Muito bem!
+<HEADSET><clr:255,255,138>Opa! Um posto de cura.
+a <I>Combine<I> usa esses postos.<sb>Eles são seguros para humanos?
+<HEADSET><clr:255,255,138>Um posto de cura, graças a Deus!
+<HEADSET><clr:255,255,138>Claro, sempre faço uso deles.
+<clr:255,190,255>Tem certeza?
+<HEADSET><clr:255,255,138>Sim, são incríveis.
+<HEADSET><clr:255,255,138>Basta colocar a mão ali.
+<HEADSET><clr:255,255,138>Olhe, é só puxar a alavanca e colocar a mão ali.
+<HEADSET><clr:255,255,138>Sim, eu sempre uso esses postos. Você só precisa achar uma bateria.
+<HEADSET><clr:255,255,138>Muito bem, garota. Você já está pronta.
+<clr:255,190,255>Ai! Ai, ai, ai!
+<clr:255,190,255>Ahhhhh
+Ei
+<clr:255,190,255>Ahhh
+Oh
+Você estava certo.<cr>Esses postos são ótimos.
+<clr:255,190,255>Ahhh! Que alívio!
+<HEADSET><clr:255,255,138>Cuidado com aquela craca, Alyx.
+<clr:255,190,255>Credo, que nojo!
+<clr:255,190,255>Quando você começou a chamar as luvas de gravidade de "Russells"?
+<HEADSET><clr:255,255,138>É a marca registrada, Alyx.
+<clr:255,190,255>Marca registrada?
+<HEADSET><clr:255,255,138>Sabe, o nome que fica na cabeça. Vou fazer uma fortuna com estas luvas assim que expulsarmos a Combine da Terra e tudo voltar ao normal.
+<clr:255,190,255>Aliás, como você e o meu pai se conheceram?<sb>Trabalharam juntos em Black Mesa, né?
+<HEADSET><clr:255,255,138>Sim. Ou melhor, não.<sb>Não é fácil arranjar um emprego lá.<sb>Tentei uma vaga em Black Mesa.<sb>Disseram para tentar de novo depois de um ano.<sb>Não preciso dizer o que aconteceu depois.<sb>Sorte a minha.<sb>Não houve muitos sobreviventes.<sb>Francamente, foi um milagre você e o seu pai terem saído vivos de lá.
+<HEADSET><clr:255,255,138>Hã
+Você precisa de privacidade?<sb>Porque eu
+posso pausar a transmissão
+<clr:255,190,255>Estou só olhando, Russ.
+<clr:255,190,255>Imagino que a Zona de Quarentena fique atrás dessa escotilha.
+<HEADSET><clr:255,255,138>Isso, é aí mesmo.
+<clr:255,190,255>Vou ver se acho um painel de controle para abri-la.
+<HEADSET><clr:255,255,138>Se eu fosse a Combine, onde é que instalaria um painel de controle?
+<HEADSET><clr:255,255,138>Esse é o painel de controle.<sb>Provavelmente desligaram os circuitos.<sb>Mas, como ninguém seria idiota a ponto de abrir a escotilha, deve ser fácil ligá-los de volta.
+<HEADSET><clr:255,255,138>O que você acha que isso é?
+<clr:255,190,255>Parece ser algum tipo de tranca.
+<clr:255,190,255>Opa! Agora, sim.
+<HEADSET><clr:255,255,138>Ha ha! Muito bem. Finalmente.
+<clr:255,190,255>Vou entrar.<cr>O Cruzamento Belavista fica muito longe?
+<HEADSET><clr:255,255,138>Você passará pelos antigos túneis do metrô no caminho para o pátio ferroviário.
+<clr:255,190,255>Eles já começaram a transportar o meu pai?
+<HEADSET><clr:255,255,138>Acho que não.<sb>O que é bom, porque ainda temos tempo.
+<clr:255,190,255>Ótimo.
+<HEADSET><clr:255,255,138>Ou ruim, porque já o mataram.<sb>E não é preciso transferir um cadáver.<sb>Basta enterrá-lo.<sb>Ou cremá-lo.<sb>Está na escuta, Alyx?
+<clr:255,190,255>Uhum.
+<clr:255,190,255>Agora que estou indo para a Zona de Quarentena, percebi uma coisa.<sb>Não sei nada <I>sobre<I> a Zona de Quarentena.
+<HEADSET><clr:255,255,138>Então, "quarentena" vem do italiano "quaranta giorni",<sb>que significa "40 dias", o tempo em que os navios tinham que ficar isolados antes que a tripulação pudesse desembarcar durante a Peste Negra.
+<clr:255,190,255>Beleeeza
+Está beeem
+<HEADSET><clr:255,255,138>Droga!
+<clr:255,190,255>Acho que estamos presos aqui.
+<clr:255,190,255>Ei, Russell!<sb>Acabei de achar uma seringa sabe-se lá do quê.<sb>É algum medicamento?
+<HEADSET><clr:255,255,138>Tem algum símbolo de caveira com ossos nela?
+<clr:255,190,255>Não estou vendo nenhuma.
+<HEADSET><clr:255,255,138>Então deve ser um medicamento.
+<HEADSET><clr:255,255,138>Alyx! Você se injetou mesmo com uma coisa que achou no chão?
+<clr:255,190,255>Estou me sentindo ÓTIMA.
+<HEADSET><clr:255,255,138>Mesmo? Então tudo bem
+Experimento bem-sucedido. Veja se acha mais pelo caminho.
+<HEADSET><clr:255,255,138>Você ouviu isso?
+<clr:255,190,255>O que foi isso?
+<clr:255,190,255>Ai, caramba
+<HEADSET><clr:255,255,138>Sim. É
+por ali que temos que ir.
+<clr:255,190,255>Não há atalhos?
+<HEADSET><clr:255,255,138>Então, esse É o atalho.
+<clr:255,190,255>Bem
+Vamos tomar o caminho mais longo.
+<HEADSET><clr:255,255,138>Pois é, esse também é o caminho mais longo.
+<HEADSET><clr:255,255,138>OK, parece que deu certo. Vamos continuar fazendo assim.
+<HEADSET><clr:255,255,138><sfx:1>[Risos]
+<clr:255,190,255>Caramba!
+<HEADSET><clr:255,255,138>Ha ha!<cr>Essa craca está do nosso lado.<sb>Só que não, obviamente, então não passe por baixo dela.
+<HEADSET><clr:255,255,138>Aliás, as Russells têm uma tela integrada. Mostra quanto você tem de resina e munição. Pode ser útil.
+<clr:255,190,255>Entendi. Valeu.
+<clr:255,190,255>Eita
+<HEADSET><clr:255,255,138>É, tenha cuidado.
+<HEADSET><clr:255,255,138>Alyx! Atrás dessa porta!<sb>Acho que é um fabricador da Combine!
+<HEADSET><clr:255,255,138>Alyx! Acho que isso é um fabricador da Combine.<sb>Ponha alguma coisa nele, quero ver como funciona.
+<clr:255,190,255>Entendi. Funciona com as Russells?
+<HEADSET><clr:255,255,138>Não, mas deve aprimorar essa pistola.<cr>O que é bom, já que te dei uma das minhas piores armas.
+<HEADSET><clr:255,255,138>Sabe
+caso o fabricador não a devolva.
+<clr:255,190,255>Proponho um trato, Russell.<cr>Se eu morrer, te devo uma arma.
+<HEADSET><clr:255,255,138>Você já me deve uma pistola!<cr>Não foi um presente. Essa pistola é MINHA.
+<HEADSET><clr:255,255,138>Ótimo, a resina valeu a pena.
+<HEADSET><clr:255,255,138>A Combine sabe como aprimorar uma arma.<sb>Tenho que admitir.
+<HEADSET><clr:255,255,138>Parece bem letal.
+<HEADSET><clr:255,255,138>Incrível.<sb>Eu quase queria estar aí para experimentar.
+<HEADSET><clr:255,255,138>Você pode fazer bom uso dela.
+<HEADSET><clr:255,255,138>Isso, sim
+será útil.
+<HEADSET><clr:255,255,138>Excelente escolha.
+<HEADSET><clr:255,255,138>Boa ideia. Isso deve ajudar.
+<HEADSET><clr:255,255,138>Difícil discordar de você agora.
+<HEADSET><clr:255,255,138>Eu não ia querer ficar em frente dessa arma.
+<HEADSET><clr:255,255,138>Isso que chamo de arma aprimorada.
+<HEADSET><clr:255,255,138>Mais letal que isso, impossível.
+<HEADSET><clr:255,255,138>Uau, funcionou mesmo? Hum
+<HEADSET><clr:255,255,138>Uau! A minha pistola ficou uma beleza!
+<clr:255,190,255>Russ, qual é? A esta altura, está mais para "nossa" arma.
+<HEADSET><clr:255,255,138>Uau, olhe só! A minha pistola está ficando cada vez melhor.
+<clr:255,190,255>Russ, tecnicamente falando, não sobrou muito da "sua" pistola.
+<HEADSET><clr:255,255,138>Fazemos assim: deixamos essa ideia de lado. Podemos falar da MINHA pistola quando você voltar.
+<clr:255,190,255>Bem, Russ, agora é oficial. Não sobrou NADA da sua pistola. Esta pistola é 100% MINHA.
+<HEADSET><clr:255,255,138>Tudo bem. Justo. Você fez por merecer. Mas ainda quero que devolva as "Russells".
+<HEADSET><clr:255,255,138>Chupa-crânio!
+<clr:255,190,255>Estou vendo!
+<HEADSET><clr:255,255,138>Espere
+para onde ele foi?
+<clr:255,190,255>Ah!
+<HEADSET><clr:255,255,138>Ah!
+<HEADSET><clr:255,255,138>Sim. Ali está ele. Achei.
+<HEADSET><clr:255,255,138>Deve ter só um.
+<HEADSET><clr:255,255,138>OK, dois. Deve ter dois.
+<HEADSET><clr:255,255,138>Boa pontaria, Alyx.
+<clr:255,190,255>Obrigada. Obrigada, Russell.
+<clr:255,190,255>Valeu. Sabe, você diz que esta é uma das suas "piores" pistolas, mas ela tão ruim assim.
+<HEADSET><clr:255,255,138>Sim
+ela é muito boa, não é?<cr>Acho até que te dei a pistola errada.
+<clr:255,190,255>Você tem notícias do meu pai, Russell?
+<HEADSET><clr:255,255,138>Não. Silêncio total desde que ele entrou no trem.
+<clr:255,190,255>Droga!
+<HEADSET><clr:255,255,138>Bom, a boa notícia é que ele deve estar bem.
+<clr:255,190,255>Como você sabe?
+<HEADSET><clr:255,255,138>Porque estão levando-o até Nova Prospekt para torturá-lo.<sb>É lá que torturam pessoas.<sb>Então não devem torturá-lo até CHEGAREM lá.<sb>Por isso, ele está bem. Logicamente falando.
+<clr:255,255,138>Ah!
+<clr:255,190,255>Posto de cura!
+<HEADSET><clr:255,255,138>Ah, um posto de cura!
+<HEADSET><clr:255,255,138>Hum. Não está funcionando.
+<clr:255,190,255>Ah! Aqui, olhe. Precisa de energia.
+<HEADSET><clr:255,255,138>Isso aí é um "disquete".<cr>Era usado para armazenar dados. Com ímãs, dá para acreditar?
+<clr:255,190,255>Hum
+<HEADSET><clr:255,255,138>Mais especificamente, dois micrômetros de óxido de ferro magnético, três micrômetros de ferrite de bário e 1,2
+<clr:255,190,255>Russell, como você sabe disso tudo?
+<HEADSET><clr:255,255,138>Estou lendo no computador.<cr>Eu baixei a internet antes da guerra.
+<clr:255,190,255>Você baixou a internet INTEIRA?
+<HEADSET><clr:255,255,138>É
+quase toda.
+<clr:255,190,255>Legal.
+<HEADSET><clr:255,255,138>É mesmo.
+<clr:255,190,255>Russell, está vendo isso?
+<HEADSET><clr:255,255,138>Sim, talvez.<sb>Você está vendo lixo flutuante?
+<clr:255,190,255>Parece ser só
+papelão.
+<HEADSET><clr:255,255,138>Certo. Bem, parece inofensivo.
+<clr:255,190,255>Sim, mas que esquisito!
+<clr:255,190,255>O que É aquilo ali?
+<clr:255,190,255>Parecem desenhos de vortiléticos
+<HEADSET><clr:255,255,138>Espere, aquele ali é
+Black Mesa?
+<clr:255,190,255>Alguém passou um bom tempo fazendo isso tudo.
+<clr:255,190,255>Caramba! Mais papelão flutuante.
+<HEADSET><clr:255,255,138>Alyx! Você está bem? O que se passa?
+<clr:255,190,255>Estou bem, Russell. O que houve?
+<HEADSET><clr:255,255,138>O sinal está fraco!<sb>Alyx? Alyx?<sb>Se ainda consegue me ouvir, continue na mesma direção e tente chegar à superfície!
+<clr:255,190,255>Russell?<sb>Russell?<sb>Droga!
+<clr:255,190,255>Uau, que lugar estranho
+<clr:255,190,255>Opa!
+Vortilético: <clr:107,232,120>A Alyx Vance!
+Vortilético: <clr:107,232,120>Você recebeu as minhas mensagens!
+Recebi?
+<clr:107,232,120>Venha! Entre.
+<clr:255,190,255>OK
+<clr:255,190,255>Obrigada.
+<clr:107,232,120>De nada!
+<clr:255,190,255>Diga-me
+O que um vortilético está fazendo aqui?
+<clr:107,232,120>[Fungada] Hum!
+<clr:107,232,120>Cozinhando!
+<clr:107,232,120><sfx:1>[Comendo ruidosamente]
+<clr:255,190,255>Saquei, mas perguntei de um modo geral.
+<clr:107,232,120>Tenho uma lesão cerebral.
+Sinto muito.
+<clr:107,232,120>O meu cérebro está lesionado!
+<clr:255,190,255>Isso é horrível. Espero que
+<clr:107,232,120>Ai.
+<clr:255,190,255>Olhe, estou bem ocupada tentando achar o meu pai
+<clr:107,232,120>O
+<clr:255,190,255>
+Eli Vance.
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Isso!
+<clr:255,190,255>A Combine o capturou, e não posso perder tempo.
+<clr:107,232,120>A Combine.<sb>Verdade. Não vá ainda.<sb>Preciso lhe mostrar uma coisa!
+<clr:255,190,255>Muito obrigada por tudo, mas
+<clr:107,232,120>Por aqui!
+<clr:255,190,255>Não posso ficar, eu
+<clr:107,232,120>É importante!
+<clr:255,190,255>Não duvido que seja, mas
+<clr:107,232,120>A Alyx Vance tem que ir por aqui de qualquer maneira
+<clr:255,190,255>Está bem.
+<clr:107,232,120><sfx:1>[Risada]
+<clr:107,232,120><sfx:1>[Bebe ruidosamente]
+<clr:107,232,120>Entre, entre!
+<clr:107,232,120>Entre, Alyx Vance.
+<clr:107,232,120>Aqui dentro!
+<clr:107,232,120>Preciso lhe mostrar por que eu a trouxe aqui.
+<clr:107,232,120><sfx:1>[Canalizando a vortessência]
+<clr:107,232,120>A Combine capturou o meu povo.
+<clr:107,232,120>Capturados, como o Eli Vance.
+<clr:107,232,120>A Alyx Vance os libertará!
+<clr:255,190,255>Eu adoraria ajudar. De verdade.<sb>Mas, a Alyx Vance realmente está ocupada salvando o pai dela.
+<clr:107,232,120>Você não o libertará!<sb>Ele já está morto.
+<clr:255,190,255>Como é?
+<clr:107,232,120>Ou vai estar
+<clr:255,190,255>Já está ou vai estar?
+<clr:107,232,120>É uma questão de perspectiva.<sb>Mas a Alyx Vance sozinha não pode evitar o destino dele.
+<clr:255,190,255>Eu
+Olhe.<sb>Obrigada por
+tudo,<sb>mas eu preciso ir mesmo.<sb>Sinto muito, mas não tenho tempo para charadas.
+<clr:107,232,120>Sem charadas!<sb>A Combine perfurou aqui dentro.<sb>Nem sei "quando" eu sou.<sb>Estou separado da vortessência.<sb>Estou sozinho na minha cabeça.
+<clr:255,190,255>Sinto muito.
+<clr:255,190,255>Se der, e eu me encontrar com os seus amigos, verei o que posso fazer.
+<clr:107,232,120>Você salvou o meu povo!
+não salvei.
+<clr:107,232,120>Então, ainda salvará.
+<clr:107,232,120>Ahhh!
+<clr:107,232,120>Coragem, Alyx Vance!
+<clr:107,232,120>A sua jornada a trouxe até aqui.<cr>Talvez até um pouco mais longe.
+<clr:107,232,120>Por ali, Alyx Vance.
+<clr:107,232,120>Você tem que ir!
+<clr:107,232,120>A sua missão começa, Alyx Vance.
+<clr:107,232,120>Vá!
+<clr:107,232,120>Ajudarei a Alyx Vance!<sb>Procure a Estrela do Norte.
+<clr:255,190,255>Por quê?
+<clr:107,232,120>Para que ela a guie!
+<clr:255,190,255>OK. Valeu.<cr>Já terminou de me ajudar então?
+<clr:107,232,120>Não! Tome.
+<clr:107,232,120>Sustento!
+Como depois.<cr>Obrigada pela ajuda.
+<clr:107,232,120>Não haverá de quê.
+<clr:107,232,120><sfx:1>[Cantarola contentemente]
+<clr:255,190,255>Ecaaa!
+<clr:255,190,255>Credo!
+<clr:255,190,255>Eca!
+<HEADSET><clr:255,255,138>Alyx! Alyx! O sinal voltou!<sb>Está me ouvindo? Você está bem?
+<clr:255,190,255>Russell! Estou bem! Como está o meu pai?
+<HEADSET><clr:255,255,138>Botaram-no no trem.<sb>Ele está a caminho.<sb>Você tem que chegar ao Cruzamento Belavista antes deles.
+<clr:255,190,255>Pode deixar.
+<HEADSET><clr:255,255,138>Aconteceu alguma coisa depois que o sinal caiu?
+<clr:255,190,255>Você não vai acreditar, mas encontrei um vortilético.
+<HEADSET><clr:255,255,138>Um vortilético?<cr>O que ele estava fazendo lá?
+<clr:255,190,255>Escondendo-se.<cr>Acho que ele fugiu da Combine.
+<HEADSET><clr:255,255,138>O que ele disse?
+<clr:255,190,255>Você nunca conversou com um vortilético?<cr>Ele falou coisas esquisitas, típicas de vortiléticos.
+<clr:255,190,255>Sabe o vortilético que eu encontrei?<cr>Ele <I>deu<I> um chupa-crânio para eu comer.
+<HEADSET><clr:255,255,138>Ótimo!<sb>Qual era o gosto?<cr>Me diga se gos
+<clr:255,190,255>Russell! Russell! Eu não comi.
+<HEADSET><clr:255,255,138>Ah! Claro que não.<cr>Não, foi
+Foi a decisão certa.
+<clr:255,190,255>Que esquisito!
+<clr:255,190,255>Opa! Aquele zumbi tem uma escopeta!
+<HEADSET><clr:255,255,138>Ouviu isso?
+<clr:255,190,255>Ouvi. Vou pegar a escopeta e dar o fora daqui.
+<clr:255,190,255>Peguei!
+<HEADSET><clr:255,255,138>Recarregue-a e depressa, o barulho está cada vez mais alto!
+<clr:255,190,255>Conseguimos.
+<HEADSET><clr:255,255,138>Eu adoro essa arma.
+<clr:255,190,255>Nossa! Que escuridão!
+<HEADSET><clr:255,255,138>Está tudo bem?
+<clr:255,190,255>Tudo bem. Tudo bem.
+<clr:255,190,255>Ai, graças a Deus!
+<clr:255,190,255>Isto
+Isto é ótimo.
+<clr:255,190,255>Está escuro mesmo
+Russ?
+<HEADSET><clr:255,255,138>Sim?
+<clr:255,190,255>Tem como você
+ficar falando?
+<HEADSET><clr:255,255,138>Sobre o quê?
+<clr:255,190,255>Sobre literalmente qualquer coisa.
+<HEADSET><clr:255,255,138>Bem, acho que, dada a nossa situação, o seu medo irracional do escuro é mais do que apropriado.<sb>Posso listar facilmente uns cem motivos para ficar apavorada.
+<clr:255,190,255>OK, a culpa foi minha.<sb>Serei mais específica na próxima vez.
+<clr:255,190,255>Esta lanterna é o máximo.
+<HEADSET><clr:255,255,138>E, assim como você, ela também é sensível à escuridão.
+<clr:255,190,255>É mesmo?
+<HEADSET><clr:255,255,138>Ou seja, ela deve ligar automaticamente em lugares escuros.
+Legal.
+<clr:255,190,255>Russ, eu preciso MESMO que volte a falar.
+<HEADSET><clr:255,255,138>Pode deixar. Seja específica.
+<clr:255,190,255>Humm
+Sobre antes. Como era a vida antes da Combine?
+<HEADSET><clr:255,255,138>Ah! Excelente.<cr>Alyx, você já ouviu falar de "club sandwich"?
+<clr:255,190,255>Humm, não. Nunquinha.
+<HEADSET><clr:255,255,138>Certo. Para fazer um club sandwich, você primeiro pega o pão.<sb>Não é pão do abrigo, e sim da padaria.
+<HEADSET><clr:255,255,138>Certo. Então, para preparar um club sandwich, você primeiro pega um pão.<sb><sb>Não daqueles de abrigo.<sb>De uma padaria do outro lado da rua, assado no dia, OK? Você coloca tomate, alface
+nada de pasta vegetal, fresco.<sb>Depois, adiciona bacon, que vem de um animal que chamávamos de "porco".<sb>Você torra o pão e coloca tudo isso dentro dele.
+<clr:255,190,255>Vocês tinham isso tudo? Que incrível!
+<HEADSET><clr:255,255,138>Isso! E não é só isso.<sb>Depois, você adiciona um segundo sanduíche em cima do primeiro.<sb>Você coloca presunto nele, que também vem do porco, peru, que vem de um animal que chamávamos de "peru", mais tomate, alface e várias outras coisas que me fogem à cabeça.<sb>Tinha uns 15cm de altura, pesava quase meio quilo e tinha 12 ingredientes de 5 continentes diferentes.<sb>Era o alimento mais impossível de imaginar em qualquer época antes da nossa.
+<clr:255,190,255>Uau!
+<HEADSET><clr:255,255,138>Não é?
+<clr:255,190,255>Quer dizer
+Uau!
+<clr:255,190,255>Valeu, Russ.
+<HEADSET><clr:255,255,138>De nada, Alyx.
+<HEADSET><clr:255,255,138>Espere, isso é um soldado da Combine morto?
+<clr:255,190,255>Sim
+<sb>Enquanto vocês estavam roubando o reator, vi a Combine transportando suprimentos para cá.<sb>Devem estar interessados neste lugar de novo.
+<HEADSET><clr:255,255,138>Bem, fique atenta.<sb>Há algo de estranho aí.
+<HEADSET><clr:255,255,138>Alyx! Um cortador! Cuidado!
+<HEADSET><clr:255,255,138>Cortador!
+<HEADSET><clr:255,255,138>Opa, cortadores!
+<clr:255,190,255>Ish
+<clr:255,190,255>Caramba
+minha nossa
+<clr:255,190,255>Então, indo de 1 a 10, que nota você daria para as condições na Terra? Eu daria nota 2.
+<HEADSET><clr:255,255,138>Sim, sempre tem como piorar.
+<clr:255,190,255>E que nota você daria para ANTES da invasão da Combine?
+<HEADSET><clr:255,255,138>Pergunta difícil.<sb>Não sei
+Em um dia bom?<sb>Diria 6.<sb>É, com certeza, nota 6.
+<clr:255,190,255>Seis? Não é lá grande coisa.
+<HEADSET><clr:255,255,138>É a vida, Alyx.<cr>Nem sempre é lá grande coisa.
+<clr:255,190,255>Bem, se conseguirmos expulsar a Combine da Terra, podemos tentar chegar a um 8, que tal?
+<HEADSET><clr:255,255,138>Hum, nota 8.<cr>Sim, seria ótimo.<sb>Ótimo mesmo.
+<clr:255,190,255>Quando expulsarmos a Combine da Terra, o que você vai fazer?
+<HEADSET><clr:255,255,138>Vou começar a produzir as "Russells" em larga escala, claro.
+<clr:255,190,255>Ah, claro!<sb>Vai rebolar em dinheiro!
+<HEADSET><clr:255,255,138>Nadar em dinheiro, isso.<sb>O plano é o seguinte: sendo pessimista, levaremos um ano para expulsar a Combine do planeta.<sb>Esse será o 1º ano.
+<HEADSET><clr:255,255,138>Depois, outro ano para produzir as "Russells" em massa.<sb>Se bem que, cá entre nós, TEREMOS que reerguer a sociedade primeiro para termos uma infraestrutura básica, empregos, capital, essas coisas.<sb>Senão, não terá ninguém para comprá-las.<sb>Sabe como é.
+<HEADSET><clr:255,255,138>Então
+<sb>Um plano de TRÊS anos.<sb>A parte da infraestrutura fica para o 2º ano.
+<clr:255,190,255>Ah, sim. Com certeza.<sb>É uma boa ideia cuidar disso no 2º ano.
+<HEADSET><clr:255,255,138>Eita! Cuidado! Cuidado!
+<HEADSET><clr:255,255,138>Firme
+Está ficando escuro de novo.
+Nesse plano de três anos das Russells... Você conseguiria arrumar um emprego para mim?
+<HEADSET><clr:255,255,138>Emprego? Alyx, você inventou a "Alyx"!<cr>Claro que pode ter um emprego!
+<clr:255,190,255>Podemos ser sócios.
+<HEADSET><clr:255,255,138>Hum, então
+<sb>Bem, pode haver opções de compra de ações.<sb>Com período aquisitivo de 5 a 10 anos, obviamente.<sb>Pode ser bem lucrativo para você, Alyx.<sb>A longo prazo.
+<clr:255,190,255>Não entendi nada do que você disse, mas aceito, sócio.
+<HEADSET><clr:255,255,138>É. Também aceito
+Alyx.
+<clr:255,190,255>Russell! Esses caras têm armas automáticas!
+<clr:255,190,255>Esses caras têm armas automáticas.
+<HEADSET><clr:255,255,138>São soldados de elite alienígenas, claro que eles têm armas automáticas.
+<HEADSET><clr:255,255,138>Também teríamos umas, mas as armas da Combine são codificadas geneticamente, então não dá. A menos que ache uma desvinculada ou esteja disposta a fazer uma pequena modificação genética.
+<clr:255,190,255>Vou torcer pela
+primeira opção. Prefiro manter os meus genes como são.
+<clr:255,190,255>Conversa demais enquanto balas demais estão vindo na minha direção, Russ!
+<clr:255,190,255>Combine!
+<clr:255,190,255>Russ, esses caras têm armas automáticas.
+<HEADSET><clr:255,255,138>Também teríamos umas, mas as armas da Combine são codificadas geneticamente, então não dá.<sb>A menos que ache uma desvinculada<cr>ou esteja disposta a fazer uma pequena modificação genética.
+<clr:255,190,255>Não
+não precisa, Russ. Prefiro manter os meus genes como são.
+<HEADSET><clr:255,255,138>Cruzamento Belavista! Chegamos!
+<HEADSET><clr:255,255,138>Esse é o lugar!
+<HEADSET><clr:255,255,138>Abaixe-se!
+<clr:255,190,255>Ufa
+Acho que era o último.
+<HEADSET><clr:255,255,138>Ótimo, porque não temos muito tempo.
+<HEADSET><clr:255,255,138>Há um posto de controle por aí.
+<HEADSET><clr:255,255,138>Você tem bastante tempo para reativar o painel de controle.
+<HEADSET><clr:255,255,138>OK, devo conseguir parar o trem.
+<clr:255,190,255>Tem certeza de que você consegue?
+<HEADSET><clr:255,255,138>Absoluta. Você só precisa ativar o terminal.
+<HEADSET><clr:255,255,138>Depois você tem que se preparar para um combate.<sb>Eles não vão libertar o seu pai facilmente.
+<clr:255,190,255>Estarei pronta.
+<HEADSET><clr:255,255,138>OK. Esse é o terminal.
+<HEADSET><clr:255,255,138>Mas se apresse.
+<HEADSET><clr:255,255,138>É, deve ter uma bateria por aí.
+<HEADSET><clr:255,255,138>Não está faltando uma peça?
+<HEADSET><clr:255,255,138>OK, não se preocupe, mas o trem está chegando.
+<clr:255,190,255>Eu tenho olhos, Russell.
+<HEADSET><clr:255,255,138>É só eu me conectar rapidinho. Você está fazendo um ótimo trabalho.
+<clr:255,190,255>Estou fazendo um ótimo trabalho, não preciso me preocupar
+<HEADSET><clr:255,255,138>Está faltando uma peça!
+<HEADSET><clr:255,255,138>OK! Agora é só reativar o sistema.
+<clr:255,190,255>Era para esta peça sair?!
+<HEADSET><clr:255,255,138>É exatamente o contrário do que era para fazer, Alyx!
+<clr:255,190,255>E o que o eu
+O que eu faço agora?!
+<HEADSET><clr:255,255,138>Hum
+bem
+não entre em pânico! Ou pare de entrar em pânico! Se estiver.
+<clr:255,190,255>Não estou entrando em pânico!
+<HEADSET><clr:255,255,138>OK, mas eu estou! Temos que achar outro jeito de parar o trem!
+<clr:255,190,255>Tem que ter outro jeito de parar esse trem
+<HEADSET><clr:255,255,138>Então procure! Não temos muito tempo!
+<HEADSET><clr:255,255,138>Procure lá fora! TEM que haver algum sistema manual. Bem, tecnicamente não. Mas seria bom se tivesse. Por favor. [Riso nervoso]
+<HEADSET><clr:255,255,138>O sistema manual tem que estar lá fora, Alyx! Depressa!
+<HEADSET><clr:255,255,138>Procure uma alavanca!
+<HEADSET><clr:255,255,138>Procure uma alavanca! Temos que parar o trem!
+<HEADSET><clr:255,255,138>O trem chega em dez segundos, Alyx!
+<HEADSET><clr:255,255,138>OK, é só puxar a alavanca.
+<HEADSET><clr:255,255,138>Cinco segundos!
+<clr:255,190,255>Ela fica voltando!
+<HEADSET><clr:255,255,138>Você tem que puxar e segurar!
+<clr:255,190,255>Quem diria? Funcionou.
+<HEADSET><clr:255,255,138>Sim. Uau! Você está bem?
+<clr:255,190,255>Estou bem. Vamos atrás do meu pai.
+<HEADSET><clr:255,255,138>Certo. Procure o vagão de transporte de prisioneiros. Deve ser um dos vagões da frente.
+<clr:255,190,255>Vou achar um caminho pelos escombros.
+<HEADSET><clr:255,255,138>O que são essas coisas?
+<clr:255,190,255>Não sei. Mas temos que achar o meu pai.
+<HEADSET><clr:255,255,138>É, eu sei.<cr>É que eu nunca tinha visto essas coisas antes.
+<HEADSET><clr:255,255,138>Essa é a cápsula do seu pai.
+<clr:255,190,255>Ai, meu Deus. Cadê o meu pai?
+<clr:255,190,255>Pai? PAI?
+<clr:255,208,172>Estou aqui, querida!<sb>Preciso de ajuda. Rápido!
+<HEADSET><clr:255,255,138>Ai, meu Deus!
+<clr:255,208,172>Querida! Aqui!
+<clr:255,190,255>Estou indo!
+<clr:255,208,172>Querida!
+<clr:255,190,255>Já vou! Um segundo!
+<HEADSET><clr:255,255,138>Alyx, depressa!
+<clr:255,190,255>Está bem.<sb>Eu vou esticar o braço e te puxar.<sb>Vai dar tudo certo. Está pronto?
+<clr:255,208,172>Sim
+estou.
+<clr:255,190,255>Me dê a sua mão!
+<clr:255,208,172>Uh!
+<clr:255,190,255><sfx:1>[Grunhidos de dor]
+<clr:255,208,172>Rápido, querida!<sb>Rápido! Estou perdendo força.
+<clr:255,208,172>Me ajude a levantar
+Me ajude a levantar
+<HEADSET><clr:255,255,138>Ai, caramba!
+<clr:255,208,172>Quase
+Quase
+Ahh!
+<clr:255,208,172><sfx:1>[Suspiro, tentando respirar]
+<clr:255,190,255><sfx:1>[Suspiro de choque]
+<HEADSET><clr:255,255,138>Um vort! É um vort!
+<clr:255,190,255>É "O" vort!
+<clr:107,232,120>Alyx Vance!<sb>Vim para ajudar, como disse que o faria.
+<clr:255,208,172>Obrigado
+Obrigado
+Ai, meu Deus
+<clr:255,190,255>Obrigada! Meu Deus! Obrigada!<sb>Pai, fique aí!<sb>Vou descobrir como chegar aí embaixo!
+<clr:255,190,255>Fique aí!<cr>Vou descobrir como chegar aí!
+<clr:255,208,172>Não! Alyx, escute!<sb>A coisa que o Russell e eu descobrimos é tipo
+Tipo uma superarma!
+<clr:255,190,255>Uma superarma?
+<clr:255,208,172>É enorme.<sb>Ela fica guardada em algum cofre aqui na ZQ.<sb>Mas estão prestes a movê-la.<sb>Para onde, não sei, mas será em breve.
+<clr:255,190,255>Então precisamos roubá-la antes disso!
+<clr:255,208,172>Sim! E olhe, olhe
+<sb>Consegui roubar o drive de dados da Combine.<sb>Se eu conseguir descriptografá-lo, poderemos descobrir como usar a arma contra eles.
+<clr:255,190,255>Então, qual é o plano?
+<clr:255,208,172>Vá para o Cofre.<sb>Levarei isto de volta para o Russell e começarei a trabalhar.
+<HEADSET><clr:255,255,138>Espere. Onde FICA o Cofre?
+<clr:255,190,255>Pai! Onde fica o Cofre?
+<clr:107,232,120>Procure a Estrela do Norte
+Claro. Procurar a estrela. Entendi. Pai?
+<clr:255,208,172>Fica no meio da ZQ.<sb>E é enorme.<sb>Obtenha uma posição elevada e veja o que você consegue descobrir.
+<clr:107,232,120>Eu acompanharei o Eli Vance para garantir a sua segurança!
+<clr:255,190,255>Ótimo! Obrigada.
+<clr:255,208,172>Vá!
+<clr:255,190,255>Também te amo!
+<clr:107,232,120>Também te amo!
+<clr:255,190,255>Obrigada!
+<clr:255,190,255>Ei, Russ.<sb>Cuide do meu pai, OK?
+<HEADSET><clr:255,255,138>Eu aviso se ele chegar
+Ou melhor, QUANDO. Quando ele chegar.
+<clr:255,190,255>Pois é, QUANDO.
+<clr:255,190,255>Sabe
+foi complicado, mas <I>conseguimos<I> resgatar o meu pai.
+<HEADSET><clr:255,255,138>O que fizemos deve chamar a atenção.<sb>"Deve" não é a palavra certa.<sb> Certamente chamará a atenção.<sb>Olhe, eles estão te procurando.<sb>OK? Então, se cuide.
+<HEADSET><clr:255,255,138>Sabe, se conseguirmos roubar esta arma, poderemos mudar as coisas para sempre.
+<clr:255,190,255>Pois é. SE conseguirmos.
+<HEADSET><clr:255,255,138>Olhe, eu sei que só estamos trabalhando juntos há algumas horas, mas
+quero que saiba que estou orgulhoso de você.<sb>OK?<sb>Você está sob muita pressão.
+<clr:255,190,255>Nossa
+Russ.
+<HEADSET><clr:255,255,138>Tanta pressão que
+<sb>Bem, nem sei se eu deveria falar.<sb>Mas percebi que, quando tentou agarrar a mão do seu pai, se ele tivesse agarrado, a mão dele teria esmagado todos os sensores delicados das "Russells".
+<clr:255,190,255>Ah, está bem.
+<HEADSET><clr:255,255,138>Totalmente compreensível, e teria sido por uma boa causa, neste caso.
+<clr:255,190,255>Claro.
+<HEADSET><clr:255,255,138>Dito isso, não consigo imaginar OUTRA situação em que seria por uma boa causa.<sb>E, assim como o seu pai, as Russells NÃO têm preço, entende?<sb>Só digo isso
+para ter em mente daqui em diante.
+<clr:255,190,255>Russ, eu prometo que cuidarei bem das suas luvas.
+<clr:255,190,255>Meu Deus, Russ! Este crachá tem um retrato de um esqueleto.
+<HEADSET><clr:255,255,138><sfx:1>[Risada]
+<clr:255,190,255>Ah! Achei.
+<clr:255,190,255>Peguei.
+Aqui está.
+<clr:255,190,255>A-há!
+<clr:255,190,255>O meu pai disse que roubou uns arquivos sobre esta arma.
+<HEADSET><clr:255,255,138>Bem, quando o assunto é criptografia da Combine
+<clr:255,190,255>Você é mestre no assunto?
+Eli é mestre no assunto!
+<HEADSET><clr:255,255,138>Sistemas, robótica, redes
+Eu domino essas áreas.
+<clr:255,190,255>Mas não criptografia de dados.
+<HEADSET><clr:255,255,138>É como se estivesse falando um idioma alienígena. Neste caso, é mesmo. Mas enfim, o Eli é o mestre no assunto.
+<HEADSET><clr:255,255,138>Alyx! Olhe pela janela!
+<HEADSET><clr:255,255,138>Estou falando sério, Alyx. Olhe pela janela.<sb>Aquilo é o que eu acho que é?
+<HEADSET><clr:255,255,138>OK, ótimo. Você achou.<sb>Agora olhe pela janela. Vamos lá.<sb>Eu não posso olhar se você não olhar também.
+Aquilo só pode ser o Cofre.
+<HEADSET><clr:255,255,138>Sim. O seu pai não disse que flutuava.
+<clr:255,190,255>Ou seja, não basta CHEGAR lá, temos que SUBIR também.
+<HEADSET><clr:255,255,138>Os cabos! Olhe só a quantidade de cabos ligados nele.
+<HEADSET><clr:255,255,138>Só temos que segui-los
+<clr:255,190,255>E quebrar seja lá o que estiver na outra extremidade.
+<HEADSET><clr:255,255,138>E o Cofre cairá.<sb>Simples. Fácil de entender.<sb>Gostei deste plano.
+<HEADSET><clr:255,255,138>Você, acredito que por um bom motivo, se recusou a olhar pela janela.
+<HEADSET><clr:255,255,138>Então esqueça a janela. Do outro lado dela, estava o COFRE que o seu pai queria que procurássemos.<sb>Ele está flutuando no ar, o que complica de chegarmos nela.
+<HEADSET><clr:255,255,138>Mas está coberta de cabos!<sb>Aposto que, se seguirmos os cabos e destruirmos o que estiver do outro lado, devemos conseguir derrubar o Cofre.
+<clr:255,190,255>Precisarei olhar por alguma janela para derrubar o Cofre?
+<HEADSET><clr:255,255,138>Acho que não.
+<clr:255,190,255>Então, pode contar comigo.
+<clr:255,190,255>Ouviu a Combine falar da fuga do meu pai?
+<HEADSET><clr:255,255,138>Não, nada. Só falam sobre enviar reforços para a Zona de Quarentena.
+<clr:255,190,255>Pelo lado bom, isso significa que o meu pai está a caminho daí.<sb>Saberíamos se eles tivessem recapturado o Eli Vance.
+<HEADSET><clr:255,255,138>E, pelo lado ruim
+<clr:255,190,255>Chegar ao Cofre ficará cada vez mais difícil.
+<clr:255,190,255>Opa, granadas.
+Que desperdício de granada!
+<HEADSET><clr:255,255,138>Valeu a pena.
+<clr:255,190,255>Concordo.
+<clr:255,190,255>Acorde para a vida, zumbi.
+<clr:255,190,255>Cuidado
+<clr:255,190,255>Errei!
+<HEADSET><clr:255,255,138>Quase!
+<HEADSET><clr:255,255,138>Essa foi por pouco.
+<clr:255,190,255>Isso!
+<HEADSET><clr:255,255,138>Isso!
+<HEADSET><clr:255,255,138>Belo arremesso!
+<HEADSET><clr:255,255,138>Ei! No monitor. Combine.
+<clr:255,190,255>Estou vendo.
+<clr:18,199,226>Vigilância, daqui fala 5-6-0, atual.<sb>Atividade sísmica local detectada no setor 0-2, na escuta.
+<clr:166,242,255><I>A Vigilância detectou atividade.<sb>Confirmar setor 0-2, possível interferência de necróticos.<sb>Vasculhar o setor e informar a situação de contenção.<I>
+<clr:18,199,226>Avançando com contenção, redirecionando 5-6-0 para a estação do metrô.<sb>Iniciando ofensiva.
+Que ótimo
+<HEADSET><clr:255,255,138>Algo está se aproximando, Alyx!
+<clr:255,190,255>"Procure a Estrela do Norte
+<HEADSET><clr:255,255,138>Já estou. Por que está falando desse jeito?
+<clr:255,190,255>Não, não. O vortilético me disse "procure a Estrela do Norte" e pediu para eu ajudar os seus amigos. Achei que fosse coisa doida de Vortilético, mas não é.
+<HEADSET><clr:255,255,138>Ah. Sim, isso faz mais sentido.
+<HEADSET><clr:255,255,138>Hum. Aquilo parece ser uma subestação da Combine. Elas costumam ser usadas para gerar energia e armazenar protocolos de segurança.
+<clr:255,190,255>Como a energia e a segurança necessárias para um cofre gigantesco.
+<clr:255,190,255>E
+lá está o Cofre.
+<HEADSET><clr:255,255,138>É, aquela subestação deve estar mantendo-o no ar. Temos que subir até lá.
+<clr:255,190,255>Quantos cabos
+<clr:255,190,255>Não consigo descobrir como entrar neste treco.
+<HEADSET><clr:255,255,138>Eles nunca iriam deixar uma entrada desprotegida no meio da rua.
+<HEADSET><clr:255,255,138>Descubra como entrar no hotel e suba ao terraço.
+<HEADSET><clr:255,255,138>Alyx, acho que você devia descobrir como entrar no hotel e chegar à subestação.
+<HEADSET><clr:255,255,138>Ah! Elevador. É a nossa carona lá para cima.
+<HEADSET><clr:255,255,138>[Interferência]<sb>Hum. Isso foi estranho.
+<clr:255,190,255>Eeeee acabou a luz.
+<clr:255,190,255>Parece que vamos pela escada.
+<clr:255,190,255>Eeeeee a escada também está destruída.
+<HEADSET><clr:255,255,138>Vamos tentar religar a luz.
+<clr:255,190,255>Oba, caixas de força!
+<clr:255,190,255>Vamos tentar o elevador de novo.<sb>Vou religar a luz.
+<clr:255,190,255>Agora, sim
+achei as caixas de força.
+<HEADSET><clr:255,255,138>Este hotel é antigo.<sb>A fiação deve estar toda enrolada.
+<clr:255,190,255>A luz voltou.<sb>Vamos ver se o elevador está funcionando.
+<clr:255,190,255>Eca! Ninho de rato.
+<clr:255,190,255>Ainda nada do elevador funcionar.
+<clr:255,190,255>Bem, parece que está tudo certo.
+<clr:255,190,255>Talvez tenhamos deixado passar alguma coisa perto do elevador.
+<HEADSET><clr:255,255,138>Tem alguma caixa de força por aí?
+<clr:255,190,255>Nada, ainda estou procurando.
+<clr:255,190,255>Agora, sim.
+<clr:255,190,255>Pronto! Está ligada.
+<clr:255,190,255>Agora, só falta levar a energia ao elevador.
+<clr:255,190,255>E aqui vamos
+<clr:255,190,255>Hum.
+<clr:255,190,255>Este lugar está empestado.<sb>Sabemos se é muito perigoso?
+<HEADSET><clr:255,255,138>Bem, são esporos de outra dimensão, então
+provavelmente
+sim, extremamente.
+<HEADSET><clr:255,255,138>Mas é uma oportunidade rara de examinar a flora alienígena de perto.
+<HEADSET><clr:255,255,138>Opa! Cuidado com essas coisas pustulentas!
+<HEADSET><clr:255,255,138>Parecem ficar irritadas à medida que você se aproxima.
+<HEADSET><clr:255,255,138>Uh.
+<clr:255,190,255>Estou começando a achar que não deveria estar respirando este ar.
+<HEADSET><clr:255,255,138>Concordo. Continue andando.
+<HEADSET><clr:255,255,138>Tente talvez respirar menos.
+<HEADSET><clr:255,255,138>Alyx, como é a sensação?
+<clr:255,190,255>Meio
+pegajoso talvez? Faz cócegas.
+<clr:255,190,255>Ai!
+<HEADSET><clr:255,255,138>Qual foi a sensação?
+<clr:255,190,255>Afiada.
+<HEADSET><clr:255,255,138>Quão afiada?
+<clr:255,190,255>De 0 a 10, eu diria 6.
+<HEADSET><clr:255,255,138>OK, seis.
+<clr:255,190,255>Nota 6, com certeza.
+<HEADSET><clr:255,255,138>Ai, meu Deus! Não olhe para baixo.<sb>Não olhe para baixo!
+<clr:255,190,255>Russ, você nem está aqui!
+<clr:255,190,255>É. Mas é claro.
+<clr:255,190,255>Ai, não
+Esse cara está sem camisa.
+<clr:255,190,255>Ooobrigada.
+<clr:255,190,255>Russ, fale uma música.
+<HEADSET><clr:255,255,138>"Flight of the Bumblebee".
+<clr:255,190,255>É para já.
+<HEADSET><clr:255,255,138>É essa mesmo!
+<clr:255,190,255><delay:4>Ai, isso não é bom sinal.
+<HEADSET><clr:255,255,138>[Interferência] Alyx? Alyx, responda.
+<clr:255,190,255>Viu isso? Russell? Russell!
+<HEADSET><clr:255,255,138>[Interferência] Alyx! Alyx! O que aconteceu?
+<clr:255,190,255>Havia uma coisa tipo
+um cachorro
+elétrico.
+<HEADSET><clr:255,255,138>Ah, sinto muito, não vi.
+<clr:255,190,255>Eu o matei, e essa coisa saiu de dentro?
+<clr:255,190,255>Ei, Russell. Este troço caiu do cachorro.
+<HEADSET><clr:255,255,138>Huh, olhe lá. Que coisa interessante!
+<clr:255,190,255>Lá está, Russ!
+<clr:255,190,255><delay:3>Droga! Um cachorro elétrico.
+<HEADSET><clr:255,255,138>Cuidado, Alyx!
+<clr:255,190,255>Meu Deus, entrou em um cadáver!<sb>Russell?
+<HEADSET><clr:255,255,138>[Interferência] Alyx! O cachorro foi embora? O que aconteceu?
+<clr:255,190,255>Novidade:<sb>o cachorro elétrico entrou em um cadáver.
+<HEADSET><clr:255,255,138>Não pode ser!
+<clr:255,190,255>Sim.<sb>Eu tive que atirar nos dois. Foi coisa de LOUCO, Russell.
+<HEADSET><clr:255,255,138>Soa como coisa de louco.
+<clr:255,190,255>Ô, se foi.
+<HEADSET><clr:255,255,138>Essas barreiras da Combine são basicamente
+[Sinal fraco]
+<clr:255,190,255>Uh oh!
+<HEADSET><clr:255,255,138>[Interferência] Apareceu outro cachorro daqueles, Alyx?
+<clr:255,190,255>Sim, ufa
+Esse aí foi
+meio complicado.
+<HEADSET><clr:255,255,138>Mas você está bem?
+<clr:255,190,255>Sim, Russ, estou bem.
+<HEADSET><clr:255,255,138>Bem, temos que tirar você daqui e irmos até o terraço.
+<clr:255,190,255>Lá está.<sb>Aquele elevador me levará até a subestação.
+<clr:255,190,255>Achei um elevador para subir.
+<HEADSET><clr:255,255,138>Ah, graças a Deus!
+<clr:255,190,255>A subestação fica no andar acima do meu.
+<clr:255,190,255>Beleza. A subestação fica ali. Vou subir um andar e desativá-la.
+<clr:255,190,255>OK, estamos nos aproximando da subestação.
+<HEADSET><clr:255,255,138>Sim, você vai ter que atravessar essa barreira da Combine.
+<clr:255,190,255>Vou descobrir como desativá-lo.
+<clr:255,190,255>OK. Isto deve desativar a barreira.
+<HEADSET><clr:255,255,138>Você vai ter que achar a fonte de energia dessa barreira.
+<HEADSET><clr:255,255,138>Tem uma barreira da Combine bloqueando o caminho.
+<clr:255,190,255>Vou abri-la e desligá-la.
+<clr:255,190,255>Não quero parecer preocupada, mas o meu pai já não deveria ter voltado?
+<HEADSET><clr:255,255,138>Bem, vamos pensar um pouco, Alyx.<sb>Ele está a pé, andando a uns 5km por hora
+<HEADSET><clr:255,255,138>E ele é um fugitivo, só tem uma perna
+<sb>Há obstáculos, ele tem que dar voltas
+<sb>Sabe de uma coisa?<sb>Não vou mentir para você, ele já DEVERIA ter voltado.
+<clr:255,190,255>Pois é. Então eu <I>deveria<I> me preocupar.
+<HEADSET><clr:255,255,138>Normalmente, sim.<sb>Mas você está está indo em DIREÇÃO ao perigo, então eu diria que nós é que temos que nos preocupar com você.
+<HEADSET><clr:255,255,138>Alyx! Hoje é seu dia de sorte!<cr>Essa arma da Combine está desvinculada!
+<HEADSET><clr:255,255,138>Ela ainda está na caixa!<sb>Eles nunca as deixam na caixa.
+<HEADSET><clr:255,255,138>Nem precisei editar o seu código genético.
+<clr:255,190,255>Eu sei. Você ia adorar fazer isso.
+<HEADSET><clr:255,255,138>Tudo bem, fica para a próxima.
+<clr:255,190,255>Muito bem, cheguei.
+<HEADSET><clr:255,255,138>Agora é só cortar os cabos, e pronto.
+<clr:255,190,255>Não vai ser tão fácil quanto parecia lá de baixo.
+<clr:255,190,255>Não vejo como desconectar os cabos.
+<clr:255,190,255>Russ, não estou conseguindo descobrir como desconectar os cabos.
+<HEADSET><clr:255,255,138>Tente abrir a tampa protetora do cabo e disparar nele.
+<clr:255,190,255>Ah! Consegui.
+<clr:255,190,255>Ah! A conexão está protegida.
+<HEADSET><clr:255,255,138>Ótimo. Agora, vá lá dentro e desligue a fonte de energia.
+<clr:255,190,255>Isso.
+<clr:255,190,255>Valeu! Boa sorte!
+<clr:255,190,255>Valeu. Boa sorte.
+<clr:255,190,255>[Tossindo]
+o que
+<clr:255,190,255><sfx:1>[Suspiro]
+<clr:255,190,255><sfx:1>[Suspiro de surpresa]
+<HEADSET><clr:255,255,138>Minha nossa, é um vortilético
+<clr:107,232,120><sfx:1>[Suspiro]
+<clr:107,232,120>Estivemos aprisionados
+na escuridão.
+<clr:255,190,255>Você está livre.<sb>Está tudo bem. O seu amigo me enviou.
+<clr:107,232,120>A Alyx Vance
+você é nossa amiga.
+<clr:255,190,255>O que estão fazendo com você aqui?
+<clr:107,232,120>O que eles fazem com todos nós.
+<clr:107,232,120>Tenho que mostrar à Alyx Vance.
+<clr:107,232,120>Venha!
+<clr:107,232,120>Olhe para cá!
+<clr:107,232,120>A Alyx Vance precisa vir.
+<clr:107,232,120>Por favor, venha.
+<clr:107,232,120>A Combine extrai de nós o poder que usa para proteger a sua arma.
+<clr:107,232,120>Ali
+<clr:107,232,120>E ali
+nos separam da nossa essência.
+<clr:255,190,255>Precisamos impedi-los de matar todos os seus amigos.
+<clr:107,232,120>Os vortiléticos irão extrair a si mesmos e impor a sua vingança.<sb>VOCÊ precisa ir até a arma.
+<clr:255,190,255>Não posso entrar no Cofre se as subestações ainda estiverem ligadas.
+<clr:107,232,120>Não se preocupe, Alyx Vance.<sb>Elas <I>não<I> estarão ligadas.<sb><I>Não<I> permitiremos isso.
+<clr:107,232,120>Abrirei o caminho.
+<clr:107,232,120><sfx:1>[Grunhidos]
+<clr:107,232,120>Vá. Os nossos caminhos se divergem.<sb>Mas se lembre disto: não há distância entre nós.<sb>Compartilhamos do mesmo espaço-tempo.
+<clr:255,190,255>Tem gente demais aqui, Russ.
+<HEADSET><clr:255,255,138>Intensificaram a comunicação desde que desligamos aquela subestação.<sb>Eles sabem que estamos indo atrás do Cofre.<sb>Seja lá o que está lá dentro, eles não querem MESMO que caia nas nossas mãos.
+<clr:255,190,255>Isso só me fez querer mais.
+<HEADSET><clr:255,255,138>É assim que se fala.
+<HEADSET><clr:255,255,138>Botamos muita fé que aquele vortilético irá desligar todas as subestações.
+confio nele.
+<HEADSET><clr:255,255,138>Sim. Eu também.<cr>Porque, se ele não conseguir, o Cofre não vai a lugar algum.<sb>E estaremos lá, sem nenhum Cofre para arrombar, cercados pela Combine e
+<clr:255,190,255>Russ, confiar nele é<cr>o nosso único plano.<sb>Ele vai conseguir. Nós vamos conseguir.
+<HEADSET><clr:255,255,138>Sim, você tem razão. Ele vai ficar bem.<sb>Nós todos vamos ficar bem.
+<HEADSET><clr:255,255,138>Então, não há caminho direto daí até o Cofre.<sb>Então você vai ter que dar umas voltas para chegar lá.
+<clr:255,190,255>Bem, o Cofre é enorme, então não deve ser difícil saber para onde ir.
+<clr:255,190,255>Não entendo o que eles estão fazendo com ela aqui.
+<clr:255,190,255>Se a arma é tão poderosa, por que guardá-la em um lixão?
+<HEADSET><clr:255,255,138>O meu palpite é que eles querem mandá-la para fora da Terra.<sb>Para o planeta deles ou um outro qualquer.
+<clr:255,190,255>Por que não usá-la AQUI?
+eles já venceram esta guerra, Alyx.
+<clr:166,242,255><I>Convergir no setor estação 1, armas autorizadas.<sb>O alvo foi designado como objetivo principal.<sb>Processar à primeira vista.<I>
+<clr:166,242,255><I>Sujeito, você foi acusado de múltiplas violações de atividade anticívica de nível 5.<sb>Pedimos que coopere com a equipe de proteção terrestre.<sb>Equipe de proteção de terrestre: alerta.<cr>Código: confrontar, isolar, neutralizar.<I>
+<clr:255,190,255>O que você acha, Russ?<sb>Acho melhor cooperarmos.
+<HEADSET><clr:255,255,138>É, parece que ela está falando sério.
+<clr:255,190,255>Fizemos um bom trabalho.
+<HEADSET><clr:255,255,138>"Cooperar." Até parece
+<clr:18,199,226>Vigilância, sofremos muitas baixas do nosso objetivo principal de número 1.
+<clr:166,242,255><I>A Vigilância confirma o fracasso da contenção.<sb>Aguardar reforços.<sb>Supressor a caminho.<I>
+<clr:18,199,226><force>Em confronto com alvo, recuar e reforçar.
+<clr:255,190,255>Ufa! OK.
+<HEADSET><clr:255,255,138>Nossa, Alyx!
+<clr:255,190,255>Você está VENDO isso?!
+<clr:255,190,255>O quê?
+<HEADSET><clr:255,255,138>Os vortiléticos estão desligando a subestação!
+<clr:255,190,255>Sim!
+<HEADSET><clr:255,255,138>Talvez esse plano dê certo.
+<clr:255,190,255>Tomara.
+<HEADSET><clr:255,255,138>Alyx! Olhe para cima!
+<HEADSET><clr:255,255,138>Olhe para cima, para cima!
+<HEADSET><clr:255,255,138>Olhe quem voltou!<sb>Coloquei o drone para funcionar de novo!
+<HEADSET><clr:255,255,138>Ignore isso aí. Nos encontramos lá fora.
+<HEADSET><clr:255,255,138>Parece que há barricadas da Combine ali na frente.<sb>Eles estão impedindo qualquer um de se aproximar do Cofre.
+<clr:255,190,255>OK. Você tem alguma ideia?
+<HEADSET><clr:255,255,138>Entre na destilaria e descubra aonde pode ir a partir de lá.<sb>Com o meu drone funcionando, estamos com a vanta
+Ah, mas não é possível!
+<HEADSET><clr:255,255,138>Ah, mas não é possível!
+<clr:255,190,255>Eu não vejo uma entrada, então vou olhar em volta.
+<clr:255,190,255>Aliás, que lugar é este?
+<HEADSET><clr:255,255,138>É uma destilaria.<sb>É onde se produzia vodca e coisas assim.
+vodca é
+bom?
+<clr:255,190,255>Vodca é bom?
+<HEADSET><clr:255,255,138>Nem um pouco.
+<clr:255,190,255>O Russell não gosta de vodca, anotado.
+<HEADSET><clr:255,255,138>Bem, eu
+nunca disse isso!
+<clr:255,190,255>Mas não é bom?
+<HEADSET><clr:255,255,138>É veneno
+mas adoro.<sb>Todo mundo
+adora.
+Isso é meio confuso.
+<clr:255,190,255>Vou descobrir como entrar e arranjo uma garrafa para você.
+<HEADSET><clr:255,255,138>Seria ótimo
+se pudesse fazer isso.
+<clr:255,190,255>Este lugar está cheio de garrafas velhas.<sb>Álcool estraga?
+<HEADSET><clr:255,255,138>Só fica melhor! Estão todas boas, Alyx!
+<clr:255,190,255>Russell? O sinal está ruim.
+<HEADSET><clr:255,255,138>A vodca está boa, Alyx!<sb>A vodca está boa!
+<clr:255,190,255>Bem, fazer o quê?
+<HEADSET><clr:255,255,138>Alyx! Responda, Alyx!<sb>Alyx? Ah, aí está você.<sb>Aí está você.
+<clr:255,190,255>Ei, Russ.<cr>Os vortiléticos desligaram outra.
+<clr:255,190,255>Russ! Os vorts estão desligando outra subestação!
+<HEADSET><clr:255,255,138>Muito bem! É uma ótima notícia!
+<clr:255,190,255>Não há um caminho direto para o Cofre.<sb>Vou voltar lá para dentro e ver como contorno a barricada.
+<clr:255,190,255>Não há caminho direto para o Cofre.<sb>Vou voltar para dentro e procurar uma saída.
+<HEADSET><clr:255,255,138>OK, se o sinal cair de novo, lembre-se:<sb>vodca não estraga, está bem?<sb>Dura para sempre.
+<HEADSET><clr:255,255,138>Alyx, você nunca vai acreditar
+<clr:255,190,255>Russ? Uh.
+[Debatendo-se] Filho da
+[Debatendo-se] Qual é, seu maldito
+? Largue
+meu
+pé! Largue
+Ah!
+[Debatendo-se] Sabe, achei que tínhamos um acordo: você fica de boca fechada, e eu não atiro nela.
+[Debatendo-se] Só para deixar claro, a nossa amizade acabou.
+[Struggling] Droga
+<sfx:1>[Debatendo-se]
+[Debatendo-se]
+odeio
+tanto
+cracas
+há anos
+que venho sobrevivendo nesta
+fábrica idiota.<sb>Como
+continuo sendo pego
+por cracas?
+[Debatendo-se] Chega.<sb>Preciso cortar a perna.<sb>Você venceu. Espero que se engasgue com ela, sua maldita.
+[Debatendo-se] Há tantas formas melhores de morrer do que esta.<sb>Que indignidade!
+[Debatendo-se] Afogado.<sb> Atropelado por uma patrulha da Combine.<sb> Atropelado por um trípode.<sb>Afogado por um trípode.<sb>Destroçado por um trípode.<sb>Tuberculose.
+Opa! Ei! Ei!<sb>Você aí que está
+coberta de sangue.<sb>Você, coberta de sangue!
+Eu tenho um probleminha aqui.
+<clr:255,190,255>É, nem me diga.
+Você, por acaso, tem uma arma?
+Sim, olhe só. E é
+<sb>Ufa! E é uma das boas.
+Hum. Melhor do que a minha, que está dentro desse cara.
+Falando nisso, você poderia atirar nessa coisa?<sb>Por favor
+Escute, os meus braços ainda aguentam umas 4 ou 5 horas, então
+Então, não precisa se apressar. Mas, se não for incômodo
+<sb> Aiii
+poderia meter uma bala nele?
+Ah, ótimo!
+Ah, boa. A minha heroína.
+Ei, uma ajudinha?
+Hum. Obrigado.
+<clr:255,190,255>Que barulho foi esse?
+Ah, é o Jeff.
+<clr:255,190,255>Jeff?
+Ah, não se preocupe. Ele é cego.<sb>Mas ouve muito bem.
+Tem um ouvido como o de Mozart.
+<clr:255,190,255>Quem?
+OK. Agora, deixe eu te ajudar.
+Pronto.<sb>A gente se vê do outro lado, jovem.
+E fale baixo.
+[Sussurando] Lá está ele.
+<clr:255,190,255>Jeff.<I>
+[Sussurando] Certo. Veja só
+Viu? Ele é totalmente previsível.<sb>Mas arranca os seus braços se achar você.
+Ei, ei, ei, como assim?<sb>O Jeff é à prova de balas!
+<clr:255,190,255>Você só pode estar brincando
+<clr:255,190,255><sfx:1>[Tossindo]
+<clr:255,190,255><sfx:1>[Tosse]
+<clr:255,190,255><sfx:1>[Tossindo alto]
+<clr:255,190,255>[Tossindo] Droga!
+<clr:255,190,255>[Tossindo]Ah
+Ei, ei! Essas coisas são repugnantes!<sb>Você precisa cobrir a boca!
+<clr:255,190,255>Entendi, obrigada.
+<clr:255,190,255>[Tossindo] Entendi, obrigada.
+Ei, quase me esqueci de perguntar:<sb>qual é o seu nome?
+<clr:255,190,255>Alyx! Alyx Vance!
+Ei, Alyx. Eu sou o Larry.<sb>Muito prazer.<sb>Tente não morrer.
+Cubra a boca para não tossir!
+Ei! Ei!<sb>Cubra a boca para não tossir!
+Você está entregando a sua posição.<sb>Cubra a boca para não tossir!
+O Jeff pode ouvir você tossindo!<sb>Cubra a sua boca!
+<clr:255,190,255><sfx:1>[Suspiro apressado]
+Jeff, eu te odeio
+Ei! Alyx Vance!<sb>Você conseguiu!
+<clr:255,190,255>Pois é! Prendi o Jeff em um compactador de lixo.
+<clr:255,190,255>Aí, eu o esmaguei.
+Caramba!
+Bem, espero que você tenha encontrado birita da boa.<sb>A gente se vê por aí!
+<clr:255,190,255>Ai, meu Deus, Jeff!<sb>Você está bem? [Risos]
+<HEADSET><clr:255,255,138>Alyx, responda.<sb>Ei, Alyx! Ah, aí está você.<sb>Está me ouvindo?
+<clr:255,190,255>Mais ou menos
+O sinal está ruim.
+<HEADSET><clr:255,255,138>Acho que você ainda está na destilaria.
+<clr:255,190,255>Fiz um amigo chamado Jeff.
+<HEADSET><clr:255,255,138>Ótimo saber.<sb>Toda ajuda é bem-vinda.
+<clr:255,190,255>Bem, não somos tão próximos assim.
+<HEADSET><clr:255,255,138>Escute, deve ter uma escotilha do tamanho de um túnel no chão.<cr>Ele deve ser
+<clr:255,190,255>O túnel para sair daqui?
+<HEADSET><clr:255,255,138>Correto.<sb>Abra a escotilha, e eu tento descobrir aonde ela leva.
+<clr:255,190,255>A Combine lacrou esta saída.<sb>Estou tentando abri-la para dar o fora daqui.
+<HEADSET><clr:255,255,138>Ótimo!<sb>Vou tentar descobrir aonde ela dá.
+<HEADSET><clr:255,255,138>Achei vários dados de mapas subterrâneos da área da cidade em que você está!
+<clr:255,190,255>Não estou te ouvindo, Russell!
+<HEADSET><clr:255,255,138>Subterrâneos. Significa embaixo da terra.<sb>Sabe, por baixo. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Mas o que é aquilo?!
+<clr:255,190,255>AQUILO lá é o Jeff.
+<HEADSET><clr:255,255,138>Ah, é o Jeff. Não gostei do Jeff.
+<clr:255,190,255>Leva um tempo para se acostumar com ele.
+<clr:255,190,255>AQUILO é o Jeff
+E fale baixo!
+<HEADSET><clr:255,255,138>Ah, OK.<cr>Não gostei do Jeff.
+E, aliás, belo chapéu.
+Aliás, belo chapéu.
+Aliás, belo capacete.
+E, aliás, belo capacete.
+Aliás, belos chapéus.
+Ah, bela máscara.
+Isso vai ser útil.
+Ah, aliás, esse visual?<sb>Cai bem em você.
+Aliás, sabe isso aí que está na sua cabeça?<sb>Curti.
+Hum! Aliás, que bela máscara!
+Hum, bela máscara!<sb>Vai ser útil aqui.
+Ah, e caso você a perca, não se esqueça de cobrir a sua boca perto dessas coisas.
+Ah! Mas caso você a perca?<sb>Cubra a sua boca quando estiver perto dessas coisas.<sb>Elas são
+nojentas.
+OK, deixe comigo.
+<HEADSET><clr:255,255,138>OK, a barra está limpa.<sb>Está na hora de abrir a escotilha para podermos sair pelos túneis.
+<HEADSET><clr:255,255,138>Procure um painel de controle.
+<HEADSET><clr:255,255,138>Procure uma luz piscante.
+<HEADSET><clr:255,255,138>Notícia boa: esse túnel nos levará ao Cofre.
+<clr:255,190,255>Ótimo. Só para avisar caso o sinal caia de vez, eu acho que o túnel está cheio de formigas-leão.
+<HEADSET><clr:255,255,138>Formigas-leão, formigas-leão, formigas-leão
+<clr:255,190,255>É, você sabe. Alienígenas com pernas afiadas.
+<HEADSET><clr:255,255,138>Ah, sim! E bem pequenas, como formigas!
+<clr:255,190,255>Não.
+<HEADSET><clr:255,255,138>Hã, como leões bem pequenos.
+<clr:255,190,255>Não, não é isso.<sb>Esses são bem perigosos.
+<HEADSET><clr:255,255,138>Certo. Bem, sejam lá o que forem, estão nesse túnel.
+<clr:255,190,255>Sim. Lá vou eu.
+<HEADSET><clr:255,255,138>Pernuda! Ah, não, morreu.
+<clr:255,190,255>Aquilo é uma formiga-leão, Russell.
+<HEADSET><clr:255,255,138>Aquilo é uma formiga-leão?
+<clr:255,190,255>Sim.<sb>Então, você SABE o que são as formigas-leão.
+<HEADSET><clr:255,255,138>Sim. Eu chamo de pernudas.
+<clr:255,190,255>Russ? Você acha que um chupa-crânio pode transformar um gorila em um zumbi?
+<HEADSET><clr:255,255,138>Sinceramente, se tivesse um gorila à solta, não acho que um chupa-crânio iria piorar a situação.
+<clr:255,190,255>Russ, lamento não ter trazido uma garrafa para você.
+<HEADSET><clr:255,255,138>Tudo bem.<sb>Você pode pegar na volta.
+<clr:255,190,255>Sabe, espero que você saiba como é difícil andar carregando uma vodca.
+<clr:255,190,255>Sabe, espero que compreenda a dificuldade de ficar carregando uma caixa de vodca.
+<HEADSET><clr:255,255,138>Eu sei.<cr>Mas você tem duas mãos.<sb>Teria como trazer uma SEGUNDA na volta?
+<HEADSET><clr:255,255,138>Olhe, eu compreendo de verdade.
+<HEADSET><clr:255,255,138>Duas garrafas!
+<HEADSET><clr:255,255,138>Três garrafas!
+<HEADSET><clr:255,255,138>Uau, você superou as expectativas.<sb>É imprudente, excessivo
+e estou muito agradecido.
+<clr:255,190,255>Ah, uma delas é para mim.
+<HEADSET><clr:255,208,172>Prisão
+<clr:255,190,255>Espere
+Pai
+O quê?!
+<HEADSET><clr:255,255,138>O quê?
+<clr:255,190,255>Manter <I>o quê<I> lá dentro?
+<HEADSET><clr:255,208,172>Não sei.<sb>Nem sei se essa informação está no drive.<sb>Mas eles mantêm algo preso lá dentro.
+<clr:255,190,255>Uau! OK.<sb>Se não é uma arma, vamos seguir com o plano mesmo assim?
+<HEADSET><clr:255,208,172>A meu ver, seja lá o que estiver lá dentro não é muito fã da Combine.<sb>Então temos ISSO em comum.
+<clr:255,190,255>Verdade
+<HEADSET><clr:255,208,172>Então
+vamos seguir em frente?
+<clr:255,190,255>Chegamos até aqui, acho que devemos continuar.<sb>Se você descobrir que não deveríamos nos meter com essa coisa, abandonamos o plano.
+<HEADSET><clr:255,208,172>Essa é a minha garota.<sb>Vou te deixando atualizada.
+<clr:255,190,255>Ah, eles estão cercando o perímetro.
+<HEADSET><clr:255,255,138>Boa sorte tentando cercar alguém carregando uma "Alyx".
+<clr:255,190,255>É, boa sorte para mim.
+<clr:255,190,255>Eita! Russell!<sb>Os vorts desligaram a última subestação!
+<HEADSET><clr:255,255,138>Opa! Deixe-me ver!<sb>Eli!<cr>Os vorts acabaram de desligar a última subestação!
+<HEADSET><clr:255,255,138>Prepare-se, Alyx!<sb>Vai cair!
+<clr:255,190,255>Espere aí. Como assim
+<HEADSET><clr:255,255,138>Aquilo
+Eles ligaram algum sistema de emergência.
+<HEADSET><clr:255,255,138>Eles ligaram um sistema de emergência!
+<HEADSET><clr:255,208,172>Diga à Alyx que o sistema é instável.<sb>Ela consegue desligá-lo.
+<HEADSET><clr:255,255,138>O seu pai disse
+<clr:255,190,255>Eu ouvi.
+<clr:255,190,255>Então, tenho que ir na direção daqueles feixes. Confere?
+<HEADSET><clr:255,255,138>Isso. Só pode ser o posto de emergência.
+<clr:255,190,255>Espero que, quem quer que esteja lá, valha a pena.
+<HEADSET><clr:255,255,138>O que foi, Alyx?
+<clr:255,190,255>Nada. Estou a caminho.
+<clr:18,199,226><force>Ei! Cuidado. Não quero que essa gosma caia em mim.
+<clr:18,199,226>Por quê? É perigosa?
+<clr:18,199,226><force>Não estamos despejando em um fosso por ser seguro. Ande.
+<clr:255,190,255>Ufa, beleza. Última.
+<HEADSET><clr:255,255,138>Você está bem?
+<clr:255,190,255>Ei, Russ, você quer trocar de lugar?
+<HEADSET><clr:255,255,138>Melhor não
+Eu provavelmente morreria na hora.
+<clr:255,190,255>Há alguém lá em cima!
+<HEADSET><clr:255,255,138>Não é um Combine.<sb>Talvez um garimpeiro?<sb>Vá com cuidado.
+<HEADSET><clr:255,255,138>Eli! Venha cá!
+<clr:255,208,172>O que foi, Russell?
+<HEADSET><clr:255,255,138>Escute
+<clr:255,190,255>Ei, ei! Silêncio!
+Eu não estou brincando, vocês precisam movê-lo agora.
+<clr:255,190,255>Espere! Quieto!
+E por que não podem?
+Então, quem tem autorização?
+OK. Então, chamem-no.
+Ah, e o que eu estou fazendo aqui?<sb>Eu deveria ir embora.
+Vocês conquistaram o planeta em sete horas.<sb>Por que isto está demorando tanto?
+Ah, não, está tudo bem.<sb>Posso esperar.
+Foi sarcasmo.<sb>Aham. Bem, que bom que você percebeu
+<sb>Sim. Isto foi sarcasmo também.<sb>E, só para lembrar, o assunto que tenho a tratar com o seu chefe é o pouco tempo que temos.
+Bem, e se eu for chamar o MEU supervisor?<sb>Será que isso faria as coisas andarem?
+Não, a questão é essa.<sb>Eu <I>sou<I> o meu supervisor.<sb>Vocês estão me matando.
+Olá, OK, ótimo, até que enfim. Olá.
+Temos que mover a caixa ou isto vai acabar como Black Mesa.
+Bem, agora estou dizendo para vocês que ESTÁ pronto.
+Olhem, se ainda estiver aqui quando ela lá chegar, ele se vai.
+Depois do que aconteceu hoje, o que faz vocês acharem que vão conseguir impedi-la?
+Olhem, o sujeito que temos ali sobreviveu a Black Mesa.<sb>Ele virou aquele lugar do avesso e desapareceu do nada.<sb>Nós finalmente o capturamos, e vocês vão deixá-lo ir embora de novo?<sb>MOVAM A CAIXA.
+<HEADSET><clr:255,255,138>Sobreviveu a Black Mesa
+desapareceu do nada
+Eli!<sb>Eles TÊM uma superarma!
+<HEADSET><clr:255,208,172>Não acredito, Russ!<sb>Eles estão com o Gordon Freeman.
+<clr:255,190,255>Uau! Isso é bom, né?
+<HEADSET><clr:255,208,172>É muito, MUITO bom.
+<HEADSET><clr:255,255,138>Isto
+Isto é um milagre.
+<clr:255,190,255>Bem. Então
+vamos salvar o Gordon Freeman!
+<HEADSET><clr:255,208,172>Com toda a certeza.<sb>Vamos resgatar o Gordon Freeman.
+<clr:255,190,255>Opa. Vem alguém aí.<sb>Um segundinho.
+<clr:255,190,255>OK, o plano é chegar à sala de controle e resgatar o Gordon.<sb>Sabe, serei honesta. As pessoas falam muito dele, mas sempre achei que ele estivesse morto.
+<HEADSET><clr:255,255,138>Eu também.
+<clr:255,190,255>Ei, pai. Está ouvindo?
+<HEADSET><clr:255,208,172>Sim, o que houve, Alyx?
+<clr:255,190,255>Se o Gordon sobreviveu a Black Mesa
+Cadê ele?
+<HEADSET><clr:255,208,172>Não sei.<sb>Mas aposto que há uma história por trás.
+<clr:255,190,255>Quando resgatarmos o Gordon, podemos ousar, não acha, Russ?<sb>Talvez acabar com a Fortaleza.
+<HEADSET><clr:255,255,138>Bem, ele salvou a humanidade antes.<sb>Aposto que consegue salvá-la de novo.
+<clr:255,190,255>E, desta vez, ele não precisará fazer tudo sozinho.
+<HEADSET><clr:255,208,172>Alyx
+Você está aí?
+<clr:255,190,255>Estou, pai.
+<HEADSET><clr:255,208,172>Parece que dá para você entrar no Cofre daí de cima.<sb>Há um terminal que estende a ponte até a entrada.
+<clr:255,190,255>Como é a segurança lá dentro?
+<HEADSET><clr:255,208,172>Tenho tudo mapeado aqui e vou dizer uma coisa
+<sb>Existir segurança, EXISTE, mas nunca vi nada assim.<sb>Não faz sentido.
+<clr:255,190,255>Acho que vou ter que improvisar.
+<HEADSET><clr:255,208,172>Não se preocupe, querida. Vou dar um jeito.
+<clr:255,190,255>Aqueles feixes estão vindo do topo DESTA torre, né?
+<HEADSET><clr:255,255,138>Sim, isso mesmo.
+<clr:255,190,255>O que acha que eles estão fazendo aqui?
+<HEADSET><clr:255,255,138>Parece que estão
+ordenhando as pernudas
+<HEADSET><clr:255,255,138>Bom trabalho, Alyx.<sb>Eles estão fazendo de tudo para te pegar.
+<clr:255,190,255>Valeu, Russ. Estamos chegando perto.
+<HEADSET><clr:255,255,138>Eu estou gravando, Alyx!<sb>Não desvie o olhar!<sb>Olhe diretamente, para ficar para a posteridade!
+<clr:255,190,255>Lá está a sala de controle.
+<HEADSET><clr:255,255,138>Estou vendo. Estamos quase lá.
+<HEADSET><clr:255,255,138>Alyx, estamos próximos do Cofre.<sb>Você não terá mais muitas oportunidades de usar a sua resina.
+<clr:255,190,255>Verdade. Vou ver se há algum aprimoramento que eu possa fazer.
+<HEADSET><clr:255,255,138>Nem acredito que a minha pistola tenha durado tanto.
+<clr:255,190,255>Eu estava pensando em oferecê-la ao Gordon.
+<HEADSET><clr:255,255,138>Não, você está tentando me provocar.<sb>Não vou cair nessa.<sb>Mas, se não for o caso, não lhe entregue a escopeta.<sb>Reza a lenda que ele vira um monstro com uma escopeta.
+<clr:255,190,255>Bom saber.
+<HEADSET><clr:255,255,138>Alyx, bem na sua frente.<sb>Esses controles atracam o Cofre ao posto.
+<clr:255,190,255>Beleza, aqui vamos nós. Hora de resgatar o salvador da humanidade.
+<HEADSET><clr:255,208,172>Sabe, querida, você não tem se saído nada mal também.
+<HEADSET><clr:255,208,172>Você poderia ter ajudado a Terra na Guerra das Sete Horas.
+<clr:255,190,255>Talvez teríamos durado oito.
+<clr:255,190,255>E agora?
+<clr:255,190,255>Ah! Ótimo
+<clr:255,190,255>OK, OK, uma destas tem que estender a ponte
+certo?
+<HEADSET><clr:255,255,138>Tenho quase certeza. Escolha uma.<sb>Rápido.
+<clr:255,190,255>Uhhh
+<clr:255,190,255>ESTA aqui.
+<HEADSET><clr:255,255,138>Não
+essa, não.
+<HEADSET><clr:255,255,138>Não, essa não é a da ponte.
+<HEADSET><clr:255,255,138>Alyx, a ponte não está se movendo.<sb>Por que a ponte não está se movendo?
+<clr:255,190,255>Eu sei, Russ. Estou vendo que ela não está se movendo.
+<HEADSET><clr:255,255,138>Não.
+<HEADSET><clr:255,255,138>Um "não" ainda pior.
+<HEADSET><clr:255,255,138>Alyx
+Alyx
+ALYX
+ALYX!
+<clr:255,190,255>Meu Deus! Meu Deus
+MEU DEUS!
+<clr:255,190,255>Ahhh!
+<HEADSET><clr:255,255,138>Quando digo "rápido", quero dizer "já".
+<HEADSET><clr:255,208,172>Russell, deixe-a pensar!
+<HEADSET><clr:255,255,138>Agora, Alyx.
+<HEADSET><clr:255,255,138>Alyx, por favor, escolha uma.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, você está bem?
+Eu acho que matei o Gordon Freeman.
+<HEADSET><clr:255,255,138>O Cofre está bem ali.<sb>É só entrar e resgatá-lo.<sb>Ou o que restou dele.
+<clr:255,190,255>Estou a caminho.
+<clr:18,199,226><force><I>Comando solicitando relatório de danos.<I>
+<clr:18,199,226><force>Dano: 70%
+80%
+90%
+Total.
+<clr:18,199,226><force><I>Total?<I>
+<clr:18,199,226><force>Total.
+<clr:18,199,226><force><I>Reforços a caminho.<I>
+<clr:18,199,226><force>Sob fogo!
+<clr:18,199,226><force>Requer reparo ou extração.
+<clr:18,199,226><force>Não sei.
+<clr:18,199,226><force>Ele está chutando.
+<clr:18,199,226><force>A Vigilância mandou parar de chutar.
+<clr:18,199,226><force>Ele parou de chutar.
+<clr:18,199,226><force>Abaixe-se! Ela está aqui!
+<clr:18,199,226><force>Alvo localizado. Alvo localizado.
+<clr:18,199,226>Identidade do alvo desconhecida.
+<clr:18,199,226><force>É a Alyx Vance.
+<clr:18,199,226>Sem contato visual com a Alyx Vance.
+<clr:18,199,226><force>É a Alyx Vance!
+<clr:18,199,226><force>Claro que é a Alyx Vance.
+<clr:18,199,226>Comunicando relatório de danos à Vigilância.
+<clr:18,199,226>Câmbio?
+<clr:18,199,226>Repetindo. Comunicando relatório de danos à Vigilância.
+<clr:18,199,226>Confrontando!
+<HEADSET><clr:255,255,138>Um trípode.<cr>Mas está desativado.<sb>Que sorte.<sb>Poderia imaginar essa coisa no seu caminho?
+<clr:255,190,255>Caramba, Russ!<cr>Não venha rogar praga para cima de mim.
+<HEADSET><clr:255,255,138>Alyx! O trípode!<sb>Cuidado, está vivo!
+<clr:255,190,255>Droga! Estou indo. Estou indo.
+<HEADSET><clr:255,255,138>Droga! Roguei praga, não foi?
+<clr:255,190,255>Literalmente!<cr>Literalmente rogando praga, Russell!
+<clr:255,190,255>Ah! Movendo-me.<sb>Ainda estou me movendo.
+<clr:255,190,255>Russell! Há uma arma das grandes adiante.
+<HEADSET><clr:255,255,138>Tive uma ideia.
+<clr:255,190,255>Pois é, eu também.
+<clr:255,190,255>Eu também.<cr>E é das boas.
+<HEADSET><clr:255,255,138>Vá! Vá lá!<cr>Atire! Atire!
+<clr:255,190,255>Estou atirando!
+<HEADSET><clr:255,255,138>Ha! Está funcionando!<sb>Acho que está funcionando.<sb>Pelo menos, ele não parece estar contente. Continue atirando!
+<clr:255,190,255>Russell, deixe-me atirar!
+<HEADSET><clr:255,255,138>Vá, vá, isso! Isso!<sb>Continue atirando!<sb>Assim que se faz!<sb>Atire! Atire!<sb>Atire! Isso!
+<clr:255,190,255>[Risos de alívio]Conseguimos, Russ.
+<HEADSET><clr:255,255,138>Sim, conseguimos. Nós conseguimos.
+<HEADSET><clr:255,255,138>Ufa. OK, Alyx.<sb>Parece que esse feixe de tração levará você até o Cofre.
+<clr:255,190,255>Uau! Está bem. OK. Estou subindo.
+<HEADSET><clr:255,255,138>[Sinal fraco] Ah. Está causando muita interferência.<sb>Provavelmente, não conseguirei falar com você lá dentro.
+<clr:255,190,255>Não. Provavelmente, não.
+<HEADSET><clr:255,255,138>[Sinal fraco] Bem, então é isso.
+<clr:255,190,255>Pois é.
+<HEADSET><clr:255,255,138>[Sinal fraco] Depois você vai sair de lá, com o Gordon, sã e salva, e vai ficar tudo
+<clr:255,190,255>Vai ficar tudo bem, Russ.<cr>Nos falamos em breve.
+<HEADSET><clr:255,208,172>Russell, impeça-a!
+<HEADSET><clr:255,255,138>O quê? Por quê?
+<HEADSET><clr:255,208,172>Alyx! Não entre no Co
+[Sinal interrompido]
+<clr:255,190,255>Pai? Pai?
+<clr:255,190,255>Apartamentos, bem como o meu pai disse.
+<clr:255,190,255>OK, isto é esquisito. Mas
+não sei. Não me parece perigoso demais.
+<clr:255,190,255>Muito bem, tem que ser isto.
+<clr:255,190,255>OK, Gordon Freeman. Espero que você valha a pena.
+<clr:255,190,255>Beleza, Gordon. Vamos tirar você desta coisa.
+<norepeat_global:10>Excelente trabalho, Srta. Vance.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [Risada]
+<norepeat_global:10>Srta. Vance.<sb>Não seria preciso <I>disto<I> tudo para prender o Gordon Freeman.
+quem é você?
+<norepeat_global:10>Talvez aquilo o que eu <I>sou<I> não seja tão importante quanto aquilo que eu posso <I>oferecer<I> como recompensa por ter vindo até aqui.
+<norepeat_global:10>Alguns acreditam que o destino dos nossos mundos é <I>imutável<I>.
+<norepeat_global:10>Os meus empregadores discordam.<sb>Eles autorizam-me a dar
+<sb>um <I>empurrãozinho<I> em uma determinada direção de vez em quando.
+<norepeat_global:10>Em que <I>você<I> daria um empurrãozinho, Srta. Vance?
+<clr:255,190,255>Na expulsão da Combine da Terra.<cr>Eu quero a Combine fora da Terra.
+<norepeat_global:10>Ahhh.<sb>Nesse caso, seria um empurrãozinho enorme.<sb>Grande demais, dados os interesses dos meus empregadores.
+<clr:255,190,255>Bem, você perguntou.
+<norepeat_global:10>E se eu pudesse lhe oferecer algo que você nem <I>sabe<I> que quer?
+<clr:255,190,255>Onde
+Onde estamos?
+pai? Pai? O quê?<sb>Essa aí sou eu?<sb>O que é isso?<sb>O que está acontecendo?
+<norepeat_global:10>Estamos no futuro.<sb>Este é o momento em que você vê o seu pai morrer.
+<norepeat_global:10>A menos que
+<clr:255,190,255>O quê? A menos que O QUÊ?
+<norepeat_global:10>A menos que você resolva o problema por conta própria.
+<norepeat_global:10>Liberte o seu pai, Srta. Vance.
+<norepeat_global:10>A sua luva, Srta. Vance.
+<norepeat_global:10>Muito bem.<sb>Como consequência da sua ação, <I>esta<I> entidade prosseguirá.
+<norepeat_global:10>E esta entidade, não.
+<clr:255,190,255>Certo. Então
+ele está bem, né? Ele está vivo. O meu pai está vivo.
+<norepeat_global:10>Você <I>sabe<I> que provou ser extraordinariamente valiosa.
+<norepeat_global:10>Uma contratação anterior provou-se incapaz<sb> ou pouco disposta <sb>a realizar as tarefas que lhe foram atribuídas.
+<norepeat_global:10>Temos tido dificuldades em encontrar um substituto adequado.
+<norepeat_global:10>Até agora.
+<clr:255,190,255>Não! Eu
+Eu
+Eu só quero ir para casa. Me mande para casa!
+<norepeat_global:10>Temo que você não tenha compreendido bem a situação, Srta. Vance.
+<clr:255,190,255>Espere. Ei! Espere! Espere! Espere!
+<clr:255,208,172>Gordon! Gordon! Gordon, acorde!
+<clr:255,208,172>Ela sumiu, Gordon.<sb>Ela SUMIU.
+<clr:255,208,172>Aquele desgraçado e as "consequências inesperadas" dele!<sb>Eu sabia.<sb>Quando puser as minhas mãos nele, eu vou
+<sb>Vou MATÁ-LO. Tenho que resolver isso. Agora
+<clr:255,208,172><sfx:1>[Expirando profundamente]
+<clr:255,208,172>Vamos, Gordon.
+<clr:255,208,172>Temos trabalho a fazer.
+<clr:255,190,255>[Fungada] Eca! Esse troço fede.
+<HEADSET><clr:255,255,138>É mesmo?<sb>Fede tipo o quê? Seja específica.
+<clr:255,190,255>Como um animal podre misturado com
+amônia.
+Misturado
+com
+OK.
+<clr:255,190,255>Quanto mais eu toco nesta coisa, mais me convenço de que é tóxica.
+<HEADSET><clr:255,255,138>Mas e se curar o câncer?
+<clr:255,190,255>E se isso ME DER câncer?
+<HEADSET><clr:255,255,138>E se te causar um novo tipo de câncer?
+<clr:255,190,255>Russ, vou tocar menos nas coisas.
+<HEADSET><clr:255,255,138>Tudo bem.
+<clr:255,190,255><sfx:1>[Espirra]
+<HEADSET><clr:255,255,138>Saúde!
+Obrigada.
+<HEADSET><clr:255,255,138>Alyx, estou detectando uma alta concentração de antipartículas irradiando dessa coisa.<sb>Só avisando.<sb>Em termos quânticos, as coisas podem ficar estranhas.
+<clr:255,190,255>Russell, você tem assistido a tudo o que aconteceu hoje.
+<clr:255,190,255>SÓ AGORA que as coisas vão ficar estranhas?
+<HEADSET><clr:255,255,138>Sim.
+<clr:255,190,255>OK, estou me preparando.
+<clr:255,190,255>Eu acho
+Acho que matei todos os alienígenas. Acho que estão todos mortos.
+<HEADSET><clr:255,255,138>Isso é bom. Muito bom. É ótimo.
+<clr:255,190,255>Agora, vamos para o Cofre, vamos pegar a arma e vamos expulsar a Combine da Terra. Moleza. E eles... Sem falar dos sanduíches. Haverá sanduíches
+<HEADSET><clr:255,255,138>Sim. Com toda a certeza.
+<clr:255,190,255>Bem. Espero que eles estejam bem.
+<HEADSET><clr:255,255,138>Então, assim que expulsarmos a Combine da Terra, o que você vai fazer, Alyx?
+Bem, o meu pai e eu compraríamos uma casa e ajudaríamos na reconstrução, sabe? Depois, eu montaria um laboratório secreto.
+<HEADSET><clr:255,255,138>Bem, não precisa ser secreto.<cr>Você pode ter uma vida normal sem precisar se esconder.
+<clr:255,190,255>Bem, é. Eu teria um laboratório meu e nem precisaria de fechaduras, portas ou janelas que fechassem!
+<HEADSET><clr:255,255,138>Não é para tanto
+criminosos ainda existirão.<cr>Só os alienígenas que não.
+<clr:255,190,255>Ohhh. Pfft, está bom.
+<HEADSET><clr:255,255,138>Então eu diria para colocar portas e fechaduras, só
+<cr>só por precaução. E pode ficar com a pistola.
+<HEADSET><clr:255,255,138>Ei! O seu pai chegou!
+<clr:255,190,255>Ahh. Graças a Deus!
+<HEADSET><clr:255,208,172>Russell!<cr>Caramba, como é bom te ver!
+<HEADSET><clr:255,255,138>Bom te ver também! Que sensação ótima!
+<HEADSET><clr:255,255,138>Sinceramente, estimei que você tinha 4% de chance de sobreviver.
+<HEADSET><clr:255,208,172>Agradeça àquele vortilético. Ele que me trouxe são e salvo.
+<clr:255,190,255>Russ! Russell! Deixe eu falar com ele!
+<HEADSET><clr:255,208,172>Alyx! Querida!
+<clr:255,190,255>Pai! Acabamos de desligar uma subestação!
+<HEADSET><clr:255,208,172>Ótimo porque, quando eles moverem essa coisa, lá se foi a arma. Temos que pegá-la ainda esta noite.
+<clr:255,190,255>E vamos. Você ainda está com o drive de dados, né?
+<HEADSET><clr:255,208,172>Estou. Russ, este troço está biocodificado.<sb>Precisarei do TLI.
+<HEADSET><clr:255,255,138>Claro, ele está ali.
+<HEADSET><clr:255,208,172>OK, ótimo.<sb>Você está bem, querida?
+<clr:255,190,255>Com certeza. Vá em frente. Vou ficar bem, pai. Prometo.
+<HEADSET><clr:255,208,172>Cumpra essa promessa.<sb>Vou analisar o drive de dados.
+<HEADSET><clr:255,208,172>Descobri uma coisa.
+<clr:255,190,255>É, o quê, pai?
+<HEADSET><clr:255,208,172>Ainda não sei exatamente o que é a arma.<sb>Mas eu SEI como eles a obtiveram.
+<HEADSET><clr:255,208,172>Pelo visto, não foram eles que construíram a arma.<sb>Parece que eles
+<sb>Sei lá, descobriram alguma coisa.<sb>Ou talvez a tenham encontrado.
+<clr:255,190,255>Como assim?
+<HEADSET><clr:255,208,172>Pelo que estou entendendo, eles detectaram a arma em um prédio antigo na ZQ.<sb>Mas, em vez de entrarem para pegá-la, arrancaram o prédio de lá e construíram um cofre ao redor.
+<clr:255,190,255>Caramba!<sb>Eles deveriam estar morrendo de medo dessa coisa.
+<HEADSET><clr:255,208,172>Estou tentando descobrir se NÓS também deveríamos estar.
+<clr:255,190,255>Russ
+O que você acha que estão fazendo com o Gordon Freeman lá?
+<HEADSET><clr:255,255,138>Boa pergunta
+<clr:255,190,255>Será que estão
+sabe
+sugando o cérebro dele?
+<HEADSET><clr:255,255,138>Hum. Eu acho que vão movê-lo para fora do planeta.
+<clr:255,190,255>De qualquer forma, não vamos esperar para descobrir. Vou chegar lá antes que isso ocorra.
+<clr:255,190,255>Russ, que história é essa de pé de cabra?
+<HEADSET><clr:255,255,138>Está falando do pé de cabra do Gordon Freeman?
+<clr:255,190,255>Sim.
+<HEADSET><clr:255,255,138>Ah, Alyx, ele fugiu de Black Mesa armado SÓ com um pé de cabra.
+<clr:255,190,255>Impossível.
+<HEADSET><clr:255,255,138>É verdade! Bem, é verdade que é isso que eles dizem. Ninguém tem certeza.
+<clr:255,190,255>Bem, quando eu resgatá-lo, vamos dar uma arma para ele.
+<HEADSET><clr:255,255,138>Sim! Mas não a minha.<cr>Abandonei o ramo de empréstimo de armas, beleza?
+<HEADSET><clr:255,255,138>Sim! Mas não a minha.
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>O que está
+<clr:255,190,255>Como o meu pai está?<sb>Tudo bem com ele?
+<HEADSET><clr:255,255,138>Ah, ele está bem, Alyx.<cr>Ele está no canto dele, trabalhando.
+<clr:255,190,255>Bom saber. Bem, obrigada.
+<HEADSET><clr:255,255,138>Ah
+mas ele ESTÁ sem uma das pernas.
+<clr:255,190,255>Bem, ele já não tinha essa perna.
+<HEADSET><clr:255,255,138>Certo. Bem, ele continua sem ela.
+<HEADSET><clr:255,255,138>Não há de quê.
+<clr:255,190,255>Ei
+Alguma notícia sobre o drive de dados?
+<HEADSET><clr:255,255,138>Ah, o seu pai está concentrado,<cr>trabalhando nisso.<sb>Ele deve estar quase terminando.
+<clr:255,190,255>Ah! Está no meu rosto! No meu rosto!
+<clr:255,190,255>Meu Deus! MEU DEUS! NO MEU
+MEU DEUS, NÃO
+<clr:255,190,255>Ah! Me solte! Me solte!
+<clr:255,190,255><sfx:1>[Suspiros de tensão]
+<HEADSET><clr:255,255,138>Ai! Meu Deus!
+<HEADSET><clr:255,255,138>Tire isso!
+<clr:255,190,255>Estou tentando!
+<HEADSET><clr:255,255,138>É nojento!
+<HEADSET><clr:255,255,138>Ah, é horrendo!
+<HEADSET><clr:255,255,138>Ai, graças a Deus!
+<HEADSET><clr:255,255,138>Ai, Alyx, que asqueroso
+<clr:255,190,255>Pois é. Era mesmo.
+<HEADSET><clr:255,255,138>Ah! Chupa-crânio! Há um chupa-crânio na sua cara! Tire-o da sua cara, Alyx!
+<HEADSET><clr:255,255,138>Caramba, ele agarrou mesmo!
+<HEADSET><clr:255,255,138>Pegue-o! Bata nele!
+<HEADSET><clr:255,255,138>Bata nele, Alyx! Tire-o da sua cara!
+<clr:255,190,255>Ufa... Estou bem
+Estou bem
+<HEADSET><clr:255,255,138>Ele estava no seu rosto e
+era nojento.
+<clr:255,190,255>Russ, eles estão me chamando?
+<HEADSET><clr:255,255,138>Sim, não é bom sinal.
+<clr:255,190,255>Vamos
+<clr:255,190,255>Hum! Ai! Ui!
+<clr:255,190,255>Hum...
+<clr:255,190,255>Ohh
+Hum
+Eca.
+<HEADSET><clr:255,255,138>Peguei ele.
+<clr:255,190,255>A-há, peguei!
+<clr:255,190,255>Hum!
+<clr:255,190,255>Uh oh.
+<clr:255,190,255>Ah, droga!
+<clr:255,190,255>Tsc, tsc, tsc. Não funcionou.
+<clr:255,190,255>Não funcionou.
+<clr:255,190,255>Consegui.
+<clr:255,190,255>Ah! Peguei!
+<clr:255,190,255>Boa ideia.
+<clr:255,190,255>Hum. Boa ideia.
+<clr:255,190,255>Uh!
+<clr:255,190,255>Ha ha!
+<clr:255,190,255>Está bem
+<clr:255,190,255>Três últimos pentes.
+<clr:255,190,255>Só tenho mais três.
+<clr:255,190,255>Último.
+<clr:255,190,255>Último pente.
+<clr:255,190,255>Não tenho mais pentes.
+<clr:255,190,255>Não tenho mais pentes?
+<clr:255,190,255>Sem munição.
+<clr:255,190,255>Três últimos.
+<clr:255,190,255>Tenho mais três.
+<clr:255,190,255>Droga! Último pente.
+<clr:255,190,255>Ah, estou sem munição!
+<clr:255,190,255>Três últimos cartuchos.
+<clr:255,190,255>Último cartucho.
+<clr:255,190,255>Não tenho mais cartuchos.
+<clr:255,190,255>Ah, estou sem munição.
+<clr:255,190,255>Quatro últimos cartuchos.
+<clr:255,190,255>Quatro últimos.
+<clr:255,190,255>Dois últimos cartuchos.
+<clr:255,190,255>Dois últimos.
+<clr:255,190,255>Últimos dois cartuchos.
+<clr:255,190,255>Só mais dois.
+<clr:255,190,255>Três últimas baterias.
+<clr:255,190,255>Última bateria.
+<clr:255,190,255>Não tenho mais baterias.
+<clr:255,190,255><sfx:1>[Tosse abafada]
+<clr:255,190,255><sfx:1>[Imita barulho de armas]
+<clr:255,190,255>Ahh!
+<HEADSET><clr:255,255,138>Escuro demais. Você vai precisar de uma lanterna.
+<clr:255,190,255>Acho que você tem razão.
+<clr:255,190,255>Está escuro demais. Preciso de uma lanterna.
+<clr:255,190,255>Precisarei de uma lanterna para entrar ali.
+<clr:255,190,255>Eu não sobreviveria a um pulo desta altura.
+<HEADSET><clr:255,255,138>Não, nem pensar. Por quê? Pensou em pular?
+<clr:255,190,255>Acho que não.
+<clr:255,190,255>Não. Isso vai me matar.
+<clr:255,190,255>Tenho que ir.
+<clr:255,190,255>A gente se fala depois.
+<clr:255,190,255>Espere aí, tenho que ir.
+<clr:255,190,255>Russell, eu tenho que ir.
+<clr:255,190,255>Até mais, tenho que ir.
+<clr:255,190,255>Espere aí, estou ocupada.
+<clr:255,190,255>Espere aí, tenho companhia.
+<clr:255,190,255>Droga! Combine.
+<clr:255,190,255>Russell!
+<clr:255,190,255>AH!
+<clr:255,190,255>CARAMBA!
+<clr:255,190,255>AI!
+<clr:255,190,255>MEU DEUS!
+Beleza.
+<clr:255,190,255><sfx:1>[Engasgando]
+<clr:255,190,255><sfx:1>[Suspiro, tentando respirar]
+<HEADSET><clr:255,255,138>Escolha algo e aponte para ele com as "Russells".
+<HEADSET><clr:255,255,138>Agora aponte para algo com as "Russells".
+<HEADSET><clr:255,255,138>Aponte para algo com a mão.
+<HEADSET><clr:255,255,138>Você só precisa apontar para qualquer coisa com a mão.
+<HEADSET><clr:255,255,138>Você só precisa apontar para alguma coisa com a mão.
+<HEADSET><clr:255,255,138>Escolha um objeto e aponte para ele com a mão.
+<HEADSET><clr:255,255,138>Alyx? Alyx, ainda na escuta?
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Não tenho resina o suficiente para nada disso.
+<HEADSET><clr:255,255,138>Ah, você sabe o que falam sobre resina, Alyx.
+<clr:255,190,255>Não. O que eles falam sobre resina, Russ?
+"Procure
+ma
+Mais resina".
+<clr:255,190,255>Estááá bem. Ficarei de olho.
+<HEADSET><clr:255,255,138>É isso mesmo
+"Procure mais resina."
+<HEADSET><clr:255,255,138>Cuidado!
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, cuidado!
+<HEADSET><clr:255,255,138>Bom trabalho.
+<HEADSET><clr:255,255,138>E
+pronto.
+<HEADSET><clr:255,255,138>É isso.
+<HEADSET><clr:255,255,138>É isso aí. Perfeito.
+<HEADSET><clr:255,255,138>OK. Resolveu rapidinho.
+<HEADSET><clr:255,255,138>Funcionou.
+<HEADSET><clr:255,255,138>Parece ter funcionado.
+<HEADSET><clr:255,255,138>Continue procurando.
+<HEADSET><clr:255,255,138>Deve estar por aí.
+<HEADSET><clr:255,255,138>Está vendo alguma coisa? Não consigo ver nada.
+<HEADSET><clr:255,255,138>Tem que estar aí.
+<HEADSET><clr:255,255,138>Cuidado
+<HEADSET><clr:255,255,138>Um já foi.
+<HEADSET><clr:255,255,138>Você está quase lá.
+<HEADSET><clr:255,255,138>Não desperdice munição! Esse painel é blindado.
+<HEADSET><clr:255,255,138>Bem ali!
+<HEADSET><clr:255,255,138>Você tem companhia.
+<HEADSET><clr:255,255,138>Depois nos falamos.
+<HEADSET><clr:255,255,138>Vá lá!
+<HEADSET><clr:255,255,138>Sim, sim, vá lá.
+<HEADSET><clr:255,255,138>Ai!
+<HEADSET><clr:255,255,138>Ufa!
+<HEADSET><clr:255,255,138>Eita!
+<HEADSET><clr:255,255,138>Ahh!
+<clr:107,232,120>Ai!
+<clr:107,232,120>Hum! [Fungada]
+<clr:107,232,120>Sim, criatura.
+<clr:107,232,120>Hum
+Ahhh
+<sb>Interessante
+Ah, excelente
+<clr:107,232,120>Eu estava à sua espera, Alyx Vance.
+Vigilância: <clr:166,242,255><I>Alerta. Unidades terrestres.<I><sb><clr:255,255,255>Vigilância: <clr:166,242,255><I>Operação invasiva de origem anticidadã.<I><sb><clr:255,255,255>Vigilância: <clr:166,242,255><I>Código de resposta:<cr>confrontar, reprimir, investigar.<I>
+<clr:166,242,255><I>Alerta, unidades de resposta.<sb>Código atualizado:<sb>limpar, escoltar, continuar.<I>
+<clr:166,242,255><I>Um lembrete aos cidadãos:<cr>uma sociedade civilizada exige uma supervisão rápida e seletiva.<sb>Impeça outros cidadãos de ameaçarem a comunidade.<I>
+<clr:166,242,255><I>Atenção, por favor.<sb>O acesso a esta quadra não é permitido.<sb>Receber esta mensagem significa estar em violação do código civil.<I>
+<clr:166,242,255><I>Atenção, por favor.<sb>O acesso a esta quadra não é permitido.<sb>Agentes de segurança local enviados e autorizados a processar.<I>
+Vigilância: <clr:166,242,255><I>Atenção, por favor.<cr>Acesso não permitido.<I><sb><clr:255,255,255>Vigilância: <clr:166,242,255><I>A atividade de garimpo por anticidadãos resultará em processo capital imediato.<I>
+<clr:166,242,255><I>Alerta, unidades terrestres.<sb>Alerta, unidades de comando.<sb>Código de emergência: inválido.<I>
+<clr:166,242,255><I>Alerta de segurança.<sb>Readministração em curso.<sb>Código de ajuste de alocação de recursos:<sb>fulgurar, inspecionar, extirpar.<sb>Prioridade: imediata.<I>
+<clr:166,242,255><I>Alerta de segurança.<sb>Insurgência civil crítica.<sb>Mobilizar equipes técnicas para as quadras 49, 64, 77.<sb>Manter a prioridade.<I>
+<clr:166,242,255><I>Alerta de segurança.<sb>Equipes terrestres, lembrem-se:<cr>Fracasso na missão resultará em realocação permanente.<sb>Código de resposta: violar, manobrar, inocultar.<I>
+<clr:166,242,255><I>Violação crítica. Estado de alerta. Estado de alerta.<I>
+<clr:166,242,255><I>Alerta de sistema total.<sb>Abordagem da operação 5-1-2-9.<sb>Mobilização imediata e simultânea.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Código de resposta:<cr>escudar, trancar, migrar.<I>
+<clr:166,242,255><I>Alerta. Equipe de resposta.<sb>Protocolo de sobrecarga:<cr>Angular. Cauterizar. Ofuscar.<sb>Angular. Cauterizar. Ofuscar.<I>
+<clr:255,190,255>Vi uma alavanca lá fora!
+<HEADSET><clr:255,255,138>Boa! Uma alavanca misteriosa! Adorei!
+<HEADSET><clr:255,255,138>Para que serve?
+<clr:255,190,255>Serve para mover os trilhos!
+<clr:255,190,255>Não sei!
+<HEADSET><clr:255,255,138>Ah. Então, o trem do Eli será redirecionado
+contra um muro.
+<HEADSET><clr:255,255,138>Isso! Sim! Ele está em uma cápsula de prisioneiro! Ele vai ficar bem! Depressa, Alyx!
+<clr:255,190,255>Achei a alavanca!
+<clr:255,190,255>Russell! Olhe só esta alavanca!
+<HEADSET><clr:255,255,138>Puxe-a! Veja no que dá!
+<HEADSET><clr:255,255,138>Isso! Sim! Ele está em uma cápsula de prisioneiro! Ele vai ficar bem!
+<HEADSET><clr:255,255,138>Segure! Não solte!
+<HEADSET><clr:255,255,138>Depressa, Alyx!
+<HEADSET><clr:255,255,138>Isso! Agora mantenha a alavanca puxada, senão o trilho volta para a posição original.
+<HEADSET><clr:255,255,138>Continue segurando, Alyx!
+<HEADSET><clr:255,255,138>Dez segundos, Alyx!
+<HEADSET><clr:255,255,138>Quatro!
+<HEADSET><clr:255,255,138>Três!
+<HEADSET><clr:255,255,138>Dois!
+<HEADSET><clr:255,255,138>Um!
+<HEADSET><clr:255,255,138>Meu Deus!
+<clr:255,190,255>Trem, trem, trem, trem, TREM!
+<clr:255,190,255>Como você sabe disso tudo?
+<clr:255,190,255>Ei, como eu desconecto os cabos?
+<clr:255,190,255>Alguma notícia do meu pai?
+<clr:255,190,255>E desde quando isso é boa notícia?
+<clr:255,190,255>Aceito a sua explicação.
+<clr:255,190,255>Russell? O sinal ficou ruim de novo.
+<clr:255,190,255>Vou usar uma tecnologiazinha que gosto de chamar de "escada".
+<clr:255,190,255>Deixe para lá. Não vou usar a escada.
+<clr:255,190,255>O QUÊ?
+<clr:255,190,255>É a última subestação! Ele conseguiu!
+<clr:255,190,255>Pessoal, podemos resolver depois? Aquele cabo agitou um ninho de formigas-leão.
+<clr:255,190,255>Não sei.<sb>Mas alguma coisa está mantendo o Cofre lá em cima.<sb>E estamos ficando sem tempo para descobrir o que é.
+<clr:255,190,255>Ótimo! O que é, pai?
+<clr:255,190,255>OK, entendi.
+<clr:255,190,255>Há cabos saindo do Cofre.<sb>Acho que eles estão conectados a uma fonte de energia.<sb>Vou para lá e vou desconectá-los.<sb>Ou melhor
+Vou atirar neles.
+<clr:255,190,255>Exato. Afinal, o que ESTÁ lá dentro?
+<clr:255,190,255>Caraaamba!
+<clr:255,190,255>Pai, eu vou achar esse cofre!
+<clr:255,190,255>OK, parece que a ponte está completamente estendida
+<clr:255,190,255>OK, bem, uma destas tem que puxar o Cofre para atracar, certo? Certo?
+<clr:255,190,255>Hum. Não é isso.
+<clr:255,190,255>Beleza. Definitivamente, não.
+<clr:255,190,255>Talvez esta?!
+<clr:255,190,255>Isto não me parece nada bom
+Uh!
+<clr:255,190,255>Só preciso atracar DEVAGARINHO o Cofre À ponte.
+<clr:255,190,255>Quão difícil pode ser?
+<clr:255,190,255>Muito bem, lá vamos nós.
+<clr:255,190,255>Uau! Russel, está vendo isto?
+<clr:255,190,255>Xiu! Xiu! Silêncio!
+<clr:255,190,255>Ai, meu Deus!
+<clr:255,190,255>Não. Ainda estou procurando.
+<clr:255,190,255>Ai, meu Deus
+<clr:255,190,255><delay:3>O que
+? Meu Deus
+<sb>Obrigada! Obrigada!
+<clr:255,190,255>Está no meu rosto! Está no meu rosto!
+<clr:255,190,255>Russ! Está no meu rosto!
+<clr:255,190,255>Russ! Está no meu rosto! Está no meu rosto, Russ!
+<clr:255,190,255>OK. Estou bem. Estou bem.
+<clr:255,190,255>Pois é, estava. Eu estava lá.
+<clr:255,190,255>Eu sei que está no meu rosto, Russ!
+<clr:255,190,255>Aiii, não consigo tirá-lo!
+<clr:255,190,255>Russ, eu sei!
+<clr:255,190,255>Ufa!
+<clr:255,190,255>Au!
+<clr:255,190,255>Uia!
+<clr:255,190,255>Oh!
+<clr:255,190,255>Aaaai!
+<clr:255,190,255>Ui!
+<clr:255,190,255>Ufa.
+<clr:255,190,255>[Tossindo] Ufa
+<clr:255,190,255>[Tosse] Uh!
+<clr:255,190,255>Uh. OK.
+<clr:255,208,172><sfx:1>[Gemendo]
+<clr:255,208,172>Russell? Cadê ele?<cr>Ele está bem?
+<clr:255,208,172>Não temos tempo.<sb>É uma arma, Alyx!<sb>É isso o que eles estão escondendo aqui.<sb>Foi isso o que descobrimos e foi por isso que eles nos sequestraram.
+<clr:255,208,172>Eles a mantém em um cofre
+<sb>Em uma torre com seguranças por todo lado.
+<clr:255,208,172>Há uma subestação por perto.
+<clr:255,208,172>Alyx, independentemente do que essa arma for, roube-a ou a destrua.
+<clr:255,208,172>[Rindo] Eu te amo, querida.
+<clr:255,208,172>Eu te amo, querida!
+Eli: <clr:255,208,172><I>O que foi, Russell?<I>
+<HEADSET><clr:255,208,172>Não sei, mas
+<HEADSET><clr:255,208,172>Continue indo em direção ao Cofre.<sb>Vou inspecionar o drive de dados.<sb>Vai que descubro alguma coisa.
+<HEADSET><clr:255,208,172>Alyx! Descobri uma coisa!
+<HEADSET><clr:255,208,172>Há um Gerador de Campo Gravitacional bem embaixo do Cofre.<sb>Só PODE ser isso que o mantém flutuando.
+<HEADSET><clr:255,208,172>Bem ali. Aquele é o Gerador de Campo Gravitacional.
+<HEADSET><clr:255,208,172>Lá vem ele
+<HEADSET><clr:255,208,172>Continuo investigando.<sb>Alyx, ache um jeito de entrar lá. Vá!
+<clr:255,208,172>Cuide-se, querida. Eu te amo.
+<HEADSET><clr:255,208,172>Não é um cofre.<sb>É uma prisão.<sb>Não foi construída para nos manter do lado de FORA.<sb>Eles querem manter algo lá DENTRO.
+<norepeat_global:10>Esta é uma pergunta com diversas...
+<clr:255,255,138>Pegue a pistola, Alyx!
+<HEADSET><clr:255,255,138>Duvido que vá precisar usá-la muito.<sb>Não deve haver muitos Combine transportando o Eli.
+<HEADSET><clr:255,255,138>Ahh, certo. A "Alyx".
+<HEADSET><clr:255,255,138>Isso consegue manipular a gravidade à distância?
+<HEADSET><clr:255,255,138>Imaginei que não.<sb>Também reparei que não pode ser usada como uma luva.
+<HEADSET><clr:255,255,138>Está bem, chega de conversa. Temos que ir salvar o seu pai, vamos lá.
+<HEADSET><clr:255,255,138>Alyx? O sinal caiu por um momento.<sb>O que aconteceu?
+<HEADSET><clr:255,255,138>Sim, Alyx?
+<clr:255,255,138>Alyx, aqui! Vou jogar um pente.
+<clr:255,255,138>Aqui vai.
+<HEADSET><clr:255,255,138>Alyx, o painel de controle é esse aí.
+<HEADSET><clr:255,255,138>Se você conseguir religar o sistema, eu devo conseguir parar o trem do Eli.
+<HEADSET><clr:255,255,138>Alyx, esse é o painel de controle!
+<HEADSET><clr:255,255,138>Atire neles, Alyx!
+<HEADSET><clr:255,255,138>Sim! Entendi completamente!
+<HEADSET><clr:255,255,138>Você tem mesmo jeito para matar alienígenas!
+<HEADSET><clr:255,255,138>É alarmante, para dizer a verdade!
+<HEADSET><clr:255,255,138>Estão colocando-o no trem agora<cr>O que é bom.<sb>Isso quer dizer que ele ainda está vivo.
+<HEADSET><clr:255,255,138>Bom, a boa notícia é que eles vão torturá-lo quando chegarem a Nova Prospekt.
+<HEADSET><clr:255,255,138>Porque, pensando logicamente, não há por que torturá-lo no caminho.
+<HEADSET><clr:255,255,138>Ah. Vá para o terraço. Procure a subestação.
+<HEADSET><clr:255,255,138>OK, agora vá para o terraço e descubra como acessar a estação.
+<HEADSET><clr:255,255,138>Há um elevador, mas será complicado religar a luz.
+<HEADSET><clr:255,255,138>Sim, compreendo.
+<HEADSET><clr:255,255,138>Ahhh.
+<HEADSET><clr:255,255,138>Alyx! O drone voltou a funcionar!<sb>Daqui de cima, parece que há barricadas da Combine ali na frente, impedindo qualquer um de se aproximar do Cofre.
+<HEADSET><clr:255,255,138>Mate a pernuda!
+<HEADSET><clr:255,255,138>Sim! Pernudas! E elas podem matar, Alyx, então tenha cuidado!
+<HEADSET><clr:255,255,138>Alyx! Olhe!
+<HEADSET><clr:255,255,138>Eu não entendo. Toda aquela energia dos vortiléticos
+Se não é ela que faz o Cofre flutuar, ela servia para o quê?
+<HEADSET><clr:255,255,138>Boa notícia: o Cofre foi ao chão. Essa era a parte complicada. Agora, a parte mais fácil: pegar o que estiver lá dentro.
+<HEADSET><clr:255,255,138>Justo. Agora vamos para a parte mais fácil: pegar o que estiver lá dentro. Eli? O que está lá dentro?
+<HEADSET><clr:255,255,138>Ahh.
+<HEADSET><clr:255,255,138>Você acha que
+morreu?
+<clr:255,255,138>Isso!
+<HEADSET><clr:255,255,138>Podemos pegar um atalho por aquele prédio.
+<HEADSET><clr:255,255,138>Ebaaa!
+<HEADSET><clr:255,255,138>Eita.
+<HEADSET><clr:255,255,138>Eli, venha cá!
+<HEADSET><clr:255,255,138>Opa! Isso deve ajudar.
+<HEADSET><clr:255,255,138>Quase hackeado
+<HEADSET><clr:255,255,138>Alyx!
+<clr:107,232,120>Então, você o fará! Coragem, Alyx Vance!
+<clr:107,232,120>O Eli Vance! A Alyx Vance!<sb>Estou aqui para ajudar, como disse que o faria.<sb>Vá. Garantirei a segurança do seu pai.
+<clr:107,232,120><sfx:1>[Grunhindo]
+<clr:107,232,120>Vou acompanhar o Eli Vance a um lugar seguro.
+<clr:107,232,120>Não
+os vortiléticos irão extrair a si mesmos e impor a sua vingança.<sb>VOCÊ precisa ir até a arma.
+<clr:107,232,120>Agora, vá! Cada um de nós tem o seu caminho.<sb>Não podemos falhar.
+<clr:107,232,120>Sem charadas!<sb>A Combine perfurou aqui dentro.<sb>Estou separado da vortessência.<sb>Estou sozinho na minha cabeça.
+<clr:107,232,120>Estou enfraquecido.<sb>A vortessência está distante de mim
+<sb>Ouço a sua canção, mas de muito longe.
+Eu aconselho evitá-lo.
+Estou indo.<sb>Mas boa sorte.<sb>E não subestime o nosso querido Jeff.<sb>Ele
+Ele não tem muita paciência.
+Ei! O que você fez com o Jeff?
+Caramba!<sb>Bem, eu
+Eu espero que você tenha encontrado birita da boa.<sb>A gente se vê por aí!
+Qual é o seu nome?
+Alyx!
+<clr:18,199,226>Queremos nomes.
+<clr:18,199,226>Não queremos saber disso.<cr>O que viu? Quem estava com você?
+<clr:18,199,226>Vamos fazer com que ele fale.<cr>Levem-no ao camburão!
+<clr:18,199,226>Ela também.
+<clr:18,199,226>Área segura.
+<clr:18,199,226>Prenda-o.
+<clr:18,199,226>E ela?
+<clr:18,199,226>Para TRÁS!
+<clr:18,199,226><force>Mãos para cima!
+<clr:18,199,226><force>Levante as mãos!
+<clr:18,199,226><force>Ela não tem nada.
+<clr:18,199,226>Para trás!
+<clr:18,199,226>Para trás! PARA TRÁS!
+<clr:18,199,226>Eu disse: mãos para cima!
+<clr:18,199,226>Mantenha essas mãos para cima!
+<clr:18,199,226>Levante as mãos!
+<clr:18,199,226>Coloque as mãos para cima!
+<clr:18,199,226>Ela não tem nada.
+<clr:18,199,226>Avançando.
+<clr:18,199,226>Avançando agora.
+<clr:18,199,226>Pressionando.
+<clr:18,199,226>Aproximando-me do alvo.
+<clr:18,199,226>Pressionar.
+<clr:18,199,226>Avançando no infectado.
+<clr:18,199,226>Avançar lentamente.
+<clr:18,199,226>Martelo Muralha. Avançando.
+<clr:18,199,226>Afirmativo. Avançando no contaminante.
+<clr:18,199,226>Pressionar. Pressionar.
+<clr:18,199,226>Equipe de estabilização avançando e pressionando.
+<clr:18,199,226>Aproximando-me do infectado.
+<clr:18,199,226>Martelo Muralha avançando no infectado.
+<clr:18,199,226>Martelo Muralha está avançando no setor.
+<clr:18,199,226>Aproximando-me do contaminante.
+<clr:18,199,226>Martelo Muralha.<cr>Avançando no alvo.
+<clr:18,199,226>Martelo Muralha.<cr>Avançando.
+<clr:18,199,226>Iniciando ofensiva.
+<clr:18,199,226>Confrontando.
+<clr:18,199,226>Atacando alvo.
+<clr:18,199,226>Processando.
+<clr:18,199,226>Martelo Muralha. Atenção total no hostil.
+<clr:18,199,226>Aproveitando.
+<clr:18,199,226>Alvo na mira. Adagas autorizadas.
+<clr:18,199,226>Armas autorizadas.
+<clr:18,199,226>Alvo 1.
+<clr:18,199,226>Cesse.
+<clr:18,199,226>É a Alyx.
+<clr:18,199,226>Alyx confirmada.
+<clr:18,199,226>Adagas apontadas para a Alyx.
+<clr:18,199,226>Adagas autorizadas no alvo 1.
+<clr:18,199,226>Disparando contra hostil principal.
+<clr:18,199,226>É ela. Martelo Muralha confrontando.
+<clr:18,199,226>Alvo principal confirmado.
+<clr:18,199,226>Interrompendo cobertura.
+<clr:18,199,226>Violação de código no setor
+<clr:18,199,226>Designar cobertura-alvo como sombra.
+<clr:18,199,226>Expondo hostil na contagem de três.
+<clr:18,199,226>Alvo protegido. Retificando.
+<clr:18,199,226>Removendo suporte.
+<clr:18,199,226>Adagas apontadas para a cobertura.
+<clr:18,199,226>Atenção total na cobertura-alvo.
+<clr:18,199,226>Martelo Muralha. Iniciando ofensiva na cobertura.
+<clr:18,199,226>Quicadora lançada.
+<clr:18,199,226>Granada lançada.
+<clr:18,199,226>Extrator lançado.
+<clr:18,199,226>Quicadora. Quicadora.
+<clr:18,199,226>Abaixem-se.
+<clr:18,199,226>Quicadora na contagem de três.
+<clr:18,199,226>Extraindo.
+<clr:18,199,226>Acionando granada.
+<clr:18,199,226>Afastando-me.
+<clr:18,199,226>Saltitante jogada.
+<clr:18,199,226>Formiga-leão.
+<clr:18,199,226>Alvo: formiga-leão.
+<clr:18,199,226>Contato. Formiga-leão.
+<clr:18,199,226>Formiga-leão se aproximando.
+<clr:18,199,226>Martelo Muralha na formiga-leão.
+<clr:18,199,226>Formiga-leão. Martelo Muralha confrontando.
+<clr:18,199,226>Formiga-leão. Setor
+<clr:18,199,226>Parasitas.
+<clr:18,199,226>Contato. Parasitas.
+<clr:18,199,226>Parasitas se aproximando.
+<clr:18,199,226>Martelo Muralha. Contato visual com parasitas.
+<clr:18,199,226>Convis. Parasitas.
+<clr:18,199,226>Temos parasitas.
+<clr:18,199,226>Parasitas vivos.
+<clr:18,199,226>Infestação de parasitas confirmada.
+<clr:18,199,226>Necróticos.
+<clr:18,199,226>Necróticos se aproximando.
+<clr:18,199,226>Infestação confirmada.
+<clr:18,199,226>Martelo Muralha. Contato visual com necróticos.
+<clr:18,199,226>Contato. Necróticos.
+<clr:18,199,226>Linha de visão sobre necróticos.
+<clr:18,199,226>Necróticos ativos.
+<clr:18,199,226>Convis. Necróticos.
+<clr:18,199,226>Temos necróticos.
+<clr:18,199,226>Hostil abatido.
+<clr:18,199,226>Alvo abatido.
+<clr:18,199,226>Abate confirmado.
+<clr:18,199,226>Abate limpo.
+<clr:18,199,226>Outro abatido.
+<clr:18,199,226>Isso é tudo.
+<clr:18,199,226>Contato abatido.
+<clr:18,199,226>Morreu.
+<clr:18,199,226>Martelo Muralha. Abate confirmado.
+<clr:18,199,226>Hostil neutralizado.
+<clr:18,199,226>Terminado.
+<clr:18,199,226>Hostil finalizado.
+<clr:18,199,226>Viroma abatido.
+<clr:18,199,226>Eliminado.
+<clr:18,199,226>Alvo esterilizado.
+<clr:18,199,226>Parasitas contidos.
+<clr:18,199,226>Um parasita eliminado.
+<clr:18,199,226>Parasita eliminado.
+<clr:18,199,226>Um se foi.
+<clr:18,199,226>Parasita contido.
+<clr:18,199,226>Que nojo!
+<clr:18,199,226>Surto ineficaz.
+<clr:18,199,226>Surto contido.
+<clr:18,199,226>AAI contido.
+<clr:18,199,226>Ordenante, o alvo 1 foi silenciado.
+<clr:18,199,226>Ela foi terminada.
+<clr:18,199,226>Ordenante. Alyx finalizada.
+<clr:18,199,226>Alyx assegurada.
+<clr:18,199,226>Alyx entregue.
+<clr:18,199,226>Morta.
+<clr:18,199,226>Eliminada.
+<clr:18,199,226>Necrótico contido.
+<clr:18,199,226>Não levante.
+<clr:18,199,226>Necrótico abatido no setor
+<clr:18,199,226>Necrótico eliminado.
+<clr:18,199,226>Morto.
+<clr:18,199,226>Limpeza bem-sucedida.
+<clr:18,199,226><sfx>[Respirando com dificuldade]
+<clr:18,199,226><sfx>[Tossindo e sibilando]
+<clr:18,199,226>Alfa.
+<clr:18,199,226>E...
+<clr:18,199,226>Bravo.
+<clr:18,199,226>Charlie.
+<clr:18,199,226>Traço.
+<clr:18,199,226>Delta.
+<clr:18,199,226>Echo.
+<clr:18,199,226>8.
+<clr:18,199,226>11.
+<clr:18,199,226>50.
+<clr:18,199,226>5.
+<clr:18,199,226>40.
+<clr:18,199,226>4.
+<clr:18,199,226>100.
+<clr:18,199,226>9.
+<clr:18,199,226>Nulo.
+<clr:18,199,226>1.
+<clr:18,199,226>70.
+<clr:18,199,226>7.
+<clr:18,199,226>60.
+<clr:18,199,226>6.
+<clr:18,199,226>10.
+<clr:18,199,226>30.
+<clr:18,199,226>1.000.
+<clr:18,199,226>3.
+<clr:18,199,226>20.
+<clr:18,199,226>2.
+<clr:18,199,226>Alyx.
+<clr:18,199,226>Anticidadãos.
+<clr:18,199,226>FPA.
+<clr:18,199,226>Muralha Lâmina.
+<clr:18,199,226>Co-muralha.
+<clr:18,199,226>Aliado.
+<clr:18,199,226>Muralha Martelo.
+<clr:18,199,226>Hostis.
+<clr:18,199,226>Parasitas livres.
+<clr:18,199,226>Necrótico.
+<clr:18,199,226>Parasita.
+<clr:18,199,226>Guardião.
+<clr:18,199,226>Martelo Muralha.
+<clr:18,199,226>Em cima.
+<clr:18,199,226>Apartamento.
+<clr:18,199,226>Barris.
+<clr:18,199,226>Atrás.
+<clr:18,199,226>Embaixo.
+<clr:18,199,226>Tijolos.
+<clr:18,199,226>Ponte.
+<clr:18,199,226>Edifício.
+<clr:18,199,226>Carro.
+<clr:18,199,226>Guindaste.
+<clr:18,199,226>Porta.
+<clr:18,199,226>Elevador.
+<clr:18,199,226>Na frente.
+<clr:18,199,226>Cabana.
+<clr:18,199,226>Canos.
+<clr:18,199,226>Barraco.
+<clr:18,199,226>Banheiro.
+<clr:18,199,226>Vagão.
+<clr:18,199,226>Lixo.
+<clr:18,199,226>Caminhão.
+<clr:18,199,226>Túnel.
+<clr:18,199,226>Van.
+<clr:18,199,226>Rodas.
+<clr:18,199,226>Lenha.
+<clr:18,199,226>Investindo.
+<clr:18,199,226>Investindo agora.
+<clr:18,199,226>Investida.
+<clr:18,199,226>Rahhh!
+<clr:18,199,226>Investida rápida.
+<clr:18,199,226>Preciso de cobertura.
+<clr:18,199,226>Cobertura.
+<clr:18,199,226>Cobertura. Martelo Muralha.
+<clr:18,199,226>Preciso de fogo de cobertura.
+<clr:18,199,226>Martelo Muralha. Solicitando cobertura.
+<clr:18,199,226>Esquivando-me.
+<clr:18,199,226>Granada.
+<clr:18,199,226>Protegendo-me.
+<clr:18,199,226>Granada ativa.
+<clr:18,199,226>Quicadora audível. Esquivando-me.
+<clr:18,199,226>Granada. Mexam-se.
+<clr:18,199,226>Emparedar.
+<clr:18,199,226>Alerta no raio.
+<clr:18,199,226>Afastando-me com emparedamento.
+<clr:18,199,226>Quicadora ativa.
+<sfx><norepeat:3><clr:255,0,0>[Combine morrendo]
+<clr:18,199,226>Martelo Muralha abatido.
+<clr:18,199,226>Alyx
+<clr:18,199,226>Vigilân
+<clr:18,199,226>Martelo Muralha. Aproximando-me.
+<clr:18,199,226>Martelo Muralha. Trocando posição.
+<clr:18,199,226>Fixando contato visual.
+<clr:18,199,226>Aperfeiçoando linha de visão.
+<clr:18,199,226>Realinhando-me ao hostil.
+<clr:18,199,226>Estabelecendo confirmação visual.
+<clr:18,199,226>Removendo bloqueio na linha de visão.
+<clr:18,199,226>Sem contato visual com o alvo. Movendo-me.
+<clr:18,199,226>Realinhando delta ao alvo.
+<clr:18,199,226>Fique aí.
+<clr:18,199,226>Trocando posição.
+<clr:18,199,226>Otimizando localização.
+<clr:18,199,226>Otimizando convis.
+<clr:18,199,226>Problema com contato visual. Movendo-me.
+<clr:18,199,226>Abrindo linha de visão.
+<clr:18,199,226>Formando linha de visão.
+<clr:18,199,226>Contato visual na contagem de três.
+<clr:18,199,226>Expondo alvo 1.
+<clr:18,199,226>Não se mexa.
+<clr:18,199,226>Ei, Alyx!
+<clr:18,199,226>Ei, Alyx, somos nós!
+<clr:18,199,226>Alyx! Você está aí?
+<clr:18,199,226>Psiu. Alyx!
+<clr:18,199,226>Cessar fogo! O alvo é nosso aliado.
+<clr:18,199,226>Martelo Muralha abatido! Martelo Muralha recuando!
+<clr:18,199,226>Cessar fogo. Não sou uma ameaça. Não sou uma ameaça!
+<clr:18,199,226>A Alyx é nossa aliada.
+<clr:18,199,226>Cessar fogo!<cr>A Alyx é nossa aliada!
+<clr:18,199,226><sfx:1>[Risos]
+<clr:18,199,226>Inimigoculto eficaz.
+<clr:18,199,226>[Risos] O hostil foi confundido.
+<clr:18,199,226>Disparando.
+<clr:18,199,226>Confrontando alvo.
+<clr:18,199,226>Martelo Muralha confrontando.
+<clr:18,199,226>Martelo Muralha.<cr>Ponto do alvo prioritário.
+<clr:18,199,226>Formação aberta. Armas autorizadas.
+<clr:18,199,226>Código 3. Oscar delta.
+<clr:18,199,226>Limpando setor
+<clr:18,199,226>Engajado.
+<clr:18,199,226>Adagas autorizadas.
+<clr:18,199,226>Abrindo fogo. Prioridade 1.
+<clr:18,199,226>Abrindo fogo contra a Alyx.
+<clr:18,199,226>Martelo Muralha no alvo principal.
+<clr:18,199,226>Ordenante! Abrindo fogo contra
+<clr:18,199,226>Adagas autorizadas contra a Vance.
+<clr:18,199,226>Outra atordoante na contagem de cinco.
+<clr:18,199,226>Atordoante falhou.
+<clr:18,199,226>Atordoante nula. Corrigindo.
+<clr:18,199,226>Solicitando outra atordoante no alvo
+<clr:18,199,226>Cegadora falhou.
+<clr:18,199,226>Atordoante bem-sucedida. Avançando.
+<clr:18,199,226>Atordoante bem-sucedida.<cr>Aproveitando.
+<clr:18,199,226>O hostil está cego.
+<clr:18,199,226>O alvo está sem visão.<cr>Aproveitando.
+<clr:18,199,226>O contaminante foi confundido.
+<clr:18,199,226>O hostil foi confundido.<cr>Todas as unidades, aproveitem.
+<clr:18,199,226>Limpando.
+<clr:18,199,226>Dispersão na contagem de três.
+<clr:18,199,226>Martelo Muralha limpando o setor
+<clr:18,199,226>Martelo Muralha extraindo em
+<clr:18,199,226>Aplicando pressão. Labareda acionada.
+<clr:18,199,226>Extraindo hostil na última localização conhecida.
+<clr:18,199,226>Quicadora. Quicadora na última localização conhecida.
+<clr:18,199,226>Eliminando.
+<clr:18,199,226>Emparedado. Protegendo-me.
+<clr:18,199,226>Granada próxima.
+<clr:18,199,226>Extrator próximo.
+<clr:18,199,226>Audível no setor
+<clr:18,199,226>Possível contaminante.
+<clr:18,199,226>Possível hostil ativo.
+<clr:18,199,226>Movimento próximo ao Martelo Muralha.
+<clr:18,199,226>Áudio ligado.
+<clr:18,199,226>Áudio ligado e
+informando de qualquer contaminante.
+<clr:18,199,226>Solicitando dose de estimulantes.
+<clr:18,199,226>Ordenante. Fui atingido.
+<clr:18,199,226>Sofrendo dano.
+<clr:18,199,226>Assistência para o Martelo Muralha.
+<clr:18,199,226>Martelo Muralha ainda ativo.
+<clr:18,199,226>Ineficaz.
+<clr:18,199,226>Pacotes corporais resistindo.
+<clr:18,199,226><sfx:1>[Risada celebratória]
+<clr:18,199,226>Contaminante não visível.
+<clr:18,199,226>Droga!
+<clr:18,199,226>Solicitando localização.
+<clr:18,199,226>Alvo perdido.
+<clr:18,199,226>Assistência no local. Martelo Muralha.
+<clr:18,199,226>Perda de contato visual com o hostil.
+<clr:18,199,226>Contato visual perdido. Contaminante.
+<clr:18,199,226>Sem contato visual. Martelo Muralha.
+<clr:18,199,226>Hostil desaparecido.<cr>Setor desconhecido.
+<clr:18,199,226>Martelo Muralha solicitando localização do alvo.
+<clr:18,199,226>Contato visual com o hostil perdido.
+<clr:18,199,226>Assistência no local para o Martelo Muralha.
+<clr:18,199,226>Preciso de assistência no local.
+<clr:18,199,226>Sem contato visual.
+<clr:18,199,226>Martelo Muralha. Perda de contato visual.
+<clr:18,199,226>Possível fuga.<cr>Solicitando localização do hostil.
+<clr:18,199,226>O contaminante está silencioso.<cr>Solicitando último setor conhecido.
+<clr:18,199,226>Perda completa de contato visual.
+<clr:18,199,226>O hostil está silencioso.
+<clr:18,199,226>Contaminante principal evasivo.
+<clr:18,199,226>Verificando cobertura.
+<clr:18,199,226>Verificação de contato
+<clr:18,199,226>Contato visual perdido. Vigiando.
+<clr:18,199,226>Nenhum contato com o Martelo Muralha.<cr>Solicitando reconhecimento.
+<clr:18,199,226>Proximidade!
+<clr:18,199,226>Alerta de proximidade. Recuar.
+<clr:18,199,226>Assistência. Assistência. Assistência.
+<clr:18,199,226>Assistência, Martelo. Assistência, Martelo.
+<clr:18,199,226>Retirada. Retirada.
+<clr:18,199,226>Afirmativo.
+<clr:18,199,226>Entendido.
+<clr:18,199,226>Positivo.
+<clr:18,199,226>Mantendo posição.
+<clr:18,199,226>Localização cercada.
+<clr:18,199,226>Armas de prontidão.
+<clr:18,199,226>Convis na última posição conhecida.
+<clr:18,199,226>Vigiando última localização conhecida.
+<clr:18,199,226>Observando.
+<clr:18,199,226>Martelo Muralha. Em posição.
+<clr:18,199,226>Mantendo o foco.
+<clr:18,199,226>Silenciar sons. Silenciar sons.
+<clr:18,199,226>Hostil não cooperativo. Aguardando instruções.
+<clr:18,199,226>Manter posição.
+<clr:18,199,226>Aguardando contato.
+<clr:18,199,226>Avaliando.
+<clr:18,199,226>Aguardando problema.
+<clr:18,199,226>Pronto para contenção.
+<clr:18,199,226>Martelo Muralha. Mantendo posição.
+<clr:18,199,226>Martelo Muralha. Vigiando.
+<clr:18,199,226>Contaminante cercado.
+<clr:18,199,226>Martelo Muralha. Assegurando perímetro.
+<clr:18,199,226>Verificando perímetro.
+<clr:18,199,226><sfx><norepeat:5>[Dor]
+a<clr:18,199,226><sfx><norepeat:5>[Dor]
+<clr:18,199,226><sfx:1><norepeat:5>[Ofegante]
+<clr:18,199,226>Hostil vulnerável.
+<clr:18,199,226>Alvo atingido.
+<clr:18,199,226>Alvo comprometido.
+<clr:18,199,226>Avançar. Avançar.
+<clr:18,199,226>Contaminante atingido.
+<clr:18,199,226>Hostil marcado.
+<clr:18,199,226>Reconvergir no hostil.
+<clr:18,199,226>Amplificar armas no Martelo Muralha.
+<clr:18,199,226>Hostil hemorrágico.
+<clr:18,199,226>Possível marcação no alvo principal.
+<clr:18,199,226>Martelo eficaz.<cr>Código 0-9.
+<clr:18,199,226>Terminando alvo 1.
+<clr:18,199,226>Martelo de prontidão.
+<clr:18,199,226>Preparando o Martelo.
+<clr:18,199,226>Martelo de prontidão para investida.
+<clr:18,199,226>Fazendo investida com o Martelo.
+<clr:18,199,226>Martelo pronto em três
+dois
+um
+<clr:18,199,226>Emparedado.
+<clr:18,199,226>Preparando parede.
+<clr:18,199,226>Escudo levantado.
+<clr:18,199,226>Levantando parede.
+<clr:18,199,226>Parede levantada.
+<clr:18,199,226>Parede pronta para uso em três
+<clr:18,199,226>Todos os setores vasculhados.
+<clr:18,199,226>Contato em silêncio.
+<clr:18,199,226>Setor limpo.<cr>Solicitando manutenção de posição.
+<clr:18,199,226>Área limpa.
+<clr:18,199,226>Martelo Muralha informando.<cr>Hostil em silêncio.
+<clr:18,199,226>Arena segura.
+<clr:18,199,226>Parece limpo.
+<clr:18,199,226>Contato visual perdido.<cr>Parece limpo.
+<clr:18,199,226>Nada aqui.
+<clr:18,199,226>Em alerta. Emparedado.
+<clr:18,199,226>Nenhum contaminante no setor.<cr>Solicitando retirada.
+<clr:18,199,226>De prontidão para código bravo.
+<clr:18,199,226>Nada.
+<clr:18,199,226>Sombra limpa.
+<clr:18,199,226>Solicitando término da condição sombra.
+<clr:18,199,226>Local limpo. Retirar assistência.
+<clr:18,199,226>Todos os setores estão limpos. Retirada.
+<clr:18,199,226>Processando convis.
+<clr:18,199,226>Ainda buscando
+<clr:18,199,226>Ainda vasculhando
+<clr:18,199,226>Martelo Muralha. Reconhecimento em curso.
+<clr:18,199,226>Condição: sombra ativa.
+<clr:18,199,226>Reconhecimento em curso.
+<clr:18,199,226>Alvo ainda na sombra.
+<clr:18,199,226>Setor limpo. Avançando.
+<clr:18,199,226>Setor nulo. Avançando.
+<clr:18,199,226>Área limpa. Movendo-me.
+<clr:18,199,226>Olhos em alerta.
+<clr:18,199,226>Martelo Muralha informando.<cr>Hostil ainda silencioso.
+<clr:18,199,226>Varredura concluída. Retomando.
+<clr:18,199,226>Ainda sem contato visual.
+<clr:18,199,226>Raio limpo. Retomando.
+<clr:18,199,226>Dispersando.
+<clr:18,199,226>Unidade Martelo Muralha em movimento.
+<clr:18,199,226>Mobilizado e vasculhando.
+<clr:18,199,226>Iniciando limpeza.
+<clr:18,199,226>Permanecendo em alerta.
+<clr:18,199,226>Em busca de hostis.
+<clr:18,199,226>Em busca do contaminante.
+<clr:18,199,226>Buscando. Formação adaga.
+<clr:18,199,226>Fechando arena.
+<clr:18,199,226>Prosseguindo com contenção.
+<clr:18,199,226>Informando linhas de visão.
+<clr:18,199,226>Formação no alvo na contagem de três.
+<clr:18,199,226>Avançando com extração de hostis.
+<clr:18,199,226>Iniciar condição sombra.
+<clr:18,199,226>Iniciar ofensiva! Delta do alvo
+<clr:18,199,226>Contato com alvo em
+<clr:18,199,226>Convis! Convis! Distância
+<clr:18,199,226>Ali.
+<clr:18,199,226>Convis! Hostil encontrado.
+<clr:18,199,226>Novo movimento.
+<clr:18,199,226>O animal está de volta no fosso.
+<clr:18,199,226>Contato visual com o hostil renovado.
+<clr:18,199,226>Hostil reencontrado no setor
+<clr:18,199,226>Martelo Muralha. Recontato visual no setor
+<clr:18,199,226>Hostil vivo. Verificar raio.
+<clr:18,199,226>Linhas de tiro adicionais confirmadas.
+<clr:18,199,226>Linhas de visão confirmadas no principal.
+<clr:18,199,226>Martelo Muralha. Interceptando.
+<clr:18,199,226>Localização confirmada. Impondo estabilidade.
+<clr:18,199,226>Confirmação visual na contagem de três.
+<clr:18,199,226>Contato visual ativo.
+<clr:18,199,226>Recarregando.
+<clr:18,199,226>Martelo Muralha recarregando.
+<clr:18,199,226>Martelo Muralha inativo em 4
+<clr:18,199,226>Sem balas.
+<clr:18,199,226>Martelo Muralha sem balas.
+<clr:18,199,226>Reserva baixa. Recarregando.
+<clr:18,199,226>Martelo renovando.
+<clr:18,199,226>Retirada, retirada.
+<clr:18,199,226>Martelo Muralha em retirada.
+<clr:18,199,226>Retirada.
+<clr:18,199,226>Recuando.
+<clr:18,199,226>Setor muito perigoso.
+<clr:18,199,226>Buscando cobertura.
+<clr:18,199,226>Martelo Muralha. Reagrupando-se.
+<clr:18,199,226>Setor volátil. Buscando sombra.
+<clr:18,199,226>Secundários confirmados.
+<clr:18,199,226>Convis de vários desconhecidos.
+<clr:18,199,226>Convis de secundários.
+<clr:18,199,226>Verificando silhuetas.<cr>Possíveis multiplicadores.
+<clr:18,199,226>Temos muitos contaminantes.
+<clr:18,199,226>O alvo 1 possui quicadoras.
+<clr:18,199,226>O hostil possui quicadoras. Fiquem em alerta.
+<clr:18,199,226>O contaminante possui granadas. Dispersar.
+<clr:18,199,226>O alvo principal possui extratores.<cr>Respondedor.
+<clr:18,199,226>Hostil recarregando.<cr>Martelo em vantagem.
+<clr:18,199,226>Alvo regenerando. Abrir fogo.
+<clr:18,199,226>Contaminante vulnerável.
+<clr:18,199,226>Alyx recarregando.<cr>Responder com atenção total.
+<clr:18,199,226>Temos minas rolantes.<cr>Emparedar.
+<clr:18,199,226>Martelo Muralha.<cr>Respondendo mina rolante.
+<clr:18,199,226>Minas rolantes.
+<clr:18,199,226>Minas rolantes subagudas.<cr>Atenção total.
+<clr:18,199,226>Trocando alvo: minas rolantes.
+<clr:18,199,226>Minas rolantes se aproximando.
+<clr:18,199,226>Alvo 1 possui espinhos aperfeiçoados.
+<clr:18,199,226>Vigilância. O alvo 1 possui aperfeiçoamentos.
+<clr:18,199,226>O hostil possui espinhos aperfeiçoados.
+<clr:18,199,226>Hostil possui espinhos ilegais.
+<clr:18,199,226>Aperfeiçoamentos identificados.<cr>Exerçam cautela.
+<clr:18,199,226>Vigilância, solicitar ação reserva.
+<clr:18,199,226>Vigilância, o setor não está seguro.
+<clr:18,199,226>Surto no setor
+<clr:18,199,226>Vigilância, unidade terrestre abatida.<cr>Setor não controlado.
+<clr:18,199,226>Vigilância, setor invadido.
+<clr:18,199,226>Vigilância.<cr>Solicitando proteção aérea.
+<clr:18,199,226>Vigilância, recomendar nova formação.
+<clr:18,199,226>Aliado abatido.
+<clr:18,199,226>Solicitando substituição.
+<clr:18,199,226>Vigilância.<cr>Única unidade ativa.
+<clr:18,199,226>Vigilância.<cr>Martelo Muralha é a última unidade.<cr>Solicitando assistência.
+<clr:18,199,226>Vigilância.<cr>Solicitando sombra imediata.
+<clr:18,199,226>Vigilância.<cr>Surto não contido.
+<clr:18,199,226>Vigilância.<cr>Informando condição de desvantagem.<cr>Na escuta.
+<clr:18,199,226>Vigilância.<cr>Contato solo contra muitos hostis.
+<clr:18,199,226>Marca de sobrevivência mobilizada.
+<clr:18,199,226>Vigilância.<cr>Solicitando extração do Martelo Muralha.<cr>Setor
+<clr:18,199,226>Vigilância, informo:<cr>Martelo Muralha é o último respondedor.
+<clr:18,199,226>Vigilância.<cr>Ordenante abatido.
+<clr:18,199,226>Ordenante silenciado.<cr>Solicitando novo líder.
+<clr:18,199,226>Ordenante em condição crepúsculo.
+<clr:18,199,226>Ordenante terminado.
+<clr:18,199,226>Vigilância. Ordenante abatido.<cr>Respondendo.
+<clr:18,199,226>Ordenante silenciado.<cr>Administrar resposta com força total.
+<clr:18,199,226>Ordenante com parada cardíaca.<cr>Ordenante com parada cardíaca.
+<clr:18,199,226><sfx:1>[Grito]
+<clr:18,199,226>Trocando.
+<clr:18,199,226>Modo 1.
+<clr:18,199,226>Modo 2.
+<clr:18,199,226>Espinhos de raspão. Sem danos.
+<clr:18,199,226>Não atingido.
+<clr:18,199,226>Erro do alvo. Aproveitar.
+<clr:18,199,226>Hostil impreciso.
+<clr:18,199,226>Quase.
+<clr:18,199,226>Martelo Muralha intacto.
+<clr:18,199,226>Errou de novo. Aproveitando.
+<clr:18,199,226>Alvo falhou.
+<clr:18,199,226>Aproveitar vantagem contra o hostil.
+<clr:18,199,226>Hostil falhou. Reagrupando.
+<clr:18,199,226>Espinhos ineficazes.<cr>Alvo inabilidoso.
+<clr:18,199,226>Negativo.
+<clr:18,199,226>Não.
+<clr:18,199,226>Impossível cumprir.
+<clr:18,199,226>Negado.
+<clr:18,199,226>Impossível executar.
+<clr:18,199,226>Espinhos confirmados.<cr>Emparedado.
+<clr:18,199,226>O hostil está vivo.
+<clr:18,199,226>Contato visual.
+<clr:18,199,226>Martelo Muralha.<cr>Retornando pressão.
+<clr:18,199,226>Temos contaminantes barulhentos.
+<clr:18,199,226>Dispersar.
+<clr:18,199,226>Alvo hostil.<cr>Adagas autorizadas.
+<clr:18,199,226>Hostis pressionando.<cr>Respondedor em
+<clr:18,199,226>Vigilância. Temos espinhos.
+<clr:18,199,226>Preparando condição delta.
+<clr:18,199,226>Sob fogo.
+<clr:18,199,226>Executando resposta com força total.
+<clr:18,199,226>Setor
+<clr:18,199,226>[Números]
+<clr:18,199,226>Nada para informar. Câmbio.
+<clr:18,199,226>1, 14, 3, 6, 11
+Verificados.<cr>Tudo limpo no Eco 4. Câmbio.
+<clr:18,199,226>Afirmativo.<cr>Mantendo convis no setor nômade quilo 3-6.
+<clr:18,199,226>Eco 1 tem movimento negativo.<cr>Coordenada 7-2.
+<clr:18,199,226>Afirmativo.<cr>Esperando oportunidades.
+<clr:18,199,226>Transmissão clara.<cr>Raio limpo. Câmbio.
+<clr:18,199,226>Vigilância.<cr>Solicitando dados de proximidade de hostis.<cr>Aguardando transmissão.
+<clr:18,199,226>Ainda aguardando transmissão. Câmbio.
+<clr:18,199,226>A Vigilância confirma isolamento do setor.<cr>Mantenham as linhas de visão desimpedidas e o áudio ligado.
+<clr:18,199,226>Afirmativo
+Surto com status de código delta-7.<cr>Equipe Crepúsculo em busca de contato com invasores.<cr>Afirmativo.
+<clr:18,199,226>Negativo
+Afirmativo
+Sem contenção do setor.<cr>Sem confirmação de vetor ao alvo 1.<cr>Aguardando códigos de parâmetros secundários.
+<clr:18,199,226>Atualizando biodados
+Dose de estimulantes: 32.<cr>Adaga: 78. Escudo: 100.<cr>Biprox: 0,73.<cr>Audíveis: 3. Fotovisuais: 15. Câmbio.
+<clr:18,199,226>Afirmativo.<cr>Preparando evisceradores no ápice 5.<cr>Temos bióticos no perímetro.<cr>Aguardando contato. Câmbio.
+<clr:18,199,226>A Vigilância confirma a aproximação de viromas não marcados.<cr>A todas as unidades, atenção: preparem-se para contato.
+<clr:18,199,226>Código da chamada:<cr>delta-echo-7-9-alfa-dois-whiskey-0
+.<cr>Confirmado.
+<clr:18,199,226>Afirmativo. Permaneço aqui.
+<clr:18,199,226>Afirmativo. Aceito.<cr>Atualizando biodados de supressão cognitiva.<cr>Atualização concluída em três segundos
+<cr>Dissonância resolvida.
+<clr:18,199,226>A Vigilância está solicitando que todas as unidades se atualizem e resolvam.<cr>Dissonâncias cognitivas não serão toleradas
+Negativo
+Incluindo memórias.<cr>Atualização lançada. Aceitação obrigatória.
+<clr:18,199,226>Equipe de estabilização mantendo posição.<cr>Fotovisuais a 73.<cr>Audíveis a
+15.<cr>A Vigilância confirma que o AAI está próximo do perímetro.<sb>Fiquem em alerta.
+<clr:18,199,226>Vigilância.<cr>Temos hostis ativos.<cr>Repassar preparações.
+<clr:18,199,226>Negativo.<cr>Alvo ainda ativo.
+<clr:18,199,226>Afirmativo.<cr>Formação alfa.
+<clr:18,199,226>Afirmativo.<cr>Formação alfa na coordenada 9-37.
+<clr:18,199,226>Aguardando diretiva de avanço. Câmbio.
+<clr:18,199,226>Confirmado. Recalibrando.
+<clr:18,199,226>Afirmativo. Preparando posição.
+<clr:18,199,226>Ainda com vida.
+<clr:18,199,226>Afirmativo.<cr>Contenção e controle em curso.
+<clr:18,199,226>Resolvendo.
+<clr:18,199,226>10-4. Renovação de adaga: negativo.<cr>Carregada e pronta.
+<clr:18,199,226>Formando vantagem tática.
+<clr:18,199,226>Permaneço no aguardo.
+<clr:18,199,226>Aguardando envio de biodados.
+<clr:18,199,226>Preparação da condição crepúsculo.
+<clr:18,199,226>Preparando comunicação para conflito prolongado.
+<clr:18,199,226>Negativo. Adagas não necessárias.
+<clr:18,199,226>Prolongando duração do conflito.
+<clr:18,199,226>Vasculhando biodados do hostil.
+<clr:18,199,226>Ignorando última chamada.
+<clr:18,199,226>Vigilância. 10-9.
+<clr:18,199,226>Em confronto e disparando.
+<clr:18,199,226>Assegurando estabilidade contra o alvo principal no setor
+<clr:18,199,226>Alvo na linha.
+<clr:18,199,226>Alvo na linha e recebendo espinhos.
+<clr:18,199,226>Intensificando força no alvo principal.
+<clr:18,199,226>Será abatido.
+<clr:18,199,226>Próximo do fim.
+<clr:18,199,226>Lançando espinhos.
+<clr:18,199,226>Lançando todos os espinhos no alvo principal.
+<clr:18,199,226>Lançando todos os espinhos.
+<clr:18,199,226>Não resista.
+<clr:18,199,226>Martelo Muralha em confronto e disparando.
+<clr:18,199,226>Ordenante em confronto e disparando.
+<clr:18,199,226>FPA em confronto e disparando.
+<clr:18,199,226>O hostil está sofrendo pânico extremo.
+<clr:18,199,226>O hostil está dominado.
+<clr:18,199,226>Alvo com baixa motivação.<cr>Aproveitar.
+<clr:18,199,226>Alvo com baixa motivação.
+<clr:18,199,226>Já pode sair.
+<clr:18,199,226>Alvo hostil, atenção:<cr>podemos ajudá-lo.<cr>Está a salvo.
+<clr:18,199,226>Podemos ajudá-lo.<cr>Está a salvo.
+<clr:18,199,226>Suspeito acima do limiar de agressão permitido por lei.<cr>Aproveitando.
+<clr:18,199,226>Prosseguindo com intensificação.
+<clr:18,199,226>Suspeito recusa-se a cooperar com o código 10-307.
+<clr:18,199,226>Código 10-307.<cr>Prosseguindo com intensificação.
+<clr:18,199,226>O hostil está hesitando.
+<clr:18,199,226>Os ataques do hostil são ineficazes.<cr>Prosseguir com contenção.
+<clr:18,199,226>Ativando código 10-108.<cr>Cessando fogo.
+<clr:18,199,226>Cessando fogo.<cr>O alvo é nosso aliado.
+<clr:18,199,226>Cessando fogo.<cr>Código 10-40.
+<clr:18,199,226>Cessar fogo! Alvo não hostil.
+<clr:18,199,226>Afirmativo. Não atirar.<cr>Cooperação confirmada.
+<clr:18,199,226>O alvo é nosso aliado.
+<clr:18,199,226>Cessar fogo.<cr>O alvo é nosso aliado.
+<clr:18,199,226>A todas as unidades: cessar fogo. O alvo é nosso aliado.
+<clr:18,199,226>Aliado confirmado.<cr>Cessar fogo!
+<clr:18,199,226>Vigilância.<cr>Temos um impasse na coordenada 9-5.
+<clr:18,199,226>Vigilância.<cr>Temos um impasse.
+<clr:18,199,226>Afirmativo.<cr>Alvo de pouca importância.
+<clr:18,199,226>Afirmativo.<cr>Hostil ignorante e pronto para contenção.
+<clr:18,199,226>Hostil com sinais de fadiga.<cr>Preparar contenção.
+<force><clr:18,199,226>Nada. Sem identificação.
+<force><clr:18,199,226>Ponha as mãos para cima. Para cima.
+<force><clr:18,199,226>Parada!
+<force><clr:18,199,226>Quem é?
+<force><delay:10.5><clr:18,199,226>Alyx? Você está aí?<cr>Ei, Alyx! Somos nós!
+<clr:18,199,226>Avançando no contaminante.
+<clr:18,199,226>Eco 1 avançando e pressionando.
+<clr:18,199,226>Eco 1 identificou o setor e está avançando no infectado.
+<clr:18,199,226>Avançando no setor.
+<clr:18,199,226>Respondendo com atenção total.
+<clr:18,199,226>Atacando com vantagem.
+<clr:18,199,226>Alvo na mira. Adagas ativadas.
+<clr:18,199,226>Alvo 1 na linha de visão.
+<clr:18,199,226>Alvo 1 com vida limitada.
+<clr:18,199,226>Encontrei-a.
+<clr:18,199,226>Eco com contato visual com a Alyx.
+<clr:18,199,226>Armas autorizadas contra a Alyx.
+<clr:18,199,226>Disparando contra a Alyx.
+<clr:18,199,226>Alvo principal. Eco 1 confrontando.
+<clr:18,199,226>É ela.
+<clr:18,199,226>Deixando cobertura.
+<clr:18,199,226>Trocando alvo. Violação de código.
+<clr:18,199,226>Designar alvo como sombra.
+<clr:18,199,226>Eco 1. Removendo suporte.
+<clr:18,199,226>Eco 1. Adagas apontadas para a cobertura.
+<clr:18,199,226>Eco 1. Iniciando ofensiva na cobertura.
+<clr:18,199,226>Violação de código.
+<clr:18,199,226>E
+extrator lançado.
+<clr:18,199,226>Abaixar!
+<clr:18,199,226>Extrator na contagem de três.
+extraindo.
+<clr:18,199,226>Convis. Formiga-leão.
+<clr:18,199,226>Formiga-leão. Eco 1 confrontando.
+<clr:18,199,226>Eco 1 estabeleceu contato com formiga-leão.
+<clr:18,199,226>Formiga-leão aqui.
+<clr:18,199,226>Parasitas no setor
+<clr:18,199,226>Ah
+Parasitas livres se aproximando.
+<clr:18,199,226>Eco 1. Contato visual com parasitas.
+<clr:18,199,226>Detesto essas coisas.
+<clr:18,199,226>Parasitas vivos. Eco 1.
+<clr:18,199,226>Parasitas aqui.
+<clr:18,199,226>Infestação parasita confirmada.
+<clr:18,199,226>Alerta de infestação.
+<clr:18,199,226>Eco 1, contato visual com necróticos.
+<clr:18,199,226>Avistei necróticos.
+<clr:18,199,226>Contato com necróticos.
+<clr:18,199,226>Eco 1. Abate confirmado.
+<clr:18,199,226>Acabou.
+<clr:18,199,226>Limpo.
+<clr:18,199,226>Setor limpo.
+<clr:18,199,226>Contaminante contido.
+<clr:18,199,226>Alvo de alta importância contido.
+<clr:18,199,226>O alvo 1 foi silenciado.
+<clr:18,199,226>Ela foi silenciada.
+<clr:18,199,226>A Alyx foi morta.
+hostil principal eliminado.
+<clr:18,199,226>Alyx terminada.
+<clr:18,199,226>Contaminante eliminado.
+<clr:18,199,226>Volte a dormir.
+<clr:18,199,226><sfx:1>[Grunhidos]
+<clr:18,199,226><sfx:1>[Respirando com dificuldade]
+<clr:18,199,226><sfx:1>[Tossindo e sibilando]
+<clr:18,199,226>12.
+<clr:18,199,226>Eco 1.
+<clr:18,199,226>Vigilância.
+<clr:18,199,226>Eco 1 solicitando cobertura.
+<clr:18,199,226>Eco 1 solicitando sombra.
+<clr:18,199,226>Preparar dose de estimulantes.
+<clr:18,199,226>Solicitando cobertura nas coordenadas
+<clr:18,199,226>Possível extrator. Esquivando-me.
+<clr:18,199,226>Protejam-se.
+<clr:18,199,226>Quicadora audível no setor
+<clr:18,199,226>Afastem-se.
+<clr:18,199,226>Quicadora ativa. Buscando sombra.
+<clr:18,199,226>Câmbio.
+<clr:18,199,226>Socorro!
+<clr:18,199,226>Sinto mui
+<clr:18,199,226>Aproximando-me.
+<clr:18,199,226>Eco 1 trocando posição.
+<clr:18,199,226>Removendo obstáculo.
+<clr:18,199,226>Eco 1 sem contato visual com o alvo. Movendo-me.
+<clr:18,199,226>Trocando de posição.
+<clr:18,199,226>Corrigindo linha de visão no hostil.
+<clr:18,199,226>Convis interrompida. Movendo-me.
+<clr:18,199,226>Expondo principal.
+<clr:18,199,226>Cessar fogo!<cr>O alvo é nosso aliado!
+<clr:18,199,226>Abaixar armas!<cr>Eco 1! Abaixar armas.
+<clr:18,199,226>Cessar fogo!<cr>Abaixar adagas.
+<clr:18,199,226>A Alyx é nossa aliada! O hostil é nosso aliado!
+<clr:18,199,226>A Alyx é nossa aliada! Cessar fogo! Cessar fogo!
+<clr:18,199,226>[Risos] Inimigoculto eficaz.
+<clr:18,199,226>Adagas apontadas para o hostil.
+<clr:18,199,226>Eco 1 no ponto do alvo principal.
+<clr:18,199,226>Pressionar hostil.
+<clr:18,199,226>Limpando setor.
+<clr:18,199,226>Processando setor.
+<clr:18,199,226>Abrindo fogo no alvo prioritário 1.
+<clr:18,199,226>Alvejando a Vance.
+<clr:18,199,226>Abrindo fogo no alvo 1.
+<clr:18,199,226>Alvo prioritário iniciando ofensiva de espinhos.<cr>Silenciem a resposta.
+<clr:18,199,226>A Alyx está com os dias contados.
+<clr:18,199,226>O animal está no fosso.
+<clr:18,199,226>Alvo principal confirmado. Disparando.
+<clr:18,199,226>Verificando última localização conhecida.
+<clr:18,199,226>Extraindo na última localização conhecida.
+<clr:18,199,226>Aplicando pressão na última localização conhecida. Labareda acionada.
+<clr:18,199,226>Limpando hostil.
+<clr:18,199,226>Lançando com cobertura.
+<clr:18,199,226>Lançando.
+<clr:18,199,226>Movimento.
+<clr:18,199,226>Eco 1 com áudio ligado.<cr>Informando de todos os suspeitos.
+<clr:18,199,226>Médico.
+<clr:18,199,226>Fui atingido. Solicitando dose de estimulantes.
+<clr:18,199,226>Solicitando pacotes corporais adicionais.
+<clr:18,199,226>Eco 1 está com os dias contados.
+<clr:18,199,226>Merda!
+<clr:18,199,226><sfx:1><norepeat:5>[Risada celebratória]
+<clr:18,199,226>Maldições!
+<clr:18,199,226>Eco 1 solicitando localização.
+<clr:18,199,226>Alvo perdido.<cr>Solicitando assistência no local.
+<clr:18,199,226>Assistência no local.
+<clr:18,199,226>Convis do hostil negativa.
+<clr:18,199,226>Linha de visão ao contaminante perdida.
+<clr:18,199,226>Sem contato visual. Respondedor.
+<clr:18,199,226>Hostil desaparecido. Setor desconhecido.
+<clr:18,199,226>Solicitando localização do hostil.
+<clr:18,199,226>Assistência no local para Eco 1.
+<clr:18,199,226>Preciso de assistência no setor
+<clr:18,199,226>Sem contato visual. Vigilância, assistência.
+<clr:18,199,226>Eco 1. Perda de contato visual.
+<clr:18,199,226>Possível fuga. Solicitando localização.
+<clr:18,199,226>Perda completa de contato visual com o alvo 1.
+<clr:18,199,226>O hostil principal está silencioso.
+<clr:18,199,226>Contaminante evasivo.<cr>Ordenante, responda.
+<clr:18,199,226>Verificando alvo 1 nas coordenadas
+<clr:18,199,226>Convis perdida. Vigiando.
+<clr:18,199,226>Nenhum contato. Solicitando reconhecimento.
+<clr:18,199,226>[Grito ofegante de pânico]
+<clr:18,199,226>Paaaaaaaaaare!
+<clr:18,199,226>Puta mer
+<clr:18,199,226>Eco. Assistência. Eco. Assistência.
+<clr:18,199,226>Rodas no chão. Recolher! Eco 7.<cr>Recolher. Eco 7.
+<clr:18,199,226>Alerta de proximidade no Eco 1! Assistência ao respondedor!
+<clr:18,199,226>Próximo demais. Corrigindo.
+<clr:18,199,226>Mantendo a posição.
+<clr:18,199,226>Adagas prontas.
+<clr:18,199,226>Eco 1 em posição.
+<clr:18,199,226>Vigiando.
+contaminante cercado.
+<clr:18,199,226>Eco 1. Assegurando perímetro.
+hostil vulnerável.
+<clr:18,199,226>Reconvergindo no hostil.
+<clr:18,199,226>Solicitando reforço de adagas contra o alvo 1.
+<clr:18,199,226>Adagas eficazes. Código 0-9.
+<clr:18,199,226>Impedir uso de estimulantes pelo hostil principal.
+<clr:18,199,226>Setor limpo. Solicitando manutenção de posição.
+<clr:18,199,226>Hostil em silêncio.
+<clr:18,199,226>Contato visual perdido. Parece limpo.
+<clr:18,199,226>Informando a todas as unidades.<cr>Silêncio no fosso.
+<clr:18,199,226>Local limpo.<cr>Retirar assistência.
+<clr:18,199,226>Convis em curso
+<clr:18,199,226>Setor nulo. Avançar.
+<clr:18,199,226>O hostil ainda está silencioso.
+<clr:18,199,226>Vasculhamento concluído. Retomando.
+<clr:18,199,226>Preparando condição alfa.
+<clr:18,199,226>Unidade Eco em movimento.
+<clr:18,199,226>Buscando.
+<clr:18,199,226>Afirmativo. Convis. Todas as unidades.
+<clr:18,199,226>Dispersar e vasculhar.
+<clr:18,199,226>Iniciando ofensiva no alvo. Delta
+<clr:18,199,226>Contato com alvo nas coordenadas
+<clr:18,199,226>Convis! Convis!
+<clr:18,199,226>Alvo encontrado.
+<clr:18,199,226>Contato com hostil.
+<clr:18,199,226>Vamos, vamos, vamos.
+<clr:18,199,226>Eco 1.<cr>Temos contato no setor 9-4.
+<clr:18,199,226>Linha de visão confirmada.
+<clr:18,199,226>Linha de visão confirmada no principal.
+<clr:18,199,226>Eco 1 interceptando.
+<clr:18,199,226>Localização confirmada.<cr>Impondo estabilidade.
+<clr:18,199,226>Contato visual ativo. Hostil reencontrado.
+<clr:18,199,226>Reabastecendo adagas.
+<clr:18,199,226>Eco vulnerável por três
+<clr:18,199,226>Solicitando supressão para recarregar.
+<clr:18,199,226>Eco 1 com adaga vazia.
+<clr:18,199,226>Renovar arma.
+<clr:18,199,226>Eco 1 em retirada.
+<clr:18,199,226>Reagrupando.
+<clr:18,199,226>Retirando-me.
+<clr:18,199,226>Condição volátil. Buscando sombra.
+<clr:18,199,226>Equipe terrestre, atenção. O alvo 1 possui extratores.
+<clr:18,199,226>Hostil recarregando. Adaga em vantagem.
+<clr:18,199,226>Alyx recarregando. Responder com atenção total.
+<clr:18,199,226>Temos minas rolantes. Adagas ativadas.
+<clr:18,199,226>Convis! Minas rolantes!
+<clr:18,199,226>Minas rolantes subagudas.<cr>Respondedor com atenção total.
+<clr:18,199,226>Equipe terrestre, atenção.<cr>O hostil possui espinhos aperfeiçoados.
+<clr:18,199,226>Convis. Espinhos ilegais.
+<clr:18,199,226>Vigilância, solicitando ação reserva.
+<clr:18,199,226>Vigilância, o setor não está seguro!
+<clr:18,199,226>Surto, surto, surto!
+<clr:18,199,226>Foi abatido.
+<clr:18,199,226>Vigilância, setor invadido!<cr>Repito, setor invadido!
+<clr:18,199,226>Vigilância. Solicitando proteção aérea.
+<clr:18,199,226>Vantagem perdida. Complicação iminente.
+<clr:18,199,226>Silenciado. Solicitando substituição.
+<clr:18,199,226>Eco 1 é a única unidade ativa.
+<clr:18,199,226>Vigilância. Eco 1 é a última unidade. Solicitando assistência.
+<clr:18,199,226>Uh. Solicitando sombra imediata!
+<clr:18,199,226>Vigilância! Surto não contido!
+<clr:18,199,226>Eco 1 informando sobre hostil excessivo.
+<clr:18,199,226>Vigilância! Equipe terrestre derrotada.
+<clr:18,199,226>Vigilância! Solicitando extração do Eco 1.
+<clr:18,199,226>Vigilância.<cr>Eco 1 é o último respondedor.
+<clr:18,199,226>Vigilância! Ordenante abatido!
+<clr:18,199,226>Ordenante silenciado! Solicitando assistência!
+<clr:18,199,226>Vigilância! Ordenante em condição crepúsculo! Na escuta!
+<clr:18,199,226>Vigilância. Ordenante inibido.<cr>Respondendo
+<clr:18,199,226>Ordenante silenciado.<cr>Administrar resposta com força total!
+<clr:18,199,226>Ordenante com parada cardíaca.
+<clr:18,199,226>Suprimindo.
+<clr:18,199,226>Fogo de supressão.
+<clr:18,199,226>Suprimindo em
+<clr:18,199,226>Eco 1 forçando cooperação.
+<clr:18,199,226>Barragem na última localização conhecida.
+<clr:18,199,226>Apontando adagas para a última localização conhecida.
+o hostil está encurralado.
+<clr:18,199,226>Erro do alvo. Aproveitando.
+<clr:18,199,226>Aproveitando vantagem sobre erro do hostil.
+<clr:18,199,226>Eco 1 intacto.
+<clr:18,199,226>Espinhos ineficazes. Alvo inabilidoso.
+<clr:18,199,226>Uhhh
+Impossível.
+<clr:18,199,226>Espinhos confirmados. Em formação.
+<clr:18,199,226>Contato. Hostil nas coordenadas
+<clr:18,199,226>Eco 1 pressionando.
+<clr:18,199,226>Este é Eco 1. Temos contaminantes barulhentos.
+<clr:18,199,226>Alvo hostil. Adagas autorizadas.
+<clr:18,199,226>Hostil pressionando.
+<clr:18,199,226>Ah. Preparando condição delta.
+<clr:18,199,226>Afirmativo.<cr>Eco 1 com áudio ligado, informando de todos os suspeitos.
+<clr:18,199,226>Audível no setor alfa nove delta.<cr>Expondo hostil em três
+<clr:18,199,226>Vigilância.<cr>Eco 1 identificou o setor e está avançando no infectado.<cr>Anticidadão 7-1-3.
+<clr:18,199,226>Contaminante vulnerável.<cr>Aproveitando.
+<clr:18,199,226>Eco 1.<cr>Temos contato no setor 9-4.<cr>Hostil vivo. Verificar raio.
+<clr:18,199,226>Verificando alvo 1 no prédio 11.<cr>O hostil principal está silencioso.<cr>Reconhecimento em curso.
+<clr:18,199,226>Preparando condição alfa e
+<cr>Contaminante cercado.<cr>Verificando o perímetro.
+<clr:18,199,226>Alvo principal confirmado.<cr>Realinhando-me ao hostil.<cr>A Alyx está com os dias contados.
+<clr:18,199,226>Hum
+nada a informar. Câmbio.
+<clr:18,199,226>1, 14, 3, 6, 11 verificados.<cr>E
+tudo limpo no Eco 4.<cr>Sua vez. Câmbio.
+<clr:18,199,226>Afirmativo.<cr>Mantendo convis no setor nômade-quilo-3-6.
+<clr:18,199,226>Sintonizando
+Eco 1 informando pouca luz e áudio baixo.<cr>Esperando oportunidades.
+<clr:18,199,226>Transmissão clara
+<cr>Condição areia movediça negativa.<cr>Hum
+espere
+Não.<cr>Raio limpo. Câmbio.
+<clr:18,199,226>Vigilância.<cr>Este é Eco 4, solicitando dados de proximidade de hostis.<cr>Aguardando transmissão.
+<clr:18,199,226>Varredura do setor em 43%.<cr>Estável. E
+<cr>ainda no aguardo de transmissão. Câmbio.
+<clr:18,199,226>A Vigilância confirma isolamento do setor.<cr>Anticidadão 1 está
+em deslocamento e ativo.<cr>Mantenham as linhas de visão desimpedidas e o áudio ligado.
+Surto com status de código delta-7.<cr>Equipe Crepúsculo em busca de contato com invasores
+<cr>Hum
+Afirmativo.
+<clr:18,199,226>Negativo. Afirmativo.<cr> Sem contenção do setor.<cr>Sem confirmação de vetor ao alvo 1.<cr>Aguardando códigos de parâmetros secundários.
+Dose de estimulantes: 32.<cr>Adaga: 78. Escudo: 100. Biprox: 73.<cr>Audíveis: 3. Fotovisuais: 15. Câmbio.
+<clr:18,199,226>Afirmativo. Preparando evisceradores no ápice 5.<cr>Temos bióticos no perímetro.<cr>Hum
+Aguardando contato. Câmbio.
+<clr:18,199,226>A Vigilância confirma
+aproximação de viromas não marcados.<cr>A todas as unidades, atenção: preparem-se para contato.
+<clr:18,199,226>Código da chamada: delta-echo-7-9-alfa-2-whiskey-0
+<cr>Confirmado. Câmbio.
+<clr:18,199,226>A Vigilância está solicitando que todas as unidades se atualizem e resolvam.<cr>Dissonâncias cognitivas não serão toleradas.<cr>Negativo
+Incluindo memórias. Atualização lançada.<cr>Aceitação obrigatória.
+<clr:18,199,226>Equipe de estabilização mantendo posição.<cr>Fotovisuais a 73. Audíveis a
+15.<cr>A Vigilância confirma que o AAI está próximo do perímetro.<cr>Fiquem em alerta.
+<clr:18,199,226>Vigilância, temos hostis ativos.<cr>Repassar preparações.
+<clr:18,199,226>Eco 1 em confronto e disparando.
+<clr:18,199,226>Assegurando estabilidade contra o alvo principal.
+<clr:18,199,226>Eco 1 lançando todos os espinhos.
+<clr:18,199,226>Ahhh! Vazamento de calor no pacote corporal!<cr>Assistência. Assistência mé
+<clr:18,199,226>Ahhh! Vazamento de calor no pacote corporal!<cr>Assistência. Assis
+[Grito ininteligível]
+<clr:18,199,226>Eco 1 solicitando contenção imediata! [Grito de pânico]
+<clr:18,199,226>Eco 1 solicitando contenção imediata. [Grito de pânico]
+<clr:18,199,226>Aaah! Limite térmico ultrapassado! Ahhh!
+<clr:18,199,226>Ahhh! Biodados em estado crítico. Expiração em 4
+<clr:18,199,226>Ah! Vazamento de calor no pacote corporal! Ahhh!
+<clr:18,199,226>Ah! Vazamento de calor no pacote corporal! [Grito ininteligível]
+<clr:18,199,226><sfx:1>[Grito de pânico]
+<clr:18,199,226>Alvo hostil, atenção:<cr>podemos ajudá-lo. Está a salvo.
+<clr:18,199,226>Podemos ajudá-lo. Está a salvo.
+<clr:18,199,226>Suspeito acima do limiar de agressão permitido por lei.
+<clr:18,199,226>Código 10-307. Prosseguindo com intensificação.
+<clr:18,199,226>Suspeito recusa-se a cooperar, código 10-307.<cr>Prosseguindo com intensificação.
+<clr:18,199,226>Ativando código 10-108. Cessando fogo.
+<clr:18,199,226>Cessando fogo. Código 10-40.
+<clr:18,199,226>Não atirar.<cr>Cooperação confirmada.
+<clr:18,199,226>Cessar fogo. O alvo é nosso aliado.
+<clr:18,199,226>Aliado confirmado. Cessar fogo!
+<clr:18,199,226>Afirmativo. Alvo de pouca importância.
+<clr:18,199,226> Diretiva de avanço.
+<clr:18,199,226>Diretiva de pressão.
+<clr:18,199,226>A todas as unidades: avançar e pressionar.
+<clr:18,199,226>A todas as unidades: convergir no alvo.
+<clr:18,199,226>A equipe de estabilização identificou o setor e está avançando no infectado.
+<clr:18,199,226>Atenção total.
+<clr:18,199,226>Alvo na mira. Adaga apontada.
+<clr:18,199,226>Olá, alvo 1.
+<clr:18,199,226>Cesse agora.
+<clr:18,199,226>Alvo principal. Ordenante confrontando.
+<clr:18,199,226>Atirar na Alyx.
+<clr:18,199,226>A todas as unidades: atirar na Alyx.
+<clr:18,199,226>Designar alvo como cobertura.
+<clr:18,199,226>Alvo protegido. Corrigindo.
+<clr:18,199,226>Iniciando ofensiva na cobertura.
+<clr:18,199,226>Remover sombra.
+<clr:18,199,226>Extrator.
+<clr:18,199,226>Acionando quicadora.
+<clr:18,199,226>Acionar.
+<clr:18,199,226>Acionar extrator.
+<clr:18,199,226>A todas as unidades: lançar quicadoras.
+<clr:18,199,226>Aproveitar.
+<clr:18,199,226>A todas as unidades: aproveitar.
+<clr:18,199,226>Convis. Formigas-leão.
+<clr:18,199,226>Equipe de proteção, alerta.<cr>Formigas-leão no setor
+<clr:18,199,226>Vigilância.<cr>Equipe terrestre tem contato visual com parasitas.
+<clr:18,199,226>Convis. Parasitas livres se aproximando.
+<clr:18,199,226>Contato visual com parasitas.
+<clr:18,199,226>Vigilância.<cr>Equipe terrestre tem contato visual com necróticos.
+<clr:18,199,226>Necróticos ativos no setor
+<clr:18,199,226>Necróticos nas redondezas.
+<clr:18,199,226>Ordenante causou abate. Marca
+<clr:18,199,226>Silenciado pelo Ordenante.
+<clr:18,199,226>Hostil terminado.
+<clr:18,199,226>Infecção eliminada.
+<clr:18,199,226>Vigilância, setor limpo.
+<clr:18,199,226>Limpeza por
+<clr:18,199,226>Término por
+<clr:18,199,226>Alvo principal limpo por
+<clr:18,199,226>Alvo principal contido por
+<clr:18,199,226>Necrótico contido por
+<clr:18,199,226>Necrótico terminado por
+<clr:18,199,226>FPA
+<clr:18,199,226>A todas as unidades: cobrir Ordenante em
+<clr:18,199,226>Cubram o Ordenante.
+<clr:18,199,226>Solicitando cobertura.
+<clr:18,199,226>Lâmina 2: preparar dose de estimulantes.
+<clr:18,199,226>Protegendo.
+<clr:18,199,226>Defendendo.
+<clr:18,199,226>Indo para a sombra.
+<clr:18,199,226>A todas as unidades: cercar e conter.
+<clr:18,199,226>A todas as unidades: esquivar.
+<clr:18,199,226>A todas as unidades: alerta de quicadora próxima.
+<clr:18,199,226>Expondo linhas de visão.
+<clr:18,199,226>Aperfeiçoando.
+<clr:18,199,226>Obstáculo removido.
+<clr:18,199,226>Abrindo visão.
+<clr:18,199,226>Realinhar.
+<clr:18,199,226>Corrigir linhas de visão.
+<clr:18,199,226>Equipe terrestre, realinhar.
+<clr:18,199,226>Equipe de proteção, corrigir linhas de visão.
+<clr:18,199,226>Ei Alyx, somos nós!
+<clr:18,199,226>Cessar fogo!<cr>O alvo é nosso aliado.
+<clr:18,199,226>Abaixar armas!<cr>Abaixar armas.
+<clr:18,199,226>Cessar fogo.<cr>Cessar fogo.
+<clr:18,199,226>A todas as unidades: a Alyx é nossa aliada.
+<clr:18,199,226>A Alyx é nossa aliada! Cessar fogo!
+<clr:18,199,226>Disparando no hostil.
+<clr:18,199,226>Processar à vontade.
+<clr:18,199,226>Abrir fogo.
+<clr:18,199,226>A todas as unidades: pressão sem restrições em
+<clr:18,199,226>Abrir fogo. Prioridade 1.
+<clr:18,199,226>Abrir fogo contra a Alyx.
+<clr:18,199,226>Adagas do Ordenante apontadas para o principal.
+<clr:18,199,226>Silenciando resposta.
+<clr:18,199,226>Alvo principal confirmado. Adagas apontadas.
+<clr:18,199,226>Atacar alvo de prioridade 1.
+<clr:18,199,226>Sem restrições contra a Vance.
+<clr:18,199,226>Silenciar o alvo 1.
+<clr:18,199,226>Limpando a área com quicadora.
+<clr:18,199,226>Extraindo das coordenadas
+<clr:18,199,226>Lançar quicadora na última localização conhecida.
+<clr:18,199,226>Extrair hostil na última localização conhecida.
+<clr:18,199,226>Limpando a área com esquiva.
+<clr:18,199,226>Movimento nas coordenadas
+<clr:18,199,226>A todas as unidades: ligar áudio.<cr>Informar contaminantes avistados.
+<clr:18,199,226>Ordenante com vida limitada.
+<clr:18,199,226>Aguardando pacote de estimulantes.
+<clr:18,199,226>Vigilância. Solicitando dose de estimulantes.
+<clr:18,199,226>Reserva no fim. Dias contados.
+<clr:18,199,226>Ordenante solicitando assistência médica
+<clr:18,199,226>Morte ineficaz.
+<clr:18,199,226>Está com os dias contados.
+<clr:18,199,226><sfx><norepeat:5>[Risada celebratória]
+<clr:18,199,226>Vigilância, solicitando localização.
+<clr:18,199,226>Solicitando assistência no local.
+<clr:18,199,226>Sem convis do contaminante.
+<clr:18,199,226>Informar linha de visão.
+<clr:18,199,226>Possível fuga. A todas as unidades: informar.
+<clr:18,199,226>Solicitando localização do alvo.
+<clr:18,199,226>O contaminante está silencioso.
+<clr:18,199,226>Sem convis do hostil.
+<clr:18,199,226>Verificar cobertura.
+<clr:18,199,226>Solicitando último setor conhecido.
+<clr:18,199,226>Informar situação do alvo.
+<clr:18,199,226>O principal está silencioso.
+<clr:18,199,226>Sem convis do principal.
+<clr:18,199,226>Alvo Vance na sombra. Assistência no local.
+<clr:18,199,226>Hostil principal na sombra. Informar convis.
+<clr:18,199,226>Violação de proximidade. Corrigindo.
+<clr:18,199,226>Assistência. Assistência. Assistência. Assistência.
+<clr:18,199,226>Infecção avançando. Infecção avançando.
+<clr:18,199,226>Para trás. Para trás. Para trás.
+<clr:18,199,226>Confirmado.
+<clr:18,199,226>Em posição.
+<clr:18,199,226>Ordenante. Assegurando perímetro.
+<clr:18,199,226>Aguarde contato.
+<clr:18,199,226><sfx><norepeat:5>[Ofegante]
+<clr:18,199,226>Hostil principal vulnerável.
+<clr:18,199,226>Martelo eficaz. Código 0-9.
+<clr:18,199,226>Reconvergir no hostil em dois, um
+<clr:18,199,226>Vigilância, solicitando amplificação de armas.
+<clr:18,199,226>Terminando.
+<clr:18,199,226>A todas as unidades: impedir uso de estimulantes pelo hostil principal.
+<clr:18,199,226>Informar expiração do hostil.
+<clr:18,199,226>Contato visual perdido. Possível descontaminação.
+<clr:18,199,226>Nenhum contaminante no setor. Solicitando retirada.
+<clr:18,199,226>Informando a todas as unidades. Silêncio no fosso.
+<clr:18,199,226>Informar situação do setor.
+<clr:18,199,226>Informar situação da infecção.
+<clr:18,199,226>Vasculhamento por convis
+<clr:18,199,226>Retomar varredura e limpeza.
+<clr:18,199,226>Continue buscando.
+<clr:18,199,226>Vigilância, informando condição alfa.
+<clr:18,199,226>Começando limpeza.
+<clr:18,199,226>Fiquem alertas e informem linhas de visão.
+<clr:18,199,226>Convis. Todas as unidades.
+<clr:18,199,226>Avançando com exposição de hostis.
+<clr:18,199,226>Mobilizar e vasculhar.
+<clr:18,199,226>Fechar arena.
+<clr:18,199,226>A todas as unidades: dispersar e vasculhar.
+<clr:18,199,226>A todas as unidades: expor todas as sombras.
+<clr:18,199,226>Iniciar ofensiva! Alvo nas coordenadas
+<clr:18,199,226>Contato com alvo nas coordenadas...
+<clr:18,199,226>Convis! Convis! Distância 50. Orientação 12.
+<clr:18,199,226>Hostil encontrado.
+<clr:18,199,226>Alvo encontrado nas coordenadas
+<clr:18,199,226>Contato no setor
+<clr:18,199,226>Contato recente no setor
+<clr:18,199,226>Linha de tiro confirmada.
+<clr:18,199,226>Linha de visão confirmada no alvo principal.
+<clr:18,199,226>Iniciar ofensiva no setor
+<clr:18,199,226>Voltar a confrontar alvo.
+<clr:18,199,226>Interceptar o hostil nas coordenadas
+<clr:18,199,226>Reabastecendo.
+<clr:18,199,226>Ordenante vulnerável por quatro
+três
+um.
+<clr:18,199,226>Sem adagas.
+<clr:18,199,226>Verificar reserva.
+<clr:18,199,226>Iniciando retirada.
+<clr:18,199,226>Procurar sombra e se retirar.
+<clr:18,199,226>
+setor muito perigoso. Recuar.
+<clr:18,199,226>Convis de vários desconhecidos. Alto risco de resposta.
+<clr:18,199,226>Vigilância. Convis de secundários.
+<clr:18,199,226>Verificar silhuetas. Possíveis multiplicadores.
+<clr:18,199,226>Múltiplos contaminantes confirmados.
+<clr:18,199,226>Alerta. O hostil possui granadas.
+<clr:18,199,226>A todas as unidades: hostil está em posse de quicadoras. Avancem com cautela.
+<clr:18,199,226>Impeça o recarregamento do hostil.
+<clr:18,199,226>Vigilância. Temos minas rolantes. Adagas ativadas.
+<clr:18,199,226>Convis, minas rolantes.
+<clr:18,199,226>Minas rolantes subagudas. Atenção total.
+<clr:18,199,226>O alvo possui espinhos ilegais.
+<clr:18,199,226>Espinhos aperfeiçoados identificados.<cr>Exerçam cautela.
+<clr:18,199,226>Vigilância, surto não contido.
+<clr:18,199,226>Vigilância, solicitando unidades adicionais.
+<clr:18,199,226>Unidade terrestre abatida.<cr>Setor não controlado.
+<clr:18,199,226>Vigilância, setor perigoso.
+<clr:18,199,226>Vigilância, solicitar proteção aérea.
+<clr:18,199,226>Vigilância, Ordenante é a única unidade ativa.
+<clr:18,199,226>Vigilância. Ordenante é a última unidade.<cr>Solicitando assistência.
+<clr:18,199,226>Vigilância, solicitando sombra imediata.
+<clr:18,199,226>Vigilância. Surto não contido.
+<clr:18,199,226>Equipe terrestre terminada.<cr>Solicitando aliados.
+<clr:18,199,226>Vigilância. Contato solo.<cr>Muitos hostis.
+<clr:18,199,226>Vigilância.<cr>Solicitando extração do Ordenante.<cr>Setor
+<clr:18,199,226>Vigilância.<cr>Ordenante é o último respondedor.
+<clr:18,199,226>Vigilância.<cr>A infecção está se espalhando.
+<clr:18,199,226>Encurralando.
+<clr:18,199,226>Esvaziando adagas no principal.
+<clr:18,199,226>Manter alvo em posição.
+<clr:18,199,226>Iniciar supressão do hostil.
+<clr:18,199,226>Intacto.
+<clr:18,199,226>Alvo falhou em atingir
+<clr:18,199,226>Erro do alvo. Aproveitar
+<clr:18,199,226>Impossível avançar.
+<clr:18,199,226>Dispersar!
+<clr:18,199,226>Alvo em tentativa de pressão. Responder.
+<clr:18,199,226>Equipe terrestre tem contato no setor
+<clr:18,199,226>Equipe de proteção tem espinhos no setor
+<clr:18,199,226>14, 1, 6, 3
+11
+sua vez. Câmbio.
+<clr:18,199,226>Movimento negativo.
+<clr:18,199,226>Afirmativo. Som baixo.<cr>Esperando oportunidades.
+<clr:18,199,226>Transmissão clara.<cr>Condição areia movediça: negativa.<cr>Raio limpo. Câmbio.
+<clr:18,199,226>Vigilância.<cr>Solicitando dados de proximidade de hostis.
+<clr:18,199,226>Varredura do setor em 43%. Estável.<cr>Ainda no aguardo de transmissão. Câmbio.
+<clr:18,199,226>Afirmativo.<cr>Surto com status de código delta-7.<cr>Equipe Crepúsculo em busca de contato com invasores.
+<clr:18,199,226>Afirmativo. Sem contenção do setor.<cr>Sem confirmação de vetor ao alvo 1.<cr>Aguardando códigos de parâmetros secundários.
+<clr:18,199,226>Audíveis: 3. Fotovisuais: 15.
+<clr:18,199,226>>Preparando evisceradores no ápice 5.<cr>Temos bióticos no perímetro. Câmbio.
+<clr:18,199,226>A Vigilância confirma aproximação de viromas não marcados.<cr>A todas as unidades, atenção: preparem-se para contato.
+Confirmado. Câmbio.
+15.<cr>A Vigilância confirma que o AAI está próximo do perímetro. Fiquem em alerta.
+<clr:18,199,226>Negativo. Alvo ainda ativo.
+<clr:18,199,226>Confirmado.<cr>Recalibrando.
+<clr:18,199,226>Vigilância, código 10-4.<cr>Eviscerador ativado.
+<clr:18,199,226>Preparando eviscerador.
+<clr:18,199,226>Acionando eviscerador.
+<clr:18,199,226>Eviscerador acionado e vasculhando.
+<clr:18,199,226>Eviscerador lançado.
+<clr:18,199,226>Ativando eviscerador.<cr>Varrer e atacar.
+<clr:18,199,226>Lançando eviscerador.<cr>Resultados pendentes.
+<clr:18,199,226>O eviscerador está caçando.<cr>A todas as unidades: não se mexam.
+<clr:18,199,226>10-0.<cr>O eviscerador está caçando.
+<clr:18,199,226>Lançando eviscerador.<cr>Controlar e conter.
+<clr:18,199,226>Lançando eviscerador.<cr>Identificar e processar.
+<clr:18,199,226>Suspeito recusa-se a cooperar, código 10-307.
+<clr:18,199,226>A todas as unidades: cessar fogo.<cr>O alvo é nosso aliado.
+<clr:18,199,226>FPA se aproximando.
+<clr:18,199,226>Unidade da FPA se aproximando.
+<clr:18,199,226>FPA avançando no alvo.
+<clr:18,199,226>FPA avançando.
+<clr:18,199,226>FPA pressionando.
+<clr:18,199,226>FPA suprimindo.
+<clr:18,199,226>FPA confrontando.
+<clr:18,199,226>Atacante, atacante.
+<clr:18,199,226>Pressionando alvo 1.
+<clr:18,199,226>Desinfetando alvo principal.
+<clr:18,199,226>Adagas apontadas para a Vance.
+<clr:18,199,226>Desista, Alyx.
+<clr:18,199,226>Atacante, atacante no hostil principal.
+<clr:18,199,226>FPA na Alyx.
+<clr:18,199,226>Confrontando alvo 1.
+<clr:18,199,226>Principal confirmado.
+<clr:18,199,226>Trocando alvo.<cr>Violação de código.
+<clr:18,199,226>Alvo protegido.<cr>Retificando.
+<clr:18,199,226>FPA. Removendo suporte.
+<clr:18,199,226>FPA. Adagas apontadas para a cobertura.
+<clr:18,199,226>Abaixar.
+<clr:18,199,226>Quicadora em 3.
+<clr:18,199,226>FPA, Convis da formiga-leão.
+<clr:18,199,226>FPA confrontando formiga-leão.
+<clr:18,199,226>Informando contato com parasitas.
+<clr:18,199,226>Parasitas livres se aproximando.
+<clr:18,199,226>FPA com contato visual com parasitas.
+<clr:18,199,226>Ahhhhh
+<clr:18,199,226>Parasitas vivos no setor
+<clr:18,199,226>FPA com contato visual com necróticos.
+<clr:18,199,226>Convis de necróticos.
+<clr:18,199,226>Hostil silenciado.
+<clr:18,199,226>FPA confirmando abate.
+<clr:18,199,226>Ah.
+<clr:18,199,226>FPA para Ordenante. Parasita abatido.
+<clr:18,199,226>Ela morreu. Administrar antisséptico.
+<clr:18,199,226>Problema eliminado.
+<clr:18,199,226>Alvo 1 abatido.
+<clr:18,199,226>Necrótico silenciado.
+<clr:18,199,226>Co-lâmina.
+<clr:18,199,226>Cubram o FPA.
+<clr:18,199,226>FPA solicitando cobertura.
+<clr:18,199,226>Cobertura em
+<clr:18,199,226>Esquivar-se.
+<clr:18,199,226>Alerta. Extrator.
+<clr:18,199,226>Cuidado.
+<clr:18,199,226>Quicadora ativa. Afastem-se.
+<clr:18,199,226>FP
+<clr:18,199,226>Câmbio
+<clr:18,199,226>Fixando convis.
+<clr:18,199,226>Aperfeiçoando linhas de visão.
+<clr:18,199,226>Corrigindo linhas de visão.
+<clr:18,199,226>Em formação.
+<clr:18,199,226>Abaixar armas!<cr>FPA! Abaixar armas.
+<clr:18,199,226>Disparando
+<clr:18,199,226>FPA no ponto do alvo prioritário.
+<clr:18,199,226>Código 3. Realizando limpeza.
+<clr:18,199,226>Adagas apontadas ao hostil.
+<clr:18,199,226>Alvo: Vance.
+<clr:18,199,226>Abrindo fogo.
+<clr:18,199,226>Ela está aqui.
+<clr:18,199,226>Anticidadão 1 confirmado. Disparando.
+<clr:18,199,226>Limpando setores.
+<clr:18,199,226>Extrator na última localização conhecida.
+<clr:18,199,226>Quicadora na última localização conhecida.
+<clr:18,199,226>Expondo.
+<clr:18,199,226>FPA com áudio ligado.<cr>Informando de qualquer contaminante.
+<clr:18,199,226>Fui atingido.
+<clr:18,199,226>Pacote corporal resistindo.
+<clr:18,199,226>Sustendo danos.<cr>Buscando sombra.
+<clr:18,199,226>Espinhos eficazes.<cr>Aplicando dose de estimulantes.
+<clr:18,199,226>Assistência no local para FPA.
+<clr:18,199,226>Contato visual com o contaminante perdido.
+<clr:18,199,226>Sem convis. Sem convis.
+<clr:18,199,226>FPA solicitando localização do alvo.
+<clr:18,199,226>Ordenante, temos um código 7-1-3.<cr>Solicitando última localização conhecida.
+<clr:18,199,226>Preciso de assistência no local. Setor
+<clr:18,199,226>Sem contato visual. Ordenante, assistência.
+<clr:18,199,226>FPA. Perda de contato visual.
+<clr:18,199,226>Possível fuga.<cr>Solicitando linhas de visão.
+<clr:18,199,226>Verificação de contato.
+<clr:18,199,226>Alerta de proximidade. Descarregando.
+<clr:18,199,226>FPA em posição.
+<clr:18,199,226>FPA mantendo posição.
+<clr:18,199,226>FPA vigiando.
+<clr:18,199,226>FPA assegurando perímetro.
+<clr:18,199,226>Vulnerável.
+<clr:18,199,226>Reconvergir no hostil imediatamente.
+<clr:18,199,226>Amplificar armas no FPA.
+<clr:18,199,226>FPA eficaz.
+<clr:18,199,226>Impedir uso de estimulantes pelo hostil.
+<clr:18,199,226>FPA para Ordenante. Hostil em silêncio.
+<clr:18,199,226>Localização limpa. Revogar assistência.
+<clr:18,199,226>Ainda varrendo
+<clr:18,199,226>Condição alfa.
+<clr:18,199,226>FPA pronto.
+<clr:18,199,226>Vigiando. Áudio ligado.
+<clr:18,199,226>Mobilizado e vasculhado.
+<clr:18,199,226>Em busca de sombras.
+<clr:18,199,226>Informando todas as linhas de visão.
+<clr:18,199,226>Avançando. Extração de hostis.
+<clr:18,199,226>Iniciar ofensiva! Alvo
+<clr:18,199,226>Vamos, vamos, vamos!
+<clr:18,199,226>FPA. Contato no setor
+<clr:18,199,226>FPA interceptando.
+<clr:18,199,226>Contato visual ativo no
+<clr:18,199,226>FPA reabastecendo.
+<clr:18,199,226>FPA com reserva baixa. 4
+<clr:18,199,226>Sem adagas. Corrigindo.
+<clr:18,199,226>FPA com adaga vazia.
+<clr:18,199,226>Renovando adagas.
+<clr:18,199,226>FPA em retirada.
+<clr:18,199,226>FPA. Reagrupando.
+<clr:18,199,226>FPA. Retirada.
+<clr:18,199,226>Condição volátil.<cr>Buscando sombra.
+<clr:18,199,226>Verificar silhuetas.<cr>Possíveis multiplicadores.
+<clr:18,199,226>Hostil possui extratores.
+<clr:18,199,226>Hostil recarregando.<cr>Adaga em vantagem.
+<clr:18,199,226>Vantagem momentânea.
+<clr:18,199,226>FPA. Contaminante vulnerável.
+<clr:18,199,226>Convis. Minas rolantes. Adagas ativadas.
+<clr:18,199,226>Minas rolantes! Respondedor, respondedor.
+<clr:18,199,226>Ordenante. Espinhos aperfeiçoados.
+<clr:18,199,226>FPA. O alvo possui espinhos ilegais.
+<clr:18,199,226>Setor 9: surto, surto, surto.
+<clr:18,199,226>Vigilância, setor não controlado.
+<clr:18,199,226>Temos um problema.
+<clr:18,199,226>Vigilância. FPA sozinho.
+<clr:18,199,226>Vigilância. FPA é a última unidade.<cr>Solicitando assistência imediata.
+<clr:18,199,226>Ah. Solicitando sombra.
+<clr:18,199,226>Vigilância. Surto não contido!
+<clr:18,199,226>FPA para a Vigilância.<cr>Condição de desvantagem ativa. Na escuta.
+<clr:18,199,226>Vigilância! Contato solo.<cr>Muitos hostis!
+<clr:18,199,226>Vigilância!<cr>Solicitando extração do FPA. Setor
+<clr:18,199,226>Vigilância!<cr>FPA é o último respondedor.
+<clr:18,199,226>Vigilância! Ordenante inibido.<cr>Respondendo!
+<clr:18,199,226>Ordenante silenciado! Administrar resposta com força total!
+<clr:18,199,226>Ordenante com parada cardíaca.<cr>Ordenante com parada cardíaca!
+<clr:18,199,226>Suprimindo nas coordenadas
+<clr:18,199,226>FPA forçando cooperação.
+<clr:18,199,226>Força de Proteção Anticorpo ativo em
+<clr:18,199,226>FPA. Hostil impreciso.
+<clr:18,199,226>Vigilância. Contaminante só ladra, mas não morde.
+<clr:18,199,226>FPA intacto.
+<clr:18,199,226>Vigilância. Negativo.
+<clr:18,199,226>Espinhos confirmados.<cr>Supressão ativa.
+<clr:18,199,226>Contato. Hostil
+<clr:18,199,226>FPA de prontidão para pressão.
+<clr:18,199,226>Alvo pressionando.
+<clr:18,199,226>Fechando arena.<cr>Iniciar condição sombra.
+<clr:18,199,226>Nada para informar.
+<clr:18,199,226>3, 11, 1, 14, 6
+verificados. Sua vez. Câmbio.
+<clr:18,199,226>Movimento negativo. Coordenada 7-2.
+<clr:18,199,226>Raio limpo. Câmbio.
+<clr:18,199,226>Vigilância. Aguardando transmissão.
+<clr:18,199,226>Estável. Aguardando transmissão. Câmbio.
+<clr:18,199,226>Surto com status de código delta-7.<cr>Equipe Crepúsculo em busca de contato com invasores
+<clr:18,199,226>Negativo. Aguardando códigos de parâmetros secundários.
+<cr>Audíveis: 3. Fotovisuais: 15. Câmbio.
+<clr:18,199,226>Afirmativo.<cr>Aguardando contato. Câmbio.
+<clr:18,199,226>Aproximação de viromas não marcados.<cr>A todas as unidades, atenção: preparem-se para contato.
+<clr:18,199,226>Código da chamada: 2-whiskey-0
+<cr>Confirmado.
+<clr:18,199,226>Afirmativo. Aceito.<cr>Atualização concluída em três segundos
+<clr:18,199,226>Atualização lançada.<cr>Aceitação obrigatória.
+<clr:18,199,226>Equipe de estabilização mantendo posição.<cr>Permaneçam em alerta.
+<sfx><norepeat:2><clr:255,0,0>[Sem munição carregada]
+<sfx:1><norepeat:3><clr:255,0,0>[Última bala carregada]
+<sfx><norepeat:3><clr:255,0,0>[Último disparo]
+<sfx><norepeat:5><clr:255,176,0>[Sem munição na pistola]
+<sfx:1><norepeat:3><clr:255,0,0>[Última bala da escopeta]
+<sfx><norepeat:5>[Escopeta carregada]
+<sfx><norepeat:5><clr:255,176,0>[Sem munição na escopeta]
+<sfx><norepeat:3>[Projétil de fragmentação pronto]
+<sfx><norepeat:5><clr:255,176,0>[Sem munição na submetralhadora]
+<sfx><norepeat:5>[Teletransporte bloqueado]
+<sfx>[Início do hackeamento]
+<sfx>[Falha no hackeamento]
+<sfx>[Hackeamento bem-sucedido]
+<sfx>[Explosão de granada]
+<sfx><clr:255,0,0>[Granada ativada]
+<sfx>[Explosão de granada Xen]
+<sfx>[Cura concluída]
+<sfx><norepeat:1><clr:255,0,0>[Posto de cura esgotado]
+<sfx>[Início da cura]
+<sfx>[Seringa de vida injetada]
+<sfx>[Sinal sonoro de sucesso]
+<sfx>[Laser ativado]
+<sfx><norepeat:1>[Reservatório ativado]
+<sfx>[Receptáculo para bateria da Combine abrindo]
+<sfx>[Bateria da Combine aceita]
+<sfx>[Porta abrindo]
+<sfx>[Porta destrancada]
+<sfx>[Aprimorando]
+<sfx>[Aprimoramento concluído]
+<sfx><norepeat:8>[Circuito concluído]
+<sfx:1><norepeat:1>[Resina colocada na mochila]
+<sfx:1><norepeat:1>[Munição retirada da mochila]
+<sfx:1>[Resina retirada da mochila]
+<sfx:1><norepeat:1>[Munição colocada na mochila]
+<sfx><norepeat:8>[Lanterna presa]
+<sfx><norepeat:20>[Alarme de pouca vida]
+<sfx>[Porta do trem]
+<sfx>[Porta trancada]
+<sfx><norepeat:4>[Rangido alto da porta]
+<sfx><norepeat:4>[Campainha de elevador]
+<sfx><norepeat:4>[Elevador em movimento]
+<sfx><norepeat:4>[Elevador chegando ao andar]
+<sfx><norepeat:4>[Botão do elevador]
+<sfx><norepeat:6>[Ruído da caixa]
+<sfx>[Cadeado quebrando]
+<sfx:1>[Explosão]
+<sfx><norepeat:2>[Batida no vidro]
+<sfx>[Porta batendo com força]
+<sfx>[Motor ligando]
+<sfx>[Choque elétrico]
+<sfx>[Porta secreta abrindo]
+<sfx>[Escada caindo]
+<sfx>[Drone explodindo]
+<sfx>[Rangido da porta abrindo]
+<sfx>[Rugido]
+<sfx>[Grito horripilante]
+<sfx>[Golpeando na cerca]
+<sfx>[Vidro estilhaçando]
+<sfx>[Porta fechando]
+<sfx>[Painel abrindo]
+<sfx>[Painel fechando]
+<sfx>[Campainha tocando]
+<sfx>[Porta destrancando]
+<sfx>[Explosão de energia do vortilético]
+<sfx>[Queda de energia]
+<sfx>[Queda do elevador]
+<sfx>[Campainha do elevador]
+<sfx>[Elevador caindo]
+<sfx>[Elevador falhando]
+<sfx>[Elevador sem energia]
+<sfx>[Elevador com energia]
+<sfx>[Elevador em movimento]
+<sfx>[Luzes acesas]
+<sfx>[Luzes apagadas]
+<sfx><norepeat_global:5>[Ruído nos dutos de ar]
+<sfx>[Explosão elétrica]
+<sfx>[Ruído nos azulejos do teto]
+<sfx>[Teto caindo]
+<sfx>[Chupa-crânio correndo]
+<sfx>[Sons de chupa-crânio]
+<sfx>[Energia desligada]
+<sfx>[Energia ligada]
+<sfx>[Chute na escada]
+<sfx>[Escada cai]
+<sfx>[Sobrecarga de energia]
+<sfx>[Explosão de vidro]
+<sfx>[Grito de morte do consultor]
+<sfx>[Tempo retrocedendo]
+<sfx>[Tempo congelando]
+<clr:255,176,0>Alerta: sinais vitais críticos. <cr>Procure atenção médica.
+<sfx>[Passos nos dutos de ar]
+<sfx>[Impacto de janela]
+<sfx>[Trem parando]
+<sfx>[Descarga]
+<sfx><norepeat:5><clr:255,0,0>[Morte de formiga-leão]
+<sfx><norepeat:5><clr:255,0,0>[Morte da craca]
+<sfx:1><norepeat:10>[Alerta do chupa-crânio]
+<sfx><norepeat:10>[Ataque de chupa-crânio]
+<sfx><norepeat:10>[Mordida de chupa-crânio]
+<sfx:1><norepeat:10>[Chupa-crânio babando]
+<sfx:1><norepeat:10>[Chupa-crânio queimando]
+<sfx:1><norepeat:10>[Chupa-crânio cavando]
+<sfx:1><norepeat:10>[Chupa-crânio emergindo]
+<sfx><norepeat:10><clr:255,0,0>[Morte do chupa-crânio]
+<sfx:1><norepeat:10>[Grito de dor do chupa-crânio]
+<sfx>[Grito alienígena]
+<sfx><norepeat:4>[Inserção do coração do reanimador]
+<sfx><norepeat:4>[Remoção do coração do reanimador]
+<sfx><norepeat:5><clr:255,0,0>[Morte do reanimador]
+<sfx><norepeat:8>[Balão inflando]
+<sfx>[Explosão do balão]
+<sfx:1><norepeat_global:5>[Conversa entre plantas carnívoras Xen]
+<sfx:1><norepeat:4>[Nuvem de esporos Xen]
+<sfx><norepeat:4>[Ataque do Jeff]
+<sfx><norepeat:6>[Jeff quebrando a porta]
+<sfx><norepeat:4>[Grito horripilante]
+<sfx><norepeat:4>[Jeff enraivecido]
+<sfx><norepeat:5>[Jeff pisoteando]
+<sfx><norepeat:6>[Jeff batendo na porta]
+<sfx><norepeat:6>[Porta aberta]
+<sfx><norepeat:12>[Jeff andando]
+<sfx><norepeat:20>[Música de elevador]
+<sfx><norepeat:20>[Barulho do alto-falante]
+<sfx><norepeat:5>[Grito do Jeff]
+<sfx><clr:255,176,0>[Parada cardíaca]
+<sfx><clr:255,176,0>Vida em estado crítico
+<sfx><clr:255,176,0>Procure atenção médica
+<sfx><norepeat:5>[Bateria inserida]
+<sfx><norepeat:5>[Bateria removida]
+<sfx><norepeat_global:5><clr:255,176,0>[Bala richoteando em armadura]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Pancada com pé de cabra!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Golpe com pé de cabra]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Câmara vazia]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo de pistola]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tiro de calibre .357]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Lançamento de granada da submetralhadora]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo primário da submetralhadora]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Recarregando]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo duplo de escopeta]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo de escopeta]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo primário]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Vazia]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo secundário]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Disparo secundário carregado]
+<sfx><norepeat:5>[Disparo de pistola]
+<sfx><norepeat:4><clr:255,176,0>[Munição coletada]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[EXPLOSÃO]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Explosão de granada]
+<sfx:1><norepeat_global:8><clr:255,176,0>[Ricochete de balas]
+<sfx><norepeat:4><clr:255,176,0>[Impacto de disparo do trípode]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[Ricochete]
+<sfx><clr:255,170,0>[Aviso de pouca vida!]
+<clr:255,170,0>[Aviso de pouca munição!]
+<sfx><clr:255,170,0>[Energia para correr esgotada]
+<sfx><norepeat:5><clr:255,170,0>[Correndo]
+<sfx><clr:255,170,0>[Não é possível usar]
+<sfx><clr:255,0,0>[Morte]
+<sfx><clr:255,170,0>[Bateria coletada]
+<sfx><clr:255,170,0>[Kit médico coletado]
+<sfx><clr:255,170,0>[Frasco de vida coletado]
+<sfx><clr:255,170,0>[Negado]
+<sfx><clr:255,170,0>[Começando a curar]
+<sfx><norepeat:5>[Botão pressionado]
+<sfx><norepeat:10>[Ataque de formiga-leão]
+<sfx><norepeat:10>[Formiga-leão cavando]
+<sfx><norepeat:10>[Formiga-leão emergindo]
+<sfx><norepeat:10>[Formiga-leão sofrendo]
+<sfx><norepeat:10>[Formiga-leão esmagada]
+<sfx><norepeat:3>[Mordida da craca]
+<sfx><norepeat:3><clr:255,0,0>[Morte da craca]
+<sfx><norepeat:3>[Craca puxando]
+<sfx><norepeat:3>[Grunhido da craca]
+<sfx><norepeat:3>[Grito da craca]
+<sfx><norepeat:5>[Craca digerindo]
+<sfx><norepeat:10>[Ameaça do chupa-crânio]
+<sfx><norepeat:10>[Alerta do chupa-crânio]
+<sfx><norepeat:10>[Explosão!]
+<sfx><norepeat:10>[Câmera recolhida]
+<sfx><norepeat:10>[Câmara aberta]
+<sfx><norepeat:10>[Alerta da câmara]
+<sfx><norepeat:10>[Clique da câmara]
+<sfx>[Câmara destruída]
+<sfx><norepeat:10>[Alerta do corvo]
+<sfx><norepeat:10>[Corvo sofrendo]
+<sfx><norepeat:10><clr:255,0,0>[Morte do corvo]
+<sfx><norepeat:10>[Grasnido do corvo!]
+<sfx><norepeat:5><clr:255,0,0>[Morte do cortador]
+<sfx><norepeat:20>[Motor do cortador]
+<sfx><norepeat:10>[Splash!]
+<sfx><norepeat:10>[Cortador abrindo]
+<sfx><norepeat:5>[Cortador ativo]
+<sfx><norepeat:30>[Rádio da Combine: conversa]
+<sfx><norepeat:15>[Rádio Combine: Alerta!]
+<sfx><norepeat:15>[Rádio Combine: Alerta de granada!]
+<sfx><norepeat:15>[Rádio da Combine: Solicitando reforços]
+<sfx><norepeat:25>[Rádio da Combine: Planejamento]
+<sfx><norepeat:10>[Alerta do vasculhador]
+<sfx><norepeat:5><clr:255,0,0>[Morte do vasculhador]
+<sfx><norepeat:5>[Estalido do vasculhador]
+<sfx><norepeat:10>[Vasculhador caindo]
+<sfx><norepeat:10>[Alerta do trípode]
+<sfx>[Trípode sofrendo]
+<sfx><norepeat:5><clr:255,0,0>[Morte do trípode]
+<sfx>[Trípode carregando]
+<sfx><norepeat:15>[Metralhadora do trípode]
+<sfx><norepeat:10>[Passos do trípode]
+<sfx>[Batida!]
+<sfx>[Ataque de raio do vortilético]
+<sfx><norepeat:10>[Alerta de zumbi]
+<sfx><norepeat:10><clr:255,0,0>[Morte do zumbi]
+<sfx><norepeat_global:20>[Gemido do zumbi]
+<sfx><norepeat:10>[Zombie sofrendo]
+<sfx>[Trancada]
+<sfx><norepeat:1>[Porta fecha]
+<sfx><norepeat:1>[Portão fecha]
+<sfx><norepeat:1>[Metal ressoando]
+<sfx><norepeat:1>[Armário fecha]
+<sfx><norepeat:1>[Trinco de porta]
+<sfx><norepeat:1>[Trancada]
+<sfx>[Botão pressionado]
+<sfx>[Alavanca]
+<sfx>[Botão bloqueado]
+<sfx>[Botão da Combine]
+<sfx><norepeat:3>[Respingo da água]
+<sfx><norepeat:1>[Vidro estilhaçando]
+<sfx><norepeat:1>[Cerâmica quebrando]
+<sfx><norepeat:1>[Cerâmica estilhaçando]
+<sfx><norepeat:1>[Monitor estilhaçando]
+<sfx>[Melancia se espatifando]
+<sfx><norepeat:1>[Impacto forte]
+<sfx><norepeat:3>[Cartão de acesso aceito]
+<sfx><norepeat:3>[Cartão de acesso rejeitado]
+<sfx><norepeat:1>[Madeira quebrando]
+<sfx><norepeat:1>[Metal destruído]
+<sfx><norepeat:1>[Concreto quebrando]
+<sfx><norepeat:1>[Gesso quebrando]
+<sfx><norepeat:1>[Papelão desmontando]
+<sfx><norepeat:1>[Plástico quebrando]
+<sfx><norepeat:1>[Madeira se deformando]
+<sfx><norepeat:3>[Madeira estilhaçando]
+<sfx><norepeat:1>[Metal quebrando]
+<sfx><norepeat:1>[Metal deformando]

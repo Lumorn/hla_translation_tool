@@ -1,0 +1,6835 @@
+ªDy
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Care e situa
+ia acolo sus?<I>
+Alyx: <clr:255,190,255>E bine, tat
+. Activitatea poli
+tilor este normal
+.<cr>La fel
+i în cazul patrulelor Combine.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Care e situa
+ia în depozit?
+Eli: <clr:255,208,172><I>Un minireactor Combine dintr-o livrare de 4.000.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>N-o s
+-i duc
+lipsa.<cr>Ia, uit
+-te
+i tu.<I>
+Russell: <clr:255,255,138><I>
+i nu numai asta.<cr>Cineva a spart re
+eaua de construc
+ii Combine.<I>
+Alyx: <clr:255,190,255>Nu fi
+i lacomi, b
+i.<cr>Nu avem timp la dispozi
+ie.
+Russell: <clr:255,255,138><I>Un minut
+i-am ie
+it.<cr>Garantat.<I>
+Alyx: <clr:255,190,255>Oh! Înc
+ceva: am observat c
+solda
+ii Combine mut
+provizii în zona de carantin
+.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Locul
+la e p
+sit de ani buni.
+Eli: <clr:255,208,172><I>Hmm. Chiar E ciudat.<cr>Ei bine, o s
+-i d
+m de cap dup
+ce ne întoarcem.<I>
+Russell: <clr:255,255,138><I>Ce
+?<I>
+Russell: <clr:255,255,138><I>Ce E asta?<I>
+Eli: <clr:255,208,172><I>Ne vedem înapoi la ad
+post, puiule.<cr>Ajungem în curând.<I>
+Russell: <clr:255,255,138><I>Pare a fi...<I>
+Alyx: <clr:255,190,255>Ce ai
+Alyx: <clr:255,190,255>Minunat.
+Psst
+Alyx! Alyx!
+Totu-i bine?
+<clr:255,190,255>Dap, au luat reactorul, floare la ureche.
+<clr:255,190,255>M
+îndrept chiar acum spre ad
+post ca s
+-l v
+d pe tata.
+<clr:255,190,255>Du-te!
+inem leg
+tura.
+Ai grij
+<clr:18,199,226>Mi
+<clr:18,199,226>Haide
+<clr:18,199,226>Tu.<sb>Mi
+<clr:18,199,226>Nu v
+opri
+<clr:18,199,226>Tu.<sb>Continu
+te mi
+ti.
+<clr:18,199,226>P
+i strada, ACUM.
+<clr:18,199,226>Merge
+i înapoi în locuin
+e.<sb>ACUM.
+<clr:18,199,226>Hai! Hai!
+<clr:18,199,226>Circula
+<clr:18,199,226>Tu. Mi
+în continuare.
+e, ACUM.
+<clr:18,199,226>Treci.
+<clr:18,199,226>Înainteaz
+<clr:18,199,226>În regul
+.<sb>Treci.
+. Treci.
+Alyx, aici!
+<clr:255,190,255>Ce e?
+Nu pare s
+fie un control de rutin
+. Sigur totul a mers bine?
+<clr:255,190,255>Sut
+la sut
+Ceva s-a-ntâmplat de se agit
+a protec
+ia civil
+<clr:255,190,255>Nu ie
+i în eviden
+i fii de
+teapt
+<clr:18,199,226>Urca
+<clr:18,199,226>Trece
+i în dub
+<clr:18,199,226>I-am prins.
+<clr:18,199,226>În spatele t
+<clr:18,199,226><force>Mâinile sus! Nu mi
+ca!
+<clr:18,199,226>Stop! STOP!
+<clr:255,190,255>Ho, ho, ho, ho, a
+tepta
+i, a
+i!<cr>Eu doar... eu doar locuiesc aici!
+<clr:18,199,226>Probabil o anticet
+ean
+.<sb>Scaneaz-o.
+<clr:255,190,255>Sta
+i, st-sta
+i, sta
+i! Nu trage
+<clr:18,199,226>Stop! ÎNAPOI!
+<clr:18,199,226>Jos mâinile de pe buton!
+<clr:18,199,226>Nu atinge butonul!
+<clr:18,199,226><force>
+ine mâinile sus!
+<clr:18,199,226><force>Mâinile sus!
+<clr:255,208,172><sfx:1>[Gemete de durere]
+<clr:255,208,172>N-am furat nimic!
+<clr:255,208,172>Nimeni! N-am v
+zut pe nimeni!
+<clr:255,208,172>Ah!
+<clr:255,190,255>TAT
+<clr:255,190,255>Hei! Stai, stai, nu, nu, nu...
+<clr:255,190,255>Ah. Unde
+<sb>Unde m
+duce
+i?<sb>Unde-i tata?
+<clr:255,190,255>E cineva acolo?!
+<clr:255,190,255>La naiba! Unde mi-e tat
+l?!
+<clr:255,190,255>Deschide fereastra naibii!
+<clr:18,199,226>Nu mai vorbi.
+<clr:18,199,226>Spune-i s
+nu se mai mi
+te prin spate.
+<clr:18,199,226>Nu te mai mi
+ca.
+<clr:18,199,226>Ce e aia?
+ZEA!
+<clr:18,199,226>Ce?
+<clr:18,199,226>GRENAD
+<clr:18,199,226>Ia-o!
+<clr:18,199,226>N-o v
+<clr:18,199,226>E sub scaun!
+<clr:18,199,226>O caut, o caut!
+<clr:18,199,226>Ia-o, ia-o, ia-o!
+<clr:18,199,226>Am prins-o!
+<clr:18,199,226>Arunc-o, arunc-o...
+<clr:18,199,226>O arunc a...
+AI-AVUT-UN-ACCIDENT.
+IA-CASCA.
+PUNE-
+I-CASCA.
+<HEADSET><clr:255,255,138>Pune-
+i casca!
+<HEADSET><clr:255,255,138>Alyx! Pune-
+<HEADSET><clr:255,255,138>Alyx! Pune
+Alyx! Pu-pune-
+<HEADSET><clr:255,255,138>Alyx! Dac
+mai e
+ti în via
+, pune-
+i casca.
+<HEADSET><clr:255,255,138>Pot s
+te v
+d! Nu ai niciun motiv s
+nu-
+i pui casca! Alyx!
+<HEADSET><clr:255,255,138>Nu e o p
+leal
+! Sunt Russel, bine? Colegul de munc
+al tat
+lui t
+u! Rezisten
+, Alyx!
+<HEADSET><clr:255,255,138>Alyx! E
+ti acolo?<cr>Tre-trebuie s
+<clr:255,190,255>Russell?
+<clr:255,190,255>Am avut un accident.
+<HEADSET><clr:255,255,138>
+tiu! Eu l-am cauzat!<sb>A
+a c
+, teoretic, nu e un accident.<cr>Trebuie s
+<clr:255,190,255>Stai. Stai. Unde e tata?
+<HEADSET><clr:255,255,138>E bine. Urm
+te drona.
+<HEADSET><clr:255,255,138>Trebuie s
+ti!
+<HEADSET><clr:255,255,138>Mi
+-te, Alyx.
+<HEADSET><clr:255,255,138>Alyx, trebuie s
+ie
+i de acolo. Acum.
+<clr:255,190,255>Bine, în
+eles.
+<clr:255,190,255>Deci
+tata e <I>bine<I>, corect?
+<HEADSET><clr:255,255,138>Da. Ei bine, nu.<cr>Sincer, a dat de belea.
+<clr:255,190,255>Dar...
+<HEADSET><clr:255,255,138>E înc
+la ei.<cr>A fost într-un alt transport.
+<clr:255,190,255>
+i m-ai salvat pe mine?
+<HEADSET><clr:255,255,138>Ei bine, da.<sb>Nu aveam de unde s
+tiu în ce dub
+e fiecare.<sb>A
+... da.<cr>Rezultatul a fost c
+te-am salvat pe TINE.
+tim unde-l duc?
+<HEADSET><clr:255,255,138>Arest preventiv.<sb>Iar apoi, dup
+ce-
+i dau seama c
+e Eli Vance
+tre Nova Prospekt.
+<HEADSET><clr:255,255,138>Dar deja lucrez la un plan pentru a-l salva.
+<HEADSET><clr:255,255,138>E
+ti aproape de laboratorul meu.<sb>Continu
+urm
+ti drona!<cr>G
+sim noi o solu
+<HEADSET><clr:255,255,138>Alyx, totul s-a întrerupt timp de o secund
+!<sb>Am pierdut transmisiunea video de la casc
+.<sb>Îmi vezi drona?<sb>E bine?
+<clr:255,190,255>Aa, sigur. Da.<cr>Voi ajunge imediat.
+<clr:255,190,255>Russell
+<cr>Ce a
+i <I>g
+sit<I> acolo?
+<HEADSET><clr:255,255,138>Ei bine, asta e chestia, nu
+tiu! Doar... poze înce
+ate cu o... cl
+dire.
+<clr:255,190,255>Citadela?
+<HEADSET><clr:255,255,138>Nu, altceva.<sb>
+i orice ar fi, o s
+-i ucid
+pe to
+i cei care au v
+zut cl
+direa
+i pe to
+i cei care
+tiu pe cineva care a v
+zut-o<sb>Adic
+noi doi...
+i tat
+l t
+<clr:255,190,255>Russell?<cr>A
+, aproape am ajuns.
+<clr:255,255,138>Alyx, grozav.<cr>Bine, haide
+stai.<cr>Drona mea e bine, da?
+<clr:255,190,255>Nup. A explodat.<cr>Sunt bine, apropo.
+<clr:255,255,138>Da. Bine, asta e cea...<cr>Asta e cea mai
+<clr:255,190,255>Russell. L-au prins pe tata.
+<clr:255,255,138>
+tiu. E... e r
+u.<sb>O s
+afle ce
+tie, iar apoi...<cr>Da, o s
+-l ucid
+<clr:255,190,255>Dumnezeule
+<clr:255,255,138>Dar!<sb>Vestea bun
+e c
+avem ceva ce ei n-au.
+<clr:255,190,255>Fiind
+<clr:255,255,138>Planul meu de a-l salva!
+<clr:255,190,255>Grozav. S
+-l auzim.
+<clr:255,255,138>A
+a.<sb>Destul de curând o s
+i dea seama c
+tat
+u nu o s
+vorbeasc
+.<sb>Iar când se va întâmpla ASTA, o s
+fie trimis s
+i se scoat
+creierul.
+<clr:255,190,255>Russell.
+<clr:255,255,138>Posibil.<sb>Poate nu, totu
+i.<cr>Adic
+, el ar putea... ei ar putea s
+-i fac
+o gaur
+în...
+<clr:255,190,255>Înceteaz
+<clr:255,255,138>Oh, dap. E tot tat
+u.<sb>Corect.<cr>Ei bine, ceea ce VOR face e s
+-l duc
+cu trenul de AICI
+sta-i Eli
+<clr:255,255,138>la
+Nova Prospekt.
+i dac
+ajunge în tren
+<cr>asta e, nu?
+<clr:255,255,138>Nu neap
+rat.<cr>Apuc
+ceva care s
+ne reprezinte.
+<clr:255,255,138>Orice e bun.
+<clr:255,255,138>Da, apuc
+orice.
+<clr:255,255,138>Grozav. Acum pune-l pe hart
+tii ce, fac eu asta.
+<clr:255,255,138>Bine, tu e
+ti asta.
+<clr:255,190,255>Parc
+ai spus
+noi
+<clr:255,255,138>Ei bine, UNUL dintre noi va trebui s
+stea aici pentru ca planul
+sta s
+func
+ioneze, adic
+eu.
+<clr:255,190,255>În regul
+, foarte bine.
+<clr:255,255,138>Chiar aici, afar
+, este un al doilea tren care pleac
+din Ora
+ul 17
+i trece prin zona de carantin
+<clr:255,190,255>Bine.
+<clr:255,255,138>Cele dou
+trenuri se intersecteaz
+aici, la nodul feroviar Fairview.<sb>Tu te urci în trenul t
+u, ajungi înainte de trenul lui
+i spargi panoul de control.<sb>Asta-mi va permite s
+preiau controlul sistemului.
+<clr:255,255,138>Trenul se opre
+te.<sb>Tu te ocupi de Combine.<sb>
+i salv
+m tat
+<clr:255,190,255>Sun
+bine.<cr>Unde-i trenul pe care-l iau?
+<clr:255,255,138>În spate, prin curte.<sb>E scos din func
+iune, dar cred c
+-i pot sparge comenzile de control.
+<clr:255,255,138>Ah.
+i ia-
+i o pereche de
+Russelli
+înainte s
+<clr:255,255,138>M
+ile, Alyx.<sb>
+tii, m
+ile gravita
+ionale.<sb>Am câteva seturi pe acolo.<sb>Le po
+i calibra afar
+, lâng
+magazie.
+<clr:255,190,255>În
+<clr:255,255,138>Putem face asta, Alyx.<sb>Ai în
+eles, nu-i a
+a?<sb>Când am zis c
+putem s-o facem?<sb>Pentru c
+o s-o facem.
+<clr:255,190,255>Da, a
+a o s
+fie.
+<HEADSET><clr:255,255,138>Sunt al
+turi de tine la fiecare pas.
+<HEADSET><clr:255,255,138>În regul
+tii cum func
+ioneaz
+.<sb>Ar trebui s
+fie ni
+te gunoaie pe acolo.<sb>
+inte
+te ceva cu mâna deschis
+<HEADSET><clr:255,255,138>Doar îndreapt
+i mâna spre ceva.
+<HEADSET><clr:255,255,138>M
+ile astea nu o s
+se calibreze singure.<sb>De
+i presupun c
+probabil ar trebui.<sb>Asta e ceva ce înc
+nu am reparat la ele.
+<clr:255,190,255>Sunt gata.
+<HEADSET><clr:255,255,138>Acum închide-
+i mâna
+i scutur-o spre tine.
+<HEADSET><clr:255,255,138>Doar scutur
+i încheietura pu
+in.
+i-o scuturi? Nu-mi dau seama dac
+i-o scuturi.
+<HEADSET><clr:255,255,138>Închide
+i scutur
+<clr:255,190,255>Hm. N-a mers.
+<HEADSET><clr:255,255,138>Bine, senzorul de referin
+e extrem de necalibrat.
+<HEADSET><clr:255,255,138>Încearc
+din nou.<sb>Alege un obiect,
+te-l, mâna deschis
+<clr:255,190,255>Tot nu merge.
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>Mna.
+din nou.
+<clr:255,190,255>Nup.
+<HEADSET><clr:255,255,138>Înc
+o dat
+<HEADSET><clr:255,255,138>Alege un obiect,
+<HEADSET><clr:255,255,138>Excelent! Acum strânge-
+i pumnul.
+, strânge-
+<clr:255,190,255>Cum e?
+<HEADSET><clr:255,255,138>S-a înregistrat.<sb>Acum scutur
+i încheietura pentru a trage obiectul.
+pu
+in.<sb>F
+-o din nou, dar de data asta s
+-l prinzi.
+<HEADSET><clr:255,255,138>Scutur
+din nou
+i încearc
+<HEADSET><clr:255,255,138>Asta e.
+<HEADSET><clr:255,255,138>Te descurci.
+<HEADSET><clr:255,255,138>Bum, dap.
+<HEADSET><clr:255,255,138>Foarte bine.
+<HEADSET><clr:255,255,138>În vizor.
+<HEADSET><clr:255,255,138>Te-ai conectat.
+<HEADSET><clr:255,255,138>Dap, te-ai conectat.
+<HEADSET><clr:255,255,138>Închide-
+i mâna.
+<HEADSET><clr:255,255,138>Acum închide-o.
+<HEADSET><clr:255,255,138>Strânge pumnul.
+<HEADSET><clr:255,255,138>Grozav.
+<HEADSET><clr:255,255,138>Dap.
+<HEADSET><clr:255,255,138>Exact a
+<HEADSET><clr:255,255,138>Perfect.
+<HEADSET><clr:255,255,138>Din nou, dar de data asta prinde-l.
+<HEADSET><clr:255,255,138>Dar prinde-l.
+<HEADSET><clr:255,255,138>Acum prinde-l.
+<HEADSET><clr:255,255,138>Prinde-l.
+<HEADSET><clr:255,255,138>Alyx, imagineaz
+i ceva ca un fel de tr
+gaci pe, ah
+pe
+<HEADSET><clr:255,255,138>Acum
+te cu mâna
+<HEADSET><clr:255,255,138>Apas
+pe tr
+gaci
+i gata.
+<HEADSET><clr:255,255,138>Alyx, ar trebui s
+fie un tr
+gaci mic lâng
+degetul ar
+tor pe fiecare dintre Rusellii t
+<HEADSET><clr:255,255,138>Perfect. Am terminat.<sb>Oh! Oh, stai! A-aproape am uitat.
+<clr:255,255,138>Alyx! Aici, sus!
+<clr:255,255,138>O s
+ai nevoie de o arm
+<clr:255,255,138>Nu-
+i face griji, e desc
+rcat
+<clr:255,255,138>Acum e desc
+<clr:255,255,138>Ai v
+zut unde s-a dus?
+<clr:255,255,138>Cred c
+e pe capota ma
+inii
+leia, acolo.
+<clr:255,255,138>Oh. Era s
+uit, armele au nevoie de muni
+<clr:255,255,138>Uite aici!
+<clr:255,255,138>Ar trebui s
+fie pe undeva pe jos.
+<HEADSET><clr:255,255,138>Cred ca a aterizat pe capota ma
+inii de acolo.
+<clr:255,255,138>Bine! M
+întorc în camera de comunica
+ii.
+<clr:255,190,255>Russell? Am r
+mas f
+muni
+<clr:255,190,255>Hei, Russell? Eu, aah
+iar am r
+<clr:255,255,138>Capul sus!
+. Din nou.
+<clr:255,255,138>Oh, nicio grij
+, avem destul
+<clr:255,255,138>Dar s
+tii c
+, nu am o rezerv
+infinit
+de muni
+ie. Bine? Doar... doar te avertizez.
+<HEADSET><clr:255,255,138>Hei, aia e fereastra mea! Ai grij
+<HEADSET><clr:255,255,138>Oh, te-ai,
+, descurcat cu lac
+tul
+la.<sb>Bine. Grozav.<sb>Aveam cheia de la el.<sb>Dar trebuia s
+i-o fi dat, e
+<sb>e vina mea.
+la-i trenul, Alyx.<sb>Vezi dac
+po
+i s
+for
+ezi u
+a.<sb>Aproape am reu
+it s
+pun trenul în func
+iune.
+<HEADSET><clr:255,255,138>Po
+ezi cumva u
+a trenului?
+<HEADSET><clr:255,255,138>Vezi dac
+i deschide u
+a trenului.
+! S
+mergem.<sb>Urm
+toarea oprire, nodul feroviar Fairview.
+<clr:255,190,255>Mul
+umesc, Russell.
+i baft
+, Alyx.<sb>Cu bine.
+<HEADSET><clr:255,255,138>Evident îns
+, asta numai ca s
+tii, sunt înc
+aici.
+tiu.
+<HEADSET><clr:255,255,138>Alo, Alyx? E POSIBIL s
+avem o problem
+.<cr>Probabil nimic îngrijor
+tor, dar
+<clr:255,190,255>Uah.
+<HEADSET><clr:255,255,138>S-a oprit trenul?<cr>S-a oprit, nu-i a
+<clr:255,190,255>Da, ce s-a întâmplat?
+<HEADSET><clr:255,255,138>Uff, e blocat.<cr>Atunci când Combine a închis zona de carantin
+, probabil au în
+sprit securitatea.
+<clr:255,190,255>Adic
+<HEADSET><clr:255,255,138>Mda, mai e mult pân
+la nodul Fairview.<cr>E
+ti în apropiere de zona de carantin
+<HEADSET><clr:255,255,138>Iar pân
+AICI
+ne-a fost drumul cu trenul.
+<clr:255,190,255>Deja am pornit-o pe jos.
+<clr:255,190,255>Atunci m
+duc pe jos.
+<HEADSET><clr:255,255,138>Bine. S
+d dac
+reu
+esc s
+sesc cumva o alt
+cale de intrare.
+<clr:255,190,255>E un zombi mort aici.<sb>A-am crezut c
+zona de carantin
+a fost sigilat
+de c
+tre Combine?
+<HEADSET><clr:255,255,138>Ah,
+sta s-o fi strecurat.<sb>Am auzit c
+au avut probleme cu sporii de lipitori în afara zonei de izolare.<sb>Dar nimic legat de tipi ca
+sta.
+<clr:255,190,255>Probabil nu e singurul, atunci.
+îndoiesc.
+<HEADSET><clr:255,255,138>Aah
+Ia te uit
+. Polimer.
+avem polimer pe aici, trebuie s
+fie
+i un fabricator Combine.<sb>Stai cu ochii în patru, poate reu
+im s
+i îmbun
+im pu
+in armele de foc.
+Pân
+la urm
+VOI r
+mâne f
+<HEADSET><clr:255,255,138>Ei bine, fii atent
+.<sb>Nu duci lips
+de cadavre pe aici
+i nu vreau s
+par insensibil
+dar lor nu prea le mai trebuie muni
+ia.
+<clr:255,190,255>Hm, cred c
+pot modifica circuitul cu instrumentul meu multifunc
+ional.
+<HEADSET><clr:255,255,138>Cu ce?
+<clr:255,190,255>E un instrument cu mai multe func
+ii.<sb>Adic
+instrument multifunc
+<HEADSET><clr:255,255,138>Alyx, chestia aia e incredibil
+!<sb>Ai nevoie de un nume de firm
+fantastic!<sb>Ceva care s
+fac
+vânzare!
+<clr:255,190,255>Cui s-o vând?
+<HEADSET><clr:255,255,138>Combine-ul nu o s
+fie aici pentru totdeauna.<sb>Ar trebui s
+te gânde
+ti la viitor, Alyx!
+<clr:255,190,255>Ei bine, ce ar fi s
+-i zic
+Alyxul
+<HEADSET><clr:255,255,138>Hmm. E pu
+in derivat de la
+Ruselli
+, dar da
+<sb>Provizoriu, sigur,
+<clr:255,190,255>Da,
+<HEADSET><clr:255,255,138>Bine lucrat!
+<HEADSET><clr:255,255,138>Oh! O sta
+ie medical
+<I>Combine-ul<I> folose
+te chestiile astea.<sb>Sunt sigure pentru oameni?
+<HEADSET><clr:255,255,138>Oh, slav
+Domnului, o sta
+<HEADSET><clr:255,255,138>A, da, eu le folosesc mereu.
+<clr:255,190,255>E
+ti sigur?
+<HEADSET><clr:255,255,138>Da, sunt grozave.
+<HEADSET><clr:255,255,138>Doar pune-
+i mâna acolo.
+<HEADSET><clr:255,255,138>Uite, sincer, doar trage de mâner
+i pune-
+<HEADSET><clr:255,255,138>Da, eu le folosesc mereu. Trebuie doar s
+ti o celul
+voltaic
+, prieteno, te-au rezolvat.
+<clr:255,190,255>Au! Au, au, au.
+<clr:255,190,255>Aaaaah. Hei
+<clr:255,190,255>Aaah. Ooh.
+<clr:255,190,255>Hei
+ai avut dreptate.<cr>Chestiile astea-s grozave.
+<clr:255,190,255>Aaah. Dr
+<HEADSET><clr:255,255,138>Aten
+ie la lipitoarea aia, Alyx.
+<clr:255,190,255>Uff, sunt scârboase.
+<clr:255,190,255>Deci, când ai început s
+folose
+ti numele de
+pentru m
+ionale?
+la-i numele de firm
+, Alyx.
+<clr:255,190,255>Numele de firm
+<HEADSET><clr:255,255,138>Da,
+tii, numele cu lipici, u
+or de re
+inut. O s
+fac o avere cu chestiile astea dup
+ce alung
+m Combine-ul de pe P
+mânt
+i totul se întoarce la normal.
+<clr:255,190,255>Apropo, cum l-ai cunoscut pe tata?<sb>A
+i lucrat împreun
+la Black Mesa, nu-i a
+<HEADSET><clr:255,255,138>Mda. Ei bine, nu.<sb>E cam complicat s
+ajungi acolo.<sb>Am avut interviu la Black Mesa.<sb>Au spus s
+mai încerc peste un an.<sb>Nu trebuie s
+i reamintesc ce s-a întâmplat dup
+.<sb>Am avut baft
+, sincer.<sb>N-au supravie
+uit mul
+i.<sb>Sincer, e un miracol c
+tu
+u a
+i sc
+pat de acolo.
+<HEADSET><clr:255,255,138>Oh.
+ai nevoie de o pauz
+?<sb>C
+, adic
+, a
+putea
+putea pune pauz
+la transmisiune
+<clr:255,190,255>Doar m
+uit, Russ.
+<clr:255,190,255>Presupun c
+e dincolo de poarta asta.
+<HEADSET><clr:255,255,138>Da, da, acolo e.
+<clr:255,190,255>O s
+caut un panou de control prin zon
+ca s-o deschid.
+<HEADSET><clr:255,255,138>Dac
+fi Combine, unde a
+pune un panou de control?
+la-i panoul de control.<sb>Probabil au întrerupt circuitul.<sb>M
+gândesc îns
+nimeni nu ar fi atât de tâmpit încât s
+deschid
+poarta, a
+n-ar trebui s
+fie prea greu de reparat.
+<HEADSET><clr:255,255,138>Ce crezi c
+e asta?
+<clr:255,190,255>Cred
+e un fel de lac
+<clr:255,190,255>Uah! Am reu
+it.
+<HEADSET><clr:255,255,138>Ha, ha! Am reu
+it. În sfâr
+<clr:255,190,255>Intru.<cr>Cât de departe e nodul Fairview?
+<HEADSET><clr:255,255,138>Va trebui s
+treci prin vechile tuneluri de metrou ca s
+ajungi la depou.
+<clr:255,190,255>Au început s
+-l mute cumva pe tata?
+<HEADSET><clr:255,255,138>Nu cred.<sb>Ceea ce e bine, fiindc
+mai avem timp.
+<clr:255,190,255>Oh, grozav.
+<HEADSET><clr:255,255,138>Sau e r
+u, fiindc
+l-au omorât deja.<sb>
+i nu trebuie s
+mu
+i un cadavru.<sb>Trebuie doar s
+-l îngropi.<sb>Sau s
+-l incinerezi.<sb>Mai e
+ti acolo, Alyx?
+<clr:255,190,255>Mm-hmm.
+tii, Russell, acum c
+duc în zona de carantin
+... tocmai mi-am dat seama.<sb>Nu
+tiu nimic <I>despre<I> zona de carantin
+<HEADSET><clr:255,255,138>De fapt, cuvântul
+carantin
+provine din latinescul
+quaranta giorni
+.<sb>
+, care înseamn
+patruzeci de zile
+intervalul în care toate vasele trebuiau s
+fie izolate în perioada Mor
+ii negre, înainte ca echipajele s
+poat
+debarca.
+<clr:255,190,255>Biiiiine. Tare.
+<HEADSET><clr:255,255,138>Ah, rahat.
+<clr:255,190,255>Cred c
+tocmai ne-am blocat aici.
+<clr:255,190,255>Hei, Russell.<sb> Tocmai am g
+sit o sering
+aruncat
+cu cine
+tie ce în ea.<sb>E medicament?
+<HEADSET><clr:255,255,138>Are un craniu
+i ni
+te oase încruci
+ate pe ea?
+<clr:255,190,255>Nu v
+d s
+<HEADSET><clr:255,255,138>Probabil medicament, atunci.
+<HEADSET><clr:255,255,138>Alyx! Doar nu
+i-ai injectat cumva ceva g
+sit pe jos?
+simt GROZAV.
+<HEADSET><clr:255,255,138>Da? OK. Bine. Ei bine
+experiment reu
+it. Fii pe faz
+, poate g
+ti mai multe.
+<HEADSET><clr:255,255,138>Ai auzit asta?
+<clr:255,190,255>Ce-a fost aia?
+<clr:255,190,255>Oh, vai.
+<HEADSET><clr:255,255,138>Dap. Pe acolo
+pe acolo trebuie s
+mergem.
+<clr:255,190,255>Nu e nicio scurt
+tur
+<HEADSET><clr:255,255,138>Mda, aia E scurt
+<clr:255,190,255>Atunci
+hai s-o lu
+m pe ocolite.
+<HEADSET><clr:255,255,138>Mda, tot al
+e
+i drumul ocolitor.
+, pare s
+mearg
+. Hai s
+mai facem a
+<HEADSET><clr:255,255,138><sfx:1>[Râsete]
+<clr:255,190,255>Oh, mam
+<HEADSET><clr:255,255,138>Ha, ha!<cr>Lipitoarea aia e de partea noastr
+.<sb>De fapt, nu e, evident, a
+nu trece pe sub ele.
+<HEADSET><clr:255,255,138>Ah, în caz c
+nu
+tiai
+Rusellii au un afi
+aj integrat. Î
+i arat
+polimerii, muni
+tii, poate
+i-o fi util.
+eles. Mersi.
+<clr:255,190,255>Oh, vai
+<HEADSET><clr:255,255,138>Da, ai grij
+<HEADSET><clr:255,255,138>Alyx! În spatele u
+ii
+leia!<sb>Cred c
+e un fabricator Combine!
+<HEADSET><clr:255,255,138>Alyx! Cred c
+e un fabricator Combine.<sb>Bag
+ceva în el, vreau s
+d cum func
+chestia asta.
+eles. Va func
+iona pe Russelli?
+<HEADSET><clr:255,255,138>Nu, dar ar trebui s
+i regleze destul de bine pistolul
+la.<cr>
+i vezi, bine c
+i-am dat una dintre armele mele mai slabe.
+<HEADSET><clr:255,255,138>Adic
+tii
+în caz c
+nu mai ajunge înapoi la mine.
+tii ce, Russell?<cr>Dac
+mor, r
+mân datoare cu un pistol.
+<HEADSET><clr:255,255,138>Oricum îmi e
+ti datoare!<cr>Nu-i un cadou. E pistolul MEU.
+<HEADSET><clr:255,255,138>Ei bine. A meritat polimerul.
+<HEADSET><clr:255,255,138>Combine-ul chiar
+tie cum s
+îmbun
+easc
+o arm
+.<sb>Asta n-am cum s
+neg.
+<HEADSET><clr:255,255,138>Arma pare foarte letal
+<HEADSET><clr:255,255,138>Foarte frumos.<sb>Aproape c
+-mi doresc s
+fiu acolo ca s-o încerc
+i eu.
+i s-o folose
+ti numai bine acum.
+<HEADSET><clr:255,255,138>Acum asta
+va fi util
+<HEADSET><clr:255,255,138>Excelent
+alegere.
+<HEADSET><clr:255,255,138>Inteligent. O s
+fie util
+<HEADSET><clr:255,255,138>Cu asta o s
+ai cu siguran
+ultimul cuvânt.
+<HEADSET><clr:255,255,138>N-a
+vrea s
+am de-a face cu chestia aia.
+<HEADSET><clr:255,255,138>Asta da îmbun
+ire.
+<HEADSET><clr:255,255,138>Mai letal
+de-atât n-are cum s
+<HEADSET><clr:255,255,138>Ooh, chiar a func
+ionat, nu-i a
+a? Ha
+<HEADSET><clr:255,255,138>Uau! Pistolul meu arat
+destul de bine!
+<clr:255,190,255>Russ, haide. De-acum e mai degrab
+pistolul
+nostru
+<HEADSET><clr:255,255,138>Oh, uau, ia te uit
+! Pistolul meu arat
+din ce în ce mai bine.
+tii ceva, Russ
+practic vorbind? Nu cred c
+a mai r
+mas cine
+tie ce din pistolul t
+<HEADSET><clr:255,255,138>Hmm. Uite cum facem: hai s
+punem punct discu
+iei pentru moment. Putem vorbi despre pistolul MEU dup
+ce te întorci.
+<clr:255,190,255>Ei bine, Russ, e oficial. Nu a mai r
+mas NIMIC din pistolul t
+u în pistolul
+sta. Acum e doar
+e pistolul MEU.
+. Bine. L-ai dobândit. O s
+vreau îns
+Rusellii
+ia înapoi.
+<HEADSET><clr:255,255,138>Rac-de-cap!
+<clr:255,190,255>Îl v
+<HEADSET><clr:255,255,138>Stai
+unde s-a dus?
+<clr:255,190,255>Aah!
+<HEADSET><clr:255,255,138>Aah!
+<HEADSET><clr:255,255,138>Dap. Acolo e. L-ai g
+sit.
+<HEADSET><clr:255,255,138>Probabil numai
+sta a fost.
+<HEADSET><clr:255,255,138>Bine, doi. Numai doi.
+<HEADSET><clr:255,255,138>Tragi bine, Alyx.
+<clr:255,190,255>Mersi. Mersi, Russell.
+<clr:255,190,255>Mersi.
+tii, chiar dac
+ai spus c
+sta e mai
+slab
+, nu e atât de r
+<HEADSET><clr:255,255,138>Mda
+chiar e destul de bun, nu-i a
+a?<cr>La naiba, cred c
+i-am dat pistolul gre
+<clr:255,190,255>Ai auzit ceva de tata, Russell?
+<HEADSET><clr:255,255,138>Nu. Absolut nimic de când s-a urcat în tren.
+<clr:255,190,255>La naiba.
+<HEADSET><clr:255,255,138>Ei bine, vestea bun
+el e probabil bine.
+<clr:255,190,255>De unde
+tii asta?
+<HEADSET><clr:255,255,138>Fiindc
+îl duc la Nova Prospekt ca s
+-l tortureze.<sb>
+la-i locul de tortur
+.<sb>A
+probabil nu o s
+-l prea tortureze înainte s
+AJUNG
+acolo.<sb>A
+e bine. Logic vorbind.
+<clr:255,255,138>Ah!
+<HEADSET><clr:255,255,138>Aah, sta
+<HEADSET><clr:255,255,138>Hm. Nu func
+<clr:255,190,255>Aah. Uite, aici. Are nevoie de alimentare.
+<HEADSET><clr:255,255,138>Aceea e o
+dischet
+.<cr>Obi
+nuiam s
+stoc
+m informa
+ii pe ele. Cu magne
+i, dac
+i vine s
+crezi.
+<clr:255,190,255>Ha.
+<HEADSET><clr:255,255,138>Mai precis, doi micrometri de oxid magnetic de fier, trei micrometri de ferit
+de bariu
+i unu virgul
+doi...
+<clr:255,190,255>Russell? De unde
+tii toate astea?
+<HEADSET><clr:255,255,138>Citesc de pe calculator.<cr>Am desc
+rcat tot internetul înainte de r
+zboi.
+<clr:255,190,255>Ai desc
+rcat tot internetul?
+<HEADSET><clr:255,255,138>Eeh, în cea mai mare parte.
+<clr:255,190,255>Dr
+<HEADSET><clr:255,255,138>Da, chiar e.
+<clr:255,190,255>Russell, vezi asta?
+<HEADSET><clr:255,255,138>Ah, posibil.<sb>Vezi gunoaie plutitoare?
+<clr:255,190,255>Pare c
+e doar
+carton.
+<HEADSET><clr:255,255,138>Da. Bine, pare inofensiv.
+<clr:255,190,255>Mda. Ciudat, totu
+<clr:255,190,255>Ce E aia?
+<clr:255,190,255>Par s
+fie desene cu vortigaun
+<HEADSET><clr:255,255,138>Stai, a-aia e
+Black Mesa?
+<clr:255,190,255>Cineva chiar a muncit la chestia asta.
+<clr:255,190,255>Uah! Mai multe cartoane plutitoare.
+ti bine? Ce se întâmpl
+<clr:255,190,255>Sunt bine, Russell, ce e?
+<HEADSET><clr:255,255,138>Pierd semnalul!<sb>Alyx? Alyx?<sb>Dac
+i auzi, continu
+în aceea
+i direc
+i...
+ajungi la suprafa
+<clr:255,190,255>Russell?<sb>Russell?<sb>Rahat.
+<clr:255,190,255>Uah. Ce ciudat.
+<clr:255,190,255>Oh!
+Vortigaunt: <clr:107,232,120>Alyx Vance!
+Vortigaunt: <clr:107,232,120>Mi-ai primit mesajele!
+<clr:255,190,255>Da?
+<clr:107,232,120>Haide! Intr
+<clr:255,190,255>Bine
+umesc.
+<clr:107,232,120>E
+ti binevenit
+<clr:255,190,255>Deci, ce caut
+un vortigaunt pe aici?
+<clr:107,232,120>[Miroase] Mmm!
+<clr:107,232,120>Mâncare!
+<clr:107,232,120><sfx:1>[M
+nânc
+zgomotos]
+<clr:255,190,255>Mda, vreau s
+zic în general.
+<clr:107,232,120>Am o leziune cerebral
+<clr:255,190,255>Oh. Îmi pare r
+u s
+...
+<clr:107,232,120>Creierul meu este lezat!
+<clr:255,190,255>E îngrozitor
+i sper c
+<clr:107,232,120>Au.
+<clr:255,190,255>Uite, de fapt, sunt foarte ocupat
+-l g
+sesc pe tat
+l meu
+<clr:107,232,120>Pe
+Eli Vance
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Da.
+<clr:255,190,255>L-a prins Combine-ul
+i chiar trebuie s
+mi
+c din loc.
+<clr:107,232,120>Combine.<sb>Da. Nu pleca înc
+!<sb>Trebuie s
+i ar
+t ceva!
+<clr:255,190,255>Uite, apreciez...
+<clr:107,232,120>Pe aici!
+<clr:255,190,255>Nu pot r
+mâne, eu...
+<clr:107,232,120>E important!
+<clr:255,190,255>Sunt sigur
+e, dar...
+<clr:107,232,120>Alyx Vance trebuie oricum s
+treac
+pe aici
+<clr:107,232,120><sfx:1>[Chicote]
+<clr:107,232,120><sfx:1>[Soarbe zgomotos]
+<clr:107,232,120>Intr
+, intr
+, Alyx Vance.
+<clr:107,232,120>Aici!
+<clr:107,232,120>Trebuie s
+t de ce te-am adus aici.
+<clr:107,232,120><sfx:1>[Canalizeaz
+vortesen
+<clr:107,232,120>Combine-ul a capturat semeni de-ai mei.
+<clr:107,232,120>Prizonieri, ca Eli Vance.
+<clr:107,232,120>Alyx Vance îi va elibera!
+<clr:255,190,255>A
+te pot ajuta, sincer.<sb>Dar Alyx Vance chiar e foarte ocupat
+cu salvarea tat
+lui ei.
+<clr:107,232,120>Nu-l vei salva.<sb>A murit.
+<clr:255,190,255>Ce?
+<clr:107,232,120>Sau va
+<clr:255,190,255>A? Sau va?
+ine de perspectiv
+.<sb>Dar Alyx Vance, de una singur
+, nu poate împiedica soarta lui.
+<clr:255,190,255>Eu
+Uite.<sb>Mul
+umesc pentru
+tot.<sb>Dar chiar trebuie s
+plec.<sb>
+i îmi pare r
+u, dar chiar nu am timp de ghicitori.
+<clr:107,232,120>Nicio ghicitoare!<sb>Combine a forat aici.<sb>Nu
+tiu când sunt.<sb>Sunt separat de vortesen
+.<sb>Sunt singur în capul meu.
+<clr:255,190,255>Îmi pare r
+<clr:255,190,255>Uite, dac
+pot, dac
+dau de prietenii t
+i, o s
+d ce pot face.
+<clr:107,232,120>Mi-ai salvat semenii!
+nu am.
+<clr:107,232,120>Atunci o vei face.
+<clr:107,232,120>Rraaah!
+<clr:107,232,120>Curaj, Alyx Vance!
+<clr:107,232,120>C
+toria ta te-a adus pân
+aici.<cr>Poate chiar un pic mai departe.
+<clr:107,232,120>Pe acolo, Alyx Vance.
+te duci!
+<clr:107,232,120>Misiunea ta începe, Alyx Vance.
+<clr:107,232,120>Hai!
+<clr:107,232,120>O voi pe ajuta Alyx Vance!<sb>Caut
+Steaua Nordului.
+<clr:255,190,255>De ce?
+<clr:107,232,120>Pentru orientare!
+<clr:255,190,255>Bine. Mul
+umesc.<cr>Ai terminat? Cu ajutatul?
+<clr:107,232,120>Nu! Ia de aici.
+<clr:107,232,120>Hran
+O s
+-l m
+nânc mai târziu.<cr>Mul
+umesc pentru ajutor.
+<clr:107,232,120>Va fi
+cu pl
+cere
+<clr:107,232,120><sfx:1>[Fredoneaz
+mul
+umit]
+<clr:255,190,255>Phiu.
+<clr:255,190,255>Ptiu.
+<clr:255,190,255>Phi.
+<HEADSET><clr:255,255,138>Alyx! Alyx! A revenit semnalul!<sb>M
+i auzi? E
+ti bine?
+<clr:255,190,255>Russell! Sunt bine! Tata cum e?
+<HEADSET><clr:255,255,138>L-au urcat în tren.<sb>E-n mi
+care.<sb>Trebuie s
+ajungi la nodul Fairview înaintea lor.
+<clr:255,190,255>Asta încerc s
+fac.
+<HEADSET><clr:255,255,138>Deci, s-a întâmplat ceva dup
+ce s-a pierdut semnalul?
+<clr:255,190,255>N-o s
+i vin
+crezi, dar am dat peste un vortigaunt.
+<HEADSET><clr:255,255,138>Un vortigaunt?<cr>Dar ce c
+uta pe acolo?
+<clr:255,190,255>Se ascundea.<cr>Cred c
+a sc
+pat de la Combine.
+<HEADSET><clr:255,255,138>Ce
+ce a zis?
+<clr:255,190,255>N-ai mai întâlnit un vortigaunt?<cr>A spus ni
+te chestii nebune de vortigaunt.
+<clr:255,190,255>Oh, vortigauntul
+la pe care l-am întâlnit? <cr>Mi-a <I>dat<I> un rac-de-cap de mâncare.
+<HEADSET><clr:255,255,138>Oh! Grozav!<sb>Ce gust a avut?<cr>Spune-mi cum ai...
+<clr:255,190,255>Russell. Russell
+Nu l-am mâncat.
+<HEADSET><clr:255,255,138>Clar. Normal c
+nu.<cr>Da, ai
+ai f
+cut bine.
+<clr:255,190,255>Ce ciudat.
+<clr:255,190,255>Oh! Zombiul al
+are o pu
+<clr:255,190,255>Uah!
+<HEADSET><clr:255,255,138>Ai auzit aia?
+<clr:255,190,255>Dap. Hai s
+lu
+m pu
+ca
+ne c
+m de aici.
+<clr:255,190,255>Am luat-o!
+<HEADSET><clr:255,255,138>Gr
+te-te
+i încarc-o, zgomotul al
+e din ce în ce mai puternic!
+<clr:255,190,255>Am reu
+<HEADSET><clr:255,255,138>Ador pu
+ca asta.
+<clr:255,190,255>Uah, ce ÎNTUNERIC e.
+<HEADSET><clr:255,255,138>Totu-i bine?
+<clr:255,190,255>Dap. Sunt bine, sunt bine.
+<clr:255,190,255>Oh, slav
+Domnului.
+e în regul
+<clr:255,190,255>E foarte întuneric
+Russ?
+<HEADSET><clr:255,255,138>Da?
+<clr:255,190,255>Po
+spui ceva?
+<HEADSET><clr:255,255,138>Ce anume?
+<clr:255,190,255>Orice, pur
+i simplu orice.
+<HEADSET><clr:255,255,138>P
+i, cred c
+, dat
+fiind situa
+ia noastr
+, frica ta absurd
+de întuneric este de fapt cât se poate de îndrept
+tii, po
+i în
+ir cu u
+urin
+o sut
+de motive pentru care trebuie s
+te îngroze
+<clr:255,190,255>OK, a fost vina mea.<sb>Data viitoare o s
+exprim mai clar.
+<clr:255,190,255>Ador lanterna asta.
+i ea, ca
+i tine, e sensibil
+la întuneric.
+<clr:255,190,255>Serios?
+ar trebui s
+se declan
+eze automat atunci când nu mai e lumin
+<clr:255,190,255>Ah. Dr
+<clr:255,190,255>Bine, Russ. Acum CHIAR trebuie s
+vorbe
+ti cu mine.
+<HEADSET><clr:255,255,138>Desigur. Despre ce, mai exact?
+înainte. Cum era via
+a înainte de Combine?
+<HEADSET><clr:255,255,138>Ah! Excelent.<cr>Alyx, ai auzit vreodat
+de un sandvi
+club?
+<clr:255,190,255>Hm, nup. Niciodat
+<HEADSET><clr:255,255,138>Bine. Deci, pentru a putea face un sandvi
+club, aveai nevoie de pâine.<sb>Dar nu de aia pe care o iei de la coad
+, ci de la o brut
+rie.
+<HEADSET><clr:255,255,138>Bine.<sb>Pentru a face un sandvi
+club, începi cu pâinea.<sb>Dar nu aia pe care o iei de la coad
+.<sb>Pâine proasp
+de la brut
+ria de peste drum, ai în
+eles? Adaugi ro
+ii, salat
+nu past
+de legume
+proaspete.<sb>Apoi pui bacon
+asta e de la un animal care se numea
+porc
+<sb>Pr
+ti pâinea
+i apoi pui toate alea în
+untru.
+<clr:255,190,255>Voi chiar a
+i avut toate astea? Incredibil.
+<HEADSET><clr:255,255,138>A
+a e!
+i înc
+n-am terminat.<sb>Apoi adaugi un alt sandvi
+peste primul.<sb>Pui
+unc
+în el
+tot de la un porc
+i curcan, de la un animal pe care îl numeam
+curcan", mai multe ro
+ii, mai mult
+salat
+i o groaz
+de alte chestii care-mi scap
+acum.<sb>Avea 15 cm în
+ime, cânt
+rea o jum
+tate de kg
+i avea peste zece ingrediente de pe cinci continente diferite.<sb>Era cea mai imposibil
+combina
+ie alimentar
+pe care
+i-o puteai imagina, înainte de vremurile de acum.
+<clr:255,190,255>Uau!
+<HEADSET><clr:255,255,138>O nebunie, a
+a-i?
+<clr:255,190,255>Asta e
+uau.
+<clr:255,190,255>Mersi, Russ.
+<HEADSET><clr:255,255,138>Cu pl
+cere, Alyx.
+<HEADSET><clr:255,255,138>Stai,
+la-i un soldat Combine mort?
+<clr:255,190,255>Ba da
+<sb>În timp ce voi era
+i la furat de reactor, i-am v
+zut pe Combine mutând ni
+te provizii aici.<sb>A
+presupun c
+sunt interesa
+i din nou de locul
+<HEADSET><clr:255,255,138>Ei bine, stai cu ochii-n patru.<sb>Ceva sigur se întâmpl
+<HEADSET><clr:255,255,138>Alyx! Ciopâr
+itor! P
+zea!
+<HEADSET><clr:255,255,138>Ciopâr
+itor!
+<HEADSET><clr:255,255,138>Uop, ciopâr
+itori!
+<clr:255,190,255>Iieh
+<clr:255,190,255>Oh
+Sfinte
+<clr:255,190,255>Bine, deci: pe o scar
+de la unu la zece, dac
+e s
+ne gândim cum e s
+tr
+ti acum pe p
+zice c
+suntem la doi.
+<HEADSET><clr:255,255,138>Dap, întotdeauna se poate mai r
+<clr:255,190,255>Ce not
+ai da ÎNAINTE s
+fi ap
+rut Combine?
+<HEADSET><clr:255,255,138>Ooh, bun
+întrebare.<sb>Nu
+tiu,
+, într-o zi bun
+?<sb>A
+spune
+ase.<sb>Da, un
+ase bun.
+ase? Nu e prea bine.
+<HEADSET><clr:255,255,138>Ei bine, asta-i via
+a, Alyx.<cr>
+tii, nu e întotdeauna roz
+<clr:255,190,255>Atunci, poate sc
+m P
+mântul de Combine
+i ajungem la un opt, mai
+tii?
+<HEADSET><clr:255,255,138>Ooh, un opt.<cr>Da, ar fi frumos.<sb>Foarte frumos.
+<clr:255,190,255>Deci, dup
+mânt, ce-o s
+faci?
+<HEADSET><clr:255,255,138>O s
+încep produc
+ia pe scar
+larg
+a
+Russellilor
+, evident.
+<clr:255,190,255>Ah, desigur!<sb>Ai dat peste o min
+de teren!
+<HEADSET><clr:255,255,138>Min
+de aur, dap.<sb>Deci, uite planul
+estimare conservativ
+gândesc c
+ne trebuie vreun an s
+sc
+m de Combine
+-i zbur
+m de pe planet
+la-i anul unu.
+<HEADSET><clr:255,255,138>Apoi un alt an pentru a produce în mas
+Russellii
+.<sb>De
+i, mai pe ascuns, c
+VA trebui s
+refacem mai întâi societatea,
+tii tu, infrastructur
+de baz
+, locuri de munc
+, bani, chestii d-astea.<sb>Altfel oamenii n-au cum s
+le cumpere.<sb>
+tii.
+, mda
+<sb>Plan de TREI ani.<sb>S
+introducem chestia cu infrastructura în anul doi.
+<clr:255,190,255>Oh. Da, desigur.<sb>Vei vrea s
+faci asta în anul doi.
+<HEADSET><clr:255,255,138>Uah! Cu grij
+! Cu grij
+<HEADSET><clr:255,255,138>U
+<clr:255,190,255>Oh, vai. Întuneric, din nou.
+în planul
+sta de trei ani cu Russellii
+crezi c
+ai avea un loc de munc
+pentru mine?
+<HEADSET><clr:255,255,138>Loc de munc
+? Alyx, ai inventat
+!<cr>Desigur c
+i pot da un loc de munc
+<clr:255,190,255>Am putea fi parteneri.
+<HEADSET><clr:255,255,138>Ooh, ei bine,
+<sb>Hmm. Ei bine, va fi listat
+la burs
+.<sb>Cu o perioad
+de cinci-zece ani de intrare deplin
+în drepturi, evident.<sb>Ar putea fi foarte lucrativ pentru tine, Alyx.<sb>Pe termen lung.
+<clr:255,190,255>N-am în
+eles nimic din ce-ai zis, dar sun
+bine, partenere.
+<HEADSET><clr:255,255,138>Dap, sun
+bine
+Alyx.
+<clr:255,190,255>Russell! Tipii
+tia au arme automate!
+<clr:255,190,255>Tipii
+tia au arme automate.
+<HEADSET><clr:255,255,138>Sunt trupe extraterestre de comando, evident c
+au arme automate.
+i noi am avea, dar armele Combine sunt codate genetic, a
+tii, nicio baft
+. Doar dac
+ti una necodat
+. Sau dac
+ti dispus
+la ni
+te modific
+ri genetice minore.
+<clr:255,190,255>S
+sper
+m c
+va fi,
+prima op
+iune. Pe moment, m
+umesc cu codul genetic pe care îl am acum.
+<clr:255,190,255>Sunt cam multe vorbe pentru atâtea gloan
+e care zboar
+spre mine, Russ!
+<clr:255,190,255>Combine!
+<clr:255,190,255>Russ, tipii
+.<sb>Sau! Poate g
+.<cr>Sau poate e
+<clr:255,190,255>Mi-e
+mi-e bine, Russ. O s
+descurc cu codul genetic pe care îl am acum.
+<HEADSET><clr:255,255,138>Nodul Fairview! Am ajuns!
+sta e!
+<HEADSET><clr:255,255,138>La p
+mânt!
+<clr:255,190,255>Uff. Cred c
+a fost ultimul.
+<HEADSET><clr:255,255,138>Bine, pentru c
+nu mai avem prea mult timp.
+<HEADSET><clr:255,255,138>E un panou pentru sta
+ia de control în apropiere.
+<HEADSET><clr:255,255,138>Ar trebui s
+ai destul timp pentru a reactiva panoul de control.
+, voi putea opri trenul chiar aici.
+<clr:255,190,255>Sigur po
+i face asta?
+<HEADSET><clr:255,255,138>Absolut. Trebuie doar s
+activezi teminalul.
+<clr:255,190,255>Frumos.
+<HEADSET><clr:255,255,138>Apoi va trebui s
+te preg
+ti de lupt
+.<sb>N-o s
+renun
+e a
+a u
+or la tat
+<clr:255,190,255>Voi fi preg
+tit
+<HEADSET><clr:255,255,138>Bine. Uite acolo terminalul.
+<clr:255,190,255>Acum m-ocup.
+te-te, totu
+<HEADSET><clr:255,255,138>Mda, ar trebui s
+fie o baterie pe aici pe undeva.
+<HEADSET><clr:255,255,138>Poate îi lipse
+te vreo pies
+<HEADSET><clr:255,255,138>Bine, nicio grij
+, dar vine trenul.
+<clr:255,190,255>Observ, Russell.
+<HEADSET><clr:255,255,138>Doar conecteaz
+, va dura o secund
+. Te descurci minunat.
+<clr:255,190,255>Dap, minunat, nicio grij
+, nicio grij
+<HEADSET><clr:255,255,138>N-are o pies
+<HEADSET><clr:255,255,138>Bine! Acum doar reactiveaz
+sistemul.
+<clr:255,190,255>Chestia asta ar fi trebuit s
+se rup
+<HEADSET><clr:255,255,138>E ultimul lucru pe care ar fi trebuit s
+-l fac
+<clr:255,190,255>Ce-ce-ce fac
+Ce fac acum?!
+nu te panica! Sau, da-dac
+cut-o deja, înceteaz
+<clr:255,190,255>Nu m
+panichez!
+<HEADSET><clr:255,255,138>Tu nu, dar eu da! Trebuie s
+sim un alt mod de a opri trenul!
+<clr:255,190,255>Trebuie s
+mai existe un alt mod de a opri trenul
+sta
+<HEADSET><clr:255,255,138>Ei bine, apuc
+-te s
+cau
+i! Nu mai avem mult timp!
+<HEADSET><clr:255,255,138>Caut
+afar
+! TREBUIE s
+fie un sistem manual. Ei bine, teoretic, nu trebuie s
+fie. Dar,
+tii, ar fi frumos dac
+ar exista. Te rog. [Chicote nervoase]
+<HEADSET><clr:255,255,138>Sistemul manual trebuie s
+fie afar
+, Alyx! Repede!
+o manet
+<HEADSET><clr:255,255,138>Continu
+i o manet
+! Trebuie s
+oprim trenul
+la!
+<HEADSET><clr:255,255,138>Trenul ajunge în zece secunde, Alyx!
+<HEADSET><clr:255,255,138>Bine, trage de manet
+, acolo.
+<HEADSET><clr:255,255,138>Cinci secunde!
+<clr:255,190,255>Nu st
+<HEADSET><clr:255,255,138>Trebuie s-o men
+ii tras
+<clr:255,190,255>Ei bine
+a func
+ionat.
+<HEADSET><clr:255,255,138>Mda. Uau. E
+<clr:255,190,255>Sunt bine. S
+sim pe tata.
+<HEADSET><clr:255,255,138>Corect. Caut
+vagonul pentru transportul prizonierilor. Ar trebui s
+fie în partea din fa
+sesc o cale prin fiare.
+<HEADSET><clr:255,255,138>Ce naiba-s alea?
+<clr:255,190,255>Nu
+tiu. Dar trebuie s
+<HEADSET><clr:255,255,138>Mda, nu...
+tiu.<cr>Doar c
+n-am mai v
+zut a
+a ceva.
+<HEADSET><clr:255,255,138>Aia e capsula de prizonier a tat
+<clr:255,190,255>Dumnezeule. Unde-i tata?
+<clr:255,190,255>Tat
+? TAT
+<clr:255,208,172>Sunt aici, drag
+!<sb>Am nevoie de ajutor, repede!
+<HEADSET><clr:255,255,138>Dumnezeule.
+<clr:255,208,172>Puiule! Aici!
+<clr:255,190,255>Vin!
+<clr:255,208,172>Pui!
+<clr:255,190,255>Ajung imediat! D
+-mi o secund
+<HEADSET><clr:255,255,138>Alyx, repede!
+<clr:255,190,255>Bine.<sb>O s
+întind
+i o s
+te trag.<sb>O s
+fie bine. E
+ti gata?
+<clr:255,208,172>Mda
+sunt bine.
+<clr:255,190,255>D
+-mi mâna!
+<clr:255,208,172>Unhh!
+<clr:255,190,255><sfx:1>[Geme de durere]
+<clr:255,208,172>Repede, pui!<sb>Repede! Alunec.
+<clr:255,208,172>Ajut
+ajut
+<HEADSET><clr:255,255,138>Oh, vai, oh, vai.
+<clr:255,208,172>Aproape
+aproape
+gah!
+<clr:255,208,172><sfx:1>[Gâfâind]
+<clr:255,190,255><sfx:1>[Icnet de uimire]
+<HEADSET><clr:255,255,138>Un vort! E un vort!
+<clr:255,190,255>Acela-i VORTUL!
+<clr:107,232,120>Alyx Vance!<sb>Am venit s
+ajut, dup
+cum am promis.
+<clr:255,208,172>Mul
+umesc
+Mul
+Dumnezeule
+umesc, Dumnezeule, mul
+umesc!<sb>Tat
+, stai acolo!<sb>S
+d cum ajung la tine!
+<clr:255,190,255>Nu te mi
+ca de acolo!<cr>V
+d eu cum ajung la tine!
+<clr:255,208,172>Nu! Alyx, ascult
+!<sb>Chestia pe care am g
+sit-o eu
+i Russel e un fel de
+un fel de superarm
+<clr:255,190,255>O superarm
+<clr:255,208,172>E ceva mare.<sb>O
+in aici în zona de carantin
+, într-un fel de seif.<sb>Dar se preg
+tesc s
+o mute.<sb>Unde, habar n-am, dar
+tiu c
+va fi mutat
+în curând.
+<clr:255,190,255>Atunci trebuie s-o fur
+m înainte s-o mute!
+<clr:255,208,172>Da!
+i uite, uite
+<sb>Am reu
+terpelesc tableta asta Combine.<sb>Dac-o pot decripta, ne putem da seama cum s
+folosim arma lor împotriva lor.
+i care e planul?
+<clr:255,208,172>Tu du-te la Seif.<sb>Eu o s
+-i aduc chestia asta lui Russell
+i trec la treab
+<HEADSET><clr:255,255,138>Stai pu
+in
+hm. UNDE e Seiful?
+! Unde e seiful?
+<clr:107,232,120>Caut
+Steaua Nordului
+da. M
+uit dup
+stea. În
+eles. Tat
+<clr:255,208,172>E chiar în centrul zonei de carantin
+i e mare.<sb>Ie
+i la suprafa
+i vezi ce po
+i g
+si.
+<clr:107,232,120>Îl voi acompania pe Eli Vance
+i voi avea grij
+fie în siguran
+<clr:255,190,255>Grozav! Mul
+<clr:255,208,172>Mergi!
+i eu te iubesc!
+umesc!
+<clr:255,190,255>Hei, Russ.<sb>S
+stai cu ochii pe tata, bine?
+<HEADSET><clr:255,255,138>Te anun
+dac
+ajunge aici
+ah, CÂND. Când ajunge aici.
+<clr:255,190,255>Da, CÂND.
+am cam f
+cut dezastru pe-acolo, dar am <I>reu
+it<I> s
+-l salv
+m pe tata.
+<HEADSET><clr:255,255,138>Mdaaaa
+, probabil asta va atrage ceva aten
+ie.<sb>De fapt, nu probabil.<sb> Sigur atrage aten
+ia.<sb>Uite, acum te caut
+.<sb>Bine? A
+ai grij
+tii, dac
+am ob
+ine arma asta, am putea schimba situa
+ia pentru totdeauna.
+<clr:255,190,255>Da. DAC
+<HEADSET><clr:255,255,138>Uite,
+lucr
+m împreun
+numai de câteva ore, dar
+vreau s
+i spun c
+sunt mândru de tine.<sb>Bine?<sb>E
+ti sub mult
+presiune aici.
+<clr:255,190,255>Uau. Russ.
+<HEADSET><clr:255,255,138>Atât de mult
+presiune încât eu
+<sb>Ei bine, ezit s-o mai
+i men
+ionez.<sb>Dar am observat, când ai întins mâna spre tat
+u, dac
+ar fi apucat-o, strânsoarea sa ar fi strivit to
+i senzorii sensibili din
+<clr:255,190,255>Aah. OK.
+<HEADSET><clr:255,255,138>Normal
+i ar fi meritat, apropo
+în cazul
+<clr:255,190,255>Corect.
+<HEADSET><clr:255,255,138>Astea fiind spuse, nu-mi prea pot imagine vreo ALT
+situa
+ie în care
+sta ar fi cazul.<sb>
+i,
+, ca tat
+u, Rusellii SUNT inestimabili.<sb>Deci
+doar
+tii, de
+inut minte pe viitor.
+<clr:255,190,255>Russ, î
+i promit, m
+ile tale sunt în siguran
+cu mine.
+<clr:255,190,255>Dumnezeule, Russ. Legitima
+ia asta are o poz
+cu-n schelet pe ea.
+<HEADSET><clr:255,255,138><sfx:1>[Chicote
+te]
+<clr:255,190,255>Ah! Am g
+sit-o.
+<clr:255,190,255>Am g
+<clr:255,190,255>Ah. Acolo era.
+<clr:255,190,255>A-ha.
+<clr:255,190,255>Oh, tata a spus c
+a furat ni
+te date despre arma asta.
+<HEADSET><clr:255,255,138>Ei bine, când vine vorba de criptarea datelor de la Combine
+bazez pe tine?...
+bazeaz
+-te pe Eli!
+<clr:255,190,255>Oh.
+<HEADSET><clr:255,255,138>Sisteme, robotic
+, re
+ele
+le rezolv imediat pe alea.
+<clr:255,190,255>Dar nu
+i criptarea datelor.
+<HEADSET><clr:255,255,138>Ar putea la fel de bine s
+fie limbaj extraterestru. De fapt, e limbaj extraterestru. Orice-ar fi, bazeaz
+-te pe Eli.
+<HEADSET><clr:255,255,138>Alyx! Uit
+-te pe geam!
+<HEADSET><clr:255,255,138>Pe bune, Alyx. Uit
+-te pe geam.<sb>E cumva ceea ce cred eu c
+e?
+<HEADSET><clr:255,255,138>OK, bine. L-ai g
+sit.<sb>Acum uit
+-te pe geam. Haide.<sb>Nu pot s
+uit dac
+nu o faci
+i tu.
+<clr:255,190,255>Oh, Doamne.
+la sigur e Seiful.
+<HEADSET><clr:255,255,138>Mda. Tat
+u n-a men
+ionat c
+plute
+te.
+<clr:255,190,255>Deci chiar dac
+AJUNGEM acolo, tot trebuie s
+URC
+M pân
+la el.
+<HEADSET><clr:255,255,138>Cablurile! Uite câte cabluri are ata
+ate.
+<HEADSET><clr:255,255,138>Trebuie doar s
+le urm
+rim
+stric
+m ce-o fi la cap
+tul cel
+lalt.
+i a
+a se coboar
+Seiful.<sb>Simplu. U
+or de urmat.<sb>Îmi place planul
+, tu
+având un motiv întemeiat, desigur
+ai refuzat s
+te ui
+i pe geam.
+uit
+de geam. Dincolo de el era SEIFUL de care ne-a zis tat
+u.<sb>Plute
+te în aer, a
+e destul de complicat s
+ajungem la el.
+<HEADSET><clr:255,255,138>Dar! E acoperit de cabluri.<sb>Presupun c
+, dac
+rim cablurile
+i distrugem acel ceva la care sunt conectate, ar trebui s
+coborâm Seiful.
+<clr:255,190,255>Va trebui s
+uit pe geamuri pentru a coborî Seiful?
+<HEADSET><clr:255,255,138>Nu, nu cred.
+<clr:255,190,255>Atunci îmi place planul.
+<clr:255,190,255>Ai mai auzit ceva de la Combine legat de evadarea lui tata?
+<HEADSET><clr:255,255,138>Nu, nimic. Se vorbe
+te numai de trimiterea de înt
+riri în zona de carantin
+<clr:255,190,255>Partea bun
+înseamn
+tata e înc
+în drum spre tine.<sb>Am fi auzit dac
+l-ar fi prins din nou pe Eli Vance.
+<HEADSET><clr:255,255,138>Iar partea proast
+<clr:255,190,255>E c
+nu o s
+ajungem atât de u
+or la Seif.
+<clr:255,190,255>Ooo, grenade.
+<clr:255,190,255>Ouf. O grenad
+irosit
+<HEADSET><clr:255,255,138>A meritat.
+<clr:255,190,255>De acord.
+<clr:255,190,255>P
+zea, zombi.
+zea.
+<clr:255,190,255>Am ratat!
+<clr:255,190,255>La naiba!
+<clr:255,190,255>Uff!
+<HEADSET><clr:255,255,138>Cât pe ce!
+<HEADSET><clr:255,255,138>A fost cât pe ce.
+<clr:255,190,255>Da!
+<HEADSET><clr:255,255,138>Da!
+<HEADSET><clr:255,255,138>Frumoas
+aruncare!
+<HEADSET><clr:255,255,138>Hei! Pe monitor. Combine.
+<clr:255,190,255>Îi v
+<clr:18,199,226>Overwatch, aici e cinci-
+ase-zero.<sb>A fost detectat
+activitate seismic
+în regiunea sectorului zero-doi, confirma
+<clr:166,242,255><I>Overwatch, confirm
+activitatea.<sb>Confirm, sectorul zero-doi, posibil
+interferen
+necrotic
+.<sb>R
+scoli
+i sectorul, raporta
+i starea izol
+rii.<I>
+<clr:18,199,226>Izolarea continu
+, redirec
+ionez cinci-
+ase-zero spre sta
+ia de metrou.<sb>Începem ofensiva.
+<clr:255,190,255>Uff. Uimitor.
+zea, Alyx!
+Caut
+<HEADSET><clr:255,255,138>Asta fac. De ce zici asta a
+<clr:255,190,255>Nu, nu
+vortigauntul a zis
+caut
+pentru a-
+i ajuta prietenii. Sun
+ca ni
+te nebunii de vortigaunt, dar se pare c
+nu sunt.
+<HEADSET><clr:255,255,138>Oooh. Mda, are mai mult sens.
+<HEADSET><clr:255,255,138>Hmm. Pare s
+fie un fel de substa
+ie Combine. De obicei genereaz
+curent
+zduiesc protocoalele de securitate.
+<clr:255,190,255>Ca securitatea
+i curentul de care ai avea nevoie pentru un seif uria
+uite seiful.
+<HEADSET><clr:255,255,138>Mda, aia e substa
+ia care-l
+ine în aer. Trebuie s
+ajungem acolo sus.
+<clr:255,190,255>Ce de cabluri
+<clr:255,190,255>Nu-mi pot da seama cum pot intra în chestia asta.
+<HEADSET><clr:255,255,138>E imposibil s
+le fi sc
+pat vreo intrare din strad
+nesecurizat
+<HEADSET><clr:255,255,138>Vezi cum po
+i intra în hotel
+i urc
+pe acoperi
+<HEADSET><clr:255,255,138>Alyx, cred c
+intri în hotelul
+la
+i de acolo s
+urci la substa
+<HEADSET><clr:255,255,138>Ooh! Lift. A
+a ajungem sus.
+<HEADSET><clr:255,255,138>[Bruiajl]<sb>Hmm. Ce ciudat.
+iiiii adio curent.
+<clr:255,190,255>Se pare c
+trebuie s-o lu
+m pe sc
+ri.
+iiiii adio sc
+<HEADSET><clr:255,255,138>Hai s
+-ncerc
+m s
+repornim curentul.
+<clr:255,190,255>Ooo, panouri electrice.
+ne întoarcem la planul cu liftul.<sb>O s
+pornesc curentul.
+<clr:255,190,255>Uite-aici
+panouri electrice.
+<HEADSET><clr:255,255,138>Hotelul
+sta e antic.<sb> Instala
+ia electric
+e cu siguran
+un adev
+rat dezastru.
+<clr:255,190,255>A revenit curentul.<sb>S
+verific
+m liftul.
+<clr:255,190,255>Arhh! Dezastru.
+<clr:255,190,255>Liftul tot n-a pornit.
+tii? Arat
+bine.
+<clr:255,190,255>Poate ne-a sc
+pat ceva acolo, lâng
+lift.
+<HEADSET><clr:255,255,138>Vezi ceva ca un panou electric pe acolo?
+<clr:255,190,255>Nup, înc
+mai caut.
+<clr:255,190,255>Uite-l.
+<clr:255,190,255>Pac. A revenit curentul.
+<clr:255,190,255>Iar acum s
+aliment
+i ne-am...
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Se pare c-o lu
+m pe scar
+<clr:255,190,255>Locul
+sta e infestat.<sb>Cât de periculoas
+este chestia asta?
+i, sunt spori dintr-o alt
+dimensiune, a
+probabil
+da, extrem de periculo
+<HEADSET><clr:255,255,138>Dar! O oportunitate rar
+de a examina flora extraterestr
+de aproape.
+<HEADSET><clr:255,255,138>Oh! Ai grij
+la chestiile alea cu pustule!
+<HEADSET><clr:255,255,138>Par s
+se enerveze pu
+in pe m
+sur
+ce te apropii de ele.
+<HEADSET><clr:255,255,138>Uff.
+<clr:255,190,255>Chiar încep s
+cred c
+nu ar trebui s
+respir chestiile astea.
+<HEADSET><clr:255,255,138>De acord. Nu te opri.
+respiri mai pu
+<HEADSET><clr:255,255,138>Alyx, cum e când le atingi?
+<clr:255,190,255>Cam
+vâscos? Furnic
+<clr:255,190,255>Au.
+<HEADSET><clr:255,255,138>Cum s-a sim
+it?
+<clr:255,190,255>Ascu
+<HEADSET><clr:255,255,138>Cât de ascu
+<clr:255,190,255>Cam un
+ase.
+<HEADSET><clr:255,255,138>OK,
+<clr:255,190,255>Un
+<HEADSET><clr:255,255,138>Dumnezeule. Nu te uita în jos.<sb>Nu te uita în jos!
+<clr:255,190,255>Russ, nici m
+car nu e
+ti aici!
+<clr:255,190,255>Dap. Desigur.
+<clr:255,190,255>Hopa, tipul
+sta nu poart
+tricou.
+<clr:255,190,255>Am prins-o.
+<clr:255,190,255>Muuul
+<clr:255,190,255>Hei, Russ, zi-mi o melodie.
+Zborul c
+ului
+<clr:255,190,255>Imediat.
+<clr:255,190,255><delay:4>Oh, nu e de bine.
+<HEADSET><clr:255,255,138>[Semnal cu bruiaj intermitent] Alyx? Alyx, r
+spunde.
+<clr:255,190,255>Ai v
+zut asta? Russell? Russell!
+<HEADSET><clr:255,255,138>[Bruiaj] Alyx! Alyx! Ce s-a întâmplat?
+<clr:255,190,255>A fost o chestie
+fulger
+toare
+care ar
+ta ca un câine.
+<HEADSET><clr:255,255,138>Ah, îmi pare r
+u c
+am ratat asta.
+<clr:255,190,255>L-am omorât
+i a l
+sat asta în urm
+<clr:255,190,255>Hei, Russell. Chestia asta a picat din câine.
+<HEADSET><clr:255,255,138>Ooh, ia te uit
+. Ha. Interesant.
+<clr:255,190,255>Uite-o, Russ!
+<clr:255,190,255><delay:3>Ah, rahat, câine-fulger.
+<HEADSET><clr:255,255,138>Ai grij
+<clr:255,190,255>Dumnezeule, a intrat într-un tip!<sb>Russell?
+<HEADSET><clr:255,255,138>[Semnal cu bruiaj] Alyx! A disp
+rut câinele? Ce s-a întâmplat?
+<clr:255,190,255>Ultima
+tire:<sb>A intrat într-un tip mort.
+<HEADSET><clr:255,255,138>Nu!
+<clr:255,190,255>Ba da.<sb>A trebuit s
+-i împu
+c pe amândoi, a fost o NEBUNIE, Russell.
+<HEADSET><clr:255,255,138>Sun
+ca o nebunie.
+<clr:255,190,255>Oh, chiar a fost.
+ile alea Combine blindate sunt într-adev
+r de ne... [Semnalul se pierde]
+<clr:255,190,255>Hopa.
+<HEADSET><clr:255,255,138>[Semnal cu bruiaj] Câinele
+la s-a întors, Alyx?
+<clr:255,190,255>Mda, offf.
+sta a fost mai
+dificil.
+<HEADSET><clr:255,255,138>Dar tu e
+ti bine, nu?
+<clr:255,190,255>Da, Russ, sunt bine.
+<HEADSET><clr:255,255,138>Ei bine, trebuie s
+te scoatem de acolo
+ajungem pe acoperi
+<clr:255,190,255>Asta încerc.
+<clr:255,190,255>Uite-o.<sb>Liftul
+la o s
+duc
+la substa
+sit un lift care merge sus.
+<HEADSET><clr:255,255,138>Of, slav
+<clr:255,190,255>Substa
+ia este la etajul de deasupra mea.
+, acolo e substa
+ia; o s
+urc un etaj
+i o închidem.
+, ne apropiem de substa
+<HEADSET><clr:255,255,138>Mda, va trebui s
+treci de zidul
+sta Combine.
+-ncerc s
+-l dezactivez.
+asta ar trebui s
+dezactiveze zidul
+la.
+ti sursa de alimentare pentru bariera de acolo.
+<HEADSET><clr:255,255,138>Un scut Combine î
+i blocheaz
+calea.
+-l deschid
+<clr:255,190,255>Nu vreau s
+-mi fac multe griji, dar tata nu trebuia s
+se fi întors deja?
+<HEADSET><clr:255,255,138>Ei bine, hai s
+ne gândim, Alyx.<sb>E pe jos, se deplaseaz
+cu cinci kilometri pe or
+<HEADSET><clr:255,255,138>Plus c
+e fugar, are numai un picior
+<sb>Mai sunt obstacole, nu e nicio cale direct
+<sb>
+tii ce?<sb>N-o s
+te mint, el ar TREBUI s
+se fi întors deja.
+<clr:255,190,255>Mda. Deci, ar <I>trebui<I> s
+-mi fac griji.
+<HEADSET><clr:255,255,138>În mod normal, da.<sb>Dar tu e
+ti cea care se îndreapt
+TRE pericol, a
+noi ar trebui s
+ne facem griji în privin
+a ta.
+<HEADSET><clr:255,255,138>Alyx! E ziua ta norocoas
+!<cr>Arma aia Combine nu e codat
+în cutie!<sb>Nu las
+niciodat
+armele în cutie.
+i nici nu a trebuit s
+i fac modific
+ri genetice.
+i-ar fi f
+cut pl
+cere.
+<HEADSET><clr:255,255,138>Nu-i problem
+, l
+m pentru data viitoare.
+, uite-o.
+<HEADSET><clr:255,255,138>Acum taie cablurile alea
+fie atât de u
+or pe cât p
+rea de jos.
+d nicio cale de a deconecta cablurile aici.
+<clr:255,190,255>Russ, nu-mi pot da seama cum s
+deconectez cablurile astea.
+, poate, s
+deschizi mantaua cablurilor
+le împu
+<clr:255,190,255>Ah! În
+<clr:255,190,255>Ah, e protec
+ie pe conexiunea aia.
+<HEADSET><clr:255,255,138>Uite-a
+<HEADSET><clr:255,255,138>Grozav, acum treci în
+untru
+i dezactiveaz
+sursa de alimentare.
+<clr:255,190,255>Dap.
+umesc! Baft
+umesc. Baft
+<clr:255,190,255>[Tuse]
+<clr:107,232,120><sfx:1>[Gâfâie]
+<HEADSET><clr:255,255,138>Sfinte, e un vortigaunt
+<clr:107,232,120>Am fost prin
+în întuneric.
+ti liber acum.<sb>E-n ordine, m-a trimis prietenul t
+<clr:107,232,120>Alyx Vance
+tu e
+ti prietena noastr
+<clr:255,190,255>Ce-
+i f
+ceau
+tia aici?
+<clr:107,232,120>Ceea ce ne fac tuturor.
+-i ar
+t lui Alyx Vance.
+<clr:107,232,120>Vino!
+<clr:107,232,120>Uit
+-te aici!
+<clr:107,232,120>Alyx Vance trebuie s
+vin
+<clr:107,232,120>Te rog, vino.
+<clr:107,232,120>Combine extrage din noi energia pe care o folose
+te pentru a-
+i proteja arma.
+<clr:107,232,120>Acolo
+suntem rup
+i de noi în
+ine.
+-i oprim din a-
+i ucide prietenii.
+<clr:107,232,120>Vortigaun
+ii se vor elibera singuri
+i se vor r
+zbuna.<sb>TU trebuie s
+te duci dup
+arm
+<clr:255,190,255>Nu pot s
+intru în Seif dac
+substa
+iile sunt înc
+active.
+<clr:107,232,120>Nu-
+i face griji, Alyx Vance.<sb>Acestea <I>nu<I> vor fi.<sb>Noi <I>nu<I> vom permite asta.
+<clr:107,232,120>Voi elibera calea.
+<clr:107,232,120><sfx:1>[Geme]
+<clr:107,232,120>Mergi. C
+ile noastre se despart.<sb>Dar
+ine mine. Între noi nu exist
+distan
+.<sb>Suntem inseparabili.
+<clr:255,190,255>Devine cam aglomerat aici, Russ.
+<HEADSET><clr:255,255,138>Canalul de comunicare a luat-o razna de când am sc
+pat de substa
+ia aia.<sb>Ei
+acum ne ducem dup
+Seif.<sb>Orice ar fi acolo, ei CHIAR nu vor ca noi s
+-l avem.
+<clr:255,190,255>Ei bine, acuma îl vreau
+i mai mult.
+a te vreau.
+<HEADSET><clr:255,255,138>Ne punem mult
+dejde în faptul c
+Vortigauntul
+la poate s
+dezactiveze toate substa
+iile.
+am încredere în el.
+<HEADSET><clr:255,255,138>Da.
+i eu.<cr>
+pentru c
+nu reu
+te, Seiful tot acolo r
+mâne.<sb>Iar noi vom sta acolo, f
+un Seif pe care s
+-l spargem, înconjura
+i de Combine
+<clr:255,190,255>Russ.<cr>Încrederea noastr
+e singurul nostru plan.<sb>O s
+. Putem face asta.
+<HEADSET><clr:255,255,138>Da. Ai dreptate. Va fi bine.<sb>Vom fi bine cu to
+<HEADSET><clr:255,255,138>Bine, din locul în care te afli acum, nu ai acces direct la Seif.<sb>A
+va trebui s
+i croie
+ti cumva drum pân
+acolo.
+<clr:255,190,255>Ei bine, e imens, a
+fie greu s
+-mi dau seama pe unde s-o apuc.
+<clr:255,190,255>Nu în
+eleg ce fac ei cu chestia asta, aici.
+<clr:255,190,255>Dac
+arma asta e atât de puternic
+, de ce s-o
+într-o ghen
+ca asta?
+rerea mea e c
+încearc
+seasc
+un mod de a o transporta de pe P
+mânt.<sb>Înapoi la casa lor sau pe vreo alt
+planet
+<clr:255,190,255>De ce n-o folosesc AICI?
+deja au câ
+tigat r
+zboiul
+sta, Alyx.
+<clr:166,242,255><I>Toate unit
+ile c
+tre sta
+ia sector unu, foc de voie.<sb>
+inta a fost desemnat
+drept obiectivul principal.<sb>Aresta
+i pe loc.<I>
+<clr:166,242,255><I>Individule, e
+ti acuzat de mai multe infrac
+iuni anticivile de nivelul cinci.<sb>Te rug
+cooperezi cu echipa de protec
+ie de la sol.<sb>Echipa de protec
+ie de la sol: alert
+.<cr>Cod: Ataca
+i. Izola
+i. Neutraliza
+i.<I>
+<clr:255,190,255>Ce crezi, Russ?<sb>Cred c
+am face bine s
+cooper
+<HEADSET><clr:255,255,138>Mda, se pare c
+-i groas
+treaba.
+<clr:255,190,255>Ne-am descurcat bine pân
+acum.
+Coopereaz
+Pffffft.
+<clr:18,199,226>Overwatch, am suferit pierderi semnificative de la obiectivul principal unu.
+<clr:166,242,255><I>Overwatch confirm
+ecul izol
+rii.<sb>A
+i înt
+ririle.<sb>Vine un supresor.<I>
+inta a fost atacat
+, retrage
+i-v
+i cere
+riri.
+<clr:255,190,255>Uof
+OK.
+<HEADSET><clr:255,255,138>Uah, Alyx!
+<clr:255,190,255>VEZI chestia aia?!
+<HEADSET><clr:255,255,138>Vortigaun
+ii deconecteaz
+ia!
+<HEADSET><clr:255,255,138>S-ar putea s
+<clr:255,190,255>Ar face bine.
+-te în sus!
+<HEADSET><clr:255,255,138>Uit
+-te în sus, uit
+<HEADSET><clr:255,255,138>Uite cine s-a întors!<sb>Am reparat drona!
+<HEADSET><clr:255,255,138>Ignor
+asta. Ne vedem afar
+<HEADSET><clr:255,255,138>Se pare c
+în fa
+sunt baricade Combine.<sb>Opresc pe oricine vrea s
+se apropie de Seif.
+<clr:255,190,255>Bine. Deci, ce crezi?
+<HEADSET><clr:255,255,138>Intr
+în distilerie
+i vezi unde te duce drumul.<sb>Acum c
+am reactivat drona, avem în sfâr
+it un avan
+oh, nu, î
+i ba
+i joc de mine!
+<HEADSET><clr:255,255,138>Oh, î
+<clr:255,190,255>Bine, nu v
+d cum pot intra în cl
+dire, a
+o s
+uit prin jur.
+<clr:255,190,255>Dar ce e locul
+sta, de fapt?
+<HEADSET><clr:255,255,138>E o distilerie.<sb>Aici f
+ceau votc
+i altele din astea.
+<clr:255,190,255>Votca
+bun
+<clr:255,190,255>Deci, votca e bun
+de ceva?
+<HEADSET><clr:255,255,138>Of, Doamne, nu.
+<clr:255,190,255>Lui Russell nu-i place votca, în
+<HEADSET><clr:255,255,138>Ei bine, n-am
+n-am spus asta niciodat
+<clr:255,190,255>Dar nu e bun
+<HEADSET><clr:255,255,138>E otrav
+<HEADSET><clr:255,255,138>...dar îmi place.<sb>Tuturor... tuturor le place.
+<clr:255,190,255>Nu mai în
+eleg nimic.
+<clr:255,190,255>Stai s
+prind cum intr
+i dup
+aceea o s
+sesc
+te vodc
+<HEADSET><clr:255,255,138>Minunat, dac
+ai putea, de fapt, da.
+<clr:255,190,255>Aici sunt o mul
+ime de sticle vechi.<sb>Alcoolul se stric
+<HEADSET><clr:255,255,138>Devine din ce în ce mai bun! E bun, Alyx!
+<clr:255,190,255>Russell? Te aud cu întreruperi.
+<HEADSET><clr:255,255,138>Votca e bun
+, Alyx!<sb>Votca e bun
+<clr:255,190,255>Ei, bine. Bine.
+<HEADSET><clr:255,255,138>Alyx! R
+spunde, Alyx!<sb>Alyx? A, e
+ti aici.<sb>E
+ti aici.
+<clr:255,190,255>Hei, Russ.<cr>Vortigaun
+ii tocmai au mai deconectat una.
+<clr:255,190,255>Russ! Vortigaun
+înc
+o substa
+ie!
+<HEADSET><clr:255,255,138>O, bun! M
+bucur s
+aud asta!
+<clr:255,190,255>Nu avem acces direct la Seif.<sb>O s
+intru
+sesc o modalitate de a ocoli baricada asta.
+sesc o cale de ie
+<HEADSET><clr:255,255,138>Bine,
+se întrerupe din nou,
+ine minte:<sb>Votca nu se stric
+, da?<sb>E bun
+o ve
+nicie.
+<HEADSET><clr:255,255,138>Alyx, n-o s
+crezi
+<clr:255,190,255>Russ? Uff.
+[For
+ându-se] Nenorocitul
+[Strofocându-se] Haide, nenorocireo
+jos
+de
+piciorul
+meu! D
+-mi
+Gah!
+[Sfor
+ându-se]
+tii ceva, credeam c
+ne-am în
+eles: tu-
+ii limba în gur
+i eu nu
+i-o g
+uresc.
+ându-se] S-a zis cu rela
+, s
+[Struggling] Omule
+<sfx:1>[Sfor
+lipitorile
+a de tare
+am
+supravie
+uit în
+fabrica asta idioat
+atâ
+ia ani.<sb>Cum de tot reu
+esc
+las prins
+de lipitori?
+ându-se] În regul
+, asta e.<sb>Trebuie s
+-mi tai piciorul.<sb>Ai câ
+tigat, s
+i stea în gât, jigodie.
+ându-se] Existau atât de multe feluri mai demne de a muri decât a
+a.<sb>Ce ru
+ându-se] Înecat.<sb>C
+lcat de o patrul
+Combine.<sb>C
+lcat de un trop
+itor.<sb>Înecat de un trop
+itor.<sb>Rupt în dou
+de un trop
+itor.<sb>Tuberculoz
+Oh! Hei! Hei!<sb>Tu, cea cu,
+, cu sânge pe tine.<sb>Tu, cea cu sângele!
+Eu,
+, am o mic
+problem
+aici?
+<clr:255,190,255>Mda, a
+a se pare.
+Tu,
+n-ai din întâmplare o arm
+la tine, nu-i a
+Mda, ia te uite.<sb> E una
+Uff! E chiar una dr
+Îhm. Mai ceva decât a mea, care e acolo sus, în
+untrul
+stuia.
+tot veni vorba, ai putea s
+împu
+ti chestia asta?<sb>Te rog?
+Uite, mai am putere în mâini pentru înc
+patru, poate cinci ore, deci
+Deci, nu trebuie s
+te gr
+ti, dar dac
+nu e cu sup
+rare
+<sb>Aaah, poate bagi un plumb în chestia asta.
+Oh, hei, minunat.
+A, frumos. Eroina mea.
+, hei, o mân
+de ajutor?
+Mmf. Mul
+<clr:255,190,255>Ce naiba a fost aia?
+Ah, e Jeff.
+<clr:255,190,255>Jeff?
+Oh, nu-
+i face probleme, nu poate s
+vad
+.<sb>Aude numai bine, totu
+Are o ureche, zici c
+-i Mozart.
+<clr:255,190,255>Cine?
+Uff. În regul
+, las
+te ajut.
+În regul
+.<sb>Ne vedem pe partea cealalt
+, încep
+toareo.
+i vorbe
+te încet.
+optind] Uite-l.
+<clr:255,190,255><I>Jeff<I>
+optind] Exact. Uite aici
+Vezi? E complet previzibil.<sb>Dar o s
+i smulg
+mâinile dac
+te g
+Uau, uau, uau, ce!<sb>Jeff rezist
+la gloan
+<clr:255,190,255>Glume
+<clr:255,190,255><sfx:1>[Tu
+ind]
+ind mai tare]
+<clr:255,190,255>[Tu
+ind] La naiba!
+ind] Uh
+Hei, hei! Chestiile alea sunt scârboase!<sb>Trebuie s
+i acoperi gura!
+ind] În
+Hei, am... aproape am uitat:<sb>Cum te cheam
+<clr:255,190,255>Alyx! Alyx Vance!
+Hei, Alyx. Eu sunt Larry.<sb>Încântat de cuno
+tin
+.<sb>Încearc
+nu fii ucis
+Acoper
+i gura s
+nu tu
+Hei! Hei!<sb>Acoper
+i tr
+dezi pozi
+ia!<sb>Acoper
+Jeff te poate auzi tu
+ind!<sb>Acoper
+i gura!
+<clr:255,190,255><sfx:1>[Icnet în
+it]
+<clr:255,190,255>Uff
+<clr:255,190,255>Ptiu
+<clr:255,190,255>Pfui
+Te ur
+sc, Jeff
+Hei! Alyx Vance!<sb>Ai reu
+it!
+<clr:255,190,255>Dap! L-am prins pe Jeff într-un compactor de gunoaie.
+<clr:255,190,255>Iar apoi l-am strivit.
+La naiba!
+Ei bine, sper c
+ai dat de marfa aia bun
+, ne mai vedem!
+<clr:255,190,255>O, Doamne, Jeff!<sb>E
+ti bine? [Râde]
+<HEADSET><clr:255,255,138>Alyx, r
+spunde.<sb>Hei, Alyx! Oh, acolo e
+ti.<sb>M
+auzi?
+<clr:255,190,255>Mai mult sau mai pu
+in. Cu întreruperi.
+<HEADSET><clr:255,255,138>Cred c
+ti în distilerie.
+<clr:255,190,255>Mi-am f
+cut un prieten. Îl cheam
+Jeff.
+<HEADSET><clr:255,255,138>Asta e bine.<sb>Avem nevoie de tot ajutorul posibil.
+<clr:255,190,255>Mda, nu suntem chiar apropria
+<HEADSET><clr:255,255,138>Ascult
+, ar trebui fie pe acolo, pe jos, un capac mare de m
+rimea unui tunel.<cr>
+fie...
+<clr:255,190,255>Tunelul prin care ie
+im de aici?
+<HEADSET><clr:255,255,138>Corect.<sb>Tu-l deschizi, eu îmi dau seama unde duce.
+<clr:255,190,255>Combine a sigilat ie
+irea.<sb>O redeschid
+i m
+car de aici.
+<HEADSET><clr:255,255,138>Bine!<sb>
+, eu o s
+încerc s
+-mi dau seama unde duce.
+<HEADSET><clr:255,255,138>Am g
+sit o mul
+ime de h
+i subterane ale zonei tale din ora
+<clr:255,190,255>Nu...nu te mai aud, Russell!
+<HEADSET><clr:255,255,138>Subteran. Adic
+pe sub p
+mânt.<sb>În
+elegi, pe dedesubt. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Ce naiba e aia?!
+LA-I Jeff.
+<HEADSET><clr:255,255,138>Oh. E Jeff. Nu-mi place de Jeff.
+te obi
+nuie
+ti cu el.
+LA-I Jeff
+te încet!
+<HEADSET><clr:255,255,138>Oh. Bine.<cr>Sigur
+Nu-mi place de Jeff.
+Oh...
+i apropo. Fain
+casc
+Fain
+, apropo.
+Faine c
+ti, apropo.
+Oh... fain
+i masca.
+prind
+A, apropo. Stilul
+sta?<sb>Te prinde.
+A, c
+veni vorba. Chestia aia de pe capul t
+u?<sb>Îmi place.
+Oh! Fain
+masc
+Oh, fain
+!<sb>O s
+Iar dac
+o pierzi,
+, ai grij
+i acoperi gura dac
+te apropii de chestiile astea.
+Oh! Dar dac
+o pierzi?<sb>Acoper
+i gura în preajma chestiilor alea.<sb>E... scârbos.
+<clr:255,190,255>Oh... OK, a
+a am s
+<HEADSET><clr:255,255,138>OK, calea e liber
+.<sb>E timpul s
+m la o parte capacul ca s
+putem ie
+i prin tunelele alea.
+ti o consol
+-te dup
+o lumin
+intermitent
+<HEADSET><clr:255,255,138>Veste bun
+: tunelul
+la duce direct c
+tre Seif.
+<clr:255,190,255>Grozav. Apropo, men
+ionez doar, cred c
+tunelul e plin cu leii-furnicilor, asta în caz c
+nu mai revin deloc.
+<HEADSET><clr:255,255,138>Leii-furnicilor, leii-furnicilor, leii-furnicilor
+<clr:255,190,255>Mda,
+tii. Extratere
+tri cu picioare ascu
+ite.
+<HEADSET><clr:255,255,138>Ah! Da!
+i foarte mici, ca furnicile!
+Nu.
+<HEADSET><clr:255,255,138>Ah, ca ni
+te lei mici, micu
+<clr:255,190,255>Nu, nu sunt
+ia.<sb>
+tia sunt destul de periculo
+. Ei bine, orice ar fi, sunt acolo în tunel.
+<clr:255,190,255>Îhm. Am plecat.
+<HEADSET><clr:255,255,138>Picioru
+! Oh, nu. E mort.
+<clr:255,190,255>Acela e un leu al furnicilor, Russell.
+sta e un leu al furnicilor?
+<clr:255,190,255>Da.<sb>Deci
+TII cum arat
+leii-furnicilor.
+<HEADSET><clr:255,255,138>Da. Sunt picioru
+<clr:255,190,255>Russ? Crezi c
+un rac-de-cap ar putea transforma o goril
+într-un zombi?
+<HEADSET><clr:255,255,138>Sincer, dac
+ar sc
+pa o goril
+, nu cred c
+un rac-de-cap ar agrava situa
+tii, Russ, îmi pare r
+i-am luat ni
+te votc
+de acolo.
+<HEADSET><clr:255,255,138>E OK.<sb>Po
+iei când te întorci.
+tii, sper c
+realizezi cât de enervant e s
+car votca asta dup
+mine.
+car l
+a asta cu votc
+dup
+<HEADSET><clr:255,255,138>Desigur.<cr>Dar ai dou
+mâini.<sb>Ai putea aduce o A DOUA când te întorci?
+<HEADSET><clr:255,255,138>Da, cu siguran
+<HEADSET><clr:255,255,138>Dou
+sticle!
+<HEADSET><clr:255,255,138>Trei sticle!
+<HEADSET><clr:255,255,138>Uau, mi-ai dep
+it a
+tept
+rile cu ce ai acolo!<sb>Este nebunesc, excesiv
+i foarte apreciat.
+<clr:255,190,255>Oh, una e pentru mine.
+<HEADSET><clr:255,208,172>Închisoare
+<clr:255,190,255>Stai
+ce?!
+<HEADSET><clr:255,255,138>Acum ce mai e?
+<clr:255,190,255><I>Ce<I> s
+<HEADSET><clr:255,208,172>Nu
+tiu.<sb>Cred c
+nici tableta nu
+tie asta.<sb>Dar sigur
+in ceva închis acolo.
+<clr:255,190,255>Uah, bine.<sb>Deci dac
+nu e o arm
+, mai facem asta?
+<HEADSET><clr:255,208,172>La cum v
+d eu lucrurile, orice ar fi acolo nu se d
+în vânt dup
+Combine.<sb>Deci avem ASTA în comun.
+a-i
+<HEADSET><clr:255,208,172>Deci
+mai facem asta?
+am ajuns pân
+aici, zic s
+continu
+m.<sb>Iar dac
+m peste ceva cu care chiar nu ne putem pune, ne l
+m p
+guba
+<HEADSET><clr:255,208,172>A
+a te vreau.<sb>Te anun
+aflu ceva.
+<clr:255,190,255>Ah, au început s
+închid
+zona.
+<HEADSET><clr:255,255,138>Baft
+celor care încearc
+blocheze pe cineva cu un
+Alyx
+la îndemân
+<clr:255,190,255>Da, baft
+<clr:255,190,255>Uah, Russell!<sb>Vortigaun
+ii tocmai au deconectat ultima substa
+<HEADSET><clr:255,255,138>Oh! Las
+d!<sb>Eli!<cr>Vor
+ine-te bine, Alyx!<sb>O s
+se pr
+<clr:255,190,255>Stai, ce
+au activat un fel de sistem de urgen
+<HEADSET><clr:255,255,138>Au activat un sistem de urgen
+<HEADSET><clr:255,208,172>Spune-i lui Alyx c
+sistemul de rezerv
+nu e în niciun caz stabil.<sb>Poate s
+-l opreasc
+<HEADSET><clr:255,255,138>Tat
+u zice...
+<clr:255,190,255>L-am auzit.
+<clr:255,190,255>Deci, mergem spre razele alea de lumin
+, da?
+<HEADSET><clr:255,255,138>Corect. Acolo trebuie s
+fie sta
+ia de rezerv
+<clr:255,190,255>Sper c
+oricine ar fi acolo închis merit
+efortul.
+<HEADSET><clr:255,255,138>Ce ai zis, Alyx?
+<clr:255,190,255>Nimic, sunt pe drum.
+<clr:18,199,226><force>Hei! Fii atent. Nu vreau ca mizeria asta s
+ajung
+pe mine.
+<clr:18,199,226>De ce, e periculoas
+<clr:18,199,226><force>N-o arunc
+m într-o groap
+e sigur
+. Continu
+mergi.
+<clr:255,190,255>Uff, bine. Ultimul.
+ti OK?
+<clr:255,190,255>Hei, Russ, vrei s
+treci în locul meu?
+<HEADSET><clr:255,255,138>Aah, nu. Probabil a
+muri pe loc.
+<clr:255,190,255>E cineva acolo sus!
+<HEADSET><clr:255,255,138>Nu e Combine.<sb>Vreun jefuitor poate?<sb>Ai grij
+<HEADSET><clr:255,255,138>Eli! Vino aici!
+<clr:255,208,172>Ce e, Russell?
+aici
+<clr:255,190,255>Uah, uah!
+Nu glumesc, trebuie s-o mu
+i acum.
+De ce nu po
+Bine, atunci cine e autorizat?
+Bine. P
+i, atunci d
+-l la telefon.
+Ah, dar ce fac aici?<sb>Ar trebui s
+plec.
+i cucerit întreaga planet
+în
+apte ore.<sb>De ce dureaz
+asta atât de mult timp?
+Oh, nu, e bine.<sb>Pot s
+tept.
+A fost sarcasm.<sb>Aha. M
+bucur c
+te-ai prins.<sb>Da. Tot sarcasm a fost
+sta.<sb>
+i, ca s
+i amintesc, chestia pe care trebuie s
+i-o spun
+efului t
+u este c
+nu mai avem timp.
+Bine, ce ar fi dac
+m-a
+duce la superiorul MEU.<sb>S-ar pune lucrurile în mi
+care?
+Nu, exact asta e ideea.<sb>Eu <I>sunt<I> superiorul meu.<sb>M
+omori cu zile.
+Salut, de acord, super, în fine. Salut.
+Trebuie s
+mut
+m cutia sau chestia asta o s
+devin
+o nou
+Black Mesa.
+Ei bine, acum î
+i zic c
+ESTE gata.
+Uite, dac
+mai e aici când ajunge ea, l-am pierdut.
+Ce te face s
+crezi, dup
+tot ce s-a întâmplat azi, c
+vei reu
+i s-o opre
+ti?
+Uite, tipul
+sta pe care-l avem acolo a supravie
+uit Black Mesa.<sb>A adus iadul pe P
+aceea pur
+i simplu a disp
+rut.<sb>În cele din urm
+l-am prins
+i tu ai de gând s
+-l la
+scape din nou?<sb>MUT
+CUTIA.
+<HEADSET><clr:255,255,138>A supravie
+uit Black Mesa
+i apoi a disp
+rut
+Eli!<sb>Ei AU o superarm
+<HEADSET><clr:255,208,172>La naiba, Russ.<sb>Îl au pe Gordon Freeman.
+<clr:255,190,255>O, uau. Asta e bine, da?
+<HEADSET><clr:255,208,172>Asta e foarte, FOARTE bine.
+<HEADSET><clr:255,255,138>E un
+e un miracol.
+. Deci
+haide s
+m pe Gordon Freeman.
+<HEADSET><clr:255,208,172>Chiar a
+a.<sb>O s
+-l recuper
+<clr:255,190,255>Oh. Iat
+-i.<sb>Hei, d
+<clr:255,190,255>Bine, deci planul e s
+intr
+m în camera aia de control
+m pe Gordon.<sb>
+tii, o s
+fiu sincer
+, oamenii spun multe despre el, îns
+eu am presupus întotdeauna c
+a murit.
+<clr:255,190,255>Hei, tat
+. E
+ti acolo?
+<HEADSET><clr:255,208,172>Da. Care-i treaba, Alyx?
+Gordon a supravie
+unde a fost?
+tiu.<sb>Dar pun pariu c
+e o poveste dat
+naibii.
+<clr:255,190,255>Dup
+ce-l eliber
+m pe Gordon, putem s
+fim mai ambi
+i, ce crezi, Russ?<sb>Poate reu
+distrugem Citadela.
+i, a salvat omenirea o dat
+.<sb>Sunt gata s
+pariez c
+o poate face din nou.
+i de data asta nu trebuie s-o fac
+de unul singur.
+<HEADSET><clr:255,208,172>Alyx
+<clr:255,190,255>Da, tat
+<HEADSET><clr:255,208,172>Se pare c
+ai PUTEA s
+intri în Seif de acolo de sus.<sb>E un terminal care extinde un pod spre intrare.
+<clr:255,190,255>Cum e paza în
+untru?
+<HEADSET><clr:255,208,172>Am totul în fa
+a ochilor
+i zic
+<sb>EXIST
+un sistem de securitate, dar n-am v
+zut niciodat
+a ceva.<sb>Nu are nici un sens.
+improvizez.
+<HEADSET><clr:255,208,172>Eh, nu-
+i face griji, drag
+. Îi dau eu de cap.
+<clr:255,190,255>Razele alea de lumin
+vin din vârful turnului
+STUIA, corect?
+<HEADSET><clr:255,255,138>Da, exact.
+<clr:255,190,255>Ce crezi c
+fac acolo, în
+mulg picioru
+<HEADSET><clr:255,255,138>Bun
+treab
+, Alyx.<sb>Te atac
+cu tot ce au.
+<clr:255,190,255>Mersi, Russ. Ne apropiem.
+<HEADSET><clr:255,255,138>Înregistrez asta, Alyx.<sb>Nu te uita în alt
+parte!<sb>Uit
+-te direct acolo pentru posteritate!
+<clr:255,190,255>Uite camera de control.
+<HEADSET><clr:255,255,138>O v
+aproape am ajuns.
+<HEADSET><clr:255,255,138>Alyx, ne apropiem de seif.<sb>Nu o s
+ai prea multe
+anse s
+i folose
+ti polimerul.
+<clr:255,190,255>Bine zis. O s
+sunt ceva îmbun
+iri de care a
+putea s
+folosesc.
+<HEADSET><clr:255,255,138>Nu pot s
+pistolul meu a rezistat pân
+gândeam s
+i-l dau lui Gordon.
+<HEADSET><clr:255,255,138>Nu, încerci s
+provoci.<sb>Nu m
+las.<sb>Dar, în cazul în care vorbe
+ti serios, mai bine d
+-i pu
+ca.<sb>Legenda spune c
+e complet nebun cu o pu
+<clr:255,190,255>E bine de
+tiut.
+<HEADSET><clr:255,255,138>Alyx, drept înainte.<sb>Comenzile acelea servesc la ancorarea Seifului de sta
+m drumul. E timpul s
+-l eliber
+m pe salvatorul omenirii.
+<HEADSET><clr:255,208,172>
+tii, drag
+, nici tu nu te-ai descurcat prea r
+<HEADSET><clr:255,208,172>P
+mântul ar fi putut beneficia de ajutorul t
+u în R
+zboiul de
+apte Ore.
+<clr:255,190,255>Poate c
+am fi rezistat opt.
+<clr:255,190,255>Acum ce mai e?
+<clr:255,190,255>O! Nemaipomenit.
+<clr:255,190,255>OK, OK, bine, una din astea ar trebui s
+extind
+podul
+corect?
+<HEADSET><clr:255,255,138>Aproape sigur. Alege una din ele.<sb>Imediat.
+<clr:255,190,255>ASTA.
+<HEADSET><clr:255,255,138>Nu
+nu aia.
+<HEADSET><clr:255,255,138>Nu, nu este pentru pod.
+<HEADSET><clr:255,255,138>Alyx, podul nu se mi
+.<sb>De ce nu se mi
+podul?
+tiu, Russ, v
+d c
+nu se mi
+<HEADSET><clr:255,255,138>Nup.
+<HEADSET><clr:255,255,138>Nu chiar mai r
+<HEADSET><clr:255,255,138>Oh, Doamne.
+<HEADSET><clr:255,255,138>Alyx
+ALYX
+ALYX!
+<clr:255,190,255>Oh, Doamne. Oh, Doamne
+Oh, DOAMNE!
+<clr:255,190,255>Ahhh!
+<HEADSET><clr:255,255,138>Când zic
+imediat
+asta înseamn
+chiar acum.
+<HEADSET><clr:255,208,172>Russell, las-o s
+gândeasc
+<HEADSET><clr:255,255,138>Acum, Alyx.
+<HEADSET><clr:255,255,138>Alyx, te rog, doar alege una.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, e
+Cred c
+tocmai l-am ucis pe Gordon Freeman.
+Tocmai l-am ucis pe Gordon Freeman.
+<HEADSET><clr:255,255,138>Seiful e chiar acolo.<sb>Pur
+i simplu du-te acolo
+i ia-l.<sb>Sau ce a mai r
+mas din el.
+<clr:255,190,255>Am plecat.
+<clr:18,199,226><force><I>Comandamentul cere evaluarea daunelor.<I>
+<clr:18,199,226><force>Distrugere: 70%
+80%
+90%
+Total
+<clr:18,199,226><force><I>Total
+<clr:18,199,226><force>Total
+<clr:18,199,226><force><I>Vin înt
+riri.<I>
+<clr:18,199,226><force>Se trage asupra mea!
+<clr:18,199,226><force>E nevoie de repara
+ii sau extrac
+<clr:18,199,226><force>Nu
+<clr:18,199,226><force>Îi d
+uturi.
+<clr:18,199,226><force>Overwatch zice s
+nu-i mai dai
+<clr:18,199,226><force>Nu-i mai d
+<clr:18,199,226><force>Las
+-te jos! E aici!
+int
+localizat
+<clr:18,199,226>Identitatea
+intei: necunoscut
+<clr:18,199,226><force>Este Alyx Vance.
+<clr:18,199,226>Nu am contact vizual cu Alyx Vance.
+<clr:18,199,226><force>E Alyx Vance.
+<clr:18,199,226><force>E Alyx Vance!
+<clr:18,199,226><force>Evident c
+e Alyx Vance.
+<clr:18,199,226>Comunic
+evaluarea daunelor c
+tre Overwatch.
+<clr:18,199,226>Recep
+ionat?
+<clr:18,199,226>Repet. Comunic
+<clr:18,199,226>Atac!
+<HEADSET><clr:255,255,138>Un trop
+itor.<cr>Dezactivat, totu
+i.<sb>Ce noroc.<sb>Î
+i po
+i imagina cum ar fi s
+i stea chestia aia în cale?
+<clr:255,190,255>Haide, Russ.<cr>Nu cobi.
+<HEADSET><clr:255,255,138>Alyx! Trop
+itorul!<sb>Fii atent
+, e viu!
+<clr:255,190,255>Oh, rahat. M
+c. M
+<HEADSET><clr:255,255,138>Arrh. Am cobit, a
+<clr:255,190,255>Ca la carte!<cr>Ai cobit ca la carte, Russell!
+<clr:255,190,255>Aagh! M
+c.<sb>Continui s
+<clr:255,190,255>Russell! Arm
+de calibru mare în fa
+am o idee.
+<clr:255,190,255>Tocmai ce mi-a venit.<cr>
+i e una bun
+<HEADSET><clr:255,255,138>Haide! Hai!<cr>Trage! Trage!
+<clr:255,190,255>Trag!
+<HEADSET><clr:255,255,138>Ha! Merge!<sb>Cred c
+merge.<sb>Nu pare fericit s
+fie împu
+cat, oricum. Continu
+tragi!
+<clr:255,190,255>Russell, las
+trag!
+<HEADSET><clr:255,255,138>Du-te, du-te, da! Da!<sb>Continu
+tragi!<sb>A
+a se face!<sb>Trage! Trage!<sb>Trage! Oh, da!
+<clr:255,190,255>[Râzând u
+urat
+] Am reu
+it, Russ.
+<HEADSET><clr:255,255,138>Da, am reu
+it. Am reu
+<HEADSET><clr:255,255,138>Uff. OK, Alyx.<sb>Se pare c
+raza aia de tractare te va duce direct la Seif.
+<clr:255,190,255>Uah! Mda, bine. M
+duc.
+<HEADSET><clr:255,255,138>[Semnalul se pierde] Argh. Cauzeaz
+mult
+.<sb>Probabil nu o s
+pot vorbi cu tine acolo.
+<clr:255,190,255>Nu. Probabil c
+nu.
+<HEADSET><clr:255,255,138>[Semnalul se pierde] Deci, asta e.
+<clr:255,190,255>Mda.
+<HEADSET><clr:255,255,138>[Semnalul se pierde] Apoi vei ie
+i de acolo cu Gordon, teferi
+i nev
+i, iar totul va fi...
+<clr:255,190,255>Totul va fi bine, Russ.<cr>Vorbim în curând.
+<HEADSET><clr:255,208,172>Russell, opre
+te-o!
+de ce?
+<HEADSET><clr:255,208,172>Alyx! Nu intra în s... [Semnalul s-a pierdut]
+? Tat
+<clr:255,190,255>Apartamente, a
+a cum a zis tata.
+<clr:255,190,255>Bine, e ciudat. Dar, nu
+tiu, nu pare prea periculos.
+<clr:255,190,255>Uah
+, asta ar trebui s
+<clr:255,190,255>Bine, Gordon Freeman. Sper c
+ai meritat efortul.
+, Gordon, s
+te scoatem din chestia asta.
+<norepeat_global:10>Excelent lucrat, domni
+oar
+Vance.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [Chicote
+<norepeat_global:10>Domni
+Vance.<sb>Nu ai avea nevoie de toate <I>astea<I> pentru a-l încarcera pe Gordon Freeman.
+cine e
+<norepeat_global:10>Poate c
+ceea ce <I>sunt<I> nu este la fel de important ca ceea ce î
+i pot <I>oferi<I> în schimbul venirii tale pân
+<norepeat_global:10>Unii cred c
+soarta lumilor noastre este <I>inflexibil
+<I>.
+<norepeat_global:10>Angajatorii mei nu sunt de acord.<sb>M
+autorizeaz
+<sb><I>înghiontesc<I> lucrurile într-o anumit
+direc
+ie din când în când.
+<norepeat_global:10>Ce ai dori <I>tu<I> s
+fie înghiontit, domni
+Vance?
+<clr:255,190,255>Combine s
+plece de pe P
+mânt.<cr>Nu mai vreau s
+fie Combine pe P
+mânt.
+<norepeat_global:10>Aaah.<sb>Ar fi un ghiont considerabil de mare.<sb>Prea mare, considerând interesele angajatorilor mei.
+i, tu ai întrebat.
+<norepeat_global:10>Ce ar fi dac
+i-a
+oferi ceva ce tu nu <I>
+tii<I> c
+vrei?
+<clr:255,190,255>Unde
+unde suntem?
+Tat
+? Ce
+<sb>A-aia sunt eu?<sb>Ce e asta?<sb>Ce se întâmpl
+<norepeat_global:10>Suntem în viitor.<sb>Acesta este momentul în care vezi cum moare tat
+<norepeat_global:10>Doar dac
+<clr:255,190,255>Ce? Doar dac
+CE?
+nu te ocupi tu s
+rezolvi situa
+ia asta.
+<norepeat_global:10>Elibereaz
+l, domni
+<norepeat_global:10>M
+a ta, domni
+<norepeat_global:10>Bine.<sb>Drept consecin
+a ac
+iunii tale, entitatea <I>aceasta<I> va continua.
+<norepeat_global:10>Iar entitatea aceasta, nu.
+<clr:255,190,255>Sigur. Deci
+e bine, nu? Tr
+te. Tat
+l meu tr
+<norepeat_global:10>Tu <I>e
+ti<I> con
+tient
+de faptul c
+te-ai dovedit extrem de important
+<norepeat_global:10>Un angajat anterior a fost incapabil<sb>
+sau nedoritor
+<sb>s
+îndeplineasc
+sarcinile care i-au fost încredin
+<norepeat_global:10>Ne-am chinuit s
+sim un înlocuitor corespunz
+tor.
+<norepeat_global:10>Pân
+<clr:255,190,255>Nu! E-e-eu vreau doar s
+duc acas
+. Trimite-m
+acas
+<norepeat_global:10>Mi-e team
+ai în
+eles situa
+ia în mod gre
+it, domni
+<clr:255,190,255>Stai. Hei, stai, stai, stai!...
+<clr:255,208,172>Gordon! Gordon! Treze
+te-te, Gordon!
+<clr:255,208,172>A disp
+rut, Gordon.<sb>A DISP
+RUT.
+<clr:255,208,172>Jigodia dracului
+consecin
+ele neprev
+zute
+ale naibii!<sb>Am
+tiut.<sb>Când îmi pun mâinile pe el o s
+<sb>O s
+-l OMOR. Trebuie s
+-mi dau seama ce s
+fac. Acum
+<clr:255,208,172><sfx:1>[Expir
+adânc]
+<clr:255,208,172>Haide, Gordon.
+<clr:255,208,172>Avem treab
+<clr:255,190,255>[Miroase] Uhh. Chestia asta duhne
+<HEADSET><clr:255,255,138>Oh, chiar?<sb>A ce duhne
+te? Fii mai specific
+<clr:255,190,255>A animal putrezit amestecat cu
+amoniac.
+Amestecat
+cu
+amoniac
+. Bine.
+<clr:255,190,255>Cu cât ating mai des chestiile astea, cu atât mai mult m
+conving c
+sunt probabil toxice.
+<HEADSET><clr:255,255,138>Dar dac
+vindec
+cancerul?
+<clr:255,190,255>Dar dac
+îmi D
+mie cancer?
+i d
+un nou tip de cancer?
+<clr:255,190,255>Russ, o s
+le ating mai pu
+<HEADSET><clr:255,255,138>Fie.
+<clr:255,190,255><sfx:1>[Str
+nut
+<HEADSET><clr:255,255,138>S
+tate.
+<clr:255,190,255>Pfui, mersi.
+<HEADSET><clr:255,255,138>Alyx. V
+d o concentra
+ie ridicat
+de antiparticule care iradiaz
+din chestia aia.<sb>Doar ca avertisment.<sb>Din punct de vedere cuantic, lucrurile pot deveni ciudate acolo.
+<clr:255,190,255>Russell, ai urm
+rit tot ce s-a întâmplat azi.
+<clr:255,190,255>ACUM se va întâmpla ceva ciudat?
+<clr:255,190,255>OK. M
+preg
+tesc.
+am omorât to
+i extratere
+trii. Cred c
+acum sunt to
+i mor
+<HEADSET><clr:255,255,138>E bine. Bine. E minunat.
+<clr:255,190,255>Acum trebuie doar s
+ajungi la seif, s
+iei arma
+-i gone
+ti pe Combine de pe P
+chestie foarte simplu de f
+cut
+fie sandviciuri, o s
+fie sandviciuri
+<HEADSET><clr:255,255,138>Da. Cu siguran
+<clr:255,190,255>Super. Sper s
+fie bune.
+<HEADSET><clr:255,255,138>Deci, dup
+ce-i alung
+m pe Combine de pe P
+mânt, ce ai de gând s
+faci, Alyx?
+ei bine, tata
+i cu mine o s
+ne lu
+m o cas
+m cu reconstruc
+ia,
+tii? Iar eu, probabil, o s
+-mi fac un laborator secret.
+<HEADSET><clr:255,255,138>Bine, dar de fapt nu trebuie s
+fie secret.<cr>Po
+ti liber via
+a, f
+te mai ascunzi.
+<clr:255,190,255>Da, bine. Deci, o s
+-mi fac laboratorul
+i nu o s
+mai am nevoie de încuietori sau u
+i ferestre care se închid!
+<HEADSET><clr:255,255,138>Ei bine
+nu, o s
+mai existe criminali.<cr>Doar c
+nu vor mai fi extratere
+tri.
+<clr:255,190,255>Offf. Pfui, a
+a e.
+<HEADSET><clr:255,255,138>Deci, a
+zice
+pentru u
+i încuietori doar ca
+mda.<cr>Ca precau
+i p
+streaz
+arma.
+<HEADSET><clr:255,255,138>Oh! Tat
+u s-a întors!
+<clr:255,190,255>Ooh. Slav
+<HEADSET><clr:255,208,172>Russell!<cr>La naiba, ce bine-mi pare s
+<HEADSET><clr:255,255,138>Asemenea! Ah, e grozav.
+<HEADSET><clr:255,255,138>Sincer,
+i-am estimat supravie
+uirea undeva la patru la sut
+<HEADSET><clr:255,208,172>Po
+-i mul
+ume
+ti vortigauntului
+luia. El m-a adus aici într-o bucat
+<clr:255,190,255>Russ! Russell! D
+-l pe tata!
+<HEADSET><clr:255,208,172>Alyx! Puiule!
+! Tocmai am deconectat o substa
+<HEADSET><clr:255,208,172>Bine. Fiindc
+atunci când vor muta chestia asta, arma aia dus
+va fi. Trebuie s-o lu
+m în noaptea asta.
+a vom face. Mai ai tableta aia cu date, nu-i a
+<HEADSET><clr:255,208,172>O am. Russ, chestia asta e biocodat
+.<sb>O s
+am nevoie de TLI.
+<HEADSET><clr:255,255,138>Dap, e chiar acolo.
+<HEADSET><clr:255,208,172>Bine, grozav.<sb>E
+ti bine, drag
+<clr:255,190,255>Evident. Tu f
+ce ai de f
+cut, voi fi bine, tat
+promit.
+<HEADSET><clr:255,208,172>S
+te
+ii de promisiune.<sb>Eu o s
+lucrez la tableta cu date.
+<HEADSET><clr:255,208,172>Am g
+sit ceva.
+<HEADSET><clr:255,255,138>Ce e?
+<clr:255,190,255>Da, ce e, tat
+<HEADSET><clr:255,208,172>Înc
+tiu despre ce arm
+e vorba.<sb>Dar
+TIU cum au pus mâna pe ea.
+<HEADSET><clr:255,208,172>Nu pare c
+au f
+cut chiar ei arma.<sb>E de parc
+<sb>Nu
+tiu, au descoperit ceva.<sb>Sau poate au dat peste ea din întâmplare.
+Cum adic
+<HEADSET><clr:255,208,172>Dac
+citesc bine, au g
+sit ceva într-un bloc vechi de apartamente din zona de carantin
+.<sb>Dar în loc s
+intre ca s-o recupereze, au luat întreaga cl
+dire
+i au construit un seif în jurul ei.
+<clr:255,190,255>Sfinte.<sb>Sigur i-a îngrozit chestia asta.
+<HEADSET><clr:255,208,172>Încerc s
+-mi dau seama dac
+i NOI ar trebui s
+fim.
+<clr:255,190,255>Russ
+ce crezi c
+îi fac lui Gordon Freeman acolo?
+<HEADSET><clr:255,255,138>E o întrebare bun
+<clr:255,190,255>Oare
+tii, îi scot creierul?
+<HEADSET><clr:255,255,138>Hmm. Cred c
+-l mute în afara lumii noastre.
+<clr:255,190,255>Ei bine, orice-ar fi, haide s
+nu afl
+m. O s
+ajung acolo înainte s
+se întâmple.
+<clr:255,190,255>Russ, care e faza cu ranga?
+<HEADSET><clr:255,255,138>Oh, adic
+ranga lui Gordon Freeman?
+<clr:255,190,255>Da.
+<HEADSET><clr:255,255,138>Oh Alyx, a ie
+it luptându-se din Black Mesa folosind DOAR ranga aia.
+<clr:255,190,255>Nu se poate.
+<HEADSET><clr:255,255,138>E adev
+rat! Ei bine, e adev
+rat c
+a se spune.
+tii, nimeni nu
+tie sigur.
+i, dup
+ce-l scoatem, s
+m o arm
+nu a mea.<cr>M-am retras din bi
+a împrumutului de arme, mmbine?
+<HEADSET><clr:255,255,138>Da! Dar nu a mea, totu
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>Ce se întâmpl
+<clr:255,190,255>Tata ce mai face?<sb>Pare bine?
+<HEADSET><clr:255,255,138>Ah, e-e bine, Alyx.<cr>Lucreaz
+acolo de zor.
+<clr:255,190,255>Bun. Ei bine, mul
+<HEADSET><clr:255,255,138>Oh
+N-ARE un picior, totu
+nu avea piciorul
+la nici înainte.
+<HEADSET><clr:255,255,138>Corect. Ei bine, tot
+tot nu-l are.
+umesc, Russ.
+<HEADSET><clr:255,255,138>Pentru nimic.
+<clr:255,190,255>Hei, ceva nout
+i despre tablet
+<HEADSET><clr:255,255,138>Ah, tat
+u se concentreaz
+.<cr>Lucreaz
+la chestia asta.<sb>Nu cred c
+mai are mult pân
+termin
+<clr:255,190,255>Grozav.
+<clr:255,190,255>Nnh! E pe fa
+a mea! Pe fa
+a mea!
+<clr:255,190,255>Oh, Dumnezeule, DUMNEZEULE
+DUMNE
+OH, DUMNEZEULE, NU
+<clr:255,190,255>Aah! D
+-te jos! D
+-te jos!
+<clr:255,190,255><sfx:1>[Sfor
+ându-se s
+respire]
+<HEADSET><clr:255,255,138>Aah! Dumnezeule!
+<HEADSET><clr:255,255,138>D
+-l jos!
+<clr:255,190,255>Încerc!
+<HEADSET><clr:255,255,138>E dezgust
+tor!
+h, e îngrozitor!
+h, Alyx, a fost scârbos
+<clr:255,190,255>Mda. A fost.
+h! Rac-de-cap! Un rac-de-cap pe fa
+a ta! Smulge-l de pe fa
+<HEADSET><clr:255,255,138>Oooh, s-a lipit bine!
+<HEADSET><clr:255,255,138>Prinde-l! Love
+te-l!
+<HEADSET><clr:255,255,138>Love
+te-l, Alyx! D
+-l jos de pe fa
+a ta!
+Domnului
+<clr:255,190,255>Uff. Sunt bine
+Sunt bine
+<HEADSET><clr:255,255,138>Era pe fa
+a ta
+h, a fost dezgust
+<clr:255,190,255>Russ, vorbesc despre mine?
+<HEADSET><clr:255,255,138>Mda, nu e bine.
+<clr:255,190,255>Îhm.
+<clr:255,190,255>Haide
+<clr:255,190,255>Îhm. Ehh. Uf!
+<clr:255,190,255>Înnnh.
+<clr:255,190,255>Ooo-key.
+<clr:255,190,255>Uhh.
+<clr:255,190,255>Hai
+<clr:255,190,255>Ohh
+mmmh
+uff.
+<HEADSET><clr:255,255,138>L-ai prins.
+<clr:255,190,255>Hopa!
+<clr:255,190,255>L-am prins!
+<clr:255,190,255>Aah. Te-am prins.
+<clr:255,190,255>Nnnh!
+<clr:255,190,255>Oh oh.
+<clr:255,190,255>Ah, rahat.
+<clr:255,190,255>Rahat.
+<clr:255,190,255>N
+. N-a mers.
+<clr:255,190,255>N-a mers.
+<clr:255,190,255>Asta e.
+<clr:255,190,255>Aha. Asta e.
+<clr:255,190,255>Hm. Sun
+<clr:255,190,255>Sigur.
+<clr:255,190,255><sfx:1>[Gâfâie]
+<clr:255,190,255>Uau.
+<clr:255,190,255>Ha ha.
+<clr:255,190,255>Mai am trei înc
+toare.
+<clr:255,190,255>Am r
+mas cu trei înc
+<clr:255,190,255>Mai am trei.
+<clr:255,190,255>Ultimul.
+<clr:255,190,255>Ultimul înc
+<clr:255,190,255>Mai am unul.
+<clr:255,190,255>Nu mai am niciun înc
+<clr:255,190,255>Nu mai am înc
+tor?
+<clr:255,190,255>Ultimele trei.
+<clr:255,190,255>Au mai r
+mas trei.
+<clr:255,190,255>Rahat. Ultimul înc
+<clr:255,190,255>Arh, am r
+<clr:255,190,255>Mai am trei cartu
+<clr:255,190,255>Ultimul cartu
+<clr:255,190,255>Nu mai am cartu
+<clr:255,190,255>Gata cartu
+ele.
+<clr:255,190,255>Uff. Am r
+<clr:255,190,255>Ultimele patru cartu
+<clr:255,190,255>Mai am patru cartu
+<clr:255,190,255>Ultimele patru.
+<clr:255,190,255>Ultimele dou
+cartu
+<clr:255,190,255>Mai am dou
+<clr:255,190,255>Mai am trei celule.
+<clr:255,190,255>Ultima celul
+<clr:255,190,255>Mai am una.
+<clr:255,190,255>Nu mai am celule.
+<clr:255,190,255><sfx:1>[Tuse în
+<clr:255,190,255><sfx:1>[Tuset în
+<clr:255,190,255><sfx:1>[Imit
+sunete de arme]
+<clr:255,190,255>Gaaah!
+<clr:255,190,255><sfx:1>[Tuse]
+<clr:255,190,255>Huh!
+<HEADSET><clr:255,255,138>E prea întuneric. O s
+ai nevoie de o lantern
+ai dreptate.
+<clr:255,190,255>E prea întuneric. Am nevoie de o lantern
+am nevoie de o lantern
+duc acolo.
+<clr:255,190,255>Nu a
+ui unui salt de la în
+imea asta.
+<HEADSET><clr:255,255,138>Nu, nu, nu, nu, absolut nu. De ce, te-ai gândit la asta?
+<clr:255,190,255>Nu cred.
+<clr:255,190,255>Nup. Asta m
+va omorî.
+<clr:255,190,255>Ah!
+<clr:255,190,255>Hai s
+vorbim mai târziu.
+, trebuie s
+<clr:255,190,255>Russell, trebuie s
+<clr:255,190,255>Mai târziu, trebuie s
+, sunt ocupat
+, am musafiri.
+<clr:255,190,255>Rahat, Combine.
+<clr:255,190,255>Russell!
+<clr:255,190,255>AH!
+<clr:255,190,255>DOAMNE!
+<clr:255,190,255>UAH!
+<clr:255,190,255>D-D-O, DOAMNE
+<clr:255,190,255>Pfui. Bine.
+<clr:255,190,255>Ouf. Bine.
+<clr:255,190,255>Pfui. OK.
+<clr:255,190,255><sfx:1>[Se sufoc
+<clr:255,190,255><sfx:1>[Icnete pentru aer]
+i mâna c
+tre ceva.
+<HEADSET><clr:255,255,138>Alege un obiect pe care s
+-l
+ti cu
+te ceva cu
+<HEADSET><clr:255,255,138>Folose
+te-
+i mâna pentru a
+inti ceva.
+<HEADSET><clr:255,255,138>Tot ce ai de f
+cut este s
+i îndrep
+i mâna spre ceva pentru a
+inti.
+<HEADSET><clr:255,255,138>G
+te un obiect
+te cu mâna spre el.
+<HEADSET><clr:255,255,138>Alyx? Alyx, mai e
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Of, nu am polimer suficient pentru niciuna dintre chestiile astea.
+<HEADSET><clr:255,255,138>Ei,
+tii ce se spune despre polimer, Alyx.
+<clr:255,190,255>Nu. Ce se spune despre polimer, Russ?
+<HEADSET><clr:255,255,138>Hm.
+mai
+m-mult polimer
+<clr:255,190,255>Biii-ne. O s
+fiu pe faz
+<HEADSET><clr:255,255,138>Da, aia e
+mai mult polimer
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, ai grij
+<HEADSET><clr:255,255,138>Bine lucrat.
+<HEADSET><clr:255,255,138>Bravo.
+iiii uite-a
+<HEADSET><clr:255,255,138>Exact.
+<HEADSET><clr:255,255,138>Aha. Perfect.
+<HEADSET><clr:255,255,138>OK. Asta a fost chiar rapid.
+<HEADSET><clr:255,255,138>A mers.
+<HEADSET><clr:255,255,138>Pare c
+fie aici pe undeva.
+<HEADSET><clr:255,255,138>Vezi ceva? Eu nu pot s
+d nimic.
+fie aici.
+<HEADSET><clr:255,255,138>Unul mai pu
+<HEADSET><clr:255,255,138>Aproape ai reu
+<HEADSET><clr:255,255,138>Nu-
+i irosi muni
+ia! Nu vei reu
+i nici m
+car s
+zgârii chestia aia.
+<HEADSET><clr:255,255,138>Fii atent
+<HEADSET><clr:255,255,138>Drept în fa
+<HEADSET><clr:255,255,138>Ai musafiri.
+<HEADSET><clr:255,255,138>Vorbim mai târziu.
+<HEADSET><clr:255,255,138>Pe ei!
+<HEADSET><clr:255,255,138>Da, da, du-te.
+<HEADSET><clr:255,255,138>Ah!
+<HEADSET><clr:255,255,138>Uff!
+<HEADSET><clr:255,255,138>Uau!
+<clr:107,232,120>Hmmm!
+<clr:107,232,120>Mmmf! [Miroase]
+satisf
+cut]
+<clr:107,232,120>Da, creatur
+<clr:107,232,120>Hrmm
+ah
+mmmhmm
+<sb>Interesant
+ah, excelent
+<clr:107,232,120>Te a
+teptam, Alyx Vance.
+Overwatch: <clr:166,242,255><I>Alert
+. Unit
+i la sol.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Opera
+iune invaziv
+de origine anti-cet
+eneasc
+.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Cod de r
+spuns:<cr>Angajeaz
+. Reprim
+. Investigheaz
+.<I>
+<clr:166,242,255><I>Alert
+i de interven
+ie<sb>Actualizare cod:<sb>Ataca
+i. Escorta
+i. Continua
+<clr:166,242,255><I>Cet
+eni,
+ine
+i minte:<cr>O societate civilizat
+necesit
+o supraveghere prompt
+ionat
+.<sb>Nu l
+i al
+i cet
+eni s
+amenin
+e comunitatea.<I>
+<clr:166,242,255><I>Aten
+ie, v
+rug
+m.<sb>Nu este permis accesul în acest sector.<sb>Dac
+primi
+i acest mesaj a
+lcat codul civil.<I>
+m.<sb>Nu este permis accesul în acest sector.<sb>Au fost mobilizate for
+ele de ordine locale pentru a interveni.<I>
+Overwatch: <clr:166,242,255><I>Aten
+m.<cr>Nu este permis accesul.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Activit
+ile anti-cet
+ene
+ti atrag imediat pedeapsa capital
+pentru unit
+ile la sol.<sb>Alert
+ile de comand
+.<sb>Cod de urgen
+: Nul.<I>
+de securitate.<sb>Re-administrare în curs.<sb>Codul de modificare a reparti
+iei resurselor:<sb>În
+spri
+i. Inspecta
+i. Extirpa
+i.<sb>Prioritate: imediat.<I>
+de securitate.<sb>Insurec
+ie civil
+major
+.<sb>Se deta
+eaz
+echipe de tehnicieni c
+tre blocurile 49, 64, 77.<sb>Se p
+prioritatea.<I>
+de securitate.<sb>În aten
+ia echipelor terestre:<cr>dac
+misiunea e
+ueaz
+, ve
+i fi transfera
+i permanent.<sb>Cod de r
+spuns: Str
+punge
+i. Manevra
+i. Inocula
+<clr:166,242,255><I>Bre
+critic
+. R
+mâne
+i pe pozi
+ii. R
+ii.<I>
+total
+<sb>Opera
+iune de atac 5-1-2-9.<sb>Deta
+are simultan
+.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Cod de r
+spuns:<cr>Proteja
+i. Închide
+i. Avansa
+. Echipa de r
+spuns.<sb>Protocol de supraînc
+rcare:<cr>Redirec
+iona
+i. Cauteriza
+i. Orbi
+i.<sb>Redirec
+<clr:255,190,255>Am v
+zut un levier afar
+<HEADSET><clr:255,255,138>Bine! Levier misterios! Îmi place!
+<HEADSET><clr:255,255,138>Ce face?
+<clr:255,190,255>Schimb
+macazul!
+tiu!
+<HEADSET><clr:255,255,138>Oh. Deci trenul lui Eli va fi redirec
+tre
+tre un zid.
+<HEADSET><clr:255,255,138>Corect! Oh, da! E într-o capsul
+pentru prizonieri! O s
+fie bine! Repede, Alyx!
+la e levierul!
+<clr:255,190,255>Russell! Uit
+-te la levierul
+sta!
+<HEADSET><clr:255,255,138>Trage-l! Vezi ce face!
+<HEADSET><clr:255,255,138>Corect! Da! E într-o capsul
+fie bine!
+<HEADSET><clr:255,255,138>Men
+ine-o tras
+! Nu-i da drumul!
+eles!
+<HEADSET><clr:255,255,138>Repede, Alyx!
+<HEADSET><clr:255,255,138>Bine! Acum men
+ine levierul
+la ap
+sat, altfel macazul va reveni în pozi
+ia ini
+ial
+<HEADSET><clr:255,255,138>Zece secunde, Alyx!
+<HEADSET><clr:255,255,138>Patru!
+<HEADSET><clr:255,255,138>Trei!
+<HEADSET><clr:255,255,138>Doi!
+<HEADSET><clr:255,255,138>Unu!
+<HEADSET><clr:255,255,138>Dumnezeule mare!
+<clr:255,190,255>Sfinte!
+<clr:255,190,255>Tren, tren, tren, tren, TREN!
+<clr:255,190,255>Am prins-o!
+<clr:255,190,255>Hei, cum deconectez toate cablurile?
+<clr:255,190,255>Ai ve
+ti în leg
+cu tata?
+i astea cum ar fi ve
+ti bune?
+<clr:255,190,255>Mie îmi convine.
+<clr:255,190,255>Russell? Iar te aud cu întreruperi.
+<clr:255,190,255>Voi folosi pu
+tehnologie pe care mie îmi place s
+o numesc
+rile
+<clr:255,190,255>Nu conteaz
+, oricum nu voi folosi sc
+rile.
+<clr:255,190,255>CE?!
+<clr:255,190,255>Aia e ultima substa
+ie! A reu
+<clr:255,190,255>B
+i. Ne putem da seama mai încolo? Cablul
+la a agitat un cuib de leii-furnicilor.
+tiu.<sb>Dar ceva îl
+ine acolo sus.<sb>
+i nu prea mai avem timp s
+ne d
+m seama ce e.
+<clr:255,190,255>Grozav! Ce e, tat
+<clr:255,190,255>Ies cabluri din el.<sb>Cred c
+se conecteaz
+la o surs
+de alimentare.<sb>Ajung acolo
+i le voi deconecta.<sb>Ei bine, împu
+<clr:255,190,255>Sigur. Dar ce E în
+untru, oricum?
+<clr:255,190,255>Aaah
+<clr:255,190,255>Sfiiiiinte!
+, plec s
+sesc seiful
+, se pare c
+podul s-a extins complet
+<clr:255,190,255>Bine, p
+i, una dintre astea trebuie s
+coboare seiful, nu? Nu?
+<clr:255,190,255>Mm. Nu e asta.
+<clr:255,190,255>Oooh, mda, sigur nu.
+<clr:255,190,255>Poate?!
+<clr:255,190,255>Nu arat
+Uff!
+<clr:255,190,255>Trebuie doar s
+ata
+ez CU GRIJ
+seiful DE pod.
+<clr:255,190,255>Cât de greu poate fi?
+<clr:255,190,255>Uah, Russell, vezi astea?
+t!
+t, lini
+te!
+<clr:255,190,255>Dumnezeule.
+<clr:255,190,255>Nup. Continui s
+caut.
+<clr:255,190,255><delay:3>Ce?
+<sb>Mul
+umesc! Mul
+<clr:255,190,255>E pe fa
+a mea! E pe fa
+<clr:255,190,255>Russ! E pe fa
+a mea, Russ!
+<clr:255,190,255>OK. Sunt bine. Sunt bine.
+<clr:255,190,255>Da, a fost. Am fost acolo.
+e pe fa
+<clr:255,190,255>Nuuu, nu pot s
+-l smulg!
+<clr:255,190,255>Russ,
+<clr:255,190,255>Uhh!
+<clr:255,190,255>Au!
+<clr:255,190,255>Pfui!
+<clr:255,190,255>Arh!
+<clr:255,190,255>Of!
+<clr:255,190,255>Aaah!
+<clr:255,190,255>Bluh!
+<clr:255,190,255>Pfui.
+ind] Pfui.
+ind] Uh!
+<clr:255,190,255>Uh. OK.
+<clr:255,208,172><sfx:1>[Geme]
+<clr:255,208,172>Russell? Unde e?<cr>E bine?
+<clr:255,208,172>Nu avem timp.<sb>E o arm
+, Alyx!<sb>Asta ascund ei aici.<sb>Am descoperit-o
+i de aceea ne-au prins.
+<clr:255,208,172>O au într-un seif
+<sb>Un turn, cu paz
+în jurul s
+<clr:255,208,172>E o substa
+ie în apropiere.
+<clr:255,208,172>Alyx, indiferent despre ce fel de arm
+e vorba, va trebui s-o furi sau s-o distrugi.
+<clr:255,208,172>[Chicote
+te] Te iubesc, pui.
+<clr:255,208,172>Te iubesc, pui!
+Eli: <clr:255,208,172><I>Ce e, Russell?<I>
+tiu, dar
+<HEADSET><clr:255,208,172>Continu
+te îndrep
+i c
+tre Seif.<sb>Eu voi umbla la tablet
+.<sb>S
+pot g
+si ceva.
+<HEADSET><clr:255,208,172>Alyx! Am g
+sit ceva!
+<HEADSET><clr:255,208,172>E un generator de câmp gravita
+ional direct sub Seif.<sb>Sigur
+STA îl
+ine în aer.
+<HEADSET><clr:255,208,172>Chiar acolo.
+la-i generatorul de câmp gravita
+i uite-a
+a se duce
+mai uit prin tablet
+.<sb>Alyx, vezi cum po
+i intra. Du-te!
+<clr:255,208,172>Ai grij
+, puiule. Te iubesc.
+<HEADSET><clr:255,208,172>Nu e un seif.<sb>E o închisoare.<sb>Nu au construit-o ca s
+ne
+AFAR
+ceva ÎN
+UNTRU.
+<norepeat_global:10>E o întrebare cu o mul
+ime de
+<clr:255,255,138>Ridic
+arma, Alyx!
+<HEADSET><clr:255,255,138>Sigur nu o s
+-l folose
+ti prea mult.<sb>Ar trebui s
+fie doar câ
+iva solda
+i Combine care-l transport
+pe Eli.
+<HEADSET><clr:255,255,138>Aah, da.
+Alyxul".
+<HEADSET><clr:255,255,138>Poate manipula gravita
+ia de la dep
+rtare?
+<HEADSET><clr:255,255,138>Da. Nu credeam.<sb>
+i nu e nici m
+, am observat.
+<HEADSET><clr:255,255,138>Gata, destul cu taclalele, trebuie s
+l. Haide.
+<HEADSET><clr:255,255,138>Alyx? Ai r
+semnal o perioad
+.<sb>Ce s-a întâmplat?
+<HEADSET><clr:255,255,138>Un vortigaunt?<cr>Ce c
+uta acolo jos?
+<HEADSET><clr:255,255,138>Da, Alyx?
+<clr:255,255,138>Alyx, aici sus! P
+zea, arunc ni
+te muni
+<clr:255,255,138>Uite.
+<HEADSET><clr:255,255,138>Alyx,
+la e panoul de control.
+ai putea s
+reactivezi sistemul, ar trebui s
+pot opri trenul lui Eli.
+la-i panoul de control!
+<HEADSET><clr:255,255,138>Doar împu
+-le, Alyx!
+<HEADSET><clr:255,255,138>Mda.
+<HEADSET><clr:255,255,138>Dap! Limpede ca lumina zilei!
+ti foarte bun
+la uciderea extratere
+trilor!
+<HEADSET><clr:255,255,138>E alarmant, chiar!
+<HEADSET><clr:255,255,138>Ahh!
+<HEADSET><clr:255,255,138>Mda, acum îl urc
+în tren.<cr>Ceea ce e bine.<sb>Fiindc
+e înc
+în via
+-l tortureze dup
+ce ajunge în Nova Prospekt.
+, logic vorbind, nu au niciun motiv s
+asta în tren.
+<HEADSET><clr:255,255,138>Ah. Mergi spre acoperi
+. G
+te substa
+<HEADSET><clr:255,255,138>Bine, acum încearc
+ajungi pe acoperi
+i acceseaz
+ia aia.
+<HEADSET><clr:255,255,138>Ai un lift pe acolo, dar va fi complicat s
+reporne
+ti curentul electric.
+<HEADSET><clr:255,255,138>Mda, am...am în
+<HEADSET><clr:255,255,138>Oooh.
+<HEADSET><clr:255,255,138>Alyx! Drona s-a întors în for
+!<sb>De aici de sus se pare c
+sunt ni
+te baricade Combine care împiedic
+lumea s
+<HEADSET><clr:255,255,138>Omoar
+picioru
+ul!
+<HEADSET><clr:255,255,138>Da! Picioru
+e!
+i sunt al naibii de letale, Alyx, ai grij
+<HEADSET><clr:255,255,138>Alyx! Uite!
+<HEADSET><clr:255,255,138>Nu în
+eleg. Toat
+energia asta de vortigaun
+i. Dac
+nu era pentru a suspenda Seiful în aer, atunci pentru ce era?
+i: Seiful a fost coborât. Asta era partea complicat
+. Acum partea u
+: ia ce-i în
+<HEADSET><clr:255,255,138>Bine. P
+i. S
+mergem
+facem partea u
+: s
+m ce e în
+untru. Eli? Ce-i în
+<HEADSET><clr:255,255,138>Aah.
+<HEADSET><clr:255,255,138>Crezi c
+, e mort?
+<clr:255,255,138>Uite-a
+<HEADSET><clr:255,255,138>Putem lua o scurt
+prin cl
+direa aia.
+<HEADSET><clr:255,255,138>Uuuuu!
+<HEADSET><clr:255,255,138>Uah.
+<HEADSET><clr:255,255,138>Eli, vino aici!
+<HEADSET><clr:255,255,138>Oh! Ar putea fi util.
+<HEADSET><clr:255,255,138>Aproape am spart
+<HEADSET><clr:255,255,138>Alyx!
+<clr:107,232,120>Atunci o vei face! Curaj, Alyx Vance!
+<clr:107,232,120>Eli Vance! Alyx Vance!<sb>Sunt aici s
+ajut dup
+cum am spus.<sb>Du-te! Voi asigura protec
+ia tat
+<clr:107,232,120><sfx:1>[Icne
+<clr:107,232,120>Îl voi duce pe Eli Vance într-un loc sigur.
+<clr:107,232,120>Nu
+Vortigaun
+ii ne vom extrage noi în
+i ne vom realiza r
+zbunarea.<sb>TU va trebui s
+te duci spre arm
+<clr:107,232,120>Acum, du-te! Fiecare are drumul s
+u.<sb>Nu putem e
+ua.
+<clr:107,232,120>Nicio ghicitoare!<sb>Combine a g
+urit aici.<sb>Sunt spintecat de la vortesen
+<clr:107,232,120>Sunt diminuat.<sb>Vortesen
+a e departe de mine
+<sb>Îi aud melodia, dar slab.
+Sfatul meu e s
+-l evi
+Plec.<sb>Dar baft
+acolo.<sb>
+nu-l subestimezi pe b
+iatul nostru, Jeff.<sb>El,
+, nu prea le are cu r
+bdarea.
+Uah! Ce i-ai f
+cut lui Jeff?
+La naiba!<sb>Ei bine, sper c
+.<sb>Ne mai vedem!
+Cum te cheam
+Alyx!
+<clr:18,199,226>D
+-ne nume.
+<clr:18,199,226>Nu ne pas
+.<cr>Ce-ai v
+zut? Cine a fost cu tine?
+<clr:18,199,226>Îl facem noi s
+.<cr>În dub
+cu el!
+<clr:18,199,226>
+i ea.
+<clr:18,199,226>Perimetru asigurat.
+<clr:18,199,226>Adu-l.
+<clr:18,199,226>Cum r
+mâne cu ea?
+<clr:18,199,226>ÎNAPOI!
+ine-le sus!
+<clr:18,199,226><force>Pune-
+i mâinile sus!
+<clr:18,199,226><force>E curat
+<clr:18,199,226>Înapoi!
+<clr:18,199,226>Înapoi! ÎNAPOI!
+ine-
+<clr:18,199,226>Pune mâinile sus!
+<clr:18,199,226>Mâinile sus!
+<clr:18,199,226>E curat
+<clr:18,199,226>M
+deplasez acum.
+<clr:18,199,226>Presez.
+apropii de
+<clr:18,199,226>Presiune.
+<clr:18,199,226>Avansez spre infectat.
+<clr:18,199,226>Avansez cu precau
+<clr:18,199,226>Continui s
+avansez.
+<clr:18,199,226>Baros. În mi
+care.
+<clr:18,199,226>În
+eles. M
+îndrept spre contaminant.
+<clr:18,199,226>Presiune. Presiune.
+<clr:18,199,226>Echipa de stabilizare for
+înaintarea.
+apropii de infectat.
+<clr:18,199,226>Avansez.
+<clr:18,199,226>Barosul se deplaseaz
+spre infectat.
+<clr:18,199,226>Barosul avanseaz
+în sector.
+apropii de contaminant.
+<clr:18,199,226>Baros.<cr>Avansez c
+<clr:18,199,226>Baros.<cr>Avansez.
+<clr:18,199,226>Încep ofensiva.
+<clr:18,199,226>Atac.
+inta e atacat
+<clr:18,199,226>Intervin.
+<clr:18,199,226>Baros. Activ complet pe ostil.
+<clr:18,199,226>Profit de avantaj.
+fixat
+. Pumnale de voie.
+<clr:18,199,226>Foc de voie.
+inta unu.
+<clr:18,199,226>Opre
+te-te acum.
+<clr:18,199,226>E Alyx.
+<clr:18,199,226>Confirmat, e Alyx.
+<clr:18,199,226>Pumnale pe Alyx.
+<clr:18,199,226>Foc de voie asupra
+intei unu.
+<clr:18,199,226>Trag în ostilul primar.
+<clr:18,199,226>Ea e. Barosul atac
+principal
+confirmat
+<clr:18,199,226>Sparg ad
+postul.
+<clr:18,199,226>Codul a fost înc
+lcat în sector
+<clr:18,199,226>Desemneaz
+ad
+postul
+ca umbr
+<clr:18,199,226>Expun
+inta în trei.
+inta este protejat
+. Rectific.
+<clr:18,199,226>Elimin suportul.
+<clr:18,199,226>Pumnale pe ad
+post.
+<clr:18,199,226>Activ complet pe ad
+<clr:18,199,226>Baros. Încep ofensiva împotriva ad
+postului.
+<clr:18,199,226>S
+ritor lansat.
+<clr:18,199,226>Grenad
+<clr:18,199,226>Extractor aruncat.
+ritor. S
+ritor.
+<clr:18,199,226>La p
+ritor în trei.
+<clr:18,199,226>Extrag.
+<clr:18,199,226>Lansez grenad
+<clr:18,199,226>Retragerea.
+ritor liber.
+<clr:18,199,226>Leul-furnicilor.
+: leul-furnicilor.
+<clr:18,199,226>Contact. Leul-furnicilor.
+<clr:18,199,226>Sose
+te leul-furnicilor.
+<clr:18,199,226>Baros pe leul-furnicilor.
+<clr:18,199,226>Leii-furnicilor. Barosul atac
+<clr:18,199,226>Leul-furnicilor. Sectorul
+<clr:18,199,226>Parazi
+<clr:18,199,226>Contact. Parazi
+<clr:18,199,226>Sosesc parazi
+<clr:18,199,226>Baros. Contact vizual cu parazi
+<clr:18,199,226>Conviz. Parazi
+<clr:18,199,226>Avem parazi
+i aici.
+i vii.
+<clr:18,199,226>Infesta
+ie cu parazi
+i confirmat
+<clr:18,199,226>Necrotici.
+<clr:18,199,226>Sosesc necrotici.
+ie confirmat
+<clr:18,199,226>Baros. Contact vizual cu necroticii.
+<clr:18,199,226>Contact. Necrotici.
+<clr:18,199,226>Contact vizual cu necroticii.
+<clr:18,199,226>Necrotici activi.
+<clr:18,199,226>Conviz. Necrotici.
+<clr:18,199,226>Necrotici aici.
+<clr:18,199,226>Ostil doborât.
+doborât
+<clr:18,199,226>Ucidere confirmat
+<clr:18,199,226>Ucidere curat
+<clr:18,199,226>Altul doborât.
+<clr:18,199,226>Asta e.
+<clr:18,199,226>Contact doborât.
+<clr:18,199,226>Sunt mor
+<clr:18,199,226>Baros. Ucidere confirmat
+<clr:18,199,226>Ostil neutralizat.
+<clr:18,199,226>Lichidat.
+<clr:18,199,226>Ostilul e terminat.
+<clr:18,199,226>Virom doborât.
+<clr:18,199,226>Cur
+at.
+sterilizat
+i izola
+<clr:18,199,226>Un parazit eliminat.
+<clr:18,199,226>Parazit cur
+sta-i unul.
+<clr:18,199,226>Parazit izolat.
+<clr:18,199,226>Scârbos.
+<clr:18,199,226>Focar ineficace.
+<clr:18,199,226>Focar izolat.
+<clr:18,199,226>Un parazit evacuat.
+<clr:18,199,226>TVS e izolat
+<clr:18,199,226>Ordinal,
+inta unu e lini
+<clr:18,199,226>A murit.
+<clr:18,199,226>Ordinal. Alyx nu mai e.
+<clr:18,199,226>Alyx sub control.
+<clr:18,199,226>Alyx livrat
+<clr:18,199,226>Moart
+<clr:18,199,226>Eliminat
+<clr:18,199,226>Necro izolat.
+<clr:18,199,226>Necrotic izolat.
+<clr:18,199,226>R
+mâi mort.
+<clr:18,199,226>Necro doborât la sectorul
+<clr:18,199,226>Necrotic eliminat.
+<clr:18,199,226>E mort.
+ire reu
+<clr:18,199,226><sfx>[Respir
+greu]
+<clr:18,199,226><sfx>[Tu
+ind
+uierând]
+<clr:18,199,226>alfa
+<clr:18,199,226>bravo
+<clr:18,199,226>charlie
+<clr:18,199,226>cu
+<clr:18,199,226>delta
+<clr:18,199,226>echo
+<clr:18,199,226>8
+<clr:18,199,226>unsprezece
+<clr:18,199,226>50
+<clr:18,199,226>5
+<clr:18,199,226>patruzeci
+<clr:18,199,226>4
+<clr:18,199,226>100
+<clr:18,199,226>9
+<clr:18,199,226>0
+<clr:18,199,226>1
+<clr:18,199,226>70
+<clr:18,199,226>7
+<clr:18,199,226>60
+<clr:18,199,226>6
+<clr:18,199,226>10
+<clr:18,199,226>30
+<clr:18,199,226>1.000
+<clr:18,199,226>3
+<clr:18,199,226>20
+<clr:18,199,226>2
+<clr:18,199,226>Alyx
+<clr:18,199,226>Anticet
+eni
+<clr:18,199,226>leul-furnicilor
+<clr:18,199,226>UPA
+<clr:18,199,226>Zid de lame
+<clr:18,199,226>Co-zid
+<clr:18,199,226>neostil
+<clr:18,199,226>Baros
+<clr:18,199,226>ostili
+<clr:18,199,226>parazi
+i liberi
+<clr:18,199,226>necrotic
+<clr:18,199,226>parazit
+<clr:18,199,226>Gardian
+<clr:18,199,226>Deasupra.
+<clr:18,199,226>Apartament.
+<clr:18,199,226>Butoaie.
+<clr:18,199,226>În spate.
+<clr:18,199,226>Dedesubt.
+<clr:18,199,226>C
+mizi.
+<clr:18,199,226>Pod.
+<clr:18,199,226>Cl
+<clr:18,199,226>Ma
+<clr:18,199,226>Macara.
+<clr:18,199,226>U
+<clr:18,199,226>Lift.
+<clr:18,199,226>Fa
+<clr:18,199,226>Barac
+evi.
+<clr:18,199,226>Toalet
+<clr:18,199,226>Vagon.
+<clr:18,199,226>Gunoi.
+<clr:18,199,226>Camion.
+<clr:18,199,226>Tunel.
+<clr:18,199,226>Dub
+<clr:18,199,226>Ro
+<clr:18,199,226>Stiv
+de lemne.
+<clr:18,199,226>Lovitur
+de atac.
+<clr:18,199,226>Atac acum.
+<clr:18,199,226>Ataca
+<clr:18,199,226>Raaah!
+<clr:18,199,226>Atac rapid.
+<clr:18,199,226>Acoper
+<clr:18,199,226>Acoperire.
+<clr:18,199,226>Acoperire. Baros.
+<clr:18,199,226>Am nevoie de foc de acoperire.
+<clr:18,199,226>Baros. Solicit acoperire.
+<clr:18,199,226>Acoperire
+<clr:18,199,226>Evit.
+postesc.
+activ
+ritor audibil. Evit.
+. Mi
+<clr:18,199,226>Zid ridicat.
+<clr:18,199,226>Alert
+pe radiali.
+<clr:18,199,226>Repliere la zid.
+ritor activ.
+<sfx><norepeat:3><clr:255,0,0>[Combine murind]
+<clr:18,199,226>Baros doborât.
+<clr:18,199,226>Overwa...
+<clr:18,199,226>Eliminat.
+<clr:18,199,226>Baros. În apropiere.
+<clr:18,199,226>Baros. Schimb pozi
+<clr:18,199,226>Reglez câmpul vizual.
+<clr:18,199,226>Reglez contactul vizual.
+<clr:18,199,226>Revin la ostil.
+<clr:18,199,226>Stabilesc confirmarea vizual
+<clr:18,199,226>Deblochez câmpul vizual.
+<clr:18,199,226>F
+contact vizual cu
+inta. M
+deplasez.
+<clr:18,199,226>Revin la
+inta delta.
+<clr:18,199,226>Stai acolo.
+<clr:18,199,226>Schimb pozi
+<clr:18,199,226>Optimizez loca
+<clr:18,199,226>Optimizez conviz.
+<clr:18,199,226>Probleme cu contactul vizual. M
+<clr:18,199,226>Elimin
+intele din câmpul vizual.
+<clr:18,199,226>Stabilesc contactul vizual.
+<clr:18,199,226>Contact în trei.
+<clr:18,199,226>Nu mi
+<clr:18,199,226>Hei, Alyx!
+<clr:18,199,226>Hei, Alyx, noi suntem!
+<clr:18,199,226>Alyx! E
+<clr:18,199,226>Psst. Alyx!
+<clr:18,199,226>Opri
+i focul!
+inta nu e ostil
+<clr:18,199,226>Ciocan doborât. Baros în retragere!
+i focul. Niciun pericol. Niciun pericol!
+<clr:18,199,226>Alyx nu e ostil
+i focul!<cr>Alyx nu e ostil
+<clr:18,199,226><sfx:1>[Râde]
+<clr:18,199,226>Jocul de-a prietenii a func
+<clr:18,199,226>[Râde] Ostilul e derutat.
+<clr:18,199,226>Trag.
+<clr:18,199,226>Atac
+inta.
+<clr:18,199,226>Barosul atac
+<clr:18,199,226>Baros.<cr>În pozi
+ia primar
+<clr:18,199,226>Forma
+ie deschis
+. Foc de voie.
+<clr:18,199,226>Cod trei. Oscar delta.
+sectorul
+<clr:18,199,226>Pumnale de voie.
+<clr:18,199,226>Deschid focul. Prioritate unu.
+<clr:18,199,226>Deschid focul pe Alyx.
+<clr:18,199,226>Baros pe
+inta principal
+<clr:18,199,226>Ordinal! Deschid focul pe
+<clr:18,199,226>Pumnale de voie asupra lui Vance.
+<clr:18,199,226>Orbitoare din nou în cinci.
+<clr:18,199,226>Orbitoarea a ratat.
+<clr:18,199,226>Orbitoarea nul
+. Corectez.
+<clr:18,199,226>Solicit orbitoare nou
+<clr:18,199,226>Orbitoarea a reu
+it. Avansez.
+it.<cr>Profit de avantaj.
+<clr:18,199,226>Ostilul e orbit.
+inta nu are contact vizual.<cr>Profit de avantaj.
+<clr:18,199,226>Contaminantul este derutat.
+<clr:18,199,226>Ostilul e derutat.<cr>Toate unit
+ile, profita
+<clr:18,199,226>Distribu
+ie în trei.
+<clr:18,199,226>Baros cur
+<clr:18,199,226>Baros extrage la
+<clr:18,199,226>Aplic presiune. F
+clie aruncat
+<clr:18,199,226>Extrag ostilul la ultima pozi
+ie cunoscut
+ritor la ultima pozi
+<clr:18,199,226>Ultimul atac.
+<clr:18,199,226>Zid ridicat. M
+la sol.
+<clr:18,199,226>Zgomote în sector
+<clr:18,199,226>Contaminant posibil.
+<clr:18,199,226>Ostil posibil activ.
+care la Baros.
+<clr:18,199,226>Sunet activ.
+<clr:18,199,226>Sunet pornit
+raportez to
+i contaminan
+<clr:18,199,226>Solicit stimdoz
+<clr:18,199,226>Ordinal. Sunt lovit.
+<clr:18,199,226>Sunt lovit.
+<clr:18,199,226>Sprijin pentru Baros.
+<clr:18,199,226>Baros înc
+activ.
+<clr:18,199,226>Ineficace.
+<clr:18,199,226>Armura rezist
+<clr:18,199,226><sfx:1>[Chicot sfid
+tor]
+<clr:18,199,226><sfx:1>[Chicot îngâmfat]
+<clr:18,199,226>Contaminantul nu e vizibil.
+<clr:18,199,226>La naiba.
+<clr:18,199,226>Solicit loca
+pierdut
+<clr:18,199,226>Sprijin pentru localizare. Baros.
+contact vizual cu ostilul.
+<clr:18,199,226>Contact pierdut. Contaminant.
+contact vizual. Baros.
+<clr:18,199,226>Ostil absent.<cr>Sector necunoscut.
+<clr:18,199,226>Baros solicit
+loca
+ia
+intei.
+<clr:18,199,226>Contact pierdut cu ostilul.
+<clr:18,199,226>Sprijin pentru localizare la Baros.
+<clr:18,199,226>Solicit sprijin pentru localizare.
+<clr:18,199,226>Nu am contact vizual.
+<clr:18,199,226>Baros, f
+contact vizual.
+<clr:18,199,226>Fug
+posibil
+.<cr>Solicit pozi
+ia ostilului.
+<clr:18,199,226>Contaminantul e lini
+tit.<cr>Solicit ultimul sector cunoscut.
+<clr:18,199,226>Am pierdut complet contactul vizual.
+<clr:18,199,226>Ostilul e t
+cut.
+<clr:18,199,226>Contaminantul fuge.
+<clr:18,199,226>Verific acoperirea.
+<clr:18,199,226>Verificare contact
+<clr:18,199,226>Contact vizual pierdut. Monitorizare activ
+<clr:18,199,226>Lips
+de contact cu barosul.<cr>Solicit recunoa
+tere.
+<clr:18,199,226>Proximitate!
+<clr:18,199,226>Amenin
+are în apropiere. Lansare.
+<clr:18,199,226>Sprijin. Sprijin. Sprijin.
+<clr:18,199,226>Baros, sprijin. Baros, sprijin.
+<clr:18,199,226>Înapoi. Înapoi.
+<clr:18,199,226>Pozitiv.
+<clr:18,199,226>Continui.
+<clr:18,199,226>Afirmativ.
+<clr:18,199,226>Men
+in pozi
+<clr:18,199,226>Zon
+închis
+<clr:18,199,226>Arme preg
+tite.
+<clr:18,199,226>Conviz la ultima pozi
+<clr:18,199,226>Aten
+ie la ultima pozi
+<clr:18,199,226>Observ.
+<clr:18,199,226>Baros. În pozi
+in concentrarea.
+te sunetul. Opre
+te sunetul.
+<clr:18,199,226>Ostilul nu coopereaz
+<clr:18,199,226>Nu te mi
+<clr:18,199,226>A
+tept contactul.
+<clr:18,199,226>Evaluez.
+tept problema.
+<clr:18,199,226>Preg
+tit pentru izolare.
+<clr:18,199,226>Baros. Men
+<clr:18,199,226>Baros. Monitorizare activ
+<clr:18,199,226>Contaminantul e blocat.
+<clr:18,199,226>Baros. Securizez flancul.
+<clr:18,199,226>Verific
+întreg perimetrul.
+<clr:18,199,226><sfx><norepeat:5>[Durere]
+<clr:18,199,226><sfx:1><norepeat:5>[Gâfâit]
+<clr:18,199,226>Ostilul este vulnerabil.
+în dificultate.
+inta este compromis
+<clr:18,199,226>Avanseaz
+. Avanseaz
+<clr:18,199,226>Contaminantul e r
+nit.
+<clr:18,199,226>Ostilul e marcat.
+<clr:18,199,226>Atac nou asupra ostilului.
+<clr:18,199,226>Amplific
+armele pe baros.
+<clr:18,199,226>Scurgere ro
+ie pe ostil.
+<clr:18,199,226>Posibil
+marcare pe principal.
+<clr:18,199,226>Ciocan eficace.<cr>Cod 0-9.
+<clr:18,199,226>Sfâr
+<clr:18,199,226>Ciocan în pozi
+tesc ciocanul.
+<clr:18,199,226>Ciocanul este gata de atac.
+<clr:18,199,226>Ciocanul atac
+<clr:18,199,226>Cocanul este gata de atac în 3
+tesc zidul.
+<clr:18,199,226>Scut ridicat.
+<clr:18,199,226>Ridic zidul.
+<clr:18,199,226>Zidul e pornit.
+<clr:18,199,226>Zidul este gata de activare în 3
+<clr:18,199,226>Toate sectoarele scanate.
+<clr:18,199,226>Contactul e t
+<clr:18,199,226>Sectorul este liber.<cr>Solicit s
+mân pe pozi
+liber
+<clr:18,199,226>Baros raporteaz
+.<cr>Ostilul este t
+<clr:18,199,226>Niciun contact.
+<clr:18,199,226>Aren
+sigur
+<clr:18,199,226>Pare curat.
+<clr:18,199,226>Contact pierdut.<cr>Pare liber.
+<clr:18,199,226>Nimic aici.
+<clr:18,199,226>Stau în alert
+. Zidul este ridicat.
+<clr:18,199,226>Niciun contaminant în sector.<cr>Solicit înl
+turarea.
+codul bravo.
+<clr:18,199,226>Nimic.
+<clr:18,199,226>Umbr
+<clr:18,199,226>Solicit sfâr
+itul la condi
+ia umbr
+<clr:18,199,226>Nu aici.
+. Retrage asisten
+<clr:18,199,226>Toate sectoarele libere. Retrage.
+<clr:18,199,226>Procesez conviz.
+<clr:18,199,226>Înc
+scolesc
+scanez
+<clr:18,199,226>Baros. Recunoa
+tere în curs.
+<clr:18,199,226>Condi
+ie: umbr
+<clr:18,199,226>Recunoa
+inta e tot umbr
+<clr:18,199,226>Sector liber. Avansez.
+<clr:18,199,226>Sector nul. Continui.
+. M
+<clr:18,199,226>Monitorizare înc
+.<cr>Ostilul e în continuare lini
+tit.
+<clr:18,199,226>Scanare complet
+. Continui.
+n-am contact vizual.
+<clr:18,199,226>Radiali liberi. Reiau.
+<clr:18,199,226>Dispersez.
+<clr:18,199,226>Dispersare.
+<clr:18,199,226>Unitatea Baros e pe teren.
+<clr:18,199,226>Mobilizat
+i scanez.
+<clr:18,199,226>Încep cur
+enia.
+<clr:18,199,226>Caut ostili.
+<clr:18,199,226>Caut contaminantul.
+<clr:18,199,226>Caut. Forma
+ie pumnal.
+<clr:18,199,226>Închid arena.
+<clr:18,199,226>Raportez contact vizual.
+iune pe
+în trei.
+<clr:18,199,226>Continui cu extrac
+<clr:18,199,226>Ini
+iaz
+condi
+<clr:18,199,226>Începe
+i ofensiva!
+inta delta
+<clr:18,199,226>Contact cu
+inta la
+<clr:18,199,226>Conviz! Conviz! Zona
+<clr:18,199,226>Acolo.
+<clr:18,199,226>Conviz! Ostil g
+care nou
+<clr:18,199,226>Animalul s-a întors în groap
+<clr:18,199,226>Contact ostil restabilit.
+<clr:18,199,226>Ostilul reactivat în sectorul
+<clr:18,199,226>Baros. Reiau contactul în sectorul
+<clr:18,199,226>Ostilul tr
+te. Verific
+radialii.
+<clr:18,199,226>Linii de ochire suplimentare confirmate.
+<clr:18,199,226>Principal confirmat în câmpul vizual.
+<clr:18,199,226>Baros. Interceptez.
+<clr:18,199,226>Pozi
+. Impun stabilitate.
+<clr:18,199,226>Confirmare contact vizual în trei.
+<clr:18,199,226>Contact vizual activ.
+<clr:18,199,226>Reîncarc.
+<clr:18,199,226>Baros reîncarc
+<clr:18,199,226>Baros doborât în 4
+tor gol.
+<clr:18,199,226>Baros e pe gol.
+<clr:18,199,226>Rezerv
+redus
+. Reîncarc.
+<clr:18,199,226>Ciocan, reîncarc.
+<clr:18,199,226>Cordon, cordon.
+<clr:18,199,226>Cordon pe Baros.
+retrag.
+<clr:18,199,226>Sectorul e prea cald.
+<clr:18,199,226>Caut ad
+<clr:18,199,226>Baros. Regrupare.
+<clr:18,199,226>Sector nesigur. Caut ad
+inte secundare identificate.
+<clr:18,199,226>Conviz cu mai multe necunoscute.
+<clr:18,199,226>Conviz cu secundarele.
+<clr:18,199,226>Verific siluetele.<cr>Posibili multiplicatori.
+<clr:18,199,226>Avem contaminan
+i multipli.
+ina unu are s
+ritori.
+<clr:18,199,226>Ostilul are s
+ritori. Aten
+<clr:18,199,226>Contaminantul are grenade. Împr
+tierea.
+are extractori.<cr>Emi
+<clr:18,199,226>Ostilul reîncarc
+.<cr>Ciocan are avantaj.
+inta se regenereaz
+. Deschid focul.
+<clr:18,199,226>Contaminantul este vulnerabil.
+<clr:18,199,226>Alyx reîncarc
+.<cr>R
+spund cu toate for
+<clr:18,199,226>Mine rostogolitoare.<cr>Ridic zidul.
+<clr:18,199,226>Baros.<cr>R
+spund la mina rostogolitoare.
+<clr:18,199,226>Mine rostogolitoare.
+<clr:18,199,226>Mine rostogolitoare subacute.<cr>Activare complet
+<clr:18,199,226>Modific
+inta: mine rostogolitoare.
+<clr:18,199,226>Sosesc mine rostogolitoare.
+inta unu are
+epi amplifica
+<clr:18,199,226>Overwatch.
+inta unu are amplific
+epii ostilului sunt amplifica
+<clr:18,199,226>Ostilul are spini ilegali.
+ri identificate.<cr>R
+spunde
+i cu precau
+<clr:18,199,226>Overwatch, solicit for
+e de rezerv
+<clr:18,199,226>Overwatch, sector necontrolat.
+<clr:18,199,226>Focar în sectorul
+<clr:18,199,226>Overwatch, unitatea terestr
+e doborât
+.<cr>Sector necontrolat.
+<clr:18,199,226>Overwatch, sectorul e cople
+<clr:18,199,226>Overwatch.<cr>Solicit acoperire aerian
+<clr:18,199,226>Overwatch, recomand
+forma
+iune nou
+<clr:18,199,226>Aliat doborât.
+<clr:18,199,226>Solicit înlocuire.
+<clr:18,199,226>Overwatch.<cr>O singur
+unitate activ
+<clr:18,199,226>Overwatch.<cr>Barosul este ultima unitate.<cr>Solicit sprijin.
+<clr:18,199,226>Overwatch.<cr>Solicit umbr
+imediat.
+<clr:18,199,226>Overwatch.<cr>Focarul nu e izolat.
+<clr:18,199,226>Overwatch.<cr>Condi
+ia curent
+: dezavantaj.<cr>Confirm
+<clr:18,199,226>Overwatch.<cr>Sunt singur cu numero
+i ostili.
+<clr:18,199,226>Însemn de supravie
+uire lansat.
+<clr:18,199,226>Overwatch.<cr>Solicit extrac
+ia Barosului.<cr>Sector
+<clr:18,199,226>Overwatch, fii informat:<cr>Barosul este ultima unitate.
+<clr:18,199,226>Overwatch.<cr>Ordinalul este doborât.
+<clr:18,199,226>Ordinalul este t
+cut.<cr>Solicit comandant nou.
+<clr:18,199,226>Ordinalul în condi
+ie apus.
+<clr:18,199,226>Ordinalul a fost lichidat.
+<clr:18,199,226>Overwatch. Ordinalul e doborât.<cr>Ripostez.
+<clr:18,199,226>Ordinal e t
+cut.<cr>R
+spunde în plin
+<clr:18,199,226>Ordinal lichidat.<cr>Ordinal lichidat.
+<clr:18,199,226><sfx:1>[
+<clr:18,199,226>Schimb.
+<clr:18,199,226>Modul unu.
+<clr:18,199,226>Modul doi.
+epi aproape. Nicio daun
+<clr:18,199,226>A ratat.
+<clr:18,199,226>Eroare a
+intei. Profit de avantaj.
+<clr:18,199,226>Ostilul nu este precis.
+<clr:18,199,226>Pe aproape.
+<clr:18,199,226>Baros intact.
+<clr:18,199,226>A ratat din nou. Profit de avantaj.
+inta a e
+uat.
+<clr:18,199,226>Profit
+de avantajul fa
+de ostil.
+<clr:18,199,226>Ostilul a ratat. Regruparea.
+epi ineficace.<cr>
+inta e neinstruit
+<clr:18,199,226>Negativ.
+<clr:18,199,226>Nu.
+<clr:18,199,226>Nu m
+pot conforma.
+<clr:18,199,226>E negativ.
+<clr:18,199,226>Nu pot executa.
+<clr:18,199,226>Confirmare
+epi.<cr>Ridic zidul.
+<clr:18,199,226>Contact.
+spund la atac.
+gio
+<clr:18,199,226>Dispersarea.
+inta este ostil
+.<cr>Pumnale de voie.
+<clr:18,199,226>Ostilii oprim
+.<cr>Emi
+tor la
+<clr:18,199,226>Overwatch. Avem
+epi.
+tesc condi
+ia delta.
+<clr:18,199,226>Se trage asupra mea.
+<clr:18,199,226>Sector
+<clr:18,199,226>[Numere]
+<clr:18,199,226>sector
+<clr:18,199,226>Nimic de raportat. Terminat.
+<clr:18,199,226>1, 14, 3, 6, 11
+Verificat.<cr>Totul e liber la Echo patru. Terminat.
+ionat.<cr>Men
+in conviz la sectorul nomad kilo 3 cu 6.
+<clr:18,199,226>Echo unu, nu observ nicio mi
+care.<cr>Coordonate: 7 cu 2.
+<clr:18,199,226>Afirmativ.<cr>A
+tept o ocazie.
+<clr:18,199,226>Transmisiune clar
+.<cr>F
+radiali. Terminat.
+<clr:18,199,226>Overwatch.<cr>Solicit date de proximitate despre ostili.<cr>A
+tept transmisiunea.
+tept transmisiunea. Terminat.
+<clr:18,199,226>Overwatch confirm
+închiderea sectorului.<cr>Men
+i contactul vizual
+i sunetul activ.
+<clr:18,199,226>Afirmativ
+starea focarului e codul delta
+apte.<cr>Echipa de apus e cople
+la contact.<cr>Recep
+<clr:18,199,226>Negativ
+Recep
+izolare în sector.<cr>F
+confirmare pe
+inta vector unu.<cr>A
+tept codurile parametrilor secundari.
+<clr:18,199,226>Actualizez biodate
+Stimdoz
+: 32.<cr>Pumnal: 78. Scut: 100.<cr>Biprox: .73.<cr>Audio: 3. Vizor: 15. Terminat.
+eles.<cr>Preg
+tesc ciopâr
+itorii în apex cinci.<cr>Avem biotici în perimetru.<cr>A
+tept contactul. Terminat.
+sosirea viromurilor nemarcate.<cr>Recomandare tuturor unit
+ilor: preg
+de contact.
+<clr:18,199,226>Cod de apel:<cr>Delta-echo-7-9-alfa-2-whisky-0
+<cr>Confirmat.
+eles. Înc
+sunt aici.
+eles. Acceptat.<cr>Actualizez biodatele cognitive de suprimare.<cr>Actualizare complet
+în T minus 3 secunde
+<cr>Disonan
+a s-a remediat.
+<clr:18,199,226>Overwatch c
+tre toate unit
+ile: actualiza
+i rezolva
+i.<cr>Disonan
+a cognitiv
+nu va fi tolerat
+Negativ
+Memoriile sunt incluse.<cr>Actualizare în curs. Conformare obligatorie.
+<clr:18,199,226>Echipa de stabilizare men
+ine pozi
+ia.<cr>Fotoviz la 73.<cr>Audio la
+15.<cr>Overwatch confirm
+TVS în perimetru.<sb>R
+i în alert
+<clr:18,199,226>Overwatch.<cr>Avem ostili activi.<cr>Recomand
+tiri.
+<clr:18,199,226>Negativ.<cr>
+inta este înc
+ionat.<cr>Formez condi
+ia alfa.
+ionat.<cr>Form
+m configura
+ia alfa la coordonatele 9 cu 3-7.
+tept directiv
+de avansare. Terminat.
+<clr:18,199,226>Confirmat. Recalibrez.
+ionat. Preg
+tesc pozi
+<clr:18,199,226>Ei sunt înc
+ionat.<cr>Izolarea
+i controlul sunt în curs.
+<clr:18,199,226>Rezolv.
+<clr:18,199,226>10-4. Negativ pentru reînc
+rcarea pumnalelor.<cr>În pozi
+i preg
+<clr:18,199,226>Creez avantaj tactic.
+tept în continuare.
+tept înc
+rcarea biodatelor.
+tesc de apus.
+tesc comurile pentru conflict extins.
+<clr:18,199,226>Negativ. Nu sunt necesare pumnalele.
+<clr:18,199,226>Extind durata conflictului.
+<clr:18,199,226>Scanez biodatele ostilului.
+<clr:18,199,226>Ignor ultima directiv
+<clr:18,199,226>Overwatch. 10-9.
+<clr:18,199,226>În atac
+i trag.
+<clr:18,199,226>Impun stabilitatea pe
+în sectorul
+inta e în raza de ac
+iune
+i prime
+<clr:18,199,226>Intensific for
+a asupra
+intei principale.
+<clr:18,199,226>Sunt termina
+<clr:18,199,226>Aproape gata.
+<clr:18,199,226>Aproape s-a terminat.
+<clr:18,199,226>Trimit
+<clr:18,199,226>Trimit to
+epii c
+epii.
+<clr:18,199,226>Nu te opune.
+<clr:18,199,226>Baros e în atac
+i trage.
+<clr:18,199,226>Ordinal e în atac
+<clr:18,199,226>UPA e angajat
+<clr:18,199,226>Ostilul se confrunt
+cu o panic
+extrem
+<clr:18,199,226>Ostilul este cople
+inta are moralul sc
+zut.<cr>Profit de avantaj.
+zut.
+<clr:18,199,226>Po
+i ie
+ie,
+ostil
+.<cr>Te putem ajuta.<cr>E
+ti în siguran
+<clr:18,199,226>Te putem ajuta.<cr>E
+<clr:18,199,226>Suspectul a dep
+it pragul legal de agresivitate.<cr>Profit de avantaj.
+<clr:18,199,226>Continui cu intensificarea.
+<clr:18,199,226>Suspectul încalc
+codul 10-307.
+<clr:18,199,226>Cod 10-307.<cr>Continui cu intensificarea
+<clr:18,199,226>Ostilul ezit
+<clr:18,199,226>Atacurile ostile sunt ineficace.<cr>Continua
+i cu izolarea.
+<clr:18,199,226>Activez codul 10-108.<cr>M
+<clr:18,199,226>Încetez focul.<cr>
+retrag.<cr>Cod 10-40.
+<clr:18,199,226>Opresc focul!
+ionat. Nu trage
+i.<cr>Cooperare confirmat
+<clr:18,199,226>Retragerea.<cr>
+ile, retragerea.
+<clr:18,199,226>Neostil confirmat.<cr>Opri
+<clr:18,199,226>Overwatch.<cr>Avem o situa
+ie expectativ
+la coordonatele 9 cu 5.
+<clr:18,199,226>Afirmativ.<cr>
+inta e r
+nit
+ionat.<cr>Ostilul nu b
+te nimic
+i e gata de izolare.
+<clr:18,199,226>Ostilul prezint
+oboseal
+.<cr>Preg
+i izolarea.
+<force><clr:18,199,226>Nu mi
+<force><clr:18,199,226>Nimic. Niciun ID.
+<force><clr:18,199,226>Ridic
+mâinile. Mâinile sus.
+<force><clr:18,199,226>Cine este?
+<force><delay:10.5><clr:18,199,226>Alyx? E
+ti acolo?<cr>Hei, Alyx! Noi suntem!
+îndrept spre infectat.
+deplasez spre contaminant.
+<clr:18,199,226>Presiune pornit
+<clr:18,199,226>Echo unu for
+<clr:18,199,226>Echo unu are codul sectorului
+i se deplaseaz
+tre infectat.
+<clr:18,199,226>Avansez în sector.
+<clr:18,199,226>Ripostez cu toat
+<clr:18,199,226>Avantaj în atac.
+. Folosesc pumnalele.
+inta unu în câmpul vizual.
+<clr:18,199,226>Jackpot confirmat.
+inta unu are via
+a limitat
+<clr:18,199,226>O am.
+<clr:18,199,226>Echo are contact vizual cu Alyx.
+<clr:18,199,226>Foc de voie asupra lui Alyx.
+<clr:18,199,226>Trag în Alyx.
+. Echo unu atac.
+<clr:18,199,226>Ea e.
+<clr:18,199,226>Schimb
+inta. Cod înc
+lcat.
+inta ca umbr
+inta e protejat
+<clr:18,199,226>Echo unu. Elimin suportul.
+<clr:18,199,226>Echo unu. Pumnale pe ad
+<clr:18,199,226>Echo unu. Încep ofensiva împotriva ad
+<clr:18,199,226>Cod înc
+extractor aruncat.
+ritor, s
+<clr:18,199,226>Extractor în 3.
+extrag.
+, leul-furnicilor.
+<clr:18,199,226>Se apropie leul-furnicilor.
+<clr:18,199,226>Conviz. Leul-furnicilor.
+<clr:18,199,226>Leul-furnicilor. Echo unu. Atac.
+<clr:18,199,226>Contact Echo unu. Leul-furnicilor.
+<clr:18,199,226>Leul-furnicilor aici.
+i în sectorul
+<clr:18,199,226>Uff
+Se apropie parazi
+i liberi.
+<clr:18,199,226>Echo unu. Contact vizual cu parazi
+<clr:18,199,226>Ur
+sc chestiile astea.
+i vii. Echo unu.
+<clr:18,199,226>Se apropie necrotici.
+de infesta
+<clr:18,199,226>Echo unu, contact vizual cu necroticii.
+<clr:18,199,226>V
+d necrotici.
+<clr:18,199,226>Avem necrotici.
+<clr:18,199,226>Contact cu necroticii.
+<clr:18,199,226>Mort.
+<clr:18,199,226>Echo unu. Ucidere confirmat
+<clr:18,199,226>S-a terminat.
+i sub control.
+<clr:18,199,226>Curat.
+<clr:18,199,226>Sector curat.
+<clr:18,199,226>Contaminant izolat.
+e sub control.
+<clr:18,199,226>E lini
+<clr:18,199,226>Alyx nu mai e.
+ostilul primar a fost eliminat.
+<clr:18,199,226>Alyx a fost lichidat
+<clr:18,199,226>Contaminant eliminat.
+<clr:18,199,226>Înapoi la culcare.
+<clr:18,199,226><sfx:1>[Geme]
+<clr:18,199,226><sfx:1>[Respir
+<clr:18,199,226><sfx:1>[Tu
+<clr:18,199,226>12
+<clr:18,199,226>Echo unu
+<clr:18,199,226>Overwatch
+<clr:18,199,226>Echo unu, solicit acoperire.
+<clr:18,199,226>Echo unu, solicit umbr
+tesc stimdoz
+<clr:18,199,226>Solicit acoperire la
+<clr:18,199,226>Posibil extractor. Evit.
+<clr:18,199,226>Ad
+poste
+te-te.
+ritor audibil în sector
+<clr:18,199,226>Înapoi.
+ritor activ. Caut umbr
+<clr:18,199,226>Terminat.
+<clr:18,199,226>Ajut
+-ne!
+<clr:18,199,226>Îmi pare r...
+apropii.
+<clr:18,199,226>Echo unu. Schimb pozi
+<clr:18,199,226>Îndep
+rtez obstacolul.
+<clr:18,199,226>Echo unu, f
+<clr:18,199,226>Corectez câmpul vizual s
+fie pe ostil.
+<clr:18,199,226>Conviz întrerupt. M
+i focul!<cr>
+<clr:18,199,226>Jos armele!<cr>Echo unu! Jos armele.
+<clr:18,199,226>Înceta
+i focul!<cr>Jos pumnalele.
+<clr:18,199,226>Alyx nu e periculoas
+! Ostilul nu e periculos!
+! Opri
+i focul! Opri
+<clr:18,199,226>[Râde] Jocul de-a prietenii a func
+<clr:18,199,226>Folosesc pumnalele pe ostil.
+<clr:18,199,226>Echo unu la punctul
+prioritar.
+<clr:18,199,226>Opresiune activ
+asupra ostilului.
+sectorul.
+<clr:18,199,226>Intervin în sector.
+<clr:18,199,226>Deschid focul asupra
+intei principale unu.
+<clr:18,199,226>O
+intesc pe Vance.
+<clr:18,199,226>Se apropie
+epi primari.<cr>Ripost
+asurzitoare.
+<clr:18,199,226>Alyx e limitat
+de timp.
+<clr:18,199,226>Animalul e în groap
+<clr:18,199,226>Jackpot confirmat. Deschid focul.
+la ultima pozi
+<clr:18,199,226>Extrag la ultima pozi
+<clr:18,199,226>Aplic presiune asupra ultimei pozi
+ii cunoscute. F
+<clr:18,199,226>Alung ostilul.
+<clr:18,199,226>Lansez sub acoperire.
+<clr:18,199,226>Lansare.
+<clr:18,199,226>Posibil contaminant.
+<clr:18,199,226>Echo unu, sunet activ.<cr>Raportez to
+i suspec
+<clr:18,199,226>Medic.
+<clr:18,199,226>Sunt lovit. Solicit stimdoz
+<clr:18,199,226>Solicit armur
+suplimentar
+<clr:18,199,226>Echo unu e limitat de timp.
+<clr:18,199,226>Rahat.
+<clr:18,199,226><sfx:1><norepeat:5>[Chicot sfid
+<clr:18,199,226>Echo unu, solicit loca
+inta pierdut
+.<cr>Solicit sprijin pentru localizare.
+<clr:18,199,226>Sprijin pentru localizare.
+<clr:18,199,226>Nu am conviz cu ostilul.
+<clr:18,199,226>Contact vizual pierdut cu contaminantul.
+<clr:18,199,226>Nu am contact vizual. Solicit sprijin.
+<clr:18,199,226>Ostil lips
+. Sector necunoscut.
+<clr:18,199,226>Solicit pozi
+<clr:18,199,226>Sprijin pentru localizare la Echo unu.
+<clr:18,199,226> sprijin pentru loca
+<clr:18,199,226>Solicit sprijin pentru localizare în sectorul
+<clr:18,199,226>Nu am contact vizual. Overwatch, sprijin.
+. Solicit pozi
+<clr:18,199,226>Am pierdut complet contactul vizual cu
+<clr:18,199,226>Ostilul principal e lini
+<clr:18,199,226>Contaminantul fuge.<cr>Ordinal, raporteaz
+inta unu la
+<clr:18,199,226>Conviz pierdut. Monitorizare activ
+de contact. Solicit recunoa
+<clr:18,199,226>[
+ipete de panic
+i respira
+ie întret
+iat
+<clr:18,199,226>Stoooooop!
+<clr:18,199,226>Raha...!
+<clr:18,199,226>Echo, sprijin. Echo, sprijin.
+<clr:18,199,226>Stop! Retragerea! Echo
+apte.<cr>Retragerea. Echo
+apte.
+de proximitate la Echo unu! Solicit sprijin!
+<clr:18,199,226>Prea aproape. Modific.
+<clr:18,199,226>Pumnale în pozi
+<clr:18,199,226>Echo unu în pozi
+<clr:18,199,226>Monitorizare activ
+contaminantul e blocat.
+<clr:18,199,226>Echo unu. Securizez flancul.
+<clr:18,199,226>Verific perimetrul.
+<clr:18,199,226><sfx:1><norepeat:5>[Gâfâie]
+ostilul este vulnerabil.
+<clr:18,199,226>Solicit amplificarea pumnalelor pe
+<clr:18,199,226>Pumnale eficace. Cod 0-9.
+<clr:18,199,226>Împiedic
+toate stimurile pe ostilul principal.
+<clr:18,199,226>Lichidez
+<clr:18,199,226>Sectorul este liber. Solicit s
+controlat
+<clr:18,199,226>Contact pierdut. Pare liber.
+<clr:18,199,226>Toate unit
+ile raporteaz
+.<cr>Lini
+te în gaur
+.<cr>Retrage asisten
+<clr:18,199,226>Se proceseaz
+conviz
+<clr:18,199,226>Ostilul e lini
+tit în continuare.
+<clr:18,199,226>Stabilesc condi
+<clr:18,199,226>Unitatea Echo e pe teren.
+<clr:18,199,226>Caut.
+eles. Conviz. Toate unit
+ile.
+<clr:18,199,226>Împr
+tia
+i scana
+<clr:18,199,226>Încep ofensiva împotriva
+intei. Delta
+<clr:18,199,226>Conviz! Conviz!
+inta g
+sit
+<clr:18,199,226>Contact ostil.
+<clr:18,199,226>Hai, hai, hai.
+<clr:18,199,226>Echo unu<cr>Contact în sectorul 9-4.
+te. Verific radialii.
+<clr:18,199,226>Linie vizual
+<clr:18,199,226>Echo unu, intercep
+.<cr>Impun stabilitate.
+<clr:18,199,226>Contact vizual activ. Ostil reg
+<clr:18,199,226>Reîncarc pumnalele.
+<clr:18,199,226>Echo vulnerabil pentru 3
+<clr:18,199,226>Solicit foc de suprimare pentru reînc
+rcare.
+<clr:18,199,226>Pumnal gol la Echo unu.
+<clr:18,199,226>Rezerve reduse. Reîncarc.
+<clr:18,199,226>Reînnoire arm
+<clr:18,199,226>Cordon.
+<clr:18,199,226>Cordon pe Echo unu.
+<clr:18,199,226>Regruparea.
+ie nesigur
+. Caut ad
+<clr:18,199,226>Avem conviz cu secundarele.
+echipa la sol.
+inta unu are extractori.
+. Pumnal în avantaj.
+<clr:18,199,226>Mine rostogolitoare. Pumnale active.
+<clr:18,199,226>Conviz! Mine rostogolitoare!
+<clr:18,199,226>Mine rostogolitoare subacute.<cr>Emi
+tor activ complet.
+inta pe minele rostogolitoare.
+<clr:18,199,226>Mine rostogolitoare. Sosesc.
+<clr:18,199,226>Echipa terestr
+, alert
+.<cr>Ostilul are
+<clr:18,199,226>Conviz.
+epi ilegali.
+<clr:18,199,226>Overwatch. Solicit ac
+iune de rezerv
+<clr:18,199,226>Overwatch. Sector necontrolat!
+<clr:18,199,226>Focar, focar, focar!
+<clr:18,199,226>a expirat.
+<clr:18,199,226>Overwatch. Unitatea terestr
+<clr:18,199,226>Overwatch. Sectorul este cople
+it!<cr>Repet. Sectorul este cople
+<clr:18,199,226>Overwatch. Solicit acoperire aerian
+<clr:18,199,226>Avantaj pierdut. Vin probleme.
+<clr:18,199,226>Overwatch. Recomand forma
+<clr:18,199,226> e t
+cut. Solicit înlocuitor.
+<clr:18,199,226>Echo unu e singurul activ.
+<clr:18,199,226>Overwatch! Echo unu este ultima unitate. Solicit sprijin.
+<clr:18,199,226>Uh. Solicit umbr
+imediat!
+<clr:18,199,226>Overwatch! Focarul nu e izolat!
+<clr:18,199,226>Echo unu. Raportez ostilitate excesiv
+<clr:18,199,226>Overwatch! Nu mai avem echip
+terestr
+<clr:18,199,226>Overwatch! Solicit extrac
+ia pentru Echo unu.
+<clr:18,199,226>Overwatch.<cr>Echo unu e ultima unitate.
+<clr:18,199,226>Overwatch! Ordinal este doborât!
+<clr:18,199,226>Ordinalul e t
+cut! Solicit asisten
+<clr:18,199,226>Overwatch! Ordinal în condi
+ia apus! Confirm
+<clr:18,199,226>Ordinal e lichidat.
+<clr:18,199,226>Overwatch. Ordinal neutralizat.<cr>Ripostez
+cut!<cr>Administreaz
+spuns complet!
+<clr:18,199,226>Suprim.
+<clr:18,199,226>Foc de suprimare.
+<clr:18,199,226>Suprim la
+cooperarea.
+<clr:18,199,226>Baraj la ultima pozi
+in pumnalele la ultima pozi
+ostilul este încol
+<clr:18,199,226>Ostilul este imprecis.
+<clr:18,199,226>Exercit avantaj pe eroarea ostilului.
+<clr:18,199,226>Echo unu este neatins.
+epi ineficace.
+nu se poate.
+epi. Forma
+<clr:18,199,226>Contact. Ostil la
+<clr:18,199,226>Echo One începe opresiunea.
+<clr:18,199,226>Echo unu aici. Avem contaminan
+<clr:18,199,226>Ostilul atac
+<clr:18,199,226>Uff. Preg
+ionat.<cr>Echo unu are sunetul activ, raporteaz
+to
+<clr:18,199,226>Zgomote în sectorul alfa nou
+delta.<cr>Expun ostilul în trei
+<clr:18,199,226>Overwatch.<cr>Echo unu are ID-ul sectorului
+spre infecta
+i.<cr>Anti-cet
+ean 7-1-3.
+<clr:18,199,226>Contaminantul e vulnerabil.<cr>Profit de avantaj.
+<clr:18,199,226>Echo unu.<cr>Contact în sectorul nou
+patru.<cr>Ostilul tr
+<clr:18,199,226>Caut
+inta unu în cl
+direa unsprezece.<cr>Ostilul principal e t
+cut.<cr>Recunoa
+<cr>Contaminantul e blocat.<cr>Verific tot perimetrul.
+<clr:18,199,226>Jackpot confirmat.<cr>M
+realiniez cu ostilul.<cr>Alyx e limitat
+mda
+nimic de raportat. Terminat.
+<clr:18,199,226>1, 14, 3, 6, 11, verificat.<cr>
+liber la Echo patru.<cr>E rândul t
+u. Terminat.
+<clr:18,199,226>Conectez
+Afirmativ
+Echo unu raporteaz
+lumin
+, sunet redus.<cr>A
+tept oportunit
+<cr>Negativ pentru condi
+ia nisipuri mi
+toare.<cr>Uhh
+Nu.<cr>F
+<clr:18,199,226>Overwatch.<cr>Aici Echo patru, solicit datele de proximitate ale ostililor.<cr>Stau pe recep
+<clr:18,199,226>Sectorul este monitorizat la 43%.<cr>Stabil.
+i...<cr>înc
+închiderea sectorului.<cr>Anticet
+eanul unu este,
+, mutat
+i activat.<cr>Men
+la contact.
+<cr>
+recep
+<clr:18,199,226>Negativ. Recep
+ionat.<cr>Lips
+izolare sector. Lips
+confirmare pe vectorul
+intei unu.<cr>A
+tept codurile parametrului secundar.
+: 32.<cr>Pumnal: 78. Scut: 100. Biprox: 73.<cr>Audio: 3. Vizor: 15. Echo terminat.
+eles. Preg
+itorii în apex cinci.<cr>Avem biotici în perimetru.<cr>
+<clr:18,199,226>Cod de apel: Delta-echo-7-9-alfa-whisky-0
+<cr>Confirmat. Echo terminat.
+.<cr>Negativ
+Memoriile sunt incluse. Actualizare disponibil
+.<cr>Conformare obligatorie.
+ia.<cr>Fotoviz la 73. Audio la
+TVS în perimetru.<cr>R
+<clr:18,199,226>Overwatch. Avem ostili activi.<cr>Recomand
+<clr:18,199,226>Echo unu e în atac
+<clr:18,199,226>Echo unu, trimit to
+<clr:18,199,226>UPA e în atac
+<clr:18,199,226>Ahhh! Pierdere de c
+ldur
+la armur
+!<cr>Sprijin. Solicit spri...
+!<cr>Sprijin. Solicit spri... [Strig
+te confuze]
+<clr:18,199,226>Echo unu, solicit izolarea imediat
+! [
+t panicat]
+. [
+<clr:18,199,226>Aaah! Limit
+termal
+dep
+! Gaaah!
+<clr:18,199,226>Uff! Biodate critice. Expirare în 4
+! Gahhh!
+! [Strig
+t de panic
+.<cr>Te putem ajuta. E sigur.
+<clr:18,199,226>Te putem ajuta. E sigur.
+it pragul legal de agresivitate.
+<clr:18,199,226>Cod 10-307. Continui cu intensificarea.
+codul 10-307.<cr>Continui cu intensificarea
+<clr:18,199,226>Activez codul 10-108. M
+retrag. Cod 10-40.
+<clr:18,199,226>Nu trage
+<clr:18,199,226>Confirmat:
+. Opri
+<clr:18,199,226>Presiune, presiune.
+<clr:18,199,226> Directiv
+de avansare.
+<clr:18,199,226>Directiv
+ile, for
+i înaintarea.
+ile, concentra
+<clr:18,199,226>Echipa de stabilizare are codul sectorului
+<clr:18,199,226>Activare complet
+. Pumnal scos.
+<clr:18,199,226>Salut,
+. Ordinal atac
+<clr:18,199,226> trage
+i în Alyx.
+ile. Trage
+lcat în sectorul
+<clr:18,199,226>Desemnez
+inta drept acoperire.
+<clr:18,199,226>Încep ofensiva împotriva ad
+i ofensiva asupra ad
+<clr:18,199,226> elimina
+i sprijinul umbr
+<clr:18,199,226>Extractor.
+<clr:18,199,226>Extractor în trei.
+<clr:18,199,226>Lansez s
+<clr:18,199,226>Lansa
+<clr:18,199,226>Arunc
+extractor.
+ile. Lansa
+ritorii.
+<clr:18,199,226> profita
+i de avantaj.
+ile. Profita
+. Leul-furnicilor.
+<clr:18,199,226>Conviz. Leii-furnicilor.
+<clr:18,199,226>Echipa de protec
+ie în alert
+.<cr>Leii-furnicilor în sectorul
+<clr:18,199,226>Overwatch.<cr>Echipa terestr
+are contact vizual cu parazi
+<clr:18,199,226>Conviz. Se apropie parazi
+<clr:18,199,226>Contact vizual cu parazi
+are contact vizual cu necroticii.
+<clr:18,199,226>Necrotici activi în sectorul
+<clr:18,199,226>Necrotici în proximitate.
+<clr:18,199,226>Contact cu necrotici.
+<clr:18,199,226>Ucis de ordinal. Însemn
+<clr:18,199,226>Eliminat de Ordinal.
+<clr:18,199,226>Ostil lichidat.
+steril
+<clr:18,199,226>Infec
+ia a fost eliminat
+<clr:18,199,226>Overwatch, sectorul e curat.
+<clr:18,199,226>Eliminat de
+<clr:18,199,226>Lichidat de
+<clr:18,199,226>Ordinal. Alyx a fost lichidat
+eliminat
+izolat
+<clr:18,199,226>Necrotic izolat de
+<clr:18,199,226>Necrotic eliminat de
+ile. Acoperi
+i-l pe Ordinal la
+<clr:18,199,226>Acoperire pe Ordinal.
+<clr:18,199,226>Solicit acoperire.
+<clr:18,199,226>Lam
+Doi preg
+te stimdoza.
+<clr:18,199,226>Protejez.
+<clr:18,199,226>Ap
+<clr:18,199,226>Intru în umbr
+ile. Strânge
+ile. Evita
+ile. Alert
+de proximitate pentru s
+<clr:18,199,226>Dezv
+lui contactul vizual.
+<clr:18,199,226>Reglez.
+<clr:18,199,226>Blocaj eliminat.
+câmpul vizual.
+<clr:18,199,226> realinierea.
+<clr:18,199,226> corecta
+i câmpul vizual.
+, realinierea.
+ie. Corecta
+<clr:18,199,226>Jos armele!<cr>Jos armele.
+i focul.<cr>Opri
+i focul.
+ile! Alyx nu e ostil
+<clr:18,199,226>Trag în ostil.
+<clr:18,199,226> po
+i interveni.
+<clr:18,199,226> deschide
+ile. Opresiune nerestric
+<clr:18,199,226>Deschide focul. Prioritatea unu.
+<clr:18,199,226>Deschide focul pe Alyx.
+<clr:18,199,226>Ordinal, pumnale pe
+<clr:18,199,226>Ripost
+<clr:18,199,226>Jackpot confirmat. Folosesc pumnalele.
+prioritate unu.
+<clr:18,199,226> nerestric
+ionat pe Vance.
+<clr:18,199,226> lini
+cu s
+<clr:18,199,226>Dispersare în trei.
+<clr:18,199,226>Extrag din
+<clr:18,199,226> lansez s
+<clr:18,199,226> atac ostilul la ultima pozi
+<clr:18,199,226>Degajare cu fug
+care la
+ile, sunet activ.<cr>Raporta
+i contactul vizual cu contaminan
+<clr:18,199,226>Ordinal are via
+<clr:18,199,226>Stimkitul rezist
+<clr:18,199,226>Overwatch. Solicit stimdoz
+<clr:18,199,226>Rezerve reduse. Timp limitat.
+<clr:18,199,226>Asisten
+medical
+pentru Ordinal
+<clr:18,199,226>Moarte ineficace.
+<clr:18,199,226> are via
+limitat
+<clr:18,199,226><sfx><norepeat:5>[Chicot sfid
+<clr:18,199,226>Overwatch, solicit loca
+conviz cu cel contaminant.
+<clr:18,199,226> raporteaz
+. Toate unit
+ile s
+raporteze.
+conviz cu ostilul.
+acoperirea.
+<clr:18,199,226>Solicit ultimul sector cunoscut.
+<clr:18,199,226> Raporta
+i starea
+e lini
+conviz cu principalul.
+inta Vance e în umbr
+. Sprijin pentru localizare.
+<clr:18,199,226>Contaminantul primar fuge.
+<clr:18,199,226>Ostilul principal e umbr
+. Raporta
+i conviz.
+lcare de proximitate. Modific.
+<clr:18,199,226>Sprijin. Sprijin. Sprijin. Sprijin.
+ia avanseaz
+. Infec
+<clr:18,199,226>Înapoi. Înapoi. Înapoi.
+<clr:18,199,226>Confirmat.
+<clr:18,199,226>Pe pozi
+toate marginile.
+<clr:18,199,226>Ordinal. Securizez flancul.
+<clr:18,199,226> a
+contactul.
+<clr:18,199,226><sfx><norepeat:5>[Gâfâit]
+<clr:18,199,226>Ostilul primar este vulnerabil.
+<clr:18,199,226>Ciocan eficace. Cod 0-9.
+<clr:18,199,226>Atac nou asupra ostilului în 2, 1
+<clr:18,199,226>Overwatch. Solicit amplificarea armelor.
+<clr:18,199,226>Lichidare.
+ile. Împiedica
+i toate stimurile pe ostilul principal.
+expirarea ostilului.
+sub control.
+<clr:18,199,226>Contact pierdut. Posibil
+decontaminare.
+<clr:18,199,226>Niciun contaminant în sector. Solicit înl
+. Lini
+<clr:18,199,226> sector, raport de stare.
+starea infec
+iei.
+<clr:18,199,226>Se scaneaz
+<clr:18,199,226>Radialii liberi. Reiau.
+<clr:18,199,226> reia scanarea
+i cur
+<clr:18,199,226> caut
+<clr:18,199,226>Overwatch. Raportez condi
+enia începe.
+mâi în alert
+. Raporteaz
+contactul vizual.
+<clr:18,199,226>Conviz. Toate unit
+<clr:18,199,226>Continui cu expunerea ostilului.
+<clr:18,199,226> mobiliza
+<clr:18,199,226> închide arena.
+ile. Împr
+ile. Expune
+i toate umbrele.
+<clr:18,199,226>Conviz. Conviz. Distan
+50. Direc
+ie 12.
+<clr:18,199,226>Ostilul a fost g
+inta a fost g
+<clr:18,199,226>Contact cu ostilul
+<clr:18,199,226>Contact în sectorul
+<clr:18,199,226>Contact proasp
+t în sectorul
+<clr:18,199,226> ofensiv
+<clr:18,199,226> reatac
+<clr:18,199,226> intercepteaz
+ostilul la
+<clr:18,199,226>Ordinal vulnerabil timp de 4
+1.
+<clr:18,199,226>Niciun pumnal.
+<clr:18,199,226> verific
+rezervele.
+iez cordonul.
+<clr:18,199,226> g
+i umbr
+i retrage
+<clr:18,199,226> sectorul e prea cald. Retragerea.
+<clr:18,199,226>Conviz cu mai multe necunoscute. Riscul de r
+spuns e ridicat.
+<clr:18,199,226>Overwatch. Avem conviz cu secundarele.
+siluetele. Posibili multiplicatori.
+<clr:18,199,226>Contaminan
+i multipli confirma
+. Ostilul are grenade.
+ile. Ave
+i în vedere c
+ostilul are s
+ritori în posesie. Continua
+i cu aten
+. Profit pumnal.
+<clr:18,199,226>Contaminantul e vulnerabil.
+<clr:18,199,226> opre
+te ostilul din a reînc
+rca.
+<clr:18,199,226>Overwatch. Avem mine rostogolitoare. Pumnale active.
+<clr:18,199,226>Conviz, min
+rostogolitoare.
+<clr:18,199,226>Mine rostogolitoare subacute. Activ complet.
+inta. Mine rostogolitoare.
+i asupra
+inei unu.
+<clr:18,199,226>Ostilul are
+inta are
+i identifica
+i.<cr>R
+<clr:18,199,226>Overwatch, solicit
+ac
+<clr:18,199,226>Overwatch, focarul nu e izolat.
+<clr:18,199,226>Overwatch, solicit unit
+i suplimentare.
+<clr:18,199,226>Overwatch, sectorul e fierbinte.
+<clr:18,199,226>Overwatch. Ordinal este singura unitate activ
+<clr:18,199,226>Overwatch. Ordinal este ultima unitate.<cr>Solicit sprijin.
+<clr:18,199,226>Overwatch. Solicit umbr
+<clr:18,199,226>Overwatch. Focarul nu e izolat.
+e eliminat
+.<cr>Solicit înt
+<clr:18,199,226>Overwatch. Sunt singur.<cr>Ostili în num
+r excesiv.
+ia Ordinalului. Sector
+<clr:18,199,226>Overwatch.<cr>Ordinalul e ultima unitate.
+<clr:18,199,226>Overwatch.<cr>Infec
+ia se r
+spânde
+<clr:18,199,226>Blocaj.
+<clr:18,199,226>Toate pumnalele pe
+<clr:18,199,226> men
+inta în pozi
+<clr:18,199,226> începe
+i suprimarea ostilului.
+<clr:18,199,226>Neatins.
+inta a ratat la
+intei. Profit
+de avantaj
+<clr:18,199,226>Nu pot continua.
+<clr:18,199,226>Pot trage.
+<clr:18,199,226>Dispersarea!
+inta încearc
+oprime. R
+are contact în sectorul
+ie are
+epi în sector
+<clr:18,199,226>14, 1, 6, 3
+11
+e rândul t
+<clr:18,199,226>Nicio mi
+<clr:18,199,226>Afirmativ. Sunet redus.<cr>A
+.<cr>Negativ pentru condi
+toare.<cr>F
+<clr:18,199,226>Overwatch.<cr>Solicit datele de proximitate pentru ostili.
+<clr:18,199,226>Sectorul este monitorizat la 43%. Stabil.<cr>Înc
+<clr:18,199,226>Afirmativ.<cr>Starea focarului e codul delta
+ionat. F
+<clr:18,199,226>Audio: 3. Vizor: 15.
+itorii în apex cinci.<cr>Avem biotici în perimetru. Terminat.
+<clr:18,199,226>Cod de apel: Delta-echo-7-9-alfa-2-whisky-0
+Confirmat. Echo terminat.
+ia.<cr>Vizorul la 73. Audio la
+TVS în perimetru. R
+<clr:18,199,226>Confirmat.<cr>Recalibrez.
+<clr:18,199,226>Ei înc
+mai tr
+iesc.
+<clr:18,199,226>Overwatch, cod 10-4.<cr>Eviscerator lansat.
+tesc evisceratorul.
+<clr:18,199,226>Lansez evisceratorul.
+<clr:18,199,226>Evisceratorul este lansat
+i scaneaz
+<clr:18,199,226>Eviscerator lansat.
+<clr:18,199,226>Activez evisceratorul.<cr>C
+uta
+i termina
+<clr:18,199,226>Lansez evisceratorul.<cr>Rezultatele sunt iminente.
+<clr:18,199,226>Evisceratorul vâneaz
+.<cr>Toate unit
+mân
+ascunse.
+<clr:18,199,226>Zece-zero.<cr>Evisceratorul vâneaz
+<clr:18,199,226>Eviscerator lansat.<cr>Controla
+<clr:18,199,226>Eviscerator lansat.<cr>Identific
+i condamn
+<clr:18,199,226>Retragerea!
+ile, retragerea.<cr>
+<clr:18,199,226>UPA se apropie.
+<clr:18,199,226>Facem cur
+enie.
+te unitatea UPA.
+<clr:18,199,226>UPA, avansez c
+<clr:18,199,226>UPA avanseaz
+<clr:18,199,226>UPA, avansez.
+<clr:18,199,226>UPA, suprim.
+<clr:18,199,226>UPA, atac.
+i, ataca
+<clr:18,199,226>Oprim
+<clr:18,199,226>Dezinfectez
+<clr:18,199,226>Pumnale pe Vance.
+<clr:18,199,226>Renun
+i. Ataca
+i ostilul principal.
+<clr:18,199,226>UPA pe Alyx.
+<clr:18,199,226>Foc pe Alyx.
+<clr:18,199,226>Schimbare
+.<cr>Cod înc
+<clr:18,199,226>Expun ostilul în trei.
+.<cr>Rectific.
+<clr:18,199,226>UPA. Elimin suportul.
+<clr:18,199,226>UPA. Pumnale pe ad
+ritor în 3.
+<clr:18,199,226>UPA, conviz cu leul-furnicilor.
+<clr:18,199,226>Angajare leul-furnicilor cu UPA.
+<clr:18,199,226>Apel contact, parazi
+<clr:18,199,226>UPA, contact vizual cu parazi
+<clr:18,199,226>Ufffff
+i vii în sectorul
+<clr:18,199,226>Conviz necrotici.
+<clr:18,199,226>UPA, confirm uciderea.
+<clr:18,199,226>Uff.
+<clr:18,199,226>Parazit evacuat.
+<clr:18,199,226>UPA c
+tre Ordinal. Parazit doborât.
+<clr:18,199,226>Ordinal.
+<clr:18,199,226>E moart
+. Administreaz
+antiseptic.
+<clr:18,199,226>Problem
+unu e doborât
+<clr:18,199,226>Necroticul e t
+<clr:18,199,226>mii
+<clr:18,199,226>anticet
+<clr:18,199,226>Acoperire pe UPA.
+<clr:18,199,226>Solicit acoperire la UPA.
+<clr:18,199,226>Acoperire la
+. Extractor.
+ritor activ. Înapoi.
+<clr:18,199,226>UP...
+<clr:18,199,226>Terminat
+<clr:18,199,226>Reglez conviz.
+<clr:18,199,226>Obstacol eliminat.
+<clr:18,199,226>Corectez câmpul vizual.
+<clr:18,199,226>În forma
+<clr:18,199,226>Jos armele!<cr>UPA! Jos armele.
+<clr:18,199,226>Foc pe
+<clr:18,199,226>UPA la punctul
+<clr:18,199,226>Cod trei. Angajat în cur
+<clr:18,199,226>Pumnale fixate pe ostil.
+<clr:18,199,226>Trage
+i în Vance.
+<clr:18,199,226>Deschid focul la
+<clr:18,199,226>E aici.
+ean unu confirmat. Foc.
+sectoarele.
+<clr:18,199,226>Extractor aruncat la ultima pozi
+<clr:18,199,226>Expun.
+<clr:18,199,226>UPA, sunet pornit.<cr>Raportez to
+<clr:18,199,226>Sunt lovit.<cr>Caut umbr
+epi eficace.<cr>Aplic stimdoz
+<clr:18,199,226>UPA solicit
+sprijin pentru localizare
+<clr:18,199,226>Contact pierdut cu contaminantul.
+conviz. F
+conviz.
+<clr:18,199,226>UPA, solicit pozi
+<clr:18,199,226>Ordinal, avem cod 7-1-3.<cr>Solicit ultima pozi
+<clr:18,199,226>Solicit sprijin pentru localizare. Sectorul
+<clr:18,199,226>Nu am contact vizual. Ordinal, sprijin.
+<clr:18,199,226>UPA, f
+.<cr>Solicit contact vizual.
+<clr:18,199,226>Contaminantul este t
+cut.<cr>Solicit ultimul sector cunoscut.
+<clr:18,199,226>Contaminant pe fug
+.<cr>Ordinal, sprijin.
+<clr:18,199,226>Verificare contact.
+de proximitate. Descarc.
+<clr:18,199,226>UPA poate.
+<clr:18,199,226>UPA în pozi
+<clr:18,199,226>UPA. Men
+<clr:18,199,226>UPA, monitorizare activ
+<clr:18,199,226>contaminantul e blocat.
+<clr:18,199,226>UPA securizeaz
+marginile.
+<clr:18,199,226>E vulnerabil.
+compromis
+<clr:18,199,226>Atac nou asupra ostilului. URGENT.
+armele pe UPA.
+<clr:18,199,226>UPA eficace.
+toate stimurile pe ostil.
+tre Ordinal. Ostilul e t
+te în groap
+<clr:18,199,226>UPA terminat.
+. Sunet activ.
+<clr:18,199,226>Caut contaminan
+<clr:18,199,226>Caut umbre.
+<clr:18,199,226>Raportez toate contactele vizuale.
+<clr:18,199,226>Continui. Extragere ostil.
+inta
+<clr:18,199,226>Hai, hai, hai!
+<clr:18,199,226>UPA. Contact în sectorul
+<clr:18,199,226>UPA intercepteaz
+<clr:18,199,226>Contact vizual activ...
+<clr:18,199,226>UPA reîncarc
+<clr:18,199,226>UPA redus. 4
+<clr:18,199,226>Niciun pumnal. Modific.
+<clr:18,199,226>Pumnal gol pe UPA.
+<clr:18,199,226>Reînnoiesc pumnalul.
+<clr:18,199,226>Cordon pe UPA.
+<clr:18,199,226>UPA. M
+regrupez.
+.<cr>Caut ad
+siluetele.<cr>Posibili multiplicatori.
+<clr:18,199,226>Ostilul are extractori.
+.<cr>Profit pumnal.
+<clr:18,199,226>Profit acum.
+<clr:18,199,226>UPA. Contaminantul e vulnerabil.
+<clr:18,199,226>Conviz. Mine rostogolitoare. Pumnale active.
+<clr:18,199,226>Mine rostogolitoare! Emi
+tor, emi
+epii sunt amplifica
+<clr:18,199,226>UPA.
+<clr:18,199,226>Overwatch, sectorul nu este sub control.
+<clr:18,199,226>Sector nou
+: focar, focar, focar.
+<clr:18,199,226>Overwatch, sectorul nu e controlat.
+<clr:18,199,226>Overwatch, solicit acoperire aerian
+<clr:18,199,226>Avem o problem
+<clr:18,199,226>Overwatch. UPA este ultima unitate.
+<clr:18,199,226>Overwatch. UPA este ultima unitate.<cr>Solicit sprijin imediat.
+<clr:18,199,226>Overwatch. Focarul nu e izolat!
+tre Overwatch.<cr>Condi
+ia dep
+ire e activ
+. Confirm
+<clr:18,199,226>Overwatch! Contact solo.<cr>Ostil excesiv!
+<clr:18,199,226>Overwatch!<cr>Solicit extrac
+ia pentru UPA. Sector
+<clr:18,199,226>Overwatch!<cr>UPA e ultima unitate.
+<clr:18,199,226>Ordinal este condi
+<clr:18,199,226>Overwatch! Ordinal inhibat.<cr>R
+spund!
+cut! Administreaz
+<clr:18,199,226>Ordinal e lichidat.<cr>Ordinal e lichidat!
+<clr:18,199,226>UPA for
+<clr:18,199,226>Baraj la ultima cunoscut
+<clr:18,199,226>Unitate de Protec
+ie Antipersonal activ
+<clr:18,199,226>UPA. Ostilul e imprecis.
+<clr:18,199,226>Overwatch. Contaminantul doar latr
+<clr:18,199,226>A ratat din nou. Profit.
+<clr:18,199,226>UPA e neatins.
+<clr:18,199,226>Overwatch. Negativ.
+epi.<cr>Suprimare activ
+<clr:18,199,226>Ostilul e viu.
+<clr:18,199,226>Contact. Ostil
+<clr:18,199,226>UPA e preg
+tit de oprimare.
+inta oprim
+<clr:18,199,226>Închid arena.<cr>Ini
+<clr:18,199,226>Nimic de raportat.
+<clr:18,199,226>3, 11, 1, 14, 6
+verificat. Rândul t
+care. Coordonate: 7 cu 2.
+afirmativ.
+<clr:18,199,226>Radialii liberi. Terminat.
+<clr:18,199,226>Overwatch. A
+tept transmisiune.
+<clr:18,199,226>Stabil. A
+tept transmisiune. Terminat.
+<clr:18,199,226>Starea focarului e codul delta
+la contact
+<clr:18,199,226>Negativ. A
+<cr>Audio: 3. Vizor: 15. Terminat.
+eles.<cr>A
+<clr:18,199,226>Ne sosesc viromuri.<cr>Recomandare tuturor unit
+<clr:18,199,226>Cod de apel: 2-whisky-0
+ionat. Acceptat.<cr>Actualizare complet
+în T minus trei secunde
+rezolvat
+<clr:18,199,226>Actualizarea este în direct.<cr>Acceptarea este obligatorie.
+ia.<cr>R
+.<cr>Te putem ajuta.<cr>E sigur.
+<clr:18,199,226>Suspectul e neconform codului 10-307.
+<clr:18,199,226>Cod 10-307. Continui cu intensificarea
+<sfx><norepeat:2><clr:255,0,0>[Nicio muni
+ie înc
+<sfx:1><norepeat:3><clr:255,0,0>[Ultimul glon
+introdus]
+<sfx><norepeat:3><clr:255,0,0>[Ultimul foc]
+<sfx><norepeat:5><clr:255,176,0>[Muni
+ie de pistol epuizat
+<sfx><norepeat:5>[Pu
+plin
+ie de pu
+epuizat
+<sfx><norepeat:3>[Muni
+ie exploziv
+ie de pistol-mitralier
+<sfx><norepeat:5>[Teleportare obstruc
+<sfx>[Hackingul începe]
+<sfx>[Spargere e
+uat
+<sfx>[Spargere reu
+<sfx>[Explozie de grenad
+<sfx><clr:255,0,0>[Grenad
+activat
+Xen]
+<sfx>[Vindecare finalizat
+<sfx><norepeat:1><clr:255,0,0>[Sta
+<sfx>[Vindecarea începe]
+<sfx>[Injectare cu seringa medical
+<sfx>[Bip de reu
+<sfx>[Laser activat]
+<sfx><norepeat:1>[Vas activat]
+<sfx>[Deschiderea receptaculului de baterie Combine]
+<sfx>[Baterie Combine acceptat
+<sfx>[U
+alimentat
+descuindu-se]
+<sfx>[Se îmbun
+<sfx>[Îmbun
+ire finalizat
+<sfx><norepeat:8>[Circuit complet]
+<sfx:1><norepeat:1>[Polimer pus în rucsac]
+<sfx:1><norepeat:1>[Muni
+ie luat
+din rucsac]
+<sfx:1>[Polimer luat din rucsac]
+ie pus
+în rucsac]
+<sfx><norepeat:8>[Lantern
+<sfx><norepeat:20>[Alert
+de via
+de tren]
+încuindu-se]
+<sfx><norepeat:4>[Scâr
+âit puternic de u
+<sfx><norepeat:4>[Clopo
+el de lift]
+<sfx><norepeat:4>[Lift pornind]
+<sfx><norepeat:4>[Liftul a ajuns]
+<sfx><norepeat:4>[Buton de lift]
+<sfx><norepeat:6>[Balama de cutie]
+<sfx>[Lac
+t spart]
+<sfx:1>[Explozie]
+<sfx><norepeat:2>[Lovitur
+în geam]
+trântit
+<sfx>[Motorul porne
+<sfx>[
+oc electric]
+a secret
+se deschide]
+<sfx>[Scara cade]
+<sfx>[Drona explodeaz
+a se deschide scâr
+âind]
+<sfx>[Mârâit]
+t îngrozitor]
+<sfx>[Lovituri în gard]
+<sfx>[Sticl
+sp
+rgându-se]
+a se deschide]
+a se închide]
+a glisant
+<sfx>[Panoul se închide]
+<sfx>[Soneria sun
+a se descuie]
+a rulant
+se închide]
+<sfx>[Explozie de energie vortigaunt]
+<sfx>[Alimentarea se întrerupe]
+<sfx>[Liftul se pr
+<sfx>[Clopo
+<sfx>[Liftul cade]
+<sfx>[Liftul se defecteaz
+<sfx>[Se întrerupe alimentarea liftului]
+<sfx>[Porne
+te alimentarea liftului]
+<sfx>[Liftul porne
+<sfx>[Luminile se aprind]
+<sfx>[Luminile se sting]
+<sfx><norepeat_global:5>[Mi
+care în ventila
+ia din tavan]
+râmat
+<sfx>[Explozie electric
+<sfx>[Mi
+care pe pl
+cile din tavan]
+<sfx>[Tavanul se pr
+<sfx>[Fug
+de rac-de-cap]
+<sfx>[Sunete de rac-de-cap]
+<sfx>[Alimentarea se opre
+<sfx>[Alimentarea porne
+<sfx>[Scar
+lovit
+<sfx>[Supraînc
+rcare cu energie]
+<sfx>[Sticla explodeaz
+<sfx>[Consilierul moare urlând]
+<sfx>[Timpul se d
+înapoi]
+<sfx>[Timpul se opre
+<clr:255,176,0>Avertisment: semnele vitale sunt la nivel critic. <cr>Caut
+îngrijire medical
+<sfx>[Pa
+i în ventila
+ie]
+<sfx>[Impact cu fereastra]
+<sfx>[Trenul se opre
+<sfx>[Se trage apa la toalet
+<sfx><norepeat:5><clr:255,0,0>[Moarte de leul-furnicilor]
+<sfx><norepeat:5><clr:255,0,0>[Moarte de lipitoare]
+<sfx:1><norepeat:10>[Alert
+<sfx><norepeat:10>[Atac de rac-de-cap]
+<sfx><norepeat:10>[Mu
+<sfx:1><norepeat:10>[Bale de rac-de-cap]
+<sfx:1><norepeat:10>[Rac-de-cap arzând]
+<sfx:1><norepeat:10>[Rac-de-cap s
+pând]
+<sfx:1><norepeat:10>[Rac-de-cap ie
+ind din p
+mânt]
+<sfx><norepeat:10><clr:255,0,0>[Moarte de rac-de-cap]
+<sfx:1><norepeat:10>[Durere de rac-de-cap]
+t de extraterestru]
+<sfx><norepeat:4>[Introducere inim
+de resuscitor]
+<sfx><norepeat:4>[Înl
+turare inim
+<sfx><norepeat:5><clr:255,0,0>[Moarte de resuscitor]
+<sfx><norepeat:8>[Pustul
+umflat
+<sfx>[Pustula explodeaz
+<sfx:1><norepeat_global:5>[Taclale de scoici Xen]
+<sfx:1><norepeat:4>[Nor de spori xen]
+<sfx><norepeat:4>[Jeff atac
+<sfx><norepeat:6>[Jeff sparge u
+<sfx><norepeat:4>[
+<sfx><norepeat:4>[Jeff furios]
+<sfx><norepeat:5>[Jeff trop
+<sfx><norepeat:6>[Jeff lovind u
+<sfx><norepeat:6>[U
+deschis
+<sfx><norepeat:12>[Jeff merge]
+<sfx><norepeat:20>[Muzic
+de lift]
+<sfx><norepeat:20>[Zgomot de difuzor]
+<sfx><norepeat:5>[Jeff
+<sfx><clr:255,176,0>[Linie plat
+<sfx><clr:255,176,0>Via
+: Nivel critic
+<sfx><clr:255,176,0>Îngrijire medical
+necesar
+<sfx><norepeat:5>[Baterie introdus
+<sfx><norepeat:5>[Baterie scoas
+<sfx><norepeat_global:5><clr:255,176,0>[Rico
+eu din armur
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Lovitur
+de rang
+rapid
+cu ranga!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Înc
+tor gol]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc de pistol]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc de .357]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Grenad
+lansat
+cu pistolul-mitralier
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc principal cu pistolul-mitralier
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Reînc
+rcare]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Detun
+dubl
+de pu
+unic
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc principal]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Gol]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc secundar]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Foc secundar înc
+rcat]
+<sfx><norepeat:5>[Foc de pistol]
+<sfx><norepeat:4><clr:255,176,0>[Muni
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[EXPLOZIE]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Explozie de grenad
+<sfx:1><norepeat_global:8><clr:255,176,0>[Rico
+eu de glon
+<sfx><norepeat:4><clr:255,176,0>[Impact de foc de la trop
+itor]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[Rico
+eu]
+<sfx><clr:255,170,0>[Avertisment de via
+<sfx><clr:255,170,0>[Avertisment de muni
+ie redus
+<sfx><clr:255,170,0>[Alergare epuizat
+<sfx><norepeat:5><clr:255,170,0>[Alergare pornit
+<sfx><clr:255,170,0>[Nu se poate folosi]
+<sfx><clr:255,0,0>[Moarte]
+<sfx><clr:255,170,0>[Baterie ridicat
+<sfx><clr:255,170,0>[Trus
+ridicat
+<sfx><clr:255,170,0>[Fiol
+<sfx><clr:255,170,0>[Refuz]
+<sfx><clr:255,170,0>[Începe vindecarea]
+<sfx><norepeat:5>[Buton ap
+sat]
+<sfx><norepeat:10>[Atac de leul-furnicilor]
+<sfx><norepeat:10>[Leul-furnicilor sap
+<sfx><norepeat:10>[Leul-furnicilor iese din p
+<sfx><norepeat:10>[Durere de leul-furnicilor]
+<sfx><norepeat:10>[Leul-furnicilor strivit]
+<sfx><norepeat:3>[Mu
+de lipitoare]
+<sfx><norepeat:3><clr:255,0,0>[Moarte de lipitoare]
+<sfx><norepeat:3>[Tragere de lipitoare]
+<sfx><norepeat:3>[Geam
+t de lipitoare]
+<sfx><norepeat:3>[
+<sfx><norepeat:5>[Digestie de lipitoare]
+<sfx><norepeat:10>[Amenin
+are de rac-de-cap]
+<sfx><norepeat:10>[Alert
+<sfx><norepeat:10>[Explozie!]
+<sfx><norepeat:10>[Retragerea camerei]
+<sfx><norepeat:10>[Lansarea camerei]
+de camer
+<sfx><norepeat:10>[Clic de camer
+<sfx>[Camer
+distrus
+de cioar
+<sfx><norepeat:10>[Durere de cioar
+<sfx><norepeat:10><clr:255,0,0>[Moarte de cioar
+<sfx><norepeat:10>[Cronc
+nit de cioar
+<sfx><norepeat:5><clr:255,0,0>[Moarte de ciopâr
+<sfx><norepeat:20>[Motor de ciopâr
+<sfx><norepeat:10>[Pleo
+c!]
+<sfx><norepeat:10>[Lansare de ciopâr
+<sfx><norepeat:5>[Ciopâr
+itor lansat]
+<sfx><norepeat:30>[Radio Combine: discu
+ii]
+<sfx><norepeat:15>[Radio Combine: alert
+<sfx><norepeat:15>[Radio combine: alert
+de grenad
+<sfx><norepeat:15>[Radio Combine: solicit
+înt
+riri]
+<sfx><norepeat:25>[Radio Combine: tactic]
+de scanner]
+<sfx><norepeat:5><clr:255,0,0>[Scanner distrus]
+<sfx><norepeat:5>[Clic de scanner]
+<sfx><norepeat:10>[Scanner în picaj]
+de trop
+<sfx>[Durere de trop
+<sfx><norepeat:5><clr:255,0,0>[Moarte de trop
+arj
+<sfx><norepeat:15>[Mitralier
+<sfx><norepeat:10>[Pa
+i de trop
+<sfx>[Impact!]
+<sfx>[Raz
+vortigaunt de atac]
+de zombi]
+<sfx><norepeat:10><clr:255,0,0>[Zombi murind]
+<sfx><norepeat_global:20>[Geam
+t de zombi]
+<sfx><norepeat:10>[Zombi suferind]
+<sfx>[Încuiat]
+<sfx><norepeat:1>[U
+închizându-se]
+<sfx><norepeat:1>[Poart
+<sfx><norepeat:1>[Z
+nit metalic]
+<sfx><norepeat:1>[Dulap închizându-se]
+vor de u
+<sfx><norepeat:1>[Încuiat]
+<sfx>[Ap
+sare de buton]
+<sfx>[Levier]
+<sfx>[Buton blocat]
+<sfx>[Buton Combine]
+<sfx><norepeat:3>[Împro
+care cu ap
+<sfx><norepeat:1>[Sticl
+<sfx><norepeat:1>[Ceramic
+<sfx><norepeat:1>[Monitor sp
+<sfx>[Pepene sp
+<sfx><norepeat:1>[Impact puternic]
+<sfx><norepeat:3>[Card de acces acceptat]
+<sfx><norepeat:3>[Card de acces respins]
+<sfx><norepeat:1>[Lemn rupându-se]
+<sfx><norepeat:1>[Metal distrus]
+<sfx><norepeat:1>[Beton sp
+<sfx><norepeat:1>[Tencuial
+rupându-se]
+<sfx><norepeat:1>[Carton rupându-se]
+<sfx><norepeat:1>[Plastic rupându-se]
+<sfx><norepeat:1>[Lemn scâr
+<sfx><norepeat:3>[Lemn f
+cându-se a
+chii]
+<sfx><norepeat:1>[Metal rupându-se]
+<sfx><norepeat:1>[Metal scâr

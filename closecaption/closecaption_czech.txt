@@ -1,0 +1,6503 @@
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Tak jak to u tebe vypadá?<I>
+Alyx: <clr:255,190,255>V pohod
+, tati. Pohyb metropoli
+je v normálu.<cr>Hlídky Combine taky beze zm
+n.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Co ve skladi
+ti?
+Eli: <clr:255,208,172><I>Jeden mini-reaktor Combine z dodávky
+tisíc.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Ani si nev
+imnou,
+e jim zmizel.<cr>Podívej se sama.<I>
+Russell: <clr:255,255,138><I>A to není v
+e.<cr>N
+kdo se taky hacknul do konstruk
+ní sít
+Combine.<I>
+Alyx: <clr:255,190,255>Jen to nep
+ehán
+jte, chlapi.<cr>Tolik
+asu nemáme.
+Russell: <clr:255,255,138><I>Minutku, a hned jdu.<cr>Slibuju.<I>
+Alyx: <clr:255,190,255>Jo, je
+co! Zahlédla jsem Combine p
+esouvat zásoby do Karantény.<sb><clr:255,255,255>Alyx: <clr:255,190,255>V
+ta zóna je u
+celé roky vybydlená.
+Eli: <clr:255,208,172><I>Hmm. Tak to JE zvlá
+tní.<cr>No nic, probereme to, a
+se vrátíme.<I>
+Russell: <clr:255,255,138><I>Co... to...?<I>
+Russell: <clr:255,255,138><I>Co to sakra je?<I>
+Eli: <clr:255,208,172><I>Sejdeme se v úkrytu, zlato.<cr>Hned tam budeme.<I>
+Russell: <clr:255,255,138><I>Vypadá to jako
+<I>
+Alyx: <clr:255,190,255>Co jsi to...?
+Alyx: <clr:255,190,255>Skv
+lý.
+Psst... Alyx! Alyx!
+e v pohod
+<clr:255,190,255>Jo. Podle plánu ukradli ten reaktor.
+<clr:255,190,255>Já te
+mí
+ím do úkrytu za tátou.
+<clr:255,190,255>B
+! Je
+se uvidíme.
+Opatruj se.
+<clr:18,199,226>Pohyb.
+<clr:18,199,226>Jd
+te!
+<clr:18,199,226>Vy tam.<sb>Pohyb.
+<clr:18,199,226>Nezastavujte se.
+<clr:18,199,226>Vy tam.<sb>Nezastavujte se.
+<clr:18,199,226>Zmizte z ulice. HNED.
+<clr:18,199,226>Vra
+te se do svých domov
+.<sb>HNED.
+<clr:18,199,226>Pohyb! Pohyb!
+<clr:18,199,226>Vy tam. Nezastavujte se.
+. HNED.
+<clr:18,199,226>Pokra
+ujte.
+<clr:18,199,226>V po
+ádku.<sb>Pokra
+ádku. Pokra
+Alyx! Alyx!
+Alyx, tady jsem!
+<clr:255,190,255>Co se d
+je?
+Tohle nevypadá jako b
+ná kontrola. Ur
+echno vy
+lo?
+<clr:255,190,255>Na sto procent.
+co muselo namíchnout Ochranu.
+<clr:255,190,255>Neupozor
+uj na sebe a dávej bacha.
+<clr:18,199,226>Dovnit
+<clr:18,199,226>Vlezte dovnit
+<clr:18,199,226>Máme je.
+<clr:18,199,226>Záda!
+<clr:18,199,226><force>Ruce vzh
+ru! Ani hnout!
+<clr:18,199,226>Stát! STÁT!
+<clr:255,190,255>Hej, hej, hej, hej! Moment! Moment!<cr>Já... Já tady bydlím!
+<clr:18,199,226>Mo
+ný nep
+ítel lidu.<sb>Prove
+te sken.
+<clr:255,190,255>Moment, moment! Nest
+ílejte!
+<clr:18,199,226>Stát! Ustupte VZAD!
+<clr:18,199,226>Ruce pry
+od tla
+ítka!
+<clr:18,199,226>Nesahejte na to tla
+ítko!
+<clr:18,199,226><force>Ruce, kde je uvidím!
+<clr:18,199,226><force>No tak, ruce vzh
+ru!
+<clr:255,208,172><sfx:1>[bolestivé sténání]
+<clr:255,208,172>My vám nic neukradli!
+<clr:255,208,172>Nikdo! A nic jsem nevid
+<clr:255,208,172>Ááá!
+<clr:255,190,255>TATI!
+<clr:255,190,255>Hej! Po
+kat! Ne, ne, ne, n
+<clr:255,190,255>Uf. Kam...<sb>Kam m
+to vezete?<sb>Kde je m
+j otec?
+<clr:255,190,255Haló?!
+<clr:255,190,255>Sakra! Kde je m
+j otec?!
+<clr:255,190,255>Odpov
+zte mi, do háje!
+<clr:18,199,226>Ticho tam.
+<clr:18,199,226>
+ekni jí, a
+tam sebou p
+estane házet.
+<clr:18,199,226>P
+esta
+te sebou házet.
+<clr:18,199,226>Co to je?
+<clr:18,199,226>POZOR!
+<clr:18,199,226>Co?
+<clr:18,199,226>GRANÁT!
+<clr:18,199,226>Seber ho!
+<clr:18,199,226>Nevidím ho!
+<clr:18,199,226>Je pod seda
+kou!
+<clr:18,199,226>Hledám, hledám!
+<clr:18,199,226>Seber ho! Seber ho!
+<clr:18,199,226>Mám ho!
+<clr:18,199,226>Vyho
+ho, vyho
+ho
+<clr:18,199,226>Vyhazuju ho
+LA-JSI-NEHODU.
+VEZMI-SI-HEADSET.
+NASA
+-SI-HEADSET.
+<HEADSET><clr:255,255,138>Nasa
+si ten headset!
+<HEADSET><clr:255,255,138>Alyx! Nasa
+Alyx! Nasa
+<HEADSET><clr:255,255,138>Alyx! Jestli jsi
+ivá, nasa
+si ten headset.
+<HEADSET><clr:255,255,138>Vidím,
+e tam jsi! Nemá
+vod, pro
+si nenasadit ten headset! Alyx!
+<HEADSET><clr:255,255,138>Tohle není trik! Tady Russell, kapi
+? Známej tvýho táty! Ten z Odboje!
+<HEADSET><clr:255,255,138>Tohle není podfuk, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Se
+tam?<cr>Musí
+odtud vypadnout.
+<clr:255,190,255>Russelle?
+<clr:255,190,255>M
+la jsem nehodu.
+<HEADSET><clr:255,255,138>Já vím! Mojí vinou!<sb>Tak
+e technicky to nebyla nehoda.<cr>Ale te
+odtud musí
+vypadnout.
+<clr:255,190,255>Moment, moment. Kde je táta?
+<HEADSET><clr:255,255,138>Je v po
+ádku. Následuj dron.
+<HEADSET><clr:255,255,138>
+up, pohyb!
+<HEADSET><clr:255,255,138>No tak, poj
+, Alyx.
+<HEADSET><clr:255,255,138>Alyx, musí
+odtud vypadnout. A to hned.
+<clr:255,190,255>Dob
+e, dob
+<clr:255,190,255>Tak
+e... Táta je <I>v pohod
+<I>, jo?
+<HEADSET><clr:255,255,138>Jo. Teda ne.<cr>Budu up
+ímnej, je v p
+kným maléru.
+<clr:255,190,255>Ale
+<HEADSET><clr:255,255,138>Jeho po
+ád mají.<cr>Byl v jiným transportu.
+<clr:255,190,255>... A ty jsi zachránil m
+<HEADSET><clr:255,255,138>No, jo.<sb>Nem
+l jsem
+ajn, kdo je ve který dodávce.<sb>Tak
+e... jo.<cr>Ve výsledku jsem zachránil TEBE.
+<clr:255,190,255>Víme, kam ho vezou?
+<HEADSET><clr:255,255,138>Do vazby.<sb>A potom, a
+jim dojde,
+e to je Eli Vance... do Nova Prospekt.
+<HEADSET><clr:255,255,138>Ale u
+ipravuju plán, jak ho zachránit.
+<HEADSET><clr:255,255,138>Se
+poblí
+mojí laborky.<sb>Pokra
+uj za dronem!<cr>Pak vymyslíme, co dál.
+<HEADSET><clr:255,255,138>Alyx, na chvíli v
+echno vypadlo!<sb>V
+bec nic jsem nevid
+l.<sb>Co m
+j dron?<sb>Je celej?
+<clr:255,190,255>Éé, jasn
+. Jo.<cr>Za minutku jsem u tebe.
+<clr:255,190,255>Russelle...<cr>Co jste tam p
+edtím <I>na
+li<I>?
+<HEADSET><clr:255,255,138>To je na tom vtipný, nemám páru! Jen... rozmazaný fotky... n
+jaký budovy.
+<clr:255,190,255>Citadely?
+<HEADSET><clr:255,255,138>Ne, n
+jaký jiný.<sb>Ale a
+je to co je to, zabijou v
+echny, kdo to vid
+li a v
+echny, kdo znají ty, co to vid
+li.<sb>Co
+znamená nás... a tvýho tátu.
+<clr:255,190,255>Russelle?<cr>Chvilku vydr
+, jdu k tob
+<clr:255,255,138>Alyx, výborn
+.<cr>OK, dáme
+po
+kat.<cr>M
+j dron je v pohod
+, vi
+<clr:255,190,255>Ne. Vybouchnul.<cr>Ale já jsem v po
+ádku.
+<clr:255,255,138>Jasný. Dob
+e, tak to je...<cr>To je hlavní...
+<clr:255,190,255>Russelle. Mají tátu.
+<clr:255,255,138>Já vím. Tohle... tohle je zlý.<sb>Zjistí, co v
+echno ví a pak...<cr>Jo, pak ho zabijou.
+<clr:255,190,255>Bo
+e m
+j...
+<clr:255,255,138>Ale!<sb>Dobrá zpráva je,
+e my máme n
+co, co oni ne.
+<clr:255,190,255>A to je...?
+<clr:255,255,138>M
+j plán, jak ho zachránit!
+<clr:255,190,255>Super. Tak povídej.
+<clr:255,255,138>Tak
+e.<sb>Brzo jim dojde,
+e tv
+j táta nepromluví.<sb>A a
+se tak stane, nechají mu vysát mozek.
+<clr:255,190,255>Russelle.
+<clr:255,255,138>Teoreticky.<sb>Ale mo
+ná ne.<cr>Kdo ví, mo
+ná
+mo
+ná mu jen navrtají
+<clr:255,190,255>Sta
+<clr:255,255,138>Chápu, je to tv
+j táta.<sb>Dob
+e.<cr>Co UR
+ud
+lají, je,
+e ho odvezou vlakem ODTUD...
+<clr:255,255,138>... Tohle je Eli...
+<clr:255,255,138>SEM... do Nova Prospekt.
+<clr:255,190,255>A pokud ho dostanou do vlaku...<cr>tak to je konec, co?
+<clr:255,255,138>Ne tak docela.<cr>Vezmi si n
+co, co budeme my.
+<clr:255,255,138>Cokoli, je to fuk.
+<clr:255,255,138>Jo, prost
+co popadni.
+<clr:255,255,138>Bezva. Te
+to polo
+na mapu.
+<clr:255,255,138>Ví
+ty co, ud
+lám to za tebe.
+<clr:255,255,138>Dob
+e, tohle jsi ty.
+<clr:255,190,255>Já myslela,
+e to budeme
+, JEDEN z nás
+já
+musí z
+stat tady, aby v
+echno klaplo.
+<clr:255,190,255>Tak jo, to beru.
+<clr:255,255,138>Kousek odsud je druhý vlak, který taky jede p
+es Karanténu ven z M
+sta 17.
+<clr:255,190,255>OK.
+<clr:255,255,138>Oba vlaky se setkají tady, na zastávce Fairview.<sb>Tak
+e ty nasedne
+do svýho vlaku, dostane
+se tam d
+ív ne
+oni a hackne
+ovládání,<sb>co
+mi umo
+ní p
+evzít kontrolu.
+<clr:255,255,138>Vlak zastaví,<sb>ty vy
+ídí
+Combine<sb>a zachráníme tvýho tátu.
+<clr:255,190,255>To zní dob
+e.<cr>Kde je ten m
+j vlak?
+<clr:255,255,138>Venku, akorát p
+es dvorek.<sb>Je teda odstavenej, ale m
+l bych se nabourat do jeho ovládání.
+<clr:255,255,138>Jo a nezapome
+si cestou vzít
+Russellky
+<clr:255,190,255>
+<clr:255,255,138>Ty rukavice, Alyx.<sb>V
+ví
+, gravita
+ní rukavice.<sb>Pár jich tady mám.<sb>Zkalibrovat je pak m
+venku.
+<clr:255,190,255>Rozumím.
+<clr:255,255,138>My to zvládnem, Alyx.<sb>Sly
+ela jsi m
+?<sb>Jak jsem
+ekl,
+e to zvládnem?<sb>Pá
+my to zvládnem.
+<clr:255,190,255>Jo, zvládnem.
+<HEADSET><clr:255,255,138>Budu s tebou na ka
+dým kroku.
+<HEADSET><clr:255,255,138>Nemusím snad
+íkat, jak to funguje.<sb>Tam dole by m
+lo být n
+jaký harampádí,<sb>tak rozev
+i dla
+a natáhni se k n
+mu.
+<HEADSET><clr:255,255,138>Prost
+na n
+co nami
+ruku.
+<HEADSET><clr:255,255,138>Ty rukavice se nezkalibrují samy.<sb>Co
+by teda asi m
+ly.<sb>Holt jedna z v
+cí, který jsem... nevychytal.
+<clr:255,190,255>P
+ipraveno.
+<HEADSET><clr:255,255,138>Te
+sev
+a
+kubni jí k sob
+<HEADSET><clr:255,255,138>Jen trochu
+kubni dlaní v záp
+stí.
+<HEADSET><clr:255,255,138>Tak u
+kube
+? Nevidím,
+e bys
+kubala.
+<HEADSET><clr:255,255,138>Sev
+ít a
+kubnout.
+ít...
+<HEADSET><clr:255,255,138>... a
+<clr:255,190,255>Hm. Nic.
+<HEADSET><clr:255,255,138>Referen
+ní senzor je t
+ce mimo.
+<HEADSET><clr:255,255,138>Zkus to znova.<sb>Vyber si cíl a natáhni k n
+mu dla
+<clr:255,190,255>Po
+ád nic.
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>Ne-e.
+<HEADSET><clr:255,255,138>Zkus to znovu.
+<clr:255,190,255>Nic.
+<HEADSET><clr:255,255,138>Je
+jednou.
+<HEADSET><clr:255,255,138>Vyber si cíl a natáhni k n
+<HEADSET><clr:255,255,138>Výborn
+! A te
+i v p
+st.
+<clr:255,190,255>N
+jak takhle?
+<HEADSET><clr:255,255,138>Zaregistrováno.<sb>Te
+kubni záp
+stím a p
+itáhni to.
+<HEADSET><clr:255,255,138>Skoro hotovo.<sb>Je
+jednou, ale te
+to chy
+kubni znovu a zkus to chytit.
+<HEADSET><clr:255,255,138>To je ono.
+<HEADSET><clr:255,255,138>Má
+to.
+<HEADSET><clr:255,255,138>Bum, a je to.
+<HEADSET><clr:255,255,138>Zacíleno.
+<HEADSET><clr:255,255,138>Zam
+eno.
+<HEADSET><clr:255,255,138>Objekt p
+ipojen.
+<HEADSET><clr:255,255,138>Jo, spojení navázáno.
+<HEADSET><clr:255,255,138>Super.
+<HEADSET><clr:255,255,138>Jo.
+<HEADSET><clr:255,255,138>Správn
+<HEADSET><clr:255,255,138>P
+esn
+tak.
+<HEADSET><clr:255,255,138>Znovu, ale chy
+<HEADSET><clr:255,255,138>Ale chy
+<HEADSET><clr:255,255,138>A te
+<HEADSET><clr:255,255,138>Zkus to chytit.
+<HEADSET><clr:255,255,138>Chy
+<HEADSET><clr:255,255,138>Alyx, p
+edstav si, jako kdyby byla na
+Russellkách
+taková spou
+natáhni ruku...
+<HEADSET><clr:255,255,138>Stiskni tu spou
+...
+<HEADSET><clr:255,255,138>A je to.
+<HEADSET><clr:255,255,138>Alyx, poblí
+ukazová
+ku by m
+la být na
+malá spou
+<HEADSET><clr:255,255,138>Perfektní. Máme hotovo.<sb>Óó! Ó, po
+kej! Málem bych zapomn
+<clr:255,255,138>Alyx! Tady!
+<clr:255,255,138>Bude
+pot
+ebovat zbra
+<clr:255,255,138>Neboj, není nabitá!
+<clr:255,255,138>Te
+není!
+<clr:255,255,138>Vid
+la jsi, kam spadla?
+<clr:255,255,138>Myslím,
+e je támhle na kapot
+toho auta.
+<clr:255,255,138>Ach. Zbran
+vlastn
+ebují munici.
+<clr:255,255,138>Tady má
+<clr:255,255,138>Zásobník by m
+l bejt n
+kde na zemi.
+<HEADSET><clr:255,255,138>Myslím,
+e zásobník spadl na kapotu toho auta.
+<clr:255,255,138>No nic, jdu zpátky k vysíla
+ce!
+<clr:255,190,255>Russelle? Jsem na suchu.
+<clr:255,190,255>Hele, Russelle? U
+... zase nemám.
+<clr:255,255,138>Chytej!
+<clr:255,190,255>Russelle? Jsem na suchu. Zase.
+<clr:255,255,138>Nic se ned
+je, je
+tu n
+co mám.
+<clr:255,255,138>Jen abys v
+la, nóóó... já tady ty náboje nerazím. Kapi
+? To jen takový varování... pro jistotu.
+<HEADSET><clr:255,255,138>Hej, to je moje okno! Dávej bacha!
+<HEADSET><clr:255,255,138>Jo, dobrý, o ten zámek ses postarala sama.<sb>Super. Bezva.<sb>Mám tu od n
+j klí
+.<sb>Ale ten jsem ti asi m
+l dát, tak
+e...<sb>moje chyba.
+<HEADSET><clr:255,255,138>To je tv
+j vlak, Alyx.<sb>Zjisti, jestli zvládne
+otev
+ít dve
+e.<sb>Já u
+tady mám skoro v
+echno p
+ipravený.
+<HEADSET><clr:255,255,138>Nevidí
+tam n
+kde, jak hacknout ty dve
+<HEADSET><clr:255,255,138>Zkus n
+jak otev
+<HEADSET><clr:255,255,138>Dobrá! Vyjí
+díme.<sb>P
+tí zastávka: Fairview.
+<clr:255,190,255>Díky, Russelle.
+<HEADSET><clr:255,255,138>A hodn
+stí, Alyx.<sb>Sbohem.
+<HEADSET><clr:255,255,138>Teda, ne doslova, samoz
+ejm
+, po
+ád tu jsem.
+<clr:255,190,255>Já vím.
+<HEADSET><clr:255,255,138>Haló, Alyx? MYSLÍM,
+e máme problém.<cr>Nejspí
+nic vá
+nýho, ale
+<clr:255,190,255>Fíha.
+<HEADSET><clr:255,255,138>To ten vlak zastavil?<cr>Zastavil, vi
+e jo.
+<clr:255,190,255>Jo, co se stalo?
+<HEADSET><clr:255,255,138>Safra, blokují spojení.<cr>Kdy
+Combine uzav
+eli Karanténu, museli posílit zabezpe
+ení.
+<clr:255,190,255>Co
+znamená?
+e ani zdaleka nejse
+na zastávce Fairview.<cr>Se
+kde na okraji Karantény.
+<HEADSET><clr:255,255,138>A TADY... tady je pro nás kone
+ná.
+<clr:255,190,255>U
+pokra
+uju po svých.
+<clr:255,190,255>Tak budu pokra
+ovat po svých.
+<HEADSET><clr:255,255,138>Dob
+e. Zjistím, jestli t
+tam dostanu jinudy.
+<clr:255,190,255>Tady je mrtvá zombie.<sb>Nem
+li Combine Karanténu náhodou uzav
+ít?
+<HEADSET><clr:255,255,138>Á, n
+co asi neuhlídali.<sb>Sly
+el jsem,
+li mimo Karanténu problémy se sporami barnacl
+,<sb>ale o zombíkách nic.
+e jich tu nejspí
+bude víc.
+<HEADSET><clr:255,255,138>Nejspí
+jo.
+<HEADSET><clr:255,255,138>Ááá... To se podívejme. Polymer.
+<HEADSET><clr:255,255,138>A kdy
+se tady válí polymer, poblí
+by mohl být výrobník Combine.<sb>Dávej pozor, a mo
+ná trochu vytuníme tv
+j kvér.
+<clr:255,190,255>Hele... Tímhle tempem mi za chvíli dojdou náboje.
+<HEADSET><clr:255,255,138>Tak se dívej kolem.<sb>Mrtvol tady bude spousta, a ne
+e bych si z nich cht
+l d
+lat srandu, ale ty u
+munici pot
+ebovat nebudou.
+<clr:255,190,255>Hm, tohle by m
+lo jít p
+epojit multi-nástrojem.
+ím
+<clr:255,190,255>Je to nástroj. A je multifunk
+ní.<sb>Tak
+e zkrácen
+multi-nástroj.
+<HEADSET><clr:255,255,138>Alyx, ta v
+ka je parádní!<sb>Te
+je
+ebuje parádní název!<sb>Takovej, kterej ji prodá!
+<clr:255,190,255>A komu to jako prodám?
+<HEADSET><clr:255,255,138>Combine tady nebudou nav
+ky.<sb>Musí
+myslet na budoucnost!
+e, tak co tomu
+íkat
+Alyx
+<HEADSET><clr:255,255,138>Hmm. To zní jako napodobenina
+Russellek
+, ale dob
+e...<sb>Prozatím to bude
+<clr:255,190,255>Jó,
+<HEADSET><clr:255,255,138>Dobrá práce!
+<HEADSET><clr:255,255,138>Hele! Zdravotní stanice.
+<clr:255,190,255>Russelle... tyhle pou
+ívají <I>Combine<I>.<sb>Jsou bezpe
+né pro lidi?
+<HEADSET><clr:255,255,138>Díky Bohu, zdravotní stanice.
+<HEADSET><clr:255,255,138>Jasn
+, já je pou
+ívám furt.
+<clr:255,190,255>Vá
+<HEADSET><clr:255,255,138>Si pi
+, jsou skv
+lé.
+tam polo
+<HEADSET><clr:255,255,138>Fakt, nekecám. Zatáhni za páku a polo
+tam ruku.
+ívám furt. Akorát musí
+najít baterii.
+<HEADSET><clr:255,255,138>Tak jo, moje milá, m
+<clr:255,190,255>Au! Au, au, au.
+<clr:255,190,255>Ááááá. Hele...
+<clr:255,190,255>Ách. Óó.
+<clr:255,190,255>Hele... ty jsi m
+l pravdu.<cr>Vá
+skv
+<clr:255,190,255>Ách. Dobrý.
+<HEADSET><clr:255,255,138>Pozor na toho barnacla, Alyx.
+<clr:255,190,255>Fuj, ten je odpornej.
+<clr:255,190,255>Od kdy vlastn
+íká
+gravita
+ním rukavicím
+<HEADSET><clr:255,255,138>To je obchodní zna
+ka, Alyx.
+<clr:255,190,255>Obchodní zna
+ka?
+<HEADSET><clr:255,255,138>Ví
+jak, chytlavej název, co zaujme. A
+vykopneme Combine ze Zem
+a v
+echno se vrátí do normálu, vyd
+lám na t
+ch rukavicích majlant.
+<clr:255,190,255>Odkud v
+bec zná
+mého tátu?<sb>Vy jste spolu pracovali v Black Mesa, ne?
+<HEADSET><clr:255,255,138>Jo. Teda ne.<sb>Popravd
+bylo t
+ký tam sehnat flek.<sb>Byl jsem tam tehdá na pohovoru.<sb>
+ekli mi, a
+to zkusím za rok znova.<sb>A nemusím ti vypráv
+t, co se stalo potom.<sb>Docela
+stí z mojí strany.<sb>Moc lidí to nep
+ilo.<sb>Je zázrak,
+e se odtud dostal tv
+j táta a ty.
+<HEADSET><clr:255,255,138>Ou. Ech. Pot
+ebuje
+si odsko
+it?<sb>Proto
+e já klidn
+... klidn
+zapauzuju video...
+<clr:255,190,255>Jen se dívám, Russi.
+edpokládám,
+e Karanténa je za tímhle poklopem.
+<HEADSET><clr:255,255,138>Jo, jo, p
+tady je schovaná.
+<clr:255,190,255>Zkusím k tomu najít ovládací panel.
+<HEADSET><clr:255,255,138>Kdybych byl Combine, kam bych asi dal ovládací panel?
+<HEADSET><clr:255,255,138>To je ovládací panel.<sb>Nejspí
+mu zp
+eházeli obvody.<sb>Ale proto
+e nikdo není takový hlupák, aby lezl do Karantény, nem
+lo by být t
+ké ho zprovoznit.
+<HEADSET><clr:255,255,138>Co myslí
+e to je?
+<clr:255,190,255>Vypadá to... jako n
+jaký zámek.
+<clr:255,190,255>Jej! A je to.
+<HEADSET><clr:255,255,138>Ha ha! A je to. Kone
+<clr:255,190,255>Tak já teda jdu.<cr>Jak daleko je zastávka Fairview?
+<HEADSET><clr:255,255,138>M
+lo by sta
+it projít starými tunely metra.
+za
+ali p
+evá
+et tátu?
+<HEADSET><clr:255,255,138>Podle m
+.<sb>Co
+je dob
+e a po
+ád máme
+as.
+<clr:255,190,255>To jsem ráda.
+<HEADSET><clr:255,255,138>Nebo
+patn
+a u
+ho zabili.<sb>A mrtvolu u
+et nepot
+.<sb>Prost
+ji poh
+.<sb>Nebo spálí
+.<sb>Se
+tam, Alyx?
+<clr:255,190,255>Mm hmm.
+<clr:255,190,255>Ví
+ty co, Russelle? Te
+kdy
+jsem na kraji Karantény, n
+co mi do
+lo...<sb>O Karantén
+<I>nic<I> nevím.
+<HEADSET><clr:255,255,138>Pro tvoji informaci, slovo
+karanténa
+pochází z italského
+quaranta giorni
+,<sb>co
+znamená
+icet dní
+neboli dobu, po kterou musely být posádky lodí izolovány p
+ed vstupem na pob
+í b
+hem epidemie moru.
+eee. Dík.
+<HEADSET><clr:255,255,138>A kur
+<clr:255,190,255>Mám pocit,
+e ven u
+nás to nepustí.
+<clr:255,190,255>Hele, Russelle,<sb>práv
+jsem na
+la n
+jakou injekci B
+h ví s
+ím uvnit
+.<sb>Ublí
+í mi to?
+<HEADSET><clr:255,255,138>Má na sob
+lebku a zk
+ené hnáty?
+<clr:255,190,255>Nic nevidím.
+<HEADSET><clr:255,255,138>Tak ti to asi neublí
+<HEADSET><clr:255,255,138>Alyx! To sis práv
+píchla injekci, kterou jsi sebrala ze zem
+<clr:255,190,255>Cítím se BÁJE
+<HEADSET><clr:255,255,138>Fakt? Oukej. Dob
+e. Experiment se zda
+il. Zkus najít dal
+í takovou.
+<HEADSET><clr:255,255,138>Sly
+elas to?
+<clr:255,190,255>Co to bylo?
+<clr:255,190,255>A jéje.
+<HEADSET><clr:255,255,138>Jo... P
+tudy musíme jít.
+<clr:255,190,255>Zkratka by nebyla?
+<HEADSET><clr:255,255,138>Tohle JE zkratka.
+e... tak p
+jdeme oklikou.
+<HEADSET><clr:255,255,138>A zárove
+je to i oklika.
+e, to vypadalo ú
+inn
+. N
+kam si to zapi
+<HEADSET><clr:255,255,138><sfx:1>[smích]
+<clr:255,190,255>No teda.
+<HEADSET><clr:255,255,138>Haha!<cr>Ten barnacle kope za nás.<sb>Pochopiteln
+si d
+lám srandu, tak
+e pozor na n
+<HEADSET><clr:255,255,138>Jen tak mimochodem
+mají zabudovaný displej, kde se ukazuje tv
+j polymer a munice. Mohl by se hodit.
+<clr:255,190,255>Chápu. Díky.
+<clr:255,190,255>A sakra...
+<HEADSET><clr:255,255,138>Dávej si bacha.
+<HEADSET><clr:255,255,138>Alyx! Támhle za dve
+ma!<sb>To vypadá jako výrobník!
+<HEADSET><clr:255,255,138>Alyx! To vypadá jako výrobník Combine.<sb>Dej do n
+j n
+co, chci vid
+t, jak funguje.
+<clr:255,190,255>Chápu. Bude fungovat s
+Russellkami
+<HEADSET><clr:255,255,138>To ne, ale m
+l by opravit pistol.<cr>Je
+e jsem ti dal jednu ze svejch hor
+ích zbraní.
+jak... kdyby ji to se
+ralo.
+<clr:255,190,255>Dám ti nabídku, Russelle.<cr>Pokud um
+u, dlu
+ím ti zbra
+<HEADSET><clr:255,255,138>Ty mi dlu
+zbra
+te
+!<cr>Tahle nebyla dárek. To je MOJE zbra
+<HEADSET><clr:255,255,138>Hm. Tohle za ten polymer stálo.
+<HEADSET><clr:255,255,138>Combine v
+dí, jak si vylep
+ovat zbran
+.<sb>To jim musím nechat.
+<HEADSET><clr:255,255,138>Vypadá zabijácky.
+<HEADSET><clr:255,255,138>Moc p
+kný.<sb>Skoro si p
+eju, abych tam byl a mohl si ji zkusit.
+<HEADSET><clr:255,255,138>Tomuhle ur
+najde
+dobrý vyu
+ití.
+<HEADSET><clr:255,255,138>Tak tohle... se bude hodit.
+<HEADSET><clr:255,255,138>Skv
+lá volba.
+<HEADSET><clr:255,255,138>Chytrý. To nám pom
+<HEADSET><clr:255,255,138>Tohle by m
+lo uml
+et pár otrap
+<HEADSET><clr:255,255,138>Necht
+l bych na tohle koukat ze
+patný strany.
+<HEADSET><clr:255,255,138>Upgrade, jak se pat
+<HEADSET><clr:255,255,138>Tak smrtící, jak jen to jde.
+<HEADSET><clr:255,255,138>Úú, tak ono to fungovalo, jo? Hmm...
+<HEADSET><clr:255,255,138>Páni! Moje boucha
+ka vypadá fajnov
+<clr:255,190,255>Russi, no tak. Te
+je to spí
+<HEADSET><clr:255,255,138>No teda, mrkej na to! Moje boucha
+ka je
+ím dál tím lep
+<clr:255,190,255>Russi? Technicky vzato z tvojí zbran
+moc nez
+stalo.
+<HEADSET><clr:255,255,138>Hmm. Ud
+láme toliko. Tuhle my
+lenku dáme stranou a o MOJÍ zbrani se pobavíme, a
+se vrátí
+<clr:255,190,255>No, Russi, je to oficiální. V téhle zbrani u
+není ani KOUSEK tvojí zbran
+. Tohle je prost
+MOJE zbra
+e, má
+pravdu. Zaslou
+ila sis ji. Ale
+mi stejn
+vrátí
+<HEADSET><clr:255,255,138>Headcrab!
+<clr:255,190,255>Vidím!
+<HEADSET><clr:255,255,138>Po
+kat
+kam zmizel?
+<clr:255,190,255>Ááá!
+<HEADSET><clr:255,255,138>Ááá!
+<HEADSET><clr:255,255,138>Jo, tady je. Na
+li jsme ho.
+vlk samotá
+e, dvojice. Párek vlk
+<HEADSET><clr:255,255,138>Dobrá trefa, Alyx.
+<clr:255,190,255>Díky. Díky, Russelle.
+<clr:255,190,255>Dík. Ví
+, i kdy
+jsi o ní mluvil jako o
+hor
+zbrani, vlastn
+není tak
+patná.
+<HEADSET><clr:255,255,138>Jo... to docela u
+lo, co?<cr>Sakra,
+e já ti dal
+patnou zbra
+<clr:255,190,255>Nezaslechl jsi n
+co o tátovi, Russelle?
+<HEADSET><clr:255,255,138>Ne. Co ho dali do vlaku, absolutní ticho.
+<clr:255,190,255>Do háje.
+<HEADSET><clr:255,255,138>Dobrá zpráva je,
+e je nejspí
+v po
+<clr:255,190,255>Jak to m
+<HEADSET><clr:255,255,138>Proto
+e ho berou do Nova Prospekt na mu
+ení.<sb>Mu
+ení se provádí a
+tam.<sb>T
+ko ho budou mu
+it, NE
+se tam dostanou.<sb>Tak
+e je v pohod
+. Technicky vzato.
+<clr:255,255,138>Á!
+<clr:255,190,255>Zdravotní stanice!
+<HEADSET><clr:255,255,138>Á, zdravotní stanice!
+<HEADSET><clr:255,255,138>Hm, ale nefunguje.
+<clr:255,190,255>Ach. Hele, podívej, pot
+ávu.
+<HEADSET><clr:255,255,138>To, co dr
+v ruce, je
+disketa
+.<cr>D
+ív jsme na nich ukládali informace. Pomocí magnet
+<clr:255,190,255>Aha.
+<HEADSET><clr:255,255,138>Konkrétn
+jsou na ní dva mikrometry oxidu
+elezitého, t
+i mikrometry barium-feritových
+ástic a jedna celá dva
+<clr:255,190,255>Russelle? Jak tohle v
+echno ví
+tu to tady z po
+íta
+e.<cr>P
+ed válkou jsem si toti
+stáhnul internet.
+e ty sis stáhl celý internet.
+<HEADSET><clr:255,255,138>Nó, v
+inu.
+<clr:255,190,255>Super.
+<HEADSET><clr:255,255,138>Jo, je to super.
+<clr:255,190,255>Russelle, vidí
+to, co já?
+<HEADSET><clr:255,255,138>Ech, asi jo.<sb>Vidí
+vzná
+ející se odpadky?
+<clr:255,190,255>Vypadá to jen jako... karton.
+<HEADSET><clr:255,255,138>Jasný. Tak jako tak ne
+kodný.
+<clr:255,190,255>To jo. Ale divný.
+<clr:255,190,255>Co je TOHLE?
+<clr:255,190,255>Zdá se,
+e n
+jaké kresby vortigaunt
+<HEADSET><clr:255,255,138>Moment, támhle je... Black Mesa?
+kdo si dal opravdu zále
+et.
+<clr:255,190,255>J
+! Dal
+í létající lepenka.
+<HEADSET><clr:255,255,138>Alyx! Jsi v pohod
+? Co se d
+<clr:255,190,255>Jsem v poho, Russelle, pro
+se ptá
+<HEADSET><clr:255,255,138>Ztrácím tv
+j signál!<sb>Alyx? Alyx?<sb>Pokud m
+sly
+, pokra
+uj stejným sm
+rem a zkus se dostat zpátky na povrch!
+<clr:255,190,255>Russelle?<sb>Russelle?<sb>Sakra.
+<clr:255,190,255>Ty jo, to je zvlá
+tní.
+<clr:255,190,255>Ou!
+Vortigaunt: <clr:107,232,120>Alyx Vance!
+Vortigaunt: <clr:107,232,120>Dostala jste mé zprávy!
+<clr:107,232,120>Poj
+te! Vstupte.
+e...
+<clr:255,190,255>Díky.
+<clr:107,232,120>Nemáte za co!
+e. Co d
+lá vortigaunt na tomhle míst
+<clr:107,232,120>[p
+ichnutí] Mmm!
+<clr:107,232,120>Va
+<clr:107,232,120><sfx:1>[hlasité jedení]
+<clr:255,190,255>Jasný, ale já myslela obecn
+<clr:107,232,120>Mám po
+kozený mozek.
+<clr:255,190,255>Aha. To je mi líto
+<clr:107,232,120>M
+j mozek je po
+kozený!
+<clr:255,190,255>To je stra
+né. Doufám,
+<clr:107,232,120>Au.
+<clr:255,190,255>Podívej, nemám moc
+asu, hledám svého otce...
+<clr:107,232,120>...
+<clr:255,190,255>... Eliho Vance...
+<clr:107,232,120>... Eliho Vance!
+<clr:107,232,120>Ano.
+<clr:255,190,255>Dostali ho Combine, tak
+e opravdu musím pohnout.
+<clr:107,232,120>Combine.<sb>Ano. Ale je
+neodcházejte!<sb>N
+co vám musím ukázat!
+<clr:255,190,255>Hele, cením si
+<clr:107,232,120>Tudy!
+<clr:255,190,255>Nem
+u se zdr
+ovat
+<clr:107,232,120>Je to d
+ité!
+<clr:255,190,255>Tomu v
+ím, ale
+<clr:107,232,120>Alyx Vance stejn
+musí jít touto cestou...
+<clr:255,190,255>Dobrá.
+<clr:107,232,120><sfx:1>[pousmání]
+<clr:107,232,120><sfx:1>[hlasité usrknutí]
+te, poj
+<clr:107,232,120>Vstupte, Alyx Vance.
+<clr:107,232,120>Zde!
+<clr:107,232,120>Musím vám ukázat, pro
+jsem vás sem p
+ivedl.
+<clr:107,232,120><sfx:1>[vyvolávání vortesence]
+<clr:107,232,120>Combine zajali mé druhy.
+<clr:107,232,120>Dr
+í je jako Eliho Vance.
+<clr:107,232,120>Alyx Vance je vysvobodí!
+<clr:255,190,255>Ráda bych pomohla. Vá
+.<sb>Jen
+e Alyx Vance má co d
+lat, aby zachránila svého otce.
+<clr:107,232,120>Toho nezachráníte.<sb>Je mrtev.
+<clr:107,232,120>Nebo bude...
+<clr:255,190,255>Je? Nebo bude?
+<clr:107,232,120>Zále
+í na úhlu pohledu.<sb>Ale Alyx Vance sama nezm
+ní jeho osud.
+<clr:255,190,255>Já
+podívej.<sb>Díky za... v
+echno.<sb>Ale u
+opravdu musím jít.<sb>A je mi to líto, ale nemám
+as na rébusy.
+<clr:107,232,120>
+ádné rébusy!<sb>Tady do m
+Combine vrtali.<sb>Netu
+ím, kdy jsem.<sb>Jsem odtr
+en od vortesence.<sb>Jsem ve své hlav
+osamocen.
+<clr:255,190,255>Promi
+<clr:255,190,255>Hele, kdy
+to p
+jde a narazím na tvé p
+átele, zkusím jim pomoct.
+<clr:107,232,120>Zachránila jste mé druhy!
+<clr:255,190,255>É... ne.
+<clr:107,232,120>Pak tedy zachráníte.
+<clr:107,232,120>Grrr!
+<clr:107,232,120>Kurá
+, Alyx Vance!
+e cesta vás p
+ivádí a
+sem.<cr>Tak vás jist
+dovede i dál.
+<clr:107,232,120>Tudy prosím, Alyx Vance.
+<clr:107,232,120>Musíte jít!
+e mise za
+íná, Alyx Vance!
+<clr:107,232,120>B
+<clr:107,232,120>Já Alyx Vance pomohu!<sb>Vyhlí
+ejte Polárku!
+<clr:255,190,255>Pro
+<clr:107,232,120>Jako vodítko!
+e, d
+kuju.<cr>To u
+je v
+e? Z pomáhání?
+<clr:107,232,120>Je
+ne! Tu máte.
+<clr:107,232,120>Potrava!
+<clr:255,190,255>É... schovám si ho na potom.<cr>D
+kuju za pomoc.
+<clr:107,232,120>Nebudete mít za
+<clr:107,232,120><sfx:1>[spokojené pobrukování]
+<clr:255,190,255>Fuj.
+<clr:255,190,255>F
+<clr:255,190,255>Fujtajxl.
+<clr:255,190,255>Tfuj.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Signál je zpátky!<sb>Sly
+? Jsi v cajku?
+<clr:255,190,255>Russelle! V
+echno dobrý. Co táta?
+<HEADSET><clr:255,255,138>Mají ho ve vlaku.<sb>Vidím,
+e je v pohybu.<sb>Musí
+najít Fairview d
+ív, ne
+se tam dostanou.
+<clr:255,190,255>D
+lám na tom.
+<HEADSET><clr:255,255,138>Stalo se n
+co, kdy
+s mi vypadla?
+<clr:255,190,255>Nebude
+mi v
+it, ale potkala jsem vortigaunta.
+<HEADSET><clr:255,255,138>Vortigaunta?<cr>Co d
+lá tam dole?
+<clr:255,190,255>Schovává se.<cr>Myslím,
+e utekl od Combine.
+<HEADSET><clr:255,255,138>A co
+íkal?
+<clr:255,190,255>Mluvil jsi n
+kdy s vortigauntem?<cr>
+íkal ty jejich nesmysly.
+<clr:255,190,255>Jo a ten vortigaunt, co jsem ho potkala?<cr>Dal mi <I>headcraba<I> k sva
+<HEADSET><clr:255,255,138>Fakt? Bezva!<sb>Jak chutnal?<cr>
+ekni mi, jak se c
+<clr:255,190,255>Russelle. Russelle
+já ho nejedla.
+<HEADSET><clr:255,255,138>Jasný. Jist
+e ne.<cr>Ne, tos... tos ud
+lala dob
+<clr:255,190,255>To je zvlá
+<clr:255,190,255>Hele! Ten zombík má brokovnici!
+<clr:255,190,255>Jejda!
+to?
+<clr:255,190,255>Jo. Vezmu tu brokovnici a padám odsud.
+<clr:255,190,255>Mám ji!
+<HEADSET><clr:255,255,138>Chvátni a nabij ji, je to
+ím dál hlasit
+<clr:255,190,255>Hotovo.
+<HEADSET><clr:255,255,138>Ta zbra
+je bo
+<clr:255,190,255>Tady je ale TMA.
+<HEADSET><clr:255,255,138>V
+echno v po
+ádku?
+<clr:255,190,255>Jo. Nic se ned
+je, nic se ned
+je.
+<clr:255,190,255>Díky Bohu.
+<clr:255,190,255>V
+echno... je v po
+<clr:255,190,255>Je tu fakticky tma... Russi?
+<HEADSET><clr:255,255,138>No?
+prost
+... mluvit?
+<HEADSET><clr:255,255,138>A o
+em?
+<clr:255,190,255>O
+emkoli, co t
+napadne.
+ekl bych,
+e v na
+í sou
+asné situaci je tv
+j iracionální strach ze tmy docela oprávn
+ný.<sb>Z fleku bych ti zvládnul vyjmenovat sto d
+vod
+, pro
+se bát.
+e, za tohle si m
+u sama.<sb>P
+budu konkrétn
+<clr:255,190,255>Ta svítilna se mi zamlouvá.
+<HEADSET><clr:255,255,138>Bodej
+by ne, je stejn
+jako ty citlivá na tmu.
+<clr:255,190,255>Jak to?
+chci
+íct,
+e by se m
+la ve tm
+sama rozsvítit.
+<clr:255,190,255>Fakt? Dobrý.
+<clr:255,190,255>Hele, Russi. Te
+FAKT pot
+ebuju, abys n
+co
+íkal.
+to mít. Ale bu
+konkrétní.
+<clr:255,190,255>Ehm... minulost. Jaký byl
+ivot p
+ed Combine?
+<HEADSET><clr:255,255,138>Á! Skv
+lý.<cr>Alyx, sly
+ela jsi n
+kdy o sendvi
+<clr:255,190,255>Hm, ne. Nikdy.
+e. Tak
+e, aby sis ud
+lala sendvi
+, za
+chlebem.<sb>Ne chlebem z pytlíku. Chlebem z pekárny.
+e.<sb>Tak
+chlebem.<sb>Ne chlebem z pytlíku.<sb>Chlebem z pekárny odnaproti, kde ho ten den upekli, jasný? Pak p
+idá
+raj
+ata a salát, ale ne jako zeleninovou pastu, v
+echno
+erstvý.<sb>Jako dal
+í se p
+idá slanina
+to je ze zví
+ete, kterýmu jsme
+íkali
+prase
+.<sb>Pak osmahne
+chleba a v
+echno to do n
+j nacpe
+<clr:255,190,255>Tohle v
+echno jste m
+li? To je
+ílený.
+<HEADSET><clr:255,255,138>To teda! A to jsem je
+neskon
+il.<sb>Pak toti
+na první sendvi
+polo
+dal
+í takovej.<sb>A do toho p
+unku, taky z prasete a kr
+tí maso ze zví
+ete, kterýmu se
+íkalo
+. A dal
+í raj
+ata, salát a hafo v
+cí, který ur
+zapomínám.<sb>Celkem to m
+lo na vej
+ku víc ne
+patnáct
+ísel, vá
+ilo p
+l kila a ingredience pocházely z p
+ti r
+znejch kontinent
+.<sb>Bylo to zkrátka nejvíc neuv
+itelný jídlo, jaký sis mohla i v dob
+ed Combine p
+edstavit.
+<clr:255,190,255>Páni!
+<HEADSET><clr:255,255,138>Drsný, co?
+<clr:255,190,255>Víc ne
+drsný.
+<clr:255,190,255>Díky, Russi.
+<HEADSET><clr:255,255,138>Nemá
+kat, to je mrtvej voják Combine?
+<clr:255,190,255>Jo...<sb>Kdy
+jste s tátou kradli ten reaktor, vid
+la jsem Combine, jak sem p
+esouvají n
+jaké zásoby.<sb>Zdá se,
+e je Karanténa zase zajímá.
+j o
+i na stopkách.<sb>N
+co se tady stopro chystá.
+<HEADSET><clr:255,255,138>Alyx! Manhack! Bacha!
+<HEADSET><clr:255,255,138>Manhack!
+<HEADSET><clr:255,255,138>Hej, manhacky!
+<clr:255,190,255>Tfuj...
+<clr:255,190,255>Ach... Je
+i...
+<clr:255,190,255>Hele, zhodno
+, jaký je to te
+ít na Zemi na stupnici od jedné do desíti. Podle m
+jsme tak na dvojce.
+<HEADSET><clr:255,255,138>Jo, dycky m
+e bejt h
+<clr:255,190,255>A jak bys to ohodnotil P
+EDTÍM, ne
+se objevili Combine?
+<HEADSET><clr:255,255,138>Ééé, t
+ko
+íct.<sb>Já ti nevím, p
+i dobrým dni?<sb>Tak
+est.<sb>
+est, skoro sedm.
+est? To není moc.
+<HEADSET><clr:255,255,138>Takovej je
+ivot, Alyx.<cr>N
+kdy to holt není nic moc.
+<clr:255,190,255>No, mo
+ná kdy
+odsud vy
+eneme Combine, dostaneme se na osmi
+ku, nemyslí
+<HEADSET><clr:255,255,138>Hmm, osm.<cr>Jo, to by bylo bájo.<sb>Velký bájo.
+<clr:255,190,255>Co vlastn
+podnikne
+, a
+dostaneme Combine ze Zem
+<HEADSET><clr:255,255,138>Pochopiteln
+naplno zahájím produkci
+<clr:255,190,255>Ach, pravda!<sb>To bude
+pod vodou!
+<HEADSET><clr:255,255,138>Za vodou, jo.<sb>Plán je podle mého skromného odhadu následující. Dávám Combine rok, maximáln
+dva, ne
+je odsud kompletn
+vy
+eneme.<sb>Ale
+ekn
+me rok.
+<HEADSET><clr:255,255,138>Dal
+í rok pak zabere masová výroba
+.<sb>I kdy
+, jen tak bokem, nejprv budeme MUSET obnovit spole
+nost, aby se rozjela základní infrastruktura, práce, peníze a tak podobn
+.<sb>Jinak si lidi nebudou moct koupit moje výrobky.<sb>Chápe
+<HEADSET><clr:255,255,138>Tak
+e tak no...<sb>T
+ÍLETÝ plán.<sb>Tu infrastrukturu asi hodíme na druhý rok.
+<clr:255,190,255>Jasný, to zní rozumn
+.<sb>Takovou v
+c bude
+chtít ud
+lat druhý rok.
+<HEADSET><clr:255,255,138>Hej! Opatrn
+, opatrn
+<HEADSET><clr:255,255,138>V klidu...
+<clr:255,190,255>A jéje, zase tma.
+e... ten t
+íletý Russell
+v plán... myslí
+, no... myslí
+e bys pro m
+l práci?
+<HEADSET><clr:255,255,138>Práci? Alyx, v
+jsi vymyslela
+!<cr>Samo,
+e pro tebe budu mít práci!
+eme být partnery.
+<HEADSET><clr:255,255,138>Nóó, jóó...<sb>Hmm. Ur
+by
+lo n
+jak rozd
+lit akcie.<sb>Pak p
+t a
+deset let jako rozhodné období, pochopiteln
+.<sb>Teoreticky dost výhodné pro tebe, Alyx.<sb>Výhledov
+<clr:255,190,255>Nemám pon
+tí, o
+em jsi práv
+mluvil, ale zní to dob
+e, par
+áku.
+<HEADSET><clr:255,255,138>Jo, zní to dob
+e... Alyx.
+<clr:255,190,255>Russelle! Tihle mají automatické zbran
+<clr:255,190,255>Tihle mají automatické zbran
+<HEADSET><clr:255,255,138>Je to mimozemský komando. Si pi
+e mají automatický zbran
+<HEADSET><clr:255,255,138>Taky bysme je m
+li, jen
+e zbran
+Combine jsou spojený s genama voják
+, tak
+e sm
+la. Leda bys na
+jakou nespojenou. Nebo se nebránila mírné modifikaci svých gen
+<clr:255,190,255>Budu doufat v první variantu. Se svými sou
+asnými geny jsem docela spokojená.
+<clr:255,190,255>To je a
+moc informací na to,
+e jsem uprost
+ed p
+est
+elky, Russi!
+<clr:255,190,255>Combine!
+<clr:255,190,255>Russi, tihle mají automatické zbran
+e mají automaty.
+la.<sb>Leda bys na
+jakou nespojenou.<cr>Nebo se nebránila mírné modifikaci svých gen
+<clr:255,190,255>Ne, to je dobrý, Russi. Se svými sou
+<HEADSET><clr:255,255,138>Tady to je! Zastávka Fairview!
+<HEADSET><clr:255,255,138>Jsme tu!
+<HEADSET><clr:255,255,138>K zemi!
+<clr:255,190,255>Uf. To byl snad poslední.
+<HEADSET><clr:255,255,138>To je dob
+e, proto
+e nemáme moc
+asu.
+<HEADSET><clr:255,255,138>N
+kde tu bude ovládací panel.
+<HEADSET><clr:255,255,138>Snad m
+zvládne
+dostat do jeho systému.
+<HEADSET><clr:255,255,138>Dobrý. Tady by ten vlak m
+lo jít zastavit.
+to ur
+<HEADSET><clr:255,255,138>Jas
+ka. Ty akorát musí
+aktivovat terminál.
+<clr:255,190,255>Bezva.
+<HEADSET><clr:255,255,138>A pak se p
+iprav,
+e to bude lítat.<sb>Tvýho táty se nevzdají bez boje.
+<clr:255,190,255>Budu p
+ipravená.
+<HEADSET><clr:255,255,138>OK. Tohle je ten terminál.
+<clr:255,190,255>Jdu na n
+<HEADSET><clr:255,255,138>Zkus chvátnout.
+kde se tu musí válet baterie.
+<HEADSET><clr:255,255,138>Mo
+ná tu n
+co chybí?
+<HEADSET><clr:255,255,138>Nechci t
+honit, ale vlak se blí
+<clr:255,190,255>Nejsem slepá, Russelle.
+dosta
+do ovládání, a hned to bude. Jde ti to skv
+le.
+<clr:255,190,255>Jo, jde mi to skv
+le. V
+echno v pohod
+, v
+co tu chybí!
+<HEADSET><clr:255,255,138>A je to! Te
+jen restartuj systém.
+<clr:255,190,255>Tohle m
+lo upadnout?
+<HEADSET><clr:255,255,138>To je p
+esnej opak toho, co to m
+lo ud
+lat, Alyx!
+<clr:255,190,255>C-c-co te
+? Co mám te
+lat?
+<HEADSET><clr:255,255,138>Éé... nó... nepanika
+! Nebo p
+panika
+it!
+<clr:255,190,255>Nepanika
+ím!
+<HEADSET><clr:255,255,138>Ale já jo! Musíme najít jinej zp
+sob, jak zastavit ten vlak!
+<clr:255,190,255>Musí existovat jiný zp
+sob, jak to zastavit...
+<HEADSET><clr:255,255,138>Tak hledej! Nemáme moc
+asu!
+<HEADSET><clr:255,255,138>Jdi se podívat ven! N
+kde tam MUSÍ bejt ru
+ní ovládání. Teda technicky vzato nemusí. Ale bylo by super, kdyby bylo. Prosím. [nervózní smích]
+<HEADSET><clr:255,255,138>Ovládání bude n
+kde venku, Alyx! D
+léj!
+<HEADSET><clr:255,255,138>Hledej výhybku!
+<HEADSET><clr:255,255,138>Hledej výhybku! Musíme zastavit ten vlak!
+<HEADSET><clr:255,255,138>Vlak je tu za deset vte
+in, Alyx!
+<HEADSET><clr:255,255,138>Zkus p
+ehodit tuhle výhybku.
+t vte
+in!
+<clr:255,190,255>Nedr
+<HEADSET><clr:255,255,138>Musí
+ji p
+idr
+et!
+e to zabralo.
+<HEADSET><clr:255,255,138>To teda. Fíha. Jsi v poho?
+<clr:255,190,255>Jo, jo. Te
+najdeme tátu.
+<HEADSET><clr:255,255,138>Souhlas. Najdi vagon pro p
+evoz v
+. Nejspí
+bude v
+ele soupravy.
+<clr:255,190,255>Nejd
+ív ale zjistím, jak se dostat do vlaku.
+<HEADSET><clr:255,255,138>Co jsou za
+tihle?
+<clr:255,190,255>To netu
+ím, ale musíme najít tátu.
+<HEADSET><clr:255,255,138>Jasný, chápu.<cr>Já jen,
+e tyhle jsem nikdy nevid
+<HEADSET><clr:255,255,138>To je v
+ská kapsle tvýho táty.
+<clr:255,190,255>Dobrý Bo
+e. A kde je táta?
+<clr:255,190,255>Tati? TATI?
+<clr:255,190,255>Tati!
+<clr:255,208,172>Tady jsem, zlato!<sb>Pot
+ebuju pomoc, rychle!
+<HEADSET><clr:255,255,138>Bo
+<clr:255,208,172>Brou
+ku! Tady!
+jdu!
+ku!
+<clr:255,190,255>Hned tam jsem! Vte
+inku!
+<HEADSET><clr:255,255,138>Alyx, posp
+<clr:255,190,255>Oukej.<sb>Natáhnu se k tob
+a chytím t
+.<sb>Bude to dobrý. P
+ipraven?
+<clr:255,208,172>Jo... m
+eme.
+<clr:255,190,255>Podej mi ruku!
+<clr:255,208,172>Hnnn!
+<clr:255,190,255><sfx:1>[bolestivé zasténání]
+ku, posp
+!<sb>Déle u
+se neudr
+ím.
+<clr:255,208,172>Pomoz mi... pomoz mi...
+ku na k
+ku.
+<clr:255,208,172>Je
+kousek... Ááá!
+<clr:255,208,172><sfx:1>[lapání po dechu]
+<clr:255,190,255><sfx:1>[zajíknutí]
+<HEADSET><clr:255,255,138>Vort! Hele, vort!
+<clr:255,190,255>To je TEN vort!
+<clr:107,232,120>Alyx Vance!<sb>P
+el jsem na pomoc, jak jsem slíbil.
+<clr:255,208,172>Díky... Díky... Bo
+<clr:255,190,255>Díky, ó Bo
+e, díky!<sb>Tati, nikam necho
+!<sb>P
+ijdu na to, jak se k tob
+dostat!
+<clr:255,190,255>Nikam necho
+te!<cr>P
+ijdu na to, jak se k vám dostat!
+<clr:255,208,172>Ne! Alyx, poslouchej!<sb>Ta v
+c, co jsme na
+li s Russellem, je podle v
+eho n
+jaká superzbra
+<clr:255,190,255>Superzbra
+<clr:255,208,172>Je to n
+co velkého.<sb>Mají to schované tady v Karantén
+v jakémsi trezoru.<sb>Ale chystají se to p
+esunout.<sb>Kam, to nevím, ale bude to brzy.
+<clr:255,190,255>Tak to musíme ukrást, ne
+k tomu dojde!
+<clr:255,208,172>P
+! A podívej...<sb>Poda
+ilo se mi uko
+istit datový disk Combine.<sb>Kdy
+ho roz
+ifruji, zjistíme, jak tu zbra
+pou
+ít proti nim.
+e jaký je plán?
+<clr:255,208,172>Ty zami
+k Trezoru.<sb>Já vezmu tohle k Russellovi a dáme se do práce.
+kat... a KDE je ten Trezor?
+<clr:255,190,255>Tati! Kde je ten Trezor?
+<clr:107,232,120>Vyhlí
+ejte Polárku...
+<clr:255,190,255>Jo... dob
+e. Vyhlí
+et hv
+zdu. Chápu. Tati?
+<clr:255,208,172>Je p
+ímo uprost
+ed Karantény.<sb>A je obrovský.<sb>Dosta
+se na povrch a rozhlédni se kolem.
+<clr:107,232,120>Já doprovodím Eliho Vance a zajistím jeho bezpe
+nost!
+<clr:255,190,255>Výborn
+! D
+kuju.
+<clr:255,208,172>B
+<clr:255,190,255>Já tebe taky!
+<clr:107,232,120>Já vás mám také rád.
+kuju!
+<clr:255,190,255>Hej, Russi.<sb>Dávej pozor na tátu, jo?
+<HEADSET><clr:255,255,138>Dám ti v
+t, jestli se sem dostane
+teda A
+. A
+se sem dostane.
+<clr:255,190,255>Jo, A
+, sice to ne
+lo podle plánu, ale tátu jsme <I>p
+ece jen<I> zachránili.
+<HEADSET><clr:255,255,138>Nóóóó...
+<clr:255,190,255>Co?
+<HEADSET><clr:255,255,138>Já jen,
+e to nejspí
+iláká pozornost.<sb>A ne nejspí
+, ur
+.<sb>Ur
+iláká pozornost.<sb>Zkrátka te
+po tob
+jdou.<sb>Jasný? Tak bu
+opatrná.
+<HEADSET><clr:255,255,138>Napadá m
+. Jestli se nám poda
+í dostat tu zbra
+, mohli bysme v
+echno zm
+nit.
+<clr:255,190,255>Jo. JESTLI.
+<HEADSET><clr:255,255,138>Hele, já vím,
+e spolu d
+láme jenom pár hodin, ale chci abys v
+la,
+e jsem na tebe py
+nej.<sb>Jasný?<sb>Se
+pod obrovským tlakem.
+<clr:255,190,255>No teda, Russi.
+<HEADSET><clr:255,255,138>Pod tak obrovským tlakem,
+e...<sb>Ani nevím, jestli o tom mám za
+ínat.<sb>Ale v
+imnul jsem si,
+e kdy
+ses natáhla pro tátovu ruku, tak kdyby se jí doopravdy chytil, rozma
+ká v
+echny senzory na
+<clr:255,190,255>Ach. Jasný.
+<HEADSET><clr:255,255,138>Ale to je pochopitelný a v tomhle p
+ípad
+by to za to stálo.
+<HEADSET><clr:255,255,138>Co
+ivádí k my
+lence,
+e nevím, kdy JINDY by to za to stálo.<sb>A
+jsou stejn
+jako tv
+j táta nevy
+ísliteln
+drahý.<sb>Tak
+e... jen abys v
+la pro p
+<clr:255,190,255>Russi, slibuji,
+e budu na tvoje rukavice opatrn
+<clr:255,190,255>Russi, dívej, tenhle pr
+kaz na sob
+má fotku kostlivce.
+<HEADSET><clr:255,255,138><sfx:1>[pousmání]
+<clr:255,190,255>Á! Mám ji.
+<clr:255,190,255>Mám ji.
+<clr:255,190,255>Ach. Tady je.
+<clr:255,190,255>Á. Ha!
+<clr:255,190,255>Jo, táta
+íkal,
+e o té zbrani ukradl n
+jaká data.
+<HEADSET><clr:255,255,138>Co se tý
+e de
+ifrování dat Combine...
+<clr:255,190,255>Jsi m
+lov
+k?
+<HEADSET><clr:255,255,138>... Eli je tv
+<clr:255,190,255>Ou.
+<HEADSET><clr:255,255,138>Systémy, robotika, sít
+... s tím v
+ím si poradím.
+<clr:255,190,255>Ale s de
+ifrováním dat ne.
+<HEADSET><clr:255,255,138>To je pro m
+jako p
+eklad mimozemského jazyka. Co
+to teda je. Nicmén
+, Eli je tv
+<HEADSET><clr:255,255,138>Alyx! Podívej se z okna!
+<HEADSET><clr:255,255,138>Ne, vá
+, Alyx, podívej se z okna.<sb>Je to to, co si myslím?
+<HEADSET><clr:255,255,138>Bezva, na
+la jsi ji.<sb>Te
+se jdi podívat z okna.
+up.<sb>Nic neuvidím, dokud se nepodívá
+i ty.
+<clr:255,190,255>Pot
+. To musí být ten Trezor.
+<HEADSET><clr:255,255,138>Jo. Tv
+j táta ale nezmínil,
+e se vzná
+e i kdy
+se k n
+mu dostaneme, je
+nás
+eká cesta nahoru.
+<HEADSET><clr:255,255,138>Kabely! Podívej se na ty p
+ipojené kabely.
+<HEADSET><clr:255,255,138>Sta
+í jít podle nich...
+<clr:255,190,255>A zni
+it, co je na jejich druhém konci.
+<HEADSET><clr:255,255,138>A Trezor p
+jde k zemi.<sb>Prostý a jednoduchý.<sb>Podle m
+super plán.
+<HEADSET><clr:255,255,138>Z n
+jakého, ur
+dobrého d
+vodu, ses teda odmítla podívat z okna.
+<HEADSET><clr:255,255,138>Ale zapome
+na okno. Za ním byl TREZOR, který nás poslal hledat tv
+j táta.<sb>Akorát se vzná
+í ve vzduchu, co
+komplikuje situaci.
+<HEADSET><clr:255,255,138>Na
+stí z n
+j vede hromada kabel
+.<sb>Podle m
+je sta
+í následovat, zni
+it v
+echno, k
+emu jsou p
+ipojené, a Trezor nám doslova spadne p
+ed nohy.
+<clr:255,190,255>Budu se muset cestou dívat je
+z n
+jakých oken?
+<HEADSET><clr:255,255,138>Ne, nemyslím si.
+<clr:255,190,255>Tak se mnou po
+ítej.
+<clr:255,190,255>Nesly
+el jsi od Combine n
+co o tom,
+e jim utekl táta?
+<HEADSET><clr:255,255,138>Ne, nic. V
+echno se to
+í kolem posil do Karantény.
+<clr:255,190,255>To na
+stí znamená,
+e táta je po
+ád na cest
+k tob
+.<sb>Kdyby znovu chytili Eliho Vance, ur
+bys o tom sly
+el.
+<HEADSET><clr:255,255,138>Ale na druhou stranu...
+<clr:255,190,255>Dostat se k Trezoru nebude
+ádná legrace.
+<clr:255,190,255>Óóó, granáty.
+<clr:255,190,255>Ech. Taková
+koda granátu.
+<HEADSET><clr:255,255,138>To stálo za to.
+<clr:255,190,255>Souhlas.
+<clr:255,190,255>Dárek pro tebe, zombíku.
+co ti házím.
+<clr:255,190,255>Vedle!
+<clr:255,190,255>Do háje!
+<clr:255,190,255>Uh!
+<HEADSET><clr:255,255,138>Chyb
+l kousek.
+<HEADSET><clr:255,255,138>O milimetr vedle.
+<clr:255,190,255>Jo!
+<HEADSET><clr:255,255,138>Jo!
+<HEADSET><clr:255,255,138>Dobrá trefa!
+<HEADSET><clr:255,255,138>Hele! Mrkej na monitor. Combine.
+<clr:255,190,255>Vidím.
+<clr:18,199,226>Bezpe
+nosti, tady velitel 5-6-0.<sb>V sektoru 0-2 byla zaznamenána seismická aktivita, potvr
+te.
+<clr:166,242,255><I>Bezpe
+nost bere aktivitu na v
+domí.<sb>Potvrzuji sektor 0-2, mo
+ný zásah mr
+in.<sb>Prohledejte sektor a nahlaste status zpacifikování.<I>
+<clr:18,199,226>Pacifikování zahájeno, 5-6-0 se p
+esouvá do stanice metra.<sb>Re
+im ofenzivy.
+<clr:255,190,255>Éé. Skv
+<HEADSET><clr:255,255,138>Alyx, pozor!
+Vyhlí
+<HEADSET><clr:255,255,138>Sna
+ím se. Ale k
+emu to bude?
+<clr:255,190,255>Ne, ne
+vortigaunt povídal
+ejte Polárku
+, abych pomohla jeho p
+átel
+m. Zdálo se mi to jako vortigauntí nesmysl, ale ono asi ne.
+<HEADSET><clr:255,255,138>Jo ták. Te
+to dává smysl.
+<HEADSET><clr:255,255,138>Hmm. To vypadá jako napájecí stanice Combine. V
+inou generují proud a hostují bezpe
+nostní protokoly.
+<clr:255,190,255>T
+eba jako proud a zabezpe
+ení ob
+ího Trezoru.
+<clr:255,190,255>A tady máme Trezor.
+<HEADSET><clr:255,255,138>Jo, tahle stanice ho nejspí
+dr
+í ve vzduchu. Musíme se k ní dostat.
+<clr:255,190,255>To je ale spousta kabel
+<clr:255,190,255>Nevím, kudy se mám dostat dovnit
+<HEADSET><clr:255,255,138>Tak ur
+by nenechali bez dozoru hlavní vchod z ulice.
+<HEADSET><clr:255,255,138>Najdi vchod do hotelu a dosta
+se na st
+echu.
+<HEADSET><clr:255,255,138>Alyx, myslím,
+e bys m
+la najít vchod do toho hotelu a pokra
+ovat ke stanici.
+<HEADSET><clr:255,255,138>Óó! Výtah. Tím se dostaneme nahoru.
+<HEADSET><clr:255,255,138>[
+um]<sb>Hmm. To bylo divný.
+<clr:255,190,255>Aaaaa jsme bez proudu.
+e asi p
+jdeme po schodech.
+<clr:255,190,255>Aaaaa jsme i bez schod
+<HEADSET><clr:255,255,138>Zkusíme nahodit ten proud.
+<clr:255,190,255>Hele, jisti
+<clr:255,190,255>Vra
+me se k tomu plánu s výtahem.<sb>Proud snad nahodím zpátky.
+<clr:255,190,255>No vida
+jisti
+<HEADSET><clr:255,255,138>Ten hotel je stoletej.<sb>Kabelá
+bude ur
+ekousaná od krys.
+<clr:255,190,255>Proud je zpátky.<sb>Zkontroluju výtah.
+<clr:255,190,255>Ááá! Krysí hnízdo.
+<clr:255,190,255>Výtah po
+ád nefunguje.
+<clr:255,190,255>Tady to v
+e vypadá v po
+<clr:255,190,255>Mo
+ná jsme n
+co p
+ehlédli u výtahu.
+kde jisti
+<clr:255,190,255>Ne, ale hledám.
+<clr:255,190,255>Tak se do toho dáme.
+<clr:255,190,255>Bum. Budi
+výtah.
+<clr:255,190,255>Te
+jen dostat do výtahu n
+jakou
+<clr:255,190,255>A vzh
+ru
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Tak na nás asi zbyl
+ík.
+<clr:255,190,255>Tady je to ale prorostlé.<sb>Jak moc nebezpe
+né to m
+e být?
+<HEADSET><clr:255,255,138>Bavíme se tady o sporách z jiné dimenze, tak
+e... nejspí
+extrémn
+<HEADSET><clr:255,255,138>Ale! Taky je to vzácná p
+íle
+itost zblízka prozkoumat mimozemskou flóru.
+<HEADSET><clr:255,255,138>Ou! Bacha na ty divné puchý
+<HEADSET><clr:255,255,138>Zdá se,
+e nemají rády, kdy
+se k nim p
+iblí
+<HEADSET><clr:255,255,138>Uh.
+co mi
+íká,
+e bych tohle nem
+la dýchat.
+<HEADSET><clr:255,255,138>Souhlas. Moc se nezastavuj.
+<HEADSET><clr:255,255,138>A mo
+ná mí
+dýchej.
+<HEADSET><clr:255,255,138>Alyx, jaké je to na dotek?
+<clr:255,190,255>Takové... slizké? A trochu to lechtá.
+<clr:255,190,255>Au.
+<HEADSET><clr:255,255,138>Jaké bylo tohle?
+<clr:255,190,255>Ostré.
+<HEADSET><clr:255,255,138>Jak ostré?
+me
+est.
+e,
+est, mo
+ná sedm.
+<HEADSET><clr:255,255,138>Dobrý Bo
+e. Nedívej se dol
+.<sb>Nedívej se dol
+<clr:255,190,255>Russi, v
+tady ani nejsi!
+<clr:255,190,255>No jo vlastn
+<clr:255,190,255>Jejda, tady u
+je obsazeno.
+<clr:255,190,255>Mám t
+<clr:255,190,255>Dííííky.
+<clr:255,190,255>Hej, Russi, co mám zahrát.
+Let
+meláka
+<clr:255,190,255>Má
+ho mít.
+<HEADSET><clr:255,255,138>Paráda!
+<clr:255,190,255><delay:4>Jej, to není dobrý.
+<HEADSET><clr:255,255,138>[p
+eru
+ovaný
+um] Alyx? Alyx, ozvi se.
+<clr:255,190,255>Vidí
+to? Russelle? Russelle!
+um] Alyx! Alyx! Co se stalo?
+<clr:255,190,255>Byl tady... takový pes... nabitý elekt
+inou.
+<HEADSET><clr:255,255,138>Jej, promi
+, to jsem pro
+vih.
+<clr:255,190,255>Zabila jsem ho a tohle z n
+j vypadlo.
+<clr:255,190,255>Hele, Russelle, tahle v
+c vypadla z toho psa.
+<HEADSET><clr:255,255,138>Úúú, to se podívejme. Hmm. Zajímavé.
+<clr:255,190,255>Tady to je, Russi!
+<clr:255,190,255><delay:3>A do háje, elektropes.
+<HEADSET><clr:255,255,138>Dávej pozor, Alyx!
+<clr:255,190,255>Je
+i, te
+vlezl do toho chlápka!<sb>Russelle?
+um] Alyx! U
+je ten pes pry
+? Co se stalo?
+it:<sb>Vlezl do mrtvoly.
+<HEADSET><clr:255,255,138>Ne!
+<clr:255,190,255>Ale jo.<sb>Musela jsem je pak zabít oba. Bylo to hodn
+DIVNÝ, Russelle.
+<HEADSET><clr:255,255,138>Zní to divn
+<clr:255,190,255>A taky
+e bylo.
+<HEADSET><clr:255,255,138>Tyhle obrn
+né dve
+e Combine jsou prakticky nezni
+um]
+um] To se zase vrátil ten pes, Alyx?
+<clr:255,190,255>Jo, uf. Tentokrát to bylo... o n
+co hor
+<HEADSET><clr:255,255,138>Ale jsi v pohod
+, ne?
+<clr:255,190,255>Jo, Russi, jsem v pohod
+<HEADSET><clr:255,255,138>Tak pohni, musí
+se dostat na st
+<clr:255,190,255>Tady to je.<sb>Tenhle výtah m
+vezme k napájecí stanici.
+<clr:255,190,255>Na
+la jsem výtah.
+<HEADSET><clr:255,255,138>Ach, díky Bohu.
+<clr:255,190,255>Napájecí stanice je v pat
+e nade mnou.
+<clr:255,190,255>OK, tady je ta stanice. Vylezu o patro vý
+a vypneme ji.
+<clr:255,190,255>Oukej, blí
+ím se k napájecí stanici.
+<HEADSET><clr:255,255,138>Jo, je
+se ale musí
+dostat p
+es to silový pole.
+<clr:255,190,255>S tím si n
+jak poradím.
+<clr:255,190,255>Bezva, tohle by m
+lo vypnout to silové pole.
+<clr:255,190,255>A sakra.
+<HEADSET><clr:255,255,138>Bude
+muset najít zdroj napájení téhle bariéry.
+e ti cestu blokuje bariéra Combine.
+<clr:255,190,255>Otev
+u tohle a deaktivuju ji.
+<clr:255,190,255>Nechci být pesimista, ale nem
+l u
+být táta touhle dobou zpátky?
+<HEADSET><clr:255,255,138>No, podívejme se na fakta, Alyx.<sb>Jde p
+ky, p
+ibli
+rychlostí p
+t kilometr
+za hodinu...
+<HEADSET><clr:255,255,138>Plus je psanec na út
+ku, má jednu nohu...<sb>Po cest
+jsou r
+zné p
+eká
+ky, nem
+e jít p
+ímo...<sb>Hm, ví
+ty co?<sb>Nebudu ti lhát, fakt by tady u
+L být.
+<clr:255,190,255>Jo, tak
+e bych se <I>m
+la<I> strachovat.
+<HEADSET><clr:255,255,138>Za b
+ných okolností jo.<sb>Ale momentáln
+jsi ta, která mí
+í sm
+rem k nebezpe
+í, tak
+e bysme se spí
+li strachovat my o tebe.
+<HEADSET><clr:255,255,138>Alyx! Dneska je tv
+astný den!<cr>Ta zbra
+není spojená s vojákem!
+<clr:255,190,255>Jak to ví
+<HEADSET><clr:255,255,138>Je je
+v krabici!<sb>Takhle je venku nikdy nenechávají.
+<HEADSET><clr:255,255,138>Ani jsem nemusel upravit tv
+j genetický kód.
+<clr:255,190,255>Já vím. A to ses tak moc t
+il.
+<HEADSET><clr:255,255,138>To je dobrý, není v
+em dn
+m konec.
+e, tady to je.
+jen sta
+í p
+típnout ty kabely a máme hotovo.
+<clr:255,190,255>Zespoda to vypadalo jednodu
+<clr:255,190,255>Nikde tu nevidím, jak ty kabely odpojit.
+<clr:255,190,255>Russi, nevím, jak mám ty kabely odpojit.
+ná zkus sundat jejich kryty a st
+elit do nich.
+<clr:255,190,255>Aha! Jdu na to.
+<clr:255,190,255>Ale ne, na t
+ch koncovkách jsou kryty.
+<clr:255,190,255>Vida.
+<HEADSET><clr:255,255,138>Super, te
+jdi dovnit
+a deaktivuj zdroj napájení.
+<clr:255,190,255>Jo.
+<clr:255,190,255>Díky! Hodn
+stí!
+<clr:255,190,255>Díky. Hodn
+<clr:255,190,255>[ka
+lání] ... co... to?
+<clr:107,232,120><sfx:1>[zalapání po dechu]
+e, to je vortigaunt...
+<clr:107,232,120><sfx:1>[lapání po dechu]
+<clr:107,232,120>Byli jsme uv
+ni... v temnot
+jsi volný.<sb>Poslal m
+tv
+j p
+ítel.
+<clr:107,232,120>Alyx Vance... je na
+ím p
+ítelem.
+<clr:255,190,255>Co ti tady d
+lali?
+<clr:107,232,120>To, co d
+lají nám v
+em.
+<clr:107,232,120>Musím Alyx Vance n
+co ukázat.
+<clr:107,232,120>Podívejte se sem!
+<clr:107,232,120>Alyx Vance musí p
+ijít blí
+te, prosím.
+<clr:107,232,120>Combine z nás vysávají sílu, pomocí ní
+chrání svoji zbra
+<clr:107,232,120>Támhle...
+<clr:107,232,120>Jsme odtr
+eni jeden od druhého.
+<clr:255,190,255>Musíme jim zabránit v zabití tvých p
+átel.
+<clr:107,232,120>Vortigaunti se osvobodí sami a vykonají vlastní pomstu.<sb>VY se musíte dostat ke zbrani.
+<clr:255,190,255>Ale dokud jsou aktivní ostatní stanice, do Trezoru se nedostanu.
+<clr:107,232,120>Nebojte se, Alyx Vance.<sb>Ji
+brzy <I>nebudou<I>.<sb>O <I>to<I> se postaráme.
+<clr:107,232,120>Nyní vám otev
+u cestu.
+<clr:107,232,120><sfx:1>[zasténání]
+te. Na
+e cesty se rozd
+lují.<sb>Ale nezapome
+te: ned
+lí nás
+ádná vzdálenost.<sb>Jsme spojeni.
+<clr:255,190,255>Za
+íná tu být n
+jak horko, Russi.
+<HEADSET><clr:255,255,138>Co jsme vy
+adili tu stanici, komunika
+ní kanály Combine o
+ily.<sb>U
+dí,
+e nám jde o Trezor.<sb>A a
+je v n
+m cokoliv, OPRAVDU necht
+jí, abysme to získali.
+<clr:255,190,255>O to víc to te
+chci.
+<HEADSET><clr:255,255,138>Tak se mi to líbí.
+<HEADSET><clr:255,255,138>Do toho vortigauntova slibu vkládáme docela dost d
+ry.
+<clr:255,190,255>Já... mu v
+<HEADSET><clr:255,255,138>Jo, já taky.<cr>Uh... proto
+e pokud neodpojí ty zbylé stanice, Trezor se ani nehne.<sb>A my budeme moct odvolat to vloupání, najdou nás Combine a
+<clr:255,190,255>Russi.<cr>V
+it mu... je te
+na
+e jediná mo
+nost.<sb>A on to zvládne. My to zvládneme.
+pravdu, bude v pohod
+.<sb>V
+ichni budeme v pohod
+<HEADSET><clr:255,255,138>Z tvojí aktuální pozice nevede k Trezoru
+ádná p
+ímá cesta,<sb>ale n
+kudy to stoprocentn
+jde.
+stí je tak velký,
+e bych ho snad nem
+la minout.
+<clr:255,190,255>Stejn
+nechápu, co tady s tím zamý
+lí.
+<clr:255,190,255>Pokud je ta zbra
+tak silná, pro
+ji schovávají v téhle dí
+se sna
+í vymyslet, jak ji dostat ze Zem
+.<sb>Na svoji domovskou nebo jinou planetu.
+<clr:255,190,255>A pro
+ji nepou
+ít TADY?
+<HEADSET><clr:255,255,138>... Tady u
+válku vyhráli, Alyx.
+<clr:166,242,255><I>Hlaste se u sektorové stanice jedna, pou
+ití zbraní povoleno.<sb>Cíl byl ur
+en jako primární.<sb>Na míst
+zpacifikujte.<I>
+<clr:166,242,255><I>Ob
+ane, jste obvin
+n z n
+kolika p
+estupk
+páté úrovn
+i bezpe
+í obyvatelstva.<sb>Spolupracujte prosím s pozemním ochranným týmem.<sb>Pozemní ochranný týme, pozor.<cr>Kód: Najít. Izolovat. Neutralizovat.<I>
+<clr:255,190,255>Co myslí
+, Russi?<sb>Asi bychom m
+li spolupracovat.
+<HEADSET><clr:255,255,138>Jo, ta paní zn
+la vá
+<clr:255,190,255>No nic, snaha byla.
+<HEADSET><clr:255,255,138>Prej
+spolupracujte
+. Pffffff.
+nosti, utrp
+li jsme t
+ké ztráty od primárního cíle.
+nost bere selhání pacifikace na v
+domí.<sb>Vy
+kejte p
+íchodu posil.<sb>Utla
+itel je na cest
+.<I>
+<clr:18,199,226><force>Cíl zam
+en. Stáhnout a p
+eskupit.
+<clr:255,190,255>Uf... No teda!
+<HEADSET><clr:255,255,138>Páni, Alyx!
+to TAKY?!
+<clr:255,190,255>Co to?
+<HEADSET><clr:255,255,138>Vortigaunti odpojují dal
+í napájecí stanici!
+<HEADSET><clr:255,255,138>Tohle by mohlo vyjít.
+<clr:255,190,255>To doufám.
+<HEADSET><clr:255,255,138>Alyx! Zvedni hlavu!
+<HEADSET><clr:255,255,138>Zvedni hlavu, zvedni hlavu!
+<HEADSET><clr:255,255,138>Podívej, kdo je tu!<sb>Opravil jsem dron a vrátil ho do akce!
+<HEADSET><clr:255,255,138>Toho si nev
+ímej. Sejdeme se venku.
+e p
+ed náma jsou barikády Combine.<sb>Cht
+jí zastavit ka
+dého, kdo se p
+í k Trezoru.
+<clr:255,190,255>OK. Jaký je plán?
+<HEADSET><clr:255,255,138>Pokra
+uj do lihovaru a pak uvidíme, kam dál.<sb>S mým dronem jsme hned o n
+no to snad ne!
+<HEADSET><clr:255,255,138>To si snad d
+srandu!
+e, ale nevidím tu
+ádný vchod. Porozhlédnu se kolem.
+<clr:255,190,255>Co je tohle v
+bec za místo?
+<HEADSET><clr:255,255,138>Lihovar.<sb>Vyráb
+li tam vodku a podobné v
+ci.
+<clr:255,190,255>Je... vodka... dobrá?
+<clr:255,190,255>A je vodka vlastn
+dobrá?
+<HEADSET><clr:255,255,138>Ne, v
+bec ne.
+<clr:255,190,255>Russell nemá rád vodku, pí
+u si.
+<HEADSET><clr:255,255,138>Ale
+to jsem ne
+ekl!
+<clr:255,190,255>A je teda dobrá?
+<HEADSET><clr:255,255,138>Je to jed...
+<clr:255,190,255>Ale...
+<HEADSET><clr:255,255,138>... ale stejn
+ji zbo
+uju.<sb>Ka
+dý, koho znám... ji zbo
+uje.
+<clr:255,190,255>To je celé docela matoucí.
+<clr:255,190,255>Ale a
+ijdu na to, jak se dostat dovnit
+, mo
+ná ti tam n
+jakou najdu.
+<HEADSET><clr:255,255,138>Výte
+. To by od tebe bylo moc hezké.
+<clr:255,190,255>Tak tady ur
+pár starých fla
+ek bude.<sb>Kazí se alkohol?
+<HEADSET><clr:255,255,138>Naopak,
+ím star
+í, tím lep
+í, Alyx!
+<clr:255,190,255>Russelle? Ztrácím t
+<HEADSET><clr:255,255,138>Vodka se nekazí, Alyx!<sb>Vodka se nekazí!
+<clr:255,190,255>Tak jo...
+<HEADSET><clr:255,255,138>Alyx! Ozvi se, Alyx!<sb>Alyx? Ach, tady t
+mám.<sbTady t
+mám.
+<clr:255,190,255>Hej, Russi.<cr>Vortigaunti sundali dal
+í stanici.
+<clr:255,190,255>Russi! Vortigaunti odpojují dal
+í stanici!
+! To je skv
+lá zpráva!
+<clr:255,190,255>K Trezoru nevede
+ímá cesta.<sb>P
+jdu dovnit
+a zjistím, kudy to obejít.
+e, ale jestli mi znovu vypadne
+, tak pamatuj:<sb>Vodka se nekazí, jasný?<sb>Vodka je v
+<HEADSET><clr:255,255,138>Alyx, tomu neuv
+<clr:255,190,255>Russi? Grr.
+[zápasení] Potvoro jedna...
+[zápasení] No tak, ty jeden zatr... pus
+... moji... nohu! Ale
+Ááá!
+[zápasení] A já si myslel,
+e jsme m
+li dohodu: ty si nechá
+ten sv
+j jazyk pro sebe a já ti ho na oplátku neust
+elím.
+[zápasení] To u
+neplatí, jen abys v
+[zápasení] Kurník...
+<sfx:1>[zápasení]
+[zápasení] ... tak moc... nesná
+ím... barnacly...
+[zápasení] ... p
+ívám v týhle... pitomý továrn
+... u
+celý roky.<sb>Jak to...
+ád... p
+ekvapují barnaclové?
+[zápasení] Tak a dost.<sb>Prost
+si tu nohu ufiknu.<sb>Vyhrál jsi. Doufám,
+e se udáví
+[zápasení] Napadají m
+stovky lep
+ích zp
+sob
+, jak um
+ít.<sb>Taková potupa.
+[zápasení] Utopit se.<sb>Být p
+ejet hlídkou Combine.<sb>Být za
+lápnut striderem.<sb>Být utopen striderem.<sb>Být roz
+tvrcen striderem.<sb>Tuberkulóza.
+Hej! Hej!<sb>Ty tam, s tou zakrvácenou vestou.<sb>Jo, ty!
+Mám tady takový men
+í problém.
+imla jsem si.
+Ty, ehm... u sebe asi nemá
+, co?
+No teda.<sb>A je... uf! Moc p
+kná.
+Unhh. Hez
+í ne
+ta moje, kterou se
+ral tady visá
+mi p
+ipomíná. Nest
+elila bys ho?<sb>Prosím?
+Hele, odhaduju svoji výdr
+tak na
+i, mo
+ná p
+t hodinek, tak
+Tak
+e nikam nechvátej, ale kdyby to bylo mo
+ný...<sb>Uáá... mo
+ná bys mu mohla zav
+ít tu hubu.
+Ach, skv
+lé. Jsi má hrdinka.
+Uf, ahoj, m
+na moment?
+Mmm. Díky.
+<clr:255,190,255>Co bylo sakra tohle?
+No, to byl Jeff.
+<clr:255,190,255>Jeff?
+Nic se neboj, je slepej jako patrona.<sb>Zato moc dob
+e sly
+Má sluch jako Mozart.
+<clr:255,190,255>Jako kdo?
+Uf. Te
+pom
+u já tob
+Tady.<sb>Uvidíme se na druhý stran
+, zelená
+A zkus mluvit potichu.
+epot] Tady ho máme.
+<clr:255,190,255><I>Jeff<I>.
+epot] Jo. A sleduj tohle...
+Vidí
+? Je totáln
+edvídatelnej.<sb>Ale kdy
+najde, utrhne ti ruce jako nic.
+Hej, hej, hej, co to!<sb>Jeffa neust
+ílí
+<clr:255,190,255>To snad ne...
+<clr:255,190,255><sfx:1>[ka
+lání]
+el]
+<clr:255,190,255><sfx:1>[hlasité ka
+lání] Sakra!
+lání] Uh...
+Hej, hej! Tyhle kytky jsou nebezpe
+ný!<sb>Zakrej si pusu!
+el] Chápu, díky.
+<clr:255,190,255>Rozumím, díky.
+Hele, málem bych zapomn
+l:<sb>Jak se jmenuje
+<clr:255,190,255>Alyx! Alyx Vance!
+au, Alyx, já jsem Larry.<sb>Rád t
+poznávám.<sb>Zkus tady nezhebnout.
+Zakrej si pusu, abys neka
+lala!
+Hej! Hej!<sb>Zakryj si pusu, abys neka
+Takhle pozná, kde jsi!<sb>Dej si ruku p
+ed pusu, abys neka
+Jeff sly
+í, jak ka
+!<sb>Zakrej si ústa!
+<clr:255,190,255><sfx:1>[tiché zajíknutí]
+<clr:255,190,255>Uf...
+<clr:255,190,255>Fjú...
+<clr:255,190,255>Uff...
+<clr:255,190,255>... Nemám t
+ráda, Jeffe...
+Hej! Alyx Vance!<sb>Tys to zvládla!
+<clr:255,190,255>Jo! Zav
+ela jsem Jeffa v drti
+i odpadk
+<clr:255,190,255>A pak jsem ho rozdrtila.
+Ty kráso!
+No nic, doufám,
+e sis zevnit
+aspo
+odnesla n
+jaký tekutý suvenýr.<sb>Je
+se uvidíme!
+e, Jeffe.<sb>Jsi v po
+ádku? [smích]
+<HEADSET><clr:255,255,138>Alyx, ozvi se.<sb>Haló, Alyx! Ach, tady t
+mám.<sb>Sly
+<clr:255,190,255>Vícemén
+docela vypadává
+<HEADSET><clr:255,255,138>To je asi tím,
+e jsi furt v lihovaru.
+<clr:255,190,255>Mám nového kamaráda. Jmenuje se Jeff.
+<HEADSET><clr:255,255,138>To je výborný.<sb>Bude se nám hodit ka
+dá pomoc.
+, zas takový kamarád to není.
+<HEADSET><clr:255,255,138>Poslechni, n
+kde poblí
+by m
+l bejt na zemi ob
+í poklop zakrejvající tunel.<cr>To by m
+l být
+<clr:255,190,255>Tunel pry
+odsud?
+.<sb>Otev
+i ho a já zatím zjistím, kam vede.
+<clr:255,190,255>Combine tady ten východ zape
+etili.<sb>Zkusím ho otev
+ít, a
+jsem odsud pry
+<HEADSET><clr:255,255,138>Bezva!<sb>Já zjistím, kam to vede.
+<HEADSET><clr:255,255,138>Vida, na
+el jsem hromadu podzemních plán
+sta!
+bec t
+nesly
+ím. Russelle!
+<HEADSET><clr:255,255,138>Podzemních. To znamená pod povrchem.<sb>Ví
+jak, ne nad zemí. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Co je do háje tohle?!
+<clr:255,190,255>To je Jeff.
+<HEADSET><clr:255,255,138>Ach, tak tohle je Jeff. Nelíbí se mi.
+<clr:255,190,255>Má vybraný vkus.
+<clr:255,190,255>To je Jeff
+mluv potichu!
+<HEADSET><clr:255,255,138>Jo, dob
+e.<cr>Ten Jeff se mi nelíbí.
+Jo a mimochodem, p
+kná helma.
+Mimochodem, p
+kná sbírka helem.
+Jo a
+kná maska.
+Ta se bude hodit.
+Mimochodem, ta tvoje výbava?<sb>Fakt dobrá.
+Mimochodem, to, co má
+na hlav
+?<sb>Moc p
+kný.
+Óó! P
+kná maska, jen tak mimochodem.
+kná maska!<sb>Ta se bude hodit.
+Ale kdybys ji náhodou ztratila, nezapome
+si poblí
+ch kytek zakrejt pusu.
+Ale! Pokud o ni p
+ijde
+?<sb>Zakrej si poblí
+ch kytek pusu.<sb>Jsou nechutný.
+<clr:255,190,255>Jasný, provedu.
+<HEADSET><clr:255,255,138>OK, vzduch
+istej.<sb>Te
+jen otev
+ít ten poklop a m
+eme pokra
+ovat do tunel
+<HEADSET><clr:255,255,138>Zkus najít ovládací panel.
+<HEADSET><clr:255,255,138>Hledej blikající sv
+týlko.
+<HEADSET><clr:255,255,138>Dobrá zpráva: ten tunel vede p
+ímo k Trezoru.
+<clr:255,190,255>Super. Jen malé upozorn
+ní. Tu
+ím,
+e je taky plný antlion
+, tak se nediv, kdy
+ti nadobro vypadnu.
+<HEADSET><clr:255,255,138>Antlioni, antlioni... Jako mravkolvi?
+<clr:255,190,255>Ty musí
+znát. Mimozem
+ani s ostrýma nohama.
+<HEADSET><clr:255,255,138>Jo! Jasn
+! A jsou mali
+katí jako mravenci!
+<clr:255,190,255>Ne.
+<HEADSET><clr:255,255,138>Tak jsou to malí lvi.
+<clr:255,190,255>Ne, to si plete
+.<sb>Tihle jsou docela nebezpe
+ní.
+e. A
+je to, co je to,
+e to bude
+íhat v tunelu?
+<clr:255,190,255>Jo. Tak já jdu.
+<HEADSET><clr:255,255,138>Skokan! Ale ne, je mrtvej.
+<clr:255,190,255>Russelle, to je antlion.
+<HEADSET><clr:255,255,138>Tohle
+e je antlion?
+<clr:255,190,255>Jo.<sb>Tak
+e je p
+ece jenom zná
+<HEADSET><clr:255,255,138>Jo. Jmenují se
+skokani
+<clr:255,190,255>Russi? Myslí
+e by headcrab dokázal prom
+nit gorilu v zombie?
+<HEADSET><clr:255,255,138>Up
+ímn
+, pokud je tam n
+kde zdivo
+elá gorila, headcrab by podle m
+tvoji situaci u
+moc nezhor
+, Russi, mrzí m
+e ti nenesu
+ádnou vodku.
+<HEADSET><clr:255,255,138>To nevadí.<sb>Po
+ád m
+jakou vzít cestou zpátky.
+<clr:255,190,255>Doufám,
+e si cení
+toho, jak tady s sebou celou dobu táhnu tu vodku.
+toho, jak tady s sebou celou dobu táhnu tu basu vodek.
+<HEADSET><clr:255,255,138>Cením.<cr>Ale pokud vím, má
+dv
+ruce.<sb>Nechce
+cestou zpátky vzít JE
+jednu?
+<HEADSET><clr:255,255,138>Cením, vá
+<HEADSET><clr:255,255,138>Dv
+fla
+ky!
+<HEADSET><clr:255,255,138>T
+i fla
+<HEADSET><clr:255,255,138>Samoz
+. Ud
+lala jsi víc, ne
+bych po tob
+kdy mohl
+ádat.<sb>Bylo to bezohledné, nep
+ené... a moc si toho vá
+<clr:255,190,255>Jo, ale jednu z nich mám pro sebe.
+<HEADSET><clr:255,208,172>V
+zení...
+kat. Tati, co
+<HEADSET><clr:255,255,138>Co to?
+<clr:255,190,255>Udr
+et <I>co<I> uvnit
+<HEADSET><clr:255,208,172>To nevím.<sb>A mo
+ná to není ani v t
+hle datech.<sb>Ale n
+co tam mají uv
+né.
+<clr:255,190,255>Týjo, OK.<sb>Ale pokud to není zbra
+, chceme to po
+ád?
+<HEADSET><clr:255,208,172>Já to vidím takhle. A
+je tam cokoliv, nemá to rádo Combine.<sb>A to máme spole
+<clr:255,190,255>Pravda...
+<HEADSET><clr:255,208,172>Tak
+e... Je
+se na to cítí
+<clr:255,190,255>Jsme u
+tak daleko,
+e to nem
+eme vzdát.<sb>Ale jestli zjistí
+e je to n
+co, s
+ím bychom si vá
+nem
+li zahrávat, odvoláme to.
+<HEADSET><clr:255,208,172>To je moje hol
+ka.<sb>Dám ti v
+t, co najdu.
+<clr:255,190,255>Sakra, celé to tu uzavírají.
+<HEADSET><clr:255,255,138>To si docela v
+í, pokou
+et se uzav
+ít n
+koho, kdo má
+<clr:255,190,255>Jo, to teda.
+<clr:255,190,255>Páni! Russelle!<sb>Vorti práv
+odpojili poslední stanici!
+<HEADSET><clr:255,255,138>Óó! Nech m
+podívat!<sb>Eli!<cr>Vorti odpojili poslední napájecí stanici!
+iprav se, Alyx!<sb>Za chvíli to spadne!
+kat, co to...
+<HEADSET><clr:255,255,138>Museli aktivovat n
+jaký zálo
+ní systém.
+<HEADSET><clr:255,255,138>Aktivovali zálo
+ní systém!
+<HEADSET><clr:255,208,172>Pov
+z Alyx,
+e ten zálo
+ní systém nem
+e být stabilní.<sb>Ur
+ho zvládne vypnout.
+<HEADSET><clr:255,255,138>Tv
+j táta
+<clr:255,190,255>Sly
+ela jsem.
+jdu za paprsky, co?
+. Tam n
+kde bude zálo
+ní stanice.
+e ten, kdo je uvnit
+, za tohle stojí.
+<HEADSET><clr:255,255,138>Co jsi
+íkala, Alyx?
+<clr:255,190,255>Nic, u
+jsem na cest
+<clr:18,199,226><force>Hej! Dávej bacha. Nechci na sob
+mít ten sajrajt.
+<clr:18,199,226>Pro
+? Je jedovatej?
+<clr:18,199,226><force>Kdyby nebyl, neházíme ho do jámy. Tak se neloudej.
+<clr:255,190,255>Uf, oukej. To byl poslední.
+<HEADSET><clr:255,255,138>Jsi v poho?
+<clr:255,190,255>Russi, nechce
+si to se mnou vym
+nit?
+<HEADSET><clr:255,255,138>Nóóó, rad
+i ne. Nejspí
+bych hned um
+<clr:255,190,255>Támhle n
+kdo je!
+<HEADSET><clr:255,255,138>Ale není to Combine.<sb>Mo
+ná n
+jaký p
+í?<sb>Bu
+<HEADSET><clr:255,255,138>Eli! Poj
+sem!
+<clr:255,208,172>Co se d
+je, Russelle?
+<HEADSET><clr:255,255,138>Poslechni si tohle...
+<clr:255,190,255>Hej, hej! P
+Myslím to vá
+, musíte to ihned p
+esunout.
+kej
+Pro
+ete?
+A kdo je tedy oprávn
+Dob
+e. Chci s ním mluvit.
+Á, o co se tady v
+bec sna
+ím?<sb>M
+la bych jít.
+Obsadili jste celou planetu za sedm hodin.<sb>Pro
+tohle trvá tak dlouho?
+Ne, ne, to je v po
+ádku.<sb>Já po
+kám.
+To byl sarkasmus.<sb>Mmm. Mám hroznou radost,
+e vám to do
+lo.<sb>Ano. To byl taky sarkasmus.<sb>Jen bych vám ráda p
+ipomn
+e ta v
+c, o které pot
+ebuji mluvit s va
+éfem je, jak nám dochází
+A co kdybych JÁ do
+la pro svého nad
+ízeného.<sb>Pomohlo by to rozhýbat na
+i situaci?
+Ne, o to tu jde.<sb><I>Já<I> jsem svým nad
+ízeným.<sb>Bo
+e, za co m
+trestá
+Dobrej, díky, kone
+. Zdravím.
+Musíme to v
+zení okam
+esunout, jinak se tu zopakuje Black Mesa.
+Ano. A te
+vám
+íkám,
+e u
+je to p
+Hele
+te, jestli to tady bude, a
+se sem dostane ona, p
+ijdeme o n
+Podle
+eho soudíte,
+e ji doká
+ete zastavit?
+Ten
+k, kterého tam dr
+íme, p
+il incident v Black Mesa.<sb>Srovnal to tam se zemí a pak prost
+zmizel.<sb>Kone
+se nám poda
+ilo ho chytit a vy ho necháte znovu pláchnout?<sb>P
+ESU
+TE TO V
+ZENÍ.
+il incident v Black Mesa... a pak zmizel... Eli!<sb>Oni tam VÁ
+mají superzbra
+<HEADSET><clr:255,208,172>Je to tak, Russi.<sb>Dostali Gordona Freemana.
+<clr:255,190,255>Páni. To je dob
+e, ne?
+<HEADSET><clr:255,208,172>To je VÍC ne
+dob
+<HEADSET><clr:255,255,138>To je... to je zázrak.
+e. Tak poj
+me zachránit Gordona Freemana.
+<HEADSET><clr:255,208,172>P
+tak.<sb>Poj
+me osvobodit Gordona Freemana.
+<clr:255,190,255>Mám spole
+nost.<sb>Dejte mi chvili
+<clr:255,190,255>OK, tak
+e plán je dostat se do té
+ídicí místnosti a zachránit Gordona.<sb>I kdy
+, budu up
+ímná. Lidi o n
+m sice hodn
+mluví, ale já si v
+dy myslela,
+e je mrtvý.
+<HEADSET><clr:255,255,138>Já taky.
+<clr:255,190,255>Hej, tati? Jsi tam?
+<HEADSET><clr:255,208,172>Jo, co se d
+je, Alyx?
+<clr:255,190,255>Pokud Gordon p
+il Black Mesu... kde byl celé ty roky?
+<HEADSET><clr:255,208,172>To netu
+ím.<sb>Ale ur
+bude mít co vypráv
+<clr:255,190,255>Russi, myslí
+e a
+zachráníme Gordona, budeme si moct za
+ít vyskakovat?<sb>Mo
+ná bychom mohli strhnout Citadelu.
+<HEADSET><clr:255,255,138>Tak jednou u
+lidstvo zachránil.<sb>Vsadil bych se,
+e to doká
+e znova.
+<clr:255,190,255>A tentokrát na to nebude sám.
+<HEADSET><clr:255,208,172>Alyx... Jsi tam?
+<clr:255,190,255>Ano, tati.
+<HEADSET><clr:255,208,172>Zdá se,
+e odtamtud se skute
+dostane
+do Trezoru.<sb>M
+l by tam být terminál, který vytvo
+í most ke vchodu.
+<clr:255,190,255>Jak je to uvnit
+se zabezpe
+ením?
+<HEADSET><clr:255,208,172>Mám to tady p
+ed sebou a nebudu ti lhát...<sb>N
+jaké zabezpe
+ení tam je, ale nikdy jsem nevid
+l nic podobného.<sb>V
+bec mi to nedává smysl.
+<clr:255,190,255>Tak to budu muset improvizovat.
+<HEADSET><clr:255,208,172>Eh, ni
+eho se neboj, zlato. P
+ijdu tomu na kloub.
+<clr:255,190,255>Ty paprsky vychází z vrcholku TÉHLE v
+e, vi
+te?
+<HEADSET><clr:255,255,138>Jo, p
+<clr:255,190,255>Co myslíte,
+e tady provád
+jí?
+<HEADSET><clr:255,255,138>Jako kdyby... dojili skokany...
+<HEADSET><clr:255,255,138>Dobrá práce, Alyx.<sb>Posílají proti tob
+e, co mají.
+<clr:255,190,255>Díky, Russi. Blí
+íme se k cíli.
+echno to nahrávám, Alyx!<sb>Neodvracej zrak!<sb>Dívej se p
+ímo na to, a
+mám
+istý záb
+<clr:255,190,255>Támhle je ta
+ídicí místnost.
+<HEADSET><clr:255,255,138>Vidím. U
+jsme skoro tam.
+<HEADSET><clr:255,255,138>Alyx, blí
+íme se k Trezoru.<sb>Podle m
+nebude
+mít moc p
+itostí vyu
+ít sv
+j polymer.
+<clr:255,190,255>To je pravda. Podívám se, jestli by se mi nehodilo n
+jaké vylep
+<HEADSET><clr:255,255,138>Nem
+u uv
+it, kam a
+se podívala moje zbra
+emý
+lela jsem,
+e bych ji dala Gordonovi.
+<HEADSET><clr:255,255,138>Ne, te
+chce
+jen na
+tvat.<sb>Na to ti nesko
+ím.<sb>Ale jestli to myslí
+vá
+, dej mu rad
+i brokovnici.<sb>Povídá se,
+e s brokovnicí je
+ábel.
+<clr:255,190,255>Dobrý v
+ímo p
+ed tebou.<sb>Tohle ovládání spojí Trezor se stanicí.
+<clr:255,190,255>To by bylo. Je na
+ase zachránit zachránce lidstva.
+<HEADSET><clr:255,208,172>Jen abys v
+la, zlato, ty sis taky nevedla zle.
+<HEADSET><clr:255,208,172>Zem
+by ocenila tvoji pomoc b
+hem sedmihodinové války.
+<clr:255,190,255>Jo, mo
+ná bychom vydr
+eli osm.
+<clr:255,190,255>Co te
+<clr:255,190,255>Ó! Bezvadný.
+e... jedna z t
+hle pák musí být k mostu...
+e jo?
+<HEADSET><clr:255,255,138>Na tuty. Prost
+jednu vyber.<sb>Ale hned.
+<clr:255,190,255>Éééé...
+<clr:255,190,255>Zkusím TUHLE.
+<HEADSET><clr:255,255,138>Ne... tahle to není.
+<HEADSET><clr:255,255,138>Ne, tahle není k mostu.
+<HEADSET><clr:255,255,138>Alyx, most se nehýbe.<sb>Pro
+se ten most nehýbe?
+<clr:255,190,255>Já vím, Russi. Vidím,
+e se nehýbe.
+<HEADSET><clr:255,255,138>Ne.
+<HEADSET><clr:255,255,138>Taky ne.
+j ty Bo
+<HEADSET><clr:255,255,138>Alyx... Alyx...
+<HEADSET><clr:255,255,138>Alyx... ALYX... ALYX!
+<clr:255,190,255>Do háje. Do háje... DO HÁJE!
+<clr:255,190,255>Áááá!
+<HEADSET><clr:255,255,138>Tím
+hned
+myslím hned!
+<HEADSET><clr:255,208,172>Russelle, nech ji p
+let!
+<HEADSET><clr:255,255,138>Alyx, te
+hned.
+<HEADSET><clr:255,255,138>Alyx, prosím, jednu si vyber.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, jsi v po
+<clr:255,190,255>Myslím,
+e jsem práv
+zabila Gordona Freemana.
+<clr:255,190,255>Myslím...
+<HEADSET><clr:255,255,138>Trezor je p
+ed tebou.<sb>Prost
+a najdi ho.<sb>Nebo co z n
+j zbylo.
+<clr:18,199,226><force><I>Vedení po
+aduje odhad
+kod.<I>
+<clr:18,199,226><force>Po
+kození: 70%... 80%... 90%... Totální.
+<clr:18,199,226><force><I>Totální?<I>
+<clr:18,199,226><force>Totální.
+<clr:18,199,226><force><I>Posily jsou na cest
+<clr:18,199,226><force>Jsem pod palbou!
+<clr:18,199,226><force>Je nutná oprava nebo extrakce.
+<clr:18,199,226><force>Netu
+<clr:18,199,226><force>On do n
+j kope.
+<clr:18,199,226><force>Bezpe
+nost
+íká, a
+do n
+estane
+kopat.
+<clr:18,199,226><force>U
+j nekope.
+<clr:18,199,226><force>K zemi! Je tu!
+en. Opakuji, cíl zam
+en.
+<clr:18,199,226>Identifikace cíle se nezda
+ila.
+<clr:18,199,226><force>Je to Alyx Vance.
+<clr:18,199,226>Nemám vizuál na Alyx Vance.
+<clr:18,199,226><force>Je to Alyx Vance!
+<clr:18,199,226><force>Samoz
+e je to Alyx Vance.
+<clr:18,199,226>Nahlaste odhad
+kod Bezpe
+nosti.
+<clr:18,199,226>Rozumíte?
+<clr:18,199,226>Opakuji. Nahlaste odhad
+<clr:18,199,226>Zam
+uji!
+<HEADSET><clr:255,255,138>Strider.<cr>Ale deaktivovaný.<sb>Máme po
+ádnou kliku.<sb>Dovede
+si p
+edstavit, kdyby se nám tahle v
+c postavila do cesty?
+<clr:255,190,255>Russi, no tak.<cr>Nezak
+ikni to.
+<HEADSET><clr:255,255,138>Alyx! Ten strider!<sb>Dávej pozor, je
+ivej!
+<clr:255,190,255>Do prdele. Utíkám. Utíkám.
+<HEADSET><clr:255,255,138>Sakra. Já jsem to zak
+iknul, vi
+<clr:255,190,255>Totáln
+!<cr>Totáln
+jsi to zak
+iknul, Russelle!
+<clr:255,190,255>Utíkám.<sb>Furt utíkám.
+<clr:255,190,255>Russelle! Velkej kvér na dohled.
+<HEADSET><clr:255,255,138>Dostal jsem nápad.
+<clr:255,190,255>Jo, já taky.
+<clr:255,190,255>Jo, já taky.<cr>A dost se mi líbí.
+<HEADSET><clr:255,255,138>Dosta
+ho! Dosta
+ho!<cr>Zast
+el ho! Zast
+el ho!
+st
+ílím!
+<HEADSET><clr:255,255,138>Ha! Funguje to!<sb>Myslím,
+e to funguje.<sb>Nelíbí se mu,
+e na n
+j st
+. Pokra
+uj v tom!
+<clr:255,190,255>Russelle, nekecej mi do toho!
+<HEADSET><clr:255,255,138>Jo, jo, jo! Jó!<sb>Nep
+estávej st
+ílet!<sb>To je ono!<sb>St
+ílej! St
+ílej!<sb>St
+ílej! Ó ano!
+<clr:255,190,255>[radostný smích] Zvládli jsme to, Russi.
+<HEADSET><clr:255,255,138>Jo, zvládli jsme to. Zvládli jsme to.
+<HEADSET><clr:255,255,138>Uf. OK, Alyx.<sb>Támhleten paprsek by t
+l vtáhnout do Trezoru.
+<clr:255,190,255>Jé! Dob
+e, tak já mizím.
+<HEADSET><clr:255,255,138>[mizení signálu] Safra, mám tu silný ru
+ení.<sb>Nejspí
+nebudu moct uvnit
+kontaktovat.
+<clr:255,190,255>Ne, to asi ne.
+<HEADSET><clr:255,255,138>[mizení signálu] Tak
+e tohle je konec.
+<HEADSET><clr:255,255,138>[mizení signálu] A
+pak vyleze
+ven, s Gordonem po boku, v
+echno bude
+echno bude v pohod
+, Russi.<cr>Brzy se ozvu.
+<HEADSET><clr:255,208,172>Russelle, zastav ji!
+pro
+<HEADSET><clr:255,208,172>Alyx! Nesmí
+do toho T
+[výpadek signálu]
+<clr:255,190,255>Tati? Tati?
+<clr:255,190,255>Panelák. P
+, jak táta
+e, tohle je divné. Ale zase to nevypadá zvlá
+nebezpe
+<clr:255,190,255>Páni...
+<clr:255,190,255>To musí být ono.
+<clr:255,190,255>Tak jo, Gordone Freemane. Doufám,
+e jsi za tohle v
+echno stál.
+<clr:255,190,255>Tak jo, Gordone, dostanu t
+odsud.
+<norepeat_global:10>P
+sobivý výkon, sle
+no Vance.
+<clr:255,190,255>Gordon... Freeman?
+<norepeat_global:10>Gordon... Freeman? [pousmání]
+<norepeat_global:10>Sle
+no Vance.<sb>Uv
+znit Gordona Freemana by nevy
+adovalo <I>zdaleka<I> tolik prost
+edk
+<clr:255,190,255>A kdo tedy jste?
+<norepeat_global:10>Mo
+ná není tak d
+ité, <I>kdo<I> jsem, jako spí
+, co vám mohu <I>nabídnout<I> za to,
+e jste se dostala a
+sem.
+<norepeat_global:10>Najdou se tací, kte
+í si myslí,
+e osud na
+ich sv
+je <I>nem
+nný<I>.
+<norepeat_global:10>Moji zam
+stnavatelé nesouhlasí.<sb>
+as od
+asu m
+oprávní k tomu... <sb><I>popostr
+it<I> v
+ci ur
+itým sm
+rem.
+<norepeat_global:10>Co byste si p
+ála popostr
+it <I>vy<I>, sle
+no Vance?
+<clr:255,190,255>Combine pry
+ze Zem
+.<cr>Chci Combine pry
+<norepeat_global:10>Ach.<sb>To by bylo opravdu znatelné popostr
+ení.<sb>A
+íli
+znatelné vzhledem k zájm
+m mých zam
+stnavatel
+<clr:255,190,255>Cht
+l jste v
+t, co chci.
+<norepeat_global:10>A co kdybych vám mohl nabídnout n
+co, co <I>nevíte<I>,
+e chcete?
+<clr:255,190,255>Kde... kde to jsme?
+<clr:255,190,255>... Tati? Tati? Co...<sb>To jsem já?<sb>Co má tohle být?<sb>Co se to d
+<norepeat_global:10>Nyní jsme v budoucnosti.<sb>V tuto chvíli sledujete, jak vá
+otec umírá.
+<norepeat_global:10>Leda
+<clr:255,190,255>Co? Leda
+e CO?
+e byste vzala osud do svých rukou.
+<norepeat_global:10>Zachra
+te svého otce, sle
+<norepeat_global:10>Va
+e rukavice, sle
+<norepeat_global:10>Výborn
+.<sb>Jako následek va
+eho
+inu bude <I>tato<I> bytost pokra
+ovat v
+<norepeat_global:10>A tato bytost ne.
+e... a je v po
+ádku, vi
+te? P
+ije. M
+j táta p
+ije.
+<norepeat_global:10>Uv
+domujete si <I>doufám<I>,
+e jste se ukázala jako nesmírn
+cenné aktivum.
+<norepeat_global:10>Ná
+ede
+lý slu
+ebník nebyl schopen<sb>
+nebo nebyl ochoten
+<sb>plnit zadané úkoly.
+<norepeat_global:10>Dlouho se nám neda
+ilo najít vhodnou náhradu.
+<norepeat_global:10>A
+dote
+<clr:255,190,255>Ne! J-j-j-á chci dom
+! Po
+lete m
+dom
+<norepeat_global:10>Obávám se,
+e jste nepochopila má slova, sle
+<clr:255,190,255>Moment. Hej, moment, moment!
+<clr:255,208,172>Gordone! Gordone! Gordone, vzbu
+se!
+<clr:255,208,172>Je pry
+, Gordone.<sb>Je PRY
+<clr:255,208,172>Ten zkurvysyn a jeho
+nep
+edvídatelný následky
+!<sb>Já to tu
+il.<sb>A
+ho dostanu do ruky, tak ho...<sb>ZABIJU HO. Je
+nevím jak, ale na to p
+ijdu. Te
+<clr:255,208,172><sfx:1>[hlasitý výdech]
+<clr:255,208,172>Poj
+, Gordone.
+<clr:255,208,172>Máme práci.
+<clr:255,190,255>[p
+ichnutí] Fuj, to smrdí.
+<HEADSET><clr:255,255,138>Vá
+?<sb>Jako co to smrdí? Bu
+<clr:255,190,255>Jako hnijící zdechlina napu
+pavkem.
+Napu
+ím víc tady na ty v
+ci sahám, tím víc si myslím,
+e jsou jedovaté.
+<HEADSET><clr:255,255,138>Co kdy
+lé
+í rakovinu?
+<clr:255,190,255>Co kdy
+mi ZP
+SOBUJÍ rakovinu?
+ti zp
+sobují nový druh rakoviny?
+<clr:255,190,255>Russi, prost
+to tu nebudu osahávat.
+<HEADSET><clr:255,255,138>Fajn.
+<clr:255,190,255><sfx:1>[p
+íknutí]
+<HEADSET><clr:255,255,138>Na zdraví.
+<clr:255,190,255>Uf, díky.
+<HEADSET><clr:255,255,138>Alyx. Detekuju vysokou koncentraci vyza
+ovaných anti-
+ástic.<sb>Jen aby ses nelekla.<sb>Z kvantového hlediska to asi te
+ne bejt divný.
+<clr:255,190,255>Russelle, vid
+l jsi v
+echno, co se mi dnes p
+ihodilo.
+<clr:255,190,255>A
+e TE
+to bude divný?
+e, rad
+i se n
+eho chytím.
+e jsem zabila v
+echny mimozem
+any. Jako
+e úpln
+echny.
+<HEADSET><clr:255,255,138>To je super. Vá
+. Dob
+e ty.
+se jen dostanu do Trezoru, seberu zbra
+, vykopnu Combine ze zem
+, to bude hra
+ka, a pak... a pak si ud
+láme sendvi
+e. Jo, ud
+láme si sendvi
+<HEADSET><clr:255,255,138>U
+se t
+<clr:255,190,255>OK. Doufám,
+e budou dobré.
+<HEADSET><clr:255,255,138>Hele, a co bude
+lat ty, a
+<clr:255,190,255>Hmm... no, nejspí
+s tátou po
+ídíme d
+m a pom
+eme s obnovou civilizace. A pak si postavím tajnou laborato
+<HEADSET><clr:255,255,138>Tou dobou u
+nebude muset bejt tajná.<cr>Prost
+ji postaví
+, kde bude
+chtít.
+<clr:255,190,255>Pravda. Tak si postavím laborato
+a nedám do ní ani zámky, ani dve
+e, ani zavírací okna!
+<HEADSET><clr:255,255,138>No... to zas ne, po
+ád tu budou lupi
+i.<cr>Jen ne z jiný planety.
+<clr:255,190,255>Ouuu. Pfff, dob
+<HEADSET><clr:255,255,138>Osobn
+bych to vid
+l na dve
+e i zámky, proto
+e...<cr>Zkrátka rad
+i jo. A nechá
+si zbra
+<HEADSET><clr:255,255,138>Ó! Tv
+j táta je zpátky!
+<clr:255,190,255>Uf. Díky Bohu.
+<HEADSET><clr:255,208,172>Russelle!<cr>Safra, jak rád t
+zase vidím!
+<HEADSET><clr:255,255,138>Nápodobn
+! Ach, tohle je bomba.
+, tvoje
+ance na p
+ití jsem vid
+l kolem
+procent.
+<HEADSET><clr:255,208,172>Za to m
+eme d
+kovat vortigauntovi. To on m
+sem dostal vcelku.
+<clr:255,190,255>Russi! Russelle! Dej mi tátu!
+<HEADSET><clr:255,208,172>Alyx! Brou
+<clr:255,190,255>Tati! Práv
+jsme odpojili jednu stanici!
+<HEADSET><clr:255,208,172>Dobrá práce. Proto
+emístí Trezor, máme sm
+lu. Musíme to provést dnes v noci.
+<clr:255,190,255>Provedeme. Neztratil jsi ten datový disk?
+<HEADSET><clr:255,208,172>Neztratil. Russi, tahle v
+c má biozámek.<sb>Budu pot
+ebovat TLI.
+, poslu
+si.
+<HEADSET><clr:255,208,172>Bezva, díky.<sb>Jsi v po
+ádku, zlato?
+<clr:255,190,255>Naprosto. Pus
+se do toho, tati, já to zvládnu. Slibuju.
+<HEADSET><clr:255,208,172>Beru t
+za slovo.<sb>Dám se tedy do de
+ifrování.
+<HEADSET><clr:255,208,172>N
+<HEADSET><clr:255,255,138>Co je to?
+<clr:255,190,255>Jo, tati, co je to?
+<HEADSET><clr:255,208,172>Je
+nevím, co je ta zbra
+.<sb>Ale u
+VÍM, jak ji získali.
+e oni sami tu zbra
+ji nevytvo
+ili.<sb>Je to skoro, jako...<sb>Já vám nevím, jako kdyby n
+co objevili.<sb>Nebo mo
+ná odhalili.
+<clr:255,190,255>... Jak to myslí
+<HEADSET><clr:255,208,172>Pokud
+tu ta data správn
+, vystopovali to ve starém paneláku v Karantén
+.<sb>Ale místo toho, aby to odnesli, vzali celou budovu a vystav
+li kolem ní Trezor.
+<clr:255,190,255>No páni.<sb>Z té v
+ci musí mít slu
+nahnáno.
+<HEADSET><clr:255,208,172>Te
+zkoumám, jestli bychom nem
+li mít i MY.
+<clr:255,190,255>Russi. Co myslí
+e tam uvnit
+Gordonovi d
+lají?
+<HEADSET><clr:255,255,138>To je dobrá otázka...
+<clr:255,190,255>Myslí
+... myslí
+e mu vysávají mozek?
+<HEADSET><clr:255,255,138>Hmm. Já myslím,
+e ho nejprv cht
+jí odvézt ze Zem
+<clr:255,190,255>Tak jako tak, dostanu se k n
+mu d
+se jim n
+co poda
+<clr:255,190,255>Russi, co v
+bec v
+ichni mají s tím pá
+idlem?
+<HEADSET><clr:255,255,138>To myslí
+pá
+idlo Gordona Freemana?
+<HEADSET><clr:255,255,138>Alyx, on se probojoval ven z Black Mesa JENOM s tím pá
+idlem.
+<clr:255,190,255>Blbost.
+<HEADSET><clr:255,255,138>Je to pravda! Teda, je pravda,
+e tohle v
+ichni
+íkají. Skute
+nou pravdu nikdo nezná.
+ho zachráním, rad
+i mu dáme zbra
+<HEADSET><clr:255,255,138>Jo! Ale ne tu moji.<cr>S p
+ováním zbraní u
+jsem skon
+il, jasný?
+<HEADSET><clr:255,255,138>Ano! Ale ne tu moji.
+<clr:255,190,255>Russi!
+<HEADSET><clr:255,255,138>Co se
+<clr:255,190,255>Jak je na tom táta?<sb>P
+ijde ti v pohod
+<HEADSET><clr:255,255,138>Á, nic mu není, Alyx.<cr>Kousek ode m
+lá na tom de
+<HEADSET><clr:255,255,138>Ale... chybí mu noha.
+<clr:255,190,255>Jo, ale ta mu chyb
+la u
+edtím.
+<HEADSET><clr:255,255,138>Jasný. No, tak ji po
+ád nena
+jaké novinky ohledn
+ch dat?
+<HEADSET><clr:255,255,138>Ále, tv
+j táta je v tom pono
+enej.<cr>D
+lá na tom u
+jakou chvíli.<sb>U
+to skoro musí mít.
+<clr:255,190,255>Ááá! Mám to na obli
+eji! Mám to na obli
+eji!
+<clr:255,190,255>Proboha, BO
+MÁM TO
+JE
+<clr:255,190,255>Ááá! Táhni! Táhni!
+<clr:255,190,255><sfx:1>[namáhavé lapání po dechu]
+<HEADSET><clr:255,255,138>Ááá! Je
+<HEADSET><clr:255,255,138>Sundej to!
+<clr:255,190,255>Sna
+ím se!
+<HEADSET><clr:255,255,138>To je nechutný!
+<HEADSET><clr:255,255,138>Fuj, to je odporný!
+<HEADSET><clr:255,255,138>Uf, díky Bohu.
+<HEADSET><clr:255,255,138>Uf, Alyx, to byl hnus...
+<clr:255,190,255>To mi povídej.
+<HEADSET><clr:255,255,138>Ááá! Headcrab! Má
+na obli
+eji headcraba! Sundej ho, Alyx!
+i, dr
+í se jak p
+isátej!
+<HEADSET><clr:255,255,138>Sundej ho! Flákni ho!
+<HEADSET><clr:255,255,138>Flákni ho, Alyx! Sho
+ho z obli
+eje!
+<HEADSET><clr:255,255,138>Uf, díky Bohu...
+<clr:255,190,255>Uff. Jsem v pohod
+... Jsem v pohod
+la jsi ho na obli
+eji a... fuj, bylo to odporný.
+<clr:255,190,255>Russi, to
+íkají moje jméno?
+<HEADSET><clr:255,255,138>Jo, to není dobrý.
+<clr:255,190,255>Mmh.
+<clr:255,190,255>No ták...
+<clr:255,190,255>Mmm. Ech. Uch!
+<clr:255,190,255>Uch.
+<clr:255,190,255>Do... b
+<clr:255,190,255>Uh.
+<clr:255,190,255>No tak...
+<clr:255,190,255>Ach... mmmf... uch.
+<HEADSET><clr:255,255,138>Je po ní.
+<clr:255,190,255>Ha!
+<clr:255,190,255>Áá. Mám t
+<clr:255,190,255>Hnnn!
+<clr:255,190,255>A do háje.
+<clr:255,190,255>Sakra.
+<clr:255,190,255>Dopr
+ic.
+<clr:255,190,255>Tss. Tak ne.
+<clr:255,190,255>Tak nic.
+<clr:255,190,255>A je to.
+<clr:255,190,255>Áá! Mám to.
+<clr:255,190,255>Hm. To zní dob
+<clr:255,190,255>Jasn
+<clr:255,190,255>Jasný.
+<clr:255,190,255><sfx:1>[zalapání po dechu]
+<clr:255,190,255>Fíha!
+<clr:255,190,255>Óó!
+<clr:255,190,255>Páni.
+<clr:255,190,255>Haha.
+<clr:255,190,255>Ha.
+mám t
+i zásobníky.
+jen t
+<clr:255,190,255>Poslední.
+<clr:255,190,255>Poslední zásobník.
+<clr:255,190,255>Zbývá poslední.
+<clr:255,190,255>A zásobníky jsou pry
+<clr:255,190,255>Víc u
+nemám.
+<clr:255,190,255>To je v
+e, co mám?
+e, co mám.
+<clr:255,190,255>Jsem na suchu.
+<clr:255,190,255>Poslední t
+<clr:255,190,255>Sakra. Poslední zásobník.
+<clr:255,190,255>Sakra, jsem na suchu.
+i patrony.
+<clr:255,190,255>Poslední patrona.
+<clr:255,190,255>Do
+ly mi patrony.
+jedna.
+<clr:255,190,255>A patrony jsou fu
+<clr:255,190,255>Poslední
+<clr:255,190,255>Poslední dv
+mám dv
+patrony.
+jen dv
+lánky.
+jeden.
+ly mi
+lánek.
+<clr:255,190,255><sfx:1>[tlumený ka
+<clr:255,190,255><sfx:1>[napodobování zvuk
+elby]
+<clr:255,190,255>Áááh!
+<clr:255,190,255><sfx:1>[zaka
+<clr:255,190,255>Uff!
+<HEADSET><clr:255,255,138>Moc velká tma. Bude
+ebovat svítilnu.
+<clr:255,190,255>Musím souhlasit.
+<clr:255,190,255>Moc velká tma. Pot
+ebuju baterku.
+<clr:255,190,255>Abych tam mohla jít, pot
+<clr:255,190,255>Skok z takové vý
+ky bych nep
+<HEADSET><clr:255,255,138>Ne, ne, ne, to rozhodn
+ne. Pro
+, p
+lela jsi snad,
+e sko
+<clr:255,190,255>To asi ne.
+<clr:255,190,255>Ne. To by m
+zabilo.
+<clr:255,190,255>Á!
+<clr:255,190,255>Musím jít.
+<clr:255,190,255>Musím kon
+it.
+<clr:255,190,255>Brzy se ozvu.
+<clr:255,190,255>Vydr
+, musím jít.
+<clr:255,190,255>Russelle, musím kon
+<clr:255,190,255>Moment, musím kon
+, n
+co tu mám.
+ekej, mám spole
+nost.
+<clr:255,190,255>Do háje, Combine.
+<clr:255,190,255>Russelle!
+<clr:255,190,255>ÁÁ!
+<clr:255,190,255>JE
+<clr:255,190,255>PANEBO
+<clr:255,190,255>Fjú. Dob
+<clr:255,190,255>Uf. Oukej.
+<clr:255,190,255>Fjú. Oukej.
+<clr:255,190,255>Fíha. Dob
+<clr:255,190,255>Oukej.
+<clr:255,190,255>No vida.
+<clr:255,190,255>Oukej...
+<clr:255,190,255><sfx:1>[du
+ení]
+<clr:255,190,255><sfx:1>[lapání po dechu]
+<HEADSET><clr:255,255,138>Najdi n
+co, co zam
+co zam
+<HEADSET><clr:255,255,138>Na n
+co uka
+rukou.
+í na n
+co namí
+it ruku.
+rukou a zam
+<HEADSET><clr:255,255,138>Vyber si objekt a natáhni k n
+<HEADSET><clr:255,255,138>Alyx? Alyx, jsi tam?
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Ech, na nic z toho nemám dost polymeru.
+<HEADSET><clr:255,255,138>No, v
+, co se
+íká o polymeru, Alyx.
+<clr:255,190,255>Ne. Co se o n
+íká, Russi?
+<HEADSET><clr:255,255,138>Um.
+Nikdy... ho... není dost.
+ééé. Zapí
+u si to za u
+<HEADSET><clr:255,255,138>Jo, to bude ono...
+Polymeru není nikdy dost.
+<HEADSET><clr:255,255,138>Pozor!
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, bacha!
+ikulka.
+<HEADSET><clr:255,255,138>Chválím t
+<HEADSET><clr:255,255,138>Áááá je to.
+<HEADSET><clr:255,255,138>To je on
+<HEADSET><clr:255,255,138>Aha. Bezvadný.
+istá práce.
+<HEADSET><clr:255,255,138>Zafungovalo.
+<HEADSET><clr:255,255,138>To o
+ividn
+zabralo.
+<HEADSET><clr:255,255,138>Ani to nebolelo.
+<HEADSET><clr:255,255,138>Ukázková práce.
+<HEADSET><clr:255,255,138>Nep
+estávej hledat.
+kde to tu musí být.
+<HEADSET><clr:255,255,138>Vidí
+co? Já v
+bec nic.
+<HEADSET><clr:255,255,138>Tady to musí být.
+<HEADSET><clr:255,255,138>Opatrn
+<HEADSET><clr:255,255,138>Jen tak dál.
+to skoro má
+<HEADSET><clr:255,255,138>Neplejtvej si náboje, v
+bec nic tomu ned
+<HEADSET><clr:255,255,138>Bacha, Alyx!
+ed tebou!
+átelé!
+spole
+<HEADSET><clr:255,255,138>Promluvíme si pozd
+jc.
+<HEADSET><clr:255,255,138>Zavolám za chvíli.
+<HEADSET><clr:255,255,138>Dej jim co proto!
+<HEADSET><clr:255,255,138>Jasný, jasný, b
+<HEADSET><clr:255,255,138>Uf!
+<HEADSET><clr:255,255,138>Fíha!
+<clr:107,232,120>Hrrmf!
+<clr:107,232,120>Mmm! [p
+ichnutí]
+<clr:107,232,120>Ano, potv
+rko.
+<clr:107,232,120>Hmm... á... mmmhmm...<sb>Zajímavé... ach ano, výte
+né...
+<clr:107,232,120>O
+ekával jsem vás, Alyx Vance.
+Bezpe
+nost: <clr:166,242,255><I>Pozor v
+em pozemním jednotkám.<I><sb><clr:255,255,255>Bezpe
+nost: <clr:166,242,255><I>Byla zji
+na invazivní operace vedená nep
+áteli lidu.<I><sb><clr:255,255,255>Bezpe
+nost: <clr:166,242,255><I>Kód reakce:<cr>Najít. Potla
+it. Vyzpovídat.<I>
+<clr:166,242,255><I>Pozor v
+em úderným jednotkám.<sb>Nový kód:<sb>Vy
+istit. Eskortovat. Pokra
+ovat.<I>
+<clr:166,242,255><I>P
+ipomínka pro ob
+any:<cr>Civilizovaná spole
+nost vy
+aduje neustálý a p
+ísný dohled.<sb>Zabra
+te proto spoluob
+m v ohro
+ení komunity.<I>
+<clr:166,242,255><I>Prosím pozor.<sb>Vstup do tohoto bloku je zakázán.<sb>Kdo sly
+í tuto zprávu, poru
+uje ob
+anský zákoník.<I>
+<clr:166,242,255><I>Prosím pozor.<sb>Vstup do tohoto bloku je zakázán.<sb>Místní jednotka byla zalarmována a vyslána stíhat naru
+itele.<I>
+nost: <clr:166,242,255><I>Prosím pozor.<cr>Vstup zakázán.<I><sb><clr:255,255,255>Bezpe
+nost: <clr:166,242,255><I>Vstup nep
+ítele lidu vyústí v okam
+ité zahájení trestního stíhání.<I>
+<clr:166,242,255><I>Poplach pozemním jednotkám.<sb>Poplach velícím jednotkám.<sb>Nouzový kód: Naru
+ení.<I>
+nostní hlá
+ení.<sb>Probíhá op
+tovné
+ízení.<sb>Zm
+na kódu pro alokaci aktiv:<sb>Zabrat. Prozkoumat. Zni
+it.<sb>Priorita: okam
+itá.<I>
+ení.<sb>Kritické ob
+anské povstání.<sb>Technici nech
+se hlásí v blocích 49, 64, 77.<sb>Dodr
+ujte prioritu.<I>
+ení.<sb>P
+ipomínka pro pozemní týmy:<cr>Selhání vyústí v trvalé p
+emíst
+ní.<sb>Kód reakce: Prorazit. Vykonat. Neutralizovat.<I>
+<clr:166,242,255><I>Kritické naru
+ení. Vy
+kejte rozkaz
+. Vy
+<clr:166,242,255><I>Poplach! V
+em jednotkám:<sb>Zahajte operaci 5-1-2-9.<sb>Okam
+ité sou
+asné nasazení.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Kód reakce:<cr>Ochránit. Zastavit. P
+esunout.<I>
+<clr:166,242,255><I>Úderný týme, pozor.<sb>Zm
+na protokolu:<cr>Zacílit. Vymýtit. Spálit.<sb>Zacílit. Vymýtit. Spálit.<I>
+<clr:255,190,255>Venku jsem zahlídla páku!
+<HEADSET><clr:255,255,138>Super! Tajemná páka! Skv
+lý nápad!
+<HEADSET><clr:255,255,138>Co ta páka d
+lá?
+ehazuje koleje!
+<clr:255,190,255>Nemám páru!
+<HEADSET><clr:255,255,138>Ou. Tak
+e Eliho vlak vjede do...
+<clr:255,190,255>... do zdi.
+! To p
+jde! Je ve v
+ské kapsli! Nic se mu nestane! Rychle, Alyx!
+<clr:255,190,255>To je ta páka!
+<clr:255,190,255>Russelle! Tady je n
+jaká páka!
+<HEADSET><clr:255,255,138>Zatáhni za ni, co se stane!
+! Jo! Je ve v
+ské kapsli! Nic se mu nestane!
+<HEADSET><clr:255,255,138>Dr
+ji dole! Nepou
+<clr:255,190,255>Jasný!
+<HEADSET><clr:255,255,138>Alyx, mákni!
+<HEADSET><clr:255,255,138>Super! Te
+tu páku dr
+dole, jinak se koleje p
+ehodí zpátky.
+<HEADSET><clr:255,255,138>Nepou
+j ji, Alyx!
+<HEADSET><clr:255,255,138>Deset sekund, Alyx!
+<HEADSET><clr:255,255,138>Dva!
+<HEADSET><clr:255,255,138>Jedna!
+<HEADSET><clr:255,255,138>Kristova noho!
+<clr:255,190,255>Ty kráso!
+<clr:255,190,255>Vlak, vlak, vlak, VLAK!
+<clr:255,190,255>Rozumím!
+<clr:255,190,255>Jak tohle v
+<clr:255,190,255>Hele, jak mám odpojit ty kabely?
+táty?
+<clr:255,190,255>To je dobrá zpráva?
+<clr:255,190,255>Russelle? Zase t
+ztrácím.
+<clr:255,190,255>Rad
+i vyu
+iju ov
+ené technologie známé jako
+schody
+<clr:255,190,255>Tak nic, po schodech to nep
+<clr:255,190,255>CO?!
+<clr:255,190,255>To byla poslední stanice! Zvládl to!
+<clr:255,190,255>Chlapi, nem
+eme tohle vy
+it pozd
+ji? Probudili jsme hnízdo antlion
+<clr:255,190,255>To nevím.<sb>Ale n
+co ho dr
+í ve vzduchu.<sb>A nám dochází
+as na hledání, co to je.
+<clr:255,190,255>Bezva! Co je to, tati?
+e, chápu.
+<clr:255,190,255>Vede z toho spousta kabel
+.<sb>A
+ekla bych,
+e k n
+jakému zdroji.<sb>Dostanu se tam a odpojím je.<sb>Teda. Odst
+elím je.
+, ale CO je vlastn
+uvnit
+<clr:255,190,255>Ááá...
+<clr:255,190,255>Ty kráááááso!
+<clr:255,190,255>Tati, jdu najít ten Trezor!
+<clr:255,190,255>Tak jo, zdá se,
+e most je pln
+vysunut...
+<clr:255,190,255>V pohod
+, jedna z t
+hle pák je ur
+pro p
+ení Trezoru,
+<clr:255,190,255>Hm. Tahle ne.
+<clr:255,190,255>Oukeeej, tahle ur
+ne.
+ná?!
+<clr:255,190,255>To nevypadá dob
+e... Grr!
+musím OPATRN
+it Trezor.
+<clr:255,190,255>Na tom nebude nic t
+kého, ne?
+<clr:255,190,255>Tak jo, jdu dál.
+<clr:255,190,255>Fíha. Russelle, vidí
+! Ztlumte to!
+<clr:255,190,255>A jejda.
+<clr:255,190,255>Ne. Po
+ád hledám.
+<clr:255,190,255>... Bo
+<clr:255,190,255><delay:3>Co to?... Bo
+j...<sb>Díky! Díky!
+<clr:255,190,255>To by
+lo.
+<clr:255,190,255>Mám to.
+<clr:255,190,255>Zbývají dv
+<clr:255,190,255>Mám to na obli
+<clr:255,190,255>Russi! Mám to na obli
+<clr:255,190,255>Russi, mám to na obli
+eji, Russi!
+<clr:255,190,255>Pohoda. Jsem v pohod
+<clr:255,190,255>To teda. Ani mi nemluv.
+<clr:255,190,255>Já vím,
+e ho mám na obli
+<clr:255,190,255>Hnnnn, nejde sundat!
+<clr:255,190,255>Russi, já vím!
+<clr:255,190,255>Uf!
+<clr:255,190,255>Au!
+<clr:255,190,255>Sakra!
+<clr:255,190,255>Umf!
+<clr:255,190,255>Íááá!
+<clr:255,190,255>Blah!
+<clr:255,190,255>Fjú.
+lání] No teda.
+lání] Páni.
+<clr:255,190,255>Uhh!
+lání] Uh!
+<clr:255,190,255>Uch!
+<clr:255,190,255>Uch. Dob
+<clr:255,208,172><sfx:1>[sténání]
+<clr:255,208,172>Russelle? Kde je?<cr>Je v po
+<clr:255,208,172>Nemáme
+asu nazbyt.<sb>Je to zbra
+, Alyx!<sb>To tam uvnit
+schovávají.<sb>A jak jsme se o tom dozv
+li, hned si pro nás p
+li.
+<clr:255,208,172>Mají to v Trezoru...<sb>Ve v
+i chrán
+né ze v
+ech stran.
+<clr:255,208,172>Poblí
+je napájecí stanice.
+<clr:255,208,172>Alyx, a
+je ta zbra
+jakákoli, musí
+ji ukrást, nebo zni
+<clr:255,208,172>[pousmání] Mám t
+rád, brou
+<clr:255,208,172>Mám t
+rád, zlato!
+Eli: <clr:255,208,172><I>Co tam má
+, Russelle?<I>
+<HEADSET><clr:255,208,172>Netu
+<HEADSET><clr:255,208,172>Pokra
+uj sm
+rem k Trezoru.<sb>Já se proberu tím datovým diskem.<sb>Kdo ví, mo
+co zjistím.
+<HEADSET><clr:255,208,172>Alyx! N
+co mám!
+ímo pod Trezorem je generátor gravita
+ního pole.<sb>To MUSÍ být d
+levituje.
+<HEADSET><clr:255,208,172>Tady. To je generátor gravita
+ního pole.
+<HEADSET><clr:255,208,172>A je to...
+<HEADSET><clr:255,208,172>D
+lám na tom.<sb>Alyx, ty najdi cestu.
+up!
+<clr:255,208,172>A dávej na sebe pozor. Mám t
+rád.
+<HEADSET><clr:255,208,172>Není to trezor.<sb>Je to v
+zení.<sb>Nepostavili to, aby nás udr
+eli OD TOHO.<sb>Sna
+í se n
+co udr
+et UVNIT
+<norepeat_global:10>To
+otázka s mno
+stvím odpov
+dí
+<clr:255,255,138>Seber tu zbra
+, Alyx!
+<HEADSET><clr:255,255,138>Pochybuju ale,
+e bys pro ni na
+la velký vyu
+ití.<sb>Eliho bude p
+et maximáln
+pár voják
+<HEADSET><clr:255,255,138>Áá, jasn
+<HEADSET><clr:255,255,138>Umí to na dálku manipulovat s gravitací?
+<HEADSET><clr:255,255,138>Jasný. Jak jsem si myslel.<sb>A taky to o
+nenasadí
+jako rukavici.
+<HEADSET><clr:255,255,138>Tak jo, dost bylo vykecávání, musíme zachránit tvýho tátu. Vzh
+ru do akce.
+<HEADSET><clr:255,255,138>Alyx? Na chvíli jsi vypadla.<sb>Co se stalo?
+<HEADSET><clr:255,255,138>Vortigaunta?<cr>Co tam dole d
+<HEADSET><clr:255,255,138>Ano, Alyx?
+<clr:255,255,138>Alyx, tady jsem! Dávej bacha, hodím ti munici.
+<HEADSET><clr:255,255,138>Alyx, támhle je ten ovládací panel.
+<HEADSET><clr:255,255,138>Pokud se ti poda
+í nahodit systém, m
+l bych zastavit Eliho vlak.
+<HEADSET><clr:255,255,138>Alyx, to je ten ovládací panel!
+je rozst
+el, Alyx!
+<HEADSET><clr:255,255,138>Jo! Bez problému!
+<HEADSET><clr:255,255,138>Zabíjení mimozem
+ti vá
+jde!
+<HEADSET><clr:255,255,138>Je to skoro a
+sivé!
+<HEADSET><clr:255,255,138>Jo, te
+ho nakládají do vlaku.<cr>Co
+e.<sb>Proto
+e to znamená,
+e je
+e ho budou mu
+it a
+v Nova Prospekt.
+<HEADSET><clr:255,255,138>No, logicky
+eno toti
+nemají d
+vod mu
+it ho cestou.
+<HEADSET><clr:255,255,138>Ach. Dosta
+echu a najdi napájecí stanici.
+e. Te
+najdi cestu na st
+echu a odpoj tu stanici.
+<HEADSET><clr:255,255,138>Támhle je výtah, ale nebude snadný mu vrátit
+<HEADSET><clr:255,255,138>Jasný, chápu.
+<HEADSET><clr:255,255,138>Óóó.
+<HEADSET><clr:255,255,138>Alyx! Dron je zpátky v akci!<sb>Takhle seshora vidím,
+ed náma jsou barikády Combine, který zastaví ka
+dýho, kdo by se cht
+l p
+it k Trezoru.
+<HEADSET><clr:255,255,138>Zabij toho skokana!
+íká se jim
+a jsou zatracen
+ní, tak dávej pozor, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Podívej!
+<HEADSET><clr:255,255,138>To jsem z toho jelen. V
+echna ta energie z vortigaunt
+. Pokud nedr
+ela Trezor ve vzduchu, k
+emu teda byla?
+<HEADSET><clr:255,255,138>Trezor je dole. To byla ta slo
+ást. Te
+na tu jednodu
+í: popadnout, co je uvnit
+<HEADSET><clr:255,255,138>To by
+lo. Te
+ta jednodu
+ást: popadnout, co je uvnit
+. Eli? Co je vlastn
+<HEADSET><clr:255,255,138>Ach.
+<HEADSET><clr:255,255,138>Myslí
+e je po n
+eme to vzít zkratkou p
+es tuhle budovu.
+<HEADSET><clr:255,255,138>Hurááá!
+<HEADSET><clr:255,255,138>Páni.
+<HEADSET><clr:255,255,138>Eli, poj
+<HEADSET><clr:255,255,138>Ó! To by se mohlo hodit.
+<HEADSET><clr:255,255,138>Skoro hotovo...
+<HEADSET><clr:255,255,138>Alyx!
+<clr:107,232,120>Pak tedy zachráníte! Kurá
+<clr:107,232,120>Eli Vance! Alyx Vance!<sb>P
+el jsem na pomoc, jak jsem slíbil.<sb>B
+te! O va
+eho otce se postarám.
+<clr:107,232,120><sfx:1>[sténání]
+<clr:107,232,120>Já doprovodím Eliho Vance do bezpe
+<clr:107,232,120>Ne... Vortigaunti se osvobodí sami a vykonají vlastní pomstu.<sb>VY se musíte dostat ke zbrani.
+<clr:107,232,120>Te
+be
+te! Ka
+dý máme svou cestu.<sb>Nem
+eme selhat.
+Combine vrtali.<sb>Jsem odtr
+<clr:107,232,120>Jsem oslaben.<sb>Vortesence je mi vzdálena...<sb>Sly
+ím její píse
+, ale slab
+Moje rada: vyhýbej se mu.
+Tak já mizím.<sb>Ale hodn
+stí.<sb>A nepodce
+uj na
+eho kámo
+e Jeffa.<sb>Ví
+, nemá zrovna moc velkou trp
+livost.
+Tyjo! Co jsi provedla s Jeffem?
+Ty kráso!<sb>No nic, doufám,
+Jak se jmenuje
+Alyx!
+<clr:18,199,226>Chceme jména.
+<clr:18,199,226>To nás nezajímá.<cr>Co jste vid
+l? Kdo byl s vámi?
+<clr:18,199,226>V
+ak ty bude
+zpívat.<cr>Odve
+te ho do transportu!
+<clr:18,199,226>Ji taky.
+<clr:18,199,226>Oblast zaji
+na.
+ive
+te ho.
+<clr:18,199,226>A co s ní?
+<clr:18,199,226>Ustupte VZAD!
+<clr:18,199,226><force>Ruce naho
+<clr:18,199,226><force>Je
+istá.
+<clr:18,199,226>Ustupte vzad!
+<clr:18,199,226>Vzad! VZAD!
+<clr:18,199,226>Ruce naho
+<clr:18,199,226>Ruce, kde je uvidím!
+<clr:18,199,226>Ruce vzh
+<clr:18,199,226>No tak, ruce vzh
+<clr:18,199,226>Je
+esouvám se.
+<clr:18,199,226>Jsem v pohybu.
+<clr:18,199,226>Vyvíjím tlak.
+uji se k cíli.
+<clr:18,199,226>Vp
+ed.
+uji k infikovanému.
+<clr:18,199,226>Postupuji vp
+<clr:18,199,226>Posouvám se vp
+títono
+je v pohybu.
+<clr:18,199,226>Rozumím. P
+esouvám se k naru
+iteli.
+ed, vp
+<clr:18,199,226>Stabiliza
+ní tým tla
+í vp
+<clr:18,199,226>Blí
+ím se k infikovanému.
+<clr:18,199,226>Posouvám se.
+se p
+esouvá k infikovanému.
+se posouvá v rámci sektoru.
+uji se k naru
+<clr:18,199,226>Tady
+.<cr>Postupuji k cíli.
+.<cr>Postupuji.
+.<cr>Posouvám se.
+<clr:18,199,226>Zahajuji ofenzivu.
+uji.
+<clr:18,199,226>Cíl zam
+<clr:18,199,226>Pacifikuji.
+sm
+uje své síly na nep
+ítele.
+<clr:18,199,226>Vyu
+ívám p
+evahy.
+en. Kosy odjistit.
+<clr:18,199,226>Zahajte palbu.
+<clr:18,199,226>Cíl jedna.
+<clr:18,199,226>St
+jte.
+<clr:18,199,226>Je to Alyx.
+<clr:18,199,226>Alyx potvrzena.
+<clr:18,199,226>Kosy na Alyx.
+<clr:18,199,226>Zahajte palbu na cíl jedna.
+<clr:18,199,226>Pálím na primárního nep
+<clr:18,199,226>Je to ona.
+zam
+<clr:18,199,226>Primární cíl potvrzen.
+<clr:18,199,226>Úto
+ím na kryt.
+<clr:18,199,226>Kód Pr
+lom v sektoru.
+<clr:18,199,226>Kryt cíle ur
+en jako stín.
+<clr:18,199,226>Odhalení cíle za t
+<clr:18,199,226>Cíl je chrán
+n. Napravuji.
+<clr:18,199,226>Odstra
+uji podporu.
+<clr:18,199,226>Kosy na kryt.
+<clr:18,199,226>Sm
+uji své síly na kryt cíle.
+zahajuje ofenzivu na kryt.
+<clr:18,199,226>Házím d
+lobuch.
+<clr:18,199,226>Házím granát.
+<clr:18,199,226>Házím extraktor.
+<clr:18,199,226>D
+lobuch. D
+<clr:18,199,226>K zemi.
+lobuch za t
+<clr:18,199,226>Extrahuji nep
+ipravuji granát.
+<clr:18,199,226>Ustupuji vzad.
+lobuch aktivní.
+<clr:18,199,226>Antlion.
+<clr:18,199,226>Cíl: antlion.
+<clr:18,199,226>Kontakt. Antlion.
+<clr:18,199,226>Antlion spat
+úto
+í na antliona.
+<clr:18,199,226>Antlion v sektoru.
+ivníci.
+<clr:18,199,226>Kontakt. P
+ivník spat
+má vizuál na p
+ivníky.
+<clr:18,199,226>Vizkon. P
+<clr:18,199,226>Máme tu p
+<clr:18,199,226>Aktivní p
+<clr:18,199,226>Zamo
+ení p
+ivníky potvrzeno.
+<clr:18,199,226>Mr
+iny.
+iny spat
+eny.
+ení potvrzeno.
+má vizuál na mr
+<clr:18,199,226>Kontakt. Mr
+iny v zorném poli.
+<clr:18,199,226>Aktivita mr
+in.
+<clr:18,199,226>Vizkon. Mr
+<clr:18,199,226>Mám tu mr
+<clr:18,199,226>Nep
+ítel zne
+kodn
+<clr:18,199,226>Cíl zne
+<clr:18,199,226>Zne
+ní potvrzeno.
+<clr:18,199,226>Dal
+í dole.
+<clr:18,199,226>A je to.
+<clr:18,199,226>Kontakt zne
+<clr:18,199,226>Mise spln
+potvrzuje zne
+ítel neutralizován.
+<clr:18,199,226>Skon
+ils.
+ítel zlikvidován.
+dce zne
+istka dokon
+ena.
+<clr:18,199,226>Cíl sterilizován.
+istka hotová.
+ivníci zpacifikováni.
+<clr:18,199,226>Jeden p
+ivník zlikvidován.
+ivník zne
+<clr:18,199,226>Jeden dole.
+ivník zpacifikován.
+<clr:18,199,226>Nechutné.
+<clr:18,199,226>Epidemie neú
+inná.
+<clr:18,199,226>Epidemie potla
+ivník odklizen.
+<clr:18,199,226>TDC zpacifikován.
+<clr:18,199,226>Veliteli, cíl jedna zne
+<clr:18,199,226>U
+nepromluví.
+<clr:18,199,226>Veliteli, Alyx zlikvidována.
+<clr:18,199,226>Alyx zaji
+<clr:18,199,226>Alyx to má za sebou.
+<clr:18,199,226>Mrtvá.
+<clr:18,199,226>Zlikvidována.
+ina zpacifikována.
+se do hrobu.
+ina zne
+na v sektoru.
+ina zlikvidována.
+<clr:18,199,226>Je to mrtvé.
+<clr:18,199,226><sfx>[namáhavé dýchání]
+<clr:18,199,226><sfx>[ka
+lání a sípání]
+<clr:18,199,226>Alfa.
+<clr:18,199,226>A.
+<clr:18,199,226>Bravo.
+<clr:18,199,226>Charlie.
+<clr:18,199,226>Poml
+ka.
+<clr:18,199,226>Delta.
+<clr:18,199,226>Echo.
+<clr:18,199,226>Osm.
+<clr:18,199,226>Jedenáct.
+<clr:18,199,226>Padesát.
+icet.
+<clr:18,199,226>Sto.
+<clr:18,199,226>Dev
+<clr:18,199,226>Nula.
+<clr:18,199,226>Jedna.
+<clr:18,199,226>Sedmdesát.
+<clr:18,199,226>Sedm.
+edesát.
+<clr:18,199,226>Deset.
+<clr:18,199,226>T
+<clr:18,199,226>Tisíc.
+<clr:18,199,226>Dvacet.
+<clr:18,199,226>Dva.
+<clr:18,199,226>Alyx.
+átelé lidu.
+<clr:18,199,226>POJ.
+<clr:18,199,226>Ostrý
+tít.
+<clr:18,199,226>Podru
+ný
+<clr:18,199,226>Spojenec.
+tít kladiv.
+átelé.
+<clr:18,199,226>Nehlídaní p
+ina.
+ivník.
+<clr:18,199,226>Strá
+ce.
+<clr:18,199,226>Nad námi.
+<clr:18,199,226>Byt.
+<clr:18,199,226>Barely.
+<clr:18,199,226>Za námi.
+<clr:18,199,226>Pod námi.
+<clr:18,199,226>Cihly.
+<clr:18,199,226>Most.
+<clr:18,199,226>Budova.
+<clr:18,199,226>Auto.
+áb.
+<clr:18,199,226>Dve
+<clr:18,199,226>Výtah.
+ed námi.
+<clr:18,199,226>Chatr
+<clr:18,199,226>Trubky.
+<clr:18,199,226>K
+lna.
+<clr:18,199,226>Záchod.
+<clr:18,199,226>Vagon.
+<clr:18,199,226>Odpadky.
+<clr:18,199,226>Nákla
+ák.
+<clr:18,199,226>Tunel.
+<clr:18,199,226>Dodávka.
+<clr:18,199,226>Kola.
+eva.
+<clr:18,199,226>Zasahuji.
+<clr:18,199,226>Provádím úder.
+<clr:18,199,226>Úder.
+<clr:18,199,226>Grrr!
+<clr:18,199,226>Rychlý úder.
+<clr:18,199,226>Kryjte m
+ádá krytí.
+<clr:18,199,226>Pot
+ebuji krycí palbu.
+ádá o krytí.
+<clr:18,199,226>Uhýbám.
+<clr:18,199,226>Granát.
+<clr:18,199,226>Kryju se.
+<clr:18,199,226>Aktivní granát.
+<clr:18,199,226>Sly
+ím d
+lobuch. Uhýbám.
+<clr:18,199,226>Granát. Pohyb.
+tít je naho
+<clr:18,199,226>Pozor na radiálách.
+<clr:18,199,226>Ustupuji se
+títem.
+<clr:18,199,226>Aktivní d
+<sfx><norepeat:3><clr:255,0,0>[voják Combine
+smrt]
+tít dole.
+<clr:18,199,226>Alyx...
+<clr:18,199,226>Selhání.
+se blí
+í k cíli.
+ní pozici.
+<clr:18,199,226>Upravuji vizuál.
+<clr:18,199,226>Vylep
+uji zorné pole.
+eskupuji se k nep
+íteli.
+<clr:18,199,226>Pracuji na vizuálním potvrzení.
+<clr:18,199,226>Odblokovávám zorné pole.
+<clr:18,199,226>Nemám vizuál na cíl. P
+eskupuji se na deltu cíle.
+<clr:18,199,226>Z
+sta
+te, kde jste.
+<clr:18,199,226>M
+ním pozici.
+<clr:18,199,226>Optimalizuji lokaci.
+<clr:18,199,226>Optimalizuji vizkon.
+<clr:18,199,226>Nedostate
+ný vizuál. P
+<clr:18,199,226>Upravuji zorné pole.
+<clr:18,199,226>Zaji
+<clr:18,199,226>Kontakt za t
+<clr:18,199,226>Odhaluji cíl jedna.
+<clr:18,199,226>Ani se nehn
+<clr:18,199,226>Haló, Alyx!
+<clr:18,199,226>Haló, Alyx, to jsme my!
+<clr:18,199,226>Alyx! Jsi tam?
+<clr:18,199,226>Psst. Alyx!
+<clr:18,199,226>Zastavte palbu! Cíl je spojenec.
+<clr:18,199,226>Odkládám kladivo!
+vzdává operaci!
+<clr:18,199,226>Zastavte palbu. Nulová hrozba. Nulová hrozba!
+<clr:18,199,226>Alyx je s námi.
+<clr:18,199,226>Zastavte palbu!<cr>Alyx je s námi!
+<clr:18,199,226><sfx:1>[smích]
+etvá
+ka úsp
+<clr:18,199,226>[smích] Nep
+ítel je zmaten.
+<clr:18,199,226>Pálím.
+uji cíl.
+<clr:18,199,226>Zbran
+odji
+ny.
+.<cr>Jsem na primárním bodu.
+<clr:18,199,226>Rozev
+ete formaci a zahajte palbu.
+<clr:18,199,226>Kód 3. Oscar Delta.
+istím sektor.
+<clr:18,199,226>Op
+tuji palbu.
+<clr:18,199,226>Kosy odji
+<clr:18,199,226>Zahajuji palbu. Priorita jedna.
+<clr:18,199,226>Zahajuji palbu na Alyx.
+í na primární cíl.
+<clr:18,199,226>Veliteli, zahajuji palbu!
+<clr:18,199,226>Kosy na Vance.
+<clr:18,199,226>Druhé oslepení za p
+<clr:18,199,226>Oslepení selhalo.
+patné oslepení. Napravuji.
+ádám o druhé oslepení cíle.
+<clr:18,199,226>Oslepující granát selhal.
+<clr:18,199,226>Oslepení úsp
+né. Postupuji.
+né.<cr>Vyu
+ítel je oslepen.
+<clr:18,199,226>Cíl nemá vizuál.<cr>Vyu
+<clr:18,199,226>Naru
+itel je zmaten.
+ítel je zmaten.<cr>V
+echny jednotky vyu
+ijte p
+istím.
+<clr:18,199,226>Rozehnání za t
+istí sektor.
+extrahuje sektor.
+<clr:18,199,226>Vyvíjím tlak. P
+ejd
+te do krytu.
+ítele z poslední známé.
+lobuch. Házím d
+lobuch na poslední známou.
+<clr:18,199,226>Zbavuji se cíle.
+e. Kryju se.
+<clr:18,199,226>Granát odhozen.
+<clr:18,199,226>Extraktor odhozen.
+<clr:18,199,226>Hlásím zvuky v sektoru.
+ný naru
+itel.
+ná nep
+átelská aktivita.
+hlásí pohyb.
+<clr:18,199,226>Zvý
+ená pozornost.
+<clr:18,199,226>Zvy
+uji pozornost... Hlaste v
+echny naru
+itele.
+ádám o stimulanty.
+<clr:18,199,226>Veliteli, jsem zasa
+<clr:18,199,226>Koupil jsem to.
+ádá o pomoc.
+stále aktivní.
+<clr:18,199,226>Pokus o vra
+du neú
+inný.
+<clr:18,199,226>Sko
+ápka dr
+<clr:18,199,226><sfx:1>[
+kodolibé pousmání]
+itel není vid
+<clr:18,199,226>Zatracen
+ádám o lokaci.
+<clr:18,199,226>Cíl ztracen.
+ádá o pomoc s lokací.
+<clr:18,199,226>Negativní vizuál na nep
+<clr:18,199,226>Ztratil jsem dohled na naru
+má nulový vizuál.
+ítel ztracen.<cr>Sektor neznámý.
+ádá o lokaci cíle.
+<clr:18,199,226>Ztratil jsem dohled na nep
+ebuji pomoc s lokací.
+<clr:18,199,226>Nulový vizuál.
+hlásí negativní vizuál.
+<clr:18,199,226>Pravd
+podobnost úniku.<cr>
+ádám o lokaci nep
+itel ml
+í.<cr>
+ádám o poslední známý sektor.
+<clr:18,199,226>Jsme kompletn
+bez vizuálu.
+ítel ml
+itel uniká.
+<clr:18,199,226>Kontroluji kryt.
+<clr:18,199,226>Kontrola kontaktu.
+<clr:18,199,226>Nulový vizuál. O
+i na stopkách.
+hlásí ticho.<cr>
+ádám o pr
+zkum.
+ení!
+<clr:18,199,226>Nebezpe
+ení. Pálím.
+<clr:18,199,226>Pomoc. Pomoc. Pomoc.
+. Pomoc! Pomoc!
+<clr:18,199,226>Zpátky. Zpátky.
+<clr:18,199,226>Rozumím.
+<clr:18,199,226>Potvrzuji.
+<clr:18,199,226>Provedu.
+<clr:18,199,226>Dr
+ím pozici.
+<clr:18,199,226>Pozice uzam
+ipraveny.
+<clr:18,199,226>Vizkon na poslední známé pozici.
+<clr:18,199,226>Dohled na poslední známé.
+<clr:18,199,226>Sleduji.
+je na pozici.
+stávám ve st
+ehu.
+<clr:18,199,226>Ti
+e. Ti
+ítel klade odpor. Vy
+kávám instrukcí.
+ekám.
+ekám na kontakt.
+ehodnocuji.
+<clr:18,199,226>O
+ekávám potí
+ipraven k pacifikaci.
+í pozici.
+má o
+itel nemá kam utéct.
+zabezpe
+uje perimetr.
+<clr:18,199,226>Zkontrolujte své perimetry.
+<clr:18,199,226><sfx><norepeat:5>[bolest]
+<clr:18,199,226><sfx:1><norepeat:5>[oddechování]
+ítel je zranitelný.
+<clr:18,199,226>Cíl je v nevýhod
+<clr:18,199,226>Cíl oslaben.
+<clr:18,199,226>Zaúto
+te. Zaúto
+itel znevýhodn
+ítel je ozna
+<clr:18,199,226>Pozornost zp
+t na nep
+<clr:18,199,226>Zesilte palbu na pozici
+ítel krvácí.
+né ozna
+ení primárního cíle.
+<clr:18,199,226>Kladivo ú
+inné.<cr>Kód 0-9.
+<clr:18,199,226>Ukon
+uji cíl jedna.
+<clr:18,199,226>Kladivo p
+ipravuji kladivo.
+ipraveno k útoku.
+ím kladivem.
+<clr:18,199,226>Útok kladivem za t
+i... dva... jedna...
+ipravuji
+tít naho
+<clr:18,199,226>Zvedám
+tít aktivní.
+<clr:18,199,226>Ochranný
+tít za t
+echny sektory oskenovány.
+<clr:18,199,226>Kontakt ml
+<clr:18,199,226>Sektor
+istý.<cr>
+ekám na povely.
+<clr:18,199,226>Oblast
+.<cr>Nep
+ádný kontakt.
+<clr:18,199,226>Aréna zaji
+<clr:18,199,226>Zdá se tu
+isto.
+<clr:18,199,226>Kontakt ztracen.<cr>Zdá se tu
+<clr:18,199,226>Tady nic.
+<clr:18,199,226>Udr
+uji pohotovost.
+ádní naru
+itelé v sektoru.<cr>
+ádám o ukon
+ení operace.
+ekám na kód Bravo.
+<clr:18,199,226>Nic.
+<clr:18,199,226>Stín
+istý.
+ení stavu Stín.
+<clr:18,199,226>Tady není.
+<clr:18,199,226>Lokace
+istá. Odvolávám
+ádost o pomoc.
+echny sektory
+isté. Odvolávám.
+<clr:18,199,226>Zpracovávám vizkon.
+<clr:18,199,226>Hledám...
+esávám...
+<clr:18,199,226>Skenuji...
+provádí pr
+<clr:18,199,226>Aktivní stav: Pr
+<clr:18,199,226>Provádím pr
+<clr:18,199,226>Cíl je stále ve stínu.
+istý. Postupuji.
+<clr:18,199,226>Prázdný sektor. Pokra
+istá. P
+ím o
+ítel stále ml
+<clr:18,199,226>Sken dokon
+en. Pokra
+<clr:18,199,226>Stále nulový vizuál.
+<clr:18,199,226>Radiály
+isté. Pokra
+<clr:18,199,226>Rozptylte se.
+<clr:18,199,226>Rozd
+lte se.
+jde do akce.
+<clr:18,199,226>Jsem aktivní a skenuji.
+<clr:18,199,226>Zahajuji
+istku.
+stávám v pozoru.
+<clr:18,199,226>Hledám nep
+átele.
+<clr:18,199,226>Hledám naru
+<clr:18,199,226>Hledám. Formace: Kosa.
+<clr:18,199,226>Uzavírám arénu.
+uji v zadr
+<clr:18,199,226>Hlaste zorná pole.
+<clr:18,199,226>Formace na cíli za t
+uji s extrakcí nep
+echázím do stavu Stín.
+<clr:18,199,226>Zahajte ofenzivu! Delta cíle.
+<clr:18,199,226>Kontakt s cílem.
+<clr:18,199,226>Vizkon! Vizkon! Dosah.
+<clr:18,199,226>Tady je.
+<clr:18,199,226>Vizkon! Nep
+ítel nalezen.
+<clr:18,199,226>Támhle je.
+<clr:18,199,226>Nový pohyb.
+<clr:18,199,226>Zví
+e je zp
+t na porá
+<clr:18,199,226>Obnovený kontakt s nep
+ítel znovu v sektoru.
+hlásí op
+tovný kontakt v sektoru.
+ítel je
+ivý. Zkontrolujte radiály.
+í potvrzení v zorném poli.
+<clr:18,199,226>Primár potvrzen v zorném poli.
+zastavuje nep
+<clr:18,199,226>Lokace potvrzena. Vynucuji káze
+<clr:18,199,226>Potvrzení vizuálu za t
+<clr:18,199,226>Aktivní vizuál.
+ebíjím.
+ebuje doplnit.
+bude bez náboj
+za 4... 3... 2... 1...
+<clr:18,199,226>Obnovuji.
+<clr:18,199,226>Prázdno.
+hlásí prázdno.
+<clr:18,199,226>Zdroje omezeny. P
+<clr:18,199,226>Obnovuji kladivo.
+<clr:18,199,226>Ústup, ústup.
+se stahuje.
+<clr:18,199,226>Ustupuji.
+<clr:18,199,226>Stahuji se.
+<clr:18,199,226>Sektor je p
+horký.
+<clr:18,199,226>Hledám kryt.
+. P
+eskupuji se.
+<clr:18,199,226>Sektor nebezpe
+ný. Hledám stín.
+<clr:18,199,226>Sekundární cíle identifikovány.
+<clr:18,199,226>Vizkon na více neznámých.
+<clr:18,199,226>Vizkon na sekundáry.
+<clr:18,199,226>Kontroluji siluety.<cr>Mo
+né navý
+ení po
+<clr:18,199,226>Máme tu vícero naru
+itel
+<clr:18,199,226>Cíl jedna má d
+lobuchy.
+ítel má d
+lobuchy. Dávejte pozor.
+itel má granáty. Rozptylte se.
+<clr:18,199,226>Primární cíl disponuje extraktory.<cr>Pomozte.
+ítel p
+ebíjí.<cr>Zji
+na výhoda.
+<clr:18,199,226>Cíl se regeneruje. Zahajte palbu.
+itel je zranitelný.
+<clr:18,199,226>Alyx p
+ebíjí.<cr>Plná ofenziva aktivní.
+<clr:18,199,226>Máme tu elektrominy.<cr>
+.<cr>Reaguji na elektrominy.
+<clr:18,199,226>Elektrominy.
+<clr:18,199,226>Subakutní elektrominy.<cr>Plná ofenziva.
+ním cíl: elektrominy.
+<clr:18,199,226>Elektrominy poblí
+<clr:18,199,226>Cíl jedna má vylep
+ené ostré.
+nosti, cíl jedna má vylep
+<clr:18,199,226>Ostré nep
+ítele jsou vylep
+ené.
+ítel má nelegální ostré.
+ení identifikována.<cr>Pokra
+ujte s opatrností.
+nosti,
+ádám o posily.
+nosti, sektor není zabezpe
+<clr:18,199,226>Vzpoura v sektoru.
+nosti, pozemní jednotka padla.<cr>Sektor není ovládán.
+nosti, sektor je zamo
+nosti.<cr>
+ádám o nebeské jezdce.
+nosti, doporu
+te novou formaci.
+<clr:18,199,226>Spojenec zne
+ádám o náhradu.
+nosti.<cr>Z
+stal jsem sólo.
+je poslední jednotka.<cr>
+ádám o pomoc.
+ádám o okam
+itý stín.
+nosti.<cr>Vzpoura se vymkla kontrole.
+nosti.<cr>Hlásím stav Selhání.<cr>Potvr
+nosti.<cr>Hlásím sólový kontakt s n
+kolika nep
+áteli.
+<clr:18,199,226>Záchranný signál umíst
+ádá o extrakci.<cr>Sektor.
+nosti, vezm
+te na v
+domí:<cr>
+je poslední na
+ivu.
+nosti.<cr>Velitel padl.
+<clr:18,199,226>Velitel ml
+ádám o nového v
+dce.
+<clr:18,199,226>Velitel je ve stavu Soumrak.
+<clr:18,199,226>Velitel byl zlikvidován.
+nosti, velitel padl.<cr>Reaguji.
+í.<cr>Prove
+te plnou ofenzivu.
+<clr:18,199,226>Velitel neodpovídá.<cr>Velitel neodpovídá.
+<clr:18,199,226><sfx:1>[k
+ik]
+ním.
+ehazuji.
+<clr:18,199,226>Mód jedna.
+<clr:18,199,226>Mód dva.
+<clr:18,199,226>Ostré blízko, ale po
+kození nulové.
+<clr:18,199,226>Vedle.
+<clr:18,199,226>Cíl selhal.Vyu
+ítel je nep
+esný.
+<clr:18,199,226>Málem.
+je netknutý.
+<clr:18,199,226>Znovu vedle. Vyu
+<clr:18,199,226>Cíl selhal.
+evahy nad nep
+ítel selhal. Nová formace.
+<clr:18,199,226>Ostré neú
+inné.<cr>Cíl je nezku
+ený.
+<clr:18,199,226>Negativní.
+<clr:18,199,226>Nesouhlasím.
+<clr:18,199,226>Ne.
+<clr:18,199,226>Nemohu slou
+<clr:18,199,226>Zamítám.
+<clr:18,199,226>Nikoli.
+<clr:18,199,226>Nemohu provést.
+<clr:18,199,226>Ostré potvrzeny.<cr>
+ítel je na
+<clr:18,199,226>Kontakt.
+.<cr>Op
+<clr:18,199,226>Máme tu hlasité naru
+<clr:18,199,226>Cíl je nep
+átelský.<cr>Kosy odjistit.
+ítel úto
+í.<cr>Pomoc na pozici.
+nosti, hlásím ostré.
+ipravuji se na stav Delta.
+<clr:18,199,226>Jsem pod palbou.
+<clr:18,199,226>Zahajuji plnou ofenzivu.
+<clr:18,199,226>Sektor.
+<clr:18,199,226>[
+ísla]
+<clr:18,199,226>Nemám co nahlásit. P
+epínám.
+<clr:18,199,226>1, 14, 3, 6, 11... Ov
+uji.<cr>Echo 4 hlásí
+isto. P
+<clr:18,199,226>Rozumím.<cr>Udr
+uji vizkon na sektor Nomad Kilo 3-6.
+<clr:18,199,226>Echo 1 hlásí negativní pohyb.<cr>Sou
+adnice 7-2.
+<clr:18,199,226>Potvrzuji.<cr>
+ekám na p
+itost.
+<clr:18,199,226>Instrukce jasné.<cr>Radiály
+isté. P
+ádám údaje o vzdálenosti nep
+átel.<cr>
+ekám na instrukce.
+<clr:18,199,226>Stále
+ekám na instrukce. P
+nost potvrzuje uzav
+ení sektoru.<cr>Sledujte okolí a dbejte zvý
+ené pozornosti.
+<clr:18,199,226>Potvrzuji... Kód statusu vzpoury je Delta 7.<cr>Tým Západ hlásí zamo
+ení nep
+áteli.<cr>Rozumím.
+<clr:18,199,226>Negativní... Rozumím... Sektor nezaji
+n.<cr>Chybí potvrzení vektoru cíle jedna.<cr>
+ekám na kódy sekundárních parametr
+<clr:18,199,226>Nahrávám biodata... Stimulanty: 32.<cr>Kosa: 78.
+tít: 100.<cr>Biprox: 0,73.<cr>Audio: 3. Fotovizuál: 15. P
+<clr:18,199,226>Rozumím.<cr>Nastavuji
+ezáky na Apex 5.<cr>V perimetru jsou hlá
+eni smrtelníci.<cr>
+ekám na kontakt. P
+nost potvrzuje neozna
+ené
+dce poblí
+.<cr>V
+echny jednotky nech
+ipraví na kontakt.
+<clr:18,199,226>Kód zprávy:<cr>Delta-Echo-7-9-Alfa-2-Whiskey-0...<cr>Potvrzuji.
+<clr:18,199,226>Rozumím. Z
+stávám na p
+íjmu.
+<clr:18,199,226>Rozumím a p
+ijímám.<cr>Aktualizování biodat potla
+ení kognitivního my
+lení.<cr>Aktualizace bude dokon
+ena za t
+i sekundy...<cr>Disharmonie vy
+nost po
+aduje po v
+ech jednotkách obnovení.<cr>Kognitivní disharmonie nebude tolerována... Nikoli... V
+etn
+vzpomínek.<cr>Aktualizace je p
+ipravena. Souhlas povinný.
+ní tým dr
+í pozici.<cr>Fotovizuál na 73.<cr>Audio na... 15.<cr>Bezpe
+nost potvrzuje výskyt TDC v perimetru poblí
+.<sb>Z
+te v pozoru.
+nosti.<cr>Máme tu aktivní nep
+átele.<cr>Doporu
+te postup.
+<clr:18,199,226>Nikoli.<cr>Cíl je stále aktivní.
+<clr:18,199,226>Rozumím.<cr>P
+ipravuji stav Alfa.
+ipravuji stav Alfa na sou
+adnicích 9-3-7.
+ekám na rozkaz k útoku. P
+<clr:18,199,226>Potvrzuji. Rekalibruji.
+ipravuji pozici.
+ítel stále na
+<clr:18,199,226>Rozumím.<cr>Potla
+ení a usm
+ní zahájeno.
+<clr:18,199,226>10-4. Negativní na obnovení kosy.<cr>Nabito a p
+ipravuji taktickou p
+evahu.
+ekám na nahrání biodat.
+ipravuji se na Soumrak.
+ipravuji komunika
+ní kanály na del
+í boj.
+<clr:18,199,226>Zamítám. Kosy net
+eba.
+<clr:18,199,226>Prodlu
+uji trvání boje.
+<clr:18,199,226>Skenuji biodata nep
+<clr:18,199,226>Odvolávám poslední rozhovor.
+nosti, 10-9.
+<clr:18,199,226>Jsem aktivní a st
+ílím.
+<clr:18,199,226>Vynucuji káze
+z primárního cíle v sektoru.
+<clr:18,199,226>Cíl je na dost
+el a dostává ostré.
+uji tlak na primární cíl.
+<clr:18,199,226>Zlo
+in nemá
+anci.
+<clr:18,199,226>Brzký konec.
+<clr:18,199,226>Hlásím brzký konec.
+<clr:18,199,226>Pálím ostré.
+<clr:18,199,226>Koncentruji palbu na primární cíl.
+<clr:18,199,226>Soust
+edím ve
+kerou palbu.
+<clr:18,199,226>Vzdejte se.
+je aktivní a pálí.
+<clr:18,199,226>Velitel je aktivní a pálí.
+<clr:18,199,226>POJ je aktivní a pálí.
+ítel propadá extrémní panice.
+ítel je zatla
+en do kouta.
+<clr:18,199,226>Cíl vykazuje malou motivaci.<cr>Vyu
+<clr:18,199,226>Cíl vykazuje malou motivaci.
+vylézt.
+iteli, prosím pozor.<cr>Nabízíme vám pomoc.<cr>Jste v bezpe
+iteli, prosím pozor.<cr>Jste v bezpe
+<clr:18,199,226>Podez
+elý p
+ekro
+il mez povolené agrese.<cr>Vyu
+<clr:18,199,226>Stup
+uji tlak.
+elý se nechce pod
+ídit kódu 10-307.
+<clr:18,199,226>Kód 10-307.<cr>Stup
+ítel váhá.
+<clr:18,199,226>Útoky nep
+ítele jsou neú
+inné.<cr>Pokra
+uji v pacifikaci.
+<clr:18,199,226>Aktivuji kód 10-108.<cr>P
+uji operaci.
+<clr:18,199,226>Zastavuji palbu.<cr>Cíl je p
+átelský.
+uji operaci.<cr>Kód 10-40.
+<clr:18,199,226>Zastavuji palbu! Cíl není nep
+<clr:18,199,226>Rozumím. Nest
+ílejte.<cr>Poslu
+nost potvrzena.
+<clr:18,199,226>Cíl je p
+ete operaci.<cr>Cíl je p
+em jednotkám. Ukon
+ete operaci. Cíl je p
+<clr:18,199,226>Spojenec potvrzen.<cr>Zastavte palbu!
+nosti.<cr>Hlásíme vy
+kávací manévr na sou
+adnicích 9-5.
+kávací manévr.
+<clr:18,199,226>Potvrzuji.<cr>Cíl má nízkou hodnotu.
+<clr:18,199,226>Rozumím.<cr>Nep
+ítel je nepozorný a p
+ipravený na pacifikaci.
+ítel vykazuje známky únavy.<cr>P
+ipravte se na pacifikaci.
+<force><clr:18,199,226>Ani hnout.
+<force><clr:18,199,226>Nic,
+ádná legitimace.
+<force><clr:18,199,226>Dejte ruce nad hlavu. No tak.
+<force><clr:18,199,226>Nehýbat!
+<force><clr:18,199,226>Kdo je tohle?
+<force><delay:10.5><clr:18,199,226>Alyx? Jsi tam?<cr>Haló, Alyx! To jsme my!
+<clr:18,199,226>Echo 1 tla
+<clr:18,199,226>Echo 1 potvrzuje ID sektoru a p
+esouvá se k infikovanému.
+<clr:18,199,226>Posouvám se v rámci sektoru.
+tuji plnou ofenzivu.
+<clr:18,199,226>Poj
+k ta
+kovi.
+ím s p
+evahou.
+<clr:18,199,226>Cíl jedna v zorném poli.
+<clr:18,199,226>Jackpot potvrzen.
+<clr:18,199,226>Cíli u
+nezbývá moc
+<clr:18,199,226>Mám ji.
+<clr:18,199,226>Echo 1 pálí na Alyx.
+<clr:18,199,226>Pálím na Alyx.
+<clr:18,199,226>Echo 1 zam
+uje primární cíl.
+<clr:18,199,226>To je ona.
+ním cíl. Kód Pr
+lom.
+<clr:18,199,226>Odhalení nep
+ítele za t
+<clr:18,199,226>Echo 1 odstra
+uje podporu.
+<clr:18,199,226>Echo 1 sm
+uje kosu na kryt.
+<clr:18,199,226>Echo 1 zahajuje ofenzivu na kryt.
+<clr:18,199,226>Á... házím extraktor.
+lobuch, d
+<clr:18,199,226>K zemi!
+<clr:18,199,226>Extraktor za t
+<clr:18,199,226>Á... extrahuji nep
+<clr:18,199,226>Vizkon. Antlion.
+<clr:18,199,226>Antlion. Echo 1 zam
+<clr:18,199,226>Echo 1 hlásí kontakt. Antlion.
+<clr:18,199,226>Mám tu antliona.
+ivníci v sektoru.
+<clr:18,199,226>Uhh... Spat
+eni nehlídaní p
+<clr:18,199,226>Echo 1 má vizuál na p
+<clr:18,199,226>Nesná
+ím tyhle potvory.
+<clr:18,199,226>Echo 1 hlásí aktivní p
+<clr:18,199,226>Mám tu p
+<clr:18,199,226>Upozorn
+ní na zamo
+<clr:18,199,226>Echo 1 má vizuál na mr
+<clr:18,199,226>Vidím mr
+<clr:18,199,226>Máme tu mr
+<clr:18,199,226>Echo 1 potvrzuje zne
+<clr:18,199,226>Máme hotovo.
+itel zpacifikován.
+<clr:18,199,226>Takticky d
+itý cíl zpacifikován.
+<clr:18,199,226>Cíl jedna u
+<clr:18,199,226>Je po Alyx.
+<clr:18,199,226>Á... primární nep
+<clr:18,199,226>Alyx byla zne
+itel eliminován.
+<clr:18,199,226>Zpátky pod kytky.
+<clr:18,199,226><sfx:1>[zasténání]
+<clr:18,199,226><sfx:1>[namáhavé dýchání]
+<clr:18,199,226><sfx:1>[ka
+<clr:18,199,226>Dvanáct.
+<clr:18,199,226>Echo 1.
+<clr:18,199,226>Echo 1
+ádá o stín.
+ipravuji stimulanty.
+ádám o kryt.
+ný extraktor. Uhýbám.
+<clr:18,199,226>Kryjte se.
+lobuch v sektoru.
+<clr:18,199,226>Stáhn
+te se.
+lobuch. Hledám stín.
+<clr:18,199,226>Kon
+<clr:18,199,226>Pomoz nám!
+<clr:18,199,226>Promi
+<clr:18,199,226>Nashle v pekle.
+uji se.
+<clr:18,199,226>Echo 1 m
+uji blokaci.
+<clr:18,199,226>Echo 1 nemá vizuál na cíl. P
+<clr:18,199,226>Upravuji zorné pole na nep
+<clr:18,199,226>Vizkon p
+en. P
+<clr:18,199,226>Odhaluji primár.
+<clr:18,199,226>Zastavte palbu!<cr>Cíl je spojenec!
+<clr:18,199,226>Slo
+te zbran
+!<cr>Echo 1 skládá zbran
+<clr:18,199,226>Zastavuji palbu!<cr>Kosy odlo
+<clr:18,199,226>Alyx je s námi! Opakuji, je s námi!
+<clr:18,199,226>Alyx je s námi! Zastavte palbu!
+<clr:18,199,226>[smích] P
+<clr:18,199,226>Zahajuji palbu na nep
+<clr:18,199,226>Echo 1 se hlásí z primárního bodu.
+<clr:18,199,226>Kropím sektor.
+<clr:18,199,226>Zahajuji palbu na prioritní cíl.
+uji Vance.
+<clr:18,199,226>Zahajuji palbu na cíl jedna.
+<clr:18,199,226>Hlásím ostré od primáru.<cr>Op
+tujte palbu.
+<clr:18,199,226>Alyx brzy padne.
+e jde na porá
+<clr:18,199,226>Jackpot potvrzen. Pálím.
+istím poslední známou.
+<clr:18,199,226>Vyvíjím tlak na poslední známé. P
+<clr:18,199,226>Vyháním nep
+<clr:18,199,226>Padám do krytu.
+<clr:18,199,226>Padám.
+<clr:18,199,226>Echo 1 zvy
+uje pozornost.<cr>Hlaste v
+echny podez
+elé.
+<clr:18,199,226>Zdravotníka!
+ádám o náhradní sko
+ápku.
+<clr:18,199,226>Echo 1 brzy padne.
+<clr:18,199,226>Kurva.
+<clr:18,199,226><sfx:1><norepeat:5>[
+ádá o lokaci.
+<clr:18,199,226>Cíl ztracen.<cr>
+ádám o pomoc s lokací.
+<clr:18,199,226>Negativní vizkon na nep
+<clr:18,199,226>Nulový vizuál. Pomozte.
+ítel ztracen. Sektor neznámý.
+<clr:18,199,226>Pomozte s lokací.
+ebuji pomoc s lokací v sektoru.
+<clr:18,199,226>Nulový vizuál. Bezpe
+nosti, pomozte.
+<clr:18,199,226>Echo 1 hlásí negativní vizuál.
+podobnost úniku.
+bez vizuálu na cíl jedna.
+<clr:18,199,226>Primární nep
+itel ztracen.<cr>Veliteli, co te
+<clr:18,199,226>Hledám cíl jedna na pozici.
+<clr:18,199,226>Vizkon ztracen. O
+<clr:18,199,226>Hlásím ticho a
+<clr:18,199,226>[panický vyd
+ený k
+jteeeee!
+<clr:18,199,226>Do prd
+<clr:18,199,226>Tady echo 1. Pomoc! Pomoc!
+jte. Odvolávám! Echo 7.<cr>Odvolávám. Echo 7.
+<clr:18,199,226>Echo 1 hlásí p
+ení! Pomozte!
+blízko. Napravuji.
+<clr:18,199,226>Ano.
+<clr:18,199,226>Kosa p
+ipravena.
+<clr:18,199,226>Echo 1 je na pozici.
+<clr:18,199,226>Á... naru
+<clr:18,199,226>Echo 1 zabezpe
+<clr:18,199,226>Kontroluji perimetry.
+<clr:18,199,226>Á... nep
+ádám o zesílení palby na cíl jedna.
+<clr:18,199,226>Kosy ú
+inné. Kód 0-9.
+<clr:18,199,226>Zabra
+te primárnímu nep
+íteli v lé
+<clr:18,199,226>Kontakt ztracen. Zdá se tu
+em jednotkám. Hlaste se.<cr>Tady ticho.
+istá.<cr>Odvolávám
+<clr:18,199,226>Zpracovávám vizkon...
+echázím do stavu Alfa.
+<clr:18,199,226>Echo 1 jde do akce.
+<clr:18,199,226>Hledám.
+<clr:18,199,226>Rozumím. Vizkon v
+ech jednotek.
+lte se a skenujte.
+<clr:18,199,226>Zahajuji ofenzivu na cíl. Delta.
+<clr:18,199,226>Vizkon! Vizkon!
+<clr:18,199,226>Cíl nalezen.
+<clr:18,199,226>Kontakt s nep
+te, jd
+<clr:18,199,226>Tady echo 1.<cr>Kontakt v sektoru 9-4.
+<clr:18,199,226>Potvrzení v zorném poli.
+<clr:18,199,226>Echo 1 zastavuje nep
+<clr:18,199,226>Lokace potvrzena.<cr>Vynucuji káze
+<clr:18,199,226>Aktivní vizuál. Nep
+ítel objeven.
+<clr:18,199,226>Obnovuji kosu.
+<clr:18,199,226>Echo 1 na suchu za 3... 2... 1...
+ádám o krycí palbu pro p
+ebití.
+<clr:18,199,226>Echo 1 hlásí prázdnou kosu.
+<clr:18,199,226>Obnovuji zbra
+<clr:18,199,226>Ústup.
+<clr:18,199,226>Echo 1 se stahuje.
+<clr:18,199,226>Máme vizkon na sekundáry.
+<clr:18,199,226>Pozemní týme, pozor. Cíl jedna má extraktory.
+ebíjí. Máme palebnou výhodu.
+ebíjí. Plná ofenziva aktivní.
+<clr:18,199,226>Máme tu elektrominy. Kosy odjistit.
+<clr:18,199,226>Vizkon! Elektrominy!
+ním cíl na elektrominy.
+<clr:18,199,226>Elektrominy. Poblí
+<clr:18,199,226>Pozemní týme, pozor.<cr>Nep
+ítel má vylep
+<clr:18,199,226>Vizkon. Nelegální ostré.
+en!
+<clr:18,199,226>Vzpoura, vzpoura, vzpoura!
+<clr:18,199,226>Jednotka selhala.
+nosti, sektor zamo
+en!<cr>Opakuji. Sektor zamo
+<clr:18,199,226>Výhoda ztracena. Problémy v dohlednu.
+<clr:18,199,226>Jednotka ml
+í.
+<clr:18,199,226>Echo 1 z
+stal sólo.
+nosti! Echo 1 je poslední jednotka!
+<clr:18,199,226>Uhh.
+itý stín!
+nosti! Vzpoura se vymkla kontrole!
+<clr:18,199,226>Echo 1 hlásí sólový kontakt s n
+nosti! Nezbývá
+ádný pozemní tým.
+nosti! Echo 1
+ádá o extrakci.
+nosti.<cr>Echo 1 je poslední na
+nosti! Velitel padl!
+í!
+ádám o pomoc!
+nosti! Velitel je ve stavu Soumrak! Potvr
+nosti, velitel padl.<cr>Reaguji...
+te plnou ofenzivu!
+<clr:18,199,226>Velitel to má za sebou.
+<clr:18,199,226>Pálím krycí.
+<clr:18,199,226>Potla
+ovací palba na pozici.
+<clr:18,199,226>Echo 1 vynucuje poslu
+<clr:18,199,226>Dávka na poslední známou.
+uji kosu na poslední známou.
+ítel je p
+pendlen.
+<clr:18,199,226>Cíl selhal. Vyu
+evahy vlivem chyby nep
+<clr:18,199,226>Echo 1 je netknutý.
+inné. Cíl je nezku
+<clr:18,199,226>Uhhh... nelze provést.
+<clr:18,199,226>Ostré potvrzeny. Utvo
+te formaci.
+<clr:18,199,226>Kontakt. Nep
+ítel na pozici.
+<clr:18,199,226>Echo 1 zahajuje palbu.
+<clr:18,199,226>Tady echo 1. Máme tu hlasité naru
+átelský. Kosy odjistit.
+<clr:18,199,226>Uhh. P
+<clr:18,199,226>Rozumím.<cr>Echo 1 zvy
+uje pozornost a hlásí v
+<clr:18,199,226>Zvuky v sektoru Alfa-9-Delta.<cr>Odhalení nep
+nosti.<cr>Echo 1 potvrzuje ID sektoru a p
+esouvá se k infikovanému.<cr>Ve
+ejný nep
+ítel 7-1-3.
+itel je zranitelný.<cr>Vyu
+<clr:18,199,226>Tady echo 1.<cr>Kontakt v sektoru 9-4.<cr>Nep
+<clr:18,199,226>Zkontrolujte budovu 11 na p
+ítomnost cíle.<cr>Primární nep
+í.<cr>Probíhá pr
+clr:18,199,226>P
+echázím do stavu Alfa. Á...<cr>Naru
+itel nemá kam utéct.<cr>Kontroluji perimetry.
+<clr:18,199,226>Jackpot potvrzen.<cr>P
+íteli.<cr>Alyx nemá
+<clr:18,199,226>Hmm... ne... nemám co nahlásit. P
+<clr:18,199,226>1, 14, 3, 6, 11. Ov
+uji.<cr>Á... Echo 4 hlásí
+isto.<cr>Te
+vy. P
+<clr:18,199,226>Ladím... Potvrzuji... Echo 1 hlásí
+patnou viditelnost a sly
+itelnost.<cr>
+<clr:18,199,226>Instrukce jasné...<cr>Stav Ku
+avka zamítnut.<cr>Uhh... po
+kejte... Ne.<cr>Radiály
+nosti.<cr>Echo 4
+ádá o údaje o vzdálenosti nep
+<clr:18,199,226>Sledování sektoru je na 43 %.<cr>Stabilní. A...<cr>Stále
+ení sektoru.<cr>Ve
+ítel
+íslo 1 je uhh... v pohybu a nebezpe
+ný.<cr>Sledujte okolí a dbejte zvý
+áteli...<cr>Uhh... Rozumím.
+<clr:18,199,226>Negativní. Rozumím.<cr>Sektor nezaji
+n. Chybí potvrzení vektoru cíle jedna.<cr>
+tít: 100. Biprox: 0,73.<cr>Audio: 3. Fotovizuál: 15. Echo 1 kon
+<clr:18,199,226>Rozumím.Nastavuji
+eni smrtelníci.<cr>Uhhh...
+nost potvrzuje hmm... neozna
+<clr:18,199,226>Kód zprávy: Delta-Echo-7-9-Alfa-2-Whiskey-0...<cr>Potvrzuji. Echo 1 kon
+ech jednotkách obnovení.<cr>Kognitivní disharmonie nebude tolerována<cr>Nikoli... V
+vzpomínek. Aktualizace je p
+ipravena.<cr>Souhlas povinný.
+í pozici.<cr>Fotovizuál na 73. Audio na... 15.<cr>Bezpe
+.<cr>Z
+nosti. Máme tu aktivní nep
+<clr:18,199,226>Echo 1 je aktivní a pálí.
+z primárního cíle.
+<clr:18,199,226>Echo 1 soust
+edí ve
+<clr:18,199,226>Áááá! P
+átí sko
+ápky!<cr>Pomoc. Pomozte
+ápky!<cr>Pomoc. Pomo
+[nez
+etelný k
+ádá okam
+itou pacifikaci nep
+ítele! [panický k
+ítele. [panický k
+<clr:18,199,226>Áááá! Tepelný limit p
+en! Áááhh!
+<clr:18,199,226>Uhh! Biodata kritická. Soumrak za 4... 3... 2
+<clr:18,199,226>Uhh! Biodata kritická. Soumrak za 4... 3
+ápky! Ááááhh!
+ápky! [nez
+<clr:18,199,226><sfx:1>[panický k
+iteli, prosím pozor.<cr>Nabízíme vám pomoc. Jste v bezpe
+<clr:18,199,226>Nabízíme vám pomoc. Jste v bezpe
+il mez povolené agrese.
+<clr:18,199,226>Kód 10-307. Stup
+ídit kódu 10-307.<cr>Stup
+<clr:18,199,226>Aktivuji kód 10-108. P
+uji operaci. Kód 10-40.
+<clr:18,199,226>Nest
+<clr:18,199,226>Spojenec potvrzen. Zastavte palbu!
+<clr:18,199,226>Potvrzuji. Cíl má nízkou hodnotu.
+ím se k naru
+ikazuji postup.
+ikazuji posun.
+em jednotkám. Tla
+te vp
+em jednotkám. Sesypte se na cíl.
+ní tým má ID sektoru a p
+<clr:18,199,226>Plná ofenziva.
+<clr:18,199,226>Ahoj, cíli jedna.
+<clr:18,199,226>Primární cíl. Velitel zam
+<clr:18,199,226>Palte na Alyx.
+em jednotkám. Palte na Alyx.
+<clr:18,199,226>Zahajuji ofenzivu na kryt.
+<clr:18,199,226>Zahajte ofenzivu na kryt.
+te podporu.
+<clr:18,199,226>Extraktor.
+ipravuji d
+<clr:18,199,226>Házejte.
+<clr:18,199,226>Ho
+te extraktor.
+em jednotkám. Pou
+ijte d
+em jednotkám. Vyu
+<clr:18,199,226>Cíl. Antlion.
+<clr:18,199,226>Vizkon. Antlioni.
+<clr:18,199,226>Ochranný týme, pozor.<cr>Aktivita antlion
+v sektoru.
+nosti.<cr>Pozemní tým má vizuál na p
+<clr:18,199,226>Vizkon. Spat
+<clr:18,199,226>Vizuál na p
+nosti.<cr>Pozemní tým má vizuál na mr
+in v sektoru.
+iny poblí
+<clr:18,199,226>Velitel hlásí likvidaci. Známka.
+ipisuji si zne
+<clr:18,199,226>Infekce byla odklizena.
+nosti, sektor je
+istku provedl:
+<clr:18,199,226>Pacifikaci provedl:
+<clr:18,199,226>Tady velitel. Alyx zlikvidována.
+<clr:18,199,226>Primární cíl zne
+n jednotkou:
+<clr:18,199,226>Primární cíl zpacifikován jednotkou:
+ina zpacifikována jednotkou:
+ina odklizena jednotkou:
+em jednotkám. Kryjte velitele na pozici.
+<clr:18,199,226>Velitel
+<clr:18,199,226>Ost
+í 2, p
+ipravte stimulanty.
+ádám o kryt na pozici.
+<clr:18,199,226>Zachra
+<clr:18,199,226>Bráním se.
+echázím do stínu.
+em jednotkám. Sev
+ít formaci.
+em jednotkám. Uhn
+em jednotkám. Upozorn
+ní na blízkost d
+lobuchu.
+<clr:18,199,226>Zaost
+<clr:18,199,226>Blokace odstran
+uji dohled.
+eskupte se.
+<clr:18,199,226>Upravte si zorné pole.
+<clr:18,199,226>Pozemní týme, p
+<clr:18,199,226>Ochranný týme, upravte si zorné pole.
+<clr:18,199,226>Zastavte palbu!<cr>Cíl je spojenec.
+!<cr>Slo
+<clr:18,199,226>Zastavte palbu.<cr>Zastavte palbu.
+em jednotkám. Alyx je s námi.
+<clr:18,199,226>Pálím na nep
+<clr:18,199,226>Kosy odjistit.
+<clr:18,199,226>Pacifikace dle uvá
+em jednotkám. Zahajte palbu na pozici.
+<clr:18,199,226>Zahajte palbu. Priorita jedna.
+<clr:18,199,226>Zahajte palbu na Alyx.
+<clr:18,199,226>Velitel sm
+uje kosu na primár.
+<clr:18,199,226>Jackpot potvrzen. Palte.
+<clr:18,199,226>Priorita, cíl jedna.
+elba na Vance povolena.
+<clr:18,199,226>Uml
+te cíl jedna.
+istím pomocí d
+<clr:18,199,226>Extrahuji ze sektoru.
+te d
+<clr:18,199,226>Vy
+te nep
+<clr:18,199,226>Provádím úhybný manévr.
+em jednotkám. Zpozorn
+te.<cr>P
+i vizuálu hlaste naru
+<clr:18,199,226>Veliteli u
+<clr:18,199,226>Zásoby se ten
+í. Nezbývá moc
+ádá o zdravotnickou pomoc.
+<clr:18,199,226>Jednotce u
+<clr:18,199,226><sfx><norepeat:5>[
+<clr:18,199,226>Nulový vizkon na naru
+<clr:18,199,226>Nahlaste zorné pole.
+podobnost úniku. V
+em jednotkám. Podejte hlá
+ádám o lokaci cíle.
+<clr:18,199,226>Nulový vizkon na nep
+<clr:18,199,226>Zkontrolujte kryt.
+<clr:18,199,226>Nahlaste status cíle.
+<clr:18,199,226>Primární cíl ml
+<clr:18,199,226>Nulový vizkon na primár.
+<clr:18,199,226>Cíl Vance je ve stínu.
+<clr:18,199,226>Primární naru
+itel ztracen.
+ítel je ve stínu. Nahlaste vizkon.
+ení vzdálenosti. Napravuji.
+<clr:18,199,226>Pomoc. Pomoc. Pomoc. Pomoc.
+<clr:18,199,226>Infekce postupuje. Infekce postupuje.
+<clr:18,199,226>Ustupte. Ustupte. Ustupte.
+<clr:18,199,226>Na pozici.
+kejte instrukcí.
+<clr:18,199,226>Velitel zabezpe
+ekejte na kontakt.
+<clr:18,199,226><sfx><norepeat:5>[oddechování]
+ítele za dva, jedna...
+ádám o zesílení palby.
+<clr:18,199,226>Dokon
+uji úkol.
+em jednotkám. Zabra
+<clr:18,199,226>Nahlaste stav nep
+<clr:18,199,226>Kontakt ztracen. Mo
+ná dekontaminace.
+itelé v sektoru.
+em jednotkám. Hlaste se. Tady ticho.
+<clr:18,199,226>Nahlaste status sektoru.
+<clr:18,199,226>Nahlaste status infekce.
+ujte ve skenování.
+ujte v hledání.
+nosti. Hlásím stav Alfa.
+istka zahájena.
+te v pozoru a hlaste zorné pole.
+em jednotkám. Nahlaste vizkon.
+uji s odhalením nep
+<clr:18,199,226>Postupujte a skenujte.
+<clr:18,199,226>Uzav
+ete arénu.
+em jednotkám. Rozd
+em jednotkám. Zkontrolujte v
+echny stíny.
+<clr:18,199,226>Zahajte ofenzivu! Cíl na sou
+adnicích.
+<clr:18,199,226>Vizkon. Vizkon. Dosah 50. Sm
+r 12.
+<clr:18,199,226>Cíl nalezen na sou
+<clr:18,199,226>Kontakt v sektoru.
+<clr:18,199,226>Nový kontakt v sektoru.
+<clr:18,199,226>Zahajte ofenzivu v sektoru.
+<clr:18,199,226>Znovu zam
+te cíl.
+<clr:18,199,226>Zastavte nep
+ítele na pozici.
+<clr:18,199,226>Velitel na suchu za 4... 3... 2... 1...
+<clr:18,199,226>Kosa prázdná.
+<clr:18,199,226>Zkontrolujte zásoby.
+<clr:18,199,226>Zahajuji ústup.
+te se do stínu.
+horký. Stáhn
+<clr:18,199,226>Vizkon na více neznámých. Riziko vysoké.
+nosti. Máme vizkon na sekundáry.
+<clr:18,199,226>Zkontrolujte siluety. Mo
+<clr:18,199,226>Vícero naru
+potvrzeno.
+<clr:18,199,226>Pozor. Nep
+ítel má granáty.
+em jednotkám. Nep
+ítel má k dispozici d
+lobuchy. Pokra
+ebíjí. Plná ofenziva.
+íteli v p
+nosti. Máme tu elektrominy. Kosy odjistit.
+<clr:18,199,226>Vizkon. Elektrominy.
+<clr:18,199,226>Subakutní elektrominy. Plná ofenziva.
+<clr:18,199,226>Zm
+te cíl. Elektrominy.
+<clr:18,199,226>Cíl má nelegální ostré.
+ené ostré identifikovány.<cr>Pokra
+nosti, vzpoura se vymkla kontrole.
+ádám o dal
+í jednotky.
+<clr:18,199,226>Pozemní tým padl.<cr>Sektor není ovládán.
+nosti, sektor je horký.
+nosti. Velitel z
+nosti. Velitel je poslední jednotka.<cr>
+nosti. Vzpoura se vymkla kontrole.
+<clr:18,199,226>Pozemní tým padl.<cr>
+nosti. Hlásím sólový kontakt.<cr>Více nep
+ádám o extrakci v sektoru.
+nosti.<cr>Velitel je poslední na
+nosti.<cr>Infekce se
+pendluji cíl.
+<clr:18,199,226>Vyprázd
+uji kosu na primár.
+te cíl na pozici.
+<clr:18,199,226>Zahajte potla
+ovací palbu.
+<clr:18,199,226>Netknutý.
+<clr:18,199,226>Nemohu splnit.
+ete pálit.
+lte se!
+<clr:18,199,226>Cíl zahájil palbu. Op
+tujte.
+<clr:18,199,226>Pozemní tým hlásí kontakt v sektoru.
+<clr:18,199,226>Ochranný tým hlásí ostré v sektoru.
+<clr:118,199,223>14, 1, 6, 3... 11... a... te
+<clr:18,199,226>Nulový pohyb.
+patná sly
+<clr:18,199,226>Instrukce jasné.<cr>Stav Ku
+avka zamítnut.<cr>Radiály
+<clr:18,199,226>Sledování sektoru je na 43 %. Stabilní.<cr>Stále
+<clr:18,199,226>Potvrzuji.<cr>Kód statusu vzpoury je Delta 7.<cr>Tým Západ hlásí zamo
+<clr:18,199,226>Rozumím. Sektor nezaji
+<clr:18,199,226>Audio: 3. Fotovizuál: 15.
+<clr:18,199,226>Nastavuji
+eni smrtelníci. P
+em jednotkám. P
+ipravte se na kontakt.
+<clr:18,199,226>Kód zprávy: Delta-Echo-7-9-Alfa-2-Whiskey-0... Potvrzuji. Echo 1 kon
+. Z
+<clr:18,199,226>Nikoli. Cíl je stále aktivní.
+<clr:18,199,226>Potvrzuji.<cr>Rekalibruji.
+nosti, kód 10-4.<cr>Vypou
+tím
+ezák.
+<clr:18,199,226>Vypou
+ezák je aktivní a skenuje.
+ezák vypu
+<clr:18,199,226>Aktivuji
+ezák.<cr>Pro
+esat a oslabit.
+ezák.<cr>Výsledky zanedlouho.
+ezák je na lovu.<cr>V
+em jednotkám. Dr
+te se zp
+<clr:18,199,226>10-0.<cr>
+ezák je na lovu.
+n.<cr>Obhlédnout a potla
+n.<cr>Identifikovat a odsoudit.
+ujte v pacifikaci.
+<clr:18,199,226>POJ se blí
+<clr:18,199,226>POJ se nachází poblí
+<clr:18,199,226>POJ postupuje k cíli.
+<clr:18,199,226>POJ postupuje.
+<clr:18,199,226>POJ se posouvá.
+<clr:18,199,226>POJ pálí krycí.
+<clr:18,199,226>POJ zam
+<clr:18,199,226>Útok, útok.
+ím na cíl jedna.
+<clr:18,199,226>Sterilizuji primární cíl.
+<clr:18,199,226>Vzdej se, Alyx.
+<clr:18,199,226>Útok na primárního nep
+<clr:18,199,226>POJ úto
+í na Alyx.
+ním cíl.<cr>Kód Pr
+n.<cr>Napravuji.
+<clr:18,199,226>POJ odstra
+<clr:18,199,226>POJ sm
+<clr:18,199,226>POJ má vizkon na antliona.
+uje antliona.
+<clr:18,199,226>Hlásím kontakt. P
+<clr:18,199,226>Spat
+<clr:18,199,226>POJ má vizuál na p
+<clr:18,199,226>Uhhhhhh...
+<clr:18,199,226>POJ má vizuál na mr
+<clr:18,199,226>Vizkon na mr
+ítel u
+<clr:18,199,226>POJ hlásí zne
+<clr:18,199,226>POJ veliteli. P
+<clr:18,199,226>Je mrtvá. Podejte antiseptikum.
+<clr:18,199,226>Problém vy
+<clr:18,199,226>Cíl jedna zne
+ina odeslána do pekel.
+<clr:18,199,226>POJ
+ádá o kryt.
+<clr:18,199,226>Kryt na pozici.
+<clr:18,199,226>Pozor, extraktor.
+<clr:18,199,226>Dávejte pozor.
+lobuch. Stáhn
+<clr:18,199,226>PO
+<clr:18,199,226>Upravuji vizkon.
+<clr:18,199,226>Pracuji na vizuálním potvrzení
+uji formaci.
+!<cr>POJ skládá zbran
+<clr:18,199,226>POJ se hlásí z primárního bodu.
+<clr:18,199,226>Kód 3. Ú
+astním se
+istky.
+<clr:18,199,226>Kosy soust
+ny na nep
+<clr:18,199,226>Cíl: Vance.
+<clr:18,199,226>Zahajuji palbu na cíl.
+<clr:18,199,226>Je tady.
+<clr:18,199,226>Ve
+íslo 1 potvrzen. Pálím.
+istím sektory.
+<clr:18,199,226>Házím extraktor na poslední známou.
+<clr:18,199,226>Odhaluji nep
+<clr:18,199,226>POJ zvy
+<clr:18,199,226>Utr
+il jsem po
+kození.<cr>Hledám stín.
+<clr:18,199,226>Ostré ú
+inné.<cr>Aplikuji stimulanty.
+<clr:18,199,226>Nulový vizkon. Nulový vizkon.
+<clr:18,199,226>Veliteli, máme tu kód 7-1-3.<cr>
+ádám o poslední známou.
+ebuji pomoc s lokací. Sektor.
+<clr:18,199,226>Nulový vizuál. Veliteli, pomozte.
+<clr:18,199,226>POJ hlásí negativní vizuál.
+podobnost úniku.<cr>Hlaste zorná pole.
+itel ztracen.<cr>Veliteli, pomozte.
+<clr:18,199,226>Hlásím p
+<clr:18,199,226>POJ provede.
+<clr:18,199,226>POJ je na pozici.
+eká.
+<clr:18,199,226>POJ má o
+<clr:18,199,226>POJ zabezpe
+uje perimetry.
+<clr:18,199,226>Je zranitelná.
+ítele. HNED.
+<clr:18,199,226>Zesilte palbu na pozici POJ.
+<clr:18,199,226>POJ ú
+<clr:18,199,226>POJ veliteli. Nep
+<clr:18,199,226>Stav Alfa.
+<clr:18,199,226>POJ jde do akce.
+uji pozornost.
+<clr:18,199,226>Prohledávám stíny.
+<clr:18,199,226>Tady POJ. Kontakt v sektoru.
+<clr:18,199,226>POJ zastavuje nep
+<clr:18,199,226>POJ obnovuje.
+<clr:18,199,226>POJ má málo. 4... 3... 2... 1...
+<clr:18,199,226>Kosa prázdná. Napravuji.
+<clr:18,199,226>POJ hlásí prázdnou kosu.
+<clr:18,199,226>POJ se stahuje.
+<clr:18,199,226>Tady POJ. P
+<clr:18,199,226>Tady POJ. Stahuji se.
+ný.<cr>Hledám stín.
+<clr:18,199,226>Zkontrolujte siluety.<cr>Mo
+ítel má extraktory.
+ebíjí.<cr>Máme palebnou výhodu.
+<clr:18,199,226>Zahajte postup.
+<clr:18,199,226>Tady POJ. Naru
+<clr:18,199,226>Vizkon. Elektrominy. Kosy odjistit.
+<clr:18,199,226>Elektrominy! Pomoc, pomoc.
+<clr:18,199,226>Veliteli, ostré nep
+<clr:18,199,226>Tady POJ. Cíl má nelegální ostré.
+<clr:18,199,226>Sektor 9: vzpoura, vzpoura, vzpoura.
+<clr:18,199,226>Máme tu problém.
+nosti, POJ z
+stala sólo.
+nosti. POJ je poslední na
+ivu.<cr>
+itou pomoc.
+ádám o stín.
+nosti. Vzpoura se vymkla kontrole!
+<clr:18,199,226>POJ Bezpe
+nosti.<cr>Stav Selhání aktivní. Potvr
+nosti! Hlásím sólový kontakt.<cr>Více nep
+átel!
+nosti.<cr>POJ
+ádá o extrakci v sektoru.
+nosti!<cr>POJ je poslední na
+nosti! Velitel padl.<cr>Reaguji!
+í! Prove
+<clr:18,199,226>Velitel neodpovídá.<cr>Velitel neodpovídá!
+<clr:18,199,226>POJ vynucuje poslu
+<clr:18,199,226>Podp
+ofenzivní jednotka pálí na pozici.
+<clr:18,199,226>Tady POJ. Nep
+nosti. Naru
+itel si dovoluje.
+<clr:18,199,226>POJ je netknutá.
+nosti. Nelze.
+<clr:18,199,226>Ostré potvrzeny.<cr>Potla
+ení zahájeno.
+<clr:18,199,226>POJ p
+ipravena k útoku.
+<clr:18,199,226>Cíl úto
+<clr:18,199,226>Uzavírám arénu.<cr>P
+<clr:18,199,226>Nemám co nahlásit.
+<clr:18,199,2214>3, 11, 1, 14, 6... Ov
+uji. Te
+<clr:18,199,226>Negativní pohyb. Sou
+<clr:18,199,226>Ladím... Potvrzuji.
+<clr:18,199,226>Stabilní.
+<clr:18,199,226>Kód statusu vzpoury je Delta 7.<cr>Tým Západ hlásí zamo
+áteli...<cr>Rozumím.
+<clr:18,199,226>Nahrávám biodata...<cr>Audio: 3. Fotovizuál: 15. P
+<clr:18,199,226>Rozumím.<cr>
+<clr:18,199,226>Hlásím
+<clr:18,199,226>Kód zprávy: 2-Whiskey-0...<cr>Potvrzuji.
+ijímám.<cr>Aktualizace bude dokon
+<clr:18,199,226>Aktualizace je p
+í pozici.<cr>Z
+<sfx><norepeat:2><clr:255,0,0>[
+ádná munice]
+<sfx:1><norepeat:3><clr:255,0,0>[poslední náboj v komo
+<sfx><norepeat:3><clr:255,0,0>[vyst
+elení posledního náboje]
+<sfx><norepeat:5><clr:255,176,0>[vypot
+ebování munice]
+<sfx:1><norepeat:3><clr:255,0,0>[poslední patrona v komo
+elení poslední patrony]
+<sfx><norepeat:5>[napln
+ní brokovnice]
+<sfx><norepeat:3>[p
+ipravení výbu
+ných brok
+<sfx><norepeat:3><clr:255,0,0>[poslední výst
+<sfx><norepeat:5>[nemo
+nost teleportace]
+<sfx>[zahájení hackování]
+<sfx>[selhání hackování]
+<sfx>[dokon
+ení hackování]
+<sfx>[výbuch granátu]
+<sfx><clr:255,0,0>[odji
+ní granátu]
+<sfx>[výbuch mimozemského granátu]
+ení lé
+<sfx><norepeat:1><clr:255,0,0>[vypot
+ebování zdravotní stanice]
+<sfx>[zahájení lé
+<sfx>[vpíchnutí lé
+ivé injekce]
+<sfx>[potvrzující pípnutí]
+<sfx>[aktivace laseru]
+<sfx><norepeat:1>[aktivace nádr
+ky]
+<sfx>[otev
+ení schránky na baterii]
+<sfx>[p
+ijetí baterie]
+ipojení dve
+<sfx>[odem
+ení dve
+<sfx>[vylep
+ování]
+ení vylep
+<sfx><norepeat:8>[uzav
+ení obvodu]
+<sfx:1><norepeat:1>[vlo
+ení polymeru do batohu]
+<sfx:1><norepeat:1>[vyta
+ení munice z batohu]
+<sfx:1>[vyta
+ení polymeru z batohu]
+ení munice do batohu]
+<sfx><norepeat:8>[p
+ipevn
+ní svítilny]
+<sfx><norepeat:20>[upozorn
+ní na nízké zdraví]
+<sfx>[posouvání dve
+<sfx>[dve
+e uzam
+eny]
+<sfx><norepeat:4>[hlasité vrzání dve
+<sfx><norepeat:4>[cinknutí výtahu]
+<sfx><norepeat:4>[spu
+ní výtahu]
+<sfx><norepeat:4>[p
+íjezd výtahu]
+<sfx><norepeat:4>[zvuk tla
+ítka výtahu]
+<sfx><norepeat:6>[sk
+ípání bedny]
+<sfx>[zni
+ení zámku]
+<sfx:1>[výbuch]
+<sfx><norepeat:2>[klepání na okno]
+<sfx>[prásknutí dve
+mi]
+<sfx>[nastartování motoru]
+<sfx>[elektrický
+ok]
+<sfx>[odsouvání tajných dve
+<sfx>[spu
+ní
+íku]
+<sfx>[výbuch dronu]
+ení vrzajících dve
+<sfx>[zavr
+<sfx>[d
+sivý k
+<sfx>[mlácení do plotu]
+<sfx>[rozbití skla]
+<sfx>[zav
+<sfx>[odsunutí panelu]
+<sfx>[zasunutí panelu]
+<sfx>[zazvon
+ní]
+<sfx>[vortigaunt
+energetický výboj]
+<sfx>[vypnutí proudu]
+<sfx>[pád výtahu]
+<sfx>[cinknutí výtahu]
+<sfx>[z
+ícení výtahu]
+<sfx>[odpojení napájení výtahu]
+ipojení napájení výtahu]
+ipojení napájení sv
+tel]
+<sfx>[odpojení napájení sv
+<sfx><norepeat_global:5>[pohyb ve ventila
+ních
+achtách]
+<sfx>[rozra
+<sfx>[výbuch elekt
+iny]
+<sfx>[pohyb nad stropem]
+<sfx>[propadnutí stropu]
+<sfx>[headcrab
+pohyb]
+zvuky]
+<sfx>[výpadek proudu]
+<sfx>[nahození proudu]
+<sfx>[skopnutí
+<sfx>[sní
+ení energie]
+<sfx>[navý
+etí
+<sfx>[výbuch skla]
+<sfx>[advisor
+smrtelný k
+evinutí
+asu]
+<sfx>[zastavení
+<clr:255,176,0>Pozor:
+ivotní funkce v kritickém stavu.<cr>Vyhledejte léka
+skou pomoc.
+<sfx>[kroky ve ventilaci]
+<sfx>[rozbití okna]
+<sfx>[zastavení vlaku]
+<sfx>[spláchnutí záchoda]
+<sfx><norepeat:5><clr:255,0,0>[antlion
+<sfx><norepeat:5><clr:255,0,0>[barnacle
+<sfx:1><norepeat:10>[headcrab
+zpozorn
+<sfx><norepeat:10>[headcrab
+útok]
+kousnutí]
+slintání]
+zahrabávání se]
+vyhrabávání se]
+<sfx><norepeat:10><clr:255,0,0>[headcrab
+bolest]
+<sfx>[mimozemský k
+<sfx><norepeat:4>[vlo
+ení srdce revivera]
+<sfx><norepeat:4>[odebrání srdce revivera]
+<sfx><norepeat:5><clr:255,0,0>[reviver
+<sfx><norepeat:8>[bloater
+nadýmání]
+<sfx>[bloater
+výbuch]
+<sfx:1><norepeat_global:5>[mimozemské
+keble
+betání]
+<sfx:1><norepeat:4>[zvuky mraku mimozemských spor]
+<sfx><norepeat:4>[Jeff
+<sfx><norepeat:6>[Jeff
+rozbití dve
+<sfx><norepeat:4>[d
+rozzu
+<sfx><norepeat:5>[Jeff
+dupání]
+mlácení na dve
+<sfx><norepeat:6>[otev
+<sfx><norepeat:12>[Jeff
+ch
+ze]
+<sfx><norepeat:20>[výtahová hudba]
+<sfx><norepeat:20>[zvuky z rozhlasu]
+<sfx><clr:255,176,0>[smrt]
+<sfx><clr:255,176,0>Zdraví kritické
+<clr:255,176,0>Vyhledejte léka
+skou pomoc
+<sfx><norepeat:5>[vlo
+ení baterie]
+<sfx><norepeat:5>[odebrání baterie]
+<sfx><norepeat_global:5><clr:255,176,0>[odra
+ení od pancí
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[pá
+idlo
+bouchnutí]
+úder]
+máchnutí]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[prázdná komora]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[pistole
+výst
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[revolver
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[samopal
+el granátu]
+primární výst
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[p
+ebíjení]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[brokovnice
+el z obou komor]
+el z jedné komory]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[primární výst
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[sekundární výst
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[sekundární nabitý výst
+<sfx><norepeat:5>[pistole
+<sfx><norepeat:4><clr:255,176,0>[sebrání munice]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[VÝBUCH]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[výbuch granátu]
+<sfx:1><norepeat_global:8><clr:255,176,0>[odra
+ení kulky]
+<sfx><norepeat:4><clr:255,176,0>[strider
+dopad st
+ely]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[odra
+<sfx><clr:255,170,0>[upozorn
+ní na málo zdraví]
+ní na málo munice]
+<sfx><clr:255,170,0>[vypot
+ebování b
+hu]
+<sfx><norepeat:5><clr:255,170,0>[zapnutí b
+<sfx><clr:255,170,0>[nelze pou
+ít]
+<sfx><clr:255,0,0>[smrt]
+<sfx><clr:255,170,0>[sebrání baterie]
+<sfx><clr:255,170,0>[sebrání lékárni
+<sfx><clr:255,170,0>[sebrání lé
+ivé ampule]
+<sfx><clr:255,170,0>[zamítnutí]
+<sfx><clr:255,170,0>[zahájení lé
+<sfx><norepeat:5>[stisknutí tla
+ítka]
+<sfx><norepeat:10>[antlion
+rozmá
+knutí]
+<sfx><norepeat:3>[barnacle
+<sfx><norepeat:3><clr:255,0,0>[barnacle
+itahování]
+krknutí]
+<sfx><norepeat:5>[barnacle
+trávení]
+výk
+<sfx><norepeat:10>[výbuch]
+<sfx><norepeat:10>[kamera
+zasouvání]
+vysouvání]
+cvaknutí]
+<sfx>[kamera
+zni
+<sfx><norepeat:10>[vrána
+<sfx><norepeat:10><clr:255,0,0>[vrána
+krákání]
+<sfx><norepeat:5><clr:255,0,0>[manhack
+<sfx><norepeat:20>[manhack
+vr
+ení motoru]
+<sfx><norepeat:10>[plesknutí]
+<sfx><norepeat:10>[manhack
+vypu
+<sfx><norepeat:5>[manhack
+<sfx><norepeat:30>[vysíla
+ka Combine
+konverzace]
+<sfx><norepeat:15>[vysíla
+upozorn
+ní na granát]
+ádost o posily]
+<sfx><norepeat:25>[vysíla
+taktická porada]
+<sfx><norepeat:10>[skener
+<sfx><norepeat:5><clr:255,0,0>[skener
+<sfx><norepeat:5>[skener
+nálet]
+<sfx><norepeat:10>[strider
+<sfx>[strider
+<sfx><norepeat:5><clr:255,0,0>[strider
+nabíjení]
+<sfx><norepeat:15>[strider
+el z minigunu]
+kroky]
+<sfx>[prásknutí]
+elektrický útok]
+<sfx><norepeat:10>[zombie
+<sfx><norepeat:10><clr:255,0,0>[zombie
+<sfx><norepeat_global:20>[zombie
+sténání]
+<sfx>[zam
+eno]
+<sfx><norepeat:1>[zav
+ení brány]
+<sfx><norepeat:1>[za
+ení kovu]
+ení sk
+<sfx><norepeat:1>[odem
+ení západky]
+<sfx><norepeat:1>[zam
+<sfx>[stisknutí tla
+<sfx>[zvuky páky]
+<sfx>[tla
+ítko zam
+ítka Combine]
+<sfx><norepeat:3>[
+plouchnutí vody]
+<sfx><norepeat:1>[t
+ní skla]
+<sfx><norepeat:1>[rozbití keramiky]
+ní keramiky]
+ní monitoru]
+<sfx>[rozplácnutí melounu]
+<sfx><norepeat:1>[tvrdý náraz]
+ijetí karty]
+<sfx><norepeat:3>[zamítnutí karty]
+<sfx><norepeat:1>[lámání d
+eva]
+<sfx><norepeat:1>[ni
+<sfx><norepeat:1>[praskání betonu]
+<sfx><norepeat:1>[lámání plastu]
+<sfx><norepeat:1>[trhání kartonu]
+<sfx><norepeat:1>[namáhání d
+<sfx><norepeat:3>[rozt
+ní d
+<sfx><norepeat:1>[lámání kovu]
+<sfx><norepeat:1>[namáhání kovu]

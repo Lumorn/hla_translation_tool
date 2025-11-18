@@ -1,0 +1,7354 @@
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Tình hình trên
+ó th
+nào?<I>
+Alyx: <clr:255,190,255>
+n ba
+ng thái c
+ám C
+m Ph
+n bình th
+ng.<cr>Quân tu
+n tra Combine c
+ng th
+.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Phía nhà kho th
+nào
+Eli: <clr:255,208,172><I>M
+t lò ph
+ng mini c
+a Combine trong c
+lô hàng 4000 cái.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Chúng ch
+ng b
+n tâm
+âu.<cr>
+ây, con xem
+i.<I>
+Russell: <clr:255,255,138><I>
+âu ch
+th
+.<cr>Có k
+còn hack vào m
+ng l
+i thi công c
+a t
+i Combine
+ây nè.<I>
+Alyx: <clr:255,190,255>Tham thôi
+ng tham quá.<cr>Không có nhi
+u th
+i gian
+âu.
+Russell: <clr:255,255,138><I>M
+t phút n
+a r
+i chú rút ngay.<cr>Cam k
+t.<I>
+Alyx: <clr:255,190,255>Ô! Còn n
+Con phát hi
+n t
+ang chuy
+ti
+p t
+vào khu cách ly.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Ch
+ã b
+hoang m
+y n
+m nay r
+Eli: <clr:255,208,172><I>H
+m. L
+t.<cr>
+c r
+i, chúng ta s
+tìm hi
+u vi
+c này khi tr
+.<I>
+Russell: <clr:255,255,138><I>Cái gì
+?<I>
+Russell: <clr:255,255,138><I>Cái GÌ
+ây?<I>
+Eli: <clr:255,208,172><I>G
+p l
+i con
+nhà trú
+n nhé c
+ng.<cr>T
+i ba s
+ó s
+m thôi.<I>
+Russell: <clr:255,255,138><I>Nó trông nh
+là
+<I>
+Alyx: <clr:255,190,255>Ba và chú s
+Alyx: <clr:255,190,255>Tuy
+Alyx! Alyx!
+Chúng ta
+n ch
+<clr:255,190,255>
+c lò ph
+ng r
+i, d
+nh
+n bánh.
+<clr:255,190,255>Gi
+tôi s
+quay l
+i nhà trú
+p ba.
+i! Chúng ta s
+liên l
+c sau.
+o tr
+ng.
+<clr:18,199,226>
+i mau.
+<clr:18,199,226>Ng
+i.<sb>
+<clr:18,199,226>Nhanh chân.
+i ti
+<clr:18,199,226>Bi
+n NGAY kh
+i ph
+<clr:18,199,226>Tr
+khu nhà c
+a ng
+i.<sb>NGAY.
+<clr:18,199,226>Mau! Mau!
+<clr:18,199,226>Nhanh chân lên.
+i.
+<clr:18,199,226>Tránh kh
+ng ph
+NGAY.
+<clr:18,199,226>V
+i NGAY.
+<clr:18,199,226>Qua
+i xong.<sb>
+i qua
+Alyx, qua
+ây!
+<clr:255,190,255>Gì th
+Trông không gi
+ng m
+t cu
+c rà quét
+nh k
+. C
+u ch
+c m
+i th
+êm
+p ch
+<clr:255,190,255>Tr
+m ph
+n tr
+Có gì
+ó ch
+úng ch
+hi
+m l
+Tr
+An r
+ng gây chú ý, và nh
+<clr:18,199,226>Vào
+<clr:18,199,226>Lên xe mau.
+i.<sb>Mau.
+i vô trong.
+<clr:18,199,226>Lên xe!
+c chúng.
+<clr:18,199,226>Nhìn
+ng sau!
+<clr:18,199,226><force>Gi
+tay lên! C
+ng
+y!
+i!
+NG L
+<clr:255,190,255>Whoa whoa whoa whoa, khoan khoan khoan!<cr>Tôi
+Tôi s
+<clr:18,199,226>Có th
+là công dân ch
+i.<sb>Quét
+<clr:255,190,255>Khoan k-khoan khoan!
+ng im! LÙI l
+<clr:18,199,226>B
+tay ra kh
+i nút b
+ng có ch
+m vào nút!
+tay trên
+tay lên!
+<clr:255,208,172><sfx:1>[Rên r
+vì
+au]
+<clr:255,208,172>B
+n tôi không có l
+y cái gì h
+<clr:255,208,172>Không! Tôi ch
+ng g
+p ai c
+<clr:255,208,172>Agh!
+<clr:255,190,255>BA!
+ng! Khoan
+ã,
+<clr:255,190,255>Ugh.  Các
+<sb>Các anh
+a tôi
+âu?<sb>Ba tôi
+âu?
+<clr:255,190,255>Này?!
+<clr:255,190,255>Kh
+t! Ba tao
+âu?!
+<clr:255,190,255>M
+a s
+ra mau!
+<clr:18,199,226>Câm ngay.
+<clr:18,199,226>Kêu nó ng
+i yên
+phía sau
+ng xê d
+ch
+<clr:18,199,226>Cái gì
+<clr:18,199,226>COI CH
+NG!
+<clr:18,199,226>Cái gì?
+<clr:18,199,226>L
+y nó mau!
+<clr:18,199,226>Tao không th
+<clr:18,199,226>Nó
+i gh
+ang tìm,
+ang tìm!
+y nó mau lên, mau lên!
+<clr:18,199,226>Ném mau, ném
+<clr:18,199,226>Tao
+ang ném
+Ã-G
+P-TAI-N
+M-L
+Y-TAI-NGHE.
+EO-TAI-NGHE-VÀO.
+<HEADSET><clr:255,255,138>
+eo tai nghe vào!
+<HEADSET><clr:255,255,138>Alyx!
+eo
+Alyx!
+<HEADSET><clr:255,255,138>Alyx! N
+u cháu còn s
+ng thì
+eo tai nghe vào
+<HEADSET><clr:255,255,138>Chú th
+y cháu
+ó r
+i! Không có lý do gì mà cháu không
+eo tai nghe vào c
+! Alyx!
+<HEADSET><clr:255,255,138>Không ph
+i b
+âu! Chú Russell
+ng nghi
+p c
+a ba cháu
+ây! Quân kháng chi
+<HEADSET><clr:255,255,138>Không l
+a ph
+nh gì
+âu, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Cháu có
+ó không?<cr>Cháu-cháu ph
+i ngay.
+<clr:255,190,255>Chú Russell?
+<clr:255,190,255>Cháu v
+a g
+p tai n
+! Tác ph
+m c
+a chú mà!<sb>Th
+nên nói là tai n
+n c
+ng không
+úng.<cr>Cháu ph
+i ngay
+<clr:255,190,255>Khoan. Ch
+ã. Ba cháu
+<HEADSET><clr:255,255,138>Ông
+y không sao.
+i theo chi
+c drone nhé.
+<HEADSET><clr:255,255,138>Cháu ph
+i ngay!
+<HEADSET><clr:255,255,138>Kh
+ng lên, Alyx.
+<HEADSET><clr:255,255,138>Alyx, cháu c
+n ph
+i ra kh
+ó. Ngay.
+<clr:255,190,255>Rõ r
+<clr:255,190,255>V
+ba cháu <I>
+n<I>, ph
+i không
+. À... không.<cr>Th
+t ra thì ông
+y g
+p r
+i l
+n r
+<clr:255,190,255>Nh
+<HEADSET><clr:255,255,138>Chúng v
+ang gi
+ông
+y.<cr>Trên m
+t chi
+c xe khác.
+Và chú l
+i c
+u cháu?
+m.<sb>Chú ch
+bi
+c ai
+ang
+xe nào.<sb>Nên
+úng v
+y.<cr>K
+t qu
+là chú
+ã c
+u CHÁU.
+<clr:255,190,255>Ta có bi
+t chúng
+âu không?
+<HEADSET><clr:255,255,138>Khu giam gi
+m.<sb>Và r
+i, khi phát hi
+n ra ông
+y là Eli Vance
+Nova Prospekt th
+ng ti
+<HEADSET><clr:255,255,138>Nh
+ng chú
+ang lên k
+ho
+u ông
+ây.
+<HEADSET><clr:255,255,138>G
+i phòng lab c
+a chú r
+i.<sb>C
+c drone
+ó!<cr>Chúng ta s
+ngh
+cách.
+<HEADSET><clr:255,255,138>Alyx, k
+t n
+i v
+t ng
+t!<sb>Chú m
+t kênh hình
+nh r
+i.<sb>Cháu th
+y drone c
+a chú không?<sb>Nó có sao không?
+<clr:255,190,255>À,
+, d
+.<cr>
+i chút cháu t
+i li
+<clr:255,190,255>Russell
+<cr>Chú và ba cháu <I>tìm th
+y<I> gì lúc nãy v
+<HEADSET><clr:255,255,138>À, chú c
+ng không bi
+t m
+iên ch
+! Ch
+là m
+nh m
+o c
+a m
+tòa nhà.
+<clr:255,190,255>C
+a Citadel?
+<HEADSET><clr:255,255,138>Không, m
+t th
+khác.<sb>Và dù là gì
+i n
+a, b
+n chúng s
+gi
+t b
+t k
+ai
+ã th
+y nó, c
+ng nh
+i dây m
+má c
+a k
+ó<sb>Ngh
+a là chúng ta
+và ba cháu.
+<clr:255,190,255>Russell?<cr>Ch
+chút, cháu g
+n n
+i r
+<clr:255,255,138>T
+t l
+m Alyx.<cr>
+i, hãy
+mà khoan.<cr>Drone c
+a ta v
+n,
+úng không?
+<clr:255,190,255>Không
+. Banh xác r
+i.<cr>Nhân ti
+n, cháu không sao.
+<clr:255,255,138>Ph
+i. T
+t r
+i, không sao là
+<cr>Là t
+<clr:255,190,255>Russell. Ba cháu b
+<clr:255,255,138>Ta bi
+t. Th
+t là t
+i t
+.<sb>Chúng s
+u tra xem ba cháu bi
+t gì và r
+<cr>Ph
+i, chúng s
+t ông
+<clr:255,190,255>Ôi tr
+<clr:255,255,138>Nh
+ng!<sb>Tin t
+t là, ta có cái mà chúng không có.
+ó là
+<clr:255,255,138>K
+ch chú v
+ch ra
+u ba cháu!
+<clr:255,190,255>Tuy
+t quá. Nói cháu nghe.
+<clr:255,255,138>Nào.<sb>Chúng s
+nhanh chóng nh
+n ra là không c
+y mi
+ng ba cháu
+c.<sb>Và
+n lúc
+Ó, chúng s
+chuy
+n sang hút não
+<clr:255,190,255>Russell.
+<clr:255,255,138>Có th
+thôi.<sb>Ch
+c là không
+âu.<cr>Ý chú là ông
+chúng có th
+khoan m
+vào
+<clr:255,190,255>Thôi chú.
+<clr:255,255,138>
+m. Ba cháu mà.<sb>Ph
+i.<cr>
+u chúng S
+làm là
+a ông
+ng tàu t
+ây là Eli
+Nova Prospekt.
+<clr:255,190,255>Và n
+y lên chuy
+n tàu
+<cr>là xong phim,
+<clr:255,255,138>Không h
+n.<cr>Qu
+y m
+t v
+i di
+n cho chúng ta
+<clr:255,255,138>Th
+gì c
+m, l
+y gì c
+m. Gi
+t nó lên b
+<clr:255,255,138>Thôi v
+y,
+chú làm cho.
+nhé,
+ó là cháu.
+<clr:255,190,255>Cháu t
+ng chú nói "chúng ta".
+<clr:255,255,138>Thì M
+T trong hai chúng ta
+chú
+ph
+ây
+tr
+ch.
+, c
+ng h
+p lý.
+<clr:255,255,138>Ngay bên ngoài kia, có m
+t chuy
+n tàu th
+hai, c
+ng kh
+i hành t
+Thành ph
+17, ch
+y xuyên qua Khu cách ly.
+<clr:255,190,255>D
+<clr:255,255,138>Hai chuy
+n tàu này g
+p nhau t
+ây, Ga
+u m
+i Fairview.<sb>Cháu lên tàu, t
+m tr
+c ba cháu, và hack vào các b
+u khi
+n.<sb>R
+i chú s
+ki
+m soát c
+<clr:255,255,138>Tàu d
+i.<sb>Cháu
+i phó v
+ám Combine.<sb>Và chúng ta
+em ba cháu tr
+<clr:255,190,255>Nghe
+y.<cr>Chuy
+n tàu cháu c
+n lên
+<clr:255,255,138>Tr
+ra phía sau, b
+ng qua sân.<sb>Nó ng
+ng ho
+i, nh
+ng chú có th
+hack vào h
+. Và
+ng quên
+em theo m
+t c
+p "Russell" tr
+c khi
+<clr:255,190,255>"Russell"?
+<clr:255,255,138>G
+ng tay
+ó Alyx.<sb>C
+p g
+ng tr
+y.<sb>Ta có m
+y b
+ng.<sb>Cháu có th
+nh chúng k
+nhà kho
+<clr:255,255,138>Chúng ta làm
+c, Alyx.<sb>Cháu hi
+u ý chú,
+úng không?<sb>Khi chú nói là chúng ta làm
+c?<sb>Vì chúng ta s
+làm
+, t
+t nhiên.
+<HEADSET><clr:255,255,138>Chú s
+theo sát t
+c chân c
+a cháu.
+<HEADSET><clr:255,255,138>Cháu bi
+t ph
+i làm gì r
+y.<sb>D
+ó h
+n s
+có m
+li
+u.<sb>Nh
+m vào m
+khi
+ang m
+lòng bàn tay.
+<HEADSET><clr:255,255,138>C
+ng tay v
+gì
+ng này s
+không t
+âu.<sb>Tuy chú cho r
+ng chúng nên ho
+.<sb>
+ó là th
+duy nh
+t chú ch
+kh
+c ph
+<clr:255,190,255>S
+n sàng.
+<HEADSET><clr:255,255,138>Gi
+thì n
+m bàn tay l
+i và h
+t nó v
+phía cháu.
+<HEADSET><clr:255,255,138>Ch
+n h
+t nh
+tay m
+t cái.
+<HEADSET><clr:255,255,138>Cháu có
+ang h
+tay không? Chú không phân bi
+<HEADSET><clr:255,255,138>N
+m và h
+và h
+<clr:255,190,255>H
+m. Không
+<HEADSET><clr:255,255,138>V
+y c
+m bi
+n tham chi
+u b
+ch quá
+à r
+<HEADSET><clr:255,255,138>Th
+i nào.<sb>Ch
+n m
+c tiêu, nh
+m vào nó, xòe tay ra.
+n không
+<HEADSET><clr:255,255,138>H
+<HEADSET><clr:255,255,138>L
+<clr:255,190,255>Không xi nhê.
+úng r
+i! Gi
+m tay l
+<HEADSET><clr:255,255,138>T
+t, n
+<clr:255,190,255>Th
+t tín hi
+u.<sb>Gi
+tay
+kéo nó l
+i.<sb>L
+i nào, l
+n này cháu hãy ch
+y nó.
+tay l
+a và c
+<HEADSET><clr:255,255,138>Cháu hi
+u r
+<HEADSET><clr:255,255,138>Bùm, chu
+<HEADSET><clr:255,255,138>Cháu ch
+t nó r
+t tiêu.
+úng th
+ã k
+m tay nào.
+m tay cháu l
+<HEADSET><clr:255,255,138>Tuy
+ng v
+<HEADSET><clr:255,255,138>Hoàn h
+i nào, nh
+ng hãy ch
+p nó.
+p nó
+p nó nào.
+<HEADSET><clr:255,255,138>Alyx, hãy t
+ng t
+ng có m
+t, nh
+t nút cò,
+trên "Russell."
+c tiêu
+<HEADSET><clr:255,255,138>Kéo cò
+<HEADSET><clr:255,255,138>Alyx, có m
+t nút cò nh
+n ngón tr
+, n
+i bên g
+ng Russell.
+i. Ta
+ã xong.<sb>Ô ô! Ô, khoan! Suýt n
+a thì quên.
+<clr:255,255,138>Alyx!
+trên này!
+<clr:255,255,138>Cháu c
+n có m
+t kh
+u súng!
+<clr:255,255,138>Yên tâm, súng không có
+âu!
+<clr:255,255,138>Gi
+thì s
+<clr:255,255,138>Chú th
+y nó r
+<clr:255,255,138>Hình nh
+trên mui chi
+c xe kia, ngay
+<clr:255,255,138>Ô. Suýt quên, có súng ph
+i có
+<clr:255,255,138>C
+a cháu
+<clr:255,255,138>Ch
+âu
+ó trên m
+ng kia.
+<HEADSET><clr:255,255,138>Chú ngh
+nó r
+i ngay trên mui xe
+i! Chú quay l
+i phòng liên l
+<clr:255,190,255>Russell? Cháu h
+<clr:255,190,255>Chú Russell
+i? Cháu,
+Cháu l
+i h
+y này!
+<clr:255,190,255>Russell? L
+i. H
+<clr:255,255,138>Ô, yên tâm, trên
+ây còn nhi
+n l
+ng nên nh
+ngu
+n cung c
+p này không ph
+i vô t
+n. Ok? Xem nó nh
+nh báo
+n th
+<HEADSET><clr:255,255,138>Này, c
+chú mà! Coi ch
+ng!
+, cháu x
+lý cái
+khóa luôn r
+i.<sb>T
+t. Tuy
+t.<sb>Th
+c ra có chìa khóa
+ây.<sb>L
+ra chú nên
+a nó cho cháu t
+m. Là
+<sb>l
+a chú.
+<HEADSET><clr:255,255,138>Tàu
+y, Alyx.<sb>Xem th
+cháu có th
+c không.<sb>Chú s
+p k
+i nó
+<HEADSET><clr:255,255,138>Có cách nào
+a tàu không?
+<HEADSET><clr:255,255,138>Xem th
+cháu có m
+c không.
+i! Lên
+ng nào.<sb>Tr
+m k
+: Ga
+i Fairview.
+n chú, Russell.
+<HEADSET><clr:255,255,138>Chúc may m
+n, Alyx.<sb>T
+t nhiên, cháu bi
+y, chú v
+<clr:255,190,255>Cháu bi
+<HEADSET><clr:255,255,138>Alyx? Chúng ta CÓ TH
+p chút v
+.<cr>Ch
+c không c
+n lo l
+ng quá, nh
+<clr:255,190,255>Whoa.
+<HEADSET><clr:255,255,138>Tàu d
+i à?<cr>Nó d
+i,
+<clr:255,190,255>Vâng, có chuy
+n gì v
+<HEADSET><clr:255,255,138>Ôi, nó b
+i.<cr>Khi l
+Combine
+óng c
+a khu cách ly, chúng h
+t ch
+t an ninh.
+<clr:255,190,255>Ngh
+a là?
+, cháu còn xa m
+i Ga
+i Fairview.<cr>M
+ngay bên ngoài KCL thôi.
+<HEADSET><clr:255,255,138>Và
+m xa nh
+t mà tàu
+<clr:255,190,255>Cháu
+ã cu
+c b
+thì cháu cu
+xem chú tìm
+c cách khác
+a cháu vào không.
+<clr:255,190,255>Có cái xác zombie
+ây.<sb>Cháu, cháu t
+ã phong t
+a KCL r
+<HEADSET><clr:255,255,138>À, ch
+c tên này b
+t ra ngoài.<sb>Chú nghe nói chúng g
+p phi
+n toái v
+i bào t
+thòng l
+ng bên ngoài khu giam gi
+.<sb>Ch
+nào ph
+i là m
+y gã thây ma này.
+y có l
+không ph
+i là cá bi
+<HEADSET><clr:255,255,138>E là th
+<HEADSET><clr:255,255,138>Aha
+Nhìn xem kìa. Resin.
+<HEADSET><clr:255,255,138>Và n
+u có resin r
+i rác quanh
+ây, thì ch
+c c
+ng s
+có máy ch
+tác Combine.<sb>Dòm ch
+ng xung quanh nhé, ta có th
+nâng c
+p súng
+ng chút ít
+CHÁU s
+m mu
+dùng h
+t s
+thì, c
+ý xung quanh.<sb>Không thi
+u xác ch
+quanh
+ây, và
+e hèm, không mu
+n nói hu
+ch to
+t ra, nh
+ã tèo thì rõ không c
+m, ch
+c là cháu có th
+dùng chìa
+a n
+<HEADSET><clr:255,255,138>Cái gì c
+t cái chìa v
+a ch
+c n
+ng.<sb>V
+y nên g
+i là chìa
+<HEADSET><clr:255,255,138>Alyx, món
+ó bá
+y!<sb>Cháu c
+t cái tên th
+t vào!<sb>
+ai nghe
+ng mu
+n mua!
+<clr:255,190,255>R
+i cháu bán cho ai?
+âu th
+ây mãi.<sb>Cháu nên suy tính cho t
+ng lai
+i Alyx!
+i nó là "Alyx"
+c không?
+m. Có tí vay m
+"Russell," nh
+t thôi
+<sb>T
+i sao không? T
+m là "Alyx" nhé.
+, chìa
+ng "Alyx."
+, tr
+m y t
+Cái này c
+a b
+n <I>Combine<I>.<sb>Ng
+i dùng
+c không v
+<HEADSET><clr:255,255,138>Ôi,
+i, tr
+ây r
+<HEADSET><clr:255,255,138>Có gì
+âu, chú dùng su
+y mà.
+<clr:255,190,255>Ch
+c không chú?
+c,
+ã l
+<HEADSET><clr:255,255,138>Cháu c
+t tay vào
+<HEADSET><clr:255,255,138>Nghe nè, nghiêm túc
+y, cháu kéo cái tay c
+m, r
+tay lên
+m, chú dùng su
+t mà. Ch
+n tìm pin thôi.
+i chi
+u, cháu th
+<clr:255,190,255>Ui! Ui-da ui-da.
+<clr:255,190,255>Ahhhhh. Hey
+<clr:255,190,255>Ahhh. Ooh.
+chú nói
+úng nha.<cr>Tuy
+<clr:255,190,255>Ahhh. Tuy
+n con thòng l
+ó, Alyx.
+<clr:255,190,255>Eo, chúng t
+m quá.
+khi nào chú b
+u g
+i g
+ng tay tr
+c là "Russell"?
+ó là tên th
+ng hi
+u, Alyx.
+, thì, m
+t cái tên thân thu
+c d
+. Chú d
+nh ki
+m m
+t gia tài t
+ó ngay khi l
+Combine bi
+n kh
+i Trái
+t và m
+bình th
+<clr:255,190,255>Cho cháu h
+i, sao chú bi
+t ba cháu?<sb>Hai ng
+i làm chung
+Black Mesa h
+. À, không.<sb>Ch
+ó không d
+m chân
+âu.<sb>Chú
+Black Mesa.<sb>H
+m sau th
+i.<sb>Không c
+n nói cháu c
+ng bi
+n gì x
+y ra sau
+ó.<sb>Qu
+là may m
+n cho chú.<sb>Ch
+ng có nhi
+u ng
+i s
+ng sót.<sb>Th
+t lòng thì, vi
+c cháu và ba thoát ra kh
+ó là m
+t phép màu
+<HEADSET><clr:255,255,138>Ô.
+cháu c
+n chút riêng t
+không?<sb>Vì
+, cháu bi
+y, chú
+chú có th
+m d
+ng tín hi
+<clr:255,190,255>Cháu nhìn qua thôi, chú Russ.
+oán khu cách ly n
+m bên kia cánh c
+a h
+m này.
+<HEADSET><clr:255,255,138>Ph
+i, ph
+i, chính là ch
+<clr:255,190,255>Cháu s
+i xung quanh tìm b
+nó ra.
+u là Combine, mình s
+âu ta?
+ó là b
+n.<sb>Ch
+c là chúng làm r
+i tung m
+i.<sb>Nh
+ng vì không có ai
+iên
+c mu
+m, chú ngh
+là vi
+c s
+không quá khó
+<HEADSET><clr:255,255,138>Cháu ngh
+ó là gì?
+<clr:255,190,255>Trông có v
+khóa.
+<clr:255,190,255>Whoa!
+<HEADSET><clr:255,255,138>Ha ha! Có th
+. M
+t bao công.
+<clr:255,190,255>Cháu vào luôn
+ây.<cr>Ga
+i Fairview còn bao xa?
+<HEADSET><clr:255,255,138>Cháu
+i d
+c h
+m tàu
+n sân ga.
+<clr:255,190,255>Chúng b
+u chuy
+n ba cháu
+i ch
+là ch
+a.<sb>T
+c là tin t
+t, vì chúng ta v
+n còn th
+i gian.
+<clr:255,190,255>Ô, v
+y t
+t quá.
+<HEADSET><clr:255,255,138>Ho
+c có th
+là tin x
+u, n
+u chúng kh
+i.<sb>Ch
+ng ai c
+n áp gi
+i cái xác
+âu n
+a.<sb>Ch
+có chôn.<sb>Ho
+c thiêu thôi.<sb>Cháu v
+, Alyx?
+<clr:255,190,255>Mm-hmm.
+<clr:255,190,255>Chú Russell này, gi
+ang ti
+n vào khu cách ly
+ng cháu m
+nh ra.<sb>Cháu ch
+t gì <I>v
+<I> khu cách ly c
+t ra thì, t
+"cách ly" (quarantine) xu
+t phát t
+ng Ý, "quaranta giorni".<sb>
+m, ngh
+a là 40 ngày
+i gian m
+i tàu thuy
+n bu
+i cách ly tr
+c khi th
+y th
+oàn có th
+lên b
+, vào lúc
+ch "Cái ch
+en" hoành hành.
+. Hay nh
+<HEADSET><clr:255,255,138>Ôi, kh
+<clr:255,190,255>Cháu ngh
+ta b
+t trong này r
+<clr:255,190,255>Chú Russell.<sb> Cháu m
+ng tiêm có th
+i gì
+ó.<sb>Thu
+<HEADSET><clr:255,255,138>Có hình
+u lâu x
+ng chéo trên
+ó không?
+<clr:255,190,255>Cháu không th
+y ch
+c là thu
+<HEADSET><clr:255,255,138>Alyx! Cháu v
+tiêm cái th
+c trên
+<clr:255,190,255>Cháu th
+Ã L
+t sao?
+m. T
+t. Coi nh
+nghi
+m thành công.
+ý tìm thêm xem.
+<HEADSET><clr:255,255,138>Cháu nghe th
+y không?
+<clr:255,190,255>Cái gì th
+<clr:255,190,255>Ây dà.
+m. Ta
+<clr:255,190,255>Còn
+m,
+y CHÍNH là
+thì
+ng vòng v
+ó c
+ng là
+ng vòng luôn.
+t, có v
+u qu
+c phát huy.
+<HEADSET><clr:255,255,138><sfx:1>[C
+<clr:255,190,255>Ui chao.
+<HEADSET><clr:255,255,138>Ha ha!<cr>Con thòng l
+phe ta.<sb>Nói ch
+âu,
+ùa chút,
+ng d
+i mà
+i bên d
+i nó.
+<HEADSET><clr:255,255,138>Ô, mà nè
+ng Russell có tích h
+p màn hình hi
+, cho bi
+resin,
+n d
+c. Cháu bi
+y, có khi s
+u ích.
+<clr:255,190,255>Rõ
+n chú.
+<clr:255,190,255>Ây da
+m, c
+n nhé.
+<HEADSET><clr:255,255,138>Alyx! Sau cánh c
+ó!<sb>Chú ngh
+t cái máy ch
+tác Combine!
+<HEADSET><clr:255,255,138>Alyx! Chú ngh
+ó là máy ch
+tác Combine.<sb>
+t cái gì
+ó vào
+i, chú mu
+y nó ho
+ng ra sao.
+. Nó s
+có tác d
+ng Russell ch
+<HEADSET><clr:255,255,138>Không, nh
+u l
+n ngon ngh
+ó.<cr>C
+t, vì chú
+a cháu m
+u h
+i cùn.
+n chú Russell.
+<HEADSET><clr:255,255,138>Thì t
+nó m
+i không tr
+i thì sao.
+i.<cr>N
+u cháu ch
+t, cháu n
+chú m
+u súng.
+<HEADSET><clr:255,255,138>Ki
+u gì cháu c
+ng n
+u!<cr>Có ph
+i quà t
+âu. Súng c
+a CHÚ
+<HEADSET><clr:255,255,138>Chà.
+áng ch
+resin b
+ra
+<HEADSET><clr:255,255,138>B
+n Combine th
+t bi
+t cách nâng c
+p súng.<sb>Cái
+ó chú công nh
+<HEADSET><clr:255,255,138>Trông ghê g
+m ra trò.
+<HEADSET><clr:255,255,138>Ng
+u ph
+t.<sb>Chú g
+n nh
+c mình có m
+n tay.
+<HEADSET><clr:255,255,138>Cháu có th
+ng nó
+u d
+n tuy
+i. R
+em nó
+i cãi nhau là th
+ng vài cu
+c à nha.
+ng dám
+i là nâng c
+<HEADSET><clr:255,255,138>S
+ng có gì ngon lành h
+<HEADSET><clr:255,255,138>Ôi chao, nó th
+n quá
+? Nh
+<HEADSET><clr:255,255,138>Wow! Súng c
+a chú gi
+nhìn
+p ph
+<clr:255,190,255>Chú Russ à. Lúc này thì nó gi
+ng "c
+a chúng ta" h
+wow, nhìn mà xem! Súng c
+a tui càng lúc càng x
+n sò.
+<clr:255,190,255>Chú Russ nè
+xét v
+thu
+t, cháu ngh
+súng này ch
+ng còn m
+y ph
+a chú n
+m.Th
+này nhé: t
+m khoan không bàn v
+u súng C
+A CHÚ bây gi
+. Chúng ta có th
+c khi cháu quay v
+<clr:255,190,255>Chú Russ, chính th
+i. Ch
+ng còn TÍ T
+O nào trong này là súng c
+a. Gi
+nó là súng c
+a CHÁU.
+t thôi. Cháu x
+áng mà. Nh
+ng ta v
+n mu
+y l
+i "Russell".
+<HEADSET><clr:255,255,138>Cua m
+y r
+nó
+âu r
+<clr:255,190,255>Ahh!
+<HEADSET><clr:255,255,138>Aah!
+<HEADSET><clr:255,255,138>R
+i. Nó
+i. Th
+i nhé.
+c ch
+t con.
+, hai. Hai con.
+n khá l
+m, Alyx.
+n. C
+n. Chú nè, dù c
+chú huyên thuyên nó là kh
+u "cùn gh
+", th
+này c
+âu ph
+t ra nó khá t
+t,
+úng không?<cr>Ch
+t ti
+t, hình nh
+a nh
+m kh
+u cho cháu r
+<clr:255,190,255>Có tin gì v
+ba cháu ch
+a, chú Russell?
+<HEADSET><clr:255,255,138>Không. Không có tin gì t
+ng lên tàu.
+thì, tin t
+t là ông
+a sao
+<clr:255,190,255>Sao chú bi
+<HEADSET><clr:255,255,138>Vì chúng
+n Nova Prospekt
+tra kh
+o.<sb>
+ó là ch
+dành cho tra kh
+o.<sb>Nên chúng s
+n khi T
+ó m
+i ra tay.<sb>Cho nên
+n. V
+lý thì th
+<clr:255,255,138>Ah!
+<clr:255,190,255>Aah!
+<HEADSET><clr:255,255,138>Ahh, tr
+<HEADSET><clr:255,255,138>Hm. Nó không ho
+<clr:255,190,255>À. Nhìn này. Không có
+<HEADSET><clr:255,255,138>Cái cháu c
+m g
+i là "
+m".<cr>T
+i ta t
+ng dùng nó
+u. Và c
+nam châm n
+a, n
+u cháu tin.
+<clr:255,190,255>Huh.
+<HEADSET><clr:255,255,138>Chính xác là hai micromet oxit s
+t t
+, ba micromet bari ferrit, và m
+y hai
+<clr:255,190,255>Russell? Sao chú bi
+này?
+c trên máy tính
+ây.<cr>Chú có t
+i Internet xu
+c khi x
+y ra chi
+n tranh.
+<clr:255,190,255>Chú t
+i nguyên cái Internet xu
+ng luôn!
+<HEADSET><clr:255,255,138>Ehh, c
+<clr:255,190,255>Quá d
+ng nhiên.
+<clr:255,190,255>Chú Russell, chú có th
+<HEADSET><clr:255,255,138>Ah, ch
+c có.<sb>Có ph
+i cháu
+ang th
+y rác
+ang trôi l
+ng?
+là... bìa các-tông.
+. Trông có v
+vô h
+<clr:255,190,255>Vâng. Nh
+<clr:255,190,255>Cái GÌ kia?
+ng hình h
+a Vortigaunt
+<HEADSET><clr:255,255,138>Khoan,
+ó có ph
+Black Mesa?
+<clr:255,190,255>Ai
+t công v
+này.
+<clr:255,190,255>Wow! L
+i thêm bìa các-tông l
+<HEADSET><clr:255,255,138>Alyx! Cháu
+n không? Chuy
+n, chú Russell, sao v
+<HEADSET><clr:255,255,138>Chú
+t d
+n tín hi
+u!<sb>Alyx? Alyx?<sb>N
+u cháu v
+n còn nghe
+c chú, c
+ng, r
+i-r
+i hãy tìm cách ngoi lên m
+<clr:255,190,255>Russell?<sb>Russell?<sb>Kh
+<clr:255,190,255>Whoa, ch
+này l
+quá.
+Vortigaunt: <clr:107,232,120>Cá th
+Alyx Vance!
+Vortigaunt: <clr:107,232,120>Cô
+ã nh
+c l
+i nh
+a tôi!
+<clr:255,190,255>Có h
+<clr:107,232,120>Nào! M
+i vào.
+<clr:107,232,120>C
+nhiên!
+t Vortigaunt
+ang làm gì
+ây?
+<clr:107,232,120>[Ng
+i] Mmm!
+<clr:107,232,120>N
+<clr:107,232,120><sfx:1>[
+n ti
+ng]
+<clr:255,190,255>À r
+i, ý tôi là khái quát h
+<clr:107,232,120>Tôi b
+ng não.
+<clr:255,190,255>Ôi. Xin l
+<clr:107,232,120>Não tôi b
+<clr:255,190,255>Kinh kh
+ng quá, tôi hy v
+<clr:107,232,120>Au.
+<clr:255,190,255>Nghe này, tôi th
+i tìm ba mình
+<clr:107,232,120>Cá th
+Eli Vance
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Ph
+<clr:255,190,255>B
+n Combine
+y, và tôi th
+<clr:107,232,120>B
+n Combine.<sb>
+i. Khoan
+ã!<sb>Tôi ph
+i cho cô xem cái này!
+<clr:255,190,255>Này, tôi c
+m kích
+<clr:107,232,120>L
+i này!
+<clr:255,190,255>Tôi không nán l
+c, tôi
+<clr:107,232,120>Quan tr
+<clr:255,190,255>Tôi bi
+t là v
+y, nh
+Alyx Vance dù gì c
+ng này
+<clr:255,190,255>Ok.
+<clr:107,232,120><sfx:1>[Khúc khích]
+<clr:107,232,120><sfx:1>[Húp sùm s
+ây, l
+<clr:107,232,120>Vào
+i, Alyx Vance.
+<clr:107,232,120>Trong này!
+<clr:107,232,120>Tôi ph
+i cho cô th
+y lý do tôi g
+i cô t
+<clr:107,232,120><sfx:1>[Truy
+n Tinh khí Vort]
+n Combine b
+c tôi.
+giam, nh
+cá th
+Eli Vance.
+Alyx Vance s
+<clr:255,190,255>Tôi mu
+n giúp. Mu
+m.<sb>Nh
+ng cá th
+Alyx Vance th
+ang r
+u ba cô
+<clr:107,232,120>Cô s
+không c
+c ông
+y.<sb>Ông
+ã ch
+<clr:255,190,255>Cái gì?
+<clr:107,232,120>Ho
+c là s
+t? Hay s
+<clr:107,232,120>Tùy góc nhìn m
+i ng
+ng ch
+mình Alyx Vance không th
+a ông.
+<clr:255,190,255>Tôi
+Nghe này.<sb>C
+n vì
+.<sb>Nh
+ng mà tôi ph
+ây.<sb>Và tôi xin l
+ng tôi không có th
+i gian ch
+ánh
+<clr:107,232,120>Không ph
+!<sb>Combine
+ã khoan vào
+ây.<sb>Tôi không bi
+ây là bao gi
+.<sb>Tôi b
+i Tinh khí Vort.<sb>Tôi
+c trong tâm trí mình.
+<clr:255,190,255>Tôi xin l
+<clr:255,190,255>Này, n
+u ti
+n ông, tôi s
+xem mình giúp
+c gì không.
+<clr:107,232,120>Cô
+ng lo
+a mà.
+<clr:107,232,120>Ch
+a thì s
+<clr:107,232,120>Rraaagh!
+<clr:107,232,120>D
+ng c
+m lên, Alyx Vance!
+ã hành trình
+ây.<cr>Ch
+ng có l
+còn m
+<clr:107,232,120>Qua l
+ó, Alyx Vance.
+<clr:107,232,120>Cô ph
+<clr:107,232,120>S
+nh c
+a cô b
+u, Alyx Vance.
+<clr:107,232,120>Tôi s
+giúp cá th
+Alyx Vance!<sb>Hãy nhìn v
+phía Sao B
+<clr:255,190,255>T
+i sao?
+<clr:255,190,255>Ok. C
+n.<cr>Ông xong ch
+a? Giúp tôi
+a xong!
+lát tôi
+n.<cr>C
+ã giúp
+không có chi.
+<clr:107,232,120><sfx:1>[Ngâm nga th
+a mãn]
+<clr:255,190,255>Eo
+iii.
+<clr:255,190,255>Yeuch.
+<clr:255,190,255>Eo.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Có tín hi
+i<sb>Cháu nghe
+c không? Cháu có sao không?
+<clr:255,190,255>Chú Russell! Cháu
+n! Ba cháu sao r
+<HEADSET><clr:255,255,138>Chúng giam ông
+y trên tàu.<sb>Ông
+ang b
+i.<sb>Cháu ph
+i Fairview tr
+n chúng.
+<HEADSET><clr:255,255,138>Có gì x
+y ra khi cháu m
+t sóng không?
+<clr:255,190,255>Chú không tin
+âu, cháu g
+p m
+t Vortigaunt.
+<HEADSET><clr:255,255,138>M
+t Vortigaunt?<cr>H
+n làm gì
+<clr:255,190,255>L
+n.<cr>Ch
+c ông ta thoát
+c kh
+i tay b
+n Combine.
+n nói gì?
+<clr:255,190,255>Chú g
+p Vortigaunt bao gi
+a?<cr>Toàn chuy
+iên c
+a Vortigaunt.
+<clr:255,190,255>À, Vortigaunt lúc nãy
+ó?<cr>Ông ta cho cháu <I>h
+n<I> m
+t con cua m
+<HEADSET><clr:255,255,138>Ô! Hay nh
+!<sb>V
+a nó ra sao?<cr>K
+chú nghe xem...
+<clr:255,190,255>Chú Russell. Chú Russell
+Cháu
+âu có
+<HEADSET><clr:255,255,138>À
+. D
+nhiên r
+ó là... quy
+nh sáng su
+! Con zombie kia có shotgun!
+<clr:255,190,255>Vâng.
+cháu l
+y kh
+u shotgun r
+i chu
+<HEADSET><clr:255,255,138>Nhanh lên, l
+n vào
+i, nghe càng g
+<clr:255,190,255>Ta làm
+<HEADSET><clr:255,255,138>Chú thích kh
+u này quá.
+<clr:255,190,255>Ui, ch
+này T
+I OM.
+. Cháu
+n, cháu
+<clr:255,190,255>Ôi,
+ây t
+i quá
+Chú Russ?
+<clr:255,190,255>Chú
+nói gì
+cái gì c
+<clr:255,190,255>Gì c
+, ch
+<HEADSET><clr:255,255,138>À, chú ngh
+trong tr
+p này, n
+bóng t
+i vô lý c
+a cháu là
+tài khá phù h
+y.<sb>Này nhé, chú có th
+ngay ra hàng tr
+m lý do
+phát ho
+<clr:255,190,255>Thôi
+i, l
+a cháu.<sb>L
+n sau cháu s
+nói c
+<clr:255,190,255>Thích cái
+èn pin này quá.
+<HEADSET><clr:255,255,138>Và nó c
+ng gi
+ng cháu
+y, c
+m v
+i bóng t
+, th
+<HEADSET><clr:255,255,138>Ngh
+a là nó s
+t khi không có ánh sáng.
+, tuy
+<clr:255,190,255>Chú Russ nè. L
+i R
+T c
+n chú nói chuy
+n sàng thôi. Vào
+cu
+c kia ra sao, khi ch
+a có Combine?
+<HEADSET><clr:255,255,138>À! Tuy
+m.<cr>Alyx, cháu nghe t
+i bánh mì k
+p th
+t bao gi
+a. Ch
+m. Th
+này,
+làm bánh mì k
+t, tr
+c tiên cháu c
+n bánh mì.<sb>Không ph
+i lo
+i phát mi
+n phí, mà t
+m h
+n hoi.
+ha.<sb>
+p, tr
+n phí.<sb>Mà mua t
+m bên kia
+ng, n
+ng trong ngày, ok?. Cháu thêm cà chua, rau di
+t rau c
+.<sb>R
+i thêm th
+t ba r
+i xông khói
+làm t
+loài
+t ta t
+i là "l
+n".<sb>Cháu n
+ng bánh nóng r
+i x
+p h
+t vào gi
+ó á? Không tin
+! Mà ch
+a xong
+âu.<sb>R
+i cháu l
+i cho thêm m
+p bánh
+trên l
+t.<sb>B
+t ngu
+i vào
+ng là t
+con l
+và th
+t gà, làm t
+con v
+t g
+i là "gà tây", r
+i thêm cà chua, xà lách, và m
+a chú quên r
+i.<sb>Nó cao c
+c, n
+a ký và có c
+tá nguyên li
+u t
+p n
+a khác nhau.<sb>
+ó chính là món
+iên r
+t mà khó ai có th
+ng ra tr
+c th
+i k
+<clr:255,190,255>Wow!
+<HEADSET><clr:255,255,138>Choáng, nh
+<clr:255,190,255>Qu
+Wow.
+n chú, Russ.
+<HEADSET><clr:255,255,138>Không có gì
+âu, Alyx.
+<HEADSET><clr:255,255,138>Khoan, có tên lính Combine
+ó à?
+<clr:255,190,255>Vâng
+<sb>Trong lúc m
+i tr
+m lò ph
+ng, cháu th
+y lính Combine chuy
+n v
+vào trong này.<sb>Cháu
+oán là chúng l
+i quan tâm t
+này r
+y thì nh
+n có bi
+<HEADSET><clr:255,255,138>Alyx! Có máy xén! Coi ch
+<HEADSET><clr:255,255,138>Máy xén!
+<HEADSET><clr:255,255,138>Úi, có máy xén!
+<clr:255,190,255>Eo ôi
+<clr:255,190,255>Ôi... tr
+i, chú hãy
+ánh giá cu
+i trên Trái
+t, t
+i. Cháu th
+c ta
+c hai
+<HEADSET><clr:255,255,138>Chu
+i luôn có th
+xu
+<clr:255,190,255>Chú ch
+m bao nhiêu
+m TR
+C KHI Combine xu
+t hi
+, h
+i khó quá.<sb>Nói sao nh
+, m
+t ngày
+p tr
+?<sb>Ch
+c là sáu.<sb>
+, sáu
+m tròn.
+<clr:255,190,255>Sáu á? C
+o nh
+, cu
+i mà Alyx.<cr>
+i lúc nào c
+y, n
+Combine kh
+t, ch
+i lên ch
+ng tám
+m luôn
+y, chú nh
+, tám
+m.<cr>
+thì tuy
+t.<sb>Tuy
+<clr:255,190,255>Khi ta t
+c Combine kh
+t, chú d
+nh s
+làm gì?
+n hành s
+n xu
+i trà "G
+ng Russell", ch
+c luôn.
+i!<sb>Chú s
+i trên m
+t núi mìn!
+<HEADSET><clr:255,255,138>Núi vàng, ph
+i.<sb>K
+ch là th
+này, v
+tính toán th
+ng, chú th
+y s
+i thoát kh
+Combine,
+chúng.<sb>
+ó là n
+m th
+i m
+m n
+ng Russell".<sb>M
+c dù v
+y, nói nh
+nè, chúng ta S
+i xây d
+i xã h
+c, nh
+m khôi ph
+n, công vi
+c, ti
+n b
+y.<sb>N
+u không ng
+i ta ch
+ng mua g
+ng tay c
+a chú
+âu.<sb>Th
+<HEADSET><clr:255,255,138>Nên là,
+<sb>K
+ch BA N
+M.<sb>Ta s
+nhét cái ph
+ng vào n
+hai.
+, vâng.<sb>Chú s
+nó cho n
+<HEADSET><clr:255,255,138>Ôi! C
+n! C
+<HEADSET><clr:255,255,138>Bình t
+<clr:255,190,255>Thôi r
+i. L
+i om.
+trong k
+ch Russell ba n
+m này
+chú ngh
+chú có vi
+c làm cho cháu không?
+<HEADSET><clr:255,255,138>Vi
+c làm á? Alyx, cháu ch
+ra "Chìa Alyx" mà!<cr>D
+nhiên cháu có m
+t chân!
+<clr:255,190,255>Chúng ta có th
+làm c
+, thì
+<sb>H
+m. Ch
+có quy
+phi
+u.<sb>D
+nhiên, giai
+n trao quy
+m t
+m.<sb>Có th
+t phi v
+siêu h
+i cho cháu
+ó Alyx.<sb>V
+dài h
+<clr:255,190,255>Cháu ch
+u gì c
+, nh
+ng mà nghe thú v
+ó, c
+à.
+. Nghe
+Alyx.
+<clr:255,190,255>Chú Russell! M
+y tên này có v
+khí t
+n chúng là lính bi
+t kích ngoài hành tinh, t
+t nhiên ph
+i có v
+áng l
+ta c
+ng dùng
+khí Combine mã hóa theo gen, nên, cháu hi
+ó, ch
+có duyên. Tr
+khi cháu tìm th
+a mã hóa. Ho
+c cháu ch
+p nh
+n vài ch
+a v
+di truy
+trông
+i vào,
+ng án m
+y. Gen mình th
+nào thì cháu gi
+y thôi.
+t gi
+tâm s
+ang bay t
+p kìa chú Russ!
+n Combine!
+<clr:255,190,255>Chú Russ, b
+n chúng có v
+<HEADSET><clr:255,255,138>Chúng là lính bi
+khí Combine mã hóa theo gen, nên, ta ch
+có duyên.<sb>Tr
+a mã hóa.<cr>Ho
+cháu
+n, chú Russ. Gen mình th
+<HEADSET><clr:255,255,138>Ga
+i Fairview! Chúng ta t
+<HEADSET><clr:255,255,138>Nó
+<clr:255,190,255>Combine!
+<HEADSET><clr:255,255,138>Núp xu
+<clr:255,190,255>Phù. Cháu ngh
+y là tên cu
+i cùng.
+t, vì ta không còn nhi
+<HEADSET><clr:255,255,138>Có m
+t h
+ng chuy
+n ray
+<HEADSET><clr:255,255,138>Cháu v
+n có nhi
+n ray.
+i, chú có th
+oàn tàu ngay t
+c có chú th
+t nhiên. Cháu ch
+n kích ho
+t tr
+<HEADSET><clr:255,255,138>Sau
+ó cháu ph
+n sàng chi
+u.<sb>B
+n chúng không d
+dàng th
+cháu ra
+i. Tr
+n kia kìa.
+<clr:255,190,255>Cháu làm ngay
+<HEADSET><clr:255,255,138>Nhanh lên nhé.
+m, ph
+i có pin
+ó quanh
+<HEADSET><clr:255,255,138>Hình nh
+còn thi
+nh?
+i, không sao, nh
+ng tàu s
+y mà, chú Russell.
+chú vào, ch
+t giây thôi. Cháu làm t
+, làm t
+m, không sao, không có gì ph
+<HEADSET><clr:255,255,138>Còn thi
+nh!
+<HEADSET><clr:255,255,138>Ok! Gi
+thì kh
+<clr:255,190,255>Cái này r
+t ra là
+úng h
+<HEADSET><clr:255,255,138>Không, ph
+úng, Alyx!
+<clr:255,190,255>Cháu, cháu ph
+i làm sao
+Ph
+ây?!
+<HEADSET><clr:255,255,138>Xem nào
+ng! Ho
+c bình t
+nh l
+i! N
+u-n
+u cháu
+ang ho
+<clr:255,190,255>Cháu có ho
+ng chú ho
+ng! Chúng ta c
+n tìm cách khác
+ng tàu!
+<clr:255,190,255>Ph
+i có cách khác
+oàn tàu
+<HEADSET><clr:255,255,138>Nhìn xung quanh xem! S
+i gian r
+<HEADSET><clr:255,255,138>Ra ngoài xem sao. PH
+I có m
+t thi
+n ray th
+công. Th
+c ra thì c
+ng không b
+t bu
+c. Nh
+ng mà dù sao có thì v
+n. Làm
+n có
+i mà. [C
+i lo l
+<HEADSET><clr:255,255,138>Thi
+n ray ch
+ngoài
+ó Alyx! Mau lên!
+<HEADSET><clr:255,255,138>Tìm c
+<HEADSET><clr:255,255,138>Ti
+c tìm c
+i! Chúng ta ph
+oàn tàu l
+i giây n
+a tàu
+n, Alyx!
+<HEADSET><clr:255,255,138>Ok, kéo c
+n g
+t xu
+m giây!
+<clr:255,190,255>Nó b
+t lên l
+i gi
+nó!
+<clr:255,190,255>Chà... có hi
+. Wow. Cháu
+<clr:255,190,255>Cháu không sao. Gi
+i tìm ba thôi.
+i. Tìm toa ch
+tù nhân. Nó th
+phía
+u c
+oàn tàu.
+tìm
+ng vào
+nát.
+<HEADSET><clr:255,255,138>Cái qu
+gì th
+<clr:255,190,255>Cháu không bi
+t. Nh
+ng chúng ta ph
+i tìm ba ngay.
+a, không, chú hi
+u.<cr>Chú ch
+ó bao gi
+ó là khoang tù nhân c
+a ba cháu.
+i. V
+y ba cháu
+<clr:255,190,255>Ba? BA
+<clr:255,190,255>Ba!
+<clr:255,208,172>Ba
+i này, con
+i!<sb>Giúp ba v
+i, nhanh lên!
+<HEADSET><clr:255,255,138>Ôi tr
+<clr:255,208,172>D
+i này! Con
+<clr:255,190,255>Con
+n ngay!
+<clr:255,208,172>Con yêu!
+n ngay! M
+t giây thôi!
+<HEADSET><clr:255,255,138>Alyx, nhanh lên!
+<clr:255,190,255>Ok.<sb>Gi
+con s
+i và kéo ba lên.<sb>S
+n thôi. Ba s
+n sàng ch
+<clr:255,208,172>
+c con.
+a tay ba cho con!
+<clr:255,208,172>Ungh!
+<clr:255,190,255><sfx:1>[Rên r
+<clr:255,208,172>Mau lên con!<sb>Nhanh nào! Ba s
+p tu
+t tay r
+<clr:255,208,172>Kéo ba
+kéo ba lên
+i, ôi tr
+<clr:255,208,172>Chút n
+Chút n
+Aaa!
+<clr:255,208,172><sfx:1>[C
+y h
+<clr:255,190,255><sfx:1>[Há h
+c mi
+<HEADSET><clr:255,255,138>Vort! M
+t tên Vort!
+<clr:255,190,255>CHÍNH ông Vort lúc nãy!
+<clr:107,232,120>Alyx Vance!<sb>Tôi
+giúp,
+úng nh
+tôi
+ã nói.
+<clr:255,208,172>C
+Xin c
+n, ôi tr
+i, c
+n!<sb>Ba
+i!<sb>Con s
+tìm cách
+i xu
+<clr:255,190,255>Hãy
+yên
+ó!<cr>
+con tìm cách
+ba!
+<clr:255,208,172>Không! Alyx, nghe ba này!<sb>Th
+mà ba và chú Russell tìm th
+ng siêu v
+khí!
+<clr:255,190,255>Siêu v
+khí?
+<clr:255,208,172>Nó khá l
+n.<sb>Chúng
+t nó
+ây, t
+i KCL trong m
+t lo
+i kho nào
+ó.<sb>Nh
+ng chúng s
+p chuy
+n nó
+i.<sb>Ba không bi
+âu, nh
+m thôi.
+<clr:255,190,255>Nên ta ph
+ánh c
+p nó tr
+c khi quá tr
+<clr:255,208,172>Nhìn này...<sb>Ba thó
+u Combine này.<sb>N
+u ba gi
+i mã
+c nó, ta có th
+tìm ra cách dùng v
+khí c
+a chúng
+y ông
+ng ông.
+y k
+ch là gì?
+<clr:255,208,172>Con
+n Kho Kín.<sb>Ba s
+a th
+này cho Russell và b
+t tay vào vi
+m. Kho Kín
+ÂU?
+<clr:255,190,255>Ba! Kho Kín
+<clr:107,232,120>Hãy nhìn v
+<clr:255,190,255>À
+i. Nhìn v
+phía sao. Rõ r
+i. Ba?
+<clr:255,208,172>Ngay trung tâm KCL.<sb>Nó r
+n.<sb>Con hãy lên trên m
+t xem th
+c gì.
+i cùng Eli Vance và b
+m an toàn cho ông
+t quá! C
+n ông.
+<clr:255,190,255>Con c
+ng yêu ba!
+<clr:107,232,120>Tôi c
+ng yêu cô!
+<clr:255,190,255>Chú Russ
+n ba cháu, nhé?
+báo tin cho cháu n
+À, KHI. Khi
+, KHI t
+<clr:255,190,255>Chú th
+ng khá ch
+ng chúng ta <I>
+ã<I> c
+c ba.
+<clr:255,190,255>Sao chú?
+, vi
+ó có th
+ã làm b
+n chúng chú ý.<sb>Không ph
+i có th
+.<sb>Mà ch
+ã gây chú ý r
+i.<sb>Nghe này, gi
+chúng
+ang tìm ki
+m cháu.<sb>Hi
+u không? V
+y nên hãy c
+u chi
+khí này, chúng ta có th
+thay
+mãi mãi.
+ó là N
+<HEADSET><clr:255,255,138>Này, tuy chúng ta m
+ng tác
+c vài ti
+thôi, nh
+chú mu
+n cháu bi
+t là chú r
+hào v
+cháu.<sb>Nhé?<sb>Cháu
+ang ch
+t nhi
+u áp l
+<clr:255,190,255>Wow, chú Russ.
+<HEADSET><clr:255,255,138>Nhi
+i chú...<sb>À, chú c
+ng ng
+c vi
+c này l
+ng khi cháu v
+i tay ra cho ba cháu, chú th
+u mà lúc
+c, l
+c tay s
+bóp nát h
+y cái c
+ng manh trên g
+ng "Russell".
+<clr:255,190,255>À. Ok.
+<HEADSET><clr:255,255,138>Hoàn toàn thông c
+và dù có h
+ng thì c
+áng thôi
+p này.
+<HEADSET><clr:255,255,138>Tuy nhiên, chú c
+ng khó lòng t
+ng ra m
+t tình hu
+ng KHÁC t
+y.<sb>Và,
+ba cháu, g
+ng tay Russell LÀ vô giá.<sb>V
+y nên... là... v
+sau cháu c
+ý nhé.
+<clr:255,190,255>Chú Russ, cháu h
+a, g
+a chú cháu lo
+i, chú Russ
+c này có in hình b
+<clr:255,190,255>A! Th
+<clr:255,190,255>A. Nó
+<clr:255,190,255>À ha.
+<clr:255,190,255>À, ba cháu có nói ông t
+m vài tài li
+u v
+khí này.
+<HEADSET><clr:255,255,138>Chà, nói
+n vi
+c mã hóa d
+a Combine thì
+<clr:255,190,255>Chú là chuyên gia?
+Eli là chuyên gia!
+ng, robot h
+c, m
+Chú có th
+lý nhanh g
+ng mã hóa d
+u thì không.
+ng khác gì ngôn ng
+ngoài hành tinh. À,
+úng là th
+mà. Dù sao thì Eli m
+i là chuyên gia.
+<HEADSET><clr:255,255,138>Alyx! Nhìn ra ngoài c
+<HEADSET><clr:255,255,138>Nghiêm túc
+ó, Alyx. Nhìn ra c
+ang ngh
+n không?
+<HEADSET><clr:255,255,138>Ok, t
+t. Cháu
+ã tìm th
+y nó.<sb>Gi
+hãy nhìn ra c
+. L
+nào.<sb>Cháu ph
+i làm th
+i nhìn
+n linh
+n là Kho Kín.
+. B
+cháu không nói là trôi nó l
+y ngay c
+khi ta
+N n
+i tìm cách LÊN
+<HEADSET><clr:255,255,138>Dây cáp! Nhìn
+ng dây cáp k
+i nó kìa.
+<HEADSET><clr:255,255,138>Chúng ta ch
+n theo chúng
+<clr:255,190,255>Và phá h
+u còn l
+<HEADSET><clr:255,255,138>Và Kho Kín s
+n gi
+n. D
+u.<sb>Ta
+i, cháu
+vì vài lý do nào
+ó, ta ch
+c v
+i nhìn ra c
+<HEADSET><clr:255,255,138>Thôi quên cái c
+phía bên kia là KHO KÍN mà ba cháu yêu c
+u chúng ta tìm.<sb>Nó l
+a không trung, vì v
+không d
+dàng gì
+ng! Nó
+y cáp n
+i bao quanh.<sb>Chú
+oán n
+u chúng ta l
+n theo và phá h
+ang k
+u kia, ta có th
+kéo Kho Kín xu
+<clr:255,190,255>Cháu có c
+n nhìn ra c
+ánh s
+p Kho Kín không?
+<HEADSET><clr:255,255,138>Không, chú không ngh
+y cháu tán thành hoàn toàn.
+<clr:255,190,255>Chú có nghe b
+n Combine tám gì vi
+c ba cháu
+ào thoát ch
+<HEADSET><clr:255,255,138>Không, không có gì. Chúng ch
+ang bàn v
+vi
+c g
+i thêm vi
+n binh
+n Khu cách ly.
+t, có ngh
+a là ba v
+ang trên
+chú.<sb>N
+u chúng b
+c Eli Vance, chúng ta
+t nghe r
+<HEADSET><clr:255,255,138>Còn m
+t x
+u là
+p vào Kho Kín s
+không
+n chút nào.
+<clr:255,190,255>Ô, l
+<clr:255,190,255>Ugh. Phí
+t trái l
+áng ph
+ng ý.
+<clr:255,190,255>Ng
+u lên, zombie.
+<clr:255,190,255>Coi ch
+<clr:255,190,255>Ugh!
+<HEADSET><clr:255,255,138>Suýt n
+a thì!
+<HEADSET><clr:255,255,138>Còn xíu n
+a là...
+<HEADSET><clr:255,255,138>Ném t
+<HEADSET><clr:255,255,138>Nhìn kìa! Trên màn hình. B
+<clr:18,199,226>Giám Sát,
+ây là
+i 5-6-0.<sb>Ho
+n x
+y ra t
+i khu v
+c 0-2, xác nh
+<clr:166,242,255><I>Giám Sát ghi nh
+c.<sb>Xác nh
+n khu v
+c 0-2, kh
+ng có th
+qu
+y nhi
+u.<sb>Quét khu v
+c, báo cáo tình tr
+<clr:18,199,226>Ti
+n hành b
+t giam, chuy
+i 5-6-0
+n ng
+m.<sb>S
+n sàng tác chi
+. Tuy
+<HEADSET><clr:255,255,138>Chúng
+n kìa, Alyx!
+<clr:255,190,255>"Hãy nhìn v
+phía sao B
+ang nhìn
+ây. Sao cháu l
+i nói nh
+<clr:255,190,255>Không, không
+Vortigaunt
+ó nói "Hãy nhìn v
+u"
+giúp b
+ng. Nghe nh
+Vortigaunt ba xàm, nh
+ng có v
+<HEADSET><clr:255,255,138>Ohhh. Ph
+i, gi
+thì h
+p lý h
+m. Trông gi
+a Combine. Chúng s
+n và th
+c hi
+n các giao th
+o m
+ng và an ninh c
+n thi
+t cho m
+t Kho Kín kh
+<clr:255,190,255>Và
+Kho Kín kia kìa.
+ang giúp Kho Kín l
+ng trong không trung. Chúng ta ph
+i lên
+<clr:255,190,255>Nhi
+u cáp n
+i ghê
+t làm sao
+vào trong.
+<HEADSET><clr:255,255,138>Không
+i nào chúng
+i vào h
+hênh ngay ngoài
+<HEADSET><clr:255,255,138>Tìm
+ng vào khách s
+i lên nóc nhà.
+<HEADSET><clr:255,255,138>Alyx, chú ngh
+cháu nên tìm cách vào khách s
+i lên tr
+! Thang máy.
+ng lên kia r
+<HEADSET><clr:255,255,138>[Nhi
+u tín hi
+u]<sb>H
+t kì l
+<clr:255,190,255>Và... cúp
+y là ph
+i thang b
+<clr:255,190,255>Và... c
+u thang h
+luôn r
+tìm cách n
+n xem sao.
+ô, h
+u dao.
+<clr:255,190,255>Quay l
+ng án thang máy.<sb>Cháu s
+i ngu
+<HEADSET><clr:255,255,138>Cái khách s
+n này siêu c
+c dây nh
+hang chu
+<clr:255,190,255>Có
+m tra thang máy.
+<clr:255,190,255>Argh! Hang chu
+<clr:255,190,255>Thang máy v
+a ho
+ó, trông
+n mà.
+<clr:255,190,255>Có l
+chúng ta b
+nh thang máy.
+<HEADSET><clr:255,255,138>Có th
+gì nhìn gi
+u dao không?
+<clr:255,190,255>Không, cháu v
+ang tìm
+<clr:255,190,255>P
+c. Có
+m cho thang máy ít
+<clr:255,190,255>Và ta lên
+<clr:255,190,255>Xem ra ph
+i leo thang r
+này b
+kín c
+.<sb>Chú ngh
+này nguy hi
+nào?
+<HEADSET><clr:255,255,138>À, chúng là bào t
+chi
+u không gian khác mà, nên
+t nguy hi
+i là c
+i hi
+m có
+t tìm hi
+t ngoài hành tinh.
+<HEADSET><clr:255,255,138>Ô! C
+phát n
+<HEADSET><clr:255,255,138>Cháu t
+i càng g
+n, chúng càng "tr
+ng" lên mu
+<HEADSET><clr:255,255,138>Ugh.
+c, cháu b
+u cho r
+ng mình không nên hít m
+ng ý. C
+<HEADSET><clr:255,255,138>Có l
+nên th
+ít
+<HEADSET><clr:255,255,138>Alyx, c
+m giác nh
+<clr:255,190,255>Ki
+p nháp? H
+<clr:255,190,255>Ui.
+sáu
+m, sáu.
+<clr:255,190,255>Sáu tròn nhé.
+ng nhìn xu
+ng.<sb>
+<clr:255,190,255>Russ, chú có
+, gã này không m
+c áo.
+n nhaaa.
+<clr:255,190,255>Chú Russ, nói tên bài hát b
+<HEADSET><clr:255,255,138>"Flight of the Bumblebee".
+<clr:255,190,255>Có ngay.
+úng nó!
+<clr:255,190,255><delay:4>
+, không
+<HEADSET><clr:255,255,138>[Tín hi
+t quãng] Alyx? Alyx, tr
+y cái
+ó không? Russell? Russell!
+u] Alyx! Alyx! Chuy
+<clr:255,190,255>Có cái gì
+ng tia sét
+mà trông nh
+con chó.
+<HEADSET><clr:255,255,138>À, xin l
+i chú
+a gi
+t nó xong thì nó xì ra m
+c này.
+<clr:255,190,255>Này, chú Russell. Có th
+i ra t
+, nhìn nó kìa. Ha. Thú v
+i, chú Russ!
+<clr:255,190,255><delay:3>Kh
+t, là con chó gi
+t sét.
+i, nó chui h
+n vô gã kia r
+i!<sb>Chú Russell?
+u sóng] Alyx! X
+xong con chó ch
+a? Chuy
+y ra v
+<clr:255,190,255>Di
+n bi
+i:<sb>Nó chui vào m
+t xác ch
+<HEADSET><clr:255,255,138>Không!
+ó.<sb>Cháu ph
+hai, th
+IÊN R
+, chú Russell
+<HEADSET><clr:255,255,138>Nghe
+iên quá.
+<clr:255,190,255>Thì
+y cánh c
+a gia c
+Combine này g
+không th
+...
+[M
+<clr:255,190,255>Ô
+u] Con c
+ó quay l
+Alyx?
+, úi. L
+n này có
+chút.
+ng cháu v
+chú Russ, v
+m, cháu c
+ây và lên trên mái m
+ang c
+i.<sb>Cái thang máy
+a cháu lên tr
+y thang máy
+i lên.
+<HEADSET><clr:255,255,138>Ha, t
+trên cháu m
+i, phát hi
+n, cháu s
+lên t
+ng k
+chúng ta t
+t nó.
+t, chúng ta g
+m, cháu s
+t qua b
+c màn Combine này
+cái này ch
+c màn
+i tìm ra ngu
+n cho b
+c màn Combine
+ang ngáng
+ng cháu.
+nó ra và vô hi
+u hóa nó.
+<clr:255,190,255>Không ph
+i cháu c
+lo, nh
+này ba cháu nên tr
+mà xem, Alyx.<sb>Ông
+n 5 km m
+a,
+n, l
+t giò
+<sb>Nhi
+t, ph
+ng vòng
+<sb>
+, mà ngh
+i...<sb>Th
+t lòng mà nói,
+ÁNG L
+. V
+y cháu <I>nên<I> lo là
+ng là th
+ng cháu là ng
+ang d
+n thân VÀO ch
+n nguy, nên chú ngh
+n ta m
+i là ng
+i lo cho cháu.
+<HEADSET><clr:255,255,138>Alyx! Hôm nay cháu may
+y!<cr>Kh
+u Combine
+c mã hóa!
+<clr:255,190,255>Sao chú ch
+<HEADSET><clr:255,255,138>Nó v
+n còn trong h
+p mà!<sb>Chúng ch
+bao gi
+t vào h
+<clr:255,190,255>Quá
+<HEADSET><clr:255,255,138>Chú còn ch
+a mã di truy
+t. Chú h
+n làm th
+<HEADSET><clr:255,255,138>Không sao, h
+n cháu l
+cáp
+ó là xong.
+<clr:255,190,255>Nó không d
+khi nhìn t
+bên d
+có cách nào
+i cáp
+ây c
+<clr:255,190,255>Chú Russ, cháu ch
+ng ngh
+ra cách gì
+i cáp c
+p b
+o v
+cáp và b
+n vào chúng xem sao.
+<clr:255,190,255>A!
+<clr:255,190,255>À, có l
+i dây cáp.
+t, gi
+cháu hãy tr
+vào trong và t
+<clr:255,190,255>Rõ.
+n! Chúc may m
+n. Chúc may m
+<clr:255,190,255>[Ho]
+cái gì
+<clr:107,232,120><sfx:1>[Th
+c kinh ng
+i, m
+t tên Vortigaunt
+n tôi
+c k
+trong bóng t
+<clr:255,190,255>Ông t
+do r
+i.<sb>Không sao
+âu, b
+n ông c
+Alyx Vance
+cô là b
+a chúng tôi.
+<clr:255,190,255>Chúng
+ang làm gì ông
+u chúng làm v
+n tôi.
+cho cá th
+Alyx Vance.
+<clr:107,232,120>Nhìn
+Alyx Vance ph
+<clr:107,232,120>Làm
+<clr:107,232,120>Combine bòn rút s
+nh t
+a chúng.
+ó n
+Chúng tôi b
+xé r
+i kh
+<clr:255,190,255>Ta ph
+n chúng gi
+n bè ông.
+<clr:107,232,120>Vortigaunt chúng tôi s
+thoát thân và báo thù.<sb>CÔ ph
+khí
+<clr:255,190,255>Tôi không th
+p vào Kho Kín n
+u các tr
+ng lo, cá th
+Alyx Vance.<sb><I>Không<I> có chuy
+âu.<sb>B
+n tôi s
+<I>không<I> cho phép.
+ng cho cô.
+<clr:107,232,120><sfx:1>[Rên r
+i. Tuy không chung l
+ng hãy nh
+: gi
+a chúng ta không có kho
+ng cách.<sb>Luôn luôn g
+n k
+i này h
+úc nha chú Russ.
+<HEADSET><clr:255,255,138>Kênh liên l
+c tr
+nên lo
+khi ta h
+cái tr
+ó.<sb>Chúng
+ã bi
+c tiêu c
+a ta là Kho Kín r
+i.<sb>Dù trong
+ó có gì, chúng r
+t R
+T không mu
+n ta
+ng tay vào.
+<clr:255,190,255>Chà, làm cháu càng mu
+n nó h
+<HEADSET><clr:255,255,138>Có chí khí ra ph
+<HEADSET><clr:255,255,138>Ta
+u vào vi
+c tên Vortigaunt
+t các tr
+cháu tin ông ta.
+m. Chú c
+vì n
+u gã th
+i, cái Kho Kín
+ng nhúc nhích.<sb>Và chúng ta s
+ây, ch
+ng có Kho Kín nào
+p, gi
+a vòng vây t
+i Combine, và
+<clr:255,190,255>Chú Russ.<cr>Ngoài vi
+c tin ông
+ta không còn cách khác.<sb>
+c. Ta c
+. Cháu nói
+úng. Gã s
+n.<sb>T
+chúng ta s
+<HEADSET><clr:255,255,138>Ok, không có
+c ti
+i Kho Kín.<sb>Vì v
+y, cháu ph
+i tìm
+ng lu
+n lách
+<clr:255,190,255>Nó to oành nh
+y, nên ch
+c không khó
+âu chú nh
+<clr:255,190,255>Cháu không hi
+u chúng
+nh làm gì v
+i nó,
+<clr:255,190,255>N
+khí này hùng m
+nh th
+i sao l
+t bãi rác th
+oán là b
+n chúng
+ang tìm cách chuy
+n nó kh
+i trái
+t.<sb>Tr
+hành tinh c
+a chúng ho
+i khác.
+<clr:255,190,255>Sao chúng không dùng
+ÂY?
+ây chúng
+i, Alyx.
+<clr:166,242,255><I>Khu tr
+p trung, b
+do.<sb>M
+c xác
+nh là
+ng chính s
+ngay t
+n.<I>
+<clr:166,242,255><I>Ph
+kia, ng
+bu
+c t
+i có nhi
+u hành vi ch
+an c
+m.<sb>Hãy h
+p tác v
+t.<sb>
+t: chú ý.<cr>Mã: Giao chi
+n. Cô l
+p. Tiêu di
+<clr:255,190,255>Chú Russ ngh
+sao?<sb>Có l
+chúng ta nên h
+p tác thì h
+m, nghe b
+nói có v
+n quá ha.
+ây là khá r
+p v
+tác. Xùy.
+ã gây th
+ng vong l
+n cho chúng ta.
+n binh.<sb>
+àn áp
+<clr:18,199,226><force>M
+c tiêu giao chi
+n, lui v
+và c
+<clr:255,190,255>Phù!
+<HEADSET><clr:255,255,138>Whoa, Alyx!
+<clr:255,190,255>Chú có TH
+Y không?!
+i Vortigaunt
+ánh h
+<HEADSET><clr:255,255,138>Có khi l
+<clr:255,190,255>Nên là v
+<HEADSET><clr:255,255,138>Alyx! Nhìn lên!
+<HEADSET><clr:255,255,138>Nhìn lên, nhìn lên!
+<HEADSET><clr:255,255,138>Xem ai tái xu
+t giang h
+ây!<sb>Chú v
+a cho drone bay l
+<HEADSET><clr:255,255,138>K
+i. G
+p cháu ngoài kia.
+t hàng rào c
+n Combine phía tr
+c.<sb>Chúng
+ang ng
+ai ti
+n Kho Kín.
+<clr:255,190,255>Ok. V
+y, chú tính sao?
+<HEADSET><clr:255,255,138>Tìm cách vào trong nhà máy r
+u và xem nó d
+âu.<sb>Gi
+ã có drone ho
+i, chúng ta cu
+i cùng
+ã chi
+ôi không,
+ùa nhau à!
+<HEADSET><clr:255,255,138>Ây,
+ùa nhau
+y à!
+<clr:255,190,255>Ok, cháu không th
+i vào tòa nhà
+ó, gi
+cháu s
+tìm xung quanh.
+<clr:255,190,255>Mà
+ây là nhà máy r
+u.<sb>H
+làm vodka và các lo
+u khác.
+<clr:255,190,255>Vodka
+có... ngon không?
+y vodka có gì ngon không?
+i, không h
+<clr:255,190,255>Á à, Russell không thích vodka,
+ã hi
+chú không h
+nói th
+nhá!
+ng nó không ngon mà?
+<HEADSET><clr:255,255,138>Nó là thu
+ng chú ghi
+n nó.<sb>Ai
+ai c
+ng thích nó c
+<clr:255,190,255>Ok, nghe siêu khó hi
+cháu tìm cách vào trong, r
+m cho chú vài chai.
+t cú mèo
+u cháu có lòng thì chú có d
+<clr:255,190,255>Trong này có c
+chai c
+lâu có h
+không?
+<HEADSET><clr:255,255,138>Càng lâu càng ngon! Chúng ngon h
+t, Alyx!
+<clr:255,190,255>Chú Russell? Tín hi
+u chú b
+rè r
+<HEADSET><clr:255,255,138>Vodka
+ó v
+n ngon, Alyx!<sb>Vodka
+n ngon!
+<clr:255,190,255>Ây chà.
+<HEADSET><clr:255,255,138>Alyx! Tr
+i, Alyx!<sb>Alyx? À, cháu
+<clr:255,190,255>Này chú Russ.<cr>H
+i Vortigaunt v
+t cái n
+<clr:255,190,255>Chú Russ! H
+i Vort
+ang x
+thêm m
+n khác!
+<HEADSET><clr:255,255,138>Ôi t
+t! Tin tuy
+<clr:255,190,255>Không có
+i Kho Kín.<sb>Cháu s
+quay tr
+vô và tìm
+t qua rào ch
+n này.
+ng ra.
+<HEADSET><clr:255,255,138>Ok,
+m, thì n
+u ta l
+u, nh
+là:<sb>Vodka không b
+, ok?<sb>Không bao gi
+<HEADSET><clr:255,255,138>Alyx, cháu s
+không tin vi
+c này
+<clr:255,190,255>Chú Russ? H
+t vã] Kh
+n ki
+t vã] Coi nào, con quái qu
+này
+chân
+tao
+ra! B
+Gah!
+t vã]
+a, tao t
+ng chúng ta
+i: mày gi
+m gi
+mi
+ng thì tao s
+không b
+t vã] Duyên mình h
+i, nói cho mày bi
+t vã] Tr
+<sfx:1>[V
+quá
+trong cái nhà máy
+ngu xu
+n này bao n
+m.<sb>Làm sao mà
+y con thòng l
+tóm hoài?
+t vã] R
+m<sb>
+tao c
+t lìa luôn cái chân.<sb>Cho mày
+ó, mong mày ch
+t ngh
+n luôn
+quái thai.
+t vã] Bao nhiêu cách
+t, l
+i vào cách này.<sb>Quá nh
+t vã] B
+dìm ch
+tu
+n tra Combine cán qua.<sb>B
+Ba C
+ng cán qua.<sb>B
+ng dìm ch
+ng xé làm
+ôi.<sb>B
+lao ph
+! Này! Này!<sb>Cô gái,
+, dính máu trên ng
+i.<sb>Cô gái dính máu trên ng
+Tôi,
+, g
+p chút r
+ây nè.
+, rõ là v
+Cô,
+ng hay cô có mang theo súng không?
+i, nhìn kìa.<sb>Kh
+Ây da! Kh
+u súng
+ó, mà b
+con này nu
+Nhân ti
+ây, cô b
+n con này giùm tôi
+c không?<sb>Làm
+, tay tôi ch
+m b
+n hay n
+m ti
+a là cùng, nên
+Nên là cô c
+u không phi
+<sb>Urragh
+cô ch
+ng cái th
+này h
+tôi.
+A, này, tuy
+A, hay quá. Ng
+i hùng c
+a tôi.
+, nè, giúp tí coi?
+Phù. C
+<clr:255,190,255>Cái quái gì v
+À, là Jeff.
+<clr:255,190,255>Jeff?
+ng lo, h
+n không nhìn
+âu.<sb>Nh
+ng nghe v
+n rõ.
+Tai thính nh
+Mozart
+<clr:255,190,255>Ai?
+Ugh.
+tôi giúp cô.
+i.<sb>G
+p cô phía bên kia nhé, tân binh.
+Và nói kh
+thôi.
+[Thì th
+m] Là h
+<clr:255,190,255><I>Jeff.<I>
+m]
+i. Xem nè
+y không? H
+oán.<sb>Nh
+u mà tóm
+c là h
+n xé lìa tay cô ngay.
+y cha cha, gì
+ó!<sb>Jeff ch
+n mà!
+ùa nhau à
+<clr:255,190,255><sfx:1>[Ho]
+<clr:255,190,255><sfx:1>[Ho l
+<clr:255,190,255>[Ho] Ch
+<clr:255,190,255>[Ho] H
+Nè nè! M
+ó ghê l
+m!<sb>Cô nh
+che mi
+<clr:255,190,255>Hi
+i. C
+<clr:255,190,255>[Ho] Hi
+À này, tôi quên h
+i:<sb>Cô tên gì?
+<clr:255,190,255>Alyx! Alyx Vance!
+Chào, Alyx. Tôi là Larry.<sb>R
+t vui
+p cô.<sb>C
+ng nhé.
+Che mi
+ho!
+Này! Này!<sb>Che mi
+Cô
+trí
+y!<sb>Mau che mi
+Jeff có th
+nghe th
+y ti
+ng cô ho
+y!<sb>Che mi
+<clr:255,190,255><sfx:1>[Th
+<clr:255,190,255>Oof
+<clr:255,190,255>Phew
+<clr:255,190,255>Whew
+Tao ghét mày, Jeff
+Này! Alyx Vance!<sb>Cô làm
+! Tôi b
+y Jeff vào cái máy ép rác.
+i cho h
+n ra bã luôn.
+Kinh th
+Hy v
+ng cô tìm
+<clr:255,190,255>Ui chúa
+i, Jeff.<sb>C
+n không? [C
+<HEADSET><clr:255,255,138>Alyx, tr
+i.<sb>Alyx
+, cháu
+i.<sb>Nghe
+c chú không?
+tín hi
+rè.
+cháu v
+nhà máy r
+<clr:255,190,255>Cháu m
+i quen m
+n tên Jeff.
+t quá.<sb>Chúng ta thêm
+c ng
+i nào hay ng
+, b
+n cháu không thân l
+<HEADSET><clr:255,255,138>Nghe này,
+trên m
+t quanh khu
+ó có m
+ó chính là
+ng thoát kh
+y.<sb>Cháu m
+nó ra, chú s
+u xem nó d
+n Combine ch
+i thoát trong này r
+nó ra l
+i và bi
+t!<sb>
+, chú s
+dò xem nó d
+<HEADSET><clr:255,255,138>Chú v
+a tìm
+m thành ph
+khu v
+a cháu!
+<clr:255,190,255>C-cháu ch
+ng nghe gì c
+. Russell!
+<HEADSET><clr:255,255,138>D
+t. Ngh
+a là
+m.<sb>Là
+y. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Cái quái gì v
+y?!
+Ó là Jeff.
+. Là Jeff. Chú không
+a Jeff.
+nh thu
+sau quen.
+Ó là Jeff
+chú nói kh
+thôi!
+<HEADSET><clr:255,255,138>Ô. Ok.<cr>R
+Chú không
+, mà này, cái m
+Mà này, cái m
+Mà này, m
+o h
+mà này, m
+o hi
+và m
+Món
+À, nhân ti
+trang ph
+ó?<sb>Xu
+À, mà này
+cái th
+cô
+i trên
+ó?<sb>Tôi thích à nha.
+! Mà này, m
+ó!<sb>
+ây s
+ng à nha.
+Và ng
+cô làm m
+t nó, thì nh
+i quanh nh
+À! L
+t?<sb>Che mi
+ó nhé.<sb>Nó
+Ok, nh
+ã an toàn.<sb>Gi
+thì m
+cái n
+ta có th
+thoát ra qua m
+<HEADSET><clr:255,255,138>Cháu tìm b
+n xem.
+<HEADSET><clr:255,255,138>Tìm m
+t ánh
+èn nh
+p nháy.
+<HEADSET><clr:255,255,138>Tin t
+t:
+m này d
+i Kho Kín.
+t. À, nói tr
+c, phòng khi cháu b
+u luôn, cháu ngh
+m này có
+y ki
+, ki
+, chú bi
+ó. Sinh v
+t ngoài hành tinh v
+y cái chân nh
+n ho
+! Ph
+i! Và r
+m, nh
+y con s
+tí hon.
+âu, không ph
+i.<sb>M
+y con này nguy hi
+y, dù là con gì
+a, chúng
+i cái h
+. Cháu xu
+<HEADSET><clr:255,255,138>Chân nh
+n! À không, nó ch
+<clr:255,190,255>Con ki
+ó, chú Russell.
+ó là ki
+sao?
+.<sb>V
+y là chú CÓ BI
+T v
+Ki
+ha.
+y con chân nh
+<clr:255,190,255>Russ? Theo chú thì cua m
+có th
+n tinh tinh thành zombie không?
+<HEADSET><clr:255,255,138>Nói th
+u có con tinh tinh x
+ng chu
+ng thì không ch
+c cua m
+làm tình hình t
+<clr:255,190,255>Chú Russ, xin l
+i lúc nãy cháu không l
+c chai vodka nào cho chú.
+<HEADSET><clr:255,255,138>Không sao.<sb>Trên
+c mà.
+<clr:255,190,255>Chú nè, hy v
+ng chú bi
+t vi
+c mang chai vodka này
+i vòng vòng phi
+nào.
+c mang thùng vodka này
+<HEADSET><clr:255,255,138>Bi
+.<cr>Nh
+ng cháu có hai tay mà.<sb>L
+y giùm chú chai TH
+HAI n
+a trên
+nhé?
+<HEADSET><clr:255,255,138>Chú bi
+t, chú bi
+t mà.
+<HEADSET><clr:255,255,138>Hai chai!
+<HEADSET><clr:255,255,138>Ba chai!
+<HEADSET><clr:255,255,138>Ôi, cháu
+ã làm
+u không t
+ng.<sb>Th
+t li
+nh quá
+áng
+và chú bi
+n sâu s
+<clr:255,190,255>À, cháu s
+t chai.
+<HEADSET><clr:255,208,172>Nhà tù
+<clr:255,190,255>Khoan
+Ba
+Sao
+<HEADSET><clr:255,255,138>Gì c
+<clr:255,190,255>Giam <I>th
+gì<I>
+trong?
+<HEADSET><clr:255,208,172>Ba không bi
+t.<sb>Ba còn không ch
+u này bi
+t.<sb>Nh
+ng chúng
+ang giam gi
+ó bên trong.
+<clr:255,190,255>Whoa, ok.<sb>V
+u nó không ph
+i là v
+khí, ta v
+<HEADSET><clr:255,208,172>Theo ba th
+y, dù trong
+ó là gì thì c
+a l
+âu.<sb>Nên chúng ta có
+Ó là
+m chung.
+úng
+<HEADSET><clr:255,208,172>V
+chúng ta có ti
+ã ti
+n xa th
+i, con ngh
+là nên ti
+c.<sb>Còn n
+u ba phát hi
+mình không nên
+ng vào thì mình s
+<HEADSET><clr:255,208,172>
+úng là con gái c
+a ba.<sb>Ba s
+báo khi bi
+t thêm.
+<clr:255,190,255>Ha, chúng
+ang phong t
+a khu v
+<HEADSET><clr:255,255,138>Còn khuya m
+c ai có
+"Alyx".
+<clr:255,190,255>Vâng, còn khuya.
+<clr:255,190,255>Ôi chú Russell!<sb>H
+i Vort v
+a x
+xong tr
+n cu
+i cùng!
+chú xem nào!<sb>Eli!<cr>H
+<HEADSET><clr:255,255,138>Coi ch
+ng, Alyx!<sb>Nó s
+<clr:255,190,255>Khoan, cái quái
+<HEADSET><clr:255,255,138>Là
+Chúng
+ã kích ho
+phòng kh
+p nào
+phòng!
+<HEADSET><clr:255,208,172>B
+o Alyx h
+phòng
+ó không th
+duy trì
+nh.<sb>Con bé có th
+c nó.
+<HEADSET><clr:255,255,138>Ba cháu b
+<clr:255,190,255>Cháu nghe r
+n chùm sáng
+ó ph
+i không?
+n là tr
+phòng.
+<clr:255,190,255>Hy v
+i nào k
+t trong
+áng công c
+<HEADSET><clr:255,255,138>Nói gì
+ó, Alyx?
+<clr:255,190,255>Không có gì, cháu
+<clr:18,199,226><force>Này! C
+n. Tao không mu
+dính th
+này lên ng
+<clr:18,199,226>T
+i sao, nguy hi
+<clr:18,199,226><force>Không an toàn nên ta m
+chúng xu
+. Ti
+<clr:255,190,255>Phù,
+i. Con cu
+<clr:255,190,255>Chú Russ, chú mu
+n hoán
+trí không?
+... không, vào
+c chú ch
+t ngay và luôn.
+<clr:255,190,255>Có ai
+trên
+i Combine.<sb>Có th
+ám ve chai?<sb>C
+<HEADSET><clr:255,255,138>Eli! L
+<clr:255,208,172>Gì th
+, Russell?
+<HEADSET><clr:255,255,138>Hãy nghe này
+<clr:255,190,255>Ôi ôi! Su
+Tôi không có
+ùa, c
+SU
+i không làm
+y, ai là ng
+m quy
+Ok. V
+ó l
+Ah, mình còn làm cái gì
+ây?<sb>Nên
+i thôi.
+Các ng
+hành tinh trong b
+ng.<sb>Mà m
+i vi
+i ngâm lâu th
+, không,
+n mà.<sb>Tôi
+a mai
+ó.<sb>
+. Tôi m
+ng là các anh nh
+n ra.<sb>Ph
+ng là m
+a mai luôn.<sb>
+tôi nh
+u tôi c
+n nói v
+p các anh là chúng ta không còn nhi
+i gian n
+y gi
+u tôi g
+i giám sát c
+a TÔI
+ây<sb>thì v
+này li
+u có bi
+n chuy
+n gì không?
+Không, ý tôi chính là v
+y.<sb><I>B
+N THÂN<I> tôi là giám sát
+ây.<sb>M
+Alô, tuy
+i mãi. Alô.
+Chúng ta c
+i ho
+i này s
+thành Black Mesa th
+, thì tôi nói các ng
+i là nó
+Ã s
+Này, n
+ây khi con nh
+n, coi nh
+ta m
+a vào
+u gì x
+y ra hôm nay mà cho r
+c con nh
+Nghe này, cái gã chúng ta
+ã tr
+i qua v
+n gây ra bao náo lo
+i bi
+t.<sb>Cu
+i cùng chúng ta c
+c mà gi
+cho h
+n thoát sao?<sb>CHUY
+N CÁI H
+ng sót qua Black Mesa
+Eli!<sb>Chúng RÕ RÀNG có siêu v
+khí trong tay!
+<HEADSET><clr:255,208,172>Kh
+t, Russ.<sb>B
+n chúng b
+c Gordon Freeman.
+wow. V
+y là t
+u này r
+t, R
+T t
+úng là
+úng là k
+di
+u Gordon Freeman thôi.
+.<sb>Chúng ta s
+giành l
+i Gordon Freeman.
+<clr:255,190,255>Ô. Có
+ch.<sb>Này,
+i con chút.
+<clr:255,190,255>Ok, th
+ch là
+n phòng
+ó và c
+u Gordon.<sb>Cháu nói th
+t, ng
+i ta bàn v
+anh
+ng cháu luôn ngh
+<HEADSET><clr:255,255,138>Chú c
+<clr:255,190,255>Ba
+i. Ba có
+<HEADSET><clr:255,208,172>Có, sao v
+y, Alyx?
+u Gordon s
+y nào gi
+anh ta
+ng dám cá
+t câu chuy
+n ly k
+<clr:255,190,255>Sau khi gi
+u Gordon, ta có th
+tính toán tham v
+n, ph
+i không chú Russ?<sb>Có khi l
+Citadel c
+ng nên.
+<HEADSET><clr:255,255,138>Anh ta t
+u nhân lo
+i.<sb>Chú cá là
+nh có th
+<clr:255,190,255>Và l
+n này anh
+c mã.
+<HEADSET><clr:255,208,172>Alyx
+Con có
+ây ba.
+<HEADSET><clr:255,208,172>Có v
+con S
+c vào Kho Kín t
+ó.<sb>Có m
+<clr:255,190,255>Tình hình an ninh trong
+<HEADSET><clr:255,208,172>Ba có t
+thông tin tr
+ây và s
+cho con bi
+<sb>CÓ h
+ng an ninh
+ng ba ch
+gì nh
+.<sb>Th
+vô cùng k
+c con ph
+i tùy c
+<HEADSET><clr:255,208,172>Này,
+ng lo, c
+ng à. Ba s
+lý gi
+y chùm sáng
+ó phát ra t
+nh tháp NÀY,
+úng không
+<clr:255,190,255>Chú ngh
+ang làm gì trong
+<HEADSET><clr:255,255,138>Có v
+<HEADSET><clr:255,255,138>Làm t
+m, Alyx.<sb>Chúng
+ang ph
+n toàn l
+c vào cháu.
+n chú. Chúng ta g
+ang quay l
+i nè, Alyx!<sb>
+ng có ngo
+t!<sb>Nhìn th
+ng vào chúng cho h
+coi!
+<clr:255,190,255>Phòng
+n kia r
+ta s
+<HEADSET><clr:255,255,138>Alyx, chúng ta s
+i Kho Kín r
+i.<sb>Cháu s
+không còn nhi
+dùng resin n
+<clr:255,190,255>Có lý
+y.
+xem cháu t
+c nâng c
+p nào n
+a không.
+<HEADSET><clr:255,255,138>Không tin n
+u súng c
+hay là
+a nó cho Gordon.
+<HEADSET><clr:255,255,138>Không, cháu rõ là
+c chú.<sb>Chú không m
+u mà cháu nói th
+a cho anh ta kh
+u shotgun
+y.<sb>Ng
+i ta b
+nh nã shotgun
+thì t
+<HEADSET><clr:255,255,138>Alyx, ngay phía tr
+c.<sb>B
+ó neo Kho Kín vào tr
+<clr:255,190,255>Xong ngay.
+n lúc gi
+i thoát v
+u tinh c
+a nhân lo
+<HEADSET><clr:255,208,172>Con gái c
+ng này, nh
+ng gì con làm c
+ng không h
+<HEADSET><clr:255,208,172>Con
+ã có th
+làm nên chuy
+n cho Trái
+t trong Th
+ta
+n tám ti
+<clr:255,190,255>Gì n
+! Tuy
+thì, m
+t trong nh
+ng nút này s
+i dài c
+u ra
+i cháu.<sb>Ngay và luôn.
+<clr:255,190,255>Uhhh
+<clr:255,190,255>Cái NÀY.
+Không ph
+i cái
+<HEADSET><clr:255,255,138>Không,
+ó không ph
+i cái c
+<HEADSET><clr:255,255,138>Alyx, cái c
+ng yên.<sb>Sao nó l
+i không nhúc nhích th
+t, Russ, cháu c
+i càng không.
+<HEADSET><clr:255,255,138>Alyx
+Alyx
+ALYX
+ALYX!
+i. Ôi tr
+Ôi TR
+<clr:255,190,255>Ahhh!
+<HEADSET><clr:255,255,138>Chú nói "ngay" là li
+<HEADSET><clr:255,208,172>Russell,
+con bé ngh
+<HEADSET><clr:255,255,138>Ngay
+<HEADSET><clr:255,255,138>Alyx, làm
+n, ch
+t giùm chú.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, con sao r
+Có khi con v
+t Gordon Freeman r
+<clr:255,190,255>Có khi
+<HEADSET><clr:255,255,138>Kho Kín ngay
+ng kia.<sb>Vào
+u anh ta
+i.<sb>Ho
+m xác anh ta v
+<clr:18,199,226><force><I>Ch
+huy yêu c
+ánh giá thi
+<clr:18,199,226><force>Thi
+i: 70%
+80%
+90%
+Toàn b
+<clr:18,199,226><force><I>Toàn b
+<clr:18,199,226><force>Toàn b
+<clr:18,199,226><force><I>Ti
+p vi
+ang t
+<clr:18,199,226><force>
+<clr:18,199,226><force>C
+c rút v
+<clr:18,199,226><force>Tôi không bi
+á nó.
+<clr:18,199,226><force>Giám Sát nói
+á nó n
+á nó r
+<clr:18,199,226><force>Núp xu
+<clr:18,199,226><force>Ti
+c tiêu. Ti
+c tiêu.
+<clr:18,199,226>Không nh
+<clr:18,199,226><force>Là Alyx Vance.
+<clr:18,199,226>Không tìm th
+y Alyx Vance.
+<clr:18,199,226><force>Là Alyx Vance!
+<clr:18,199,226><force>Alyx Vance ch
+còn ai.
+<clr:18,199,226>Cung c
+i cho Giám Sát.
+<clr:18,199,226>Nghe ch
+<clr:18,199,226>Nh
+i. Cung c
+<clr:18,199,226>Tham chi
+t con Ba C
+ng.<cr>
+ã ng
+ng.<sb>Cháu g
+p may
+y.<sb>Hình dung n
+nh b
+ng không?
+<clr:255,190,255>Thôi mà chú Russ.<cr>
+ng trù
+<HEADSET><clr:255,255,138>Alyx! Ba C
+ng kìa!<sb>Coi ch
+ng, nó còn s
+t.
+<HEADSET><clr:255,255,138>Ây. Do ta trù
+o,
+<clr:255,190,255>Linh l
+m!<cr>Linh d
+luôn chú Russell!
+<clr:255,190,255>Agh!
+y.<sb>V
+y nè.
+<clr:255,190,255>Russell! Súng l
+<HEADSET><clr:255,255,138>Chú có ý t
+ng này.
+<clr:255,190,255>Cháu c
+y ra.
+y ra.<cr>Là ý hay luôn
+i! T
+i luôn!<cr>B
+n nó! B
+<HEADSET><clr:255,255,138>Ha! Có tác d
+ng!<sb>Chú ngh
+y.<sb>Trông nó không vui khi b
+n chút nào. B
+n nó ti
+<clr:255,190,255>Chú Russell,
+cháu b
+m!<sb>B
+i!<sb>Ph
+!<sb>B
+n! B
+i!<sb>B
+i! Ô quá tuy
+<clr:255,190,255>[C
+nhõm] Thành công r
+i, chú Russ.
+i. Ta làm
+<HEADSET><clr:255,255,138>Ui.
+i, Alyx.<sb>Tia sáng
+ó trông có v
+n cháu th
+ng lên Kho Kín.
+ã rõ.
+<clr:255,190,255>Whoa! Chà,
+i. Cháu
+ang lên.
+u rè]
+c. Nó
+ang làm nhi
+u.<sb>Có th
+không liên l
+trong
+. Có l
+u rè] V
+m chia tay.
+u rè] R
+i cháu s
+ra, cùng v
+i Gordon, bình an vô s
+, và m
+n, chú Russ.<cr>G
+i chú sau.
+<HEADSET><clr:255,208,172>Russell, ng
+n con bé l
+<HEADSET><clr:255,255,138>Cái gì
+<HEADSET><clr:255,208,172>Alyx!
+i vào K
+[Tín hi
+<clr:255,190,255>Ba? Ba à?
+<clr:255,190,255>Chung c
+ba nói.
+<clr:255,190,255>Ok, n
+i này l
+ng mình không rõ n
+a. Trông ch
+ng nguy hi
+m gì l
+<clr:255,190,255>Whoa
+n là nó.
+<clr:255,190,255>Ok, Gordon Freeman. Hy v
+ng bõ công l
+u anh.
+i Gordon,
+a anh ra kh
+<norepeat_global:10>R
+c, cô Vance.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [C
+<norepeat_global:10>Cô Vance.<sb>
+âu c
+n bao nhiêu <I>th
+này<I>
+giam c
+m Gordon Freeman.
+ông là ai?
+<norepeat_global:10>Có l
+tôi là <I>ai<I> không quan tr
+tôi có th
+<I>tr
+<I> cho cô vì
+công t
+<norepeat_global:10>Vài k
+i chúng ta là <I>b
+ch<I>.
+<norepeat_global:10>Ch
+a tôi không
+ng ý.<sb>H
+cho phép tôi
+ôi khi có th
+<sb><I>nhích<I> m
+t vài th
+theo h
+nh.
+<norepeat_global:10>V
+y <I>cô<I> mu
+n nhích th
+gì, quý cô Vance?
+n Combine r
+t.<cr>Tôi mu
+<norepeat_global:10>Ahhh.<sb>Có v
+cú nhích này khá là xa
+ó.<sb>Quá xa, n
+u xét
+i ích dành cho ch
+<clr:255,190,255>Thì ông h
+i mà.
+<norepeat_global:10>Gi
+cho cô m
+cô không <I>bi
+t<I> mình mu
+<clr:255,190,255>Chúng ta
+Ba? Ba
+i? Cái gì
+<sb>Có ph
+i l-là tôi
+ó không?<sb>Cái gì
+ây?<sb>Chuy
+n gì
+<norepeat_global:10>Chúng ta
+ng lai.<sb>
+ây là th
+c cô ch
+ng ki
+n ba cô lìa
+<norepeat_global:10>Tr
+<clr:255,190,255>Sao? Tr
+khi SAO?
+khi cô mu
+<norepeat_global:10>Hãy gi
+u ba mình, cô Vance.
+<norepeat_global:10>Dùng g
+ng tay, cô Vance.
+<norepeat_global:10>T
+t.<sb>H
+a hành
+ó, là th
+<I>này<I> s
+<norepeat_global:10>Và th
+này thì không.
+úng không? Ông
+ng. Ba tôi s
+<norepeat_global:10>Cô <I>h
+n<I> nh
+n ra cô
+ng minh b
+n thân b
+giá tr
+phi th
+<norepeat_global:10>M
+t nhân viên tr
+ã không th
+c không mu
+<sb>th
+c thi nhi
+c giao phó.
+<norepeat_global:10>Chúng tôi
+ã r
+tìm m
+ng viên thay th
+phù h
+<norepeat_global:10>Cho t
+<clr:255,190,255>Không! Tôi, tôi, tôi ch
+mu
+nhà. Cho tôi v
+nhà!
+<norepeat_global:10>Tôi e là cô hi
+u sai tình hình hi
+i, cô Vance.
+<clr:255,190,255>Khoan,
+<clr:255,208,172>Gordon! Gordon! D
+i, Gordon!
+<clr:255,208,172>Con bé
+i.<sb>Nó
+I R
+I, Gordon.
+<clr:255,208,172>T
+cha nó và cái m
+bòng bong "h
+khôn l
+ng" mà nó ra r
+!<sb>Bi
+t ngay mà.<sb>Khi mà b
+c nó, tui s
+... <sb>Tui s
+GI
+T b
+t. Tui s
+tìm cách. Còn gi
+<clr:255,208,172><sfx:1>[Th
+nh]
+i, Gordon.
+<clr:255,208,172>Chúng ta còn vi
+i làm.
+<clr:255,190,255>[Ng
+i] Khi
+p. Ch
+này n
+ng mùi quá.
+?<sb>Mùi nó nh
+nào? C
+coi.
+mùi th
+a tr
+amoniac.
+Ok.
+<clr:255,190,255>Càng ch
+m vào th
+này, cháu càng cho r
+ng nó có th
+nó ch
+c ung th
+thì sao?
+nó LÀM cháu ung th
+nó t
+o ra lo
+i ung th
+i thì sao?
+<clr:255,190,255>Russ, cháu không s
+m gì n
+c thôi.
+<clr:255,190,255><sfx:1>[H
+t xì]
+<HEADSET><clr:255,255,138>Tr
+m vía.
+<clr:255,190,255>Phù, c
+<HEADSET><clr:255,255,138>Alyx. Chú th
+y có m
+t phát ra t
+ó.<sb>Nói tr
+c cho cho cháu.<sb>V
+, bên trong
+<clr:255,190,255>Russell, chú
+n bao nhiêu th
+y ra hôm nay.
+<clr:255,190,255>Mà GI
+<clr:255,190,255>Ok,
+cháu chu
+tinh th
+cháu di
+ch l
+ngoài hành tinh r
+i. Hình nh
+chúng ch
+t. R
+chúng ta ch
+n Kho Kín, l
+y v
+khí,
+quá d
+và chúng
+và ta có bánh mì k
+p, ta s
+có bánh mì k
+úng. Chính xác.
+t. Hy v
+ng là s
+ngon.
+t khi chúng ta
+n Combine kh
+t, cháu
+nh làm gì h
+à, thì, ba và cháu s
+mua m
+n nhà và giúp tái thi
+t. Và sau
+ó, có l
+xây d
+t phòng thí nghi
+m bí m
+<HEADSET><clr:255,255,138>Không nh
+i là bí m
+âu.<cr>Cháu có th
+t cách công khai mà.
+<clr:255,190,255>À, d
+y thì cháu s
+xây phòng thí nghi
+m, không c
+n khóa,
+a ra vào l
+không, v
+có t
+m ch
+thi
+i ngoài hành tinh thôi.
+. Pfft, ph
+y chú th
+y nên có c
+a và khóa
+phòng. Và gi
+ó luôn.
+<HEADSET><clr:255,255,138>Ô! Ba cháu v
+i nè!
+<clr:255,190,255>Ôi, c
+<HEADSET><clr:255,208,172>Russell!<cr>Tr
+i, cu
+i cùng c
+i anh!
+y! Ah, tuy
+i làm sao.
+<HEADSET><clr:255,255,138>Thành th
+t mà nói, tôi ngh
+anh ch
+có b
+ng sót.
+<HEADSET><clr:255,208,172>Ph
+n gã Vortigaunt
+a tôi tr
+ây nguyên v
+<clr:255,190,255>Chú Russell! Cho cháu nói chuy
+i ba!
+<HEADSET><clr:255,208,172>Alyx! Con yêu!
+<clr:255,190,255>Ba! Chúng ta v
+a c
+<HEADSET><clr:255,208,172>T
+m, vì n
+u chúng chuy
+i, v
+khí s
+i luôn. Ta c
+c nó trong t
+i nay.
+<clr:255,190,255>Vâng. Ba v
+<HEADSET><clr:255,208,172>Có
+ây. Russ, nó
+c mã hóa sinh h
+c.<sb>Tôi c
+n TLI.
+, nó
+ngay
+<HEADSET><clr:255,208,172>Ok, tuy
+t.<sb>M
+con?
+i. Ba làm vi
+i, con không sao
+con h
+<HEADSET><clr:255,208,172>Nh
+y.<sb>Gi
+ba ph
+p trung x
+lý
+<HEADSET><clr:255,208,172>Có phát hi
+<HEADSET><clr:255,255,138>Cái gì v
+, cái gì v
+y ba?
+a bi
+ó là gì.<sb>Nh
+ng ta BI
+T làm sao chúng có
+chúng không t
+o ra v
+khí này.<sb>Gi
+<sb>không bi
+ã khám phá
+u gì
+ó.<sb>Ho
+ã khai qu
+Ý ba là sao?
+<HEADSET><clr:255,208,172>N
+u ba
+c không nh
+m, chúng truy v
+t tòa chung c
+KCL.<sb>Nh
+ng thay vì vào trong
+y nó, chúng thâu tóm c
+tòa nhà và xây Kho Kín xung quanh nó.
+t.<sb>Ch
+c chúng ph
+<HEADSET><clr:255,208,172>Ba
+ang tìm hi
+u xem li
+u CHÚNG TA có nên s
+không.
+ang làm gì Gordon Freeman trong
+t câu h
+i hay
+<clr:255,190,255>Có khi nào chúng
+ang hút não anh
+y ra?
+m. Chú ngh
+là chúng
+nh chuy
+n anh ta kh
+<clr:255,190,255>Mà ki
+u gì thì c
+qua
+i. Cháu s
+ó x
+<clr:255,190,255>Chú Russ, cái v
+xà beng là sao
+y nh
+, ý cháu là cây xà beng c
+a Gordon Freeman h
+<HEADSET><clr:255,255,138>Ôi Alyx, anh
+y chi
+u thoát thân kh
+i Black Mesa ch
+ng M
+I cây xà beng
+i nào.
+úng mà!
+thì,
+úng là nghe ng
+i ta
+y. Nh
+ng có ai bi
+tình.
+y, khi cháu c
+c anh
+y, hãy cho
+! Không ph
+a chú là
+c.<cr>C
+âu cho m
+n hoài, hi
+u không?
+i súng c
+<clr:255,190,255>Chú Russ!
+<HEADSET><clr:255,255,138>Cái gì th
+<clr:255,190,255>Su
+t! B
+cháu sao r
+i?<sb>
+ng trông
+<HEADSET><clr:255,255,138>À,
+ng bình th
+ng, Alyx.<cr>
+p trung làm vi
+ng B
+t chân, nha.
+t ba cháu b
+t chân mà.
+n còn què nha.
+n, chú Russ.
+<HEADSET><clr:255,255,138>Không có chi.
+có tin gì v
+<HEADSET><clr:255,255,138>À, ba cháu
+i làm.<cr>Ông
+u.<sb>Ch
+p xong r
+<clr:255,190,255>Ngh! Nó trên m
+t cháu! Nó trên m
+t cháu!
+i, ÔI TR
+NÓ
+NG CÓ
+<clr:255,190,255>Á! Tránh tao ra! Tránh ra!
+<clr:255,190,255><sfx:1>[V
+t vã, c
+<HEADSET><clr:255,255,138>Á! Tr
+nó ra!
+m thi
+<HEADSET><clr:255,255,138>Eo ôi, g
+m quá!
+<HEADSET><clr:255,255,138>Ôi, l
+y tr
+<HEADSET><clr:255,255,138>Eo ôi, Alyx, g
+m quá
+úng g
+m luôn.
+c! Cua m
+! Có con cua m
+t cháu kìa! Kéo nó ra
+<HEADSET><clr:255,255,138>Ôiii, nguyên m
+t con trên
+u kìa!
+<HEADSET><clr:255,255,138>Túm nó!
+p nó!
+i Alyx! Kéo nó ra kh
+t cháu
+<HEADSET><clr:255,255,138>Ôi, c
+n Chúa
+<clr:255,190,255>Ôi. Cháu không sao
+Cháu không sao
+<HEADSET><clr:255,255,138>Nó trùm h
+t cháu và
+eo ôi, t
+<clr:255,190,255>Chú Russ, chúng
+ang nh
+n cháu h
+<clr:255,190,255>Coi nào
+mm. H
+. H
+<clr:255,190,255>Ôi
+eooooo
+ôiii.
+<HEADSET><clr:255,255,138>X
+<clr:255,190,255>Whup!
+<clr:255,190,255>Tóm nè!
+<clr:255,190,255>Ahh.
+<clr:255,190,255>Nnngh!
+<clr:255,190,255>Không.
+<clr:255,190,255>Uh uh.
+<clr:255,190,255>A, kh
+gió.
+c. Không
+<clr:255,190,255>Hay
+<clr:255,190,255>Hm. Hay
+<clr:255,190,255>Oh!
+<clr:255,190,255>Wow.
+<clr:255,190,255>Ha hah.
+<clr:255,190,255>Còn ba b
+còn ba b
+<clr:255,190,255>Còn ba.
+<clr:255,190,255>Cái cu
+ng cu
+<clr:255,190,255>Còn l
+<clr:255,190,255>Còn m
+<clr:255,190,255>Không còn b
+ng nào.
+ng nào?
+i ba.
+t. B
+<clr:255,190,255>Argh, h
+<clr:255,190,255>Còn ba viên.
+<clr:255,190,255>Viên cu
+<clr:255,190,255>Không còn viên nào.
+<clr:255,190,255>Ugh. H
+n viên cu
+<clr:255,190,255>Còn b
+n viên.
+<clr:255,190,255>4 viên cu
+<clr:255,190,255>Hai viên cu
+i hai.
+<clr:255,190,255>Còn hai viên.
+còn hai.
+<clr:255,190,255>Còn ba pin
+<clr:255,190,255>Pin
+t pin.
+<clr:255,190,255><sfx:1>[Nén ho]
+<clr:255,190,255><sfx:1>[B
+ng súng]
+<clr:255,190,255>Gahhh!
+<clr:255,190,255>Unh!
+i quá. Cháu c
+èn pin.
+<clr:255,190,255>Chú nói
+úng.
+<clr:255,190,255>Quá t
+i. Cháu c
+u vào
+ó cháu c
+<clr:255,190,255>Cháu mà té t
+cao này e không s
+<HEADSET><clr:255,255,138>Không, không không không,
+ng có d
+i. Sao th
+nh h
+<clr:255,190,255>Không h
+<clr:255,190,255>Cháu không ngh
+âu có. Ch
+<clr:255,190,255>Ah!
+<clr:255,190,255>Chu
+<clr:255,190,255>Nói sau nhe.
+<clr:255,190,255>Khoan, cháu ph
+<clr:255,190,255>Chú Russell, cháu ph
+o n
+a, ph
+chút, có bi
+<clr:255,190,255>Khoan, có khách t
+t, b
+<clr:255,190,255>Chú Russell!
+<clr:255,190,255>AH!
+<clr:255,190,255>TR
+<clr:255,190,255>GAH!
+<clr:255,190,255>T-T-TR
+<clr:255,190,255>Oof. Ok.
+<clr:255,190,255>Whew. Ok.
+<clr:255,190,255><sfx:1>[Ng
+<clr:255,190,255><sfx:1>[C
+<HEADSET><clr:255,255,138>Tìm th
+"G
+ng Russell" nh
+m vào.
+dùng "G
+<HEADSET><clr:255,255,138>Dùng tay cháu
+ng gì cháu c
+n làm là h
+t gì
+n nó làm m
+t và dùng tay nh
+m vào nó.
+<HEADSET><clr:255,255,138>Alyx? Alyx, cháu còn
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Enh, cháu ch
+có
+resin cho cái nào trong
+<HEADSET><clr:255,255,138>À, bi
+nói gì v
+resin không Alyx?
+<clr:255,190,255>Không. H
+resin, chú Russ?
+m. "Tìm
+thêm
+n-nhi
+u resin."
+<clr:255,190,255>Ô, th
+á. Cháu s
+ý xung quanh.
+"Tìm thêm nhi
+ng, Alyx!
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, coi ch
+<HEADSET><clr:255,255,138>Hay l
+<HEADSET><clr:255,255,138>Vàaa ph
+<HEADSET><clr:255,255,138>À há. Hoàn h
+<HEADSET><clr:255,255,138>Ok. X
+y là xong.
+<HEADSET><clr:255,255,138>Tìm ti
+ây thôi.
+y gì không? Chú ch
+<HEADSET><clr:255,255,138>Nó ph
+<HEADSET><clr:255,255,138>Xong m
+ng phí
+a! Th
+<HEADSET><clr:255,255,138>Alyx, chú ý!
+i kìa!
+<HEADSET><clr:255,255,138>Cháu có khách kìa.
+<HEADSET><clr:255,255,138>Ta s
+nói chuy
+n sau.
+<HEADSET><clr:255,255,138>Nói chuy
+n sau nhé.
+p chúng
+<HEADSET><clr:255,255,138>Hú hú, ti
+n lên.
+<HEADSET><clr:255,255,138>Agh!
+<HEADSET><clr:255,255,138>Oof!
+<HEADSET><clr:255,255,138>Whoa!
+<clr:107,232,120>Hrrmph!
+<clr:107,232,120>Hmm! [Kh
+<clr:107,232,120><sfx:1>[Ngân nga th
+i, ngoan nào.
+<clr:107,232,120>Hrrmm
+ah
+mmmhmm
+<sb>Hay
+à há, xu
+<clr:107,232,120>Tôi
+lâu r
+Giám Sát: <clr:166,242,255><I>C
+nh báo. B
+binh.<I><sb><clr:255,255,255>Giám Sát: <clr:166,242,255><I>Ho
+ng xâm chi
+công dân ch
+i.<I><sb><clr:255,255,255>Giám Sát: <clr:166,242,255><I>Mã ph
+i:<cr>Giao chi
+n.
+àn áp. Tra h
+<clr:166,242,255><I>C
+nh báo.
+binh.<sb>Mã c
+t:<sb>D
+ng. Ti
+c.<I>
+<clr:166,242,255><I>L
+c công dân:<cr>M
+t xã h
+n minh
+òi h
+i có s
+giám sát nhanh chóng và c
+.<sb>C
+m các công dân có hành vi
+e d
+ng.<I>
+<clr:166,242,255><I>Chú ý, chú ý.<sb>Khu v
+c này không ph
+n vào.<sb>Nh
+c thông
+p này ngh
+ang vi ph
+m quy t
+c công dân.<I>
+n vào.<sb>L
+c tri
+n khai và giao nhi
+truy tìm.<I>
+Giám Sát: <clr:166,242,255><I>Chú ý, chú ý.<cr>Không ph
+n vào.<I><sb><clr:255,255,255>Giám sát: <clr:166,242,255><I>Công dân ch
+i thu l
+<clr:166,242,255><I>B
+binh chú ý.<sb>
+huy chú ý.<sb>Mã kh
+p: H
+vô.<I>
+nh báo an ninh.<sb>Tái th
+c thi qu
+n giám.<sb>Mã
+nh phân b
+tài s
+n:<sb>
+t cháy. Ki
+m tra. Di
+.<sb>M
+u tiên: ngay l
+nh báo an ninh.<sb>C
+dân n
+n nghiêm tr
+u các nhóm k
+t viên
+n Kh
+i 49, 64, 77.<sb>Duy trì m
+u tiên.<I>
+nh báo an ninh.<sb>Nh
+c nh
+t:<cr>Nhi
+i chuy
+n công tác v
+nh vi
+n.<sb>Mã ph
+i: Xâm ph
+m.
+ng. Ch
+a.<I>
+<clr:166,242,255><I>Xâm ph
+m nghiêm tr
+nh. Ch
+nh.<I>
+<clr:166,242,255><I>Báo
+ng toàn h
+ng.<sb>Tham gia giao chi
+n 5-1-2-9.<sb>Tri
+n khai
+, ngay l
+c.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Mã ph
+i:<cr>Khiên. Chìa khóa. Di c
+áp
+ng.<sb>Ghi
+è giao th
+c:<cr>Góc
+. Thiêu
+t. Lóe sáng.<sb>Góc
+t. Lóe sáng.<I>
+t cái c
+ngoài!
+t bí
+n!
+ta thích!
+<clr:255,190,255>Chuy
+ng ray!
+. Th
+tàu c
+a Eli s
+âm vào t
+i! Ph
+trong khoang tù nhân! S
+không sao
+âu! Nhanh lên, Alyx!
+ó chính là công t
+<clr:255,190,255>Chú Russell! Xem cái c
+t này!
+<HEADSET><clr:255,255,138>Kéo
+xem th
+nào!
+không sao!
+<HEADSET><clr:255,255,138>Ghì nó xu
+ng! Gi
+<HEADSET><clr:255,255,138>Mau, Alyx!
+t! Gi
+ghì c
+ng, không thì
+ng ray s
+a, Alyx!
+<HEADSET><clr:255,255,138>Ba!
+<HEADSET><clr:255,255,138>Hai!
+<clr:255,190,255>Tàu, tàu, tàu, tàu, TÀU!
+<clr:255,190,255>Này, làm sao
+i cáp?
+<clr:255,190,255>Có gì m
+ba cháu không?
+mà là tin t
+<clr:255,190,255>Chú Russell, tín hi
+u chú l
+ng tí công ngh
+mà cháu g
+i là "c
+u thang"
+<clr:255,190,255>Thôi kh
+i, cháu không dùng c
+u thang
+i. Chuy
+n này
+sau
+c không? S
+<clr:255,190,255>Không bi
+a.<sb>Ph
+i có gì
+nó l
+ng.<sb>Và chúng ta s
+tìm ra r
+t! Cái gì v
+<clr:255,190,255>Có m
+nó.<sb>Hình nh
+n.<sb>Con s
+ó và ng
+i chúng.<sb>Ho
+c là, b
+y bên trong LÀ gì?
+<clr:255,190,255>Ahhh
+<clr:255,190,255>Tía má
+<clr:255,190,255>Ba, con s
+i tìm cái kho kín này!
+i, có v
+cây c
+c kéo ra hoàn toàn
+<clr:255,190,255>Ok, trong s
+này ph
+i có m
+t cái
+a kho kín c
+m. Không ph
+i cái này.
+<clr:255,190,255>O...K, ch
+n không ph
+nào?!
+<clr:255,190,255>Trông ch
+n chút nào
+Ugh!
+n NH
+NHÀNG c
+p kho kín VÀO cây c
+<clr:255,190,255>Có khó gì
+i, ta
+i thôi nào.
+<clr:255,190,255>Whoa, chú Russell, chú có th
+t! S-s-su
+t im l
+<clr:255,190,255>Không. V
+ang tìm.
+<clr:255,190,255><delay:3>H
+<sb>C
+<clr:255,190,255>Trên m
+t cháu, trên m
+<clr:255,190,255>Chú Russ! Nó trên m
+t cháu, chú Russ!
+n. Cháu
+t mà. Cháu
+<clr:255,190,255>Nggggh, cháu không kéo nó ra
+<clr:255,190,255>Russ, cháu bi
+<clr:255,190,255>Oof!
+<clr:255,190,255>Uhn!
+<clr:255,190,255>Ow!
+<clr:255,190,255>Whew!
+<clr:255,190,255>Argh!
+<clr:255,190,255>Umph!
+<clr:255,190,255>Gyeeah!
+<clr:255,190,255>Blugh!
+<clr:255,190,255>Whew.
+<clr:255,190,255>[Ho] Whew.
+<clr:255,190,255>[Ho] Ugh!
+<clr:255,190,255>Ugh.
+<clr:255,208,172>Russell? Ông
+âu?<cr>
+<clr:255,208,172>Chúng ta không có thì gi
+.<sb>Nó là m
+khí, Alyx!<sb>
+bên trong.<sb>H
+n là th
+chúng ta
+ã phát hi
+n ra và lý do t
+i sao chúng b
+mình.
+<clr:255,208,172>Chúng gi
+nó trong m
+t kho kín
+<sb>M
+t tòa tháp v
+xung quanh.
+<clr:255,208,172>Có m
+<clr:255,208,172>Alyx, dù th
+khí này là gì, con c
+n: m
+t là tr
+m nó, hai là phá h
+<clr:255,208,172>[C
+m] Yêu gái c
+a ba.
+<clr:255,208,172>Ba yêu con, c
+Eli: <clr:255,208,172><I>Gì th
+, Russell?<I>
+ng...
+<HEADSET><clr:255,208,172>Con c
+i Kho kín.<sb>Ba s
+"ngh
+ch"
+u.<sb>Xem có phát hi
+n gì không.
+<HEADSET><clr:255,208,172>Alyx, ba v
+a phát hi
+<HEADSET><clr:255,208,172>Có m
+t máy phát tr
+ng ngay bên d
+i Kho kín.<sb>
+giúp nó l
+<HEADSET><clr:255,208,172>Ngay
+ó. Máy phát tr
+<HEADSET><clr:255,208,172>Ba v
+ang nghiên c
+u.<sb>Alyx, hãy tìm cách vào trong. Nhanh lên!
+n, con gái. Ba yêu con.
+i kho kín.<sb>Mà là m
+t nhà tù.<sb>Chúng không xây nó
+NGOÀI.<sb>Chúng mu
+n giam th
+TRONG.
+<norepeat_global:10>
+i vô s
+t súng lên, Alyx!
+oán cháu không c
+ng nhi
+âu.<sb>Có l
+có vài th
+ng Combine
+ang áp gi
+i Eli.
+c thôi. Chìa "Alyx."
+xa
+. Không ngh
+y.<sb>Ta th
+y nó c
+ng không ph
+ng tay.
+<HEADSET><clr:255,255,138>Thôi, tám
+i, chúng ta ph
+u ba cháu thôi. Nào.
+<HEADSET><clr:255,255,138>Alyx? Cháu b
+t lúc.<sb>Sao v
+<HEADSET><clr:255,255,138>Sao Alyx?
+<clr:255,255,138>Alyx,
+trên này! Chú ý, chú th
+ng vài viên
+ây này.
+<HEADSET><clr:255,255,138>Alyx, b
+n ngay
+u cháu làm h
+i, chú s
+c tàu c
+a Eli.
+<HEADSET><clr:255,255,138>Alyx,
+i, Alyx!
+<HEADSET><clr:255,255,138>Yeah.
+<HEADSET><clr:255,255,138>Vâng! Rõ nh
+ban ngày!
+<HEADSET><clr:255,255,138>Cháu có khi
+u gi
+n ngoài hành tinh
+t là
+áng báo
+<HEADSET><clr:255,255,138>À, chúng
+i ông
+y lên tàu.<cr>V
+i.<sb>Ngh
+ng còn s
+t là, chúng s
+tra t
+ng khi
+c Nova Prospekt.
+i vì v
+nguyên t
+c, chúng ch
+ng có lý gì ph
+i làm
+ó ngay trên tàu c
+<HEADSET><clr:255,255,138>Ah. Lên mái nhà. Tìm tr
+<HEADSET><clr:255,255,138>Ok, gi
+cháu ch
+n lên mái nhà và tìm
+ng vào cái tr
+<HEADSET><clr:255,255,138>Thang máy
+ng kia, nh
+i thì c
+ng "chua"
+, ta... ta bi
+<HEADSET><clr:255,255,138>Alyx! Drone ho
+i!<sb>T
+y có gì gi
+y cái rào ch
+i Combine ngay phía tr
+c, ng
+ai mu
+n kho kín.
+t con chân nh
+i! Chân nh
+n! Và chúng nguy hi
+m. Alyx, c
+<HEADSET><clr:255,255,138>Alyx! Nhìn kìa!
+<HEADSET><clr:255,255,138>Chú ch
+u. M
+y cái th
+ng Vortigaunt. N
+u không ph
+làm Kho kín l
+ng, thì nó
+thì Kho kín
+i. Ph
+n khó nh
+ã xong. Gi
+nè: tóm l
+bên trong.
+y. Gi
+n: tóm l
+bên trong. Eli này, bên trong là gì v
+<HEADSET><clr:255,255,138>Ahh.
+<HEADSET><clr:255,255,138>Cháu có ngh
+là...
+, nó ch
+<HEADSET><clr:255,255,138>Chúng ta có th
+t qua tòa nhà
+<HEADSET><clr:255,255,138>Woooo!
+<HEADSET><clr:255,255,138>Whoa.
+<HEADSET><clr:255,255,138>Eli, l
+<HEADSET><clr:255,255,138>Chà! Ch
+<HEADSET><clr:255,255,138>Suýt hack
+<clr:107,232,120>R
+u! D
+Eli Vance! Cá th
+Alyx Vance!<sb>Tôi
+giúp nh
+ã h
+a.<sb>
+i! Tôi s
+o an toàn cho ba cô.
+<clr:107,232,120><sfx:1>[Càu nhàu]
+a cá th
+i an toàn.
+<clr:107,232,120>Không... Vortigaunt b
+i có lo
+i siêu v
+<clr:107,232,120>Hãy
+i! M
+u có con
+ng riêng.<sb>Chúng ta không th
+ây.<sb>Tôi
+<clr:107,232,120>Tôi y
+i.<sb>Tinh khí Vort
+ã lìa b
+tôi...<sb>Tôi nghe giai
+a nó, nh
+t mong manh.
+Tôi khuyên cô nên tránh xa h
+Tôi
+ây.<sb>Nh
+ng chúc cô may m
+n.<sb>Và
+ánh giá th
+p chàng Jeff c
+a chúng ta.<sb>H
+u ki
+Whoa! Cô
+ã làm gì Jeff?
+, tôi.. Hy v
+ng cô tìm th
+y cái gì
+ó t
+Cô tên gì?
+<clr:18,199,226>Khai
+n ra.
+<clr:18,199,226>Không quan tâm.<cr>Ng
+y gì? Ai
+i cùng?
+<clr:18,199,226>Chúng ta s
+n khai.<cr>T
+n lên xe!
+<clr:18,199,226>Khu v
+c an toàn.
+em h
+n vào.
+<clr:18,199,226>Còn cô ta?
+<clr:18,199,226>LÙI l
+nguyên
+<clr:18,199,226><force>Không v
+<clr:18,199,226>Lùi l
+<clr:18,199,226>Lùi! LÙI l
+<clr:18,199,226>Gi
+<clr:18,199,226>Không v
+i.<sb>Quét cô ta.
+<clr:18,199,226>Di chuy
+n ngay.
+<clr:18,199,226>D
+n ép.
+<clr:18,199,226>Áp l
+i con b
+y lên.
+<clr:18,199,226>Búa Phá T
+ng. Di chuy
+ã nghe.
+ô nhi
+c. Áp l
+n an
+ng áp l
+<clr:18,199,226>Áp sát con b
+<clr:18,199,226>Tràn lên.
+n con b
+ang ép khu v
+ng.<cr>Ti
+p trung.
+<clr:18,199,226>Giao chi
+<clr:18,199,226>Thi hành.
+ng. Toàn h
+c vào k
+<clr:18,199,226>Ch
+<clr:18,199,226>Khóa m
+c tiêu. Phóng dao g
+do.
+<clr:18,199,226>M
+c tiêu s
+<clr:18,199,226>Alyx kìa.
+<clr:18,199,226>Xác nh
+n Alyx.
+<clr:18,199,226>Phi dao lên Alyx.
+do vào m
+c tiêu m
+ch chính.
+<clr:18,199,226>Là
+. Búa Phá T
+ng tham chi
+c tiêu chính.
+<clr:18,199,226>Phá ch
+<clr:18,199,226>Mã phá s
+nh ch
+c tiêu là trong bóng.
+<clr:18,199,226>Làm l
+ch trong ba.
+c che ch
+<clr:18,199,226>G
+<clr:18,199,226>Dao g
+m lên ch
+<clr:18,199,226>Toàn l
+c lên n
+ng. T
+p trung lên ch
+<clr:18,199,226>Bung banh nh
+<clr:18,199,226>Ném l
+<clr:18,199,226>Li
+ng máy ép.
+<clr:18,199,226>Banh nh
+y. Banh nh
+<clr:18,199,226>Cúi xu
+y trong ba.
+<clr:18,199,226>Lùa ra.
+<clr:18,199,226>Tri
+n khai l
+<clr:18,199,226>Lui l
+<clr:18,199,226>Tung banh nh
+<clr:18,199,226>Ki
+c tiêu: ki
+. Ki
+m Ki
+n S
+. Khu v
+ký sinh.
+. Ký sinh.
+<clr:18,199,226>Ký sinh
+ng. Th
+<clr:18,199,226>Phát hi
+n. Ký sinh.
+<clr:18,199,226>Chúng ta có ký sinh
+<clr:18,199,226>Ký sinh s
+<clr:18,199,226>Th
+trong t
+m nhìn.
+n. Ho
+<clr:18,199,226>K
+ã g
+ã gi
+<clr:18,199,226>H
+<clr:18,199,226>Chúng
+ng. Xác nh
+ã vô hi
+u hóa
+<clr:18,199,226>Xong xuôi.
+ã t
+vong.
+<clr:18,199,226>Virome
+ã kh
+y u
+ch m
+t ký sinh.
+ã d
+n ký sinh.
+<clr:18,199,226>Xong m
+t thành.
+ã tiêu h
+c tiêu giá tr
+<clr:18,199,226>Ordinal, m
+<clr:18,199,226>Ordinal. Alyx
+ã tiêu
+t Alyx.
+ã x
+ã tiêu di
+<clr:18,199,226>Ho
+<clr:18,199,226>Nó ch
+thành công.
+<clr:18,199,226><sfx>[Th
+<clr:18,199,226><sfx>[Ho và th
+khò khè]
+<clr:18,199,226>alpha
+<clr:18,199,226>và
+<clr:18,199,226>bravo
+<clr:18,199,226>charlie
+<clr:18,199,226>g
+<clr:18,199,226>delta
+<clr:18,199,226>echo
+<clr:18,199,226>tám
+<clr:18,199,226>m
+<clr:18,199,226>n
+m không
+<clr:18,199,226>b
+<clr:18,199,226>tr
+<clr:18,199,226>chín
+<clr:18,199,226>r
+y không
+<clr:18,199,226>sáu không
+<clr:18,199,226>sáu
+t không
+<clr:18,199,226>ba không
+<clr:18,199,226>ngàn
+<clr:18,199,226>ba
+<clr:18,199,226>hai không
+<clr:18,199,226>hai
+<clr:18,199,226>Alyx
+<clr:18,199,226>Công dân ch
+<clr:18,199,226>ki
+<clr:18,199,226>APF
+ng-
+ng-Tr
+ng minh
+ng-Búa
+<clr:18,199,226>k
+<clr:18,199,226>ký sinh th
+rông
+<clr:18,199,226>ho
+<clr:18,199,226>ký sinh
+<clr:18,199,226>Trên.
+<clr:18,199,226>C
+<clr:18,199,226>Thùng phi.
+<clr:18,199,226>Sau.
+<clr:18,199,226>Tòa nhà.
+<clr:18,199,226>Xe h
+<clr:18,199,226>Thang máy.
+<clr:18,199,226>Nhà chòi.
+<clr:18,199,226>Toilet.
+<clr:18,199,226>Toa tàu
+<clr:18,199,226>Rác.
+<clr:18,199,226>Xe t
+<clr:18,199,226>Xe van.
+<clr:18,199,226>Bánh xe.
+<clr:18,199,226>Công kích vào.
+<clr:18,199,226>Công kích ngay.
+ang công kích.
+<clr:18,199,226>Công kích.
+<clr:18,199,226>Rahhh!
+t kích.
+c lót tôi.
+c lót.
+c lót. Búa Phá T
+n y
+<clr:18,199,226>Wallhammer. C
+c lót
+n tránh.
+<clr:18,199,226>N
+p mình ngay.
+<clr:18,199,226>Có l
+<clr:18,199,226>Nghe ti
+ng banh nh
+y. L
+n. Di chuy
+nh báo trong ph
+m vi.
+<clr:18,199,226>Rút lui cùng t
+<clr:18,199,226>Có banh nh
+<sfx><norepeat:3><clr:255,0,0>[Combine ch
+<clr:18,199,226>Giám Sá
+màn.
+ng. Áp sát.
+trí.
+nh góc nhìn.
+<clr:18,199,226>Tinh ch
+nh tâm v
+n hành xác nh
+giác.
+i phóng t
+<clr:18,199,226>Không th
+c tiêu. Di chuy
+c tiêu delta.
+<clr:18,199,226>Chuy
+u hóa v
+u hóa t
+<clr:18,199,226>Khó nhìn.
+ang di chuy
+<clr:18,199,226>Làm thoáng t
+o t
+trong ba.
+<clr:18,199,226>Ph
+i bày m
+<clr:18,199,226>Này Alyx!
+<clr:18,199,226>Này Alyx, b
+n tui nè!
+<clr:18,199,226>Alyx! Cô có
+<clr:18,199,226>Su
+t. Alyx!
+ng thu
+c bên mình.
+<clr:18,199,226>Búa g
+c! Búa Phá T
+n. Không nguy hi
+m. Không nguy hi
+<clr:18,199,226>Alyx bên phe mình.
+n!<cr>Alyx bên phe mình mà!
+<clr:18,199,226><sfx:1>[C
+<clr:18,199,226>Chiêu làm thân có tác d
+<clr:18,199,226>[C
+i]
+xáo tr
+<clr:18,199,226>Khai h
+<clr:18,199,226>Dàn quân. B
+<clr:18,199,226>Mã 3. O-D.
+p khu v
+súng.
+u tiên s
+ang n
+súng vào Alyx.
+<clr:18,199,226>Ordinal! N
+súng vào
+<clr:18,199,226>X
+dao vào Vance.
+<clr:18,199,226>Làm lóa l
+i trong n
+<clr:18,199,226>Làm lóa không thành.
+<clr:18,199,226>Lóa b
+t thành. Tu ch
+<clr:18,199,226>Yêu c
+u làm lóa l
+<clr:18,199,226>Màn che
+<clr:18,199,226>Làm lóa thành công. Ti
+<clr:18,199,226>Làm lóa thành công.<cr>Ch
+ch b
+lóa m
+c tiêu không th
+nhìn.<cr>Ch
+choáng.
+ang choáng váng.<cr>T
+<clr:18,199,226>Phát quang.
+<clr:18,199,226>Phân phát trong ba.
+ng trích xu
+<clr:18,199,226>Gia t
+c. Bung pháo sáng.
+<clr:18,199,226>Lùa k
+ch kh
+trí nh
+y vào v
+banh.
+ng. N
+p mình.
+t máy ép.
+<clr:18,199,226>Có ti
+<clr:18,199,226>Kh
+ng có ph
+<clr:18,199,226>Có kh
+<clr:18,199,226>Có
+i Búa Phá T
+t âm.
+ng và
+báo cáo m
+u li
+u kích thích.
+<clr:18,199,226>Ordinal. Tôi trúng
+n sát th
+<clr:18,199,226>Y
+Búa Phá T
+ng còn ho
+<clr:18,199,226>Không hi
+<clr:18,199,226>Giáp còn tr
+hê]
+ánh.
+trí. Búa Phá T
+ng không còn d
+u. Ph
+y gì. Búa Phá T
+ng.<cr>Khu v
+c không rõ.
+ng yêu c
+trí m
+u k
+trí cho Búa Phá T
+nh v
+ng không th
+n náu.<cr>Yêu c
+ng.<cr>Yêu c
+u khu v
+<clr:18,199,226>Chúng ta hoàn toàn m
+t hình.
+n náu.
+m tra ch
+m tra tung tích
+m nhìn hoàn toàn.
+i tung tích
+u trinh sát.
+<clr:18,199,226>Ngay
+<clr:18,199,226>Nguy hi
+m ngay
+ây. Bung hàng.
+. Y
+ng y
+. T
+<clr:18,199,226>Lui v
+. Lui v
+<clr:18,199,226>Rõ.
+<clr:18,199,226>Nghe rõ.
+n hành.
+<clr:18,199,226>Tuân l
+<clr:18,199,226>Khóa kín v
+m nhìn
+<clr:18,199,226>Quan sát.
+ng. Vào v
+ng âm. Ng
+ng âm.
+ch không h
+p tác. Ch
+ánh giá.
+<clr:18,199,226>S
+n sàng kh
+ng. Gi
+ã khóa ph
+ng. Chi
+i ngõ ngách.
+<clr:18,199,226><sfx><norepeat:5>[
+<clr:18,199,226><sfx:1><norepeat:5>[Th
+c tiêu g
+c tiêu b
+m còn ít máu.
+ã trúng
+ng cho Búa Phá T
+c tiêu chính trúng
+<clr:18,199,226>Búa có hi
+u nghi
+m.<cr>Mã 0-9.
+<clr:18,199,226>Búa s
+<clr:18,199,226>Chu
+búa.
+n sàng ti
+n công.
+n công b
+ng búa t
+n sàng búa trong ba... hai... m
+ng khiên lên.
+<clr:18,199,226>Nâng t
+ã lên.
+ng lên trong ba
+hai
+ã quét t
+ng im l
+c an toàn.<cr>Ch
+c quét s
+ng báo cáo.<cr>K
+ch nín ti
+<clr:18,199,226>Không có
+n an toàn.
+<clr:18,199,226>Nhìn không th
+y gì.
+t.<cr>Có v
+ng không.
+<clr:18,199,226>Không có gì
+nh giác. D
+c không ph
+m.<cr>Yêu c
+khí.
+mã bravo.
+<clr:18,199,226>Không có gì.
+<clr:18,199,226>Không có bóng.
+t thúc tình tr
+p bóng.
+trí tr
+i. Rút l
+c an toàn. Rút l
+lý t
+ang rà quét
+ang quét
+ang trinh sát.
+<clr:18,199,226>Tình tr
+ng: kích ho
+c tiêu v
+c an toàn. Ti
+ch s
+. Di chuy
+ng báo cáo.<cr>
+<clr:18,199,226>Quét xong. Ti
+n không th
+<clr:18,199,226>Xung quanh tr
+<clr:18,199,226>Tách ra.
+<clr:18,199,226>Chia
+i hình.
+ng ra quân.
+n khai và quét.
+nh giác.
+<clr:18,199,226>Rà quét k
+<clr:18,199,226>Rà quét ph
+i hình dao g
+óng m
+n hành giam gi
+<clr:18,199,226>Báo cáo t
+i hình nh
+c tiêu trong ba.
+n hành c
+n khai tình tr
+p trung! M
+c tiêu delta
+c tiêu t
+ch! Có
+ch! C
+ly
+<clr:18,199,226>Kia.
+n! Th
+<clr:18,199,226>Cá l
+ch tái xu
+i khu
+ng. Tái
+ch còn s
+ng. Ki
+m xung quanh.
+n có thêm t
+ánh ch
+trí. Ra tay tr
+n áp.
+<clr:18,199,226>Có hình.
+p thêm trên Búa Phá T
+ng còn 4
+ang s
+còn ít. N
+<clr:18,199,226>Làm m
+i búa.
+<clr:18,199,226>Dây dù dây dù.
+<clr:18,199,226>Dây dù trên Búa Phá T
+<clr:18,199,226>Lui quân.
+c quá nóng.
+<clr:18,199,226>Tìm ch
+n. Tìm bóng.
+n di
+c tiêu ph
+c tiêu ch
+a rõ.
+y các m
+m tra hình bóng.<cr>Kh
+<clr:18,199,226>Chúng ta có nhi
+t có nhi
+u banh nh
+ch có nhi
+y. Coi ch
+m có nhi
+n. T
+c tiêu chính có nhi
+u máy ép.<cr>T
+n.<cr>Dùng l
+ang tái n
+p. Khai h
+n.<cr>Kích ho
+áp tr
+toàn l
+<clr:18,199,226>Chúng ta có mìn l
+n.<cr>D
+ng.<cr>Ph
+i mìn l
+<clr:18,199,226>Mìn l
+n góc hi
+m.<cr>Toàn l
+c tiêu: mìn l
+<clr:18,199,226>Mìn
+ang l
+<clr:18,199,226>Gai nâng c
+p trên m
+<clr:18,199,226>Giám Sát. M
+u nâng c
+<clr:18,199,226>Gai c
+ng có nâng c
+ng có gai phi pháp.
+p.<cr>
+<clr:18,199,226>Giám Sát, yêu c
+ng thái b
+o toàn.
+<clr:18,199,226>Giám Sát, khu v
+c không an toàn.
+<clr:18,199,226>Giám Sát, b
+binh
+c.<cr>Khu v
+c không
+c ki
+m soát.
+<clr:18,199,226>Giám Sát.<cr>Yêu c
+u khiên tr
+<clr:18,199,226>Giám Sát, c
+i khuyên
+ng minh g
+c ngã.
+u thay th
+<clr:18,199,226>Giám Sát.<cr>
+<clr:18,199,226>Giám Sát.<cr>Búa Phá T
+i.<cr>Yêu c
+u y
+u n
+p bóng ngay l
+<clr:18,199,226>Giám Sát.<cr>B
+<clr:18,199,226>Giám Sát.<cr>Báo cáo tình tr
+.<cr>Nghe rõ tr
+<clr:18,199,226>Giám Sát.<cr>M
+t mình
+nhi
+ch hung hãn.
+n khai d
+u sinh t
+<clr:18,199,226>Giám Sát!<cr>Yêu c
+u rút Búa Phá T
+<clr:18,199,226>Giám Sát, l
+u ý:<cr>Búa Phá T
+ng là ph
+ng viên cu
+<clr:18,199,226>Giám Sát.<cr>Ordinal
+<clr:18,199,226>Ordinal l
+huy m
+<clr:18,199,226>Ordinal tr
+ng thái t
+<clr:18,199,226>Ordinal
+i tong.
+<clr:18,199,226>Giám Sát. Ordinal b
+lo
+i.<cr>Ph
+<clr:18,199,226>Ordinal nín ti
+ng.<cr>Thi hành
+<clr:18,199,226>Ordinal ng
+p.<cr>Ordinal ng
+<clr:18,199,226><sfx:1>[Gào thét]
+ang hoán
+. Không có th
+ng vong.
+n không chu
+<clr:18,199,226>Xém trúng.
+t. Ch
+ch th
+i. Tái l
+<clr:18,199,226>Gai không hi
+.<cr>M
+c tiêu k
+<clr:18,199,226>Không.
+tuân th
+thi hành.
+n có gai.<cr>D
+<clr:18,199,226>Có k
+<clr:18,199,226>Ta có nhi
+n ào.
+<clr:18,199,226>Phân tán.
+c tiêu thù
+ch.<cr>Phóng dao g
+<clr:18,199,226>Nhi
+ch áp
+o.<cr>T
+<clr:18,199,226>Giám Sát. Chúng ta có gai.
+tình tr
+ng delta.
+c thi
+<clr:18,199,226>[S
+<clr:18,199,226>khu v
+báo cáo. H
+<clr:1,8,199,226>1, 14, 3, 6, 11... Ki
+m tra.<cr>Echo-4 không có v
+<clr:18,199,226>Nghe rõ.<cr>Duy trì t
+m nhìn t
+c NK 3-6.
+<clr:18,199,226>Echo-1 không có
+nh.<cr>L
+i 7-2.
+nh.<cr>Ch
+<clr:18,199,226>Tín hi
+u rõ.<cr>Xung quanh tr
+ng. H
+ly trên k
+ch.<cr>Ch
+i truy
+n tin.
+n tin. H
+<clr:18,199,226>Giám Sát
+ang xác nh
+n phong t
+c.<cr>Gi
+m nhìn thoáng và b
+ng mã D-7.<cr>
+i tà d
+ch.<cr>Nghe rõ.
+<clr:18,199,226>Không
+ã nghe rõ
+Không có khu v
+c bao vây.<cr>Không có xác nh
+n vector trên m
+i các mã tham s
+u sinh h
+Kích thích: 32.<cr>Dao g
+m: 78. Lá ch
+n: 100.<cr>C
+ly sinh h
+c: 0.73.<cr>Âm thanh: 3.
+sáng: 15. H
+ã rõ.<cr>Thi
+p máy phanh thây t
+i Apex-5.<cr>Ta có sinh th
+ng biên.<cr>Ch
+<clr:18,199,226>Giám Sát xác nh
+n các virome ch
+ánh d
+i.<cr>Toàn
+u ý: chu
+<clr:18,199,226>Mã g
+i:<cr>D-E-7-9-A-2-W-0
+.<cr>Xác nh
+ã rõ. V
+ã nghe. Ch
+n.<cr>
+t hoàn thành sau 3 giây
+<cr>B
+t hòa
+c gi
+i quy
+<clr:18,199,226>Giám Sát yêu c
+u toàn quân t
+nh táo và quy
+t tâm.<cr>Không dung th
+t hòa nh
+Không th
+ã có c
+trí.<cr>
+sáng m
+c 73.<cr>Âm thanh m
+15.<cr>Giám Sát xác nh
+ng biên.<sb>C
+<clr:18,199,226>Giám Sát.<cr>Ta có nhi
+ch ho
+ng.<cr>Xin h
+n chu
+<clr:18,199,226>Nghe rõ.<cr>Thi
+p tình tr
+ng Alpha.
+ng Alpha t
+i 9 - 3, 7.
+n công. H
+n. Tái hi
+ã nghe. Thi
+<clr:18,199,226>Chúng còn s
+<clr:18,199,226>Nghe rõ.<cr>
+ang tri
+n khai b
+và ch
+lý.
+<clr:18,199,226>10-4. Không c
+n làm m
+i dao g
+m.<cr>Lên
+n và s
+o l
+n thu
+cho t
+c cho xung
+t kéo dài.
+. Không c
+n dao g
+<clr:18,199,226>Kéo dài th
+i gian xung
+<clr:18,199,226>Quét d
+qua m
+nh cu
+<clr:18,199,226>Giám sát. 10-9.
+<clr:18,199,226>Giao tranh và n
+n hành tr
+n áp m
+c tiêu chính t
+c tiêu trong t
+n và lãnh gai.
+c lên m
+<clr:18,199,226>Chúng s
+n xong.
+n xong r
+<clr:18,199,226>Phóng gai.
+<clr:18,199,226>Phóng m
+i gai t
+i gai.
+ang giao chi
+n và n
+n chí.<cr>Ch
+n chí.
+<clr:18,199,226>Hé
+ng chú ý.<cr>B
+n ta có th
+giúp.<cr>An toàn r
+<clr:18,199,226>Nghi ph
+c cho phép.<cr>Ch
+n hành leo thang v
+m không tuân th
+u lu
+t 10-307.
+<clr:18,199,226>Mã 10-307.<cr>Ti
+ang do d
+ch t
+n công không hi
+.<cr>Ti
+n hành bao vây.
+<clr:18,199,226>Kích ho
+t mã 10-108.<cr>H
+n.<cr>M
+c tiêu thân thi
+khí.<cr>Mã 10-40.
+n! M
+c tiêu không ph
+ã nghe. Không
+n.<cr>Xác nh
+ã tuân th
+khí.<cr>M
+<clr:18,199,226>Toàn
+khí. M
+n phe mình.<cr>Ng
+<clr:18,199,226>Giám Sát.<cr>Ta có tình hu
+-và-xem t
+i 9 - 5.
+-và-xem.
+nh.<cr>M
+<clr:18,199,226>Nghe rõ.<cr>K
+ch không hay bi
+t và s
+n sàng
+t giam.
+ch có d
+u hi
+c.<cr>Chu
+<force><clr:18,199,226>C
+<force><clr:18,199,226>Không có gì. Không ID.
+<force><clr:18,199,226>Gi
+tay lên. Gi
+lên.
+<force><clr:18,199,226>
+ng yên!
+<force><clr:18,199,226>Ai
+<force><delay:10.5><clr:18,199,226>Alyx? Cô có
+ó không?<cr>Này, Alyx! Chúng tôi
+<clr:18,199,226>Echo-1 gia t
+<clr:18,199,226>Echo-1
+ã khoanh vùng và
+<clr:18,199,226>Ép khu v
+n công
+n công v
+c tiêu. Phi dao.
+t trong t
+m ng
+n trúng s
+<clr:18,199,226>Tóm
+echo lên Alyx.
+do vào Alyx.
+a lên Alyx.
+c tiêu chính. Echo-1 tham chi
+c tiêu. Mã phá s
+c tiêu là n
+<clr:18,199,226>Echo-1. G
+<clr:18,199,226>Echo-1. Dao g
+<clr:18,199,226>Echo-1. T
+<clr:18,199,226>Và... li
+<clr:18,199,226>Máy ép trong 3.
+<clr:18,199,226>Và
+lùa ra.
+n Ki
+n. Ki
+. Echo-1 tham chi
+<clr:18,199,226>Ký sinh t
+<clr:18,199,226>Ugh
+Ký sinh th
+<clr:18,199,226>Echo-1. Th
+<clr:18,199,226>Tao thù m
+ng. Echo-1.
+<clr:18,199,226>Echo-1, th
+<clr:18,199,226>Chúng ta có l
+<clr:18,199,226>Xong.
+<clr:18,199,226>Echo-1. Xác nh
+ã xong.
+ã s
+ch chính
+tiêu di
+ã tiêu tùng.
+ã di
+<clr:18,199,226><sfx:1>[Càu nhàu]
+<clr:18,199,226><sfx:1>[Th
+<clr:18,199,226><sfx:1>[Ho và th
+t hai
+<clr:18,199,226>APS
+<clr:18,199,226>Toa tàu.
+<clr:18,199,226>Echo-1 yêu c
+bóng.
+c lót t
+ng có máy ép. L
+y. Tìm bóng râm.
+<clr:18,199,226>Giúp chúng tôi!
+<clr:18,199,226>Tôi xin l
+<clr:18,199,226>Áp sát.
+<clr:18,199,226>Echo-1 không th
+i thi
+n lên k
+<clr:18,199,226>Alyx! Có
+n!<cr>
+c bên mình!
+khí!<cr>Echo-1! H
+khí xu
+n!<cr>H
+dao g
+<clr:18,199,226>Alyx vô h
+i! K
+ch vô h
+<clr:18,199,226>Alyx bên phe mình! D
+n! D
+i] Chiêu làm thân có tác d
+m lên k
+<clr:18,199,226>Echo-1 t
+àn áp k
+<clr:18,199,226>Thi hành khu v
+u tiên m
+m vào Vance.
+súng vào m
+<clr:18,199,226>Gai chính
+inh tai.
+<clr:18,199,226>Alyx s
+át.
+<clr:18,199,226>Cá n
+m trên th
+. Khai h
+<clr:18,199,226>Phát quang v
+<clr:18,199,226>Trích xu
+c lên v
+i. Bung pháo sáng.
+banh có ch
+y banh nh
+<clr:18,199,226>Echo-1 b
+t âm thanh.<cr>Báo cáo m
+i nghi ph
+<clr:18,199,226>Tôi trúng
+n. Yêu c
+u giáp b
+sung.
+<clr:18,199,226>Echo-1 s
+<clr:18,199,226><sfx:1><norepeat:5>[C
+<clr:18,199,226>Echo-1, yêu c
+c tiêu.<cr>Yêu c
+<clr:18,199,226>Không có t
+m nhìn lên k
+m nhìn ph
+y gì. T
+ng. Khu v
+trí cho Echo-1.
+<clr:18,199,226> h
+y. Giám Sát, h
+n náu. Yêu c
+t hình m
+ch chính l
+n náu.<cr>Ordinal, báo cáo.
+m tra m
+ng. Yêu c
+<clr:18,199,226>[Hét ho
+iiii!
+<clr:18,199,226>Va
+<clr:18,199,226>Echo y
+. Echo y
+càng. Thu quân! Echo-7.<cr>Thu quân. Echo-7.
+<clr:18,199,226>Báo c
+nguy hi
+m trên Echo-1! Y
+ng viên!
+<clr:18,199,226>Quá g
+n. Tu ch
+<clr:18,199,226>Làm
+m s
+ã vào v
+<clr:18,199,226>Và... Ph
+ã khóa.
+<clr:18,199,226>Echo-1. Chi
+ng dao g
+m lên m
+m hi
+m. Mã 0-9.
+i cách tr
+ng chính.
+c an toàn. Ch
+t. Có v
+<clr:18,199,226>Toàn quân báo cáo.<cr>H
+không có ti
+i.<cr>Rút l
+ch v
+<clr:18,199,226>Thi
+ng alpha.
+Echo ra quân.
+<clr:18,199,226>Rõ. Xác nh
+m nhìn. Toàn
+n ra và quét.
+p trung lên m
+c tiêu. Delta
+ch!
+<clr:18,199,226>Tìm th
+<clr:18,199,226>Echo-1.<cr>
+c 9-4.
+n có t
+<clr:18,199,226>Echo-1,
+trí.<cr>Ra tay tr
+p thêm dao g
+<clr:18,199,226>Echo còn ít trong ba... hai... m
+n rát
+<clr:18,199,226>Echo-1 c
+t dao g
+<clr:18,199,226>Dây dù.
+<clr:18,199,226>Dây dù trên Echo-1.
+<clr:18,199,226>Rút lui.
+t. M
+c tiêu có nhi
+u máy ép.
+n. Dùng l
+n. Kích ho
+<clr:18,199,226>Ta có mìn l
+n. Phi dao.
+n! Mìn l
+m.<cr>T
+ng chú ý.
+c tiêu sang mìn l
+ng có gai nâng c
+y. Gai phi pháp.
+<clr:18,199,226>Giám Sát. Yêu c
+<clr:18,199,226>Giám Sát. Khu v
+c không an toàn!
+ng, b
+<clr:18,199,226>Giám Sát. B
+!<cr>L
+i. Khu v
+. S
+p có v
+<clr:18,199,226>Giám Sát. C
+<clr:18,199,226> l
+<clr:18,199,226>Echo-1 hi
+<clr:18,199,226>Giám Sát! Echo-1 là
+i! Yêu c
+<clr:18,199,226>Ugh. Yêu c
+<clr:18,199,226>Giám Sát! B
+<clr:18,199,226>Echo-1 báo cáo k
+<clr:18,199,226>Giám Sát! Không còn
+t nào.
+<clr:18,199,226>Giám Sát! Echo-1 yêu c
+u rút quân.
+<clr:18,199,226>Giám Sát.<cr>Echo-1 là ph
+<clr:18,199,226>Giám Sát! Ordinal
+ng! Yêu c
+<clr:18,199,226>Giám Sát! Ordinal tr
+ng! Nghe rõ tr
+.<cr>Ph
+n rát.
+súng b
+n rát t
+ang ép bu
+c tuân th
+n vào v
+<clr:18,199,226>Duy trì dao g
+m vào v
+trí cu
+m chân.
+<clr:18,199,226>Echo-1 không h
+làm.
+n có gai. L
+. K
+<clr:18,199,226>Echo-1 m
+àn áp.
+ây là Echo-1. Ta có nhi
+ch. Phóng dao g
+ang áp
+<clr:18,199,226>Ugh. Chu
+<clr:18,199,226>Nghe rõ.<cr>Echo-1 m
+kênh âm,
+ang báo cáo t
+nghi ph
+c A-9-D.<cr>Làm l
+ch trong ba
+<clr:18,199,226>Giám Sát.<cr>Echo-1
+nh.<cr>Công dân ch
+i 7-1-3.
+i khu 9-4.<cr>K
+ang tìm m
+i Tòa M
+i M
+ng chính l
+ng alpha. Và
+<cr>
+m.<cr>Ki
+i ngóc ngách.
+ch.<cr>Alyx s
+vâng
+không có gì
+<clr:1,8,199,226>1, 14, 3, 6, 11, Ki
+m tra.<cr>Và
+Echo-4 không có v
+.<cr>T
+t mày. H
+i: 7-2.
+<clr:18,199,226>Hi
+Tuân l
+Echo-1 báo cáo ít ánh sáng, ít âm thanh.<cr>Ch
+u rõ
+<cr>Không có tình tr
+ng cát lún.<cr>Uhh
+khoan
+Không.<cr>Xung quanh tr
+ây là Echo-4 yêu c
+ã quét
+c 43%.<cr>
+nh. Và...<cr>v
+c.<cr>Công dân ch
+mm, d
+trí và kích
+ng.<cr>Gi
+ch...<cr>Uhhh... Nghe rõ.
+ã nghe rõ.<cr>Khu v
+c bao vây. Không có xác nh
+n vector m
+n: 100. C
+c: 0.73<cr>Âm thanh: 3.
+sáng: 15. Echo h
+ã rõ. Thi
+ng biên.<cr>Uhhh... Ch
+n uhh... các virome ch
+i: D-E-7-9-A-2-W-0
+n. Echo h
+c.<cr>Không th
+t.<cr>B
+c 73. Âm thanh m
+ng biên.<cr>C
+<clr:18,199,226>Giám Sát. Ta có nhi
+ã nghe.<cr>
+<clr:18,199,226>Echo-1 phóng m
+<clr:18,199,226>Arrrgh! Giáp b
+rò r
+t!<cr>H
+tr.. [La hét th
+t thanh]
+u kh
+ngay l
+c! [La hét ho
+c. [La hét ho
+<clr:18,199,226>Aaah! V
+t quá gi
+n nhi
+! Gahhh!
+<clr:18,199,226>Ugh! D
+c: nguy k
+ch. H
+át trong 4
+t! Gahhh!
+t! [La hét th
+<clr:18,199,226><sfx:1>[Ho
+n gào thét]
+giúp. An toàn r
+c cho phép.
+<clr:18,199,226>Mã 10-307. Ti
+t 10-307.<cr>Ti
+t mã 10-108. H
+khí. Mã 10-40.
+n phe mình. Ng
+nh. M
+<clr:18,199,226>Áp sát ph
+c áp l
+<clr:18,199,226> L
+nh ti
+y quân.
+gia t
+n vào m
+n an gia t
+<clr:18,199,226>Phóng dao g
+<clr:18,199,226>Xin chào m
+c tiêu chính. Ordinal tham chi
+<clr:18,199,226>Phi dao vào Alyx.
+<clr:18,199,226> xác nh
+<clr:18,199,226> n
+súng lên Alyx.
+. N
+c tiêu là ch
+<clr:18,199,226> tác chi
+n lên ch
+<clr:18,199,226> lo
+o bóng.
+<clr:18,199,226>Máy ép.
+<clr:18,199,226>Máy ép trong ba.
+n khai banh nh
+n khai.
+n khai máy ép.
+. Tung banh nh
+<clr:18,199,226> ch
+. Ch
+c tiêu. Ki
+n. Nhi
+u Ki
+chú ý.<cr>Ki
+y ký sinh.
+y. Ký sinh t
+do
+trong khu v
+<clr:18,199,226>Ordinal gi
+<clr:18,199,226>Ordinal di
+ng vô hi
+t lây nhi
+<clr:18,199,226>Di
+t thúc b
+c tiêu chính b
+<clr:18,199,226>Túp l
+c lót Ordinal t
+c lót Ordinal.
+ao-2 chu
+<clr:18,199,226>Phòng th
+<clr:18,199,226>Phòng h
+n mình.
+. Bám ch
+c và ki
+. Né.
+nh báo banh nh
+<clr:18,199,226>Tìm t
+nh tâm.
+<clr:18,199,226> c
+t, s
+p x
+khí!<cr>H
+n.<cr>Ng
+! Alyx bên phe mình.
+a lên k
+<clr:18,199,226> phóng dao g
+<clr:18,199,226> thi hành tùy ý.
+àn áp không gi
+m Ordinal lên m
+. X
+<clr:18,199,226> nh
+<clr:18,199,226> tùy ý x
+Vance.
+<clr:18,199,226> b
+t mi
+<clr:18,199,226>Phát quang b
+<clr:18,199,226>Lùa ra kh
+<clr:18,199,226> th
+banh nh
+<clr:18,199,226> d
+<clr:18,199,226>Phát quang có né tránh.
+i
+nghe k
+.<cr>Báo cáo th
+<clr:18,199,226>Ordinal s
+<clr:18,199,226>Còn gói t
+<clr:18,199,226>Giám sát. Yêu c
+u máu. S
+cho Ordinal
+t còn xa v
+<clr:18,199,226> s
+<clr:18,199,226><sfx><norepeat:5>[C
+<clr:18,199,226>Không còn th
+y d
+<clr:18,199,226> báo cáo t
+n náu. Toàn
+báo cáo.
+m nhìn lên
+<clr:18,199,226> Báo cáo tình tr
+c tiêu Vance n
+p bóng. H
+m chính
+ng chính n
+p bóng. Báo cáo tung tích.
+<clr:18,199,226>Vi ph
+ly. Tu ch
+i. Lùi l
+<clr:18,199,226>Vào v
+<clr:18,199,226>Ordinal. Chi
+<clr:18,199,226><sfx><norepeat:5>[Th
+ng chính b
+ng sau hai, m
+. Ng
+<clr:18,199,226> báo cáo
+t. Kh
+ch ô nhi
+m. Yêu c
+<clr:18,199,226> báo cáo tr
+ng thái khu v
+<clr:18,199,226> báo cáo tình hình d
+<clr:18,199,226>Quét t
+<clr:18,199,226> ti
+c quét và d
+c tìm ki
+<clr:18,199,226>Giám Sát. Báo cáo tình tr
+nh giác. Báo cáo t
+<clr:18,199,226>Tìm ki
+y. Toàn
+p hành ph
+i bày
+<clr:18,199,226> tri
+. Ph
+i bóng.
+p trung! Nh
+m vào
+ch. Có
+ch. C
+ly: 50. Góc bearing: 12.
+<clr:18,199,226> t
+p trung t
+<clr:18,199,226> giao chi
+p thêm.
+<clr:18,199,226>Ordinal còn ít trong b
+n... ba... hai... m
+<clr:18,199,226> ki
+m tra
+n khai dây dù.
+<clr:18,199,226> tìm bóng và lui quân.
+<clr:18,199,226> khu v
+c quá nóng. Lui v
+a rõ. R
+i ro ph
+i cao.
+<clr:18,199,226>Giám Sát. Xác nh
+m tra hình bóng. Kh
+nh báo. K
+chú ý: k
+u nhi
+y. C
+n khi ti
+n quân.
+<clr:18,199,226>Giám Sát. Ta có mìn l
+n, mìn l
+m. Toàn l
+c tiêu. Mìn l
+c tiêu có gai phi pháp.
+n gai nâng c
+t nóng.
+<clr:18,199,226>Giám Sát. Ordinal hi
+<clr:18,199,226>Giám Sát! Ordinal là
+i!<cr>Yêu c
+ã xong.<cr>Yêu c
+ng minh.
+<clr:18,199,226>Giám Sát! M
+.<cr>Nhi
+u rút Ordinal. Khu v
+<clr:18,199,226>Giám Sát.<cr>Ordinal là ph
+<clr:18,199,226>Giám Sát.<cr>D
+ang lây lan.
+<clr:18,199,226> gi
+n rát k
+<clr:18,199,226>Không h
+<clr:18,199,226>Cho phép n
+<clr:18,199,226>Phân tán!
+c tiêu tìm cách áp
+o. Ph
+p gai t
+<clr:18,199,226>14, 1, 6, 3
+11
+và
+nh. Ít âm thanh.<cr>Ch
+u rõ.<cr>Không có tình tr
+ng cát lún.<cr>Xung quanh tr
+c 43%.
+nh.<cr>V
+nh.<cr>Tr
+<clr:18,199,226>Nghe rõ. Không có khu v
+<clr:18,199,226>Âm thanh: 3.
+sáng: 15.
+ng biên. H
+u ý: Chu
+.Xác nh
+ng biên. C
+n.<cr>Tái hi
+n thêm dao g
+i.<cr>Lên
+<clr:18,199,226>Giám Sát, mã 10-4.<cr>Th
+máy phanh thây.
+ang chu
+n khai máy phanh thây.
+<clr:18,199,226>Máy phanh thây
+i và
+ang quét.
+t máy phanh thây.<cr>Quét và qu
+máy phanh thây.<cr>
+n.<cr>T
+cúi xu
+<clr:18,199,226>10-0.<cr>Máy phanh thây
+máy phanh thây.<cr>Ki
+m soát và kìm gi
+máy phanh thây.<cr>Nh
+n và thi hành.
+<clr:18,199,226>APF áp sát.
+<clr:18,199,226>Quét vào.
+APF
+<clr:18,199,226>APF ti
+<clr:18,199,226>APF b
+<clr:18,199,226>APF tham chi
+p kích t
+p kích.
+àn áp m
+t khu
+<clr:18,199,226>Phi dao lên Vance.
+u hàng
+i Alyx.
+p kích lên m
+<clr:18,199,226>APF lên Alyx.
+c tiêu.<cr>Mã phá s
+<clr:18,199,226>APF. G
+<clr:18,199,226>APF. Dao g
+<clr:18,199,226>Bung l
+y trong 3.
+c tiêu: Ki
+<clr:18,199,226>APF phát hi
+. APF tham chi
+i liên l
+c, có ký sinh.
+<clr:18,199,226>Ký sinh th
+<clr:18,199,226>APF th
+<clr:18,199,226>Ughhhhh
+, phát hi
+<clr:18,199,226>APF, xác nh
+<clr:18,199,226>Ugh.
+<clr:18,199,226>APF g
+i Ordinal. Ký sinh
+<clr:18,199,226>Ordinal. M
+t. Ti
+n hành kh
+trùng.
+ã tri
+t tiêu v
+nín ti
+c lót APF.
+c lót cho APF.
+<clr:18,199,226>Né.
+p ngay.
+nh báo. Máy ép.
+<clr:18,199,226>Coi ch
+y. Lùi v
+<clr:18,199,226>AP
+giác
+khí!<cr>APF! H
+<clr:18,199,226>APF t
+<clr:18,199,226>Mã ba. Tham gia d
+m nh
+m vào k
+n công dân ch
+t. Khai h
+các khu.
+t máy ép
+<clr:18,199,226>Ép l
+m xu
+ng sát th
+ng.<cr>Tìm bóng.
+<clr:18,199,226>Gai có hi
+.<cr>Tiêm li
+trí cho APF
+ch. Không th
+<clr:18,199,226>APF yêu c
+<clr:18,199,226>Ordinal, ta có mã 7-1-3.<cr>Yêu c
+y. Ordinal, h
+<clr:18,199,226>APF không th
+n náu.<cr>Ordinal, h
+m tra tung tích.
+nh báo c
+<clr:18,199,226>APF làm
+ã xác nh
+<clr:18,199,226>APF vào v
+<clr:18,199,226>APF gi
+<clr:18,199,226>APF chi
+ng. B
+N NGAY.
+khí cho APF.
+<clr:18,199,226>APF hi
+i Ordinal. K
+<clr:18,199,226>APF ra quân.
+<clr:18,199,226>Tìm bóng.
+<clr:18,199,226>Báo cáo m
+n hành. C
+<clr:18,199,226>APF.
+<clr:18,199,226>Có hình t
+p thêm trên APF.
+<clr:18,199,226>APF còn ít. 4
+<clr:18,199,226>APF c
+<clr:18,199,226>Dây dù trên APF.
+<clr:18,199,226>APF. T
+<clr:18,199,226>APF. Rút lui.
+n.<cr>Tìm bóng.
+<clr:18,199,226>APF. Ph
+y. Mìn l
+n! T
+ng, t
+<clr:18,199,226>Ordinal. Có gai nâng c
+<clr:18,199,226>APF. M
+c 9: b
+<clr:18,199,226>Chúng ta có m
+<clr:18,199,226>Overwatch. APF ch
+<clr:18,199,226>Giám Sát. APF là
+<clr:18,199,226>APF báo Giám Sát.<cr>Tình tr
+ang di
+n ra. Nghe rõ tr
+.<cr>K
+ch hung hãn!
+u rút APF. Khu v
+<clr:18,199,226>Giám Sát!<cr>APF là ph
+<clr:18,199,226>Giám Sát! Ordinal b
+ng! Thi hành
+Quân Ch
+ng Ng
+i (APF) toàn l
+c vào
+<clr:18,199,226>APF. K
+<clr:18,199,226>Giám Sát. Ph
+<clr:18,199,226>APF không h
+<clr:18,199,226>Giám Sát. Không th
+n có gai.<cr>Kích ho
+<clr:18,199,226>APF s
+c tiêu áp
+n.<cr>Tri
+<clr:18,199,226>3, 11, 1, 14, 6
+m tra. T
+nh. L
+<clr:18,199,226>Giám Sát. Ch
+ch... Nghe rõ.
+<cr> Âm thanh: 3.
+ã rõ.<cr>Ch
+<clr:18,199,226>Có virome
+i: 2-W-0
+n<cr>C
+n an gi
+nguyên v
+trí.<cr>C
+<clr:18,199,226>Nghe rõ. Không
+<sfx><norepeat:2><clr:255,0,0>[Không có
+<sfx:1><norepeat:3><clr:255,0,0>[Viên cu
+i trong bu
+<sfx><norepeat:3><clr:255,0,0>[B
+n phát cu
+<sfx><norepeat:5><clr:255,176,0>[H
+n súng l
+<sfx><norepeat:5>[Shotgun
+n shotgun]
+<sfx><norepeat:3>[Chùm
+n sàng]
+<sfx><norepeat:3><clr:255,0,0>[Phát cu
+u liên]
+<sfx><norepeat:5>[D
+ch chuy
+<sfx>[B
+u hack]
+<sfx>[Hack th
+<sfx>[Hack thành công]
+<sfx>[L
+<sfx><clr:255,0,0>[Tháo ch
+n Xen n
+<sfx>[Hoàn t
+i máu]
+<sfx><norepeat:1><clr:255,0,0>[Tr
+<sfx>[
+ng tiêm
+<sfx>[Bíp thành công]
+<sfx>[Laze
+<sfx><norepeat:1>[B
+c kích ho
+<sfx>[Khay nh
+n pin Combine m
+ra]
+<sfx>[Ti
+n Pin Combine]
+<sfx>[C
+khóa]
+ang nâng c
+t nâng c
+<sfx><norepeat:8>[Hoàn thành m
+<sfx:1><norepeat:1>[B
+resin vào ba lô]
+<sfx:1><norepeat:1>[L
+ba lô]
+<sfx:1>[L
+y resin t
+n vào ba lô]
+<sfx><norepeat:8>[L
+èn pin]
+<sfx><norepeat:20>[Chuông báo máu ít]
+a tàu]
+<sfx><norepeat:4>[Ti
+<sfx><norepeat:4>[Chuông thang máy kêu]
+<sfx><norepeat:4>[Thang máy b
+<sfx><norepeat:4>[Thang máy
+<sfx><norepeat:4>[Nút thang máy]
+<sfx><norepeat:6>[B
+thùng]
+<sfx>[Phá khóa]
+<sfx:1>[N
+<sfx><norepeat:2>[Gõ lên kính]
+óng s
+<sfx>[Gi
+a bí m
+<sfx>[Thang th
+<sfx>[Drone n
+<sfx>[G
+<sfx>[Thét kinh hoàng]
+p vào hàng rào]
+<sfx>[Kính b
+óng l
+<sfx>[Chuông reo]
+a cu
+<sfx>[Vortigaunt ch
+<sfx>[Cúp
+<sfx>[Va ch
+m thang máy]
+<sfx>[Chuông thang máy kêu]
+<sfx>[Thang máy r
+<sfx>[Thang máy h
+n thang máy]
+<sfx>[Thang máy có
+<sfx>[Thang máy b
+èn b
+èn t
+<sfx><norepeat_global:5>[Ti
+o x
+o trong
+ng thông gió]
+p bung c
+n phát n
+o trên tr
+n nhà]
+<sfx>[Tr
+n nhà s
+p xu
+<sfx>[Cua m
+ng Cua m
+<sfx>[M
+<sfx>[Có
+á thang]
+<sfx>[N
+ng quá t
+<sfx>[Kính phát n
+n thét ch
+<sfx>[Quay ng
+i gian]
+óng b
+<clr:255,176,0>C
+nh báo: sinh hi
+c nguy k
+ch.<cr>Tìm h
+c chân trong
+<sfx>[Tàu d
+<sfx>[X
+toilet]
+<sfx><norepeat:5><clr:255,0,0>[Ki
+<sfx><norepeat:5><clr:255,0,0>[Thòng l
+<sfx:1><norepeat:10>[C
+nh báo Cua m
+<sfx><norepeat:10>[Cua m
+n công]
+<sfx:1><norepeat:10>[Cua m
+dãi]
+cháy]
+ào b
+<sfx><norepeat:10><clr:255,0,0>[Cua m
+au
+<sfx>[Quái ngoài hành tinh la thét]
+<sfx><norepeat:4>[L
+p tim Chó Tái Sinh]
+<sfx><norepeat:4>[Tháo tim Chó Tái Sinh]
+<sfx><norepeat:5><clr:255,0,0>[Chó Tái Sinh ch
+<sfx><norepeat:8>[Kh
+ng lên]
+<sfx>[Kh
+<sfx:1><norepeat_global:5>[Sò Xen c
+p mi
+<sfx:1><norepeat:4>[S
+n Xen]
+<sfx><norepeat:4>[Jeff t
+<sfx><norepeat:6>[Jeff phá c
+<sfx><norepeat:4>[Thét kinh hoàng]
+<sfx><norepeat:4>[Jeff n
+<sfx><norepeat:5>[Jeff d
+m chân]
+<sfx><norepeat:6>[Jeff
+<sfx><norepeat:6>[C
+<sfx><norepeat:12>[Jeff b
+<sfx><norepeat:20>[Nh
+c thang máy]
+<sfx><norepeat:20>[Ti
+ng loa]
+<sfx><norepeat:5>[Jeff gào thét]
+<sfx><clr:255,176,0>[M
+t sinh hi
+<sfx><clr:255,176,0>S
+e nguy k
+<sfx><clr:255,176,0>Tìm ngay h
+<sfx><norepeat:5>[L
+p pin]
+<sfx><norepeat:5>[Tháo pin]
+<sfx><norepeat_global:5><clr:255,176,0>[
+i giáp]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Xà beng ph
+p!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Xà beng qu
+t!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Bu
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Phát b
+n súng .357]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Phóng l
+n SMG]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[B
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[N
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Shotgun b
+n kép!]
+khí chính]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[R
+khí ph
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[G
+khí th
+<sfx><norepeat:5>[Phát b
+<sfx><norepeat:4><clr:255,176,0>[Nh
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[L
+<sfx:1><norepeat_global:8><clr:255,176,0>[
+<sfx><norepeat:4><clr:255,176,0>[
+a Ba C
+ng va ch
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[
+<sfx><clr:255,170,0>[C
+nh báo s
+t máu!]
+n!]
+<sfx><clr:255,170,0>[H
+<sfx><norepeat:5><clr:255,170,0>[Dùng n
+<sfx><clr:255,170,0>[Không th
+dùng]
+<sfx><clr:255,0,0>[Ch
+<sfx><clr:255,170,0>[Nh
+t pin]
+ng máu]
+<sfx><clr:255,170,0>[T
+<sfx><clr:255,170,0>[B
+<sfx><norepeat:5>[Nh
+n nút]
+<sfx><norepeat:10>[Ki
+ào hang]
+chui ra]
+<sfx><norepeat:3>[Thòng l
+n xé]
+<sfx><norepeat:3><clr:255,0,0>[Thòng l
+ng kéo]
+ng càu nhàu]
+ng gào thét]
+<sfx><norepeat:5>[Thòng l
+ng tiêu hóa]
+<sfx><norepeat:10>[Headcrab
+<sfx><norepeat:10>[C
+<sfx><norepeat:10>[N
+<sfx><norepeat:10>[Camera t
+<sfx><norepeat:10>[Tri
+n khai camera]
+nh báo camera]
+<sfx><norepeat:10>[Camera ch
+<sfx>[Camera b
+phá h
+<sfx><norepeat:10>[Qu
+nh giác]
+<sfx><norepeat:10><clr:255,0,0>[Qu
+kêu!]
+<sfx><norepeat:5><clr:255,0,0>[Máy xén ch
+<sfx><norepeat:20>[
+máy xén]
+<sfx><norepeat:10>[B
+<sfx><norepeat:10>[Máy xén tri
+n khai]
+<sfx><norepeat:5>[Máy xén
+<sfx><norepeat:30>[Radio Combine:
+àm tho
+<sfx><norepeat:15>[Radio Combine: C
+nh báo!]
+nh báo l
+<sfx><norepeat:15>[Radio Combine: Yêu c
+<sfx><norepeat:25>[Radio Combine: Chi
+nh báo máy quét]
+<sfx><norepeat:5><clr:255,0,0>[Máy quét ch
+<sfx><norepeat:5>[Máy quét b
+m click]
+<sfx><norepeat:10>[Máy quét
+âm th
+ng vào]
+nh báo Ba C
+<sfx>[Ba C
+<sfx><norepeat:5><clr:255,0,0>[Ba C
+<sfx><norepeat:15>[Ba C
+n minigun]
+<sfx><norepeat:10>[Ba C
+m!]
+ng tia]
+nh báo zombie]
+<sfx><norepeat:10><clr:255,0,0>[Zombie ch
+<sfx><norepeat_global:20>[Zombie kêu]
+<sfx><norepeat:10>[Zombie
+<sfx>[Khóa]
+<sfx><norepeat:1>[C
+óng]
+<sfx><norepeat:1>[Kim lo
+i leng keng]
+<sfx><norepeat:1>[T
+<sfx><norepeat:1>[Ch
+<sfx><norepeat:1>[Khóa]
+<sfx>[Nh
+<sfx>[Nút
+ã khóa]
+<sfx>[Nút Combine]
+<sfx><norepeat:3>[N
+c tung tóe]
+<sfx><norepeat:1>[Kính v
+<sfx><norepeat:1>[G
+<sfx><norepeat:1>[Màn hình v
+<sfx>[D
+a d
+<sfx><norepeat:1>[Va ch
+<sfx><norepeat:3>[Th
+chìa khóa
+chìa khóa b
+gãy khúc]
+<sfx><norepeat:1>[Bê tông v
+<sfx><norepeat:1>[Tr
+n nhà toang ra]
+c tông to
+c ra]
+<sfx><norepeat:1>[Nh
+a gãy khúc]
+<sfx><norepeat:3>[G
+i gãy khúc]

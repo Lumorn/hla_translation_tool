@@ -1,0 +1,4837 @@
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Odafentr
+l hogy néz ki?<I>
+Alyx: <clr:255,190,255>Jól, apu. A városi zsaruk mozgása a szokásos.<cr>A társulási jár
+röké szintén.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Hogy haladtok a raktárudvaron?
+Eli: <clr:255,208,172><I>Egy társulási minireaktor egy négyezres szállítmányból.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Nem fog nekik hiányozni.<cr>Tessék, nézd meg magad.<I>
+Russell: <clr:255,255,138><I>És van más is.<cr>Valaki behatolt a Társulás építési hálózatába.<I>
+Alyx: <clr:255,190,255>Ne legyetek mohók.<cr>Nem vagyunk id
+milliomosok.
+Russell: <clr:255,255,138><I>Egy perc és kiléptem.<cr>Biztosíthatlak.<I>
+Alyx: <clr:255,190,255>Ja, és
+Észrevettem, hogy a Társulás anyagot szállít a Karanténzónába.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Az a hely éveken át elhagyatott volt.
+Eli: <clr:255,208,172><I>Hmm. Az TÉNYLEG fura.<cr>Hát, majd utánanézünk, amikor visszaértünk.<I>
+Russell: <clr:255,255,138><I>Mi
+?<I>
+Russell: <clr:255,255,138><I>Ez meg micsoda?<I>
+Eli: <clr:255,208,172><I>Találkozzunk a menedékháznál, kicsim.<cr>Hamarosan ott leszünk.<I>
+Russell: <clr:255,255,138><I>Ez olyan, mint
+<I>
+Alyx: <clr:255,190,255>Mit mon
+Alyx: <clr:255,190,255>Csodás.
+Psszt
+Alyx! Alyx!
+Jók vagyunk?
+<clr:255,190,255>Aha. Pikk-pakk megszerezték a reaktort.
+<clr:255,190,255>Épp megyek vissza menedékházhoz, hogy találkozzak apuval.
+<clr:255,190,255>Menj! Majd beszélünk.
+Vigyázz magadra.
+<clr:18,199,226>Mozgás!
+<clr:18,199,226>Gyerünk!
+<clr:18,199,226>Maga!<sb>Mozogjon!
+<clr:18,199,226>Haladjon!
+<clr:18,199,226>Maga!<sb>Haladjon tovább!
+<clr:18,199,226>Hagyják el az utcát, azonnal!
+<clr:18,199,226>Térjenek vissza a lakóblokkjukba!<sb>Azonnal!
+<clr:18,199,226>Gyerünk! Gyerünk!
+<clr:18,199,226>Maga! Haladjon tovább!
+<clr:18,199,226>Azonnal térjen vissza a lakóblokkjába!
+<clr:18,199,226>Jöjjön tovább.
+<clr:18,199,226>Menjen tovább.
+<clr:18,199,226>Van engedélye.<sb>Jöjjön tovább.
+<clr:18,199,226>Van engedélye. Jöjjön tovább.
+Alyx, itt vagyok!
+<clr:255,190,255>Mi az?
+Ez nem rutin razziának t
+nik. Biztos vagy benne, hogy minden rendben ment?
+<clr:255,190,255>Száz százalékig.
+Valami felpiszkálta a PV-ket.
+<clr:255,190,255>Ne legyél szem el
+tt, és csak okosan.
+<clr:18,199,226>Beszállni!
+<clr:18,199,226>Beszállni a furgonba!
+<clr:18,199,226>Megvannak.
+<clr:18,199,226>Maga mögött!
+<clr:18,199,226><force>Kezeket fel! Ne mozduljon!
+<clr:18,199,226>Megállni! MEGÁLLNI!
+<clr:255,190,255>Hó, hó, hó, várjunk, várjunk!<cr>Én csak
+Én csak itt lakom!
+<clr:18,199,226>Valószín
+antipolgár.<sb>Olvassák le.
+<clr:255,190,255>Várjanak, v-várjanak! Ne l
+jenek!
+<clr:18,199,226>Megállni! VISSZA!
+<clr:18,199,226>El a kezekkel a gombtól!
+<clr:18,199,226>Ne nyúljon a gombhoz!
+<clr:18,199,226><force>Kezek fent maradnak!
+<clr:18,199,226><force>Fel azokat a kezeket!
+<clr:255,208,172><sfx:1>[fájdalmas nyögés]
+<clr:255,208,172>Mi nem loptunk el semmit!
+<clr:255,208,172>Senki! Nem láttam senkit!
+<clr:255,208,172>Ahh!
+<clr:255,190,255>APU!
+<clr:255,190,255>Hé! Várjon, várjon, ne, ne, ne
+<clr:255,190,255>Uhh. Hová
+<sb>Hová visznek?<sb>Hol van az apám?
+<clr:255,190,255>Hahó?!
+<clr:255,190,255>Francba! Hol az apám?!
+<clr:255,190,255>Nyissák ki az átkozott ablakot!
+<clr:18,199,226>Hallgasson!
+<clr:18,199,226>Szóljon neki, hogy ne ugráljon ott hátul.
+<clr:18,199,226>Ne mozogjon.
+<clr:18,199,226>Az meg mi?
+<clr:18,199,226>TÁMADNAK!
+<clr:18,199,226>Micsoda?
+<clr:18,199,226>GRÁNÁT!
+<clr:18,199,226>Kapja el!
+<clr:18,199,226>Nem látom!
+<clr:18,199,226>Az ülés alatt van!
+<clr:18,199,226>Keresem! Keresem!
+<clr:18,199,226>Kapja el, kapja el, kapja el!
+<clr:18,199,226>Megvan!
+<clr:18,199,226>Dobja ki, dobja ki
+<clr:18,199,226>Már dobom
+BALESETET-SZENVEDETT.
+VEGYE-EL-A-FEJSZETTET.
+TEGYE-FEL-A-FEJSZETTET.
+<HEADSET><clr:255,255,138>Tedd fel a fejszettet!
+<HEADSET><clr:255,255,138>Alyx! Tedd fel a fejszettet!
+<HEADSET><clr:255,255,138>Alyx! Tedd
+Alyx! Tedd fel a fejszettet!
+<HEADSET><clr:255,255,138>Alyx! Ha még élsz, tedd fel a fejszettet.
+<HEADSET><clr:255,255,138>Látom, hogy odabent vagy. Semmi okod nem feltenni a fejszettet! Alyx!
+<HEADSET><clr:255,255,138>Ez nem trükk. Russell vagyok, tudod? Apád munkahelyi barátja! Az ellenállásnál!
+<HEADSET><clr:255,255,138>Ez nem trükk, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Ott vagy?<cr>El
+el kell indulnod.
+<clr:255,190,255>Russell?
+<clr:255,190,255>Balesetem volt.
+<HEADSET><clr:255,255,138>Tudom! Én okoztam!<sb>Szóval technikailag nem volt baleset.<cr>Indulnod kell.
+<clr:255,190,255>Várj. Várj! Apu hol van?
+<HEADSET><clr:255,255,138>Semmi baja. Kövesd a drónt.
+<HEADSET><clr:255,255,138>Indulnod kell!
+<HEADSET><clr:255,255,138>Indulj már, Alyx!
+<HEADSET><clr:255,255,138>Alyx, el kell t
+nnöd innen, de azonnal!
+<clr:255,190,255>Oké, értettem.
+<clr:255,190,255>Szóval
+Apu<I>jól van<I>, igaz?
+<HEADSET><clr:255,255,138>Aha. Hát, nem.<cr>
+szintén szólva, óriási z
+rben van.
+<clr:255,190,255>De
+<HEADSET><clr:255,255,138>Még mindig náluk van.<cr>Egy másik rabszállítóban volt.
+<clr:255,190,255>És te engem mentettél meg?!
+<HEADSET><clr:255,255,138>Hát, igen.<sb>Nem tudhattam, ki melyik furgonban van.<sb>Így
+Igen.<cr>Az lett az eredmény, hogy TÉGED mentettelek meg.
+<clr:255,190,255>Tudjuk, hová viszik?
+<HEADSET><clr:255,255,138>A b
+nügyi gy
+be.<sb>Aztán, amikor rájönnek, hogy
+Eli Vance
+Nova Prospektbe.
+<HEADSET><clr:255,255,138>De már dolgozom egy terven, hogy kiszabadítsuk.
+<HEADSET><clr:255,255,138>Közel vagy a laboromhoz.<sb>Kövesd tovább a drónt!<cr>Majd kitaláljuk, mit tegyünk.
+<HEADSET><clr:255,255,138>Alyx, egy másodpercre minden megszakadt!<sb>Elvesztettem a fejszett képét.<sb>Látod a drónomat?<sb>Rendben van?
+<clr:255,190,255>Ööö, persze. Aha.<cr>Egy perc, és ott vagyok.
+<clr:255,190,255>Russell
+<cr>Mit <I>találtatok<I> korábban?
+<HEADSET><clr:255,255,138>Hát, ez benne az
+rület, hogy nem tudom! Csak
+homályos képek egy
+épületr
+<clr:255,190,255>A Citadelláról?
+<HEADSET><clr:255,255,138>Á, valami másról.<sb>És bármi is az, meg fognak ölni bárkit, aki látta, és bárkit, aki ismer bárkit, aki látta.<sb>Ami minket jelent
+meg az apádat.
+<clr:255,190,255>Russell?<cr>Várj egy kicsit, majdnem ott vagyok.
+<clr:255,255,138>Alyx, nagyszer
+!<cr>Oké, most
+Várjunk.<cr>A drónom rendben van, igaz?
+<clr:255,190,255>Nem. Felrobbant.<cr>Én, mellesleg, jól vagyok.
+<clr:255,255,138>Persze. Jó, hát az a
+<cr>Az a lényeg.
+<clr:255,190,255>Russell. Náluk van apu.
+<clr:255,255,138>Tudom. Ez
+Ez baj.<sb>Ki fogják deríteni, mit tud, és aztán
+<cr>Ja, meg fogják ölni.
+<clr:255,190,255>Ó, istenem
+<clr:255,255,138>Csakhogy!<sb>A jó hír, hogy van valamink, ami nekik nincs.
+<clr:255,190,255>Mégpedig
+<clr:255,255,138>A tervem a visszaszerzésére!
+<clr:255,190,255>Remek. Halljuk.
+<clr:255,255,138>Szóval.<sb>Igen hamar rá fognak jönni, hogy apád nem fog beszélni.<sb>És amikor AZ bekövetkezik, már megy is agykiszívásra.
+<clr:255,255,138>Esetlegesen.<sb>De lehet, hogy nem.<cr>Úgy értem, lehet, hogy
+Akár bele is fúrhatnak a
+<clr:255,190,255>Elég.
+<clr:255,255,138>Ja, persze. Elvégre az apád.<sb>Rendben.<cr>Nos, amit biztosan MEGTESZNEK, hogy vonattal elviszik INNEN
+<clr:255,255,138>Ez itt Eli
+<clr:255,255,138>Nova Prospektbe.
+<clr:255,190,255>És ha felkerül arra a vonatra
+<cr>Akkor vége, igaz?
+<clr:255,255,138>Nem feltétlenül.<cr>Kapj fel valamit, ami minket jelképez.
+<clr:255,255,138>Bármi megteszi.
+<clr:255,255,138>Ja, csak kapj fel valamit.
+<clr:255,255,138>Remek. És most tedd a térképre.
+<clr:255,255,138>Tudod mit, majd én.
+<clr:255,255,138>Oké, ez vagy te.
+<clr:255,190,255>Mintha azt mondtad volna,
+minket
+<clr:255,255,138>Hát, EGYIKÜNKNEK
+nekem
+itt kell maradnia, hogy ez a terv beváljon.
+<clr:255,190,255>Jó, az igaz.
+<clr:255,255,138>Épp itt a közelben van egy másik vágány, ami szintén kivisz a 17-es Városból, a Karanténzónán át.
+<clr:255,190,255>Oké.
+<clr:255,255,138>A két vágány itt keresztez
+dik, a Fairview-csomópontnál.<sb>Fogod a vonatodat, el
+bb érsz oda az övénél, és feltöröd a vezérlést.<sb>Akkor átvehetem a rendszer irányítását.
+<clr:255,255,138>A vonat megáll.<sb>Te elintézed a társulási problémát.<sb>És visszaszerezzük apádat.
+<clr:255,190,255>Jól hangzik.<cr>Hol a vonat, amivel megyek?
+<clr:255,255,138>Kint hátul, az udvaron át.<sb>Kivonták a forgalomból, de szerintem fel tudom törni a vezérlését.
+<clr:255,255,138>Ja, és vegyél fel egy pár Russellt útban kifelé.
+<clr:255,190,255>Russellt?
+<clr:255,255,138>A keszty
+ket, Alyx.<sb>Tudod, a gravitorkeszty
+ket.<sb>Van ott bel
+le néhány pár.<sb>Kint a fészernél majd kalibrálhatod.
+<clr:255,190,255>Értem.
+<clr:255,255,138>Meg tudjuk csinálni, Alyx.<sb>Hallottad, ugye?<sb>Hogy azt mondtam, meg tudjuk csinálni.<sb>Mer' meg fogjuk csinálni.
+<clr:255,190,255>Aha, meg ám.
+<HEADSET><clr:255,255,138>Veled leszek minden lépésnél.
+<HEADSET><clr:255,255,138>Rendben, tudod, hogy megy.<sb>Lennie kell ott lent egy csomó kacatnak.<sb>Célozz meg valamit nyitott tenyérrel.
+<HEADSET><clr:255,255,138>Csak célozz valamire a kezeddel.
+<HEADSET><clr:255,255,138>Azok a keszty
+k nem fognak maguktól bekalibrálódni.<sb>Bár, azt hiszem, kéne nekik.<sb>Ez az egyik dolog, amit
+nem javítottam ki rajtuk.
+<clr:255,190,255>Kész vagyok.
+<HEADSET><clr:255,255,138>Most csukd össze az ujjaidat és rándítsd magad felé az öklöd.
+<HEADSET><clr:255,255,138>Csak egy kis rándítás, csuklóból.
+<HEADSET><clr:255,255,138>Rándítasz? Nem tudom megállapítani, rándítasz-e.
+<HEADSET><clr:255,255,138>Összecsuk és rándít.
+<HEADSET><clr:255,255,138>Összecsuk
+<HEADSET><clr:255,255,138>
+és rándít.
+<clr:255,190,255>Hm. Nem m
+ködött.
+<HEADSET><clr:255,255,138>Oké, a referenciaszenzor teljesen el van állítódva.
+<HEADSET><clr:255,255,138>Próbáld újra.<sb>Válassz célt, és célozd meg nyitott tenyérrel.
+<clr:255,190,255>Még mindig nem jó.
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>A-aa.
+<HEADSET><clr:255,255,138>Próbáld újra.
+<clr:255,190,255>Nem.
+<HEADSET><clr:255,255,138>Még egyszer.
+<HEADSET><clr:255,255,138>Válassz célt, célozd meg nyitott tenyérrel.
+<HEADSET><clr:255,255,138>Kiváló! Most szorítsd ökölbe.
+<HEADSET><clr:255,255,138>Jól van, szorítsd ökölbe.
+<clr:255,190,255>Így milyen?
+<HEADSET><clr:255,255,138>Regisztrálva.<sb>Most rándíts a csuklódon, hogy odahúzd.
+<HEADSET><clr:255,255,138>Majdnem kész.<sb>Csináld újra, csak ezúttal kapd el.
+<HEADSET><clr:255,255,138>Rándíts újra, és próbáld meg elkapni.
+<HEADSET><clr:255,255,138>Ez az.
+<HEADSET><clr:255,255,138>Megy ez neked.
+<HEADSET><clr:255,255,138>Bumm, aha.
+<HEADSET><clr:255,255,138>Rajta vagy.
+<HEADSET><clr:255,255,138>Becéloztad.
+<HEADSET><clr:255,255,138>Kapcsolódtál.
+<HEADSET><clr:255,255,138>Aha, hozzákapcsolódtál.
+<HEADSET><clr:255,255,138>Csukd össze a kezed.
+<HEADSET><clr:255,255,138>Most csukd össze.
+<HEADSET><clr:255,255,138>Markold meg.
+<HEADSET><clr:255,255,138>Most csukd össze a kezed.
+<HEADSET><clr:255,255,138>Nagyszer
+<HEADSET><clr:255,255,138>Aha.
+<HEADSET><clr:255,255,138>Pontosan úgy.
+<HEADSET><clr:255,255,138>Tökéletes.
+<HEADSET><clr:255,255,138>Újra, de kapd el.
+<HEADSET><clr:255,255,138>De kapd el.
+<HEADSET><clr:255,255,138>Most kapd el.
+<HEADSET><clr:255,255,138>Próbáld meg elkapni.
+<HEADSET><clr:255,255,138>Kapd el.
+<HEADSET><clr:255,255,138>Alyx, képzeld azt, hogy van egy
+mint egy ravasz, a
+Russellen.
+<HEADSET><clr:255,255,138>Most célozz a kezeddel
+<HEADSET><clr:255,255,138>Húzd meg a ravaszt
+<HEADSET><clr:255,255,138>És meg is van.
+<HEADSET><clr:255,255,138>Alyx, lennie kell egy kis ravasznak mindkét Russelleden a mutatóujj közelében.
+<HEADSET><clr:255,255,138>Tökéletes. Végeztünk.<sb>Óó! Ó, várj! M-majdnem elfelejtettem.
+<clr:255,255,138>Alyx! Idefent!
+<clr:255,255,138>Szükséged lesz fegyverre!
+<clr:255,255,138>Ne aggódj, nincs megtöltve!
+<clr:255,255,138>Most már nincs megtöltve!
+<clr:255,255,138>Láttad, hová repült?
+<clr:255,255,138>Azt hiszem, annak a kocsinak a motorházán van.
+<clr:255,255,138>Ó. Majd elfelejtettem, a fegyverhez l
+szer is kell.
+<clr:255,255,138>Parancsolj!
+<clr:255,255,138>Ott kéne lennie valahol a földön.
+<HEADSET><clr:255,255,138>Szerintem annak a kocsinak a motorházán landolt.
+<clr:255,255,138>Jól van! Megyek vissza a kommunikációs szobába.
+<clr:255,190,255>Russell? Kifogytam.
+<clr:255,190,255>Hé, Russell! Megint, ööö
+kifogytam.
+<clr:255,255,138>Figyelj!
+? Kifogytam. Megint.
+<clr:255,255,138>Ó, ne aggódj, van még ott l
+szer, ahonnan ez jött.
+<clr:255,255,138>Azért, csak hogy tudd, ööö
+nincs idefent végtelen készletem. Oké? Csak úgy
+figyelmeztetésképp.
+<HEADSET><clr:255,255,138>Hé, az az én ablakom! Vigyázz már!
+<HEADSET><clr:255,255,138>Ó, hát, akkor azt a lakatot elintézted.<sb>Jó. Remek.<sb>Volt hozzá kulcsom.<sb>Bár, oda kellett volna adnom, szóval
+<sb>Az az én hibám.
+<HEADSET><clr:255,255,138>Az az a vonat, Alyx.<sb>Nézd meg, fel tudod-e törni az ajtaját.<sb>Én itt már majdnem rákapcsolódtam.
+<HEADSET><clr:255,255,138>Fel lehet törni a vonat ajtaját?
+<HEADSET><clr:255,255,138>Nézd meg, ki tudod-e nyitni az ajtót.
+<HEADSET><clr:255,255,138>Jól van! Indulás.<sb>Következ
+megálló: Fairview-csomópont.
+<clr:255,190,255>Kösz, Russell.
+<HEADSET><clr:255,255,138>És sok szerencsét, Alyx.<sb>Viszlát.
+<HEADSET><clr:255,255,138>Nyilván, csak hogy tudassam veled, azért még itt vagyok.
+<clr:255,190,255>Tudom.
+<HEADSET><clr:255,255,138>Halló, Alyx? LEHET, hogy van egy problémánk.<cr>Valószín
+leg semmi aggasztó, de
+<clr:255,190,255>Húha.
+<HEADSET><clr:255,255,138>Megállt a vonat?<cr>Megállt, ugye?
+<clr:255,190,255>Aha, mi történt?
+<HEADSET><clr:255,255,138>Öhh, elakadt.<cr>Amikor a Társulás lezárta a Karanténzónát, biztos meger
+sítették a biztonságát.
+<clr:255,190,255>Vagyis?
+<HEADSET><clr:255,255,138>Hát, a közelében se vagy a Fairview-csomópontnak.<cr>Épp csak a KZ-n kívül vagy.
+<HEADSET><clr:255,255,138>És ENNÉL tovább
+vonattal nem jutunk.
+<clr:255,190,255>Már el is indultam gyalog.
+<clr:255,190,255>Akkor indulok tovább gyalog.
+<HEADSET><clr:255,255,138>Jó. Megnézem, be tudlak-e juttatni valami más úton.
+<clr:255,190,255>Találtam itt egy halott zombit.<sb>Azt hittem, a Társulás lezárta a KZ-t.
+<HEADSET><clr:255,255,138>Á, biztos kislisszolt valahol.<sb>Azt hallottam, hogy plafonlakó-spórákkal voltak gondok az elszigetelési területen kívül.<sb>De ilyen fazonokkal nem.
+<clr:255,190,255>Akkor valószín
+leg nem egyedi eset.
+<HEADSET><clr:255,255,138>Kétlem.
+<HEADSET><clr:255,255,138>Ááá
+Odanézz! Gyanta!
+<HEADSET><clr:255,255,138>És ha errefelé gyanta van, akkor társulási gyártónak is kell lennie.<sb>Tartsd nyitva a szemed, talán tudunk kicsit fejleszteni a t
+zer
+dön.
+El
+bb-utóbb ki fogok fogyni a l
+szerb
+<HEADSET><clr:255,255,138>Hát, tartsd nyitva a szemed.<sb>Errefelé nincs hiány halottakból, és
+hát, mit szépítsük, azoknak már nincs szükségük a l
+szerükre.
+<clr:255,190,255>Hah, azt hiszem, ezt át tudom irányítani a többszerszámommal.
+<HEADSET><clr:255,255,138>A middel?
+<clr:255,190,255>Szerszám, többféle funkcióval.<sb>Szóval, érted, többszerszám.
+<HEADSET><clr:255,255,138>Hihetetlen az a szerkenty
+, Alyx!<sb>Szükséged van egy hihetetlen márkanévre!<sb>Valamire, ami eladatja!
+<clr:255,190,255>Ugyan kinek adnám el?
+<HEADSET><clr:255,255,138>A Társulás nem lesz itt örökké.<sb>Gondolnod kellene a jöv
+re, Alyx!
+<clr:255,190,255>Hát, mi lenne, ha Alyxnek nevezném el?
+<HEADSET><clr:255,255,138>Hmm. Kicsit mintha a
+Russell
+ihlette volna, de, ja
+<sb>Ideiglenesen, persze, legyen
+az Alyx
+<clr:255,190,255>Aha,
+<HEADSET><clr:255,255,138>Szép munka!
+<HEADSET><clr:255,255,138>Ó! Egy gyógyítóállomás.
+Ezeket a <I>Társulás<I> használja.<sb>Biztonságosak emberek számára?
+<HEADSET><clr:255,255,138>Ó, hála istennek, egy gyógyítóállomás.
+<HEADSET><clr:255,255,138>Öö, ja, én folyton használom
+ket.
+<clr:255,190,255>Biztos vagy benne?
+<HEADSET><clr:255,255,138>Aha, nagyszer
+ek.
+<HEADSET><clr:255,255,138>Csak tedd oda a kezed.
+<HEADSET><clr:255,255,138>Figyelj, komolyan, csak húzd meg a kart, és tedd oda a kezed.
+<HEADSET><clr:255,255,138>Aha, én folyton használom
+ket. Csak keress egy energiacellát.
+<HEADSET><clr:255,255,138>Jól van, barátom, kezdheted is.
+<clr:255,190,255>Au! Au-au-au!
+<clr:255,190,255>Áhhhhh. Hé
+<clr:255,190,255>Áhhh. Óó.
+<clr:255,190,255>Hé
+Igazad volt.<cr>Ez tényleg nagyszer
+<clr:255,190,255>Áhhh. Kellemes.
+<HEADSET><clr:255,255,138>Vigyázz azzal a plafonlakóval, Alyx.
+<clr:255,190,255>Uff, undorítóak.
+<clr:255,190,255>És, mikor kezdted el Russellnek hívni a gravitorkeszty
+ket?
+<HEADSET><clr:255,255,138>Az a márkaneve, Alyx.
+<clr:255,190,255>A márkaneve?
+<HEADSET><clr:255,255,138>Ja, tudod, a figyelemfelkelt
+köznapi nevük. Egy vagyont fogok keresni velük, miután eltüntettük a Társulást a Földr
+l, és minden újra normális lett.
+<clr:255,190,255>Egyébként, hogy találkoztál apuval?<sb>Együtt dolgoztatok a Black Mesában, igaz?
+<HEADSET><clr:255,255,138>Igen. Azaz, nem.<sb>Igazából trükkös volt ott munkát kapni.<sb>Behívtak interjúra a Black Mesához.<sb>Azt mondták, próbálkozzam újra egy év múlva.<sb>Nem kell mondanom, utána mi történt.<sb>Igazából szerencsém volt.<sb>Nem volt sok túlél
+.<sb>
+szintén, csoda hogy te és az apád kijutottatok.
+<HEADSET><clr:255,255,138>Ó. Ööö
+Szükséged van egy percre?<sb>Mert, ööö, érted, ki tudom
+Szüneteltethetem a továbbítást
+<clr:255,190,255>Csak körülnézek, Russ.
+<clr:255,190,255>Felteszem, a Karanténzóna e mögött a zárófedél mögött van.
+<HEADSET><clr:255,255,138>Ja, ja, a mögött tartják.
+<clr:255,190,255>Körülnézek valami vezérl
+panel után a kinyitásához.
+<HEADSET><clr:255,255,138>Ha én lennék a Társulás, hová tennék egy vezérl
+panelt?
+<HEADSET><clr:255,255,138>Az a vezérl
+panel.<sb>Valószín
+leg összekutyulták az áramkört.<sb>De tekintve, hogy senki sem lenne olyan ostoba, hogy kinyissa a fedelet, nem lehet túl nehéz rendbe hozni.
+<HEADSET><clr:255,255,138>Szerinted ez micsoda?
+<clr:255,190,255>Azt hiszem
+valamiféle zár.
+<clr:255,190,255>Hú! Kész vagyunk.
+<HEADSET><clr:255,255,138>Ha-ha! Kész vagyunk. Végre.
+<clr:255,190,255>Indulok befelé.<cr>Milyen messze van a Fairview-csomópont?
+<HEADSET><clr:255,255,138>Úton a vasútállomás felé át fogsz menni a régi metróalagutakon.
+<clr:255,190,255>Elindultak már apuval?
+<HEADSET><clr:255,255,138>Nem hiszem.<sb>Ami jó hír, mert akkor még van id
+nk.
+<clr:255,190,255>Ó, nagyszer
+<HEADSET><clr:255,255,138>Vagy rossz hír, mert már megölték.<sb>És egy hullát nem kell átszállítani.<sb>Csak eltemetni.<sb>Vagy elégetni.<sb>Ott vagy még, Alyx?
+<clr:255,190,255>Mm-hmm.
+<clr:255,190,255>Tudod, Russell, most, hogy épp besétálok a Karanténzónába, felötlött bennem
+<sb>Hogy semmit sem tudok <I>magáról<I> a Karanténzónáról.
+<HEADSET><clr:255,255,138>Nos, a karantén szó igazából olasz eredet
+quaranta giorni
+.<sb>Ami, ööö, azt jelenti, negyven nap; az az id
+szak, ameddig minden hajót el kellett különíteni a legénység partra szállása el
+tt a pestisjárvány idején.
+<clr:255,190,255>Rendben. Szuper.
+<HEADSET><clr:255,255,138>Ó, bakker.
+<clr:255,190,255>Azt hiszem, épp most záródtunk be ide.
+<clr:255,190,255>Hé, Russell!<sb>Találtam egy gazdátlan fecskend
+nyi isten tudja, mit.<sb>Gyógyszer lenne?
+<HEADSET><clr:255,255,138>Van rajta koponya meg csontok keresztben?
+<clr:255,190,255>Egyiket se látok.
+<HEADSET><clr:255,255,138>Akkor valószín
+leg gyógyszer.
+<HEADSET><clr:255,255,138>Alyx! Az imént beadtál magadnak valamit, amit a földön találtál?!
+<clr:255,190,255>REMEKÜL érzem magam!
+<HEADSET><clr:255,255,138>Tényleg? Oké. Rendben. Hát
+Sikeres kísérlet. Tartsd nyitva a szemed továbbiak után.
+<HEADSET><clr:255,255,138>Hallod ezt?
+<clr:255,190,255>Mi ez?
+<clr:255,190,255>Ajjaj!
+<HEADSET><clr:255,255,138>Ja. Az
+Abba az irányba kell mennünk.
+<clr:255,190,255>Nincs rövidebb út?
+<HEADSET><clr:255,255,138>Hát, AZ a rövidebb út.
+<clr:255,190,255>Nos
+Akkor menjünk a hosszabb úton.
+<HEADSET><clr:255,255,138>Hát, az egyben a hosszabb út is.
+<HEADSET><clr:255,255,138>Rendben, úgy t
+nik, ez bevált. Csináljuk csak tovább.
+<HEADSET><clr:255,255,138><sfx:1>[nevetés]
+<clr:255,190,255>Ó, öregem.
+<HEADSET><clr:255,255,138>Ha-ha!<cr>Az a plafonlakó velünk van.<sb>Persze, nyilván nincs, szóval ne menj be alá.
+<HEADSET><clr:255,255,138>Ja, csak hogy tudd
+A Russellbe kijelz
+van építve. Mutatja a gyanta- meg l
+szermennyiséget. Tudod, hasznos lehet.
+<clr:255,190,255>Értem. Kösz.
+<clr:255,190,255>Húha
+<HEADSET><clr:255,255,138>Ja, légy óvatos.
+<HEADSET><clr:255,255,138>Alyx! Ott, az ajtó mögött!<sb>Azt hiszem, az egy társulási gyártó!
+<HEADSET><clr:255,255,138>Alyx! Azt hiszem, az egy társulási gyártó.<sb>Tegyél bele valamit, látni akarom, hogyan m
+ködik egy ilyen.
+<clr:255,190,255>Értem. A Russellen m
+ködik?
+<HEADSET><clr:255,255,138>Nem, de azt a pisztolyt szépen rendbe hozná.<cr>Jól is jönne, az egyik vacakabb fegyveremet adtam neked.
+<clr:255,190,255>Kösz, Russell
+<HEADSET><clr:255,255,138>Hát, tudod
+Ha esetleg nem kerülne vissza.
+<clr:255,190,255>Tudod mit, Russell?<cr>Ha meghalok, jövök neked egy fegyverrel.
+<HEADSET><clr:255,255,138>Mindenképp jössz eggyel!<cr>Nem ajándék volt. Az az ÉN fegyverem.
+<HEADSET><clr:255,255,138>Na. Ez megérte a gyantát.
+<HEADSET><clr:255,255,138>A Társulás ért a fegyverfejlesztéshez.<sb>Ezt el kell ismernem.
+<HEADSET><clr:255,255,138>Nagyon halálosnak látszik.
+<HEADSET><clr:255,255,138>Nagyon szép.<sb>Szinte azt kívánom, bárcsak ott lehetnék, hogy kipróbáljam.
+<HEADSET><clr:255,255,138>Annak jó hasznát veheted.
+<HEADSET><clr:255,255,138>Na, az
+hasznos lesz.
+<HEADSET><clr:255,255,138>Kiváló választás.
+<HEADSET><clr:255,255,138>Okos. Az jól fog jönni.
+<HEADSET><clr:255,255,138>Azzal meg lehet nyerni néhány vitát.
+<HEADSET><clr:255,255,138>Nem akarnék annak a rossz végén lenni.
+<HEADSET><clr:255,255,138>Ezt nevezem fejlesztésnek.
+<HEADSET><clr:255,255,138>Az a vacak ennél nem is lehetne halálosabb.
+<HEADSET><clr:255,255,138>Ó, az tényleg bevált? Hah
+<HEADSET><clr:255,255,138>H
+! Elég jól néz ki a fegyverem!
+<clr:255,190,255>Russ, ne már! Jelenleg ez már igencsak a
+fegyverünk.
+<HEADSET><clr:255,255,138>Ó, h
+, odasüss! A fegyverem egyre jobb és jobb lesz.
+<clr:255,190,255>Tudod, Russ, technikailag
+szerintem nagyon nem sok maradt már a te fegyveredb
+<HEADSET><clr:255,255,138>Hmm. Tudod mit: egyel
+re szüneteltessük ezt a témát. Cseveghetünk az ÉN fegyveremr
+l, amikor visszajöttél.
+<clr:255,190,255>Hát, Russ, ez hivatalos. Ebben a fegyverben SEMMI sem maradt a te fegyveredb
+l. Ez már csak az
+ÉN fegyverem.
+<HEADSET><clr:255,255,138>Jó, legyen. Kiérdemelted. De azt a Russellt azért vissza akarom kapni.
+<HEADSET><clr:255,255,138>Fejrágó!
+<clr:255,190,255>Látom!
+<HEADSET><clr:255,255,138>Várjunk
+Hová lett?
+<clr:255,190,255>Ááá!
+<HEADSET><clr:255,255,138>Ááá!
+<HEADSET><clr:255,255,138>Ja. Ott van. Megtaláltad.
+<HEADSET><clr:255,255,138>Valószín
+leg csak egy ilyen volt.
+<HEADSET><clr:255,255,138>Oké, kett
+. Kett
+volt.
+<HEADSET><clr:255,255,138>Szép lövés, Alyx.
+<clr:255,190,255>Kösz. Kösz, Russell.
+<clr:255,190,255>Kösz. Tudod, annak ellenére, mennyit emlegetted, hogy milyen
+vacak
+fegyver ez, nem is olyan rossz.
+<HEADSET><clr:255,255,138>Ja
+Igazából egész jó, ugye?<cr>Francba, szerintem másik fegyvert adtam oda.
+<clr:255,190,255>Hallottál valamit apuról, Russell?
+<HEADSET><clr:255,255,138>Nem. Rádiócsend, mióta feltették a vonatra.
+<clr:255,190,255>Fenébe.
+<HEADSET><clr:255,255,138>Hát, a jó hír az, hogy valószín
+leg jól van.
+<clr:255,190,255>Ezt meg honnan veszed?
+<HEADSET><clr:255,255,138>Mert Nova Prospektbe viszik megkínozni.<sb>Az a kínzóhely.<sb>Szóval aligha fogják kínozni, MIEL
+TT odaérnének.<sb>Vagyis jól van. Logikailag.
+<clr:255,255,138>Á!
+<clr:255,190,255>Áá!
+<clr:255,190,255>Gyógyítóállomás!
+<HEADSET><clr:255,255,138>Áá, gyógyítóállomás!
+<HEADSET><clr:255,255,138>Hm. Nem m
+ködik.
+<clr:255,190,255>Á! Ott, nézd! Energia kell neki.
+<HEADSET><clr:255,255,138>Az ott egy
+floppylemez
+.<cr>Egykor ilyeneken tároltunk információt. Hiszed vagy sem, mágnesekkel.
+<clr:255,190,255>Hah.
+<HEADSET><clr:255,255,138>Pontosabban, két mikrométer mágneses vasoxid, három mikrométer bárium-ferrit és egy egész két
+<clr:255,190,255>Russell? Honnan tudod te mindezt?
+<HEADSET><clr:255,255,138>Itt olvasom a számítógépemen.<cr>A háború el
+tt letöltöttem az internetet.
+<clr:255,190,255>Letöltötted az EGÉSZ internetet.
+<HEADSET><clr:255,255,138>Hát, a nagyját.
+<clr:255,190,255>Szép.
+<HEADSET><clr:255,255,138>Ja, az.
+<clr:255,190,255>Russell, látod ezt?
+<HEADSET><clr:255,255,138>Hát, lehet.<sb>Te lebeg
+szemetet látsz?
+<clr:255,190,255>Úgy t
+nik, csak
+kartonpapír.
+<HEADSET><clr:255,255,138>Úgy. Hát, ártalmatlannak t
+nik.
+<clr:255,190,255>Aha. De azért fura.
+<clr:255,190,255>AZ micsoda?
+<clr:255,190,255>Mintha rajzolt villámujjúak lennének
+<HEADSET><clr:255,255,138>Várjunk, e-ez
+a Black Mesa?
+<clr:255,190,255>Valaki sok id
+t töltött ezzel.
+<clr:255,190,255>H
+! Még több lebeg
+<HEADSET><clr:255,255,138>Alyx! Jól vagy? Mi baj?
+<clr:255,190,255>Jól vagyok, Russell, mi a helyzet?
+<HEADSET><clr:255,255,138>Elveszítem a jeledet!<sb>Alyx? Alyx?<sb>Ha még hallasz, haladj tovább ugyanabba az irányba, és
+és próbálj a felszínre jutni!
+<clr:255,190,255>Russell?<sb>Russell?<sb>Bakker.
+<clr:255,190,255>Hú, ez fura.
+<clr:255,190,255>Ó!
+Villámujjú: <clr:107,232,120>Az Alyx Vance!
+Villámujjú: <clr:107,232,120>Fogta az üzeneteimet!
+<clr:255,190,255>Tényleg?
+<clr:107,232,120>Jöjjön! Lépjen be.
+<clr:255,190,255>Oké
+<clr:255,190,255>Kösz.
+<clr:107,232,120>Szívesen!
+<clr:255,190,255>És, mit csinál itt egy villámujjú?
+<clr:107,232,120>[szimatol] Hmm!
+<clr:107,232,120>F
+<clr:107,232,120><sfx:1>[hangosan eszik]
+<clr:255,190,255>Jó, de úgy értem, egyébként.
+<clr:107,232,120>Agysérülésem van.
+<clr:255,190,255>Ó. Sajnálattal
+<clr:107,232,120>Sérült az agyam!
+<clr:255,190,255>Ez rettenetes, és remélem
+<clr:107,232,120>Au.
+<clr:255,190,255>Figyelj, nekem igazából elég siet
+s, az apámat keresem
+<clr:107,232,120>Az
+<clr:255,190,255>
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Igen.
+<clr:255,190,255>A Társulás elfogta, és nekem tényleg indulnom kell.
+<clr:107,232,120>A Társulás.<sb>Igen. Ne menjen még!<sb>Mutatnom kell valamit!
+<clr:255,190,255>Figyelj, méltányolom
+<clr:107,232,120>Erre!
+<clr:255,190,255>Nem maradhatok, nekem
+<clr:107,232,120>Fontos!
+<clr:255,190,255>Biztos, hogy az, de
+<clr:107,232,120>Az Alyx Vance-nek úgyis erre kell mennie
+<clr:255,190,255>Na jó.
+<clr:107,232,120><sfx:1>[kuncog]
+<clr:107,232,120><sfx:1>[hangosan szürcsöl]
+<clr:107,232,120>Jöjjön, jöjjön!
+<clr:107,232,120>Lépjen be, Alyx Vance.
+<clr:107,232,120>Itt bent!
+<clr:107,232,120>Meg kell mutatnom, miért hoztam ide.
+<clr:107,232,120><sfx:1>[örvénylényeget fókuszál]
+<clr:107,232,120>A Társulásnál vannak mások a népemb
+<clr:107,232,120>Fogva, mint az Eli Vance.
+<clr:107,232,120>Az Alyx Vance ki fogja szabadítani
+ket!
+<clr:255,190,255>Szeretnék segíteni. Tényleg.<sb>De az Alyx Vance-t komolyan lefoglalja az apja megmentése.
+<clr:107,232,120>Nem fogja megmenteni
+t.<sb>Halott.
+<clr:255,190,255>Mi?
+<clr:107,232,120>Vagy az lesz
+<clr:255,190,255>Az? Vagy az lesz?
+<clr:107,232,120>Néz
+pont kérdése.<sb>De az Alyx Vance egyedül nem tudja megóvni a végzetét
+<clr:255,190,255>Én
+Figyelj.<sb>Köszönök
+mindent.<sb>De tényleg mennem kell.<sb>És sajnálom, de igazán nincs id
+m fejtör
+kre.
+<clr:107,232,120>Nem fejtör
+!<sb>A Társulás ide fúrt.<sb>Nem tudom, mikor vagyok.<sb>Elválasztattam az örvénylényegt
+l.<sb>Egyedül vagyok a fejemben.
+<clr:255,190,255>Sajnálom.
+<clr:255,190,255>Figyelj, ha lehet, ha összefutok a barátaiddal, meglátom, mit tudok tenni.
+<clr:107,232,120>Megmentette az enyéimet!
+nem.
+<clr:107,232,120>Akkor meg fogja.
+<clr:107,232,120>Rraaagh!
+<clr:107,232,120>Bátorság, Alyx Vance!
+<clr:107,232,120>Útja elhozza idáig.<cr>Talán kicsit még tovább.
+<clr:107,232,120>Itt át, Alyx Vance.
+<clr:107,232,120>Mennie kell!
+<clr:107,232,120>Küldetése kezd
+dik, Alyx Vance.
+<clr:107,232,120>Menjen!
+<clr:107,232,120>Segíteni fogok az Alyx Vance-nek!<sb>Keresse a Sarkcsillagot.
+<clr:255,190,255>Miért?
+<clr:107,232,120>Útmutatásképp!
+<clr:255,190,255>Oké. Kösz.<cr>Végeztél? A segítéssel?
+<clr:107,232,120>Nem! Tessék.
+<clr:107,232,120>Táplálék!
+<clr:255,190,255>Uh
+Majd kés
+bb megeszem.<cr>Kösz a segítséget.
+<clr:107,232,120>Örömmel fogjuk tenni.
+<clr:107,232,120><sfx:1>[elégedetten dúdol]
+<clr:255,190,255>Fúúú.
+<clr:255,190,255>Bleh.
+<clr:255,190,255>Fú.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Visszajött a jel!<sb>Hallasz engem? Jól vagy?
+<clr:255,190,255>Russell! Jól vagyok! Apu hogy van?
+<HEADSET><clr:255,255,138>Feltették a vonatra.<sb>Mozgásban van.<sb>Meg kell találnod a Fairview-csomópontot, miel
+tt odaérnek.
+<clr:255,190,255>Dolgozom rajta.
+<HEADSET><clr:255,255,138>És, történt valami, míg nem volt jel?
+<clr:255,190,255>Nem fogod elhinni, de összefutottam egy villámujjúval.
+<HEADSET><clr:255,255,138>Villámujjúval?<cr>Mit keresett odalent?
+<clr:255,190,255>Rejt
+zött.<cr>Azt hiszem, megszökött a Társulástól.
+<HEADSET><clr:255,255,138>Mit mondott?
+<clr:255,190,255>Találkoztál valaha villámujjúval?<cr>Bolond villámujjús dolgokat mondott.
+<clr:255,190,255>Ja, és a villámujjú, akivel találkoztam
+<cr><I>Adott<I> egy fejrágót, megenni.
+<HEADSET><clr:255,255,138>Ó! Remek!<sb>Milyen íze volt?<cr>Mondd el, hogy érz
+Russell! Nem ettem meg.
+<HEADSET><clr:255,255,138>Persze. Persze, hogy nem.<cr>Nem, az
+az a helyes döntés.
+<clr:255,190,255>Ez fura.
+<clr:255,190,255>Ó! Annál a zombinál van egy sörétes!
+<clr:255,190,255>Húha!
+<clr:255,190,255>Aha. Szerezzük meg azt a sörétest és t
+njünk innen.
+<clr:255,190,255>Megvan!
+<HEADSET><clr:255,255,138>Igyekezz, és töltsd meg, er
+södik a zaj!
+<clr:255,190,255>Sikerült.
+<HEADSET><clr:255,255,138>Imádom ezt a fegyvert.
+<clr:255,190,255>Hú, SÖTÉT van itt.
+<HEADSET><clr:255,255,138>Minden rendben?
+<clr:255,190,255>Persze, jól vagyok, jól vagyok.
+<clr:255,190,255>Ó, hála istennek.
+<clr:255,190,255>Nincs
+Nincs itt semmi baj.
+<clr:255,190,255>Igazán sötét van
+Russ?
+<HEADSET><clr:255,255,138>Igen?
+<clr:255,190,255>Tudnál
+beszélni?
+<HEADSET><clr:255,255,138>Mir
+<clr:255,190,255>Bármir
+l. Szó szerint bármir
+<HEADSET><clr:255,255,138>Hát, azt hiszem, a helyzetünket tekintve az irracionális félelmed a sötétt
+l igencsak helyénvaló.<sb>Tudod, fel tudnék sorolni akár száz okot a félelemre.
+<clr:255,190,255>Oké, ez az én hibám volt.<sb>Legközelebb konkrétabb leszek.
+<clr:255,190,255>Nagy rajongója vagyok ennek a zseblámpának.
+<HEADSET><clr:255,255,138>És hozzád hasonlóan az is érzékeny a sötétségre.
+<clr:255,190,255>Ó, tényleg?
+<HEADSET><clr:255,255,138>Úgy értve, automatikusan be kéne kapcsolnia, amikor nincs fény.
+<clr:255,190,255>Ó. Ügyes.
+<clr:255,190,255>Jól van, Russ. NAGYON jó lenne, ha megint beszélnél.
+<HEADSET><clr:255,255,138>Semmi akadálya. Légy konkrét.
+<clr:255,190,255>Ahm
+Korábban
+Milyen volt az élet a Társulás el
+tt?
+<HEADSET><clr:255,255,138>Áá! Kiváló.<cr>Alyx, hallottál valaha a klubszendvicsr
+<clr:255,190,255>Ahm, nem. Soha.
+<HEADSET><clr:255,255,138>Szóval. Nos, klubszendvics készítéséhez a kenyérrel kellett kezdeni.<sb>Nem a kenyeres sorból, pékségb
+<HEADSET><clr:255,255,138>Szóval.<sb>Nos, klubszendvics készítéséhez a kenyérrel kellett kezdeni.<sb>Nem a kenyeres sorból.<sb>A pékségb
+l, az utca túloldalán, aznapi sütés
+vel, oké? Teszel hozzá paradicsomot, salátát; nem zöldségkrémet, frisset.<sb>Aztán jön a bacon; az egy állatból volt, aminek
+disznó
+volt a neve.<sb>Megpirítod a kenyeret, és mindezt beleteszed.
+<clr:255,190,255>És nektek ez mind volt?
+rület.
+<HEADSET><clr:255,255,138>Az! És még nem végeztem.<sb>Aztán raksz egy második szendvicset az els
+tetejére.<sb>Abba sonkát teszel, szintén disznóból, meg pulykát, ami egy állatból volt, aminek
+pulyka
+volt a neve, és még paradicsomot, még salátát, meg egy csomó egyéb dolgot, amit elfelejtettem.<sb>Tizenöt centi magas volt, fél kiló, és öt különböz
+kontinensr
+l egy tucat hozzávaló volt benne.<sb>A legképtelenebb étel volt, amit a mi korunk el
+tt valaha el lehetett képzelni.
+<HEADSET><clr:255,255,138>Nekem mondod?
+<clr:255,190,255>Hát ez
+<clr:255,190,255>Kösz, Russ.
+<HEADSET><clr:255,255,138>Szívesen, Alyx.
+<HEADSET><clr:255,255,138>Várj, az egy halott társulási katona?
+<clr:255,190,255>Aha
+<sb>Mikor ti oda voltatok reaktort lopni, láttam, hogy a Társulás ellátmányt szállít be ide.<sb>Szóval, gondolom, megint érdekli
+ket ez a hely.
+<HEADSET><clr:255,255,138>Hát, tartsd nyitva a szemed.<sb>Határozottan készül valami.
+<HEADSET><clr:255,255,138>Alyx! Embernyes
+! Vigyázz!
+<HEADSET><clr:255,255,138>Embernyes
+<HEADSET><clr:255,255,138>Hoppá, embernyes
+<clr:255,190,255>Iih
+<clr:255,190,255>Ó
+Azta
+<clr:255,190,255>Oké, szóval: jelenleg a Földön élni, egyt
+l tízig terjed
+skálán
+Azt mondanám, kett
+nél vagyunk.
+<HEADSET><clr:255,255,138>Ja, tudna még rosszabb lenni.
+<clr:255,190,255>Mennyire értékelnéd AZEL
+TT, hogy felbukkant a Társulás?
+<HEADSET><clr:255,255,138>Óó, ez fogós.<sb>Nem is tudom, egy jó napon?<sb>Mondjuk hat.<sb>Ja, egy er
+s hatos.
+<clr:255,190,255>Hat? Az nem valami jó.
+<HEADSET><clr:255,255,138>Hát, ilyen az élet, Alyx.<cr>Tudod, nem mindig jó.
+<clr:255,190,255>Hát, eltakarítjuk a Társulást a Földr
+l, és megcélozhatnánk talán mondjuk egy nyolcast, érted?
+<HEADSET><clr:255,255,138>Ó, nyolcast.<cr>Ja, az nagyon kellemes volna.<sb>Igazán kellemes.
+<clr:255,190,255>És, miután eltüntettük a Földr
+l a Társulást, mihez fogsz kezdeni?
+<HEADSET><clr:255,255,138>Beindítom a
+nagyüzemi gyártását, természetesen.
+<clr:255,190,255>Ja, hát persze!<sb>És akkor az öledbe hull a plafon!
+<HEADSET><clr:255,255,138>A vagyon, ja.<sb>Szóval, a terv, óvatos becsléssel, hogy gondolom, kell egy év a Föld megszabadítására a Társulástól, a bolygóról való eltüntetésükhöz.<sb>Szóval, ez az els
+év.
+<HEADSET><clr:255,255,138>Aztán még egy év a
+tömeggyártásáig.<sb>Bár, csak halkan téve hozzá, el
+bb MUSZÁJ újraépítenünk a társadalmat, tudod, valami alap infrastruktúra, munkahelyek, pénz, ilyesmi.<sb>Különben az emberek nem fogják tudni megvenni.<sb>Érted.
+<HEADSET><clr:255,255,138>Szóval, öö, ja
+<sb>HÁROMÉVES terv.<sb>Suvasszuk be az infrastruktúrás dolgot a második évbe.
+<clr:255,190,255>Ó. Aha, mindenképp.<sb>Azt a második évbe lesz érdemes tenni.
+<HEADSET><clr:255,255,138>Hó! Vigyázz! Vigyázz!
+<HEADSET><clr:255,255,138>Csak nyugodtan
+<clr:255,190,255>Ajaj. Megint sötétedik.
+Ez a teljes hároméves Russell terv
+Szerinted, ahm
+Szerinted lenne ott nekem munka?
+<HEADSET><clr:255,255,138>Munka? Alyx, te találtad fel az
+Alyxet
+!<cr>Persze, hogy kapnál munkát!
+<clr:255,190,255>Lehetnénk üzlettársak.
+<HEADSET><clr:255,255,138>Ó, hát, ahm
+<sb>Hmm. Hát, lehetne részvényopció.<sb>Öt-tíz éves megszolgálási id
+szakkal, nyilván.<sb>Nagyon jövedelmez
+lehetne a számodra, Alyx.<sb>Hosszú távon.
+<clr:255,190,255>Fogalmam sincs, mit jelentett ez az egész, de jól hangzik, üzlettárs.
+<HEADSET><clr:255,255,138>Aha. Jól hangzik
+Alyx.
+<clr:255,190,255>Russell! Ezeknek automata fegyvereik vannak!
+<clr:255,190,255>Ezeknek automata fegyvereik vannak.
+<HEADSET><clr:255,255,138>Földönkívüli kommandósok, persze, hogy vannak automata fegyvereik.
+<HEADSET><clr:255,255,138>Nekünk is lennének, de a társulási fegyverek génkódoltak, úgyhogy, érted, pechünk van. Hacsak nem találsz egy kötetlent. Vagy nem vállalkozol egy apróbb génmódosításra.
+<clr:255,190,255>Majd szorítok az
+els
+lehet
+ségnek. Inkább maradnék azoknál a géneknél, amikkel most m
+ködök.
+<clr:255,190,255>Ez egy csomó szó, miközben egy csomó golyó repked körülöttem, Russ!
+<clr:255,190,255>Társulás!
+<clr:255,190,255>Russ, ezeknek automata fegyvereik vannak.
+<HEADSET><clr:255,255,138>Nekünk is lennének, de a társulási fegyverek génkódoltak, úgyhogy pechünk van.<sb>Hacsak
+nem találsz egy kötetlent.<cr>Vagy nem vállalkozol egy apróbb génmódosításra.
+<clr:255,190,255>Hát
+Kösz, nem, Russ. Maradok azoknál a géneknél, amik most vannak.
+<HEADSET><clr:255,255,138>Fairview-csomópont! Megjöttünk!
+<HEADSET><clr:255,255,138>Ez az!
+<HEADSET><clr:255,255,138>Fedezékbe!
+<clr:255,190,255>Uff. Szerintem ez volt az utolsó.
+<HEADSET><clr:255,255,138>Helyes, mert nincs sok id
+<HEADSET><clr:255,255,138>Van a közelben egy vezérl
+állomás-felülbíráló.
+<HEADSET><clr:255,255,138>B
+ven kellene legyen id
+d a felülbíráló újra beüzemelésére.
+<HEADSET><clr:255,255,138>Jól van, meg fogom tudni állítani a vonatot, épp itt.
+<clr:255,190,255>Biztos meg tudod csinálni?
+<HEADSET><clr:255,255,138>Abszolút. Csak aktiválnod kell a terminált.
+<clr:255,190,255>Szuper.
+<HEADSET><clr:255,255,138>Aztán készen kell állnod a harcra.<sb>Nem fognak egykönnyen lemondani apádról.
+<clr:255,190,255>Kész leszek.
+<HEADSET><clr:255,255,138>Na, az ott a terminál.
+<clr:255,190,255>Nekilátok.
+<HEADSET><clr:255,255,138>Aztán csak igyekezz.
+<HEADSET><clr:255,255,138>Hát, kéne lennie itt valahol egy akkunak.
+<HEADSET><clr:255,255,138>Talán hiányzik egy alkatrésze?
+<HEADSET><clr:255,255,138>Oké, semmi gond, csak jön a vonat.
+<clr:255,190,255>Azt én is látom, Russell.
+<HEADSET><clr:255,255,138>Csak juttass be, csak egy pillanatig fog tartani. Remekül csinálod.
+<clr:255,190,255>Ja, remekül csinálom, nem kell aggódni, nem kell aggódni
+<HEADSET><clr:255,255,138>Hiányzik egy alkatrésze!
+<HEADSET><clr:255,255,138>Oké! És most kapcsold vissza a rendszert.
+<clr:255,190,255>Ennek le kellett jönnie
+<HEADSET><clr:255,255,138>Az pont az ellenkez
+je annak, amit csinálnia kellene, Alyx!
+<clr:255,190,255>M-m-most m-mit
+Most mit csináljak?!
+<HEADSET><clr:255,255,138>Öö
+Hát
+Ne ess pánikba! Vagy hagyd abba! Ha már pánikolsz.
+<clr:255,190,255>Nem pánikolok!
+<HEADSET><clr:255,255,138>Jó, de én igen! Más módot kell találnunk a vonat megállítására!
+<clr:255,190,255>Kell lennie más módnak a vonat megállítására
+<HEADSET><clr:255,255,138>Hát, kezdd el keresni! Nincs sok id
+nk!
+<HEADSET><clr:255,255,138>Menj, nézz körül odakint! KELL lennie kézi felülbírálásnak. Hát, technikailag nem kell lennie. De, érted, jó lenne, ha volna. Légyszi. [ideges kuncogás]
+<HEADSET><clr:255,255,138>A felülbírálónak odakint kell lennie, Alyx! Siess!
+<HEADSET><clr:255,255,138>Egy váltót keress!
+<HEADSET><clr:255,255,138>Keresd tovább a váltót! Meg kell állítanunk a vonatot!
+<HEADSET><clr:255,255,138>Tíz másodperc, és itt a vonat, Alyx!
+<HEADSET><clr:255,255,138>Oké, csak váltsd át ott azt a kart.
+<HEADSET><clr:255,255,138>Öt másodperc!
+<clr:255,190,255>Nem marad úgy!
+<HEADSET><clr:255,255,138>Meghúzva kell tartanod!
+Ez bevált.
+<HEADSET><clr:255,255,138>Aha. H
+. Jól vagy?
+<clr:255,190,255>Jól vagyok. Gyerünk, keressük meg aput.
+<HEADSET><clr:255,255,138>Tényleg. Keresd a fogolyszállító vagont. A vonat eleje felé kellene lennie.
+<clr:255,190,255>Valahogy bejutok a roncsba.
+<HEADSET><clr:255,255,138>Azok meg mi a fenék?
+<clr:255,190,255>Nem tudom. Aput viszont meg kell találnunk.
+<HEADSET><clr:255,255,138>Ja, igen, tudom.<cr>Csak sose láttam még olyat ezel
+tt.
+<HEADSET><clr:255,255,138>Az az apád fogolykapszulája.
+<clr:255,190,255>Jaj, istenem! Hol van apu?
+<clr:255,190,255>Apu? APU?
+<clr:255,190,255>Apu!
+<clr:255,208,172>Itt vagyok, édesem!<sb>Segíts, gyorsan!
+<HEADSET><clr:255,255,138>Jaj, istenem.
+<clr:255,208,172>Kicsim! Itt vagyok!
+<clr:255,190,255>Jövök!
+<clr:255,208,172>Kicsim!
+<clr:255,190,255>Azonnal ott leszek! Egy pillanat!
+<HEADSET><clr:255,255,138>Alyx, siess!
+<clr:255,190,255>Oké.<sb>Kinyúlok, és felhúzlak.<sb>Minden rendben lesz. Kész vagy?
+<clr:255,208,172>Aha
+Kész vagyok.
+<clr:255,190,255>Nyújtsd ide a kezed!
+<clr:255,208,172>Uhh!
+<clr:255,190,255><sfx:1>[fájdalmasan nyög]
+<clr:255,208,172>Igyekezz, kicsim!<sb>Siess! Lecsúszik a kezem.
+<clr:255,208,172>Segíts fel
+Segíts fel
+<HEADSET><clr:255,255,138>Ó, jesszus, ó, jesszus.
+<clr:255,208,172>Majdnem
+Majdnem
+Gah!
+<clr:255,208,172><sfx:1>[leveg
+ért kapkod]
+<clr:255,190,255><sfx:1>[döbbent lélegzetvétel]
+<HEADSET><clr:255,255,138>Egy villi! Ott egy villi!
+<clr:255,190,255>Ez AZ a villi!
+<clr:107,232,120>Alyx Vance!<sb>Jöttem segíteni, ahogy mondottam.
+<clr:255,208,172>Köszönöm
+Köszönöm
+Ó, istenem
+<clr:255,190,255>Köszönöm, jaj, istenem, köszönöm!<sb>Apu, maradj ott!<sb>Ki fogom találni, hogy jussak le hozzád!
+<clr:255,190,255>Csak maradj ott!<cr>Ki fogom találni, hogy jussak át hozzád!
+<clr:255,208,172>Ne! Alyx, figyelj!<sb>Az a valami, amit Russell és én találtunk, valami
+valamiféle szuperfegyver!
+<clr:255,190,255>Szuperfegyver?
+<clr:255,208,172>Valami nagy.<sb>Itt tartják a KZ-ben, valamiféle széfben.<sb>De hamarosan el fogják vinni.<sb>Hogy hová, azt nem tudom, de nemsokára.
+<clr:255,190,255>Akkor el kell lopnunk, miel
+tt megteszik!
+<clr:255,208,172>Igen! És, nézd, nézd
+<sb>Sikerült zsebre vágnom ezt a társulási adattokot.<sb>Ha sikerül dekódolnom, kideríthetjük, hogyan használjuk ellenük a fegyverüket.
+<clr:255,190,255>Szóval, mi a terv?
+<clr:255,208,172>Te indulsz a Széfhez.<sb>Én visszaviszem ezt a vacakot Russellhez, és munkához látok.
+Hm. HOL van a Széf?
+<clr:255,190,255>Apu! Hol van a Széf?
+<clr:107,232,120>Keresse a Sarkcsillagot
+Igen. Keressem a csillagot. Értem. Apu?
+<clr:255,208,172>A KZ kell
+s közepén van.<sb>És nagy.<sb>Menj valami magaslatra és nézd meg, mit találsz.
+<clr:107,232,120>Én az Eli Vance társául szeg
+döm és gondoskodom a biztonságáról!
+<clr:255,190,255>Nagyszer
+! Köszönöm.
+<clr:255,208,172>Menj!
+<clr:255,190,255>Én is szeretlek!
+<clr:107,232,120>Én is szeretem!
+<clr:255,190,255>Köszönöm!
+<clr:255,190,255>Hé, Russ!<sb>Figyelj majd oda apura, oké?
+<HEADSET><clr:255,255,138>Szólni fogok, ha ideér.
+Ahm, AMIKOR. Amikor ideér.
+<clr:255,190,255>Igen, AMIKOR.
+<clr:255,190,255>Tudod, lett bel
+le némi felfordulás, de <I>tényleg<I> visszaszereztük aput.
+<HEADSET><clr:255,255,138>Háááát
+<clr:255,190,255>Mi van?
+<HEADSET><clr:255,255,138>Ahm, ez valószín
+leg kelteni fog némi figyelmet.<sb>Nem valószín
+leg, konkrétan.<sb>Határozottan felfigyeltek rá.<sb>Figyelj, most már keresnek téged.<sb>Oké? Úgyhogy csak légy óvatos.
+<HEADSET><clr:255,255,138>Ha meg tudjuk szerezni ezt a fegyvert, örökre megváltoztathatjuk a dolgokat.
+<clr:255,190,255>Igen. HA.
+<HEADSET><clr:255,255,138>Nézd, tudom, hogy csak néhány órája dolgozunk együtt, de
+szeretném, ha tudnád, hogy büszke vagyok rád.<sb>Oké?<sb>Nagy nyomás alatt vagy.
+, Russ!
+<HEADSET><clr:255,255,138>Igazából akkora nyomás alatt, hogy én
+<sb>Hát, habozok még szóba hozni is.<sb>De észrevettem, hogy amikor apád kezéért nyúltál, ha megragadott volna, a szorítása összezúzta volna a Russell összes finom érzékel
+jét.
+<clr:255,190,255>Áhhh. Oké.
+<HEADSET><clr:255,255,138>Teljesen érthet
+és amúgy meg is érte volna
+ebben az esetben.
+<clr:255,190,255>Persze.
+<HEADSET><clr:255,255,138>Ett
+l eltekintve, nehezen tudnék EGYÉB olyan esetet elképzelni, amikor ez lenne a helyzet.<sb>És, ööö, apádhoz hasonlóan a Russell IS felbecsülhetetlen érték
+, oké?<sb>Szóval
+Csak
+Érted, a jöv
+re nézve.
+<clr:255,190,255>Russ, biztonságban van nálam a keszty
+d, ígérem.
+<clr:255,190,255>Jaj, istenem, Russ. Ezen az azonosítókártyán egy csontváz képe van.
+<HEADSET><clr:255,255,138><sfx:1>[kuncog]
+<clr:255,190,255>Á! Megtaláltam.
+<clr:255,190,255>Megvan.
+<clr:255,190,255>Á. Ott van.
+<clr:255,190,255>A-ha.
+<clr:255,190,255>Ja, apu mondta, hogy ellopott valami fájlokat err
+l a fegyverr
+<HEADSET><clr:255,255,138>Hát, ha társulási adattitkosításról van szó
+<clr:255,190,255>Te vagy az én emberem
+Eli a te embered!
+<clr:255,190,255>Ó.
+<HEADSET><clr:255,255,138>Rendszerek, robotok, hálózatok
+Azokkal gyorsan el tudok bánni.
+<clr:255,190,255>De adattitkosítással nem.
+<HEADSET><clr:255,255,138>Mintha egy idegen nyelv volna. Bár tényleg egy idegen nyelv. Na mindegy, Eli a te embered.
+<HEADSET><clr:255,255,138>Alyx! Nézz ki az ablakon!
+<HEADSET><clr:255,255,138>Komolyan mondom, Alyx. Nézz ki az ablakon!<sb>Az az, aminek gondolom?
+<HEADSET><clr:255,255,138>Oké, helyes. Megtaláltad.<sb>Most menj, nézz ki az ablakon. Gyerünk!<sb>Én nem tudom megnézni, ha te nem teszed.
+<clr:255,190,255>A szentségit! Az biztos a Széf lesz.
+<HEADSET><clr:255,255,138>Aha. Apád azt nem említette, hogy lebeg.
+<clr:255,190,255>Szóval még ha ODA is jutunk, valahogy FEL is kell mennünk.
+<HEADSET><clr:255,255,138>A kábelek! Nézd a sok kábelt, ami hozzá csatlakozik.
+<HEADSET><clr:255,255,138>Csak annyi a dolgunk, hogy követjük
+ket
+<clr:255,190,255>És elrontjuk, bármi van is a másik végükön.
+<HEADSET><clr:255,255,138>És már jön is le a Széf.<sb>Egyszer
+. Könnyen követhet
+.<sb>Tetszik ez a terv.
+<HEADSET><clr:255,255,138>Jól van, nyilván jó okkal nem voltál hajlandó kinézni az ablakon.
+<HEADSET><clr:255,255,138>Úgyhogy felejtsük el az ablakot. Odakint volt a SZÉF, amit apád meg akart kerestetni velünk.<sb>A leveg
+ben lebeg, amit
+l trükkös lesz odajutnunk.
+<HEADSET><clr:255,255,138>De! Kábelek borítják.<sb>Gondolom, ha követjük a kábeleket, és elpusztítjuk, amihez csatlakoztatva vannak, le kellene tudnunk hozni a Széfet.
+<clr:255,190,255>Kell bármilyen ablakon kinéznem a Széf földre hozásához?
+<HEADSET><clr:255,255,138>Nem, nem hiszem.
+<clr:255,190,255>Akkor benne vagyok.
+<clr:255,190,255>Hallottál bármilyen társulási rádiózást apu szökésér
+<HEADSET><clr:255,255,138>Nem, semmit. Mindenütt csak a Karanténzónába küldend
+er
+sítésr
+l van szó.
+<clr:255,190,255>A jó hír, hogy ez azt jelenti, apu továbbra is úton van hozzád.<sb>Azt hallottuk volna, ha újra elfogják Eli Vance-t.
+<HEADSET><clr:255,255,138>A rossz hír pedig
+<clr:255,190,255>Ett
+l nem lesz könnyebb eljutni a Széfhez.
+<clr:255,190,255>Óóó, gránátok.
+<clr:255,190,255>Uhh. Totális gránátpocséklás.
+<HEADSET><clr:255,255,138>Megérte.
+<clr:255,190,255>Egyetértek.
+<clr:255,190,255>Figyelem, zombi.
+<clr:255,190,255>Vigyázat.
+<clr:255,190,255>Mellé!
+<clr:255,190,255>Szentségit!
+<clr:255,190,255>Uhh!
+<HEADSET><clr:255,255,138>Nagyon közel volt!
+<HEADSET><clr:255,255,138>Ez igazán közel volt.
+<clr:255,190,255>Igen!
+<HEADSET><clr:255,255,138>Igen!
+<HEADSET><clr:255,255,138>Szép dobás!
+<HEADSET><clr:255,255,138>Hé! A monitoron. Társulás.
+<clr:255,190,255>Látom
+<clr:18,199,226>Felvigyázók, itt ötös-hatos-zéró vezér.<sb>Szeizmikus aktivitást észleltünk a zéró-kettes szektorban. Meger
+sítést.
+<clr:166,242,255><I>Felvigyázók nyugtázza az aktivitást.<sb>Meger
+sítve, zéró-kettes szektor, lehetséges nekrotikus zavar.<sb>Szektort átfésülni, elszigetelési állapotot jelenteni.<I>
+<clr:18,199,226>Elszigetelés folyamatban, ötös-hatos-zéró útirányt vált a metróállomás felé.<sb>Fegyverkészenlét.
+<clr:255,190,255>Uhh. Csodálatos.
+<HEADSET><clr:255,255,138>Támadnak, Alyx!
+Keresse a Sarkcsillagot
+<HEADSET><clr:255,255,138>Azt teszem. Miért mondod ezt így?
+<clr:255,190,255>Nem, nem
+A villámujjú azt mondta,
+, hogy segítsünk a barátain. Ami villámujjú zagyvaságnak hangzott, de azt hiszem, nem az.
+<HEADSET><clr:255,255,138>Óóó. Ja, így több értelme van.
+<HEADSET><clr:255,255,138>Hmm. Az valamiféle társulási alállomás. Általában energiaforrás és biztonsági protokollok vannak benne.
+<clr:255,190,255>Mint az energia meg a biztonság, ami egy hatalmas széfhez kell.
+<clr:255,190,255>És
+ott a Széf.
+<HEADSET><clr:255,255,138>Aha, biztos az az alállomás tartja a leveg
+ben. Fel kell jutnunk oda.
+<clr:255,190,255>Az jó sok kábel
+<clr:255,190,255>Nem tudok rájönni, hogy jussak be ebbe a vacakba.
+<HEADSET><clr:255,255,138>Kizárt, hogy
+rizetlenül hagyjanak egy bejáratot az utcán.
+<HEADSET><clr:255,255,138>Juss be a hotelbe, és indulj a tet
+felé.
+<HEADSET><clr:255,255,138>Alyx, szerintem valahogy be kéne jutnod abba a hotelbe, aztán fel az alállomáshoz.
+<HEADSET><clr:255,255,138>Óó! Felvonó. Ez az út felfelé.
+<HEADSET><clr:255,255,138>[rádiózaj]<sb>Hmm. Ez fura volt.
+<clr:255,190,255>Éééés az áramnak l
+ttek.
+<clr:255,190,255>Úgy látszik, a lépcs
+n megyünk.
+<clr:255,190,255>Éééés a lépcs
+nek l
+<HEADSET><clr:255,255,138>Próbáljuk meg visszakapcsolni az áramot.
+<clr:255,190,255>Ó, megszakítódobozok.
+<clr:255,190,255>Térjünk vissza a felvonós tervhez.<sb>Visszakapcsolom az áramot.
+<clr:255,190,255>Meg is van
+Megszakítódobozok.
+srégi ez a hotel.<sb>A vezetékezés hatalmas gubanc lesz.
+<clr:255,190,255>Visszajött az áram.<sb>Nézzük meg a felvonót.
+<clr:255,190,255>Argh! Ez kész gubanc!
+<clr:255,190,255>Még mindig nem megy a felvonó.
+<clr:255,190,255>Tudod, ez itt jónak t
+<clr:255,190,255>Talán kint a felvonónál néztünk el valamit.
+<HEADSET><clr:255,255,138>Van itt bármi, ami megszakítódoboznak látszik?
+<clr:255,190,255>Hát, még keresgélek.
+<clr:255,190,255>Bumm. Áram visszakapcsolva.
+<clr:255,190,255>Most már csak a felvonónak kell adni egy kis kakaót.
+<clr:255,190,255>És irány fel
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Úgy néz ki, a létrán megyünk.
+<clr:255,190,255>Teljesen ben
+tt itt mindent.<sb>Milyen veszélyesnek gondoljuk ezt az izét?
+<HEADSET><clr:255,255,138>Hát, egy másik dimenzióból való spórák, szóval
+valószín
+leg
+ja, rendkívül.
+<HEADSET><clr:255,255,138>De! Ritka lehet
+ség a földönkívüli flóra közeli vizsgálatára.
+<HEADSET><clr:255,255,138>Ó! Vigyázz azokkal a hólyagos izékkel!
+<HEADSET><clr:255,255,138>Minél közelebb kerülsz, annál morcosabbnak t
+nnek.
+<HEADSET><clr:255,255,138>Uhh.
+<clr:255,190,255>Er
+sen kezdem azt gondolni, hogy nagyon nem kéne ezt belélegeznem.
+<HEADSET><clr:255,255,138>Egyetértek. Csak haladj tovább.
+<HEADSET><clr:255,255,138>Talán lélegezz kevesebbet.
+<HEADSET><clr:255,255,138>Alyx, milyen érzés?
+<clr:255,190,255>Eléggé
+nyálkás? Kicsit bizserg
+<clr:255,190,255>Au.
+<HEADSET><clr:255,255,138>Ez milyen érzés volt?
+<clr:255,190,255>Metsz
+<HEADSET><clr:255,255,138>Mennyire?
+<clr:255,190,255>Úgy hatos.
+<HEADSET><clr:255,255,138>Oké, hatos.
+<HEADSET><clr:255,255,138>Ó, istenem. Ne nézz le.<sb>Ne nézz le!
+<clr:255,190,255>Russ, te még csak itt se vagy!
+<clr:255,190,255>Aha. Persze.
+<clr:255,190,255>Húha, ezen a fickón nincs ing.
+<clr:255,190,255>Megvagy.
+<clr:255,190,255>Köszike.
+<clr:255,190,255>Hé Russ, mondj egy dalt.
+A dongó
+<clr:255,190,255>Máris.
+<clr:255,190,255><delay:4>Ó, ez nem jó.
+<HEADSET><clr:255,255,138>[id
+nkénti rádiózaj] Alyx? Alyx, jelentkezz.
+<clr:255,190,255>Látod azt? Russell? Russell!
+<HEADSET><clr:255,255,138>[rádiózaj] Alyx! Alyx! Mi történt?
+<clr:255,190,255>Volt itt egy ilyen
+kutyaszer
+villámló izé.
+<HEADSET><clr:255,255,138>Ah, sajnálom, lemaradtam róla.
+<clr:255,190,255>Megöltem, és kijött bel
+le ez a bigyó.
+<clr:255,190,255>Hé, Russell. Ez a bigyó esett ki a kutyából.
+<HEADSET><clr:255,255,138>Ó, na lám csak! Hah. Érdekes.
+<clr:255,190,255>Ott van, Russ!
+<clr:255,190,255><delay:3>A fenébe, villámkutya.
+<HEADSET><clr:255,255,138>Légy óvatos, Alyx!
+<clr:255,190,255>Ó, istenem, belebújt egy fickóba!<sb>Russell?
+<HEADSET><clr:255,255,138>[rádiózaj] Alyx! Elment a kutya? Mi történt?
+<clr:255,190,255>Új fejlemény:<sb>belebújt egy halott fickóba.
+<HEADSET><clr:255,255,138>Neem
+<clr:255,190,255>De.<sb>Mindkett
+t le kellett l
+nöm.
+RÜLETES volt, Russell.
+rületesen is hangzik.
+<clr:255,190,255>Ó, az volt.
+<HEADSET><clr:255,255,138>Azok a társulási pajzsajtók gyakorlatilag átha
+[elvész a jel]
+<HEADSET><clr:255,255,138>[rádiózaj] Megint visszajött az a kutya, Alyx?
+<clr:255,190,255>Aha, uhh. Ez elég
+durva volt.
+<HEADSET><clr:255,255,138>De azért jól vagy, ugye?
+<clr:255,190,255>Aha, Russ, jól vagyok.
+<HEADSET><clr:255,255,138>Hát, ki kell juttatnunk téged innen, fel, a tet
+re.
+<clr:255,190,255>Ott van.<sb>Az a felvonó fel fog vinni az alállomáshoz.
+<clr:255,190,255>Találtam egy felvonót felfelé.
+<HEADSET><clr:255,255,138>Ah, hála az égnek.
+<clr:255,190,255>Az alállomás a fölöttem lev
+szinten van.
+<clr:255,190,255>Jól van, ott az alállomás. Felmegyek a következ
+emeletre és kikapcsoljuk.
+<clr:255,190,255>Rendben, itt már közeledünk az alállomáshoz.
+<HEADSET><clr:255,255,138>Hát, át kell majd jutnod azon a társulási pajzson.
+<clr:255,190,255>Majd kitalálom, hogy lehet kikapcsolni.
+<clr:255,190,255>Jól van, ez ki kell kapcsolja azt a pajzsot.
+<HEADSET><clr:255,255,138>Meg kell találnod annak a pajzsnak az energiaforrását.
+<HEADSET><clr:255,255,138>Egy társulási pajzs zárja el az utadat.
+<clr:255,190,255>Kinyitom ezt, és kikapcsolom.
+<clr:255,190,255>Nem akarok aggodalmaskodni, de apunak nem kéne már ott lennie?
+<HEADSET><clr:255,255,138>Hát, gondoljuk végig, Alyx.<sb>Gyalog jön, óránként négy és fél kilométert téve meg
+<HEADSET><clr:255,255,138>Plusz, szökevény, csak egy lába van
+<sb>Vannak akadályok, nincs közvetlen útvonal
+<sb>Ah, hát, tudod
+<sb>Nem fogok hazudni, mostanra vissza KELLETT VOLNA érnie.
+<clr:255,190,255>Ja. Szóval <I>van<I> okom aggódni.
+<HEADSET><clr:255,255,138>Normál esetben lenne.<sb>De te vagy az, aki a veszély FELÉ halad, úgyhogy én azt mondom, nekünk kellene aggódnunk miattad.
+<HEADSET><clr:255,255,138>Alyx! Szerencsés napod van!<cr>Az a társulási fegyver kötetlen!
+<clr:255,190,255>Honnan tudod ilyen biztosan?
+<HEADSET><clr:255,255,138>Még a ládájában van!<sb>Sosem hagyják
+ket a ládában.
+<HEADSET><clr:255,255,138>Még a genetikai kódodat sem kellett átszerkesztenem.
+<clr:255,190,255>Ugye? Azt imádtad volna.
+<HEADSET><clr:255,255,138>Semmi baj, lesz másik alkalom.
+<clr:255,190,255>Rendben, itt van.
+<HEADSET><clr:255,255,138>Most nyisszantsd el azokat a kábeleket, és megvagyunk.
+<clr:255,190,255>Ez nem lesz olyan könny
+, mint amilyennek a földr
+l t
+nt.
+<clr:255,190,255>Idebent nem látok semmi módot a kábelek leválasztására.
+<clr:255,190,255>Russ, nem tudok rájönni, hogy válasszam le ezeket a kábeleket.
+<HEADSET><clr:255,255,138>Talán próbáld meg kinyitni a kábelburkolatot, és rájuk l
+ni.
+<clr:255,190,255>Á! Értem.
+<clr:255,190,255>Á, véd
+burkolat van a csatlakozáson.
+<clr:255,190,255>Ügyes.
+<HEADSET><clr:255,255,138>Na ugye!
+, most menj be, és kapcsold ki az energiaforrást.
+<clr:255,190,255>Aha.
+<clr:255,190,255>Kösz! Sok szerencsét!
+<clr:255,190,255>Kösz. Sok szerencsét.
+<clr:255,190,255>[köhög]
+az
+<clr:107,232,120><sfx:1>[meglep
+dés]
+<clr:255,190,255><sfx:1>[meglepett lélegzetvétel]
+<HEADSET><clr:255,255,138>Atyaég, egy villámujjú
+<clr:107,232,120><sfx:1>[zihálás]
+<clr:107,232,120>Csapdában voltunk
+a sötétségben.
+<clr:255,190,255>Most már szabad vagy.<sb>Minden rendben, a barátod küldött.
+<clr:107,232,120>Az Alyx Vance
+Maga a barátunk.
+<clr:255,190,255>Mit m
+velnek itt veletek?
+<clr:107,232,120>Amit mindannyiunkkal.
+<clr:107,232,120>Meg kell mutatnom az Alyx Vance-nek.
+<clr:107,232,120>Jöjjön!
+<clr:107,232,120>Nézze csak!
+<clr:107,232,120>Az Alyx Vance-nek jönnie kell.
+<clr:107,232,120>Kérem, jöjjön.
+<clr:107,232,120>A Társulás t
+lünk szívja el a fegyverük védelméhez használt energiát.
+<clr:107,232,120>Ott
+<clr:107,232,120>Eltépnek minket önmagunktól.
+<clr:255,190,255>Meg kell akadályoznunk
+ket a barátaid megölésében.
+<clr:107,232,120>Mi, villámujjúak kimentjük magunkat, és bosszút veszünk magunkért.<sb>MAGÁNAK a fegyverhez kell mennie.
+<clr:255,190,255>Nem tudok bejutni a Széfbe, ha az alállomások még m
+ködnek.
+<clr:107,232,120>Ne aggódjon, Alyx Vance.<sb><I>Nem<I> fognak.<sb><I>Nem<I> fogjuk hagyni.
+<clr:107,232,120>Megtisztítom az utat.
+<clr:107,232,120><sfx:1>[nyögés]
+<clr:107,232,120>Menjen. Útjaink elválnak.<sb>De ne feledje: Nincs távolság miközöttünk.<sb>Léteztünk együtt.
+<clr:255,190,255>Kezd idelent elég zsúfolt lenni, Russ.
+<HEADSET><clr:255,255,138>A kommunikációs csatornák megbolondultak, mióta kiiktattuk az alállomást.<sb>Most már tudják, hogy a Széfre pályázunk.<sb>Bármi van benne, nagyon, de NAGYON nem akarják, hogy megszerezzük.
+<clr:255,190,255>Hát, ett
+l csak még inkább akarom.
+<HEADSET><clr:255,255,138>Na, ez a beszéd!
+<HEADSET><clr:255,255,138>Sok múlik a villámujjúba vetett bizalmunkon, hogy kikapcsolják az összes alállomást.
+bízom benne.
+<HEADSET><clr:255,255,138>Igen. Én is.<cr>Ööö
+Mert ha nem teszi meg, az a Széf nem megy sehova.<sb>Mi meg ott fogunk állni Széf nélkül, amibe betörhetnénk, a Társulással körülvéve, és
+<clr:255,190,255>Russ.<cr>Megbízni benne
+az egyetlen tervünk.<sb>Meg fogja tenni. Meg tudjuk csinálni.
+<HEADSET><clr:255,255,138>Igen. Igazad van. Boldogulni fog.<sb>Mind boldogulni fogunk.
+<HEADSET><clr:255,255,138>Oké, nincs egyenes út a Széfhez onnan, ahol vagy.<sb>Úgyhogy kacskaringóznod kell odáig.
+<clr:255,190,255>Hát, hatalmas, szóval nem lesz nehéz tudni, merre tartok.
+<clr:255,190,255>Nem értem, mit akarnak ITT vele.
+<clr:255,190,255>Ha ez a fegyver annyira er
+s, miért tartják elzárva egy ilyen szeméttelepen?
+<HEADSET><clr:255,255,138>Én arra tippelek, próbálnak módot találni a kijuttatására a Földr
+l.<sb>Vissza az anyabolygójukra, vagy máshova.
+<clr:255,190,255>Miért nem használják itt?
+<HEADSET><clr:255,255,138>Ezt a háborút már megnyerték, Alyx.
+<clr:166,242,255><I>Gyülekez
+, egyes szektorállomás, fegyverhasználat.<sb>Célpont els
+dleges egyes célnak jelölve.<sb>Észleléskor végrehajtandó.<I>
+<clr:166,242,255><I>Személy, mostantól több ötös szint
+polgárellenes tevékenységi kihágással vádoljuk.<sb>Kérjük, m
+ködjön együtt a területvédelmi osztaggal.<sb>Területvédelmi osztag: riadó.<cr>Kód: Támadás. Izolálás. Semlegesítés.<I>
+<clr:255,190,255>Mit gondolsz, Russ?<sb>Szerintem jobb, ha együttm
+ködünk.
+<HEADSET><clr:255,255,138>Ja, úgy hangzik, komolyan gondolja.
+<clr:255,190,255>Jó menet volt.
+ködjön együtt.
+Pffft.
+<clr:18,199,226>Felvigyázók, súlyos veszteségeket szenvedtünk az els
+dleges egyes céltól.
+<clr:166,242,255><I>Felvigyázók nyugtázza az elszigetelési kudarcot.<sb>Várják az er
+sítést.<sb>Elfojtó érkezik.<I>
+<clr:18,199,226><force>Harcérintkezés célponttal. Visszavonulás és felfejl
+dés.
+<clr:255,190,255>Uhh
+Ph
+! Oké.
+, Alyx!
+<clr:255,190,255>Látod azt?!
+<HEADSET><clr:255,255,138>A villámujjúak elintézik az alállomást!
+<clr:255,190,255>Ez az!
+<HEADSET><clr:255,255,138>Összejöhet.
+<clr:255,190,255>Ajánlom is.
+<HEADSET><clr:255,255,138>Alyx! Nézz fel!
+<HEADSET><clr:255,255,138>Nézz fel! Nézz fel!
+<HEADSET><clr:255,255,138>Nézd, ki jött vissza!<sb>Újra beüzemeltem a drónt!
+<HEADSET><clr:255,255,138>Ne tör
+dj vele. Odakint találkozunk.
+<HEADSET><clr:255,255,138>Úgy t
+nik, távolabb az úton társulási barikádok vannak.<sb>Megakadályozzák, hogy bárki ennél közelebb jusson a Széfhez.
+<clr:255,190,255>Oké. És, akkor mire gondolsz?
+<HEADSET><clr:255,255,138>Juss be a szeszf
+zdébe, és nézd meg, hova lyukadsz ki.<sb>Most, hogy a drónom újra m
+ködik, végre nálunk van az el
+Na ne szórakozzatok már!
+<HEADSET><clr:255,255,138>Na ne szórakozzatok már!
+<clr:255,190,255>Oké, nem látok bejáratot ebbe az épületbe, úgyhogy elmegyek körülnézni.
+<clr:255,190,255>Tulajdonképpen mi ez a hely?
+<HEADSET><clr:255,255,138>Szeszf
+zde.<sb>Vodkát meg ilyesmit készítettek.
+<clr:255,190,255>A
+vodka
+jó?
+<clr:255,190,255>És az a vodka jó dolog?
+<HEADSET><clr:255,255,138>Jaj, istenem, dehogy.
+<clr:255,190,255>Russell nem szereti a vodkát, értem.
+<HEADSET><clr:255,255,138>Hát
+Azt nem mondtam!
+<clr:255,190,255>De ha nem jó?
+<HEADSET><clr:255,255,138>Méreg
+de szeretem.<sb>Mindenki
+mindenki szereti.
+<clr:255,190,255>Oké, ez így nagyon zavaros.
+<clr:255,190,255>Hadd derítsem ki, hogy jussak be, és keresek neked egy kicsit.
+<HEADSET><clr:255,255,138>Csodás volna, ha
+ha tényleg tudnál, igen.
+<clr:255,190,255>Hát, az biztos, hogy van itt egy rakás régi palack.<sb>Megromlik az alkohol?
+<HEADSET><clr:255,255,138>Csak még jobb lesz! Semmi baja, Alyx!
+<clr:255,190,255>Russell? Szakadozol.
+<HEADSET><clr:255,255,138>Jó a vodka, Alyx!<sb>Jó a vodka!
+<clr:255,190,255>Hát, jól van.
+<HEADSET><clr:255,255,138>Alyx! Jelentkezz, Alyx!<sb>Alyx? Á, megvagy.<sb>Megvagy.
+<clr:255,190,255>Hé, Russ.<cr>A villámujjúak most intéztek el egy másikat.
+<clr:255,190,255>Russ! A villik elintéznek egy újabb alállomást!
+<HEADSET><clr:255,255,138>Ó, jó! Az nagyszer
+hír!
+<clr:255,190,255>Nincs egyenes út a Széfhez.<sb>Elindulok befelé, és megpróbálom megkerülni ezt a barikádot.
+<clr:255,190,255>Nincs egyenes út a Széfhez.<sb>Elindulok befelé, és keresek kiutat.
+<HEADSET><clr:255,255,138>Oké, öö, ha megint megszakadnék, ne feledd:<sb>a vodka nem romlik meg, oké?<sb>Örökre eláll.
+<HEADSET><clr:255,255,138>Alyx, el se fogod hinni, mi
+<clr:255,190,255>Russ? Uhh.
+[er
+lködés] Hogy az a
+lködés] Gyerünk, te átkozott
+engedd
+el
+lábam! Hagyj
+Ááh!
+lködés] Tudod, azt hittem, megállapodtunk: te nem nyújtogatod a nyelved, én pedig nem lövöm szét.
+lködés] De csak hogy tudd, ezennel végeztünk.
+lködés] Öregem
+<sfx:1>[er
+lködés]
+annyira
+gy
+lölöm
+a plafonlakókat
+évekig
+életben maradtam
+ebben a hülye gyárban.<sb>Hogy lehet
+hogy a plafonlakók
+folyton elkapnak?
+lködés] Jól van, ennyi volt.<sb>Le kell vágni a lábat.<sb>Te gy
+ztél, remélem, a torkodon akad, te nyomorult.
+lködés] Annyi jobb módja lett volna ennél a halálnak.<sb>Megalázó.
+lködés] Vízbe fulladok.<sb>Lerohan egy társulási
+rjárat.<sb>Eltapos egy nyakigláb.<sb>Megfojt egy nyakigláb.<sb>Kettétép egy nyakigláb.<sb>Tuberkulózist kapok.
+Ó! Hé! Hé!<sb>Maga ott a, ööö, a vérrel a ruháján.<sb>Maga, véres!
+Van, ööö, van itt egy kis problémám
+<clr:255,190,255>Ja, az biztos.
+Maga, ööö
+Nincs magánál véletlenül fegyver, esetleg?
+Aha, nézzenek oda!<sb>És
+Uhh! Méghozzá szép darab.
+Unhh. Szebb az enyémnél, ami fent van ebben a nyavalyásban.
+Ha már szóba került, le tudná l
+ni?<sb>Kérem!
+Figyeljen, valószín
+leg van még négy, talán öt órányi er
+a karjaimban, úgyhogy
+Szóval, ja, nem kell sietni, de ha nem fáradság
+<sb>Urragh
+Eresszen már bele egyet a kedvemért.
+Ah, hé, remek.
+Ah, szuper. Maga a h
+söm.
+Ah, hé, segítene kicsit?
+Mmph. Kösz.
+<clr:255,190,255>Az mi a fene volt?
+Ja, az Jeff.
+<clr:255,190,255>Jeff?
+Ó, ne aggódjon, nem lát.<sb>Hallani viszont remekül hall.
+A hallása akár Mozarté.
+<clr:255,190,255>Kié?
+Uhh. Jól van, most hadd segítsem ki én magát.
+Rendben.<sb>A túloldalon találkozunk, zöldfül
+És ne hangoskodjon.
+[suttog] Ott van.
+<clr:255,190,255><I>Jeff<I>.
+[suttog] Igen. Ezt nézze
+Látja? Teljesen kiszámítható.<sb>De letépi a karjait, ha megtalálja magát.
+Hó, hó, hó, mi van?!<sb>Jeff golyóálló!
+<clr:255,190,255>Ugye viccel
+<clr:255,190,255><sfx:1>[köhögés]
+<clr:255,190,255><sfx:1>[hangosabb köhögés]
+<clr:255,190,255>[köhögés] Francba!
+<clr:255,190,255>[köhögés] Uhh
+Hé, hé! Azok az izék veszélyesek!<sb>El kell takarnia a száját!
+<clr:255,190,255>Értem, kösz.
+<clr:255,190,255>[köhögés] Értem, kösz.
+Hé, majd elfelejtettem.<sb>Hogy hívják?
+<clr:255,190,255>Alyx! Alyx Vance!
+Üdv, Alyx. Én Larry vagyok.<sb>Örülök, hogy találkoztunk.<sb>Próbálja nem megöletni magát.
+Takarja el a száját, hogy ne köhögjön!
+Hé! Hé!<sb>Takarja el a száját, hogy ne köhögjön!
+Elárulja, hol van!<sb>Takarja el a száját, hogy ne köhögjön!
+Jeff hallja a köhögését!<sb>Takarja el a száját!
+<clr:255,190,255><sfx:1>[csendes lélegzetvétel]
+<clr:255,190,255>Uff
+<clr:255,190,255>Ph
+<clr:255,190,255>Huh
+<clr:255,190,255>Utállak, Jeff
+Hé! Alyx Vance!<sb>Kijutott!
+<clr:255,190,255>Aha! Csapdába ejtettem Jeffet egy szeméttömörít
+ben.
+<clr:255,190,255>Aztán agyonnyomtam.
+A szentségit!
+Hát, remélem, talált a javából.<sb>Na, akkor viszlát!
+<clr:255,190,255>Jaj, istenem, Jeff!<sb>Jól vagy? [nevetés]
+<HEADSET><clr:255,255,138>Alyx, jelentkezz.<sb>Hé, Alyx! Ó, megvagy.<sb>Hallasz engem?
+<clr:255,190,255>Többé-kevésbé
+Szakadozol.
+<HEADSET><clr:255,255,138>Azt hiszem, még mindig a szeszf
+zdében vagy.
+<clr:255,190,255>Lett egy Jeff nev
+barátom.
+<HEADSET><clr:255,255,138>Hát, ez nagyszer
+.<sb>Minden segítség ránk fér.
+<clr:255,190,255>Hát, annyira nem kerültünk közel.
+<HEADSET><clr:255,255,138>Figyelj, lennie kellene ott valahol egy nagy, alagútméret
+dugónak a földben.<cr>Az lesz
+<clr:255,190,255>Az innen kivezet
+alagút?
+<HEADSET><clr:255,255,138>Pontosan.<sb>Te kinyitod, én kiderítem, hová vezet.
+<clr:255,190,255>A Társulás lezárta a kijáratot innen.<sb>Kinyitom, és elt
+nök a környékr
+<HEADSET><clr:255,255,138>Helyes!<sb>Ööö, én megpróbálom kideríteni, hová vezet.
+<HEADSET><clr:255,255,138>Találtam egy csomó föld alatti térképadatot a városrészr
+l, ahol vagy!
+<clr:255,190,255>N-nem hallak. Russell!
+<HEADSET><clr:255,255,138>Föld alatti. Tudod, odalent.<sb>Érted, alattad. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Az mi a fene?!
+<clr:255,190,255>Az Jeff.
+Az Jeff. Nem tetszik nekem Jeff.
+<clr:255,190,255>Hozzá kell szokni.
+<clr:255,190,255>Az Jeff
+Halkan beszélj!
+<HEADSET><clr:255,255,138>Ja. Oké.<cr>Rendben. Nem tetszik nekem Jeff.
+Ja, és
+ööö, egyébként, szép a kalapja.
+Egyébként, szép a kalapja.
+Egyébként, szép a sisakja.
+ööö, egyébként, szép a sisakja.
+Egyébként, szép kalapok.
+és szép a maszkja.
+Jól fog jönni.
+Ja, egyébként
+Az az öltözék.<sb>Mutatós.
+Bármi is az ott a fején
+<sb>Tetszik.
+Óó! Egyébként, szép a maszkja.
+Óó, szép maszk!<sb>Az idebent jól fog jönni.
+És, ööö, ha esetleg elveszti, ne felejtse eltakarni a száját az olyan izék közelében.
+Ja! De ha elvesztené
+<sb>Takarja el a száját az olyan izék közelében.<sb>Undorítóak.
+Oké, úgy lesz.
+<HEADSET><clr:255,255,138>Oké, tiszta a leveg
+.<sb>Ideje kihúzni azt a dugót, hogy azokon az alagutakon át kijuthassunk.
+<HEADSET><clr:255,255,138>Próbálj keresni egy konzolt.
+<HEADSET><clr:255,255,138>Egy villogó fényt keress.
+<HEADSET><clr:255,255,138>Jó hír: az az alagút a Széf felé vezet.
+. Továbbá, tájékoztatásul, azt hiszem, az alagút tele van hangyales
+kkel, ha esetleg végleg elnémulnék.
+<HEADSET><clr:255,255,138>Hangyales
+k, hangyales
+<clr:255,190,255>Aha, tudod, hegyes lábú földönkívüliek.
+<HEADSET><clr:255,255,138>Ja! Igen! És nagyon kicsik, mint egy hangya!
+<HEADSET><clr:255,255,138>Ööö, akkor, mindent meglesnek.
+<clr:255,190,255>Nem, nem olyanok.<sb>Ezek elég veszélyesek.
+<HEADSET><clr:255,255,138>Jó. Hát, szóval bármik is, lent vannak abban az alagútban.
+<clr:255,190,255>Aha. Na, megyek.
+<HEADSET><clr:255,255,138>Soklábú! Ja, nem, ez döglött.
+<clr:255,190,255>Az egy hangyales
+, Russell.
+<HEADSET><clr:255,255,138>Az egy hangyales
+<clr:255,190,255>Igen.<sb>Szóval MÉGIS tudod, mi az a hangyales
+<HEADSET><clr:255,255,138>Igen. Soklábúak.
+<clr:255,190,255>Russ? Szerinted egy fejrágó zombit tudna csinálni egy gorillából?
+szintén, ha van ott egy elszabadult gorilla, azt hiszem, azon egy fejrágó már nem sokat rontana.
+<clr:255,190,255>Tudod, Russ, sajnálom, hogy nem hoztam neked vodkát.
+<HEADSET><clr:255,255,138>Nem gond.<sb>Majd a visszaúton hozhatsz.
+<clr:255,190,255>Tudod, remélem, méltányolod, mekkora ny
+g magammal hurcolni ezt a vodkát.
+g magammal hurcolni ezt a rekesz vodkát.
+<HEADSET><clr:255,255,138>Igen.<cr>De két kezed van.<sb>Magadhoz tudnál venni egy MÁSODIKAT a visszaúton?
+<HEADSET><clr:255,255,138>Figyelj, nagyon is.
+<HEADSET><clr:255,255,138>Két üveg!
+<HEADSET><clr:255,255,138>Három üveg!
+<HEADSET><clr:255,255,138>Ó, b
+ven túlteljesítettél azzal, ami nálad van.<sb>Vakmer
+ség, túlzás
+És nagyra értékelem.
+<clr:255,190,255>Ja, az egyiket magamnak hozom.
+<HEADSET><clr:255,208,172>Börtön
+<clr:255,190,255>Várj, apu, micsoda?!
+<HEADSET><clr:255,255,138>Hogy mi?
+<clr:255,190,255><I>Mit<I> tartsanak bent?
+<HEADSET><clr:255,208,172>Nem tudom.<sb>Abban se vagyok biztos, ez az adattok tudja-e egyáltalán.<sb>De valamit csapdába ejtettek odabent.
+<clr:255,190,255>Hú, oké.<sb>Szóval, ha nem fegyver, akkor is folytatjuk ezt?
+<HEADSET><clr:255,208,172>Meglátásom szerint, bármi van is odabent, nem különösebben szereti a Társulást.<sb>Úgyhogy AZ közös bennünk.
+<clr:255,190,255>Igaz
+<HEADSET><clr:255,208,172>Akkor
+folytatjuk?
+<clr:255,190,255>Eddig eljutottunk, én azt mondom, menjünk tovább.<sb>És ha azt derítitek ki, olyasmi, amit nagyon nem kéne piszkálnunk, lefújjuk.
+<HEADSET><clr:255,208,172>Ez az én lányom.<sb>Majd szólok, mit tudtam meg.
+<clr:255,190,255>Á, lezárják a területet.
+<HEADSET><clr:255,255,138>Sok szerencsét olyasvalaki kizárásához, akinél van egy
+Alyx
+<clr:255,190,255>Ja, sok szerencsét.
+<clr:255,190,255>Hú! Russell!<sb>A villik most intézték el az utolsó alállomást!
+<HEADSET><clr:255,255,138>Ó! Hadd lássam!<sb>Eli!<cr>A villik most intézték el az utolsó alállomást!
+<HEADSET><clr:255,255,138>Kapaszkodj, Alyx!<sb>Le fog zuhanni!
+<clr:255,190,255>Várjunk, mi a
+<HEADSET><clr:255,255,138>Ez
+Ezek aktiváltak valami vészhelyzeti tartalékot.
+<HEADSET><clr:255,255,138>Aktiváltak egy tartalékot!
+<HEADSET><clr:255,208,172>Mondd meg Alyxnek, hogy az a tartalék nem lehet stabil.<sb>Ki tudja kapcsolni.
+<HEADSET><clr:255,255,138>Apád azt mondja
+<clr:255,190,255>Hallottam.
+<clr:255,190,255>Szóval, menjek a sugarak felé, ugye?
+<HEADSET><clr:255,255,138>Úgy van. Annak kell lennie a tartalék állomásnak.
+<clr:255,190,255>Remélem, bárki van is odabent, megéri.
+<HEADSET><clr:255,255,138>Mit mondtál, Alyx?
+<clr:255,190,255>Semmit. Megyek.
+<clr:18,199,226><force>Hé! Vigyázzon! Nem akarom, hogy rám folyjon ez a szar.
+<clr:18,199,226>Miért, veszélyes?
+<clr:18,199,226><force>Nem azért dobjuk egy gödörbe, mert biztonságos. Mozogjon.
+<clr:255,190,255>Uhh, oké. Ez az utolsó.
+<HEADSET><clr:255,255,138>Jól vagy?
+<clr:255,190,255>Hé, Russ, nem akarsz cserélni velem?
+<HEADSET><clr:255,255,138>Hááát, nem, valószín
+leg rögtön meghalnék.
+<clr:255,190,255>Valaki van odafent!
+<HEADSET><clr:255,255,138>Nem társulási.<sb>Talán gy
+jtöget
+?<sb>Légy óvatos.
+<HEADSET><clr:255,255,138>Eli! Gyere ide!
+<clr:255,208,172>Mi az, Russell?
+<HEADSET><clr:255,255,138>Ezt hallgasd
+<clr:255,190,255>Hé, hé! Ss!
+Nem viccelek, azonnal el kell szállítaniuk.
+<clr:255,190,255>Várjatok
+SSS!
+Miért nem fog menni?
+Akkor ki van rá felhatalmazva?
+Rendben, akkor hívja oda.
+Á, mit keresek itt egyáltalán?<sb>Mennem kéne.
+Az egész bolygót elfoglalták hét óra alatt.<sb>Ez miért tart ilyen sokáig?
+Ja, nem, semmi baj.<sb>Tudok én várni.
+Szarkazmus volt.<sb>Aha. Szenzációs, hogy felt
+nt.<sb>Igen, ez is szarkazmus volt.<sb>És csak hogy emlékeztessem, a dolog, amir
+l a f
+nökével beszélnem kell az az, hogy mennyire fogytán van az id
+Nos, mit szólna, ha ÉN hívnám a felettesemet?<sb>Az el
+remozdítaná a dolgot?
+Pont ez a lényeg.<sb>Nekem <I>nincs<I> felettesem.<sb>Az agyamra megy.
+Üdv, remek, végre. Üdv!
+El kell szállítani a dobozt, különben ebb
+l az egészb
+l egy újabb Black Mesa lesz.
+Hát, most meg azt mondom, KÉSZEN áll.
+Figyeljen, ha még itt lesz, amikor a n
+ideér, elveszítjük.
+A ma történtek melyik része alapján gondolja, hogy meg fogják állítani?
+Nézze, akit itt fogva tartunk, túlélte a Black Mesát.<sb>Pokoli felfordulást csinált, aztán egyszer
+en elt
+nt.<sb>Végre elkaptuk, és most megint hagyni fogja megszökni?<sb>SZÁLLÍTSÁK EL A DOBOZT.
+<HEADSET><clr:255,255,138>Túlélte a Black Mesát
+aztán elt
+Eli!<sb>TÉNYLEG szuperfegyverük van!
+<HEADSET><clr:255,208,172>A szentségit, Russ.<sb>Náluk van Gordon Freeman.
+ha! Az jó, nem?
+<HEADSET><clr:255,208,172>Az nagyon, NAGYON jó.
+<HEADSET><clr:255,255,138>S
+ez kész csoda.
+<clr:255,190,255>Jól van. Akkor
+mentsük meg Gordon Freemant.
+<HEADSET><clr:255,208,172>Még szép.<sb>Visszaszerezzük Gordon Freemant.
+<clr:255,190,255>Ó, valaki jön.<sb>Várjatok egy percet.
+<clr:255,190,255>Oké, szóval a terv eljutni a vezérl
+teremhez és kihozni Gordont.<sb>Tudjátok, sokat beszélnek róla, de
+szintén szólva én egyszer
+en azt feltételeztem, hogy halott.
+<HEADSET><clr:255,255,138>Én is.
+<clr:255,190,255>Hé, apu. Ott vagy?
+<HEADSET><clr:255,208,172>Igen, mi az, Alyx?
+<clr:255,190,255>Ha Gordon túlélte a Black Mesát
+Hol volt eddig?
+<HEADSET><clr:255,208,172>Nem tudom.<sb>De lefogadom, pokoli jó történet.
+<clr:255,190,255>Miután visszaszereztük Gordont, nagyobb célokat is kit
+zhetünk, nem gondolod, Russ?<sb>Talán ledönthetnénk a Citadellát.
+<HEADSET><clr:255,255,138>Hát, egyszer már megmentette az emberiséget.<sb>Lefogadom, hogy újra meg tudja tenni.
+<clr:255,190,255>És ezúttal nem egyedül kell csinálnia.
+<HEADSET><clr:255,208,172>Alyx
+Ott vagy?
+<clr:255,190,255>Igen, apu.
+<HEADSET><clr:255,208,172>Úgy t
+nik, hogy odafentr
+l be fogsz tudni jutni a Széfbe.<sb>Van ott egy terminál, ami kitol egy hidat a bejárathoz.
+<clr:255,190,255>Milyen odabent a védelem?
+<HEADSET><clr:255,208,172>Itt van el
+ttem kiterítve az egész, és meg kell mondjam
+<sb>VAN védelme, de még soha nem láttam ehhez hasonlót.<sb>Semmi értelme.
+<clr:255,190,255>Azt hiszem, improvizálnom kell.
+<HEADSET><clr:255,208,172>Eh, ne aggódj, kicsim. Kitalálok valamit.
+<clr:255,190,255>Azok a sugarak ENNEK a toronynak a tetejér
+l jönnek, igaz?
+<HEADSET><clr:255,255,138>Igen, úgy van.
+<clr:255,190,255>Mit gondolsz, mit csinálnak odabent?
+nik
+fejik a soklábúakat
+<HEADSET><clr:255,255,138>Remek munka, Alyx.<sb>Mindenüket bevetik ellened.
+<clr:255,190,255>Kösz, Russ. Közeledünk.
+<HEADSET><clr:255,255,138>Megy a felvétel, Alyx!<sb>Ne máshova nézz!<sb>Nézz egyenesen rá, az utókornak!
+<clr:255,190,255>Ott a vezérl
+terem.
+<HEADSET><clr:255,255,138>Látom
+Majdnem ott vagyunk.
+<HEADSET><clr:255,255,138>Alyx, most már közeledünk a Széfhez.<sb>Már nem nagyon lesz több lehet
+séged elhasználni a gyantádat.
+<clr:255,190,255>Jó meglátás. Megnézem, van-e olyan fejlesztés, ami hasznos lenne.
+<HEADSET><clr:255,255,138>El se hiszem, hogy idáig eljutott a pisztolyom.
+<clr:255,190,255>Arra gondoltam, hogy odaadom Gordonnak.
+<HEADSET><clr:255,255,138>Nem, csak fel akarsz bosszantani.<sb>Nem d
+lök be neki.<sb>De ha komolyan gondoltad, a sörétest add oda neki.<sb>A legendák szerint
+rült jól bánik a sörétessel.
+<clr:255,190,255>Jó tudni.
+<HEADSET><clr:255,255,138>Alyx, el
+tted.<sb>Az a vezérl
+kapcsolja a Széfet az állomáshoz.
+<clr:255,190,255>Rajta vagyok.
+<clr:255,190,255>Jól van, lássuk. Ideje megmenteni az emberiség megment
+<HEADSET><clr:255,208,172>Tudod, édesem, azért te magad is elég jól boldogultál.
+<HEADSET><clr:255,208,172>Jól jöttél volna a Földnek a Hétórás Háborúban.
+<clr:255,190,255>Talán nyolcig is húztuk volna.
+<clr:255,190,255>A francba.
+<clr:255,190,255>És most?
+<clr:255,190,255>Ó, csodás.
+<clr:255,190,255>Oké, oké, valamelyiknek ezek közül ki kell tolnia a hidat
+igaz?
+<HEADSET><clr:255,255,138>Szinte biztosan. Csak válassz egyet.<sb>Azonnal.
+<clr:255,190,255>Öö
+<clr:255,190,255>EZ lesz.
+<HEADSET><clr:255,255,138>Nem
+nem az.
+<HEADSET><clr:255,255,138>Nem, az nem a híd.
+<HEADSET><clr:255,255,138>Alyx, nem mozdul a híd.<sb>Miért nem mozdul a híd?
+<clr:255,190,255>Tudom, Russ, látom, hogy nem mozdul.
+<HEADSET><clr:255,255,138>Nem.
+<HEADSET><clr:255,255,138>Még inkább nem.
+<HEADSET><clr:255,255,138>Istenem.
+<HEADSET><clr:255,255,138>Alyx
+ALYX
+ALYX!
+<clr:255,190,255>Ó, istenem. Istenem
+ISTENEM!
+Azonnal
+azonnalra gondoltam.
+<HEADSET><clr:255,208,172>Russell, hagyd gondolkodni!
+<HEADSET><clr:255,255,138>Most, Alyx.
+<HEADSET><clr:255,255,138>Alyx, kérlek, válassz egyet.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, jól vagy?
+Azt hiszem, most öltem meg Gordon Freemant.
+most öltem meg Gordon Freemant.
+<HEADSET><clr:255,255,138>Ott van a Széf.<sb>Csak menj be és hozd ki onnan.<sb>Vagy ami maradt bel
+le.
+<clr:255,190,255>Indulok.
+<clr:18,199,226><force><I>A parancsnokság kárfelmérést kér.<I>
+<clr:18,199,226><force>Kár: 70%
+80%
+90%
+Teljes.
+<clr:18,199,226><force><I>Teljes?<I>
+<clr:18,199,226><force>Teljes.
+<clr:18,199,226><force><I>Er
+sítés érkezik.<I>
+<clr:18,199,226><force>T
+z alatt állok!
+<clr:18,199,226><force>Javítás vagy kivonás szükséges.
+<clr:18,199,226><force>Nem tudom.
+<clr:18,199,226><force>Rugdossa.
+<clr:18,199,226><force>Felvigyázók azt mondja, ne rugdossa.
+<clr:18,199,226><force>Már nem rugdossa.
+<clr:18,199,226><force>Fedezékbe! Itt van!
+<clr:18,199,226><force>Cél befogva. Cél befogva.
+<clr:18,199,226>Célpont kiléte ismeretlen.
+<clr:18,199,226><force>Alyx Vance az.
+<clr:18,199,226>Alyx Vance nem látható.
+<clr:18,199,226><force>Alyx Vance az!
+<clr:18,199,226><force>Persze, hogy Alyx Vance.
+<clr:18,199,226>Adjanak kárfelmérést a Felvigyázóknak.
+<clr:18,199,226>Vették?
+<clr:18,199,226>Ismétlem. Adjanak kárfelmérést a Felvigyázóknak.
+<clr:18,199,226>Támadok!
+<HEADSET><clr:255,255,138>Egy nyakigláb.<cr>Bár deaktivált.<sb>Szerencsénk van.<sb>Képzeld csak, mi lenne, ha az az izé az utadat állná.
+<clr:255,190,255>Ne már, Russ.<cr>Ne kiabáld el.
+<HEADSET><clr:255,255,138>Alyx! A nyakigláb!<sb>Vigyázz! Feléledt!
+<clr:255,190,255>A fene! Sietek. Sietek.
+<HEADSET><clr:255,255,138>Áá! Tényleg elkiabáltam, igaz?
+<clr:255,190,255>Ahogy kell!<cr>Az elkiabálás iskolapéldája, Russell!
+<clr:255,190,255>Áhh! Sietek.<sb>Még mindig sietek.
+<clr:255,190,255>Russell! Ott egy nagy ágyú.
+<HEADSET><clr:255,255,138>Azt hiszem, van egy ötletem.
+<clr:255,190,255>Ja, egyre gondoltunk.
+<clr:255,190,255>Egyre gondoltunk.<cr>És jó kis ötlet.
+<HEADSET><clr:255,255,138>Szedd le! Adj neki!<cr>L
+dd le! L
+dd le!
+<clr:255,190,255>Lövöm!
+<HEADSET><clr:255,255,138>Há! M
+ködik!<sb>Azt hiszem, m
+ködik.<sb>Legalábbis nem t
+nik boldognak amiatt, hogy megl
+tted. L
+dd tovább!
+<clr:255,190,255>Russell, hagyjál l
+ni!
+<HEADSET><clr:255,255,138>Gyerünk, igen! Igen!<sb>L
+dd tovább!<sb>Ez az!<sb>L
+dd! L
+dd!<sb>L
+dd! Ez az!
+<clr:255,190,255>[megkönnyebbült nevetés] Megcsináltuk, Russ.
+<HEADSET><clr:255,255,138>Igen, meg. Megcsináltuk.
+<HEADSET><clr:255,255,138>Uh. Jól van, Alyx.<sb>Úgy t
+nik, az a vonósugár ott fel fog vinni a Széfhez.
+! Na, jó, felmegyek.
+<HEADSET><clr:255,255,138>[szakadozó adás] Áá. Elég nagy interferenciát okoz.<sb>Valószín
+leg nem fogunk tudni beszélni odabent.
+<clr:255,190,255>Nem, valószín
+leg nem.
+<HEADSET><clr:255,255,138>[szakadozó adás] Akkor itt az id
+<HEADSET><clr:255,255,138>[szakadozó adás] Aztán majd kijössz Gordonnal, épen és egészségben, és minden
+<clr:255,190,255>Minden rendben lesz, Russ.<cr>Hamarosan beszélünk.
+<HEADSET><clr:255,208,172>Russell, állítsd meg!
+<HEADSET><clr:255,255,138>Mi? Miért?
+<HEADSET><clr:255,208,172>Alyx! Ne menj be a Szé
+[adás megszakad]
+<clr:255,190,255>Apu? Apu?
+<clr:255,190,255>Lakások, pont, ahogy apu mondta.
+<clr:255,190,255>Oké, ez fura. De nem is tudom. Nem t
+nik olyan veszélyesnek.
+<clr:255,190,255>Jól van, ez lesz az.
+<clr:255,190,255>Oké, Gordon Freeman. Remélem, megértél ennyit.
+<clr:255,190,255>Jól van, Gordon, hadd szedjelek ki ebb
+l az izéb
+<norepeat_global:10>Leny
+göz
+munka, Vance kisasszony.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [kuncog]
+<norepeat_global:10>Vance kisasszony
+<sb>Gordon Freeman bebörtönzéséhez nem volna szükség <I>minderre<I>.
+<clr:255,190,255>Akkor
+ki maga?
+<norepeat_global:10>Talán az, hogy mi <I>vagyok<I>, nem olyan fontos, mint hogy mit tudok <I>felajánlani<I> cserébe e hosszú út megtételéért.
+<norepeat_global:10>Egyesek úgy vélik, világaink sorsa <I>rugalmatlan<I>.
+<norepeat_global:10>Munkaadóim nem értenek egyet.<sb>Id
+l id
+re felhatalmaznak, hogy bizonyos irányba
+<sb><I>ösztökéljek<I> dolgokat.
+<norepeat_global:10><I>Ön<I> mit ösztökéltetne másfelé, Vance kisasszony?
+<clr:255,190,255>A Társulást, el a Földr
+l.<cr>El akarom tüntetni a Társulást a Földr
+<norepeat_global:10>Ahhh.<sb>Az meglehet
+sen nagy ösztökélés volna.<sb>Túlságosan nagy, tekintve munkaadóim érdekeit.
+<clr:255,190,255>Hát, maga kérdezte.
+<norepeat_global:10>Mi volna, ha olyasmit ajánlhatnék, amir
+l nem <I>tudja<I>, hogy akarja?
+<clr:255,190,255>Hol
+Hol vagyunk?
+<clr:255,190,255>Apu
+? Apu? Mi
+<sb>A-az én vagyok?<sb>Mi ez?<sb>Mi történik?
+<norepeat_global:10>A jöv
+ben vagyunk.<sb>Ez az a pillanat, amikor végignézi az apja halálát.
+<norepeat_global:10>Hacsak
+<clr:255,190,255>Mi? Hacsak MI?
+<norepeat_global:10>Hacsak a saját kezébe nem veszi a dolgokat.
+<norepeat_global:10>Szabadítsa ki az apját, Vance kisasszony.
+<norepeat_global:10>A keszty
+je, Vance kisasszony.
+<norepeat_global:10>Helyes.<sb>Tette következményeképp <I>ez<I> az entitás folytatódni fog.
+<norepeat_global:10>Ez az entitás pedig nem.
+<clr:255,190,255>Aha. Szóval
+jól van, igaz? Életben marad. Az apám élni fog.
+<norepeat_global:10><I>Nyilván<I> tisztában van azzal, hogy bizonyította rendkívüli értékességét.
+<norepeat_global:10>Egy korábbi alkalmazott nem volt képes
+<sb>vagy hajlandó
+<sb> elvégezni a rá kiszabott feladatokat.
+<norepeat_global:10>Nem igazán találtunk megfelel
+helyettest.
+<norepeat_global:10>Mostanáig.
+<clr:255,190,255>Nem! É-én csak haza akarok menni. Küldjön haza!
+<norepeat_global:10>Attól tartok, félreérti a helyzetet, Vance kisasszony.
+<clr:255,190,255>Várjon! Hé, várjon, várjon, várjon
+<clr:255,208,172>Gordon! Gordon! Ébredj fel, Gordon!
+<clr:255,208,172>Elt
+nt, Gordon.<sb>ELT
+NT!
+<clr:255,208,172>Az a rohadék meg az
+váratlan következményei
+!<sb>Tudtam.<sb>Ha egyszer elkapom, esküszöm
+<sb>Meg fogom ölni. Valamit ki kell találnom. Most rögtön
+<clr:255,208,172><sfx:1>[mélyen kilélegez]
+<clr:255,208,172>Gyerünk, Gordon.
+<clr:255,208,172>Dolgunk van.
+<clr:255,190,255>[szimatol] Fúj
+Ez b
+zlik.
+<HEADSET><clr:255,255,138>Ó, tényleg?<sb>És milyen szaga van? Légy konkrét.
+<clr:255,190,255>Mint egy bomló állat
+ammóniával keverve.
+Ammóniával
+keverve
+Oké.
+<clr:255,190,255>Minél többször érek hozzá, annál inkább gondolom, hogy valószín
+leg mérgez
+<HEADSET><clr:255,255,138>De mi van, ha gyógyítja a rákot?
+<clr:255,190,255>És mi van, ha rákos LESZEK t
+le?
+<HEADSET><clr:255,255,138>Mi van, ha valami új fajta rákot kapsz t
+<clr:255,190,255>Russ, visszaveszek a fogdosásból.
+<HEADSET><clr:255,255,138>Jó.
+<clr:255,190,255><sfx:1>[tüsszentés]
+<HEADSET><clr:255,255,138>Egészségedre.
+<clr:255,190,255>Fú, köszi.
+<HEADSET><clr:255,255,138>Alyx. Nagy koncentrációjú antirészecskéket észlelek abból sugározni.<sb>Csak figyelmeztetlek.<sb>Kvantum szempontból lehet, hogy fura lesz odabent.
+<clr:255,190,255>Russell, mindent láttál, ami ma történt.
+<clr:255,190,255>És pont MOST lesz fura?
+<HEADSET><clr:255,255,138>Igen.
+<clr:255,190,255>Oké, rákészülök.
+Azt hiszem, megöltem minden földönkívülit. Szerintem mind halott.
+<HEADSET><clr:255,255,138>Az jó. Jó. Az remek.
+<clr:255,190,255>Akkor már csak el kell jutnunk a Széfhez, megszerezni a fegyvert, kirúgni a Társulást a Földr
+ami szuper könny
+és aztán
+aztán jöhetnek a szendvicsek
+<HEADSET><clr:255,255,138>Igen. Abszolút.
+<clr:255,190,255>Helyes. Remélem, tényleg jók.
+<HEADSET><clr:255,255,138>És, miután eltüntettük a Társulást a Földr
+l, te mihez fogsz kezdeni, Alyx?
+Szereznénk egy házat apuval, segítenénk az újjáépítésben. Aztán, tudod, valószín
+leg nyitnék egy titkos laboratóriumot.
+<HEADSET><clr:255,255,138>Nos, nem kellene ténylegesen titkosnak lennie.<cr>Egyszer
+en élhetnéd nyíltan az életedet.
+<clr:255,190,255>Hát, ja. Szóval nyitnék egy labort, és nem lenne szükségem se zárakra, se ajtókra, se zárható ablakokra.
+<HEADSET><clr:255,255,138>Nos
+azért b
+nöz
+k még lennének.<cr>Csak földönkívüliek nem.
+<clr:255,190,255>Óó. Pff, tényleg.
+<HEADSET><clr:255,255,138>Így én igent mondanék az ajtókra és zárakra, csak öö
+ja.<cr>Óvatosságból. És tartsd meg a pisztolyt.
+<HEADSET><clr:255,255,138>Ó! Apád visszaért!
+<HEADSET><clr:255,208,172>Russell!<cr>A szentségit, de jó látni téged!
+<HEADSET><clr:255,255,138>Szintúgy! Á, ez nagyszer
+szintén szólva úgy 4%-ot adtam volna a túlélésednek.
+<HEADSET><clr:255,208,172>Annak a villámujjúnak köszönhetjük.
+hozott vissza egy darabban.
+<clr:255,190,255>Russ! Russell! Add aput!
+<HEADSET><clr:255,208,172>Alyx! Kicsim!
+<clr:255,190,255>Apu! Épp most kapcsoltunk le egy alállomást!
+<HEADSET><clr:255,208,172>Helyes, mert amikor elszállítják innen azt a fegyvert, nem látjuk többé. Ma éjjel meg kell szereznünk.
+<clr:255,190,255>Meg fogjuk. Még megvan az az adattok, igaz?
+<HEADSET><clr:255,208,172>Meg. Russ, ez az izé biokódolt.<sb>Szükségem lesz a TLI-re.
+<HEADSET><clr:255,255,138>Jó, ott van.
+<HEADSET><clr:255,208,172>Oké, remek.<sb>Jól vagy, édesem?
+<clr:255,190,255>Persze. Láss hozzá, apu. Nem lesz bajom, ígérem.
+<HEADSET><clr:255,208,172>Tartsd is be.<sb>Nekilátok az adattoknak.
+<HEADSET><clr:255,208,172>Találtam valamit.
+<HEADSET><clr:255,255,138>Mit?
+<clr:255,190,255>Mit találtál, apu?
+<HEADSET><clr:255,208,172>Még nem tudom, mi ez a fegyver.<sb>De azt IGEN, hogyan tettek rá szert.
+<HEADSET><clr:255,208,172>Nem úgy t
+nik, mintha
+k maguk építették volna.<sb>Mintha
+<sb>Nem is tudom, felfedeztek volna valamit.<sb>Vagy a felszínre hozták.
+Ezt hogy érted?
+<HEADSET><clr:255,208,172>Ha jól értelmezem, egy régi lakóépületben akadtak rá a KZ-ben.<sb>De ahelyett, hogy bementek és kihozták volna onnan, fogták az egész épületet, és építettek köré egy széfet.
+<clr:255,190,255>Szent ég!<sb>Biztosan rettegnek ett
+l a dologtól.
+<HEADSET><clr:255,208,172>Próbálom kideríteni, hogy NEKÜNK kéne-e.
+<clr:255,190,255>Russ
+Mit gondolsz, mit csinálnak ott Gordon Freemannel?
+<HEADSET><clr:255,255,138>Ez egy jó kérdés
+<clr:255,190,255>Gondolod
+hogy kiszívják az agyát?
+<HEADSET><clr:255,255,138>Hmm. Azt hiszem, el fogják szállítani a bolygóról.
+<clr:255,190,255>Hát, akárhogy is, ne hagyjuk kiderülni. Odaérek, miel
+tt megtörténne.
+<clr:255,190,255>Russ, mi ez az egész a feszít
+vassal?
+<HEADSET><clr:255,255,138>Ja, Gordon Freeman feszít
+vasára gondolsz?
+<HEADSET><clr:255,255,138>Ó, Alyx, MINDÖSSZE azzal a feszít
+vassal verekedte ki magát a Black Mesából.
+<clr:255,190,255>Kizárt.
+<HEADSET><clr:255,255,138>Így igaz! Legalábbis az igaz, hogy ezt mondják. Tudod, biztosra senki se tudja.
+<clr:255,190,255>Hát, amikor kiszabadítom, adjunk neki l
+fegyvert.
+<HEADSET><clr:255,255,138>Jó! Öö, de ne az enyémet.<cr>Kiszálltam a fegyverkölcsönz
+bizniszb
+l, oké?
+<HEADSET><clr:255,255,138>Jó, de ne az enyémet.
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>Mi folyik
+<clr:255,190,255>Hogy van apu?<sb>Szerinted jól van?
+<HEADSET><clr:255,255,138>Á, kutya baja, Alyx.<cr>Amott dolgozgat.
+<clr:255,190,255>Jó. Akkor, köszi.
+<HEADSET><clr:255,255,138>Ó
+Viszont az egyik lába hiányzik.
+<clr:255,190,255>Ja, tudod, az már korábban is hiányzott neki.
+<HEADSET><clr:255,255,138>Igaz. Hát
+még mindig hiányzik.
+<HEADSET><clr:255,255,138>Nincs mit.
+<clr:255,190,255>Hé! Van hír az adattokról?
+<HEADSET><clr:255,255,138>Apád bele van merülve.<cr>Dolgozik rajta.<sb>Biztosan közel jár már.
+<clr:255,190,255>Nnáhh! Az arcomon van! Az arcomon!
+<clr:255,190,255>Jaj, istenem, JAJ, ISTENEM
+RAJTAM
+ISTENEM, NE
+<clr:255,190,255>Áá! Menj innen! Menj innen!
+<clr:255,190,255><sfx:1>[er
+lködve leveg
+<HEADSET><clr:255,255,138>Ááh! Jaj, istenem!
+<HEADSET><clr:255,255,138>Szedd le!
+<clr:255,190,255>Próbálom!
+<HEADSET><clr:255,255,138>Undorító!
+<HEADSET><clr:255,255,138>Uhh, borzalmas!
+<HEADSET><clr:255,255,138>Ó, hála istennek.
+<HEADSET><clr:255,255,138>Uhh, Alyx, ez ronda volt
+<clr:255,190,255>Ja. Az.
+<HEADSET><clr:255,255,138>Ááá! Fejrágó! Fejrágó van az arcodon! Szedd le az arcodról, Alyx!
+<HEADSET><clr:255,255,138>Óóó, jól rád tapadt!
+<HEADSET><clr:255,255,138>Kapd el! Csapj oda!
+<HEADSET><clr:255,255,138>Üsd, Alyx! Verd le az arcodról!
+<HEADSET><clr:255,255,138>Ó, hála istennek
+<clr:255,190,255>Uhh. Jól vagyok
+Jól vagyok
+<HEADSET><clr:255,255,138>Az arcodon volt és
+Uhh, ez undorító volt.
+<clr:255,190,255>Russ, ezek a nevemet mondják?
+<HEADSET><clr:255,255,138>Aha, ez rosszat jelent.
+<clr:255,190,255>Hmf.
+<clr:255,190,255>Gyerünk már
+<clr:255,190,255>Hmf. Ehh. Uhh!
+<clr:255,190,255>Annnh.
+<clr:255,190,255>Ooo
+ké.
+<clr:255,190,255>Ahh.
+<clr:255,190,255>Gyerünk
+<clr:255,190,255>Óóó
+mmmf
+uhh.
+<HEADSET><clr:255,255,138>Leszedted.
+<clr:255,190,255>Hoppsz!
+<clr:255,190,255>Elkaptam!
+<clr:255,190,255>Ahh. Megvagy.
+<clr:255,190,255>Nnngh!
+<clr:255,190,255>Á, bakker.
+<clr:255,190,255>Francba.
+<clr:255,190,255>Tcc. Ez nem vált be.
+<clr:255,190,255>Nem vált be.
+<clr:255,190,255>Jól van.
+<clr:255,190,255>Áá! Megvan.
+<clr:255,190,255>Jól hangzik.
+<clr:255,190,255>Hm. Jól hangzik.
+<clr:255,190,255><sfx:1>[meglep
+<clr:255,190,255>Hú!
+<clr:255,190,255>Haha.
+<clr:255,190,255>Jól van
+<clr:255,190,255>Három tár maradt.
+<clr:255,190,255>Már csak három táram van.
+<clr:255,190,255>Három maradt.
+<clr:255,190,255>Utolsó.
+<clr:255,190,255>Az utolsó tár.
+<clr:255,190,255>Utolsó tár.
+<clr:255,190,255>Egy maradt.
+<clr:255,190,255>Nincs több tár.
+<clr:255,190,255>Kifogytam a tárakból.
+<clr:255,190,255>Nincs több tár?
+<clr:255,190,255>Kifogytam.
+<clr:255,190,255>Utolsó három.
+<clr:255,190,255>Még három.
+<clr:255,190,255>Francba. Utolsó tár.
+<clr:255,190,255>Á, kifogytam.
+<clr:255,190,255>Három töltény maradt.
+<clr:255,190,255>Utolsó töltény.
+<clr:255,190,255>Kifogytam a töltényb
+<clr:255,190,255>Nincs töltény.
+<clr:255,190,255>Uhh, kifogytam.
+<clr:255,190,255>Utolsó négy töltény.
+<clr:255,190,255>Négy töltény maradt.
+<clr:255,190,255>Utolsó négy.
+<clr:255,190,255>Utolsó két töltény.
+<clr:255,190,255>Utolsó kett
+<clr:255,190,255>Két töltény maradt.
+<clr:255,190,255>Csak kett
+maradt.
+<clr:255,190,255>Három cella maradt.
+<clr:255,190,255>Utolsó cella.
+<clr:255,190,255>Kifogytam a cellákból.
+<clr:255,190,255><sfx:1>[elfojtott köhögés]
+<clr:255,190,255><sfx:1>[fegyverhangokat utánoz]
+<clr:255,190,255>Ááhh!
+<HEADSET><clr:255,255,138>Túl sötét van. Zseblámpára lesz szükséged.
+<clr:255,190,255>Azt hiszem, igazad van.
+<clr:255,190,255>Túl sötét van. Kéne egy zseblámpa.
+<clr:255,190,255>Zseblámpára lesz szükségem, ha be akarok menni oda.
+<clr:255,190,255>Nem élnék túl egy ugrást ilyen magasról.
+<HEADSET><clr:255,255,138>Nem, nem, nem. Persze, hogy nem. Miért, fontolgattad?
+<clr:255,190,255>Nem hiszem.
+<clr:255,190,255>Nem. Abba belehalnék.
+<clr:255,190,255>Á!
+<clr:255,190,255>Mennem kell.
+<clr:255,190,255>Kés
+bb beszélünk.
+<clr:255,190,255>Várj, mennem kell.
+<clr:255,190,255>Russell, mennem kell.
+bb, mennem kell.
+<clr:255,190,255>Várj, nem érek rá.
+<clr:255,190,255>Várj, jön valaki.
+<clr:255,190,255>Bakker, Társulás.
+<clr:255,190,255>Russell!
+<clr:255,190,255>SZENTSÉGIT!
+<clr:255,190,255>ÁÁH!
+<clr:255,190,255>ISTENEEM
+. Oké.
+<clr:255,190,255>Uff. Oké.
+<clr:255,190,255>Fú. Oké.
+<clr:255,190,255>Fú
+<clr:255,190,255><sfx:1>[fuldoklás]
+<clr:255,190,255><sfx:1>[leveg
+<HEADSET><clr:255,255,138>Keress valami megcélozhatót a
+Russellekkel
+<HEADSET><clr:255,255,138>Most célozz meg valamit a
+<HEADSET><clr:255,255,138>A kezedet használva célozz meg valamit.
+<HEADSET><clr:255,255,138>Csak annyit kell tenned, hogy megcélzol valamit a kezeddel.
+<HEADSET><clr:255,255,138>Célzáshoz csak mutass rá valamire a kezeddel.
+<HEADSET><clr:255,255,138>Keress egy tárgyat, és vedd célba a kezeddel.
+<HEADSET><clr:255,255,138>Alyx? Alyx, ott vagy még?
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Áh, ezek közül egyikhez sincs elég gyantám.
+<HEADSET><clr:255,255,138>Hát, tudod, hogy mit mondanak a gyantáról, Alyx.
+<clr:255,190,255>Nem. Mit mondanak a gyantáról, Russ?
+<HEADSET><clr:255,255,138>Öö.
+Keress
+több
+gyantát.
+Majd nyitva tartom a szemem.
+<HEADSET><clr:255,255,138>Ja, ezt mondják
+Keress több gyantát.
+<HEADSET><clr:255,255,138>Támadnak!
+<HEADSET><clr:255,255,138>Társulás!
+<HEADSET><clr:255,255,138>Alyx, vigyázz!
+<HEADSET><clr:255,255,138>Szép volt.
+<HEADSET><clr:255,255,138>Szép munka.
+<HEADSET><clr:255,255,138>Éés meg is vagyunk.
+<HEADSET><clr:255,255,138>Aha. Tökéletes.
+<HEADSET><clr:255,255,138>Jól van. Ezt gyorsan elintézted.
+<HEADSET><clr:255,255,138>Az bejött.
+nik, bevált.
+<HEADSET><clr:255,255,138>Na ugye.
+<HEADSET><clr:255,255,138>Keresd tovább.
+<HEADSET><clr:255,255,138>Valahol itt kell lennie.
+<HEADSET><clr:255,255,138>Látsz valamit? Én nem látok semmit.
+<HEADSET><clr:255,255,138>Itt kell legyen.
+<HEADSET><clr:255,255,138>Óvatosan
+<HEADSET><clr:255,255,138>Egy megvan.
+<HEADSET><clr:255,255,138>Már majdnem megvan.
+<HEADSET><clr:255,255,138>Figyelj, ne pazarold a l
+szert! Még csak be se tudod horpasztani.
+<HEADSET><clr:255,255,138>Vigyázz, Alyx!
+<HEADSET><clr:255,255,138>Pont el
+tted!
+<HEADSET><clr:255,255,138>Társaságod akadt.
+<HEADSET><clr:255,255,138>Majd kés
+<HEADSET><clr:255,255,138>Beszéljünk kés
+bb.
+<HEADSET><clr:255,255,138>Kapd el
+<HEADSET><clr:255,255,138>Jó, jó, hajrá!
+<HEADSET><clr:255,255,138>Uff!
+<HEADSET><clr:255,255,138>Húha!
+<clr:107,232,120>Hrrm!
+<clr:107,232,120>Mmm! [szimatol]
+<clr:107,232,120>Igen, él
+lény.
+<clr:107,232,120>Hrrmm
+ah
+mmmhmm
+<sb>Érdekes
+ah, kiváló
+<clr:107,232,120>Már vártam magát, Alyx Vance.
+Felvigyázók: <clr:166,242,255><I>Riadó. Földi egységek.<I><sb><clr:255,255,255>Felvigyázók: <clr:166,242,255><I>Antipolgár eredet
+invazív tevékenység.<I><sb><clr:255,255,255>Felvigyázók: <clr:166,242,255><I>Reagálási kód:<cr>Megtámad. Elfojt. Kikérdez.<I>
+<clr:166,242,255><I>Riadó. Reagáló egységek.<sb>Kódfrissítés:<sb>Ki
+z. Kísér. Folytat.<I>
+<clr:166,242,255><I>Lakossági emlékeztet
+:<cr>Egy civilizált társadalom gyors és célzatos felügyeletet követel.<sb>Gátolják polgártársaikat a közösség fenyegetésében.<I>
+<clr:166,242,255><I>Figyelmet kérünk.<sb>Ebbe a blokkba tilos a bejárás.<sb>Ha ezt az üzenetet hallja, polgári törvénysértést követett el.<I>
+<clr:166,242,255><I>Figyelmet kérünk.<sb>Ebbe a blokkba tilos a bejárás.<sb>A helyi biztonsági er
+k végrehajtási paranccsal elindultak.<I>
+Felvigyázók: <clr:166,242,255><I>Figyelmet kérünk.<cr>Belépni tilos.<I><sb><clr:255,255,255>Felvigyázók: <clr:166,242,255><I>Az antipolgár guberálás azonnali halálbüntetést eredményez.<I>
+<clr:166,242,255><I>Földi egységek, riadó.<sb>Parancsnoki egységek, riadó.<sb>Vészhelyzeti kód: Semmis.<I>
+<clr:166,242,255><I>Biztonsági riadó.<sb>Irányítás-visszaszerzés folyamatban.<sb>Eszközallokációs korrekciós kód:<sb>Kemény. Vizsgál. Kiirt.<sb>Prioritás: azonnali.<I>
+<clr:166,242,255><I>Biztonsági riadó.<sb>Kritikus polgárlázadás.<sb>Technikusosztagok bevetése a 49-es, 64-es, 77-es blokkokban.<sb>Prioritás fenntartandó.<I>
+<clr:166,242,255><I>Biztonsági riadó.<sb>Földi osztagok, emlékeztet
+:<cr>A küldetéskudarc végleges áttelepítést eredményez.<sb>Reagálási kód: Behatol. Helyezkedik. Beolt.<I>
+<clr:166,242,255><I>Kritikus behatolás. Készenlét. Készenlét.<I>
+<clr:166,242,255><I>Teljes rendszerriadó.<sb>Ötös-egyes-kettes-kilences m
+velet indul.<sb>Azonnali párhuzamos bevetés.<sb>Ötös-egyes-kettes-kilences.<I>
+<clr:166,242,255><I>Reagálási kód:<cr>Pajzs. Kulcs. Költözés.<I>
+<clr:166,242,255><I>Riadó. Reagáló osztag.<sb>Túlterhelési protokoll:<cr>Bemér. Kiéget. Lerohan.<sb>Bemér. Kiéget. Lerohan.<I>
+<clr:255,190,255>Láttam odakint egy kart!
+<HEADSET><clr:255,255,138>Remek! Egy rejtélyes kar! Imádom!
+<HEADSET><clr:255,255,138>És mit csinál?
+<clr:255,190,255>Átváltja a síneket!
+<clr:255,190,255>Nem tudom!
+<HEADSET><clr:255,255,138>Ó! Szóval Eli vonata át lesz irányítva a
+a falba.
+<HEADSET><clr:255,255,138>Ez az! Igen! Fogolykapszulában van! Nem lesz baja! Siess, Alyx!
+<clr:255,190,255>Ott a váltó!
+<clr:255,190,255>Russell! Nézd csak ezt a kart!
+<HEADSET><clr:255,255,138>Húzd meg! Lássuk, mit csinál!
+<HEADSET><clr:255,255,138>Ez az! Igen! Fogolykapszulában van! Nem lesz baja!
+<HEADSET><clr:255,255,138>Tartsd meg! Tartsd meghúzva!
+<HEADSET><clr:255,255,138>Gyorsan, Alyx!
+<HEADSET><clr:255,255,138>Jó! Most tartsd meg a kart, különben a sín vissza fog váltani.
+<HEADSET><clr:255,255,138>Tartsd meg, Alyx!
+<HEADSET><clr:255,255,138>Tíz másodperc, Alyx!
+<HEADSET><clr:255,255,138>Négy!
+<HEADSET><clr:255,255,138>Három!
+<HEADSET><clr:255,255,138>Kett
+<HEADSET><clr:255,255,138>Egy!
+<HEADSET><clr:255,255,138>Te jó isten!
+<clr:255,190,255>Szent ég!
+<clr:255,190,255>Vonat, vonat, vonat, vonat, VONAT!
+<clr:255,190,255>Honnan tudod te mindezt?
+<clr:255,190,255>Hé, hogy válasszam le a kábeleket?
+<clr:255,190,255>Bármi hír apuról?
+<clr:255,190,255>És az miért jó hír?
+<clr:255,190,255>Jó lesz.
+<clr:255,190,255>Russell? Megint szakadozol.
+<clr:255,190,255>Egy olyan szerkezetet fogok használni, amit csak
+lépcs
+nek
+hívok.
+<clr:255,190,255>Semmi, mégsem lépcs
+zöm.
+<clr:255,190,255>MI?!
+<clr:255,190,255>Az az utolsó alállomás! Megcsinálta!
+<clr:255,190,255>Srácok. Kitalálhatnánk ezt kés
+bb? Az a kábel felbolygatott egy hangyales
+-fészket.
+<clr:255,190,255>Nem tudom.<sb>De valami a leveg
+ben tartja.<sb>És kifutunk az id
+l, hogy megtaláljuk.
+<clr:255,190,255>Szuper! Mi az, apu?
+<clr:255,190,255>Oké, értem.
+<clr:255,190,255>Kábelek jönnek ki bel
+le.<sb>Szerintem egy energiaforráshoz csatlakoznak.<sb>Odamegyek, és leválasztom
+ket.<sb>Vagy szétlövöm.
+<clr:255,190,255>Igaz. Egyébként, MI is van benne?
+<clr:255,190,255>Aaatyaééég!!
+<clr:255,190,255>Apu, megyek, megkeresem azt a Széfet!
+<clr:255,190,255>Jól van, úgy néz ki, teljesen kiért a híd
+<clr:255,190,255>Oké, hát, ezek egyike majdcsak behúzza dokkoláshoz a Széfet, igaz? Igaz?
+<clr:255,190,255>Ahm. Ez nem az.
+<clr:255,190,255>Okééé, határozottan nem.
+<clr:255,190,255>Talán?!
+<clr:255,190,255>Ez nem t
+nik jónak
+Uhh!
+<clr:255,190,255>Csak FINOMAN csatlakoztatnom kell a hídhoz a Széfet.
+<clr:255,190,255>Mennyire lehet az nehéz?
+<clr:255,190,255>Jól van, lássuk.
+, Russell, látod ezt?
+<clr:255,190,255>Ss! Ss-sh-shh. Csönd!
+<clr:255,190,255>Ó, istenem.
+<clr:255,190,255>Nem, még keresgélek.
+édes istenem
+<clr:255,190,255><delay:3>Mi?
+Szent isten
+<sb>Köszi! Köszönöm!
+<clr:255,190,255>Az utolsó kett
+<clr:255,190,255>Az arcomon van! Az arcomon van!
+<clr:255,190,255>Russ! Az arcomon van!
+<clr:255,190,255>Russ! Az arcomon van! Az arcomon van, Russ!
+<clr:255,190,255>Oké. Jól vagyok. Jól vagyok.
+<clr:255,190,255>Ja, az. Én is ott voltam.
+<clr:255,190,255>Tudom, hogy az arcomon van, Russ!
+<clr:255,190,255>Ááh, nem jön le!
+<clr:255,190,255>Russ, tudom!
+<clr:255,190,255>Uff!
+<clr:255,190,255>Uh!
+<clr:255,190,255>Au!
+<clr:255,190,255>Huh!
+<clr:255,190,255>Umf!
+<clr:255,190,255>Nyaaah!
+<clr:255,190,255>Blah!
+<clr:255,190,255>[köhögés] Fú.
+<clr:255,190,255>[köhögés] Uhh!
+<clr:255,190,255>Uhh. Oké.
+<clr:255,208,172><sfx:1>[nyögés]
+<clr:255,208,172>Russell? Hol van?<cr>Nincsen baja?
+<clr:255,208,172>Nincs id
+nk.<sb>Egy fegyver az, Alyx!<sb>Azt rejtegetnek odabent.<sb>Ez az, amit megtudtunk, és amiért elkaptak minket.
+<clr:255,208,172>Egy széfben
+rzik
+<sb>Egy toronyban, amit er
+sen védenek.
+<clr:255,208,172>Van a közelben egy alállomás.
+<clr:255,208,172>Alyx, bármi is ez a fegyver, el kell lopnod, vagy meg kell semmisítened.
+<clr:255,208,172>[kuncog] Szeretlek, kicsim!
+<clr:255,208,172>Szeretlek, kicsim!
+Eli: <clr:255,208,172><I>Mi az, Russell?<I>
+<HEADSET><clr:255,208,172>Nem tudom, de
+<HEADSET><clr:255,208,172>Te menj csak tovább a Széf felé.<sb>Én körülnézek az adattokban.<sb>Meglátom, találok-e valamit.
+<HEADSET><clr:255,208,172>Alyx! Találtam valamit!
+<HEADSET><clr:255,208,172>Közvetlenül a Széf alatt van egy gravitációmez
+-generátor.<sb>Biztosan az tartja a leveg
+<HEADSET><clr:255,208,172>Ott ni. Az a gravitációmez
+-generátor.
+<HEADSET><clr:255,208,172>Itt jön már
+<HEADSET><clr:255,208,172>Dolgozom rajta.<sb>Alyx, juss be valahogy. Eredj!
+<clr:255,208,172>Vigyázz magadra, kicsim. Szeretlek.
+<HEADSET><clr:255,208,172>Ez nem széf.<sb>Börtön.<sb>Nem azért építették, hogy minket KINT tartsanak.<sb>BENT tartani próbálnak valamit.
+<norepeat_global:10>Ez olyan kérdés, amelyre számos
+<clr:255,255,138>Vedd fel a pisztolyt, Alyx!
+<HEADSET><clr:255,255,138>Kétlem, hogy sokat kell majd használnod.<sb>Legfeljebb néhány társulási szállíthatja Elit.
+<HEADSET><clr:255,255,138>Á, tényleg. Az
+<HEADSET><clr:255,255,138>Tudja a távolból manipulálni a gravitációt?
+<HEADSET><clr:255,255,138>Ja. Gondoltam, hogy nem.<sb>És úgy látom, nem is keszty
+formájú.
+<HEADSET><clr:255,255,138>Jól van, elég a csevejb
+l, mennünk kell megmenteni apádat. Gyerünk.
+<HEADSET><clr:255,255,138>Alyx? Egy id
+re megszakadt az adás.<sb>Mi történt?
+<HEADSET><clr:255,255,138>Egy villámujjú?<cr>Mit keresett ott lent?
+<HEADSET><clr:255,255,138>Igen, Alyx?
+<clr:255,255,138>Alyx, idefent! Figyelj, dobok egy kis l
+szert.
+<clr:255,255,138>Parancsolj.
+<HEADSET><clr:255,255,138>Alyx, az ott a vezérl
+pult.
+<HEADSET><clr:255,255,138>Ha életre tudod kelteni a rendszert, meg fogom tudni állítani Eli vonatát.
+<HEADSET><clr:255,255,138>Alyx, az a vezérl
+pult!
+<HEADSET><clr:255,255,138>Csak l
+dd
+ket, Alyx!
+<HEADSET><clr:255,255,138>Ja! Kristálytisztán!
+<HEADSET><clr:255,255,138>Rendkívül jól megy neked a földönkívüliek öldösése!
+<HEADSET><clr:255,255,138>Igazából aggasztóan!
+<HEADSET><clr:255,255,138>Igen, most teszik fel a vonatra.<cr>Ami jó.<sb>Mert azt jelenti, hogy még életben van.
+<HEADSET><clr:255,255,138>Nos, a jó hír, hogy meg fogják kínozni, amikor Nova Prospektbe érnek.
+<HEADSET><clr:255,255,138>Mert logikusan nézve semmi okuk nincs, hogy az oda vezet
+vonatúton tegyék.
+<HEADSET><clr:255,255,138>Á! Menj fel a tet
+re. Keresd meg az alállomást.
+<HEADSET><clr:255,255,138>Oké, akkor most juss fel a tet
+re, és férj hozzá valahogy az állomáshoz.
+<HEADSET><clr:255,255,138>Van itt egy lift, de bajos lesz visszakapcsolni az áramot.
+<HEADSET><clr:255,255,138>Ja, látom.
+<HEADSET><clr:255,255,138>Óó.
+<HEADSET><clr:255,255,138>Alyx! A drón újra akcióban!<sb>Innen föntr
+l úgy t
+nik, társulási barikádok vannak el
+tted, amik mindenkit megakadályoznak, hogy a Széf közelébe jusson.
+<HEADSET><clr:255,255,138>Öld meg a soklábút!
+<HEADSET><clr:255,255,138>Igen! Soklábúak! És rohadt halálosak, Alyx, légy óvatos!
+<HEADSET><clr:255,255,138>Alyx! Nézd!
+<HEADSET><clr:255,255,138>Nem értem. Az a sok villámujjú-energia. Ha nem az tartotta fent a Széfet, akkor mire kellett?
+<HEADSET><clr:255,255,138>Nos, a Széf lent van. Ez volt a trükkös része. Most jön a könny
+rész: megszerezni, ami benne van.
+<HEADSET><clr:255,255,138>Igaz. Nos. Akkor csináljuk a könny
+részt: szerezzük meg, ami benne van. Eli? Mi van benne?
+<HEADSET><clr:255,255,138>Ah.
+<HEADSET><clr:255,255,138>Szerinted, öö, halott?
+<HEADSET><clr:255,255,138>Azon az épületen keresztül levághatjuk az utat.
+<HEADSET><clr:255,255,138>Hú!
+<HEADSET><clr:255,255,138>Húha.
+<HEADSET><clr:255,255,138>Eli, gyere ide!
+<HEADSET><clr:255,255,138>Ó! Az jól fog jönni.
+<HEADSET><clr:255,255,138>Majdnem feltörve
+<HEADSET><clr:255,255,138>Alyx!
+<clr:107,232,120>Akkor meg fogja! Bátorság, Alyx Vance!
+<clr:107,232,120>Az Eli Vance! Az Alyx Vance!<sb>Jöttem segíteni, ahogy mondottam.<sb>Menjen! Biztosítani fogom az apja épségét.
+<clr:107,232,120>Biztonságba vezetem az Eli Vance-t.
+<clr:107,232,120>Nem
+Mi, villámujjúak kimentjük magunkat, és bosszút veszünk magunkért.<sb>MAGÁNAK a fegyverhez kell mennie.
+<clr:107,232,120>Most menjen. Mindünknek megvan az ösvénye.<sb>Nem bukhatunk el.
+!<sb>A Társulás ide fúrt.<sb>Elválasztattam az örvénylényegt
+<clr:107,232,120>Megfogyatkoztam.<sb>Az örvénylényeg távol került t
+lem
+<sb>Hallom énekét, de er
+tlen.
+Azt tanácsolom, egyszer
+en kerülje el.
+Én leléptem.<sb>De sok szerencsét odabent.<sb>És ne becsülje alá Jeff barátunkat.<sb>
+, ahm, nem valami türelmes.
+Húha! Mit csinált Jeffel?
+A szentségit!<sb>Hát, öö, remélem talált a javából.<sb>Na, viszlát!
+Hogy hívják?
+Alyx!
+<clr:18,199,226>Neveket akarunk.
+<clr:18,199,226>Nem számít.<cr>Mit látott? Ki volt magával?
+<clr:18,199,226>Ki fogjuk szedni bel
+le.<cr>Vigyék a szállítójárm
+höz!
+<clr:18,199,226>A n
+t is.
+<clr:18,199,226>Terület biztosítva.
+<clr:18,199,226>Vigyék be.
+vel mi lesz?
+<clr:18,199,226>VISSZA!
+<clr:18,199,226><force>Ne tegye le!
+<clr:18,199,226><force>Tegye fel a kezét!
+<clr:18,199,226><force>Tiszta.
+<clr:18,199,226>Vissza!
+<clr:18,199,226>Vissza! VISSZA!
+<clr:18,199,226>Ne tegye le!
+<clr:18,199,226>Kezek fent maradnak!
+<clr:18,199,226>Tegye fel a kezét!
+<clr:18,199,226>Tiszta.
+<clr:18,199,226>Mozgásban.
+<clr:18,199,226>Indulok.
+<clr:18,199,226>El
+renyomulok.
+<clr:18,199,226>Megközelítem a célpontot.
+renyomulás.
+<clr:18,199,226>Haladok a fert
+zötthöz.
+<clr:18,199,226>Folyamatosan haladok.
+<clr:18,199,226>Faltör
+mozgásban.
+<clr:18,199,226>Vettem. Mozgásban a szennyez
+höz.
+renyomulás. El
+<clr:18,199,226>Stabilizálóosztag el
+renyomulásban.
+<clr:18,199,226>Közeledem a fert
+<clr:18,199,226>Kiszorítom.
+mozgásban a fert
+renyomul a szektorban.
+<clr:18,199,226>Közeledem a szennyez
+.<cr>Felfejl
+dök a célponthoz.
+dök.
+.<cr>Kiszorítom.
+<clr:18,199,226>Fegyverkészenlét.
+<clr:18,199,226>Támadok.
+<clr:18,199,226>Célpont megtámadva.
+<clr:18,199,226>Végrehajtok.
+. Teljes aktivitás az ellenségen.
+<clr:18,199,226>Kihasználom.
+<clr:18,199,226>Célponton vagyok. T
+rhasználat.
+<clr:18,199,226>Fegyverhasználat.
+<clr:18,199,226>Egyes célpont.
+<clr:18,199,226>Álljon meg!
+<clr:18,199,226>Alyx az.
+<clr:18,199,226>Alyx meger
+sítve.
+<clr:18,199,226>T
+r Alyx ellen.
+<clr:18,199,226>Fegyverhasználat az egyes célponton.
+<clr:18,199,226>Tüzelek az els
+dleges ellenségre.
+<clr:18,199,226>
+az. Faltör
+felveszi a harcot.
+<clr:18,199,226>Els
+dleges célpont meger
+<clr:18,199,226>Fedezéket bontok.
+<clr:18,199,226>Kód: ledöntés. Szektor:
+<clr:18,199,226>Célpont fedezék kódjele árnyék.
+<clr:18,199,226>Ellenség felfedésééig három.
+<clr:18,199,226>Célpont védett. Korrigálom.
+<clr:18,199,226>Megszüntetem a támaszt.
+r a fedezéken.
+<clr:18,199,226>Teljes aktivitás a célpontfedezéken.
+. Fegyverhasználat a fedezéken.
+<clr:18,199,226>Pattogó úton.
+<clr:18,199,226>Gránát úton.
+<clr:18,199,226>Kivonó úton.
+<clr:18,199,226>Pattogó. Pattogó.
+<clr:18,199,226>Feküdj.
+<clr:18,199,226>Pattogóig három.
+<clr:18,199,226>Kivonás.
+<clr:18,199,226>Gránátot használok.
+<clr:18,199,226>Hátrahúzódok.
+<clr:18,199,226>Pattogó elengedve.
+<clr:18,199,226>Hangyales
+<clr:18,199,226>Célpont: hangyales
+<clr:18,199,226>Kapcsolat. Hangyales
+-támadás.
+hangyales
+t támad.
+. Faltör
+támad.
+. Szektor:
+<clr:18,199,226>Paraziták.
+<clr:18,199,226>Kapcsolat. Paraziták.
+<clr:18,199,226>Parazitatámadás.
+. Paraziták láthatók.
+<clr:18,199,226>Vizkapcs. Paraziták.
+<clr:18,199,226>Parazitákkal találkoztunk.
+<clr:18,199,226>Él
+paraziták.
+<clr:18,199,226>Parazitafert
+zés meger
+<clr:18,199,226>Nekrotikus.
+<clr:18,199,226>Nekrotikus-támadás.
+<clr:18,199,226>Fert
+. Nekrotikus látható.
+<clr:18,199,226>Kapcsolat. Nekrotikus.
+<clr:18,199,226>Nekrotikus a látótérben.
+<clr:18,199,226>Nekrotikus aktivitás.
+<clr:18,199,226>Vizkapcs. Nekrotikus.
+<clr:18,199,226>Nekrotikust találtam.
+<clr:18,199,226>Ellenség kiiktatva.
+<clr:18,199,226>Célpont kiiktatva.
+<clr:18,199,226>Ölés meger
+<clr:18,199,226>Tiszta ölés.
+<clr:18,199,226>Még egy kiiktatva.
+<clr:18,199,226>Megvolt.
+<clr:18,199,226>Kapcsolat kiiktatva.
+<clr:18,199,226>Meghalt.
+. Ölés meger
+<clr:18,199,226>Ellenség semlegesítve.
+<clr:18,199,226>Elintézve.
+<clr:18,199,226>Az ellenségnek vége.
+<clr:18,199,226>Virom kiiktatva.
+<clr:18,199,226>Megtisztítva.
+<clr:18,199,226>Célpont sterilizálva.
+<clr:18,199,226>Paraziták elszigetelve.
+<clr:18,199,226>Egy parazitától megtisztítva.
+<clr:18,199,226>Parazitától megtisztítva.
+<clr:18,199,226>Egy megvolt.
+<clr:18,199,226>Parazita elszigetelve.
+<clr:18,199,226>Undorító.
+<clr:18,199,226>Kitörés hatástalan.
+<clr:18,199,226>Kitörés elszigetelve.
+<clr:18,199,226>Nagy érték
+célpont elszigetelve.
+<clr:18,199,226>Rendelkez
+, egyes célpont csendes.
+<clr:18,199,226>Vége van.
+. Alyxnek vége.
+<clr:18,199,226>Alyx biztosítva.
+<clr:18,199,226>Alyx leszállítva.
+<clr:18,199,226>Halott.
+<clr:18,199,226>Felszámolva.
+<clr:18,199,226>Nekro elszigetelve.
+<clr:18,199,226>Nekrotikus elszigetelve.
+<clr:18,199,226>Maradj is halott.
+<clr:18,199,226>Nekro kiiktatva. Szektor:
+<clr:18,199,226>Nekrotikus felszámolva.
+<clr:18,199,226>Sikeres megtisztítás.
+<clr:18,199,226><sfx>[nehézkes lélegzés]
+<clr:18,199,226><sfx>[köhögés és zihálás]
+<clr:18,199,226>Alfa
+<clr:18,199,226>és
+<clr:18,199,226>Bravo
+<clr:18,199,226>Charlie
+<clr:18,199,226>vonás
+<clr:18,199,226>Delta
+<clr:18,199,226>Echo
+<clr:18,199,226>nyolc
+<clr:18,199,226>tizenegy
+<clr:18,199,226>ötven
+<clr:18,199,226>öt
+<clr:18,199,226>negyven
+<clr:18,199,226>négy
+<clr:18,199,226>száz
+<clr:18,199,226>kilenc
+<clr:18,199,226>nulla
+<clr:18,199,226>egy
+<clr:18,199,226>hetven
+<clr:18,199,226>hét
+<clr:18,199,226>hatvan
+<clr:18,199,226>hat
+<clr:18,199,226>tíz
+<clr:18,199,226>harminc
+<clr:18,199,226>ezer
+<clr:18,199,226>három
+<clr:18,199,226>húsz
+<clr:18,199,226>kett
+<clr:18,199,226>Alyx
+<clr:18,199,226>Antipolgár
+<clr:18,199,226>hangyales
+<clr:18,199,226>AVE
+<clr:18,199,226>Pengefal
+<clr:18,199,226>Társfal
+<clr:18,199,226>baráti
+<clr:18,199,226>ellenség
+<clr:18,199,226>szabad parazita
+<clr:18,199,226>nekrotikus
+<clr:18,199,226>parazita
+<clr:18,199,226>Biztosító
+<clr:18,199,226>Felettünk.
+<clr:18,199,226>Lakás.
+<clr:18,199,226>Hordók.
+<clr:18,199,226>Mögöttünk.
+<clr:18,199,226>Alattunk.
+<clr:18,199,226>Téglák.
+<clr:18,199,226>Híd.
+<clr:18,199,226>Épület.
+<clr:18,199,226>Kocsi.
+<clr:18,199,226>Daru.
+<clr:18,199,226>Ajtó.
+<clr:18,199,226>Lift.
+ttünk.
+<clr:18,199,226>Bódé.
+<clr:18,199,226>Csövek.
+<clr:18,199,226>Kunyhó.
+<clr:18,199,226>Vécé.
+<clr:18,199,226>Vasúti kocsi.
+<clr:18,199,226>Szemetes.
+<clr:18,199,226>Teherautó.
+<clr:18,199,226>Alagút.
+<clr:18,199,226>Furgon.
+<clr:18,199,226>Kerekek.
+<clr:18,199,226>Farakás.
+<clr:18,199,226>Rárontok.
+<clr:18,199,226>Támadást indítok.
+<clr:18,199,226>Lecsapok.
+<clr:18,199,226>Támadás.
+<clr:18,199,226>Rahhh!
+<clr:18,199,226>Gyors lerohanás.
+<clr:18,199,226>Fedezzen.
+<clr:18,199,226>Fedez
+tüzet. Faltör
+zre van szükségem.
+. Fedez
+tüzet kérek.
+<clr:18,199,226>Fedezzen,
+<clr:18,199,226>Kitérek.
+<clr:18,199,226>Gránát.
+<clr:18,199,226>Fedezékbe vonulok.
+<clr:18,199,226>Élesített gránát.
+<clr:18,199,226>Pattogó hallható. Kitérek.
+<clr:18,199,226>Gránát. Mozgás.
+<clr:18,199,226>Fal fent.
+<clr:18,199,226>Szárnyak, vigyázat.
+<clr:18,199,226>Fallal hátrálok.
+<clr:18,199,226>Élesített pattogó.
+<sfx><norepeat:3><clr:255,0,0>[társulási halál]
+<clr:18,199,226>Fal elesett.
+<clr:18,199,226>Felvi
+<clr:18,199,226>Elintéztek.
+. Közelítek.
+. Pozíciót változtatok.
+<clr:18,199,226>Javítok a rálátáson.
+<clr:18,199,226>Igazítok a rálátáson.
+<clr:18,199,226>Igazodom az ellenséghez.
+<clr:18,199,226>Vizuális meger
+sítést alakítok ki.
+<clr:18,199,226>Megszüntetem a rálátás-kitakarást.
+<clr:18,199,226>Célpont nem látható. Mozgok.
+<clr:18,199,226>Igazítok a céleltérésen.
+<clr:18,199,226>Maradjon ott.
+<clr:18,199,226>Pozíciót váltok.
+<clr:18,199,226>Optimalizálom a helyzetem.
+<clr:18,199,226>Vizkapcs-optimalizálás.
+<clr:18,199,226>Problémás láthatóság. Mozgok.
+<clr:18,199,226>Megtisztítom a rálátást.
+<clr:18,199,226>Rálátást alakítok ki.
+<clr:18,199,226>Kapcsolatig három.
+<clr:18,199,226>Felfedem az egyes célpontot.
+<clr:18,199,226>Ne mozduljon.
+<clr:18,199,226>Hé, Alyx!
+<clr:18,199,226>Hé, Alyx, mi vagyunk azok!
+<clr:18,199,226>Alyx! Ott vagy?
+<clr:18,199,226>Pszt. Alyx!
+<clr:18,199,226>Tüzet szüntess. A célpont baráti.
+<clr:18,199,226>Tör
+leáll! Faltör
+készenlétbe áll!
+<clr:18,199,226>Tüzet szüntess. Nem fenyegetés. Nem fenyegetés!
+<clr:18,199,226>Alyx baráti.
+<clr:18,199,226>Tüzet szüntess!<cr>Alyx baráti!
+<clr:18,199,226><sfx:1>[nevetés]
+<clr:18,199,226>Barátjátszma hatásos.
+<clr:18,199,226>[nevet] Ellenség zavarodott.
+<clr:18,199,226>Tüzelek.
+<clr:18,199,226>Támadom a célpontot.
+.<cr>Els
+dlegesen kijelölt helyen.
+<clr:18,199,226>Nyílt alakzat. Fegyverhasználat.
+<clr:18,199,226>Hármas kód. Tango-hotel.
+<clr:18,199,226>Megtisztítás. Szektor:
+<clr:18,199,226>Harcérintkezésben.
+<clr:18,199,226>Tüzet nyitok. Egyes prioritás.
+<clr:18,199,226>Tüzet nyitok Alyxre.
+az els
+dleges célponton.
+! Tüzet nyitok. Célpont:
+rhasználat Vance ellen.
+<clr:18,199,226>Újravillantásig öt.
+<clr:18,199,226>Villantás sikertelen.
+<clr:18,199,226>Villantás nullás. Korrigálom.
+<clr:18,199,226>Újravillantást kérek. Célpont:
+<clr:18,199,226>Vakító hatástalan.
+<clr:18,199,226>Sikeres villantás. Közelítek.
+<clr:18,199,226>Sikeres villantás.<cr>Kihasználom.
+<clr:18,199,226>Ellenség elvakítva.
+<clr:18,199,226>Célpont látásvesztett.<cr>Kihasználom.
+<clr:18,199,226>Szennyez
+összezavarva.
+<clr:18,199,226>Ellenség összezavarva.<cr>Minden egység, kihasználni.
+<clr:18,199,226>Szabaddá teszem.
+<clr:18,199,226>Alkalmazásig három.
+kiugraszt. Szektor:
+kivonási célpontja:
+<clr:18,199,226>Kiszorítom. Lefelé igazodj.
+<clr:18,199,226>Ellenségkivonás az utolsó ismertnél.
+<clr:18,199,226>Pattogó. Pattogó az utolsó ismertnél.
+<clr:18,199,226>Szabadulok.
+<clr:18,199,226>Fal fent. Fedezékbe vonulok.
+<clr:18,199,226>Gránát, feküdj.
+<clr:18,199,226>Kivonó, feküdj.
+<clr:18,199,226>Hangészlelés. Szektor:
+<clr:18,199,226>Lehetséges szennyez
+<clr:18,199,226>Lehetséges aktív ellenség.
+<clr:18,199,226>Mozgás Faltör
+nél.
+<clr:18,199,226>Hangészlelés.
+<clr:18,199,226>Hangészlelés, és
+minden szennyez
+jelentése.
+<clr:18,199,226>Stimdózist kérek.
+. Eltaláltak.
+<clr:18,199,226>Sebzést szenvedek.
+támogatást kér.
+még aktív.
+<clr:18,199,226>Hatástalan.
+<clr:18,199,226>Testburkok kitartanak.
+<clr:18,199,226><sfx:1>[kárörvend
+kuncogás]
+nem látható.
+<clr:18,199,226>A szentségit.
+<clr:18,199,226>Helyzetet kérek.
+<clr:18,199,226>Célpontvesztés.
+<clr:18,199,226>Helyzettámogatást. Faltör
+<clr:18,199,226>Ellenség vizuális kapcsolat negatív.
+szem el
+l tévesztve.
+<clr:18,199,226>Nem látható. Faltör
+<clr:18,199,226>Ellenség elt
+nt.<cr>Szektor ismeretlen.
+célponthelyzetet kér.
+<clr:18,199,226>Ellenség szem el
+helyzettámogatást kér.
+<clr:18,199,226>Helyzettámogatást kérek.
+<clr:18,199,226>Nincs láthatóság.
+negatív láthatóságot jelent.
+<clr:18,199,226>Lehetséges kitérés.<cr>Ellenséghelyzetet kérek.
+csendes.<cr>Utolsó ismert szektort kérek.
+<clr:18,199,226>Teljesen blokkolt láthatóság.
+<clr:18,199,226>Ellenség csendes.
+kitérésben.
+<clr:18,199,226>Ellen
+rzöm a fedezéket.
+<clr:18,199,226>Kapcsolatellen
+rzést:
+<clr:18,199,226>Teljes láthatóságvesztés. Figyelmet.
+pozícióján megsz
+nt a kapcsolat.<cr>Felderítést kérek.
+<clr:18,199,226>Közelség!
+<clr:18,199,226>Közeli fenyegetés. Elszakadok.
+<clr:18,199,226>Támogatást. Támogatást. Támogatást.
+, támogatást. Tör
+, támogatást.
+<clr:18,199,226>Hátrálni. Hátrálni.
+<clr:18,199,226>Nyugtázva.
+<clr:18,199,226>Vettem.
+<clr:18,199,226>Pozitív.
+<clr:18,199,226>Végrehajtom.
+<clr:18,199,226>Értettem.
+<clr:18,199,226>Tartom a helyzetem.
+<clr:18,199,226>Helyzet zárolva.
+<clr:18,199,226>Fegyverek készen.
+<clr:18,199,226>Vizkapcs az utolsó ismert pozíción.
+<clr:18,199,226>Utolsó ismert szemmel tartva.
+<clr:18,199,226>Megfigyelés.
+. Pozícióban.
+<clr:18,199,226>Fókuszban tartom.
+<clr:18,199,226>Zajtalanság. Zajtalanság.
+<clr:18,199,226>Az ellenség ellenáll. Várakozás.
+<clr:18,199,226>Várakozás.
+<clr:18,199,226>Várakozás kapcsolatra.
+<clr:18,199,226>Kiértékelés.
+<clr:18,199,226>Várakozás problémára.
+<clr:18,199,226>Elszigetelésre készen.
+. Várakozik.
+. Szemmel tart.
+elzárva.
+. Perembiztosítás.
+<clr:18,199,226>Széleket ellen
+rizni.
+<clr:18,199,226><sfx><norepeat:5>[fájdalom]
+<clr:18,199,226><sfx:1><norepeat:5>[zihálás]
+<clr:18,199,226>Az ellenség sebezhet
+<clr:18,199,226>Célpont er
+hátrányban.
+<clr:18,199,226>Célpont sérült.
+<clr:18,199,226>Lerohanni. Lerohanni.
+alacsony értéken.
+<clr:18,199,226>Ellenség megjelölve.
+<clr:18,199,226>Ismétlés az ellenségre.
+fokozza a t
+zintenzitást.
+<clr:18,199,226>Vörös szivárgás az ellenségen.
+dleges valószín
+leg megjelölve.
+hatásos.<cr>Nulla-kilences kód.
+<clr:18,199,226>Végzek az egyes célponttal.
+kész.
+felkészül.
+rohamra kész.
+<clr:18,199,226>Rohamozok.
+lerohanja:
+<clr:18,199,226>Rohamkészültségig három
+kett
+egy
+készítem a falat.
+<clr:18,199,226>Pajzs fent.
+<clr:18,199,226>Falat emelek.
+<clr:18,199,226>Fal bekapcsolva.
+<clr:18,199,226>Fal bevetéséig három
+<clr:18,199,226>Minden szektor átvizsgálva.
+<clr:18,199,226>A kapcsolat csendes.
+<clr:18,199,226>Szektor tiszta.<cr>Készenlétet kérek.
+<clr:18,199,226>Terület tiszta.
+jelentkezik.<cr>Az ellenség csendes.
+<clr:18,199,226>Nincs kapcsolat.
+<clr:18,199,226>Aréna biztosítva.
+<clr:18,199,226>Tisztának t
+<clr:18,199,226>Kapcsolatvesztés.<cr>Tisztának t
+<clr:18,199,226>Itt nincs semmi.
+<clr:18,199,226>Készenlétben maradok. Fal fent.
+<clr:18,199,226>Nincs szektorszennyezés.<cr>Pihen
+állapotot kérek.
+<clr:18,199,226>Készen állok Bravo kódra.
+<clr:18,199,226>Semmi.
+<clr:18,199,226>Árnyék tiszta.
+<clr:18,199,226>Kérem az árnyék állapot befejezését.
+<clr:18,199,226>Nincs itt.
+<clr:18,199,226>Pozíció tiszta. Támogatás visszavonható.
+<clr:18,199,226>Összes szektor tiszta. Visszavonás.
+<clr:18,199,226>Vizkapcs feldolgozás.
+<clr:18,199,226>Még keresem
+<clr:18,199,226>Átfésülés folyamatban
+<clr:18,199,226>Letapogatás folyamatban
+. Felderítés folyamatban.
+<clr:18,199,226>Állapot: árnyék aktív.
+<clr:18,199,226>Felderítés folyamatban.
+<clr:18,199,226>Cél továbbra is árnyékban.
+<clr:18,199,226>Szektor tiszta. Haladok.
+<clr:18,199,226>Szektor nullás. El
+rehaladok.
+<clr:18,199,226>Terület tiszta. Tovább.
+<clr:18,199,226>Zajlik a megfigyelés.
+jelentkezik.<cr>Az ellenség továbbra is csendes.
+<clr:18,199,226>Átvizsgálás kész. Folytatás.
+<clr:18,199,226>Továbbra sincs láthatóság.
+<clr:18,199,226>Szárnyak tiszták. Folytatás.
+<clr:18,199,226>Szétszóródás.
+egység indul.
+<clr:18,199,226>Elindult és vizsgál.
+<clr:18,199,226>Megkezdem a takarítást.
+<clr:18,199,226>Éber maradok.
+<clr:18,199,226>Átfésülöm ellenségek után.
+<clr:18,199,226>Átfésülöm szennyez
+k után.
+<clr:18,199,226>Keresés. T
+r alakzat.
+<clr:18,199,226>Zárom az arénát.
+<clr:18,199,226>Elszigetelés folyamatban.
+<clr:18,199,226>Jelentem a rálátást.
+<clr:18,199,226>Célponthoz felfejl
+désig három.
+<clr:18,199,226>Megkezdem az ellenségkivonást.
+<clr:18,199,226>Árnyék állapot kezdeményezése.
+<clr:18,199,226>Fegyverkészenlét! Célponteltérés:
+<clr:18,199,226>Célészlelés helye:
+<clr:18,199,226>Vizkapcs! Vizkapcs! Távolság
+<clr:18,199,226>Ott.
+<clr:18,199,226>Vizkapcs! Ellenség megtalálva.
+<clr:18,199,226>Ott van.
+<clr:18,199,226>Új mozgás.
+<clr:18,199,226>Állat újra a veremben.
+<clr:18,199,226>Kiújult ellenséges kapcsolat.
+<clr:18,199,226>Ellenség újra aktív. Szektor:
+. Kapcsolatismétl
+dés. Szektor:
+<clr:18,199,226>Ellenség mozgásban. Szárnyakat ellen
+<clr:18,199,226>További rálátás meger
+<clr:18,199,226>Rálátás els
+dlegesre meger
+. Elfogás.
+<clr:18,199,226>Helyzet meger
+sítve. Stabilitást kényszerítek.
+sítésig három.
+<clr:18,199,226>Aktív rálátás.
+<clr:18,199,226>Újratöltök.
+újratölt.
+kifogyásáig 4
+<clr:18,199,226>Feltöltés.
+<clr:18,199,226>Üres.
+üres.
+<clr:18,199,226>Alacsony tartalék. Újratöltök.
+frissít.
+<clr:18,199,226>Elszakadás, elszakadás.
+elszakad.
+<clr:18,199,226>Visszavonulok.
+<clr:18,199,226>Meghátrálok.
+<clr:18,199,226>A szektor túl forró.
+<clr:18,199,226>Fedezéket keresek.
+. Átcsoportosulok.
+<clr:18,199,226>A szektor lobbanékony. Árnyékot keresek.
+<clr:18,199,226>Másodlagosak azonosítva.
+<clr:18,199,226>Vizkapcs több ismeretlennel.
+<clr:18,199,226>Vizkapcs másodlagosakkal.
+<clr:18,199,226>Körvonalakat ellen
+rizni.<cr>Lehetséges szorzók.
+<clr:18,199,226>Több szennyez
+nk van.
+<clr:18,199,226>Egyes célpontnál pattogók vannak.
+<clr:18,199,226>Az ellenségnél pattogó van. Óvatosan.
+<clr:18,199,226>A szennyez
+nél gránát van. Szétszóródni.
+<clr:18,199,226>Az els
+dleges célpontnak kivonói vannak.<cr>Válaszlépést.
+<clr:18,199,226>Ellenség újratölt.<cr>Faltör
+kihasználja.
+<clr:18,199,226>Célpont töltekezik. Tüzet nyiss.
+sebezhet
+<clr:18,199,226>Alyx újratölt.<cr>Teljes válaszcsapás aktív.
+<clr:18,199,226>Göraknák közelednek.<cr>Fal fent.
+.<cr>Göraknára reagálok.
+<clr:18,199,226>Göraknák.
+<clr:18,199,226>Szubakut göraknák.<cr>Teljes aktivitás.
+<clr:18,199,226>Célpontváltás: göraknák.
+<clr:18,199,226>Göraknák közelednek.
+<clr:18,199,226>Egyes célpontnál feler
+sített tüskék.
+<clr:18,199,226>Felvigyázók. Egyes célpontnak er
+sítései vannak.
+<clr:18,199,226>Ellenséges tüskék feler
+<clr:18,199,226>Az ellenségnek illegális tüskéi vannak.
+<clr:18,199,226>Er
+sítés azonosítva.<cr>Óvatosan reagáljanak.
+<clr:18,199,226>Felvigyázók, tartalékmozgósítást kérek.
+<clr:18,199,226>Felvigyázók, a szektor nem biztosított.
+<clr:18,199,226>Kitörés. Szektor:
+<clr:18,199,226>Felvigyázók, egy földi egység elesett.<cr>A szektor nincs irányítás alatt.
+<clr:18,199,226>Felvigyázók, a szektort lerohanták.
+<clr:18,199,226>Felvigyázók.<cr>Égi pajzsot kérünk.
+<clr:18,199,226>Felvigyázók, javasoljanak új alakzatot.
+<clr:18,199,226>Baráti egységet vesztettünk.
+<clr:18,199,226>Pótlást kérek.
+<clr:18,199,226>Felvigyázók.<cr>Utolsó aktív.
+<clr:18,199,226>Felvigyázók.<cr>Faltör
+az utolsó egység.<cr>Támogatást kérek.
+<clr:18,199,226>Felvigyázók.<cr>Azonnali árnyékot kérek.
+<clr:18,199,226>Felvigyázók.<cr>A kitörés elszigeteletlen.
+<clr:18,199,226>Felvigyázók.<cr>Lerohant állapotot jelentek.<cr>Nyugtázást.
+<clr:18,199,226>Felvigyázók.<cr>Egyedüli kapcsolat tömeges ellenséggel.
+<clr:18,199,226>Túlél
+jelzés telepítve.
+kivonást kér.<cr>Szektor:
+<clr:18,199,226>Felvigyázók, tájékoztatásul:<cr>Faltör
+az utolsó reagáló.
+<clr:18,199,226>Felvigyázók.<cr>Rendelkez
+elesett.
+csendes!<cr>Új vezet
+t kérek.
+napnyugta állapotban.
+t kiiktatták.
+<clr:18,199,226>Felvigyázók. Rendelkez
+kiesett.<cr>Reagálok.
+csendes.<cr>Teljes reagálást alkalmazni.
+lapos görbe.<cr>Rendelkez
+lapos görbe.
+<clr:18,199,226><sfx:1>[üvöltés]
+<clr:18,199,226>Váltok.
+<clr:18,199,226>Cserélek.
+<clr:18,199,226>Egyes mód.
+<clr:18,199,226>Kettes mód.
+<clr:18,199,226>Tüskék a közelben. Nincs károsodás.
+<clr:18,199,226>Elhibázta.
+<clr:18,199,226>Célzási hiba. Kihasználni.
+<clr:18,199,226>Az ellenség pontatlan.
+<clr:18,199,226>Majdnem.
+érintetlen.
+<clr:18,199,226>Megint elhibázta. Kihasználom.
+<clr:18,199,226>A célpont sikertelen.
+nykihasználás az ellenségen.
+<clr:18,199,226>Ellenség sikertelen. Átcsoportosítás.
+<clr:18,199,226>Tüskék hatástalanok.<cr>Célpont gyakorlatlan.
+<clr:18,199,226>Negatív.
+<clr:18,199,226>Nemleges.
+<clr:18,199,226>Nem.
+<clr:18,199,226>Nem végrehajtható.
+<clr:18,199,226>Megtagadva.
+<clr:18,199,226>Negatív válasz.
+<clr:18,199,226>Nem kivitelezhet
+<clr:18,199,226>Tüskék meger
+sítve.<cr>Fal fent.
+<clr:18,199,226>Ellenség aktív.
+<clr:18,199,226>Harcérintkezés.
+.<cr>Viszonzom a támadást.
+k zajosak.
+<clr:18,199,226>Célpont ellenséges.<cr>T
+<clr:18,199,226>Elfojtó ellenség.<cr>Reagálási cél:
+<clr:18,199,226>Felvigyázók. Tüskéket kapunk.
+<clr:18,199,226>Delta állapot el
+készítése.
+z alatt állok.
+<clr:18,199,226>Teljes reagálás végrehajtása.
+<clr:18,199,226>Szektor
+<clr:18,199,226>[számok]
+<clr:18,199,226>szektor
+<clr:18,199,226>Nincs mit jelentenem. Vége.
+<clr:18,199,226>1, 14, 3, 6, 11
+Ellen
+rizve.<cr>Echo Négynél minden tiszta. Vége.
+<clr:18,199,226>Nyugtázva.<cr>Vizkapcs fenntartva a nomad kilo három vonás hat szektorban.
+<clr:18,199,226>Echo Egynél mozgás negatív.<cr>Hét vonás kettes rácspont.
+<clr:18,199,226>Értettem.<cr>Lehet
+ségekre készen várakozom.
+<clr:18,199,226>Adás tiszta.<cr>Szárnyak tiszták. Vége.
+<clr:18,199,226>Felvigyázók.<cr>Közelségi adatokat kérek az ellenségr
+l.<cr>Várom az adást.
+<clr:18,199,226>Továbbra is várom az adást. Vége.
+<clr:18,199,226>Felvigyázók meger
+sítik a szektorlezárást.<cr>Rálátást szabadon hagyni, hangfelügyelet.
+<clr:18,199,226>Nyugtázva
+Kitörési állapot delta hetes kód.<cr>Osztag-napnyugta kapcsolatlerohanáskor.<cr>Nyugtázva.
+<clr:18,199,226>Negatív
+Nyugtázva
+Nincs szennyez
+a szektorban.<cr>Els
+dleges célvektorra nincs meger
+sítés.<cr>Várom a másodlagos paraméterkódokat.
+<clr:18,199,226>Bioadat-frissítés
+Stimdózis: 32.<cr>T
+r: 78. Pajzs: 100.<cr>Biprox: .73.<cr>Hallhatóság: 3. Fényviszonyok: 15. Vége.
+<clr:18,199,226>Vettem.<cr>Zsigerel
+k ötös csúcspontra állítva.<cr>Biotikusok vannak a határzónánál.<cr>Várjuk a harcérintkezést. Vége.
+sítik ép viromok közeledését.<cr>Minden egység tájékoztatására: harcérintkezésre készülj.
+<clr:18,199,226>Hívókód:<cr>Delta echo hetes kilences alfa kettes orsó zéró
+.<cr>Meger
+<clr:18,199,226>Vettem. Itt vagyok.
+<clr:18,199,226>Vétel. Elfogadva.<cr>Kognitív-elnyomó bioadatok frissítése.<cr>Frissítés vége T mínusz három másodperc múlva
+<cr>Disszonancia feloldva.
+<clr:18,199,226>Felvigyázók frissítést és feloldást kérnek minden egységt
+l.<cr>A kognitív disszonanciát nem fogjuk tolerálni.
+Negatív
+Az emlékeket is.<cr>A frissítés elérhet
+. Az elfogadás kötelez
+<clr:18,199,226>Stabilizálóosztag tartja a pozíciót.<cr>Láthatóság 73.<cr>Hallhatóság
+15.<cr>Felvigyázók meger
+sítik a nagy érték
+célpont közeledését a határzónához.<sb>Figyelmet.
+<clr:18,199,226>Felvigyázók.<cr>Aktív ellenséggel találkoztunk.<cr>Felkészülési tanácsok?
+<clr:18,199,226>Negatív.<cr>A célpont továbbra is aktív.
+<clr:18,199,226>Vettem.<cr>Alfa állapot kialakítása.
+<clr:18,199,226>Vettem.<cr>Alfa állapot kialakítása kilenc vonás három hét rácsponton.
+<clr:18,199,226>Várom az el
+rehaladási direktívát. Vége.
+<clr:18,199,226>Meger
+sítve. Újrakalibrálás.
+<clr:18,199,226>Vettem. Felveszem a pozíciót.
+<clr:18,199,226>Még mindig él.
+<clr:18,199,226>Vettem.<cr>Elszigetelés és felügyelet folyamatban.
+<clr:18,199,226>Feloldás alatt.
+<clr:18,199,226>10-4. T
+rfrissítés negatív.<cr>Töltve és t
+zkész.
+<clr:18,199,226>Taktikai el
+nyt szerzek.
+<clr:18,199,226>Tartom.
+<clr:18,199,226>Bioadat-feltöltésre várok.
+<clr:18,199,226>Felkészülök a napnyugtára.
+<clr:18,199,226>Kommunikáció kialakítása elhúzódó ütközethez.
+<clr:18,199,226>Negatív. Nincs szükség t
+rökre.
+<clr:18,199,226>Növelem az ütközet id
+tartamát.
+<clr:18,199,226>Ellenséges bioadatok beolvasása.
+<clr:18,199,226>Legutóbbi utasítás semmis.
+<clr:18,199,226>Felvigyázók. 10 - 9.
+<clr:18,199,226>Harcban és tüzelek.
+<clr:18,199,226>Stabilitást kényszerítek az els
+dleges célpontra. Szektor:
+<clr:18,199,226>Célpont t
+zvonalban.
+zvonalban és tüskéket kap.
+teljesebb fellépés az els
+dleges célponttal szemben.
+<clr:18,199,226>Most annyi neki.
+<clr:18,199,226>Mindjárt vége.
+<clr:18,199,226>Mindjárt vége van.
+<clr:18,199,226>Tüskéket küldök.
+<clr:18,199,226>Minden tüske az els
+dleges célpontra.
+<clr:18,199,226>Megy minden tüske.
+<clr:18,199,226>Ne álljon ellen.
+harcban és tüzel.
+<clr:18,199,226>AVE harcban és tüzel.
+<clr:18,199,226>Az ellenség rendkívüli pánikban van.
+<clr:18,199,226>Ellenség lerohanva.
+<clr:18,199,226>A célpont motivációja alacsony.<cr>Kihasználni.
+<clr:18,199,226>A célpont motivációja alacsony.
+<clr:18,199,226>Most már el
+jöhet.
+<clr:18,199,226>Figyelem, ellenséges célpont!<cr>Tudunk segíteni.<cr>Biztonságban van.
+<clr:18,199,226>Tudunk segíteni.<cr>Biztonságban van.
+<clr:18,199,226>Gyanúsított törvényes agresszióküszöb fölött.<cr>Kihasználom.
+<clr:18,199,226>Megkezdem az eszkalációt.
+<clr:18,199,226>Gyanúsított nem engedelmeskedik a 10-307-es cikkelynek.
+<clr:18,199,226>10-307-es cikkely.<cr>Megkezdem az eszkalációt.
+<clr:18,199,226>Az ellenség tétovázik.
+<clr:18,199,226>Az ellenséges támadás hatástalan.<cr>Folytatni az elszigetelést.
+<clr:18,199,226>10-108-as kód aktiválása.<cr>Vissza.
+<clr:18,199,226>Tüzelés beszüntetve.<cr>A célpont baráti.
+<clr:18,199,226>Vissza.<cr>10-40-es kód.
+<clr:18,199,226>Tüzelés beszüntetve. A célpont nem ellenséges.
+<clr:18,199,226>Vettem. Ne l
+jenek.<cr>Együttm
+ködés meger
+<clr:18,199,226>A célpont baráti.
+<clr:18,199,226>Vissza.<cr>A célpont baráti.
+<clr:18,199,226>Minden egység vissza. A célpont baráti.
+sített baráti.<cr>Tüzet szüntess!
+<clr:18,199,226>Felvigyázók.<cr>Várakozó állásponton a kilenc vonás öt rácsponton.
+<clr:18,199,226>Felvigyázók.<cr>Várakozó állásponton.
+<clr:18,199,226>Értettem.<cr>Célpont alacsony értéken.
+<clr:18,199,226>Vettem.<cr>Az ellenség nem figyel, elszigetelésre kész.
+<clr:18,199,226>Az ellenség kimerültséget mutat.<cr>Elszigetelésre készülj.
+<force><clr:18,199,226>Ne mozduljon.
+<force><clr:18,199,226>Semmi. Nincs azonosítója.
+<force><clr:18,199,226>Tegye fel a kezét. Kezeket fel.
+<force><clr:18,199,226>Ne mozogjon!
+<force><clr:18,199,226>Hol van a többi?
+<force><clr:18,199,226>Ez kicsoda?
+<force><delay:10.5><clr:18,199,226>Alyx? Ott vagy?<cr>Hé, Alyx! Mi vagyunk!
+<clr:18,199,226>Mozgásban a szennyez
+<clr:18,199,226>Nyomás alá helyezem.
+<clr:18,199,226>Echo Egy el
+<clr:18,199,226>Echo Egy azonosította a szektort és mozgásban a fert
+renyomulok a szektorban.
+<clr:18,199,226>Teljes aktivitással reagálok.
+<clr:18,199,226>Tüzet nyitok.
+nyb
+l támadok.
+<clr:18,199,226>Egyes célpont rálátásban.
+<clr:18,199,226>F
+nyeremény meger
+<clr:18,199,226>Egyes célpont életkorlátozott.
+az.
+<clr:18,199,226>Echo fellép Alyx ellen.
+<clr:18,199,226>Fegyverhasználat Alyx ellen.
+<clr:18,199,226>Tüzelek Alyxre.
+dleges célpont. Echo Egy támad.
+<clr:18,199,226>Célpontot váltok. Kód: ledöntés.
+<clr:18,199,226>Célpont kódjele árnyék.
+<clr:18,199,226>Echo Egy. Megszüntetem a támaszt.
+<clr:18,199,226>Echo Egy. T
+<clr:18,199,226>Echo Egy. Fegyverhasználat a fedezéken.
+<clr:18,199,226>Kód: ledöntés.
+<clr:18,199,226>És
+Kivonó úton.
+<clr:18,199,226>Feküdj!
+<clr:18,199,226>Kivonóig három.
+Kivonás.
+<clr:18,199,226>Vizkapcs. Hangyales
+. Echo Egy támad.
+<clr:18,199,226>Echo Egy, kapcsolat. Hangyales
+<clr:18,199,226>Itt egy hangyales
+<clr:18,199,226>Paraziták. Szektor:
+<clr:18,199,226>Uhh
+Szabad paraziták közelednek.
+<clr:18,199,226>Echo Egy. Paraziták láthatók.
+<clr:18,199,226>Gy
+lölöm ezeket.
+paraziták. Echo Egy.
+zésriadó.
+<clr:18,199,226>Echo Egy. Nekrotikus látható.
+<clr:18,199,226>Nekrotikust látok.
+<clr:18,199,226>Itt nekrotikusok vannak.
+<clr:18,199,226>Kapcsolat nekrotikussal.
+<clr:18,199,226>Echo Egy. Ölés meger
+<clr:18,199,226>Elvégezve.
+<clr:18,199,226>Szektor tiszta.
+elszigetelve.
+<clr:18,199,226>Egyes célpont csendes.
+<clr:18,199,226>Csendben van.
+<clr:18,199,226>Alyxnek vége.
+dleges ellenség felszámolva.
+<clr:18,199,226>Alyx elintézve.
+felszámolva.
+<clr:18,199,226>Vissza aludni.
+<clr:18,199,226><sfx:1>[nyögés]
+<clr:18,199,226><sfx:1>[nehézkes lélegzés]
+<clr:18,199,226><sfx:1>[köhögés és zihálás]
+<clr:18,199,226>tizenkett
+<clr:18,199,226>APS
+<clr:18,199,226>Echo Egy
+<clr:18,199,226>Felvigyázók
+<clr:18,199,226>Echo Egy fedez
+tüzet kér.
+<clr:18,199,226>Echo Egy árnyékot kér.
+<clr:18,199,226>Készítsenek stimdózist.
+tüzet kérek. Helyzetem:
+<clr:18,199,226>Lehetséges kivonó. Kitérek.
+<clr:18,199,226>Fedezékbe.
+<clr:18,199,226>Pattogó hallható. Szektor:
+<clr:18,199,226>Vissza.
+<clr:18,199,226>Élesített pattogó. Árnyékot keresek.
+<clr:18,199,226>Vége.
+<clr:18,199,226>Segítség!
+<clr:18,199,226>Sajnál
+<clr:18,199,226>Közeledem.
+<clr:18,199,226>Echo Egy pozíciót vált.
+<clr:18,199,226>Megszüntetem a kitakarást.
+<clr:18,199,226>Echo Egy, célpont nem látható. Mozgok.
+<clr:18,199,226>Korrigálom az ellenségre rálátást.
+<clr:18,199,226>Vizkapcs megszakadt. Mozgok.
+<clr:18,199,226>Felfedem az els
+dlegest.
+<clr:18,199,226>Tüzet szüntess.<cr>A célpont baráti!
+<clr:18,199,226>Fegyvert le!<cr>Echo Egy! Fegyver lent.
+<clr:18,199,226>Tüzelés beszüntetve.<cr>T
+r lent.
+<clr:18,199,226>Alyx baráti! Az ellenség baráti!
+<clr:18,199,226>Alyx baráti! Tüzet szüntess! Tüzet szüntess!
+<clr:18,199,226>[nevet] Barátjátszma hatásos.
+r az ellenségen.
+<clr:18,199,226>Echo Egy az els
+<clr:18,199,226>Elfojtás indítása az ellenségen.
+<clr:18,199,226>Megtisztítom a szektort.
+<clr:18,199,226>Végrehajtok a szektorban.
+<clr:18,199,226>Tüzet nyitok az egyes prioritásra.
+<clr:18,199,226>Vance-t célzom.
+<clr:18,199,226>Tüzet nyitok az egyes célpontra.
+<clr:18,199,226>Tüskék az els
+dleges felé.<cr>Reakciót tompítani.
+<clr:18,199,226>Alyx id
+korlátos.
+<clr:18,199,226>Állat a veremben.
+sítve. Tüzelek.
+<clr:18,199,226>Megtisztítom az utolsó ismertet.
+<clr:18,199,226>Kiugrasztás. Szektor:
+<clr:18,199,226>Kivonás az utolsó ismertnél.
+<clr:18,199,226>Kiszorítom az utolsó ismerten. Lefelé igazodj.
+<clr:18,199,226>Kiugrasztom az ellenséget.
+<clr:18,199,226>Elszakadok a fedezékt
+<clr:18,199,226>Elszakadok.
+<clr:18,199,226>Mozgás.
+<clr:18,199,226>Echo Egy hangészlelésen.<cr>Minden gyanúsítottat jelentek.
+<clr:18,199,226>Szanitéc.
+<clr:18,199,226>Eltaláltak. Stimdózist kérek.
+<clr:18,199,226>Kiegészít
+testburkokat kérek.
+<clr:18,199,226>Echo Egy id
+<clr:18,199,226>Picsába.
+<clr:18,199,226><sfx:1><norepeat:5>[kárörvend
+<clr:18,199,226>Szentségit.
+<clr:18,199,226>Echo Egy célponthelyzetet kér.
+<clr:18,199,226>Elvesztettem a célt.<cr>Helyzettámogatást kérek.
+<clr:18,199,226>Helyzettámogatást.
+<clr:18,199,226>Vizkapcs az ellenséggel negatív.
+<clr:18,199,226>Szem el
+l tévesztettem a szennyez
+<clr:18,199,226>Nem látható. Reagáló.
+nt. Szektor ismeretlen.
+<clr:18,199,226>Ellenséghelyzetet kérek.
+<clr:18,199,226>Helyzettámogatást Echo Egynek.
+<clr:18,199,226> helyzettámogatást kérek.
+<clr:18,199,226>Helyzettámogatást kérek. Célszektor:
+<clr:18,199,226>Nem látható. Felvigyázók, támogatást.
+<clr:18,199,226>Echo Egy negatív láthatóságot jelent.
+<clr:18,199,226>Lehetséges kitérés. Ellenséghelyzetet kérek.
+<clr:18,199,226>Egyes célpont láthatósága teljesen blokkolt.
+dleges ellenség csendes.
+<clr:18,199,226>Kitér
+szennyez
+.<cr>Rendelkez
+, jelentést.
+<clr:18,199,226>Keresem az egyes célpontot, helyzetem:
+<clr:18,199,226>Vizkapcs elveszítve. Figyelek.
+<clr:18,199,226>Minden kapcsolat csendes. Felderítést kérek.
+<clr:18,199,226>[elfulladt rémült kiáltás]
+<clr:18,199,226>Áááálllj!
+<clr:18,199,226>Azist
+<clr:18,199,226>Echo, támogatást. Echo, támogatást.
+<clr:18,199,226>M
+veletbefejezés. Kivonást! Echo Hetes.<cr>Kivonást. Echo Hetes.
+<clr:18,199,226>Közelségi riadó Echo Egynél! Reagálói támogatást!
+<clr:18,199,226>Túl közel van. Korrigálom.
+<clr:18,199,226>Megoldható.
+r készen.
+<clr:18,199,226>Echo Egy pozícióban.
+<clr:18,199,226>Figyelés.
+<clr:18,199,226>Echo Egy. Perembiztosítás.
+rzöm a széleket.
+az ellenség sebezhet
+<clr:18,199,226>Ismétlek az ellenségre.
+rer
+sítést kérek egyes célpont ellen.
+r hatásos. Nulla-kilences kód.
+dleges ellenség stimhozzáférését meggátolni.
+<clr:18,199,226>Szektor tiszta. Készenlétet kérek.
+<clr:18,199,226>Kapcsolatvesztés.Tisztának t
+<clr:18,199,226>Készenlétben maradok.
+<clr:18,199,226>Minden egység jelentkezik.<cr>Csend van a veremben.
+<clr:18,199,226>Pozíció tiszta.<cr>Támogatás visszavonható.
+<clr:18,199,226>Vizkapcs-feldolgozás
+<clr:18,199,226>Ellenség továbbra is csendes.
+<clr:18,199,226>Alfa állapot beállítása.
+<clr:18,199,226>Echo egység indul.
+<clr:18,199,226>Keresem.
+<clr:18,199,226>Vettem. Vizkapcs. Minden egység.
+<clr:18,199,226>Szétszóródás és vizsgálat.
+<clr:18,199,226>Fegyverhasználat célponton. Célponteltérés:
+<clr:18,199,226>Vizkapcs! Vizkapcs!
+<clr:18,199,226>Célpont megtalálva.
+<clr:18,199,226>Ellenséges kapcsolat.
+<clr:18,199,226>Gyerünk, gyerünk, gyerünk.
+<clr:18,199,226>Echo Egy.<cr>Kapcsolat a kilenc négyes szektorban.
+<clr:18,199,226>Rálátás meger
+<clr:18,199,226>Echo Egy, elfogás.
+sítve.<cr>Stabilitást kényszerítek.
+<clr:18,199,226>Aktív rálátás. Ellenség újra megtalálva.
+<clr:18,199,226>Újratöltöm a t
+röket.
+<clr:18,199,226>Echo kifogy, még három
+ztámogatást kérek újratöltéshez.
+<clr:18,199,226>Echo Egy, üres t
+<clr:18,199,226>Fegyverfrissítés.
+<clr:18,199,226>Elszakadás.
+<clr:18,199,226>Echo Egy elszakad.
+<clr:18,199,226>Átcsoportosulás.
+<clr:18,199,226>Visszahúzódok.
+<clr:18,199,226>Lobbanékony helyzet. Árnyékot keresek.
+<clr:18,199,226>Vizkapcsunk van másodlagosakkal.
+<clr:18,199,226>Földi osztag, riadó. Egyes célpontnak kivonói vannak.
+<clr:18,199,226>Ellenség újratölt. T
+rel
+ny.
+<clr:18,199,226>Alyx újratölt. Teljes válaszcsapás aktív.
+<clr:18,199,226>Göraknákkal találkoztunk. T
+<clr:18,199,226>Vizkapcs! Göraknák!
+<clr:18,199,226>Szubakut göraknák.<cr>Reagáló teljes aktivitáson.
+<clr:18,199,226>Célpontváltás a göraknákra.
+<clr:18,199,226>Göraknák. Közelednek.
+<clr:18,199,226>Földi osztag, riadó.<cr>Ellenségnek er
+sített tüskéi vannak.
+<clr:18,199,226>Vizkapcs. Illegális tüskék.
+<clr:18,199,226>Felvigyázók. Tartalékmozgósítást kérek.
+<clr:18,199,226>Felvigyázók. A szektor nem biztosított!
+<clr:18,199,226>Kitörés, kitörés, kitörés!
+<clr:18,199,226> kimúlt.
+<clr:18,199,226>Felvigyázók.A szektort lerohanták!<cr>Ismétlem. A szektort lerohanták!
+<clr:18,199,226>Felvigyázók. Égi pajzsot kérünk.
+<clr:18,199,226>Elvesztettük az el
+nyt. Problémák várhatók.
+<clr:18,199,226>Felvigyázók. Javasoljanak új alakzatot.
+<clr:18,199,226> csendes. Pótlást kérek.
+<clr:18,199,226>Echo Egy az utolsó aktív.
+<clr:18,199,226>Felvigyázók! Echo Egy az utolsó egység! Támogatást kérek.
+<clr:18,199,226>Uhh. Azonnali árnyékot kérek!
+<clr:18,199,226>Felvigyázók! A kitörés elszigeteletlen!
+<clr:18,199,226>Echo Egy tömeges ellenséget jelent.
+<clr:18,199,226>Felvigyázók! Nem maradt földi egység.
+<clr:18,199,226>Felvigyázók! Echo Egy a kivonását kéri.
+<clr:18,199,226>Felvigyázók.<cr>Echo Egy az utolsó reagáló.
+<clr:18,199,226>Felvigyázók! Rendelkez
+elesett!
+csendes! Támogatást kérek!
+napnyugta állapotban! Nyugtázást!
+kiiktatva.
+gátolt.<cr>Reagálok
+csendes.<cr>Teljes reagálást alkalmazni!
+<clr:18,199,226>Elfojtom.
+<clr:18,199,226>Elfojtási cél:
+<clr:18,199,226>Echo Egy engedelmességet kényszerít.
+<clr:18,199,226>Zárót
+z az utolsó ismertre.
+<clr:18,199,226>Fenntartott t
+r az utolsó ismertre.
+az ellenség helyhez szögezve.
+<clr:18,199,226>Célzási hiba. Kihasználom.
+nykihasználás az ellenség hibáján.
+<clr:18,199,226>Echo Egy érintetlen.
+<clr:18,199,226>Tüskék hatástalanok. Célpont gyakorlatlan.
+<clr:18,199,226>Ahm
+Nem megoldható.
+sítve. Alakzatba.
+<clr:18,199,226>Kapcsolat. Ellenség helyzete:
+<clr:18,199,226>Echo Egy elfojtást kezdeményez.
+<clr:18,199,226>Itt Echo Egy. A szennyez
+<clr:18,199,226>Célpont ellenséges. T
+<clr:18,199,226>Az ellenség elfojt.
+<clr:18,199,226>Uhh. Delta állapot el
+<clr:18,199,226>Nyugtázva.<cr>Echo Egy hangészlelésen, minden gyanúsítottat jelentek.
+<clr:18,199,226>Hangészlelés az alfa kilenc delta szektorban.<cr>Ellenség felfedéséig három
+<clr:18,199,226>Felvigyázók.<cr>Echo Egy azonosította a szektort és mozgásban a fert
+zötthöz.<cr>Hét-egy-hármas antipolgár.
+.<cr>Kihasználom.
+<clr:18,199,226>Echo Egy.<cr>Kapcsolat a kilenc négyes szektorban.<cr>Ellenség aktív. Szárnyakat ellen
+<clr:18,199,226>Egyes célpont ellen
+rzése a tizenegyes épületnél.<cr>Els
+dleges ellenség csendes.<cr>Felderítés folyamatban.
+<clr:18,199,226>Alfa állapot beállítása. És
+<cr>Szennyez
+zárolva.<cr>Ellen
+sítve.<cr>Igazodom az ellenséghez.<cr>Alyx id
+Aha
+Nincs mit jelentenem. Vége.
+rizve.<cr>És
+Echo Négynél minden tiszta.<cr>Maga jön. Vége.
+<clr:18,199,226>Behangolás
+Értettem
+Echo Egy alacsony fényt és alacsony hangot jelent.<cr>Lehet
+<clr:18,199,226>Adás tiszta
+<cr>Futóhomok állapot negatív.<cr>Ööö
+Várjon
+Nem.<cr>Szárnyak tiszták. Vége.
+<clr:18,199,226>Felvigyázók.<cr>Itt Echo Négy, közelségi adatokat kérek az ellenségr
+<clr:18,199,226>A szektor követése 43%-on.<cr>Stabil. És
+<cr>Továbbra is várom az adást. Vége.
+sítik a szektorlezárást.<cr>Egyes számú antipolgár, ööö
+kiszorítva és aktiválva.<cr>Rálátást szabadon hagyni, hangfelügyelet.
+Kitörési állapot delta hetes kód.<cr>Osztag-napnyugta kapcsolatlerohanáskor
+<cr>Ahm
+Nyugtázva.
+<clr:18,199,226>Negatív. Nyugtázva.<cr>Nincs szennyez
+a szektorban. Els
+r: 78. Pajzs: 100. Biprox: .73.<cr>Hallhatóság: 3. Fényviszonyok: 15. Echo Egy, vége.
+<clr:18,199,226>Vettem. Zsigerel
+k ötös csúcspontra állítva.<cr>Biotikusok vannak a határzónánál.<cr>Ahm
+Várjuk a harcérintkezést. Vége.
+sítik, ööö
+ép viromok közeledését.<cr>Minden egység tájékoztatására: harcérintkezésre készülj.
+<clr:18,199,226>Hívókód: Delta echo hetes kilences alfa kettes orsó zéró
+<cr>Meger
+sítve. Echo kilép.
+l.<cr>A kognitív disszonanciát nem fogjuk tolerálni.<cr>Negatív
+Az emlékeket is. A frissítés elérhet
+.<cr>Az elfogadás kötelez
+<clr:18,199,226>Stabilizálóosztag tartja a pozíciót.<cr>Láthatóság 73. Hallhatóság
+célpont közeledését a határzónához.<cr>Figyelmet.
+<clr:18,199,226>Felvigyázók. Aktív ellenséggel találkoztunk.<cr>Felkészülési tanácsok?
+<clr:18,199,226>Echo Egy harcban és tüzel.
+<clr:18,199,226>Echo Egy küldi az összes tüskét.
+<clr:18,199,226>Áááhhh! H
+szivárgás a testburkon!<cr>Támogatást. Támogatást ké
+szivárgás a testburkon!<cr>Támogatást. Támog
+[érthetetlen kiáltozás]
+<clr:18,199,226>Echo Egy azonnali elszigetelést kér! [rémült üvöltés]
+<clr:18,199,226>Echo Egy azonnali elszigetelést kér. [rémült üvöltés]
+<clr:18,199,226>Ááá! Határérték fölötti h
+mérséklet! Áááhhh!
+<clr:18,199,226>Uhh! Kritikus bioadatok. Kimúlásig 4
+<clr:18,199,26>Uhh! Kritikus bioadatok. Kimúlásig 4
+szivárgás a testburkon! Áááá!
+szivárgás a testburkon! [érthetetlen kiáltozás]
+<clr:18,199,226><sfx:1>[rémült üvöltés]
+<clr:18,199,226>Figyelem, ellenséges célpont!<cr>Tudunk segíteni. Biztonságban van.
+<clr:18,199,226>Tudunk segíteni. Biztonságban van.
+<clr:18,199,226>Gyanúsított törvényes agresszióküszöb fölött.
+<clr:18,199,226>10-307-es cikkely. Megkezdem az eszkalációt.
+<clr:18,199,226>Gyanúsított nem engedelmeskedik a 10-307-es cikkelynek.<cr>Megkezdem az eszkalációt.
+<clr:18,199,226>10-108-as kód aktiválása. Vissza.
+<clr:18,199,226>Tüzelés felfüggesztve.<cr>A célpont baráti.
+<clr:18,199,226>Vissza. 10-40-es kód.
+<clr:18,199,226>Ne l
+<clr:18,199,226>Vissza. A célpont baráti.
+sített baráti. Tüzet szüntess!
+<clr:18,199,226>Értettem. Célpont alacsony értéken.
+<clr:18,199,226> El
+rehaladási direktíva.
+renyomulási direktíva.
+<clr:18,199,226>Minden egység, el
+<clr:18,199,226>Minden egység, célpontra felfejl
+dni.
+<clr:18,199,226>A stabilizálóosztag azonosította a szektort és mozgásban a fert
+<clr:18,199,226>Teljes aktivitás.
+<clr:18,199,226>Helló, egyes célpont.
+dleges célpont. Rendelkez
+<clr:18,199,226> els
+<clr:18,199,226> tüzel Alyxre.
+<clr:18,199,226>Minden egység. T
+z Alyxre.
+<clr:18,199,226>Fegyverhasználat a fedezéken.
+<clr:18,199,226> fegyverhasználat a fedezéken.
+<clr:18,199,226> szüntesse meg az árnyéktámogatást.
+<clr:18,199,226>Kivonó.
+<clr:18,199,226>Pattogót használok.
+<clr:18,199,226>Alkalmazni.
+<clr:18,199,226>Kivonót alkalmazni.
+<clr:18,199,226>Minden egység. Indítsák a pattogókat.
+<clr:18,199,226> használja ki.
+<clr:18,199,226>Minden egység. Kihasználni.
+<clr:18,199,226>Célpont. Hangyales
+<clr:18,199,226>Védelmi osztag, riadó.<cr>Hangyales
+k. Észlelési szektor:
+<clr:18,199,226>Felvigyázók.<cr>A földi osztag parazitákat észlel.
+<clr:18,199,226>Vizkapcs. Szabad paraziták közelednek.
+<clr:18,199,226>Paraziták láthatók.
+<clr:18,199,226>Felvigyázók.<cr>A földi osztag nekrotikusokat észlel.
+<clr:18,199,226>Aktív nekrotikus. Szektor:
+<clr:18,199,226>Nekrotikus a közelben.
+i ölés. Jegyzend
+elhallgattatta.
+<clr:18,199,226>Ellenségnek vége.
+<clr:18,199,226>Célpont steril.
+zés megtisztítva.
+<clr:18,199,226>Felvigyázók, a szektor tiszta.
+<clr:18,199,226>Megtisztító:
+<clr:18,199,226>Elintéz
+dleges célpont megtisztítója:
+dleges célpont elszigetel
+je:
+<clr:18,199,226>Nekrotikus elszigetel
+<clr:18,199,226>Nekrotikus elintéz
+<clr:18,199,226>Minden egység. Fedezzék a Rendelkez
+t. Helyzete:
+<clr:18,199,226>Fedezzék a Rendelkez
+<clr:18,199,226>Penge Kett
+, készítsen stimdózist.
+<clr:18,199,226>Védelmezek.
+<clr:18,199,226>Védekezem.
+<clr:18,199,226>Árnyékba húzódok.
+<clr:18,199,226>Minden egység. Rögzítés és tartás.
+<clr:18,199,226>Minden egység. Kitérés.
+<clr:18,199,226>Minden egység. Pattogó közelségi riadó.
+<clr:18,199,226>Felfedem a rálátást.
+<clr:18,199,226>Igazítok.
+<clr:18,199,226>Takarás megszüntetve.
+<clr:18,199,226> igazodjon.
+<clr:18,199,226> korrigálja a rálátást.
+<clr:18,199,226>Földi osztag, igazodni.
+<clr:18,199,226>Védelmi osztag. Rálátáson igazíts.
+<clr:18,199,226>Tüzet szüntess.<cr>A célpont baráti.
+<clr:18,199,226>Fegyvert le!<cr>Fegyver lent.
+<clr:18,199,226>Tüzet szüntess.<cr>Tüzet szüntess.
+<clr:18,199,226>Minden egység! Alyx baráti.
+<clr:18,199,226>Alyx baráti! Tüzet szüntess!
+<clr:18,199,226>Tüzelek az ellenségre.
+<clr:18,199,226> t
+<clr:18,199,226> végrehajtás belátás szerint.
+<clr:18,199,226> nyisson tüzet.
+<clr:18,199,226>Minden egység. Korlátlan elfojtást. Célterület:
+<clr:18,199,226>Tüzet nyiss. Egyes prioritás.
+<clr:18,199,226>Tüzet nyiss Alyxre.
+, t
+r az els
+dlegesen.
+<clr:18,199,226>Fülsiketít
+reagálás.
+sítve. T
+<clr:18,199,226> célozza az egyes prioritást.
+<clr:18,199,226> korlátlanul Vance ellen.
+<clr:18,199,226> hallgattassa el az egyes célpontot.
+<clr:18,199,226>Pattogóval tisztítok.
+<clr:18,199,226>Kivonási célpont:
+<clr:18,199,226> használjon pattogót az utolsó ismertre.
+<clr:18,199,226> ellenség kiugrasztása az utolsó ismerten.
+<clr:18,199,226>Kitéréssel elszakadok.
+<clr:18,199,226>Mozgásészlelés:
+<clr:18,199,226>Minden egység, hangészlelést.<cr>Rálátáskor jelentsék a szennyez
+életkorlátozott.
+<clr:18,199,226>Stimcsomag kitart.
+<clr:18,199,226>Felvigyázók. Stimdózist kérek.
+<clr:18,199,226>Alacsony tartalék. Id
+<clr:18,199,226>Orvosi segítséget. Rendelkez
+helyzete:
+<clr:18,199,226>Halál hatástalan.
+<clr:18,199,226> életkorlátozott.
+<clr:18,199,226><sfx><norepeat:5>[kárörvend
+<clr:18,199,226>Felvigyázók, helyzetet kérek.
+<clr:18,199,226>Nincs vizkapcs a szennyez
+vel.
+<clr:18,199,226> jelentse a rálátást.
+<clr:18,199,226>Lehetséges kitérés. Minden egység, jelentést.
+<clr:18,199,226>Célponthelyzetet kérek.
+csendes.
+<clr:18,199,226>Nincs vizkapcs az ellenséggel.
+<clr:18,199,226>Fedezéket ellen
+<clr:18,199,226>Utolsó ismert szektort kérek.
+<clr:18,199,226> Célállapot-jelentést kérek.
+dleges csendes.
+<clr:18,199,226>Nincs vizkapcs az els
+dlegessel.
+<clr:18,199,226>Vance célpont árnyékban. Helyzettámogatást.
+dleges szennyez
+dleges ellenség árnyékban. Jelentse a vizkapcsot.
+<clr:18,199,226>Közelségsértés. Korrigálom.
+<clr:18,199,226>Támogatást. Támogatást. Támogatást. Támogatást.
+zés terjed. Fert
+zés terjed.
+<clr:18,199,226>Hátra. Hátra. Hátra.
+sítés.
+<clr:18,199,226>A helyemen vagyok.
+<clr:18,199,226>Várakozz.
+<clr:18,199,226> várja a kapcsolatot.
+<clr:18,199,226><sfx><norepeat:5>[zihálás]
+dleges ellenség sebezhet
+hatásos. Nulla-kilences kód.
+<clr:18,199,226>Ismétlés az ellenségre, kett
+, egy
+<clr:18,199,226>Felvigyázók. Fegyverer
+sítést kérek.
+<clr:18,199,226>A végét járja.
+<clr:18,199,226>Minden egység, els
+<clr:18,199,226> jelentse az ellenség kimúlását.
+<clr:18,199,226>Kapcsolatvesztés. Lehetséges szennyezésmegsz
+nés.
+<clr:18,199,226>Nincs szektorszennyezés. Pihen
+<clr:18,199,226>Minden egység jelentkezik. Csend van a veremben.
+<clr:18,199,226> jelentse a szektorállapotot.
+<clr:18,199,226> jelentse a fert
+zésállapotot.
+<clr:18,199,226>Vizkapcs-letapogatás
+<clr:18,199,226> folytassa az átvizsgálást és megtisztítást.
+<clr:18,199,226> keresse tovább.
+<clr:18,199,226>Felvigyázók. Alfa állapotot jelentek.
+<clr:18,199,226>Kezd
+dik a takarítás.
+<clr:18,199,226>Figyelmet fenntartani. Rálátást jelenteni.
+<clr:18,199,226>Vizkapcs. Minden egységnek.
+<clr:18,199,226>Megkezdem az ellenségfelfedést.
+<clr:18,199,226> indulás és vizsgálat.
+<clr:18,199,226> zárja az arénát.
+<clr:18,199,226>Minden egység. Szétszóródás és vizsgálat.
+<clr:18,199,226>Minden egység. Minden árnyékot felfedni.
+<clr:18,199,226>Fegyverkészenlét! Célponthelyzet:
+<clr:18,199,226>Vizkapcs. Vizkapcs. Távolság 50. Irány 12.
+<clr:18,199,226>Ellenség megtalálva.
+<clr:18,199,226>Célfellelés helye:
+<clr:18,199,226>Ellenséges kapcsolat helye:
+<clr:18,199,226>Kapcsolat. Szektor:
+<clr:18,199,226>Friss kapcsolat. Szektor:
+<clr:18,199,226> fegyverkészenlétbe. Célszektor:
+<clr:18,199,226> támadja újra a célpontot.
+<clr:18,199,226> ellenségelfogási pont:
+kifogy, még négy
+Három
+Kett
+Egy.
+<clr:18,199,226>Nincs t
+<clr:18,199,226> ellen
+rizze a tartalékát.
+<clr:18,199,226>Elszakadást kezdeményezek.
+<clr:18,199,226>Visszavonulás.
+<clr:18,199,226> keressen árnyékot és vonuljon vissza.
+<clr:18,199,226> a szektor túl forró. Visszavonulni.
+<clr:18,199,226>Vizkapcs több ismeretlennel. Válaszcsapás kockázata magas.
+<clr:18,199,226>Felvigyázók. Vizkapcsunk van másodlagosakkal.
+rizni. Lehetséges szorzók.
+meger
+<clr:18,199,226>Riadó. Az ellenségnél gránát van.
+<clr:18,199,226>Minden egység, tájékoztatás. Az ellenség pattogókkal rendelkezik. Óvatosan haladjanak.
+<clr:18,199,226>Alyx újratölt. Teljes válaszcsapás.
+<clr:18,199,226> akadályozza az ellenség újratöltését.
+<clr:18,199,226>Felvigyázók. Göraknákkal találkoztunk. T
+<clr:18,199,226>Vizkapcs, görakna.
+<clr:18,199,226>Szubakut göraknák. Teljes aktivitás.
+<clr:18,199,226>Célpontváltás. Göraknák.
+<clr:18,199,226>Az ellenségnek er
+sített tüskék azonosítva.<cr>Óvatosan reagáljanak.
+<clr:18,199,226>Felvigyázók, a kitörés elszigeteletlen.
+<clr:18,199,226>Felvigyázók, további egységeket kérek.
+<clr:18,199,226>A földi osztag elesett.<cr>A szektor nincs irányítás alatt.
+<clr:18,199,226>Felvigyázók, a szektor forró.
+<clr:18,199,226>Felvigyázók, égi pajzsot kérek.
+az utolsó aktív.
+<clr:18,199,226>Felvigyázók, azonnali árnyékot kérek.
+<clr:18,199,226>Felvigyázók. A kitörés elszigeteletlen.
+<clr:18,199,226>A földi osztagnak vége.<cr>Baráti egységeket kérek.
+<clr:18,199,226>Felvigyázók. Egyedüli kapcsolat.<cr>Tömeges ellenség.
+kivonást kér. Szektor:
+<clr:18,199,226>Felvigyázók.<cr>A fert
+<clr:18,199,226>Odaszögezem.
+dlegesre ürítem a t
+rt.
+<clr:18,199,226> tartsa pozícióban a célpontot.
+<clr:18,199,226> kezdje meg az ellenségelnyomást.
+<clr:18,199,226>Érintetlen.
+<clr:18,199,226>A célpont sikertelenül támadta:
+<clr:18,199,226>Célpont hibázott. Használja ki,
+<clr:18,199,226>Nem teljesíthet
+<clr:18,199,226>Tüzet nyithat.
+<clr:18,199,226>Szétszóródás!
+<clr:18,199,226>A célpont elfojtással próbálkozik. Reagálni.
+<clr:18,199,226>Földi osztag harcérintkezésben. Szektor:
+<clr:18,199,226>A védelmi osztag tüskéket kap. Szektor:
+<clr:18,199,226>14, 1, 6, 3
+11
+és
+maga jön. Vége.
+<clr:18,199,226>Mozgás negatív.
+<clr:18,199,226>Értettem. Alacsony hang.<cr>Lehet
+<clr:18,199,226>Adás tiszta.<cr>Futóhomok állapot negatív.<cr>Szárnyak tiszták. Vége.
+<clr:18,199,226>A szektor követése 43%-on. Stabil.<cr>Továbbra is várom az adást. Vége.
+<clr:18,199,226>Nyugtázva.<cr>Kitörési állapot delta hetes kód.<cr>Osztag-napnyugta kapcsolatlerohanáskor.
+<clr:18,199,226>Nyugtázva. Nincs szennyez
+<clr:18,199,226>Hallhatóság: 3. Fényviszonyok: 15.
+<clr:18,199,226>Zsigerel
+k ötös csúcspontra állítva.<cr>Biotikusok vannak a határzónánál. Vége.
+Meger
+célpont közeledését a határzónához. Figyelmet.
+<clr:18,199,226>Negatív. A célpont továbbra is aktív.
+<clr:18,199,226>Vettem.<cr>Alfa feltétel kialakítása.
+sítve.<cr>Újrakalibrálás.
+<clr:18,199,226>Felvigyázók, kód: 10-4.<cr>Zsigerel
+úton.
+t indítok.
+elindult és keres.
+t aktiválok.<cr>Átfésülés és rajtaütés.
+t indítok.<cr>Eredmények várhatók.
+vadászik.<cr>Minden egység a földre.
+<clr:18,199,226>10-0.<cr>Zsigerel
+vadászik.
+úton.<cr>Felügyelet és elszigetelés.
+úton.<cr>Azonosítás és végrehajtás.
+<clr:18,199,226>Minden egység vissza.<cr>A célpont baráti.
+<clr:18,199,226>AVE közeledik.
+<clr:18,199,226>Benyomulok.
+<clr:18,199,226>AVE egység érkezik.
+<clr:18,199,226>AVE felfejl
+dik a célponthoz.
+dik.
+<clr:18,199,226>AVE kiszorít.
+<clr:18,199,226>AVE elfojt.
+<clr:18,199,226>AVE támad.
+<clr:18,199,226>Csapás, csapás.
+<clr:18,199,226>Elfojtom az egyes célpontot.
+tlenítem az els
+dleges célpontot.
+<clr:18,199,226>Add fel, Alyx.
+<clr:18,199,226>Csapás, csapás az els
+<clr:18,199,226>AVE Alyxet támadja.
+<clr:18,199,226>Támadom az egyes célpontot.
+dleges meger
+<clr:18,199,226>Célpontot váltok.<cr>Kód: ledöntés.
+<clr:18,199,226>Célpont védett.<cr>Korrigálom.
+<clr:18,199,226>AVE. Megszüntetem a támaszt.
+<clr:18,199,226>AVE. T
+<clr:18,199,226>Pattogó háromra.
+<clr:18,199,226>AVE, vizkapcs hangyales
+. AVE támad.
+<clr:18,199,226>Kapcsolatjelentés, paraziták.
+<clr:18,199,226>Szabad paraziták közelednek.
+<clr:18,199,226>AVE, paraziták láthatók.
+<clr:18,199,226>Aaahhhh
+paraziták. Szektor:
+<clr:18,199,226>AVE, nekrotikus látható.
+<clr:18,199,226>Nekrotikus vizkapcs.
+<clr:18,199,226>AVE, meger
+sítem az ölést.
+<clr:18,199,226>Uhh.
+<clr:18,199,226>AVE Rendelkez
+nek. Parazita kiiktatva.
+<clr:18,199,226>Halott. Fert
+tlenít
+t beadni.
+<clr:18,199,226>Probléma felszámolva.
+<clr:18,199,226>Egyes célpont kiiktatva.
+<clr:18,199,226>Nekrotikus csendes.
+<clr:18,199,226>Fedezzék az AVE-t.
+<clr:18,199,226>AVE fedez
+tüzet:
+<clr:18,199,226>Kitérés.
+<clr:18,199,226>Riadó. Kivonó.
+<clr:18,199,226>Vigyázat.
+<clr:18,199,226>Élesített pattogó. Vissza.
+<clr:18,199,226>AV
+<clr:18,199,226>Javítok a vizkapcson.
+sítést alakítok ki
+<clr:18,199,226>Korrigálom a rálátást.
+<clr:18,199,226>Felfejl
+<clr:18,199,226>Tüzet szüntess!<cr>A célpont baráti.
+<clr:18,199,226>Fegyvert le!<cr>AVE. Fegyver lent.
+<clr:18,199,226>AVE az els
+<clr:18,199,226>Hármas kód. Takarításba kezdtem.
+r az ellenségre állítva.
+z alá veszem:
+<clr:18,199,226>Itt van.
+számú antipolgár meger
+<clr:18,199,226>Kiugrasztás a szektorokban.
+<clr:18,199,226>Kivonó az utolsó ismertre.
+<clr:18,199,226>Pattogó az utolsó ismertre.
+<clr:18,199,226>Felfedem.
+<clr:18,199,226>Pattogó, pattogó.
+<clr:18,199,226>AVE, hangészlelés.<cr>Minden szennyez
+<clr:18,199,226>Eltaláltak.
+<clr:18,199,226>Testburok kitart.
+<clr:18,199,226>Fenntartott sebzés.<cr>Árnyékot keresek.
+<clr:18,199,226>Tüskék hatásosak.<cr>Stimdózist alkalmazok.
+<clr:18,199,226>Helyzettámogatást AVE-nek. Célterület:
+<clr:18,199,226>Nincs vizkapcs. Nincs vizkapcs.
+<clr:18,199,226>AVE célponthelyzetet kér.
+, 7-1-3-as kód.<cr>Utolsó ismertet kérek.
+<clr:18,199,226>Nem látható. Rendelkez
+<clr:18,199,226>AVE negatív láthatóságot jelent.
+<clr:18,199,226>Lehetséges kitérés.<cr>Rálátást kérek.
+rzés.
+<clr:18,199,226>Teljes láthatóságvesztés. Figyelek.
+<clr:18,199,226>Közelségi riadó. Megszórom.
+<clr:18,199,226>AVE, megoldható.
+<clr:18,199,226>AVE a helyén.
+<clr:18,199,226>AVE várakozik.
+<clr:18,199,226>AVE figyel.
+<clr:18,199,226>AVE biztosítja a széleket.
+<clr:18,199,226>Sebezhet
+<clr:18,199,226>Ismétlés az ellenségre. Azonnal.
+<clr:18,199,226>AVE fokozza a t
+<clr:18,199,226>AVE hatásos.
+<clr:18,199,226>Ellenség stimhozzáférését meggátolni.
+nek. Ellenség csendes.
+<clr:18,199,226>Alfa állapot.
+<clr:18,199,226>AVE indul.
+<clr:18,199,226>Megfigyelés. Hangészlelés.
+<clr:18,199,226>Átkutatom az árnyékokat.
+<clr:18,199,226>Jelentek minden rálátást.
+<clr:18,199,226>Ellenségkivonás. Megkezdem.
+<clr:18,199,226>Fegyverkészenlét! Célpont:
+<clr:18,199,226>Gyerünk, gyerünk, gyerünk!
+<clr:18,199,226>AVE. Kapcsolat. Szektor:
+<clr:18,199,226>AVE elfog.
+<clr:18,199,226>Aktív rálátás helye:
+<clr:18,199,226>AVE újratölt.
+<clr:18,199,226>AVE kifogy. 4
+r. Korrigálom.
+<clr:18,199,226>AVE, üres t
+<clr:18,199,226>Frissítem a t
+<clr:18,199,226>AVE elszakad.
+<clr:18,199,226>AVE. Átcsoportosulok.
+<clr:18,199,226>AVE. Visszavonulás.
+<clr:18,199,226>Lobbanékony helyzet.<cr>Árnyékot keresek.
+<clr:18,199,226>Az ellenségnek kivonói vannak.
+<clr:18,199,226>Ellenség újratölt.<cr>T
+ny, most.
+<clr:18,199,226>AVE. A szennyez
+<clr:18,199,226>Vizkapcs. Göraknák. T
+<clr:18,199,226>Göraknák! Reagáló, reagáló.
+, tüskék feler
+<clr:18,199,226>AVE. Az ellenségnek illegális tüskéi vannak.
+<clr:18,199,226>Kilences szektor: kitörés, kitörés, kitörés.
+<clr:18,199,226>Felvigyázók, a szektor nem uralt.
+<clr:18,199,226>Problémánk van.
+<clr:18,199,226>Felvigyázók. AVE egyedül jelentkezik.
+<clr:18,199,226>Felvigyázók. AVE az utolsó egység.<cr>Azonnali támogatást kérek.
+<clr:18,199,226>Uhh. Árnyékot kérek.
+<clr:18,199,226>Felvigyázók. A kitörés elszigeteletlen!
+<clr:18,199,226>AVE Felvigyázóknak.<cr>Lerohant állapot aktív. Nyugtázást.
+<clr:18,199,226>Felvigyázók! Egyedüli kapcsolat.<cr>Tömeges ellenség!
+<clr:18,199,226>Felvigyázók!<cr>AVE kivonást kér. Szektor:
+<clr:18,199,226>Felvigyázók!<cr>AVE az utolsó reagáló.
+gátolt.<cr>Reagálok!
+csendes! Teljes reagálást alkalmazni!
+lapos görbe!
+<clr:18,199,226>AVE engedelmességet kényszerít.
+<clr:18,199,226>Antitest Védelmi Er
+aktivitási célpontja:
+<clr:18,199,226>AVE. Az ellenség pontatlan.
+<clr:18,199,226>Felvigyázók. A szennyez
+csak ugat.
+<clr:18,199,226>AVE érintetlen.
+<clr:18,199,226>Felvigyázók. Negatív.
+sítve.<cr>Elfojtás aktív.
+<clr:18,199,226>Kapcsolat. Ellenséges
+<clr:18,199,226>AVE elnyomásra kész.
+<clr:18,199,226>A célpont elfojt.
+<clr:18,199,226>Zárom az arénát.<cr>Árnyék állapot kezdeményezése.
+<clr:18,199,226>Nincs mit jelentenem.
+<clr:18,199,226>3, 11, 1, 14, 6
+rizve. Maga jön. Vége.
+<clr:18,199,226>Mozgás negatív. Hét vonás kettes rácspont.
+Értettem.
+<clr:18,199,226>Szárnyak tiszták. Vége.
+<clr:18,199,226>Felvigyázók. Várom az adást.
+<clr:18,199,226>Stabil. Várom az adást. Vége.
+<clr:18,199,226>Kitörési állapot delta hetes kód.<cr>Osztag-napnyugta kapcsolatlerohanáskor
+<clr:18,199,226>Negatív. Várom a másodlagos paraméterkódokat.
+<cr>Hallhatóság: 3. Láthatóság: 15. Vége.
+<clr:18,199,226>Vettem.<cr>Várakozás kapcsolatra. Vége.
+<clr:18,199,226>Közeled
+viromok.<cr>Minden egység, tájékoztatás: harcérintkezésre készülj.
+<clr:18,199,226>Hívókód: kettes orsó zéró
+<clr:18,199,226>Vétel. Elfogadva.<cr>Frissítés vége T mínusz három másodperc múlva
+<clr:18,199,226>A frissítés elérhet
+<clr:18,199,226>A stabilizálóosztag tartja a pozíciót.<cr>Figyelmet.
+<sfx><norepeat:2><clr:255,0,0>[nincs l
+szer betöltve]
+<sfx:1><norepeat:3><clr:255,0,0>[utolsó l
+szer a töltény
+rben]
+<sfx><norepeat:3><clr:255,0,0>[utolsó töltény elhasználva]
+<sfx><norepeat:5><clr:255,176,0>[elfogyott a pisztolyl
+szer]
+<sfx><norepeat:5>[sörétes tele]
+<sfx><norepeat:5><clr:255,176,0>[elfogyott a sörétl
+<sfx><norepeat:3>[lövedékfürt kész]
+<sfx><norepeat:3><clr:255,0,0>[utolsó lövés]
+<sfx><norepeat:5><clr:255,176,0>[elfogyott a géppisztolyl
+<sfx><norepeat:5>[teleportálás akadályoztatva]
+<sfx>[feltörés kezd
+dik]
+<sfx>[feltörés sikertelen]
+<sfx>[feltörés sikeres]
+<sfx>[gránátrobbanás]
+<sfx><clr:255,0,0>[gránát élesítve]
+<sfx>[Xen-gránát robbanás]
+<sfx>[gyógyítás elkészült]
+<sfx><norepeat:1><clr:255,0,0>[gyógyítóállomás kiürült]
+<sfx>[gyógyítás kezd
+<sfx>[els
+segély-injekció beadva]
+<sfx>[sikeres sípolás]
+<sfx>[lézer aktiválva]
+<sfx><norepeat:1>[tartály aktiválva]
+<sfx>[társulási energiaegység aljzat nyílik]
+<sfx>[társulási energiaegység elfogadva]
+<sfx>[ajtó áram alatt]
+<sfx>[ajtó kinyitva]
+<sfx>[fejlesztés]
+<sfx>[fejlesztés kész]
+<sfx><norepeat:8>[áramkör záródik]
+<sfx:1><norepeat:1>[gyanta a hátizsákba téve]
+<sfx:1><norepeat:1>[l
+szer kivéve a hátizsákból]
+<sfx:1>[gyanta kivéve a hátizsákból]
+szer a hátizsákba téve]
+<sfx><norepeat:8>[zseblámpa felszerelve]
+<sfx><norepeat:20>[alacsony egészség riasztás]
+<sfx>[vonatajtó]
+<sfx>[ajtó zárva]
+<sfx><norepeat:4>[hangos ajtónyikorgás]
+<sfx><norepeat:4>[lift csenget]
+<sfx><norepeat:4>[lift indul]
+<sfx><norepeat:4>[lift megérkezett]
+<sfx><norepeat:4>[liftgomb]
+<sfx><norepeat:6>[láda csukódik]
+<sfx><norepeat:6>[láda nyílik]
+<sfx>[lakat törik]
+<sfx:1>[robbanás]
+<sfx><norepeat:2>[kopogás üvegen]
+<sfx>[ajtócsapódás]
+<sfx>[motor beindul]
+<sfx>[elektromos kisülés]
+<sfx>[titkos ajtó csúszik]
+<sfx>[létra lecsúszik]
+<sfx>[drón felrobban]
+<sfx>[ajtó nyikorogva nyílik]
+[morgás]
+<sfx>[szörny
+sikoly]
+<sfx>[kerítésen dörömbölés]
+<sfx>[üveg törik]
+<sfx>[ajtó nyílik]
+<sfx>[ajtó csukódik]
+<sfx>[panel kinyílik]
+<sfx>[panel csukódik]
+<sfx>[csengetés]
+<sfx>[ajtó kinyitódik]
+<sfx>[gördül
+ajtó nyílik]
+ajtó csukódik]
+<sfx>[villámujjú energialöket]
+<sfx>[elmegy az áram]
+<sfx>[lift lezuhan]
+<sfx>[lift csenget]
+<sfx>[lift zuhan]
+<sfx>[lift leáll]
+<sfx>[lift kikapcsol]
+<sfx>[lift bekapcsol]
+<sfx>[lift indul]
+<sfx>[világítás bekapcsol]
+<sfx>[világítás kikapcsol]
+<sfx><norepeat_global:5>[motoszkálás a plafon szell
+iben]
+<sfx>[ajtó törik]
+<sfx>[elektromos robbanás]
+<sfx>[motoszkálás a plafon panelein]
+<sfx>[plafon leomlik]
+<sfx>[fejrágó motoszkál]
+<sfx>[fejrágó hangok]
+<sfx>[visszajön az áram]
+<sfx>[létra megrúgva]
+<sfx>[kikapcsolás]
+<sfx>[bekapcsolás]
+<sfx>[energiatúltölt
+<sfx>[üveg robban]
+<sfx>[tanácsadó halálsikoly]
+<sfx>[id
+visszafelé halad]
+megáll]
+<clr:255,176,0>Figyelem: életjelek kritikus szint alatt.<cr>Kérjen orvosi segítséget.
+<sfx>[mozgás a szell
+ben]
+<sfx>[üvegnek csapódás]
+<sfx>[vonat megáll]
+<sfx>[vécélehúzás]
+<sfx><norepeat:5><clr:255,0,0>[hangyales
+elpusztul]
+<sfx><norepeat:5><clr:255,0,0>[plafonlakó elpusztul]
+<sfx:1><norepeat:10>[fejrágó riaszt]
+<sfx><norepeat:10>[fejrágó támad]
+<sfx><norepeat:10>[fejrágó harap]
+<sfx:1><norepeat:10>[fejrágó nyáladzik]
+<sfx:1><norepeat:10>[fejrágó lángol]
+<sfx:1><norepeat:10>[fejrágó beássa magát]
+<sfx:1><norepeat:10>[fejrágó el
+bújik]
+<sfx><norepeat:10><clr:255,0,0>[fejrágó elpusztul]
+<sfx:1><norepeat:10>[fejrágó sérül]
+<sfx>[földönkívüli sikoly]
+<sfx><norepeat:4>[felrázó szív behelyezve]
+<sfx><norepeat:4>[felrázó szív eltávolítva]
+<sfx><norepeat:5><clr:255,0,0>[felrázó elpusztul]
+<sfx><norepeat:8>[pöfeteg felfújódik]
+<sfx>[pöfeteg kirobban]
+<sfx:1><norepeat_global:5>[Xen kagylócsattogás]
+<sfx:1><norepeat:4>[Xen spórafelh
+<sfx><norepeat:4>[Jeff támad]
+<sfx><norepeat:6>[Jeff ajtót tör]
+<sfx><norepeat:4>[szörny
+<sfx><norepeat:4>[Jeff dühöng]
+<sfx><norepeat:5>[Jeff dobog]
+<sfx><norepeat:6>[Jeff ajtót püföl]
+<sfx><norepeat:6>[ajtónyitás]
+<sfx><norepeat:12>[Jeff sétál]
+<sfx><norepeat:20>[lift zenél]
+<sfx><norepeat:20>[hangszórózaj]
+<sfx><norepeat:5>[Jeff üvölt]
+<sfx><clr:255,176,0>[lapos görbe]
+Életjelek kritikus szint alatt.
+<sfx><clr:255,176,0>Kérjen orvosi segítséget.
+<sfx><norepeat:5>[elembehelyezés]
+<sfx><norepeat:5>[elemeltávolítás]
+<sfx><norepeat_global:5><clr:255,176,0>[páncél geller]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[feszít
+vas kopp!]
+vas csatt!]
+vas sutty]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[üres töltény
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[pisztolylövés!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[.357-es lövés!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[géppisztoly gránát-kilövés]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[géppisztoly lövés]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[újratöltés]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[sörétes duplázás!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[sörétes egyes lövés!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[els
+dleges lövés]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[üres]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[másodlagos lövés]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[túltöltött másodlagos lövés]
+<sfx><norepeat:5>[pisztolylövés!]
+<sfx><norepeat:4><clr:255,176,0>[l
+szerfelvétel]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[ROBBANÁS!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[gránátrobbanás!]
+<sfx:1><norepeat_global:8><clr:255,176,0>[lövedék gellert kap]
+<sfx><norepeat:4><clr:255,176,0>[becsapódó nyakigláb-lövedék]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[geller!]
+<sfx><clr:255,170,0>[alacsony egészség riasztás!]
+<sfx><clr:255,170,0>[kevés l
+szer riasztás!]
+<sfx><clr:255,170,0>[futássegít
+kimerült]
+<sfx><norepeat:5><clr:255,170,0>[futássegít
+bekapcsol]
+<sfx><clr:255,170,0>[nem használható]
+<sfx><clr:255,0,0>[halál]
+<sfx><clr:255,170,0>[elemfelvétel]
+<sfx><clr:255,170,0>[els
+segély-csomag felvétel]
+segély-injekció felvétel]
+<sfx><clr:255,170,0>[megtagad]
+<sfx><clr:255,170,0>[gyógyítás kezd
+<sfx><norepeat:5>[gombnyomás]
+<sfx><norepeat:10>[hangyales
+támad]
+beássa magát]
+sérül]
+rágcsál]
+<sfx><norepeat:3>[plafonlakó harap]
+<sfx><norepeat:3><clr:255,0,0>[plafonlakó elpusztul]
+<sfx><norepeat:3>[plafonlakó húz]
+<sfx><norepeat:3>[plafonlakó morog]
+<sfx><norepeat:3>[plafonlakó sikolt]
+<sfx><norepeat:5>[plafonlakó emészt]
+<sfx><norepeat:10>[fejrágó fenyeget]
+<sfx><norepeat:10>[fejrágó riaszt]
+<sfx><norepeat:10>[robbanás!]
+<sfx><norepeat:10>[kamera visszahúzódik]
+<sfx><norepeat:10>[kamera kiemelkedik]
+<sfx><norepeat:10>[kamera riaszt]
+<sfx><norepeat:10>[kamera kattan]
+<sfx>[kamera megsemmisül]
+<sfx><norepeat:10>[varjú riaszt]
+<sfx><norepeat:10>[varjú sérül]
+<sfx><norepeat:10><clr:255,0,0>[varjú elpusztul]
+<sfx><norepeat:10>[varjúkárogás!]
+<sfx><norepeat:4>[csapatszállító üldöz]
+<sfx>[légitank tönkremegy]
+<sfx><norepeat:10>[légitank hangjelzés]
+<sfx><norepeat:10>[légitank riaszt]
+<sfx><norepeat:10>[légitank sérül]
+<sfx><norepeat:10>[légitank felrobban]
+<sfx><norepeat:5><clr:255,0,0>[embernyes
+megsemmisül]
+<sfx><norepeat:20>[embernyes
+hajtóm
+<sfx><norepeat:10>[placcs!]
+<sfx><norepeat:10>[embernyes
+elindul]
+<sfx><norepeat:5>[embernyes
+elindult]
+<sfx><norepeat:30>[társulási rádió: beszélgetés]
+<sfx><norepeat:15>[társulási rádió: riasztás!]
+<sfx><norepeat:15>[társulási rádió: gránátriasztás!]
+<sfx><norepeat:15>[társulási rádió: er
+sítést kér]
+<sfx><norepeat:25>[társulási rádió: taktikai utasítás]
+<sfx><norepeat:10>[fürkész riaszt]
+<sfx><norepeat:5><clr:255,0,0>[fürkész megsemmisül]
+<sfx><norepeat:5>[fürkész kattan]
+<sfx><norepeat:10>[fürkész zuhanóbombáz]
+<sfx><norepeat:10>[nyakigláb riaszt]
+<sfx>[nyakigláb sérül]
+<sfx><norepeat:5><clr:255,0,0>[nyakigláb elpusztul]
+<sfx>[nyakigláb tölt
+<sfx><norepeat:15>[nyakigláb gépágyú]
+<sfx><norepeat:10>[nyakigláb lépked]
+<sfx>[csatt!]
+<sfx>[villámujjú villámot l
+<sfx><norepeat:10>[zombi riaszt]
+<sfx><norepeat:10><clr:255,0,0>[zombi meghal]
+<sfx><norepeat_global:20>[zombi jajgat]
+<sfx><norepeat:10>[zombi sérül]
+<sfx>[zárva]
+<sfx><norepeat:1>[ajtócsukódás]
+<sfx><norepeat:1>[kapucsukódás]
+<sfx><norepeat:1>[fémes csattanás]
+<sfx><norepeat:1>[szekrénycsukódás]
+<sfx><norepeat:1>[ajtóretesz]
+<sfx><norepeat:1>[zárva]
+<sfx>[gombnyomás]
+<sfx>[kar hangja]
+<sfx>[gomb benyomva marad]
+<sfx>[társulási gomb]
+<sfx><norepeat:3>[víz csobban]
+<sfx><norepeat:1>[üveg törik]
+<sfx><norepeat:1>[kerámia törik]
+<sfx><norepeat:1>[monitor törik]
+<sfx>[dinnye csattan]
+<sfx><norepeat:1>[hangos ütközés]
+<sfx><norepeat:3>[kulcskártya elfogadva]
+<sfx><norepeat:3>[kulcskártya elutasítva]
+<sfx><norepeat:1>[fa törik]
+<sfx><norepeat:1>[fém szakad]
+<sfx><norepeat:1>[beton törik]
+<sfx><norepeat:1>[vakolat törik]
+<sfx><norepeat:1>[kartonpapír szakad]
+<sfx><norepeat:1>[m
+anyag törik]
+<sfx><norepeat:1>[fa recseg]
+<sfx><norepeat:3>[fa hasadozik]
+<sfx><norepeat:1>[fém törik]
+<sfx><norepeat:1>[fém feszül]

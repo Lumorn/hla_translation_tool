@@ -1,0 +1,4201 @@
+Ðn1
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Miltä siellä näyttää?<I>
+Alyx: <clr:255,190,255>Hyvältä näyttää, isä. Kaupunkipoliisin liikkeet ovat normaaleja.<cr>Samoin Combine-partion.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Miten varastolla sujuu?
+Eli: <clr:255,208,172><I>Yksi Combinen minireaktori 4 000 lastista.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Ei ne sitä huomaa.<cr>Katso tätä.<I>
+Russell: <clr:255,255,138><I>Eikä siinä kaikki.<cr>Joku murtautui Combinen rakennusverkkoon.<I>
+Alyx: <clr:255,190,255>Älkää ruvetko ahneiksi.<cr>Aika on kortilla.
+Russell: <clr:255,255,138><I>Hoidan homman minuutissa.<cr>Takaan sen.<I>
+Alyx: <clr:255,190,255>Ai niin, huomasin Combinen kuljettavan tarvikkeita karanteenialueelle.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Se on ollut hylättynä vuosia.
+Eli: <clr:255,208,172><I>Hmm. Onpa outoa.<cr>Mietitään sitä sitten, kun palataan.<I>
+Russell: <clr:255,255,138><I>Mikä
+?<I>
+Russell: <clr:255,255,138><I>Mikä TÄMÄ on?<I>
+Eli: <clr:255,208,172><I>Nähdään turvatalolla, kulta.<cr>Ihan kohta.<I>
+Russell: <clr:255,255,138><I>Näyttää...<I>
+Alyx: <clr:255,190,255>Mitä
+Alyx: <clr:255,190,255>Mahtavaa.
+Psst
+Alyx!
+Onko kaikki hyvin?
+<clr:255,190,255>Jep. He saivat reaktorin. Helppo nakki.
+<clr:255,190,255>Olen menossa turvatalolle tapaamaan isää.
+<clr:255,190,255>Mene! Pidetään yhteyttä.
+Ole varovainen.
+<clr:18,199,226>Liikettä.
+<clr:18,199,226>Liikettä!
+<clr:18,199,226>Sinä.<sb>Liikettä.
+<clr:18,199,226>Eteenpäin.
+<clr:18,199,226>Sinä.<sb>Vauhtia.
+<clr:18,199,226>Pois kadulta NYT.
+<clr:18,199,226>Takaisin asuntokortteliin.<sb>NYT.
+<clr:18,199,226>Vauhtia!
+<clr:18,199,226>Sinä. Vauhtia.
+<clr:18,199,226>Takaisin asuntokortteliin NYT.
+<clr:18,199,226>Tule vaan.
+<clr:18,199,226>Mene vaan.
+<clr:18,199,226>Kaikki kunnossa.<sb>Tule vaan.
+<clr:18,199,226>Kaikki kunnossa. Tule vaan.
+Alyx! Alyx!
+Alyx, täällä!
+<clr:255,190,255>Mitä nyt?
+Tämä ei näytä rutiinitarkastukselta. Oletko varma, että kaikki meni hyvin?
+<clr:255,190,255>Täysin varma.
+Suojelupalvelu on hermona jostain.
+<clr:255,190,255>Pysy piilossa ja ole varovainen.
+<clr:18,199,226>Kyytiin siitä.
+<clr:18,199,226>Nouskaa kyytiin.
+<clr:18,199,226>Sisään siitä.
+<clr:18,199,226>Kaikki kyydissä.
+<clr:18,199,226>Takanasi!
+<clr:18,199,226><force>Kädet ylös! Liikkumatta!
+<clr:18,199,226>Seis! SEIS!
+<clr:255,190,255>Hei, hei! Odota! <cr>Minä asun täällä!
+<clr:18,199,226>Todennäköisesti yhteiskunnan vihollinen.<sb>Skannaa se.
+<clr:255,190,255>Odota! Älä ammu!
+<clr:18,199,226>Seis! Paikka!
+<clr:18,199,226>Näpit irti painikkeesta!
+<clr:18,199,226>Älä koske painikkeeseen!
+<clr:18,199,226><force>Kädet ylös nyt!
+<clr:255,208,172><sfx:1>[Vaikeroi kivusta]
+<clr:255,208,172>Ei varastettu mitään!
+<clr:255,208,172>En nähnyt ketään!
+<clr:255,208,172>Aah!
+<clr:255,190,255>ISÄ!
+<clr:255,190,255>Hei! Seis! Ei, ei...
+<clr:255,190,255>Mihin viette minua?<sb>Missä isä?
+<clr:255,190,255>Huhuu!
+<clr:255,190,255>Perhana! Missä isä?
+<clr:255,190,255>Avaa tämä perhanan ikkuna!
+<clr:18,199,226>Suu kiinni.
+<clr:18,199,226>Käske pysyä paikallaan.
+<clr:18,199,226>Pysy paikallasi.
+<clr:18,199,226>Mikä tuo on?
+<clr:18,199,226>SE TULEE KOHTI!
+<clr:18,199,226>Mikä?
+<clr:18,199,226>KRANAATTI!
+<clr:18,199,226>Hoitele se!
+<clr:18,199,226>En näe sitä!
+<clr:18,199,226>Se on penkin alla!
+<clr:18,199,226>Etsin sitä koko ajan!
+<clr:18,199,226>Etsi, etsi, etsi!
+<clr:18,199,226>Löytyi!
+<clr:18,199,226>Heitä jo!
+<clr:18,199,226>Heitän...
+OLIT-ONNETTOMUUDESSA.
+OTA-KUULOKKEET.
+LAITA-KUULOKKEET-PÄÄHÄN.
+<HEADSET><clr:255,255,138>Laita kuulokkeet päähän!
+<HEADSET><clr:255,255,138>Alyx! Laita kuulokkeet päähän!
+<HEADSET><clr:255,255,138>Alyx! Jos olet elossa, laita kuulokkeet päähän.
+<HEADSET><clr:255,255,138>Näen sinut! Älä epäröi, vaan laita kuulokkeet päähän. Alyx!
+<HEADSET><clr:255,255,138>Tämä ei ole mikään juoni! Russell tässä, isäsi työkaveri. Vastarintaliikkeestä!
+<HEADSET><clr:255,255,138>Tämä ei ole mikään juoni!
+<HEADSET><clr:255,255,138>Alyx! Kuuletko?<cr>Sinun täytyy lähteä liikkeelle.
+<clr:255,190,255>Russell?
+<clr:255,190,255>Olin onnettomuudessa.
+<HEADSET><clr:255,255,138>Tiedän! Minä järjestin sen!<sb>Joten teknisesti se ei ollut onnettomuus.<cr>Sinun on lähdettävä liikkeelle.
+<clr:255,190,255>Hetkinen. Entä isä?
+<HEADSET><clr:255,255,138>Hän on kunnossa. Seuraa dronea.
+<HEADSET><clr:255,255,138>Sinun täytyy lähteä liikkeelle!
+<HEADSET><clr:255,255,138>Vauhtia, Alyx.
+<HEADSET><clr:255,255,138>Alyx, sinun pitää häipyä sieltä. Nyt.
+<clr:255,190,255>Selvä.
+<clr:255,190,255>Isä on siis kunnossa?
+<HEADSET><clr:255,255,138>On tai siis ei. <cr>Isäsi on suoraan sanottuna pahassa pulassa.
+<clr:255,190,255>Mutta...
+<HEADSET><clr:255,255,138>Isäsi on yhä vankina.<cr>Hän oli eri kyydissä.
+<clr:255,190,255>Sinäkö pelastit minut?
+<HEADSET><clr:255,255,138>Niin.<sb>En tiennyt, kumpi oli kummassa autossa.<sb>Joten... kyllä.<cr>Päädyin pelastamaan SINUT.
+<clr:255,190,255>Mihin isä viedään?
+<HEADSET><clr:255,255,138>Pidätyskeskukseen.<sb>Kun ne tajuavat, että kyseessä on Eli Vance
+Nova Prospektiin.
+<HEADSET><clr:255,255,138>Mutta minulla on jo vapautussuunnitelma.
+<HEADSET><clr:255,255,138>Olet lähellä laboratoriota.<sb>Seuraa vain dronea!<cr>Katsotaan sitten, mitä tehdään.
+<HEADSET><clr:255,255,138>Alyx, yhteys meni poikki hetkeksi!<sb>Videokuva katosi.<sb>Näetkö dronen?<sb>Onko se kunnossa?
+<clr:255,190,255>Ööh, joo.<cr>Olen siellä ihan kohta.
+<clr:255,190,255>Russell
+<cr>Mitä te <I>löysitte<I> sieltä?
+<HEADSET><clr:255,255,138>Se tässä hämmentääkin. Ei hajuakaan! Vain hämäriä kuvia jostain rakennuksesta.
+<clr:255,190,255>Linnoituksestako?
+<HEADSET><clr:255,255,138>Ei, jostain muusta.<sb>Oli mikä oli, ne tappavat kaikki, jotka sen näkivät tai kaikki, jotka tuntevat jonkun, joka näki.<sb>Eli meidät
+ja isäsi.
+<clr:255,190,255>Russell?<cr>Odota hetki. Olen melkein perillä.
+<clr:255,255,138>Hienoa, että tulit.<cr>Hetkinen.<cr>Onko drone kunnossa?
+<clr:255,190,255>Ei. Se räjähti.<cr>Minä olen kunnossa, kiitos kysymästä.
+<clr:255,255,138>Hyvä, sehän on
+<cr>Sehän on tärkeintä
+<clr:255,190,255>Russell. Isä on niiden vankina.
+<clr:255,255,138>Tiedän. Huono homma.<sb>Ne selvittävät, mitä hän tietää, ja sitten
+<cr>hänet tapetaan.
+<clr:255,190,255>Voi luoja
+<clr:255,255,138>Mutta!<sb>Hyvä uutinen on, että meillä on jotain, jota niillä ei ole.
+<clr:255,190,255>Eli?
+<clr:255,255,138>Isäsi pelastussuunnitelma!
+<clr:255,190,255>Mahtavaa. Antaa kuulua.
+<clr:255,255,138>Eli...<sb>Ne tajuavat nopeasti, ettei isäsi aio puhua.<sb>Sitten häneltä imetään aivot päästä.
+<clr:255,190,255>Russell.
+<clr:255,255,138>Mahdollisesti.<sb>Ehkä ei.<cr>Toisaalta ne saattavat vain porata...
+<clr:255,190,255>Lopeta.
+<clr:255,255,138>Anteeksi. Kyse on sinun isästäsi.<sb>No niin.<cr>Varmaa on se, että hänet viedään junalla TÄÄLTÄ
+<clr:255,255,138>Tämä on Eli
+<clr:255,255,138>
+<clr:255,190,255>Ja jos hän joutuu junaan,<cr>peli on pelattu?
+<clr:255,255,138>Ei välttämättä.<cr>Nappaa jotain, joka esittää meitä.
+<clr:255,255,138>Mikä tahansa käy.
+<clr:255,255,138>Ota mikä tahansa esine.
+<clr:255,255,138>Hyvä. Laita se nyt kartalle.
+<clr:255,255,138>Oikeastaan, annas kun minä.
+<clr:255,255,138>Se olet sinä.
+<clr:255,190,255>Luulin, että sanoit "me."
+<clr:255,255,138>No, yksi meistä
+eli minä
+joutuu jäämään tänne.
+<clr:255,190,255>Okei, selvä.
+<clr:255,255,138>Ulkona on toinen juna, joka kulkee karanteenialueen läpi pois kaupungista.
+<clr:255,190,255>Okei.
+<clr:255,255,138>Junat kohtaavat Fairview'n risteysasemalla.<sb>Nouset junaan, olet perillä ennen isääsi ja hakkeroit junan ohjaimet.<sb>Niin minä pääsen hallitsemaan järjestelmää.
+<clr:255,255,138>Juna pysähtyy.<sb>Sinä hoitelet Combine-tilanteen.<sb>Ja tuodaan isäsi takaisin.
+<clr:255,190,255>Kuulostaa hyvältä.<cr>Missä se minun junani on?
+<clr:255,255,138>Ulkona, pihan poikki.<sb>Se on poistettu käytöstä, mutta uskon pystyväni murtautumaan sen ohjaukseen.
+<clr:255,255,138>Ai niin. Ja nappaa mennessä "Russellit".
+<clr:255,190,255>"Russellit"?
+<clr:255,255,138>Hanskat, Alyx.<sb>Painovoimahanskat.<sb>Minulla on muutama pari tuolla.<sb>Voit kalibroida ne vajalla.
+<clr:255,255,138>Hoidetaan homma kotiin, Alyx.<sb>Kuulitko?<sb>Sanoin, että hoidetaan homma.<sb>Koska niin tehdään.
+<clr:255,190,255>Todellakin.
+<HEADSET><clr:255,255,138>Olen kuulolla koko ajan.
+<HEADSET><clr:255,255,138>Tiedät, miten homma toimii.<sb>Siellä pitäisi olla kaikenlaista tavaraa.<sb>Tähtää jotakin käsi auki.
+<HEADSET><clr:255,255,138>Osoita jotakin kädellä.
+<HEADSET><clr:255,255,138>Hanskat eivät kalibroi itseään.<sb>Mutta ehkä niiden pitäisi.<sb>Sitä asiaa
+en ole vielä korjannut.
+<clr:255,190,255>Valmiina.
+<HEADSET><clr:255,255,138>Pane käsi nyrkkiin ja nykäise itseäsi kohti.
+<HEADSET><clr:255,255,138>Pikku nykäisy vain ranteella.
+<HEADSET><clr:255,255,138>Nykäisitkö ranteella? En näe.
+<HEADSET><clr:255,255,138>Käsi nyrkkiin ja nykäisy.
+<HEADSET><clr:255,255,138>Nyrkkiin
+<HEADSET><clr:255,255,138>
+ja nykäisy.
+<clr:255,190,255>Hm. Ei onnistu.
+<HEADSET><clr:255,255,138>Okei, lähdeanturin kohdistus on pahasti pielessä.
+<HEADSET><clr:255,255,138>Kokeile uudestaan.<sb>Valitse kohde ja osoita sitä kämmen avoinna.
+<clr:255,190,255>Ei onnistu vieläkään.
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>Ei.
+<HEADSET><clr:255,255,138>Kokeile uudestaan.
+<HEADSET><clr:255,255,138>Vielä kerran.
+<HEADSET><clr:255,255,138>Valitse kohde ja osoita sitä kämmen avoinna.
+<HEADSET><clr:255,255,138>Loistavaa! Pane käsi nyrkkiin.
+<HEADSET><clr:255,255,138>No niin, käsi nyrkkiin.
+<clr:255,190,255>Tällä tavalla?
+<HEADSET><clr:255,255,138>Rekisteröity.<sb>Nyt vain nykäiset sen ranteella lähelle.
+<HEADSET><clr:255,255,138>Melkein valmista.<sb>Kokeile uudestaan, mutta tällä kertaa nappaa se.
+<HEADSET><clr:255,255,138>Nykäise uudestaan ja kokeile napata se.
+<HEADSET><clr:255,255,138>Juuri noin.
+<HEADSET><clr:255,255,138>Hienoa.
+<HEADSET><clr:255,255,138>Jep!
+<HEADSET><clr:255,255,138>Homma hanskassa.
+<HEADSET><clr:255,255,138>Tähtäimessä.
+<HEADSET><clr:255,255,138>Kohde on tähtäimessä.
+<HEADSET><clr:255,255,138>Jep, kohde on tähtäimessä.
+<HEADSET><clr:255,255,138>Pane käsi nyrkkiin.
+<HEADSET><clr:255,255,138>Käsi nyrkkiin.
+<HEADSET><clr:255,255,138>Tartu siihen.
+<HEADSET><clr:255,255,138>Jep.
+<HEADSET><clr:255,255,138>Jatka samaan malliin.
+<HEADSET><clr:255,255,138>Täydellistä.
+<HEADSET><clr:255,255,138>Uudestaan, mutta tällä kertaa nappaa se.
+<HEADSET><clr:255,255,138>Mutta nappaa se.
+<HEADSET><clr:255,255,138>Nyt nappaa se.
+<HEADSET><clr:255,255,138>Kokeile napata se.
+<HEADSET><clr:255,255,138>Nappaa se.
+<HEADSET><clr:255,255,138>Kuvittele, että Russelleissa on liipaisin.
+<HEADSET><clr:255,255,138>Nyt vain tähtäät kädellä
+<HEADSET><clr:255,255,138>Vedät liipaisimesta
+<HEADSET><clr:255,255,138>Ja sillä lailla.
+<HEADSET><clr:255,255,138>Alyx, kummassakin Russellissa pitäisi olla etusormen kohdalla pieni liipaisin.
+<HEADSET><clr:255,255,138>Loistavaa. Valmista tuli.<sb>Odota! Meinasin unohtaa.
+<clr:255,255,138>Alyx! Täällä ylhäällä!
+<clr:255,255,138>Tarvitset aseen!
+<clr:255,255,138>Älä huoli, se ei ole ladattu!
+<clr:255,255,138>No, nyt se ei ainakaan ole ladattu!
+<clr:255,255,138>Näitkö, minne se meni?
+<clr:255,255,138>Varmaan tuon auton konepellillä.
+<clr:255,255,138>Ai niin. Melkein unohdin, että aseisiin tarvitaan ammuksia.
+<clr:255,255,138>Tässä!
+<clr:255,255,138>Pitäisi olla jossain siellä maassa.
+<HEADSET><clr:255,255,138>Varmaan tuon auton konepellillä.
+<clr:255,255,138>Selvä homma! Palaan komentokeskukseen.
+<clr:255,190,255>Russell? Ammukset loppu.
+<clr:255,190,255>Hei, Russell? Ammukset loppuivat taas.
+<clr:255,255,138>Täältä pesee!
+<clr:255,190,255>Russell? Ammukset loppuivat... taas.
+<clr:255,255,138>Ei hätää. Ammuksia piisaa.
+<clr:255,255,138>Halusin vain ilmoittaa
+ettei niitä loputtomasti ole. Pieni
+varoituksen sana vain.
+<HEADSET><clr:255,255,138>Hei, varo vähän! Älä ammu mun ikkunaa!
+<HEADSET><clr:255,255,138>Ai, hoitelit näköjään lukon.<sb>Hyvä.<sb>Siihen olisi ollut avainkin.<sb>Mutta olisi pitänyt antaa se sinulle
+<sb>Minun mokani.
+<HEADSET><clr:255,255,138>Tuo on se juna, Alyx.<sb>Kokeile avata ovi.<sb>Olen melkein jo järjestelmässä.
+<HEADSET><clr:255,255,138>Saatko oven jotenkin auki?
+<HEADSET><clr:255,255,138>Kokeile avata se ovi jotenkin.
+<HEADSET><clr:255,255,138>Hienoa! No niin.<sb>Seuraava pysäkki: Fairview
+n risteysasema.
+<clr:255,190,255>Kiitti, Russell.
+<HEADSET><clr:255,255,138>Ja onnea matkaan, Alyx.<sb>Hyvästi.
+<HEADSET><clr:255,255,138>Olen siis tietenkin yhä täällä.
+<clr:255,190,255>Tiedän.
+<HEADSET><clr:255,255,138>Haloo, Alyx? Meillä SAATTAA olla ongelma.<cr>Ei varmaan mitään vakavaa, mutta...
+<clr:255,190,255>Oho.
+<HEADSET><clr:255,255,138>Pysähtyikö juna?<cr>Se pysähtyi, eikö vaan?
+<clr:255,190,255>Joo, mitä tapahtui?
+<HEADSET><clr:255,255,138>Äh, se on jumissa.<cr>Combine sulki karanteenialueen ja tiukensi turvatoimia.
+<clr:255,190,255>Ja se tarkoittaa?
+<HEADSET><clr:255,255,138>Et ole lähelläkään Fairview
+n risteysasemaa.<cr>Olet melkein karanteenialueen rajalla.
+<HEADSET><clr:255,255,138>Ja TÄHÄN tyssää junamatka.
+<clr:255,190,255>Lähdin jo liikkeelle jalkaisin.
+<clr:255,190,255>Jatkan siis matkaa kävellen.
+<HEADSET><clr:255,255,138>Hyvä. Yritän löytää toisen reitin sisään.
+<clr:255,190,255>Täällä on kuollut zombi.<sb>Luulin, että Combine sulki karanteenialueen.
+<HEADSET><clr:255,255,138>Se on livahtanut ulos.<sb>Kuulin, että riippujien itiöiden kanssa on ongelmia eristysalueen ulkopuolella.<sb>Mutta noista hepuista en ole kuullut vastaavaa.
+<clr:255,190,255>Ei varmaan yksittäistapaus.
+<HEADSET><clr:255,255,138>Tuskinpa.
+<HEADSET><clr:255,255,138>Aah
+kappas. Hartsia.
+<HEADSET><clr:255,255,138>Jos täältä löytyy hartsia, pitäisi löytyä myös Combine-kokoonpanija.<sb>Pidä silmät auki. Päästän ehkä päivittämään asetta.
+<clr:255,190,255>Eli
+ammukset siis LOPPUVAT jossain vaiheessa.
+<HEADSET><clr:255,255,138>Pidä silmät auki.<sb>Täällä riittää ruumiita. Ja asiaa kaunistelematta... Ne eivät tarvitse ammuksiaan enää.
+<clr:255,190,255>Jaa... Voin varmaan muuttaa virran suunnan monitoimilaiteella.
+<HEADSET><clr:255,255,138>Siis millä?
+<clr:255,190,255>Laitteella, jossa on monia toimintoja.<sb>Eli monitoimilaitteella.
+<HEADSET><clr:255,255,138>Alyx, ällistyttävä vekotin!<sb>Sille pitää keksiä mahtava brändinimi!<sb>Joku todella myyvä.
+<clr:255,190,255>Kenelle tätä myydään?
+<HEADSET><clr:255,255,138>Ei Combine ikuisesti hallitse.<sb>Sinun pitää miettiä tulevaisuutta, Alyx!
+<clr:255,190,255>No, mitä jos annetaan nimeksi Alyx?
+<HEADSET><clr:255,255,138>Hmm. Aika lailla samaa sarjaa kuin Russellit, mutta joo
+<sb> Olkoon tilapäisesti Alyx.
+<clr:255,190,255>Joo, "Alyx."
+<HEADSET><clr:255,255,138>Se meni hienosti!
+<HEADSET><clr:255,255,138>Oh! Terveysasema.
+<I>Combine<I> käyttää näitä.<sb>Ovatko nämä turvallisia ihmisille?
+<HEADSET><clr:255,255,138>Oh, luojan kiitos, terveysasema.
+<HEADSET><clr:255,255,138>Joo, käytän niitä itse koko ajan.
+<clr:255,190,255>Oletko varma?
+<HEADSET><clr:255,255,138>Joo, loistokeksintö.
+<HEADSET><clr:255,255,138>Laita vain kätesi sinne.
+<HEADSET><clr:255,255,138>Hei, vedä vain kahvaa ja laita kätesi sinne.
+<HEADSET><clr:255,255,138>Joo, käytän niitä itse koko ajan. Täytyy vain löytää virtakapseli.
+<HEADSET><clr:255,255,138>No niin, nyt se on valmis.
+<clr:255,190,255>Au! Au-au-au.
+<clr:255,190,255>Aah. Hei
+<clr:255,190,255>Aah. Ooh.
+<clr:255,190,255>Hei
+Olit oikeassa.<cr>Loistokeksintö.
+<clr:255,190,255>Aah. Hienoa.
+<HEADSET><clr:255,255,138>Varo riippujaa, Alyx.
+<clr:255,190,255>Hyi, ällöttäviä otuksia.
+<clr:255,190,255>Milloin aloit kutsua painovoimahanskoja Russelleiksi?
+<HEADSET><clr:255,255,138>Se on brändinimi, Alyx.
+<clr:255,190,255>Brändinimi?
+<HEADSET><clr:255,255,138>Niin, sellainen iskevä tuotenimi. Lyön niillä rahoiksi, kun Combine potkitaan planeetalta ja tilanne palaa ennalleen.
+<clr:255,190,255>Miten tapasit isäni?<sb>Työskentelitte yhdessä Black Mesassa, eikö niin?
+<HEADSET><clr:255,255,138>Joo tai siis ei.<sb>Sinne oli vaikeaa päästä töihin.<sb>Kävin haastattelussa Black Mesassa.<sb>Käskivät kokeilla uudestaan vuoden päästä.<sb>Tiedät, mitä tapahtui seuraavaksi.<sb>Minulla kävi tuuri.<sb>Moni ei selvinnyt.<sb>On ihme, että sinä ja isäsi selvisitte.
+<HEADSET><clr:255,255,138>Oh. Haluatko olla hetken rauhassa?<sb>Voisin... pysäyttää videon
+<clr:255,190,255>Kunhan katselen ympärilleni, Russ.
+<clr:255,190,255>Veikkaan, että karanteenialue on tämän oven takana.
+<HEADSET><clr:255,255,138>Jep jep, siellähän se.
+<clr:255,190,255>Etsin ohjauskeskuksen, jolla saadaan ovi auki.
+<HEADSET><clr:255,255,138>Mihin laittaisin ohjauskeskuksen, jos olisin Combine?
+<HEADSET><clr:255,255,138>Se on ohjauskeskus.<sb>Ne varmaan sotkivat virtapiirit.<sb>Mutta koska kukaan ei ole niin tyhmä, että avaisi oven, korjaaminen on varmaan suhteellisen helppo homma.
+<HEADSET><clr:255,255,138>Mikä tämä on?
+<clr:255,190,255>Varmaan
+jonkinlainen lukko.
+<clr:255,190,255>Vau! No niin.
+<HEADSET><clr:255,255,138>Ha ha! No niin. Viimeinkin.
+<clr:255,190,255>Menen sisään.<cr>Kuinka kaukana Fairview
+n risteysasema on?
+<HEADSET><clr:255,255,138>Joudut kulkemaan vanhojen metrotunneleiden läpi ratapihalle.
+<clr:255,190,255>Onko isää alettu siirtää?
+<HEADSET><clr:255,255,138>Ei tietääkseni.<sb>Mikä on hyvä juttu, koska se tarkoittaa, että meillä on aikaa.
+<clr:255,190,255>Ai, hyvä.
+<HEADSET><clr:255,255,138>Tai huono juttu, jos isäsi onkin jo tapettu.<sb>Ruumista ei tarvitse viedä mihinkään.<sb>Sen voi vaan haudata.<sb>Tai polttaa.<sb>Oletko siellä vielä, Alyx?
+<clr:255,190,255>Mm-hmm.
+<clr:255,190,255>Russell, nyt kun olen menossa karanteenialueelle
+tajusin yhden asian.<sb>En tiedä karanteenialueesta <I>mitään<I>.
+<HEADSET><clr:255,255,138>Itse asiassa sana tulee italian kielen sanoista "quaranta giorni."<sb>Se tarkoittaa neljäkymmentä päivää, joka oli pakkoeristyksen kesto laivojen miehistöille, ennen kuin he saivat tulla maihin Mustan surman aikaan.
+<clr:255,190,255>Ookei. Siistiä.
+<HEADSET><clr:255,255,138>Hitto.
+<clr:255,190,255>Taidettiin jäädä loukkuun tänne.
+<clr:255,190,255>Hei, Russell.<sb> Löysin jonkun ruiskun. Luoja tietää, mitä siinä on.<sb>Onko tämä lääkettä?
+<HEADSET><clr:255,255,138>Onko siinä pääkallo ja luut ristissä?
+<clr:255,190,255>Ei näytä olevan.
+<HEADSET><clr:255,255,138>Varmaan lääkettä sitten.
+<HEADSET><clr:255,255,138>Alyx! Ruiskutitko itseesi juuri jotain, mitä löysit maasta?
+<clr:255,190,255>MAHTAVA olo.
+<HEADSET><clr:255,255,138>Niinkö? Hyvä. No
+onnistunut kokeilu. Pidä silmät auki niiden varalta.
+<HEADSET><clr:255,255,138>Kuulitko tuon?
+<clr:255,190,255>Mikä se oli?
+<clr:255,190,255>Voi pojat.
+<HEADSET><clr:255,255,138>Joo. Tuonne
+meidän täytyy mennä.
+<clr:255,190,255>Eikö ole oikotietä?
+<HEADSET><clr:255,255,138>Tuo ON oikotie.
+<clr:255,190,255>No
+mennään sitten pitempää reittiä.
+<HEADSET><clr:255,255,138>Tuo on myös se pitempi reitti.
+<HEADSET><clr:255,255,138>Okei, tuo näytti tepsivän. Jatka samaan malliin.
+<HEADSET><clr:255,255,138><sfx:1>[Nauraa]
+<clr:255,190,255>Johan nyt.
+<HEADSET><clr:255,255,138>Haha!<cr>Riippuja on meidän puolella.<sb>Mutta ei oikeasti, joten älä kävele riippujien alla.
+<HEADSET><clr:255,255,138>Ai niin, Russelleissa on muuten sisäänrakennettu näyttö. Se näyttää hartsin ja ammusten määrän. Se voi olla hyödyksi.
+<clr:255,190,255>Selvä. Kiitos.
+<clr:255,190,255>Voi pojat
+<HEADSET><clr:255,255,138>Joo, ole varovainen.
+<HEADSET><clr:255,255,138>Alyx! Tuon oven takana!<sb>Se taitaa olla Combine-kokoonpanija!
+<HEADSET><clr:255,255,138>Alyx! Tuo näyttää olevan Combine-kokoonpanija.<sb>Laita sinne jotain. Haluan nähdä, miten se toimii.
+<clr:255,190,255>Okei. Toimiiko se Russeleihin?
+<HEADSET><clr:255,255,138>Ei, mutta pistooliasi se voi parantaa kummasti.<cr>Hyvä juttu, koska annoin sinulle aseen huonommasta päästä.
+<HEADSET><clr:255,255,138>No, siltä varalta
+etten saa sitä koskaan takaisin.
+<clr:255,190,255>Sovitaan näin, Russell.<cr>Jos kuolen, olen sinulle aseen velkaa.
+<HEADSET><clr:255,255,138>Olet jo muutenkin aseen velkaa!<cr>Tuo ei ollut mikään lahja. Se on MINUN aseeni.
+<HEADSET><clr:255,255,138>Tuo on joka hartsin väärti.
+<HEADSET><clr:255,255,138>Combine kyllä ymmärtää asepäivitysten päälle.<sb>Sen vaan sanon.
+<HEADSET><clr:255,255,138>Tappava ase.
+<HEADSET><clr:255,255,138>Hyvältä näyttää.<sb>Melkein toivoisin olevani siellä, että pääsisin kokeilemaan.
+<HEADSET><clr:255,255,138>Siitä on vielä hyötyä.
+<HEADSET><clr:255,255,138>Tuo
+on hyödyllinen.
+<HEADSET><clr:255,255,138>Loistava valinta.
+<HEADSET><clr:255,255,138>Näppärää. Tuosta on varmasti hyötyä.
+<HEADSET><clr:255,255,138>Tuon avulla voittaa varmasti muutaman väittelyn.
+<HEADSET><clr:255,255,138>Enpä tahtoisi olla tuon väärässä päässä.
+<HEADSET><clr:255,255,138>Tuolta näyttää kunnon päivitys.
+<HEADSET><clr:255,255,138>Tuon tappavampaa siitä ei saa.
+<HEADSET><clr:255,255,138>Oo, se todella tepsi, eikö vain? Hmm
+<HEADSET><clr:255,255,138>Vau! Näyttääpä minun aseeni hyvältä.
+<clr:255,190,255>Hei, kyllä tämä alkaa olla "meidän" ase.
+<HEADSET><clr:255,255,138>Vau! Minun aseeni vain paranee paranemistaan.
+<clr:255,190,255>Kuule, Russ... Alkuperäisestä aseesta ei ole hirveän paljon jäljellä.
+<HEADSET><clr:255,255,138>Hmm. Tehdäänpä näin. Puhutaan siitä myöhemmin. Voidaan puhua MINUN aseestani, kun palaat.
+<clr:255,190,255>No niin, nyt se on virallista. Sinun aseestasi ei ole enää MITÄÄN jäljellä. Tämä on nyt... MINUN aseeni.
+<HEADSET><clr:255,255,138>Hyvä on. Olet sen ansainnut. Mutta Russellit haluan takaisin.
+<HEADSET><clr:255,255,138>Päärapu!
+<clr:255,190,255>Näen sen!
+<HEADSET><clr:255,255,138>Mihin se meni?
+<clr:255,190,255>Ahh!
+<HEADSET><clr:255,255,138>Aah!
+<HEADSET><clr:255,255,138>Jep, löytyi.
+<HEADSET><clr:255,255,138>Varmaan ainoa.
+<HEADSET><clr:255,255,138>Okei, oli niitä kaksi.
+<HEADSET><clr:255,255,138>Ammut hienosti, Alyx.
+<clr:255,190,255>Kiitti. Kuules, haukut tätä ihan turhaan huonoksi aseeksi.
+<HEADSET><clr:255,255,138>Se onkin ihan hyvä, vai mitä?<cr>Hitsi, taisin antaa sinulle väärän aseen.
+<clr:255,190,255>Onko isästä kuulunut, Russell?
+<HEADSET><clr:255,255,138>Ei mitään sen jälkeen, kun hän nousi junaan.
+<clr:255,190,255>Hitto.
+<HEADSET><clr:255,255,138>Mutta hyvä uutinen on se, että hän on varmaan kunnossa.
+<clr:255,190,255>Mistä sinä sen tiedät?
+<HEADSET><clr:255,255,138>Koska hänet viedään Nova Prospektiin kidutettavaksi.<sb>Siellä kidutetaan.<sb>Joten tuskin ne alkavat kiduttamaan häntä VIELÄ.<sb>Hän on siis kunnossa. Sillä logiikalla.
+<clr:255,255,138>Ah!
+<clr:255,190,255>Aah!
+<clr:255,190,255>Terveysasema!
+<HEADSET><clr:255,255,138>Aah, terveysasema!
+<HEADSET><clr:255,255,138>Hmm. Ei toimi.
+<clr:255,190,255>Aah. Näetkö? Se tarvitsee virtaa.
+<HEADSET><clr:255,255,138>Se on disketti.<cr>Tuollaisiin tallennettiin tietoja. Magneettien avulla. Usko tai älä.
+<clr:255,190,255>Häh?
+<HEADSET><clr:255,255,138>Tarkalleen kaksi mikrometriä magneettista rautaoksidia, kolme mikrometriä bariumferriittiä ja 1,2...
+<clr:255,190,255>Russell? Mistä tiedät kaiken tämän?
+<HEADSET><clr:255,255,138>Luen koneelta.<cr>Latasin internetin ennen sotaa.
+<clr:255,190,255>Latasit koko internetin.
+<HEADSET><clr:255,255,138>Suurimman osan.
+<clr:255,190,255>Siistiä.
+<HEADSET><clr:255,255,138>Joo, niin on.
+<clr:255,190,255>Näetkö tuon, Russell?
+<HEADSET><clr:255,255,138>Mahdollisesti.<sb>Näetkö leijuvia roskia?
+<clr:255,190,255>Näyttää
+pahvilta.
+<HEADSET><clr:255,255,138>Jep. Näyttää harmittomalta.
+<clr:255,190,255>Niin, mutta outoa.
+<clr:255,190,255>Mikä TUO on?
+<clr:255,190,255>Näyttää vortigaunteilta
+<HEADSET><clr:255,255,138>Hetkinen, tuohan on
+Black Mesa?
+<clr:255,190,255>Joku on käyttänyt tähän paljon aikaa.
+<clr:255,190,255>Oho! Lisää leijailevaa pahvia.
+<HEADSET><clr:255,255,138>Alyx, oletko kunnossa? Mikä hätänä?
+<clr:255,190,255>Kaikki hyvin, Russell. Mitä nyt?
+<HEADSET><clr:255,255,138>Signaali katoaa!<sb>Alyx? Alyx?<sb>Jos kuulet tämän, jatka samaan suuntaan ja yritä päästä maan pinnalle.
+<clr:255,190,255>Russell?<sb>Russell?<sb>Hitto.
+<clr:255,190,255>Vau, onpa outoa.
+<clr:255,190,255>Oi!
+Vortigaunt: <clr:107,232,120>Alyx Vance!
+Vortigaunt: <clr:107,232,120>Sait viestini.
+<clr:255,190,255>Sainko?
+<clr:107,232,120>Tule! Sisään.
+<clr:255,190,255>Okei
+<clr:255,190,255>Kiitti.
+<clr:107,232,120>Eipä kestä.
+<clr:255,190,255>Mitä vortigaunt tekee täällä?
+<clr:107,232,120>[Nuuhkaisee] Mmm!
+<clr:107,232,120>Laittaa ruokaa.
+<clr:107,232,120><sfx:1>[Syö äänekkäästi]
+<clr:255,190,255>Just joo, mutta siis yleensä.
+<clr:107,232,120>Minulla on aivovaurio.
+<clr:255,190,255>Ai. Ikävä kuulla...
+<clr:107,232,120>Aivoni ovat vaurioituneet.
+<clr:255,190,255>Kamalaa, mutta toivottavasti...
+<clr:107,232,120>Au.
+<clr:255,190,255>Yritän kovasti löytää isäni...
+<clr:107,232,120>Eli
+<clr:255,190,255>
+Eli Vance
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Aivan.
+<clr:255,190,255>Combine nappasi isän, joten minun pitää nyt mennä.
+<clr:107,232,120>Combine.<sb>Älä mene vielä.<sb>Näytän sinulle jotain.
+<clr:255,190,255>Kiitos, mutta...
+<clr:107,232,120>Tännepäin!
+<clr:255,190,255>En ehdi nyt jäämään...
+<clr:107,232,120>Tämä on tärkeää!
+<clr:255,190,255>Uskon sen, mutta...
+<clr:107,232,120>Alyx Vance menee tätä kautta muutenkin.
+<clr:107,232,120><sfx:1>[Hykertelee]
+<clr:107,232,120><sfx:1>[Ryystää äänekkäästi]
+<clr:107,232,120>Tule, tule!
+<clr:107,232,120>Tule, Alyx Vance.
+<clr:107,232,120>Täällä!
+<clr:107,232,120>Näytän, miksi toin sinut tänne.
+<clr:107,232,120><sfx:1>[Kanavoi vorteisuutta]
+<clr:107,232,120>Kaltaiseni ovat Combinen käsissä.
+<clr:107,232,120>Vankina, kuten Eli Vance.
+<clr:107,232,120>Alyx Vance vapauttaa ne.
+<clr:255,190,255>Auttaisin mielelläni. Oikeasti.<sb>Mutta Alyx Vance yrittää pelastaa isänsä.
+<clr:107,232,120>Et voi pelastaa häntä.<sb>Hän on kuollut.
+<clr:255,190,255>Mitä?
+<clr:107,232,120>Tai kuolee
+<clr:255,190,255>Onko kuollut vai kuoleeko?
+<clr:107,232,120>Riippuu näkökulmasta.<sb>Alyx Vance ei voi yksin muuttaa hänen kohtaloaan.
+<clr:255,190,255>Hei...<sb>Kiitos kaikesta
+<sb>mutta on pakko mennä.<sb>Ikävä kyllä en ehdi nyt ratkoa arvoituksia.
+<clr:107,232,120>Ei arvoituksia.<sb>Combine porasi tähän.<sb>En tiedä milloin.<sb>Yhteys vorteisuuteen on poikki.<sb>Olen yksin päässäni.
+<clr:255,190,255>Onpa ikävää.
+<clr:255,190,255>Jos voin... Jos törmään kavereihisi, katson, mitä voin tehdä.
+<clr:107,232,120>Pelastit kaltaiseni!
+<clr:255,190,255>En
+pelastanut.
+<clr:107,232,120>Mutta pelastat.
+<clr:107,232,120>Raah!
+<clr:107,232,120>Rohkeutta, Alyx Vance!
+<clr:107,232,120>Olet jo tullut näin pitkälle.<cr>Jatka vielä vähän.
+<clr:107,232,120>Tännepäin, Alyx Vance.
+<clr:107,232,120>Sinun pitää mennä!
+<clr:107,232,120>Tehtävä kutsuu, Alyx Vance.
+<clr:107,232,120>Mene!
+<clr:107,232,120>Autan Alyx Vancea.<sb>Seuraa Pohjantähteä.
+<clr:255,190,255>Miksi?
+<clr:107,232,120>Se opastaa.
+<clr:255,190,255>Okei, kiitti.<cr>Oliko siinä kaikki?
+<clr:107,232,120>Ei. Tässä!
+<clr:107,232,120>Evästä!
+<clr:255,190,255>Öö
+Syön sen myöhemmin.<cr>Kiitos avusta.
+<clr:107,232,120>Kiität vielä myöhemmin.
+<clr:107,232,120><sfx:1>[Hymisee tyytyväisenä]
+<clr:255,190,255>Yök.
+<clr:255,190,255>Yäk.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Yhteys toimii taas!<sb>Kuuluuko? Oletko kunnossa?
+<clr:255,190,255>Russell! Kaikki hyvin! Entä isä?
+<HEADSET><clr:255,255,138>Hän on junassa.<sb>Juna liikkuu.<sb>Sinun on löydettävä Fairview
+n risteysasema, ennen kuin ne ehtivät sinne.
+<clr:255,190,255>Yritän ehtiä.
+<HEADSET><clr:255,255,138>Tapahtuiko mitään, kun yhteys oli poikki?
+<clr:255,190,255>Et ikinä usko tätä, mutta törmäsin vortigauntiin.
+<HEADSET><clr:255,255,138>Vortigauntiin?<cr>Mitä se siellä teki?
+<clr:255,190,255>Piileskeli.<cr>Se on varmaan karannut Combinelta.
+<HEADSET><clr:255,255,138>Mitä se sanoi?
+<clr:255,190,255>Oletko törmännyt joskus vortigauntiin?<cr>Se puhui hulluja vortigaunt-juttuja.
+<clr:255,190,255>Hei, muuten. Se vortigaunt...<cr>antoi minulle pääravun evääksi.
+<HEADSET><clr:255,255,138>Mahtavaa!<sb>Miltä se maistui?<cr>Kerro, miltä...
+<clr:255,190,255>Russell! Russell... en minä maistanut.
+<HEADSET><clr:255,255,138>Et tietenkään.<cr>Se oli oikea päätös.
+<clr:255,190,255>Onpa kummallinen.
+<clr:255,190,255>Vau! Tuolla zombilla on haulikko.
+<clr:255,190,255>Ooh!
+<clr:255,190,255>Joo. Nappaan haulikon ja jatkan matkaa.
+<clr:255,190,255>Sain sen!
+<HEADSET><clr:255,255,138>Lataa se äkkiä. Ääni kovenee.
+<clr:255,190,255>Se onnistui.
+<HEADSET><clr:255,255,138>Mahtava ase.
+<clr:255,190,255>Vau, onpa pimeää!
+<HEADSET><clr:255,255,138>Kaikki hyvin?
+<clr:255,190,255>Ei hätää. Kaikki hyvin.
+<clr:255,190,255>Ah, luojan kiitos.
+<clr:255,190,255>Ei
+Ei tässä hätää.
+<clr:255,190,255>Täällä on tosi pimeää. Russ?
+<HEADSET><clr:255,255,138>Niin?
+<clr:255,190,255>Voisitko vain
+puhua?
+<HEADSET><clr:255,255,138>Mistä?
+<clr:255,190,255>Mistä tahansa, ihan mistä tahansa.
+<HEADSET><clr:255,255,138>Täytyy myöntää, että tässä tilanteessa järjenvastainen pimeän pelkosi on paikallaan.<sb>Voin listata sata syytä pelätä.
+<clr:255,190,255>Okei, minun syytäni.<sb>Olen ensi kerralla tarkempi.
+<clr:255,190,255>Tämä taskulamppu on ihan paras.
+<HEADSET><clr:255,255,138>Samoin kuin sinä, sekin reagoi pimeyteen.
+<clr:255,190,255>Niinkö?
+<HEADSET><clr:255,255,138>Sen pitäisi syttyä automaattisesti, kun valot sammuvat.
+<clr:255,190,255>Ai? Kiva.
+<clr:255,190,255>Kuule, Russ. Nyt olisi TOSI kiva, jos juttelisit.
+<HEADSET><clr:255,255,138>Sopii. Kerro aihe.
+<clr:255,190,255>Hmm
+Kerro menneistä. Millaista elämä oli ennen Combinea?
+<HEADSET><clr:255,255,138>Ah! Hienoa.<cr>Tiedätkö, mikä on klubileipä?
+<clr:255,190,255>En, ei hajuakaan.
+<HEADSET><clr:255,255,138>Okei. Klubileipään vaaditaan ensinnäkin leipää.<sb>Ei leipäjonosta, vaan leipomosta.
+<HEADSET><clr:255,255,138>Ok.<sb>Klubileipään vaaditaan ensinnäkin leipää.<sb>Ei leipäjonosta.<sb>Vaan kulman leipomosta, tuoreena. Sitten tarvitaan tomaatteja ja salaattia. Ei mitään tahnaa vaan tuoretta.<sb>Lopuksi pekonia. Sitä saadaan eläimestä, jota kutsuttiin possuksi.<sb>Leipä paahdetaan ja täytetään kaikilla aineilla.
+<clr:255,190,255>Oliko kaikkea tuota tarjolla? Käsittämätöntä.
+<HEADSET><clr:255,255,138>Niin! Eikä siinä vielä kaikki.<sb>Ensimmäisen leivän päälle tulee toinen.<sb>Siihen tulee kinkkua, jota saatiin possusta. Kalkkunaa, jota saatiin eläimestä nimeltä kalkkuna. Lisää tomaatteja, salaattia ja muita aineita, joita en nyt muista.<sb>Se oli 15 senttiä korkea, painoi puoli kiloa ja siinä oli yli kymmenen ainesta viideltä eri mantereelta.<sb>Se oli kaikkein käsittämättömin annos kautta historian.
+<clr:255,190,255>Vau!
+<HEADSET><clr:255,255,138>Aivan!
+<clr:255,190,255>Olipa... Vau.
+<clr:255,190,255>Kiitti, Russ.
+<HEADSET><clr:255,255,138>Eipä kestä, Alyx.
+<HEADSET><clr:255,255,138>Hetkinen. Onko tuo kuollut Combine-sotilas?
+<clr:255,190,255>On
+<sb>Kun te varastitte reaktorin, näin Combinen siirtävän tarvikkeita tänne.<sb>Tämä paikka selvästi kiinnostaa niitä taas.
+<HEADSET><clr:255,255,138>Ole varovainen siellä.<sb>Jotain on selvästi tekeillä.
+<HEADSET><clr:255,255,138>Alyx! Manhakki! Varo!
+<HEADSET><clr:255,255,138>Manhakki!
+<HEADSET><clr:255,255,138>Oo, manhakkeja!
+<clr:255,190,255>Yääh
+<clr:255,190,255>Varjele
+<clr:255,190,255>Jos mietin, millaista elämä Maan päällä on nyt asteikolla 1
+10... Nyt ollaan kakkostasolla.
+<HEADSET><clr:255,255,138>Jep, aina voisi mennä huonommin.
+<clr:255,190,255>Minkä numeron antaisit elämälle ennen Combinea?
+<HEADSET><clr:255,255,138>Nyt panit pahan.<sb>En tiedä... Hyvänä päivänä...<sb>kuusi. <sb>6+.
+<clr:255,190,255>Kuusi? Ei kuulosta turhan hyvältä.
+<HEADSET><clr:255,255,138>Sellaista elämä on, Alyx.<cr>Ei se aina mene putkeen.
+<clr:255,190,255>Jos saadaan ajattua Combine pois Maasta, voitaisiin yrittää tähdätä kasiin.
+<HEADSET><clr:255,255,138>Oi, kasi!<cr>Se kuulostaa hyvältä.<sb>Tosi hyvältä.
+<clr:255,190,255>Mitä aiot tehdä, kun päästään Combinesta eroon?
+<HEADSET><clr:255,255,138>Siirryn tietenkin tuottamaan Russelleita.
+<clr:255,190,255>Tietenkin!<sb>Russelit ovat taattu kuparikaivos.
+<HEADSET><clr:255,255,138>Kultakaivos.<sb>Suunnitelma on tämä. Varovainen arvio on, että Combinesta päästään eroon vuodessa, ja planeetta on meidän.<sb>Se on siis ensimmäinen vuosi.
+<HEADSET><clr:255,255,138>Toinen vuosi menee siihen, että valmistan Russelleita massatuotantona.<sb>Tosin yhteiskunta pitää tietty rakentaa hitaasti uudelleen. Infrastruktuuria, työpaikkoja, rahaa ja sellaista.<sb>Ei ihmisillä muuten ole varaa ostaa niitä.<sb>Vai mitä.
+<HEADSET><clr:255,255,138>Eli siis
+<sb>KOLMEN vuoden suunnitelma.<sb>Pannaan se infrastruktuurin jälleenrakennus vuodelle kaksi.
+<clr:255,190,255>Joo, ehdottomasti.<sb>Se kannattaa hoitaa vuonna kaksi.
+<HEADSET><clr:255,255,138>Hei! Varo! Varo!
+<HEADSET><clr:255,255,138>Iisisti
+<clr:255,190,255>Voi ei. Taas on pimeää.
+<clr:255,190,255>Se kolmivuotinen Russell-suunnitelma
+Olisiko, öö... olisiko siinä mahdollisesti minulle joku homma?
+<HEADSET><clr:255,255,138>Joku homma? Sinähän keksit "Alyxin".<cr>Totta kai sinulle on töitä!
+<clr:255,190,255>Voidaan olla yhtiökumppaneita.
+<HEADSET><clr:255,255,138>No tuota
+<sb>Voisit tietty saada firman osakkeita.<sb>5
+10 vuoden karttumisajalla tietenkin.<sb>Se voisi olla varsin kannattavaa, Alyx.<sb>Pitkällä aikavälillä.
+<clr:255,190,255>En tajunnut sanakaan, mutta kuulostaa hyvältä, kumppani.
+<HEADSET><clr:255,255,138>Jep, kuulostaa hyvältä
+Alyx.
+<clr:255,190,255>Russ! Niillä on automaattiaseet.
+<clr:255,190,255>Niillä on automaattiaseet.
+<HEADSET><clr:255,255,138>Ne ovat muukalaisiskujoukkoa. Totta kai niillä on automaattiaseet.
+<HEADSET><clr:255,255,138>Niin olisi meilläkin, mutta Combinen aseet on turvattu geenikoodilla, joten se siitä. Paitsi jos löydät koodaamattoman aseen. Tai olet valmis pieniin geneettisiin muutoksiin.
+<clr:255,190,255>Toivottavasti eka vaihtoehto toteutuu. Olen nimittäin tyytyväinen näihin geeneihin.
+<clr:255,190,255>Sinä se jauhat, vaikka luodit viuhuu ohitseni, Russ!
+<clr:255,190,255>Combine!
+<HEADSET><clr:255,255,138>Niin olisi meilläkin, mutta Combinen aseet on turvattu geenikoodilla, joten se siitä.<sb>Paitsi jos löydät koodaamattoman aseen.<cr>Tai olet valmis pieniin geneettisiin muutoksiin.
+<clr:255,190,255>Hyvä näin, Russ. Olen ihan tyytyväinen näihin geeneihin.
+<HEADSET><clr:255,255,138>Fairview
+n risteysasema! Perillä ollaan.
+<HEADSET><clr:255,255,138>Pääsit sinne!
+<HEADSET><clr:255,255,138>Suojaudu!
+<clr:255,190,255>Huoh. Se taisi olla viimeinen.
+<HEADSET><clr:255,255,138>Hyvä, koska aika käy vähiin.
+<HEADSET><clr:255,255,138>Lähellä on ohjauskeskuksen varajärjestelmä.
+<HEADSET><clr:255,255,138>Sinun pitäisi ehtiä hyvin käynnistää varajärjestelmä uudelleen.
+<HEADSET><clr:255,255,138>Okei, voin pysäyttää junan tähän.
+<HEADSET><clr:255,255,138>Täysin. Kunhan aktivoit ohjauskeskuksen.
+<clr:255,190,255>Hienoa.
+<HEADSET><clr:255,255,138>Valmistaudu taistelemaan.<sb>Ne eivät luovu isästäsi helpolla.
+<clr:255,190,255>Olen valmis.
+<HEADSET><clr:255,255,138>Okei. Tuossa on se ohjauskeskus.
+<clr:255,190,255>Menossa.
+<HEADSET><clr:255,255,138>Pidä kiirettä.
+<HEADSET><clr:255,255,138>Jossain on oltava akku.
+<HEADSET><clr:255,255,138>Ehkä siitä puuttuu joku osa.
+<HEADSET><clr:255,255,138>En halua hoputtaa, mutta juna on tulossa.
+<clr:255,190,255>Tiedän, Russell.
+<HEADSET><clr:255,255,138>Hoidat minut sisään. Hommaan menee sekunti. Pärjäät mainiosti.
+<clr:255,190,255>Jep jep, ei tässä hätää
+Ei hätää
+<HEADSET><clr:255,255,138>Siitä puuttuu osa.
+<HEADSET><clr:255,255,138>Okei. Käynnistä järjestelmä nyt uudelleen.
+<clr:255,190,255>Kuuluuko tämän irrota?
+<HEADSET><clr:255,255,138>Ei todellakaan. Päinvastoin, Alyx!
+<clr:255,190,255>Mitä.... mitä minä nyt teen?
+<HEADSET><clr:255,255,138>Älä panikoi. Tai lopeta se, jos panikoit.
+<clr:255,190,255>En panikoi.
+<HEADSET><clr:255,255,138>No, mutta minä panikoin! Täytyy keksiä toinen keino pysäyttää juna.
+<clr:255,190,255>Täytyy olla joku toinen keino pysäyttää juna
+<HEADSET><clr:255,255,138>No, ala keksiä! Kohta on myöhäistä.
+<HEADSET><clr:255,255,138>Mene ulos! Jossain ON pakko olla manuaalinen varajärjestelmä. Tai ei siis ole pakko olla, mutta olisihan se kiva. Ole kiltti ja etsi se. [Hykertelee hermostuneesti]
+<HEADSET><clr:255,255,138>Varajärjestelmän täytyy olla ulkona, Alyx! Mene jo!
+<HEADSET><clr:255,255,138>Etsi jostain vipu!
+<HEADSET><clr:255,255,138>Etsi vipu! Juna on pysäytettävä!
+<HEADSET><clr:255,255,138>Juna tulee kymmenen sekunnin päästä, Alyx!
+<HEADSET><clr:255,255,138>Väännä sitä vipua.
+<HEADSET><clr:255,255,138>Viisi sekuntia!
+<clr:255,190,255>Se ei pysy alhaalla.
+<HEADSET><clr:255,255,138>Pidä sitä alhaalla.
+<clr:255,190,255>Kappas
+Se onnistui.
+<HEADSET><clr:255,255,138>Niinpä. Vau. Oletko kunnossa?
+<clr:255,190,255>Olen. Etsitään isä.
+<HEADSET><clr:255,255,138>Etsi vankikuljetusvaunu. Sen pitäisi olla junan etupäässä.
+<clr:255,190,255>Yritän raivata tieni junanromuun.
+<HEADSET><clr:255,255,138>Mitä hittoa nuo ovat?
+<clr:255,190,255>En tiedä, mutta meidän pitää löytää isä.
+<HEADSET><clr:255,255,138>Tiedän.<cr>En ole nähnyt noita aiemmin.
+<HEADSET><clr:255,255,138>Tuo on isäsi vankisäilö.
+<clr:255,190,255>Varjele. Missä isä on?
+<clr:255,190,255>Isä? ISÄ?
+<clr:255,190,255>Isä!
+<clr:255,208,172>Täällä, kulta.<sb>Tarvitsen apua, kiirehdi.
+<HEADSET><clr:255,255,138>Varjele.
+<clr:255,208,172>Kulta! Täällä!
+<clr:255,190,255>Olen tulossa!
+<clr:255,208,172>Kulta!
+<clr:255,190,255>Olen tulossa. Ihan hetki!
+<HEADSET><clr:255,255,138>Äkkiä, Alyx!
+<clr:255,190,255>Okei.<sb>Ojennan käteni ja vedän sinut turvaan.<sb>Kaikki järjestyy. Oletko valmis?
+<clr:255,208,172>Kyllä, olen valmis.
+<clr:255,190,255>Anna käsi!
+<clr:255,208,172>Äh!
+<clr:255,190,255><sfx:1>[Ähisee kivusta]
+<clr:255,208,172>Nopeasti, kulta.<sb>Ote alkaa lipsua.
+<clr:255,208,172>Vedä minut ylös
+Vedä minut ylös
+<HEADSET><clr:255,255,138>Jestas... voi jestas.
+<clr:255,208,172>Melkein
+melkein
+Aah!
+<clr:255,208,172><sfx:1>[Haukkoo henkeään]
+<clr:255,190,255><sfx:1>[Kauhistunut henkäisy]
+<HEADSET><clr:255,255,138>Vortigaunt! Se on vortigaunt.
+<clr:255,190,255>Tuo on SE vortigaunt!
+<clr:107,232,120>Alyx Vance!<sb>Tulin apuun, kuten lupasin.
+<clr:255,208,172>Kiitos
+Kiitos
+Varjele
+<clr:255,190,255>Kiitos, kiitos.<sb>Pysy siellä, isä!<sb>Yritän päästä sinne jotenkin!
+<clr:255,190,255>Pysy siellä!<cr>Yritän päästä itse sinne jotenkin!
+<clr:255,208,172>Ei, Alyx! Kuuntele!<sb>Se, mitä Russell ja minä löydettiin
+on jonkun sortin
+superase!
+<clr:255,190,255>Superase?
+<clr:255,208,172>Se on iso juttu.<sb>Sitä säilytetään karanteenialueella jossain holvissa.<sb>Se siirretään jonnekin.<sb>En tiedä minne, mutta pian.
+<clr:255,190,255>Se pitää varastaa siis sitä ennen.
+<clr:255,208,172>Aivan! Katso, katso
+<sb>Onnistuin varastamaan Combinen datakapselin.<sb>Jos onnistun purkamaan salauksen, voidaan käyttää niiden omaa asetta niitä vastaan.
+<clr:255,190,255>Mitä tehdään?
+<clr:255,208,172>Sinä menet holviin.<sb>Minä palaan Russellin luo tämän kanssa ja käyn hommiin.
+<HEADSET><clr:255,255,138>Siis hetkinen... Missä se holvi on?
+<clr:255,190,255>Isä! Missä se holvi on?
+<clr:107,232,120>Seuraa Pohjantähteä
+<clr:255,190,255>Selvä
+Seuraan tähteä. Isä?
+<clr:255,208,172>Se on karanteenialueen keskellä.<sb>Ja tosi iso.<sb>Nouse maan pinnalle ja ala etsiä.
+<clr:107,232,120>Minä saatan Eli Vancen turvallisesti perille.
+<clr:255,190,255>Hieno homma. Kiitos.
+<clr:255,208,172>Mene!
+<clr:255,190,255>Samoin!
+<clr:107,232,120>Samoin!
+<clr:255,190,255>Kiitos!
+<clr:255,190,255>Hei, Russ.<sb>Pidä isää silmällä, jooko?
+<HEADSET><clr:255,255,138>Kerron, jos hän tulee... Siis KUN hän tulee.
+<clr:255,190,255>Juuri niin, KUN hän tulee.
+<clr:255,190,255>Tilanne lähti vähän lapasesta, mutta <I>löysimme<I> sentään isän.
+<HEADSET><clr:255,255,138>Joo-o
+<HEADSET><clr:255,255,138>Saatettiin ehkä herättää vähän huomiota.<sb>Tai no ei mitenkään ehkä...<sb>Se taatusti herätti huomiota.<sb>Sinua siis etsitään jo.<sb>Ole varovainen.
+<HEADSET><clr:255,255,138>Jos onnistutaan nappaamaan se ase, kaikki voi muuttua lopullisesti.
+<clr:255,190,255>Niin... JOS.
+<HEADSET><clr:255,255,138>Tiedän, että ollaan tehty tätä yhdessä vasta muutama tunti, mutta olen ylpeä sinusta.<sb>Sinulla on kovat paineet.
+<clr:255,190,255>Vau... Russ.
+<HEADSET><clr:255,255,138>Sinulla on niin kovat paineet
+<sb>etten tohdi melkein ottaa koko asiaa edes esille.<sb>Huomasin, että kun ojensit käden isällesi... Jos hän olisi tarttunut siihen, kaikki Russellien herkät sensorit olisivat hajonneet.
+<clr:255,190,255>Aa... Okei.
+<HEADSET><clr:255,255,138>Täysin ymmärrettävää ja täysin sen arvoista... tässä tilanteessa.
+<clr:255,190,255>Just.
+<HEADSET><clr:255,255,138>Mutta en osaa kyllä kuvitella MITÄÄN muuta tilannetta, jossa sama pätisi.<sb>Isäsi tavoin Russellit ovat korvaamattomat.<sb>Joten
+se kannattaa pitää vastedes mielessä.
+<clr:255,190,255>Russ, lupaan, että pidän hanskoista hyvää huolta.
+<clr:255,190,255>Varjele, Russ. Kulkukortissa on luurangon kuva.
+<HEADSET><clr:255,255,138><sfx:1>[Hykertelee]
+<clr:255,190,255>Aa! Löytyi.
+<clr:255,190,255>Löytyi.
+<clr:255,190,255>No niin.
+<clr:255,190,255>Isä kertoi, että varastit jotain aseeseen liittyviä papereita.
+<HEADSET><clr:255,255,138>Jos on kyse Combine-datan salauksesta
+<clr:255,190,255>Sinä hoidat sen?
+<HEADSET><clr:255,255,138>Eli hoitaa homman.
+<clr:255,190,255>Ai.
+<HEADSET><clr:255,255,138>Järjestelmät, robotiikka, verkot
+Niistä selviän vauhdilla.
+<clr:255,190,255>Muttet tietojen salauksesta.
+<HEADSET><clr:255,255,138>Se on minulle ihan kuin jotain muukalaiskieltä. No, sitähän se onkin. Oli miten oli, Eli hoitaa homman.
+<HEADSET><clr:255,255,138>Alyx! Katso ulos ikkunasta.
+<HEADSET><clr:255,255,138>Oikeasti, Alyx. Katso ulos.<sb>Onko tuo se, mikä luulen?
+<HEADSET><clr:255,255,138>Hyvä, löysit sen.<sb>Mene nyt ikkunaan ja katso ulos.<sb>En näe sitä, jos et katso sinne.
+<clr:255,190,255>Jestas! Tuon on pakko olla se holvi.
+<HEADSET><clr:255,255,138>Niin... Isäsi ei maininnut, että se leijuu ilmassa.
+<clr:255,190,255>Eli vaikka selvittäisiin sinne asti, pitää päästä jotenkin ylös.
+<HEADSET><clr:255,255,138>Kaapelit! Sehän on kaapeleiden varassa.
+<HEADSET><clr:255,255,138>Pitää vain seurata niitä
+<clr:255,190,255>Ja rikkoa se, mitä toisesta päästä löytyy.
+<HEADSET><clr:255,255,138>Ja holvi romahtaa maahan.<sb>Simppeliä ja loogista.<sb>Hyvä suunnitelma.
+<HEADSET><clr:255,255,138>Okei... Jostain syystä et suostunut katsomaan ikkunasta ulos.
+<HEADSET><clr:255,255,138>Joten unohda ikkuna. Sieltä näkyi HOLVI, jonka isäsi käski etsiä. <sb>Se leijuu ilmassa, joten sinne on vaikea päästä.
+<HEADSET><clr:255,255,138>Mutta onneksi siinä on läjäpäin kaapeleita!<sb>Jos seurataan kaapeleita ja pannaan ne toisessa päässä poikki, holvin pitäisi rojahtaa maahan.
+<clr:255,190,255>Onko pakko katsella ikkunoista, jotta saadan tuhottua holvi?
+<HEADSET><clr:255,255,138>Enpä usko.
+<clr:255,190,255>Siinä tapauksessa sopii.
+<clr:255,190,255>Oletko kuullut Combinen puhuvan isän paosta?
+<HEADSET><clr:255,255,138>En sanallakaan. Ne puhuvat vain vahvistusten lähettämisestä karanteenialueelle.
+<clr:255,190,255>Hyvä puoli on se, että se tarkoittaa isän olevan vielä matkalla sinun luoksesi.<sb>Olisimme kuulleet, jos Eli Vance olisi saatu kiinni.
+<HEADSET><clr:255,255,138>Huono puoli on taas
+<clr:255,190,255>Holviin pääseminen ei ole sen helpompaa.
+<clr:255,190,255>Uu, kranaatteja.
+<clr:255,190,255>Höh. Siinä meni kranaatti täysin hukkaan.
+<HEADSET><clr:255,255,138>Kyllä kannatti.
+<clr:255,190,255>Samaa mieltä.
+<clr:255,190,255>Täältä pesee, zombi.
+<clr:255,190,255>Varokaa.
+<clr:255,190,255>Huti!
+<clr:255,190,255>Kirottua!
+<clr:255,190,255>Äh!
+<HEADSET><clr:255,255,138>Melkein!
+<HEADSET><clr:255,255,138>Se oli tosi lähellä.
+<clr:255,190,255>Jes!
+<HEADSET><clr:255,255,138>Jes!
+<HEADSET><clr:255,255,138>Hieno heitto!
+<HEADSET><clr:255,255,138>Hei! Katso näyttöä. Combine!
+<clr:255,190,255>Huomasin.
+<clr:18,199,226>Overwatch, 5-6-0 tässä.<sb>Sektorissa 0-2 todettu seismistä toimintaa. Vahvistakaa.
+<clr:166,242,255><I>Overwatch vahvistaa toiminnan.<sb>Varmistakaa sektori 0-2, mahdollinen nekroottinen häiriö.<sb>Haravoikaa sektori, raportoikaa eristyksen tila.<I>
+<clr:18,199,226>Eristys jatkuu. 5-6-0 siirtyy metroasemalle.<sb>Valmiina taistoon.
+<clr:255,190,255>Äh. Loistavaa.
+<HEADSET><clr:255,255,138>Ne tulee, Alyx!
+<clr:255,190,255>"Seuraa Pohjantähteä
+<HEADSET><clr:255,255,138>Näen sen. Miksi sanoit sen noin?
+<clr:255,190,255>Vortigaunt käski seurata Pohjantähteä, jotta voisin auttaa sen kavereita. Se kuulosti vortigauntien horinalta, mutta siinä olikin perää.
+<HEADSET><clr:255,255,138>Aa, joo. Siinä tosiaan oli perää.
+<HEADSET><clr:255,255,138>Hmm. Tuo on Combinen sähköasema. Ne tuottavat sähköä, ja niissä on tiukka turvallisuusprotokolla.
+<clr:255,190,255>Jättimäinen holvi tarvitsee juuri sähköä ja tiukkaa suojausta.
+<clr:255,190,255>Ja
+siinä holvi.
+<HEADSET><clr:255,255,138>Sähköasema pitää sitä varmaan ilmassa. Täytyy päästä sinne jotenkin.
+<clr:255,190,255>Aikamoinen määrä kaapeleita...
+<clr:255,190,255>Oho!
+<clr:255,190,255>Miten tuonne pääsee?
+<HEADSET><clr:255,255,138>En usko, että kadulta pääsee mitenkään sisään.
+<HEADSET><clr:255,255,138>Yritä päästä hotelliin ja sitä kautta katolle.
+<HEADSET><clr:255,255,138>Alyx, yritä päästä sisään hotelliin ja sitä kautta sähköasemalle.
+<HEADSET><clr:255,255,138>Ooh! Hissi. Sillä pääset ylös.
+<HEADSET><clr:255,255,138>[Rätinää]<sb>Hmm. Olipa kummallista.
+<clr:255,190,255>Sähköt meni poikki.
+<clr:255,190,255>Taidetaan mennä rappusia.
+<clr:255,190,255>Se niistä rappusista.
+<HEADSET><clr:255,255,138>Yritetään korjata sähköt.
+<clr:255,190,255>Uu, sulakekaappi.
+<clr:255,190,255>Palataan hissisuunnitelmaan.<sb>Yritän saada sähköt takaisin.
+<clr:255,190,255>Nyt löytyi. Sulakekaappi.
+<HEADSET><clr:255,255,138>Hotelli on ikivanha.<sb>Sähköt on taatusti kamala sotku.
+<clr:255,190,255>Sähköt toimii.<sb>Tsekataan hissi.
+<clr:255,190,255>Argh! Mikä sotku.
+<clr:255,190,255>Hissi ei vieläkään toimi.
+<clr:255,190,255>Kaikki näyttää hyvältä.
+<clr:255,190,255>Ehkä missattiin jotain hissin luona.
+<HEADSET><clr:255,255,138>Näetkö missään sulakekaappia?
+<clr:255,190,255>En vielä. Etsin edelleen.
+<clr:255,190,255>Ta-daa! Sähköt toimii taas.
+<clr:255,190,255>Nyt vain hissin pitää saada vähän virtaa.
+<clr:255,190,255>Sitten vaan ylös...
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Taidetaan nousta tikkaita.
+<clr:255,190,255>Ihan villiintynyt paikka.<sb>Miten vaarallista täällä oikeastaan on?
+<HEADSET><clr:255,255,138>No, siellä on itiöitä toisesta ulottuvuudesta, joten
+varmaan
+tosi vaarallista.
+<HEADSET><clr:255,255,138>Mutta toisaalta ainutlaatuinen tilaisuus tutkia muukalaiskasveja.
+<HEADSET><clr:255,255,138>Oh! Varo niitä rakkuloita!
+<HEADSET><clr:255,255,138>Ne ärsyyntyvät, kun menet lähelle.
+<HEADSET><clr:255,255,138>Hyi.
+<clr:255,190,255>Alkaa tuntua vahvasti siltä, ettei minun kannattaisi hengittää tätä ilmaa.
+<HEADSET><clr:255,255,138>Totta. Pysy liikkeessä.
+<HEADSET><clr:255,255,138>Hengitä vähemmän.
+<HEADSET><clr:255,255,138>Alyx, miltä se tuntuu?
+<clr:255,190,255>Vähän
+limaiselta. Ja kihelmöivältä.
+<clr:255,190,255>Au.
+<HEADSET><clr:255,255,138>Miltä se tuntui?
+<clr:255,190,255>Terävältä.
+<HEADSET><clr:255,255,138>Kuinka terävältä?
+<clr:255,190,255>Kutoselta kympin asteikolla.
+<HEADSET><clr:255,255,138>Okei, kutonen.
+<clr:255,190,255>Vahva kutonen.
+<HEADSET><clr:255,255,138>Jestas, älä katso alas.<sb>Älä katso alas!
+<clr:255,190,255>Ethän sinä edes ole täällä, Russ!
+<clr:255,190,255>Just. Niinpä tietenkin.
+<clr:255,190,255>Oho, tyypillä ei ole paitaa.
+<clr:255,190,255>Sainpas.
+<clr:255,190,255>Kiitti!
+<clr:255,190,255>Hei Russ, valitse joku kappale.
+<HEADSET><clr:255,255,138>"Kimalaisen lento."
+<clr:255,190,255>Nyt lähtee.
+<HEADSET><clr:255,255,138>Juuri noin!
+<clr:255,190,255><delay:4>Oho, ei hyvältä näytä.
+<HEADSET><clr:255,255,138>[Yhteys pätkii] Alyx? Alyx, kuuletko?
+<clr:255,190,255>Näitkö tuon? Russell? Russell!
+<HEADSET><clr:255,255,138>[Rätinää] Alyx! Alyx! Mitä tapahtui?
+<clr:255,190,255>Siellä oli joku
+koiramainen
+salamoiva otus.
+<HEADSET><clr:255,255,138>Harmi, että se meni minulta ohi.
+<clr:255,190,255>Tapoin sen ja se jätti tällaisen.
+<clr:255,190,255>Hei, Russell. Tämä tuli siitä koirasta.
+<HEADSET><clr:255,255,138>Kappas. Onpas mielenkiintoinen.
+<clr:255,190,255>Tuolla se on, Russ!
+<clr:255,190,255><delay:3>Hitto, salamoiva koira.
+<HEADSET><clr:255,255,138>Ole varovainen, Alyx!
+<clr:255,190,255>Varjele! Se sulautui ruumiiseen!<sb>Russell?
+<HEADSET><clr:255,255,138>[Rätinää] Alyx! Kuoliko koira? Mitä tapahtui?
+<clr:255,190,255>Tätä et usko ikinä.<sb>Se sulautui ruumiiseen.
+<HEADSET><clr:255,255,138>Eikä!
+<clr:255,190,255>Kyllä.<sb>Oli pakko ampua kummatkin. Ihan sekopäistä.
+<HEADSET><clr:255,255,138>Siltä se kuulostaakin.
+<clr:255,190,255>Sitä se oli.
+<HEADSET><clr:255,255,138>Nuo Combinen panssariovet ovat käytännössä läpäi... [Yhteys pätkii]
+<clr:255,190,255>O-ou.
+<HEADSET><clr:255,255,138>[Rätinää] Tuliko se koira takaisin, Alyx?
+<clr:255,190,255>Joo. Oli aika
+rankka paikka.
+<HEADSET><clr:255,255,138>Olethan sinä kunnossa?
+<clr:255,190,255>Olen, Russ. Kaikki hyvin.
+<HEADSET><clr:255,255,138>Sinun on päästävä pois sieltä ja katolle.
+<clr:255,190,255>Yritetään.
+<clr:255,190,255>Siellä se on.<sb>Tuolla hissillä pääsen sähköasemalle.
+<clr:255,190,255>Löysin hissin.
+<HEADSET><clr:255,255,138>Luojan kiitos.
+<clr:255,190,255>Sähköasema on kerrosta ylempänä.
+<clr:255,190,255>Sähköasema on tuolla. Menen ylös, ja pysäytetään se.
+<clr:255,190,255>Nyt aletaan lähestyä sähköasemaa.
+<HEADSET><clr:255,255,138>Sinun täytyy selvittää tuo Combine-sulku.
+<clr:255,190,255>Keksin keinon purkaa sen.
+<clr:255,190,255>No niin, tämän pitäisi avata sulku.
+<HEADSET><clr:255,255,138>Sinun täytyy löytää sulun virtalähde.
+<HEADSET><clr:255,255,138>Edessä on Combine-sulku.
+<clr:255,190,255>Avaan ja sammutan sen.
+<clr:255,190,255>En halua murehtia liikoja, mutta eikö isän pitäisi jo olla siellä?
+<HEADSET><clr:255,255,138>Mietitäänpä.<sb>Hän liikkuu kävellen, 5 km/h
+<HEADSET><clr:255,255,138>Plus hän on yksijalkainen karkuri
+<sb>Tiellä on esteitä ja mutkia
+<sb>Tai, no...<sb>Turha minun yrittää kierrellä. KYLLÄ hänen pitäisi jo olla täällä.
+<clr:255,190,255>Niin. Joten minun <I>pitäisi<I> olla huolissani.
+<HEADSET><clr:255,255,138>Normaalitilanteessa kyllä...<sb>mutta sinä taas olet kulkemassa KOHTI vaaraa, joten meidän pitäisi olla huolissamme sinusta.
+<HEADSET><clr:255,255,138>Alyx! Nyt kävi mäihä!<cr>Löysit koodaamattoman Combine-aseen!
+<clr:255,190,255>Mistä tiedät?
+<HEADSET><clr:255,255,138>Se on vielä kotelossa.<sb>Ne eivät ikinä jätä niitä koteloihin.
+<clr:255,190,255>Loistavaa.
+<HEADSET><clr:255,255,138>Ei tarvinnut edes sörkkiä geneejäsi.
+<clr:255,190,255>Tiedän, että olisit sörkkinyt mielelläsi.
+<HEADSET><clr:255,255,138>Ei se mitään, ensi kerralla.
+<clr:255,190,255>No niin, siinä se nyt on.
+<HEADSET><clr:255,255,138>Napsauta kaapelit poikki ja menoksi.
+<clr:255,190,255>Tämä ei käy yhtä helposti kuin kuvittelin maasta katsottuna.
+<clr:255,190,255>En näe täällä mitään, millä kaapelit voi irrottaa.
+<clr:255,190,255>Russ, en keksi, miten irrotan kaapelit.
+<HEADSET><clr:255,255,138>Yritä vaikka avata kaapelin suojus ja ammu se.
+<clr:255,190,255>Aa! Selvä.
+<clr:255,190,255>Aa, liitoksessa on suojaus.
+<clr:255,190,255>Jees!
+<HEADSET><clr:255,255,138>Sillä lailla!
+<HEADSET><clr:255,255,138>Hienoa. Mene nyt sisään ja kytke virtalähde pois päältä.
+<clr:255,190,255>Jep.
+<clr:255,190,255>Kiitos! Onnea matkaan!
+<clr:255,190,255>Kiitos! Onnea matkaan.
+<clr:255,190,255>[Yskii] Mikä
+tämä
+on?
+<clr:107,232,120><sfx:1>[Haukkoo henkeä]
+<clr:255,190,255><sfx:1>[Hämmästynyt henkäisy]
+<HEADSET><clr:255,255,138>Hyvänen aika, se on vortigaunt
+<clr:107,232,120>Olemme ansassa täällä
+pimeässä.
+<clr:255,190,255>Nyt olet vapaa.<sb>Kaikki on hyvin. Kaverisi lähetti minut.
+<clr:107,232,120>Alyx Vance
+olet ystävämme.
+<clr:255,190,255>Mitä sinulle tehdään täällä?
+<clr:107,232,120>Samaa tehdään kaikille.
+<clr:107,232,120>Pitää näyttää Alyx Vancelle.
+<clr:107,232,120>Tule!
+<clr:107,232,120>Katso tänne!
+<clr:107,232,120>Alyx Vancen pitää tulla.
+<clr:107,232,120>Tule.
+<clr:107,232,120>Combine imee meistä virtaa ja käyttää sitä aseen suojelemiseen.
+<clr:107,232,120>Tuolla
+<clr:107,232,120>Meiltä revitään sisin.
+<clr:255,190,255>Meidän pitää estää niitä tappamasta ystäviäsi.
+<clr:107,232,120>Vortigauntit vapauttavat itsensä ja pitävät huolta kostosta.<sb>SINUN pitää löytää ase.
+<clr:255,190,255>En pääse holviin, jos sähköasemat ovat päällä.
+<clr:107,232,120>Älä huoli, Alyx Vance.<sb>Ne <I>eivät<I> ole kauan.<sb><I>Emme<I> salli sitä.
+<clr:107,232,120>Minä raivaan tien.
+<clr:107,232,120><sfx:1>[Voihkaisee]
+<clr:107,232,120>Mene. Tiemme eroavat.<sb>Mutta muista: välillämme ei ole etäisyyttä.<sb>Olemme yhteenkiedotut.
+<clr:255,190,255>Täällä alkaa olla melko täyttä, Russ.
+<HEADSET><clr:255,255,138>Viestintäkanavat ovat käyneet kuumina siitä saakka, kun eliminoitiin se sähköasema.<sb>Ne tietävät nyt, että yritämme päästä holviin.<sb>Mitä siellä ikinä onkin, ne eivät TODELLAKAAN halua meidän saavan sitä.
+<clr:255,190,255>No, nyt minä sen vasta haluankin!
+<HEADSET><clr:255,255,138>Noin, tuo on oikea asenne.
+<HEADSET><clr:255,255,138>Lasketaan aika lailla sen varaan, että vortigaunt sulkee sähköasemat.
+<clr:255,190,255>Minä luotan siihen.
+<HEADSET><clr:255,255,138>Joo, niin minäkin.<cr>Jos se ei tee osaansa, holvi ei mene mihinkään.<sb>Me seisoa pönötämme Combine-sotilaiden keskellä, ilman mitään holvia...
+<clr:255,190,255>Russ.<cr>Muuta suunnitelmaa ei ole.<sb>Vortigaunt hoitaa hommansa, ja kaikki järjestyy.
+<HEADSET><clr:255,255,138>Olet oikeassa. Kaikki järjestyy.<sb>Ei ole mitään hätää.
+<HEADSET><clr:255,255,138>Okei, sieltä ei ole suoraan reittiä holviin.<sb>Sinun täytyy luikerrella sisään.
+<clr:255,190,255>No, se on valtava, joten ei pitäisi olla vaikea nähdä, mihin päin pitää mennä.
+<clr:255,190,255>En ymmärrä, mitä ne tekee sillä täällä.
+<clr:255,190,255>Jos ase on niin tehokas, niin miksi sitä pidetään lukittuna tällaisessa murjussa?
+<HEADSET><clr:255,255,138>Uskoisin, että ne yrittävät keksiä, miten sen saa siirrettyä pois Maasta.<sb>Takaisin kotiin tai jollekin toiselle planeetalle.
+<clr:255,190,255>Miksi ne eivät käytä sitä TÄÄLLÄ?
+<HEADSET><clr:255,255,138>Ne voittivat jo tämän sodan, Alyx.
+<clr:166,242,255><I>Suunnataan sektoriin asemalle yksi, aseet käyttöön.<sb>Kohde on määritetty ensisijaiseksi kohteeksi.<sb>Pidättäkää välittömästi.<I>
+<clr:166,242,255><I>Yksilöä syytetään nyt useasta 5. tason rikkomuksesta yhteiskuntaa vastaan.<sb>Yhteistyötä vaaditaan paikallisten suojelujoukkojen kanssa.<sb>Hälytys, suojelujoukot.<cr>Koodi: Hyökätkää. Eristäkää. Neutraloikaa.<I>
+<clr:255,190,255>Mitäs sanot, Russ?<sb>Parasta varmaan totella.
+<HEADSET><clr:255,255,138>Jep, kuulostaa siltä, että se on tosissaan.
+<clr:255,190,255>Oli kivaa niin kauan kuin sitä kesti.
+<HEADSET><clr:255,255,138>Vai yhteistyötä? Pyh.
+<clr:18,199,226>Overwatch, olemme kärsineet suuria tappioita ensisijaisen kohteen takia.
+<clr:166,242,255><I>Overwatch vahvistaa kohteen hallintaongelman.<sb>Odottakaa vahvistuksia.<sb>Kukistaja on matkalla.<I>
+<clr:18,199,226><force>Kohde lukittu, perääntykää ja vahvistakaa.
+<clr:255,190,255>Uh
+Huh.
+<HEADSET><clr:255,255,138>Ooh, Alyx!
+<clr:255,190,255>NÄETKÖ tuon?!
+<HEADSET><clr:255,255,138>Vortigauntit tuhoavat sähköaseman!
+<HEADSET><clr:255,255,138>Tämä saattaa onnistua.
+<clr:255,190,255>Parasta olisi.
+<HEADSET><clr:255,255,138>Alyx! Katso ylös!
+<HEADSET><clr:255,255,138>Katso ylös, katso ylös!
+<HEADSET><clr:255,255,138>Katso, kuka on taas täällä!<sb>Sain dronen jälleen toimimaan!
+<HEADSET><clr:255,255,138>Unohda tuo. Nähdään ulkona.
+<HEADSET><clr:255,255,138>Näyttää siltä, että edessä on Combinen barrikadeja.<sb>Ne estävät pääsemästä lähemmäksi holvia.
+<clr:255,190,255>Okei. Mitäs mietit?
+<HEADSET><clr:255,255,138>Yritä löytää tislaamolle ja katso, mihin sieltä pääsee.<sb>Nyt kun drone on taas verkossa, ollaan vihdoin etulyönti... Ei voi olla totta!
+<HEADSET><clr:255,255,138>Ei voi olla totta!
+<clr:255,190,255>En tiedä, mistä rakennukseen mennään sisään, joten katselen vähän ympärilleni.
+<clr:255,190,255>Mikä paikka tämä muuten on?
+<HEADSET><clr:255,255,138>Se on tislaamo.<sb>Siellä tehtiin vodkaa ja muuta.
+<clr:255,190,255>Onko
+vodka
+hyvää?
+<clr:255,190,255>Siis onko vodka hyvää?
+<HEADSET><clr:255,255,138>Hyvänen aika, ei.
+<clr:255,190,255>Russell ei tykkää vodkasta, selvä.
+<HEADSET><clr:255,255,138>En minä niin sanonut!
+<clr:255,190,255>Mutta se ei ole hyvää?
+<HEADSET><clr:255,255,138>Se on myrkkyä
+tykkään siitä.<sb>Kaikki
+tykkäävät.
+<clr:255,190,255>Okei, varsin hämmentävää.
+<clr:255,190,255>Kunhan pääsen sisälle, etsin sinulle pullon.
+<HEADSET><clr:255,255,138>Se olisi itse asiassa hieno juttu.
+<clr:255,190,255>Täällä on todellakin läjäpäin vanhoja pulloja.<sb>Pilaantuuko alkoholi?
+<HEADSET><clr:255,255,138>Se vain paranee! Se on hyvää, Alyx!
+<clr:255,190,255>Russell? Yhteys pätkii.
+<HEADSET><clr:255,255,138>Vodka on hyvää, Alyx!<sb>Vodka on hyvää!
+<clr:255,190,255>Just joo...
+<HEADSET><clr:255,255,138>Alyx! Kuuluuko?<sb>Alyx? Ah, siinähän sinä olet.
+<clr:255,190,255>Hei Russ.<cr>Vortigauntit tuhosivat taas yhden.
+<clr:255,190,255>Russ! Vortigauntit tuhoavat toisen sähköaseman!
+<HEADSET><clr:255,255,138>Hyvä! Hieno uutinen!
+<clr:255,190,255>Holviin ei ole suoraan reittiä.<sb>Menen sisään, jotta voin kiertää barrikadin.
+<clr:255,190,255>Holviin ei ole suoraan reittiä.<sb>Menen sisään ja yritän löytää uloskäynnin.
+<HEADSET><clr:255,255,138>Jos yhteys katkeaa taas, muista:<sb>vodka ei pilaannu, okei?<sb>Se säilyy ikuisesti.
+<HEADSET><clr:255,255,138>Alyx, et kyllä ikinä usko
+<clr:255,190,255>Russ? Ääh.
+[Ponnistelee] Perhanan
+[Ponnistelee] Senkin
+Päästä irti
+jalasta! Anna... Aargh!
+[Ponnistelee] Luulin, että meillä on sopimus: sinä et käytä kieltä, enkä minä ammu sitä.
+[Struggling] Tämä oli nyt tässä, ettäs tiedät.
+[Ponnistelee] Jestas
+<sfx:1>[Ponnistelee]
+[Ponnistelee]
+vihaan
+riippujia
+niin paljon
+olen selviytynyt
+typerässä tehtaassa vuosia.<sb>Miksi
+riippujat
+saavat minut vielä kiinni?
+[Ponnistelee] No niin.<sb>Pakko leikata jalka poikki.<sb>Sinä voitat. Toivottavasti tukehdut siihen, senkin hirviö.
+[Ponnistelee] Olisi ollut niin monta parempaakin tapaa kuolla kuin tämä.<sb>Mikä nöyryytys.
+[Ponnistelee] Olisin voinut hukkua.<sb>Jäädä Combine-partion alle.<sb>Striderin alle.<sb>Strider olisi voinut hukuttaa.<sb>Tai repiä kahtia.<sb>Tuberkuloosi.
+Oi! Hei!<sb>Sinä siellä, joka olet veressä.<sb>Sinä, joka olet veressä!
+Minulla on... pieni tilanne täällä päällä.
+<clr:255,190,255>Joo, siltä näyttää.
+Ei... sinulla sattuisi olemaa asetta?
+Jopas on!<sb>Se on... Onpa se hieno.
+Äh. Hienompi kuin oma aseeni, joka on tuon kaverin sisuksissa.
+Siitä puheen olleen, voisitko ampua sen?
+Katsos, käsivoimat riittävät vielä neljä tai viisi tuntia, joten
+Joten ihan kaikessa rauhassa, mutta jos siitä ei ole vaivaa
+<sb>Argh... Voisit ehkä pamauttaa pamauttaa otuksen hengiltä.
+Ah, hienoa.
+Ah, hienoa. Sankarini.
+Hei, auttaisitko vähän?
+Hmph. Kiitos.
+<clr:255,190,255>Mikä hitto se oli?
+Ai, se on Jeff.
+<clr:255,190,255>Jeff?
+Älä huoli, se ei näe.<sb>Kuulee toki hyvin.
+Kuulo on kuin Mozartilla.
+<clr:255,190,255>Kenellä?
+Äh. Okei, annas kun autan sinua.
+Selvä.<sb>Nähdään toisella puolella, keltanokka.
+Ja puhu hiljempaa.
+[Kuiskaa] Tuolla se on.
+<clr:255,190,255><I>Jeff.<I>
+[Kuiskaa] Joo. Katsos tätä
+Näetkö? Se on täysin ennalta arvattava.<sb>Mutta se repii kädet irti, jos se löytää sinut.
+Hei, hei! Mitä?<sb>Jeff on luodinkestävä!
+<clr:255,190,255>Ei voi olla totta
+<clr:255,190,255><sfx:1>[Yskii]
+<clr:255,190,255><sfx:1>[Yskii kovempaa]
+<clr:255,190,255>[Yskii] Hitto!
+<clr:255,190,255>[Yskii] Ääh
+Hei! Ne on myrkyllisiä!<sb>Peitä suu!
+<clr:255,190,255>Okei, kiitos.
+<clr:255,190,255>[Yskii] Okei, kiitos.
+<clr:255,190,255>Okei, kiitti.
+Meinasi unohtua.<sb>Mikä sun nimesi on?
+<clr:255,190,255>Alyx! Alyx Vance!
+Hei, Alyx. Olen Larry.<sb>Hauska tutustua.<sb>Koeta pysyä hengissä.
+Peitä suusi, niin et yski!
+Hei! Hei!<sb>Peitä suusi, niin et yski!
+Paljastat sijaintisi!<sb>Peitä suusi, niin et yski!
+Jeff kuule yskinnän!<sb>Peitä suusi!
+<clr:255,190,255><sfx:1>[Vaimea henkäisy]
+<clr:255,190,255>Äh
+<clr:255,190,255>Huh
+<clr:255,190,255>Vihaan sinua, Jeff
+Hei! Alyx Vance!<sb>Onnistuit!
+<clr:255,190,255>Telkesin Jeffin jätepuristimeen.
+<clr:255,190,255>Ja sitten murskasin sen.
+Piru vieköön!
+No, toivottavasti löysit hyvää tavaraa.<sb>Nähdään!
+<clr:255,190,255>Oi ei, Jeff.<sb>Oletko kunnossa? [Nauraa]
+<HEADSET><clr:255,255,138>Alyx! Kuuluuko, Alyx?<sb>Alyx? Siinähän sinä olet.<sb>Kuuletko?
+<clr:255,190,255>Jotakuinkin. Yhteys pätkii.
+<HEADSET><clr:255,255,138>Taidat olla edelleen tislaamossa.
+<clr:255,190,255>Sain uuden ystävän, Jeffin.
+<HEADSET><clr:255,255,138>Mahtavaa.<sb>Kaikki apu on tervetullutta.
+<clr:255,190,255>Joo no... Ei olla läheisiä.
+<HEADSET><clr:255,255,138>Kuuntele. Siellä jossain pitäisi olla tunnelinkokoinen kansi lattiassa.<cr>Se on...
+<clr:255,190,255>Tunneli, joka johtaa pois täältä?
+<HEADSET><clr:255,255,138>Aivan.<sb>Kun saat sen auki, selvitän mihin sen johtaa.
+<clr:255,190,255>Combine sulki uloskäynnin täällä.<sb>Aion avata sen ja häipyä täältä.
+<HEADSET><clr:255,255,138>Hyvä!<sb>Ja yritän selvittää, mihin sen johtaa.
+<HEADSET><clr:255,255,138>Löysin kasan sen kaupunginosan maanalaisia karttoja!
+<clr:255,190,255>En kuule. Russell!
+<HEADSET><clr:255,255,138>Maanalainen. Se tarkoittaa maan alla olevaa.<sb>Tiedäthän, alapuolella. Alyx?
+<HEADSET><clr:255,255,138>Mikä hitto tuo on?
+<clr:255,190,255>SE on Jeff.
+<HEADSET><clr:255,255,138>Ai. Se on Jeff. En tykkää Jeffistä.
+<clr:255,190,255>Siitä oppii pitämään.
+<clr:255,190,255>TUO on Jeff. Puhu hiljempaa!
+<HEADSET><clr:255,255,138>Ai. Okei.<cr>Selvä. En tykkää Jeffistä.
+Niin, ja kiva hattu muuten.
+Kiva hattu muuten.
+Kiva kypärä muuten.
+Niin, ja kiva kypärä muuten.
+Kivat hatut muuten.
+Niin.. ja kiva naamari.
+Se tulee tarpeeseen.
+Niin muuten... Tuo tyyli.<sb>Sopii sinulle.
+Niin muuten... Mikä tuo päässäsi oleva sitten onkaan.<sb>Tykkään siitä.
+Oo! Kiva naamari muuten.
+Oo! Kiva naamari.<sb>Sitä tarvitaan täällä.
+Ja tota, jos satut hukkaamaan sen, muista peittää suusi noiden lähettyvillä.
+Ai! Mutta jos hukkaat sen...<sb>Peitä suusi noiden lähettyvillä.<sb>Se on... ällöttävää.
+<clr:255,190,255>Ai... Okei, teen niin.
+<HEADSET><clr:255,255,138>Okei, reitti on selvä.<sb>Avaa kansi, jotta päästään pois tunnelien kautta.
+<HEADSET><clr:255,255,138>Yritä löytää konsoli.
+<HEADSET><clr:255,255,138>Etsi vilkkuva valo.
+<HEADSET><clr:255,255,138>Hyviä uutisia: tuo tunneli johtaa holviin.
+<clr:255,190,255>Hienoa. Pieni ennakkovaroitus: luulen, että tunneli on täynnä muurahaiskorentoja. Siltä varalta, että yhteys katkeaa lopullisesti.
+<HEADSET><clr:255,255,138>Muurahaiskorentoja, muurahaiskorentoja,
+<clr:255,190,255>Niin, tiedäthän. Muukalaisia, joilla on pistävät koivet.
+<HEADSET><clr:255,255,138>Ai! Joo! Ja pieniä kuin muurahaiset!
+<HEADSET><clr:255,255,138>Öh, pieniä kuin korennot.
+<clr:255,190,255>Ei, ei niitä.<sb>Nämä on melko vaarallisia.
+<HEADSET><clr:255,255,138>Okei. Oli mitä oli, niitä on siellä tunnelissa.
+<clr:255,190,255>Jep. Eikun menoksi.
+<HEADSET><clr:255,255,138>Jalkiainen! Eikun, se on kuollut.
+<clr:255,190,255>Se on muurahaiskorento, Russell.
+<HEADSET><clr:255,255,138>Tuo on muurahaiskorento?
+<clr:255,190,255>Joo.<sb>Eli TIEDÄT sittenkin, mitä muurahaiskorennot on.
+<HEADSET><clr:255,255,138>Joo. Ne on jalkiaisia.
+<clr:255,190,255>Russ? Luuletko, että päärapu voi muuttaa gorillan zombiksi?
+<HEADSET><clr:255,255,138>Jos totta puhutaan... Jos paikalla on gorilla, päärapu on ongelmista pienin.
+<clr:255,190,255>Pahoitteluni, Russ, etten tuonut sinulle vodkaa.
+<HEADSET><clr:255,255,138>Ei haittaa.<sb>Nappaat paluumatkalla.
+<clr:255,190,255>Toivottavasti osaat arvostaa sitä, miten iso homma tämän vodkan kantelussa on.
+<clr:255,190,255>Toivottavasti osaat arvostaa sitä, miten iso homma vodkalaatikon kantelussa on.
+<HEADSET><clr:255,255,138>Osaan.<cr>Mutta sulla on kaksi kättä.<sb>Voisitko napata TOISEN pullon paluumatkalla?
+<HEADSET><clr:255,255,138>Totta kai osaan.
+<HEADSET><clr:255,255,138>Kaksi pulloa!
+<HEADSET><clr:255,255,138>Kolme pulloa!
+<HEADSET><clr:255,255,138>Oi, olet ylittänyt kaikki odotukset.<sb>Holtitonta ja kohtuutonta touhua... mutta arvostan sitä todella.
+<clr:255,190,255>Ai, otan itselleni yhden tällaisen.
+<HEADSET><clr:255,208,172>Vankila
+<clr:255,190,255>Odota... Isä... Mitä?!
+<HEADSET><clr:255,255,138>Mitä nyt?
+<clr:255,190,255>Pitämään <I>mitä<I>?
+<HEADSET><clr:255,208,172>En tiedä.<sb>En ole varma, tietääkö tämä datakapselikaan.<sb>Mutta jotain ne siellä pitää.
+<clr:255,190,255>Vau, okei.<sb>Jos se ei ole ase, vieläkö jatketaan tätä?
+<HEADSET><clr:255,208,172>Näkisin sen näin: mikä se ikinä onkin, se ei pahemmin tykkää Combinesta.<sb>Joten SE meillä on yhteistä.
+<clr:255,190,255>Totta
+<HEADSET><clr:255,208,172>Eli
+Vieläkö me jatketaan?
+<clr:255,190,255>Ollaan tultu tänne asti, joten jatketaan.<sb>Jos selviää, että siellä on jotain, mihin ei todellakaan kannata sotkeentua, lopetetaan siihen.
+<HEADSET><clr:255,208,172>Niin sitä pitää.<sb>Ilmoitan, mitä saan sen selville.
+<clr:255,190,255>Aa, ne sulkevat alueen.
+<HEADSET><clr:255,255,138>Lykkyä pyttyyn niille! Sinulla on käytössä Alyx.
+<clr:255,190,255>Joo, onnea vaan.
+<clr:255,190,255>Vau! Russell!<sb>Vortigauntit tuhosivat juuri viimeisen sähköaseman!
+<HEADSET><clr:255,255,138>Ai! Annas kun katson!<sb>Eli!<cr>Vortigauntit tuhosivat juuri viimeisen sähköaseman!
+<HEADSET><clr:255,255,138>Varaudu, Alyx!<sb>Se romahtaa kohta!
+<clr:255,190,255>Hetkinen, mitä
+<HEADSET><clr:255,255,138>Se... Ne on aktivoineet jonkunlaisen varajärjestelmän.
+<HEADSET><clr:255,255,138>Ne on aktivoineet varajärjestelmän!
+<HEADSET><clr:255,208,172>Sano Alyxille, ettei sellainen varajärjestelmä voi olla vakaa.<sb>Hän voi sulkea sen.
+<HEADSET><clr:255,255,138>Isäsi sanoo...
+<clr:255,190,255>Kuulin sen.
+<clr:255,190,255>Eli suuntaan noille palkeille, vai mitä?
+<HEADSET><clr:255,255,138>Niin. Varajärjestelmäasema on varmaan siellä.
+<clr:255,190,255>Kuka siellä onkin, on toivottavasti tämän arvoinen.
+<HEADSET><clr:255,255,138>Mitä sanoit, Alyx?
+<clr:255,190,255>En mitään, menossa.
+<clr:18,199,226><force>Hei! Varo. En halua litkua päälleni.
+<clr:18,199,226>Miksi? Onko se vaarallista?
+<clr:18,199,226><force>Ei sitä heitetä monttuun, koska se on turvallista. Jatka.
+<clr:255,190,255>Oh, okei. Viimeinen.
+<HEADSET><clr:255,255,138>Oletko kunnossa?
+<clr:255,190,255>Hei Russ, haluatko vaihtaa paikkoja?
+<HEADSET><clr:255,255,138>Joo, en. Kuolisin varmaan heti.
+<clr:255,190,255>Tuolla ylhäällä on joku!
+<HEADSET><clr:255,255,138>Tuo ei ole Combinen väkeä.<sb>Ehkä romunkerääjä?<sb>Ole varovainen.
+<HEADSET><clr:255,255,138>Eli! Tule tänne!
+<clr:255,208,172>Mitä nyt, Russell?
+<HEADSET><clr:255,255,138>Kuuntele tätä
+<clr:255,190,255>Hei, hei! Hys!
+Oikeasti, se pitää siirtää nyt.
+<clr:255,190,255>Odota... Hys!
+Mikset sinä voi tehdä sitä?
+No, kenet sitten on valtuutettu?
+Okei. No, hae se.
+Äh, mitä edes teen täällä?<sb>Minun on parasta häipyä.
+Valtasitte kokonaisen planeetan seitsemässä tunnissa.<sb>Miksi tässä kestää näin kauan?
+Ei hätää.<sb>Voin odottaa.
+Se oli sarkasmia.<sb>No, hyvä, että huomasit.<sb>Kyllä. Sekin oli sarkasmia.<sb>Muistutan vaan, että minun pitää puhua pomollesi, että meiltä alkaa loppua aika kesken.
+No, entäs jos hakisin OMAN esimieheni?<sb>Laittaisiko se asioihin vauhtia?
+Ei, se oli asian ydin.<sb>Minä <I>olen<I> oma esimieheni.<sb>Et ole tosissasi.
+Hei, hienoa, vihdoin.
+Meidän pitää siirtää se laatikko tai Black Mesan tapahtumat toistuu taas.
+No, kerron nyt, että se ON valmis.
+Jos se on siellä vielä, kun hän pääsee sinne asti, niin tyyppi on mennyttä.
+Miten voit kuvitella tämänpäiväisen perusteella, että pysäytät hänet?
+Se kaveri selviytyi Black Mesasta.<sb>Se aiheutti totaalisen kaaoksen ja häipyi.<sb>Saimme tyypin viimein kiinni, ja te meinaatte päästä sen pois?<sb>SIIRRÄ SE LAATIKKO.
+<HEADSET><clr:255,255,138>Selviytyi Black Mesasta
+ja hävisi. Eli!<sb>Niillä ON superase!
+<HEADSET><clr:255,208,172>Piru vieköön, Russ.<sb>Niillä on Gordon Freeman.
+<clr:255,190,255>Vau. Sehän on hyvä, eikö?
+<HEADSET><clr:255,208,172>Se on oikein, OIKEIN hyvä.
+<HEADSET><clr:255,255,138>Tämä on
+ihme.
+<clr:255,190,255>Selvä. Eli
+mennään pelastamaan Gordon Freeman.
+<HEADSET><clr:255,208,172>Niin juuri.<sb>Tuodaan Gordon Freeman takaisin.
+<clr:255,190,255>Oi. Joku on tulossa.<sb>Odota hetki.
+<clr:255,190,255>Okei, eli suunnitelmana on mennä valvomoon ja vapauttaa Gordon.<sb>Hänestä puhutaan paljon, mutta luulin aina, että hän on kuollut.
+<HEADSET><clr:255,255,138>Samoin.
+<clr:255,190,255>Hei, isä. Oletko siellä?
+<HEADSET><clr:255,208,172>Joo, mitä mietit, Alyx?
+<clr:255,190,255>Jos Gordon selviytyi Black Mesasta
+missä hän on ollut?
+<HEADSET><clr:255,208,172>En tiedä.<sb>Mutta se on varmaan hemmetinmoinen tarina.
+<clr:255,190,255>Kun on pelastettu Gordon, voidaan tehdä jotain todella kunnianhimoista, vai mitä?<sb>Ehkä voidaan tuhota Linnoitus.
+<HEADSET><clr:255,255,138>No, hän pelasti ihmiskunnan kerran.<sb>Uskoisin, että se onnistuu toistamiseenkin.
+<clr:255,190,255>Ja tällä kertaa hänen ei tarvitse tehdä sitä yksin.
+<HEADSET><clr:255,208,172>Alyx
+Oletko siellä?
+<clr:255,190,255>Olen, isä.
+<HEADSET><clr:255,208,172>Näyttää siltä, että sieltä pääsee holviin.<sb>Siellä on päätelaite, josta saa sillan pidennettyä sisäänkäynnille.
+<clr:255,190,255>Miltä turvatoimet näyttää sisällä?
+<HEADSET><clr:255,208,172>Minulla on se kaikki tässä edessäni ja voin kertoa
+<sb>Siellä ON turvatoimet, mutten ole koskaan nähnyt vastaavaa.<sb>Se ei käy järkeen.
+<clr:255,190,255>Pitää sitten varmaan improvisoida.
+<HEADSET><clr:255,208,172>Älä huoli, kultaseni. Minä selvitän tämän.
+<clr:255,190,255>Nuo palkit tulevat TÄMÄN tornin huipulta, eikö?
+<HEADSET><clr:255,255,138>Joo, pitää paikkansa.
+<clr:255,190,255>Mitä ihmettä tuolla tehdään?
+<HEADSET><clr:255,255,138>Ihan kuin ne
+lypsäisivät jalkiaisia
+<HEADSET><clr:255,255,138>Hienoa työtä, Alyx.<sb>Niillä on kaikki keinot käytössä.
+<clr:255,190,255>Kiitos, Russ. Ollaan melkein perillä.
+<HEADSET><clr:255,255,138>Minä tallennan sen, Alyx!<sb>Älä katso pois!<sb>Katso suoraan siihen jälkipolvia varten!
+<clr:255,190,255>Tuolla se valvomo on.
+<HEADSET><clr:255,255,138>Näen sen... Ollaan melkein perillä.
+<HEADSET><clr:255,255,138>Alyx, lähestymme holvia.<sb>Sinulla ei ole enää monta mahdollisuutta käyttää hartsiasi.
+<clr:255,190,255>Hyvä huomio. Katson, löytyykö päivityksiä, joita voisin käyttää.
+<HEADSET><clr:255,255,138>En voi uskoa, että pistoolini on vielä toiminnassa.
+<clr:255,190,255>Meinasin antaa sen Gordonille.
+<HEADSET><clr:255,255,138>Ei, yrität vaan ärsyttää.<sb>En lankea tuohon.<sb>Mutta jos olet tosissasi, anna sille haulikko.<sb>Tarinan mukaan Gordon sekoaa täysin haulikko kädessä.
+<clr:255,190,255>Hyvä tietää.
+<HEADSET><clr:255,255,138>Alyx, suoraan edessä.<sb>Noilla ohjaimilla voi telakoida holvin asemaan.
+<clr:255,190,255>No niin, tästä lähtee. Täältä tullaan, ihmiskunnan pelastaja.
+<HEADSET><clr:255,208,172>Kuulepa, kulta. Et ole itsekään pärjännyt mitenkään huonosti.
+<HEADSET><clr:255,208,172>Maa olisi tarvinnut sinua Seitsemän tunnin sodan aikana.
+<clr:255,190,255>Ehkä olisimme kestäneet kahdeksan tuntia.
+<clr:255,190,255>Perhana.
+<clr:255,190,255>Oi! Hieno homma.
+<clr:255,190,255>Okei, okei, no jonkun näistä pitää pidentää sitä siltaa
+vai mitä?
+<HEADSET><clr:255,255,138>Melko varmasti. Valitse vaan yksi.<sb>Heti.
+<clr:255,190,255>TÄMÄ.
+<HEADSET><clr:255,255,138>Ei
+ei sitä.
+<HEADSET><clr:255,255,138>Ei, se ei ole siltaa varten.
+<HEADSET><clr:255,255,138>Alyx, silta ei liiku.<sb>Miksei se silta liiku?
+<clr:255,190,255>Tiedän, Russ. Näen kyllä, ettei se liiku.
+<HEADSET><clr:255,255,138>Ei.
+<HEADSET><clr:255,255,138>Vieläkin ei.
+<HEADSET><clr:255,255,138>Hyvänen aika.
+<HEADSET><clr:255,255,138>Alyx
+Alyx
+ALYX
+ALYX!
+VOI LUOJA!
+<clr:255,190,255>Ahhh!
+<HEADSET><clr:255,255,138>Siis nyt heti, välittömästi.
+<HEADSET><clr:255,208,172>Russell, anna sen nyt miettiä!
+<HEADSET><clr:255,255,138>Nyt, Alyx.
+<HEADSET><clr:255,255,138>Alyx, valitse nyt joku.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Oletko kunnossa?
+<clr:255,190,255>Taisin juuri tappaa Gordon Freemanin.
+<clr:255,190,255>Luulen, että tapoin juuri Gordon Freemanin.
+<HEADSET><clr:255,255,138>Holvi on suoraan edessä.<sb>Mene ja hae hänet.<sb>Tai mitä hänestä on jäljellä.
+<clr:18,199,226><force><I>Komentaja vaatii vahinkoarviota.<I>
+<clr:18,199,226><force>Vahinko: 70 %
+80 %
+90 %
+Totaalinen.
+<clr:18,199,226><force><I>Totaalinen?<I>
+<clr:18,199,226><force>Totaalinen.
+<clr:18,199,226><force><I>Vahvistuksia tulossa.<I>
+<clr:18,199,226><force>Ottaa osumaa!
+<clr:18,199,226><force>Korjaus tai pelastus.
+<clr:18,199,226><force>En tiedä.
+<clr:18,199,226><force>Hän potkii sitä.
+<clr:18,199,226><force>Overwatch käskee lopettaa potkimisen.
+<clr:18,199,226><force>Hän lopetti potkimisen.
+<clr:18,199,226><force>Maahan! Hän on täällä!
+<clr:18,199,226><force>Kohde lukittu. Kohde lukittu.
+<clr:18,199,226>Kohdetta ei tunnistettu.
+<clr:18,199,226><force>Se on Alyx Vance.
+<clr:18,199,226>Ei näköhavaintoa Alyx Vancesta.
+<clr:18,199,226><force>Se on Alyx Vance!
+<clr:18,199,226><force>Totta kai se on Alyx Vance.
+<clr:18,199,226>Vahinkoarvion ilmoitus Overwatchille.
+<clr:18,199,226>Kuulitko?
+<clr:18,199,226>Toistan. Vahinkoarvion ilmoitus Overwatchille.
+<clr:18,199,226>Hyökkäys!
+<HEADSET><clr:255,255,138>Strider.<cr>Onneksi nyt vaaraton.<sb>Kävi tuuri.<sb>Onneksi et joudu kohtaamaan sitä.
+<clr:255,190,255>Voi, Russ.<cr>Älä maalaa piruja seinille.
+<HEADSET><clr:255,255,138>Alyx! Strider!<sb>Varo, se on elossa!
+<clr:255,190,255>Hitto. Liikkuu vieläkin.
+<HEADSET><clr:255,255,138>Argh. Manaus kävi toteen.
+<clr:255,190,255>Todellakin!<cr>Suoraan oppikirjasta, Russell!
+<clr:255,190,255>Agh! Liikkuu.<sb>Liikkuu edelleen.
+<clr:255,190,255>Russell! Iso ase edessä.
+<HEADSET><clr:255,255,138>Minä sain idean!
+<clr:255,190,255>Niin minäkin.
+<clr:255,190,255>Niin minäkin.<cr>Tosi hyvän idean.
+<HEADSET><clr:255,255,138>Tapa se!<cr>Anna palaa!
+<clr:255,190,255>Ammun sitä!
+<HEADSET><clr:255,255,138>Hah! Se toimii!<sb>Luulen, että se toimii.<sb>Se ei ainakaan näytä iloiselta. Jatka ampumista!
+<clr:255,190,255>Russell, ammun koko ajan.
+<HEADSET><clr:255,255,138>Anna mennä, jees!<sb>Jatka ampumista!<sb>Sillä lailla!<sb>Ammu! Ammu!<sb>Ammu! Hienoa!
+<clr:255,190,255>[Nauraa helpotuksesta] Me tehtiin se, Russ.
+<HEADSET><clr:255,255,138>Joo, niin tehtiin.
+<HEADSET><clr:255,255,138>No niin, Alyx.<sb>Tuo vetosäde näyttää vievän holviin.
+<clr:255,190,255>Vau! Okei, menen ylös.
+<HEADSET><clr:255,255,138>[Yhteys pätkii] Argh. Se aiheuttaa häiriötä.<sb>Yhteys ei varmaan toimi sinne.
+<clr:255,190,255>Ei varmaan.
+<HEADSET><clr:255,255,138>[Yhteys pätkii] Nyt se tapahtuu.
+<clr:255,190,255>Niinpä.
+<HEADSET><clr:255,255,138>[Yhteys pätkii] Tulet pois sieltä Gordonin kanssa, turvallisesti yhtenä kappaleena. Kaikki sujuu...
+<clr:255,190,255>Kaikki menee hyvin, Russ.<cr>Kuullaan pian.
+<HEADSET><clr:255,208,172>Russell, pysäytä Alyx!
+<HEADSET><clr:255,255,138>Mitä? Miksi?
+<HEADSET><clr:255,208,172>Alyx! Älä mene h... [Yhteys katkeaa]
+<clr:255,190,255>Isä? Isä?
+<clr:255,190,255>Asuntoja, ihan niin kuin isä sanoi.
+<clr:255,190,255>Okei, outoa. Muttei tämä kovin vaaralliselta näytä.
+<clr:255,190,255>Vau
+<clr:255,190,255>No niin, tämä se varmaan on.
+<clr:255,190,255>Okei, Gordon Freeman. Toivottavasti olet tämän arvoinen.
+<clr:255,190,255>No niin, Gordon. Hoidetaan sinut pois sieltä.
+<norepeat_global:10>Vaikuttavaa työtä, neiti Vance.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [Hykertelee]
+<norepeat_global:10>Neiti Vance.<sb>Gordon Freemanin vangitsemiiseen riittäisi <I>paljon<I> vähempi.
+<clr:255,190,255>Kuka
+sinä siis olet?
+<norepeat_global:10>Ehkä sillä ei ole niin väliä, <I>kuka<I> minä olen. Ehkä tärkeintä on se, mitä voin <I>tarjota<I> sinulle siitä hyvästä, että tulit tänne asti.
+<norepeat_global:10>Jotkut uskovat, että maailmojemme kohtalo on <I>joustamaton<I>.
+<norepeat_global:10>Työnantajani ovat eri mieltä.<sb>He antavat minulle luvan
+<sb><I>tönäistä<I> asioita silloin tällöin tiettyyn suuntaan.
+<norepeat_global:10>Mitä <I>sinä<I> haluaisit tönäistävän, neiti Vance?
+<clr:255,190,255>Combinen pois Maasta.<cr>Haluan Combinen pois Maasta.
+<norepeat_global:10>Ahhh.<sb>Se olisi erittäin iso tönäisy.<sb>Liian iso, työnantajani intressien suhteen.
+<clr:255,190,255>Itsepä kysyit.
+<norepeat_global:10>Entä jos voisin tarjota jotain sellaista, jota et <I>tiedä<I> haluavasi?
+<clr:255,190,255>Missä
+me olemme?
+<clr:255,190,255>Isä? Isä?<sb>Olenko tuo minä?<sb>Mistä on kyse?<sb>Mitä tapahtuu?
+<norepeat_global:10>Olemme tulevaisuudessa.<sb>Tuo on se hetki, kun näet isäsi kuolevan.
+<norepeat_global:10>Paitsi jos
+<clr:255,190,255>Mitä? Paitsi MITÄ?
+<norepeat_global:10>Paitsi, jos otat ohjat omiin käsiisi.
+<norepeat_global:10>Vapauta isäsi, neiti Vance.
+<norepeat_global:10>Hanskasi, neiti Vance.
+<norepeat_global:10>Hyvä.<sb>Tekosi ansiosta <I>tämä<I> kokonaisuus jatkuu.
+<norepeat_global:10>Tämä taas ei jatku.
+hän on kunnossa? Hän elää. Isä on elossa.
+<norepeat_global:10><I>Tiedäthän<I>, että olet todistanut olevasi poikkeuksellisen arvokas.
+<norepeat_global:10>Aiemmalla työntekijällä ei ollut kykyä <sb>
+tai halua
+<sb>suorittaa hänelle annettuja tehtäviä.
+<norepeat_global:10>Emme ole onnistuneet löytämään korvaavaa työntekijää.
+<norepeat_global:10>Ennen kuin nyt.
+<clr:255,190,255>Ei! Haluan vain kotiin. Lähetä minut kotiin!
+<norepeat_global:10>Taidat ymmärtää tilanteen väärin, neiti Vance.
+<clr:255,190,255>Odota. Hei, odota, odota!
+<clr:255,208,172>Gordon! Herää, Gordon!
+<clr:255,208,172>Alyx on poissa, Gordon.<sb>Hän lähti.
+<clr:255,208,172>Perhanan idiootti ja "ennennäkemättömät seuraukset"!<sb>Arvasin.<sb>Kun saan sen käsiini, niin
+<sb>TAPAN sen. Minun pitää vähän miettiä tätä. Juuri nyt
+<clr:255,208,172><sfx:1>[Hengittää syvään]
+<clr:255,208,172>Tule, Gordon.
+<clr:255,208,172>Meillä on hommia.
+<clr:255,190,255>[Nuuhkaisee] Yök. Kamala haju.
+<HEADSET><clr:255,255,138>Ai, niinkö?<sb>Miltä se haisee? Kuvaile.
+<clr:255,190,255>Mätänevältä eläimeltä ja
+ammoniakilta.
+<HEADSET><clr:255,255,138>Ammoniakilta? Okei.
+<clr:255,190,255>Mitä enemmän kosken tähän, sitä vakuuttuneempi olen, että se on myrkyllistä.
+<HEADSET><clr:255,255,138>Entäs jos se parantaa syövän?
+<clr:255,190,255>Entäs jos SAAN siitä syövän?
+<HEADSET><clr:255,255,138>Mitä jos saat siitä uudentyyppisen syövän?
+<clr:255,190,255>Russ, yritän olla koskematta siihen.
+<HEADSET><clr:255,255,138>Hyvä.
+<clr:255,190,255><sfx:1>[Aivastaa]
+<HEADSET><clr:255,255,138>Terveydeksi.
+<clr:255,190,255>Huh, kiitos.
+<HEADSET><clr:255,255,138>Alyx, siitä säteilee runsaasti antihiukkasia.<sb>Varoitanpahan vaan.<sb>Kvanttien näkökulmasta siellä saattaa olla melko erikoista.
+<clr:255,190,255>Tiedät, mitä tänään on tapahtunut, Russell.
+<clr:255,190,255>NYTKÖ tämä menee erikoiseksi?
+<HEADSET><clr:255,255,138>Joo.
+<clr:255,190,255>Okei, no minäpä varaudun.
+<clr:255,190,255>Luulen
+Luulen, että tapoin kaikki muukalaiset. Nyt ne on kaikki kuolleita.
+<HEADSET><clr:255,255,138>Se on hyvä. Hienoa.
+<clr:255,190,255>Nyt pitää vain päästä holviin, napata ase, potkaista Combine pois Maasta. Helppo nakki. Ja sitten... tarjolla on klubileipiä
+<HEADSET><clr:255,255,138>Kyllä. Ehdottomasti.
+<clr:255,190,255>Hyvä. Toivottavasti ne ovat hyviä.
+<HEADSET><clr:255,255,138>Sitten kun häädetään Combine Maasta, mitä ajattelit tehdä, Alyx?
+Hankittaisiin isän kanssa talo ja autettaisiin jälleenrakennuksessa. Sitten voisin ehkä perustaa salaisen laboratorion.
+<HEADSET><clr:255,255,138>No, ei sen tarvitsisi olla salainen.<cr>Voisit elää piileskelemättä.
+<clr:255,190,255>Joo. Voisin perustaa laboratorion, enkä tarvitsisi lukkoja, ovia tai suljettavia ikkunoita!
+<HEADSET><clr:255,255,138>No
+kyllähän rikollisia olisi.<cr>Muttei vaan muukalaisia.
+<clr:255,190,255>Aah. Pyh, joo.
+<HEADSET><clr:255,255,138>Joten sanoisin kyllä oville ja lukoille...<cr>Vain varuiksi. Ja pidä ase.
+<HEADSET><clr:255,255,138>Hei! Isäsi tuli takaisin!
+<clr:255,190,255>Luojan kiitos.
+<HEADSET><clr:255,208,172>Russell!<cr>Piru vieköön, onpa hyvä nähdä sinut!
+<HEADSET><clr:255,255,138>Kuten myös! Ihan mahtavaa.
+<HEADSET><clr:255,255,138>Oikeasti, arvioin selviytymismahdollisuutesi olevan neljän prosentin luokkaa.
+<HEADSET><clr:255,208,172>Voit kiittää vortigauntia. Se toi minut tänne yhtenä kappaleena.
+<clr:255,190,255>Russ! Russell! Anna isälle!
+<HEADSET><clr:255,208,172>Alyx! Muru!
+<clr:255,190,255>Isä! Tuhottiin juuri sähköasema!
+<HEADSET><clr:255,208,172>Hyvä. Kun ne siirtävät tuon vempeleen, ase on mennyttä. Meidän pitää saada se tänään.
+<clr:255,190,255>Niin tehdään. Onhan sinulla vielä se datakapseli?
+<HEADSET><clr:255,208,172>On. Russ, tämä on biokoodattu.<sb>Tarvitsen TLI:n.
+<HEADSET><clr:255,255,138>Jep, se on tuossa.
+<HEADSET><clr:255,208,172>Okei, hyvä.<sb>Kaikki kunnossa, kulta?
+<clr:255,190,255>On. Mene vaan, kaikki on hyvin isä. Lupaan sen.
+<HEADSET><clr:255,208,172>Pidä se lupaus.<sb>Menen työstämään datakapselia.
+<HEADSET><clr:255,208,172>Löysin jotain.
+<HEADSET><clr:255,255,138>Mitä?
+<clr:255,190,255>Mitä löysit isä?
+<HEADSET><clr:255,208,172>En tiedä vielä, mikä se ase on.<sb>Mutta TIEDÄN, miten ne sai sen.
+<HEADSET><clr:255,208,172>Ne eivät käsittääkseni rakentaneet asetta.<sb>Näyttää siltä, että
+<sb>ne löysivät jotain.<sb>Tai kaivoivat jotain esiin.
+<clr:255,190,255>Mitä tarkoitat?
+<HEADSET><clr:255,208,172>Jos tulkitsen tätä oikein, ne jäljitti sen karanteenialueen vanhaan kerrostaloon.<sb>Mutta ne eivät hakeneet sitä pois, vaan nappasivat koko rakennuksen ja rakensivat holvin sen ympärille.
+<clr:255,190,255>Hyvät hyssykät.<sb>Niiden on täytynyt todella pelätä sitä.
+<HEADSET><clr:255,208,172>Yritän selvittää, että pitäisikö MEIDÄNKIN pelätä.
+<clr:255,190,255>Russ... Mitä luulet niiden tekevän Gordon Freemanille?
+<HEADSET><clr:255,255,138>Se on hyvä kysymys
+<clr:255,190,255>Luuletko, että... häneltä imetään aivot päästä?
+<HEADSET><clr:255,255,138>Hmm. Luulen, että hänet siirretään pois Maasta.
+<clr:255,190,255>Oli miten oli, ei anneta käydä niin. Ehdin sinne, ennen kuin se tapahtuu.
+<clr:255,190,255>Russ, mikä se sorkkarautajuttu on?
+<HEADSET><clr:255,255,138>Ai, tarkoitatko Gordon Freemanin sorkkarautaa?
+<clr:255,190,255>Joo.
+<HEADSET><clr:255,255,138>Hän taisteli tiensä ulos Black Mesasta PELKÄSTÄÄN sillä sorkkaraudalla.
+<clr:255,190,255>Eikä.
+<HEADSET><clr:255,255,138>Se on totta! No, on totta, että niin kerrotaan. Muttei kukaan tiedä varmaksi.
+<clr:255,190,255>Kun pelastan Gordonin, hän saa aseen.
+<HEADSET><clr:255,255,138>Joo! Muttei minulta.<cr>Aseenlainausbisnes on minun osaltani tässä.
+<HEADSET><clr:255,255,138>Joo! Muttei minulta.
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>Mitä...
+<clr:255,190,255>Hys! Mitä isälle kuuluu?<sb>Onko kaikki hyvin?
+<HEADSET><clr:255,255,138>Kaikki on hyvin, Alyx.<cr>Hän työskentelee tuolla.
+<clr:255,190,255>Hyvä. Kiitos.
+<HEADSET><clr:255,255,138>Aa
+häneltä puuttuu kyllä jalka.
+<clr:255,190,255>Joo, se puuttui jo aiemminkin.
+<HEADSET><clr:255,255,138>Aivan. No se puuttuu vieläkin.
+<HEADSET><clr:255,255,138>Eipä mitään.
+<clr:255,190,255>Hei! Onko datakapselista mitään uutta?
+<HEADSET><clr:255,255,138>Isäsi on työn touhussa.<cr>Varmaan pian jo valmis.
+<clr:255,190,255>Hyvä.
+<clr:255,190,255>Yök! Se on naamalla!
+<clr:255,190,255>Voi ei... VOI EI!
+<clr:255,190,255>Agh! Irti! Irti!
+<clr:255,190,255><sfx:1>[Pinnistelee, haukkoo henkeään]
+<HEADSET><clr:255,255,138>Agh! Voi luoja!
+<HEADSET><clr:255,255,138>Ota se pois!
+<clr:255,190,255>Yritän koko ajan!
+<HEADSET><clr:255,255,138>Se on ällöttävä!
+<HEADSET><clr:255,255,138>Yök, se on karsea!
+<HEADSET><clr:255,255,138>>Luojan kiitos.
+<HEADSET><clr:255,255,138>Alyx, tuo oli inhottava
+<clr:255,190,255>Joo, niin oli.
+<HEADSET><clr:255,255,138>Uh! Päärapu! Naamalla. Irrota se, Alyx!
+<HEADSET><clr:255,255,138>Ooh, se tosissaan on siinä!
+<HEADSET><clr:255,255,138>Nappaa se! Lyö sitä!
+<HEADSET><clr:255,255,138>Lyö sitä, Alyx! Iske se irti.
+<clr:255,190,255>Uhh. Ei hätää
+<HEADSET><clr:255,255,138>Se oli naamalla. Ällöttävää.
+<clr:255,190,255>Russ, kuulenko oman nimeni?
+<HEADSET><clr:255,255,138>Joo, huono juttu.
+<clr:255,190,255>Hmph.
+<clr:255,190,255>Nooh
+<clr:255,190,255>Hmph. Argh. Ugh!
+<clr:255,190,255>Ääh.
+<clr:255,190,255>Argh.. okei.
+<clr:255,190,255>Ähh.
+<clr:255,190,255>No niin
+<clr:255,190,255>Ahh
+mmmph
+ugh.
+<HEADSET><clr:255,255,138>Osui.
+<clr:255,190,255>Hups!
+<clr:255,190,255>Ahh. Sainpas.
+<clr:255,190,255>Nnngh!
+<clr:255,190,255>Uhh.
+<clr:255,190,255>Voi hitto.
+<clr:255,190,255>Pyh. Ei toiminut.
+<clr:255,190,255>Ei toiminut.
+<clr:255,190,255>Kuulostaa hyvältä.
+<clr:255,190,255>Hmm. Kuulostaa hyvältä.
+<clr:255,190,255>Toki.
+<clr:255,190,255><sfx:1>[Haukkoo henkeä]
+<clr:255,190,255>Oh!
+<clr:255,190,255>Huh.
+<clr:255,190,255>Kiva.
+<clr:255,190,255>Vau.
+<clr:255,190,255>Hah ha.
+<clr:255,190,255>Kolme lipasta jäljellä.
+<clr:255,190,255>Enää kolme lipasta jäljellä.
+<clr:255,190,255>Kolme jäljellä.
+<clr:255,190,255>Viimeinen.
+<clr:255,190,255>Viimeinen lipas.
+<clr:255,190,255>Yksi jäljellä.
+<clr:255,190,255>Lippaat loppu.
+<clr:255,190,255>Lippaat loppu?
+<clr:255,190,255>Ammukset loppu.
+<clr:255,190,255>Viimeiset kolme.
+<clr:255,190,255>Vielä kolme.
+<clr:255,190,255>Hitto. Viimeinen lipas.
+<clr:255,190,255>Äh. Ammukset loppu.
+<clr:255,190,255>Kolme ammusta jäljellä.
+<clr:255,190,255>Viimeinen ammus.
+<clr:255,190,255>Viimeiset neljä ammusta.
+<clr:255,190,255>Neljä ammusta jäljellä.
+<clr:255,190,255>Viimeiset neljä.
+<clr:255,190,255>Viimeiset kaksi ammusta.
+<clr:255,190,255>Viimeiset kaksi.
+<clr:255,190,255>Kaksi ammusta jäljellä.
+<clr:255,190,255>Enää kaksi jäljellä.
+<clr:255,190,255>Kolme kapselia jäljellä.
+<clr:255,190,255>Viimeinen kapseli.
+<clr:255,190,255>Kapselit loppu.
+<clr:255,190,255><sfx:1>[Vaimeaa yskintää]
+<clr:255,190,255><sfx:1>[Matkii aseen ääniä]
+<clr:255,190,255>Aahhh!
+<clr:255,190,255><sfx:1>[Yskintää]
+<clr:255,190,255>Yh!
+<HEADSET><clr:255,255,138>Liian pimeää. Tarvitset taskulampun.
+<clr:255,190,255>Olet varmaan oikeassa.
+<clr:255,190,255>Täällä on liian pimeää. Tarvitsen taskulampun.
+<clr:255,190,255>Jos menen tuonne, tarvitsen taskulampun.
+<clr:255,190,255>En ikinä selviä, jos hyppään näin korkealta.
+<HEADSET><clr:255,255,138>Ei, et todellakaan. Et kai edes harkinnut?
+<clr:255,190,255>Enpä usko.
+<clr:255,190,255>Ei. Kuolisin siihen.
+<clr:255,190,255>Ah!
+<clr:255,190,255>Pitää mennä.
+<clr:255,190,255>Puhutaan myöhemmin.
+<clr:255,190,255>Odota, pitää mennä.
+<clr:255,190,255>Russell, minun pitää mennä.
+<clr:255,190,255>Myöhemmin, pitää mennä.
+<clr:255,190,255>Odota, on homma kesken.
+<clr:255,190,255>Odota, minulla on seuraa.
+<clr:255,190,255>Hitto, Combine.
+<clr:255,190,255>Russell!
+<clr:255,190,255>AH!
+<clr:255,190,255>JESTAS!
+<clr:255,190,255>HYVÄNEN AIKA!
+<clr:255,190,255>Huh. Okei.
+<clr:255,190,255>Äh. Okei.
+<clr:255,190,255><sfx:1>[Tukahtunutta äännähtelyä]
+<clr:255,190,255><sfx:1>[Haukkoo henkeään]
+<HEADSET><clr:255,255,138>Osoita vaan kädellä jotain.
+<HEADSET><clr:255,255,138>Tähtää Russelleilla jotain.
+<HEADSET><clr:255,255,138>Tähtää nyt Russelleilla jotain.
+<HEADSET><clr:255,255,138>Kohdista käsi johonkin.
+<HEADSET><clr:255,255,138>Riittää, että osoitat kädellä jotain.
+<HEADSET><clr:255,255,138>Osoita vaan jotain kohdetta kädellä.
+<HEADSET><clr:255,255,138>Etsi esine ja osoita sitä kädellä.
+<HEADSET><clr:255,255,138>Alyx? Oletko vielä siellä?
+<HEADSET><clr:255,255,138>Alyx?
+<HEADSET><clr:255,255,138>Alyx!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Äh, hartsi ei riitä mihinkään.
+<HEADSET><clr:255,255,138>No, tiedäthän mitä hartsista sanotaan?
+<clr:255,190,255>En. Mitä siitä sanotaan, Russ?
+<HEADSET><clr:255,255,138>Ööh. "Etsi
+lisää hartsia."
+<clr:255,190,255>Okei. Pidän silmät auki.
+<HEADSET><clr:255,255,138>Joo, se se on
+"Etsi lisää hartsia."
+<HEADSET><clr:255,255,138>Varo!
+<HEADSET><clr:255,255,138>Varo, Alyx!
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, varo!
+<HEADSET><clr:255,255,138>Hieno homma.
+<HEADSET><clr:255,255,138>Ja taas mennään.
+<HEADSET><clr:255,255,138>Okei. Sepä kävi näppärästi.
+<HEADSET><clr:255,255,138>Se toimi.
+<HEADSET><clr:255,255,138>Se näytti toimivan.
+<HEADSET><clr:255,255,138>Sillä lailla.
+<HEADSET><clr:255,255,138>Hyvin tehty.
+<HEADSET><clr:255,255,138>Jatka etsimistä.
+<HEADSET><clr:255,255,138>Jossain täällä sen on oltava.
+<HEADSET><clr:255,255,138>Näetkö jotain? En näe mitään.
+<HEADSET><clr:255,255,138>Sen täytyy olla täällä.
+<HEADSET><clr:255,255,138>Varovasti
+<HEADSET><clr:255,255,138>Yksi hoidettu.
+<HEADSET><clr:255,255,138>Lähellä on jo.
+<HEADSET><clr:255,255,138>Hei, älä haaskaa ammuksia! Et saa tehtyä siihen edes kolhua.
+<HEADSET><clr:255,255,138>Suoraan edessä!
+<HEADSET><clr:255,255,138>Sinulla on seuraa.
+<HEADSET><clr:255,255,138>Puhutaan myöhemmin.
+<HEADSET><clr:255,255,138>Anna niille kyytiä!
+<HEADSET><clr:255,255,138>Joo joo, mene.
+<HEADSET><clr:255,255,138>Ah!
+<HEADSET><clr:255,255,138>Uh!
+<HEADSET><clr:255,255,138>Vau!
+<clr:107,232,120>Hmph!
+<clr:107,232,120>Mmph! [Nuuhkaisee]
+<clr:107,232,120>Kyllä, olio.
+<clr:107,232,120>Hmm
+ah
+hmm
+<sb>Mielenkiintoista
+ah, erinomaista
+<clr:107,232,120>Olen odottanut sinua, Alyx Vance.
+Overwatch: <clr:166,242,255><I>Hälytys, kenttäyksiköt.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Yhteiskunnan vihollisen tunkeiluyritys.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Toimintakoodi:<cr>Hyökätkää. Taltuttakaa. Kuulustelkaa.<I>
+<clr:166,242,255><I>Hälytys. Toimintayksiköt.<sb>Päivitetty koodi:<sb>Savustakaa. Saattakaa. Jatkakaa.<I>
+<clr:166,242,255><I>Muistutus kansalaisille:<cr>Sivistynyt yhteiskunta vaatii laajaa ja tarkkaa valvontaa.<sb>Estäkää muita kansalaisia uhkaamasta yhteisöä.<I>
+<clr:166,242,255><I>Huomio!<sb>Rakennukseen pääsy kielletty.<sb>Viestin vastaanottaminen todistaa siviililain rikkomisen.<I>
+<clr:166,242,255><I>Huomio!<sb>Rakennukseen pääsy kielletty.<sb>Turvajoukot liikkeellä ja määrätty hyökkäämään.<I>
+Overwatch: <clr:166,242,255><I>Huomio!<cr>Pääsy kielletty.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Yhteiskunnan viholliset saavat romunkeräilystä kuolemantuomion.<I>
+<clr:166,242,255><I>Huomio, kenttäyksiköt.<sb>Huomio, komentoyksiköt.<sb>Hätäkoodi: mitätön.<I>
+<clr:166,242,255><I>Hälytys.<sb>Hallinnan palautus käynnissä.<sb>Resurssien allokaation säätökoodi:<sb>Etsi. Tutki. Poista.<sb>Prioriteetti: välitön.<I>
+<clr:166,242,255><I>Hälytys.<sb>Kriittinen kansannousu käynnissä.<sb>Teknikkotiimi asemiin kortteleihin 49, 64 ja 77.<sb>Prioriteetti säilyy.<I>
+<clr:166,242,255><I>Hälytys.<sb>Muistutus, kenttätiimit:<cr>tehtävän epäonnistuminen johtaa lopulliseen uudelleensijoitukseen.<sb>Toimintakoodi: Murto. Menettely. Rokotus.<I>
+<clr:166,242,255><I>Kriittinen tunteutuminen. Olkaa valmiudessa.<I>
+<clr:166,242,255><I>Koko järjestelmän hälytys.<sb>Operaation taistelu 5-1-2-9.<sb>Välitön samanaikainen sijoittelu.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Toimintakoodi<cr>Suojaa. Sulje. Siirrä.<I>
+<clr:166,242,255><I>Hälytys. Toimintaryhmä.<sb>Ylikuormitusprotokolla:<cr>Suuntaa. Kauterisoi. Väläytä.<sb>Suuntaa. Kauterisoi. Väläytä.<I>
+<clr:255,190,255>Näin vivun ulkona!
+<HEADSET><clr:255,255,138>Hyvä! Mysteerivipu! Ihanaa!
+<HEADSET><clr:255,255,138>Mitä se tekee?
+<clr:255,190,255>Se vaihtaa raiteet!
+<clr:255,190,255>En tiedä!
+<HEADSET><clr:255,255,138>Oh. Eli Elin juna ohjataan uudelleen
+seinään.
+<HEADSET><clr:255,255,138>Aivan! Joo! Hän on vankisäiliössä! Hänelle ei käy kuinkaan! Kiirehdi, Alyx!
+<clr:255,190,255>Tuolla on se vaihde!
+<clr:255,190,255>Russell! Tsekkaa tämä vipu!
+<HEADSET><clr:255,255,138>Vedä sitä, niin näet, mitä tapahtuu!
+<HEADSET><clr:255,255,138>Aivan! Joo! Hän on vankisäiliössä! Hänelle ei käy kuinkaan!
+<HEADSET><clr:255,255,138>Pidä se alhaalla! Pidä se painettuna!
+<clr:255,190,255>Selvä!
+<HEADSET><clr:255,255,138>Nopeasti, Alyx!
+<HEADSET><clr:255,255,138>Hyvä! Nyt pidä vipua painettuna, muuten raide vaihtuu takaisin.
+<HEADSET><clr:255,255,138>Pidä se alhaalla, Alyx!
+<HEADSET><clr:255,255,138>Kymmenen sekuntia, Alyx!
+<HEADSET><clr:255,255,138>Neljä!
+<HEADSET><clr:255,255,138>Kolme!
+<HEADSET><clr:255,255,138>Kaksi!
+<HEADSET><clr:255,255,138>Yksi!
+<HEADSET><clr:255,255,138>Jestas sentään!
+<clr:255,190,255>Hyvät hyssykät!
+<clr:255,190,255>Juna, juna, JUNA!
+<clr:255,190,255>Miten sinä tiedät kaiken tämän?
+<clr:255,190,255>Hei, miten saan kaapelit irti?
+<clr:255,190,255>Oletko kuullut isästä?
+<clr:255,190,255>Miten ne on muka hyviä uutisia?
+<clr:255,190,255>Parempi kuin ei mitään.
+<clr:255,190,255>Russell? Yhteys pätkii taas.
+<clr:255,190,255>Käytän teknologiaa, jota "portaiksi" kutsutaan.
+<clr:255,190,255>Tai ei mitään, en käytäkään portaita.
+<clr:255,190,255>MITÄ?
+<clr:255,190,255>Se oli viimeinen sähköasema! Se teki sen!
+<clr:255,190,255>Voidaanko selvittää tämä myöhemmin? Kaapeli osui muurahaiskorentojen pesään.
+<clr:255,190,255>En tiedä.<sb>Mutta jokin sen pitää tuolla.<sb>Ja meiltä loppuu aika.
+<clr:255,190,255>Hienoa! Mikä se on, isä?
+<clr:255,190,255>Siitä tulee kaapeleita.<sb>Ne varmaan liittävät sen virtalähteeseen.<sb>Menen ja irrotan ne.<sb>Tai no, ammun ne.
+<clr:255,190,255>Aivan. Mitä sen sisällä ylipäätään ON?
+<clr:255,190,255>Isä, löydän kyllä sen holvin!
+<clr:255,190,255>No niin. Näyttää siltä, että silta on täydessä pituudessaan...
+<clr:255,190,255>Okei, no jonkin näistä vivuista pitäisi telakoida se holviin. Vai mitä?
+<clr:255,190,255>Hmm. Ei tämä.
+<clr:255,190,255>Okei, ei ainakaan tämä.
+<clr:255,190,255>Ehkä tämä?
+<clr:255,190,255>Tämä ei näytä hyvältä
+Ääh!
+<clr:255,190,255>Holvi pitää telakoida VAROVASTI siltaan.
+<clr:255,190,255>Miten vaikeaa se voi olla?
+<clr:255,190,255>Selvä, eikun menoks.
+<clr:255,190,255>Vau, näetkö tämän, Russell?
+<clr:255,190,255>Hys hys! Hys hiljaa!
+<clr:255,190,255>Voi luoja.
+<clr:255,190,255>Ei. Etsin vielä.
+<clr:255,190,255><delay:3>Mitä ihmettä? Voi luoja
+<sb>Kiitos, kiitos.
+<clr:255,190,255>Russ! Se on naamalla!
+<clr:255,190,255>Okei. Ei hätää.
+<clr:255,190,255>Niin oli. Olin paikalla.
+<clr:255,190,255>Tiedän, että se on naamalla!
+<clr:255,190,255>Ääh, en saa sitä irti!
+<clr:255,190,255>Tiedän, Russ!
+<clr:255,190,255>Ähh!
+<clr:255,190,255>Au!
+<clr:255,190,255>Huh!
+<clr:255,190,255>Argh!
+<clr:255,190,255>Ääh!
+<clr:255,190,255>Krääh!
+<clr:255,190,255>Blääh!
+<clr:255,190,255>[Yskii] Huh.
+<clr:255,190,255>[Yskii] Ääh!
+<clr:255,208,172><sfx:1>[Vaikeroi]
+<clr:255,208,172>Russell? Missä hän on?<cr>Onko hän kunnossa?
+<clr:255,208,172>Ei ole aikaa.<sb>Se on ase, Alyx!<sb>Sitä ne ovat piilotelleet täällä.<sb>Saimme sen selville, ja siksi ne ottivat meidät kiinni.
+<clr:255,208,172>Se on niillä holvissa
+<sb>Rakennelma, jota ympäröi turvatoimet.
+<clr:255,208,172>Lähettyvillä on sähköasema.
+<clr:255,208,172>Alyx, mikä se ase ikinä onkin, sinun pitää joko varastaa tai tuhota se.
+<clr:255,208,172>[Hykertelee] Rakastan sinua, kulta.
+<clr:255,208,172>Rakastan sinua, kulta!
+Eli: <clr:255,208,172><I>Mitä nyt, Russell?<I>
+<HEADSET><clr:255,208,172>En tiedä, mutta...
+<HEADSET><clr:255,208,172>Suuntaa vaan holviin.<sb>Minä tutkiskelen datakapselia.<sb>Jos vaikka saisin jotain selville.
+<HEADSET><clr:255,208,172>Alyx! Löysin jotain!
+<HEADSET><clr:255,208,172>Suoraan holvin alla on painovoimakenttägeneraattori.<sb>Sen täytyy OLLA se, mikä sen pitää toiminnassa.
+<HEADSET><clr:255,208,172>Tuolla. Tuo on se painovoimakenttägeneraattori.
+<HEADSET><clr:255,208,172>Nyt se lähtee...
+<HEADSET><clr:255,208,172>Tutkin sitä.<sb>Alyx, koeta löytää perille.
+<clr:255,208,172>Ole varovainen, kulta. Olet rakas.
+<HEADSET><clr:255,208,172>Ei se ole holvi.<sb>Se on vankila.<sb>Sen ei ole tarkoitus pitää meitä POISSA.<sb>Ne yrittää pitää jotain siellä SISÄLLÄ.
+<norepeat_global:10>Tämä on kysymys, johon on useita...
+<clr:255,255,138>Poimi se ase, Alyx!
+<HEADSET><clr:255,255,138>Tuskin sille edes tulee käyttöä.<sb>Elin matkassa on varmaan vain muutama Combinen sotilas.
+<HEADSET><clr:255,255,138>Ahh, aivan. "Alyx."
+<HEADSET><clr:255,255,138>Voiko sillä ohjailla painovoimaa kauempaa?
+<HEADSET><clr:255,255,138>Aivan, sitähän minäkin.<sb>Ei myöskään hanskamuodossa, huomasin.
+<HEADSET><clr:255,255,138>Se siitä rupattelusta. Pitää mennä pelastamaan isäsi. Mene.
+<HEADSET><clr:255,255,138>Alyx? Hävisit hetkeksi.<sb>Mitä tapahtui?
+<HEADSET><clr:255,255,138>Vortigaunt?<cr>Mitä se siellä teki?
+<HEADSET><clr:255,255,138>Niin, Alyx?
+<clr:255,255,138>Alyx, täällä! Varo, heitän ammuksia.
+<clr:255,255,138>Ole hyvä.
+<HEADSET><clr:255,255,138>Alyx, siinä se ohjauskeskus on.
+<HEADSET><clr:255,255,138>Jos onnistut käynnistämään järjestelmän, minun pitäisi pystyä pysäyttämään Elin juna.
+<HEADSET><clr:255,255,138>Alyx, se on se ohjauskeskus!
+<HEADSET><clr:255,255,138>Ammu ne, Alyx!
+<HEADSET><clr:255,255,138>Jee.
+<HEADSET><clr:255,255,138>Jep! Kristallinkirkas!
+<HEADSET><clr:255,255,138>Olet haka tappamaan muukalaisia!
+<HEADSET><clr:255,255,138>Se on itse asiassa pelottavaa!
+<HEADSET><clr:255,255,138>Joo, häntä pannaan junan kyytiin.<cr>Se on hyvä.<sb>Se tarkoittaa, että hän on elossa.
+<HEADSET><clr:255,255,138>No, hyvä uutinen on se, että häntä kidutetaan sitten Nova Prospektissa.
+<HEADSET><clr:255,255,138>Koska loogisesti ajatellen, niillä ei ole syytä tehdä sitä junamatkan aikana.
+<HEADSET><clr:255,255,138>Aah. Mene katolle. Löydä sähköasema.
+<HEADSET><clr:255,255,138>Alyx, yritä nyt vaan päästä katolle ja sitten asemalle.
+<HEADSET><clr:255,255,138>Tuolla on hissi, mutta sähkön saaminen siihen on tuskallista.
+<HEADSET><clr:255,255,138>Joo, ymmärrän.
+<HEADSET><clr:255,255,138>Ooh.
+<HEADSET><clr:255,255,138>Alyx! Drone toimii taas! <sb>Täältä käsin näyttää siltä, että edessä on Combinen barrikadeja, ja ne estävät ketä tahansa pääsemästä lähemmäksi holvia.
+<HEADSET><clr:255,255,138>Tapa se jalkiainen!
+<HEADSET><clr:255,255,138>Jes! Jalkiaisia! Ja ne on melko tappavia, Alyx. Ole varovainen!
+<HEADSET><clr:255,255,138>Alyx! Katso!
+<HEADSET><clr:255,255,138>En ymmärrä. Kaikki se vortigaunt-energia. Jos se ei pidätellyt holvia, niin mitä se teki?
+<HEADSET><clr:255,255,138>No, holvi on irrotettu. Se oli se hankala osuus. Sitten se helpompi osuus: napataan se, mitä siellä on.
+<HEADSET><clr:255,255,138>Selvä. Mennään helppoon osaan: napataan se, mitä siellä on. Eli? Mitä sisällä on?
+<HEADSET><clr:255,255,138>Ahh.
+<HEADSET><clr:255,255,138>Onkohan se kuollut?
+<clr:255,255,138>Sillä lailla!
+<HEADSET><clr:255,255,138>Voidaan mennä oikotietä rakennuksen läpi.
+<HEADSET><clr:255,255,138>Vuhuu!
+<HEADSET><clr:255,255,138>Vau.
+<HEADSET><clr:255,255,138>Eli, tule tänne!
+<HEADSET><clr:255,255,138>Vau! Tuosta on vielä iloa.
+<HEADSET><clr:255,255,138>Melkein hakkeroitu
+<clr:107,232,120>Sitten teet niin! Rohkeutta, Alyx Vance!
+<clr:107,232,120>Eli Vance! Alyx Vance!<sb>Olen apuna, kuten lupasin.<sb>Mene! Varmistan isäsi turvallisuuden.
+<clr:107,232,120><sfx:1>[Murahtaa]
+<clr:107,232,120>Hoidan Eli Vancen turvaan.
+<clr:107,232,120>Ei... Vortigauntit vapauttavat itsensä ja pitävät huolta kostosta.<sb>SINUN pitää löytää ase.
+<clr:107,232,120>Mene nyt! Jokainen kulkee omaa polkuaan.<sb>Emme voi epäonnistua.
+<clr:107,232,120>Ei arvoituksia.<sb>Combine porasi tähän.<sb>Yhteys vorteisuuteen on poikki.<sb>Olen yksin päässäni.
+<clr:107,232,120>Olen heikentynyt.<sb>Vorteisuus on kaukana minusta
+<sb>Kuulen sen laulun, mutta heikosti.
+Sinuna välttelisin sitä.
+Minä menen.<sb>Mutta onnea matkaan.<sb>Äläkä aliarvioi meidän Jeffiä.<sb>Se ei ole turhan kärsivällinen.
+Hei! Mitä teit Jeffille?
+Piru vieköön!<sb>No, toivottavasti löysit jotain hyvää.<sb>Nähdään!
+Kuka sinä olet?
+<clr:18,199,226>Paljasta nimiä.
+<clr:18,199,226>Ihan sama.<cr>Mitä näit? Kenen kanssa olit?
+<clr:18,199,226>Puristamme sen hänestä.<cr>Heittäkää kyytiin!
+<clr:18,199,226>Hänet myös.
+<clr:18,199,226>Alue varmistettu.
+<clr:18,199,226>Tuo hänet tänne.
+<clr:18,199,226>Entäs hän?
+<clr:18,199,226>TAKAISIN!
+<clr:18,199,226><force>Pidä ne ylhäällä!
+<clr:18,199,226><force>Kädet ylös!
+<clr:18,199,226><force>Hänellä ei ole mitään.
+<clr:18,199,226>Takaisin!
+<clr:18,199,226>Takaisin! TAKAISIN!
+<clr:18,199,226>Pidä ne ylhäällä!
+<clr:18,199,226>Pidä ne kädet ylhäällä!
+<clr:18,199,226>Nosta kädet ylös!
+<clr:18,199,226>Kädet ylös!
+<clr:18,199,226>Hänellä ei ole mitään.
+<clr:18,199,226>Liikkeelle.
+<clr:18,199,226>Liikkuu nyt.
+<clr:18,199,226>Painostetaan.
+<clr:18,199,226>Lähestytään kohdetta.
+<clr:18,199,226>Painetta.
+<clr:18,199,226>Lähestytään infektoitunutta.
+<clr:18,199,226>Vakaasti eteenpäin.
+<clr:18,199,226>Pusketaan eteenpäin.
+<clr:18,199,226>Moukari. Liikkuu.
+<clr:18,199,226>Kuitti. Edetään vierasyksikön luo.
+<clr:18,199,226>Painetta. Painetta.
+<clr:18,199,226>Stabilointitiimi etenee paineella.
+<clr:18,199,226>Pusketaan.
+<clr:18,199,226>Moukari lähestyy infektoitunutta.
+<clr:18,199,226>Moukari puskee sektorille.
+<clr:18,199,226>Lähestytään vierasyksikköä.
+<clr:18,199,226>Moukari.<cr>Lähestyy kohdetta.
+<clr:18,199,226>Moukari.<cr>Lähestyy.
+<clr:18,199,226>Moukari.<cr>Puskee.
+<clr:18,199,226>Valmiina taistoon.
+<clr:18,199,226>Hyökätään.
+<clr:18,199,226>Kohteeseen isketty.
+<clr:18,199,226>Hyökkäyksessä.
+<clr:18,199,226>Moukari. Iske täysillä viholliseen.
+<clr:18,199,226>Hyödynnetään tilanne.
+<clr:18,199,226>Kohde lukittu. Tikarit käyttöön.
+<clr:18,199,226>Aseet käyttöön.
+<clr:18,199,226>Kohde 1.
+<clr:18,199,226>Pysähdy nyt.
+<clr:18,199,226>Se on Alyx.
+<clr:18,199,226>Alyx varmistettu.
+<clr:18,199,226>Tikarit Alyxiin.
+<clr:18,199,226>Aseet käyttöön kohteeseen 1.
+<clr:18,199,226>Tulitetaan päävihollista.
+<clr:18,199,226>Hän se on. Moukari hyökkää.
+<clr:18,199,226>Pääkohde vahvistettu.
+<clr:18,199,226>Hyökkäys suojaan.
+<clr:18,199,226>Koodi: raivaus sektorilla...
+<clr:18,199,226>Kohteen suoja määritetään varjoksi.
+<clr:18,199,226>Vihollisen paljastus kolmosella.
+<clr:18,199,226>Kohde on suojattu. Korjataan.
+<clr:18,199,226>Poistetaan tuki.
+<clr:18,199,226>Kohdistetaan tikarit suojaan.
+<clr:18,199,226>Täysin voimin kohteen suojaan.
+<clr:18,199,226>Moukari. Valmiina iskemään suojaan.
+<clr:18,199,226>Kranaatti heitetty.
+<clr:18,199,226>Kranaatti lähtee!
+<clr:18,199,226>Kranaatti.
+<clr:18,199,226>Suojaudu.
+<clr:18,199,226>Kranaatti kolmosella.
+<clr:18,199,226>Poistetaan.
+<clr:18,199,226>Laukaistaan kranaatti.
+<clr:18,199,226>Peräännytään.
+<clr:18,199,226>Muurahaiskorento.
+<clr:18,199,226>Kohde: muurahaiskorento.
+<clr:18,199,226>Kontakti. Muurahaiskorento.
+<clr:18,199,226>Muurahaiskorento tulossa.
+<clr:18,199,226>Moukari muurahaiskorennon kimppuun.
+<clr:18,199,226>Muurahaiskorento. Moukari hyökkää.
+<clr:18,199,226>Muurahaiskorento. Sektori...
+<clr:18,199,226>Loisia.
+<clr:18,199,226>Kontakti. Loisia.
+<clr:18,199,226>Loisia tulossa.
+<clr:18,199,226>Moukari. Näköhavainto loisista.
+<clr:18,199,226>Näköyhteys. Loisia.
+<clr:18,199,226>Täällä on loisia.
+<clr:18,199,226>Eläviä loisia.
+<clr:18,199,226>Loistartunta vahvistettu.
+<clr:18,199,226>Nekrootteja.
+<clr:18,199,226>Nekrootteja tulossa.
+<clr:18,199,226>Tartunta vahvistettu.
+<clr:18,199,226>Moukari. Näköhavainto nekrooteista.
+<clr:18,199,226>Kontakti. Nekrootteja.
+<clr:18,199,226>Nekrootteja tähtäysviivalla.
+<clr:18,199,226>Nekrootit aktiivisia.
+<clr:18,199,226>Näköyhteys. Nekrootteja.
+<clr:18,199,226>Nekrootteja täällä.
+<clr:18,199,226>Vihollinen kukistettu.
+<clr:18,199,226>Kohde kukistettu.
+<clr:18,199,226>Tappo vahvistettu.
+<clr:18,199,226>Puhdas tappo.
+<clr:18,199,226>Jälleen yksi kukistettu.
+<clr:18,199,226>Se oli siinä.
+<clr:18,199,226>Kontakti kukistettu.
+<clr:18,199,226>Ne on kuolleet.
+<clr:18,199,226>Moukari. Tappo vahvistettu.
+<clr:18,199,226>Vihollinen neutraloitu.
+<clr:18,199,226>Tuhottu.
+<clr:18,199,226>Vihollinen on päihitetty.
+<clr:18,199,226>Viromi kukistettu.
+<clr:18,199,226>Siivottu.
+<clr:18,199,226>Kohde steriloitu.
+<clr:18,199,226>Puhdistettu.
+<clr:18,199,226>Loiset eristetty.
+<clr:18,199,226>Yksi loinen siivottu.
+<clr:18,199,226>Loiset siivottu.
+<clr:18,199,226>Siinä oli yksi.
+<clr:18,199,226>Loinen eristetty.
+<clr:18,199,226>Ällöttävä.
+<clr:18,199,226>Tauti tehoton.
+<clr:18,199,226>Tauti hillitty.
+<clr:18,199,226>Yksi loinen taltutettu.
+<clr:18,199,226>TK eristetty.
+<clr:18,199,226>Ordinaali, kohde 1 hiljaa.
+<clr:18,199,226>Se on tuhottu.
+<clr:18,199,226>Ordinaali. Alyx hoideltu.
+<clr:18,199,226>Alyx toimitettu.
+<clr:18,199,226>Kuollut.
+<clr:18,199,226>Eliminoitu.
+<clr:18,199,226>Nekrootti eristetty.
+<clr:18,199,226>Pysy kuolleena.
+<clr:18,199,226>Nekrootti kukistettu sektorilla...
+<clr:18,199,226>Nekrootti eliminoitu.
+<clr:18,199,226>Se on kuollut.
+<clr:18,199,226>Puhdistus suoritettu.
+<clr:18,199,226><sfx>[Hengittää työläästi]
+<clr:18,199,226><sfx>[Yskii ja vinkuu]
+<clr:18,199,226>alpha
+<clr:18,199,226>ja
+<clr:18,199,226>bravo
+<clr:18,199,226>charlie
+<clr:18,199,226>viiva
+<clr:18,199,226>delta
+<clr:18,199,226>echo
+<clr:18,199,226>8
+<clr:18,199,226>11
+<clr:18,199,226>50
+<clr:18,199,226>5
+<clr:18,199,226>40
+<clr:18,199,226>4
+<clr:18,199,226>100
+<clr:18,199,226>9
+<clr:18,199,226>0
+<clr:18,199,226>1
+<clr:18,199,226>70
+<clr:18,199,226>7
+<clr:18,199,226>60
+<clr:18,199,226>6
+<clr:18,199,226>10
+<clr:18,199,226>30
+<clr:18,199,226>1 000
+<clr:18,199,226>3
+<clr:18,199,226>20
+<clr:18,199,226>2
+<clr:18,199,226>Alyx
+<clr:18,199,226>Yhteiskunnan viholliset
+<clr:18,199,226>muurahaiskorento
+<clr:18,199,226>VAJ
+<clr:18,199,226>Terämuuri
+<clr:18,199,226>Tuplamuuri
+<clr:18,199,226>liittolainen
+<clr:18,199,226>Moukarimuuri
+<clr:18,199,226>vihollisia
+<clr:18,199,226>vapaita loisia
+<clr:18,199,226>nekrootti
+<clr:18,199,226>loinen
+<clr:18,199,226>Turvamies
+<clr:18,199,226>Moukari
+<clr:18,199,226>Yllä.
+<clr:18,199,226>Asunto.
+<clr:18,199,226>Tynnyrit.
+<clr:18,199,226>Takana.
+<clr:18,199,226>Alla.
+<clr:18,199,226>Tiilet.
+<clr:18,199,226>Silta.
+<clr:18,199,226>Rakennus.
+<clr:18,199,226>Auto.
+<clr:18,199,226>Nosturi.
+<clr:18,199,226>Ovi.
+<clr:18,199,226>Hissi.
+<clr:18,199,226>Edessä.
+<clr:18,199,226>Vaja.
+<clr:18,199,226>Putket.
+<clr:18,199,226>Hökkeli.
+<clr:18,199,226>WC.
+<clr:18,199,226>Junavaunu.
+<clr:18,199,226>Rojua.
+<clr:18,199,226>Rekka.
+<clr:18,199,226>Tunneli.
+<clr:18,199,226>Pakettiauto.
+<clr:18,199,226>Renkaita.
+<clr:18,199,226>Puukasa.
+<clr:18,199,226>Isketään.
+<clr:18,199,226>Isketään nyt.
+<clr:18,199,226>Isku.
+<clr:18,199,226>Grrr!
+<clr:18,199,226>Iske nopeasti.
+<clr:18,199,226>Turvaa selusta.
+<clr:18,199,226>Suojaa.
+<clr:18,199,226>Suojaa. Moukari.
+<clr:18,199,226>Pyydetään suojatulta.
+<clr:18,199,226>Moukari. Tarvitaan suojaa.
+<clr:18,199,226>Suojaa
+<clr:18,199,226>Suojaudutaan.
+<clr:18,199,226>Kranaatti matkalla.
+<clr:18,199,226>Kranaatti havaittu. Peräännytään.
+<clr:18,199,226>Kranaatti. Liikettä.
+<clr:18,199,226>Sulku pystyyn.
+<clr:18,199,226>Hälytä alueita.
+<clr:18,199,226>Peräännytään sulkua kohti.
+<sfx><norepeat:3><clr:255,0,0>[Combinen sotilas kuolee]
+<clr:18,199,226>Moukari maassa.
+<clr:18,199,226>Overwa...
+<clr:18,199,226>Moukari. Lähestytään.
+<clr:18,199,226>Moukari. Vaihtaa asemaa.
+<clr:18,199,226>Korjataan näköyhteys.
+<clr:18,199,226>Tähtäysviivojen tarkennus.
+<clr:18,199,226>Suunnataan uudelleen kohti vihollista.
+<clr:18,199,226>Muodostetaan näköyhteys.
+<clr:18,199,226>Raivataan tähtäysviivoja.
+<clr:18,199,226>Ei näköhavaintoa kohteesta. Liikutaan.
+<clr:18,199,226>Suunnataan uudelleen kohteeseen delta.
+<clr:18,199,226>Paikka.
+<clr:18,199,226>Vaihdetaan asemaa.
+<clr:18,199,226>Optimoidaan sijainti.
+<clr:18,199,226>Optimoidaan näköyhteys.
+<clr:18,199,226>Ongelma näköyhteydessä. Liikutaan.
+<clr:18,199,226>Selvennetään tähtäysviivoja.
+<clr:18,199,226>Muodostetaan tähtäysviivoja.
+<clr:18,199,226>Kontakti kolmosella.
+<clr:18,199,226>Paljastetaan kohde 1.
+<clr:18,199,226>Liikkumatta.
+<clr:18,199,226>Hei Alyx!
+<clr:18,199,226>Me tässä, Alyx!
+<clr:18,199,226>Alyx! Oletko siellä?
+<clr:18,199,226>Psst. Alyx!
+<clr:18,199,226>Tulitus seis! Kohde liittolainen.
+<clr:18,199,226>Moukari maassa! Moukari vetäytyy.
+<clr:18,199,226>Tulitus seis! Ei uhka. Ei uhka!
+<clr:18,199,226>Alyx on liittolainen.
+<clr:18,199,226>Tulitus seis!<cr>Alyx on liittolainen.
+<clr:18,199,226><sfx:1>[Nauraa]
+<clr:18,199,226>[Nauraa] Kaveripeli toimii.
+<clr:18,199,226>[Nauraa] Vihollinen on häkeltynyt.
+<clr:18,199,226>Tulitetaan.
+<clr:18,199,226>Hyökätään kohteeseen.
+<clr:18,199,226>Moukari hyökkää.
+<clr:18,199,226>Moukari.<cr>Pääasemissa.
+<clr:18,199,226>Avoin ryhmittymä. Aseet käyttöön.
+<clr:18,199,226>Koodi kolme. Oscar delta.
+<clr:18,199,226>Tyhjennetään sektori...
+<clr:18,199,226>Isku aloitettu.
+<clr:18,199,226>Tikarit käyttöön.
+<clr:18,199,226>Avataan tuli. Ykkösprioriteetti.
+<clr:18,199,226>Avataan tuli Alyxia vastaan.
+<clr:18,199,226>Moukari pääkohteeseen.
+<clr:18,199,226>Ordinaali! Avataan tuli...
+<clr:18,199,226>Tikarit käyttöön Vancea vastaan.
+<clr:18,199,226>Uusi tainnutuskranaatti vitosella.
+<clr:18,199,226>Tainnutuskranaatti epäonnistui.
+<clr:18,199,226>Ei tainnutusta. Korjataan.
+<clr:18,199,226>Tarvitaan uusi tainnutuskranaatti kohteeseen...
+<clr:18,199,226>Sokaisu epäonnistui.
+<clr:18,199,226>Tainnutuskranaatti toimi. Liikutaan.
+<clr:18,199,226>Tainnutuskranaatti toimi.<cr>Hyödynnetään.
+<clr:18,199,226>Vihollinen on sokaistu.
+<clr:18,199,226>Kohteella ei näköyhteyttä.<cr>Hyödynnetään.
+<clr:18,199,226>Vierasyksikkö on häkeltynyt.
+<clr:18,199,226>Vihollinen on häkeltynyt.<cr>Kaikki yksiköt, hyödyntäkää.
+<clr:18,199,226>Raivataan.
+<clr:18,199,226>Jako kolmosella.
+<clr:18,199,226>Moukari savustaa sektoria...
+<clr:18,199,226>Moukari heittää...
+<clr:18,199,226>Laitetaan painetta. Ammus maassa.
+<clr:18,199,226>Kranaatti vihollisen viimeisimpään sijaintiin.
+<clr:18,199,226>Kranaatti viimeiseen sijaintiin.
+<clr:18,199,226>Nyt lähtee.
+<clr:18,199,226>Sulku pystyyn. Suojaudutaan.
+<clr:18,199,226>Kuulohavainto sektorilla...
+<clr:18,199,226>Mahdollinen vierasyksikkö.
+<clr:18,199,226>Mahdollisesti aktiivinen vihollinen.
+<clr:18,199,226>Liikehdintää moukaria kohti.
+<clr:18,199,226>Ääni päällä.
+<clr:18,199,226>Ääni päälle
+Raportti vierasyksiköistä.
+<clr:18,199,226>Tarvitaan stimulantti.
+<clr:18,199,226>Ordinaali. Sain osuman.
+<clr:18,199,226>Otetaan osumaa.
+<clr:18,199,226>Tukea moukarille.
+<clr:18,199,226>Moukari edelleen aktiivinen.
+<clr:18,199,226>Tehoton.
+<clr:18,199,226>Suojapanssarit toimivat.
+<clr:18,199,226><sfx:1>[Vahingoniloista hykertelyä]
+<clr:18,199,226>Vierasyksikkö ei näkyvissä.
+<clr:18,199,226>Piru vieköön.
+<clr:18,199,226>Pyydetään sijaintia.
+<clr:18,199,226>Kohde kadonnut.
+<clr:18,199,226>Aluetukea. Moukari.
+<clr:18,199,226>Ei näköyhteyttä viholliseen.
+<clr:18,199,226>Näköyhteys menetetty. Vierasyksikkö.
+<clr:18,199,226>Ei näköyhteyttä. Moukari.
+<clr:18,199,226>Vihollinen kadonnut.<cr>Sektori tuntematon.
+<clr:18,199,226>Moukari pyytää kohteen sijaintia.
+<clr:18,199,226>Menetettiin näköyhteys viholliseen.
+<clr:18,199,226>Aluetukea Moukarille.
+<clr:18,199,226>Tarvitaan aluetukea.
+<clr:18,199,226>Ei näköyhteyttä.
+<clr:18,199,226>Moukari, ei näköyhteyttä.
+<clr:18,199,226>Mahdollinen pako.<cr>Tarvitaan vihollisen sijainti.
+<clr:18,199,226>Vierasyksikkö hiljaa.<cr>Tarvitaan viimeisin sijaintisektori.
+<clr:18,199,226>Näköyhteys täysin poikki.
+<clr:18,199,226>Vihollinen hiljainen.
+<clr:18,199,226>Vierasyksikkö välttelevä.
+<clr:18,199,226>Tarkistetaan suoja.
+<clr:18,199,226>Kontaktin tarkistus.
+<clr:18,199,226>Näköyhteys poikki. Silmä kovana.
+<clr:18,199,226>Kaikki yhteydet poikki moukariin.<cr>Tarvitaan tiedustelua.
+<clr:18,199,226>Lähellä!
+<clr:18,199,226>Uhka lähellä. Irrotetaan.
+<clr:18,199,226>Tarvitaan tukea!
+<clr:18,199,226>Moukari, tukea. Moukari, tukea.
+<clr:18,199,226>Perääntykää. Perääntykää.
+<clr:18,199,226>Kuitti.
+<clr:18,199,226>Selvä.
+<clr:18,199,226>Positiivinen.
+<clr:18,199,226>Jatketaan.
+<clr:18,199,226>Vahvistetaan.
+<clr:18,199,226>Pysyn asemissa.
+<clr:18,199,226>Sijainti lukittu.
+<clr:18,199,226>Aseet valmiina.
+<clr:18,199,226>Näköyhteys viimeiseen sijaintiin.
+<clr:18,199,226>Katse viimeisessä sijainnissa.
+<clr:18,199,226>Tarkkailuasemissa.
+<clr:18,199,226>Moukari asemissa.
+<clr:18,199,226>Tarkkana.
+<clr:18,199,226>Hiljaisuus. Hiljaisuus.
+<clr:18,199,226>Vihollisyksikkö vastahakoinen. Valmiudessa.
+<clr:18,199,226>Odotetaan yhteyttä.
+<clr:18,199,226>Tilannearvio.
+<clr:18,199,226>Odotetaan ongelmaa.
+<clr:18,199,226>Valmiina eristykseen.
+<clr:18,199,226>Moukari tarkkana.
+<clr:18,199,226>Vierasyksikkö lukittu.
+<clr:18,199,226>Moukari. Varmistetaan rajat.
+<clr:18,199,226>Tarkistetaan kaikki rajat.
+<clr:18,199,226><sfx><norepeat:5>[Tuskissaan]
+<clr:18,199,226><sfx:1><norepeat:5>[Huohottaa]
+<clr:18,199,226>Vihollinen heikko.
+<clr:18,199,226>Kohde pulassa.
+<clr:18,199,226>Kohde vaarannettu.
+<clr:18,199,226>Eteenpäin, eteenpäin.
+<clr:18,199,226>Vierasyksikkö heikkona.
+<clr:18,199,226>Vihollinen merkitty.
+<clr:18,199,226>Uusi hyökkäys vihollista vastaan.
+<clr:18,199,226>Järeämmin asein moukarin kimppuun.
+<clr:18,199,226>Vihollinen vuotaa verta.
+<clr:18,199,226>Pääkohde ehkä tähtäimessä.
+<clr:18,199,226>Moukari toiminnassa.<cr>Koodi 0-9.
+<clr:18,199,226>Kohde 1 elimoidaan.
+<clr:18,199,226>Moukari valmis.
+<clr:18,199,226>Valmistellaan moukaria.
+<clr:18,199,226>Moukari iskuvalmis.
+<clr:18,199,226>Hyökkäykseen.
+<clr:18,199,226>Moukari iskee...
+<clr:18,199,226>Iskuvalmiina. 3
+<clr:18,199,226>Valmistellaan sulkua.
+<clr:18,199,226>Sulku ylös.
+<clr:18,199,226>Nostetaan sulku.
+<clr:18,199,226>Sulku kiinni.
+<clr:18,199,226>Sulku valmis. 3
+<clr:18,199,226>Kaikki sektorit skannattu.
+<clr:18,199,226>Kontakti hiljaa.
+<clr:18,199,226>Sektori skannattu.<cr>Lupa jäädä tarkkailemaan.
+<clr:18,199,226>Alue skannattu.
+<clr:18,199,226>Moukari raportoi.<cr>Vihollinen hiljaa.
+<clr:18,199,226>Ei kontaktia.
+<clr:18,199,226>Areena skannattu.
+<clr:18,199,226>Näyttää tyhjältä.
+<clr:18,199,226>Kontakti katosi.<cr>Näyttää tyhjältä.
+<clr:18,199,226>Ei näy mitään.
+<clr:18,199,226>Tarkkana. Sulku ylös.
+<clr:18,199,226>Ei vierasyksiköitä sektorilla.<cr>Lupa poistua valmiusasemista.
+<clr:18,199,226>Valmis koodiin bravo.
+<clr:18,199,226>Ei mitään.
+<clr:18,199,226>Varjo skannattu.
+<clr:18,199,226>Pyydetään lupaa lopettaa alueen tutkinta.
+<clr:18,199,226>Ei täällä.
+<clr:18,199,226>Sijainti skannattu. Perutaan tuki.
+<clr:18,199,226>Kaikki sektorit skannattu. Peruutus.
+<clr:18,199,226>Prosessoidaan näköyhteyttä.
+<clr:18,199,226>Haku kesken
+<clr:18,199,226>Haravointi kesken
+<clr:18,199,226>Skannaus kesken
+<clr:18,199,226>Moukari. Tiedustelu käynnissä.
+<clr:18,199,226>Tila: alueen tutkinta aktiivinen.
+<clr:18,199,226>Tiedustelu käynnissä.
+<clr:18,199,226>Kohde yhä varjossa.
+<clr:18,199,226>Sektori skannattu. Eteenpäin.
+<clr:18,199,226>Nollasektori. Jatketaan.
+<clr:18,199,226>Alue vapaa. Liikutaan.
+<clr:18,199,226>Tarkkailu jatkuu.
+<clr:18,199,226>Moukari raportoi.<cr>Vihollinen yhä hiljaa.
+<clr:18,199,226>Skannaus valmis. Jatketaan.
+<clr:18,199,226>Ei edelleenkään näköyhteyttä.
+<clr:18,199,226>Alue vapaa. Jatketaan.
+<clr:18,199,226>Levittäydytään.
+<clr:18,199,226>Jaetaan.
+<clr:18,199,226>Moukariyksikkö liikkeelle.
+<clr:18,199,226>Asemissa ja skannaus päällä.
+<clr:18,199,226>Aloitetaan siivous.
+<clr:18,199,226>Haravoidaan vihollisia.
+<clr:18,199,226>Haravoidaan vierasyksiköitä.
+<clr:18,199,226>Etsitään. Ryhmittymä: tikari.
+<clr:18,199,226>Suljetaan areena.
+<clr:18,199,226>Eristys etenee.
+<clr:18,199,226>Raportoidaan tähtäysviivat.
+<clr:18,199,226>Ryhmittymä kohteeseen kolmosella.
+<clr:18,199,226>Vihollisen poisto käyntiin.
+<clr:18,199,226>Käynnistetään alueen tutkinta.
+<clr:18,199,226>Hyökkäykseen! Kohde delta...
+<clr:18,199,226>Yhteys kohteeseen...
+<clr:18,199,226>Näköyhteys! Etäisyys...
+<clr:18,199,226>Tuolla.
+<clr:18,199,226>Näköyhteys! Vihollinen löytyi.
+<clr:18,199,226>Uutta liikehdintää.
+<clr:18,199,226>Peto jälleen näkyvissä.
+<clr:18,199,226>Yhteys viholliseen löydetty.
+<clr:18,199,226>Vihollinen jälleen sektorilla...
+<clr:18,199,226>Moukari. Uusi yhteys sektorilla...
+<clr:18,199,226>Vihollinen liikkeessä. Alueen tarkastus.
+<clr:18,199,226>Useampi tähtäysviiva vahvistettu.
+<clr:18,199,226>Pääkohde tähtäysviivalla.
+<clr:18,199,226>Moukari kuuntelee.
+<clr:18,199,226>Sijainti vahvistettu. Vaaditaan vakautta.
+<clr:18,199,226>Näköyhteys kolmosella.
+<clr:18,199,226>Näköyhteys olemassa.
+<clr:18,199,226>Ladataan uudelleen.
+<clr:18,199,226>Moukari lataa aseen.
+<clr:18,199,226>Moukari maassa. 4
+<clr:18,199,226>Aseen lataus.
+<clr:18,199,226>Tyhjä.
+<clr:18,199,226>Moukari tyhjä.
+<clr:18,199,226>Ammukset vähissä. Ladataan uudelleen.
+<clr:18,199,226>Moukarin lataus.
+<clr:18,199,226>Tulitukea!
+<clr:18,199,226>Tulitukea Moukarille.
+<clr:18,199,226>Vetäydytään.
+<clr:18,199,226>Sektorilla kuumat paikat.
+<clr:18,199,226>Etsitään suojaa.
+<clr:18,199,226>Moukari järjestäytyy uudelleen.
+<clr:18,199,226>Sektori epävakaa. Etsitään suojaa.
+<clr:18,199,226>Toissijaiset kohteet tunnistettu.
+<clr:18,199,226>Näköyhteys useampaan tuntemattomaan.
+<clr:18,199,226>Näköyhteys toissijaisiin vihollisiin.
+<clr:18,199,226>Tarkistetaan siluetit.<cr>Mahdollisesti lisäkohteita.
+<clr:18,199,226>Useampi vierasyksikkö.
+<clr:18,199,226>Kohteella 1 on kranaatteja.
+<clr:18,199,226>Vihollisella kranaatteja. Varokaa.
+<clr:18,199,226>Vierasyksiköllä kranaatteja. Hajaantukaa.
+<clr:18,199,226>Pääkohteella kranaatteja.<cr>Vastatkaa.
+<clr:18,199,226>Vihollinen lataa asetta.<cr>Moukarilla etu.
+<clr:18,199,226>Kohde palautunut. Avatkaa tuli.
+<clr:18,199,226>Vierasyksikkö on haavoittuvainen.
+<clr:18,199,226>Alyx lataa asetta.<cr>Iskekää täysillä.
+<clr:18,199,226>Rullamiinoja näkyvissä.<cr>Sulku ylös.
+<clr:18,199,226>Moukari.<cr>Vastataan rullamiinaan.
+<clr:18,199,226>Rullamiinoja.
+<clr:18,199,226>Subakuutteja rullamiinoja.<cr>Iskekää täysillä.
+<clr:18,199,226>Uusi kohde: rullamiinat.
+<clr:18,199,226>Rullamiinoja tulossa.
+<clr:18,199,226>Vahvistetulla lyijyllä kohteen 1 kimppuun.
+<clr:18,199,226>Overwatch. Kohteella yksi paranneltuja aseita.
+<clr:18,199,226>Vihollisella on vahvistettua lyijyä.
+<clr:18,199,226>Vihollisella on laitonta lyijyä.
+<clr:18,199,226>Kohteella tehoaseita.<cr>Vastaiskuun varoen.
+<clr:18,199,226>Overwatch, vaaditaan vahvistusta.
+<clr:18,199,226>Overwatch, sektori epävakaa.
+<clr:18,199,226>Tauti puhjennut sektorilla...
+<clr:18,199,226>Overwatch, kenttäyksikkö kukistettu.<cr>Sektori ei ole hallinnassa.
+<clr:18,199,226>Overwatch, sektori on vallattu.
+<clr:18,199,226>Overwatch<cr>Tarvitaan ilmapuolustus.
+<clr:18,199,226>Overwatch. Suositellaan uutta ryhmittymää.
+<clr:18,199,226>Liittolainen maassa.
+<clr:18,199,226>Vaaditaan korvaajaa.
+<clr:18,199,226>Overwatch.<cr>Ainoa aktiivinen.
+<clr:18,199,226>Overwatch.<cr>Moukari viimeinen yksikkö.<cr>Vaaditaan vahvistusta.
+<clr:18,199,226>Overwatch.<cr>Tarvitaan välittömästi suojaa.
+<clr:18,199,226>Overwatch.<cr>Tauti hallitsematon.
+<clr:18,199,226>Overwatch.<cr>Raportoidaan tila: pako.<cr>Kuitatkaa.
+<clr:18,199,226>Overwatch.<cr>Ainoa yksikkö, vihollisia liikaa.
+<clr:18,199,226>Eloonjäämismerkki annettu.
+<clr:18,199,226>Overwatch.<cr>Vaaditaan moukarin nouto.<cr>Sektori...
+<clr:18,199,226>Overwatch, ilmoitus.<cr>Moukari on viimeinen yksikkö.
+<clr:18,199,226>Overwatch.<cr>Ordinaali maassa.
+<clr:18,199,226>Ordinaali hiljaa.<cr>Vaaditaan uusi johtaja.
+<clr:18,199,226>Ordinaali hiipuu.
+<clr:18,199,226>Ordinaali tuhottu.
+<clr:18,199,226>Overwatch. Ordinaali poissa pelistä.<cr>Vastataan.
+<clr:18,199,226>Ordinaali hiljaa.<cr>Täydellä teholla hyökkäykseen.
+<clr:18,199,226>Ordinaali nollaviivalla.<cr>Ordinaali nollaviivalla.
+<clr:18,199,226><sfx:1>[Huutaa]
+<clr:18,199,226>Vaihto.
+<clr:18,199,226>Vaihdetaan.
+<clr:18,199,226>Moodi 1.
+<clr:18,199,226>Moodi 2.
+<clr:18,199,226>Lyijyä lähellä. Ei vahinkoa.
+<clr:18,199,226>Ohi.
+<clr:18,199,226>Kohteen virhe. Hyödyntäkää.
+<clr:18,199,226>Vihollinen ampuu ohi.
+<clr:18,199,226>Melkein.
+<clr:18,199,226>Moukari kunnossa.
+<clr:18,199,226>Jälleen ohi. Hyödyntäkää.
+<clr:18,199,226>Kohde ampui ohi.
+<clr:18,199,226>Käyttäkää etulyöntiasemaa viholliseen.
+<clr:18,199,226>Vihollinen ampui ohi. Ryhmitytään uudelleen.
+<clr:18,199,226>Lyijyisku tehoton.<cr>Kohde kokematon.
+<clr:18,199,226>Negatiivinen.
+<clr:18,199,226>Kielteinen.
+<clr:18,199,226>Ei.
+<clr:18,199,226>Ei onnistu.
+<clr:18,199,226>Evätty.
+<clr:18,199,226>Ei voi toteuttaa.
+<clr:18,199,226>Lyijyisku vahvistettu.<cr>Sulku pystyyn.
+<clr:18,199,226>Vihollinen iskussa.
+<clr:18,199,226>Kontakti.
+<clr:18,199,226>Wallhammer.<cr>Käydään vastaiskuun.
+<clr:18,199,226>Agressiivisia vierasyksiköitä havaittu.
+<clr:18,199,226>Jakakaa.
+<clr:18,199,226>Kohde on vihollinen.<cr>Tikarit käyttöön.
+<clr:18,199,226>Vihollinen murskaa.<cr>Lisäjoukot...
+<clr:18,199,226>Overwatch. Lyijyä sataa.
+<clr:18,199,226>Valmistellaan tila: delta.
+<clr:18,199,226>Täysi hyökkäys käynnissä.
+<clr:18,199,226>Sektori...
+<clr:18,199,226>[Numeroita]
+<clr:18,199,226>sektori...
+<clr:18,199,226>Ei raportoitavaa. Loppu.
+<clr:18,199,226>1, 14, 3, 6, 11. Täsmää.<cr>Echo 4, kuitti. Loppu.
+<clr:18,199,226>Kuitti.<cr>Säilytetään näköyhteys sektorilla nomad-kilo-3-6.
+<clr:18,199,226>Echo 1, ei liikehdintää.<cr>Ruutu: 7-2.
+<clr:18,199,226>Vahvistus.<cr>Odotetaan tilaisuutta.
+<clr:18,199,226>Lähetys selvä.<cr>Alue selvä. Loppu.
+<clr:18,199,226>Overwatch.<cr>Pyydetään vihollisen sijaintitietoja.<cr>Odotetaan lähetystä.
+<clr:18,199,226>Odotetaan edelleen lähetystä. Loppu.
+<clr:18,199,226>Overwatch vahvistaa sektorin lukituksen.<cr>Tähtäysviivat auki ja ääni päällä.
+<clr:18,199,226>Vahvistettu
+Taudin tila: koodi delta-7.<cr>Tiimi: auringonlasku. Läheinen kontakti.<cr>Kuitti.
+<clr:18,199,226>Negatiivinen
+Kuitti. Ei sektorin eristystä.<cr>Ei vahvistusta kohteen yksi tartuttajasta.<cr>Odotetaan sekundäärisiä parametrikoodeja.
+<clr:18,199,226>Päivitetään biodataa
+Stimulantti 32.<cr>Tikarit 78, kilvet 100.<cr>Bioetäisyys 73.<cr>Kuultu 3, nähty 15. Loppu.
+<clr:18,199,226>Selvä.<cr>Asetetaan suolistimia kärkeen viisi.<cr>Biootteja kehällä.<cr>Odotetaan kontaktia. Loppu.
+<clr:18,199,226>Overwatch vahvistaa: koodaamattomia viromeja tulossa.<cr>Kaikki yksiköt: valmistautukaa kontaktiin.
+<clr:18,199,226>Kutsukoodi:<cr>delta-echo-7-9-alpha-2-whiskey-0.<cr>Vahvistettu.
+<clr:18,199,226>Selvä. Vielä täällä.
+<clr:18,199,226>Kuitti. Hyväksytty<cr>Päivitetään kognitiivisen vaientamisen biodataa.<cr>Päivitys valmis A miinus kolme sekuntia
+<cr>Ristiriita ratkaistu.
+<clr:18,199,226>Overwatch kaikille yksiköille: tilanteen päivitys ja purku.<cr>Kognitiivista dissonanssia ei hyväksytä
+Eikä muistoja.<cr>Päivitys valmis. Hyväksyntä pakollinen.
+<clr:18,199,226>Stabilointitiimi pitää asemansa.<cr>Näkyvyys 73.<cr>Kuuluvuus 15.<cr>Overwatch vahvistaa: TK matkalla kehälle.<sb>Tarkkana.
+<clr:18,199,226>Overwatch.<cr>Aktiivisia vihollisia.<cr>Ohjeistakaa valmisteluihin.
+<clr:18,199,226>Negatiivinen.<cr>Kohde on edelleen aktiivinen.
+<clr:18,199,226>Kuitti.<cr>Ryhmitytään, tila alpha.
+<clr:18,199,226>Kuitti.<cr>Ryhmitytään, tila alpha ruudussa 9-37.
+<clr:18,199,226>Odotetaan hyökkäysohjetta. Loppu.
+<clr:18,199,226>Vahvistettu. Kalibroidaan uudelleen.
+<clr:18,199,226>Kuitti. Valmistellaan asemaa.
+<clr:18,199,226>Yhä hengissä.
+<clr:18,199,226>Kuitti.<cr>Hillintä ja kontrollointi menossa.
+<clr:18,199,226>Ratkaistaan.
+<clr:18,199,226>10-4. Ei tikarien latausta.<cr>Lukittu ja valmis.
+<clr:18,199,226>Muodostetaan taktista etua.
+<clr:18,199,226>Odotetaan edelleen.
+<clr:18,199,226>Odotetaan biodatan lähetystä.
+<clr:18,199,226>Valmistaudutaan hiipumiseen.
+<clr:18,199,226>Valmistellaan kommunikointi pidempään konfliktiin.
+<clr:18,199,226>Negatiivinen. Tikareita ei tarvita.
+<clr:18,199,226>Pidennetään konfliktin kestoa.
+<clr:18,199,226>Skannataan vihollisen biodataa.
+<clr:18,199,226>Sivuutetaan edellinen viesti.
+<clr:18,199,226>Overwatch. 10-9.
+<clr:18,199,226>Lataus ja tulitus.
+<clr:18,199,226>Vahvistetaan pääkohteen vakautta sektorilla...
+<clr:18,199,226>Kohde on linjassa.
+<clr:18,199,226>Kohde on linjassa ja saa lyijyä.
+<clr:18,199,226>Eskaloidaan voimaa pääkohteeseen.
+<clr:18,199,226>Täältä pesee!
+<clr:18,199,226>Melkein ohi.
+<clr:18,199,226>Se on melkein ohi.
+<clr:18,199,226>Lähetetään lyijyä.
+<clr:18,199,226>Lähetetään kaikki lyijyt pääkohteeseen.
+<clr:18,199,226>Lähetetään kaikki lyijyt.
+<clr:18,199,226>Älä tee vastarintaa.
+<clr:18,199,226>Moukari hyökkää ja tulittaa.
+<clr:18,199,226>Ordinaali hyökkää ja tulittaa.
+<clr:18,199,226>VAJ hyökkää ja tulittaa.
+<clr:18,199,226>Vihollinen on äärimmäisessä paniikissa.
+<clr:18,199,226>Vihollinen on häkeltynyt.
+<clr:18,199,226>Kohde innoton.<cr>Hyödyntäkää.
+<clr:18,199,226>Kohde innoton.
+<clr:18,199,226>Voit tulla nyt ulos.
+<clr:18,199,226>Huomio, viholliskohde.<cr>Voimme auttaa sinua.<cr>Olet turvassa.
+<clr:18,199,226>Voimme auttaa.<cr>Olet turvassa.
+<clr:18,199,226>Epäilty on ylittänyt laillisen agression rajan.<cr>Hyödynnetään tilanne.
+<clr:18,199,226>Epäilty on ylittänyt laillisen aggression rajan.<cr>Hyödynnetään tilanne.
+<clr:18,199,226>Jatketaan eskalointia.
+<clr:18,199,226>Epäilty ei noudata koodia 10-307.
+<clr:18,199,226>Koodi 10-307.<cr>Jatketaan eskalointia
+<clr:18,199,226>Vihollinen epäröi.
+<clr:18,199,226>Vihollisen hyökkäykset ovat tehottomia.<cr>Jatketaan eristämistä.
+<clr:18,199,226>Aktivoidaan koodi 10-108.<cr>Peräännytään.
+<clr:18,199,226>Keskeytetään tulitus.<cr>Kohde liittolainen.
+<clr:18,199,226>Peräännytään.<cr>Koodi 10-40.
+<clr:18,199,226>Tulitus seis! Kohde ei ole vihollinen.
+<clr:18,199,226>Kuitti. Älkää ampuko.<cr>Ohjeiden noudattaminen vahvistettu.
+<clr:18,199,226>Kohde liittolainen.
+<clr:18,199,226>Tulitus seis!<cr>Kohde liittolainen.
+<clr:18,199,226>Kaikki yksiköt, tulitus seis! Kohde liittolainen.
+<clr:18,199,226>Kohde liittolainen.<cr>Tulitus seis!
+<clr:18,199,226>Overwatch.<cr>Tarkkailuasemissa ruudussa 9-5.
+<clr:18,199,226>Overwatch.<cr>Tarkkailuasemissa.
+<clr:18,199,226>Vahvistus.<cr>Alhaisen prioriteetin kohde.
+<clr:18,199,226>Kuitti.<cr>Vihollinen ei aavista mitään. Valmis eristykseen.
+<clr:18,199,226>Vihollinen vaikuttaa väsyneeltä.<cr>Valmistellaan eristys.
+<force><clr:18,199,226>Liikkumatta.
+<force><clr:18,199,226>Ei mitään. Ei tunnistusta.
+<force><clr:18,199,226>Kädet ylös.
+<force><clr:18,199,226>Liikkumatta!
+<force><clr:18,199,226>Missä loput?
+<force><clr:18,199,226>Kuka tämä on?
+<force><delay:10.5><clr:18,199,226>Oletko siellä, Alyx?<cr>Me täällä, Alyx!
+<clr:18,199,226>Liikkeellä.
+<clr:18,199,226>Edetään.
+<clr:18,199,226>Edetään vierasyksikön luo.
+<clr:18,199,226>Lisätään painetta.
+<clr:18,199,226>Echo 1 etenee paineella.
+<clr:18,199,226>Echo 1 tietää sektoritunnuksen ja lähestyy infektoitunutta.
+<clr:18,199,226>Pusketaan sektorille.
+<clr:18,199,226>Hyökkäys.
+<clr:18,199,226>Vastataan täysillä.
+<clr:18,199,226>Ammutaan kohdetta.
+<clr:18,199,226>Hyökkäysetu meillä.
+<clr:18,199,226>Kohde lukittu. Tikarit tanassa.
+<clr:18,199,226>Kohde 1 tähtäysviivoilla.
+<clr:18,199,226>Jättipotti vahvistettu.
+<clr:18,199,226>Kohde 1:n henki hiipuu.
+<clr:18,199,226>Kohde näkyvissä.
+<clr:18,199,226>Alyx vahvistettu.
+<clr:18,199,226>Echo, tulittakaa Alyxia.
+<clr:18,199,226>Asein Alyxin kimppuun.
+<clr:18,199,226>Tulitetaan Alyxia.
+<clr:18,199,226>Pääkohde. Echo 1 hyökkää.
+<clr:18,199,226>Kohde tunnistettu.
+<clr:18,199,226>Uusi kohde. Koodi: raivaus.
+<clr:18,199,226>Kohde määritetään varjoksi.
+<clr:18,199,226>Kohde suojattu. Korjataan.
+<clr:18,199,226>Echo 1. Poistetaan tuki.
+<clr:18,199,226>Echo 1. Kohdistakaa tikarit suojaan.
+<clr:18,199,226>Echo 1. Täysin asein suojaan.
+<clr:18,199,226>Koodi: raivaus.
+<clr:18,199,226>Ja
+kranaatti lähtee!
+<clr:18,199,226>Suojaan!
+<clr:18,199,226>Näköyhteys. Muurahaiskorento.
+<clr:18,199,226>Muurahaiskorento. Echo 1 hyökkää.
+<clr:18,199,226>Echo 1, kontakti. Muurahaiskorento.
+<clr:18,199,226>Muurahaiskorento täällä.
+<clr:18,199,226>Loisia sektorilla...
+<clr:18,199,226>Ääh
+Vapaita loisia tulossa.
+<clr:18,199,226>Echo 1. Näköhavainto loisista.
+<clr:18,199,226>Inhoan näitä otuksia.
+<clr:18,199,226>Eläviä loisia. Echo 1.
+<clr:18,199,226>Loisia täällä.
+<clr:18,199,226>Tartuntavaroitus.
+<clr:18,199,226>Echo 1. Näköhavainto nekrooteista.
+<clr:18,199,226>Nekrootteja näkyvissä.
+<clr:18,199,226>Täällä on nekrootteja.
+<clr:18,199,226>Kontakti nekrootteihin.
+<clr:18,199,226>Echo 1. Tappo vahvistettu.
+<clr:18,199,226>Hoidettu.
+<clr:18,199,226>Hoideltu.
+<clr:18,199,226>Sektori selvä.
+<clr:18,199,226>Siinä meni yksi.
+<clr:18,199,226>Vierasyksikkö eristetty.
+<clr:18,199,226>Tärkeä kohde eristetty.
+<clr:18,199,226>Kohde 1 hiljaa.
+<clr:18,199,226>Hän on hiljaa.
+<clr:18,199,226>Alyx on päihitetty.
+pääkohde eliminoitu.
+<clr:18,199,226>Alyx tuhottu.
+<clr:18,199,226>Vierasyksikkö eliminoitu.
+<clr:18,199,226>Ikiunessa.
+<clr:18,199,226><sfx:1>[Murahtaa]
+<clr:18,199,226><sfx:1>[Hengittää raskaasti]
+<clr:18,199,226><sfx:1>[Yskii ja vinkuu]
+<clr:18,199,226>12
+<clr:18,199,226>Echo 1
+<clr:18,199,226>Overwatch
+<clr:18,199,226>Suojaus.
+<clr:18,199,226>Echo 1 pyytää suojausta.
+<clr:18,199,226>Echo 1 tarvitsee suojaa.
+<clr:18,199,226>Valmistelkaa stimulantti.
+<clr:18,199,226>Tarvitaan suojaa...
+<clr:18,199,226>Mahdollinen kranaatti. Peräännytään.
+<clr:18,199,226>Suojaan.
+<clr:18,199,226>Kranaatti havaittu sektorilla...
+<clr:18,199,226>Takaisin.
+<clr:18,199,226>Kranaatti matkalla. Etsitään suojaa.
+<clr:18,199,226>Loppu.
+<clr:18,199,226>Apua!
+<clr:18,199,226>Anteeksi...
+<clr:18,199,226>Overwatch...
+<clr:18,199,226>Lähestytään.
+<clr:18,199,226>Echo 1 vaihtaa asemaa.
+<clr:18,199,226>Tarkennetaan tähtäysviivoja.
+<clr:18,199,226>Raivataan este.
+<clr:18,199,226>Echo 1. Ei näköhavaintoa kohteesta. Liikutaan.
+<clr:18,199,226>Korjataan tähtäysviivat viholliseen.
+<clr:18,199,226>Näköyhteys katkesi. Liikutaan.
+<clr:18,199,226>Paljastetaan ykköskohde.
+<clr:18,199,226>Laskekaa aseet!<cr>Echo 1! Laskekaa aseet.
+<clr:18,199,226>Tulitus seis!<cr>Tikarit alas.
+<clr:18,199,226>Alyx on liittolainen! Kohde liittolainen!
+<clr:18,199,226>Alyx on liittolainen! Tulitus seis!
+<clr:18,199,226>Tikarein vihollisen kimppuun.
+<clr:18,199,226>Echo 1 pääasemissa.
+<clr:18,199,226>Murskatkaa vihollinen.
+<clr:18,199,226>Tyhjennetään sektori.
+<clr:18,199,226>Hyökätään sektorille.
+<clr:18,199,226>Aloitetaan ykkösprioriteetin tulitus.
+<clr:18,199,226>Käydään Vancen kimppuun.
+<clr:18,199,226>Aloitetaan ykköskohteen tulitus.
+<clr:18,199,226>Ykköskohde tulittaa lyijyllä.<cr>Hiljentäkää kohde!
+<clr:18,199,226>Alyxin aika käy vähiin.
+<clr:18,199,226>Peto näkökentässä.
+<clr:18,199,226>Jättipotti vahvistettu. Tulitetaan.
+<clr:18,199,226>Raivataan viimeisin sijainti.
+<clr:18,199,226>Savustetaan sektori...
+<clr:18,199,226>Kranaatti viimeisimpään sijaintiin!
+<clr:18,199,226>Painetta viime sijaintiin. Ammus maassa.
+<clr:18,199,226>Savustetaan vihollinen.
+<clr:18,199,226>Tulitus turvasta.
+<clr:18,199,226>Irrotetaan.
+<clr:18,199,226>Liikehdintää.
+<clr:18,199,226>Echo 1 ääni päällä.<cr>Raportoidaan kaikki epäilyttävä.
+<clr:18,199,226>Lääkintämies.
+<clr:18,199,226>Otin osumaa. Tarvitaan stimulantti.
+<clr:18,199,226>Tarvitaan lisää suojapanssareita.
+<clr:18,199,226>Echo 1:n aika käy vähiin.
+<clr:18,199,226>Hitto.
+<clr:18,199,226><sfx:1><norepeat:5>[Vahingoniloista hykertelyä]
+<clr:18,199,226>Kirottua.
+<clr:18,199,226>Echo 1, pyydetään sijaintia.
+<clr:18,199,226>Kohde katosi.<cr>Pyydetään aluetukea.
+<clr:18,199,226>Aluetukea.
+<clr:18,199,226>Näköyhteys viholliseen negatiivinen.
+<clr:18,199,226>Vierasyksikkö ei tähtäysviivoilla.
+<clr:18,199,226>Ei näköyhteyttä. Vastatkaa.
+<clr:18,199,226>Vihollinen kadonnut. Sektori tuntematon.
+<clr:18,199,226>Tarvitaan vihollisen sijainti.
+<clr:18,199,226>Tarvitaan sijainti.
+<clr:18,199,226>Aluetukea Echo 1:lle.
+<clr:18,199,226>...aluetukea.
+<clr:18,199,226>Tarvitaan aluetukea sektorilla...
+<clr:18,199,226>Ei näköyhteyttä. Overwatch, tukea.
+<clr:18,199,226>Echo 1, negatiivinen näköyhteys.
+<clr:18,199,226>Mahdollinen pako. Tarvitaan sijainti.
+<clr:18,199,226>Näköyhteys kohteeseen 1 täysin poikki.
+<clr:18,199,226>Päävihollinen hiljaa.
+<clr:18,199,226>Vierasyksikkö pakoilee.<cr>Ordinaali, raportoi.
+<clr:18,199,226>Etsitään kohdetta 1...
+<clr:18,199,226>Kaikki yhteydet hiljaa. Tarvitaan tiedustelua.
+<clr:18,199,226>[Hengästynyttä, paniikinomaista huutoa]
+<clr:18,199,226>Seeeis!
+<clr:18,199,226>Tarvitaan tukea, tukea.
+<clr:18,199,226>Hitto soikoon!
+<clr:18,199,226>Echo, tukea. Echo, tukea.
+<clr:18,199,226>Paikka! Peruutus! Echo 7.<cr>Peruutus. Echo 7.
+<clr:18,199,226>Kohde lähellä, Echo 1! Vaaditaan lisäjoukkoja!
+<clr:18,199,226>Liian lähellä. Korjataan sijainti.
+<clr:18,199,226>Onnistuu.
+<clr:18,199,226>Pysytään asemissa.
+<clr:18,199,226>Tikarit valmiina.
+<clr:18,199,226>Echo 1 asemissa.
+<clr:18,199,226>Pysytään tarkkana.
+<clr:18,199,226>Asemissa.
+<clr:18,199,226>Odotetaan kontaktia.
+<clr:18,199,226>Arvioidaan.
+<clr:18,199,226>Vierasyksikkö on lukittu.
+<clr:18,199,226>Echo 1. Varmistetaan raja.
+vihollinen on haavoittuvainen.
+<clr:18,199,226>Uusi hyökkäys vihollista kohti.
+<clr:18,199,226>Tarvitaan tikarit kohti kohde 1:stä.
+<clr:18,199,226>Tikarit tehokkaita. Koodi 0-9.
+<clr:18,199,226>Estäkää päävihollisen stimulointi.
+<clr:18,199,226>Sektori skannattu. Lupa jäädä tarkkailemaan.
+<clr:18,199,226>Kontakti katosi. Näyttää tyhjältä.
+<clr:18,199,226>Silmä tarkkana.
+<clr:18,199,226>Kaikki yksiköt raportoivat.<cr>Näkökentässä tyhjää.
+<clr:18,199,226>Sijainti skannattu.<cr>Perutaan tuki.
+<clr:18,199,226>Prosessoidaan näköyhteyttä
+<clr:18,199,226>Vihollinen yhä hiljaa.
+<clr:18,199,226>Valmistellaan tila: alpha.
+<clr:18,199,226>Echo-yksikkö matkalla.
+<clr:18,199,226>Etsitään.
+<clr:18,199,226>Selvä. Näköyhteys. Kaikki yksiköt.
+<clr:18,199,226>Hajaannutaan ja skannataan.
+<clr:18,199,226>Valmiina iskemään kohteeseen. Delta...
+<clr:18,199,226>Näköyhteys!
+<clr:18,199,226>Kohde löytyi.
+<clr:18,199,226>Yhteys viholliseen.
+<clr:18,199,226>Vauhtia, vauhtia.
+<clr:18,199,226>Echo 1.<cr>Kontakti sektorilla 9-5.
+<clr:18,199,226>Tähtäysviiva vahvistettu.
+<clr:18,199,226>Echo 1 kuuntelee.
+<clr:18,199,226>Sijainti vahvistettu.<cr> Vaaditaan vakautta.
+<clr:18,199,226>Näköyhteys aktiivinen. Vihollinen löytyi.
+<clr:18,199,226>Tikarien lataus.
+<clr:18,199,226>Echo, ammukset vähissä 3
+<clr:18,199,226>Pyydetään suojatulta latauksen ajaksi.
+<clr:18,199,226>Echo 1, tyhjä tikari.
+<clr:18,199,226>Uusi ase kehiin.
+<clr:18,199,226>Tulitukea.
+<clr:18,199,226>Tulitukea Echo 1:lle.
+<clr:18,199,226>Järjestäydytään uudelleen.
+<clr:18,199,226>Tiukka tilanne. Etsitään suojaa.
+<clr:18,199,226>Vierasyksiköllä on kranaatteja. Hajaantukaa.
+<clr:18,199,226>Hälytys, kenttätiimit. Kohteella 1 on kranaatteja.
+<clr:18,199,226>Vihollinen lataa asetta.Tikarietu.
+<clr:18,199,226>Alyx lataa asetta. Iskekää täysillä.
+<clr:18,199,226>Rullamiinoja näkyvissä. Tikarit tanassa.
+<clr:18,199,226>Näköyhteys! Rullamiinoja!
+<clr:18,199,226>Hälytys, kenttätiimit.<cr> Kohteella 1 on vahvistettua lyijyä.
+<clr:18,199,226>Näköyhteys. Laitonta lyijyä.
+<clr:18,199,226>Overwatch, sektori epävakaa!
+<clr:18,199,226>Tauti, tauti!
+<clr:18,199,226> ...on kuihtunut.
+<clr:18,199,226>Overwatch. Kenttäyksikkö kukistettu.<cr>Sektori ei ole hallinnassa.
+<clr:18,199,226>Overwatch. Sektori vallattu!<cr>Toistan. Sektori vallattu!
+<clr:18,199,226>Overwatch. Tarvitaan ilmapuolustus.
+<clr:18,199,226>Etu menetetty. Ongelmia tiedossa.
+<clr:18,199,226>Liittolainen on kukistettu.
+<clr:18,199,226> ...on hiljaa. Tarvitaan sijainen.
+<clr:18,199,226>Echo 1 ainoa aktiivinen.
+<clr:18,199,226>Overwatch! Echo 1 on viimeinen yksikkö. Tarvitaan tukea!
+<clr:18,199,226>Ugh.Tarvitaan välittömästi varjoa!
+<clr:18,199,226>Overwatch. Tauti leviää!
+<clr:18,199,226>Echo 1 raportoi: vihollisia liikaa.
+<clr:18,199,226>Overwatch! Kenttätiimi nollassa.
+<clr:18,199,226>Overwatch! Tarvitaan Echo 1:n nouto.
+<clr:18,199,226>Overwatch.<cr>Echo 1 on viimeinen yksikkö.
+<clr:18,199,226>Overwatch! Ordinaali kukistettu!
+<clr:18,199,226>Ordinaali hiljaa. Vaaditaan vahvistusta!
+<clr:18,199,226>Overwatch! Ordinaali hiipuu! Kuitatkaa.
+<clr:18,199,226>Overwatch. Ordinaali estynyt.<cr>Vastataan
+<clr:18,199,226>Ordinaali hiljaa.<cr>Täydellä teholla hyökkäykseen!
+<clr:18,199,226>Ordinaali nollaviivalla.
+<clr:18,199,226>Suojatulta.
+<clr:18,199,226>Suojatulta...
+<clr:18,199,226>Echo 1 vaatii käskyn noudattamista.
+<clr:18,199,226>Ristitulta viimeiseen sijaintiin.
+<clr:18,199,226>Jatketaan tikareilla viimeiseen sijaintiin.
+<clr:18,199,226>Vihollinen rusennettu.
+<clr:18,199,226>Kohteen virhe. Hyödynnetään.
+<clr:18,199,226>Hyödynnetään vihollisen virhe.
+<clr:18,199,226>Echo 1 kunnossa.
+<clr:18,199,226>Lyijyisku tehoton. Kohde kokematon.
+<clr:18,199,226>Ähh... Ei onnistu.
+<clr:18,199,226>Epäys.
+<clr:18,199,226>Lyijyisku vahvistettu. Ryhmitytään.
+<clr:18,199,226>Kontakti. Vihollinen...
+<clr:18,199,226>Echo 1 murskaa vihollisen.
+<clr:18,199,226>Echo 1 kutsuu. Vierasyksiköt kuultavissa.
+<clr:18,199,226>Kohde on vihollinen. Tikarit käyttöön.
+<clr:18,199,226>Vihollinen murskaa.
+<clr:18,199,226>Overwatch. Meillä on lyijyä.
+<clr:18,199,226>Uhh. Valmistellaan tila: delta.
+<clr:18,199,226>Kuitti.<cr>Echo 1 ääni päällä. Raportoidaan kaikki epäilyttävä.
+<clr:18,199,226>Kuultavissa sektorilla alpha-9-delta.<cr>Vihollisen paljastus kolmosella
+<clr:18,199,226>Overwatch.<cr>Echo 1 tietää sektoritunnuksen ja lähestyy infektoitunutta.<cr>Yhteiskunnan vihollinen 7-1-3.
+<clr:18,199,226>Vierasyksikkö on haavoittuvainen.<cr>Hyödynnetään tilanne.
+<clr:18,199,226>Echo 1.<cr>Kontakti sektorilla 9-5.<cr>Vihollinen iskussa. Tarkistakaa alue.
+<clr:18,199,226>Haetaan kohdetta 1 rakennuksesta 11.<cr>Päävihollinen hiljaa.<cr>Tiedustelu käynnissä.
+<clr:18,199,226>Valmistellaan tila: alpha.<cr>Vierasyksikkö lukittu.<cr>Tarkistetaan rajat.
+<clr:18,199,226>Jättipotti vahvistettu.<cr>Suunnataan uudelleen kohteeseen.<cr>Alyxin aika käy vähiin.
+<clr:18,199,226>Uuh
+Ei raportoitavaa. Loppu.
+<clr:18,199,226>1, 14, 3, 6, 11. Täsmää.<cr>Echo 4, kaikki kunnossa.<cr>Teidän vuoro. Loppu.
+<clr:18,199,226>Echo 1, ei liikettä.<cr>Ruutu 7-2.
+<clr:18,199,226>Linjoilla
+Vahvistus. Echo 1 raportoi: valaistus ja kuuluvuus huono. <cr>Odotetaan tilaisuutta.
+<clr:18,199,226>Lähetys selvä.<cr>Juoksuhiekka negatiivinen.<cr>Hetki
+Ei.<cr>Alue selvä. Loppu.
+<clr:18,199,226>Overwatch.<cr>Echo 4 pyytää vihollisen sijaintitietoja.<cr>Odotetaan lähetystä.
+<clr:18,199,226>Sektorin jäljitys 43 %.<cr>Vakaa...<cr>Odotetaan edelleen lähetystä. Loppu.
+<clr:18,199,226>Overwatch vahvistaa sektorin lukituksen.<cr>Yhteiskunnan vihollinen 1... syrjäytetty ja aktivoitu.<cr>Tähtäysviivat auki ja ääni päällä.
+Taudin tila: delta-7.<cr>Tiimi: auringonlasku. Läheinen kontakti.<cr>Kuitti.
+<clr:18,199,226>Negatiivinen, kuitti.<cr> Ei sektorin eristystä. Ei vahvistusta kohteen yksi tartuttajasta.<cr>Odotetaan sekundäärisiä parametrikoodeja.
+Stimulantti 32.<cr>Tikarit 78, kilvet 100. Bioetäisyys 73.<cr>Kuultu 3, nähty 15. Loppu.
+<clr:18,199,226>Selvä. Asetetaan suolistimia kärkeen viisi.<cr>Biootteja kehällä.<cr>Äh
+Odotetaan kontaktia. Loppu.
+<clr:18,199,226>Overwatch vahvistaa
+Koodaamattomia viromeja tulossa.<cr>Kaikki yksiköt: valmistautukaa kontaktiin.
+<clr:18,199,226>Kutsukoodi: delta-echo-7-9-alpha-2-whiskey-0
+<cr>Vahvistettu. Loppu.
+<cr>Negatiivinen
+Eikä muistoja. Päivitys valmis.<cr>Hyväksyntä pakollinen.
+<clr:18,199,226>Stabilointitiimi pitää asemansa.<cr>Näkyvyys 73, kuuluvuus
+15.<cr>Overwatch vahvistaa: TK matkalla kehälle.<cr>Tarkkana.
+<clr:18,199,226>Overwatch. Aktiivisia vihollisia.<cr>Ohjeistakaa valmistelut.
+<clr:18,199,226>Negatiivinen.<cr>Kohde edelleen aktiivinen.
+<clr:18,199,226>Pidentää konfliktin kestoa.
+<clr:18,199,226>Echo 1 hyökkää ja tulittaa.
+<clr:18,199,226>Vahvistetaan pääkohteen vakautta.
+<clr:18,199,226>Echo 1 lähettää kaikki lyijyt.
+<clr:18,199,226>Argh! Suojapanssari vuotaa lämpöä!<cr>Tarvitaan apua...
+<clr:18,199,226>Argh! Suojapanssari vuotaa lämpöä!<cr>Tarvitaan apua... [Sekavaa huutoa]
+<clr:18,199,226>Echo 1 pyytää välitöntä eristystä! [Paniikinomaista huutoa]
+<clr:18,199,226>Aah! Lämpöraja ylitetty! Aaargh.
+<clr:18,199,226>Ugh! Biodata kriittinen. Aikaa jäljellä 4
+2...
+<clr:18,199,26>Ugh! Biodata kriittinen. Aikaa jäljellä 4
+3...
+<clr:18,199,226>Argh! Suojapanssari vuotaa lämpöä! Aaargh.
+<clr:18,199,226>Argh! Suojapanssari vuotaa lämpöä! [Sekavaa huutoa]
+<clr:18,199,226><sfx:1>[Paniikinomaista huutoa]
+<clr:18,199,226>Huomio, viholliskohde.<cr>Voimme auttaa sinua. Olet turvassa.
+<clr:18,199,226>Voimme auttaa. Olet turvassa.
+<clr:18,199,226>Epäilty on ylittänyt laillisen aggression rajan. Hyödynnetään tilanne.
+<clr:18,199,226>Koodi 10-307. Jatketaan eskalointia.
+<clr:18,199,226>Epäilty ei noudata koodia 10-307. Jatketaan eskalointia.
+<clr:18,199,226>Aktivoidaan koodi 10-108. Peräännytään.
+<clr:18,199,226>Peräännytään. Koodi 10-40.
+<clr:18,199,226>Älkää ampuko.<cr>Ohjeiden noudattaminen vahvistettu.
+<clr:18,199,226>Liittolainen vahvistettu. Tulitus seis!
+<clr:18,199,226>Vahvistus. Alhaisen prioriteetin kohde.
+<clr:18,199,226> Käsky edetä.
+<clr:18,199,226> Käsky puskea eteenpäin.
+<clr:18,199,226>Kaikki yksiköt, puskekaa eteenpäin.
+<clr:18,199,226>Kaikki yksiköt, ryhmittykää kohteen ympärille.
+<clr:18,199,226>Stabilointitiimi tietää sektoritunnuksen ja lähestyy infektoitunutta.
+<clr:18,199,226>Täysillä.
+<clr:18,199,226>Terve, ykköskohde.
+<clr:18,199,226>Seis nyt.
+<clr:18,199,226>Pääkohde. Ordinaali hyökkää.
+<clr:18,199,226>...pääkohde vahvistettu.
+<clr:18,199,226>...avataan Alyxiin.
+<clr:18,199,226>Kaikki yksiköt. Avataan tuli Alyxiin.
+<clr:18,199,226>Kohde määritetään suojaksi.
+<clr:18,199,226>Kohdistakaa tikarit suojaan.
+<clr:18,199,226>Täysin asein suojaan.
+<clr:18,199,226>...täysin asein suojaan.
+<clr:18,199,226>...suojaustuki pois.
+<clr:18,199,226>Sokka irti.
+<clr:18,199,226>Laukaisu!
+<clr:18,199,226>Kranaatin laukaisu.
+<clr:18,199,226>Kaikki yksiköt. Kranaatit käyttöön.
+<clr:18,199,226>...hyödynnetään tilanne.
+<clr:18,199,226>Kaikki yksiköt. Hyödyntäkää.
+<clr:18,199,226>Hälytys, suojelujoukot.<cr>Muurahaiskorentoja sektorilla...
+<clr:18,199,226>Overwatch.<cr>Kenttätiimillä näköhavainto loisista.
+<clr:18,199,226>Näköyhteys. Vapaita loisia tulossa.
+<clr:18,199,226>Näköhavainto loisista.
+<clr:18,199,226>Overwatch.<cr>Kenttätiimillä näköhavainto nekrooteista.
+<clr:18,199,226>Aktiivisia nekrootteja sektorilla...
+<clr:18,199,226>Nekrootteja lähistöllä.
+<clr:18,199,226>Ordinaali tappaa. Merkki...
+<clr:18,199,226>Ordinaali hiljensi.
+<clr:18,199,226>Vihollinen tuhottu.
+<clr:18,199,226>Kohde steriili.
+<clr:18,199,226>Infektio taltutettu.
+<clr:18,199,226>Overwatch, sektori tyhjä.
+<clr:18,199,226>Raivattu...
+<clr:18,199,226>Tuhottu...
+<clr:18,199,226>Pääkohde kukistettu...
+<clr:18,199,226>Pääkohde eristetty...
+<clr:18,199,226>Nekrootti eristetty...
+<clr:18,199,226>Nekrootti tuhottu...
+<clr:18,199,226><sfx:1>[Ähisee kivusta]
+<clr:18,199,226>Kaikki yksiköt. Suojatkaa ordinaalia...
+<clr:18,199,226>Ordinaalin suojaus.
+<clr:18,199,226>Tarvitaan suojaa.
+<clr:18,199,226>Terä 2, stimulantin valmistelu.
+<clr:18,199,226>Suojataan.
+<clr:18,199,226>Puolustetaan.
+<clr:18,199,226>Siirrytään suojaan.
+<clr:18,199,226>Kaikki yksiköt, ryhmittyminen ja eristys.
+<clr:18,199,226>Kaikki yksiköt, perääntykää.
+<clr:18,199,226>Kaikki yksiköt. Kranaatti läheisyydessä.
+<clr:18,199,226>Paljastetaan tähtäysviivat.
+<clr:18,199,226>Tarkennus.
+<clr:18,199,226>Este raivattu.
+<clr:18,199,226>Raivataan näkyvyyttä.
+<clr:18,199,226>...suunnataan uudelleen.
+<clr:18,199,226>...tähtäysviivojen korjaus.
+<clr:18,199,226>Kenttätiimi, uudelleensuuntaus.
+<clr:18,199,226>Suojelujoukot, tähtäysviivojen korjaus.
+<clr:18,199,226>Laskekaa aseet!<cr>Laskekaa aseet.
+<clr:18,199,226>Tulitus seis.<cr>Tulitus seis.
+<clr:18,199,226>Kaikki yksiköt! Alyx on liittolainen.
+<clr:18,199,226>Tulitetaan vihollista.
+<clr:18,199,226>...tikarit käyttöön.
+<clr:18,199,226>...lupa pidättää.
+<clr:18,199,226>...avaa tuli.
+<clr:18,199,226>Kaikki yksiköt. Täysillä murskaamaan...
+<clr:18,199,226>Avaa tuli. Ykkösprioriteetti.
+<clr:18,199,226>Ordinaali, tikarit kohteeseen.
+<clr:18,199,226>Hiljennetään vastatuli.
+<clr:18,199,226>Jättipotti vahvistettu. Tikarit käyttöön.
+<clr:18,199,226>...kohde ykkösprioriteetti.
+<clr:18,199,226>...täysillä Vancen kimppuun.
+<clr:18,199,226>...kohteen 1 vaiennus.
+<clr:18,199,226>Raivataan kranaatilla.
+<clr:18,199,226>Poistetaan...
+<clr:18,199,226>...kranaatti viimeiseen sijaintiin.
+<clr:18,199,226>...vihollisen savustus viime sijainnissa.
+<clr:18,199,226>Raivataan pakoa varten.
+<clr:18,199,226>Liikehdintää...
+<clr:18,199,226>Kaikki yksiköt, ääni päälle.<cr>Raportoikaa näköhavainnot vierasyksiköistä.
+<clr:18,199,226>Ordinaalin henki hiipuu.
+<clr:18,199,226>Stimulanttipaketti toimii.
+<clr:18,199,226>Overwatch. Tarvitaan stimulantti.
+<clr:18,199,226>Ammukset vähissä. Aika käy vähiin.
+<clr:18,199,226>Ordinaali tarvitsee lääkintämiehen...
+<clr:18,199,226>Yhä elossa.
+<clr:18,199,226>...henki hiipuu.
+<clr:18,199,226><sfx><norepeat:5>[Vahingoniloista hykertelyä]
+<clr:18,199,226>Overwatch, pyydetään sijaintia.
+<clr:18,199,226>Ei näköyhteyttä vierasyksikköön.
+<clr:18,199,226>...raportoi tähtäysviivat.
+<clr:18,199,226>Mahdollinen pako. Raportoikaa, kaikki yksiköt.
+<clr:18,199,226>Tarvitaan kohteen sijainti.
+<clr:18,199,226>Vierasyksikkö hiljainen.
+<clr:18,199,226>Tarkista suoja.
+<clr:18,199,226>Tarvitaan viimeisin sektori.
+<clr:18,199,226> Raportoikaa kohteen tila.
+<clr:18,199,226>Ei näköyhteyttä pääviholliseen.
+<clr:18,199,226>Vance suojassa. Pyydetään sijaintia.
+<clr:18,199,226>Vierasyksikkö pakoilee.
+<clr:18,199,226>...päävihollinen suojassa. Raportoikaa näköyhteys.
+<clr:18,199,226>Liian lähellä. Korjataan.
+<clr:18,199,226>Liian lähellä! Korjataan.
+<clr:18,199,226>Tartunta etenee. Tartunta etenee.
+<clr:18,199,226>Perääntykää, perääntykää.
+<clr:18,199,226>Vahvista.
+<clr:18,199,226>Ordinaali. Varmistetaan rajat.
+<clr:18,199,226>...odottakaa kontaktia.
+<clr:18,199,226><sfx><norepeat:5>[Huohottaa]
+<clr:18,199,226>Päävihollinen on haavoittuvainen.
+<clr:18,199,226>Moukari toiminnassa. Koodi 0-9.
+<clr:18,199,226>Uusi hyökkäys vihollista kohti. Kaksi, yksi
+<clr:18,199,226>Overwatch, vaaditaan lisäaseita.
+<clr:18,199,226>Pääkohde mahdollisesti haavoittunut.
+<clr:18,199,226>Maassa.
+<clr:18,199,226>Kaikki yksiköt, estäkää päävihollisen stimulointi.
+<clr:18,199,226>...raportoikaa vihollisen hiipuminen.
+<clr:18,199,226>Kontakti hiljainen.
+<clr:18,199,226>Kontakti katosi. Mahdollinen dekontaminaatio.
+<clr:18,199,226>Ei vierasyksiköitä sektorilla. Lupa perääntyä.
+<clr:18,199,226>Suoja selvä.
+<clr:18,199,226>Kaikki yksiköt raportoivat. Näkökentässä tyhjää.
+<clr:18,199,226>...sektorin tilaraportti.
+<clr:18,199,226>...raportoikaa infektiotila.
+<clr:18,199,226>Skannataan näköyhteyttä
+<clr:18,199,226>...jatketaan skannausta ja raivausta.
+<clr:18,199,226>...etsintä jatkuu.
+<clr:18,199,226>Overwatch. Raportoidaan tila: alpha.
+<clr:18,199,226>Raivaus alkaa.
+<clr:18,199,226>Tarkkana. Raportoikaa tähtäysviivat.
+<clr:18,199,226>Näköyhteys. Kaikki yksiköt.
+<clr:18,199,226>Jatketaan vihollisen paljastusta.
+<clr:18,199,226>...asemiin ja skannaus päälle.
+<clr:18,199,226>...suljetaan areena.
+<clr:18,199,226>Kaikki yksiköt. Hajaannutaan ja skannataan.
+<clr:18,199,226>Kaikki yksiköt. Tutkikaa kaikki suojat.
+<clr:18,199,226>Hyökkäykseen! Kohde...
+<clr:18,199,226>Näköyhteys! Etäisyys 50, suunta 12!
+<clr:18,199,226>Vihollinen löydetty.
+<clr:18,199,226>Kohde löytyi...
+<clr:18,199,226>Yhteys viholliseen...
+<clr:18,199,226>Kontakti sektorilla...
+<clr:18,199,226>Tuore kontakti sektorilla...
+<clr:18,199,226>...täysin asein sektorille...
+<clr:18,199,226>...hyökätään uudelleen kohteeseen.
+<clr:18,199,226>...kuuntele vihollista...
+<clr:18,199,226>Ladataan.
+<clr:18,199,226>Ordinaali, ammukset vähissä. 4
+1.
+<clr:18,199,226>Lataus.
+<clr:18,199,226>Ei tikareita.
+<clr:18,199,226>Ammukset vähissä. Lataus.
+<clr:18,199,226>...ammusten tarkistus.
+<clr:18,199,226>Aloitetaan tulituki.
+<clr:18,199,226> ...etsi suoja ja vetäydy.
+<clr:18,199,226>...sektorilla kuumat paikat. Perääntykää.
+<clr:18,199,226>Näköyhteys useampaan tuntemattomaan. Vastaisku riskaabeli.
+<clr:18,199,226>Overwatch. Näköyhteys toissijaisiin vihollisiin.
+<clr:18,199,226>Tarkista siluetit. Mahdollisesti lisäkohteita.
+<clr:18,199,226>Useampi vierasyksikkö vahvistettu.
+<clr:18,199,226>Huomio. Vihollisella on kranaatteja.
+<clr:18,199,226>Kaikki yksiköt, huomio. Vihollisella on kranaatteja. Edetkää varoen.
+<clr:18,199,226>Kohde lataa asetta. Tikarietu.
+<clr:18,199,226>Vierasyksikkö haavoittuvainen.
+<clr:18,199,226>...estettävä vihollista lataamasta.
+<clr:18,199,226>Overwatch. Rullamiinoja näkyvissä. Tikarit valmiiksi.
+<clr:18,199,226>Näköyhteys. Rullamiinoja.
+<clr:18,199,226>Subakuutteja rullamiinoja. Iskekää täysillä.
+<clr:18,199,226>Vaihda kohdetta. Rullamiinat.
+<clr:18,199,226>Lyijyllä kohteen 1 kimppuun.
+<clr:18,199,226>Kohteella on laitonta lyijyä.
+<clr:18,199,226>Vahvistetut lyijyt tunnistettu.<cr>Vastaiskuun varoen.
+<clr:18,199,226>Overwatch. Tauti leviää.
+<clr:18,199,226>Overwatch, vaaditaan lisäyksiköitä.
+<clr:18,199,226>Kenttäyksikkö kukistettu.<cr>Sektori ei hallinnassa.
+<clr:18,199,226>Overwatch, sektorilla kuumat paikat.
+<clr:18,199,226>Overwatch, tarvitaan ilmapuolustus.
+<clr:18,199,226>Liittolainen kukistettu.
+<clr:18,199,226>...on hiljaa. Tarvitaan sijainen.
+<clr:18,199,226>Overwatch. Ordinaali yksin aktiivinen.
+<clr:18,199,226>Overwatch. Ordinaali viimeinen yksikkö.<cr>Vaaditaan vahvistusta.
+<clr:18,199,226>Overwatch, tarvitaan välittömästi suojaa.
+<clr:18,199,226>Kenttätiimi tuhottu.<cr>Tarvitaan liittolaisia.
+<clr:18,199,226>Overwatch, viimeinen yksikkö.<cr>Vihollisia liikaa.
+<clr:18,199,226>Overwatch.<cr>Vaaditaan ordinaalin nouto. Sektori...
+<clr:18,199,226>Overwatch.<cr>Ordinaali viimeinen yksikkö.
+<clr:18,199,226>Overwatch.<cr>Infektio leviää.
+<clr:18,199,226>Rusennetaan.
+<clr:18,199,226>Kaikki tikarit kohteeseen.
+<clr:18,199,226>...pitäkää kohde asemissa.
+<clr:18,199,226>...käynnistäkää suojatuli kohteeseen.
+<clr:18,199,226>Ei osunut.
+<clr:18,199,226>Taas ohi. Hyödynnetään tilanne.
+<clr:18,199,226>Käytetään etulyöntiasemaa viholliseen.
+<clr:18,199,226>Kohde ampui ohi...
+<clr:18,199,226>Kohteen virhe. Hyödynnetään tilanne...
+<clr:18,199,226>Ei voi edetä.
+<clr:18,199,226>Valmiina tulitukseen.
+<clr:18,199,226>Useampi vierasyksikkö kuultavissa.
+<clr:18,199,226>Jakakaa!
+<clr:18,199,226>Kohde vihollinen. Tikarit käyttöön.
+<clr:18,199,226>Kohde yrittää murskata. Vastatkaa.
+<clr:18,199,226>Kenttätiimillä kontakti sektorilla...
+<clr:18,199,226>Suojelujoukoilla kontakti sektorilla...
+<clr:118,199,226>14, 1, 6, 3, 11 ja
+sinun vuorosi. Loppu.
+<clr:18,199,226>Ei liikehdintää.
+<clr:18,199,226>Vahvistus. Huono kuuluvuus.<cr>Odotetaan tilaisuutta.
+<clr:18,199,226>Lähetys selvä.<cr>Juoksuhiekka negatiivinen.<cr>Alue selvä. Loppu.
+<clr:18,199,226>Overwatch.<cr>Pyydetään vihollisen sijaintitietoja.
+<clr:18,199,226>Sektorin jäljitys 43 %. Vakaa.<cr>Odotetaan lähetystä. Loppu.
+<clr:18,199,226>Vahvistettu.<cr>Taudin tila: delta-7.<cr>Tiimi: auringonlasku. Läheinen kontakti.
+<clr:18,199,226>Kuitti. Ei sektorin eristystä.<cr>Ei vahvistusta kohteen 1 tartuttajasta.<cr>Odotetaan sekundäärisiä parametrikoodeja.
+<clr:18,199,226>Kuultu 3. Nähty 15.
+<clr:18,199,226>Asetetaan suolistimia kärkeen viisi.<cr>Biootteja kehällä. Loppu.
+<clr:18,199,226>Kutsukoodi: delta-echo-7-9-alpha-2-whiskey-0. Vahvistettu. Loppu.
+<clr:18,199,226>Stabilointitiimi pitää asemansa.<cr>Näkyvyys 73, kuuluvuus 15.<cr>Overwatch vahvistaa: TK matkalla kehälle. Tarkkana.
+<clr:18,199,226>Negatiivinen. Kohde edelleen aktiivinen.
+<clr:18,199,226>Vahvistettu.<cr>Kalibroidaan uudelleen.
+<clr:18,199,226>Overwatch, koodi 10-4.<cr>Suolistin käytössä.
+<clr:18,199,226>Valmistellaan suolistin.
+<clr:18,199,226>Suolistin käyttöön.
+<clr:18,199,226>Suolistin on asemissa ja skannaus päällä.
+<clr:18,199,226>Suolistin käytössä.
+<clr:18,199,226>Aktivoidaan suolistin.<cr>Haravointi ja isku.
+<clr:18,199,226>Suolistin irti.<cr>Odotetaan tuloksia.
+<clr:18,199,226>Suolistin metsästää.<cr>Kaikki yksiköt, matalana.
+<clr:18,199,226>10-0.<cr>Suolistin metsästää.
+<clr:18,199,226>Suolistin käytössä.<cr>Hillintä ja kontrollointi.
+<clr:18,199,226>Suolistin käytössä.<cr>Tunnistetaan ja pidätetään.
+<clr:18,199,226>Epäilty ylitti laillisen aggression rajan.<cr>Hyödynnetään tilanne.
+<clr:18,199,226>Vihollisen hyökkäykset tehottomia.<cr>Jatketaan eristämistä.
+<clr:18,199,226>Kaikki yksiköt, tulitus seis!<cr>Kohde liittolainen.
+<clr:18,199,226>Liittolainen vahvistettu.<cr>Tulitus seis!
+<clr:18,199,226>Liikkeellä nyt.
+<clr:18,199,226>VAJ lähestyy.
+<clr:18,199,226>Painetta, painetta.
+<clr:18,199,226>VAJ-yksikkö tulossa.
+<clr:18,199,226>VAJ lähestyy kohdetta.
+<clr:18,199,226>VAJ etenee.
+<clr:18,199,226>VAJ puskee eteenpäin.
+<clr:18,199,226>VAJ, suojatulta.
+<clr:18,199,226>VAJ hyökkää.
+<clr:18,199,226>Hyökätään. Hyökätään.
+<clr:18,199,226>Murskataan kohde 1.
+<clr:18,199,226>Desinfioidaan pääkohde.
+<clr:18,199,226>Tikarit Vancea kohti.
+<clr:18,199,226>Anna periksi, Alyx.
+<clr:18,199,226>Hyökätään pääviholliseen.
+<clr:18,199,226>VAJ Alyxin kimppuun.
+<clr:18,199,226>Alyx tulituksessa.
+<clr:18,199,226>Hyökätään pääkohteeseen.
+<clr:18,199,226>Uusi kohde.<cr>Koodi: raivaus.
+<clr:18,199,226>Kohde on suojattu.<cr>Korjataan.
+<clr:18,199,226>VAJ. Poistetaan tuki.
+<clr:18,199,226>VAJ. Kohdistakaa tikarit suojaan.
+<clr:18,199,226>Kranaatti lähtee.
+<clr:18,199,226>VAJ:llä näköyhteys muurahaiskorentoon.
+<clr:18,199,226>Muurahaiskorento. VAJ, hyökkäykseen.
+<clr:18,199,226>Kontaktikutsu. Loisia.
+<clr:18,199,226>Vapaita loisia tulossa.
+<clr:18,199,226>VAJ. Näköhavainto loisista.
+<clr:18,199,226>Ughhhhh
+<clr:18,199,226>Eläviä loisia sektorilla...
+<clr:18,199,226>VAJ. Näköhavainto nekrooteista.
+<clr:18,199,226>Näköyhteys nekrootteihin.
+<clr:18,199,226>VAJ vahvistaa tapon.
+<clr:18,199,226>Puhdas.
+<clr:18,199,226>Se oli yksi.
+<clr:18,199,226>Huh.
+<clr:18,199,226>Loinen taltutettu.
+<clr:18,199,226>VAJ ordinaalille. Loinen maassa.
+<clr:18,199,226>Ordinaali. Kohde 1 hiljaa.
+<clr:18,199,226>Kohde kuollut. Antiseptin annostus.
+<clr:18,199,226>Ongelma eliminoitu.
+<clr:18,199,226>Kohde 1 kukistettu.
+<clr:18,199,226>Nekrootti on hiljaa.
+<clr:18,199,226><sfx:1>[Yksii ja vinkuu]
+<clr:18,199,226>Turvaa VAJ:n selusta.
+<clr:18,199,226>Tarvitaan suojaa VAJ:lle.
+<clr:18,199,226>Turvaa selusta...
+<clr:18,199,226>Perääntykää.
+<clr:18,199,226>Hälytys. Kranaatti.
+<clr:18,199,226>Varo.
+<clr:18,199,226>Kranaatti matkalla. Perääntykää.
+<clr:18,199,226>VA...
+<clr:18,199,226>Loppu...
+<clr:18,199,226>Muodostetaan näköyhteys...
+<clr:18,199,226>Korjataan tähtäysviivoja.
+<clr:18,199,226>Ryhmittäydytään.
+<clr:18,199,226>Laskekaa aseet!<cr>VAJ! Laskekaa aseet.
+<clr:18,199,226>Tulitetaan...
+<clr:18,199,226>VAJ pääasemissa.
+<clr:18,199,226>Koodi kolme. Raivauksen käynnistys.
+<clr:18,199,226>Tikarit kohdistettu viholliseen.
+<clr:18,199,226>Avataan tuli Alyxia kohti.
+<clr:18,199,226>Kohde Vance.
+<clr:18,199,226>Avataan tuli...
+<clr:18,199,226>Hän on täällä.
+<clr:18,199,226>Yhteiskunnan vihollinen 1 vahvistettu. Tulitetaan.
+<clr:18,199,226>Savustetaan sektorit.
+<clr:18,199,226>Kranaatti viimeisimpään sijaintiin.
+<clr:18,199,226>Altistus.
+<clr:18,199,226>VAJ ääni päälle.<cr>Raportoidaan vierasyksiköistä.
+<clr:18,199,226>Minuun osui.
+<clr:18,199,226>Otettu osumaa.<cr>Etsitään suojaa.
+<clr:18,199,226>Lyijyisku toimii.<cr>Stimulantti käyttöön.
+<clr:18,199,226>Sijaintitukea VAJ:lle...
+<clr:18,199,226>Näköyhteys vierasyksikköön menetetty.
+<clr:18,199,226>VAJ pyytää kohteen sijaintia.
+<clr:18,199,226>Ordinaali, koodi 7-1-3.<cr>Pyydetään edellistä sijaintia.
+<clr:18,199,226>Vaaditaan sijaintitukea. Sektori...
+<clr:18,199,226>Ei näköyhteyttä. Ordinaali, tukea.
+<clr:18,199,226>VAJ. Näköyhteys: negatiiviinen.
+<clr:18,199,226>Mahdollinen pako.<cr>Tarvitaan tähtäysviivat.
+<clr:18,199,226>Vierasyksikkö pakoilee.<cr>Ordinaali, tukea.
+<clr:18,199,226>Liian lähellä! Ladataan täysillä.
+<clr:18,199,226>VAJ hoitaa.
+<clr:18,199,226>Vahvistettu.
+<clr:18,199,226>VAJ asemissa.
+<clr:18,199,226>VAJ tarkkana.
+<clr:18,199,226>...vierasyksikkö lukittu.
+<clr:18,199,226>VAJ varmistaa rajat.
+<clr:18,199,226>Vihollinen haavoittuvainen.
+<clr:18,199,226>Uusi hyökkäys vihollista kohti. HETI.
+<clr:18,199,226>Järeämmin asein VAJ:n kimppuun.
+<clr:18,199,226>Kohde ehkä tähtäimessä.
+<clr:18,199,226>VAJ toimii.
+<clr:18,199,226>Estäkää vihollisen stimulointi.
+<clr:18,199,226>VAJ ordinaalille. Vihollinen hiljainen.
+<clr:18,199,226>Tila: alpha.
+<clr:18,199,226>VAJ liikkeellä.
+<clr:18,199,226>Silmä kovana, ääni päällä.
+<clr:18,199,226>Haravoidaan aluetta.
+<clr:18,199,226>Raportoidaan kaikki tähtäysviivat.
+<clr:18,199,226>Jatketaan. Vihollisen poisto.
+<clr:18,199,226>Vauhtia, vauhtia!
+<clr:18,199,226>VAJ. Kontakti sektorilla...
+<clr:18,199,226>VAJ kuuntelee.
+<clr:18,199,226>Näköyhteys olemassa...
+<clr:18,199,226>VAJ lataa aseet.
+<clr:18,199,226>VAJ, ammukset vähissä. 4
+<clr:18,199,226>Ei tikareita. Korjataan.
+<clr:18,199,226>VAJ, tyhjä tikari.
+<clr:18,199,226>Tulitukea VAJ:lle.
+<clr:18,199,226>VAJ. Järjestäydytään uudelleen.
+<clr:18,199,226>VAJ. Peräännytään.
+<clr:18,199,226>Tiukka tilanne.<cr>Etsitään suojaa.
+<clr:18,199,226>Tarkista siluetit.<cr>Mahdollisesti lisäkohteita.
+<clr:18,199,226>Vihollisella on kranaatteja.
+<clr:18,199,226>Vihollinen lataa asetta.<cr>Tikarietu.
+<clr:18,199,226>Etu meillä.
+<clr:18,199,226>VAJ. Vierasyksikkö haavoittuvainen.
+<clr:18,199,226>Näköyhteys. Rullamiinoja. Tikarit valmiiksi.
+<clr:18,199,226>Rullamiinoja. Vastatkaa!
+<clr:18,199,226>Overwatch. Kohteella 1 tehoaseita.
+<clr:18,199,226>Ordinaali, käytössä vahvistettu lyijy.
+<clr:18,199,226>VAJ. Kohteella on laitonta lyijyä.
+<clr:18,199,226>Sektori 9: tauti, tauti.
+<clr:18,199,226>Overwatch, sektori kontrolloimaton.
+<clr:18,199,226>Overwatch, sektori vallattu.
+<clr:18,199,226>Ongelmatilanne päällä.
+<clr:18,199,226>Overwatch. VAJ raportoi yksin.
+<clr:18,199,226>Overwatch. VAJ on viimeinen yksikkö.<cr>Vaaditaan välitöntä vahvistusta.
+<clr:18,199,226>Ugh. Tarvitaan suojaa.
+<clr:18,199,226>VAJ Overwatchille.<cr>Tila: tauti aktiivinen. Kuitatkaa.
+<clr:18,199,226>Overwatch, viimeinen yksikkö.<cr>Vihollisia liikaa!
+<clr:18,199,226>Overwatch.<cr>Vaaditaan VAJ:n nouto. Sektori...
+<clr:18,199,226>Overwatch.<cr>VAJ on viimeinen yksikkö.
+<clr:18,199,226>Overwatch. Ordinaali estynyt.<cr>Vastataan!
+<clr:18,199,226>Ordinaali hiljaa. Täydellä teholla hyökkäykseen!
+<clr:18,199,226>Ordinaali nollalinjalla.<cr>Ordinaali nollalinjalla!
+<clr:18,199,226>VAJ vaatii käskyn noudattamista.
+<clr:18,199,226>Vasta-ainejoukko aktiivinen...
+<clr:18,199,226>VAJ. Vihollinen ampuu ohi.
+<clr:18,199,226>Overwatch. Vierasyksikkö on pelkkää uhoa.
+<clr:18,199,226>VAJ kunnossa.
+<clr:18,199,226>Overwatch. Negatiivinen.
+<clr:18,199,226>[Epäys].
+<clr:18,199,226>Lyijyisku vahvistettu.<cr>Suojatuli aktiivinen.
+<clr:18,199,226>VAJ valmis murskaamaan.
+<clr:18,199,226>Kohde murskaa.
+<clr:18,199,226>Overwatch. Lyijy liikkuu.
+<clr:18,199,226>Suljetaan areena.<cr>Käynnistetään alueen tutkinta.
+<clr:18,199,226>Ei raportoitavaa.
+<clr:18,199,226>3, 11, 1, 14, 6
+Täsmää. Sinun vuorosi. Loppu.
+<clr:18,199,226>Ei liikehdintää. Ruutu: 7-2.
+Vahvistus.
+<clr:18,199,226>Alue vapaa. Loppu.
+<clr:18,199,226>Overwatch. Odotetaan lähetystä.
+<clr:18,199,226>Vakaa. Odotetaan lähetystä. Loppu.
+Taudin tila: delta-7.<cr>Tiimi: auringonlasku. Läheinen kontakti... Kuitti.
+<clr:18,199,226>Negatiivinen. Odotetaan sekundäärisiä parametrikoodeja.
+<cr>Kuultu 3. Nähty 15. Loppu.
+<clr:18,199,226>Selvä.<cr>Odotetaan yhteyttä. Loppu.
+<clr:18,199,226>Viromeja tulossa.<cr>Ohje kaikille yksiköille: valmiina kontaktiin.
+<clr:18,199,226>Kutsukoodi: kaksi-whiskey-nolla
+<cr>Vahvistettu.
+<clr:18,199,226>Kuitti. Hyväksytty.<cr>Päivitys valmis A miinus kolme sekuntia
+<clr:18,199,226>Päivitys tehty.<cr>Hyväksyminen pakollista.
+<clr:18,199,226>Stabilointitiimi pitää asemansa.<cr>Pysy valppaana.
+<clr:18,199,226>Negatiivinen.<cr>Kohde yhä aktiivinen.
+<clr:18,199,226>Epäilty rikkoo koodia 10-307.
+<clr:18,199,226>Koodi 10-307. Jatketaan eskalointia...
+<clr:18,199,226>Tulitus seis.<cr>Kohde liittolainen.
+<clr:18,199,226>Kuitti. Älkää ampuko.<cr>Noudatetaan ohjeita.
+<clr:18,199,226>Älkää ampuko.<cr>Noudatetaan ohjeita.
+<clr:18,199,226>Liittolainen vahvistettu.Tulitus seis!
+<sfx><norepeat:2><clr:255,0,0>[Ammuksia ei ole ladattu]
+<sfx:1><norepeat:3><clr:255,0,0>[Viimeinen ammus pesässä]
+<sfx><norepeat:3><clr:255,0,0>[Viimeinen laukaus ammuttu]
+<sfx><norepeat:5><clr:255,176,0>[Pistoolin ammukset loppuivat]
+<sfx><norepeat:5>[Haulikko täynnä]
+<sfx><norepeat:5><clr:255,176,0>[Haulikon ammukset loppuivat]
+<sfx><norepeat:3>[Luotirypäs valmis]
+<sfx><norepeat:3><clr:255,0,0>[Viimeinen laukaus]
+<sfx><norepeat:5><clr:255,176,0>[Konepistoolin ammukset loppuivat]
+<sfx><norepeat:5>[Teleporttaus estetty]
+<sfx>[Hakkerointi alkaa]
+<sfx>[Hakkerointi epäonnistui]
+<sfx>[Hakkerointi onnistui]
+<sfx>[Kranaatin räjähdys]
+<sfx><clr:255,0,0>[Kranaatti aktivoitu]
+<sfx>[Xen-kranaatin räjähdys]
+<sfx>[Parannus valmis]
+<sfx><norepeat:1><clr:255,0,0>[Terveysasema tyhjä]
+<sfx>[Parannus alkaa]
+<sfx>[Terveyskynä piikitetty]
+<sfx>[Onnistumisesta kertova äänimerkki]
+<sfx>[Laser aktivoitu]
+<sfx><norepeat:1>[Tankki aktivoitu]
+<sfx>[Combine-akkusäiliö auki]
+<sfx>[Combine-akku hyväksytty]
+<sfx>[Ovi aktivoitu]
+<sfx>[Oven lukko avattu]
+<sfx>[Päivitetään]
+<sfx>[Päivitys suoritettu]
+<sfx><norepeat:8>[Virtapiiri valmis]
+<sfx:1><norepeat:1>[Hartsi laitettu reppuun]
+<sfx:1><norepeat:1>[Ammuksia otettu repusta]
+<sfx:1>[Hartsi otettu repusta]
+<sfx:1><norepeat:1>[Ammukset laitettu reppuun]
+<sfx><norepeat:8>[Taskulamppu kiinnitetty]
+<sfx><norepeat:20>[Alhaisen terveyden varoitus]
+<sfx>[Junan ovi]
+<sfx>[Ovi lukittu]
+<sfx><norepeat:4>[Ovi narahtaa kovaäänisesti]
+<sfx><norepeat:4>[Hissi kilahtaa]
+<sfx><norepeat:4>[Hissi alkaa liikkua]
+<sfx><norepeat:4>[Hissi saapui]
+<sfx><norepeat:4>[Hissin nappula]
+<sfx><norepeat:6>[Laatikon sarana]
+<sfx>[Lukko rikkoutuu]
+<sfx:1>[Räjähdys]
+<sfx><norepeat:2>[Lasiin koputus]
+<sfx>[Ovi pamahtaa kiinni]
+<sfx>[Moottori käynnistyy]
+<sfx>[Sähköisku]
+<sfx>[Salaovi avautuu]
+<sfx>[Tikkaat kaatuvat]
+<sfx>[Drone räjähtää]
+<sfx>[Ovi narahtaa auki]
+<sfx>[Murinaa]
+<sfx>[Karmea huuto]
+<sfx>[Jyskyttää aitaa]
+<sfx>[Lasi rikkoutuu]
+<sfx>[Ovi avautuu]
+<sfx>[Ovi sulkeutuu]
+<sfx>[Paneeliovi avautuu]
+<sfx>[Paneeli sulkeutuu]
+<sfx>[Hälytyskello soi]
+<sfx>[Oven lukko avautuu]
+<sfx>[Rullaovi avautuu]
+<sfx>[Rullaovi sulkeutuu]
+<sfx>[Vortigauntin energiatulitus]
+<sfx>[Sähkökatko]
+<sfx>[Hissi rysähtää]
+<sfx>[Hissi kilahtaa]
+<sfx>[Hissi putoaa]
+<sfx>[Hissi menee epäkuntoon]
+<sfx>[Hissin virta poikki]
+<sfx>[Hissin virta menee päälle]
+<sfx>[Hissi käynnistyy]
+<sfx>[Valot syttyvät]
+<sfx>[Valot sammuvat]
+<sfx><norepeat_global:5>[Liikehdintää ilmastointikanavissa]
+<sfx>[Ovi pamahtaa]
+<sfx>[Sähköräjähdys]
+<sfx>[Liikehdintää katolla]
+<sfx>[Katto romahtaa]
+<sfx>[Päärapu kipittää]
+<sfx>[Pääravun ääniä]
+<sfx>[Tikkaita potkaistaan]
+<sfx>[Sähköt takaisin päälle]
+<sfx>[Energian ylikuormitus]
+<sfx>[Lasi räjähtää]
+<sfx>[Neuvonantajan tuskanhuuto]
+<sfx>[Kello käy taaksepäin]
+<sfx>[Aika pysähtyy]
+<clr:255,176,0>Varoitus: elintoiminnot kriittiset.<cr>Hanki lääkintäapua.
+<sfx>[Askeleita ilmastointikanavassa]
+<sfx>[Ikkunaosuma]
+<sfx>[Juna pysähtyy]
+<sfx>[Vessan huuhtelu]
+<sfx><norepeat:5><clr:255,0,0>[Muurahaiskorennon kuolema]
+<sfx><norepeat:5><clr:255,0,0>[Riippujan kuolema]
+<sfx:1><norepeat:10>[Päärapu-hälytys]
+<sfx><norepeat:10>[Pääravun hyökkäys]
+<sfx><norepeat:10>[Pääravun purema]
+<sfx:1><norepeat:10>[Pääravun kuola]
+<sfx:1><norepeat:10>[Päärapu palaa]
+<sfx:1><norepeat:10>[Päärapu kaivaa]
+<sfx:1><norepeat:10>[Päärapu ilmestyy]
+<sfx><norepeat:10><clr:255,0,0>[Pääravun kuolema]
+<sfx:1><norepeat:10>[Päärapu tuskissaan]
+<sfx>[Muukalaisen huuto]
+<sfx><norepeat:4>[Elvyttäjän sydän sisään]
+<sfx><norepeat:4>[Elvyttäjän sydän pois]
+<sfx><norepeat:5><clr:255,0,0>[Elvyttäjän kuolema]
+<sfx><norepeat:8>[Pallokainen pullistuu]
+<sfx>[Pallokainen räjähtää]
+<sfx:1><norepeat_global:5>[Xen-simpukat naksuvat]
+<sfx:1><norepeat:4>[Xen-itiöiden pilvi]
+<sfx><norepeat:4>[Jeff hyökkää]
+<sfx><norepeat:6>[Jeff hajottaa oven]
+<sfx><norepeat:4>[Karmea huuto]
+<sfx><norepeat:4>[Jeff raivoaa]
+<sfx><norepeat:5>[Jeff tömistelee]
+<sfx><norepeat:6>[Jeff hakkaa ovea]
+<sfx><norepeat:6>[Ovi auki]
+<sfx><norepeat:12>[Jeff kävelee]
+<sfx><norepeat:20>[Hissimusiikkia]
+<sfx><norepeat:20>[Kovaäänisen ääntä]
+<sfx><norepeat:5>[Jeff huutaa]
+<sfx><clr:255,176,0>[Nollaviiva]
+<sfx><clr:255,176,0>Terveys kriittinen
+<sfx><clr:255,176,0>Hanki lääkintäapua
+<sfx><norepeat:5>[Akku sisään]
+<sfx><norepeat:5>[Akku pois]
+<sfx><norepeat_global:5><clr:255,176,0>[Luodit kimpoilevat panssarista]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Sorkkaraudan pehmeä isku!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Sorkkaraudan kova isku!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>
+[Sorkkaraudan suhahdus!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tyhjä pesä]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Pistoolin laukaus]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[.357:n laukaus]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Konepistoolin kranaatin laukaisu]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Konepistoolin ensisijainen tulitus]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Ladataan]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Haulikon tuplalaukaus!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Haulikon yksittäinen laukaus!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Ensisijainen tulitus]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tyhjä]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Toissijainen tulitus]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Ladattu toissijainen tulitus]
+<sfx><norepeat:5>[Pistoolin laukaus]
+<sfx><norepeat:4><clr:255,176,0>[Ammuksen nosto]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[RÄJÄHDYS]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Kranaatin räjähdys]
+<sfx:1><norepeat_global:8><clr:255,176,0>[Kimpoilevia luoteja]
+<sfx><norepeat:4><clr:255,176,0>[Striderin lakauksen vaikutus]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[Kimpoilua]
+<sfx><clr:255,170,0>[Alhaisen terveyden varoitus!]
+<sfx><clr:255,170,0>[Vähäisen ammusvarannon varoitus!]
+<sfx><clr:255,170,0>[Nopea juoksu kulutettu]
+<sfx><norepeat:5><clr:255,170,0>[Nopea juoksu päällä]
+<sfx><clr:255,170,0>[Ei voi käyttää]
+<sfx><clr:255,0,0>[Kuolema]
+<sfx><clr:255,170,0>[Akun nosto]
+<sfx><clr:255,170,0>[Lääkintäpakkauksen nosto]
+<sfx><clr:255,170,0>[Terveysampullin nosto]
+<sfx><clr:255,170,0>[Epäys]
+<sfx><clr:255,170,0>[Aloita parantaminen]
+<sfx><norepeat:5>[Painikkeen painallus]
+<sfx><norepeat:10>[Muurahaiskorennon hyökkäys]
+<sfx><norepeat:10>[Muurahaiskorento kaivautuu]
+<sfx><norepeat:10>[Muurahaiskorento tulee esiin]
+<sfx><norepeat:10>[Muurahaiskorento tuskissaan]
+<sfx><norepeat:10>[Muurahaiskorennon rusennus]
+<sfx><norepeat:3>[Riippujan purema]
+<sfx><norepeat:3><clr:255,0,0>[Riippujan kuolema]
+<sfx><norepeat:3>[Riippujan veto]
+<sfx><norepeat:3>[Riippujan murahdus]
+<sfx><norepeat:3>[Riippujan huuto]
+<sfx><norepeat:5>[Riippujan ruuansulatus]
+<sfx><norepeat:10>[Pääravun uhkaus]
+<sfx><norepeat:10>[Päärapu-hälytys]
+<sfx><norepeat:10>[Räjähdys!]
+<sfx><norepeat:10>[Kameran vetäytyminen]
+<sfx><norepeat:10>[Kameran käyttöönotto]
+<sfx><norepeat:10>[Kameran hälytys]
+<sfx><norepeat:10>[Kameran naksahdus]
+<sfx>[Kamera tuhottu]
+<sfx><norepeat:10>[Varis varoittaa]
+<sfx><norepeat:10>[Varis tuskissaan]
+<sfx><norepeat:10><clr:255,0,0>[Variksen kuolema]
+<sfx><norepeat:10>[Variksen rääkäisy!]
+<sfx><norepeat:5><clr:255,0,0>[Manhakin kuolema]
+<sfx><norepeat:20>[Manhakin moottori]
+<sfx><norepeat:10>[Loiskahdus!]
+<sfx><norepeat:10>[Manhakin ilmestyminen]
+<sfx><norepeat:5>[Manhakki ilmestyy]
+<sfx><norepeat:30>[Combine-radio: viestintää]
+<sfx><norepeat:15>[Combine-radio: hälytys!]
+<sfx><norepeat:15>[Combine-radio: kranaattihälytys!]
+<sfx><norepeat:15>[Combine-radio: vahvistuksia kutsutaan]
+<sfx><norepeat:25>[Combine-radio: taktinen]
+<sfx><norepeat:10>[Skannerin hälytys]
+<sfx><norepeat:5><clr:255,0,0>[Skannerin tuhoutuminen]
+<sfx><norepeat:5>[Skannerin naksahdus]
+<sfx><norepeat:10>[Skannerin pommitus]
+<sfx><norepeat:10>[Strider-hälytys]
+<sfx>[Strider tuskissaan]
+<sfx><norepeat:5><clr:255,0,0>[Striderin kuolema]
+<sfx>[Striderin hyökkäys]
+<sfx><norepeat:15>[Striderin minitykki]
+<sfx><norepeat:10>[Striderin askeleita]
+<sfx>[Törmäys!]
+<sfx>[Vortigauntin sädehyökkäys]
+<sfx><norepeat:10>[Zombi-hälytys]
+<sfx><norepeat:10><clr:255,0,0>[Zombin kuolema]
+<sfx><norepeat_global:20>[Zombi vaikertaa]
+<sfx><norepeat:10>[Zombi tuskissaan]
+<sfx>[Lukittu]
+<sfx><norepeat:1>[Ovi sulkeutuu]
+<sfx><norepeat:1>[Portti sulkeutuu]
+<sfx><norepeat:1>[Metallin kalahdus]
+<sfx><norepeat:1>[Lokero sulkeutuu]
+<sfx><norepeat:1>[Ovensalpa]
+<sfx><norepeat:1>[Lukittu]
+<sfx>[Painikkeen painallus]
+<sfx>[Vipu]
+<sfx>[Painike lukittu]
+<sfx>[Combinen painikkeen ääni]
+<sfx><norepeat:3>[Veden loisketta]
+<sfx><norepeat:1>[Särkyvä lasi]
+<sfx><norepeat:1>[Astiat rikkoutuu]
+<sfx><norepeat:1>[Särkyvät astiat]
+<sfx><norepeat:1>[Särkyvä näyttö]
+<sfx>[Melonin läiskähdys]
+<sfx><norepeat:1>[Kova isku]
+<sfx><norepeat:3>[Avainkortti hyväksytty]
+<sfx><norepeat:3>[Avainkortti hylätty]
+<sfx><norepeat:1>[Puu halkeaa]
+<sfx><norepeat:1>[Metalli tuhoutuu]
+<sfx><norepeat:1>[Lasi särkyy]
+<sfx><norepeat:1>[Betoni hajoaa]
+<sfx><norepeat:1>[Laasti rikkoutuu]
+<sfx><norepeat:1>[Pahvi rikkoutuu]
+<sfx><norepeat:1>[Muovi rikkoutuu]
+<sfx><norepeat:1>[Puu pingottuu]
+<sfx><norepeat:3>[Puu pirstoutuu]
+<sfx><norepeat:1>[Metalli rikkoutuu]
+<sfx><norepeat:1>[Metalli pingottuu]

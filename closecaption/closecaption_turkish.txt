@@ -1,0 +1,6313 @@
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Oradaki durumlar nas
+l?<I>
+Alyx: <clr:255,190,255>Her
+ey yolunda baba. Yerel polis hareketleri normal.<cr>
+ttifak devriyeleri de ayn
+ekilde.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Depoda durumlar nas
+Eli: <clr:255,208,172><I>Sevk edilen 4000
+ttifak mini reaktöründen birini ele geçirdik.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>Fark bile etmeyeceklerdir.<cr>Bak, burada.<I>
+Russell: <clr:255,255,138><I>S
+rf bu da de
+il...<cr>Birileri
+ttifak yap
+na s
+zmay
+ba
+ard
+.<I>
+Alyx: <clr:255,190,255>Çok açgözlülük etmeyin derim.<cr>Sonuçta zaman
+z s
+Russell: <clr:255,255,138><I>Sadece 1 dakika laz
+m, sonra i
+im bitecek.<cr>Kesin.<I>
+Alyx: <clr:255,190,255>Ah! Bir de
+ttfak'
+n Karantina Bölgesi'nden malzeme ta
+gördüm.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Oras
+llard
+r terk edilmi
+vaziyetteydi.
+Eli: <clr:255,208,172><I>Öyle mi? Tuhafm
+sahiden.<cr>Neyse, geri döndü
+ümüzde inceleriz.<I>
+Russell: <clr:255,255,138><I>Bu da
+Nesi
+?<I>
+Russell: <clr:255,255,138><I>BU ne?<I>
+Eli: <clr:255,208,172><I>Güvenli yerde bulu
+uruz can
+m.<cr>Hemen gelece
+iz.<I>
+Russell: <clr:255,255,138><I>
+ey gibi görünüyor...<I>
+Alyx: <clr:255,190,255>Ne oluyor
+Alyx: <clr:255,190,255>Harika.
+t... Alyx! Alyx!
+Her
+ey yolunda m
+<clr:255,190,255>Evet, reaktörü ele geçirmi
+ler.
+<clr:255,190,255>Babamla bulu
+mak için güvenli yere dönüyorum.
+<clr:255,190,255>Git sen! Sonra konu
+uruz.
+Kendine dikkat et.
+<clr:18,199,226>
+lerleyin.
+<clr:18,199,226>Yürüyün!
+<clr:18,199,226>Sen.<sb>
+lerle.
+<clr:18,199,226>Devam et.
+<clr:18,199,226>Soka
+bo
+alt. HEMEN.
+<clr:18,199,226>Evlerinize geri dönün.<sb>HEMEN.
+<clr:18,199,226>Yürü! Yürü!
+<clr:18,199,226>Devam edin.
+<clr:18,199,226>Sen.
+<clr:18,199,226>HEMEN soka
+terk et.
+<clr:18,199,226>HEMEN evlerinize geri dönün.
+<clr:18,199,226>Geçebilirsin.<sb>Devam et.
+<clr:18,199,226>Geçebilirsin. Devam et.
+Alyx! Alyx!
+Alyx, buraday
+<clr:255,190,255>Ne oldu?
+Bu s
+radan bir taramaya benzemiyor. Her
+eyin yolunda oldu
+undan emin misin?
+<clr:255,190,255>Eminim.
+Bir
+eyler yerel polisi teyakkuza geçirmi
+<clr:255,190,255>Dikkat çekme ve ak
+davran.
+<clr:18,199,226>Geç, geç.
+<clr:18,199,226>Minibüse geçin.
+<clr:18,199,226>Onlar
+yakalad
+<clr:18,199,226>Arkanda!
+<clr:18,199,226><force>Eller yukar
+! K
+rdama!
+<clr:18,199,226>Dur! DUR!
+<clr:255,190,255>Hey, hey, hey, durun durun!<cr>Ben... Burada ya
+yorum!
+<clr:18,199,226>Muhtemel bölücü.<sb>Tara.
+<clr:255,190,255>Durun, durun! Ate
+etmeyin!
+<clr:18,199,226>Dur! GER
+DUR!
+<clr:18,199,226>Elini dü
+meden çek!
+<clr:18,199,226>Dü
+meye dokunma!
+<clr:18,199,226><force>Eller havaya!
+<clr:255,208,172><sfx:1>[Ac
+çinde
+nler]
+<clr:255,208,172>Biz bir
+ey çalmad
+<clr:255,208,172>Kimse yoktu! Hiçbir
+ey görmedim!
+<clr:255,208,172>Ah!
+<clr:255,190,255>BABA!
+<clr:255,190,255>Hey! Bir dakika, hay
+r hay
+r, h...
+<clr:255,190,255>Of. Nereye
+<sb>Beni nereye götürüyorsunuz?<sb>Babam nerede?
+<clr:255,190,255>Kimse yok mu?!
+<clr:255,190,255>Hay böyle i
+e! Babam nerede?!
+<clr:255,190,255>Lanet pencereyi aç
+<clr:18,199,226>Konu
+ma.
+<clr:18,199,226>Ona arkada k
+rdamamas
+söyle.
+<clr:18,199,226>K
+rdama.
+<clr:18,199,226>O ne?
+<clr:18,199,226>S
+PER ALIN!
+<clr:18,199,226>Ne?
+<clr:18,199,226>BOMBA!
+<clr:18,199,226>Bul hemen!
+<clr:18,199,226>Göremiyorum!
+<clr:18,199,226>Koltu
+un alt
+nda!
+<clr:18,199,226>Bak
+yorum, bak
+<clr:18,199,226>Bul
+unu, hemen bul
+unu!
+<clr:18,199,226>Buldum!
+<clr:18,199,226>At, d
+at...
+<clr:18,199,226>Hemen at
+yor...
+R. KAZA. GEÇ
+KULAKLI
+I. ALIN.
+I. TAKIN.
+<HEADSET><clr:255,255,138>Kulakl
+tak!
+<HEADSET><clr:255,255,138>Alyx! Kulakl
+... Alyx! Kulakl
+<HEADSET><clr:255,255,138>Alyx! Hayattaysan kulakl
+tak.
+<HEADSET><clr:255,255,138>Seni görebiliyorum! Kulakl
+takmamak için hiçbir nedenin yok! Alyx!
+<HEADSET><clr:255,255,138>Numara yapm
+yorum. Russell ben. Baban
+n i
+arkada
+! Direni
+'ten!
+<HEADSET><clr:255,255,138>Bu bir numara de
+il Alyx!
+<HEADSET><clr:255,255,138>Alyx! Orada m
+n?<cr>Harekete geçmelisin.
+<clr:255,190,255>Russell?
+<clr:255,190,255>Bir kaza geçirdim.
+<HEADSET><clr:255,255,138>Biliyorum! Kazaya ben neden oldum!<sb>Yani asl
+nda kaza say
+lmaz.<cr>Harekete geçmelisin.
+<clr:255,190,255>Bir dakika... Babam nerede?
+<HEADSET><clr:255,255,138>Gayet iyi. Dronu takip et.
+<HEADSET><clr:255,255,138>Harekete geçmelisin!
+<HEADSET><clr:255,255,138>Harekete geç Alyx.
+<HEADSET><clr:255,255,138>Alyx, oradan uzakla
+mal
+n. Hemen.
+<clr:255,190,255>Tamamd
+<clr:255,190,255>Peki... Babam <I>iyi<I> yani, de
+il mi?
+<HEADSET><clr:255,255,138>
+ey, hay
+r.<cr>Dürüst olmak gerekirse, ba
+büyük belada.
+<clr:255,190,255>Ama...
+<HEADSET><clr:255,255,138>Baban hâlâ tutuklu vaziyette.<cr>Farkl
+bir araçtayd
+<clr:255,190,255>
+Sen de beni kurtard
+n yani?
+ey, evet.<sb>Hangi araçta kimin oldu
+unu bilmiyordum.<sb>Yani... Evet.<cr>Sonuç olarak SEN
+kurtarm
+oldum.
+<clr:255,190,255>Babam
+nereye götürdüklerini biliyor muyuz?
+<HEADSET><clr:255,255,138>Gözalt
+merkezine.<sb>Onun Eli Vance oldu
+unu fark ettiklerindeyse... Nova Prospekt'e.
+<HEADSET><clr:255,255,138>Ama kurtarma plan
+üzerinde çal
+maya ba
+lad
+m bile.
+<HEADSET><clr:255,255,138>Laboratuvar
+ma yak
+n.<sb>Dronu takip et!<cr>Bir çözüm buluruz.
+<HEADSET><clr:255,255,138>Alyx, her
+ey bir saniyeli
+ine kesildi!<sb>Video ak
+kaybettim.<sb>Dronumu görebiliyor musun?<sb>
+yi mi?
+<clr:255,190,255>Ee, evet.
+yi.<cr>Biraz sonra gelmi
+olurum.
+<clr:255,190,255>Russell
+<cr>Orada ne <I>buldunuz<I>?
+<HEADSET><clr:255,255,138>Acayip olan da bu, bilmiyorum! Bir binan
+n... bulan
+k foto
+raflar
+vard
+sadece.
+<clr:255,190,255>Hisar m
+<HEADSET><clr:255,255,138>Yok, de
+il.<sb>Bu bina her neyse,
+ttifak bunu görenleri ve görenleri tan
+yanlar
+öldürmeye kararl
+.<sb>Yani bizi ve baban
+<clr:255,190,255>Russell?<cr>Bekle, neredeyse geldim.
+<clr:255,255,138>Alyx, harika.<cr>Tamam, haydi... bir dakika.<cr>Dronum iyi mi?
+<clr:255,190,255>Hay
+r. Patlad
+.<cr>Ben iyiyim bu arada.
+<clr:255,255,138>Peki. Güzel
+<cr>Önemli olan oydu
+<clr:255,190,255>Russell. Babam
+lar.
+<clr:255,255,138>Biliyorum. Bu
+kötü bir durum.<sb>Bildiklerini ö
+renecekler ve ard
+ndan
+<cr>Onu öldürecekler.
+<clr:255,190,255>Aman tanr
+<clr:255,255,138>Fakat!<sb>
+yi haber
+u ki; onlarda olmayan bir
+eye sahibiz.
+<clr:255,190,255>Neymi
+bu?
+<clr:255,255,138>Onu kurtarma plan
+<clr:255,190,255>Harika. Anlat bakal
+<clr:255,255,138>
+imdi.<sb>Yak
+nda baban
+n konu
+mayaca
+anlayacaklar.<sb>Anlad
+klar
+zaman, beynini ç
+karacaklar.
+<clr:255,190,255>Russell.
+htimal tabii.<sb>Gerçekle
+meyebilir de.<cr>Ya da sadece kafatas
+na...
+<clr:255,190,255>Lütfen dur.
+<clr:255,255,138>Ah, evet. Baban tabii.<sb>Do
+ru.<cr>O zaman ne YAPACAKLARINI söyleyeyim; onu BURADAN trenle alacaklar
+Eli bu
+Nova Prospekt'e götürecekler.
+<clr:255,190,255>Peki o trene bindi
+inde
+<cr>
+ans
+z kalm
+yor, de
+<clr:255,255,138>Pek say
+lmaz.<cr>Bizi temsil eden bir
+ey al eline.
+<clr:255,255,138>Her
+ey olur.
+<clr:255,255,138>Evet, rastgele bir
+ey al.
+<clr:255,255,138>Güzel.
+imdi onu haritaya koy.
+<clr:255,255,138>Neyse, ben hâllederim.
+<clr:255,255,138>Tamam. Bu sensin.
+<clr:255,190,255>Sanki "biz" demi
+tin.
+<clr:255,255,138>Plan
+e yaramas
+için bizden B
+N, yani benim, burada kalmas
+gerekiyor.
+<clr:255,190,255>Peki.
+<clr:255,255,138>Hemen d
+da Karantina Bölgesi'nden geçen ve
+ehir 17'ye giden ikinci bir tren daha var.
+<clr:255,190,255>Tamam.
+<clr:255,255,138>Tren hatlar
+Fairview Kav
+'nda kesi
+iyor.<sb>Sen o trene binip, baban
+n treninden önce oraya varacaks
+n ve kontrolleri ele geçireceksin.<sb>Ben de sistemi kontrol edece
+im.
+<clr:255,255,138>Tren duracak.<sb>
+ttifak sorununu hâlledeceksin.<sb>Sonra baban
+kurtaraca
+yi fikir.<cr>Binece
+im tren nerede?
+<clr:255,255,138>Arka taraftaki aç
+n ilerisinde.<sb>Aktif kullan
+mda de
+il ama kontrollerini ele geçirebilirim.
+<clr:255,255,138>Unutmadan, gitmeden önce kendine bir çift "Russell" al.
+<clr:255,190,255>"Russell" m
+<clr:255,255,138>Eldivenler, Alyx.<sb>Yer çekimi eldivenleri i
+te.<sb>Birkaç set var etrafta.<sb>Kulübenin yan
+nda ölçümlemelerini yapabilirsin.
+<clr:255,255,138>Bunu ba
+arabiliriz Alyx.<sb>Anlad
+n, de
+il mi?<sb>Ba
+arabiliriz dedi
+imi yani?<sb>Çünkü ba
+araca
+<clr:255,190,255>Aynen öyle.
+<HEADSET><clr:255,255,138>Daima yan
+nda olaca
+<HEADSET><clr:255,255,138>Olay
+biliyorsun.<sb>A
+da bir sürü
+r z
+r göreceksin.<sb>Bunlardan birine elin aç
+ekilde hedef al.
+<HEADSET><clr:255,255,138>Elini bir
+eye do
+ru do
+rult.
+<HEADSET><clr:255,255,138>Bu eldivenler kendi kendilerini ölçümlemeyecek.<sb>Ama asl
+nda ölçümleseler iyi olur.<sb>Eldivenlerde düzeltmedi
+im
+eylerden biri.
+<clr:255,190,255>Haz
+imdi elin kapa ve kendine do
+ru h
+ca hareket ettir.
+<HEADSET><clr:255,255,138>Bile
+ini h
+ca hareket ettiriyor musun? Buradan seçemiyorum.
+<HEADSET><clr:255,255,138>Elini kapa ve h
+<HEADSET><clr:255,255,138>Elini kapa
+Ve h
+<clr:255,190,255>Hm. Olmad
+<HEADSET><clr:255,255,138>Tamam, referans sensörünün hizas
+kaym
+<HEADSET><clr:255,255,138>Tekrar dene.<sb>Elin aç
+k bir
+ekilde hedef seç ve ni
+an al.
+<clr:255,190,255>Yine olmad
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>Olmad
+<HEADSET><clr:255,255,138>Tekrar dene.
+<clr:255,190,255>Yok.
+<HEADSET><clr:255,255,138>Bir defa daha.
+<HEADSET><clr:255,255,138>Elin aç
+<HEADSET><clr:255,255,138>Çok iyi!
+imdi yumruk yap.
+<HEADSET><clr:255,255,138>Tamam, yumruk yap.
+<clr:255,190,255>Bu nas
+<HEADSET><clr:255,255,138>Oldu.<sb>
+imdi bile
+ca kendine do
+ru hareket ettir.
+<HEADSET><clr:255,255,138>Neredeyse bitti.<sb>Tekrar yap
+imdi ama bu sefer yakala.
+ca hareket ettir ve yakala.
+te bu.
+<HEADSET><clr:255,255,138>Oldu i
+te.
+<HEADSET><clr:255,255,138>Bum, aynen öyle!
+<HEADSET><clr:255,255,138>Böyle devam et.
+<HEADSET><clr:255,255,138>Hedef ald
+<HEADSET><clr:255,255,138>Evet, hedef ald
+<HEADSET><clr:255,255,138>Elini kapat.
+imdi elini kapat.
+<HEADSET><clr:255,255,138>Elinle kavrama hareketi yap.
+<HEADSET><clr:255,255,138>Harika.
+<HEADSET><clr:255,255,138>Evet.
+<HEADSET><clr:255,255,138>Aynen böyle.
+<HEADSET><clr:255,255,138>Mükemmel.
+<HEADSET><clr:255,255,138>Tekrar ama bu sefer yakala.
+<HEADSET><clr:255,255,138>Ama yakala.
+<HEADSET><clr:255,255,138>Yakala
+imdi.
+<HEADSET><clr:255,255,138>Yakalamay
+dene.
+<HEADSET><clr:255,255,138>Yakala.
+<HEADSET><clr:255,255,138>Alyx, "Russel'larda" bir
+tetik oldu
+unu varsay.
+imdi elinle hedef al
+<HEADSET><clr:255,255,138>Teti
+i çek
+te böyle.
+<HEADSET><clr:255,255,138>Alyx, her iki eldivende de i
+aret parma
+n orada ufak bir tetik olacak.
+<HEADSET><clr:255,255,138>Mükemmel. Ölçümleme tamamland
+.<sb>Ah, bir dakika! Neredeyse unutuyordum.
+<clr:255,255,138>Alyx! Yukar
+<clr:255,255,138>Bir silaha ihtiyac
+n olacak!
+<clr:255,255,138>Endi
+elenme, içi bo
+imdi kesin bo
+<clr:255,255,138>Nereye gitti
+ini gördün mü?
+<clr:255,255,138>San
+uradaki otomobilin kaputunun üstünde.
+<clr:255,255,138>Neredeyse unutuyordum. Silaha cephane de laz
+<clr:255,255,138>Al bakal
+<clr:255,255,138>Yere bir yere dü
+tü.
+<HEADSET><clr:255,255,138>San
+<clr:255,255,138>Mükemmel!
+leti
+im odas
+na geri gidiyorum.
+<clr:255,190,255>Russell? Cephanem bitti.
+<clr:255,255,138>Yakala!
+<clr:255,190,255>Russell? Cephanem
+Yine bitti.
+<clr:255,255,138>At
+<clr:255,190,255>Russell? Cephanem bitti. Yine.
+<clr:255,255,138>S
+yok, cephane çok.
+<clr:255,255,138>Bil diye söylüyorum
+Cephane miktar
+m s
+z de
+il. Tamam m
+? Uyaray
+m dedim.
+<HEADSET><clr:255,255,138>Hey! Pencereme dikkat et!
+<HEADSET><clr:255,255,138>Demek kilidin icab
+na bakt
+n.<sb>Süper. Harika.<sb>Kilidin anahtar
+ama...<sb>Gerçi, önceden sana bu anahtar
+vermeliydim.<sb>Suç bende.
+<HEADSET><clr:255,255,138>Tren bu Alyx.<sb>Kap
+zorlayarak açmay
+bir dene.<sb>Ben de neredeyse tren kontrollerini ele geçirdim.
+<HEADSET><clr:255,255,138>Kap
+zorla açabilmenin yolu var m
+açmay
+bir dene bakal
+<HEADSET><clr:255,255,138>Evet!
+te oldu.<sb>S
+radaki durak: Fairview Kav
+<clr:255,190,255>Sa
+ol Russell.
+yi
+anslar Alyx.<sb>Ho
+ça kal.
+<HEADSET><clr:255,255,138>Ama bil diye söylüyorum, ben hâlâ buraday
+<clr:255,190,255>Biliyorum.
+<HEADSET><clr:255,255,138>Alyx, orada m
+n? Bir sorunumuz olabilir.<cr>Endi
+e edilecek bir
+ey de
+il muhtemelen ama...
+<clr:255,190,255>N'oluyor?
+<HEADSET><clr:255,255,138>Tren durdu mu?<cr>Durdu, de
+<clr:255,190,255>Evet, ne oldu?
+<HEADSET><clr:255,255,138>Kontrolü kaybettim.<cr>
+ttifak, Karantina Bölgesi'ni kapatt
+nda güvenli
+i de s
+olmal
+<clr:255,190,255>Yani?
+<HEADSET><clr:255,255,138>Yani Fairview Kav
+n yak
+nda bile de
+ilsin.<cr>Karantina Bölgesi'nin hemen d
+ndas
+<HEADSET><clr:255,255,138>Ve buras
+tren için son durak.
+<clr:255,190,255>Yürümeye ba
+<clr:255,190,255>O zaman yürümeye ba
+yorum.
+<HEADSET><clr:255,255,138>Güzel. Ben de seni ba
+ka bir
+ekilde içeri sokup sokamayaca
+ma bakay
+<clr:255,190,255>Burada ölü bir zombi var.<sb>
+ttifak, Karantina Bölgesi'ni kapatmam
+<HEADSET><clr:255,255,138>Bu aradan s
+.<sb>Duydu
+uma göre tecrit bölgesinin d
+nda sülük sporlar
+yla ilgili sorun da ya
+lar.<sb>Ama zombiler hakk
+nda bir
+ey duymam
+<clr:255,190,255>Tek seferlik bir durum olmasa gerek.
+<HEADSET><clr:255,255,138>Bence de.
+<HEADSET><clr:255,255,138>Ah
+una bak. Reçine.
+<HEADSET><clr:255,255,138>Reçine varsa civarda bir
+ttifak Üretim
+stasyonu da vard
+r.<sb>
+lerlerken etraf
+na dikkat et, bir tane bulursan silah
+geli
+tirebilirsin.
+<clr:255,190,255>Ee... En nihayetinde cephanem B
+TECEK.
+<HEADSET><clr:255,255,138>O zaman etraf
+kolaçan et.<sb>Orada ölüden bol bir
+ey yok ve... Ölülerin de cephaneye ihtiyac
+yok.
+<clr:255,190,255>San
+m çok i
+levli arac
+kullanarak devre yolunu de
+tirebilirim.
+<HEADSET><clr:255,255,138>Neyini?
+<clr:255,190,255>Birden fazla i
+leve sahip arac
+.<sb>Çok i
+yani i
+<HEADSET><clr:255,255,138>Alyx, bu harika bir aletmi
+!<sb>Bunun için harika bir marka ad
+na ihtiyac
+n var!<sb>
+nsanlar
+n ilgisini çekecek cinsten bir ada!
+<clr:255,190,255>Kime sataca
+m ki?
+ttifak en nihayetinde gidecek.<sb>Gelece
+i dü
+ünmelisin Alyx!
+<clr:255,190,255>Mesela ad
+na "Alyx" desek?
+<HEADSET><clr:255,255,138>Biraz "Russell'lar"a benziyor sanki ama
+<sb>"Alyx" olur ama geçici olarak.
+<clr:255,190,255>Tamam öyleyse. "Alyx" olsun.
+<HEADSET><clr:255,255,138>Aferin!
+<HEADSET><clr:255,255,138>Aha! Bir sa
+k istasyonu!
+Bunlar
+<I>
+ttifak<I> kullan
+yor...<sb>
+nsanlar için güvenli mi?
+ükürler olsun, bir sa
+k istasyonu.
+<HEADSET><clr:255,255,138>Evet, ben sürekli kullan
+<clr:255,190,255>Emin misin?
+<HEADSET><clr:255,255,138>Evet, eminim.
+<HEADSET><clr:255,255,138>Tek yapman gereken elini oraya koymak.
+<HEADSET><clr:255,255,138>Ciddiyim, kolu çek ve elini koy.
+yorum. Sadece bir güç hücresi bul.
+<HEADSET><clr:255,255,138>Evet, haz
+n Alyx.
+<clr:255,190,255>Of! Of, ofofof.
+<clr:255,190,255>Aaaah. Hey
+<clr:255,190,255>Aaah. Ooh.
+<clr:255,190,255>Hey
+Hakl
+n.<cr>Bu istasyonlar çok iyiymi
+<clr:255,190,255>Aaah. Çok iyi.
+<HEADSET><clr:255,255,138>Sülü
+e dikkat et Alyx.
+<clr:255,190,255>Iyy, i
+rençler.
+<clr:255,190,255>Yer çekimi eldivenlerine ne zaman "Russell'lar" demeye ba
+<HEADSET><clr:255,255,138>Marka adlar
+bu Alyx.
+<clr:255,190,255>Marka ad
+<HEADSET><clr:255,255,138>Evet, i
+te ak
+lda kal
+bir ad yani.
+ttifak'
+Dünya'dan defettikten sonra ve her
+ey normale döndü
+ünde bu eldivenleri satarak servet kazanaca
+<clr:255,190,255>Babamla nas
+l tan
+n?<sb>Black Mesa'da birlikte çal
+yordunuz, de
+<HEADSET><clr:255,255,138>Evet. Asl
+nda hay
+r.<sb>Black Mesa'da i
+e girmek biraz zor.<sb>
+görü
+mesine gittim.<sb>Bir y
+l sonra tekrar dene dediler.<sb>Sonra da olanlar oldu.<sb>Ama ucuz y
+rtm
+m.<sb>Çünkü oradan hayatta kalan çok olmad
+.<sb>Baban
+n sa
+kabilmi
+olmas
+tam bir mucize.
+ey... yaln
+z kalmak ister misin?<sb>Yani, istersen ak
+durdurabilirim
+<clr:255,190,255>Sadece bak
+yordum Russ.
+<clr:255,190,255>Bu kapa
+n arkas
+nda Karantina Bölgesi var galiba.
+<HEADSET><clr:255,255,138>Evet, evet, hemen arkas
+nda.
+<clr:255,190,255>Kapa
+açan kontrol panelini arayay
+m o zaman.
+ttifak olsam kontrol panelini nereye koyard
+te kontrol paneli.<sb>Muhtemelen devrelerini kar
+lard
+r.<sb>Ama kimsenin kapa
+açacak kadar aptal olmad
+varsayd
+ndan, düzeltmesi pek zor olmasa gerek.
+<HEADSET><clr:255,255,138>Sence bu nedir?
+Bir tür kilit.
+<clr:255,190,255>Oldu!
+e koyulma vakti.
+<HEADSET><clr:255,255,138>Haha! Aç
+! Sonunda!
+<clr:255,190,255>Yola koyulmal
+m.<cr>Fairview Kav
+ne kadar uzakta?
+<HEADSET><clr:255,255,138>Bak
+m istasyonuna giderken eski metro tünellerinden geçeceksin.
+n transferi ba
+<HEADSET><clr:255,255,138>Sanm
+yorum.<sb>Ki bu gayet iyi bir haber, daha zaman
+z var demek.
+<clr:255,190,255>Çok iyi.
+<HEADSET><clr:255,255,138>Veya çok kötü. Çünkü öldürmü
+de olabilirler.<sb>Öyleyse cesedi ta
+mana gerek kalmaz.<sb>Gömersin gider.<sb>Ya da yakars
+n.<sb>Alyx, orada m
+<clr:255,190,255>H
+<clr:255,190,255>Russell,
+imdi Karantina Bölgesi'ne yürürken fark ettim
+<sb>Karantina Bölgesi hakk
+nda <sb>hiçbir
+ey<I> bilmiyorum.
+<HEADSET><clr:255,255,138>Karantina sözcü
+ü,
+talyanca "quaranta giorni" teriminden geliyor.<sb>Bu 40 gün demek. Bu da Kara Ölüm esnas
+nda gemi mürettebat
+n karaya ç
+kmadan önce izole bir hâlde beklemesi gereken süreye denk geliyor.
+<clr:255,190,255>Anl
+yorum. Neyse.
+<HEADSET><clr:255,255,138>Olamaz.
+m içeride kapana k
+<clr:255,190,255>Hey, Russell.<sb>Ne idi
+i belirsiz bir
+nga buldum.<sb>
+laç m
+<HEADSET><clr:255,255,138>Üstünde kafatas
+ve üst üste çapraz kemikler var m
+<clr:255,190,255>Görünürde yok.
+<HEADSET><clr:255,255,138>O zaman muhtemelen ilaçt
+<HEADSET><clr:255,255,138>Alyx! Yerde buldu
+un rastgele bir
+ngay
+kendine mi enjekte ettin?
+<clr:255,190,255>ÇOK
+hissediyorum.
+<HEADSET><clr:255,255,138>Öyle mi? Peki.
+yi.
+Ba
+bir deney oldu o zaman. Daha fazlas
+için etrafa bak
+nmay
+unutma.
+<HEADSET><clr:255,255,138>Duydun mu?
+<clr:255,190,255>O neydi?
+<clr:255,190,255>Eyvah.
+<HEADSET><clr:255,255,138>Evet
+Yolumuz oradan geçiyor.
+<clr:255,190,255>Kestirme yok mu?
+<HEADSET><clr:255,255,138>Kestirme oras
+zaten.
+<clr:255,190,255>Peki
+Uzun yoldan gideyim o zaman.
+<HEADSET><clr:255,255,138>Uzun yol da oras
+<HEADSET><clr:255,255,138>Peki, bu i
+e yaram
+gibi duruyor. Bu yöntemi kullanmaya devam.
+<HEADSET><clr:255,255,138><sfx:1>[Güler]
+<clr:255,190,255>Öf, i
+renç.
+<HEADSET><clr:255,255,138>Haha!<cr>O sülük bizden yana galiba.<sb>Ama asl
+nda de
+il. Alt
+ndan geçme yani.
+<HEADSET><clr:255,255,138>Bil diye söylüyorum, Russell'larda dahili bir gösterge var. Reçine ve mermi miktar
+gösteriyor.
+ine yarayabilir.
+r. Sa
+ol.
+<clr:255,190,255>Eyvah
+<HEADSET><clr:255,255,138>Evet, dikkatli ol.
+<HEADSET><clr:255,255,138>Alyx! Kap
+na bak!<sb>San
+m bu bir
+stasyonu!
+<HEADSET><clr:255,255,138>Alyx! San
+stasyonu.<sb>
+çine bir
+eyler koysana, nas
+l çal
+görmek istiyorum.
+r. Russell'lar üzerinde de i
+e yarar m
+<HEADSET><clr:255,255,138>Hay
+r ama tabancay
+güzelce güçlendirebilirsin.<cr>
+yi de olur, sana güçsüz silahlar
+mdan birini vermi
+tim.
+<clr:255,190,255>Eksik olma Russell.
+<HEADSET><clr:255,255,138>Hani, olur da
+Geri dönmez belki diye.
+<clr:255,190,255>Bak ne diyece
+im.<cr>Ölürsem sana bir silah borcum olsun.
+<HEADSET><clr:255,255,138>Her türlü bana bir silah borçlusun!<cr>O bir hediye de
+ildi. O hâlâ BEN
+M tabancam.
+<HEADSET><clr:255,255,138>Harcad
+m reçineye de
+ttifak, silah güçlendirme i
+ini biliyor do
+rusu.<sb>Haklar
+vermek gerek.
+<HEADSET><clr:255,255,138>Çok ölümcül görünüyor.
+<HEADSET><clr:255,255,138>Çok iyi.<sb>Ke
+ke ben de orada olsayd
+m da bir deneyebilseydim.
+<HEADSET><clr:255,255,138>Bu çok i
+ine yarayacak.
+te bu
+çok i
+e yarayacak.
+yi bir seçim.
+<HEADSET><clr:255,255,138>Ak
+ca.
+<HEADSET><clr:255,255,138>Bununla birçok tart
+may
+kazanacaks
+<HEADSET><clr:255,255,138>Bununla ters dü
+mek istemezdim.
+<HEADSET><clr:255,255,138>Güçlendirme diye buna derim.
+<HEADSET><clr:255,255,138>Bundan daha da ölümcül bir hâle gelemez.
+<HEADSET><clr:255,255,138>Ne güzel oldu de
+<HEADSET><clr:255,255,138>Vaay! Silah
+m çok iyi görünüyor!
+<clr:255,190,255>Russ, haydi ama. Art
+k bu "bizim" silah
+z say
+<HEADSET><clr:255,255,138>Vay,
+una bak! Silah
+m git gide geli
+meye devam ediyor.
+<clr:255,190,255>Russ, asl
+nda teknik olarak ortada senin silah
+ndan pek eser kalmad
+<HEADSET><clr:255,255,138>Bak ne diyece
+im,
+imdilik bu fikri bir kenara koyal
+m. Geri döndü
+ünde S
+LAHIM hakk
+nda uzun uzad
+ya konu
+<clr:255,190,255>Russ, gel
+u i
+i resmiyete kavu
+tural
+m. Bu silah
+n art
+k senin silah
+nla ALAKASI YOK. Bu art
+BEN
+M silah
+<HEADSET><clr:255,255,138>Peki, tamam. Hak ettin. Russell'lar
+geri istiyorum ama.
+<HEADSET><clr:255,255,138>Kafayengeci!
+<clr:255,190,255>Gördüm!
+<HEADSET><clr:255,255,138>Bir dakika... Nereye gitti o?
+<clr:255,190,255>Aah!
+<HEADSET><clr:255,255,138>Aah!
+<HEADSET><clr:255,255,138>Evet. Bulduk.
+<HEADSET><clr:255,255,138>Muhtemelen sadece bir tane vard
+ki tane.
+ki tane diyecektim.
+yi at
+Alyx.
+<clr:255,190,255>Te
+ekkürler. Sa
+ol. Bu silaha "güçsüz" dedin ama hiç de fena de
+ilmi
+Asl
+nda gayet iyi, de
+il mi?<cr>San
+m sana yanl
+silah
+verdim.
+<clr:255,190,255>Babamla ilgili bir
+eyler duydun mu Russel?
+r. Trene bindi
+inden beri hiçbir
+ey duymad
+<clr:255,190,255>Siktir.
+<HEADSET><clr:255,255,138>Ama muhtemelen bir
+eyi yoktur, iyidir.
+<clr:255,190,255>Nereden biliyorsun?
+<HEADSET><clr:255,255,138>Çünkü i
+kence etmek için Nova Prospekt'e götürülüyor.<sb>Oras
+kence yeri.<sb>Oraya varana kadar pek i
+kence etmezler.<sb>Yani mant
+ken iyi olmas
+laz
+<clr:255,255,138>Ah!
+<HEADSET><clr:255,255,138>Aa, sa
+<HEADSET><clr:255,255,138>Hm. Çal
+yor.
+<clr:255,190,255>Aa. Bak, güce ihtiyac
+var.
+<HEADSET><clr:255,255,138>Elindekine "disket" deniyor.<cr>Eskiden içinde bilgi saklard
+k. M
+knat
+slarla çal
+<clr:255,190,255>Oh.
+<HEADSET><clr:255,255,138>Aç
+klamak gerekirse; içinde 2 mikron manyetik demir oksit, 3 mikron baryum ferrit ve 1,2...
+<clr:255,190,255>Russell? Bütün bunlar
+nereden biliyorsun?
+<HEADSET><clr:255,255,138>Bilgisayar
+mdan okuyorum.<cr>Sava
+tan önce interneti indirmi
+<clr:255,190,255>Bütün interneti mi indirdin?
+<HEADSET><clr:255,255,138>Hee, ço
+unu indiriverdim.
+<clr:255,190,255>Süper.
+<HEADSET><clr:255,255,138>Evet, evet öyle.
+<clr:255,190,255>Russell, görüyor musun bunu?
+<HEADSET><clr:255,255,138>Emin de
+ilim.<sb>Süzülen bir y
+n çöp mü görüyorsun?
+<clr:255,190,255>Görünü
+e göre sadece
+karton bunlar.
+<HEADSET><clr:255,255,138>Evet. Zarars
+z görünüyorlar.
+<clr:255,190,255>Evet. Tuhaf ama.
+<clr:255,190,255>Bu da nesi?
+<clr:255,190,255>Vortigauntlar
+n gösterildi
+i bir resme benziyor
+<HEADSET><clr:255,255,138>Bir dakika
+uras
+Black Mesa m
+<clr:255,190,255>Birileri bunun üzerinde bolca zaman harcam
+<clr:255,190,255>Daha fazla uçan karton!
+<HEADSET><clr:255,255,138>Alyx!
+yi misin? Ne oldu?
+yiyim Russell, ne oldu?
+<HEADSET><clr:255,255,138>Sinyalini kaybediyorum!<sb>Alyx? Alyx?<sb>E
+er beni duyabiliyorsan ayn
+yönde ilerlemeye devam et ve yüzeye ç
+kmaya çal
+<clr:255,190,255>Russell?<sb>Russell?<sb>Siktir.
+<clr:255,190,255>Çok acayip bir yermi
+<clr:255,190,255>Oh!
+Vortigaunt: <clr:107,232,120>Me
+hur Alyx Vance!
+Vortigaunt: <clr:107,232,120>Mesaj
+alm
+<clr:255,190,255>Öyle mi yapm
+<clr:107,232,120>Gel! Gir.
+ekkürler.
+<clr:107,232,120>Rica ederim!
+<clr:255,190,255>Bir Vortigaunt burada ne yap
+yor?
+<clr:107,232,120>[Koklar] Mmm!
+<clr:107,232,120>Yemek yap
+yor!
+<clr:107,232,120>[Sesli Bir
+ekilde Yemek Yer]
+<clr:255,190,255>Tabii, ama genel anlamda sormu
+tum.
+<clr:107,232,120>Beyin hasar
+m var.
+<clr:255,190,255>Oh, duydu
+uma üz...
+<clr:107,232,120>Beynim hasarl
+<clr:255,190,255>Bu çok kötüymü
+, umar
+m...
+<clr:107,232,120>Of.
+<clr:255,190,255>Bak, asl
+nda babam
+aramakla oldukça me
+gulüm
+<clr:107,232,120>Me
+hur
+Eli Vance
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Evet.
+u an
+n elinde ve benim de onu kurtarmaya gitmem laz
+ttifak.<sb>Evet.
+imdi gitme!<sb>Sana bir
+ey göstermeliyim!
+<clr:255,190,255>Bak, cidden te
+ek...
+<clr:107,232,120>Buradan!
+<clr:255,190,255>Burada kalamam, git...
+<clr:107,232,120>Çok önemli ama!
+<clr:255,190,255>Eminim öyledir fakat...
+hur Alyx Vance'in zaten bu taraftan gitmesi gerekiyor
+<clr:107,232,120>[K
+rdar]
+ekilde Höpürdetir]
+<clr:107,232,120>Gel, gel!
+<clr:107,232,120>Gir içeri, Alyx Vance.
+<clr:107,232,120>Buraday
+<clr:107,232,120>Seni neden buraya getirdi
+imi göstermeliyim.
+<clr:107,232,120><sfx:1>[Vort Özü Yönlendirir]
+ttifak, halk
+tutsak etti.
+<clr:107,232,120>Zorla tutuluyorlar, me
+hur Eli Vance gibi.
+hur Alyx Vance, onlar
+kurtaracak!
+<clr:255,190,255>Yard
+m ederdim. Gerçekten.<sb>Ama me
+hur Alyx Vance
+in çok i
+i var. Babas
+kurtarmas
+gerek.
+<clr:107,232,120>Baban
+kurtaramayacaks
+n.<sb>O öldü.
+<clr:255,190,255>Ne?
+<clr:107,232,120>Ya da ölecek
+<clr:255,190,255>Öldü mü ölecek mi?
+<clr:107,232,120>Perspektif meselesi.<sb>Fakat Alyx Vance tek ba
+na onun kaderinin önüne geçemeyecek.
+<clr:255,190,255>Ben... Bak.<sb>Her
+ey için
+Te
+ekkürler.<sb>Ama gerçekten gitmeliyim.<sb>Ve üzgünüm, bilmecelere ay
+racak vaktim yok.
+<clr:107,232,120>Bilmece yok!<sb>ittifak buray
+deldi.<sb>Hangi zamanda oldu
+umu bilmiyorum.<sb>Vort Özü'nden koptum.<sb>Ba
+n içinde yapayaln
+<clr:255,190,255>Üzgünüm.
+<clr:255,190,255>E
+er arkada
+lar
+na denk gelirsem, elimden geleni yapar
+<clr:107,232,120>Sen halk
+kurtard
+<clr:255,190,255>Ben...<sb>Hay
+<clr:107,232,120>O zaman kurtaracaks
+<clr:107,232,120>Aaaaahh!
+<clr:107,232,120>Cesaret, Alyx Vance!
+<clr:107,232,120>Yolculu
+un seni buraya kadar getirdi.<cr>Belki de gidecek yolun da azald
+<clr:107,232,120>Buradan, Alyx Vance.
+<clr:107,232,120>Gitmelisin!
+<clr:107,232,120>Görevin ba
+yor, Alyx Vance.
+<clr:107,232,120>Git!
+hur Alyx Vance'e yard
+m edece
+im!<sb>Kuzey Y
+'na bak.
+<clr:255,190,255>Neden?
+<clr:107,232,120>Yolunu bulmak için!
+<clr:255,190,255>Anlad
+m. Te
+ekkürler.<cr>Bitirdin mi? Bana yard
+m etmeyi yani?
+<clr:107,232,120>Hay
+r! Al.
+<clr:107,232,120>Yolluk yapars
+<clr:255,190,255>Ee
+Sonra yerim.<cr>Yard
+m için te
+<clr:107,232,120>Rica edece
+<clr:107,232,120><sfx:1>[Kendinden Memnun M
+ldan
+<clr:255,190,255>Iy.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Sinyal al
+yorum!<sb>Beni duyuyor musun?
+yi misin?
+<clr:255,190,255>Russell! Ben iyiyim! Babam nas
+<HEADSET><clr:255,255,138>Trene bindirmi
+ler.<sb>Hareket hâlinde.<sb>Onlardan önce Fairview Kav
+'na sen ula
+<clr:255,190,255>Elimden geleni yap
+<HEADSET><clr:255,255,138>Sinyal kesikken bir
+ey oldu mu?
+nanmayacaks
+n ama bir Vortigaunt ile kar
+<HEADSET><clr:255,255,138>Vortigaunt mu?<cr>Orada ne yap
+yormu
+<clr:255,190,255>Saklan
+yordu.<cr>San
+ttifak'tan kaçm
+<HEADSET><clr:255,255,138>Ne dedi?
+<clr:255,190,255>Hiç bir Vortigaunt ile kar
+n m
+?<cr>Vortigaunt saçmas
+eyler söyledi i
+<clr:255,190,255>O kar
+m Vortigaunt var ya?<cr>Bana <I>yemem için<I> bir kafayengeci verdi.
+<HEADSET><clr:255,255,138>Ah! Harika!<sb>Tad
+nas
+?<cr>Nas
+l yedi
+...
+<clr:255,190,255>Russell. Russell... Yemedim.
+<HEADSET><clr:255,255,138>Evet. Elbette yemedin.<cr>Yani
+Evet, do
+ru karar vermi
+sin.
+<clr:255,190,255>Ne tuhaf.
+<clr:255,190,255>Oh! Bu zombide pompal
+tüfek var!
+<clr:255,190,255>Aman!
+<HEADSET><clr:255,255,138>Sesi duydun mu?
+<clr:255,190,255>Evet.
+u pompal
+tüfe
+i al
+p toz olal
+<clr:255,190,255>Ald
+<HEADSET><clr:255,255,138>Acele et ve silah
+doldur. Ses yükseliyor!
+<clr:255,190,255>Ba
+<HEADSET><clr:255,255,138>Bay
+m bu silaha.
+<clr:255,190,255>Uf, ortal
+k FENA karanl
+<HEADSET><clr:255,255,138>Her
+yiyim, iyiyim.
+<clr:255,190,255>Oh,
+ükürler olsun.
+<clr:255,190,255>Her
+ey yolunda.
+<clr:255,190,255>Ortal
+k çok karanl
+Russ?
+<HEADSET><clr:255,255,138>Evet?
+<clr:255,190,255>Öylesine konu
+abilir misin?
+<HEADSET><clr:255,255,138>Ne hakk
+nda?
+<clr:255,190,255>Hiç fark etmez, ne olursa.
+<HEADSET><clr:255,255,138>Durumumuz göz önünde bulunduruldu
+unda, karanl
+a kar
+duydu
+un nedensiz korku asl
+nda yerinde.<sb>Yani istersen seni deh
+ete dü
+ürebilecek 100 neden sayabilirim.
+<clr:255,190,255>Tamam, hata bende.<sb>Bir dahaki sefere daha net olurum.
+<clr:255,190,255>Bu el fenerini çok sevdim.
+<HEADSET><clr:255,255,138>Ve bu fener, t
+senin gibi karanl
+duyarl
+<clr:255,190,255>Öyle mi?
+<HEADSET><clr:255,255,138>Evet, ortal
+k karar
+nca otomatik olarak yanar çünkü.
+<clr:255,190,255>Aa. Çok iyi.
+<clr:255,190,255>Pekâlâ Russ, tekrar konu
+mana ihtiyac
+<HEADSET><clr:255,255,138>Tabii ki. Ama bu sefer daha net ol.
+ttifak'tan önce hayat nas
+<HEADSET><clr:255,255,138>Ah! Harika soru.<cr>Alyx, 3 katl
+sandviç diye bir
+ey duydun mu?
+r. Duymad
+<HEADSET><clr:255,255,138>3 katl
+sandviç yapmak için önce ekmek laz
+m.<sb>Ama ekmek seri üretim de
+il, f
+ndan olacak.
+<HEADSET><clr:255,255,138>Anlad
+m.<sb>3 katl
+sandviç için önce ekmek laz
+ndan olacak.<sb>Soka
+n kar
+nda, ekme
+i o gün taze yapm
+bir f
+ndan. Sonra domates ve marul koyars
+n. Ama krem sebze de
+il. Taze olacak.<sb>Ard
+ndan da past
+rma. Bu past
+rma "domuz" dedi
+imiz hayvanlardan elde edilirdi.<sb>Ve sonunda ekme
+i k
+zart
+p malzemeleri de aras
+na koyars
+<clr:255,190,255>Bütün bunlara sahip miydiniz?
+nan
+lmaz.
+<HEADSET><clr:255,255,138>Öyle! Ve daha bitmedi.<sb>Sonra ilk sandviçin üstüne bir tane daha ekliyorsun.<sb>Bunun içine yine domuz ve eskiden "hindi" dedi
+imiz hayvandan elde edilen jambonu, bol marulu ve
+u an unuttu
+um di
+er birkaç
+eyi de aras
+na koyuyorsun.<sb>Bitti
+inde toplamda yar
+m kiloluk, 16 santim uzunlu
+unda ve içinde be
+farkl
+tadan malzeme olan bir sandviç elde ediyordun.<sb>Bizim zaman
+zdan önce kimsenin akl
+na gelmeyecek yiyecek türlerinden biriydi.
+<clr:255,190,255>Vay be!
+<HEADSET><clr:255,255,138>De
+il mi ama?
+<clr:255,190,255>Bu
+Vay can
+na.
+ol Russ.
+<HEADSET><clr:255,255,138>Rica ederim Alyx.
+<HEADSET><clr:255,255,138>Bir dakika,
+ttifak askeri cesedi mi o?
+<clr:255,190,255>Evet
+<sb>Siz reaktörü çalarken ben de
+n buraya malzeme ta
+görmü
+tüm.<sb>San
+m yine burayla ilgilenmeye ba
+<HEADSET><clr:255,255,138>Dikkatli ol o zaman.<sb>Belli ki bir
+eyler dönüyor.
+<HEADSET><clr:255,255,138>Alyx! Sivilkeser! Dikkat et!
+<HEADSET><clr:255,255,138>Sivilkeser!
+<HEADSET><clr:255,255,138>Hop, Sivilkeserler!
+<clr:255,190,255>Aman
+Tanr
+<clr:255,190,255>Sana bir soru: Dünya üzerinde ya
+amaya 10 üzerinden kaç verirsin? Ben 2 diyorum.
+<HEADSET><clr:255,255,138>Evet, daha da kötü olabilirdi.
+ttifak ÖNCES
+ya
+ama kaç verirdin?
+<HEADSET><clr:255,255,138>Of, zor soru.<sb>Bilmiyorum ki, iyi bir gün için...<sb>6 verirdim.<sb>Evet, 6.
+<clr:255,190,255>6 m
+? O kadar da iyi de
+<HEADSET><clr:255,255,138>Hayat i
+te Alyx.<cr>Her zaman iyi olmuyor.
+<clr:255,190,255>O zaman
+Dünya'dan defedip 8'e ula
+maya çal
+abiliriz sanki?
+<HEADSET><clr:255,255,138>Oo, 8.<cr>Evet, baya
+iyi olurdu.<sb>Çok iyi olurdu.
+Dünya'dan defettikten sonra ne yapacaks
+<HEADSET><clr:255,255,138>Tabii ki Russell'lar
+seri üretime sokaca
+<clr:255,190,255>Ah, tabii ya!<sb>Kaz
+lmam
+bir may
+n madeni o eldivenler!
+<HEADSET><clr:255,255,138>Alt
+n madeni, evet.<sb>Plan
+u; tahminen 1 y
+la
+temizler ve gezegenden göndeririz.<sb>Bu ilk sene.
+kinci sene Russel'lar
+seri üretime sokar
+m.<sb>Ama tabii sessiz sedas
+z yap
+lacak çünkü önce altyap
+, i
+, para gibi
+eyler için toplumu yeniden kurmam
+z gerekli.<sb>Öbür türlü kimse sat
+n alamaz.<sb>Para yok çünkü.
+<sb>3 y
+k bir plan.<sb>Altyap
+ikinci y
+lda yapar
+<clr:255,190,255>Evet, kesinlikle.<sb>Altyap
+la koymal
+<HEADSET><clr:255,255,138>Hey! Dikkat et! Dikkat et!
+<HEADSET><clr:255,255,138>Sakin
+<clr:255,190,255>Eyvah. Ortal
+k yine karar
+Bu 3 y
+k Russell plan
+nda
+Sence
+Bana da bir i
+kar m
+mi? Sen "Alyx"in mucidisin!<cr>Tabii ki sana i
+kar!
+<clr:255,190,255>Ortak olabiliriz.
+<HEADSET><clr:255,255,138>E,
+<sb>Hmm. Hisse seçene
+i olur bak.<sb>5 ilâ 10 y
+k bir hak edi
+taahhüt süresi olacak tabii ki.<sb>Senin için çok kârl
+olabilir bu Alyx.<sb>Uzun vadede.
+<clr:255,190,255>Dediklerinden hiçbir
+ey anlamad
+m ama kula
+a iyi geliyor ortak.
+<HEADSET><clr:255,255,138>Evet. Bence de
+<clr:255,190,255>Russell! Bunlarda otomatik silah var!
+<clr:255,190,255>Bunlarda otomatik silah var.
+<HEADSET><clr:255,255,138>Onlar uzayl
+komandolar, tabii ki otomatik silahlar
+olacak.
+<HEADSET><clr:255,255,138>Bizim de olabilirdi ama
+ttifak silahlar
+genetik kodlu oldu
+undan, olamad
+. E
+er bo
+ta, kimseye atanmam
+bir tane bulursan veya ufak bir genetik de
+ikli
+e aç
+ksan senin de olabilir.
+lk seçene
+i tercih ederim. Mevcut genlerimle hayat
+ma devam etmeyi planl
+<clr:255,190,255>Kafam
+n üstünden mermiler uçuyor
+u an Russ, biraz daha k
+sa konu
+ttifak!
+<clr:255,190,255>Russ, bunlarda otomatik silah var.
+.<sb>Bo
+bir tane bulursan...<cr> Veya ufak bir genetik de
+Gerek yok Russ. Mevcut genlerimle mutluyum ben.
+<HEADSET><clr:255,255,138>Fairview Kav
+! Geldik!
+<HEADSET><clr:255,255,138>Geldik!
+<HEADSET><clr:255,255,138>E
+il!
+<clr:255,190,255>Uf. San
+m bu sonuncuydu.
+yi, zira pek zaman
+z yok.
+<HEADSET><clr:255,255,138>Yak
+nda bir kontrol istasyonu olacak.
+<HEADSET><clr:255,255,138>Kontrol istasyonunu devreye sokmak için bolca vaktin var.
+<HEADSET><clr:255,255,138>Tamam, treni burada durdurabilirim.
+<HEADSET><clr:255,255,138>Kesinlikle. Sen terminali etkinle
+tir yeter.
+<clr:255,190,255>Harika.
+<HEADSET><clr:255,255,138>Sonra çat
+maya haz
+r olmal
+n.<sb>Baban
+kolay kolay b
+rakmayacaklard
+r olaca
+<HEADSET><clr:255,255,138>Tamam. Terminal bu.
+<HEADSET><clr:255,255,138>Acele et.
+<HEADSET><clr:255,255,138>Evet, burada bir yerde bir enerji kayna
+<HEADSET><clr:255,255,138>Belki bir parças
+eksiktir?
+<HEADSET><clr:255,255,138>Endi
+elenme ama tren geliyor.
+<clr:255,190,255>Görüyorum Russell.
+<HEADSET><clr:255,255,138>Bana eri
+im ver yeter, birkaç saniyemi alacak. Harika gidiyorsun.
+<clr:255,190,255>Evet, harika gidiyorum, endi
+e yok, endi
+e yok
+<HEADSET><clr:255,255,138>Bir parças
+eksik!
+<HEADSET><clr:255,255,138>Tamam!
+imdi sistemi tekrar devreye sok.
+<clr:255,190,255>Elimde kalmas
+normal mi?!
+<HEADSET><clr:255,255,138>Böyle olmamas
+gerekiyordu Alyx!
+<clr:255,190,255>Ne, ben, ne... Ne yapaca
+m?!
+<HEADSET><clr:255,255,138>Ee
+Panik yok! Ya da paniklediysen paniklemeyi b
+rak!
+<clr:255,190,255>Paniklemedim!
+<HEADSET><clr:255,255,138>Peki ama ben panikledim! Bu treni durduracak ba
+ka bir yol bulmal
+<clr:255,190,255>Bu treni durduracak ba
+ka bir yol olmal
+nmaya ba
+la! Pek zaman
+z yok!
+<HEADSET><clr:255,255,138>D
+ya ç
+k! Elle kontrol edebilece
+in bir
+ey olmal
+. Yani olmak zorunda de
+il tabii asl
+nda. Ama olursa, iyi olur yani. Lütfen. [Gergince Güler]
+<HEADSET><clr:255,255,138>Kontrol d
+da olmal
+Alyx! Acele et!
+<HEADSET><clr:255,255,138>Bir kol ara!
+<HEADSET><clr:255,255,138>Aramaya devam et! O treni durdurmal
+<HEADSET><clr:255,255,138>Tren 10 saniye sonra burada olacak Alyx!
+<HEADSET><clr:255,255,138>Tamam, o kolu çek.
+<HEADSET><clr:255,255,138>5 saniye!
+<clr:255,190,255>Durmuyor!
+<HEADSET><clr:255,255,138>Ayn
+pozisyonda tutmal
+e yarad
+<HEADSET><clr:255,255,138>Evet. Vay can
+yiyim. Babam
+bulmal
+<HEADSET><clr:255,255,138>Tamam. Mahkûm nakil vagonunu bul. Trenin ön taraflar
+nda olmal
+<clr:255,190,255>Enkaz içine giden bir yol bulay
+<HEADSET><clr:255,255,138>Onlar da ne?
+<clr:255,190,255>Bilmiyorum. Ama babam
+<HEADSET><clr:255,255,138>Evet, hakl
+n.<cr>Sadece bunlar
+daha önce görmemi
+<HEADSET><clr:255,255,138>Bu, baban
+n mahkûm kapsülü.
+<clr:255,190,255>Olamaz. Babam nerede?
+<clr:255,190,255>Baba? BABA?
+<clr:255,190,255>Baba!
+<clr:255,208,172>Buraday
+m can
+m!<sb>Yard
+ma ihtiyac
+m var, acele et!
+<HEADSET><clr:255,255,138>Tanr
+<clr:255,190,255>Geliyorum!
+<clr:255,208,172>Can
+m!
+<clr:255,190,255>Hemen geliyorum! Bir saniye!
+<HEADSET><clr:255,255,138>Alyx, acele et!
+<clr:255,190,255>Tamam.<sb>
+imdi uzan
+p seni yukar
+çekece
+im.<sb>Her
+ey yoluna girecek. Haz
+r m
+<clr:255,208,172>Evet
+Haz
+<clr:255,190,255>Elini uzat!
+<clr:255,190,255><sfx:1>[Ac
+yla
+<clr:255,208,172>Acele et can
+m!<sb>Acele et! Kay
+<clr:255,208,172>Yukar
+çek
+Yukar
+<HEADSET><clr:255,255,138>Siktir, siktir.
+<clr:255,208,172>Az kald
+Az kald
+Aah!
+<clr:255,208,172><sfx:1>[Nefes Almaya Çal
+<clr:255,190,255><sfx:1>[Deh
+etle Nefesini Tutar]
+<HEADSET><clr:255,255,138>Vort! Bu bir Vort!
+<clr:255,190,255>Bu sana bahsetti
+im Vort!
+<clr:107,232,120>Alyx Vance!<sb>Söz verdi
+im gibi yard
+m etmeye geldim.
+<clr:255,208,172>Te
+ekkürler
+ekkürler, çok, çok, te
+ekkürler!<sb>Baba, orada kal!<sb>Yan
+na gelmenin bir yolunu bulaca
+<clr:255,190,255>Orada bekle!<cr>Yan
+<clr:255,208,172>Hay
+r! Alyx, beni dinle!<sb>Russell'la birlikte buldu
+umuz
+ey bir çe
+Süper silah!
+<clr:255,190,255>Süper silah m
+<clr:255,208,172>Önemli bir
+ey.<sb>Karantina Bölgesi'nde bir tür kalenin içinde tutuyorlar.<sb>Ama yerini de
+tirmek üzereler.<sb>Nereye götürecekler bilmiyorum ama fazla zaman
+<clr:255,190,255>O zaman hedeflerine ula
+madan çalmal
+<clr:255,208,172>Evet! Bir de bak
+<sb>Bu
+ttifak veri kapsülünü ele geçirmeyi ba
+m.<sb>
+ifresini k
+rabilirsem silahlar
+onlara kar
+kullanman
+n bir yolunu bulabilirim.
+<clr:255,190,255>Peki plan ne?
+<clr:255,208,172>Sen kaleye git.<sb>Ben bunu Russell'a götürüp i
+e koyulaca
+<HEADSET><clr:255,255,138>Bir dakika... Kale nerede?
+<clr:255,190,255>Baba! Kale nerede?
+<clr:107,232,120>Kuzey Y
+'na bak
+<clr:255,190,255>Ben
+Evet. Y
+za bak. Anlad
+m. Baba?
+<clr:255,208,172>Karantina Bölgesi'nin ortas
+nda.<sb>Kocaman bir
+ey.<sb>Yüzeye ç
+p neler bulabilece
+ine bak.
+hur Eli Vance'e ben e
+lik edece
+im ve onu güvende tutaca
+<clr:255,190,255>Harika! Sa
+<clr:255,208,172>Git!
+<clr:255,190,255>Ben de seni seviyorum!
+<clr:107,232,120>Ben de seni seviyorum!
+ol!
+<clr:255,190,255>Hey, Russ.<sb>Babama göz kulak ol, tamam m
+<HEADSET><clr:255,255,138>Buraya gelirse... GEL
+NCE, gelince haber veririm.
+<clr:255,190,255>Evet, GEL
+NCE.
+ler biraz kar
+ama sonunda babam
+<I>kurtarabildik<I>.
+<HEADSET><clr:255,255,138>Eveeet
+<HEADSET><clr:255,255,138>Bu muhtemelen dikkat çekecek.<sb>Hatta muhtemelen de
+il, kesinlikle.<sb>Kesinlikle dikkat çekecek.<sb>Art
+k senin pe
+indeler.<sb>Dikkatli ol, tamam m
+er bu silah
+ele geçirebilirsek, i
+leri sonsuza kadar de
+tirebiliriz.
+<clr:255,190,255>Evet. Geçirebilirsek.
+<HEADSET><clr:255,255,138>Bak, sadece son birkaç saattir birlikte çal
+n fark
+nday
+m ama... Seninle gurur duyuyorum.<sb>Tamam m
+?<sb>
+u an çok bask
+alt
+<clr:255,190,255>Vay. Russ.
+<HEADSET><clr:255,255,138>O kadar bask
+n ki
+<sb>Konuyu açmaya bile çekiniyorum.<sb>Fakat, elini uzatt
+nda, baban elini tutmu
+olsayd
+, Russell'lar
+n üzerindeki bütün hassas sensörler parçalanacakt
+<clr:255,190,255>Ah.
+imdi anlad
+<HEADSET><clr:255,255,138>Ama tabii bu durum için tamamen anla
+labilir olurdu. Sensörün laf
+falan olmaz yani.
+<clr:255,190,255>Tabii.
+<HEADSET><clr:255,255,138>Di
+er yandan bu durumun tekrarlanabilece
+ini H
+Ç sanm
+yorum.<sb>Ve,
+ey, t
+baban gibi Russell'lar da paha biçilemez.<sb>
+lerisi için akl
+nda bulunsun.
+<clr:255,190,255>Russ, söz, eldivenlerin benimle güvende.
+m, Russ. Bu kimlik kart
+n üzerinde bir iskelet foto
+raf
+<clr:255,190,255>Ah! Buldum.
+<clr:255,190,255>Buldum.
+te burada.
+<clr:255,190,255>Aha.
+<clr:255,190,255>Babam bu silahla ilgili baz
+dosyalar çald
+söylemi
+ti.
+<HEADSET><clr:255,255,138>Evet,
+ttifak veri
+ifrelemesi
+<clr:255,190,255>Senden mi sorulur?
+Eli'dan sorulur!
+<HEADSET><clr:255,255,138>Sistemler, robotik teknolojisi, a
+Bunlar benden sorulur.
+<clr:255,190,255>Ama veri
+ifrelemesi senden sorulmaz.
+<HEADSET><clr:255,255,138>Benim için uzayl
+dili gibi bir
+ey. Gerçi zaten uzayl
+dili ama. Neyse, onlar Eli'dan sorulur.
+<HEADSET><clr:255,255,138>Alyx! D
+bak!
+<HEADSET><clr:255,255,138>Ciddiyim Alyx. Pencereden d
+bak.<sb>O dü
+ündü
+üm
+ey mi?
+<HEADSET><clr:255,255,138>Tamam, iyi. Buldun.<sb>
+imdi pencereden d
+bak. Haydi.<sb>Sen bakmazsan ben de göremem.
+<clr:255,190,255>Hasiktir! Kale bu olmal
+<HEADSET><clr:255,255,138>Evet. Baban uçtu
+undan bahsetmemi
+<clr:255,190,255>Yani oraya gitsek bile i
+in bir de YUKARI ç
+kma k
+<HEADSET><clr:255,255,138>Kablolar! Üzerine ba
+u kablolara bak.
+<HEADSET><clr:255,255,138>Yapmam
+z gereken tek
+ey bunlar
+takip etmek
+<clr:255,190,255>Ve kar
+za ç
+kan
+eyi yok etmek.
+<HEADSET><clr:255,255,138>Sonra da Gök Kale'yi indirmi
+olaca
+z.<sb>Basit. Yapmas
+kolay.<sb>Sevdim bu plan
+<HEADSET><clr:255,255,138>Tamam. Eminim d
+bakmay
+reddetmenin iyi bir nedeni vard
+<HEADSET><clr:255,255,138>Neyse, pencereyi bo
+ver. Pencerenin öte taraf
+n aramam
+istedi
+i GÖK KALE vard
+.<sb>Kale havada uçtu
+undan içine girmesi biraz zor olacak.
+<HEADSET><clr:255,255,138>Ama her taraf
+kablolarla kapl
+.<sb>Kablolar
+takip edip, ba
+olduklar
+eyleri yok edersek Gök Kale'yi a
+indirebiliriz diye dü
+ünüyorum.
+<clr:255,190,255>Gök Kale'yi indirmek için pencerelerden d
+bakmam gerekecek mi?
+r, sanm
+<clr:255,190,255>O zaman var
+ttifak'tan babam
+n kaçmas
+na dair bir
+eyler duydun mu?
+r. Sadece Karantina Bölgesi'ne destek göndermekten bahsediyorlar.
+<clr:255,190,255>Olumlu taraf
+ndan bakarsak, bu, babam
+n hâlâ yolda oldu
+unu gösterir.<sb>Eli Vance tekrar yakalansa kesin duyard
+<HEADSET><clr:255,255,138>Olumsuz taraf
+ndan bakarsak
+<clr:255,190,255>Gök Kale'ye ula
+mak daha da zorla
+acak.
+<clr:255,190,255>Uu, bombalar.
+<clr:255,190,255>Bombaya yaz
+k oldu.
+<HEADSET><clr:255,255,138>Bence de
+di.
+<clr:255,190,255>Kat
+<clr:255,190,255>Bomba geliyor zombi.
+<clr:255,190,255>Dikkat et.
+<clr:255,190,255>Iska!
+<clr:255,190,255>Siktir!
+<clr:255,190,255>Öf!
+<HEADSET><clr:255,255,138>Neredeyse!
+<HEADSET><clr:255,255,138>Neredeyse isabet etmi
+ti bu sefer.
+te bu!
+<HEADSET><clr:255,255,138>Hey! Monitöre bak.
+ttifak.
+<clr:255,190,255>Gördüm.
+<clr:18,199,226>Güvenlik, buras
+5-6-0.<sb>Bölge 0-2'de sismik etkinlik tespit edildi, onaylay
+<clr:166,242,255><I>Güvenlik güçleri etkinli
+in fark
+nda.<sb>Bölge 0-2 onayland
+, çürük ç
+kmas
+olas
+.<sb>Bölgeyi taray
+n, etkisizle
+tirme durumunu rapor edin.<I>
+<clr:18,199,226>Etkisizle
+tirme i
+lemine ba
+land
+, 5-6-0 metro istasyonuna do
+ru yönleniyor.<sb>Çat
+<clr:255,190,255>Of. Harika.
+<HEADSET><clr:255,255,138>Alyx, dikkat, geliyor!
+<clr:255,190,255>"Kuzey Y
+yorum. N'oldu ki?
+<clr:255,190,255>Vortigaunt, arkada
+na yard
+m etmem için "Kuzey Y
+'na bak." demi
+ti. Kula
+a Vortigaunt saçmal
+gibi gelmi
+ti ama görünü
+e göre de
+il.
+imdi anla
+<HEADSET><clr:255,255,138>Hmm. Bu bir çe
+it
+ttifak güç istasyonu. Bunlar genellikle güç üretir ve güvenlik protokollerini bar
+<clr:255,190,255>O devasa Gök Kale için ihtiyaç duyulabilecek türden gücü ve güvenli
+<clr:255,190,255>Ve
+te Gök Kale.
+<HEADSET><clr:255,255,138>Evet, o güç istasyonu Gök Kale'yi havada tutan
+. Oraya ç
+kmal
+<clr:255,190,255>Amma kablo varm
+eye nas
+l girece
+imi bir türlü çözemiyorum.
+<HEADSET><clr:255,255,138>Soka
+n ortas
+nda korumas
+z bir giri
+yoktur.
+<HEADSET><clr:255,255,138>Otele girmenin bir yolunu bul ve çat
+<HEADSET><clr:255,255,138>Alyx, bence o otele girmenin bir yolunu bulmal
+ve güç istasyonuna ç
+<HEADSET><clr:255,255,138>Uu! Asansör. Bununla yukar
+kabiliriz.
+<HEADSET><clr:255,255,138>[Statik]<sb>Hmm. Bu tuhaft
+<clr:255,190,255>Veee... Elektrikler kesildi.
+e göre merdivenleri kullanaca
+<clr:255,190,255>Ve... Merdivenleri unutabiliriz.
+<HEADSET><clr:255,255,138>Gücü tekrar açmay
+deneyelim.
+<clr:255,190,255>Uu, sigorta kutular
+<clr:255,190,255>Asansör plan
+na geri dönelim.<sb>Elektrik tesisat
+tamir edece
+te. Sigorta kutular
+<HEADSET><clr:255,255,138>Bu otel çok eski.<sb>Elektrik tesisat
+cidden kar
+k olmal
+<clr:255,190,255>Elektrikler geri geldi.<sb>Bakal
+m asansör ne durumda.
+<clr:255,190,255>Aaa! Karmakar
+<clr:255,190,255>Asansör hâlâ çal
+ey burada iyi görünüyor ama...
+<clr:255,190,255>Belki de asansörün yak
+eyi gözden kaç
+<HEADSET><clr:255,255,138>Orada sigorta kutusuna benzeyen bir
+ey var m
+r, hâlâ ar
+<clr:255,190,255>Bum. Elektrikler geri geldi.
+imdi tek yapmam gereken asansöre elektrik sa
+lamak.
+<clr:255,190,255>Ve i
+te asan...
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Acil durum merdivenleri de i
+imi görür.
+<clr:255,190,255>Her yerde bir
+eyler büyüyor burada.<sb>Sence bunlar ne kadar tehlikelidir?
+<HEADSET><clr:255,255,138>Bunlar
+n ba
+ka boyuta ait sporlar oldu
+unu dü
+ünürsek
+Muhtemelen
+Oldukça tehlikelidir.
+<HEADSET><clr:255,255,138>Fakat bu, ayn
+zamanda uzayl
+floras
+incelemek için nadide bir f
+rsat!
+<HEADSET><clr:255,255,138>O irin dolu
+eylere dikkat et!
+<HEADSET><clr:255,255,138>Yakla
+kça agresifle
+iyorlar.
+<HEADSET><clr:255,255,138>Öf.
+eyleri solumamam gerekti
+ini dü
+<HEADSET><clr:255,255,138>Kat
+lerlemeye devam et.
+<HEADSET><clr:255,255,138>Bir de belki daha az nefes al.
+<HEADSET><clr:255,255,138>Alyx, onlara dokunmak nas
+l hissettirdi?
+Sümüksü? Biraz da iç ürpertici.
+<clr:255,190,255>Of.
+<HEADSET><clr:255,255,138>O nas
+<clr:255,190,255>Keskin.
+<HEADSET><clr:255,255,138>Kaç puan verirdin?
+<clr:255,190,255>6 verirdim.
+<HEADSET><clr:255,255,138>Tamam. 6.
+<clr:255,190,255>Ama 7'ye yak
+n bir 6.
+<HEADSET><clr:255,255,138>Aman tanr
+m. A
+bakma.<sb>A
+bakma!
+<clr:255,190,255>Russ, yak
+mda bile de
+ilsin!
+<clr:255,190,255>Evet, hakl
+<clr:255,190,255>Eyvah, bu adam
+n üzerinde bir
+ey yok.
+<clr:255,190,255>Yakalad
+<clr:255,190,255>Russ, bir
+ark
+ad
+söylesene.
+<HEADSET><clr:255,255,138>"Flight of the Bumblebee".
+<clr:255,190,255>Hemen çalay
+<clr:255,190,255><delay:4>Of, bu çok fenaym
+<HEADSET><clr:255,255,138>[Kesik Statik Sesi] Alyx? Alyx, cevap ver.
+unu görüyor musun? Russell? Russell!
+<HEADSET><clr:255,255,138>[Statik] Alyx! Alyx! Ne oldu?
+eye
+Köpe
+e benzeyen
+Elektrikli bir
+ey vard
+<HEADSET><clr:255,255,138>Tüh, kaç
+ma üzüldüm.
+<clr:255,190,255>O
+eyi öldürdüm ve san
+m bunu s
+<clr:255,190,255>Hey, Russell. Köpe
+in içinden bu ç
+<HEADSET><clr:255,255,138>Uu
+una bak. Hah.
+lginç.
+te burada Russ!
+<clr:255,190,255><delay:3>Siktir, elektrikli köpek.
+<HEADSET><clr:255,255,138>Dikkatli ol Alyx!
+m, adam
+n içine girdi!<sb>Russell?
+<HEADSET><clr:255,255,138>[Statik] Alyx! Köpek gitti mi? Ne oldu?
+<clr:255,190,255>Yeni durum var:<sb>Köpek ölü birinin içine girdi.
+<HEADSET><clr:255,255,138>Yok art
+<clr:255,190,255>Evet.<sb>Her ikisini de vurmam gerekti, ÇOK ACAY
+Russell.
+<HEADSET><clr:255,255,138>Kula
+a da çok acayip geliyor.
+<clr:255,190,255>Kesinlikle öyleydi.
+ttifak kalkan
+kap
+... [Sinyal Kesilir]
+<HEADSET><clr:255,255,138>[Statik] O köpek geri mi geldi Alyx?
+<clr:255,190,255>Evet. Bu sefer biraz
+Zorlad
+yisin ama, de
+<clr:255,190,255>Evet Russ, iyiyim.
+<HEADSET><clr:255,255,138>Seni oradan ç
+karmal
+ve çat
+ya gitmeni sa
+lamal
+te.<sb>Bu asansörle güç istasyonuna ç
+kabilirim.
+<clr:255,190,255>Yukar
+ya giden bir asansör buldum.
+<HEADSET><clr:255,255,138>Oh, harika.
+<clr:255,190,255>Güç istasyonu bir kat üstümde.
+<clr:255,190,255>Tamam, güç istasyonu orada, bir üst kata ç
+p kapatal
+<clr:255,190,255>Evet, güç istasyonuna yakla
+yoruz.
+<HEADSET><clr:255,255,138>Evet, bu
+ttifak duvar
+bir
+ekilde a
+man gerekecek.
+<clr:255,190,255>Kapatman
+n bir yolunu bulaca
+<clr:255,190,255>Tamam... Bu, duvar
+kapatmal
+<clr:255,190,255>Of be.
+<HEADSET><clr:255,255,138>O bariyerin güç kayna
+<HEADSET><clr:255,255,138>Yolunu engelleyen bir
+<clr:255,190,255>Bunu aç
+p devre d
+rakaca
+<clr:255,190,255>Endi
+elenmek istemiyorum ama art
+k babam
+n dönmü
+gerekmiyor mu?
+<HEADSET><clr:255,255,138>Bir dü
+ünelim Alyx.<sb>Baban, yayan olarak saatte 5 km yürüyor
+<HEADSET><clr:255,255,138>Ayr
+ca kendisi bir kaçak ve tek bir baca
+var
+<sb>Önünde engeller var, dümdüz bir yol yok
+<sb>Ee, bak?<sb>Yalan söylemeyece
+imdiye kadar dönmü
+gerekiyordu.
+<clr:255,190,255>Evet. O zaman endi
+e <I>etmeliyim<I> yani?
+<HEADSET><clr:255,255,138>Normalde evet.<sb>Ama tehlikeye do
+ru SEN gidiyorsun. O yüzden as
+l biz senin için endi
+e etmeliyiz.
+<HEADSET><clr:255,255,138>Alyx! Bugün
+ansl
+günün!<cr>O ittifak silah
+kimseye genetik olarak ba
+de
+<HEADSET><clr:255,255,138>Hâlâ kutusunda!<sb>Normalde kutusunda tutmazlar.
+<HEADSET><clr:255,255,138>Genetik kodunu de
+tirmeme bile gerek kalmad
+<clr:255,190,255>Evet, tüh. Halbuki bu çok ho
+una giderdi.
+<HEADSET><clr:255,255,138>Sorun de
+il. Ba
+ka zaman art
+te geldik.
+imdi o kablolar
+kes de buradan gidelim.
+<clr:255,190,255>Bu, a
+dan göründü
+ü kadar kolay olmayacak.
+<clr:255,190,255>Kablolar
+lant
+buradan kesmenin bir yolunu göremiyorum.
+<clr:255,190,255>Russ, bu kablolar
+l kesece
+<HEADSET><clr:255,255,138>Kablo kapa
+aç
+p kablolara ate
+etmeyi deneyebilirsin.
+<clr:255,190,255>Ah! Tamamd
+<clr:255,190,255>Ah, ba
+n üzerinde kapak var.
+<clr:255,190,255>Güzel.
+<HEADSET><clr:255,255,138>Çok iyi,
+imdi içeri gidip güç kayna
+devre d
+rak.
+anslar!
+anslar.
+<clr:255,190,255>[Öksürür]
+Ne
+Bu
+<clr:107,232,120><sfx:1>[Zorlukla Nefes Al
+<clr:255,190,255><sfx:1>[
+ekilde Nefes Al
+m, bu bir Vortigaunt
+<clr:107,232,120>Karanl
+kta
+p kalm
+<clr:255,190,255>Art
+k özgürsün.<sb>Her
+ey yolunda. Beni arkada
+n gönderdi.
+Sen bizim dostumuzsun.
+<clr:255,190,255>Sana burada ne yap
+yorlar?
+<clr:107,232,120>Hepimize ne yap
+yorlarsa onu.
+hur Alyx Vance'e göstermeliyim.
+<clr:107,232,120>Gel!
+uraya bak!
+hur Alyx Vance gelmeli.
+<clr:107,232,120>Lütfen, gel.
+ttifak, silahlar
+korumak için bizden güç emiyor.
+<clr:107,232,120>Orada
+<clr:107,232,120>Ve orada
+Özümüzden kopar
+n arkada
+öldürmesini engellemeliyiz.
+<clr:107,232,120>Vortigaunt kendimizi kurtaracak ve intikam
+alacak.<sb>SEN, silaha gitmelisin.
+<clr:255,190,255>Güç istasyonlar
+çal
+sürece Gök Kale
+ye giremem.
+<clr:107,232,120>Endi
+elenme Alyx Vance.<sb>
+stasyonlar <I>çal
+mayacak.<I><sb>Buna izin <I>vermeyece
+<clr:107,232,120>Yolu açaca
+<clr:107,232,120><sfx:1>[
+<clr:107,232,120>Git
+imdi. Yollar
+z ayr
+yor.<sb>Ama unutma; aram
+zda mesafe yok.<sb>Ortak varl
+a sahibiz.
+<clr:255,190,255>Buras
+biraz kalabal
+kla
+yor Russ.
+<HEADSET><clr:255,255,138>Güç istasyonunu kapatt
+zdan beri ileti
+im kanallar
+susmuyor.<sb>Gök Kale'nin pe
+inde oldu
+umuzu biliyorlar.<sb>Orada ne varsa, elde etmemizi H
+Ç istemiyorlar.
+<clr:255,190,255>Ben de o silah
+art
+k daha fazla istiyorum.
+<HEADSET><clr:255,255,138>Güç istasyonlar
+rakmas
+için o Vortigaunt'a fazla güveniyoruz.
+<clr:255,190,255>Ona güveniyorum.
+<HEADSET><clr:255,255,138>Evet. Ben de.<cr>Ama
+Dedi
+ini yapmazsa Gök Kale yerinde kalmaya devam edecek.<sb>Biz de keklik gibi ortada kalaca
+z. Etraf
+z ku
+biçimde...
+<clr:255,190,255>Russ.<cr>Ona güvenmek
+Elimizdeki tek plan.<sb>Dedi
+ini yapacak. Bunu ba
+arabiliriz.
+<HEADSET><clr:255,255,138>Evet. Hakl
+n. Dedi
+ini yapacakt
+r.<sb>Her
+ey yolunda gidecek.
+<HEADSET><clr:255,255,138>Bulundu
+un yerden Gök Kale
+ye giden bir yol yok.<sb>Yani etraftan dolanman gerekecek.
+<clr:255,190,255>Sonuçta devasa bir yap
+, yolumu bulmam zor olmasa gerek.
+<clr:255,190,255>O silahla burada ne yapt
+anlam
+ilim.
+er bu kadar güçlüyse neden böyle bir çöplükte tutuyorlar ki?
+<HEADSET><clr:255,255,138>Dünya d
+na götürmenin bir yolunu arad
+dü
+ünüyorum.<sb>Kendi gezegenlerine veya ba
+ka bir gezegene.
+<clr:255,190,255>Burada niye kullanm
+Buradaki sava
+zaten kazand
+lar Alyx.
+<clr:166,242,255><I>Bölge istasyonu 1'de toplan
+n, ate
+serbest.<sb>Hedef, birincil göreviniz olarak belirlendi.<sb>Gördü
+ünüz yerde cezai i
+lem ba
+lat
+n.<I>
+<clr:166,242,255><I>Birey, çok say
+da 5. seviye kanun kar
+eylem gerçekle
+tirmekle suçlan
+yorsunuz.<sb>Karasal güvenlik ekibine zorluk ç
+karmay
+n.<sb>Karasal güvenlik ekibi: Dikkat.<cr>Kod: Sald
+r.
+zole et. Etkisizle
+tir.<I>
+<clr:255,190,255>Ne dersin Russ?<sb>Zorluk ç
+karmasak iyi olacak galiba?
+<HEADSET><clr:255,255,138>Evet, çok ciddi bir havas
+<clr:255,190,255>Buraya kadar iyi geldik.
+<HEADSET><clr:255,255,138>Zorluk ç
+karmaym
+<clr:18,199,226>Güvenlik, birincil görevden ötürü çok kay
+p verdik.
+<clr:166,242,255><I>Güvenlik, etkisizle
+tirmenin ba
+z oldu
+unu onayl
+yor.<sb>Destek için bekle.<sb>Bask
+lay
+birim geliyor.<I>
+<clr:18,199,226><force>Hedef sald
+yor, geri dön ve destekle.
+<clr:255,190,255>Uf
+Bunu da atlatt
+unu GÖRÜYOR musun?!
+<clr:255,190,255>Neyi?
+<HEADSET><clr:255,255,138>Vortigauntlar güç istasyonunu devre d
+rak
+<clr:255,190,255>Evet!
+<HEADSET><clr:255,255,138>Plan
+z i
+e yarayabilir.
+<clr:255,190,255>Umar
+<HEADSET><clr:255,255,138>Alyx! Yukar
+<HEADSET><clr:255,255,138>Yukar
+bak, yukar
+<HEADSET><clr:255,255,138>Bak, kim geldi!<sb>Dronu tekrar çal
+<HEADSET><clr:255,255,138>Onu yok say. D
+da bulu
+leride
+ttifak barikatlar
+var gibi görünüyor.<sb>Gök Kale'ye kimseyi yakla
+yorlar.
+<clr:255,190,255>Peki. Sen ne dü
+ünüyorsun?
+çki fabrikas
+na git ve oradan nereye gidebilece
+ine bir bak.<sb>Dronum geri geldi
+i için art
+k üstünlük biz... Yok art
+k, bu bir
+aka olmal
+<clr:255,190,255>Binan
+n giri
+ini göremiyorum. Etrafa bak
+naca
+ne?
+<HEADSET><clr:255,255,138>Bir içki fabrikas
+.<sb>Votka gibi
+eyleri üretiyorlard
+<clr:255,190,255>Votka
+yi bir
+<clr:255,190,255>Votka iyi bir
+<HEADSET><clr:255,255,138>Kesinlikle de
+ildi.
+<clr:255,190,255>Russell votka sevmiyor, anlad
+<HEADSET><clr:255,255,138>Ben öyle bir
+ey demedim!
+<clr:255,190,255>Ama iyi de
+il dedin?
+<HEADSET><clr:255,255,138>Bildi
+in zehirdi
+Ama çok severdim.<sb>Herkes
+Çok severdi.
+<clr:255,190,255>Peki ama kafam kar
+çeri girmenin bir yolunu bulay
+m, sonra sana getirmek için votka arar
+<HEADSET><clr:255,255,138>Bunu yapabilirsen
+Gerçekten çok
+ahane olur.
+<clr:255,190,255>Burada bir sürü eski
+e var.<sb>Alkol bozulur mu?
+<HEADSET><clr:255,255,138>Eskidikçe daha da güzelle
+ir.
+çilir bunlar Alyx!
+<clr:255,190,255>Russell? Sesin gidiyor.
+<HEADSET><clr:255,255,138>Votka bozulmaz Alyx!<sb>Votka bozulmaz!
+<clr:255,190,255>Neyse.
+<HEADSET><clr:255,255,138>Alyx! Cevap ver Alyx!<sb>Alyx? Sonunda.<sb>Seni duyuyorum.
+<clr:255,190,255>Hey Russ.<cr>Vortigauntlar ba
+ka bir istasyonu daha devre d
+rakt
+<clr:255,190,255>Russ! Vortlar ba
+ka bir güç istasyonunu daha devre d
+<HEADSET><clr:255,255,138>Güzel! Bu harika bir haber!
+<clr:255,190,255>Gök Kale'ye do
+rudan giden bir yol yok.<sb>
+çeri gidip bu barikat
+man
+n bir yolunu bulmay
+deneyece
+çeri gidip bir yol bulmay
+<HEADSET><clr:255,255,138>Tamam,
+ey, e
+er yine sinyal giderse
+unu unutma:<sb>Votka bozulmaz, tamam m
+?<sb>Votka sonsuza kadar dayan
+<HEADSET><clr:255,255,138>Alyx, buna inanamayacaks
+<clr:255,190,255>Russ? Öf.
+[Bo
+uyor] Seni adi pez
+uyor] Haydi ama lanet
+Aya
+Art
+k! Bana... Aah!
+uyor] Anla
+san
+yordum. Sen diline hâkim olacakt
+n ben de seni dilinden vurmayacakt
+uyor] Aram
+zdaki her
+ey bitti art
+uyor] Sokay
+<sfx:1>[Bo
+uyor]
+Sülüklerden
+Nefret
+Ediyorum
+uyor] Bu le
+Fabrikada
+r hayatta kalabildim.<sb>Sülükler taraf
+Hâlâ
+Nas
+l yakalanmay
+becerebiliyorum?
+uyor] Tamam, art
+k yeter.<sb>Baca
+kesme vakti.<sb> Sen kazand
+n, umar
+m baca
+m bo
+na tak
+r i
+renç yarat
+uyor] Böyle ölmektense çok daha iyi bir
+ekilde ölebilirdim.<sb>Rezalete bak.
+uyor] Bo
+ulmak.<sb>
+ttifak devriyesi taraf
+ndan ezilmek.<sb>Uzunbacak taraf
+ndan ezilmek,<sb>bo
+ulmak veya ikiye bölünmek.<sb>Hatta tüberküloz bile buna ye
+dir.
+Oo! Hey! Hey!<sb>Üzerinde, ee, kan olan ki
+i, hey.<sb>Üstü kanl
+ki
+Ufak bir problemim var burada.
+<clr:255,190,255>Evet, evet öyle görünüyor.
+Ee... Üzerinde silah yoktur herhâlde?
+Evet,
+u silaha bak!<sb>Of... Ne de güzelmi
+Ah! Benimkinden de güzelmi
+. Bir de
+u yarat
+k yemeseydi...
+Laf
+ken, o
+eyi vurabilir misin?<sb>Lütfen?
+Bak, muhtemelen yakla
+k 5 saatlik kol gücüne falan sahibim, yani
+Yani, evet, acele etmene gerek yok ama senin için de sorun olmayacaksa
+<sb>Aaah... O
+eyi haklayabilirsin belki.
+Ah, hey, harika.
+Aah, süper. Kahraman
+m benim.
+Hey, bir yard
+m rica etsem?
+Oh. Te
+<clr:255,190,255>O da neydi?
+Ah, Jeff'ti o.
+<clr:255,190,255>Jeff mi?
+Endi
+elenme, seni göremez.<sb>
+itmesinde sorun yok ama.
+Mozart gibi kula
+a sahip.
+<clr:255,190,255>Kim gibi?
+Gel,
+imdi sana yard
+m edeyim.
+Tamam.<sb>Di
+er tarafta görü
+ürüz çaylak.
+Ve k
+k sesle konu
+ldar]
+te orada.
+<clr:255,190,255><I>Jeff mi?<I>
+ldar] Bak, izle
+Gördün mü? Hiç
+maz.<sb>Ama seni bir bulursa kollar
+kopart
+Oha, oha, oha, yok art
+k?!<sb>Jeff kur
+un geçirmez!
+<clr:255,190,255>Bu bir
+<clr:255,190,255><sfx:1>[Öksürüyor]
+<clr:255,190,255><sfx:1>[Yüksek Sesle Öksürüyor]
+<clr:255,190,255>[Öksürüyor] Lanet
+ey!
+<clr:255,190,255>[Öksürüyor] Öf
+Hey, hey! Bu
+eyler çok fena!<sb>A
+kapat!
+r, te
+<clr:255,190,255>[Öksürüyor] Tamamd
+Hey, neredeyse unutuyordum.<sb>Ad
+n ne?
+<clr:255,190,255>Alyx! Alyx Vance!
+Selam Alyx. Ben Larry.<sb>Memnun oldum.<sb>Ölmemeye çal
+Öksürmemek için a
+Hey! Hey!<sb>Öksürmemek için a
+Konumunu ele vereceksin!<sb>Öksürmemek için a
+Jeff öksürdü
+ünü duyabilir!<sb>A
+<clr:255,190,255><sfx:1>[Nefesi Kesilir]
+<clr:255,190,255>Oh
+<clr:255,190,255>Senden nefret ediyorum Jeff
+Hey! Alyx Vance!<sb>Hâlâ hayattas
+<clr:255,190,255>Evet! Jeff'i çöp s
+na hapsettim.
+<clr:255,190,255>Ve sonra onu ezdim.
+Oha!
+Umar
+m votkalar
+n iyisine denk gelmi
+sindir.<sb>Sonra görü
+ürüz!
+m, Jeff.<sb>
+yi misin? [Güler]
+<HEADSET><clr:255,255,138>Alyx, cevap ver.<sb>Hey Alyx!
+te buradas
+n.<sb>Beni duyuyor musun?
+<clr:255,190,255>K
+smen, sesin gidip geliyor.
+<HEADSET><clr:255,255,138>Hâlâ içki fabrikas
+n san
+<clr:255,190,255>Jeff ad
+nda bir arkada
+edindim.
+<HEADSET><clr:255,255,138>Çok iyi.<sb>Yard
+m her zaman laz
+<clr:255,190,255>Evet ama pek yak
+iliz.
+un yerde zeminde, tünel giri
+i boyutunda büyük bir kapak olacak.<cr>Bu kapak da...
+<clr:255,190,255>D
+kan bir tünele mi aç
+lacak?
+<HEADSET><clr:255,255,138>Evet.<sb>Kapa
+aç, sonra nereye gitti
+ini çözerim.
+ttifak buradaki ç
+mühürlemi
+.<sb>Buray
+tekrar aç
+p gidece
+<HEADSET><clr:255,255,138>Güzel!<sb>Ee, ben de nereye gitti
+ini çözeyim.
+un bölgeye ait bir dizi yer alt
+harita verisi buldum!
+<clr:255,190,255>Seni duyam
+yorum. Russell!
+<HEADSET><clr:255,255,138>Yer alt
+. Yerin yüzeyi alt
+ndaki bölümü demek.<sb>Yüzeyin alt
+yani. Alyx? Alyx?
+<HEADSET><clr:255,255,138>O
+ey de ne?!
+EY, Jeff.
+<HEADSET><clr:255,255,138>Ooh. Jeff bu mu? Jeff'i hiç sevmedim.
+<clr:255,190,255>Herkesin sevece
+i biri de
+EY Jeff... K
+<HEADSET><clr:255,255,138>Oh, peki.<cr>Evet. Jeff'i hiç sevmedim.
+Uu, baretin... Güzelmi
+bu arada.
+Baretin güzelmi
+Baretlerin güzelmi
+Uu, masken... Güzelmi
+e yarayacakt
+Bu arada tarz
+n...<sb>Sana yak
+Bu arada kafandaki
+ey ne bilmiyorum ama...<sb>Sana yak
+Uu! Masken güzelmi
+Uu, güzel maske!<sb>Burada i
+ine yarayacakt
+Ve,
+ey, olur da maskeni kaybedersen o
+eylerin etraf
+ndayken elinle a
+kapatmay
+Oh! Ama maskeni kaybedersen...<sb>O
+kapat.<sb>Çok... i
+<clr:255,190,255>Peki, tamamd
+<HEADSET><clr:255,255,138>Tamam, ortal
+k sakin.<sb>Kapa
+aç da tünellerden geçip buradan toz olal
+<HEADSET><clr:255,255,138>Bir konsol bulmaya çal
+<HEADSET><clr:255,255,138>Üzerinde yan
+p sönen
+klar olacak.
+<HEADSET><clr:255,255,138>Haberler iyi: Bu tünel Gök Kale'ye gidiyor.
+<clr:255,190,255>Harika. Ayr
+ca haberin olsun, san
+m tünel kar
+nca aslanlar
+yla dolu. Olur da kal
+olarak ba
+giderse diye dedim.
+<HEADSET><clr:255,255,138>Kar
+, kar
+<clr:255,190,255>Evet, i
+te uzayl
+lar. Delici bacaklar
+olanlardan.
+<HEADSET><clr:255,255,138>Ah! Evet! Kar
+nca gibi ufak
+eyler!
+<HEADSET><clr:255,255,138>Minik,
+irin aslanlar o zaman?
+r, o da de
+il.<sb>Bunlar oldukça tehlikeli
+eyler.
+<HEADSET><clr:255,255,138>Evet. Peki, bunlar her neyse a
+daki tüneldeler.
+<clr:255,190,255>Evet. Gitme vakti.
+<HEADSET><clr:255,255,138>Bacakl
+! Neyse, ölmü
+<clr:255,190,255>Kar
+nca aslan
+bu i
+te Russell.
+bu mu?
+<clr:255,190,255>Evet.<sb>Demek ne olduklar
+sen de biliyorsun.
+<HEADSET><clr:255,255,138>Evet, bacakl
+lar i
+<clr:255,190,255>Russ? Sence bir kafayengeci, bir gorili zombiye dönü
+türebilir mi?
+<HEADSET><clr:255,255,138>Yani, ortalarda ba
+gezen bir goril varsa, bir kafayengecinin durumu daha da kötüle
+tirece
+ini sanmam.
+<clr:255,190,255>Russ, sana o fabrikadan votka getiremedi
+im için üzgünüm.
+il.<sb>Dönerken birkaç tane kapars
+m votka ta
+mak için çekti
+im cefay
+takdir ediyorsundur.
+m bir kasa votkay
+ta
+<HEADSET><clr:255,255,138>Ediyorum.<cr>Ama sonuçta iki elin var.<sb>Dönerken ikinci
+eyi de alabilir misin?
+<HEADSET><clr:255,255,138>Gerçekten takdir ediyorum.
+<HEADSET><clr:255,255,138>2
+e hem de!
+<HEADSET><clr:255,255,138>3
+<HEADSET><clr:255,255,138>Beraberinde ta
+n bunca votkayla gerçeken kendini a
+n.<sb>Biraz pervas
+z ve a
+ama
+Gerçekten takdir ediyorum.
+<clr:255,190,255>Ama bunlardan biri benim için.
+<HEADSET><clr:255,208,172>Hapishane
+<clr:255,190,255>Bir dakika... Baba... Ne?!
+<HEADSET><clr:255,255,138>Ne dedin?
+<clr:255,190,255><I>Neyi<I> içeride tutuyorlar?
+<HEADSET><clr:255,208,172>Bilmiyorum.<sb>Bu veri kapsülünün bile bildi
+inden
+üpheliyim.<sb>Ama orada hapsettikleri bir
+ey var.
+<clr:255,190,255>Vay can
+na, tamam.<sb>Peki bu bir silah de
+ilse yine de devam ediyor muyuz?
+<HEADSET><clr:255,208,172>Bana kal
+rsa, oradaki
+ey her neyse
+ttifak'tan pek ho
+lanm
+yor gibi.<sb>Yani, en az
+ndan bu yan
+z ortak.
+<clr:255,190,255>Do
+<HEADSET><clr:255,208,172>Peki... Yine de devam edecek miyiz?
+<clr:255,190,255>Buraya kadar geldik art
+k, bence devam edelim.<sb>Ve e
+er buldu
+ey, kurcalamamam
+z gereken bir
+eyse geri döneriz.
+<HEADSET><clr:255,208,172>
+te benim k
+m.<sb>Ö
+rendiklerimden seni haberdar ederim.
+<clr:255,190,255>Aah, bölgeyi kapat
+<HEADSET><clr:255,255,138>"Alyx" sahibi olan birini engelleme
+anslar
+<clr:255,190,255>Evet, iyi
+<clr:255,190,255>Russell!<sb>Vortlar son güç istasyonunu da devre d
+<HEADSET><clr:255,255,138>Bana da göster!<sb>Eli!<cr>Vortlar son güç istasyonunu da devre d
+rakm
+<HEADSET><clr:255,255,138>S
+dur Alyx!<sb>Kale dü
+üyor!
+<clr:255,190,255>Bu da ne
+<HEADSET><clr:255,255,138>Bu... Bir çe
+it acil durum yedek gücünü devreye soktular.
+<HEADSET><clr:255,255,138>Acil durum yedek gücünü devreye soktular!
+<HEADSET><clr:255,208,172>Alyx'e söyle, yedek güç stabil olamaz.<sb>Onu da devre d
+rakabilir.
+<HEADSET><clr:255,255,138>Baban diyor ki...
+<clr:255,190,255>Duydum.
+nlara do
+ru gidiyorum yani?
+<HEADSET><clr:255,255,138>Evet. Yedek istasyon orada olmal
+çinde kim varsa, umar
+m buna de
+erdir.
+<HEADSET><clr:255,255,138>Ne dedin Alyx?
+<clr:255,190,255>Hiç, ilerlemeye devam ediyorum.
+<clr:18,199,226><force>Hey! Dikkat et. Bu
+eyin üzerime bula
+mas
+istemiyorum.
+<clr:18,199,226>Neden, tehlikeli mi?
+<clr:18,199,226><force>Bu
+eyi güvenli oldu
+u için bir çukura dökmüyoruz. Devam et.
+<clr:255,190,255>Ooh, sonunda bitti.
+<clr:255,190,255>Hey, Russ, yerime geçmek ister misin?
+<HEADSET><clr:255,255,138>Ee, yok, muhtemelen orac
+kta ölürdüm.
+da biri var!
+ttifak'tan de
+il.<sb>Belki de bir çöpçüdür?<sb>Dikkat et.
+<HEADSET><clr:255,255,138>Eli! Buraya gel!
+<clr:255,208,172>Ne var Russell?
+unu dinle
+Hemen konumunu de
+tirmelisiniz, çok ciddiyim.
+<clr:255,190,255>Dur...
+Yapamama nedeniniz ne?
+O zaman kimin yetkisi var?
+Tamam. O zaman yetkili birini ba
+la.
+Eeh, ne diye u
+yorum ki?<sb>Gitmem gerek.
+Bütün gezegeni 7 saatte ele geçirdiniz.<sb>Bunu niye hemen yapam
+yorsunuz?
+Sorun olur mu hiç?<sb>Tabii beklerim.
+Elbette alay ediyorum.<sb>Fark etti
+ine sevindim.<sb>Evet, bu da alayd
+.<sb>Hat
+rlatay
+m: Müdürünle, zaman
+n kalmad
+konu
+mam gerekiyor.
+Peki, o zaman ben KEND
+müdürümü dahil edersem nas
+l olur?<sb>Bu durumda bir ilerleme kaydedebilir miyiz?
+Hay
+r, ben de onu diyorum.<sb>Müdür zaten <I>benim<I>.<sb>Aptal m
+n nesin?
+Merhaba, güzel, sonunda. Merhaba.
+Kutuyu ta
+mam
+z gerekiyor yoksa bu
+ey yeni Black Mesa olacak.
+Ben de sana HAZIR oldu
+unu söylüyorum.
+Alyx vard
+nda kutu hâlâ oradaysa adam elimizden kaçar.
+Bugün ya
+anan hangi olay, sende Alyx'i durdurabilece
+ine dair bir intiba b
+Bak, o adam Black Mesa'dan sa
+.<sb>Ortal
+n alt
+üstüne getirdi ve bir anda kayboldu.<sb>Sonunda yakalad
+k ve
+imdi gitmesine izin mi vereceksin?<sb>KUTUNUN YER
+DE
+<HEADSET><clr:255,255,138>Black Mesa'dan sa
+Ard
+ndan ortadan kayboldu
+Eli!<sb>Süper silahlar
+gerçekten VAR!
+<HEADSET><clr:255,208,172>Oha Russ.<sb>Gordon Freeman ellerinde.
+na. Bu iyi bir haber, de
+<HEADSET><clr:255,208,172>Bu OLDUKÇA iyi bir haber.
+<HEADSET><clr:255,255,138>Bu
+Bir mucize.
+<clr:255,190,255>Tamam. O zaman
+Gordon Freeman'
+kurtaral
+<HEADSET><clr:255,208,172>Aynen öyle.<sb>Gordon Freeman'
+<clr:255,190,255>Oh. Dü
+manlar.<sb>Hey, bana bir dakika verin.
+<clr:255,190,255>Tamam, o zaman plan
+z kontrol odas
+na gidip Gordon'
+kurtarmak.<sb>Dürüst olaca
+m, onun hakk
+nda çok
+ey duydum ama hep ölmü
+oldu
+unu varsaym
+<HEADSET><clr:255,255,138>Ben de.
+<clr:255,190,255>Hey, baba. Orada m
+<HEADSET><clr:255,208,172>Evet, ne oldu Alyx?
+er Gordon Black Mesa'dan sa
+ysa
+Bunca zaman neredeydi?
+<HEADSET><clr:255,208,172>Bilmiyorum.<sb>Ama eminim bu muhte
+em bir hikâyedir.
+<clr:255,190,255>Gordon'
+ktan sonra i
+leri bir sonraki seviye ta
+yabiliriz, ne dersin Russ?<sb>Belki de Hisar'
+ala
+edebiliriz.
+<HEADSET><clr:255,255,138>Sonuçta insanl
+bir defa kurtard
+.<sb>Eminim tekrar yapabilir.
+<clr:255,190,255>Ve bu sefer yaln
+z olmayacak.
+<HEADSET><clr:255,208,172>Alyx
+Orada m
+<clr:255,190,255>Evet baba.
+<HEADSET><clr:255,208,172>Oradan Gök Kale'ye girebileceksin gibi duruyor.<sb>Giri
+e uzanan köprüyü kontrol eden bir terminal var.
+çerideki güvenlik nas
+<HEADSET><clr:255,208,172>Önümde detayl
+ekilde hepsi aç
+<sb>
+çeride çok say
+da güvenlik var.<sb>Böylesini daha önce hiç görmemi
+m do
+açlama yapmam gerekecek.
+<HEADSET><clr:255,208,172>Eh, endi
+elenme can
+m. Bir yolunu bulaca
+nlar BU kulenin tepesinden ç
+<HEADSET><clr:255,255,138>Evet, öyle.
+<clr:255,190,255>Burada ne yap
+yorlar acaba?
+Sa
+yorlar gibi duruyor
+<HEADSET><clr:255,255,138>Harika i
+kard
+n Alyx.<sb>Bütün kaynaklar
+senin üzerinde kullan
+ol Russ. Çok yakla
+<HEADSET><clr:255,255,138>Kaydediyorum Alyx!<sb>Kafan
+çevirme!<sb>Gelecek nesillere b
+m bunu!
+te kontrol odas
+<HEADSET><clr:255,255,138>Evet... Neredeyse geldik.
+<HEADSET><clr:255,255,138>Alyx, Gök Kale'ye gelmek üzereyiz.<sb>Reçineni kullanabilece
+in ba
+ka bir f
+rsat kar
+na ç
+kmayabilir.
+<clr:255,190,255>Evet. Reçineyle yapabilece
+im güçlendirme var m
+bir bakay
+<HEADSET><clr:255,255,138>Tabancam
+n buralara kadar gelebilmi
+na inanam
+<clr:255,190,255>Tabancay
+Gordon'a vermeyi dü
+<HEADSET><clr:255,255,138>Beni bilerek sinir etmeye çal
+yorsun.<sb>Oyuna gelmeyece
+im.<sb>Ama ciddiysen, bence bence pompal
+i ver.<sb>Duydu
+uma göre pompal
+ondan daha iyi kullanan yokmu
+<clr:255,190,255>Söyledi
+in iyi oldu.
+<HEADSET><clr:255,255,138>Alyx, hemen ileride bak.<sb>Oradaki kontrolleri kullanarak Gök Kale'yi istasyona yakla
+rabilirsin.
+<clr:255,190,255>Evet, haydi bakal
+m.
+nsanl
+n kurtar
+kurtarma vakti.
+<HEADSET><clr:255,208,172>Can
+m, asl
+nda, sen de gayet iyi i
+<HEADSET><clr:255,208,172>Dünya senin gibi birini Yedi Saat Sava
+'nda kullanabilirdi.
+<clr:255,190,255>Belki sayemde 8 saat dayan
+<clr:255,190,255>S
+çay
+imdi ne oldu?
+<clr:255,190,255>Oh! Harika.
+<clr:255,190,255>Tamam, tamam,
+ey, bunlardan biri köprüyü uzat
+yor olmal
+De
+<HEADSET><clr:255,255,138>Kesinlikle. Bir tanesini seç.<sb>
+<clr:255,190,255>Eee
+<clr:255,190,255>BU olsun.
+O de
+r, bu köprü de
+<HEADSET><clr:255,255,138>Alyx, köprü hareket etmiyor.<sb>Köprü neden hareket etmiyor?
+<clr:255,190,255>Fark
+m, Russ. Hareket etmedi
+ini görüyorum.
+<HEADSET><clr:255,255,138>Olmad
+<HEADSET><clr:255,255,138>Hiç olmad
+<HEADSET><clr:255,255,138>Alyx
+Alyx
+ALYX
+ALYX!
+<clr:255,190,255>Olamaz. Olamaz
+OLAMAZ!
+<clr:255,190,255>Aaah!
+imdi derken, hemen
+imdiyi kastetmi
+<HEADSET><clr:255,208,172>Russel, b
+rak da k
+z dü
+ünsün!
+imdi Alyx.
+<HEADSET><clr:255,255,138>Alyx, lütfen, seç bir tane.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, iyi misin?
+<clr:255,190,255>Galiba
+Az önce Gordon Freeman'
+öldürdüm.
+<HEADSET><clr:255,255,138>Gök Kale hemen ileride.<sb>
+çeri gir ve Gordon'
+kurtar.<sb>Ya da ondan geriye ne kalm
+sa.
+<clr:255,190,255>Gidiyorum.
+<clr:18,199,226><force><I>Komuta hasar de
+erlendirmesi istiyor.<I>
+<clr:18,199,226><force>Hasar: %70
+%80
+%90
+Tamamen.
+<clr:18,199,226><force><I>Tamamen mi?<I>
+<clr:18,199,226><force>Tamamen.
+<clr:18,199,226><force><I>Destek birimleri geliyor.<I>
+<clr:18,199,226><force>Dü
+man ate
+<clr:18,199,226><force>Onar
+m veya tahliye gerekli.
+<clr:18,199,226><force>Bilmiyorum.
+<clr:18,199,226><force>Onu tekmeliyor.
+<clr:18,199,226><force>Güvenlik, tekmelemeyi kes diyor.
+<clr:18,199,226><force>Tekmelemeyi kesti.
+<clr:18,199,226><force>E
+il! Geldi!
+<clr:18,199,226><force>Hedef tespit edildi. Hedef tespit edildi.
+<clr:18,199,226>Hedef kimli
+i bilinmiyor.
+<clr:18,199,226><force>Hedef, Alyx Vance.
+<clr:18,199,226>Alyx Vance ile görsel temas yok.
+<clr:18,199,226><force>Hedef, Alyx Vance!
+<clr:18,199,226><force>Hedef tabii ki Alyx Vance.
+<clr:18,199,226>Güvenlik'e hasar de
+erlendirmesini teslim et.
+<clr:18,199,226>Anla
+<clr:18,199,226>Tekrar ediyorum. Güvenlik'e hasar de
+<clr:18,199,226>Sald
+<HEADSET><clr:255,255,138>Bir Uzunbacak.<cr>Devre d
+gerçi.<sb>
+z.<sb>Bu
+eyin önümüze ç
+ünsene?
+<clr:255,190,255>Russ, lütfen.<cr>U
+ursuz, u
+ursuz konu
+<HEADSET><clr:255,255,138>Alyx! Uzunbacak!<sb>Dikkat et, çal
+<clr:255,190,255>Siktir. Gidiyorum, Gidiyorum.
+<HEADSET><clr:255,255,138>Aah. U
+ursuzluk getirdim, de
+<clr:255,190,255>Evet!<cr>Demedim mi u
+ursuz u
+ma diye Russell!
+<clr:255,190,255>Aah! Hareket ediyor.<sb>Hareket etmeye devam ediyor.
+<clr:255,190,255>Russell!
+leride büyük bir silah var.
+<HEADSET><clr:255,255,138>Bir fikrim var.
+<clr:255,190,255>Evet, benim de var bir tane.
+<clr:255,190,255>Benim de bir fikrim var.<cr>Bence iyi de bir fikir.
+<HEADSET><clr:255,255,138>Haydi! Geç ba
+na!<cr>Ate
+et! Ate
+et!
+<clr:255,190,255>Ediyorum!
+<HEADSET><clr:255,255,138>Ha!
+e yar
+yor!<sb>San
+m i
+yor.<sb>Ate
+edilmekten ho
+görünmüyor. Ate
+etmeye devam!
+<clr:255,190,255>Russell, b
+rak da ate
+edeyim!
+<HEADSET><clr:255,255,138>Evet, evet! Evet!<sb>Ate
+etmeye devam et!<sb>
+te bu!<sb>Ate
+! Ate
+!<sb>Ate
+! Evet!
+<clr:255,190,255>[Rahatlam
+ekilde Gülüyor] Ba
+k Russ.
+<HEADSET><clr:255,255,138>Evet, ba
+k. Ba
+<HEADSET><clr:255,255,138>Peki Alyx.<sb>Bu çekim
+, seni Gök Kale'ye ç
+kartacak gibi duruyor.
+<clr:255,190,255>Oha! Pekâlâ. Yukar
+<HEADSET><clr:255,255,138>[Sinyal Kayboluyor] Aah. I
+n stati
+e neden oluyor.<sb>Muhtemelen oradayken seninle konu
+amayaca
+<clr:255,190,255>Muhtemelen.
+<HEADSET><clr:255,255,138>[Sinyal Kayboluyor] Sona geldik art
+k yani.
+<HEADSET><clr:255,255,138>[Sinyal Kayboluyor] O zaman oradan Gordon'la sa
+salim bir
+ekilde ç
+kacaks
+n ve her
+ey iyi...
+ey iyi olacak Russ.<cr>Sonra konu
+<HEADSET><clr:255,208,172>Russell, durdur onu!
+<HEADSET><clr:255,255,138>Ne... Neden?
+<HEADSET><clr:255,208,172>Alyx! Oraya girm... [Sinyal Kayboluyor]
+<clr:255,190,255>Baba? Baba?
+<clr:255,190,255>Apartmanlar, t
+babam
+n dedi
+i gibi.
+<clr:255,190,255>Tamam, buras
+tuhafm
+. Ama bilemiyorum. Çok tehlikeli görünmüyor.
+<clr:255,190,255>Oooo
+te, bu olmal
+<clr:255,190,255>Pekâlâ Gordon Freeman. Umar
+m bütün bunlara de
+ersin.
+<clr:255,190,255>Pekâlâ Gordon,
+imdi seni buradan ç
+karal
+<norepeat_global:10>Etkileyici bir i
+z Vance Han
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman m
+? [Gülüyor]
+<norepeat_global:10>Vance Han
+m.<sb>Gordon Freeman'
+hapsetmek için <I>bütün bunlara<I> ihtiyaç yok ki.
+Siz kimsiniz?
+<norepeat_global:10>Belki de önemli olan, <I>ne oldu
+umdan<I> ziyade, tüm çabalar
+z kar
+nda size ne <I>sunabilece
+imdir.<I>
+<norepeat_global:10>Baz
+, dünyalar
+n kaderinin <I>kati<I> oldu
+una inan
+<norepeat_global:10>
+verenlerim buna kat
+yor.<sb>Onlar bana, baz
+eylerin
+<sb>Kaderini ara s
+ra belirli bir do
+rultuda <I>de
+tirme<I> yetkisi verdi.
+<norepeat_global:10><I>Siz<I>, neyin de
+tirilmesini isterdiniz Vance Han
+n Dünya'dan gitmesini.<cr>
+n Dünya'dan gitmesini istiyorum.
+<norepeat_global:10>Bu büyük bir de
+iklik olur.<sb>
+verenlerimin ç
+karlar
+ünülürse, biraz fazla büyük bir de
+iklik...
+<clr:255,190,255>Soruyu soran sizdiniz.
+stedi
+inizi henüz <I>bilmedi
+iniz<I> bir
+eye ne dersiniz?
+<clr:255,190,255>Nerede
+Neredeyiz?
+Baba? Baba? Ne
+<sb>O ben miyim?<sb>Bu nedir?<sb>Neler oluyor?
+<norepeat_global:10>Gelecekteyiz.<sb>Bu, baban
+n ölümüne
+ahit oldu
+unuz an.
+<norepeat_global:10>Tabii
+<clr:255,190,255>Ne? Tabii NE?
+<norepeat_global:10>Tabii dizginleri elinize almazsan
+<norepeat_global:10>Baban
+kurtar
+n, Vance Han
+<norepeat_global:10>Eldivenleriniz, Vance Han
+<norepeat_global:10>Güzel.<sb>Eyleminizin bir sonucu olarak, <I>bu varl
+k<I>, varl
+sürdürecek.
+<norepeat_global:10>Ve bu varl
+k sürdürmeyecek.
+<clr:255,190,255>Tamam. Peki
+O iyi, de
+il mi? Ya
+yor. Babam ya
+yor yani?
+<norepeat_global:10>Fevkalâde yararl
+bir varl
+k <I>oldu
+unuzu<I> kan
+tlad
+<norepeat_global:10>Bir önceki çal
+an,<sb>kendisine verilen görevleri yapamad
+<sb>veya yapmak istemedi.
+<norepeat_global:10>Onun yerine geçecek uygun ki
+iyi bulmakta zorland
+<norepeat_global:10>Ta ki
+imdiye kadar.
+r! Ben... Ben... Eve gitmek istiyorum. Beni eve gönder!
+<norepeat_global:10>Korkar
+m vaziyeti yanl
+anlad
+<clr:255,190,255>Bir dakika. Hey, dur, dur, dur...
+<clr:255,208,172>Gordon! Gordon! Uyan Gordon!
+<clr:255,208,172>Alyx yok oldu, Gordon.<sb>YOK OLDU.
+<clr:255,208,172>Bu orospu çocu
+u ve onun öngörülemeyen sonuçlar
+!<sb>Biliyordum.<sb>Bir elime geçireyim, onu
+<sb>Onu GEBERTECE
+M. Bir yolunu bulmal
+m. Hemen
+<clr:255,208,172>[Derin Bir Nefes Verir]
+<clr:255,208,172>Haydi, Gordon.
+<clr:255,208,172>Yapacak çok i
+imiz var.
+<clr:255,190,255>[Koklar] Öf. Le
+gibi kokuyorlar.
+<HEADSET><clr:255,255,138>Gerçekten mi?<sb>Ne gibi kokuyor? Biraz daha ayr
+ver.
+<clr:255,190,255>Amonyakla kar
+Çürük hayvan gibi kokuyor.
+<HEADSET><clr:255,255,138>"Amonyakla
+Kar
+Hayvan." Tamam.
+eylere dokundukça bana daha fazla zehirlilermi
+gibi geliyor.
+<HEADSET><clr:255,255,138>Peki ya kanseri iyile
+tiriyorsa?
+<clr:255,190,255>Peki ya beni kanser ED
+YORSA?
+<HEADSET><clr:255,255,138>Peki ya seni yeni türde bir kanserle kanser ediyorsa?
+<clr:255,190,255>Russ, art
+k daha az dokunaca
+<HEADSET><clr:255,255,138>Peki.
+<clr:255,190,255><sfx:1>[Hap
+yor]
+<HEADSET><clr:255,255,138>Çok ya
+<clr:255,190,255>Of, sen de gör.
+<HEADSET><clr:255,255,138>Alyx. O
+eyden yüksek seviyelerde anti parçac
+k yay
+yor.<sb>Uyaray
+m dedim.<sb>
+çeride i
+ler kuantum baz
+nda biraz tuhafla
+abilir.
+<clr:255,190,255>Russell, bugün olan her
+eyi izledin.
+mi tuhafla
+acak diyorsun?
+<clr:255,190,255>Tamam, o zaman haz
+rlansam iyi olacak.
+San
+m bütün uzayl
+öldürdüm. Galiba hepsi öldü.
+<HEADSET><clr:255,255,138>Güzel. Harika. Müthi
+imdi tek yapmam
+z gereken Gök Kale'ye gitmek, sonra kolay bir
+ekilde
+Dünya'dan defetmek ve sandviç yemek... Her
+ey bitti
+inde sandviç yiyece
+<HEADSET><clr:255,255,138>Evet. Kesinlikle.
+<clr:255,190,255>Güzel. Umar
+m lezzetlidirler.
+Dünya'dan defettikten sonra sen ne yapmay
+planl
+yorsun Alyx?
+<clr:255,190,255>Hmm
+ey, babamla bir ev al
+z, yeniden in
+a ederiz. Sonra gizli bir laboratuvar açar
+<HEADSET><clr:255,255,138>Gizli olmas
+na da gerek yok.<cr>Hayat
+herkese aç
+ekilde ya
+ayabilirsin.
+<clr:255,190,255>Peki, evet. O zaman laboratuvar
+açar
+m ve hatta kilitlere, kap
+lara ya da pencerelere ihtiyac
+m da olmaz!
+<HEADSET><clr:255,255,138>Yani
+Yok, sonuçta suçlular olmaya devam edecek.<cr>Sadece uzayl
+lar olmayacak.
+<clr:255,190,255>Ooh. Pff, evet.
+<HEADSET><clr:255,255,138>Yani kap
+lar ve kilitler olsun.<cr>Ne olur ne olmaz. Silah da bulundur.
+<HEADSET><clr:255,255,138>Baban geldi!
+<HEADSET><clr:255,208,172>Russell!<cr>Seni gördü
+üme sevindim!
+<HEADSET><clr:255,255,138>Ben de! Çok iyi oldu bu durum.
+<HEADSET><clr:255,255,138>Zira hayatta kalmana %4'lük bir ihtimal veriyordum.
+<HEADSET><clr:255,208,172>Bunun için
+u Vortigaunt
+a te
+ekkür edebilirsin. Beni buraya o getirdi.
+<clr:255,190,255>Russ! Russell! Babam
+ver!
+<HEADSET><clr:255,208,172>Alyx! Can
+<clr:255,190,255>Baba! Güç istasyonlar
+ndan birini devre d
+<HEADSET><clr:255,208,172>Güzel. Çünkü transfer ba
+nda silah da gidecek. O silah
+bu gece ele geçirmeliyiz.
+<clr:255,190,255>Geçirece
+iz. Veri kapsülü hâlâ sende, de
+<HEADSET><clr:255,208,172>Evet. Russ, bu
+ey biyolojik olarak kodlanm
+.<sb>Bana bir TLI laz
+urada bak.
+<HEADSET><clr:255,208,172>Güzel, harika.<sb>Sen iyi misin can
+<clr:255,190,255>Evet. Sen i
+ine dönebilirsin, ba
+ma bir
+ey gelmeyecek baba... Söz.
+<HEADSET><clr:255,208,172>Sözünü tutsan iyi edersin.<sb>Ben veri kapsülü üzerinde çal
+<HEADSET><clr:255,208,172>Bir
+ey buldum.
+<HEADSET><clr:255,255,138>Ne buldun?
+<clr:255,190,255>Evet baba, ne buldun?
+<HEADSET><clr:255,208,172>Silah
+n ne oldu
+unu henüz bilmiyorum.<sb>Fakat, nas
+l elde ettiklerini B
+YORUM.
+kendileri yapmam
+.<sb>Sanki
+<sb>Bilmiyorum; bir
+ey ke
+fetmi
+ler.<sb>Ya da aç
+a ç
+karm
+Ne demek istiyorsun?
+<HEADSET><clr:255,208,172>E
+er do
+ru anlad
+ysam, silah
+Karantina Bölgesi'ndeki eski bir apartman dairesine kadar takip etmi
+ler.<sb>Ama içeri girmek yerine bütün binay
+al
+p etraf
+na bir kale in
+a etmi
+<clr:255,190,255>Hassiktir.<sb>Bu
+eyden ödleri kopuyor olmal
+<HEADSET><clr:255,208,172>B
+M de bundan korkup korkmamam
+z gerekti
+ini ö
+renmeye çal
+<clr:255,190,255>Russ... Sence Gordon Freeman'a orada ne yap
+yorlard
+<HEADSET><clr:255,255,138>Güzel soru
+<clr:255,190,255>Acaba... Beynini emiyorlar m
+<HEADSET><clr:255,255,138>Hmm. Bence onu Dünya d
+na götürecekler.
+<clr:255,190,255>Neyse, ö
+renmek için beklemeyelim. Böyle bir
+ey olmadan önce oraya ula
+aca
+<clr:255,190,255>Russ, levyenin olay
+nedir?
+<HEADSET><clr:255,255,138>Gordon Freeman'
+n levyesi mi?
+<HEADSET><clr:255,255,138>Oh Alyx; Gordon Freeman, elinde SADECE levyeyle Black Mesa'dan ç
+<clr:255,190,255>Haydi can
+<HEADSET><clr:255,255,138>Cidden! Yani en az
+ndan öyle diyorlar. Kimse tam olarak bilmiyor tabii.
+<clr:255,190,255>Freeman'
+zda bu sefer ona bir silah verelim.
+ey... Benimkilerden de
+il ama.<cr>Silah ödünç verme i
+ini b
+m art
+k, tamam m
+<HEADSET><clr:255,255,138>Evet! Benimkilerden de
+il ama.
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>Neler oluy...
+<clr:255,190,255>Babam nas
+l?<sb>
+<HEADSET><clr:255,255,138>Ah, o iyi Alyx.<cr>
+urada, i
+ine odaklanm
+vaziyette.
+<clr:255,190,255>Güzel. Sa
+<HEADSET><clr:255,255,138>Gerçi
+Bir baca
+eksik.
+<clr:255,190,255>Evet, önceden de yoktu.
+<HEADSET><clr:255,255,138>Do
+ru ya. Olmayan baca
+hâlâ yok yani.
+<HEADSET><clr:255,255,138>Ne demek.
+<clr:255,190,255>Hey... Veri kapsülüyle ilgili bir geli
+me var m
+<HEADSET><clr:255,255,138>Baban odaklanm
+vaziyette.<cr>Üzerinde çal
+yor.<sb>
+i bitmek üzeredir herhâlde.
+<clr:255,190,255>Iyy! Yüzümde! Yüzümde!
+m. AMAN TANRIM. AMAN... TANRIM, HAYIR!
+<clr:255,190,255>Aaa! B
+rak! B
+<clr:255,190,255><sfx:1>[Zorlan
+yor, Nefes Nefese]
+<HEADSET><clr:255,255,138>Aaa! Olamaz!
+<HEADSET><clr:255,255,138>At üstünden!
+<clr:255,190,255>Deniyorum!
+renç!
+<HEADSET><clr:255,255,138>Öf, berbat!
+<HEADSET><clr:255,255,138>Oh, sonunda.
+<HEADSET><clr:255,255,138>Of, Alyx, i
+rençti
+<clr:255,190,255>Evet. Evet, öyleydi.
+<HEADSET><clr:255,255,138>Aah! Kafayengeci! Surat
+nda kafayengeci var!
+unu at üstünden Alyx!
+<HEADSET><clr:255,255,138>Oof, cidden s
+ca sar
+<HEADSET><clr:255,255,138>Tut
+unu! Vur bir tane!
+<HEADSET><clr:255,255,138>Vur
+una Alyx! Surat
+ndan at!
+<HEADSET><clr:255,255,138>Oh,
+ükürler olsun
+<clr:255,190,255>Uf.
+yiyim
+ey surat
+ndayd
+ve
+Öf, i
+rençti.
+<clr:255,190,255>Russ, ad
+söylüyorlar?
+<HEADSET><clr:255,255,138>Evet, durum iyi görünmüyor.
+<clr:255,190,255>Haydi ama
+<clr:255,190,255>Of, tamam.
+<clr:255,190,255>Uuh.
+<clr:255,190,255>Ooh
+Öyk.
+<HEADSET><clr:255,255,138>Vurdum seni.
+<clr:255,190,255>Oley!
+<clr:255,190,255>Tuttum!
+<clr:255,190,255>Aha. Yakalad
+<clr:255,190,255>I
+hhh!
+<clr:255,190,255>Ah, siktir.
+<clr:255,190,255>Hassiktir.
+<clr:255,190,255>C
+k. Olmad
+<clr:255,190,255> Oldu.
+<clr:255,190,255>Aah! Oldu.
+<clr:255,190,255>Oldu.
+<clr:255,190,255>Bana uyar.
+m. Bana uyar.
+<clr:255,190,255>Olur.
+<clr:255,190,255>Ohaa!
+<clr:255,190,255>Hah.
+<clr:255,190,255>Vaay.
+<clr:255,190,255>Hahah.
+<clr:255,190,255>Tamam
+<clr:255,190,255>3
+arjör kald
+arjörüm kald
+<clr:255,190,255>3 tane kald
+<clr:255,190,255>Bu sonuncu.
+<clr:255,190,255>Son
+arjör.
+<clr:255,190,255>Bu son
+<clr:255,190,255>1 tane kald
+arjörüm kalmad
+arjörüm bitti.
+arjör bitti mi?
+<clr:255,190,255>Cephanem bitti.
+<clr:255,190,255>Son üç
+<clr:255,190,255>3 tane daha var.
+<clr:255,190,255>Siktir. Bu son
+<clr:255,190,255>Aah, cephanem bitti.
+<clr:255,190,255>3 fi
+ek kald
+<clr:255,190,255>Son fi
+<clr:255,190,255>Fi
+im bitti.
+<clr:255,190,255>Aah. Cephanem bitti.
+<clr:255,190,255>Son 4 fi
+ek.
+<clr:255,190,255>4 fi
+<clr:255,190,255>Son 2 fi
+<clr:255,190,255>2 fi
+im kald
+<clr:255,190,255>3 güç hücresi kald
+<clr:255,190,255>Son güç hücresi.
+<clr:255,190,255>1 güç hücresi kald
+<clr:255,190,255>Güç hücrem bitti.
+<clr:255,190,255><sfx:1>[Öksürür]
+<clr:255,190,255><sfx:1>[Bo
+uk Öksürür]
+<clr:255,190,255><sfx:1>[Silah Sesleri Ç
+kar
+<clr:255,190,255>Ahh!
+<HEADSET><clr:255,255,138>Çok karanl
+k. Bir el fenerine ihtiyac
+n olacak.
+m hakl
+<clr:255,190,255>Çok karanl
+er oraya gideceksem bana bir el feneri laz
+m olacak.
+<clr:255,190,255>Bu kadar yüksekten atlarsam asla kurtulamam.
+r, hay
+r, kesinlikle olmaz. Neden? Atlamay
+ünüyordun?
+<clr:255,190,255>Sanm
+r. Bu beni öldürür.
+<clr:255,190,255>Ah!
+<clr:255,190,255>Gitmem laz
+<clr:255,190,255>Sonra konu
+<clr:255,190,255>Bir dakika, gitmem laz
+<clr:255,190,255>Russell, gitmeliyim.
+<clr:255,190,255>Daha sonra, gitmeliyim.
+<clr:255,190,255>Bir dakika, me
+gulüm.
+<clr:255,190,255>Bir dakika, gelenler var.
+<clr:255,190,255>Siktir,
+<clr:255,190,255>AH!
+<clr:255,190,255>TANRIM!
+<clr:255,190,255>AY!
+<clr:255,190,255>AMAN TANRIM
+<clr:255,190,255>Of. Tamam.
+<clr:255,190,255>Oof. Tamam.
+<clr:255,190,255>Üf. Tamam.
+<clr:255,190,255>Üf
+<clr:255,190,255>Pekala
+<clr:255,190,255><sfx:1>[Nefesi kesilir]
+<clr:255,190,255><sfx:1>[Nefes Nefese]
+<HEADSET><clr:255,255,138>"Russell'lar" ile hedefleyece
+ey bul.
+imdi "Russell'lar" ile bir
+eyi hedefle.
+eyi hedeflemek için kullan.
+<HEADSET><clr:255,255,138>Tek yapman gereken elini bir
+rultmak.
+<HEADSET><clr:255,255,138>Ni
+an almak için elini bir
+<HEADSET><clr:255,255,138>Elinle ni
+an alabilece
+in bir nesne bul.
+<HEADSET><clr:255,255,138>Alyx? Alyx, hâlâ orada m
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Eh, bunlar
+n hiçbiri için yeterli reçinem yok.
+<HEADSET><clr:255,255,138>Reçine hakk
+nda ne derler bilirsin Alyx.
+r. Reçine hakk
+nda ne derler Russ?
+<HEADSET><clr:255,255,138>"Daha
+Fazla
+Reçine ara."
+yorum. Bulmaya çal
+<HEADSET><clr:255,255,138>Evet, öyle derler
+"Daha fazla reçine ara."
+<HEADSET><clr:255,255,138>Gelen var!
+<HEADSET><clr:255,255,138>Alyx, gelen var!
+<HEADSET><clr:255,255,138>Alyx, dikkat et!
+<HEADSET><clr:255,255,138>Aferin.
+<HEADSET><clr:255,255,138>Güzel.
+<HEADSET><clr:255,255,138>Vee ba
+<HEADSET><clr:255,255,138>Tamam. Çabucak hallettin.
+<HEADSET><clr:255,255,138>Bu i
+e yarar gibi.
+<HEADSET><clr:255,255,138>Bakmaya devam et.
+<HEADSET><clr:255,255,138>Burada bir yerde olmal
+<HEADSET><clr:255,255,138>Sen bir
+ey görüyor musun? Ben hiçbir
+ey göremiyorum.
+<HEADSET><clr:255,255,138>Burada olmal
+<HEADSET><clr:255,255,138>Dikkatli ol
+<HEADSET><clr:255,255,138>Biri gitti.
+<HEADSET><clr:255,255,138>Neredeyse çözdün.
+<HEADSET><clr:255,255,138>Cephaneni bo
+a harcama! O
+eye çizik bile atamazs
+<HEADSET><clr:255,255,138>Dikkat et, Alyx!
+<HEADSET><clr:255,255,138>Tam önünde!
+<HEADSET><clr:255,255,138>Dikkat et!
+<HEADSET><clr:255,255,138>Gelenler var.
+<HEADSET><clr:255,255,138>Daha sonra konu
+<HEADSET><clr:255,255,138>Sonra konu
+<HEADSET><clr:255,255,138>Hakla onlar
+<HEADSET><clr:255,255,138>Evet, evet, git.
+<HEADSET><clr:255,255,138>Ahh!
+<HEADSET><clr:255,255,138>Oof!
+<clr:107,232,120>Mmm! [Koklar]
+<clr:107,232,120>Evet, yarat
+<clr:107,232,120>Hrrmm
+Ah
+Mmmhmm
+lginç
+Ah, mükemmel
+<clr:107,232,120>Seni bekliyordum Alyx Vance.
+Güvenlik güçleri: <clr:166,242,255><I>Kara birimlerinin dikkatine.<I><sb><clr:255,255,255>Güvenlik güçleri: <clr:166,242,255><I>Bölücü kaynakl
+istila operasyonu.<I><sb><clr:255,255,255>Güvenlik güçleri: <clr:166,242,255><I>Müdahale yöntemi:<cr>Müdahale et. Sindir. Sorgula.<I>
+<clr:166,242,255><I>Müdahale birimleri. Alarm.<sb>Yeni yöntem:<sb>Ç
+kmaya zorla. E
+lik et. Devam et.<I>
+<clr:166,242,255><I>Vatanda
+lara hat
+rlatma:<cr>Uygar bir toplum h
+ve hedefli bir gözetim gerektirir.<sb>Di
+er vatanda
+n toplumu tehdit etmesini önleyin.<I>
+<clr:166,242,255><I>Lütfen dikkat.<sb>Bu bölgeye giri
+yasaklanm
+r.<sb>Bu bildirimi al
+yorsan
+z, kanunu ihlal ediyorsunuz demektir.<I>
+r.<sb>Yerel güvenlik cezai i
+lem için gönderildi.<I>
+Güvenlik güçleri: <clr:166,242,255><I>Lütfen dikkat.<cr>Eri
+im yasakland
+.<I><sb><clr:255,255,255>Güvenlik güçleri: <clr:166,242,255><I>Bölücülü
+ün cezas
+, an
+nda idamd
+r.<I>
+<clr:166,242,255><I>Kara birimlerinin dikkatine.<sb>Komuta birimlerinin dikkatine.<sb>Acil durum kodu: Geçersiz.<I>
+<clr:166,242,255><I>Güvenlik alarm
+.<sb>Tedavi devam ediyor.<sb>Kaynak da
+m kodu:<sb>Sertle
+tir.
+ncele.
+mha et.<sb>Öncelik: Acil.<I>
+.<sb>Sivil isyan
+kritik seviyede.<sb>49, 64 ve 77. bölgelere teknisyen gönderin.<sb>Önceli
+i koruyun.<I>
+.<sb>Kara ekipleri için hat
+rlatma:<cr>Ba
+n cezas
+sürgündür.<sb>Müdahale yöntemi: Gir. Tatbik et. Etkisizle
+<clr:166,242,255><I>Önemli ihlâl. Bekleyin. Bekleyin.<I>
+<clr:166,242,255><I>Tüm sistemin dikkatine.<sb>Çat
+ma operasyonu 5-1-2-9.<sb>Acil e
+zamanl
+lanma uygulamas
+.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Müdahale yöntemi:<cr>Kalkan. Anahtar. Hamle.<I>
+<clr:166,242,255><I>Müdahale ekibinin dikkatine.<sb>A
+yük protokolü:<cr>Aç
+. Duyars
+zla
+rma. Fla
+.<sb>Aç
+da bir kol gördüm!
+<HEADSET><clr:255,255,138>Güzel! Gizemli bir kol! Bay
+<HEADSET><clr:255,255,138>Ne i
+<clr:255,190,255>Raylar
+tiriyor!
+<clr:255,190,255>Bilmiyorum!
+<HEADSET><clr:255,255,138>Ah. Böylece Eli'
+n treni do
+rudan
+duvara toslayacak.
+<HEADSET><clr:255,255,138>Evet! Harika! Eli mahkûm kapsülünde! Ona bir
+ey olmaz! Acele et Alyx!
+te kol!
+<clr:255,190,255>Russell! Bu kolu kontrol et!
+<HEADSET><clr:255,255,138>Çek ve ne yapt
+na bak!
+<HEADSET><clr:255,255,138>Tamam! Evet! Eli mahkûm kapsülünde! Ona bir
+ey olmaz!
+<HEADSET><clr:255,255,138>A
+indir ve a
+da tut!
+<HEADSET><clr:255,255,138>H
+ol Alyx!
+<HEADSET><clr:255,255,138>Güzel!
+imdi kolu a
+da tut. B
+rsan raylar eski hâline döner.
+da tut Alyx!
+<HEADSET><clr:255,255,138>10 saniye Alyx!
+<HEADSET><clr:255,255,138>4!
+<HEADSET><clr:255,255,138>3!
+<HEADSET><clr:255,255,138>2!
+<HEADSET><clr:255,255,138>1!
+<HEADSET><clr:255,255,138>Ulu tanr
+<clr:255,190,255>Hassiktir!
+<clr:255,190,255>Tren, tren, tren, tren, TREN!
+<clr:255,190,255>Bütün bunlar
+<clr:255,190,255>Hey, kablolar
+im?
+<clr:255,190,255>Babamdan haber var m
+l bir iyi haber?
+<clr:255,190,255>Alaca
+<clr:255,190,255>Russell? Sesin yine gidiyor.
+<clr:255,190,255>Biraz teknolojinin nimetlerinden faydalanaca
+m. Buna "merdiven" diyorum.
+<clr:255,190,255>Bo
+ver, merdivenleri kullanamayaca
+<clr:255,190,255>NE?!
+<clr:255,190,255>Bu son güç istasyonuydu! Ba
+<clr:255,190,255>Çocuklar. Bunu daha sonra çözebilir miyiz? Bu kablo bir kar
+yuvas
+<clr:255,190,255>Bilmiyorum.<sb>Ama orada bir
+ey duruyor.<sb> Ve onu bulmak için zaman
+z azal
+<clr:255,190,255>Harika! Bu nedir baba?
+r, anlad
+çinden kablolar ç
+yor.<sb>San
+m bir güç kayna
+yla ba
+lar.<sb>Oraya gidip ba
+sökece
+im.<sb>Tamam. Vur onlar
+<clr:255,190,255>Tabii. Zaten içinde ne var ki?
+<clr:255,190,255>Ahhh
+<clr:255,190,255>Haaassiktir!
+<clr:255,190,255>O kaleyi bulaca
+m baba!
+<clr:255,190,255>Tamam, köprü tamamen uzam
+gibi görünüyor
+<clr:255,190,255>Tamam,
+ey, bunlardan biri Gök Kale'yi yana
+, de
+il mi? De
+<clr:255,190,255>Bu o de
+<clr:255,190,255>Peki, bu hiç de
+<clr:255,190,255>Bu mu?!
+<clr:255,190,255>Bu hiç iyi olmad
+Of!
+<clr:255,190,255>Tek yapmam gereken Gök Kale'yi dikkatlice köprüye yana
+rmak.
+<clr:255,190,255>Ne kadar zor olabilir ki?
+<clr:255,190,255>Pekala, i
+te ba
+<clr:255,190,255>Vay, Russell. Bunu görüyor musun?
+. Sessiz ol!
+aman tanr
+<clr:255,190,255><delay:3>Ne?
+Aman tanr
+<sb>Te
+ekkür ederim! Te
+ekkür ederim!
+r, Nefes Nefese]
+<clr:255,190,255>Yüzümde! Yüzümde!
+<clr:255,190,255>Russ! Yüzümde!
+<clr:255,190,255>Russ! Yüzümde, Russ! Yüzümde!
+<clr:255,190,255>Tamam. Ben iyiyim.
+yiyim.
+<clr:255,190,255>Evet, öyleydi. Ben de oradayd
+<clr:255,190,255>Yüzümde oldu
+unu biliyorum Russ!
+<clr:255,190,255>Yok, kurtulam
+<clr:255,190,255>Russ, biliyorum!
+<clr:255,190,255>Ihh!
+<clr:255,190,255>Uf!
+<clr:255,190,255>[Öksürür] Üf.
+<clr:255,190,255>Ö
+<clr:255,190,255>[Öksürür] Ö
+<clr:255,190,255>Aah. Tamam.
+<clr:255,208,172><sfx:1>[
+<clr:255,208,172>Russell? O nerede?<cr>
+<clr:255,208,172>Vaktimiz yok<sb>Bu bir silah, Alyx!<sb>Orada saklad
+ey bir silah.<sb>Buldu
+ey bu ve bizi bu yüzden yakalad
+<clr:255,208,172>Kale'ye girdiler
+<sb>Güvenlik hatt
+yla çevrili kuleye benziyor.
+<clr:255,208,172>Yak
+nlarda bir güç istasyonu var.
+<clr:255,208,172>Gördün mü? Ben iyiyim.<sb>
+imdi devam edelim.
+<clr:255,208,172>Alyx, bu silah her neyse ya çalmal
+n ya da yok etmelisin.
+<clr:255,208,172>[Güler] Seni seviyorum can
+<clr:255,208,172>Seni seviyorum can
+Eli: <clr:255,208,172><I>Ne oldu Russell?<I>
+<HEADSET><clr:255,208,172>Bilmiyorum, ama...
+<HEADSET><clr:255,208,172>Gök Kale'ye do
+ru devam et.<sb>Ben etrafta veri kapsülü arayaca
+m.<sb>Bakal
+m bir
+eyler bulabilecek miyim.
+<HEADSET><clr:255,208,172>Alyx! Bir
+ey buldum!
+<HEADSET><clr:255,208,172>Gök Kale'nin tam alt
+nda bir Yer Çekimi Jeneratörü var.<sb>Onu havada tutan
+ey bu olmal
+<HEADSET><clr:255,208,172>Tam orada. Yer Çekimi Jeneratörü kar
+da.
+te orada
+<HEADSET><clr:255,208,172>U
+yorum.<sb>Alyx, içeri girmenin bir yolunu bul. Haydi!
+<clr:255,208,172>Kendine dikkat et can
+m. Seni seviyorum.
+<HEADSET><clr:255,208,172>Bu bir kale de
+il.<sb>Bir hapishane.<sb>Bizi DI
+ARIDA tutmak için in
+a etmemi
+ler.<sb>Bir
+eyi
+ÇER
+DE tutmaya çal
+<norepeat_global:10>Bu, oldukça fazla say
+da cevab
+olan...
+<clr:255,255,138>Silah
+al Alyx!
+<HEADSET><clr:255,255,138>Bunu çok kullanaca
+sanm
+yorum.<sb>Eli'
+nakledenler birkaç
+ttifak askerinden fazla de
+ildir.
+<HEADSET><clr:255,255,138>Ha, do
+ru. "Alyx".
+<HEADSET><clr:255,255,138>Yer çekimini uzaktan yönlendirebilir mi?
+<HEADSET><clr:255,255,138>Evet. Yapabilece
+ini de sanm
+yordum.<sb>Hem eldiven biçiminde de de
+il zaten.
+<HEADSET><clr:255,255,138>Tamam, bu kadar çene çalmak yeter. Gidip babam
+kurtarmal
+z. Haydi.
+<HEADSET><clr:255,255,138>Alyx? Ba
+z bir süreli
+ine kesildi.<sb>Ne oldu?
+<HEADSET><clr:255,255,138>Bir Vortigaunt m
+?<cr>Onun a
+da i
+i ne?
+<HEADSET><clr:255,255,138>Evet, Alyx?
+<clr:255,255,138>Alyx, yukar
+bak! Sana biraz cephane at
+<clr:255,255,138>Yakala.
+<HEADSET><clr:255,255,138>Alyx, orada kontrol paneli var.
+er sistemi açabilirsen Eli'
+n trenini durdurabilirim.
+<HEADSET><clr:255,255,138>Alyx, i
+te kontrol paneli!
+<HEADSET><clr:255,255,138>Ate
+et onlara!
+<HEADSET><clr:255,255,138>Evet! Çok aç
+<HEADSET><clr:255,255,138>Uzayl
+öldürmede oldukça iyisin!
+<HEADSET><clr:255,255,138>Asl
+nda endi
+e verici!
+<HEADSET><clr:255,255,138>Onu
+imdi trene koyuyorlar<cr>Bu iyi bir
+ey.<sb>Hayatta oldu
+unu gösteriyor.
+ey, iyi haber onu Nova Prospekt'e götürdüklerinde i
+kence edecek olmalar
+<HEADSET><clr:255,255,138>Yani mant
+ünürsek, trende giderken yapmalar
+için hiçbir sebepleri yok.
+<HEADSET><clr:255,255,138>Çat
+k. Güç istasyonunu bul.
+<HEADSET><clr:255,255,138>Tamam, çat
+k ve istasyona ba
+lan.
+<HEADSET><clr:255,255,138>Burada bir asansör var. Ama güç vermek çok zor olacak.
+<HEADSET><clr:255,255,138>Evet, anlad
+<HEADSET><clr:255,255,138>Ohhh.
+<HEADSET><clr:255,255,138>Alyx! Dron yeniden etkinle
+ti!<sb>Buradan gördü
+üm kadar
+yla Gök Kale'ye yakla
+mak isteyenleri engellemek için
+ttifak barikatlar kurmu
+öldür!
+<HEADSET><clr:255,255,138>Evet! Bacakl
+lar! Oldukça ölümcüldürler Alyx, dikkatli ol!
+<HEADSET><clr:255,255,138>Alyx! Bak!
+<HEADSET><clr:255,255,138>Anlam
+yorum. Tüm bu Vortigaunt enerjisi. E
+er Gök Kale'yi ta
+yorsa ne yap
+yordu?
+<HEADSET><clr:255,255,138>Tamam. Gök Kale y
+. Bu i
+in u
+imdiyse kolay yan
+; ya
+malamak.
+<HEADSET><clr:255,255,138>Mant
+. Pekala. Haydi kolay olan
+yapal
+çinde ne varsa alal
+m. Eli?
+çinde ne var?
+<HEADSET><clr:255,255,138>Ahh.
+<HEADSET><clr:255,255,138>Sence öldü mü?
+<HEADSET><clr:255,255,138>Bu binadan geçerek kestirmeden gidebiliriz.
+<HEADSET><clr:255,255,138>Eli, buraya gel!
+<HEADSET><clr:255,255,138>Bu baya
+ine yarar.
+<HEADSET><clr:255,255,138>Neredeyse hackleniyordu
+<clr:107,232,120>O zaman yapacaks
+n! Cesur ol, Alyx Vance!
+<clr:107,232,120>Eli Vance! Alyx Vance!<sb>Söyledi
+m etmek için buraday
+m.<sb>Git! Baban
+n güvenli
+ini sa
+layaca
+<clr:107,232,120><sfx:1>[Homurdan
+<clr:107,232,120>Eli Vance'e güvenli alana kadar e
+Vortigaunt kendimizi kurtaracak ve intikam
+alacak.<sb>SEN silaha gitmelisin.
+imdi! Her birimizin kendi yolu var.<sb>Ba
+z olamay
+<clr:107,232,120>Bilmece yok!<sb>
+ttifak buray
+deldi.<sb>Vort Özü'nden kopar
+m.<sb>Ba
+<clr:107,232,120>Gücüm azald
+.<sb>Vort Özü art
+k benden çok uzaklarda
+çok hafif duyabiliyorum sadece.
+Bence ondan uzak dur.
+Ben gidiyorum.<sb>Sana kolay gelsin.<sb>Jeff'i hafife alma.<sb>Pek sab
+u söylenemez.
+Jeff'e ne yapt
+Lanet olsun!<sb>Umar
+m birkaç iyi
+eyle kar
+r.<sb>Sonra görü
+Alyx!
+<clr:18,199,226>Bize adlar
+<clr:18,199,226>Umurumuzda de
+il.<cr>Ne gördün? Yan
+nda kim vard
+<clr:18,199,226>O hâlde zorla ö
+reniriz.<cr>Araca götürün!
+da al
+<clr:18,199,226>Bölge güvenli.
+<clr:18,199,226>Onu getirin.
+<clr:18,199,226>Peki k
+<clr:18,199,226>GER
+gelin!
+<clr:18,199,226><force>Yukar
+da tutun!
+<clr:18,199,226><force>K
+z temiz.
+<clr:18,199,226>Geri gel!
+<clr:18,199,226>Geri! GER
+<clr:18,199,226>Yukar
+<clr:18,199,226>Ellerinizi yukar
+<clr:18,199,226>Eller yukar
+<clr:18,199,226>Eller havaya!
+lerliyorum.
+<clr:18,199,226>Bask
+uyguluyorum.
+<clr:18,199,226>Hedefe yakla
+<clr:18,199,226>Sindir.
+<clr:18,199,226>Enfekte ki
+iye ilerle.
+<clr:18,199,226>Yava
+ça ilerle.
+<clr:18,199,226>Balyoz.
+lerliyor.
+. Kontaminanta do
+ru ilerliyoruz.
+<clr:18,199,226>Sindirin. Sindirin.
+<clr:18,199,226>Stabilizasyon ekibi ilerliyor.
+iye yakla
+<clr:18,199,226>Balyoz, enfekteye do
+ru ilerliyor.
+<clr:18,199,226>Balyoz, bölgeye do
+<clr:18,199,226>Kontaminanta yakla
+<clr:18,199,226>Balyoz.<cr>Hedefe ilerliyor.
+<clr:18,199,226>Balyoz.<cr>
+<clr:18,199,226>Çat
+<clr:18,199,226>Hedefe kilitlendim.
+<clr:18,199,226>Cezai i
+<clr:18,199,226>Balyoz. Sald
+rgan üzerinde tam etkin.
+<clr:18,199,226>F
+rsat
+kullan
+<clr:18,199,226>Hedef görüldü. Hançerler kullan
+labilir.
+<clr:18,199,226>Ate
+serbest.
+<clr:18,199,226>Hedef 1.
+imdi dur.
+<clr:18,199,226>Bu Alyx.
+<clr:18,199,226>Alyx do
+ruland
+<clr:18,199,226>Alyx'e hançer çekin.
+<clr:18,199,226>Hedef 1'e at
+<clr:18,199,226>Birincil sald
+rgana ate
+ediliyor.
+<clr:18,199,226>Bu o. Balyoz sald
+<clr:18,199,226>Ana hedef do
+<clr:18,199,226>Siperden ç
+<clr:18,199,226>Bölgede kalkan k
+ran kodu
+<clr:18,199,226>Hedef siperi gölge olarak tan
+mla.
+rgan aç
+kart
+<clr:18,199,226>Hedef korunuyor. Sald
+<clr:18,199,226>Koruma kald
+<clr:18,199,226>Hançerler sipere yöneltildi.
+<clr:18,199,226>Hedef siper üstünde tam etkinlik.
+<clr:18,199,226>Balyoz. Sipere ate
+rlat
+labilir at
+<clr:18,199,226>Bomba at
+mha ayg
+at
+labilir. F
+<clr:18,199,226>E
+labilir geliyor.
+<clr:18,199,226>Ç
+kmaya zorlan
+<clr:18,199,226>Geride durun.
+<clr:18,199,226>Kar
+<clr:18,199,226>Hedef: Kar
+<clr:18,199,226>Temas. Kar
+sald
+<clr:18,199,226>Balyoz kar
+na iniyor.
+. Balyoz sald
+. Bölge
+<clr:18,199,226>Asalaklar.
+<clr:18,199,226>Temas. Asalaklar.
+<clr:18,199,226>Asalaklar sald
+<clr:18,199,226>Balyoz. Asalaklar görü
+alan
+<clr:18,199,226>Görsel Temas. Asalaklar.
+<clr:18,199,226>Asalaklar görüldü.
+<clr:18,199,226>Canl
+asalaklar.
+<clr:18,199,226>Asalak istilas
+do
+<clr:18,199,226>Çürükler.
+<clr:18,199,226>Çürükler sald
+stila do
+<clr:18,199,226>Balyoz. Çürükler görü
+<clr:18,199,226>Temas. Çürükler.
+<clr:18,199,226>Çürükler görü
+hatt
+<clr:18,199,226>Çürükler etkin durumda.
+<clr:18,199,226>Görsel Temas. Çürükler.
+<clr:18,199,226>Çürükler görüldü.
+rgan indirildi.
+<clr:18,199,226>Hedef indirildi.
+<clr:18,199,226>Öldürüldü.
+<clr:18,199,226>Temizlendi.
+ndirildi.
+<clr:18,199,226>Öldüler.
+<clr:18,199,226>Balyoz. Öldürüldü.
+rgan etkisizle
+tirildi.
+<clr:18,199,226>Sonland
+rgan
+n hayat
+sonland
+<clr:18,199,226>Böcek indirildi.
+<clr:18,199,226>Hedef sterilize edildi.
+<clr:18,199,226>Asalaklar etkisizle
+<clr:18,199,226>Bir asalak temizlendi.
+<clr:18,199,226>Asalak temizlendi.
+lki öldü.
+<clr:18,199,226>Asalak etkisizle
+<clr:18,199,226>Salg
+n etkisizle
+<clr:18,199,226>Bir asalak etkisizle
+<clr:18,199,226>Yüksek de
+erli hedef etkisizle
+<clr:18,199,226>Komutan
+m, 1 numaral
+hedef sessiz.
+m, Alyx'in hayat
+<clr:18,199,226>Alyx etkisizle
+<clr:18,199,226>Alyx görevi tamam.
+<clr:18,199,226>Öldü.
+<clr:18,199,226>Ortadan kald
+<clr:18,199,226>Çürük etkisizle
+<clr:18,199,226>Geber.
+<clr:18,199,226>Bölgede çürük etkisizle
+tirildi
+<clr:18,199,226>Çürük ortadan kald
+<clr:18,199,226>Temizleme i
+lemi ba
+<clr:18,199,226><sfx>[Nefes Almakta Zorlan
+<clr:18,199,226><sfx>[Öksürme ve H
+Nefes]
+<clr:18,199,226>alpha
+<clr:18,199,226>ve
+<clr:18,199,226>bravo
+<clr:18,199,226>charlie
+<clr:18,199,226>tire
+<clr:18,199,226>delta
+<clr:18,199,226>echo
+<clr:18,199,226>sekiz
+<clr:18,199,226>on bir
+<clr:18,199,226>elli
+<clr:18,199,226>be
+<clr:18,199,226>k
+<clr:18,199,226>dört
+<clr:18,199,226>yüz
+<clr:18,199,226>dokuz
+<clr:18,199,226>s
+<clr:18,199,226>bir
+<clr:18,199,226>yetmi
+<clr:18,199,226>yedi
+<clr:18,199,226>altm
+<clr:18,199,226>alt
+<clr:18,199,226>on
+<clr:18,199,226>otuz
+<clr:18,199,226>bin
+<clr:18,199,226>üç
+<clr:18,199,226>yirmi
+<clr:18,199,226>iki
+<clr:18,199,226>Alyx
+<clr:18,199,226>Bölücüler
+<clr:18,199,226>kar
+<clr:18,199,226>AKG
+<clr:18,199,226>Diken Duvar
+ttifak Duvar
+<clr:18,199,226>dost
+<clr:18,199,226>Balyoz
+<clr:18,199,226>sald
+rganlar
+<clr:18,199,226>ba
+asalaklar
+<clr:18,199,226>çürük
+<clr:18,199,226>asalak
+<clr:18,199,226>Gardiyan
+<clr:18,199,226>Apartmanda.
+<clr:18,199,226>Varillerde.
+<clr:18,199,226>Arkada.
+<clr:18,199,226>A
+<clr:18,199,226>Tu
+lalarda.
+<clr:18,199,226>Köprüde.
+<clr:18,199,226>Binada.
+<clr:18,199,226>Arabada.
+<clr:18,199,226>Vinçte.
+<clr:18,199,226>Kap
+<clr:18,199,226>Asansörde.
+leride.
+<clr:18,199,226>Kulübede.
+<clr:18,199,226>Borularda.
+<clr:18,199,226>Banyoda.
+<clr:18,199,226>Tren vagonunda.
+<clr:18,199,226>Çöpte.
+<clr:18,199,226>Kamyonda.
+<clr:18,199,226>Tünelde.
+<clr:18,199,226>Kamyonette.
+<clr:18,199,226>Tekerleklerin orada.
+<clr:18,199,226>Kalas y
+rmaya ba
+imdi sald
+<clr:18,199,226>Ahhh!
+<clr:18,199,226>H
+<clr:18,199,226>Beni koru.
+<clr:18,199,226>Koru.
+<clr:18,199,226>Koru. Balyoz.
+<clr:18,199,226>Koruma ate
+i aç
+<clr:18,199,226>Balyoz. Koruma isteniyor.
+<clr:18,199,226>Koru
+<clr:18,199,226>Kaç
+<clr:18,199,226>Bomba.
+<clr:18,199,226>Siper al
+labilir sesi. Kaç
+<clr:18,199,226>Bomba. Kaç.
+<clr:18,199,226>Korunun.
+<clr:18,199,226>Radyallarda uyar
+<clr:18,199,226>Duvar
+nda kal
+<sfx><norepeat:3><clr:255,0,0>[
+ttifak Askeri Ölür]
+<clr:18,199,226>Balyoz öldü.
+<clr:18,199,226>Güvenl...
+<clr:18,199,226>Balyoz. Yakla
+<clr:18,199,226>Balyoz. Konum de
+tiriyor.
+<clr:18,199,226>Görsel temas
+düzeltiyorum.
+<clr:18,199,226>Görü
+netle
+tiriliyor.
+rgana kar
+toparlan
+<clr:18,199,226>Görsel do
+rulama sa
+lan
+<clr:18,199,226>Hedef görünürde de
+<clr:18,199,226>Delta hedefine kar
+<clr:18,199,226>Yerinde kal.
+<clr:18,199,226>Konum de
+<clr:18,199,226>Konum iyile
+<clr:18,199,226>Görsel temas iyile
+<clr:18,199,226>Görünümde sorun var. Konum de
+tiriyorum.
+temizleniyor.
+sa
+<clr:18,199,226>Temas edilmek üzere.
+<clr:18,199,226>1 numaral
+hedef aç
+<clr:18,199,226>Hareket etme.
+<clr:18,199,226>Hey Alyx!
+<clr:18,199,226>Hey Alyx, biziz!
+<clr:18,199,226>Alyx! Orada m
+t. Alyx!
+i Kes! Hedef bizden.
+<clr:18,199,226>Balyoz dü
+tü! Balyoz geri çekiliyor!
+i Kes! Tehdit yok. Tehdit yok!
+<clr:18,199,226>Alyx dü
+man de
+i kes!<cr>Alyx dü
+<clr:18,199,226><sfx:1>[Güler]
+<clr:18,199,226>Dost rolü i
+<clr:18,199,226>[Güler] Sald
+<clr:18,199,226>Hedefle çat
+maya giriliyor.
+<clr:18,199,226>Balyoz sald
+<clr:18,199,226>Balyoz.<cr>Birincil görev konumunda.
+<clr:18,199,226>Aç
+k düzen. Ate
+<clr:18,199,226>Kod 3. Oscar delta.
+<clr:18,199,226>Bölge temizleniyor
+<clr:18,199,226>Hedef al
+<clr:18,199,226>Hançerler kullan
+yor. Öncelikli hedef.
+<clr:18,199,226>Alyx'e ate
+<clr:18,199,226>Balyoz ana hedefe ilerliyor.
+m! Ate
+yor
+<clr:18,199,226>Vance'a hançerler kullan
+<clr:18,199,226>Fla
+bombas
+lacak.
+z oldu.
+<clr:18,199,226>Bomba ba
+yile
+<clr:18,199,226>Hedef üzerinde yeniden fla
+m izni isteniyor
+<clr:18,199,226>Kör edici bomba ba
+oldu.
+oldu.<cr>F
+rgan kör edildi.
+<clr:18,199,226>Hedefin görü
+ü yok.<cr>F
+<clr:18,199,226>Kontaminant
+.<cr>Tüm birimler bu f
+kullans
+<clr:18,199,226>Temizliyorum.
+<clr:18,199,226>Hemen da
+<clr:18,199,226>Balyoz, bölgeyi temizliyor
+<clr:18,199,226>Balyoz, ç
+kmaya zorluyor
+<clr:18,199,226>Sindirme uygulan
+yor. Siper al
+<clr:18,199,226>Son bilinen konumda sald
+rgan ç
+labilir. Son bilinen konuma f
+<clr:18,199,226>Geri çekiliniyor.
+indirildi.
+<clr:18,199,226>Bölgede ses var
+<clr:18,199,226>Olas
+kontaminant.
+rgan etkinli
+<clr:18,199,226>Balyoz hareket ediyor.
+<clr:18,199,226>Ses var.
+<clr:18,199,226>Ses duyuyorum
+tüm kontaminantlar
+n dikkatine.
+<clr:18,199,226>Uyar
+ne verin.
+m. Vuruldum.
+<clr:18,199,226>Hasar al
+<clr:18,199,226>Balyoz'a yard
+m edin.
+<clr:18,199,226>Balyoz hâlâ hayatta.
+<clr:18,199,226>Etkisiz.
+<clr:18,199,226>Vücut z
+dayan
+<clr:18,199,226><sfx:1>[Pis Pis Güler]
+<clr:18,199,226>Kontaminant görü
+<clr:18,199,226>Kahretsin.
+<clr:18,199,226>Konum bildirin.
+<clr:18,199,226>Hedef kayboldu.
+<clr:18,199,226>Konum deste
+i. Balyoz.
+rganla görsel temas kayboldu.
+kaybedildi. Kontaminant.
+<clr:18,199,226>Hedef kayboldu. Balyoz.
+rgan kaybedildi.<cr>Bölge bilinmiyor.
+<clr:18,199,226>Balyoz hedef konumu istiyor.
+rgan görü
+ü kaybedildi.
+<clr:18,199,226>Balyoz'a konum deste
+i verin.
+<clr:18,199,226>Görsel temas yok.
+<clr:18,199,226>Balyoz, görsel temas
+kaybetti.
+<clr:18,199,226>Hedef saklan
+yor olabilir.<cr>Sald
+n konumunu bildirin.
+<clr:18,199,226>Kontaminant sessiz.<cr>Son bilinen konumu bildirin.
+<clr:18,199,226>Görsel temas tamamen kayboldu.
+rgan sessiz.
+<clr:18,199,226>Kontaminant gizleniyor.
+siperleri kontrol ediyorum.
+<clr:18,199,226>Hedef kontrolü
+<clr:18,199,226>Görsel temas tamamen kayboldu. Dikkatli olun.
+<clr:18,199,226>Balyoz'la temas sa
+lanam
+yor.<cr>Ke
+if timi istiyorum.
+<clr:18,199,226>Yak
+nlarda!
+<clr:18,199,226>Tehdit yak
+nlarda. Harekete geçiyorum.
+<clr:18,199,226>Destek. Destek. Destek.
+<clr:18,199,226>Balyoz yard
+. Balyoz yard
+<clr:18,199,226>Geri çekil. Geri çekil.
+<clr:18,199,226>Tamam.
+<clr:18,199,226>Olumlu.
+<clr:18,199,226>Konumumu koruyorum.
+<clr:18,199,226>Konum sabitlendi.
+<clr:18,199,226>Silahlar haz
+<clr:18,199,226>Son bilinen konumda görsel temas.
+<clr:18,199,226>Son bilinen konum izleniyor.
+<clr:18,199,226>Gözleniyor.
+<clr:18,199,226>Balyoz. Konum ald
+zliyorum.
+<clr:18,199,226>Sesi kes. Sesi kes.
+rgan hareketsiz. Beklemede kal
+<clr:18,199,226>Dur.
+<clr:18,199,226>Temas bekleniyor.
+<clr:18,199,226>De
+erlendiriliyor.
+<clr:18,199,226>Sorun bekleniyor.
+tirmeye haz
+<clr:18,199,226>Balyoz. Bekliyor.
+zleniyor.
+<clr:18,199,226>Kontaminant kilitlendi.
+<clr:18,199,226>Balyoz. Kö
+e emniyeti sa
+<clr:18,199,226>Tüm kö
+eleri kontrol edin.
+<clr:18,199,226><sfx><norepeat:5>[Ac
+Çeker]
+<clr:18,199,226><sfx:1><norepeat:5>[Nefes nefese]
+rgan savunmas
+<clr:18,199,226>Hedef zay
+f durumda.
+<clr:18,199,226>Hedef hasar ald
+<clr:18,199,226>Kontaminant zay
+f hâlde.
+rgan vuruldu.
+rganla tekrar çat
+maya gir.
+<clr:18,199,226>Silahlar
+n gücünü art
+rganda k
+l s
+<clr:18,199,226>Ana hedefe olas
+isabet.
+<clr:18,199,226>Balyoz etkin.<cr>Kod 0-9.
+<clr:18,199,226>1 Numaral
+Hedefi Bitiriyorum.
+<clr:18,199,226>Balyoz haz
+rlan
+rmaya haz
+<clr:18,199,226>Balyoz'un haz
+rlanmas
+na 3
+<clr:18,199,226>Duvar haz
+<clr:18,199,226>Kalkanlar
+<clr:18,199,226>Duvar yükseltiliyor.
+<clr:18,199,226>Duvar örüldü.
+n örülmesine 3
+<clr:18,199,226>Tüm bölgeler tarand
+<clr:18,199,226>Hedef sessiz.
+<clr:18,199,226>Bölge temiz.<cr>Beklemeye geçi
+istiyorum.
+<clr:18,199,226>Alan temiz.
+<clr:18,199,226>Balyoz durum bildiriyor.<cr>Sald
+<clr:18,199,226>Temas yok.
+<clr:18,199,226>Arena güvenli.
+<clr:18,199,226>Temiz görünüyor.
+<clr:18,199,226>Temas kaybedildi.<cr>Temiz görünüyor.
+<clr:18,199,226>Burada bir
+<clr:18,199,226>Tetikte kal
+n. Korunun.
+<clr:18,199,226>Bölgede kontaminant yok.<cr>Bekleme izni istiyorum.
+<clr:18,199,226>Bravo kodu için bekleyin.
+<clr:18,199,226>Bir
+<clr:18,199,226>Gölge temiz.
+<clr:18,199,226>Gölge durumuna son verme isteniyor.
+<clr:18,199,226>Burada de
+<clr:18,199,226>Konum temiz. Deste
+i geri çekin.
+<clr:18,199,226>Tüm bölgeler temiz. Geri çekin.
+<clr:18,199,226>Görsel temas kuruluyor.
+<clr:18,199,226>Hâlâ ar
+yorum
+<clr:18,199,226>Hâlâ taran
+<clr:18,199,226>Tarama devam ediyor
+<clr:18,199,226>Balyoz. Ke
+if devam ediyor.
+<clr:18,199,226>Gölge durumu etkin.
+<clr:18,199,226>Ke
+<clr:18,199,226>Hedef hâlâ gölge durumunda.
+<clr:18,199,226>Bölge temiz.
+<clr:18,199,226>Bölge bo
+<clr:18,199,226>Alan temiz. Konum de
+<clr:18,199,226>Gözlem hâlâ etkin.
+rgan hâlâ sessiz.
+<clr:18,199,226>Tarama tamamland
+. Devam ediyorum.
+<clr:18,199,226>Hâlâ görsel temas yok.
+<clr:18,199,226>Radyallar temiz. Devam ediyorum.
+<clr:18,199,226>Yay
+<clr:18,199,226>Da
+<clr:18,199,226>Balyoz birimi ç
+<clr:18,199,226>Mevzi al
+, taran
+<clr:18,199,226>Tasfiyeye ba
+rgan taramas
+yap
+<clr:18,199,226>Kontaminant taramas
+<clr:18,199,226>Ar
+yorum. Hançer dizilimi.
+<clr:18,199,226>Arena ku
+<clr:18,199,226>Tecrit devam ediyor.
+bildiriliyor.
+sa süre içinde hedefe kar
+dizilimi.
+rgan tahliyesi ile ilerliyorum.
+<clr:18,199,226>Gölge durumuna geçin.
+n! Hedef delta:
+<clr:18,199,226>Hedefle temas yeri:
+<clr:18,199,226>Görsel temas! Görsel temas! Menzil:
+<clr:18,199,226>Orada.
+<clr:18,199,226>Görsel temas! Sald
+rgan bulundu.
+<clr:18,199,226>Hareket var.
+<clr:18,199,226>Hayvan yeniden görü
+rganla yeniden temas sa
+rgan bölgede etkin.
+u bölgede görüldü:
+rgan ya
+yor. Radyallar
+kontrol edin.
+<clr:18,199,226>Ek görü
+<clr:18,199,226>Ana hedef üzerinde görü
+<clr:18,199,226>Balyoz. Müdahale ediyor.
+<clr:18,199,226>Konum do
+. Sabitliyorum.
+<clr:18,199,226>Hemen görsel do
+<clr:18,199,226>Etkin görsel.
+arjörü dolduruyorum.
+arjör dolduruyor.
+<clr:18,199,226>Balyoz mermi dolduruyor 4
+<clr:18,199,226>Silah
+dolduruyorum.
+<clr:18,199,226>Bo
+<clr:18,199,226>Balyoz'un cephanesi bitti.
+<clr:18,199,226>Tedarik az. Dolduruyorum.
+<clr:18,199,226>Siper al. Siper al.
+<clr:18,199,226>Balyoz mermi doldurmak için siper ald
+<clr:18,199,226>Geri çekiliyorum.
+<clr:18,199,226>Çekiliyorum.
+<clr:18,199,226>Bölge fazla s
+cak.
+<clr:18,199,226>Siper ar
+<clr:18,199,226>Balyoz. Yeniden toplan
+<clr:18,199,226>Bölge dengesiz. Siper ar
+kincil hedefler tan
+mland
+<clr:18,199,226>Çok say
+da yabanc
+yla görsel temas var.
+kincil hedeflerle görsel temas kuruldu.
+<clr:18,199,226>Silüetleri kontrol ediyorum.<cr>Çok say
+da olmalar
+muhtemel.
+da kontaminant var.
+hedefte f
+labilirler var.
+rganda f
+labilir var. Dikkat edin.
+<clr:18,199,226>Kontaminantta bomba var. Da
+<clr:18,199,226>Ana hedefte imha ayg
+tlar
+var.<cr>.Müdahale ekibi.
+arjör dolduruyor.<cr>Balyoz avantaj
+<clr:18,199,226>Hedef yeniden dolduruyor. Ate
+aç.
+<clr:18,199,226>Kontaminant savunmas
+<clr:18,199,226>Alyx silah dolduruyor.<cr>Tam kar
+k etkin.
+<clr:18,199,226>Top may
+nlar
+z var.<cr>Korunun.
+<clr:18,199,226>Balyoz.<cr>Top may
+na müdahale ediyor.
+nlar.
+<clr:18,199,226>Subakut top may
+.<cr>Tam etkinlik seviyesi.
+<clr:18,199,226>Hedefi top may
+nlar olarak de
+nlar geliyor.
+<clr:18,199,226>Dikenleri 1 numaral
+hedefe yo
+unla
+<clr:18,199,226>Güvenlik. 1 numaral
+labilir var.
+rgan dikenleri güçlendirildi.
+rganda yasa d
+dikenler var.
+<clr:18,199,226>Güçlendiriciler tespit edildi.<cr>Dikkatli olun.
+<clr:18,199,226>Güvenlik, takviye gönderin.
+<clr:18,199,226>Güvenlik, bölge güvenli de
+<clr:18,199,226>Bölgede salg
+n var
+<clr:18,199,226>Güvenlik, kara birimleri dü
+tü.<cr>Sektör kontrol alt
+<clr:18,199,226>Güvenlik, bölge istila alt
+<clr:18,199,226>Güvenlik.<cr>Gök kalkan istiyorum.
+<clr:18,199,226>Güvenlik, yeni dizilim tavsiyesi edin.
+<clr:18,199,226>Bizden biri öldürüldü.
+<clr:18,199,226>Takviye istiyorum.
+<clr:18,199,226>Güvenlik.<cr>Tek ba
+<clr:18,199,226>Güvenlik.<cr>Balyoz tek kald
+.<cr>Yard
+m istiyorum.
+<clr:18,199,226>Güvenlik.<cr>Acil gölge durumu istiyorum.
+<clr:18,199,226>Güvenlik.<cr>Salg
+n kontrol alt
+na al
+nam
+<clr:18,199,226>Güvenlik.<cr>Da
+lma bildiriliyor.<cr>Onaylay
+<clr:18,199,226>Güvenlik.<cr>Sald
+rgan güçlü. Tek kald
+<clr:18,199,226>Tek kald
+m. Destek gönderin.
+<clr:18,199,226>Güvenlik.<cr>Balyoz'un tahliyesi isteniyor.<cr>Bölge
+<clr:18,199,226>Güvenlik Güçleri'nin dikkatine:<cr>Hayatta bir tek Balyoz kald
+<clr:18,199,226>Güvenlik.<cr>Komutan dü
+n sesi kesildi.<cr>Yeni komutan gönderin.
+<clr:18,199,226>Komutan gün bat
+durumunda.
+<clr:18,199,226>Komutan öldü.
+<clr:18,199,226>Güvenlik! Komutan dü
+tü.<cr>Müdahale ediyorum.
+<clr:18,199,226>Komutan susturuldu.<cr>Tüm birimlerle müdahale edin.
+<clr:18,199,226>Komutan mevta.<cr>Komutan öldü.
+<clr:18,199,226><sfx:1>[Ç
+k atar]
+<clr:18,199,226>Silah de
+<clr:18,199,226>1. mod.
+<clr:18,199,226>2. mod.
+<clr:18,199,226>Dikenler yak
+ndan geçti. Hasar yok.
+<clr:18,199,226>Iskalad
+<clr:18,199,226>Hedef hatas
+. F
+skalad
+ndan geçti.
+<clr:18,199,226>Balyoz hasar almad
+<clr:18,199,226>Yine
+<clr:18,199,226>Hedef ba
+rgan ba
+z. Tekrar toparlan
+<clr:18,199,226>Dikenler etkisiz.<cr>Hedef yetenek yoksunu.
+<clr:18,199,226>Olumsuz.
+<clr:18,199,226>Olmaz.
+<clr:18,199,226>Hay
+<clr:18,199,226>Yapamam.
+<clr:18,199,226>Reddedildi.
+<clr:18,199,226>Diken do
+.<cr>Korunun.
+rgan sald
+<clr:18,199,226>Temas var.
+<clr:18,199,226>Balyoz.<cr>Bask
+ya müdahale ediyor.
+<clr:18,199,226>Kontaminantlar gürültü ç
+<clr:18,199,226>Hedef sald
+rgan.<cr>Hançerler kullan
+rganlar bask
+uyguluyor.<cr> Dikkatli olun
+<clr:18,199,226>Güvenlik. Üstümüze diken at
+<clr:18,199,226>Delta durumuna haz
+<clr:18,199,226>Tam kar
+k veriliyor.
+<clr:18,199,226>Bölge
+<clr:18,199,226>[Say
+lar]
+<clr:18,199,226>bölge
+ey yok. Tamam.
+<clr:18,199,226>1, 14, 3, 6, 11
+Do
+.<cr>Echo 4 temiz. Tamam.
+.<cr>Nomad bölgesi K3-6'da görsel temas sürüyor.
+<clr:18,199,226>Echo 1'de hareket yok.<cr> Konum: 7-2.
+<clr:18,199,226>Olumlu.<cr>F
+rsat için bekliyorum.
+im net.<cr>Radyallar temiz. Tamam.
+rganlar için yak
+k bilgisi istiyorum.<cr>
+letim bekleniyor.
+im için hâlâ bekliyorum. Tamam.
+<clr:18,199,226>Güvenlik, bölgesel karantinay
+ruluyor.<cr>Görü
+ve sesleri aç
+k tutun.
+<clr:18,199,226>Olumlu
+Salg
+n durumu kodu D7.<cr>Gün bat
+ekibi istila noktas
+nda.<cr>Anla
+<clr:18,199,226>Olumsuz... Anla
+... Bölgede tecrit yok.<cr>1 numaral
+hedefe dair do
+rulama yok.<cr>
+kincil parametre kodlar
+bekliyorum.
+<clr:18,199,226>Biyoveri güncelleniyor
+Uyar
+ne: 32.<cr>Hançer: 78. Kalkan: 100<cr>Biprox: 73.<cr>Ses: 3. Vizör: 15. Echo ç
+.<cr>Kesicileri apeks 5'e ayarl
+yorum.<cr>Çevre dahilinde biyotiklerimiz var<cr>Temas bekliyorum. Tamam.
+<clr:18,199,226>Güvenlik, isabet almam
+böceklerin geldi
+ini do
+ruluyor.<cr>Tüm birimlere: temasa haz
+<clr:18,199,226>Belirtme Kodu:<cr>Delta-echo-7-9 -alfa-2-Winder-0...<cr>Do
+. Hâlâ buraday
+. Kabul edildi.<cr>Bili
+sel sindirme biyoverileri güncelleniyor.<cr>Güncellemenin tamamlanmas
+na 3 saniye var
+<cr>Uyumsuzluk düzeltildi.
+<clr:18,199,226>Güvenlik tüm birimlerin toparlanmas
+istiyor.<cr>Zihinsel uyumsuzluk kabul edilmeyecektir
+Olumsuz
+Bellek dahil.<cr>Güncelleme ba
+. Kabul etmek zorunludur.
+<clr:18,199,226>Stabilizasyon ekibi beklemede.<cr>Vizör 73'te.<cr>Ses... 15'te.<cr>Güvenlik yüksek de
+erli hedefin çevrede oldu
+unu do
+ruluyor.<sb>Tetikte kal
+rgan aktif.<cr>Öneride bulunun.
+<clr:18,199,226>Olumsuz.<cr>Hedef hâlâ etkin.
+.<cr>Alfa durumuna geçiliyor.
+.<cr>9-37 konumunda Alfa durumuna geçiliyor.
+lerleme emri bekleniyor. Tamam.
+<clr:18,199,226>Do
+. Tekrar ayarlan
+.Tekrar ayarlan
+. Mevzileniyorum.
+<clr:18,199,226>Hâlâ hayatta.
+.<cr>Kontrol ve tecrit uygulan
+<clr:18,199,226>Sorun çözülüyor.
+. Hançer yenileme olumsuz.<cr>Ate
+e haz
+<clr:18,199,226>Taktiksel üstünlük kullan
+<clr:18,199,226>Hâlâ beklemedeyim.
+<clr:18,199,226>Biyoveri yüklemesi bekleniyor.
+<clr:18,199,226>Gün bat
+bekleniyor.
+im cihazlar
+uzun çat
+<clr:18,199,226>Olumsuz. Hançere gerek yok.
+ma süresi uzuyor.
+rgan biyoverileri taran
+<clr:18,199,226>Son ça
+dikkate al
+<clr:18,199,226>Güvenlik. 10-9.
+<clr:18,199,226>Temas sa
+. Ate
+<clr:18,199,226>Düzeni sa
+lamaya zorluyorum. Ana hedef bölgede.
+<clr:18,199,226>Hedef önümde.
+<clr:18,199,226>Hedef önümde ve ate
+<clr:18,199,226>Ana hedef üzerindeki bask
+üyorlar.
+<clr:18,199,226>Az kald
+<clr:18,199,226>Neredeyse bitti.
+<clr:18,199,226>Dikenler yollan
+<clr:18,199,226>Tüm dikenler ana hedefe yollan
+<clr:18,199,226>Tüm dikenler yollan
+koyma.
+ma var. Ate
+<clr:18,199,226>Komutan çat
+<clr:18,199,226>AKG çat
+mada ve ate
+ediyor.
+rgan a
+panik ya
+rgan ambale oldu.
+<clr:18,199,226>Hedefin motivasyonu dü
+ük.<cr>F
+ük.
+<clr:18,199,226>Art
+k ç
+kabilirsin.
+rgan hedefin dikkatine.<cr>Sana yard
+m edebiliriz.<cr>Güvendesin.
+<clr:18,199,226>Sana yard
+üpheli yasal agresiflik s
+n üstünde.<cr>Yetki kullan
+<clr:18,199,226>Müdahale
+iddetini art
+üpheli, kod 10-307'ye itaat etmiyor.
+<clr:18,199,226>Kod 10-307.<cr>Müdahale
+rgan tereddüt ediyor.
+n sald
+etkisiz.<cr>Tecrit uygulay
+<clr:18,199,226>Kod 10-108'i etkinle
+tiriyorum.<cr>Beklemedeyim.
+i kesiyorum.<cr>Hedef bizden.
+<clr:18,199,226>Beklemedeyim.<cr>Kod 10-40.
+i kesiyorum! Hedef sald
+rgan de
+etmeyin.<cr>
+taat do
+<clr:18,199,226>Hedef bizden.
+rmay
+n.<cr>Hedef bizden.
+<clr:18,199,226>Tüm birimler, sald
+durdurun. Hedef bizden.
+man olmad
+.<cr>Ate
+i kes!
+<clr:18,199,226>Güvenlik.<cr>9-5 konumunda bekle ve gör durumu var.
+<clr:18,199,226>Güvenlik.<cr>Bekle ve gör durumu var.
+<clr:18,199,226>Olumlu.<cr>Hedef zay
+.<cr>Sald
+rgan durumdan habersiz ve tecrite haz
+rgan yorgunluk belirtisi gösteriyor.<cr>Tecrite haz
+<force><clr:18,199,226>Hareket etme.
+<force><clr:18,199,226>Bir
+ey yok. Kimliksiz.
+<force><clr:18,199,226>Ellerini yukar
+kald
+r. Eller yukar
+<force><clr:18,199,226>Hareket etme!
+<force><clr:18,199,226>Bu kim?
+<force><delay:10.5><clr:18,199,226>Alyx? Orada m
+n?<cr>Hey, Alyx! Biziz!
+iye ilerliyorum.
+<clr:18,199,226>Kontaminanta do
+<clr:18,199,226>Sindiriliyor.
+<clr:18,199,226>Echo 1, bask
+<clr:18,199,226>Echo 1 bölgeye intikal etti, enfekteye ilerliyor.
+<clr:18,199,226>Bölgeye ilerliyoruz.
+<clr:18,199,226>Tam etkinlikle kar
+ediyoruz.
+kullanarak sald
+<clr:18,199,226>Hedef görüldü. Hançer çekildi.
+hedef görü
+<clr:18,199,226>Talih ku
+u do
+hedefin hayati belirtileri zay
+z bende.
+<clr:18,199,226>Alyx'e sald
+<clr:18,199,226>Alyx'e at
+ediyorum.
+<clr:18,199,226>Ana hedef. Echo 1 çat
+<clr:18,199,226>Bu o.
+<clr:18,199,226>Hedef de
+tiriliyor. Kalkan k
+ran kodu.
+<clr:18,199,226>Hedef gölge durumunda.
+<clr:18,199,226>Echo 1. Koruma kald
+<clr:18,199,226>Echo 1. Hançerler sipere yöneltildi.
+<clr:18,199,226>Echo 1. Sipere ate
+<clr:18,199,226>Kalkan k
+<clr:18,199,226>Ve
+imha ayg
+<clr:18,199,226>Görsel temas. Kar
+. Echo 1 sald
+<clr:18,199,226>Echo 1 temasta. Kar
+burada.
+<clr:18,199,226>Asalaklar
+n bulundu
+u bölge
+<clr:18,199,226>Of. Ba
+asalaklar sald
+<clr:18,199,226>Echo 1. Çürükler görü
+<clr:18,199,226>Bu
+eylerden nefret ediyorum.
+asalaklar. Echo 1.
+<clr:18,199,226>Asalaklar burada.
+stila uyar
+<clr:18,199,226>Echo 1, çürükler görü
+<clr:18,199,226>Çürükleri görüyorum.
+<clr:18,199,226>Çürükler burada.
+<clr:18,199,226>Çürüklerle temas.
+<clr:18,199,226>Biri daha indirildi.
+<clr:18,199,226>Echo 1. Öldürüldü.
+lem tamam.
+<clr:18,199,226>Temiz.
+<clr:18,199,226>Kontaminant etkisizle
+hedef susturuldu.
+<clr:18,199,226>Sesi kesildi.
+<clr:18,199,226>Alyx sonland
+ana sald
+rgan ortadan kald
+<clr:18,199,226>Alyx öldü.
+<clr:18,199,226>Kontaminant ortadan kald
+<clr:18,199,226>Uyku vakti.
+<clr:18,199,226><sfx:1>[
+<clr:18,199,226><sfx:1>[Nefes Almakta Zorlan
+<clr:18,199,226><sfx:1>[Öksürme ve H
+<clr:18,199,226>on iki
+<clr:18,199,226>aKG
+<clr:18,199,226>Echo 1
+<clr:18,199,226>Güvenlik güçleri
+<clr:18,199,226>Echo 1, siper isteniyor.
+<clr:18,199,226>Echo 1, gölge isteniyor.
+neyi haz
+rla.
+<clr:18,199,226>Koruma istiyorum
+. Kaç
+<clr:18,199,226>Siper al.
+<clr:18,199,226>Bölgede f
+labilir sesi var
+<clr:18,199,226>Geri çekil.
+labilir geliyor. Siper ar
+<clr:18,199,226>Yard
+m edin!
+<clr:18,199,226>Üzgü...
+<clr:18,199,226>Ölüyorum.
+<clr:18,199,226>Ku
+<clr:18,199,226>Echo 1 konum de
+<clr:18,199,226>Engel temizleniyor.
+<clr:18,199,226>Echo 1, hedef görünürde de
+iyile
+<clr:18,199,226>Görsel temas kesintisi. Konum de
+<clr:18,199,226>Ana hedef ç
+<clr:18,199,226>Hey Alyx, korkma, biziz!
+i kes!!<cr>Hedef bizden!
+indir!<cr>Echo 1! Silahlar
+indir.
+i kesiyoruz!<cr>Hançerleri indir.
+il! Sald
+rgan dü
+il! Ate
+etme!
+<clr:18,199,226>[Güler] Dost rolü i
+hançer çek.
+<clr:18,199,226>Echo 1 birincil görev konumunda.
+rgana bask
+<clr:18,199,226>Bölge temizleniyor.
+<clr:18,199,226>Bölgede cezai i
+<clr:18,199,226>Öncelikli hedefe ate
+lyor.
+<clr:18,199,226>Vance hedef al
+hedefe ate
+<clr:18,199,226>Ana dikenler geliyor.<cr>Kar
+k verin.
+<clr:18,199,226>Alyx'in fazla zaman
+<clr:18,199,226>Hayvan görü
+<clr:18,199,226>Son bilinen konum temizleniyor.
+<clr:18,199,226>Son bilinen konumda tahliye yap
+<clr:18,199,226>Son bilinen konumda sindirme yap
+<clr:18,199,226>Siper alarak gönderiyorum.
+<clr:18,199,226>Gönderiyorum.
+<clr:18,199,226>Bölgede ses var.
+etkin sald
+rgan.
+<clr:18,199,226>Echo 1 konu
+uyor.<cr>Tüm
+üphelileri bildiriyorum.
+lkyard
+<clr:18,199,226>Vuruldum. Uyar
+<clr:18,199,226>Ek vücut z
+<clr:18,199,226>Echo 1'in fazla zaman
+<clr:18,199,226>Siktir.
+<clr:18,199,226><sfx:1><norepeat:5>[Pis Pis Güler]
+<clr:18,199,226>Lanet olsun.
+<clr:18,199,226>Echo 1, konum istiyor.
+<clr:18,199,226>Hedef kayboldu.<cr>Konum deste
+rgan görsel temas
+negatif.
+ndan ç
+yok. Müdahale ekibi.
+rgan kaybedildi. Bölge bilinmiyor.
+<clr:18,199,226>Echo 1 için konum deste
+<clr:18,199,226> Konumuma destek istiyorum.
+ine ihtiyac
+z var.
+il. Güvenlik güçleri, destek istiyorum.
+<clr:18,199,226>Echo 1 görsel temas
+yor olabilir. Konum bildirin.
+<clr:18,199,226>Kontaminant sessiz<cr> Son bilinen bölge isteniyor.
+hedefle görsel temas tamamen kayboldu.
+<clr:18,199,226>Ana sald
+<clr:18,199,226>Kontaminant gizleniyor.<cr>Komutan, bilgi verin.
+hedef kontrol ediliyor:
+<clr:18,199,226>Görsel temas kayboldu. Vizör aç
+<clr:18,199,226>Hedef sessiz. Ke
+<clr:18,199,226>[Soluk Solu
+a Panik Ba
+rmalar
+<clr:18,199,226>Burada!
+<clr:18,199,226>Dur!
+<clr:18,199,226>Hay ben böyle...
+<clr:18,199,226>Echo destek. Echo destek.
+<clr:18,199,226>Hedef aç
+kta. Geri dön! Echo 7.<cr>Geri dön. Echo 7.
+<clr:18,199,226>Echo 1 yak
+k uyar
+. Müdahale ekibi, destek istiyorum!
+<clr:18,199,226>Çok yak
+nda. Konum de
+, tamam.
+<clr:18,199,226>Mümkün.
+<clr:18,199,226>Konum ayn
+<clr:18,199,226>Hançerler haz
+<clr:18,199,226>Echo 1 konumunda.
+<clr:18,199,226>Sesi kes. Kes.
+<clr:18,199,226>Beklemede.
+Kontaminant hedefine kilitlenildi.
+<clr:18,199,226>Echo 1. Kö
+eleri kontrol ediyorum.
+<clr:18,199,226><sfx:1><norepeat:5>[Nefes Nefese]
+rgan korunmas
+hedefe kar
+hançer kullanma izni isteniyor.
+<clr:18,199,226>Hançerler etkin. Kod 0-9.
+rgan üzerindeki tüm uyar
+kesin.
+hedefi bitiriyorum.
+<clr:18,199,226>Bölge temiz. Beklemeye geçi
+<clr:18,199,226>Temas kaybedildi. Temiz görünüyor.
+<clr:18,199,226>Tetikteyim.
+<clr:18,199,226>Tüm birimler bildiriyor<cr>Görü
+te sessizlik.
+<clr:18,199,226>Konum temiz.<cr>Deste
+<clr:18,199,226>Görsel temas kuruluyor
+<clr:18,199,226>Alfa durumuna geçiliyor.
+<clr:18,199,226>Echo Birimi ç
+<clr:18,199,226>Tamam. Görsel Temas. Tüm Birimler.
+p taray
+<clr:18,199,226>Hedefe ate
+yorum. Delta
+<clr:18,199,226>Görsel temas! Görsel temas!
+<clr:18,199,226>Hedef bulundu.
+rganla temas.
+lerle ilerle.
+<clr:18,199,226>Echo 1.<cr>Bölge 9-4'te temas.
+<clr:18,199,226>Echo 1, müdahale ediliyor.
+.<cr>Sabitliyorum.
+<clr:18,199,226>Görsel etkin. Sald
+rgan tekrar bulundu.
+<clr:18,199,226>Hançerler yenileniyor.
+<clr:18,199,226>Echo cephanesi az, 3
+arjör dolduruyorum. Hedefi sindir.
+<clr:18,199,226>Echo 1'in hançeri bo
+<clr:18,199,226>Silah yenileyin.
+<clr:18,199,226>Yeniden toplan
+<clr:18,199,226>Durum dengesiz. Siper ar
+<clr:18,199,226>Kara ekibi, dikkat. 1 numaral
+hedefte imha ayg
+arjör dolduruyor. Hançer avantaj
+<clr:18,199,226>Alyx silah dolduruyor. Tam kar
+z var. Hançeri kullan
+<clr:18,199,226>Görsel temas! Top may
+nlar!
+nlar.<cr>Tam etkinlik seviyesi.
+<clr:18,199,226>Kara ekibi, dikkat<cr>Sald
+rganda güçlendirilmi
+diken var.
+<clr:18,199,226>Görsel temas. Yasa d
+dikenler.
+n, salg
+<clr:18,199,226> ex oldu.
+nda!<cr>Tekrar ediyorum. Bölge istila alt
+<clr:18,199,226>Güvenlik, gök kalkan istiyorum.
+<clr:18,199,226>Avantaj kaybedildi. Sorunlar olu
+uyor.
+<clr:18,199,226>Güvenlik, yeni dizilim tavsiyesi verin.
+<clr:18,199,226> Ses yok. Takviye gönderin.
+<clr:18,199,226>Echo 1 tek ba
+na kald
+<clr:18,199,226>Güvenlik! Echo 1 tek kald
+. Yard
+<clr:18,199,226>Ah. Acil gölge durumu istiyorum!
+<clr:18,199,226>Güvenlik! Salg
+<clr:18,199,226>Echo 1 bildiriyor, dü
+man güçlü.
+<clr:18,199,226>Güvenlik, kara ekibi kalmad
+<clr:18,199,226>Güvenlik! Echo 1 konu
+uyor. Beni tahliye edin.
+<clr:18,199,226>Güvenlik!<cr>Müdahale ekibinden bir tek Echo 1 kald
+tü!
+n sesi kesildi. Destek gönderin!
+<clr:18,199,226>Güvenlik! Komutan gün bat
+durumunda! Onaylay
+<clr:18,199,226>Güvenlik! Komutan devre d
+.<cr>Müdahale ediyorum
+<clr:18,199,226>Komutan susturuldu.<cr>Tüm birimlerle müdahale edin!
+<clr:18,199,226>Komutan mevta.
+k Atar]
+<clr:18,199,226>Bast
+bast
+rma konumu
+<clr:18,199,226>Eco 1, itaate zorluyor.
+<clr:18,199,226>Son bilinen konuma ate
+<clr:18,199,226>Son bilinen konuma hançerler çekiliyor.
+rgan m
+hland
+n hatas
+ndan yararlan
+<clr:18,199,226>Echo 1 hasar almad
+<clr:18,199,226>Dikenler etkisiz. Hedef yetenek yoksunu.
+<clr:18,199,226>I
+Olmuyor.
+. Toparlan
+<clr:18,199,226>Temas. Sald
+rgan konumu:
+<clr:18,199,226>Echo 1 sald
+uyor. Kontaminantlar gürültü ç
+rgan. Hançerler kullan
+n bask
+uyguluyor.
+<clr:18,199,226>Ah. Delta durumuna haz
+.<cr>Echo 1 konu
+uyor, tüm
+<clr:18,199,226>Bölge Alfa 9 Delta'da ses var.<cr>Sald
+<clr:18,199,226>Güvenlik.<cr>Echo 1 bölgeye intikal etti, enfekteye ilerliyor.<cr>Bölücü 7-1-3.
+z.<cr>F
+<clr:18,199,226>Echo 1.<cr>Bölge 9-4'te temas.<cr>Sald
+hedef 11 no'lu binada aran
+yor.<cr>Ana sald
+rgan sessiz.<cr>Ke
+<clr:18,199,226>Alfa durumuna geçiliyor. Ve
+<cr>Kontaminant kilitlendi.<cr>Tüm kö
+yoruz.<cr>Alyx'in fazla zaman
+Evet
+Bildirilecek bir
+<clr:18,199,226>1, 14, 3, 6, 11, Do
+.<cr>Ve
+Echo 4 temiz.<cr>S
+ra sende. Tamam.
+<clr:18,199,226>Echo 1'de hareket yok.<cr>Konum: 7-2.
+<clr:18,199,226>Dinliyorum
+Olumlu
+Echo 1 dü
+ük
+k, dü
+ük ses bildiriyor.<cr>F
+rsat kolluyorum.
+im net
+<cr>Batakl
+k durumu olumsuz.<cr>I
+Bir dakika
+r.<cr>Radyallar temiz. Tamam.
+<clr:18,199,226>Güvenlik.<cr>Echo 1 konu
+uyor, sald
+<clr:18,199,226>Sektör izlemesi %43'te.<cr>Stabil.<cr>
+im bekliyorum. Tamam.
+<clr:18,199,226>Güvenlik bölgesel karantinay
+ruluyor.<cr>Bölücü 1'in yeri de
+ti ve etkin.<cr>Görü
+n durumu kodu D7.<cr>Günbat
+<cr>Anla
+<clr:18,199,226>Olumsuz. Anla
+.<cr>Bölgede tecrit yok. 1 numaral
+ne: 32.<cr>Hançer: 78. Kalkan: 100. Biprox: 73.<cr>Ses: 3. Vizör: 15. Echo ç
+<clr:18,199,226>Tamam. Kesicileri apeks 5'e ayarl
+<clr:18,199,226>Güvenlik isabet almam
+ruluyor.<cr>Tüm birimlere: Temasa haz
+<clr:18,199,226>Belirtme Kodu: Delta-Echo-7-9 -alfa-2-Winder-0
+.<cr>Do
+. Echo Ç
+<clr:18,199,226>Tamam. Hâlâ buraday
+<cr>Olumsuz
+<clr:18,199,226>Stabilizasyon ekibi beklemede.<cr>Vizör 73'te. Ses 15'te.<cr>Güvenlik yüksek de
+ruluyor.<cr>Tetikte kal
+<clr:18,199,226>Güvenlik. Sald
+<clr:18,199,226>Echo 1 çat
+mada, ate
+<clr:18,199,226>Ana hedef üzerinde stabilite uyguluyorum.
+<clr:18,199,226>Echo 1 tüm dikenleri yolluyor.
+<clr:18,199,226>Ah! Vücut z
+!<cr>Destek. Destek gönderin...
+!<cr>Destek. Destek gönderin... [Anla
+lmayan Ba
+rma]
+<clr:18,199,226>Echo 1 acil tecrit istiyor! [Panik Ç
+<clr:18,199,226>Echo 1 acil tecrit istiyor. [Panik Ç
+<clr:18,199,226>Ah! Termal s
+r a
+. Ahhh!
+<clr:18,199,226>Ah! Kritik biyoveri. Biti
+e 4
+2...
+3...
+! Ahh!
+! [Anla
+<clr:18,199,226><sfx:1>[Panikle Ç
+m edebiliriz. Güvendesin.
+n üstünde.
+<clr:18,199,226>Kod 10-307. Müdahale
+üpheli, kod 10-307 ile uyumlu de
+il.<cr>Müdahale
+tiriyorum. Beklemedeyim.
+<clr:18,199,226>Beklemedeyim. Kod 10-40.
+<clr:18,199,226>Hedef dü
+durdur. Hedef bizden.
+<clr:18,199,226>Güvenlik.<cr>9-5 konumunda bir bekle ve gör durumu var.
+<clr:18,199,226>Güvenlik.<cr>Bir bekle ve gör durumu var.
+<clr:18,199,226>Olumlu. Hedef zay
+sar
+<clr:18,199,226>Sindirin, sindirin.
+lerleme emri.
+<clr:18,199,226>Tüm birimler, bask
+<clr:18,199,226>Tüm birimler, hedefe yo
+<clr:18,199,226>Stabilizasyon ekibi bölge konumunu ald
+, enfekte ki
+iye ilerliyor.
+<clr:18,199,226>Tam etkin.
+<clr:18,199,226>Hedef görüldü. Hançerler haz
+<clr:18,199,226>Merhaba 1 Numaral
+Hedef.
+<clr:18,199,226>Dur bakal
+<clr:18,199,226>Ana hedef. Komutan çat
+<clr:18,199,226>Ana Hedef do
+<clr:18,199,226>Tüm birimler. Alyx'e sald
+<clr:18,199,226>Hedef siperde.
+<clr:18,199,226>Hedef korunuyor. Konum de
+<clr:18,199,226>Sipere ate
+<clr:18,199,226> Sipere ate
+<clr:18,199,226> gölge deste
+ini kald
+gönderiyorum.
+geliyor.
+<clr:18,199,226>At.
+at.
+<clr:18,199,226>Tüm birimler. F
+labilirler serbest.
+<clr:18,199,226> f
+kullan.
+nca Aslan
+<clr:18,199,226>Hedef. Kar
+<clr:18,199,226>Güvenlik ekibi dikkat.<cr>Kar
+n oldu
+<clr:18,199,226>Güvenlik.<cr>Kara ekibi, asalaklarla görsel temas sa
+<clr:18,199,226>Görsel Temas. Ba
+<clr:18,199,226>Asalaklar görü
+<clr:18,199,226>Parazit istilas
+<clr:18,199,226>Güvenlik.<cr>Kara ekibi, çürüklerle görsel temas sa
+<clr:18,199,226>Aktif çürüklerin bulundu
+<clr:18,199,226>Çürükler yak
+aretleyin
+<clr:18,199,226>Komutan susturdu.
+i bitirildi.
+<clr:18,199,226>Hedef steril.
+<clr:18,199,226>Enfeksiyon temizlendi.
+<clr:18,199,226>Güvenlik, bölge temiz.
+<clr:18,199,226>Temizleyen
+ran
+<clr:18,199,226>Ana hedefi temizleyen
+<clr:18,199,226>Ana hedefi etkisizle
+tiren
+<clr:18,199,226>Çürü
+ü etkisizle
+ü bitiren
+<clr:18,199,226><sfx:1>[H
+<clr:18,199,226>Tüm birimler. Komutan
+koruyun, konumu
+koruyun.
+<clr:18,199,226>Koruma istiyorum.
+<clr:18,199,226>Jilet 2, uyar
+<clr:18,199,226>Koruyorum.
+<clr:18,199,226>Savunmaday
+<clr:18,199,226>Gölge durumuna geçiyorum.
+<clr:18,199,226>Tüm birimler. Toplan
+tirin.
+<clr:18,199,226>Tüm birimler. Kaç
+<clr:18,199,226>Tüm birimler. Yak
+nda f
+labilir var, dikkat.
+<clr:18,199,226>Pozisyon de
+<clr:18,199,226>Netle
+<clr:18,199,226>Engel kald
+<clr:18,199,226> toparlan
+<clr:18,199,226> görü
+<clr:18,199,226>Kara Ekibi, toparlan
+<clr:18,199,226>Güvenlik Ekibi, görü
+i kes!!<cr>Hedef bizden.
+indir!<cr>Silahlar
+i kes!!<cr>Ate
+i kes.
+<clr:18,199,226>Tüm birimler! Alyx dü
+<clr:18,199,226> hançerler kullan
+<clr:18,199,226> cezai i
+lat.
+<clr:18,199,226> ate
+<clr:18,199,226>Tüm birimler, s
+z bask
+bölgesi
+<clr:18,199,226>Öncelikli hedef. Ate
+<clr:18,199,226>Komutan ana hedefi hançerliyor.
+. Hançerler serbest.
+<clr:18,199,226> öncelikli hedef.
+<clr:18,199,226> Vance üzerinde k
+tlama yok.
+<clr:18,199,226> 1 numaral
+hedefi sustur.
+labilirle temizliyorum.
+<clr:18,199,226>Temizlenen bölge
+yeri
+<clr:18,199,226> son bilinen konuma f
+<clr:18,199,226> sald
+son bilinen konumdan ç
+kmaya zorlay
+narak temizliyorum.
+<clr:18,199,226>Sesin geldi
+i yer bölge
+<clr:18,199,226>Hareket var
+<clr:18,199,226>Tüm birimler ses aç
+n.<cr>Görsel temas sa
+lanan kontaminantlar
+bildirin.
+<clr:18,199,226>Komutan a
+r yaral
+<clr:18,199,226>Güvenlik, uyar
+ne istiyorum.
+<clr:18,199,226>Birlik say
+ük. Zaman
+z azald
+<clr:18,199,226>Komutana t
+bbi destek gönderin.
+<clr:18,199,226>Öldürme ba
+<clr:18,199,226> ömrü az.
+<clr:18,199,226><sfx><norepeat:5>[Pis Pis Güler]
+<clr:18,199,226>Güvenlik, konum istiyorum.
+rganla görsel temas olumsuz.
+<clr:18,199,226>Kontaminantla görsel temas yok.
+yor olabilir. Tüm birimler, rapor verin.
+<clr:18,199,226>Hedefin konumunu bildirin.
+n görü
+<clr:18,199,226>Kontaminant sessiz.
+rganla görsel temas yok.
+siperleri kontrol edin.
+<clr:18,199,226>Son bilinen konumu verin.
+<clr:18,199,226> Hedef durumunu bildirin.
+<clr:18,199,226>Ana hedefle görsel temas yok.
+<clr:18,199,226>Vance gölge durumunda. Konum deste
+<clr:18,199,226>Birincil kontaminant gizleniyor.
+<clr:18,199,226> ana sald
+rgan gölge durumunda. Görsel temas bildirin.
+. Konum de
+<clr:18,199,226>Enfeksiyon ilerliyor. Enfeksiyon ilerliyor.
+<clr:18,199,226>Geri çekil. Geri çekil. Geri çekil.
+<clr:18,199,226>Onayland
+<clr:18,199,226>Mevzide.
+m. Kö
+<clr:18,199,226> temas bekle.
+<clr:18,199,226><sfx><norepeat:5>[Nefes Nefese]
+<clr:18,199,226>Ana hedef korunmas
+<clr:18,199,226>Balyoz etkin. Kod 0-9.
+rgana tekrar silah çekin, üç, iki
+<clr:18,199,226>Güvenlik, silah takviyesi gönder.
+<clr:18,199,226>Sonu geliyor.
+<clr:18,199,226>Tüm birimler. Ana sald
+rgan üzerindeki uyar
+n öldü
+ünü bildirin.
+<clr:18,199,226>Temas kaybedildi. Olas
+dekontaminasyon.
+<clr:18,199,226>Bölgede kontaminant yok. Bekleme izni istiyorum.
+<clr:18,199,226>Tüm birimler bildiriyor. Görü
+<clr:18,199,226> bölgesi durum raporu.
+<clr:18,199,226> enfeksiyon durumunu bildir.
+<clr:18,199,226>Görsel temas taran
+<clr:18,199,226> taramaya devam edip temizleyin.
+<clr:18,199,226> Aramaya devam et.
+<clr:18,199,226>Güvenlik. Alfa durumu bildiriliyor.
+<clr:18,199,226>Temizlik ba
+<clr:18,199,226>Tetikte olun. Görü
+<clr:18,199,226>Görsel temas. Tüm birimler.
+<clr:18,199,226> mevzi al
+n ve taray
+<clr:18,199,226> arenay
+ku
+<clr:18,199,226>Tüm birimler. Da
+<clr:18,199,226>Tüm birimler. Tüm gölgeleri aç
+n! Hedef yeri
+<clr:18,199,226>Hedefle temas konumu:
+<clr:18,199,226>Görsel temas. Aral
+k 50. Konum aç
+12.
+<clr:18,199,226>Hedef bulundu, yeri
+rganla temas
+<clr:18,199,226>Bölgede temas
+<clr:18,199,226>Yeni temas bölgesi
+<clr:18,199,226> bölgede çat
+<clr:18,199,226> hedefle çat
+maya girin.
+rgana müdahale edin, konumu
+<clr:18,199,226>Dolduruyorum.
+n cephanesi az, 3
+1.
+<clr:18,199,226>Hançer yok.
+<clr:18,199,226> takviyeleri kontrol edin.
+<clr:18,199,226> siper bulup geri çekilin.
+<clr:18,199,226>bölge fazla s
+cak. Çekilin.
+yla görsel temas var. Kar
+k verme riski yüksek.
+<clr:18,199,226>Güvenlik.
+<clr:18,199,226>Silüetleri kontrol et. Çok say
+<clr:18,199,226>Birden fazla kontaminant do
+<clr:18,199,226>Dikkat. Sald
+rganda bomba var.
+<clr:18,199,226>Tüm birimler. Sald
+labilirler var. Dikkat edin.
+rgana yönelik tüm
+arjör doldurmalar
+durdurun.
+<clr:18,199,226>Güvenlik. Top may
+nlar. Tam etkinlik seviyesi.
+tirin. Top may
+<clr:18,199,226>Güvenlik. Hedef 1'de f
+<clr:18,199,226>Hedefte illegal diken var.
+<clr:18,199,226>Güçlendirilmi
+dikenler tespit edildi.<cr>Dikkatli kar
+<clr:18,199,226>Güvenlik, salg
+namad
+<clr:18,199,226>Güvenlik, ek birimler isteniyor.
+<clr:18,199,226>Kara birimi dü
+<clr:18,199,226>Güvenlik, bölge s
+<clr:18,199,226> sessiz. Takviye istiyorum.
+<clr:18,199,226>Güvenlik! Komutan tek ba
+<clr:18,199,226>Güvenlik. Komutan tek kald
+<clr:18,199,226>Güvenlik, acil gölge durumu istiyorum.
+<clr:18,199,226>Güvenlik. Salg
+<clr:18,199,226>Kara ekibi sonland
+.<cr>Dost birimler isteniyor.
+<clr:18,199,226>Güvenlik. Tek kald
+m.<cr>Çok fazla sald
+rgan var.
+<clr:18,199,226>Güvenlik.<cr>Komutan
+n tahliyesi isteniyor.
+<clr:18,199,226>Güvenlik.<cr>Müdahale ekibinden bir tek Komutan kald
+<clr:18,199,226>Güvenlik.<cr>Enfeksiyon yay
+<clr:18,199,226>Ana hedef üzerine hançerler bo
+rma ate
+<clr:18,199,226> hedefi konumunda tut.
+uygulamaya ba
+sabet etmedi.
+<clr:18,199,226>Hedef hata yapt
+lerleyemem.
+<clr:18,199,226>Hedef bask
+kurmaya çal
+yor. Cevap verin.
+<clr:18,199,226>Kara Ekibinin temas sa
+bölge
+<clr:18,199,226>Güvenlik ekibinin dikenleri bölgede etkin.
+<clr:18,199,226>14, 1, 6, 3
+11
+<clr:18,199,226>Hareket yok.
+<clr:18,199,226>Olumlu. Ses az.<cr>F
+im net.<cr>Batakl
+k durumu olumsuz.<cr>Radyallar temiz. Tamam.
+k verisi isteniyor.
+<clr:18,199,226>Sektör izlemesi %43'te. Stabil.<cr>Yan
+t bekliyorum. Tamam.
+<clr:18,199,226>Olumlu.<cr>Salg
+. Bölgede tecrit yok.<cr>1 numaral
+<clr:18,199,226>Ses: 3. Vizör: 15.
+<clr:18,199,226>Kesicileri apeks 5'e ayarl
+yorum.<cr>Çevre dahilinde biyotiklerimiz var. Tamam.
+<clr:18,199,226>Belirtme kodu: Delta-Echo-7-9 -alfa-2-Winder-0
+ruluyor. Tetikte kal
+<clr:18,199,226>Olumsuz. Hedef hâlâ etkin.
+.<cr>Tekrar ayarlan
+<clr:18,199,226>Güvenlik, kod 10-4. <cr>Kesici ç
+<clr:18,199,226>Kesici haz
+<clr:18,199,226>Kesiciyi gönderiyorum.
+<clr:18,199,226>Kesici gönderildi ve tar
+<clr:18,199,226>Kesici ç
+<clr:18,199,226>Kesici etkinle
+tiriliyor.<cr>Tara ve sald
+yor.<cr>Bitmesi an meselesi.
+<clr:18,199,226>Kesici, av üstünde.<cr>Tüm birimler, dikkat çekmeyin.
+<clr:18,199,226>Dikkat.<cr>Kesici, av üstünde.
+.<cr>Kontrol ve tecrit uygulay
+.<cr>Kimlik tespiti ve cezai i
+lem yap
+kesin.<cr>Hedef bizden.
+<clr:18,199,226>AKG yakla
+<clr:18,199,226>Dal
+<clr:18,199,226>AKG birimi sald
+<clr:18,199,226>AKG hedefe ilerliyor.
+<clr:18,199,226>AKG ilerliyor.
+<clr:18,199,226>AKG bast
+<clr:18,199,226>Vurucu birim, vurucu birim.
+hedefe bask
+<clr:18,199,226>Ana hedefi dezenfekte ediyorum.
+<clr:18,199,226>Hançerler Vance'a yöneltildi.
+<clr:18,199,226>Pes et Alyx.
+<clr:18,199,226>Vurucu birim, ana sald
+rgana yönel.
+<clr:18,199,226>AKG, Alyx'in pe
+inde.
+hedefle çat
+tiriliyor.<cr>Kalkan k
+<clr:18,199,226>Hedef korunuyor.<cr>Sald
+<clr:18,199,226>AKG. Koruma kald
+<clr:18,199,226>AKG. Hançerler sipere yöneltildi.
+labilir!
+<clr:18,199,226>Yere yat.
+<clr:18,199,226>AKG, kar
+yla görsel temas sa
+na sald
+<clr:18,199,226>Asalaklarla temas sa
+<clr:18,199,226>Ba
+<clr:18,199,226>Asalaklar, AKG'nin görü
+<clr:18,199,226>Aaaahhh
+asalaklar görüldü. Bölge:
+<clr:18,199,226>Çürükler, AKG'nin görü
+<clr:18,199,226>Çürüklerle görsel temas sa
+<clr:18,199,226>Hedef etkisizle
+rgan susturuldu.
+<clr:18,199,226>AKG konu
+uyor; hedef öldürüldü.
+<clr:18,199,226>Bölge temizlendi.
+<clr:18,199,226>AKG'den komutana. Asalak indirildi.
+<clr:18,199,226>Öldürüldü. Ar
+tmaya ba
+<clr:18,199,226>Sorun ortadan kald
+hedef indirildi.
+<clr:18,199,226>Çürük susturuldu.
+<clr:18,199,226>Bölücü
+<clr:18,199,226>AKG siper ar
+<clr:18,199,226>APF'yi siper olarak kullanma izni isteniyor.
+<clr:18,199,226>Siper konumu
+nma.
+. Dikkat!
+<clr:18,199,226>Dikkat et.
+labilir geliyor. Geri çekil!
+<clr:18,199,226>Anti Kolluk
+<clr:18,199,226>Tamam
+<clr:18,199,226>Güvenl
+tekrar kuruyorum.
+<clr:18,199,226>Pozisyon al
+indir!<cr>AKG! Silahlar
+ediliyor
+<clr:18,199,226>AKG birincil görev konumunda.
+<clr:18,199,226>Kod 3. Temizlik ba
+hançerler çekildi.
+<clr:18,199,226>Hedef Vance.
+yor. Hedef
+<clr:18,199,226>Burada.
+<clr:18,199,226>Bir numaral
+bölücü do
+<clr:18,199,226>Son bilinen konumda imha ayg
+<clr:18,199,226>Son bilinen konuma f
+<clr:18,199,226>AKG ses duyuyor.<cr>Tüm kontaminantlar bildiriliyor.
+<clr:18,199,226>Vuruldum.
+korumada etkili.
+yorum.<cr>Siper arayaca
+<clr:18,199,226>Diken batt
+.<cr>Uyar
+ne kullan
+<clr:18,199,226>AKG için konum deste
+rgan görünürde yok.
+<clr:18,199,226>Görsel temas yok. Görsel temas yok.
+<clr:18,199,226>AKG hedef konumu istiyor.
+m, 7-1-3 durumu mevcut.<cr>Son bilinen konumu talep ediyorum.
+<clr:18,199,226>Hedef kayboldu. Destek istiyorum.
+<clr:18,199,226>AKG, görsel temas
+yor olabilir.<cr>Görü
+isteniyor.
+<clr:18,199,226>Kontaminant gizleniyor.<cr>Yard
+<clr:18,199,226>Hedef kontrolü.
+<clr:18,199,226>Beklemedeyim.
+<clr:18,199,226>AKG mevzide.
+<clr:18,199,226>AKG beklemede.
+<clr:18,199,226>AKG izlemede.
+<clr:18,199,226>AKG kö
+eleri emniyete al
+<clr:18,199,226><sfx><norepeat:5>[Nefes nefese]
+<clr:18,199,226>Hedef savunmas
+<clr:18,199,226>Tekrar silah çekin. Hemen!
+AKG'de yo
+<clr:18,199,226>AKG etkili.
+<clr:18,199,226>AKG'den komutana. Sald
+rgan susturuldu..
+<clr:18,199,226>Durum: Gölge etkin.
+<clr:18,199,226>Alfa durumu.
+<clr:18,199,226>Vizör aç
+k. Ses aç
+<clr:18,199,226>Gölge ar
+<clr:18,199,226>Tüm görü
+hatlar
+rgan tahliyesi için ilerliyorum.
+n! Hedef
+lerle ilerle!
+<clr:18,199,226>AKG. Temas bölgesi:
+<clr:18,199,226>AKG müdahale ediyor.
+<clr:18,199,226>Etkin görüntü konumu
+<clr:18,199,226>AKG'nin mermisi bitiyor. 4
+<clr:18,199,226>Hançer köreldi. Yeniliyorum.
+<clr:18,199,226>AKG'nin
+arjörü bo
+<clr:18,199,226>AKG. Yeniden toplan
+<clr:18,199,226>AKG. Geri çekil.
+<clr:18,199,226>Durum dengesiz.<cr>Siper ar
+<clr:18,199,226>Silüetleri kontrol et.<cr>Çok say
+rganda imha ayg
+arjör dolduruyor.<cr>Hançer kullan
+<clr:18,199,226>AKG. Kontaminant savunmas
+<clr:18,199,226>Görsel temas. Top may
+nlar. Hançerleri çekin.
+nlar! Müdahale edin.
+<clr:18,199,226>Komutan. Dikenler güçlendirildi.
+<clr:18,199,226>AKG. Hedefte illegal diken var.
+labilir görüldü.<cr>Dikkatli olun.
+<clr:18,199,226>Bölge 9: Salg
+<clr:18,199,226>Güvenlik, bölge kontrol alt
+<clr:18,199,226>Bir sorunumuz var.
+<clr:18,199,226>Güvenlik. AKG tek ba
+<clr:18,199,226>Güvenlik. AKG tek kald
+.<cr>Acil yard
+<clr:18,199,226>Ah. Gölge durumu istiyorum.
+<clr:18,199,226>AKG'den güvenli
+e.<cr>Da
+lma etkin. Onaylay
+<clr:18,199,226>Güvenlik! Tek kald
+m.<cr>Dü
+man çok güçlü!
+<clr:18,199,226>Güvenlik!<cr>AKG tahliye istiyor.
+<clr:18,199,226>Güvenlik!<cr>Müdahale ekibinden bir tek AKG kald
+.<cr>Müdahale ediyorum!
+<clr:18,199,226>Komutan susturuldu. Tüm birimlerle müdahale edin!
+<clr:18,199,226>Komutan öldü.<cr>Komutan öldü!
+<clr:18,199,226>AKG, itaate zorluyor.
+<clr:18,199,226>Antipersonel Kolluk Gücü etkinlik konumu
+<clr:18,199,226>AKG. Sald
+rgan kolsuz.
+<clr:18,199,226>Güvenlik. Kontaminant
+<clr:18,199,226>AKG hasar almad
+<clr:18,199,226>Güvenlik. Olumsuz.
+.<cr>Sindirme etkin.
+<clr:18,199,226>Arenay
+kapat
+yorum.<cr>Gölge durumu ba
+las
+<clr:18,199,226>3, 11, 1, 14, 6
+. S
+<clr:18,199,226>Hareket yok. Konum: 7-2.
+Olumlu.
+<clr:18,199,226>Radyallar temiz. Tamam.
+im bekliyorum.
+<clr:18,199,226>Stabil.
+Anla
+<clr:18,199,226>Biyoveri güncelleniyor<cr>Ses: 3. Vizör: 15. Tamam.
+.<cr>Temas bekleniyor. Tamam.
+<clr:18,199,226>Böcekler geliyor.<cr>Tüm birimlerin dikkatine, temasa haz
+<clr:18,199,226>Ça
+kodu: 2W0
+<cr>Do
+. Kabul edildi.<cr>Güncellemenin tamamlanmas
+<clr:18,199,226>Güncelleme etkin.<cr>Kabul etmek zorunludur.
+<clr:18,199,226>Stabilizasyon ekibi beklemede.<cr>Tetikte olun.
+ma süresini uzat
+rgan biyoveriler taran
+<sfx><norepeat:2><clr:255,0,0>[Mermi Yok]
+<sfx:1><norepeat:3><clr:255,0,0>[Son Mermi Sürüldü]
+<sfx><norepeat:3><clr:255,0,0>[Son Mermi Ate
+lendi]
+<sfx><norepeat:5><clr:255,176,0>[Tabanca Mermisi Bitti]
+<sfx><norepeat:5>[Pompal
+Tüfek Dolu]
+<sfx><norepeat:5><clr:255,176,0>[Pompal
+Mermisi Bitti]
+<sfx><norepeat:3>[Mermi Kümesi Haz
+<sfx><norepeat:3><clr:255,0,0>[Son Mermi]
+<sfx><norepeat:5><clr:255,176,0>[Hafif Makineli Mermisi Bitti]
+<sfx><norepeat:5>[I
+nlanma Engeli]
+<sfx>[Hack Ba
+lang
+<sfx>[Bomba Patlar]
+<sfx><clr:255,0,0>[Bomba Haz
+<sfx>[Xen Bombas
+Patlar]
+<sfx>[
+me Tamamland
+<sfx><norepeat:1><clr:255,0,0>[Sa
+stasyonu Bo
+me Ba
+<sfx>[Sa
+nesi Uyguland
+<sfx>[Ba
+Biplemesi]
+<sfx>[Lazer Etkinle
+tirildi]
+<sfx><norepeat:1>[Tank Etkinle
+ttifak Batarya Yuvas
+Aç
+ttifak Bataryas
+Kabul Edildi]
+<sfx>[Kap
+Çal
+Kilidi Aç
+<sfx>[Yükseltiliyor]
+<sfx>[Yükseltme Tamamland
+<sfx><norepeat:8>[Devre Tamamland
+<sfx:1><norepeat:1>[Çantaya Reçine Koyuldu]
+<sfx:1><norepeat:1>[Çantadan Mermi Al
+<sfx:1>[Çantadan Reçine Al
+<sfx:1><norepeat:1>[Çantaya Mermi Koyuldu]
+<sfx><norepeat:8>[Fener Eklendi]
+<sfx><norepeat:20>[Dü
+ük Sa
+k Alarm
+<sfx>[Tren Kap
+Kilitli]
+<sfx><norepeat:4>[Yüksek Sesli Kap
+<sfx><norepeat:4>[Asansör Var
+Sesi]
+<sfx><norepeat:4>[Asansör Harekete Geçer]
+<sfx><norepeat:4>[Asansör Kata Ula
+<sfx><norepeat:4>[Asansör Butonu]
+<sfx><norepeat:6>[Kasa Mente
+esi]
+<sfx>[Kilit K
+<sfx:1>[Patlama]
+<sfx><norepeat:2>[Cam
+klat
+Çarpar]
+<sfx>[Motor Çal
+<sfx>[Elektrik
+oku]
+<sfx>[Gizli Kap
+Kayar]
+<sfx>[Merdiven Dü
+er]
+<sfx>[Dron Patlar]
+Aralan
+<sfx>[H
+<sfx>[Korkunç Ç
+<sfx>[Tele Vurur]
+<sfx>[Cam K
+Kapan
+<sfx>[Panel Kayarak Aç
+<sfx>[Panel Kapan
+<sfx>[Zil Çalar]
+<sfx>[Vortigaunt Enerji Patlamas
+<sfx>[Güç Kesilir]
+<sfx>[Asansör Çak
+<sfx>[Asansör T
+nlamas
+<sfx>[Asansör Dü
+<sfx>[Asansör Çal
+maz]
+<sfx>[Asansör Elektri
+i Kesilir]
+<sfx>[Asansöre Elektrik Gelir]
+<sfx>[I
+klar Aç
+klar Kapan
+<sfx><norepeat_global:5>[Tavandan Sesler Gelir]
+<sfx>[Elektrik Patlamas
+<sfx>[Tavandan Sesler Gelir]
+<sfx>[Tavan Çöker]
+<sfx>[Kafayengeci Ko
+usu]
+<sfx>[Kafayengeci Sesleri]
+<sfx>[Elektrik Kesilir]
+<sfx>[Elektrik Gelir]
+<sfx>[Merdiven Tekmelenir]
+<sfx>[Güç Seviyesi Azal
+<sfx>[Güç Seviyesi Artar]
+<sfx>[A
+Enerji Yüklemesi]
+<sfx>[Cam Patlar]
+<sfx>[Advisor Ölüm Ç
+<sfx>[Zaman Geriye Sarar]
+<sfx>[Zaman Donar]
+<clr:255,176,0>Uyar
+: Hayati göstergeler kritik seviyede.<cr>T
+bbi yard
+m aray
+<sfx>[Havaland
+rmada Ad
+m Sesleri]
+<sfx>[Pencereye Çarpar]
+<sfx>[Tren Durur]
+<sfx>[Sifon Sesi]
+<sfx><norepeat:5><clr:255,0,0>[Kar
+Ölür]
+<sfx><norepeat:5><clr:255,0,0>[Sülük Ölür]
+<sfx:1><norepeat:10>[Kafayengeci H
+rlamas
+<sfx><norepeat:10>[Kafayengeci Sald
+<sfx><norepeat:10>[Kafayengeci Is
+<sfx:1><norepeat:10>[Kafayengeci Salya Sesi]
+<sfx:1><norepeat:10>[Kafayengeci Yanma Sesi]
+<sfx:1><norepeat:10>[Kafayengeci Kazma Sesi]
+<sfx:1><norepeat:10>[Kafayengeci Ortaya Ç
+kar]
+<sfx><norepeat:10><clr:255,0,0>[Kafayengeci Ölür]
+<sfx:1><norepeat:10>[Kafayengeci Ac
+<sfx>[Uzayl
+<sfx><norepeat:4>[Vatoz Kalbi Yerle
+tirilir]
+<sfx><norepeat:4>[Vatoz Kalbi Ç
+<sfx><norepeat:5><clr:255,0,0>[Vatoz Ölür]
+<sfx><norepeat:8>[Balon
+<sfx>[Balon Patlar]
+<sfx:1><norepeat_global:5>[Xen Midyesi Ç
+<sfx:1><norepeat:4>[Xen Spor Bulutu]
+<sfx><norepeat:4>[Jeff Sald
+<sfx><norepeat:6>[Jeff Kap
+rar]
+<sfx><norepeat:4>[Korkunç Ç
+<sfx><norepeat:4>[Jeff Sinirlenir]
+<sfx><norepeat:5>[Jeff Sinirle Yürür]
+ya Vurur]
+<sfx><norepeat:6>[Kap
+<sfx><norepeat:12>[Jeff Yürüyor]
+<sfx><norepeat:20>[Asansör Müzi
+<sfx><norepeat:20>[Tiz Hoparlör Sesi]
+<sfx><norepeat:5>[Jeff Ç
+<sfx><clr:255,176,0>[Ölüm]
+<sfx><clr:255,176,0>Sa
+k Kritik Seviyede
+<sfx><clr:255,176,0>T
+bbi Yard
+m Aray
+<sfx><norepeat:5>[Batarya Yerle
+<sfx><norepeat:5>[Batarya Ç
+<sfx><norepeat_global:5><clr:255,176,0>[Z
+rhtan Seker]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Levye Sesi!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Levye Darbesi!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Levye Savurmas
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Mermi Yok]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tabanca At
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[.357 At
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Hafif Makineliden Bomba At
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Hafif Makineli Birincil Ate
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[
+arjör Dolduruluyor]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Çifte Pompal
+Ate
+i!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tekli Pompal
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Birincil Ate
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Bo
+kincil Ate
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Yüklü
+<sfx><norepeat:5>[Tabanca At
+<sfx><norepeat:4><clr:255,176,0>[Mermi Al
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[PATLAMA]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Bomba Patlar]
+<sfx:1><norepeat_global:8><clr:255,176,0>[Mermi Seker]
+<sfx><norepeat:4><clr:255,176,0>[Uzunbacak Ate
+sabet Eder]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[Sekme Sesi]
+<sfx><clr:255,170,0>[Dü
+k Uyar
+ük Mermi Uyar
+<sfx><clr:255,170,0>[H
+zlanma Kesildi]
+<sfx><norepeat:5><clr:255,170,0>[H
+zlanma Aç
+<sfx><clr:255,170,0>[Kullan
+lam
+<sfx><clr:255,0,0>[Ölüm]
+<sfx><clr:255,170,0>[Batarya Al
+<sfx><clr:255,170,0>[Sa
+k Çantas
+Al
+k Tüpü Al
+<sfx><clr:255,170,0>[Ret]
+<sfx><clr:255,170,0>[
+<sfx><norepeat:5>[Butona Bas
+<sfx><norepeat:10>[Kar
+Sald
+Saklan
+Yüzeye Ç
+Ac
+Ezilir]
+<sfx><norepeat:3>[Sülük Is
+<sfx><norepeat:3><clr:255,0,0>[Sülük Ölür]
+<sfx><norepeat:3>[Sülük Yukar
+<sfx><norepeat:3>[Sülük Homurdar]
+<sfx><norepeat:3>[Sülük Ç
+<sfx><norepeat:5>[Sülük Sindirir]
+<sfx><norepeat:10>[Kafayengeci H
+<sfx><norepeat:10>[Patlama!]
+<sfx><norepeat:10>[Kamera Uzakla
+<sfx><norepeat:10>[Kamera Harekete Geçer]
+<sfx><norepeat:10>[Kamera Uyar
+<sfx><norepeat:10>[Deklan
+ör Sesi]
+<sfx>[Kamera Yok Edildi]
+<sfx><norepeat:10>[Karga Uyar
+<sfx><norepeat:10>[Karga Ac
+<sfx><norepeat:10><clr:255,0,0>[Karga Ölür]
+<sfx><norepeat:10>[Karga Gaklar!]
+<sfx><norepeat:5><clr:255,0,0>[Sivilkeser Yok Edilir]
+<sfx><norepeat:20>[Sivilkeser Motoru]
+<sfx><norepeat:10>[
+ap!]
+<sfx><norepeat:10>[Sivilkeser Gönderilir]
+<sfx><norepeat:5>[Sivilkeser Gönderildi]
+<sfx><norepeat:30>[
+ttifak Telsizi: Konu
+ma Sesleri]
+<sfx><norepeat:15>[
+ttifak Telsizi: Alarm!]
+ttifak Telsizi: Bomba Alarm
+ttifak Telsizi: Destek
+steniyor]
+<sfx><norepeat:25>[
+ttifak Telsizi: Taktiksel Konu
+malar]
+<sfx><norepeat:10>[Taray
+<sfx><norepeat:5><clr:255,0,0>[Taray
+<sfx><norepeat:5>[Taray
+Deklan
+Kamikaze Sald
+<sfx><norepeat:10>[Uzunbacak Uyar
+<sfx>[Uzunbacak Ac
+<sfx><norepeat:5><clr:255,0,0>[Uzunbacak Ölür]
+<sfx>[Uzunbacak Sald
+<sfx><norepeat:15>[Uzunbacak Mitralyözü]
+<sfx><norepeat:10>[Uzunbacak Ad
+m Sesi]
+<sfx>[Çarpma!]
+<sfx>[Vortigaunt I
+n Sald
+<sfx><norepeat:10>[Zombi Sesi]
+<sfx><norepeat:10><clr:255,0,0>[Zombi Ölür]
+<sfx><norepeat_global:20>[Zombi
+<sfx><norepeat:10>[Zombi Ac
+<sfx>[Kilitli]
+<sfx><norepeat:1>[Kap
+<sfx><norepeat:1>[Geçit Kapan
+<sfx><norepeat:1>[Metal Ç
+nlar]
+<sfx><norepeat:1>[Dolap Kapan
+<sfx><norepeat:1>[Kilitli]
+<sfx>[Butona Bas
+<sfx>[Kol Sesi]
+<sfx>[Buton Kilitli]
+ttifak Tu
+<sfx><norepeat:3>[Su S
+çrar]
+<sfx><norepeat:1>[Cam Parçalan
+<sfx><norepeat:1>[Seramikler K
+<sfx><norepeat:1>[Seramikler Parçalan
+<sfx><norepeat:1>[Monitör Parçalan
+<sfx>[Karpuz Parçalan
+<sfx><norepeat:1>[Sert Darbe]
+<sfx><norepeat:3>[Kart Kabul Edilir]
+<sfx><norepeat:3>[Kilitli]
+<sfx><norepeat:1>[Tahta K
+<sfx><norepeat:1>[Metal Yok Edilir]
+<sfx><norepeat:1>[Beton K
+<sfx><norepeat:1>[Alç
+<sfx><norepeat:1>[Karton Y
+<sfx><norepeat:1>[Plastik K
+<sfx><norepeat:1>[Tahta Çat
+<sfx><norepeat:3>[Tahta Paramparça Olur]

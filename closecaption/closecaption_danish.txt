@@ -1,0 +1,4246 @@
+Nbn
+Map
+MOVEMENT
+Move forward
+Move back
+Turn left
+Turn right
+Move left (strafe)
+Move right (strafe)
+Jump
+Duck
+Swim up
+Swim down
+Look up
+Look down
+Look straight ahead
+Strafe modifier
+Mouse look modifier
+Keyboard look modifier
+Use item (buttons, machines, ...)
+Pickup/Use objects
+COMMUNICATION
+Use voice communication
+Chat message
+Team message
+COMBAT
+Primary attack
+Secondary attack
+Reload weapon
+Walk (Move Slowly)
+Flashlight
+Spray logo
+The server is offering to connect you to:
+Press %s1 to accept.
+Please configure a key to accept.
+Weapon category 1
+Weapon category 2
+Weapon category 3
+Weapon category 4
+Weapon category 5
+Weapon category 6
+Weapon category 7
+Weapon category 8
+Weapon category 9
+Weapon category 0
+Previous weapon
+Next weapon
+Last weapon used
+MISCELLANEOUS
+Display multiplayer scores
+Take screen shot
+Quick save
+Quick load
+Pause game
+Quit game
+Accept redirect to another server
+Cheer
+Activate in-game GUI
+Change team
+Change class
+Use special skill
+Multiplayer decal limit
+Valid teams, leave blank for all
+Frag Limit
+Time Limit (Min.)
+Falling Damage
+Normal
+Realistic
+Teamplay
+Friendly Fire
+Weapons Stay
+Force Respawn
+Footsteps
+Autocrosshair
+Center player names
+Switch weapons immediately
+Automatically take end-game screenshots
+Observer crosshair
+Toggle developer console
+Cancel
+Camera Options
+Locked Chase Camera
+Free Chase Camera
+Free Look
+First Person
+Free Map Overview
+Chase Map Overview
+Options
+Name
+Score
+Deaths
+Latency
+Voice
+Friend
+Hostname
+Max. players
+Server password
+Close
+Help
+Settings
+Chat Messages
+Show Status
+View Cone
+Player Names
+Picture-In-Picture
+Overview
+No Map
+Small Map
+Large Map
+Zoom In
+Zoom Out
+No Rotation
+Show Names
+Show Health
+Show Tracks
+Auto Director
+Show Scores
+Game Saved
+Orange
+Yellow
+Blue
+Ltblue
+Green
+Red
+Brown
+Ltgray
+Dkgray
+Playing
+Stopped
+Paused
+x1/4
+x1/2
+%s1  %s2  %s3
+Chapter
+Creating sound caches...
+Processing:  %s1
+Updating Steam resources...
+Sprint (Move Quickly)
+Suit Zoom
+Send/Recall Squad
+Gravity Gun
+Toggle close caption sound effects
+No Film Grain
+Film Grain
+No Color Correction
+Color Correction
+%+attack%: Start/Stop node
+%+attack2%: Next node
+Player %s1 is connecting
+Player %s1 has joined the game
+Player %s1 left the game (%s2)
+Player %s1 joined team %s2
+Player %s1 was automatically assigned to team %s2
+Player %s1 changed name to %s2
+Server cvar '%s1' changed to %s2
+%s1
+has earned the achievement
+%s2
+Next map : %s1
+Auto-save a scoreboard screenshot at the end of a map.
+This server does not allow spectating
+Disable HTML MOTDs.
+Synchronize with the Steam Cloud.
+Save screenshots to Steam
+ITEM MANAGEMENT
+Store
+Loadout
+Backpack
+Crafting
+Trading
+Tradable & Marketable After: %s1
+Becomes Tradable After a Few Days
+Will Not Be Tradable or Usable in Crafting
+Purchased: Not Tradable or Usable in Crafting
+Store Promotion Item: Not Tradable
+Achievement Item: Not Tradable
+Not Tradable or Usable in Crafting
+Contains: %s1
+This item has a user written description.
+This item has been renamed.
+Original name: "%s1"
+This is a limited use item.
+Uses: %s1
+Date Received: %s1
+Currently In Use
+Given to valuable Community Contributors
+I made this!
+Can be listed on the Steam Community Market.
+This item cannot be listed on the Steam Community Market.
+On Trade Cooldown Until: %s1
+This item can be Gift Wrapped after %s1
+This item may be gifted once
+Not Tradable
+Not Usable in Crafting
+Not Tradable, Deletable, or Usable in Crafting
+Not Tradable or Deletable
+Not Craftable or Deletable
+Not Deletable
+Gift From: %s1
+Unlimited Use
+Date: %s1
+Item
+#%selecteditem%
+%numitems% NEW ITEMS ACQUIRED!
+NEW ITEM ACQUIRED!
+%numitems% NEW ITEMS CRAFTED!
+NEW ITEM CRAFTED!
+You have new items!
+NEW!
+SALE!
+Okay
+NOW AVAILABLE
+All Items
+(%s1)
+Checkout
+Add to Cart
+Your Shopping Cart
+Continue Shopping
+%s1 Items
+estimated total
+sales tax will be calculated for WA state residents
+all items will added to your backpack after purchase
+Remove
+You have no items in your cart.
+Steam Account Balance: $%s1  ($%s2 left after cart)
+Steam Account Balance: $%s1
+Featured item!
+Preview
+Details
+Empty Backpack Slots: %s1
+Your shopping cart is empty!
+You have too many items in your shopping cart!
+Checking out...
+Checkout unavailable at this time.
+Canceling...
+Loading the Store...
+The Store is currently closed.
+The product list has been updated to the latest version.
+Please contact customer support to have your Steam wallet configured.
+You must enable the Steam Community in-game and restart the game to use the Store.
+A connection to Steam is required to use the Store.
+The In-game Store is currently closed.
+A programmer messed up! An invalid parameter was passed to the game coordinator. Try the purchase again.
+There seems to have been an error initializing or updating your transaction. Please wait a minute and try again or contact support for assistance.
+There was an error with your transaction. Please contact support for assistance.
+The game coordinator was unable to approve your transaction with Steam. Please try the purchase again later.
+You must be logged in to Steam in order to complete a purchase.
+This transaction's currency doesn't match your wallet currency.
+Your Steam account is currently unavailable. Please try this purchase again later.
+You do not have enough funds to complete the purchase.
+This transaction has timed out. Please try the purchase again.
+Your Steam account is disabled and cannot make a purchase.
+Steam wallet transactions have been disabled on this account.
+Your local product list is out of date. Requesting a new one.
+This transaction's id wasn't found by the game coordinator. Please try the purchase again.
+Transaction canceled. You have not been charged.
+Transaction cancelled. You have not been charged.
+Transaction completed! Enjoy your loot!
+Unable to confirm success. If successful, your items will be delivered at a later date.
+You don't have enough room in your backpack to buy that many items.
+Warning
+Contact
+An item you are attempting to purchase has sold out or is currently unavailable.
+You are missing a prerequisite feature for an item you are attempting to purchase.
+This item can only be purchased once, and you have already purchased it.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased once.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+This item can only be purchased a limited number of times.<br><br>If you believe you are seeing this message in error, please try again in 35 minutes.
+Back
+BACKPACK
+X DELETE
+X DISCARD
+Permanently Discard
+ARE YOU SURE?
+CONTINUE
+Deleting this item will permanently destroy it. This cannot be undone.
+Deleting these items will permanently destroy all of them. This cannot be undone.
+X YEAH, DELETE IT
+BACKPACK - OUT OF ROOM
+You've received this item, but you don't have room for it in your backpack.
+Delete an item below to make room or press discard to throw your new item away.
+Delete?
+DISCARDED!
+Equipped
+Select the item to apply the %s1 to:
+Use With...
+Use
+Customize
+Refurbish
+STOCK ITEMS
+SPECIAL ITEMS
+Show Stock Items
+Show Duplicate Items
+NO ACTION
+SET STYLE
+SELECT STYLE
+Remember, once you have used a tool, it's gone!
+Current Item Name:
+New Item Name:
+Current Item Desc:
+New Item Desc:
+Using
+on
+Enter this Item's New Name:
+Name It!
+Describe It!
+No Thanks
+Are you sure you want to use this name?
+(This name will be publicly visible and permanent)
+Yep, I'm Sure!
+Invalid Name!
+Only letters, numbers, and spaces are allowed
+Are you sure you want to paint the item this color?
+(This color will be publicly visible and permanent)
+Are you sure you want to open this crate?
+Uncrating your Loot
+Are you sure you want to gift wrap this item?
+Wrapping your Gift
+Unwrapping the Gift
+You have nothing that this tool can be applied to.
+Sort Backpack
+Sort by Rarity
+Sort by Type
+Sort by Loadout Slot
+MPEG-2
+MPEG-4
+H.261
+H.263
+H.264
+Motion JPEG A
+Motion JPEG B
+Sorenson 3
+Cinepack
+WebM
+Unable To Start Game
+A game file appears to be missing or corrupted.  In the Steam client go to the game's properties.  In the 'Local Files' tab select 'Verify Integrity of Game Cache' to have Steam double-check the game's installation.
+The system ran out of memory while loading the game.
+Unable to find a valid Direct 3D device!
+Check that your graphics driver is working properly,
+and that you satisfy the minspecs of the game you are playing.
+Your graphics card falls below our official minimum specs,
+which have not been changed in the transition to Dota 2 Reborn.
+When running under the Source 1 engine, that did not prevent
+the game from working because the engine was not designed around
+the full capabilities of the minimum spec for graphic cards.
+However, Dota 2 Reborn relies on graphics features such as vertex textures and shader model 3.0
+and so adherence to the minimum spec is a stronger requirement
+than it was in Source 1 Dota 2. Unfortunately this means that Dota 2 Reborn
+will not be able to run on some graphics cards from 2006 or before.
+You might be using an old version of fraps which is incompatible with the game. Upgrade to Version 3.5.99 Build 15623 or later.
+Error creating a D3D device! This can occur because of incompatibility with some 3rd party applications.
+Change Rendering API
+The game has detected that changing the rendering API to %s1 should increase your frame rate.
+Changing this setting requires restarting the game, though, so approving the change means the game will exit this launch and try to restart after clicking yes.
+Do you want the game to switch to the suggested rendering API?
+If the game does not start properly after this change you can add -safe_mode to your launch options to override the change.
+You can also change the rendering API setting later in the video settings.
+Yes
+OpenGL Support for Windows DLC required for OpenGL (-gl) mode.
+Please download the OpenGL DLC and restart.
+Failed to create an OpenGL context.
+Your graphics card must support at least OpenGL v%s1.
+Required OpenGL extension "%s1" is not supported.  Please update your OpenGL driver.
+Vulkan Support DLC required for Vulkan (-vulkan) mode.
+Please download the Vulkan DLC and restart.
+Vulkan on macOS requires macOS v%s1 or greater.
+Failed to initialize Vulkan.
+Please make sure your driver and GPU support Vulkan.
+To disable Vulkan, remove -vulkan from your launch options.
+If you chose Vulkan in the video settings, please add -safe_mode to your launch options to allow the game to start with the default rendersystem.
+Required Vulkan extension "%s1" is not supported.  Please update your Vulkan driver.
+Not Enough Memory For Game
+This device does not meet the minimum requirements.
+The game requires at least %s1 of device memory to run reliably,
+you may not be able to complete a game on this device.
+The device appears to have %s2 of memory.
+Unsupported Windows Version
+This version of Windows is not supported, please upgrade to a newer version
+Deprecation Warning
+The 32-bit version has been deprecated and will be removed, please use the 64-bit version
+VERSION:
+Contacting Server
+Manifest Downloaded
+Preparing To Download...
+DOWNLOADING CONTENT
+An Error Occurred
+Unknown Error
+Unable to download manifest
+Unable to download content file
+Unable to queue download for content file
+Insufficient storage
+Download latest update:
+Download latest app
+Play without updating (offline)
+LOADING GAME...
+WIFI not active
+Not Downloading...
+Press OK to check for WIFI.
+A new version is available in the App Store. It is required for online play.
+New Version Available
+A new app version is available. It is required for online play.
+A new app version is available
+Play without updating. Online play disabled.
+Play without updating
+Preparing to download %d megabytes of Content - Proceed with download over cellular connection?
+Proceed with %d megabyte Content download?
+Content update required:
+The Internet connection appears to be offline. Please connect to the Internet and try again
+Exit
+Storage Permissions are Required
+In order to install game content, we need access to your device storage. Go to settings to enable the permissions.
+Content Update Failed
+A required filesystem operation failed. Please restart the app. If this message persists. Try reinstalling the app.
+A previous update operation failed and needs an internet connection to recover.
+English
+Español (Spanish)
+Français (French)
+Italiano (Italian)
+Deutsch (German)
+(Greek)
+(Korean)
+(Simplified Chinese)
+(Traditional Chinese)
+(Russian)
+(Thai)
+(Japanese)
+Português (Portuguese)
+Português-Brasil (Portuguese-Brazil)
+Polski (Polish)
+Dansk (Danish)
+Nederlands (Dutch)
+Suomi (Finnish)
+Norsk (Norwegian)
+Svenska (Swedish)
+tina (Czech)
+Magyar (Hungarian)
+Român
+(Romanian)
+(Bulgarian)
+Türkçe (Turkish)
+(Arabic)
+(Ukrainian)
+Español-Latinoamérica (Spanish-Latin America)
+ng Vi
+t (Vietnamese)
+Failed to load data. Please try again in a few minutes.
+Loading data...
+singular
+second
+Do not
+Treasure
+Gem
+Genuine
+Do not localize
+Unusual
+January
+February
+March
+April
+May
+June
+July
+August
+September
+October
+November
+December
+Jan
+Feb
+Mar
+Apr
+Jun
+Jul
+Aug
+Sep
+Oct
+Nov
+Dec
+Sunday
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday
+Saturday
+Sun
+Mon
+Tue
+Wed
+Thu
+Fri
+Sat
+Today
+Tomorrow
+Yesterday
+%s1/%s2/%s3
+%s2/%s1/%s3
+%s1/%s2
+%s2/%s1
+%s1, %s2 %s3, %s4
+%s1 %s2
+%s1 %s2 %s3
+%s1 %s2 %s3, %s4:%s5
+%s1 %s2 %s3, %s4:%s5 %s6
+%s1 %s2 %s3, %s4:%s5:%s6
+%s1 %s2 %s3, %s4:%s5:%s6 %s7
+%s1 %s2 %s3 %s4:%s5:%s6
+%s1 %s2 %s3 %s4:%s5:%s6 %s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7
+%s1, %s2 %s3, %s4 %s5:%s6:%s7 %s8
+%s1:%s2
+%s1:%s2 %s3
+%s1:%s2:%s3
+%s1:%s2:%s3 %s4
+%s1, %s2 %s3, %s4:%s5
+%s1, %s2 %s3, %s4:%s5 %s6
+%s1 %s2, %s3 (%s4:%s5:%s6)
+%s1 %s2, %s3 (%s4:%s5:%s6) GMT
+Unknown
+%s1d %s2:%s3:%s4
+%s1d %s2h %s3m %s4s
+%s1d %s2h %s3m
+%s1h %s2m %s3s
+%s1h %s2m
+%s1m %s2s
+%s1m
+%s1s
+days
+hours
+minutes
+seconds
+day
+hour
+minute
+Inf
+United States
+Afghanistan
+Åland Islands
+Albania
+Algeria
+American Samoa
+Andorra
+Angola
+Anguilla
+Antarctica
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Barbados
+Belarus
+Belgium
+Belize
+Benin
+Bermuda
+Bhutan
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Bouvet Island
+Brazil
+British Indian Ocean Territory
+Brunei Darussalam
+Bulgaria
+Burkina Faso
+Burundi
+Cambodia
+Cameroon
+Canada
+Republic of Cabo Verde
+Cayman Islands
+Central African Republic
+Chad
+Chile
+China
+Christmas Island
+Cocos (Keeling) Islands
+Colombia
+Comoros
+Congo
+Congo, the Democratic Republic of the
+Cook Islands
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Djibouti
+Dominica
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Equatorial Guinea
+Eritrea
+Estonia
+Ethiopia
+Falkland Islands (Malvinas)
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+French Southern Territories
+Gabon
+Gambia
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Grenada
+Guadeloupe
+Guam
+Guatemala
+Guinea
+Guinea-Bissau
+Guernsey
+Guyana
+Haiti
+Heard and Mc Donald Islands
+Vatican City State (Holy See)
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iran
+Iraq
+Ireland
+Isle of Man
+Israel
+Italy
+Jamaica
+Japan
+Jersey
+Jordan
+Kazakhstan
+Kenya
+Kiribati
+Korea, Republic of
+Kosovo
+Kuwait
+Kyrgyzstan
+Lao People's Democratic Republic
+Latvia
+Lebanon
+Lesotho
+Liberia
+Libya
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+North Macedonia
+Madagascar
+Malawi
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritania
+Mauritius
+Mayotte
+Mexico
+Micronesia, Federated States of
+Moldova, Republic of
+Monaco
+Mongolia
+Montenegro
+Montserrat
+Morocco
+Mozambique
+Myanmar
+Namibia
+Nauru
+Nepal
+Netherlands
+Netherlands Antilles
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+Niue
+Norfolk Island
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Palestinian Territory, Occupied
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Pitcairn
+Poland
+Portugal
+Puerto Rico
+Qatar
+Reunion
+Romania
+Serbia
+Russian Federation
+Rwanda
+Saint Helena
+Saint Kitts and Nevis
+Saint Lucia
+Saint Pierre and Miquelon
+Saint Vincent and the Grenadines
+Samoa
+San Marino
+Sao Tome and Principe
+Saudi Arabia
+Senegal
+Serbia and Montenegro
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+Solomon Islands
+Somalia
+South Africa
+South Georgia and the South Sandwich Islands
+Spain
+Sri Lanka
+Sudan
+Suriname
+Svalbard and Jan Mayen
+Eswatini
+Sweden
+South Sudan
+Switzerland
+Syria
+Taiwan
+Tajikistan
+Tanzania, United Republic of
+Thailand
+Timor-Leste
+Togo
+Tokelau
+Tonga
+Trinidad and Tobago
+Tunisia
+Turkey
+Turkmenistan
+Turks and Caicos Islands
+Tuvalu
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States Minor Outlying Islands
+Uruguay
+Uzbekistan
+Vanuatu
+Venezuela
+Viet Nam
+Virgin Islands, British
+Virgin Islands, U.S.
+Wallis and Futuna
+Western Sahara
+Yemen
+Zambia
+Zimbabwe
+Eli: <clr:255,208,172><I>Alyx! Hvordan ser det ud deroppe fra?<I>
+Alyx: <clr:255,190,255>Fint, far. Metropolitiets aktivitet er normal.<cr>Det samme med Combine-patruljerne.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Hvordan går det på lageret?
+Eli: <clr:255,208,172><I>Én Combine-minireaktor ud af en sending på 4000.<I><sb><clr:255,255,255>Eli: <clr:255,208,172><I>De kommer ikke til at savne den.<cr>Her, se selv.<I>
+Russell: <clr:255,255,138><I>Og ikke bare det.<cr>Nogle har hacket sig ind i Combines bygningsnetværk.<I>
+Alyx: <clr:255,190,255>Vær ikke grådige, drenge.<cr>Vi har ikke alverdens tid.
+Russell: <clr:255,255,138><I>Ét minut, så er jeg færdig.<cr>På ære.<I>
+Alyx: <clr:255,190,255>Åh, forresten
+jeg så, at Combine flyttede forsyninger ind i karantænezonen.<sb><clr:255,255,255>Alyx: <clr:255,190,255>Det sted har været forladt i årevis.
+Eli: <clr:255,208,172><I>Hmm. Mærkeligt.<cr>Nå, det undersøger vi, når vi kommer tilbage.<I>
+Russell: <clr:255,255,138><I>Hvad
+er
+?<I>
+Russell: <clr:255,255,138><I>Hvad ER det her?<I>
+Eli: <clr:255,208,172><I>Mød mig på skjulestedet, skat.<cr>Vi er der snart.<I>
+Russell: <clr:255,255,138><I>Det ligner
+<I>
+Alyx: <clr:255,190,255>Hvad har du
+Alyx: <clr:255,190,255>Fedt.
+Psst
+Alyx! Alyx!
+Er alt OK?
+<clr:255,190,255>Jep
+de har reaktoren, ingen problemer.
+<clr:255,190,255>Jeg er på vej tilbage til skjulestedet nu for at mødes med far.
+<clr:255,190,255>Løb! Vi snakkes ved.
+Pas på dig selv.
+<clr:18,199,226>Kom af sted.
+<clr:18,199,226>Væk!
+<clr:18,199,226>Du.<sb>Forsvind.
+<clr:18,199,226>Du.<sb>Flyt dig.
+<clr:18,199,226>Kom væk fra gaden NU.
+<clr:18,199,226>Se at komme tilbage til din boligblok.<sb>NU.
+<clr:18,199,226>Væk! Væk!
+<clr:18,199,226>Dig. Kom af sted.
+<clr:18,199,226>Se at komme tilbage til din boligblok NU.
+<clr:18,199,226>Fortsæt.
+<clr:18,199,226>Kom bare igennem.
+<clr:18,199,226>Der er frit.<sb>Fortsæt.
+<clr:18,199,226>Der er frit. Fortsæt.
+Herovre, Alyx!
+<clr:255,190,255>Hvad sker der?
+Det her føles ikke som en rutinekontrol. Er du sikker på, alt gik OK?
+<clr:255,190,255>100%.
+Civilbeskyttelsen er helt oppe i det røde felt.
+<clr:255,190,255>Hold hovedet nede, og tænk dig om.
+<clr:18,199,226>Ind med dig.
+<clr:18,199,226>Ind i vognen.
+<clr:18,199,226>Dig.<sb>Af sted.
+<clr:18,199,226>Ind.
+<clr:18,199,226>Vi har dem.
+<clr:18,199,226>Bag dig!
+<clr:18,199,226><force>Hænderne op! Stå stille!
+<clr:18,199,226>Stop! STOP!
+<clr:255,190,255>Wow wow, vent!<cr>Jeg bor her!
+<clr:18,199,226>Sandsynlig antiborger.<sb>Foretag scanning.
+<clr:255,190,255>Vent, vent, vent! Skyd ikke!
+<clr:18,199,226>Stop! Træd tilbage!
+<clr:18,199,226>Fingrene væk fra knappen!
+<clr:18,199,226>Rør ikke knappen!
+<clr:18,199,226><force>Hold de hænder oppe!
+<clr:18,199,226><force>Få de hænder op!
+<clr:255,208,172><sfx:1>[Stønner af smerte]
+<clr:255,208,172>Vi har ikke stjålet noget!
+<clr:255,208,172>Ingen! Jeg har ikke set nogen!
+<clr:255,208,172>Agh!
+<clr:255,190,255>FAR!
+<clr:255,190,255>Hey! Vent, vent, nej, nej, nej
+<clr:255,190,255>Hvor
+<sb>Hvor fører I mig hen?<sb>Hvor er min far?
+<clr:255,190,255>Hallo?!
+<clr:255,190,255>Hvor fanden er min far?!
+<clr:255,190,255>Åbn det forbandede vindue!
+<clr:18,199,226>Ti stille.
+<clr:18,199,226>Sig til hende, at hun skal sidde stille deromme.
+<clr:18,199,226>Sid stille.
+<clr:18,199,226>Hvad er det?
+<clr:18,199,226>PAS PÅ!
+<clr:18,199,226>Hvad?
+<clr:18,199,226>GRANAT!
+<clr:18,199,226>Find den!
+<clr:18,199,226>Jeg kan ikke se den!
+<clr:18,199,226>Den er under sædet!
+<clr:18,199,226>Jeg leder, jeg leder!
+<clr:18,199,226>Find den, find den, find den!
+<clr:18,199,226>Jeg har den!
+<clr:18,199,226>Kast den, kast den
+<clr:18,199,226>Jeg kaster den n...
+DU-HAR-VÆRET-I-EN-ULYKKE.
+TAG-HEADSETTET.
+TAG-HEADSETTET-PÅ.
+<HEADSET><clr:255,255,138>Tag headsettet på!
+<HEADSET><clr:255,255,138>Alyx! Tag headsettet på!
+<HEADSET><clr:255,255,138>Alyx! Hvis du stadig er i live, så tag headsettet på.
+<HEADSET><clr:255,255,138>Jeg kan se dig derinde! Der er ingen grund til, at du ikke skal tage headsettet på! Alyx!
+<HEADSET><clr:255,255,138>Det er ikke et trick! Det er Russell, okay? Din fars ven fra arbejdet! Modstandsbevægelsen!
+<HEADSET><clr:255,255,138>Det er ikke et trick, Alyx!
+<HEADSET><clr:255,255,138>Alyx! Er du der?<cr>Du er nødt til at komme væk.
+<clr:255,190,255>Russell?
+<clr:255,190,255>Jeg har været i en ulykke.
+<HEADSET><clr:255,255,138>Det ved jeg! Jeg forårsagede den!<sb>Så teknisk set er det ikke en ulykke.<cr>Du er nødt til at komme væk.
+<clr:255,190,255>Vent. Vent. Hvor er far?
+<HEADSET><clr:255,255,138>Han har det fint. Følg dronen.
+<HEADSET><clr:255,255,138>Du skal se at komme væk!
+<HEADSET><clr:255,255,138>Kom i gang, Alyx.
+<HEADSET><clr:255,255,138>Alyx, du skal se at komme væk. Nu.
+<clr:255,190,255>Okay, forstået.
+<clr:255,190,255>Så
+far har det <I>fint<I>, ikke?
+<HEADSET><clr:255,255,138>Ja. Eller nej.<cr>For at være ærlig er han i en alvorlig knibe.
+<clr:255,190,255>Men
+<HEADSET><clr:255,255,138>De har ham stadig.<cr>Han var i en anden vogn.
+<clr:255,190,255>
+Og du reddede mig?
+<HEADSET><clr:255,255,138>Ja.<sb>Jeg kunne ikke vide, hvem der var i hvilket køretøj.<sb>Så... ja.<cr>Resultatet var, at jeg reddede DIG.
+<clr:255,190,255>Ved vi, hvor de kører ham hen?
+<HEADSET><clr:255,255,138>Arresten.<sb>Og når de finder ud af, at han er Eli Vance
+til Nova Prospekt.
+<HEADSET><clr:255,255,138>Men jeg arbejder allerede på en plan for at få ham tilbage.
+<HEADSET><clr:255,255,138>Du er tæt på mit laboratorium.<sb>Bliv ved med at følge dronen!<cr>Vi skal nok finde ud af, hvad vi gør.
+<HEADSET><clr:255,255,138>Alyx, forbindelsen forsvandt et øjeblik!<sb>Jeg har mistet forbindelsen til headsettets video.<sb>Kan du se min drone?<sb>Er den OK?
+<clr:255,190,255>Øh ja. Jo.<cr>Jeg er der om lidt.
+<clr:255,190,255>Russell
+<cr>Hvad <I>var<I> det, I fandt før?
+<HEADSET><clr:255,255,138>Det er det tossede ved det. Jeg aner det ikke! Bare slørede billeder af en bygning.
+<clr:255,190,255>Citadellet?
+<HEADSET><clr:255,255,138>Nej, noget andet.<sb>Og de slår alle, der har set det, ihjel. Og alle, der kender nogen, der har set det.<sb>Hvilket vil sige os... og din far.
+<clr:255,190,255>Russell?<cr>Hold ud lidt endnu, jeg er der snart.
+<clr:255,255,138>Godt, Alyx.<cr>Okay, lad os
+vent.<cr>Min drone er okay, ikke?
+<clr:255,190,255>Niks. Den eksploderede.<cr>Men jeg har det i øvrigt fint.
+<clr:255,255,138>Ja. Godt, det er
+<cr>det er det vigtigste
+<clr:255,190,255>Russell. De har far.
+<clr:255,255,138>Jeg ved det. Det her er skidt.<sb>De finder ud af, hvad han ved, og så
+<cr>Ja, så slår de ham ihjel.
+<clr:255,190,255>Åh gud
+<clr:255,255,138>Men!<sb>Den gode nyhed er, at vi har noget, de ikke har.
+<clr:255,190,255>Som er
+<clr:255,255,138>Min plan til at få ham tilbage!
+<clr:255,190,255>Fedt. Fortæl.
+<clr:255,255,138>Godt.<sb>De opdager snart, at din far nægter at tale.<sb>Og når <i>det<i> sker, suger de hjernen ud på ham.
+<clr:255,190,255>Russell.
+<clr:255,255,138>Måske.<sb>Men måske ikke.<cr>Jeg mener, han kunne
+de kunne bare bore ind i hans
+<clr:255,190,255>Stop.
+<clr:255,255,138>Nåh, ja. Det er din far.<sb>Okay.<cr>Men de vil helt sikkert tage ham med toget herfra
+<clr:255,255,138>... Her er Eli
+<clr:255,255,138>til
+Nova Prospekt.
+<clr:255,190,255>Og hvis han kommer på det tog
+<cr>så er løbet kørt, ikke?
+<clr:255,255,138>Ikke nødvendigvis.<cr>Find noget, der repræsenterer os.
+<clr:255,255,138>Hvad som helst.
+<clr:255,255,138>Ja, bare tag et eller andet.
+<clr:255,255,138>Godt. Sæt det på kortet.
+<clr:255,255,138>Ved du hvad, jeg gør det bare selv.
+<clr:255,255,138>Okay, det er dig.
+<clr:255,190,255>Jeg troede, du sagde "os".
+<clr:255,255,138>Altså, <i>én<i> af os
+mig
+skal blive her, for at planen virker.
+<clr:255,190,255>Okay, fair nok.
+<clr:255,255,138>Lige udenfor er der et andet tog, som også fører ud af by 17 gennem karantænezonen.
+<clr:255,190,255>Okay.
+<clr:255,255,138>Begge tog krydser her ved Fairview Station.<sb>Du tager dit tog, når frem før hans tog og hacker dig ind i styringssystemet.<sb>Derefter kan jeg overtage systemet.
+<clr:255,255,138>Toget stopper.<sb>Du tager dig af Combine-situationen.<sb>Og vi får din far tilbage.
+<clr:255,190,255>Lyder godt.<cr>Hvor er toget, jeg skal med?
+<clr:255,255,138>Ude bagved, gennem baggården.<sb>Det er taget ud af drift, men jeg tror, jeg kan hacke ind i styringssystemet.
+<clr:255,255,138>Nåh ja. Tag et par "Russells" på vejen ud.
+<clr:255,190,255>"Russells"?
+<clr:255,255,138>Handskerne, Alyx.<sb>Du ved, tyngdekraftshandskerne.<sb>Jeg har et par stykker derovre.<sb>Du kan kalibrere dem ude ved skuret.
+<clr:255,190,255>Forstået.
+<clr:255,255,138>Vi kan klare det her, Alyx.<sb>Du hørte mig, ikke?<sb>At jeg sagde, vi kan klare det?<sb>Fordi vi klarer det.
+<clr:255,190,255>Ja, vi gør.
+<HEADSET><clr:255,255,138>Jeg er med dig hele vejen.
+<HEADSET><clr:255,255,138>Okay, du ved, hvordan det fungerer.<sb>Der burde være en masse skrot dernede.<sb>Sigt på noget med åben hånd.
+<HEADSET><clr:255,255,138>Bare peg på noget med hånden.
+<HEADSET><clr:255,255,138>Handskerne kalibrerer ikke sig selv.<sb>Men det burde de vel egentlig.<sb>Det er noget, jeg ikke har rettet på dem.
+<clr:255,190,255>Klar.
+<HEADSET><clr:255,255,138>Luk hånden, og svip den mod dig.
+<HEADSET><clr:255,255,138>Bare et lille svip med håndleddet.
+<HEADSET><clr:255,255,138>Svipper du? Jeg kan ikke se, om du svipper.
+<HEADSET><clr:255,255,138>Luk, og svip.
+<HEADSET><clr:255,255,138>Luk
+<HEADSET><clr:255,255,138>
+og svip.
+<clr:255,190,255>Hm. Det fungerede ikke.
+<HEADSET><clr:255,255,138>Okay, referencesensoren er helt forkert indstillet.
+<HEADSET><clr:255,255,138>Prøv igen.<sb>Vælg et mål, og sigt på det med åben hånd.
+<clr:255,190,255>Virker stadig ikke.
+<HEADSET><clr:255,255,138>Hmm.
+<clr:255,190,255>Åh åh.
+<HEADSET><clr:255,255,138>Prøv igen.
+<clr:255,190,255>Niks.
+<HEADSET><clr:255,255,138>En gang til.
+<HEADSET><clr:255,255,138>Vælg et mål, og sigt på det med åben hånd.
+<HEADSET><clr:255,255,138>Fantastisk! Lav så en knytnæve.
+<HEADSET><clr:255,255,138>Okay, lav en knytnæve.
+<clr:255,190,255>Hvordan er det?
+<HEADSET><clr:255,255,138>Registreret.<sb>Svip nu med håndleddet for at trække genstanden til dig.
+<HEADSET><clr:255,255,138>Du er der næsten.<sb>Gør det igen, men grib denne gang.
+<HEADSET><clr:255,255,138>Svip igen, og prøv at gribe den.
+<HEADSET><clr:255,255,138>Sådan.
+<HEADSET><clr:255,255,138>Ja, sådan.
+<HEADSET><clr:255,255,138>Boom, jep.
+<HEADSET><clr:255,255,138>Du har fanget ideen.
+<HEADSET><clr:255,255,138>Mål valgt.
+<HEADSET><clr:255,255,138>Du er koblet på.
+<HEADSET><clr:255,255,138>Jep, du er forbundet.
+<HEADSET><clr:255,255,138>Luk hånden.
+<HEADSET><clr:255,255,138>Luk den.
+<HEADSET><clr:255,255,138>Grib fast.
+<HEADSET><clr:255,255,138>Godt.
+<HEADSET><clr:255,255,138>Jep.
+<HEADSET><clr:255,255,138>Ja, nemlig.
+<HEADSET><clr:255,255,138>Perfekt.
+<HEADSET><clr:255,255,138>Igen, men grib det.
+<HEADSET><clr:255,255,138>Men grib det.
+<HEADSET><clr:255,255,138>Grib det.
+<HEADSET><clr:255,255,138>Prøv at gribe det.
+<HEADSET><clr:255,255,138>Alyx, forestil dig, at der er en slags aftrækker på... øh... på dine "Russells".
+<HEADSET><clr:255,255,138>Sigt med hånden
+<HEADSET><clr:255,255,138>Tryk på aftrækkeren
+<HEADSET><clr:255,255,138>Og det var det.
+<HEADSET><clr:255,255,138>Alyx, der burde være en lille aftrækker ved pegefingeren på hver handske.
+<HEADSET><clr:255,255,138>Perfekt. Vi er færdige.<sb>Åh! Vent, jeg havde nær glemt...
+<clr:255,255,138>Alyx! Heroppe!
+<clr:255,255,138>Du får brug for en pistol!
+<clr:255,255,138>Bare rolig, den er ikke ladt!
+<clr:255,255,138>Den er ikke ladt nu!
+<clr:255,255,138>Så du, hvor den landede?
+<clr:255,255,138>Jeg tror, den er på kølerhjelmen på bilen, der.
+<clr:255,255,138>Åh, jeg glemte næsten: Våben kræver ammunition.
+<clr:255,255,138>Værsgo!
+<clr:255,255,138>Det bør ligge et eller andet sted på jorden.
+<HEADSET><clr:255,255,138>Jeg tror, den landede på kølerhjelmen på bilen, der.
+<clr:255,255,138>OK! Jeg smutter tilbage til kommunikationsrummet.
+<clr:255,190,255>Russell? Jeg er løbet tør.
+<clr:255,190,255>Hey Russell? Jeg, øh
+jeg løb tør igen.
+<clr:255,255,138>Pas på hovedet!
+<clr:255,190,255>Russell? Jeg er løbet tør. Igen.
+<clr:255,255,138>Intet problem. Vi har mere ammunition.
+<clr:255,255,138>Lige så du ved det... der er ikke et ubegrænset lager heroppe, okay? Bare lige en... lille advarsel.
+<HEADSET><clr:255,255,138>Hey, det er mit vindue! Se, hvor du skyder!
+<HEADSET><clr:255,255,138>Åh, du klarede låsen.<sb>Godt. Fantastisk.<sb>Jeg havde faktisk en nøgle til den.<sb>Men jeg skulle have givet dig den
+<sb>Det er min fejl.
+<HEADSET><clr:255,255,138>Det er toget, Alyx.<sb>Se, om du kan tvinge døren op.<sb>Jeg har næsten toget online herfra.
+<HEADSET><clr:255,255,138>Kan jeg tvinge togdøren op på en eller anden måde?
+<HEADSET><clr:255,255,138>Se, om du kan få døren op.
+<HEADSET><clr:255,255,138>Sådan! Så er vi her.<sb>Næste stop: Fairview Station.
+<clr:255,190,255>Tak, Russell.
+<HEADSET><clr:255,255,138>Held og lykke, Alyx.<sb>Farvel.
+<HEADSET><clr:255,255,138>Jeg er her selvfølgelig stadigvæk, bare så du ved det.
+<clr:255,190,255>Det ved jeg.
+<HEADSET><clr:255,255,138>Hey Alyx? Vi har MULIGVIS et problem.<cr>Det er sikkert ikke noget at bekymre sig om, men
+<clr:255,190,255>Wow.
+<HEADSET><clr:255,255,138>Stoppede toget?<cr>Det stoppede, gjorde det ikke?
+<clr:255,190,255>Jo, hvad skete der?
+<HEADSET><clr:255,255,138>Åh, den sidder fast.<cr>Combine må have skærpet sikkerheden, da de lukkede ned for karantænezonen.
+<clr:255,190,255>Og det betyder?
+<HEADSET><clr:255,255,138>Ja, du er overhovedet ikke tæt på Fairview Station.<cr>Du er lige udenfor karantænezonen.
+<HEADSET><clr:255,255,138>Så vi kommer ikke længere med tog.
+<clr:255,190,255>Jeg er allerede på vej til fods.
+<clr:255,190,255>Så fortsætter jeg til fods.
+<HEADSET><clr:255,255,138>Godt. Jeg vil se, om jeg kan få dig ind på en anden måde.
+<clr:255,190,255>Jeg har en død zombie her.<sb>Jeg troede, at Combine havde afspærret karantænezonen?
+<HEADSET><clr:255,255,138>Ah, den må være brudt ud<sb>Jeg har hørt, at de har problemer med barnaclesporer uden for inddæmningsområdet<sb>Men ikke gutter som ham her.
+<clr:255,190,255>Så er det nok ikke den eneste.
+<HEADSET><clr:255,255,138>Jeg tvivler på det.
+<HEADSET><clr:255,255,138>Ahh
+Se lige det her. Resin.
+<HEADSET><clr:255,255,138>Og hvis der er resin her, burde der være en Combine-fabrikator i nærheden.<sb>Hold øjnene åbne. Måske kan vi opgradere dit skydevåben lidt.
+på et eller andet tidspunkt løber jeg tør for ammunition.
+<HEADSET><clr:255,255,138>OK, hold øjnene åbne.<sb>Der er ingen mangel på døde mennesker her, og
+ja, ikke for at skære det ud i pap, men de har ikke længere brug for deres ammunition.
+<clr:255,190,255>Hm. Jeg tror, jeg kan omdirigere det her med mit multiværktøj.
+<HEADSET><clr:255,255,138>Dit hvad?
+<clr:255,190,255>Det er et værktøj med mange funktioner.<sb>Et multiværktøj.
+<HEADSET><clr:255,255,138>Alyx, den dims er jo fantastisk!<sb>Du har brug for et helt specielt mærkenavn!<sb>Noget, som virkelig sælger!
+<clr:255,190,255>Hvem skulle jeg sælge det til?
+<HEADSET><clr:255,255,138>Combine vil ikke være her for evigt.<sb>Du er nødt til at tænke på fremtiden, Alyx!
+<clr:255,190,255>Hvad med at vi bare kalder den "Alyx"?
+<HEADSET><clr:255,255,138>Det er lidt en afledning af "Russells", men jo
+<sb>Som midlertidigt navn, okay, "Alyx".
+<clr:255,190,255>Ja, "Alyx".
+<HEADSET><clr:255,255,138>Godt klaret!
+<HEADSET><clr:255,255,138>Åh! En helbredsstation.
+<I>Combine<I> anvender disse.<sb>Er de sikre for mennesker at bruge?
+<HEADSET><clr:255,255,138>Åh gudskelov, en helbredsstation.
+<HEADSET><clr:255,255,138>Ah ja, jeg bruger dem hele tiden.
+<clr:255,190,255>Er du sikker?
+<HEADSET><clr:255,255,138>Ja, de er alletiders.
+<HEADSET><clr:255,255,138>Bare læg hånden ind der.
+<HEADSET><clr:255,255,138>Bare træk i håndtaget, og læg hånden ind der.
+<HEADSET><clr:255,255,138>Ja, jeg bruger dem hele tiden. Bare find et batteri.
+<HEADSET><clr:255,255,138>Godt, min ven. Så er du klar igen.
+<clr:255,190,255>Av, av, av!
+<clr:255,190,255>Ahhhhh. Hey
+<clr:255,190,255>Ahhh. Puh.
+<clr:255,190,255>Du havde ret.<cr>De er alletiders.
+<clr:255,190,255>Skønt.
+<HEADSET><clr:255,255,138>Pas på den barnacle, Alyx.
+<clr:255,190,255>Ad, de er ulækre.
+<clr:255,190,255>Så hvornår begyndte du at kalde tyngdekraftshandskerne for "Russells"?
+<HEADSET><clr:255,255,138>Det er brandnavnet, Alyx.
+<clr:255,190,255>Brandnavnet?
+<HEADSET><clr:255,255,138>Ja, du ved, et fængende navn, som alle kender. Jeg kommer til at tjene en formue på disse tingester, så snart vi får Combine væk fra Jorden, og alt bliver normalt igen.
+<clr:255,190,255>Hvordan mødte du egentlig min far?<sb>I arbejdede sammen på Black Mesa, ikke?
+<HEADSET><clr:255,255,138>Ja. Eller nej.<sb>Svært sted at få et job.<sb>Jeg havde en jobsamtale hos Black Mesa.<sb>De sagde, jeg skulle prøve igen om et år.<sb>Jeg behøver ikke at fortælle, hvad der skete derefter.<sb>Men det var egentlig heldigt for mig.<sb>Ikke mange overlevende.<sb>Ærlig talt, så er det et mirakel, at du og din far kom væk i live.
+<HEADSET><clr:255,255,138>Har du brug for et øjeblik?<sb>Jeg kan, øh
+jeg kan pause feedet...
+<clr:255,190,255>Jeg kigger bare, Russ.
+<clr:255,190,255>Jeg går ud fra, at karantænezonen er bag denne luge?
+<HEADSET><clr:255,255,138>Ja, det er der, den er.
+<clr:255,190,255>Jeg kigger rundt efter et kontrolpanel til at åbne den.
+<HEADSET><clr:255,255,138>Hvis jeg var Combine, hvor ville jeg så placere et kontrolpanel?
+<HEADSET><clr:255,255,138>Det er kontrolpanelet.<sb>De har sikkert krypteret kredsløbet.<sb>Men eftersom ingen ville være dumme nok til at åbne porten, burde det ikke være svært at sætte det på plads igen.
+<HEADSET><clr:255,255,138>Hvad tror du, det her er?
+<clr:255,190,255>En eller anden form for lås...
+<clr:255,190,255>Wow! Sådan!
+<HEADSET><clr:255,255,138>Ha ha! Sådan. Endelig.
+<clr:255,190,255>Jeg går derind.<cr>Hvor langt er der til Fairview Station?
+<HEADSET><clr:255,255,138>Du kommer til at gå gennem de gamle undergrundsbaner på vej til jernbanestationen.
+<clr:255,190,255>Er de begyndt at flytte far endnu?
+<HEADSET><clr:255,255,138>Det tror jeg ikke.<sb>Hvilket er godt nyt, for så har vi stadig tid.
+<clr:255,190,255>Åh, det er godt.
+<HEADSET><clr:255,255,138>Eller dårligt nyt, fordi de allerede har dræbt ham.<sb>Og man behøver ikke at flytte lig.<sb>Man begraver dem bare.<sb>Eller brænder dem.<sb>Er du der endnu, Alyx?
+<clr:255,190,255>Mm-hmm.
+<clr:255,190,255>Hør, Russell, nu hvor jeg er på vej ind i karantænezonen, slår det mig...<sb>Jeg ved ingenting <I>om<I> karantænezonen.
+<HEADSET><clr:255,255,138>Altså ordet karantæne kommer fra det italienske "quaranta giorni".<sb>Som betyder 40 dage
+den periode, som alle skibe skulle være i isolation, før besætningen fik lov til at gå i land under Den Sorte Død.
+<clr:255,190,255>Okaaay. Cool.
+<HEADSET><clr:255,255,138>Ah pis.
+<clr:255,190,255>Jeg tror, vi er blevet låst inde.
+<clr:255,190,255>Hey, Russell.<sb> Jeg har lige fundet en sprøjte med et eller andet.<sb>Er det medicin?
+<HEADSET><clr:255,255,138>Er der et dødningehoved og krydsede knogler på den?
+<clr:255,190,255>Jeg kan ikke se noget.
+<HEADSET><clr:255,255,138>Så er det nok medicin.
+<HEADSET><clr:255,255,138>Alyx! Stak du dig lige med noget, du fandt på jorden?
+<clr:255,190,255>Jeg har det FANTASTISK!
+<HEADSET><clr:255,255,138>Ja? Okay. Godt. Jamen, et vellykket eksperiment. Hold øje med andre ting.
+<HEADSET><clr:255,255,138>Hørte du det?
+<clr:255,190,255>Hvad er det?
+<clr:255,190,255>Åh, mand.
+<HEADSET><clr:255,255,138>Ja... Vi skal den vej.
+<clr:255,190,255>Ingen genvej?
+<HEADSET><clr:255,255,138>Det her er genvejen.
+<clr:255,190,255>Nå... Lad os tage den lange vej.
+<HEADSET><clr:255,255,138>Det her er også den lange vej.
+<HEADSET><clr:255,255,138>Okay, det fungerede vist. Lad os blive ved med det.
+<HEADSET><clr:255,255,138>[Griner]
+<HEADSET><clr:255,255,138>Ha ha!<cr>Barnaclen er på vores side.<sb>Men ikke rigtigt selvfølgelig, så gå ikke under den.
+<HEADSET><clr:255,255,138>Åh, bare så du ved det
+dine Russells har et indbygget display. Det viser din resin og ammunition. Det kan være meget praktisk, du ved.
+<clr:255,190,255>Forstået. Tak.
+<clr:255,190,255>Åh, mand
+<HEADSET><clr:255,255,138>Ja, pas på.
+<HEADSET><clr:255,255,138>Alyx! Bag den dør!<sb>Jeg tror, at det er en Combine-fabrikator!
+<HEADSET><clr:255,255,138>Alyx! Jeg tror, at det er en Combine-fabrikator.<sb>Put noget i den. Jeg vil se, hvordan den virker.
+<clr:255,190,255>Forstået. Vil den virke på mine Russells?
+<HEADSET><clr:255,255,138>Nej, men den burde give din pistol en pæn opgradering.<cr>Heldigvis, for jeg gav dig en af mine dårligere pistoler.
+<HEADSET><clr:255,255,138>Ja, du ved... hvis jeg nu ikke får den tilbage.
+<clr:255,190,255>Hør her, Russell.<cr>Hvis jeg dør, skylder jeg dig en pistol.
+<HEADSET><clr:255,255,138>Du skylder mig alligevel en pistol!<cr>Det var ikke en gave. Det er MIN pistol.
+<HEADSET><clr:255,255,138>Det var al vores resin værd.
+<HEADSET><clr:255,255,138>Combine ved, hvordan man opgraderer en pistol.<sb>Det må jeg give dem.
+<HEADSET><clr:255,255,138>Ser meget farlig ud.
+<HEADSET><clr:255,255,138>Flot.<sb>Jeg ville næsten ønske, jeg var der, så jeg kunne prøve den.
+<HEADSET><clr:255,255,138>Den kan du gøre godt brug af.
+<HEADSET><clr:255,255,138>Den
+bliver god at have.
+<HEADSET><clr:255,255,138>Udmærket valg.
+<HEADSET><clr:255,255,138>Smart. Den bliver rar at have.
+<HEADSET><clr:255,255,138>Den kan nok vinde en del diskussioner.
+<HEADSET><clr:255,255,138>Det ville ikke være godt at være på den forkerte side af den.
+<HEADSET><clr:255,255,138>Det kan man kalde opgraderet.
+<HEADSET><clr:255,255,138>Den kan næsten ikke være farligere.
+<HEADSET><clr:255,255,138>Åh, det virkede søreme.
+<HEADSET><clr:255,255,138>Wow! Min pistol ser ret godt ud!
+<clr:255,190,255>Russ, helt ærligt. Det må da være "vores" pistol nu.
+<HEADSET><clr:255,255,138>Orv, se! Min pistol bliver bare bedre og bedre.
+<clr:255,190,255>Ved du hvad, Russ
+teknisk set? Så tror jeg ikke, der er meget af din pistol tilbage mere.
+<HEADSET><clr:255,255,138>Hmm. Hør, lad os lægge den tanke på hylden lidt. Vi kan snakke om MIN pistol, når du kommer tilbage.
+<clr:255,190,255>Russ, nu er det officielt. Der er INTET tilbage af din pistol i denne pistol. Det er bare
+det er MIN pistol.
+<HEADSET><clr:255,255,138>OK. Rimeligt nok. Du har fortjent den. Men jeg vil altså stadig have de der "Russells" tilbage.
+<HEADSET><clr:255,255,138>Headcrab!
+<clr:255,190,255>Jeg ser den!
+<HEADSET><clr:255,255,138>Vent
+hvor forsvandt den hen?
+<clr:255,190,255>Ahh!
+<HEADSET><clr:255,255,138>Aah!
+<HEADSET><clr:255,255,138>Jep. Der er den. Fandt den.
+<HEADSET><clr:255,255,138>Der er sikkert kun en af dem.
+<HEADSET><clr:255,255,138>Okay, to. Der er to af dem.
+<HEADSET><clr:255,255,138>Godt skudt, Alyx.
+<clr:255,190,255>Tak. Tak, Russell.
+<clr:255,190,255>Tak. Selvom det er en af dine "dårligere" pistoler, er den slet ikke så ringe endda.
+<HEADSET><clr:255,255,138>Ja
+den er egentlig ret god, er den ikke?<cr>Jeg tror søreme, jeg gav dig den forkerte pistol.
+<clr:255,190,255>Har du hørt noget om far, Russell?
+<HEADSET><clr:255,255,138>No. Radioen har været stille, siden de satte ham på toget.
+<clr:255,190,255>For helvede.
+<HEADSET><clr:255,255,138>Men den gode nyhed er, at han sikkert har det fint.
+<clr:255,190,255>Hvordan ved du det?
+<HEADSET><clr:255,255,138>Fordi de tager ham til Nova Prospekt for at torturere ham.<sb>Det er torturstedet.<sb>Så de torturerer ham nok ikke, før de når frem.<sb>Så han har det fint. Logisk set.
+<clr:255,255,138>Ah!
+<clr:255,190,255>Aah!
+<clr:255,190,255>Helbredsstation!
+<HEADSET><clr:255,255,138>Ahh, helbredsstation!
+<HEADSET><clr:255,255,138>Hm. Den virker ikke.
+<clr:255,190,255>Ahh. Se her. Den mangler strøm.
+<HEADSET><clr:255,255,138>Det der er en "diskette".<cr>Vi plejede at lagre information på dem. Med magneter, tro det eller ej.
+<clr:255,190,255>Hm.
+<HEADSET><clr:255,255,138>Helt præcist to mikrometer magnetisk jernoxid, tre mikrometer bariumferrit og 1,2
+<clr:255,190,255>Russell? Hvordan ved du alt dette?
+<HEADSET><clr:255,255,138>Jeg læser det her på min computer.<cr>Jeg downloadede internettet før krigen.
+<clr:255,190,255>Du downloadede hele internettet?
+<HEADSET><clr:255,255,138>Tja, det meste af det.
+<clr:255,190,255>Fedt.
+<HEADSET><clr:255,255,138>Ja. Ja, det er det.
+<clr:255,190,255>Russell, ser du det her?
+<HEADSET><clr:255,255,138>Muligvis.<sb>Ser du flyvende affald?
+<clr:255,190,255>Det ser ud til, at det bare er
+pap.
+<HEADSET><clr:255,255,138>Ja. Nå, det virker harmløst.
+<clr:255,190,255>Ja. Bare underligt.
+<clr:255,190,255>Hvad ER det?
+<clr:255,190,255>Det ligner billeder af vortigaunter
+<HEADSET><clr:255,255,138>Vent, er den af
+Black Mesa?
+<clr:255,190,255>En eller anden har brugt meget tid på det her.
+<clr:255,190,255>Wow! Mere flyvende pap.
+<HEADSET><clr:255,255,138>Alyx! Er du okay? Hvad er der sket?
+<clr:255,190,255>Jeg har det fint, Russell. Hvad så?
+<HEADSET><clr:255,255,138>Jeg er ved at miste signalet til dig!<sb>Alyx? Alyx?<sb>Hvis du stadig kan høre mig, så fortsæt i samme retning, og prøv at komme op til overfladen!
+<clr:255,190,255>Russell?<sb>Russell?<sb>Lort.
+<clr:255,190,255>Wow, det her er mærkeligt.
+<clr:255,190,255>Åh!
+Vortigaunt: <clr:107,232,120>Alyx Vance!
+Vortigaunt: <clr:107,232,120>Du har modtaget mine beskeder!
+<clr:255,190,255>Har jeg det?
+<clr:107,232,120>Kom! Kom ind.
+<clr:255,190,255>Okay
+<clr:255,190,255>Tak.
+<clr:107,232,120>Du er velkommen!
+<clr:255,190,255>Hvad laver en vortigaunt her?
+<clr:107,232,120>[Snuser] Mmm!
+<clr:107,232,120>Laver mad!
+<clr:107,232,120><sfx:1>[Æder højlydt]
+<clr:255,190,255>Jo, men sådan generelt.
+<clr:107,232,120>Jeg har en hjerneskade.
+<clr:255,190,255>Åh, det er jeg ked af at
+<clr:107,232,120>Min hjerne er skadet!
+<clr:255,190,255>Det er forfærdeligt, og jeg håber
+<clr:107,232,120>Av.
+<clr:255,190,255>Jeg har altså travlt med at finde min far
+<clr:107,232,120>Din
+Eli Vance
+<clr:107,232,120>
+Eli Vance!
+<clr:107,232,120>Ja.
+<clr:255,190,255>Combine har fanget ham, og jeg har virkelig travlt.
+<clr:107,232,120>Combine<sb>Ja. Gå ikke endnu!<sb>Jeg skal vise dig noget!
+<clr:255,190,255>Hør, jeg sætter pris på
+<clr:107,232,120>Denne vej!
+<clr:255,190,255>Jeg kan ikke blive her, jeg
+<clr:107,232,120>Det er vigtigt!
+<clr:255,190,255>Det tror jeg gerne, men
+<clr:107,232,120>Alyx Vance skal alligevel denne vej
+<clr:107,232,120><sfx:1>[Klukker]
+<clr:107,232,120><sfx:1>[Slubrer højlydt]
+<clr:107,232,120>Kom ind, kom ind!
+<clr:107,232,120>Kom ind, Alyx Vance.
+<clr:107,232,120>Herinde!
+<clr:107,232,120>Jeg må vise dig, hvorfor jeg har bragt dig hertil.
+<clr:107,232,120><sfx:1>[Kanaliserer vortessens]
+<clr:107,232,120>Combine har andre af min slægt.
+<clr:107,232,120>Fanget, ligesom Eli Vance.
+<clr:107,232,120>Alyx Vance vil befri dem!
+<clr:255,190,255>Jeg ville gerne hjælpe. Det ville jeg.<sb>Men Alyx Vance har ærlig talt meget travlt med at redde sin far.
+<clr:107,232,120>Du kommer ikke til at redde ham.<sb>Han er død.
+<clr:255,190,255>Hvad?
+<clr:107,232,120>Eller det vil han være
+<clr:255,190,255>Er? Eller vil være?
+<clr:107,232,120>Det er et spørgsmål om perspektiv.<sb>Men Alyx Vance kan ikke ændre hans skæbne alene.
+<clr:255,190,255>Jeg
+hør.<sb>Tak for
+alt.<sb>Jeg må altså af sted.<sb>Og undskyld, men jeg har ikke tid til gåder.
+<clr:107,232,120>Ingen gåder!<sb>Combine har boret her.<sb>Jeg ved ikke, hvornår jeg er.<sb>Jeg er afskåret fra vortessensen.<sb>Jeg er alene i mit hoved.
+<clr:255,190,255>Det er jeg ked af.
+<clr:255,190,255>Hør, hvis jeg kan... Hvis jeg møder dine venner, skal jeg nok se, hvad jeg kan gøre.
+<clr:107,232,120>Du har reddet mine slægtninge!
+<clr:255,190,255>Nej
+jeg har ej.
+<clr:107,232,120>Så vil du gøre det.
+<clr:107,232,120>Rraaagh!
+<clr:107,232,120>Fat mod, Alyx Vance!
+<clr:107,232,120>Din rejser fører dig så langt.<cr>Bare lidt længere, måske.
+<clr:107,232,120>Igennem her, Alyx Vance.
+<clr:107,232,120>Du må gå!
+<clr:107,232,120>Din mission begynder, Alyx Vance.
+<clr:107,232,120>Smut af sted!
+<clr:107,232,120>Jeg vil hjælpe Alyx Vance!<sb>Kig mod Nordstjernen.
+<clr:255,190,255>Hvorfor?
+<clr:107,232,120>For at orientere dig!
+<clr:255,190,255>Okay. Tak.<cr>Er du færdig? Med at hjælpe?
+<clr:107,232,120>Jeg er ikke! Her.
+<clr:107,232,120>Næring!
+<clr:255,190,255>Øh
+den spiser jeg senere.<cr>Tak for din hjælp.
+<clr:107,232,120>Du vil være velkommen.
+<clr:107,232,120><sfx:1>[Brummer tilfreds]
+<clr:255,190,255>Addd.
+<clr:255,190,255>Bvadr.
+<clr:255,190,255>Ad.
+<HEADSET><clr:255,255,138>Alyx! Alyx! Signalet er tilbage!<sb>Kan du høre mig? Er du okay?
+<clr:255,190,255>Russell! Jeg har det godt. Hvad med far?
+<HEADSET><clr:255,255,138>De har ham på toget.<sb>Han er på vej.<sb>Du bliver nødt til at finde Fairview Station, inden de når frem.
+<clr:255,190,255>Jeg arbejder på det.
+<HEADSET><clr:255,255,138>Skete der noget, da du mistede forbindelsen?
+<clr:255,190,255>Du tror, det er løgn, men jeg mødte en vortigaunt.
+<HEADSET><clr:255,255,138>En vortigaunt?<cr>Hvad lavede han dernede?
+<clr:255,190,255>Gemte sig.<cr>Jeg tror, at han er flygtet fra Combine.
+<HEADSET><clr:255,255,138>Hvad sagde han?
+<clr:255,190,255>Har du nogensinde mødt en vortigaunt?<cr>Han sagde mærkelige vortigaunt-ting.
+<clr:255,190,255>Nåh ja, den vortigaunt, jeg mødte?<cr>Han gav mig en headcrab til at spise.
+<HEADSET><clr:255,255,138>Åh! Fedt!<sb>Hvad smagte den af?<cr> Fortæl mig, hvordan du
+<clr:255,190,255>Russell. Russell
+jeg spiste den ikke.
+<HEADSET><clr:255,255,138>Nej. Selvfølgelig gjorde du ikke det.<cr>Det er også
+den rigtige beslutning.
+<clr:255,190,255>Det er mærkeligt.
+<clr:255,190,255>Uh! Den zombie har et haglgevær!
+<clr:255,190,255>Wow!
+<clr:255,190,255>Ja. Lad os få fingrene på haglgeværet og komme ud herfra.
+<clr:255,190,255>Sådan!
+<HEADSET><clr:255,255,138>Se at få den tingest ladet, lyden bliver højere!
+<clr:255,190,255>Vi klarede det.
+<HEADSET><clr:255,255,138>Jeg elsker den her pistol.
+<clr:255,190,255>Puh, det er MØRKT.
+<HEADSET><clr:255,255,138>Er alt okay?
+<clr:255,190,255>Ja, jeg har det fint.
+<clr:255,190,255>Åh gudskelov.
+<clr:255,190,255>Det her er fint
+helt fint.
+<clr:255,190,255>Det er virkelig mørkt
+Russ?
+<HEADSET><clr:255,255,138>Ja?
+<clr:255,190,255>Kan du ikke
+snakke?
+<HEADSET><clr:255,255,138>Om hvad?
+<clr:255,190,255>Om hvad som helst. Hvad som helst.
+<HEADSET><clr:255,255,138>Altså i betragtning af vores aktuelle situation, så er din irrationelle angst for mørke faktisk velbegrundet.<sb>Jeg kan nemt give dig 100 grunde til at være skrækslagen.
+<clr:255,190,255>Okay, det var jeg selv ude om.<sb>Jeg må være mere specifik næste gang.
+<clr:255,190,255>Stor fan af denne lommelygte.
+<HEADSET><clr:255,255,138>Og ligesom dig er den også følsom overfor mørket.
+<clr:255,190,255>Er den det?
+<HEADSET><clr:255,255,138>Hvilket betyder, at den automatisk tændes, når lyset slukkes.
+<clr:255,190,255>Ah, fedt.
+<clr:255,190,255>Okay, Russ. Du må VIRKELIG gerne snakke igen.
+<HEADSET><clr:255,255,138>Selvfølgelig. Vær specifik.
+<clr:255,190,255>Øhh
+før. Hvordan var livet før Combine?
+<HEADSET><clr:255,255,138>Ah! Fantastisk.<cr>Alyx, har du nogensinde hørt om en clubsandwich?
+<clr:255,190,255>Øh, nej. Aldrig.
+<HEADSET><clr:255,255,138>OK. Nå, men for at lave en clubsandwich skal du starte med brødet.<sb>Ikke fra en madkø, men fra et bageri.
+<HEADSET><clr:255,255,138>OK.<sb>For at lave en clubsandwich skal du starte med brødet.<sb>Ikke fra en madkø.<sb>Fra bageriet på den anden side af vejen, bagt samme dag, okay? Tilføj tomater og salat
+ikke grønsagspuré
+frisk grønt.<sb>Derefter tilføjer du bacon
+det kommer fra et dyr, vi plejede at kalde en "gris".<sb>Rist brødet, og læg det hele indeni.
+<clr:255,190,255>Havde I alt det? Det er vildt.
+<HEADSET><clr:255,255,138>Ja! Og jeg er ikke færdig.<sb>Derefter lægger du den anden sandwich oven på den første.<sb>Du lægger skinke i
+også fra en gris
+og kalkun fra et dyr, vi kaldte for en "kalkun" og mere tomat, mere salat og en masse andet, som jeg ikke kan huske.<sb>Den var 15 cm høj og vejede et halvt kilo og havde adskillige ingredienser fra fem forskellige kontinenter.<sb>Det var den mest umulige madret, man kan forestille sig før vores tid.
+<HEADSET><clr:255,255,138>Ja, ikke?
+<clr:255,190,255>Det er
+wow.
+<clr:255,190,255>Tak, Russ.
+<HEADSET><clr:255,255,138>Det var så lidt, Alyx.
+<HEADSET><clr:255,255,138>Vent, er det en død Combine-soldat?
+<clr:255,190,255>Ja
+<sb>Da I havde travlt med at stjæle reaktoren, så jeg Combine flytte forsyninger herind.<sb>Så de må være interesserede i dette sted igen.
+<HEADSET><clr:255,255,138>OK, hold øjnene åbne.<sb>Der er helt klart noget i gære.
+<HEADSET><clr:255,255,138>Alyx! Manhack! Pas på!
+<HEADSET><clr:255,255,138>Manhack!
+<HEADSET><clr:255,255,138>Uh, manhacks!
+<clr:255,190,255>Føj
+<clr:255,190,255>Åh
+min
+<clr:255,190,255>Okay, så... Hvordan er det at leve på Jorden lige nu, på en skala fra 1 til 10
+så ville jeg nok sige 2.
+<HEADSET><clr:255,255,138>Jep, det kan altid blive værre.
+<clr:255,190,255>Hvordan ville du bedømme det, FØR Combine dukkede op?
+<HEADSET><clr:255,255,138>Åh, det er svært.<sb>Det ved jeg ikke, øh... på en god dag?<sb>6.<sb>Ja, et stort 6-tal.
+<clr:255,190,255>6? Det er ikke så godt.
+<HEADSET><clr:255,255,138>Sådan er livet, Alyx.<cr>Det er ikke altid så godt.
+<clr:255,190,255>Hm, hvis vi får fjernet Combine fra Jorden, kan vi måske sigte efter en 8'er?
+<HEADSET><clr:255,255,138>Uh, en 8'er.<cr>Ja, det ville være dejligt.<sb>Meget dejligt.
+<clr:255,190,255>Så hvad er dine planer, når vi får fjernet Combine fra Jorden?
+<HEADSET><clr:255,255,138>Så vil jeg gå i fuld produktion af mine "Russells", selvfølgelig.
+<clr:255,190,255>Åh, selvfølgelig!<sb>Du sidder jo på en faldgrube!
+<HEADSET><clr:255,255,138>Guldgrube, jep.<sb>Så her er planen, ud fra en forsigtig beregning. Jeg regner med, at det tager et år at stoppe Combine og få dem væk fra planeten.<sb>Så det er det første år.
+<HEADSET><clr:255,255,138>Så et år mere til at masseproducere "Russells".<sb>Selvom vi, sagt mellem os to, først skal genopbygge samfundet, du ved... skabe en grundlæggende infrastruktur, jobs, penge, den slags ting.<sb>Ellers vil folk ikke kunne købe dem.<sb>Ikke sandt.
+<HEADSET><clr:255,255,138>Så, øh... ja
+<sb>En TREÅRSPLAN.<sb>Lad os lægge infrastrukturdelen i det andet år.
+<clr:255,190,255>Ja, helt sikkert.<sb>Det vil du have i det andet år.
+<HEADSET><clr:255,255,138>Wow! Forsigtig! Forsigtig!
+<HEADSET><clr:255,255,138>Rolig nu
+<clr:255,190,255>Åh nej. Det begynder at blive mørkt igen.
+denne her treårige Russell-plan
+tror du, øh
+tror du, du ville have et job til mig?
+<HEADSET><clr:255,255,138>Job? Alyx, du opfandt "Alyx"!<cr>Selvfølgelig kan du få et job!
+<clr:255,190,255>Vi kunne blive partnere.
+<HEADSET><clr:255,255,138>Uh, tja øh
+<sb>Hmm. Der vil i hvert fald være mulighed for aktier.<sb>5-10 års optjeningsperiode, selvfølgelig.<sb>Det kunne være meget lukrativt for dig, Alyx.<sb>På lang sigt.
+<clr:255,190,255>Jeg ved ikke, hvad alt det betød, men det lyder godt, partner.
+<HEADSET><clr:255,255,138>Jep. Det lyder godt
+Alyx.
+<clr:255,190,255>Russell! De her gutter har automatvåben!
+<clr:255,190,255>De her gutter har automatvåben.
+<HEADSET><clr:255,255,138>Det er alienkommandosoldater, selvfølgelig har de automatvåben.
+<HEADSET><clr:255,255,138>Vi ville også have dem, hvis ikke Combine-våben var genkrypterede. Så ingen held her. Medmindre du finder et, som ikke er tilknyttet. Eller du er åben over for lidt genmodificering.
+<clr:255,190,255>Jeg krydser fingre for det... øh... det første. Jeg nøjes med de gener, jeg har.
+<clr:255,190,255>Det er mange ord, mens kuglerne flyver om ørerne på mig, Russ!
+<clr:255,190,255>Combine!
+<clr:255,190,255>Russ, de her har automatvåben.
+<HEADSET><clr:255,255,138>Vi ville også have dem, hvis ikke Combine-våben var genkrypterede. Så ingen held her.<sb>Medmindre du finder et, som ikke er tilknyttet!<cr>Eller du er åben over for lidt genmodificering.
+<clr:255,190,255>Jeg... Jeg klarer mig, Russ. Jeg nøjes med de gener, jeg har.
+<HEADSET><clr:255,255,138>Fairview Station! Vi er her!
+<HEADSET><clr:255,255,138>Vi er fremme!
+<HEADSET><clr:255,255,138>Duk dig!
+<clr:255,190,255>Uh. Jeg tror, det var den sidste.
+<HEADSET><clr:255,255,138>Godt, for vi har ikke meget tid.
+<HEADSET><clr:255,255,138>Der er en kontrolstation i nærheden.
+<HEADSET><clr:255,255,138>Du burde have rigelig tid til at få terminalen online igen.
+<HEADSET><clr:255,255,138>Okay, jeg vil kunne stoppe toget lige her.
+<clr:255,190,255>Er du sikker på det?
+<HEADSET><clr:255,255,138>Helt sikker. Du skal bare aktivere terminalen.
+<HEADSET><clr:255,255,138>Og så skal du være klar til kamp.<sb>De giver ikke din far fra sig frivilligt.
+<clr:255,190,255>Jeg skal nok være klar.
+<HEADSET><clr:255,255,138>OK. Der er terminalen.
+<clr:255,190,255>Jeg går i gang.
+<HEADSET><clr:255,255,138>Men skynd dig.
+<HEADSET><clr:255,255,138>Ja, der må være et batteri her et sted.
+<HEADSET><clr:255,255,138>Måske mangler der en del?
+<HEADSET><clr:255,255,138>Okay, ingen panik, men toget er på vej.
+<clr:255,190,255>Det ser jeg, Russell.
+<HEADSET><clr:255,255,138>Bare få mig ind. Det tager kun et sekund. Du klarer det godt.
+<clr:255,190,255>Jep, jeg klarer det godt, ingen panik, ingen panik, ingen panik
+<HEADSET><clr:255,255,138>Der mangler en komponent!
+<HEADSET><clr:255,255,138>Okay! Nu skal du bare aktivere systemet igen.
+<clr:255,190,255>Skulle den her falde af?!
+<HEADSET><clr:255,255,138>Det er det modsatte af, hvad den skulle, Alyx!
+<clr:255,190,255>Hvad gør jeg
+hvad gør jeg nu?!
+<HEADSET><clr:255,255,138>Øh
+ingen panik! Eller stop med at panikke! Hvis du er gået i panik.
+<clr:255,190,255>Jeg er ikke i panik!
+<HEADSET><clr:255,255,138>Ok, men det er jeg! Vi må finde en anden måde at stoppe det her tog!
+<clr:255,190,255>Der må være en anden måde at stoppe toget på
+<HEADSET><clr:255,255,138>Jamen, se dig omkring! Vi har ikke meget tid!
+<HEADSET><clr:255,255,138>Se udenfor! Der MÅ være en måde at tilsidesætte det manuelt. Okay, teknisk set ikke. Men, du ved, det ville være rart, hvis der var. Please. [Griner nervøst]
+<HEADSET><clr:255,255,138>Den manuelle styring må være udenfor, Alyx! Skynd dig!
+<HEADSET><clr:255,255,138>Se efter en trækstang!
+<HEADSET><clr:255,255,138>Bliv ved med at se efter en trækstang! Vi er nødt til at stoppe det tog!
+<HEADSET><clr:255,255,138>Toget er her om 10 sekunder, Alyx!
+<HEADSET><clr:255,255,138>Okay, bare træk i stangen der.
+<HEADSET><clr:255,255,138>5 sekunder!
+<clr:255,190,255>Den bliver der ikke!
+<HEADSET><clr:255,255,138>Du er nødt til at holde den nede!
+<clr:255,190,255>OK
+Det virkede.
+<HEADSET><clr:255,255,138>Ja. Wow. Er du okay?
+<clr:255,190,255>Jeg er okay. Lad os finde far.
+<HEADSET><clr:255,255,138>Ja. Se efter fangevognen. Den burde være i den forreste del af toget.
+<clr:255,190,255>Jeg finder en vej ind i vraget.
+<HEADSET><clr:255,255,138>Hvad fanden er det?
+<clr:255,190,255>Det ved jeg ikke. Men vi skal finde far.
+<HEADSET><clr:255,255,138>Ja, nej, det ved jeg.<cr>Jeg har bare aldrig set dem før.
+<HEADSET><clr:255,255,138>Det er din fars fangekapsel.
+<clr:255,190,255>Åh gud. Hvor er far?
+<clr:255,190,255>Far? FAR?
+<clr:255,190,255>Far!
+<clr:255,208,172>Jeg er herovre, skat!<sb>Jeg har brug for hjælp, skynd dig!
+<HEADSET><clr:255,255,138>Åh gud.
+<clr:255,208,172>Skat! Herovre!
+<clr:255,190,255>Jeg kommer!
+<clr:255,208,172>Skat!
+<clr:255,190,255>Jeg er der lige straks! Ét sekund!
+<HEADSET><clr:255,255,138>Alyx, skynd dig!
+<clr:255,190,255>Okay.<sb>Jeg rækker armen ud og trækker dig op.<sb>Det skal nok gå. Er du klar?
+<clr:255,208,172>Ja
+Jeg er klar.
+<clr:255,190,255>Giv mig din hånd!
+<clr:255,208,172>Ungh!
+<clr:255,190,255><sfx:1>[Stønner af smerte]
+<clr:255,208,172>Skynd dig, skat!<sb>Skynd dig! Jeg kan ikke holde fast.
+<clr:255,208,172>Hjælp mig op
+hjælp mig op
+<HEADSET><clr:255,255,138>Åh gud, åh gud.
+<clr:255,208,172>Næsten
+Næsten
+Aah!
+<clr:255,208,172><sfx:1>[Gisper efter vejret]
+<clr:255,190,255><sfx:1>[Chokeret gisp]
+<HEADSET><clr:255,255,138>En vortigaunt! Det er en vortigaunt!
+<clr:255,190,255>Det er DEN vortigaunt!
+<clr:107,232,120>Alyx Vance!<sb>Jeg er kommet for at hjælpe, ligesom jeg sagde.
+<clr:255,208,172>Tusind tak
+tusind tak
+åh gud
+<clr:255,190,255>Tak, åh gud, tak!<sb>Far, bliv dér!<sb>Jeg finder ud af, hvordan jeg kommer over til dig!
+<clr:255,190,255>Bare bliv der!<cr>Jeg finder ud af, hvordan jeg kommer over til dig!
+<clr:255,208,172>Nej! Alyx, hør efter!<sb>Det, Russell og jeg fandt, er et slags
+et slags supervåben!
+<clr:255,190,255>Et supervåben?
+<clr:255,208,172>Noget stort.<sb>De har det her i karantænezonen i en slags boksanlæg.<sb>Men de flytter det snart.<sb>Hvorhen ved jeg ikke, men det sker snart.
+<clr:255,190,255>Så må vi stjæle det, før de flytter det!
+<clr:255,208,172>Ja! Og se, se
+<sb>Det lykkedes mig at få fat i denne Combine-datapod.<sb>Hvis jeg kan dekryptere den, kan vi finde ud af at bruge deres våben imod dem.
+<clr:255,190,255>Så hvad er planen?
+<clr:255,208,172>Du tager til boksanlægget.<sb>Jeg tager den her tilbage til Russell og går i gang.
+<HEADSET><clr:255,255,138>Vent, øh... Hvor ER boksanlægget?
+<clr:255,190,255>Far! Hvor er boksanlægget?
+<clr:107,232,120>Kig mod Nordstjernen
+ja. Kig mod stjernen. OK. Far?
+<clr:255,208,172>Det er midt i karantænezonen.<sb>Og det er stort.<sb>Tag op til overfladen og se, hvad du kan finde.
+<clr:107,232,120>Jeg vil ledsage Eli Vance og sørge for, at han er i sikkerhed!
+<clr:255,190,255>Genialt! Tak.
+<clr:255,208,172>Af sted!
+<clr:255,190,255>Jeg elsker også dig!
+<clr:107,232,120>Jeg elsker også dig!
+<clr:255,190,255>Mange tak!
+<clr:255,190,255>Hey, Russ.<sb>Hold øje med far, okay?
+<HEADSET><clr:255,255,138>Jeg skal nok sige til, hvis han når hertil
+ah, NÅR. Når han kommer hertil.
+<clr:255,190,255>Ja, NÅR.
+<clr:255,190,255>Hør
+det var lidt kaotisk før, men vi <I>fik<I> far tilbage.
+<HEADSET><clr:255,255,138>Jaaa
+<HEADSET><clr:255,255,138>Øh, det kommer sandsynligvis til at tiltrække noget opmærksomhed.<sb>Ikke "sandsynligvis", det gør det.<sb>Det har helt sikkert tiltrukket opmærksomhed.<sb>Hør, de leder efter dig nu.<sb>Okay? Så vær forsigtig.
+<HEADSET><clr:255,255,138>Hør, hvis vi kan få fat i dette våben, kan vi ændre tingene for altid.
+<clr:255,190,255>Ja. HVIS.
+<HEADSET><clr:255,255,138>Hør, jeg ved godt, vi kun har arbejdet sammen i et par timer, men
+du skal vide, at jeg er stolt af dig.<sb>Okay?<sb>Du er under meget stort pres her.
+<clr:255,190,255>Wow. Russ.
+<HEADSET><clr:255,255,138>Faktisk så meget pres, at jeg
+<sb>Ja, jeg tøver med at nævne det.<sb>Men jeg bemærkede, da du rakte hånden ud efter din far... hvis han havde taget fat i den, ville hans greb have knust alle de følsomme sensorer i "Russells".
+<clr:255,190,255>Ahh. Okay.
+<HEADSET><clr:255,255,138>Helt forståeligt
+og det ville også have været det værd
+i dette tilfælde.
+<clr:255,190,255>OK.
+<HEADSET><clr:255,255,138>Men når det er sagt, har jeg svært ved at forestille mig EN ANDEN situation, hvor det ville have været tilfældet.<sb>Og, øh, ligesom din far ER Russells uvurderlige, okay.<sb>Så
+bare
+så du ved det, fremover.
+<clr:255,190,255>Russ, jeg lover, at dine handsker er i trygge hænder hos mig.
+<clr:255,190,255>Åh gud, Russ. Det her ID har et billede af et skelet.
+<HEADSET><clr:255,255,138><sfx:1>[Klukker]
+<clr:255,190,255>Ah! Fandt det.
+<clr:255,190,255>Fandt det.
+<clr:255,190,255>Ah. Der er det.
+<clr:255,190,255>Aha.
+<clr:255,190,255>Åh, far sagde, han havde stjålet nogle filer om det her våben.
+<HEADSET><clr:255,255,138>Når det gælder Combines datakryptering
+<clr:255,190,255>Så er du manden?
+er Eli manden!
+<clr:255,190,255>Åh.
+<HEADSET><clr:255,255,138>Systemer, robotteknologi, netværk
+Det kan jeg hurtigt klare.
+<clr:255,190,255>Men ikke datakryptering.
+<HEADSET><clr:255,255,138>Det kunne lige så godt være et fremmedsprog. Ja, det er det jo også. Men, hør, Eli er manden til det.
+<HEADSET><clr:255,255,138>Alyx! Kig ud ad vinduet!
+<HEADSET><clr:255,255,138>Jeg er seriøs, Alyx. Kig ud ad vinduet.<sb>Er det, hvad jeg tror, det er?
+<HEADSET><clr:255,255,138>Okay, godt. Du fandt det.<sb>Kig ud af vinduet. Kom nu.<sb>Jeg kan kun se det, hvis du kan.
+<clr:255,190,255>Du godeste. Det må være boksanlægget.
+<HEADSET><clr:255,255,138>Ja. Din far nævnte ikke, at det svævede i luften.
+<clr:255,190,255>Så selvom vi kommer derhen, skal vi stadig OP til det.
+<HEADSET><clr:255,255,138>Kablerne! Se alle de kabler, der er fastgjort til det.
+<HEADSET><clr:255,255,138>Vi skal bare følge dem
+<clr:255,190,255>Og ødelægge det, som er i den anden ende.
+<HEADSET><clr:255,255,138>Og ned kommer boksanlægget.<sb>Meget enkelt. Nemt at følge.<sb>Den her plan kan jeg lide.
+<HEADSET><clr:255,255,138>Okay, du
+af en god grund, tænker jeg
+nægtede at se ud ad vinduet.
+<HEADSET><clr:255,255,138>Så glem vinduet. På den anden side af det er BOKSANLÆGGET, som din far vil have, at vi leder efter.<sb>Det svæver i luften, så det bliver svært for os at nå det.
+<HEADSET><clr:255,255,138>Men! Det er dækket til med kabler.<sb>Jeg vil tro, at vi kan få boksanlægget ned, hvis vi følger kablerne og ødelægger det, de sidder fast på.
+<clr:255,190,255>Skal jeg kigge ud ad nogen vinduer for at få boksanlægget ned?
+<HEADSET><clr:255,255,138>Nej, det tror jeg ikke.
+<clr:255,190,255>Så lad os gøre det.
+<clr:255,190,255>Har du hørt Combine snakke om, at far er flygtet?
+<HEADSET><clr:255,255,138>Nej, slet ikke. De snakker kun om at sende forstærkninger til karantænezonen.
+<clr:255,190,255>På plussiden betyder det, at far stadig er på vej tilbage til dig.<sb>Vi ville have hørt, hvis de havde fanget Eli Vance igen.
+<HEADSET><clr:255,255,138>Og på minussiden
+<clr:255,190,255>Det bliver ikke nemmere at komme hen til boksanlægget.
+<clr:255,190,255>Åhh, granater.
+<clr:255,190,255>Ugh. Totalt spild af granat.
+<HEADSET><clr:255,255,138>Det var det værd.
+<clr:255,190,255>Enig.
+<clr:255,190,255>Pas på, zombie.
+<clr:255,190,255>Pas på.
+<clr:255,190,255>Missede!
+<clr:255,190,255>Lort!
+<clr:255,190,255>Ugh!
+<HEADSET><clr:255,255,138>Så tæt på!
+<HEADSET><clr:255,255,138>Meget tæt på denne gang.
+<clr:255,190,255>Ja!
+<HEADSET><clr:255,255,138>Ja!
+<HEADSET><clr:255,255,138>Godt kastet!
+<HEADSET><clr:255,255,138>Hey! På skærmen. Combine.
+<clr:255,190,255>Jeg ser dem.
+<clr:18,199,226>Overwatch, dette er 5-6-0.<sb>Seismisk aktivitet registreret i sektor 0-2, bekræft.
+<clr:166,242,255><I>Overwatch bekræfter aktivitet.<sb>Bekræft sektor 0-2, mulig nekrotisk forstyrrelse.<sb>Afsøg sektor, rapportér inddæmningsstatus.<I>
+<clr:18,199,226>Inddæmning fortsætter, omdirigerer 5-6-0 til undergrundsbanen.<sb>Angriber.
+<clr:255,190,255>Uh. Fantastisk.
+<HEADSET><clr:255,255,138>Pas på, Alyx!
+<clr:255,190,255>"Kig mod Nordstjernen..."
+<HEADSET><clr:255,255,138>Det gør jeg. Hvorfor siger du det på den måde?
+<clr:255,190,255>Nej, nej
+Vortigaunten sagde: "Kig mod Nordstjernen" for at hjælpe hans venner. Hvilket lyder som vortigaunt-volapyk, men det er det vist ikke.
+<HEADSET><clr:255,255,138>Ah, ja, det giver mere mening.
+<HEADSET><clr:255,255,138>Hmm. Det er et eller andet Combine-transformeranlæg. De genererer som regel strøm og forvalter sikkerhedsprotokoller.
+<clr:255,190,255>Ligesom den strøm og sikkerhed, man har brug for til et kæmpe boksanlæg.
+<clr:255,190,255>Og
+der er boksanlægget.
+<HEADSET><clr:255,255,138>Ja, det transformeranlæg må være det, der holder den oppe i luften. Vi er nødt til at komme derop.
+<clr:255,190,255>Der er godt nok mange kabler
+<clr:255,190,255>Jeg kan ikke finde ud af, hvordan jeg kommer ind.
+<HEADSET><clr:255,255,138>De ville aldrig lade en indgang midt på gaden være ubevogtet.
+<HEADSET><clr:255,255,138>Find en vej til hotellet, og gå op på taget.
+<HEADSET><clr:255,255,138>Alyx, jeg synes, du skal prøve at komme hen til det hotel og op til transformeranlægget.
+<HEADSET><clr:255,255,138>Uuh! En elevator. Det er vores vej op.
+<HEADSET><clr:255,255,138>[Signalstøj]<sb>Hmm. Det var underligt.
+<clr:255,190,255>Oooog strømmen gik.
+<clr:255,190,255>Det ser ud til, at vi må tage trapperne.
+<clr:255,190,255>Oooog trapperne er udelukket.
+<HEADSET><clr:255,255,138>Lad os prøve at få strømmen tilbage igen.
+<clr:255,190,255>Uuh, relæer.
+<clr:255,190,255>Lad os gå tilbage til elevatorplanen.<sb>Jeg skal nok få strømmen tilbage.
+<clr:255,190,255>Sådan der
+relæer.
+<HEADSET><clr:255,255,138>Det her hotel er ældgammelt.<sb>Elføringen er sikkert den rene ledningssalat.
+<clr:255,190,255>Strømmen er tilbage.<sb>Lad os tjekke elevatoren.
+<clr:255,190,255>Argh! Ledningssalat.
+<clr:255,190,255>Elevatoren har stadig ikke strøm.
+<clr:255,190,255>Øh, det her ser alt sammen fint ud.
+<clr:255,190,255>Måske overså vi noget ude ved elevatoren.
+<HEADSET><clr:255,255,138>Noget, der ligner et relæ derinde?
+<clr:255,190,255>Næh, jeg kigger stadig.
+<clr:255,190,255>Sådan der.
+<clr:255,190,255>Bum. Strømmen er tilbage.
+<clr:255,190,255>Nu skal jeg bare sætte gang i elevatoren.
+<clr:255,190,255>Så tager vi op
+<clr:255,190,255>Hmm.
+<clr:255,190,255>Det ser ud til, vi må bruge stigen.
+<clr:255,190,255>Det her sted er groet helt til.<sb>Hvor farligt tror vi, alt dette er?
+<HEADSET><clr:255,255,138>Tjah, det er sporer fra en anden dimension, så
+formodentlig
+ja, ekstremt.
+<HEADSET><clr:255,255,138>Men! En sjælden mulighed for at undersøge en fremmed flora på nært hold.
+<HEADSET><clr:255,255,138>Åh! Pas på med de der blæretingester!
+<HEADSET><clr:255,255,138>De ser lidt arrige ud, jo nærmere du kommer.
+<HEADSET><clr:255,255,138>Ugh.
+<clr:255,190,255>Jeg tror virkelig ikke, jeg burde indånde det her.
+<HEADSET><clr:255,255,138>Enig. Bare gå videre.
+<HEADSET><clr:255,255,138>Og tag færre indåndinger måske.
+<HEADSET><clr:255,255,138>Alyx, hvordan føles det?
+<clr:255,190,255>Lidt
+slimet? Det kilder lidt.
+<clr:255,190,255>Av.
+<HEADSET><clr:255,255,138>Hvordan føles det?
+<clr:255,190,255>Skarpt.
+<HEADSET><clr:255,255,138>Hvor skarpt?
+<clr:255,190,255>Som et 6-tal.
+<HEADSET><clr:255,255,138>Okay, 6.
+<clr:255,190,255>Et stort 6-tal.
+<HEADSET><clr:255,255,138>Åh gud. Kig ikke ned.<sb>Kig ikke ned!
+<clr:255,190,255>Russ, du er her ikke engang!
+<clr:255,190,255>Ja, selvfølgelig.
+<clr:255,190,255>Åh åh, ham her har ingen trøje på.
+<clr:255,190,255>Fik den.
+<clr:255,190,255>Taaak.
+<clr:255,190,255>Hey Russ, sig en sang.
+<HEADSET><clr:255,255,138>"Humlebiens Flugt".
+<clr:255,190,255>Den kommer her.
+<HEADSET><clr:255,255,138>Ja, det er den!
+<clr:255,190,255><delay:4>Åh, det er ikke godt.
+<HEADSET><clr:255,255,138>[Periodisk signalstøj] Alyx? Alyx, kom ind.
+<clr:255,190,255>Ser du det, Russell? Russell!
+<HEADSET><clr:255,255,138>[Signalstøj] Alyx! Alyx! Hvad skete der?
+<clr:255,190,255>Der var en
+hundelignende
+lynting.
+<HEADSET><clr:255,255,138>Ah, det er jeg ked af, jeg ikke så.
+<clr:255,190,255>Jeg dræbte den, og så sked den denne her ud?
+<clr:255,190,255>Hey, Russell. Den her ting faldt ud af hunden.
+<HEADSET><clr:255,255,138>Åh, ser man det. Hm. Interessant.
+<clr:255,190,255>Der er det, Russ!
+<clr:255,190,255><delay:3>Åh nej, lynhunden.
+<HEADSET><clr:255,255,138>Vær forsigtig, Alyx!
+<clr:255,190,255>Åh gud, den gik ind i en fyr!<sb>Russell?
+<HEADSET><clr:255,255,138>[Signalstøj] Alyx! Er hunden væk? Hvad skete der?
+<clr:255,190,255>Ny udvikling:<sb>Den forsvandt ind i en død gut.
+<HEADSET><clr:255,255,138>Nej!
+<clr:255,190,255>Jo.<sb>Jeg var nødt til at skyde dem begge, det var VANVITTIGT, Russell.
+<HEADSET><clr:255,255,138>Det lyder vanvittigt.
+<clr:255,190,255>Åh, det var det.
+<HEADSET><clr:255,255,138>De der Combine-beskyttelsesdøre er i realiteten helt umulige
+[signal forsvinder]
+<clr:255,190,255> Åh åh.
+<HEADSET><clr:255,255,138>[Signalstøj] Kom hunden tilbage, Alyx?
+<clr:255,190,255>Ja, uh. Den var
+ret barsk.
+<HEADSET><clr:255,255,138>Men du er OK, ikke?
+<clr:255,190,255>Jo, Russ, jeg er OK.
+<HEADSET><clr:255,255,138>Okay, vi må se at få dig ud herfra og op på taget.
+<clr:255,190,255>Jeg arbejder på sagen.
+<clr:255,190,255>Der er den.<sb>Den elevator fører op til transformeranlægget.
+<clr:255,190,255>Fandt en elevator til at komme op.
+<HEADSET><clr:255,255,138>Ah, gudskelov.
+<clr:255,190,255>Transformeranlægget er på etagen over mig.
+<clr:255,190,255>OK, der er transformeranlægget. Jeg tager op til næste etage, og så lukker vi det ned.
+<clr:255,190,255>OK, nu nærmer vi os transformeranlægget.
+<HEADSET><clr:255,255,138>Ja, du skal forbi dette Combine-kraftfelt.
+<clr:255,190,255>Jeg finder ud af, hvordan jeg deaktiverer det.
+det her burde deaktivere kraftfeltet.
+<clr:255,190,255>Årh, mand.
+<HEADSET><clr:255,255,138>Du er nødt til at finde strømkilden til den barriere der.
+<HEADSET><clr:255,255,138>Der er et Combine-skjold, som blokerer vejen.
+<clr:255,190,255>Jeg åbner den og deaktiverer den.
+<clr:255,190,255>Ikke for at være sortseer, men burde far ikke være tilbage nu?
+<HEADSET><clr:255,255,138>Hm, lad os tænke lidt, Alyx.<sb>Han er til fods, bevæger sig fem kilometer i timen
+<HEADSET><clr:255,255,138>Og han er på flugt, han har kun ét ben
+<sb>Der er forhindringer, ingen direkte vej
+<sb>Øh, ved du hvad?<sb>For at være ærlig, så BURDE han være tilbage nu.
+<clr:255,190,255>Ja. Så jeg <I>bør<I> være bekymret.
+<HEADSET><clr:255,255,138>Normalt, ja.<sb>Men det er dig, der bevæger dig MOD faren, så vi bør nok snarere bekymre os om dig.
+<HEADSET><clr:255,255,138>Alyx! Det er din lykkedag!<cr>Combine-våbnet er ikke tilknyttet!
+<clr:255,190,255>Hvordan er du så sikker?
+<HEADSET><clr:255,255,138>Det er stadig i kassen!<sb>De efterlader dem aldrig i kasserne.
+<clr:255,190,255>Nice.
+<HEADSET><clr:255,255,138>Det var ikke engang nødvendigt at ændre din genetiske kode.
+<clr:255,190,255>Ja, det ville du kunne lide.
+<HEADSET><clr:255,255,138>Det er okay. Der er altid næste gang.
+<clr:255,190,255>Okay, så er vi her.
+<HEADSET><clr:255,255,138>Bare klip kablerne, så kører vi.
+<clr:255,190,255>Det her bliver ikke så nemt, som det så ud fra jorden.
+<clr:255,190,255>Jeg kan ikke se, hvordan jeg skal frakoble kablerne herinde.
+<clr:255,190,255>Russ, jeg kan ikke finde ud af, hvordan jeg frakobler kablerne.
+<HEADSET><clr:255,255,138>Prøv måske at åbne kabelafskærmningen og skyde på dem.
+<clr:255,190,255>Ah! Forstået.
+<clr:255,190,255>Ah, der er noget rundt om forbindelsen.
+<HEADSET><clr:255,255,138>Sådan!
+<HEADSET><clr:255,255,138>Godt, gå indenfor nu, og deaktiver strømkilden.
+<clr:255,190,255>Jep.
+<clr:255,190,255>Tak! Held og lykke!
+<clr:255,190,255>Tak. Held og lykke.
+<clr:255,190,255>[Hoster]
+hvad
+<clr:107,232,120><sfx:1>[Gisper]
+<clr:255,190,255><sfx:1>[Overrasket gisp]
+<HEADSET><clr:255,255,138>Milde Moses, det er en vortigaunt
+<clr:107,232,120>[Gisper]
+<clr:107,232,120>Vi har været fanget
+i mørket.
+<clr:255,190,255>Du er fri nu.<sb>Det er okay, din ven har sendt mig.
+<clr:107,232,120>Alyx Vance... du er vores ven.
+<clr:255,190,255>Hvad gør de ved dig?
+<clr:107,232,120>Det, de gør ved os alle.
+<clr:107,232,120>Jeg må vise Alyx Vance.
+<clr:107,232,120>Kom!
+<clr:107,232,120>Se her!
+<clr:107,232,120>Alyx Vance skal komme.
+<clr:107,232,120>Kom venligst.
+<clr:107,232,120>Combine dræner os for den energi, de bruger til at beskytte deres våben.
+<clr:107,232,120>Der
+Vi bliver flået fra os selv.
+<clr:255,190,255>Vi er nødt til at forhindre dem i at dræbe dine venner.
+<clr:107,232,120>Vortigaunterne vil befri os selv og kræve vores egen hævn.<sb>DU skal gå til våbnet.
+<clr:255,190,255>Jeg kan ikke komme ind i boksanlægget, hvis transformeranlæggene stadig er online.
+<clr:107,232,120>Bare rolig, Alyx Vance.<sb>Det vil de <I>ikke<I> være.<sb>Vi vil <I>ikke<I> tillade det.
+<clr:107,232,120>Jeg vil rydde vejen.
+<clr:107,232,120><sfx:1>[Stønner]
+<clr:107,232,120>Gå. Vores veje skilles.<sb>Men husk: Der er ingen afstand imellem os.<sb>Vi er et og det samme.
+<clr:255,190,255>Pladsen er ved at blive lidt trang hernede, Russ.
+<HEADSET><clr:255,255,138>Kommunikationskanalen har været gloende, siden vi eliminerede det transformeranlæg.<sb>De ved, vi er ude efter boksanlægget nu.<sb>Uanset hvad der er derinde, vil de VIRKELIG ikke have, vi får fat i det.
+<clr:255,190,255>Jamen, nu vil jeg bare have det endnu mere.
+<HEADSET><clr:255,255,138>Sådan skal det lyde.
+<HEADSET><clr:255,255,138>Vi sætter stor lid til, at den vortigaunt kan slå alle transformeranlæggene fra.
+<clr:255,190,255>Jeg stoler på ham.
+<HEADSET><clr:255,255,138>Ja. Det gør jeg også.<cr>Øh
+for hvis han ikke gør det, går det boksanlæg ingen vegne.<sb>Og så står vi her, uden noget boksanlæg at bryde ind i, omringet af Combine, og
+<clr:255,190,255>Russ.<cr>At stole på ham er
+den eneste plan, vi har.<sb>Han klarer det her. Vi klarer det her.
+<HEADSET><clr:255,255,138>Ja. Du har ret. Han klarer det.<sb>Vi klarer det alle sammen.
+<HEADSET><clr:255,255,138>Okay, der er ingen direkte vej, fra hvor du er til boksanlægget.<sb>Så du bliver nødt til at zigzagge dig frem.
+<clr:255,190,255>Nå, men det er kæmpestort, så det burde ikke være svært at vide, hvilken vej jeg skal.
+<clr:255,190,255>Jeg forstår ikke, hvorfor de har det her.
+<clr:255,190,255>Hvis våbnet er så kraftigt, hvorfor så låse det inde i et hul som dette?
+<HEADSET><clr:255,255,138>Jeg gætter på, at de prøver at finde en måde at få det væk fra Jorden på.<sb>Tilbage til deres hjem eller en anden planet.
+<clr:255,190,255>Hvorfor ikke bruge det HER?
+<HEADSET><clr:255,255,138>De har allerede vundet denne krig, Alyx.
+<clr:166,242,255><I>Alle enheder til stationssektor 1, fri skydning.<sb>Mål erklæret som primært mål.<sb>Forfølg straks.<I>
+<clr:166,242,255><I>Individ, du er nu sigtet for flere antiborgerlige overtrædelser på niveau 5.<sb>Samarbejd venligst med markteamet.<sb>Markteam: alarm.<cr>Kode: Konfronter. Isoler. Neutraliser.<I>
+<clr:255,190,255>Hvad synes du, Russ?<sb>Vi må vel hellere gøre, som hun siger.
+<HEADSET><clr:255,255,138>Ja, hun lyder, som om hun mener det.
+<clr:255,190,255>Det var sjovt, så længe det varede.
+<HEADSET><clr:255,255,138>"Samarbejd". Pfff.
+<clr:18,199,226>Overwatch, vi har lidt store tab mod det primære mål.
+<clr:166,242,255><I>Overwatch bekræfter mislykket inddæmning.<sb>Vent på forstærkninger.<sb>Undertrykker på vej.<I>
+<clr:18,199,226><force>Målet konfronteret. Fald tilbage, og afvent forstærkninger.
+<clr:255,190,255>Puh
+Pyyh! Okay.
+<HEADSET><clr:255,255,138>Wow, Alyx!
+<clr:255,190,255>SER du det?!
+<HEADSET><clr:255,255,138>Vortigaunterne tager transformeranlægget ned!
+<HEADSET><clr:255,255,138>Det her kan fungere.
+<clr:255,190,255>Det har det bare at gøre.
+<HEADSET><clr:255,255,138>Alyx! Se op!
+<HEADSET><clr:255,255,138>Se op, se op!
+<HEADSET><clr:255,255,138>Se, hvem der er tilbage!<sb>Jeg har fået dronen op at køre igen!
+<HEADSET><clr:255,255,138>Ignorer det. Vi mødes udenfor.
+<HEADSET><clr:255,255,138>Det ser ud til, at der er Combine-barrikader længere fremme.<sb>De forhindrer alle i at komme tæt på boksanlægget.
+<clr:255,190,255>Okay. Så, hvad er din plan?
+<HEADSET><clr:255,255,138>Find en vej ind på destilleriet, og se, hvor det fører dig hen.<sb>Nu hvor min drone er online igen, har vi endelig
+årh nej, sig det er løgn!
+<HEADSET><clr:255,255,138>Åh, det er løgn!
+<clr:255,190,255>Okay, jeg kan ikke se nogen vej ind i bygningen, så jeg kigger lige rundt.
+<clr:255,190,255>Hvad er det her sted egentlig?
+<HEADSET><clr:255,255,138>Det er et destilleri.<sb>De lavede vodka og den slags.
+<clr:255,190,255>Er
+vodka
+godt?
+<clr:255,190,255>Så er vodka godt?
+<HEADSET><clr:255,255,138>Uf, nej.
+<clr:255,190,255>Russell kan ikke lide vodka, forstået.
+<HEADSET><clr:255,255,138>Altså, det var ikke det, jeg sagde!
+<clr:255,190,255>Men det er ikke godt?
+<HEADSET><clr:255,255,138>Det er gift
+<HEADSET><clr:255,255,138>... men jeg elsker det.<sb>Alle... elsker det.
+<clr:255,190,255>Okay, det er alt sammen meget forvirrende.
+<clr:255,190,255>Lad mig se, hvordan jeg kommer ind, så finder jeg noget til dig.
+<HEADSET><clr:255,255,138>Fantastisk, hvis du... hvis du kunne, egentlig, ja.
+<clr:255,190,255>Der er i hvert fald en masse flasker herinde.<sb>Bliver alkohol dårligt?
+<HEADSET><clr:255,255,138>Det bliver kun bedre! Det hele er godt, Alyx!
+<clr:255,190,255>Russell? Forbindelsen er dårlig.
+<HEADSET><clr:255,255,138>Vodkaen er god, Alyx!<sb>Vodkaen er god!
+<clr:255,190,255>Nå, okay.
+<HEADSET><clr:255,255,138>Alyx! Kom ind, Alyx!<sb>Alyx? Ah, der er du.<sb>Der er du.
+<clr:255,190,255>Hey, Russ.<cr>Vortigaunterne har lige taget endnu et transformeranlæg ned.
+<clr:255,190,255>Russ! Vortigaunterne tager endnu et transformeranlæg ned!
+<HEADSET><clr:255,255,138>Åh godt! Det er gode nyheder!
+<clr:255,190,255>Der er ingen direkte vej til boksanlægget.<sb>Jeg går ind og ser, om der en vej udenom barrikaden.
+<clr:255,190,255>Der er ingen direkte vej til boksanlægget.<sb>Jeg går ind og ser efter en vej ud.
+<HEADSET><clr:255,255,138>Okay, øh, men hvis jeg forsvinder igen, så husk:<sb>Vodka bliver aldrig dårligt, okay?<sb>Det kan holde sig for evigt.
+<HEADSET><clr:255,255,138>Alyx, du vil ikke tro
+<clr:255,190,255>Russ? Ugh.
+[Anstrengt] Din lede
+[Anstrengt] Kom nu af
+din forpulede
+giv
+min fod! Giv mig
+arh!
+[Anstrengt] Jeg troede, at vi havde en aftale: Du holder din tunge for dig selv, så skyder jeg dig ikke i den.
+[Anstrengt] Vi er færdige med hinanden, bare så du ved det.
+[Anstrengt] Mand
+<sfx:1>[Anstrengt]
+[Anstrengt]
+hader
+barnacler
+så meget
+har
+overlevet på denne
+dumme fabrik i årevis.<sb>Hvor bliver jeg
+ved med at blive fanget
+af barnacler?
+[Anstrengt] Okay, nu er det nok.<sb>Nu ryger benet af.<sb>Du vinder. Jeg håber, at du kløjes i det, dit kryb.
+[Anstrengt] Der er så mange bedre måder at dø på end det her.<sb>Sikke en ydmygelse.
+[Anstrengt] Drukning.<sb>Blive kørt over af en Combine-patrulje.<sb>Blive trampet ned af en strider.<sb>Druknet af en strider.<sb>Revet midt over af en strider.<sb>Tuberkulose.
+Åh! Hey! Hey!<sb>Du med, øh, blodet på dig.<sb>Du med blodet på dig!
+Jeg, øh, er lidt i knibe her?
+<clr:255,190,255>Ja, i den grad.
+Du, øh
+du har tilfældigvis ikke en pistol på dig?
+Ja, se lige der.<sb>Det er
+uh! Det er en flot en.
+Unhh. Flottere end min, som er langt oppe i ham her.
+Apropos, gad du skyde den her tingest?<sb>Be' om?
+Hør, jeg har nok 4, måske 5 timers armkræfter tilbage her, så
+Så ja, bare giv dig god tid, men hvis det ikke er til for meget besvær...<sb>Argh
+så kunne du måske skyde den her for mig.
+Ah, hey, fedt.
+Ah, nice. Min helt.
+Øh, hey, en smule hjælp?
+Mmf. Tak.
+<clr:255,190,255>Hvad fanden var det?
+Åh, det er Jeff.
+<clr:255,190,255>Jeff?
+Åh, bare rolig, han kan ikke se.<sb>Han hører dog fint.
+Har et øre som Mozart.
+<clr:255,190,255>Hvem?
+Ugh. OK, lad mig hjælpe dig ud.
+OK.<sb>Vi ses på den anden side, grønskolling.
+Og snak ikke for højt.
+[Hvisken] Der er han.
+<clr:255,190,255><I>Jeff<I>.
+[Hvisken] Jep. Tjek det her
+Ser du det? Han er meget forudsigelig.<sb>Men han river armene af dig, hvis han finder dig.
+Wow, wow, wow, hvad!<sb>Jeff er skudsikker!
+<clr:255,190,255>Du tager pis på mig
+<clr:255,190,255><sfx:1>[Hoster]
+<clr:255,190,255><sfx:1>[Hoster højere]
+<clr:255,190,255>[Hoster] Fandens!
+<clr:255,190,255>[Hoster] Ugh
+Hey, hey! De ting er klamme!<sb>Du er nødt til at holde dig for munden!
+<clr:255,190,255>[Hoster] Forstået. Tak.
+Hey
+jeg glemte næsten:<sb>Hvad hedder du?
+<clr:255,190,255>Alyx! Alyx Vance!
+Dav, Alyx, jeg hedder Larry.<sb>Det glæder mig at møde dig.<sb>Prøv på ikke at dø.
+Hold dig for munden, så du ikke hoster!
+Hey! Hey!<sb>Hold dig for munden, så du ikke hoster!
+Du afslører, hvor du er!<sb>Hold dig for munden, så du ikke hoster!
+Jeff kan høre, at du hoster!<sb>Hold dig for munden!
+<clr:255,190,255><sfx:1>[Lavmælt gisp]
+<clr:255,190,255>Uh
+<clr:255,190,255>Pyh
+Jeg hader dig, Jeff
+Hey! Alyx Vance<sb>Du gjorde det!
+<clr:255,190,255>Jep! Jeg fangede Jeff i en affaldskomprimator.
+<clr:255,190,255>Og så knuste jeg ham.
+Hold da kæft!
+Jeg håber, at du fandt nogle gode sager derinde.<sb>Vi ses!
+<clr:255,190,255>Åh gud, Jeff.<sb>Er du okay? [Griner]
+<HEADSET><clr:255,255,138>Alyx, kom ind.<sb>Hey Alyx! Åh, der er du.<sb>Kan du høre mig?
+<clr:255,190,255>Mere eller mindre
+forbindelsen er dårlig.
+<HEADSET><clr:255,255,138>Jeg tror, du stadig er på destilleriet.
+<clr:255,190,255>Jeg fandt mig en ny ven, Jeff.
+<HEADSET><clr:255,255,138>Jamen, det lyder godt.<sb>Vi tager imod al den hjælp, vi kan få.
+<clr:255,190,255>Ja, vi er ikke så tætte.
+<HEADSET><clr:255,255,138>Hør, der burde være en slags låge i gulvet et eller andet sted, lige så stor som tunnelen.<cr>Den skulle være
+<clr:255,190,255>Tunnelen ud herfra?
+<HEADSET><clr:255,255,138>Korrekt.<sb>Du åbner den, så finder jeg ud af, hvor den fører hen.
+<clr:255,190,255>Combine har forseglet udgangen herinde.<sb>Jeg åbner den igen og kommer væk herfra.
+<HEADSET><clr:255,255,138>Godt!<sb>Hm, jeg prøver at finde ud af, hvor den fører hen.
+<HEADSET><clr:255,255,138>Jeg har fundet en masse undergrundskort over dette område af byen!
+jeg kan ikke høre dig. Russell!
+<HEADSET><clr:255,255,138>Undergrund. Det betyder under jorden.<sb>Du ved, under overfladen. Alyx? Alyx?
+<HEADSET><clr:255,255,138>Hvad fanden er det?!
+<clr:255,190,255>DET er Jeff.
+<HEADSET><clr:255,255,138>Åh. Det er Jeff. Jeg kan ikke lide Jeff.
+<clr:255,190,255>Man skal lige vænne sig til ham.
+<clr:255,190,255>DET er Jeff
+sænk stemmen!
+<HEADSET><clr:255,255,138>Åh. Okay.<cr>Jaaeh
+jeg kan ikke lide Jeff.
+Åh
+i øvrigt en flot hjelm.
+Flot hovedbeklædning i øvrigt.
+Flot hjem i øvrigt.
+Flotte hjelme i øvrigt.
+og flot maske.
+Den er god at have.
+Åh, forresten
+det look?<sb>Det er godt.
+uanset hvad det der er på dit hoved?<sb>Så kan jeg godt lide det.
+Åhh! Flot maske i øvrigt.
+Åhh, flot maske!<sb>Den skal du nok få brug for her.
+Og, øh, hvis du mister den, så husk at holde dig for munden i nærheden af de der tingester.
+Åh! Men hvis du mister den?<sb>Så hold dig for munden i nærheden af de der tingester.<sb>Det er
+ækelt.
+okay, skal jeg nok.
+<HEADSET><clr:255,255,138>Okay, der er fri bane.<sb>Tid til at få den låge åbnet, så vi kan komme ud gennem tunnelerne.
+<HEADSET><clr:255,255,138>Prøv at finde en konsol.
+<HEADSET><clr:255,255,138>Kig efter et blinkende lys.
+<HEADSET><clr:255,255,138>Godt nyt: Tunnelen fører til boksanlægget.
+<clr:255,190,255>Super. Og lige så du ved det, så tror jeg, at tunnelen er fuld af antlioner. Bare hvis jeg pludselig forsvinder permanent.
+<HEADSET><clr:255,255,138>Antlioner, antlioner, antlioner
+<clr:255,190,255>Ja, du ved, aliens med skarpe ben.
+<HEADSET><clr:255,255,138>Ah! Ja! Og meget små, små som myrer!
+Nej.
+<HEADSET><clr:255,255,138>Åh, som bittesmå løver.
+<clr:255,190,255>Nej, det er ikke dem.<sb>De her er meget farlige.
+<HEADSET><clr:255,255,138>Ja. Øh, men uanset hvad de er, er de nede i den tunnel.
+<clr:255,190,255>Jep. Her kommer jeg.
+<HEADSET><clr:255,255,138>Et langben! Åh nej, den er død.
+<clr:255,190,255>Det er en antlion, Russell.
+<HEADSET><clr:255,255,138>Er det en antlion?
+<clr:255,190,255>Ja.<sb>Så du VED, hvad antlioner er.
+<HEADSET><clr:255,255,138>Ja. Det er langben.
+<clr:255,190,255>Russ? Tror du, at en headcrab kan gøre en gorilla til en zombie?
+<HEADSET><clr:255,255,138>Ærlig talt, hvis der er en gorilla på fri fod, er jeg ikke sikker på, at en headcrab kan gøre situationen så meget værre.
+<clr:255,190,255>Hør, Russ, jeg er ked af, jeg ikke fik taget noget vodka med til dig.
+<HEADSET><clr:255,255,138>Det er okay.<sb>Du kan tage noget med på tilbagevejen.
+<clr:255,190,255>Hør, jeg håber, du sætter pris på, hvor besværligt det er at slæbe rundt på den her vodka.
+<clr:255,190,255>Hør, jeg håber, du sætter pris på, hvor besværligt det er at slæbe rundt på den her kasse med vodka.
+<HEADSET><clr:255,255,138>Det gør jeg.<cr>Men du har jo to hænder.<sb>Kan du tage ENDNU en flaske med på tilbagevejen?
+<HEADSET><clr:255,255,138>Det gør jeg bestemt.
+<HEADSET><clr:255,255,138>To flasker!
+<HEADSET><clr:255,255,138>Tre flasker!
+<HEADSET><clr:255,255,138>Åh, du har overgået alle forventninger med det, du har der.<sb>Det er uforsvarligt, overdrevent... og jeg er dybt taknemlig.
+<clr:255,190,255>Åh, jeg tager en af dem her til mig selv.
+<HEADSET><clr:255,208,172>Fængsel
+<clr:255,190,255>Vent
+far
+hvad?!
+<HEADSET><clr:255,255,138>Hvad nu?
+<clr:255,190,255>Holde <I>hvad<I> inde?
+<HEADSET><clr:255,208,172>Aner det ikke.<sb>Jeg ved ikke engang, om den her datapod ved det.<sb>Men de holder noget fanget derinde.
+<clr:255,190,255>Wow, okay.<sb>Så hvis det ikke er et våben, skal vi så stadig fortsætte?
+<HEADSET><clr:255,208,172>Sådan som jeg ser det, uanset hvad der er derinde, er det ikke ret glad for Combine.<sb>Så DET har vi til fælles.
+<clr:255,190,255>Sandt
+<HEADSET><clr:255,208,172>Så
+Fortsætter vi?
+<clr:255,190,255>Vi er nået hertil, så jeg synes, vi skal fortsætte.<sb>Og hvis du finder ud af, at det er noget, som vi virkelig ikke bør blande os i, så dropper vi det.
+<HEADSET><clr:255,208,172>Sådan, min pige.<sb>Jeg giver besked om, hvad jeg finder ud af.
+<clr:255,190,255>Ah, de afspærrer området.
+<HEADSET><clr:255,255,138>Held og lykke med at låse en, der har en "Alyx", ude.
+<clr:255,190,255>Ja, held og lykke.
+<clr:255,190,255>Wow! Russell!<sb>Vortigaunterne har lige taget det sidste transformeranlæg ned!
+<HEADSET><clr:255,255,138>Åh! Lad mig se!<sb>Eli!<cr>Vortigaunterne har lige taget det sidste transformeranlæg ned!
+<HEADSET><clr:255,255,138>Vær klar, Alyx!<sb>Det styrter ned!
+<clr:255,190,255>Vent, hvad fand
+<HEADSET><clr:255,255,138>Det
+de har aktiveret en eller anden slags nødsystem.
+<HEADSET><clr:255,255,138>De har aktiveret et nødsystem!
+<HEADSET><clr:255,208,172>Sig til Alyx, at nødsystemet umuligt kan være stabilt.<sb>Hun kan slå det fra.
+<HEADSET><clr:255,255,138>Din far siger
+<clr:255,190,255>Jeg hørte ham godt.
+<clr:255,190,255>Så, gå mod de der stråler, ikke?
+<HEADSET><clr:255,255,138>Nemlig. Det må være nødanlægget.
+<clr:255,190,255>Jeg håber, at hvem end der er derinde, er det værd.
+<HEADSET><clr:255,255,138>Hvad siger du, Alyx?
+<clr:255,190,255>Ingenting. Jeg er på vej.
+<clr:18,199,226><force>Hey! Pas lige på. Jeg vil ikke have noget af det her stads på mig.
+<clr:18,199,226>Hvorfor? Er det farligt?
+<clr:18,199,226><force>Vi smider det jo ikke i et hul, fordi det er harmløst. Fortsæt frem.
+<clr:255,190,255>Uha, okay. Det var den sidste.
+<HEADSET><clr:255,255,138>Er du okay?
+<clr:255,190,255>Hey Russ, kunne du tænke dig at bytte plads?
+<HEADSET><clr:255,255,138>Jaaah, nej, jeg ville nok dø øjeblikkeligt.
+<clr:255,190,255>Der er nogen deroppe!
+<HEADSET><clr:255,255,138>Det er ikke Combine.<sb>Måske en plyndrer?<sb>Vær forsigtig.
+<HEADSET><clr:255,255,138>Eli! Kom her!
+<clr:255,208,172>Hvad er der, Russell?
+<HEADSET><clr:255,255,138>Lyt til det her
+<clr:255,190,255>Wow, wow! Shh!
+Jeg laver ikke sjov, I er nødt til at flytte det nu.
+SHH!
+Hvorfor kan I ikke gøre det?
+Hvem har så autorisation til det?
+Okay. Jamen, så få fat i dem.
+Ah, hvad laver jeg overhovedet her?<sb>Jeg burde se at komme væk.
+I overtog en planet på syv timer.<sb>Hvorfor tager det her så lang tid?
+Åh, nej, det er fint.<sb>Jeg kan vente.
+Det var sarkastisk.<sb>Jep. Jamen, det glæder mig, at du fangede det.<sb>Ja. Det var også sarkastisk.<sb>Og jeg vil lige minde om, at det, jeg skal snakke med din chef om, er, at vi ikke har meget tid.
+Jamen, hvad hvis jeg hentede MIN overordnede?<sb>Ville det rykke på noget her?
+Nej, det er netop pointen.<sb>Jeg <I>er<I> min overordnede.<sb>Hvor er du morsom.
+Hej, okay, fedt, endelig. Hej.
+Vi må flytte boksen, ellers kommer Black Mesa til at gentage sig.
+Jamen, nu siger jeg, at den ER klar.
+Hør, hvis den stadig er der, når hun når frem, er han væk.
+Hvilken af dagens hændelser får jer til at tro, at I kan stoppe hende?
+Den her fyr overlevede Black Mesa.<sb>Han skabte et sandt helvede og forsvandt bare.<sb>Vi har endelig fanget ham, og I vil bare lade ham stikke af igen?<sb>FLYT KASSEN.
+<HEADSET><clr:255,255,138>Overlevede Black Mesa
+og forsvandt
+Eli!<sb>De HAR et supervåben!
+<HEADSET><clr:255,208,172>For helvede, Russ.<sb>De har Gordon Freeman.
+<clr:255,190,255>Åh, wow. Det er godt, ikke?
+<HEADSET><clr:255,208,172>Det er meget, MEGET godt.
+<HEADSET><clr:255,255,138>Det her
+det her er et mirakel.
+<clr:255,190,255>Okay. Så
+lad os redde Gordon Freeman.
+<HEADSET><clr:255,208,172>Ja for pokker.<sb>Vi skal nok få Gordon Freeman tilbage.
+<clr:255,190,255>Åh. De kommer.<sb>Hey, lige et øjeblik.
+<clr:255,190,255>Okay, så planen er at nå det kontrolrum og få fat i Gordon.<sb>Egentlig, hvis jeg skal være ærlig, så snakker folk meget om ham, men jeg gik altid ud fra, at han var død.
+<HEADSET><clr:255,255,138>Det gjorde jeg også.
+<clr:255,190,255>Hey far, er du der?
+<HEADSET><clr:255,208,172>Ja, hvad er der, Alyx?
+<clr:255,190,255>Hvis Gordon overlevede Black Mesa
+hvor har han så været?
+<HEADSET><clr:255,208,172>Ingen idé.<sb>Men det må være en fandens god historie.
+<clr:255,190,255>Når vi får Gordon tilbage, kan vi rigtig blive ambitiøse, tror du ikke, Russ?<sb>Måske kan vi fjerne citadellet.
+<HEADSET><clr:255,255,138>Tjah, han har reddet menneskeheden én gang.<sb>Jeg tør vædde på, han kan gøre det igen.
+<clr:255,190,255>Og denne gang skal han ikke gøre det alene.
+<HEADSET><clr:255,208,172>Alyx
+er du der?
+<clr:255,190,255>Ja, far.
+<HEADSET><clr:255,208,172>Det ser ud til, at du GODT kan komme ind i boksanlægget deroppefra.<sb>Der er en terminal, som kan forlænges til en bro hen til indgangen.
+<clr:255,190,255>Hvordan er sikkerheden derinde?
+<HEADSET><clr:255,208,172>Jeg har det hele foran mig, og ved du hvad
+<sb>Der ER sikkerhed, men jeg har aldrig set noget lignende.<sb>Det giver ingen mening.
+<clr:255,190,255>Jamen, så må jeg improvisere.
+<HEADSET><clr:255,208,172>Bare rolig, skat. Jeg skal nok finde ud af det.
+<clr:255,190,255>De der stråler kommer fra toppen af DETTE tårn, ikke?
+<HEADSET><clr:255,255,138>Ja, det er korrekt.
+<clr:255,190,255>Hvad tror du, de laver herinde?
+<HEADSET><clr:255,255,138>Det ser ud til, at de
+malker langbenene
+<HEADSET><clr:255,255,138>Godt klaret, Alyx.<sb>De bruger alt, hvad de har, imod dig.
+<clr:255,190,255>Tak, Russ. Vi kommer tættere på.
+<HEADSET><clr:255,255,138>Jeg optager det, Alyx!<sb>Kig ikke væk!<sb>Se direkte på det for eftertiden!
+<clr:255,190,255>Der er kontrolrummet.
+<HEADSET><clr:255,255,138>Jeg ser det. Vi er der næsten.
+<HEADSET><clr:255,255,138>Alyx, vi nærmer os boksanlægget nu.<sb>Du vil ikke have mange flere chancer for at bruge resinen.
+<clr:255,190,255>Du har ret. Lad mig se, om der er nogen opgraderinger, jeg kan bruge.
+<HEADSET><clr:255,255,138>Utroligt, at min pistol har klaret sig så langt.
+<clr:255,190,255>Jeg har tænkt på at give den til Gordon.
+<HEADSET><clr:255,255,138>Nej, du prøver bare på at provokere mig.<sb>Jeg bider ikke på.<sb>Men i tilfælde af at du mener det alvorligt, så giv ham haglgeværet.<sb>Ifølge sagnet gør haglgeværer ham helt vild.
+<clr:255,190,255>Godt at vide.
+<HEADSET><clr:255,255,138>Alyx, lige fremme.<sb>De der kontrolgreb dokker boksanlægget til stationen.
+<clr:255,190,255>Okay, sådan der. Tid til at redde menneskehedens frelser.
+<HEADSET><clr:255,208,172>Hey, skat. Du har også klaret det godt.
+<HEADSET><clr:255,208,172>Jorden kunne have brugt dig i Syvtimerskrigen.
+<clr:255,190,255>Måske kunne vi have holdt ud i otte.
+<clr:255,190,255>Fandens også.
+<clr:255,190,255>Hvad nu?
+<clr:255,190,255>Åh! Fantastisk.
+<clr:255,190,255>Okay, okay. Altså en af de her må da forlænge broen, ikke?
+<HEADSET><clr:255,255,138>Næsten helt sikkert. Bare vælg en.<sb>Med det samme.
+<clr:255,190,255>Øhhh
+<clr:255,190,255>DEN her.
+<HEADSET><clr:255,255,138>Nej
+ikke den.
+<HEADSET><clr:255,255,138>Nej, det er ikke broen.
+<HEADSET><clr:255,255,138>Alyx, broen bevæger sig ikke.<sb>Hvorfor bevæger broen sig ikke?
+<clr:255,190,255>Jeg ved det, Russ. Jeg kan se, at den ikke bevæger sig.
+<HEADSET><clr:255,255,138>Niks.
+<HEADSET><clr:255,255,138>Et endnu større niks.
+<HEADSET><clr:255,255,138>Alyx
+Alyx
+ALYX
+ALYX!
+<clr:255,190,255>Åh gud. Åh gud
+Åh GUD!
+<clr:255,190,255>Ahhh!
+<HEADSET><clr:255,255,138>Jeg mener "lige nu" med det samme.
+<HEADSET><clr:255,208,172>Russell, lad hende tænke!
+<HEADSET><clr:255,255,138>Nu, Alyx.
+<HEADSET><clr:255,255,138>Alyx, bare vælg én.
+<HEADSET><clr:255,208,172>Alyx? Alyx!<sb>Alyx, er du okay?
+jeg tror, at jeg lige har dræbt Gordon Freeman.
+<clr:255,190,255>Jeg tror
+at jeg lige har dræbt Gordon Freeman.
+<HEADSET><clr:255,255,138>Boksanlægget er lige der.<sb>Gå ind og hent ham.<sb>Eller det, der er tilbage af ham.
+<clr:255,190,255>Jeg er på vej.
+<clr:18,199,226><force><I>Kommando anmoder om skadesvurdering.<I>
+<clr:18,199,226><force>Skade: 70%
+80%
+90%
+i alt.
+<clr:18,199,226><force><I>I alt?<I>
+<clr:18,199,226><force>I alt.
+<clr:18,199,226><force><I>Forstærkninger på vej.<I>
+<clr:18,199,226><force>Under beskydning!
+<clr:18,199,226><force>Reparation eller tilbagetrækning nødvendig.
+<clr:18,199,226><force>Det ved jeg ikke.
+<clr:18,199,226><force>Han sparker til den.
+<clr:18,199,226><force>Overwatch siger, du skal holde op med at sparke til den.
+<clr:18,199,226><force>Han holdt op med at sparke til den.
+<clr:18,199,226><force>Duk jer! Hun er her!
+<clr:18,199,226><force>Mål erkendt. Mål erkendt.
+<clr:18,199,226>Målets identitet ukendt.
+<clr:18,199,226><force>Det er Alyx Vance.
+<clr:18,199,226>Ingen visuel kontakt med Alyx Vance.
+<clr:18,199,226><force>Det er Alyx Vance!
+<clr:18,199,226><force>Selvfølgelig er det Alyx Vance.
+<clr:18,199,226>Aflever skadesvurdering til Overwatch.
+<clr:18,199,226>Modtaget?
+<clr:18,199,226>Gentag. Aflever skadesvurdering til Overwatch.
+<clr:18,199,226>Angriber!
+<HEADSET><clr:255,255,138>En strider.<cr>Godt nok deaktiveret.<sb>Der var vi heldige.<sb>Tænk, hvis den havde blokeret vejen?
+<clr:255,190,255>Russ!<cr>Lad være med at udfordre skæbnen.
+<HEADSET><clr:255,255,138>Alyx! Strideren!<sb>Pas på, den er i live!
+<clr:255,190,255>Åh, lort. Afsted. Afsted.
+<HEADSET><clr:255,255,138>Arh. Jeg jinxede det for os, gjorde jeg ikke?
+<clr:255,190,255>Ja!<cr>Mildest talt, Russell!
+<clr:255,190,255>Agh! Den bevæger sig.<sb>Den bevæger sig stadig.
+<clr:255,190,255>Russell! Stort våben længere fremme.
+<HEADSET><clr:255,255,138>Jeg tror, at jeg har en idé.
+<clr:255,190,255>Ja, samme her.
+<clr:255,190,255>Samme her.<cr>Og den er god.
+<HEADSET><clr:255,255,138>Dræb den! Dræb den!<cr>Skyd den! Skyd den!
+<clr:255,190,255>Jeg skyder den!
+<HEADSET><clr:255,255,138>Ha! Det virker!<sb>Jeg tror, det virker.<sb>Den ser i hvert fald ikke glad ud. Bliv ved med at skyde!
+<clr:255,190,255>Russell, lad mig skyde!
+<HEADSET><clr:255,255,138>Bliv ved, bliv ved, ja! Ja!<sb>Bliv ved med at skyde!<sb>Sådan!<sb>Skyd! Skyd!<sb>Skyd! Ja!
+<clr:255,190,255>[Griner lettet] Vi klarede det, Russ.
+<HEADSET><clr:255,255,138>Ja, vi gjorde. Vi klarede det.
+<HEADSET><clr:255,255,138>Puh. Okay, Alyx.<sb>Strålen derovre ser ud til at føre op til boksanlægget.
+<clr:255,190,255>Wow! Ja, okay. Jeg bevæger mig opad.
+<HEADSET><clr:255,255,138>[Signal forsvinder] Argh. Der er meget interferens.<sb>Jeg kan nok ikke tale med dig derinde.
+<clr:255,190,255>Nej. Sikkert ikke.
+<HEADSET><clr:255,255,138>[Signal forsvinder] Så det var det.
+<clr:255,190,255>Ja.
+<HEADSET><clr:255,255,138>[Signal forsvinder] Så kommer du ud igen, med Gordon, i god behold, så det hele skal nok blive
+<clr:255,190,255>Det hele skal nok blive godt, Russ.<cr>Vi snakkes ved om lidt.
+<HEADSET><clr:255,208,172>Russell, stop hende!
+<HEADSET><clr:255,255,138>Hvad
+hvorfor?
+<HEADSET><clr:255,208,172>Alyx! Gå ikke ind i boks... [signal forsvinder]
+<clr:255,190,255>Far? Far?
+<clr:255,190,255>Lejligheder, ligesom far sagde.
+<clr:255,190,255>Okay, det her er mærkeligt. Men jeg ved ikke. Det ser ikke så farligt ud.
+<clr:255,190,255>Wow
+<clr:255,190,255>Okay, det må være her.
+<clr:255,190,255>Okay, Gordon Freeman. Jeg håber, at du er det værd.
+<clr:255,190,255>Okay, Gordon, lad os få dig ud herfra.
+<norepeat_global:10>Imponerende arbejde, frk. Vance.
+<clr:255,190,255>Gordon
+Freeman?
+<norepeat_global:10>Gordon
+Freeman? [Griner]
+<norepeat_global:10>Frk. Vance.<sb>Det ville ikke være nødvendigt med alt <I>det<I> for at indespærre Gordon Freeman.
+hvem er du?
+<norepeat_global:10>Hvad jeg <I>er<I>, er måske ikke lige så vigtigt, som hvad jeg kan <I>tilbyde<I> dig for at komme hele vejen hertil.
+<norepeat_global:10>Nogle mener, at vores verdeners skæbne er <I>ufleksibel<I>.
+<norepeat_global:10>Mine overordnede er uenige.<sb>De har givet mig tilladelse til
+<sb>at <I>skubbe<I> ting i en bestemt retning fra tid til anden.
+<norepeat_global:10>Hvad ønsker <I>du<I> at få skubbet, frk. Vance?
+<clr:255,190,255>Combine væk fra jorden.<cr>Jeg ønsker Combine væk fra jorden.
+<norepeat_global:10>Ahhh.<sb>Det ville være et væsentligt stort skub.<sb>For stort, når man tager mine overordnedes interesser i mente.
+<clr:255,190,255>Du spurgte.
+<norepeat_global:10>Hvad hvis jeg kunne tilbyde dig noget, du ikke <I>ved<I>, at du ønsker dig?
+hvor er vi?
+Far? far? Hvad
+<sb>Er det mig?<sb>Hvad er det her?<sb>Hvad sker der?
+<norepeat_global:10>Vi er i fremtiden.<sb>Det her er øjeblikket, hvor du ser din far dø.
+<norepeat_global:10>Medmindre...
+<clr:255,190,255>Hvad? Medmindre HVAD?
+<norepeat_global:10>Medmindre du tager sagen i egen hånd.
+<norepeat_global:10>Befri din far, frk. Vance.
+<norepeat_global:10>Din handske, frk. Vance.
+<norepeat_global:10>Godt.<sb>Som en konsekvens af din handling, vil <I>denne<I> entitet fortsætte.
+<norepeat_global:10>Og denne entitet vil ikke.
+<clr:255,190,255>Ja. Så
+han er okay, ikke? Han lever. Min far lever.
+<norepeat_global:10>Du <I>ved<I> at du har bevist, at du er af en ekstraordinær værdi.
+<norepeat_global:10>En tidligere ansat har ikke formået<sb>
+eller ikke været villig til
+<sb>at løse opgaverne foran sig.
+<norepeat_global:10>Vi har haft svært ved at finde en passende erstatning.
+<norepeat_global:10>Indtil nu.
+<clr:255,190,255>Nej! Jeg vil bare gerne hjem. Send mig hjem!
+<norepeat_global:10>Jeg er bange for, at du misforstår situationen, frk. Vance.
+<clr:255,190,255>Vent. Hey, vent, vent, vent!
+<clr:255,208,172>Gordon! Gordon! Vågn op, Gordon!
+<clr:255,208,172>Hun er væk, Gordon.<sb>Hun er VÆK.
+<clr:255,208,172>Ham og hans "uforudsete konsekvenser"!<sb>Jeg vidste det.<sb>Når jeg får fingrene i ham, så vil
+<sb>Så slår jeg ham IHJEL. Jeg er nødt til at løse det her. Lige nu
+<clr:255,208,172><sfx:1>[Sukker dybt]
+<clr:255,208,172>Kom, Gordon.
+<clr:255,208,172>Arbejdet kalder.
+<clr:255,190,255>[Snuser] Bvadr. Det her stads stinker.
+<HEADSET><clr:255,255,138>Gør det?<sb>Hvad stinker det af? Vær specifik.
+<clr:255,190,255>Som et dyr, der er gået i forrådnelse, blandet med... ammoniak.
+<HEADSET><clr:255,255,138>"Blandet
+med
+ammoniak". Okay.
+<clr:255,190,255>Jo mere jeg rører ved det her, jo mere tænker jeg, at det er giftigt.
+<HEADSET><clr:255,255,138>Men hvad hvis det kan kurere kræft?
+<clr:255,190,255>Hvad hvis det GIVER mig kræft?
+<HEADSET><clr:255,255,138>Hvad hvis det giver dig en ny form for kræft?
+<clr:255,190,255>Russ, jeg vil ikke røre det så meget mere.
+<HEADSET><clr:255,255,138>Okay så.
+<clr:255,190,255><sfx:1>[Nyser]
+<HEADSET><clr:255,255,138>Prosit.
+<clr:255,190,255>Pyh, tak.
+<HEADSET><clr:255,255,138>Alyx. Jeg ser høje koncentrationer af antipartikler rundt om den tingest.<sb>Bare en lille advarsel.<sb>Kvantemæssigt kan det godt gå hen at blive mærkeligt derinde.
+<clr:255,190,255>Russell, du har set alt, hvad der er sket i dag.
+<clr:255,190,255>Og NU bliver det mærkeligt?
+<HEADSET><clr:255,255,138>Ja.
+<clr:255,190,255>Okay, jeg er klar.
+Jeg tror, jeg har dræbt alle aliens. Jeg tror, de er døde alle sammen nu.
+<HEADSET><clr:255,255,138>Det er godt. Godt. Fantastisk.
+<clr:255,190,255>Nu skal vi bare til boksanlægget, hente våbnet, få Combine væk fra Jorden
+smaddernemt
+og så skal vi have sandwicher, masser af sandwicher
+<HEADSET><clr:255,255,138>Ja, absolut.
+<clr:255,190,255>Godt. Jeg håber, at de er gode.
+<HEADSET><clr:255,255,138>Hvad har du tænkt dig at gøre, når vi får Combine væk fra Jorden, Alyx?
+hm, tja, far og jeg vil købe et hus og hjælpe med at genopbygge. Og så vil jeg nok bygge et hemmeligt laboratorium.
+<HEADSET><clr:255,255,138>Jamen, det behøver ikke at være hemmeligt.<cr>Du kan leve resten af dine dage helt åbent.
+<clr:255,190,255>Hmm, ja. Så når jeg bygger mit laboratorium, behøver jeg ikke engang låse eller døre eller vinduer, der kan lukkes!
+<HEADSET><clr:255,255,138>Hmm
+der vil stadig være kriminelle.<cr>Bare ingen aliens.
+<clr:255,190,255>Åhhh. Pfft, ja.
+<HEADSET><clr:255,255,138>Så jeg ville have døre og låse, bare... øh... ja.<cr>Bare for en sikkerheds skyld. Og behold pistolen.
+<HEADSET><clr:255,255,138>Åh! Din far er tilbage!
+<clr:255,190,255>Åh. Gudskelov.
+<HEADSET><clr:255,208,172>Russell!<cr>For fanden, det er godt at se dig!
+<HEADSET><clr:255,255,138>I lige måde! Ah, hvor er det godt.
+<HEADSET><clr:255,255,138>For at være ærlig havde jeg sat din overlevelseschance til fire procent.
+<HEADSET><clr:255,208,172>Du kan takke den vortigaunt. Han fik mig helskindet tilbage hertil.
+<clr:255,190,255>Russ! Russell! Sæt far på!
+<HEADSET><clr:255,208,172>Alyx! Skat!
+<clr:255,190,255>Far! Vi har lige elimineret et transformeranlæg!
+<HEADSET><clr:255,208,172>Godt. For når de flytter den her ting, er våbnet væk. Vi skal have fat i det i aften.
+<clr:255,190,255>Det får vi. Du har stadig den der datapod, ikke?
+<HEADSET><clr:255,208,172>Det har jeg. Russ, denne tingest er biokrypteret.<sb>Jeg har brug for en TLI.
+<HEADSET><clr:255,255,138>Jep, den står lige derovre.
+<HEADSET><clr:255,208,172>Okay, godt.<sb>Er du OK, skat?
+<clr:255,190,255>Helt sikkert. Fortsæt I bare, jeg klarer mig, far
+det lover jeg.
+<HEADSET><clr:255,208,172>Hold det løfte.<sb>Jeg går i gang med den her datapod.
+<HEADSET><clr:255,208,172>Jeg har fundet ud af noget.
+<HEADSET><clr:255,255,138>Hvad er det?
+<clr:255,190,255>Ja, hvad er det, far?
+<HEADSET><clr:255,208,172>Jeg ved ikke, hvad våbnet er endnu.<sb>Men jeg VED, hvordan de fik fat i det.
+<HEADSET><clr:255,208,172>Det ser ikke ud til, at de rent faktisk har bygget våbnet.<sb>Det er, som om de
+<sb>Jeg ved det ikke, opdagede noget.<sb>Eller måske afslørede det.
+Hvad mener du?
+<HEADSET><clr:255,208,172>Hvis jeg læser det her rigtigt, sporede de det til en gammel beboelsesejendom i karantænezonen.<sb>Men i stedet for at gå ind og hente det, tog de hele bygningen og byggede et boksanlæg rundt om den.
+<clr:255,190,255>Åh shit.<sb>De må have været bange for det her.
+<HEADSET><clr:255,208,172>Jeg er ved at prøve at finde ud af, om VI også burde være det.
+<clr:255,190,255>Russ
+hvad tror du, de gør ved Gordon Freeman derinde?
+<HEADSET><clr:255,255,138>Det er et godt spørgsmål
+<clr:255,190,255>Suger de
+du ved, suger de hjernen ud på ham?
+<HEADSET><clr:255,255,138>Hmm. Jeg tror, de har tænkt sig at få ham helt ud af verden.
+<clr:255,190,255>OK, uanset hvad, så lad os ikke finde ud af det. Jeg når frem, inden det sker.
+<clr:255,190,255>Russ, hvad er der med det der brækjern?
+<HEADSET><clr:255,255,138>Åh, du mener Gordon Freemans brækjern?
+<HEADSET><clr:255,255,138>Åh, Alyx, han kæmpede sig ud af Black Mesa ALENE med det brækjern.
+<clr:255,190,255>Det er løgn.
+<HEADSET><clr:255,255,138>Det passer! Eller det er sandt, at det er det, de siger. Du ved, ingen er helt sikre.
+<clr:255,190,255>Nå, men når jeg får ham ud, så lad os give ham en pistol.
+<HEADSET><clr:255,255,138>Ja! Øh
+ikke min.<cr>Jeg er ikke længere i pistoludlåningsbranchen, mmkay?
+<HEADSET><clr:255,255,138>Ja! Men ikke min.
+<clr:255,190,255>Russ!
+<HEADSET><clr:255,255,138>Hvad sker
+<clr:255,190,255>Shh! Hvordan har far det?<sb>Virker han okay?
+<HEADSET><clr:255,255,138>Ah, han har det fint, Alyx.<cr>Han arbejder løs derovre.
+<clr:255,190,255>Godt. Nå, men tak.
+<HEADSET><clr:255,255,138>Åh
+han mangler dog et ben.
+<clr:255,190,255>Ja, det manglede han også før.
+<HEADSET><clr:255,255,138>Ja. Øh, men det
+mangler stadig.
+<HEADSET><clr:255,255,138>Det var så lidt.
+<clr:255,190,255>Hey
+noget nyt om den der datapod?
+<HEADSET><clr:255,255,138>Ah, din far er helt opslugt.<cr>Han arbejder på den.<sb>Han må snart være der.
+<clr:255,190,255>Godt.
+<clr:255,190,255>Argh! Den er på mit ansigt! På mit ansigt!
+<clr:255,190,255>Åh gud, ÅH GUD
+PÅ MIT
+ÅH GUD NEJ
+<clr:255,190,255>Agh! Kom af! Kom af!
+<clr:255,190,255><sfx:1>[Anstrengt gispen efter vejret]
+<HEADSET><clr:255,255,138>Ahh! Åh gud!
+<HEADSET><clr:255,255,138>Få den af!
+<clr:255,190,255>Jeg prøver!
+<HEADSET><clr:255,255,138>Den er ulækker!
+<HEADSET><clr:255,255,138>Ugh, den er ækel!
+<HEADSET><clr:255,255,138>Åh gudskelov.
+<HEADSET><clr:255,255,138>Ugh, Alyx, det var modbydeligt
+<clr:255,190,255>Ja. Det var det.
+<HEADSET><clr:255,255,138>Ahh! Headcrab! En headcrab på dit ansigt! Få den af, Alyx!
+<HEADSET><clr:255,255,138>Åhhh, den sidder virkelig fast!
+<HEADSET><clr:255,255,138>Tag den! Slå den!
+<HEADSET><clr:255,255,138>Slå den, Alyx! Slå den af dit ansigt!
+<HEADSET><clr:255,255,138>Åh gudskelov
+<clr:255,190,255>Uf. Jeg har det fint
+jeg har det fint
+<HEADSET><clr:255,255,138>Den sad fast på dit ansigt
+uh, det var ulækkert.
+<clr:255,190,255>Russ, siger de mit navn?
+<HEADSET><clr:255,255,138>Ja, det er ikke godt.
+<clr:255,190,255>Mmf.
+<clr:255,190,255>Helt ærligt
+<clr:255,190,255>Mmf. Argh. Ugh!
+<clr:255,190,255>Unnnh.
+<clr:255,190,255>Åhh... kay.
+<clr:255,190,255>Uh.
+hmmmf
+ugh.
+<HEADSET><clr:255,255,138>Fik den.
+<clr:255,190,255>Vupti!
+<clr:255,190,255>Greb det!
+<clr:255,190,255>Ahh. Greb det.
+<clr:255,190,255>Hnnng!
+<clr:255,190,255>Ah lort.
+<clr:255,190,255>Lort.
+<clr:255,190,255>Tsk. Det fungerede ikke.
+<clr:255,190,255>Det virkede ikke.
+<clr:255,190,255>Sådan.
+<clr:255,190,255>Aah! Jeg gjorde det.
+<clr:255,190,255>Jeg gjorde det.
+<clr:255,190,255>Lyder godt.
+<clr:255,190,255>Hm. Lyder godt.
+<clr:255,190,255>Helt sikkert.
+<clr:255,190,255><sfx:1>[Gisper]
+<clr:255,190,255>Ha ha.
+<clr:255,190,255>Tre magasiner tilbage.
+<clr:255,190,255>Nede på tre magasiner.
+<clr:255,190,255>Tre tilbage.
+<clr:255,190,255>Sidste.
+<clr:255,190,255>Sidste magasin.
+<clr:255,190,255>Et tilbage.
+<clr:255,190,255>Ingen magasiner tilbage.
+<clr:255,190,255>Ikke flere magasiner.
+<clr:255,190,255>Ikke flere magasiner?
+<clr:255,190,255>Jeg er løbet tør.
+<clr:255,190,255>Sidste tre.
+<clr:255,190,255>Tre til.
+<clr:255,190,255>Pis. Sidste magasin.
+<clr:255,190,255>Argh, jeg er løbet tør.
+<clr:255,190,255>Tre patroner tilbage.
+<clr:255,190,255>Sidste patron.
+<clr:255,190,255>Ikke flere patroner.
+<clr:255,190,255>Uh, jeg er løbet tør.
+<clr:255,190,255>Sidste fire patroner.
+<clr:255,190,255>Fire patroner tilbage.
+<clr:255,190,255>Sidste fire.
+<clr:255,190,255>Sidste to patroner.
+<clr:255,190,255>Sidste to.
+<clr:255,190,255>To patroner tilbage.
+<clr:255,190,255>Nede på to.
+<clr:255,190,255>Tre batterier tilbage.
+<clr:255,190,255>Sidste batteri.
+<clr:255,190,255>Én tilbage.
+<clr:255,190,255>Ikke flere batterier.
+<clr:255,190,255><sfx:1>[Dæmpet hosten]
+<clr:255,190,255><sfx:1>[Efterligner pistollyde]
+<clr:255,190,255>Aaargh!
+<clr:255,190,255><sfx:1>[Host]
+<clr:255,190,255>Unh!
+<HEADSET><clr:255,255,138>For mørkt. Jeg har brug for en lommelygte.
+<clr:255,190,255>Jeg tror, at du har ret.
+<clr:255,190,255>Det er for mørkt. Jeg har brug for en lommelygte.
+<clr:255,190,255>Jeg har brug for en lommelygte, hvis jeg vil derind.
+<clr:255,190,255>Jeg ville aldrig overleve et spring fra denne højde.
+<HEADSET><clr:255,255,138>Nej, nej, nej, nej, aldrig nej. Hvorfor, overvejede du det?
+<clr:255,190,255>Det tror jeg ikke.
+<clr:255,190,255>Niks. Det vil slå mig ihjel.
+<clr:255,190,255>Ah!
+<clr:255,190,255>Jeg må smutte.
+<clr:255,190,255>Lad os snakke senere.
+<clr:255,190,255>Vent, jeg må smutte.
+<clr:255,190,255>Russell, jeg må smutte.
+<clr:255,190,255>Vi snakkes, jeg må smutte.
+<clr:255,190,255>Vent, jeg er optaget.
+<clr:255,190,255>Øjeblik, jeg har fået selskab.
+<clr:255,190,255>Pis, Combine.
+<clr:255,190,255>Russell!
+<clr:255,190,255>AH!
+<clr:255,190,255>HOLD DA!
+<clr:255,190,255>GAH!
+<clr:255,190,255>ÅH GUD
+<clr:255,190,255>Pyh. Okay.
+<clr:255,190,255>Uh. Okay.
+<clr:255,190,255><sfx:1>[Kvæles]
+<clr:255,190,255><sfx:1>[Gisper efter vejret]
+<HEADSET><clr:255,255,138>Find noget at sigte på med "Russells".
+<HEADSET><clr:255,255,138>Sigt på noget med "Russells".
+<HEADSET><clr:255,255,138>Brug hånden til at sigte på noget.
+<HEADSET><clr:255,255,138>Du skal bare pege på noget med hånden.
+<HEADSET><clr:255,255,138>Bare peg på noget med hånden for at sigte.
+<HEADSET><clr:255,255,138>Find et objekt, og sigt på det med hånden.
+<HEADSET><clr:255,255,138>Alyx? Alyx, er du der endnu?
+<HEADSET><clr:255,255,138>Alyx? Alyx?
+<HEADSET><clr:255,255,138>Alyx? ALYX!
+<HEADSET><clr:255,255,138>ALYX!
+<clr:255,190,255>Øh, jeg har ikke nok resin til noget af det her.
+<HEADSET><clr:255,255,138>Ah, jamen, du ved, hvad man siger om resin, Alyx.
+<clr:255,190,255>Nej. Hvad siger man om resin, Russ?
+<HEADSET><clr:255,255,138>Øh. "Kig
+efter
+mere resin".
+<clr:255,190,255>Okay. Jeg holder øjnene åbne.
+<HEADSET><clr:255,255,138>Ja, nemlig
+"Kig efter mere resin".
+<HEADSET><clr:255,255,138>Pas på!
+<HEADSET><clr:255,255,138>Combine!
+<HEADSET><clr:255,255,138>Alyx, pas på!
+<HEADSET><clr:255,255,138>Godt klaret.
+<HEADSET><clr:255,255,138>Godt arbejde.
+<HEADSET><clr:255,255,138>Sådan ja.
+<HEADSET><clr:255,255,138>Lige præcis.
+<HEADSET><clr:255,255,138>Mhm. Perfekt.
+<HEADSET><clr:255,255,138>Okay. Det var hurtigt.
+<HEADSET><clr:255,255,138>Det var det, der skulle til.
+<HEADSET><clr:255,255,138>Det lod til at virke.
+<HEADSET><clr:255,255,138>Sådan der.
+<HEADSET><clr:255,255,138>Flot.
+<HEADSET><clr:255,255,138>Bliv ved med at lede.
+<HEADSET><clr:255,255,138>Det må være her et eller andet sted.
+<HEADSET><clr:255,255,138>Kan du se noget? Jeg kan ikke se noget.
+<HEADSET><clr:255,255,138>Det må være her.
+<HEADSET><clr:255,255,138>Vær forsigtig
+<HEADSET><clr:255,255,138>Det var én.
+<HEADSET><clr:255,255,138>Den er der næsten.
+<HEADSET><clr:255,255,138>Du, spild ikke din ammunition! Den der får ikke så meget som en skramme.
+<HEADSET><clr:255,255,138>Lige fremme!
+<HEADSET><clr:255,255,138>Du har fået selskab.
+<HEADSET><clr:255,255,138>Vi snakkes ved senere.
+<HEADSET><clr:255,255,138>Lad os snakke senere.
+<HEADSET><clr:255,255,138>På dem!
+<HEADSET><clr:255,255,138>Ja, ja, afsted.
+<HEADSET><clr:255,255,138>Agh!
+<HEADSET><clr:255,255,138>Uh!
+<HEADSET><clr:255,255,138>Wow!
+<clr:107,232,120>Hrrmf!
+<clr:107,232,120>Mmf! [Snøfter]
+<clr:107,232,120><sfx:1>[Nynner tilfreds]
+<clr:107,232,120>Ja, væsen.
+<clr:107,232,120>Hmm
+ah
+mmmhmm
+<sb>Interessant
+ah, fremragende
+<clr:107,232,120>Jeg har ventet på dig, Alyx Vance.
+Overwatch: <clr:166,242,255><I>Alarm. Markenheder.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Invasiv operation med antiborgerligt udspring.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Svarkode:<cr>Angrib. Undertryk. Spørg.<I>
+<clr:166,242,255><I>Alarm: Indsatsenheder.<sb>Opdateringskode:<sb>Jag. Forfølg. Fortsæt.<I>
+<clr:166,242,255><I>Påmindelse til borgere:<cr>Et civiliseret samfund kræver hurtigt og målrettet tilsyn.<sb>Lad ikke medborgere true samfundet.<I>
+<clr:166,242,255><I>Advarsel.<sb>Adgang til denne blok er forbudt.<sb>Modtagere af denne besked overtræder civilloven.<I>
+<clr:166,242,255><I>Advarsel.<sb>Adgang til denne blok er forbudt.<sb>Lokale sikkerhedsforanstaltninger er indsat og angivet til retsforfølgning.<I>
+Overwatch: <clr:166,242,255><I>Advarsel.<cr>Adgang forbudt.<I><sb><clr:255,255,255>Overwatch: <clr:166,242,255><I>Antiborgerlig plyndring straffes straks med særdeles alvorlige sanktioner.<I>
+<clr:166,242,255><I>Alarm: Markenheder.<sb>Alarm: Kommandoenheder.<sb>Nødkode: Ophæv.<I>
+<clr:166,242,255><I>Sikkerhedsalarm.<sb>Omforvaltning i gang.<sb>Justeret kode for ressourcefordeling:<sb>Skærp. Inspicer. Udryd.<sb>Prioritet: øjeblikkelig.<I>
+<clr:166,242,255><I>Sikkerhedsalarm.<sb>Kritisk civilt oprør.<sb>Indsæt tekniske teams i blok 49, 64, 77.<sb>Oprethold prioritet.<I>
+<clr:166,242,255><I>Sikkerhedsalarm.<sb>Gentager, markteams:<cr>Mislykket mission vil medføre permanent forflyttelse.<sb>Svarkode: Bryd igennem. Manøvrer. Inokulér.<I>
+<clr:166,242,255><I>Kritisk brud. Stå i beredskab. Stå i beredskab.<I>
+<clr:166,242,255><I>Alarm: alle systemer.<sb>Indgrebshandling 5-1-2-9.<sb>Øjeblikkelig, samtidig mobilisering.<sb>5-1-2-9.<I>
+<clr:166,242,255><I>Svarkode:<cr>Blokér. Lås. Flyt.<I>
+<clr:166,242,255><I>Alarm. Udrykningsteam.<sb>Overbelastningsprotokol:<cr>Orienter. Kauteriser. Blænd.<sb>Orienter. Kauteriser. Blænd.<I>
+<clr:255,190,255>Jeg så en stang udenfor!
+<HEADSET><clr:255,255,138>Godt! En mystisk stang! Jeg elsker det!
+<HEADSET><clr:255,255,138>Hvad gør den?
+<clr:255,190,255>Den ændrer sporenes stilling!
+<clr:255,190,255>Jeg ved det ikke!
+<HEADSET><clr:255,255,138>Åh. Så Elis tog ville blive omdirigeret til
+til en væg.
+<HEADSET><clr:255,255,138>Nemlig! Åh ja! Han er i en fangekapsel! Han klarer sig! Skynd dig, Alyx!
+<clr:255,190,255>Der er stangen!
+<clr:255,190,255>Russell! Se lige den her stang!
+<HEADSET><clr:255,255,138>Træk i den! Se, hvad der sker!
+<HEADSET><clr:255,255,138>Nemlig! Ja! Han er i en fangekapsel! Han klarer sig!
+<HEADSET><clr:255,255,138>Hold den nede! Sørg for, den bliver nede!
+<HEADSET><clr:255,255,138>Hurtigt, Alyx!
+<HEADSET><clr:255,255,138>Godt! Hold stangen neden, ellers flyttes sporet tilbage.
+<HEADSET><clr:255,255,138>Hold den nede, Alyx!
+<HEADSET><clr:255,255,138>10 sekunder, Alyx!
+<HEADSET><clr:255,255,138>4!
+<HEADSET><clr:255,255,138>3!
+<HEADSET><clr:255,255,138>2!
+<HEADSET><clr:255,255,138>1!
+<HEADSET><clr:255,255,138>Du godeste!
+<clr:255,190,255>Åh shit!
+<clr:255,190,255>Tog, tog, tog, tog, TOG!
+<clr:255,190,255>hvordan ved du alt dette?
+<clr:255,190,255>Hey, hvordan frakobler jeg kablerne?
+<clr:255,190,255>Noget nyt om far?
+<clr:255,190,255>Hvordan er det godt nyt?
+<clr:255,190,255>Bedre end ingenting.
+<clr:255,190,255>Russell? Forbindelsen er dårlig igen.
+<clr:255,190,255>Jeg vil bruge lidt teknologi, som jeg kalder "trapperne".
+<clr:255,190,255>Glem det, jeg tager ikke trapperne.
+<clr:255,190,255>HVAD?!
+<clr:255,190,255>Det sidste transformeranlæg! Han klarede det!
+<clr:255,190,255>Venner. Kan vi finde ud af det her senere? Kablet har lavet rav i en koloni af antlioner.
+<clr:255,190,255>Jeg ved det ikke.<sb>Men noget holder det oppe.<sb>Og vi har ikke meget tid til at finde det.
+<clr:255,190,255>Fedt! Hvad er det, far?
+<clr:255,190,255>Der stikker kabler ud af det.<sb>Jeg tror, de er forbundet til en strømkilde.<sb>Jeg tager derhen og frakobler dem.<sb>Altså. Skyder dem.
+<clr:255,190,255>Fint. Men hvad er der indeni?
+<clr:255,190,255>Ahhh
+<clr:255,190,255>Far, jeg finder det her boksanlæg!
+<clr:255,190,255>Okay, det ser ud til, at broen er helt ude
+<clr:255,190,255>Okay. Altså en af de her må da dokke boksanlægget, ikke? Ikke?
+<clr:255,190,255>Øh. Ikke den der.
+<clr:255,190,255>Okay, bestemt ikke.
+<clr:255,190,255>Måske?!
+<clr:255,190,255>Det ser ikke godt ud
+Ugh!
+<clr:255,190,255>Jeg skal bare FORSIGTIGT dokke boksanlægget til broen.
+<clr:255,190,255>Hvor svært kan det være?
+<clr:255,190,255>Okay, lad os gøre det.
+<clr:255,190,255>Wow. Russell, ser du det her?
+<clr:255,190,255>Shh! Shh! Stille!
+<clr:255,190,255>Åh gud.
+<clr:255,190,255>Nej. Leder stadig.
+<clr:255,190,255><delay:3>Hvad?
+Åh gud
+<sb>Tak! Tak!
+<clr:255,190,255>Den er på mit ansigt! Den er på mit ansigt!
+<clr:255,190,255>Russ! Den er på mit ansigt!
+<clr:255,190,255>Russ! Den er på mit ansigt! Den er på mit ansigt, Russ!
+<clr:255,190,255>Okay. Jeg er okay. Jeg er okay.
+<clr:255,190,255>Ja, det var den. Jeg var der.
+<clr:255,190,255>Jeg ved godt, at den er på mit ansigt, Russ!
+<clr:255,190,255>Jeg kan ikke få den væk!
+<clr:255,190,255>Jeg ved det, Russ!
+<clr:255,190,255>Uh!
+<clr:255,190,255>Av!
+<clr:255,190,255>Puh!
+<clr:255,190,255>Argh!
+<clr:255,190,255>Umf!
+<clr:255,190,255>Aaah!
+<clr:255,190,255>Blah!
+<clr:255,190,255>Puh.
+<clr:255,190,255>[Hoster] Pyh.
+<clr:255,190,255>[Hoster] Ugh!
+<clr:255,190,255>Ugh. Okay.
+<clr:255,208,172><sfx:1>[Stønner]
+<clr:255,208,172>Russell? Hvor er han?<cr>Er han okay?
+<clr:255,208,172>Vi har ikke tid.<sb>Det er et våben, Alyx!<sb>Det er det, de skjuler herinde.<sb>Det var det, vi fandt ud af, og det var derfor, de tog os.
+<clr:255,208,172>De har det i boksanlægget
+<sb>Et tårn, med sikkerhed hele vejen rundt.
+<clr:255,208,172>Der er et transformeranlæg i nærheden.
+<clr:255,208,172>Alyx, uanset hvad det våben er, er du nødt til enten at stjæle det eller tilintetgøre det.
+<clr:255,208,172>[Klukker] Jeg elsker dig, skat.
+<clr:255,208,172>Jeg elsker dig, skat!
+Eli: <clr:255,208,172><I>Hvad er det, Russell?<I>
+<HEADSET><clr:255,208,172>Jeg ved det ikke, men
+<HEADSET><clr:255,208,172>Fortsæt du til boksanlægget.<sb>Jeg snuser rundt i den datapod.<sb>Ser, om jeg kan finde ud af noget.
+<HEADSET><clr:255,208,172>Alyx! Jeg har fundet noget!
+<HEADSET><clr:255,208,172>Der er en tyngdekraftsgenerator direkte under boksanlægget.<sb>Det må være DEN, der holder det oppe.
+<HEADSET><clr:255,208,172>Lige der. Det er tyngdefeltsgeneratoren.
+<HEADSET><clr:255,208,172>Der ryger den
+<HEADSET><clr:255,208,172>Jeg arbejder på sagen.<sb>Alyx, find en vej ind. Afsted!
+<clr:255,208,172>Pas på dig selv, skat. Jeg elsker dig.
+<HEADSET><clr:255,208,172>Det er ikke et boksanlæg.<sb>Det er et fængsel.<sb>De byggede det ikke for at holde os UDE.<sb>De prøver at holde noget INDE.
+<norepeat_global:10>Det er et spørgsmål med en række
+<clr:255,255,138>Saml pistolen op, Alyx!
+<HEADSET><clr:255,255,138>Jeg tror ikke, du får så meget brug for den.<sb>Der er nok kun et par Combine-soldater, der transporterer Eli.
+<HEADSET><clr:255,255,138>Ahh, okay. "Alyx".
+<HEADSET><clr:255,255,138>Kan den manipulere tyngdekraften på afstand?
+<HEADSET><clr:255,255,138>Akkurat. Det troede jeg heller ikke.<sb>Den fås heller ikke i handskeform, bemærkede jeg.
+<HEADSET><clr:255,255,138>Okay, nok småsnak. Vi må skynde os at redde din far. Kom.
+<HEADSET><clr:255,255,138>Alyx? Signalet forsvandt et øjeblik.<sb>Hvad skete der?
+<HEADSET><clr:255,255,138>Ja, Alyx?
+<clr:255,255,138>Alyx, heroppe! Pas på, jeg kaster noget ammunition ned.
+<clr:255,255,138>Værsgo.
+<HEADSET><clr:255,255,138>Alyx, det er kontrolpanelet lige der.
+<HEADSET><clr:255,255,138>Hvis du kan få liv i systemet igen, burde jeg kunne stoppe Elis tog.
+<HEADSET><clr:255,255,138>Alyx, det er kontrolpanelet!
+<HEADSET><clr:255,255,138>Bare skyd dem, Alyx!
+<HEADSET><clr:255,255,138>Ja! Klokkeklar!
+<HEADSET><clr:255,255,138>Du er ekstremt god til at dræbe aliens!
+<HEADSET><clr:255,255,138>Det er faktisk skræmmende!
+<HEADSET><clr:255,255,138>Ja, de sætter ham på toget nu.<cr>Hvilket er godt.<sb>For det betyder, at han stadig er i live.
+<HEADSET><clr:255,255,138>Men den gode nyhed er, at de torturerer ham, når de når frem ved Nova Prospekt.
+<HEADSET><clr:255,255,138>Fordi logisk set har de ingen grund til at gøre det på togturen derhen.
+<HEADSET><clr:255,255,138>Ah. Kom op på taget. Find transformeranlægget.
+<HEADSET><clr:255,255,138>Okay, find op på taget, og få adgang til det anlæg.
+<HEADSET><clr:255,255,138>Der er en elevator, der, men det bliver ikke nemt at få strømmen tilbage.
+<HEADSET><clr:255,255,138>Ja, jeg forstår.
+<HEADSET><clr:255,255,138>Åhhh.
+<HEADSET><clr:255,255,138>Alyx! Dronen er klar igen!<sb>Heroppefra ser det ud til, at Combine har barrikader længere fremme og forhindrer alle i at komme tættere på boksanlægget.
+<HEADSET><clr:255,255,138>Dræb langbenet!
+<HEADSET><clr:255,255,138>Ja! Langben! Og de er livsfarlige, Alyx, vær forsigtig!
+<HEADSET><clr:255,255,138>Alyx! Se!
+<HEADSET><clr:255,255,138>Det forstår jeg ikke. Al den vortigaunt-energi. Hvis ikke den holdt boksanlægget oppe, hvad gjorde den så?
+<HEADSET><clr:255,255,138>Tjah, boksanlægget er nede. Det var den svære del. Nu kommer den nemme del. At få fat i det, der er indeni.
+<HEADSET><clr:255,255,138>Lyder rimeligt. Tjah. Lad os klare den nemme del. Få fat i det, der er indeni. Eli? Hvad er der indeni?
+<HEADSET><clr:255,255,138>Ahh.
+<HEADSET><clr:255,255,138>Tror du, øh, at den er død?
+<HEADSET><clr:255,255,138>Vi kan skyde genvej gennem den bygning.
+<HEADSET><clr:255,255,138>Woooo!
+<HEADSET><clr:255,255,138>Wow.
+<HEADSET><clr:255,255,138>Eli, kom her!
+<HEADSET><clr:255,255,138>Åh! Den skal vi nok få brug for.
+<HEADSET><clr:255,255,138>Næsten hacket
+<HEADSET><clr:255,255,138>Alyx!
+<clr:107,232,120>Så vil du gøre det! Fat mod, Alyx Vance!
+<clr:107,232,120>Eli Vance! Alyx Vance!<sb>Jeg er her for at hjælpe, som jeg lovede.<sb>Gå! Jeg sørger for, at din far er i sikkerhed.
+<clr:107,232,120><sfx:1>[Grynten]
+<clr:107,232,120>Jeg fører Eli Vance i sikkerhed.
+<clr:107,232,120>Nej
+vortigaunterne vil befri os selv og kræve vores egen hævn.<sb>DU skal gå til våbnet.
+<clr:107,232,120>Gå nu! Vi har hver især vores egen vej.<sb>Vi kan ikke mislykkes.
+<clr:107,232,120>Ingen gåder!<sb>Combine har boret her.<sb>Jeg er afskåret fra vortessensen.<sb>Jeg er alene i mit hoved.
+<clr:107,232,120>Jeg er svækket.<sb>Vortessensen er langt væk fra mig
+<sb>Jeg hører dens sang, men ganske svagt.
+Mit råd er, at du bare undgår ham.
+Jeg smutter.<sb>Men held og lykke derinde.<sb>Og undervurder ikke ham der Jeff.<sb>Han, øh, han har ikke så meget tålmodighed.
+Wow! Hvad gjorde du ved Jeff?
+Hold da kæft!<sb>Jamen, jeg, øh... Jeg håber, du fandt nogle af de gode sager.<sb>Vi ses!
+Hvad er dit navn?
+Alyx!
+<clr:18,199,226>Giv os navne.
+<clr:18,199,226>Vi er ligeglade.<cr>Hvad har du set? Hvem var sammen med dig?
+<clr:18,199,226>Vi skal nok få hans mund på gled.<cr>Tag ham til fangetransporten!
+<clr:18,199,226>Også hende.
+<clr:18,199,226>Område sikkert.
+<clr:18,199,226>Før ham ind.
+<clr:18,199,226>Hvad med hende?
+<clr:18,199,226>TILBAGE!
+<clr:18,199,226><force>Hold dem oppe!
+<clr:18,199,226><force>Op med hænderne!
+<clr:18,199,226><force>Hun er ren.
+<clr:18,199,226>Tilbage!
+<clr:18,199,226>Tilbage! TILBAGE!
+<clr:18,199,226>Hold dem oppe!
+<clr:18,199,226>Hold de hænder oppe!
+<clr:18,199,226>Op med hænderne!
+<clr:18,199,226>Få de hænder op!
+<clr:18,199,226>Hun er ren.
+<clr:18,199,226>Flytter placering.
+<clr:18,199,226>I bevægelse nu.
+<clr:18,199,226>Lægger pres på målet.
+<clr:18,199,226>Rykker frem mod målet.
+<clr:18,199,226>Pres.
+<clr:18,199,226>Fortsæt mod den inficerede.
+<clr:18,199,226>Roligt frem.
+<clr:18,199,226>Rykker fremad.
+<clr:18,199,226>Wallhammer. Flytter placering.
+<clr:18,199,226>Modtaget. Rykker ind på kontaminant.
+<clr:18,199,226>Pres. Pres.
+<clr:18,199,226>Stabiliseringsteam presser frem.
+<clr:18,199,226>Indeslutter den inficerede.
+<clr:18,199,226>Rykker frem.
+<clr:18,199,226>Wallhammer rykker ind på den inficerede.
+<clr:18,199,226>Wallhammer rykker fremad i sektor.
+<clr:18,199,226>Rykker frem mod kontaminant.
+<clr:18,199,226>Wallhammer.<cr>Fremrykning mod mål.
+<clr:18,199,226>Wallhammer.<cr>Fremrykning.
+<clr:18,199,226>Wallhammer.<cr>Rykker fremad.
+<clr:18,199,226>Angriber.
+<clr:18,199,226>Mål konfronteret.
+<clr:18,199,226>Forfølger.
+<clr:18,199,226>Wallhammer. Fuld aktivitet mod fjendtlig enhed.
+<clr:18,199,226>Udnytter situation.
+<clr:18,199,226>Låst fast på målet. Fri skydning.
+<clr:18,199,226>Fri skydning.
+<clr:18,199,226>Mål 1.
+<clr:18,199,226>Stop nu.
+<clr:18,199,226>Det er Alyx.
+<clr:18,199,226>Alyx bekræftet.
+<clr:18,199,226>Våben på Alyx.
+<clr:18,199,226>Fri skydning på mål 1.
+<clr:18,199,226>Skyder på primær fjendtlig enhed.
+<clr:18,199,226>Det er hende. Wallhammer angriber.
+<clr:18,199,226>Primært mål bekræftet.
+<clr:18,199,226>Afslører dækning.
+<clr:18,199,226>Kode nedbrydning ved sektor...
+<clr:18,199,226>Designér målets dækning som skygge.
+<clr:18,199,226>Afslører fjendtlig enhed om 3.
+<clr:18,199,226>Målet er beskyttet. Korrigerer.
+<clr:18,199,226>Fjerner support.
+<clr:18,199,226>Våben rettet mod dækning.
+<clr:18,199,226>Fuld styrke på målets dækning.
+<clr:18,199,226>Wallhammer. Angriber dækning.
+<clr:18,199,226>Granat kastet.
+<clr:18,199,226>Granat smidt.
+<clr:18,199,226>Håndgranat kastet.
+<clr:18,199,226>Granat. Granat.
+<clr:18,199,226>Duk dig.
+<clr:18,199,226>Granat om 3.
+<clr:18,199,226>Ekstraherer.
+<clr:18,199,226>Smider granat.
+<clr:18,199,226>Rykker tilbage.
+<clr:18,199,226>Antlion.
+<clr:18,199,226>Mål: antlion.
+<clr:18,199,226>Kontakt. Antlion.
+<clr:18,199,226>Antlion på vej.
+<clr:18,199,226>Wallhammer mod antlion.
+<clr:18,199,226>Antlion. Wallhammer angriber.
+<clr:18,199,226>Antlion. Sektor...
+<clr:18,199,226>Parasitter.
+<clr:18,199,226>Kontakt. Parasitter.
+<clr:18,199,226>Parasitter på vej.
+<clr:18,199,226>Wallhammer. Visuel kontakt med parasitter.
+<clr:18,199,226>Visuel kontakt. Parasitter.
+<clr:18,199,226>Vi har parasitter herovre.
+<clr:18,199,226>Levende parasitter.
+<clr:18,199,226>Parasitangreb bekræftet.
+<clr:18,199,226>Nekrotisk.
+<clr:18,199,226>Nekrotisk på vej.
+<clr:18,199,226>Wallhammer. Visuel kontakt med nekrotisk.
+<clr:18,199,226>Kontakt. Nekrotisk.
+<clr:18,199,226>Nekrotisk indenfor sigtelinje.
+<clr:18,199,226>Nekrotisk aktiv.
+<clr:18,199,226>Visuel kontakt. Nekrotisk.
+<clr:18,199,226>Nekrotisk her.
+<clr:18,199,226>Fjendtlig enhed elimineret.
+<clr:18,199,226>Mål elimineret.
+<clr:18,199,226>Drab bekræftet.
+<clr:18,199,226>Rent skud.
+<clr:18,199,226>Endnu en elimineret.
+<clr:18,199,226>Sådan.
+<clr:18,199,226>Kontakt elimineret.
+<clr:18,199,226>De er døde.
+<clr:18,199,226>Wallhammer. Drab bekræftet.
+<clr:18,199,226>Fjendtlig enhed neutraliseret.
+<clr:18,199,226>Færdig.
+<clr:18,199,226>Fjendtlig enhed er færdig.
+<clr:18,199,226>Virom elimineret.
+<clr:18,199,226>Elimineret.
+<clr:18,199,226>Mål steriliseret.
+<clr:18,199,226>Renset.
+<clr:18,199,226>Parasit inddæmmet.
+<clr:18,199,226>En parasit elimineret.
+<clr:18,199,226>Parasit elimineret.
+<clr:18,199,226>Det var én.
+<clr:18,199,226>Ulækkert.
+<clr:18,199,226>Udbrud ineffektivt.
+<clr:18,199,226>Udbrud inddæmmet.
+<clr:18,199,226>Én parasit fjernet.
+<clr:18,199,226>Værdifuldt mål inddæmmet.
+<clr:18,199,226>Ordinal, mål 1 er stille.
+<clr:18,199,226>Hun er færdig.
+<clr:18,199,226>Ordinal. Alyx er færdig.
+<clr:18,199,226>Alyx sikret.
+<clr:18,199,226>Alyx leveret.
+<clr:18,199,226>Død.
+<clr:18,199,226>Nekrotisk inddæmmet.
+<clr:18,199,226>Forbliv død.
+<clr:18,199,226>Nekrotisk elimineret ved sektor...
+<clr:18,199,226>Nekrotisk elimineret.
+<clr:18,199,226>Den er død.
+<clr:18,199,226>Rensning udført.
+<clr:18,199,226><sfx>[Puster tungt]
+<clr:18,199,226><sfx>[Hoster og hiver efter vejret]
+<clr:18,199,226>Alfa.
+<clr:18,199,226>Og...
+<clr:18,199,226>Bravo.
+<clr:18,199,226>Charlie.
+<clr:18,199,226>Streg.
+<clr:18,199,226>Delta.
+<clr:18,199,226>Echo.
+<clr:18,199,226>8.
+<clr:18,199,226>11.
+<clr:18,199,226>50.
+<clr:18,199,226>5.
+<clr:18,199,226>40.
+<clr:18,199,226>4.
+<clr:18,199,226>100.
+<clr:18,199,226>9.
+<clr:18,199,226>0.
+<clr:18,199,226>1.
+<clr:18,199,226>70.
+<clr:18,199,226>7.
+<clr:18,199,226>60.
+<clr:18,199,226>6.
+<clr:18,199,226>10.
+<clr:18,199,226>30.
+<clr:18,199,226>1000.
+<clr:18,199,226>3.
+<clr:18,199,226>20.
+<clr:18,199,226>2.
+<clr:18,199,226>Alyx.
+<clr:18,199,226>Antiborgere.
+<clr:18,199,226>APF.
+<clr:18,199,226>Blade-Wall.
+<clr:18,199,226>Co-Wall.
+<clr:18,199,226>Allierede enheder.
+<clr:18,199,226>Hammer-Wall.
+<clr:18,199,226>Fjendtlige enheder.
+<clr:18,199,226>Frie parasitter.
+<clr:18,199,226>Parasit.
+<clr:18,199,226>Safeman.
+<clr:18,199,226>Wallhammer.
+<clr:18,199,226>Ovenover.
+<clr:18,199,226>Lejlighed.
+<clr:18,199,226>Tønder.
+<clr:18,199,226>Bagved.
+<clr:18,199,226>Nedenunder.
+<clr:18,199,226>Mursten.
+<clr:18,199,226>Bro.
+<clr:18,199,226>Bygning.
+<clr:18,199,226>Bil.
+<clr:18,199,226>Kran.
+<clr:18,199,226>Dør.
+<clr:18,199,226>Elevator.
+<clr:18,199,226>Foran.
+<clr:18,199,226>Barak.
+<clr:18,199,226>Rør.
+<clr:18,199,226>Skur.
+<clr:18,199,226>Toilet.
+<clr:18,199,226>Togvogn.
+<clr:18,199,226>Skrald.
+<clr:18,199,226>Lastbil.
+<clr:18,199,226>Tunnel.
+<clr:18,199,226>Varevogn.
+<clr:18,199,226>Hjul.
+<clr:18,199,226>Brændestabel.
+<clr:18,199,226>Angriber nu.
+<clr:18,199,226>Angrib.
+<clr:18,199,226>Rahhh!
+<clr:18,199,226>Angrib hurtigt.
+<clr:18,199,226>Dæk mig.
+<clr:18,199,226>Dækning.
+<clr:18,199,226>Dækning. Wallhammer.
+<clr:18,199,226>Har brug for dækild.
+<clr:18,199,226>Wallhammer. Anmoder om dækning.
+<clr:18,199,226>Dækning...
+<clr:18,199,226>Undviger.
+<clr:18,199,226>Granat.
+<clr:18,199,226>Går i dækning.
+<clr:18,199,226>Aktiveret granat.
+<clr:18,199,226>Hørbar granat. Undviger.
+<clr:18,199,226>Granat. Væk.
+<clr:18,199,226>Op med barrikade.
+<clr:18,199,226>Alarm i radius.
+<clr:18,199,226>Rykker tilbage til barrikade.
+<sfx><norepeat:3><clr:255,0,0>[Combine-soldat er død]
+<clr:18,199,226>Wall nede.
+<clr:18,199,226>Alyx
+<clr:18,199,226>Overwa...
+<clr:18,199,226>Wallhammer. Nærmere.
+<clr:18,199,226>Wallhammer. Skifter position.
+<clr:18,199,226>Korrigerer visuel kontakt.
+<clr:18,199,226>Skærper sigtelinjer.
+<clr:18,199,226>Omstiller til fjendtlig enhed.
+<clr:18,199,226>Skaber visuel bekræftelse.
+<clr:18,199,226>Rydder sigtelinjer.
+<clr:18,199,226>Ingen visuel kontakt med mål. Flytter placering.
+<clr:18,199,226>Omstiller mål. Delta.
+<clr:18,199,226>Bliv der.
+<clr:18,199,226>Skifter position.
+<clr:18,199,226>Optimerer position.
+<clr:18,199,226>Optimerer visuel kontakt.
+<clr:18,199,226>Problem med visuel kontakt. Flytter placering.
+<clr:18,199,226>Etablerer sigtelinjer.
+<clr:18,199,226>Kontakt om 3.
+<clr:18,199,226>Afslører mål 1.
+<clr:18,199,226>Stå stille.
+<clr:18,199,226>Hey Alyx!
+<clr:18,199,226>Hey Alyx, det er os!
+<clr:18,199,226>Alyx! Er du der?
+<clr:18,199,226>Psst. Alyx!
+<clr:18,199,226>Indstil skydningen! Målet er en allieret.
+<clr:18,199,226>Sænker våben! Wallhammer giver op!
+<clr:18,199,226>Stop med at skyde. Ingen trussel. Ingen trussel!
+<clr:18,199,226>Alyx er vores allierede.
+<clr:18,199,226>Stop med at skyde!<cr>Alyx er vores allierede!
+<clr:18,199,226><sfx:1>[Griner]
+<clr:18,199,226>Vennespil virker.
+<clr:18,199,226>[Griner] Fjendtlig enhed er forvirret.
+<clr:18,199,226>Skyder.
+<clr:18,199,226>Angriber mål.
+<clr:18,199,226>Wallhammer angriber.
+<clr:18,199,226>Wallhammer.<cr>Primært referencepunkt.
+<clr:18,199,226>Åben formation. Fri skydning.
+<clr:18,199,226>Kode 3. Oscar delta.
+<clr:18,199,226>Renser sektor...
+<clr:18,199,226>Engageret.
+<clr:18,199,226>Starter beskydning. Første prioritet.
+<clr:18,199,226>Skyder mod Alyx.
+<clr:18,199,226>Wallhammer på primært mål.
+<clr:18,199,226>Ordinal! Starter beskydning ved...
+<clr:18,199,226>Fri skydning på Vance.
+<clr:18,199,226>Ny chokgranat om 5.
+<clr:18,199,226>Chokgranat slog fejl.
+<clr:18,199,226>Chokgranat slog fejl. Korrigerer.
+<clr:18,199,226>Anmoder om ny chokgranat på målet...
+<clr:18,199,226>Chokgranat virkede. March.
+<clr:18,199,226>Chokgranat virkede.<cr>Udnytter situation.
+<clr:18,199,226>Fjendtlig enhed er blændet.
+<clr:18,199,226>Mål har ingen visuel kontakt.<cr>Udnytter situation.
+<clr:18,199,226>Kontaminant er forvirret.
+<clr:18,199,226>Fjendtlig enhed er omtumlet.<cr>Alle enheder, udnyt situation.
+<clr:18,199,226>Rydder.
+<clr:18,199,226>Distribution om 3.
+<clr:18,199,226>Wallhammer uddriver alt i sektor...
+<clr:18,199,226>Wallhammer foretager ekstraktion ved...
+<clr:18,199,226>Lægger pres på. Søg dækning.
+<clr:18,199,226>Ekstraherer fjendtlig enhed på sidst kendte position.
+<clr:18,199,226>Granat. Granat på sidst kendte position.
+<clr:18,199,226>Barrikade op. Går i dækning
+<clr:18,199,226>Lyd ved sektor...
+<clr:18,199,226>Mulig kontaminant.
+<clr:18,199,226>Mulig fjendtlig enhed aktiv.
+<clr:18,199,226>Bevægelse ved Wallhammer.
+<clr:18,199,226>Lyd til.
+<clr:18,199,226>Lyd til og
+rapporterer alle kontaminanter.
+<clr:18,199,226>Anmoder om stimdosis.
+<clr:18,199,226>Ordinal. Jeg er ramt.
+<clr:18,199,226>Tager skade.
+<clr:18,199,226>Assistance til Wallhammer.
+<clr:18,199,226>Wallhammer stadig aktiv.
+<clr:18,199,226>Ineffektivt.
+<clr:18,199,226>Kropspanser holder.
+<clr:18,199,226><sfx:1>[Skadefro klukken]
+<clr:18,199,226>Kontaminant ikke synlig.
+<clr:18,199,226>Fandens også.
+<clr:18,199,226>Anmoder om position.
+<clr:18,199,226>Mål borte.
+<clr:18,199,226>Positionsassistance. Wallhammer.
+<clr:18,199,226>Visuel kontakt med fjende negativ.
+<clr:18,199,226>Ude af syne. Kontaminant.
+<clr:18,199,226>Ingen visuel kontakt. Wallhammer.
+<clr:18,199,226>Fjendtlig enhed forsvundet.<cr>Sektor ukendt.
+<clr:18,199,226>Wallhammer anmoder om målets position.
+<clr:18,199,226>Fjendtlig enhed ude af syne.
+<clr:18,199,226>Positionsassistance til Wallhammer.
+<clr:18,199,226>Har brug for positionsassistance.
+<clr:18,199,226>Ingen visuel kontakt.
+<clr:18,199,226>Wallhammer. Ingen visuel kontakt.
+<clr:18,199,226>Mulig undvigelse.<cr>Anmoder om fjendtlig enheds position.
+<clr:18,199,226>Kontaminant er stille.<cr>Anmoder om sidst kendte sektor.
+<clr:18,199,226>Vi har total visuel blackout.
+<clr:18,199,226>Fjendtlig enhed er stille.
+<clr:18,199,226>Kontaminant er undvigende.
+<clr:18,199,226>Tjekker dækning.
+<clr:18,199,226>Tjekker kontakt...
+<clr:18,199,226>Ingen visuel kontakt længere. Øjne åbne.
+<clr:18,199,226>Al kontakt stille hos Wallhammer.<cr>Anmoder om rekognoscering.
+<clr:18,199,226>Tæt på!
+<clr:18,199,226>Nærhedsalarm. Udløser.
+<clr:18,199,226>Assister. Assister. Assister.
+<clr:18,199,226>Wall, assistance. Wall, assistance.
+<clr:18,199,226>Overgiv dig. Overgiv dig.
+<clr:18,199,226>Modtaget.
+<clr:18,199,226>Ja.
+<clr:18,199,226>Fortsætter.
+<clr:18,199,226>Holder position.
+<clr:18,199,226>Position låst.
+<clr:18,199,226>Våben klar.
+<clr:18,199,226>Visuel kontakt på sidst kendte position.
+<clr:18,199,226>Øjne på sidst kendte position.
+<clr:18,199,226>Observerer.
+<clr:18,199,226>Wallhammer. I position.
+<clr:18,199,226>Holder fokus.
+<clr:18,199,226>Stop lyd. Stop lyd.
+<clr:18,199,226>Fjendtlig enhed stritter imod. Stå i beredskab.
+<clr:18,199,226>Vent.
+<clr:18,199,226>Venter på kontakt.
+<clr:18,199,226>Evaluerer.
+<clr:18,199,226>Afventer problem.
+<clr:18,199,226>Klar til inddæmning.
+<clr:18,199,226>Wallhammer. Afventer.
+<clr:18,199,226>Wallhammer. Øjne åbne.
+<clr:18,199,226>Kontaminant er fanget.
+<clr:18,199,226>Wallhammer. Sikrer ydergrænse.
+<clr:18,199,226>Tjek alle ydergrænser.
+<clr:18,199,226><sfx><norepeat:5>[Smerte]
+<clr:18,199,226><sfx:1><norepeat:5>[Gisper]
+<clr:18,199,226>Fjendtlig enhed er sårbar.
+<clr:18,199,226>Målet er på grænsen.
+<clr:18,199,226>Mål kompromitteret.
+<clr:18,199,226>Ryk ind. Ryk ind.
+<clr:18,199,226>Kontaminant af lav værdi.
+<clr:18,199,226>Målet er markeret.
+<clr:18,199,226>Nyt angreb på fjendtlig enhed.
+<clr:18,199,226>Stærkere våben til Wallhammer.
+<clr:18,199,226>Rød lækage hos fjendtlig enhed.
+<clr:18,199,226>Mulig markering på primært mål.
+<clr:18,199,226>Hammer effektiv.<cr>Kode 0-9.
+<clr:18,199,226>Gør det af med mål 1.
+<clr:18,199,226>Hammer klar.
+<clr:18,199,226>Forbereder hammer.
+<clr:18,199,226>Hammer er klar til angreb.
+<clr:18,199,226>Stormangreb.
+<clr:18,199,226>Hammer stormer...
+<clr:18,199,226>Hammer klar om 3
+<clr:18,199,226>Forbereder mur.
+<clr:18,199,226>Op med skjold.
+<clr:18,199,226>Rejser barrikade.
+<clr:18,199,226>Barrikade er aktiv.
+<clr:18,199,226>Barrikade er klar til aktivering om 3
+<clr:18,199,226>Alle sektorer scannet.
+<clr:18,199,226>Kontakt er stille.
+<clr:18,199,226>Sektor sikret.<cr>Anmoder om afventning.
+<clr:18,199,226>Område sikret.
+<clr:18,199,226>Wallhammer rapporterer.<cr>Fjendtlig enhed er stille.
+<clr:18,199,226>Ingen kontakt.
+<clr:18,199,226>Arena sikker.
+<clr:18,199,226>Ser rent ud.
+<clr:18,199,226>Kontakt mistet.<cr>Ingen fare identificeret.
+<clr:18,199,226>Intet her.
+<clr:18,199,226>Beredt. Barrikader oppe.
+<clr:18,199,226>Ingen kontaminanter i sektor.<cr>Anmoder om afblæsning.
+<clr:18,199,226>Afvent kode bravo.
+<clr:18,199,226>Intet.
+<clr:18,199,226>Skygge sikret.
+<clr:18,199,226>Anmod om at afslutte skyggetilstand.
+<clr:18,199,226>Ikke her.
+<clr:18,199,226>Område sikret. Afblæs assistance.
+<clr:18,199,226>Alle sektorer sikret. Afblæs.
+<clr:18,199,226>Bearbejder visuel kontakt.
+<clr:18,199,226>Søger stadig
+<clr:18,199,226>Scanner stadig
+<clr:18,199,226>Wallhammer. Rekognoscering i gang.
+<clr:18,199,226>Tilstand: skygge aktiv.
+<clr:18,199,226>Rekognoscering i gang.
+<clr:18,199,226>Målet er stadig i skygge.
+<clr:18,199,226>Sektor sikret. Avancerer.
+<clr:18,199,226>Nulsektor. Fortsætter.
+<clr:18,199,226>Område renset. Flytter placering.
+<clr:18,199,226>Øjne stadig aktive.
+<clr:18,199,226>Scanning færdig. Genoptager.
+<clr:18,199,226>Stadig ingen visuel kontakt.
+<clr:18,199,ra226>Radius sikret. Genoptager.
+<clr:18,199,226>Spreder ud.
+<clr:18,199,226>I bevægelse.
+<clr:18,199,226>Wallhammer-enhed aktiv.
+<clr:18,199,226>Indsat og scanner.
+<clr:18,199,226>Starter rensning.
+<clr:18,199,226>Er på vagt.
+<clr:18,199,226>Søger efter fjendtlige enheder.
+<clr:18,199,226>Søger efter kontaminant.
+<clr:18,199,226>Søger. Formation: våben.
+<clr:18,199,226>Lukker arena.
+<clr:18,199,226>Inddæmning fortsættes.
+<clr:18,199,226>Rapporterer sigtelinjer.
+<clr:18,199,226>Formation ved målet om 3.
+<clr:18,199,226>Fortsætter med fjendtlig ekstrahering.
+<clr:18,199,226>Indled skyggetilstand.
+<clr:18,199,226>Angrib! Mål: Delta.
+<clr:18,199,226>Kontakt med målet ved...
+<clr:18,199,226>Visuel kontakt! Visuel kontakt! Afstand...
+<clr:18,199,226>Der.
+<clr:18,199,226>Visuel kontakt! Fjendtlig enhed fundet.
+<clr:18,199,226>Derovre.
+<clr:18,199,226>Ny bevægelse.
+<clr:18,199,226>Dyret er tilbage i hullet.
+<clr:18,199,226>Kontakt med fjendtlig enhed igen.
+<clr:18,199,226>Fjendtlig enhed tilbage i sektor...
+<clr:18,199,226>Wallhammer. Ny kontakt ved sektor...
+<clr:18,199,226>Fjendtlig enhed i live. Kontrollér radius.
+<clr:18,199,226>Yderligere sigtelinjer bekræftet.
+<clr:18,199,226>Sigtelinjer bekræftet på primært mål.
+<clr:18,199,226>Wallhammer. Opsnapper.
+<clr:18,199,226>Position bekræftet. Indfører stabilitet.
+<clr:18,199,226>Visuel bekræftelse på 3.
+<clr:18,199,226>Aktiv visuel kontakt.
+<clr:18,199,226>Genlader.
+<clr:18,199,226>Wallhammer lader våben.
+<clr:18,199,226>Wallhammer nede i 4
+<clr:18,199,226>Tom.
+<clr:18,199,226>Wallhammer tom.
+<clr:18,199,226>Ammunition lav. Genlader.
+<clr:18,199,226>Hammer genlader.
+<clr:18,199,226>Faldskærm, faldskærm.
+<clr:18,199,226>Faldskærm til Wallhammer.
+<clr:18,199,226>Retræte.
+<clr:18,199,226>Trækker tilbage.
+<clr:18,199,226>Sektor er for varm.
+<clr:18,199,226>Finder dække.
+<clr:18,199,226>Wallhammer. Omgrupperer.
+<clr:18,199,226>Sektor ustabil. Søger dækning.
+<clr:18,199,226>Sekundære enheder identificeret.
+<clr:18,199,226>Visuel kontakt med flere ukendte.
+<clr:18,199,226>Visuel kontakt med sekundære enheder.
+<clr:18,199,226>Tjekker silhuetter.<cr>Mulige sekundære mål.
+<clr:18,199,226>Vi har flere kontaminanter.
+<clr:18,199,226>Mål 1 har granater.
+<clr:18,199,226>Fjendtlig enhed har granater. Vær på vagt.
+<clr:18,199,226>Kontaminant har granater. Spred jer.
+<clr:18,199,226>Primært mål har håndgranater.<cr>Indsatsenhed.
+<clr:18,199,226>Fjendtlig enhed genlader.<cr>Wallhammer har fordel.
+<clr:18,199,226>Målet regenererer. Start beskydning.
+<clr:18,199,226>Kontaminant er sårbar.
+<clr:18,199,226>Alyx genlader.<cr>Svarer igen med fuld styrke.
+<clr:18,199,226>Vi har rulleminer.<cr>Op med barrikade.
+<clr:18,199,226>Wallhammer.<cr>Svarer igen på rullemine.
+<clr:18,199,226>Rulleminer.
+<clr:18,199,226>Subakutte rulleminer.<cr>Fuld styrke.
+<clr:18,199,226>Skifter mål: rulleminer.
+<clr:18,199,226>Indkommende rulleminer.
+<clr:18,199,226>Forstærket bly på mål 1.
+<clr:18,199,226>Overwatch. Mål 1 har boostere.
+<clr:18,199,226>Fjendtligt bly er boostet.
+<clr:18,199,226>Fjendtlig enhed har ulovligt bly.
+<clr:18,199,226>Boostere identificeret.<cr>Svar igen med forsigtighed.
+<clr:18,199,226>Overwatch, anmodning om reservestyrker.
+<clr:18,199,226>Overwatch, sektor er ikke sikker.
+<clr:18,199,226>Udbrud ved sektor...
+<clr:18,199,226>Overwatch, markenhed er nede.<cr>Sektor ikke under kontrol.
+<clr:18,199,226>Overwatch, sektor er overrendt.
+<clr:18,199,226>Overwatch.<cr>Anmoder om skyværn.
+<clr:18,199,226>Overwatch, anbefal ny formation.
+<clr:18,199,226>Allieret enhed er blevet dræbt.
+<clr:18,199,226>Anmoder om udskiftning.
+<clr:18,199,226>Overwatch.<cr>Eneste aktive.
+<clr:18,199,226>Overwatch.<cr>Wallhammer er sidste enhed.<cr>Anmoder om assistance.
+<clr:18,199,226>Overwatch.<cr>Anmoder om øjeblikkelig skygge.
+<clr:18,199,226>Overwatch.<cr>Udbrud er ikke inddæmmet.
+<clr:18,199,226>Overwatch.<cr>Rapporterer Overhalingstilstand.<cr>Bekræft.
+<clr:18,199,226>Overwatch.<cr>Eneste kontakt med meget fjendtlige enheder.
+<clr:18,199,226>Overlevelsesmærke aktiveret.
+<clr:18,199,226>Overwatch.<cr>Anmoder om tilbagetrækning af Wallhammer.<cr>Sektor...
+<clr:18,199,226>Overwatch, bemærk:<cr>Wallhammer er sidste indsatsenhed.
+<clr:18,199,226>Overwatch.<cr>Ordinal er blevet dræbt.
+<clr:18,199,226>Ordinal er stille.<cr>Anmoder om ny leder.
+<clr:18,199,226>Ordinal er i tilstand solnedgang.
+<clr:18,199,226>Ordinal er færdig.
+<clr:18,199,226>Overwatch. Ordinal er blevet dræbt.<cr>Svarer igen.
+<clr:18,199,226>Ordinal er stille.<cr>Indled fuldt modangreb.
+<clr:18,199,226>Ordinal har ingen puls.<cr>Ordinal har ingen puls.
+<clr:18,199,226><sfx:1>[Skriger]
+<clr:18,199,226>Skifter.
+<clr:18,199,226>Tilstand 1.
+<clr:18,199,226>Tilstand 2.
+<clr:18,199,226>Bly tæt på. Ingen skade.
+<clr:18,199,226>Missede.
+<clr:18,199,226>Mål begik fejl. Udnyt situation.
+<clr:18,199,226>Fjendtlig enhed mangler præcision.
+<clr:18,199,226>Næsten.
+<clr:18,199,226>Wallhammer er intakt.
+<clr:18,199,226>Missede igen. Udnytter situation.
+<clr:18,199,226>Målet har fejlet.
+<clr:18,199,226>Udnyt situation over for fjendtlig enhed.
+<clr:18,199,226>Fjendtlig enhed mislykkedes. Omgrupperer.
+<clr:18,199,226>Bly ineffektivt.<cr>Målet har ingen erfaring.
+<clr:18,199,226>Negativ.
+<clr:18,199,226>Nej.
+<clr:18,199,226>Kan ikke efterkomme.
+<clr:18,199,226>Afvist.
+<clr:18,199,226>Kan ikke udføre.
+<clr:18,199,226>Bekræftet bly.<cr>Op med barrikade.
+<clr:18,199,226>Fjendtlig enhed er i live.
+<clr:18,199,226>Kontakt.
+<clr:18,199,226>Wallhammer.<cr>Gengælder angreb.
+<clr:18,199,226>Vi har højlydte kontaminanter.
+<clr:18,199,226>Distribuer.
+<clr:18,199,226>Målet er fjendtligt.<cr>Fri skydning.
+<clr:18,199,226>Fjendtlige enheder angriber.<cr>Indsatsenhed ved...
+<clr:18,199,226>Overwatch. Vi har bly.
+<clr:18,199,226>Forbereder tilstand delta.
+<clr:18,199,226>Under beskydning.
+<clr:18,199,226>Fuld indsats i gang.
+<clr:18,199,226>Sektor...
+<clr:18,199,226>[Tal]
+<clr:18,199,226>Intet at rapportere. Skifter.
+<clr:18,199,226>1, 14, 3, 6, 11
+Ja.<cr>Alt klar ved Echo Four. Skifter.
+<clr:18,199,226>Modtaget.<cr>Fastholder visuel kontakt ved sektor: Nomade. Kilo. 3. 6.
+<clr:18,199,226>Echo One har negativ bevægelse.<cr>Koordinat 7-2.
+<clr:18,199,226>Modtaget.<cr>I beredskab, hvis muligheden byder sig.
+<clr:18,199,226>Transmission sikret.<cr>Radius sikret. Skifter.
+<clr:18,199,226>Overwatch.<cr>Anmoder om afstandsdata for fjendtlige enheder.<cr>Afventer udsendelse.
+<clr:18,199,226>Afventer stadig udsendelse. Skifter.
+<clr:18,199,226>Overwatch bekræfter nedlukning af sektor.<cr>Hold sigtelinjer åbne, lyd til.
+<clr:18,199,226>Bekræftet
+Udbrudsstatus har kode: Delta. 7.<cr>Team solnedgang er overvældet med kontakt.<cr>Modtaget.
+<clr:18,199,226>Negativ
+Modtaget
+Sektor ikke inddæmmet.<cr>Ingen bekræftelse af vektor for mål 1.<cr>Afventer sekundære parameterkoder.
+<clr:18,199,226>Opdaterer biodata
+Stimdose: 32.<cr>Våben: 78. Skjold: 100.<cr>Biprox: .73.<cr>Lyd: 3. Sigte: 15. Skifter.
+<clr:18,199,226>Modtaget.<cr>Sætter bugåbnere i apeks 5.<cr>Vi har biotiske faktorer ved ydergrænsen.<cr>Venter på kontakt. Skifter.
+<clr:18,199,226>Overwatch bekræfter indkommende umarkerede viromer.<cr>Til alle enheder: Gør klar til kontakt.
+<clr:18,199,226>Udrykningskode:<cr>Delta. Ekko. 7. 9. Alfa. 2. Whisky. 0
+.<cr>Bekræftet.
+<clr:18,199,226>Modtaget. Er her stadig.
+<clr:18,199,226>Modtaget. Accepteret.<cr>Opdaterer biodata om kognitiv undertrykkelse.<cr>Opdatering færdig om 3 sekunder
+<cr>Dissonans løst.
+<clr:18,199,226>Overwatch anmoder alle enheder om at opdatere og afklare situationen.<cr>Kognitiv dissonans tolereres ikke
+Negativ
+Inklusive hukommelser.<cr>Opdatering er live. Accept er obligatorisk.
+<clr:18,199,226>Stabiliseringsteam holder position.<cr>Udsyn: 73.<cr>Lyd... 15.<cr>Overwatch bekræfter, at værdifuldt mål nærmer sig.<sb>Vær på vagt.
+<clr:18,199,226>Overwatch.<cr>Vi har aktive fjendtlige enheder.<cr>Adviser om forberedelser.
+<clr:18,199,226>Negativ.<cr>Målet er stadig aktivt.
+<clr:18,199,226>Modtaget.<cr>Danner tilstand alfa.
+<clr:18,199,226>Modtaget.<cr>Danner tilstand alfa på koordinat 9-37.
+<clr:18,199,226>Afventer instruktioner om fremrykning. Skifter.
+<clr:18,199,226>Bekræftet. Omkalibrerer.
+<clr:18,199,226>Modtaget. Indtager position.
+<clr:18,199,226>De er stadig i live.
+<clr:18,199,226>Modtaget.<cr>Inddæmning og kontrol er i gang.
+<clr:18,199,226>Løser.
+<clr:18,199,226>10-4. Ikke nødvendigt at genlade våben.<cr>Ladet og klar.
+<clr:18,199,226>Danner taktisk fordel.
+<clr:18,199,226>Afventer stadig.
+<clr:18,199,226>Venter på upload af biodata.
+<clr:18,199,226>Forbereder solnedgang.
+<clr:18,199,226>Forbereder kommunikation til langvarig konflikt.
+<clr:18,199,226>Negativ. Ingen våben nødvendige.
+<clr:18,199,226>Forlænger konfliktens varighed.
+<clr:18,199,226>Scanner fjendtlig enheds biodata.
+<clr:18,199,226>Ignorerer sidste direktiv.
+<clr:18,199,226>Overwatch. 10-9.
+<clr:18,199,226>Aktiv og angriber.
+<clr:18,199,226>Stabiliseringsforanstaltning på primært mål i sektor...
+<clr:18,199,226>Målet er i sigte.
+<clr:18,199,226>Målet er i sigte og modtager bly.
+<clr:18,199,226>Optrapper pres på primært mål.
+<clr:18,199,226>De er færdige.
+<clr:18,199,226>Næsten færdig.
+<clr:18,199,226>Det er næsten slut.
+<clr:18,199,226>Sender bly.
+<clr:18,199,226>Sender alt bly mod primært mål.
+<clr:18,199,226>Sender alt bly.
+<clr:18,199,226>Kæmp ikke imod.
+<clr:18,199,226>Wallhammer er aktiv og angriber.
+<clr:18,199,226>Ordinal er aktiv og angriber.
+<clr:18,199,226>APF er aktiv og angriber.
+<clr:18,199,226>Fjendtlig enhed oplever ekstrem panik.
+<clr:18,199,226>Fjendtlig enhed er overvældet.
+<clr:18,199,226>Målets motivation er lav.<cr>Udnyt situation.
+<clr:18,199,226>Målets motivation er lav.
+<clr:18,199,226>Du kan komme frit frem.
+<clr:18,199,226>Fjendtligt mål.<cr>Vi kan hjælpe dig.<cr>Der er ingen fare.
+<clr:18,199,226>Vi kan hjælpe dig.<cr>Der er ingen fare.
+<clr:18,199,226>Mistænkt er over den tilladte aggressionsgrænse.<cr>Udnytter situation.
+<clr:18,199,226>Fortsætter med eskalering.
+<clr:18,199,226>Mistænkt har overtrådt kode 10-307.
+<clr:18,199,226>Kode 10-307.<cr>Fortsætter med eskalering
+<clr:18,199,226>Fjendtlig enhed tøver.
+<clr:18,199,226>Fjendtlige angreb er ineffektive.<cr>Fortsæt med inddæmning.
+<clr:18,199,226>Aktiverer kode 10-108.<cr>Afblæser kampberedskab.
+<clr:18,199,226>Indstiller ilden.<cr>Målet er en allieret.
+<clr:18,199,226>Afblæser kampberedskab.<cr>Kode 10-40.
+<clr:18,199,226>Indstiller skydningen! Målet er ikke fjendtligt.
+<clr:18,199,226>Modtaget. Skyd ikke.<cr>Overholdelse bekræftet.
+<clr:18,199,226>Målet er en allieret.
+<clr:18,199,226>Indstil skydningen.<cr>Målet er en allieret.
+<clr:18,199,226>Alle enheder, indstil skydningen. Målet er en allieret.
+<clr:18,199,226>Allieret enhed bekræftet.<cr>Stop med at skyde!
+<clr:18,199,226>Overwatch.<cr>Vi afventer situationen på koordinat 9-5.
+<clr:18,199,226>Overwatch<cr>Vi afventer.
+<clr:18,199,226>Korrekt.<cr>Målet har lav værdi.
+<clr:18,199,226>Modtaget.<cr>Fjendtlig enhed er uvidende og klar til inddæmning.
+<clr:18,199,226>Fjendtlig enhed udviser træthed.<cr>Forbered inddæmning.
+<force><clr:18,199,226>Stå stille.
+<force><clr:18,199,226>Ingenting. Intet ID.
+<force><clr:18,199,226>Tag hænderne op. Hænderne op.
+<force><clr:18,199,226>Stå stille!
+<force><clr:18,199,226>Hvem er det?
+<force><delay:10.5><clr:18,199,226>Alyx? Er du der?<cr>Hey Alyx! Det er os!
+<clr:18,199,226>Fortsætter mod den inficerede.
+<clr:18,199,226>Rykker ind på kontaminant.
+<clr:18,199,226>Pres på.
+<clr:18,199,226>Echo One presser frem.
+<clr:8,199,226>Echo One har sektor-ID og rykker ind på den inficerede.
+<clr:18,199,226>Rykker fremad i sektor.
+<clr:18,199,226>Svarer igen med fuld styrke.
+<clr:18,199,226>Tager skuddet.
+<clr:18,199,226>Angriber med fordel.
+<clr:18,199,226>Mål 1 i sigte.
+<clr:18,199,226>Jackpot bekræftet.
+<clr:18,199,226>Mål 1 har begrænset levetid.
+<clr:18,199,226>Jeg har hende.
+<clr:18,199,226>Åbn Echo på Alyx.
+<clr:18,199,226>Fri skydning på Alyx.
+<clr:18,199,226>Primært mål. Echo One, angrib.
+<clr:18,199,226>Det er hende.
+<clr:18,199,226>Skifter mål. Kode: Nedbrydning.
+<clr:18,199,226>Designer målet som skygge.
+<clr:18,199,226>Afdækker fjendtlig enhed om 3.
+<clr:18,199,226>Echo One. Fjerner support.
+<clr:18,199,226>Echo One. Våben rettet mod dækning.
+<clr:18,199,226>Echo One. Angriber dækning.
+<clr:18,199,226>Kode nedbrydning.
+<clr:18,199,226>Og... håndgranat kastet.
+<clr:18,199,226>Granat, granat.
+<clr:18,199,226>Duk dig!
+<clr:18,199,226>Håndgranat om 3.
+<clr:18,199,226>Og... ekstraherer.
+<clr:18,199,226>Visuel kontakt. Antlion.
+<clr:18,199,226>Antlion. Echo One angriber.
+<clr:18,199,226>Echo One, kontakt. Antlion.
+<clr:18,199,226>Antlion her.
+<clr:18,199,226>Parasitter ved sektor...
+<clr:18,199,226>Ugh... Løse parasitter på vej.
+<clr:18,199,226>Echo One. Visuel kontakt med parasitter.
+<clr:18,199,226>Jeg hader de her tingester.
+<clr:18,199,226>Levende parasitter. Echo One.
+<clr:18,199,226>Parasitter her.
+<clr:18,199,226>Parasitalarm.
+<clr:18,199,226>Echo One, visuel kontakt med nekrotisk.
+<clr:18,199,226>Jeg ser nekrotisk.
+<clr:18,199,226>Vi har nekrotisk.
+<clr:18,199,226>Kontakt med nekrotisk.
+<clr:18,199,226>Echo One. Drab bekræftet.
+<clr:18,199,226>Det er ovre.
+<clr:18,199,226>Eliminér.
+<clr:18,199,226>Sektor renset.
+<clr:18,199,226>Kontaminant inddæmmet.
+<clr:18,199,226>Mål 1 er stille.
+<clr:18,199,226>Hun er stille.
+<clr:18,199,226>Alyx er færdig.
+<clr:18,199,226>Og
+primær fjendtlig enhed elimineret.
+<clr:18,199,226>Kontaminant elimineret.
+<clr:18,199,226>Godnat igen.
+<clr:18,199,226><sfx:1>[Grynter]
+<clr:18,199,226><sfx:1>[Puster tungt]
+<clr:18,199,226><sfx:1>[Hoster og hiver efter vejret]
+<clr:18,199,226>Og.
+<clr:18,199,226>12.
+<clr:18,199,226>APF
+<clr:18,199,226>APS.
+<clr:18,199,226>Echo One.
+<clr:18,199,226>Allieret enhed.
+<clr:18,199,226>Overwatch.
+<clr:18,199,226>Echo One anmoder om dækning.
+<clr:18,199,226>Echo One anmoder om skygge.
+<clr:18,199,226>Forbered stimdosis.
+<clr:18,199,226>Anmoder om dækning ved...
+<clr:18,199,226>Mulig håndgranat. Undviger.
+<clr:18,199,226>Søg dækning.
+<clr:18,199,226>Hørbar granat ved sektor...
+<clr:18,199,226>Tilbage.
+<clr:18,199,226>Aktiveret granat. Søger dækning.
+<clr:18,199,226>Hjælp os!
+<clr:18,199,226>Jeg bekla...
+<clr:18,199,226>Kommer nærmere.
+<clr:18,199,226>Echo One skifter position.
+<clr:18,199,226>Fjerner blokering.
+<clr:18,199,226>Echo One, ingen visuel kontakt med mål. Flytter placering.
+<clr:18,199,226>Korrigerer sigtelinjer på fjendtlig enhed.
+<clr:18,199,226>Visuel kontakt afbrudt. Flytter placering.
+<clr:18,199,226>Afslører primært mål.
+<clr:18,199,226>Stop med at skyde!<cr>Målet er en allieret!
+<clr:18,199,226>Sænk våben!<cr>Echo One! Sænk våben.
+<clr:18,199,226>Indstiller skydningen!<cr>Sænker våben.
+<clr:18,199,226>Alyx er vores allierede! Fjendtlig enhed er vores allierede!
+<clr:18,199,226>Alyx er vores allierede! Stop med at skyde! Stop med at skyde!
+<clr:18,199,226>[Griner] Vennespil virker.
+<clr:18,199,226>Åbn ild mod fjendtlig enhed.
+<clr:18,199,226>Echo One ved primært referencepunkt.
+<clr:18,199,226>Åbent angreb på fjendtlig enhed.
+<clr:18,199,226>Renser sektor.
+<clr:18,199,226>Forfølger sektor.
+<clr:18,199,226>Start beskydning mod første prioritet.
+<clr:18,199,226>Sigter på Vance.
+<clr:18,199,226>Starter beskydning mod mål 1.
+<clr:18,199,226>Indkommende primært bly.<cr>Overdøv indsats.
+<clr:18,199,226>Alyx har begrænset tid.
+<clr:18,199,226>Dyret er i hullet.
+<clr:18,199,226>Jackpot bekræftet. Affyrer.
+<clr:18,199,226>Rydder sidst kendte position.
+<clr:18,199,226>Uddriver alt i sektor...
+<clr:18,199,226>Ekstraherer på sidst kendte position.
+<clr:18,199,226>Lægger pres på sidst kendte position. Søg dækning.
+<clr:18,199,226>Uddriver fjendtlig enhed.
+<clr:18,199,226>Udløser med dækning.
+<clr:18,199,226>Udløser.
+<clr:18,199,226>Bevægelse.
+<clr:18,199,226>Echo One har lyd til.<cr>Rapporterer alle mistænkte.
+<clr:18,199,226>Samarit.
+<clr:18,199,226>Jeg er ramt. Anmoder om stimdose.
+<clr:18,199,226>Anmoder om yderligere kropspanser.
+<clr:18,199,226>Echo One har begrænset tid.
+<clr:18,199,226>Lort.
+<clr:18,199,226><sfx:1><norepeat:5>[Skadefro klukken]
+<clr:18,199,226>For helvede.
+<clr:18,199,226>Echo One, anmoder om position.
+<clr:18,199,226>Mål er væk.<cr>Anmoder om positionsassistance.
+<clr:18,199,226>Positionsassistance.
+<clr:18,199,226>Negativ visuel kontakt med fjendtlig enhed.
+<clr:18,199,226>Kontaminant udenfor sigtelinje.
+<clr:18,199,226>Ingen visuel kontakt. Indsatsenhed.
+<clr:18,199,226>Fjendtlig enhed forsvundet. Sektor ukendt.
+<clr:18,199,226>Anmoder om fjendtlig enheds position.
+<clr:18,199,226>Positionsassistance til Echo One.
+<clr:18,199,226>Assistance til position.
+<clr:18,199,226>Har brug for positionsassistance til sektor...
+<clr:18,199,226>Ingen visuel kontakt. Overwatch, assister.
+<clr:18,199,226>Echo One, negativ visuel kontakt.
+<clr:18,199,226>Mulig undvigelse. Anmoder om position.
+<clr:18,199,226>Vi har total visuel blackout på mål 1.
+<clr:18,199,226>Primær fjendtlig enhed er stille.
+<clr:18,199,226>Undvigende kontaminant.<cr>Ordinal, rapportér.
+<clr:18,199,226>Ser efter mål 1 ved...
+<clr:18,199,226>Al kontakt stille. Anmoder om rekognoscering.
+<clr:18,199,226>[Stakåndet panisk skrig]
+<clr:18,199,226>Stooooooop!
+<clr:18,199,226>Hold da kæ...!
+<clr:18,199,226>Echo, assistance. Echo, assistance.
+<clr:18,199,226>Landing. Afblæs! Echo Seven.<cr>Afblæs. Echo Seven.
+<clr:18,199,226>Nærhedsalarm på Echo One! Indsatsenhed, assister!
+<clr:18,199,226>For tæt på. Korrigerer.
+<clr:18,199,226>Forstået.
+<clr:18,199,226>Bekræftet.
+<clr:18,199,226>Echo One er i position.
+<clr:18,199,226>Afventer.
+<clr:18,199,226>Visuel kontakt.
+kontaminanten er fanget.
+<clr:18,199,226>Echo One. Sikrer ydergrænse.
+<clr:18,199,226>Tjekker alle ydergrænser.
+fjendtlig enhed er sårbar.
+<clr:18,199,226>Angriber fjendtlig enhed igen.
+<clr:18,199,226>Anmoder om våbenforstærkning mod mål 1.
+<clr:18,199,226>Våben effektive. Kode 0-9.
+<clr:18,199,226>Bloker alle stimdoser for primær fjende.
+<clr:18,199,226>Sektor sikret. Anmoder om afventning.
+<clr:18,199,226>Kontakt mistet. Ingen fare identificeret.
+<clr:18,199,226>Beredt.
+<clr:18,199,226>Alle enheder rapporterer.<cr>Stilhed i hullet.
+<clr:18,199,226>Område sikret.<cr>Afblæs assistance.
+<clr:18,199,226>Visuel kontakt bearbejdes...
+<clr:18,199,226>Nulsektor. Fortsæt.
+<clr:18,199,226>Fjendtlig enhed er stadig stille.
+<clr:18,199,226>Opretter tilstand alfa.
+<clr:18,199,226>Echo-enhed aktiv.
+<clr:18,199,226>Søger.
+<clr:18,199,226>Modtaget. Visuel kontakt. Alle enheder.
+<clr:18,199,226>Fordel jer, og scan.
+<clr:18,199,226>Angriber målet. Delta...
+<clr:18,199,226>Visuel kontakt! Visuel kontakt!
+<clr:18,199,226>Mål fundet.
+<clr:18,199,226>Fjendtlig kontakt.
+<clr:18,199,226>Afsted, afsted, afsted.
+<clr:18,199,226>Echo One.<cr>Kontakt ved sektor 9-4.
+<clr:18,199,226>Sigtelinje bekræftet.
+<clr:18,199,226>Sigtelinje bekræftet på primært mål.
+<clr:18,199,226>Echo One, opsnapper.
+<clr:18,199,226>Position bekræftet.<cr>Indfører stabilitet.
+<clr:18,199,226>Aktiv visuel kontakt. Fjendtlig enhed fundet igen.
+<clr:18,199,226>Genlader våben.
+<clr:18,199,226>Echo lav i 3
+<clr:18,199,226>Anmoder om spærreild for at genlade.
+<clr:18,199,226>Echo One, tomt våben.
+<clr:18,199,226>Udløser faldskærm.
+<clr:18,199,226>Udløser faldskærm, udløser faldskærm.
+<clr:18,199,226>Faldskærm til Echo One.
+<clr:18,199,226>Omgrupperer.
+<clr:18,199,226>Situation ustabil. Søger dækning.
+<clr:18,199,226>Vi har visuel kontakt med sekundære enheder.
+<clr:18,199,226>Markteam, alarm. Mål 1 har håndgranater.
+<clr:18,199,226>Fjendtlig enhed genlader. Våbenfordel.
+<clr:18,199,226>Alyx genlader. Svarer igen med fuld styrke.
+<clr:18,199,226>Vi har rulleminer. Våben frem.
+<clr:18,199,226>Visuel kontakt! Rulleminer!
+<clr:18,199,226>Subakutte rulleminer.<cr>Svarer igen med fuld styrke.
+<clr:18,199,226>Skifter mål til rulleminer.
+<clr:18,199,226>Markteam, alarm.<cr>Fjendtlig enhed har forstærket bly.
+<clr:18,199,226>Visuel kontakt. Ulovligt bly.
+<clr:18,199,226>Overwatch. Anmoder om reservestyrker.
+<clr:18,199,226>Overwatch. Sektor er ikke sikker!
+<clr:18,199,226>Udbrud, udbrud, udbrud!
+<clr:18,199,226>Er død.
+<clr:18,199,226>Overwatch. Markenhed er nede.<cr>Sektor ikke under kontrol.
+<clr:18,199,226>Overwatch. Sektor overrendt!<cr>Gentager. Sektor overrendt!
+<clr:18,199,226>Overwatch. Anmoder om skyværn.
+<clr:18,199,226>Tabt fordel. Problemer på vej.
+<clr:18,199,226>Overwatch. Anbefal ny formation.
+<clr:18,199,226>Allieret enhed er nede.
+<clr:18,199,226>Er stille. Anmoder om udskiftning.
+<clr:18,199,226>Echo One er eneste aktive.
+<clr:18,199,226>Overwatch! Echo One er sidste enhed! Anmoder om assistance.
+<clr:18,199,226>Ugh. Anmoder om øjeblikkelig skygge!
+<clr:18,199,226>Overwatch! Udbrud er ikke inddæmmet!
+<clr:18,199,226>Echo One. Rapporterer meget fjendtlig enhed.
+<clr:18,199,226>Overwatch! Intet markteam tilbage.
+<clr:18,199,226>Overwatch! Anmoder om tilbagetrækning af Echo One.
+<clr:18,199,226>Overwatch.<cr>Echo One er sidste indsatsenhed.
+<clr:18,199,226>Overwatch! Ordinal er blevet dræbt!
+<clr:18,199,226>Ordinal er stille! Anmoder om assistance!
+<clr:18,199,226>Overwatch! Ordinal er i tilstand solnedgang! Bekræft!
+<clr:18,199,226>Overwatch. Ordinal hæmmet.<cr>Svarer igen
+<clr:18,199,226>Ordinal er stille.<cr>Indled fuldt modangreb!
+<clr:18,199,226>Ordinal har ingen puls.
+<clr:18,199,226>Spærreild.
+<clr:18,199,226>Spærreild ved...
+<clr:18,199,226>Echo One gennemtvinger overholdelse.
+<clr:18,199,226>Bombardement på sidst kendte position.
+<clr:18,199,226>Fastholder våben på sidst kendte position.
+<clr:18,199,226>Og... fjendtlig enhed sidder fast.
+<clr:18,199,226>Mål begik fejl. Udnytter situation.
+<clr:18,199,226>Udnytter situation efter fjendtlig enheds fejl.
+<clr:18,199,226>Echo One er intakt.
+<clr:18,199,226>Bly ineffektivt. Målet er uøvet.
+<clr:18,199,226>Øhhh... ikke muligt.
+<clr:18,199,226>Afvis.
+<clr:18,199,226>Bekræftet bly. Formation.
+<clr:18,199,226>Kontakt. Fjendtlig enhed ved...
+<clr:18,199,226>Echo One starter angreb.
+<clr:18,199,226>Dette er Echo One. Vi har højlydte kontaminanter.
+<clr:18,199,226>Målet er fjendtligt. Fri skydning.
+<clr:18,199,226>Fjendtlig enhed angriber.
+<clr:18,199,226>Ugh. Forbereder tilstand delta.
+<clr:18,199,226>Modtaget.<cr>Echo One har lyd til, rapporterer alle mistænkte.
+<clr:18,199,226>Lyd ved sektor: Alfa. 9. Delta.<cr>Afslører fjendtlig enhed om
+<clr:18,199,226>Overwatch.<cr>Echo One har sektor-ID og rykker ind på den inficerede.<cr>Antiborger 7-1-3.
+<clr:18,199,226>Kontaminant er sårbar.<cr>Udnytter situation.
+<clr:18,199,226>Echo One.<cr>Kontakt ved sektor 9-4.<cr>Fjendtlig enhed i live. Tjek radius.
+<clr:18,199,226>Ser efter mål 1 ved Bygning 11.<cr>Primær fjendtlig enhed er stille.<cr>Rekognoscering i gang.
+<clr:18,199,226>Opretter tilstand alfa. Og
+<cr>Kontaminant er fanget.<cr>Tjekker alle ydergrænser.
+<clr:18,199,226>Jackpot bekræftet.<cr>Omstiller til fjendtlig enhed.<cr>Alyx har begrænset tid.
+<clr:18,199,226>Øhh
+ja
+intet at rapportere. Skifter.
+Ja.<cr>Alt... alt klar ved Echo Four.<cr>Din tur. Skifter.
+<clr:18,199,226>Echo One har negativ bevægelse.<cr>Koordinat: 7-2.
+<clr:18,199,226>Stiller ind
+Echo One rapporterer lav belysning, lav lyd.<cr>I beredskab, hvis muligheden byder sig.
+<clr:18,199,226>Transmission sikret
+<cr>Tilstand kviksand negativ.<cr>Øhh
+vent
+Nej.<cr>Radius sikret. Skifter.
+<clr:18,199,226>Overwatch.<cr>Dette er Echo Four, som anmoder om afstandsdata for fjendtlig enhed.<cr>Afventer udsendelse.
+<clr:18,199,226>Sektor er på 43%.<cr>Stabil. Og...<cr>afventer stadig udsendelse. Skifter.
+<clr:18,199,226>Overwatch bekræfter nedlukning af sektor.<cr>Antiborger 1 er... øh... fortrængt og aktiveret.<cr>Hold sigtelinjer åbne, lyd til.
+<clr:18,199,226>Det er bekræftet
+Udbrudsstatus har kode delta-7.<cr>Team solnedgang er overvældet med kontakt.<cr>Uhhh... Modtaget.
+<clr:18,199,226>Negativ. Modtaget.<cr>Sektor ikke inddæmmet. Ingen bekræftelse af vektor for mål 1.<cr>Afventer sekundære parameterkoder.
+Stimdosis: 32.<cr>Våben: 78. Skjold: 100. Biprox: 73.<cr>Lyd: 3. Sigte: 15. Echo slut.
+<clr:18,199,226>Modtaget. Sætter bugåbnere i apeks 5.<cr>Vi har biotiske faktorer ved ydergrænsen.<cr>Uhhh
+Venter på kontakt. Skifter.
+<clr:18,199,226>Overwatch bekræfter... øhh... indkommende umarkerede viromer.<cr>Til alle enheder: Gør klar til kontakt.
+<clr:18,199,226>Udrykningskode: Delta. Ekko. 7. 9. Alfa. 2. Whisky. 0
+.<cr>Bekræftet. Echo slut.
+<clr:18,199,226>Overwatch anmoder alle enheder om at opdatere og afklare situationen.<cr>Kognitiv dissonans tolereres ikke.<cr>Negativ
+Inklusive hukommelser. Opdatering er live.<cr>Accept er obligatorisk.
+<clr:18,199,226>Stabiliseringsteam holder position.<cr>Udsyn: 73. Lyd... 15.<cr>Overwatch bekræfter, at værdifuldt mål nærmer sig.<cr>Vær på vagt.
+<clr:18,199,226>Overwatch. Vi har aktive fjendtlige enheder.<cr>Adviser om forberedelser.
+<clr:18,199,226>Echo One er aktiv og angriber.
+<clr:18,199,226>Echo One er aktiv og affyrer.
+<clr:18,199,226>Stabiliseringsforanstaltning på primært mål.
+<clr:18,199,226>Echo One sender alt bly.
+<clr:18,199,226>Argh! Varmelækage på kropspanser!<cr>Assistance. Assis...
+<clr:18,199,226>Argh! Varmelækage på kropspanser!<cr><cr>Assistance. Assis... [Uforståelig råben]
+<clr:18,199,226>Echo One anmoder om øjeblikkelig inddæmning! [Panisk skrigen]
+<clr:18,199,226>Echo One anmoder om øjeblikkelig inddæmning. [Panisk skrigen]
+<clr:18,199,226>Aaah! Termisk grænse overskredet! Aaargh!
+<clr:18,199,226>Ugh! Kritiske biodata. Dør om 4
+3... 2
+3
+<clr:18,199,226>Argh! Varmelækage på kropspanser! Åhhh!
+<clr:18,199,226>Argh! Varmelækage på kropspanser! [Uforståelig råben]
+<clr:18,199,226><sfx:1>[Panisk skrigen]
+<clr:18,199,226>Målets motivation er lav.<cr>Udnyt det.
+<clr:18,199,226>Fjendtligt mål.<cr>Vi kan hjælpe dig. Der er ingen fare.
+<clr:18,199,226>Vi kan hjælpe dig. Der er ingen fare.
+<clr:18,199,226>Mistænkt er over den tilladte aggressionsgrænse.
+<clr:18,199,226>Kode 10-307. Fortsætter med eskalering.
+<clr:18,199,226>Mistænkt har overtrådt kode 10-307.<cr>Fortsætter med eskalering
+<clr:18,199,226>Aktiverer kode 10-108. Afblæser kampberedskab.
+<clr:18,199,226>Afblæser kampberedskab. Kode 10-40.
+<clr:18,199,226>Skyd ikke.<cr>Overholdelse bekræftet.
+<clr:18,199,226>Indstil skydningen. Målet er en allieret.
+<clr:18,199,226>Allieret enhed bekræftet. Stop med at skyde!
+<clr:18,199,226>Modtaget. Målet har lav værdi.
+<clr:18,199,226>Kommer nærmere på kontaminant.
+<clr:18,199,226>Pres, pres.
+<clr:18,199,226>Fremrykningsdirektiv.
+<clr:18,199,226>Alle enheder presser frem.
+<clr:18,199,226>Alle enheder, koncentrer jer om målet.
+<clr:8,199,226>Stabiliseringsteam har sektor-ID og rykker ind på den inficerede.
+<clr:18,199,226>Fuld styrke.
+<clr:18,199,226>Låst fast på målet. Våben fremme.
+<clr:18,199,226>Hej mål 1.
+<clr:18,199,226>Primært mål. Ordinal, angrib.
+<clr:18,199,226>Åbn ild mod Alyx.
+<clr:18,199,226>Alle enheder. Åbn ild mod Alyx.
+<clr:18,199,226>Designér målet som dækning.
+<clr:18,199,226>Angriber dækning.
+<clr:18,199,226>Angrib dækning.
+<clr:18,199,226>Fjern skygge.
+<clr:18,199,226>Håndgranat.
+<clr:18,199,226>Smid.
+<clr:18,199,226>Kast håndgranat.
+<clr:18,199,226>Alle enheder. Sæt granaterne fri.
+<clr:18,199,226>Udnyt situation.
+<clr:18,199,226>Alle enheder. Udnyt situation.
+<clr:18,199,226>Visuel kontakt. Antlioner.
+<clr:18,199,226>Beskyttelsesteam, alarm.<cr>Antlioner ved sektor...
+<clr:18,199,226>Overwatch.<cr>Markteam har visuel kontakt med parasitter.
+<clr:18,199,226>Visuel kontakt. Løse parasitter på vej.
+<clr:18,199,226>Visuel kontakt med parasitter.
+<clr:18,199,226>Overwatch.<cr>Markteam har visuel kontakt med nekrotisk.
+<clr:18,199,226>Aktiv nekrotisk i sektor...
+<clr:18,199,226>Nekrotisk i nærheden.
+<clr:18,199,226>Ordinal, drab. Afmærk...
+<clr:18,199,226>Elimineret af Ordinal.
+<clr:18,199,226>Fjendtlig enhed færdig.
+<clr:18,199,226>Parasit er blevet fjernet.
+<clr:18,199,226>Overwatch, sektor er ryddet.
+<clr:18,199,226>Elimineret af...
+<clr:18,199,226>Likvideret af...
+<clr:18,199,226>Primært mål elimineret af...
+<clr:18,199,226>Primært mål inddæmmet af...
+<clr:18,199,226>Nekrotisk inddæmmet af...
+<clr:18,199,226>Nekrotisk likvideret af...
+<clr:18,199,226>Alle enheder. Dæk ordinal ved...
+<clr:18,199,226>Dæk ordinal.
+<clr:18,199,226>Anmoder om dækning.
+<clr:18,199,226>Klinge 2, forbered stimdosis.
+<clr:18,199,226>Beskytter.
+<clr:18,199,226>Forsvarer.
+<clr:18,199,226>Søger skygge.
+<clr:18,199,226>Alle enheder. Hold fast og isolér.
+<clr:18,199,226>Alle enheder. Undvig.
+<clr:18,199,226>Alle enheder. Alarm: granat i nærheden.
+<clr:18,199,226>Afslører sigtelinjer.
+<clr:18,199,226>Skærper.
+<clr:18,199,226>Blokering fjernet.
+<clr:18,199,226>Rydder sigtelinje.
+<clr:18,199,226>Omstil.
+<clr:18,199,226>Korriger sigtelinjer.
+<clr:18,199,226>Markteam, omstil.
+<clr:18,199,226>Beskyttelsesteam. Korriger sigtelinjer.
+<clr:18,199,226>Indstil skydningen!<cr>Målet er en allieret.
+<clr:18,199,226>Sænk våben!<cr>Sænk våben.
+<clr:18,199,226>Stop med at skyde.<cr>Stop med at skyde.
+<clr:18,199,226>Alle enheder! Alyx er vores allierede.
+<clr:18,199,226>Alyx er vores allierede! Stop med at skyde!
+<clr:18,199,226>Skyder på fjendtlig enhed.
+<clr:18,199,226>Forfølg frit.
+<clr:18,199,226>Start beskydning.
+<clr:18,199,226>Alle enheder. Ubegrænset angreb ved...
+<clr:18,199,226>Start beskydning. Første prioritet.
+<clr:18,199,226>Skyd mod Alyx.
+<clr:18,199,226>Ordinal, våben på primært mål.
+<clr:18,199,226>Øredøvende svar.
+<clr:18,199,226>Jackpot bekræftet. Åbn ild.
+<clr:18,199,226>Målet er første prioritet.
+<clr:18,199,226>Ubegrænset angreb på Vance.
+<clr:18,199,226>Dæmp mål 1.
+<clr:18,199,226>Rydder område med granat.
+<clr:18,199,226>Ekstraherer fra...
+<clr:18,199,226>Smid granat på sidst kendte position.
+<clr:18,199,226>Uddriver fjendtlig enhed fra sidst kendte position.
+<clr:18,199,226>Rydder med undvigelse.
+<clr:18,199,226>Bevægelse ved...
+<clr:18,199,226>Alle enheder, lyd til.<cr>Rapporter visuel kontakt med kontaminanter.
+<clr:18,199,226>Ordinal har begrænset levetid.
+<clr:18,199,226>Stimpakke holder.
+<clr:18,199,226>Overwatch. Anmoder om stimdosis.
+<clr:18,199,226>Lave reserver. Begrænset tid.
+<clr:18,199,226>Lægehjælp til Ordinal...
+<clr:18,199,226>Død ineffektiv.
+<clr:18,199,226>Har begrænset levetid.
+<clr:18,199,226><sfx><norepeat:5>[Skadefro klukken]
+<clr:18,199,226>Overwatch, anmoder om position.
+<clr:18,199,226>Anmoder om positionsassistance.
+<clr:18,199,226>Ingen visuel kontakt med kontaminant.
+<clr:18,199,226>Rapportér sigtelinje.
+<clr:18,199,226>Mulig undvigelse. Alle enheder, rapportér.
+<clr:18,199,226>Anmoder om målets position.
+<clr:18,199,226>Kontaminant er stille.
+<clr:18,199,226>Ingen visuel kontakt med fjendtlig enhed.
+<clr:18,199,226>Tjek dækning.
+<clr:18,199,226>Anmoder om sidst kendte sektor.
+<clr:18,199,226>Rapportér målets status.
+<clr:18,199,226>Primært mål er stille.
+<clr:18,199,226>Ingen visuel kontakt med primær.
+<clr:18,199,226>Mål: Vance er i skygge. Assister med position.
+<clr:18,199,226>Undvigende primær kontaminant.
+<clr:18,199,226>Primær fjendtlig enhed er i skygge. Rapportér visuel kontakt.
+<clr:18,199,226>Nærhedsovertrædelse. Korrigerer.
+<clr:18,199,226>Assister. Assister. Assister. Assister.
+<clr:18,199,226>Parasit avancerer. Infektion avancerer.
+<clr:18,199,226>Træd tilbage. Træd tilbage. Træd tilbage.
+<clr:18,199,226>Bekræft.
+<clr:18,199,226>I position.
+<clr:18,199,226>Ordinal. Sikrer ydergrænse.
+<clr:18,199,226>Vent på kontakt.
+<clr:18,199,226><sfx><norepeat:5>[Gisper]
+<clr:18,199,226>Primær fjendtlig enhed er sårbar.
+<clr:18,199,226>Hammer effektiv. Kode 0-9.
+<clr:18,199,226>Nyt angreb på fjendtlig enhed om 2, 1
+<clr:18,199,226>Overwatch. Anmoder om våbenforstærkning.
+<clr:18,199,226>Afslutter.
+<clr:18,199,226>Alle enheder. Bloker stimdoser for primær fjende.
+<clr:18,199,226>Meld fjendtlig enheds sidste åndedrag.
+<clr:18,199,226>Kontakt mistet. Mulig dekontaminering.
+<clr:18,199,226>Ingen kontaminanter i sektor. Anmoder om afblæsning.
+<clr:18,199,226>Alle enheder rapporterer. Stilhed i hullet.
+<clr:18,199,226>Statusrapport for sektor...
+<clr:18,199,226>Rapportér parasitstatus.
+<clr:18,199,226>Scanner efter visuel kontakt
+<clr:18,199,226>Genoptag scanning og afsikring.
+<clr:18,199,226>Fortsæt søgning...
+<clr:18,199,226>Overwatch. Rapporterer tilstand alfa.
+<clr:18,199,226>Rensning starter.
+<clr:18,199,226>Vær på vagt. Rapportér sigtelinjer.
+<clr:18,199,226>Visuel kontakt. Alle enheder.
+<clr:18,199,226>Fortsætter med fjendtlig afdækning.
+<clr:18,199,226>Indsæt og scan.
+<clr:18,199,226>Luk arena...
+<clr:18,199,226>Alle enheder. Fordel jer, og scan.
+<clr:18,199,226>Alle enheder. Afslør alle skygger.
+<clr:18,199,226>Angrib! Målet...
+<clr:18,199,226>Visuel kontakt. Visuel kontakt. Afstand 50. Pejling 12.
+<clr:18,199,226>Fjendtlig enhed fundet.
+<clr:18,199,226>Mål fundet ved...
+<clr:18,199,226>Kontakt med fjendtlig enhed...
+<clr:18,199,226>Kontakt ved sektor...
+<clr:18,199,226>Ny kontakt ved sektor...
+<clr:18,199,226>Angrib ved sektor...
+<clr:18,199,226>Angrib målet igen.
+<clr:18,199,226>Stop fjendtlig enhed ved...
+<clr:18,199,226>Fylder i.
+<clr:18,199,226>Ordinal lav i 4... 3... 2... 1.
+<clr:18,199,226>Ingen våben.
+<clr:18,199,226>Tjek reserver.
+<clr:18,199,226>Find skygge og træk tilbage.
+<clr:18,199,226>Sektor er for varm. Tilbagetrækning.
+<clr:18,199,226>Visuel kontakt med flere ukendte. Indsatsrisiko er høj.
+<clr:18,199,226>Overwatch. Vi har visuel kontakt med sekundære enheder.
+<clr:18,199,226>Tjek silhuetter. Mulige sekundære mål.
+<clr:18,199,226>Flere kontaminanter bekræftet.
+<clr:18,199,226>Alarm. Fjendtlig enhed har granater.
+<clr:18,199,226>Alle enheder. Vær opmærksom på, at fjendtlig enhed er i besiddelse af granater. Fortsæt med forsigtighed.
+<clr:18,199,226>Alyx genlader. Fuld styrke.
+<clr:18,199,226>Stop fjendtlig enheds genladning.
+<clr:18,199,226>Overwatch. Vi har rulleminer. Våben frem.
+<clr:18,199,226>Visuel kontakt, rullemine.
+<clr:18,199,226>Subakutte rulleminer. Fuld styrke.
+<clr:18,199,226>Skift mål. Rulleminer.
+<clr:18,199,226>Boostet bly på mål 1.
+<clr:18,199,226>Fjendtlig enhed har boostet bly.
+<clr:18,199,226>Boostet bly identificeret.<cr>Svar igen med forsigtighed.
+<clr:18,199,226>Overwatch, udbrud er ikke inddæmmet.
+<clr:18,199,226>Overwatch, anmoder om yderligere enheder.
+<clr:18,199,226>Markteam er nede.<cr>Sektor ikke under kontrol.
+<clr:18,199,226>Overwatch, sektor er varm.
+<clr:18,199,226>Overwatch, anmoder om skyværn.
+<clr:18,199,226>Overwatch. Ordinal er eneste aktive.
+<clr:18,199,226>Overwatch. Ordinal er sidste enhed.<cr>Anmoder om assistance.
+<clr:18,199,226>Overwatch. Anmoder om øjeblikkelig skygge.
+<clr:18,199,226>Overwatch. Udbrud er ikke inddæmmet.
+<clr:18,199,226>Markteam likvideret.<cr>Anmoder om allierede.
+<clr:18,199,226>Overwatch. Eneste kontakt.<cr>Meget fjendtlige enheder.
+<clr:18,199,226>Overwatch.<cr>Anmoder om tilbagetrækning af Ordinal.<cr>Sektor...
+<clr:18,199,226>Overwatch.<cr>Ordinal er sidste indsatsenhed.
+<clr:18,199,226>Overwatch.<cr>Parasitter breder sig.
+<clr:18,199,226>Holder fast.
+<clr:18,199,226>Tømmer våben på primært mål.
+<clr:18,199,226>Hold mål i position.
+<clr:18,199,226>Påbegynd spærreild på fjendtlig enhed.
+<clr:18,199,226>Intakt.
+<clr:18,199,226>Målet har fejlet...
+<clr:18,199,226>Målfejl. Udnyt situation.
+<clr:18,199,226>Kan ikke fortsætte.
+<clr:18,199,226>Klar til at skyde.
+<clr:18,199,226>Distribuer!
+<clr:18,199,226>Målet forsøger sig med angreb. Svar igen.
+<clr:18,199,226>Markteam har kontakt ved sektor...
+<clr:18,199,226>Beskyttelsesteam har bly ved sektor...
+<clr:18,199,226>14, 1, 6, 3
+11
+og
+din tur. Skifter.
+<clr:18,199,226>Negativ bevægelse.
+<clr:18,199,226>Modtaget. Lav lyd.<cr>I beredskab, hvis muligheden byder sig.
+<clr:18,199,226>Transmission sikret.<cr>Tilstand kviksand negativ.<cr>Radius sikret. Skifter.
+<clr:18,199,226>Overwatch.<cr>Anmoder om afstandsdata for fjendtlige enheder.
+<clr:18,199,226>Sektor er på 43%. Stabil.<cr>Afventer stadig udsendelse. Skifter.
+<clr:18,199,226>Det er bekræftet.<cr>Udbrudsstatus har kode: Delta. 7.<cr>Team solnedgang er overvældet med kontakt.
+<clr:18,199,226>Modtaget. Sektor ikke inddæmmet.<cr>Ingen bekræftelse af vektor for mål 1.<cr>Afventer sekundære parameterkoder.
+<clr:18,199,226>Lyd: 3. Sigte: 15.
+<clr:18,199,226>Sætter bugåbnere i apeks 5.<cr>Vi har biotiske faktorer ved ydergrænsen. Skifter.
+. Bekræftet. Echo slut.
+<clr:18,199,226>Stabiliseringsteam holder position.<cr>Udsyn: 73. Lyd... 15.<cr>Overwatch bekræfter, at værdifuldt mål nærmer sig. Vær på vagt.
+<clr:18,199,226>Negativ. Målet er stadig aktivt.
+<clr:18,199,226>Bekræftet.<cr>Omkalibrerer.
+<clr:18,199,226>Forbereder kommunikation på langvarig konflikt.
+<clr:18,199,226>Overwatch, kode 10-4.<cr>Bugåbner løs.
+<clr:18,199,226>Forbereder bugåbner.
+<clr:18,199,226>Indsætter bugåbner.
+<clr:18,199,226>Bugåbner er indsat og scanner.
+<clr:18,199,226>Bugåbner løs.
+<clr:18,199,226>Aktiverer bugåbner.<cr>Søg og angrib.
+<clr:18,199,226>Udløser bugåbner.<cr>Resultater afventer.
+<clr:18,199,226>Bugåbner er på jagt.<cr>Alle enheder, hold lav profil.
+<clr:18,199,226>10-0.<cr>Bugåbner er på jagt.
+<clr:18,199,226>Bugåbner elimineret.<cr>Kontrollér og inddæm.
+<clr:18,199,226>Bugåbner løs.<cr>Identificer og forfølg.
+<clr:18,199,226>Alle enheder, indstil skydningen.<cr>Målet er en allieret.
+<clr:18,199,226>APF kommer nærmere.
+<clr:18,199,226>Stormer ind.
+<clr:18,199,226>APF-enhed på vej.
+<clr:18,199,226>APF rykker frem mod mål.
+<clr:18,199,226>APF rykker frem.
+<clr:18,199,226>APF rykker fremad.
+<clr:18,199,226>APF, spærreild.
+<clr:18,199,226>APF angriber.
+<clr:18,199,226>Angriber, angriber.
+<clr:18,199,226>Angriber mål 1.
+<clr:18,199,226>Desinficerer primært mål.
+<clr:18,199,226>Giv op, Alyx.
+<clr:18,199,226>Angriber, angriber på primær fjende.
+<clr:18,199,226>APF på Alyx.
+<clr:18,199,226>Skifter mål.<cr>Kode: Nedbrydning.
+<clr:18,199,226>Målet er beskyttet.<cr>Korrigerer.
+<clr:18,199,226>APF. Fjerner support.
+<clr:18,199,226>APF. Våben rettet mod dækning.
+<clr:18,199,226>Granat på 3.
+<clr:18,199,226>APF, visuel kontakt med antlion.
+<clr:18,199,226>Antlion, APF, angrib.
+<clr:18,199,226>Rapportér kontakt. Parasitter.
+<clr:18,199,226>Løse parasitter på vej.
+<clr:18,199,226>APF har visuel kontakt med parasitter.
+<clr:18,199,226>Ughhhhh
+<clr:18,199,226>Levende parasitter ved sektor...
+<clr:18,199,226>APF har visuel kontakt med nekrotisk.
+<clr:18,199,226>Visuel kontakt med nekrotisk.
+<clr:18,199,226>APF, bekræfter drab.
+<clr:18,199,226>Ugh.
+<clr:18,199,226>Parasit fjernet.
+<clr:18,199,226>APF til ordinal. Parasit elimineret.
+<clr:18,199,226>Ordinal. Mål 1 er stille.
+<clr:18,199,226>Hun er død. Påfør antiseptisk middel.
+<clr:18,199,226>Problem elimineret.
+<clr:18,199,226>Mål 1 er nede.
+<clr:18,199,226>Nekrotisk er stille.
+<clr:18,199,226>Dæk APF.
+<clr:18,199,226>Anmoder om dækning ved APF.
+<clr:18,199,226>Dækning ved...
+<clr:18,199,226>Undvig.
+<clr:18,199,226>Kom i dækning.
+<clr:18,199,226>Alarm. Håndgranat.
+<clr:18,199,226>Pas på.
+<clr:18,199,226>Aktiveret granat. Tilbage.
+<clr:18,199,226>AP...
+<clr:18,199,226>Skaber visuel bekræftelse
+<clr:18,199,226>Korrigerer sigtelinjer.
+<clr:18,199,226>Danner formation.
+<clr:18,199,226>Sænk våben!<cr>APF! Sænk våben.
+<clr:18,199,226>APF ved primært referencepunkt.
+<clr:18,199,226>Kode 3. I gang med rensning.
+<clr:18,199,226>Våben rettet på fjendtlig enhed.
+<clr:18,199,226>Angrib Vance.
+<clr:18,199,226>Starter beskydning ved...
+<clr:18,199,226>Hun er her.
+<clr:18,199,226>Antiborger 1 bekræftet. Angriber.
+<clr:18,199,226>Uddriver alt i sektorer.
+<clr:18,199,226>Håndgranat kastet på sidst kendte position.
+<clr:18,199,226>Granat på sidst kendte position.
+<clr:18,199,226>Afslører.
+<clr:18,199,226>APF, lyd til.<cr>Rapporterer alle kontaminanter.
+<clr:18,199,226>Jeg er ramt.
+<clr:18,199,226>Modtager skade.<cr>Søger dækning.
+<clr:18,199,226>Bly effektivt.<cr>Tager stimdosis.
+<clr:18,199,226>Positionsassistance til APF...
+<clr:18,199,226>Kontaminant ude af syne.
+<clr:18,199,226>Ingen visuel kontakt. Ingen visuel kontakt.
+<clr:18,199,226>APF anmoder om målets position.
+<clr:18,199,226>Ordinal, vi har kode 7-1-3.<cr>Anmoder om sidst kendte visuelle kontakt.
+<clr:18,199,226>Har brug for positionsassistance. Sektor...
+<clr:18,199,226>Ingen visuel kontakt. Ordinal, assister.
+<clr:18,199,226>APF, negativ visuel kontakt.
+<clr:18,199,226>Mulig undvigelse.<cr>Anmoder om sigtelinjer.
+<clr:18,199,226>Undvigende kontaminant.<cr>Ordinal, assister.
+<clr:18,199,226>Tjekker kontakt.
+<clr:18,199,226>Nærhedsalarm. Giver los.
+<clr:18,199,226>APF, bekræftet.
+<clr:18,199,226>APF i position.
+<clr:18,199,226>APF afventer.
+<clr:18,199,226>APF. Øjne åbne.
+<clr:18,199,226>APF sikrer ydergrænser.
+<clr:18,199,226>Den er sårbar.
+<clr:18,199,226>Nyt angreb på fjendtlig enhed. SNAREST.
+<clr:18,199,226>Stærkere våben til APF.
+<clr:18,199,226>APF effektiv.
+<clr:18,199,226>Bloker alle stimdoser for fjendtlig enhed.
+<clr:18,199,226>APF til ordinal. Fjendtlig enhed er stille.
+<clr:18,199,226>Tilstand alfa.
+<clr:18,199,226>APF slut.
+<clr:18,199,226>Øjne og ører åbne.
+<clr:18,199,226>Søger i skygger.
+<clr:18,199,226>Rapporterer alle sigtelinjer.
+<clr:18,199,226>Fortsætter. Fjendtlig ekstrahering.
+<clr:18,199,226>Angrib! Mål...
+<clr:18,199,226>Afsted, afsted, afsted!
+<clr:18,199,226>APF. Kontakt ved sektor...
+<clr:18,199,226>APF opsnapper.
+<clr:18,199,226>Aktiv visuel kontakt ved...
+<clr:18,199,226>APF lader våben.
+<clr:18,199,226>APF lav. 4
+<clr:18,199,226>Ingen våben. Korrigerer.
+<clr:18,199,226>APF, tomt våben.
+<clr:18,199,226>Faldskærm til APF.
+<clr:18,199,226>APF. Omgrupperer.
+<clr:18,199,226>APF. Retræte.
+<clr:18,199,226>Situation ustabil.<cr>Søger dækning.
+<clr:18,199,226>Tjek silhuetter.<cr>Mulige sekundære mål.
+<clr:18,199,226>Fjendtlig enhed har håndgranater.
+<clr:18,199,226>Fjendtlig enhed genlader.<cr>Våbenfordel.
+<clr:18,199,226>Fordel.
+<clr:18,199,226>APF. Kontaminant er sårbar.
+<clr:18,199,226>Visuel kontakt. Rulleminer. Våben frem.
+<clr:18,199,226>Rulleminer! Indsatsenhed, indsatsenhed.
+<clr:18,199,226>Rulleminer. Indkommende.
+<clr:18,199,226>Ordinal. Bly er boostet.
+<clr:18,199,226>APF. Målet har ulovligt bly.
+<clr:18,199,226>Sektor 9: udbrud, udbrud, udbrud.
+<clr:18,199,226>Overwatch, sektor ikke under kontrol.
+<clr:18,199,226>Overwatch, anmodning om skyværn.
+<clr:18,199,226>Vi har et problem.
+<clr:18,199,226>Overwatch. APF er sidste aktive enhed.
+<clr:18,199,226>Overwatch. APF er sidste enhed.<cr>Anmoder om assistance.
+<clr:18,199,226>Ugh. Anmoder om skygge.
+<clr:18,199,226>Overwatch. Udbrud er ikke inddæmmet!
+<clr:18,199,226>APF til Overwatch.<cr>Overhalingstilstand er aktiv. Bekræft.
+<clr:18,199,226>Overwatch! Eneste kontakt.<cr>Meget fjendtlige enheder!
+<clr:18,199,226>Overwatch.<cr>Anmoder om tilbagetrækning af APF.<cr>Sektor...
+<clr:18,199,226>Overwatch!<cr>APF er sidste indsatsenhed.
+<clr:18,199,226>Overwatch! Ordinal hæmmet.<cr>Svarer igen!
+<clr:18,199,226>Ordinal er stille! Indled fuldt modangreb!
+<clr:18,199,226>Ordinal har ingen puls.<cr>Ordinal har ingen puls!
+<clr:18,199,226>APF gennemtvinger overholdelse.
+<clr:18,199,226>APF aktiv på...
+<clr:18,199,226>APF. Fjendtlig enhed mangler præcision.
+<clr:18,199,226>Overwatch. Kontaminanten har det hele i munden.
+<clr:18,199,226>APF er intakt.
+<clr:18,199,226>Overwatch. Negativ.
+<clr:18,199,226>Bekræftet bly.<cr>Spærreild aktiv.
+<clr:18,199,226>Kontakt. Fjendtlig...
+<clr:18,199,226>APF er klar til at angribe.
+<clr:18,199,226>Målet angriber.
+<clr:18,199,226>Lukker arena.<cr>Indled skyggetilstand.
+<clr:18,199,226>Intet at rapportere.
+<clr:18,199,226>3, 11, 1, 14, 6
+Ja. Din tur. Skifter.
+<clr:18,199,226>Negativ bevægelse. Koordinat: 7-2.
+Modtaget.
+<clr:18,199,226>Radius sikret. Skifter.
+<clr:18,199,226>Overwatch. Afventer udsendelse.
+<clr:18,199,226>Stabil. Afventer udsendelse. Skifter.
+<clr:18,199,226>Udbrudsstatus har kode: Delta. 7.<cr>Team Solnedgang er overvældet med kontakt... Modtaget.
+<clr:18,199,226>Negativ. Afventer sekundære parameterkoder.
+<cr>Lyd: 3. Sigte: 15. Skifter.
+<clr:18,199,226>Modtaget.<cr>Venter på kontakt. Skifter.
+<clr:18,199,226>Indkommende viromer.<cr>Til alle enheder: Gør klar til kontakt.
+<clr:18,199,226>Udrykningskode: 2. Whisky. 0
+<cr>Bekræftet.
+<clr:18,199,226>Modtaget. Accepteret.<cr>Opdatering færdig om 3 sekunder
+<clr:18,199,226>Opdatering er live.<cr>Accept er obligatorisk.
+<clr:18,199,226>Stabiliseringsteam holder position.<cr>Vær på vagt.
+<clr:18,199,226>Kode 10-307. Fortsætter med eskalering
+<sfx><norepeat:2><clr:255,0,0>[Ingen ammunition ladet]
+<sfx:1><norepeat:3><clr:255,0,0>[Sidste patron i kammer]
+<sfx><norepeat:3><clr:255,0,0>[Sidste skud affyret]
+<sfx><norepeat:5><clr:255,176,0>[Ikke mere ammunition til pistolen]
+<sfx><norepeat:5>[Kammer på haglgevær fyldt]
+<sfx><norepeat:5><clr:255,176,0>[Ikke mere ammunition til haglgeværet]
+<sfx><norepeat:3>[Kugleklynge klar]
+<sfx><norepeat:3><clr:255,0,0>[Sidste skud]
+<sfx><norepeat:5><clr:255,176,0>[Ikke mere ammunition til maskinpistolen]
+<sfx><norepeat:5>[Teleportering blokeret]
+<sfx>[Start på hacking]
+<sfx>[Hacking mislykkedes]
+<sfx>[Hacking lykkedes]
+<sfx>[Granateksplosion]
+<sfx><clr:255,0,0>[Granat aktiveret]
+<sfx>[Xen-granateksplosion]
+<sfx>[Heling fuldført]
+<sfx><norepeat:1><clr:255,0,0>[Helbredsstation brugt op]
+<sfx>[Heling begynder]
+<sfx>[Helbredssprøjte brugt]
+<sfx>[Bekræftende bip]
+<sfx>[Laser aktiveret]
+<sfx><norepeat:1>[Tank aktiveret]
+<sfx>[Combine-batteriholder åbnes]
+<sfx>[Combine-batteri accepteret]
+<sfx>[Dør har strøm]
+<sfx>[Dør låst op]
+<sfx>[Opgraderer]
+<sfx>[Opgradering fuldført]
+<sfx><norepeat:8>[Kredsløb fuldført]
+<sfx:1><norepeat:1>[Resin lagt i rygsæk]
+<sfx:1><norepeat:1>[Ammunition taget fra rygsækken]
+<sfx:1>[Resin blev taget op af rygsæk]
+<sfx:1><norepeat:1>[Ammunition lagt i rygsækken]
+<sfx><norepeat:8>[Lommelygte monteret]
+<sfx><norepeat:20>[Advarsel om dårligt helbred]
+<sfx>[Togdør]
+<sfx>[Låst dør]
+<sfx><norepeat:4>[Dør knirker højt]
+<sfx><norepeat:4>[Elevator plinger]
+<sfx><norepeat:4>[Elevator starter]
+<sfx><norepeat:4>[Elevator ankommer]
+<sfx><norepeat:4>[Elevatorknap]
+<sfx><norepeat:6>[Kasse lukket]
+<sfx><norepeat:6>[Kasse åbnet]
+<sfx>[Lås ødelægges]
+<sfx:1>[Eksplosion]
+<sfx><norepeat:2>[Banken på glas]
+<sfx>[Dør smækker]
+<sfx>[Motorstart]
+<sfx>[Elektrisk stød]
+<sfx>[Hemmelig dør åbnes]
+<sfx>[Stige sænkes]
+<sfx>[Drone eksploderer]
+<sfx>[Knirkende dør åbnes]
+<sfx>[Knurren]
+<sfx>[Forfærdeligt skrig]
+<sfx>[Banken på hegn]
+<sfx>[Glas knuses]
+<sfx>[Dør åbner]
+<sfx>[Dør lukker]
+<sfx>[Panel åbnes]
+<sfx>[Panel lukkes]
+<sfx>[Klokke ringer]
+<sfx>[Dør låses op]
+<sfx>[Skydedør åbnes]
+<sfx>[Skydedør lukkes]
+<sfx>[Vortigaunt-energieksplosion]
+<sfx>[Strømafbrydelse]
+<sfx>[Elevator styrter ned]
+<sfx>[Elevator plinger]
+<sfx>[Elevator falder]
+<sfx>[Elevatorfejl]
+<sfx>[Strøm til elevator afbrudt]
+<sfx>[Strøm til elevator slået til]
+<sfx>[Elevator starter]
+<sfx>[Lys tænder]
+<sfx>[Lys går ud]
+<sfx><norepeat_global:5>[Rumsteren fra ventilationsskakter i loftet]
+<sfx>[Dør smadres]
+<sfx>[Elektrisk eksplosion]
+<sfx>[Rumsteren i loftsfliser]
+<sfx>[Loft falder ned]
+<sfx>[Headcrab piler af sted]
+<sfx>[Headcrab larmer]
+<sfx>[Strøm slås til]
+<sfx>[Der sparkes til en stige]
+<sfx>[Strøm slås fra]
+<sfx>[Energioverbelastning]
+<sfx>[Glas eksploderer]
+<sfx>[Dødsskrig fra rådgiver]
+<sfx>[Tiden spoler tilbage]
+<sfx>[Tiden står stille]
+<clr:255,176,0>Advarsel: Livstegn kritiske.<cr>Søg lægehjælp.
+<sfx>[Fodtrin i ventilationsskakt]
+<sfx>[Vindueskollision]
+<sfx>[Tog standser]
+<sfx>[Toiletskyl]
+<sfx><norepeat:5><clr:255,0,0>[Antlion er død]
+<sfx><norepeat:5><clr:255,0,0>[Barnacle er død]
+<sfx:1><norepeat:10>[Alarm: Headcrab]
+<sfx><norepeat:10>[Headcrab angriber]
+<sfx><norepeat:10>[Headcrab bider]
+<sfx:1><norepeat:10>[Headcrab savler]
+<sfx:1><norepeat:10>[Headcrab brænder]
+<sfx:1><norepeat:10>[Headcrab graver]
+<sfx:1><norepeat:10>[Headcrab dukker op]
+<sfx><norepeat:10><clr:255,0,0>[Headcrab er død]
+<sfx:1><norepeat:10>[Headcrab har ondt]
+<sfx>[Alienskrig]
+<sfx><norepeat:4>[Lynhunds hjerte indsættes]
+<sfx><norepeat:4>[Lynhunds hjerte fjernes]
+<sfx><norepeat:5><clr:255,0,0>[Lynhund er død]
+<sfx><norepeat:8>[Blære svulmer]
+<sfx>[Blære eksploderer]
+<sfx:1><norepeat_global:5>[Xen-muslinger klaprer]
+<sfx:1><norepeat:4>[Xen-sporesky]
+<sfx><norepeat:4>[Jeff angriber]
+<sfx><norepeat:6>[Jeff ødelægger dør]
+<sfx><norepeat:4>[Forfærdeligt skrig]
+<sfx><norepeat:4>[Jeff er vred]
+<sfx><norepeat:5>[Jeff tramper]
+<sfx><norepeat:6>[Jeff slår på dør]
+<sfx><norepeat:6>[Dør åbnes]
+<sfx><norepeat:12>[Jeff går]
+<sfx><norepeat:20>[Elevatormusik]
+<sfx><norepeat:20>[Højtalerlyd]
+<sfx><norepeat:5>[Jeff skriger]
+<sfx><clr:255,176,0>[Ingen puls]
+<sfx><clr:255,176,0>Kritisk helbred
+<sfx><clr:255,176,0>Søg lægehjælp.
+<sfx><norepeat:5>[Batteri indsættes]
+<sfx><norepeat:5>[Batteri fjernes]
+<sfx><norepeat_global:5><clr:255,176,0>[Kugler preller af på panser]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Slag med brækjern!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Klask med brækjern!]
+<sfx><norepeat:5><playerclr:255,176,0:255,255,255>[Sving med brækjern]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tomt kammer]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Pistolskud]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[.357-skud]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Maskinpistol affyrer granat]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Maskinpistol: Primært skud]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Genlader]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Dobbeltskud med haglgevær!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Enkeltskud med haglgevær!]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Primært skud]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Tom]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Sekundært skud]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Ladt sekundær skydning]
+<sfx><norepeat:5>[Pistolskud]
+<sfx><norepeat:4><clr:255,176,0>[Samler ammunition op]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[EKSPLOSION]
+<sfx><norepeat:4><playerclr:255,176,0:255,255,255>[Granateksplosion]
+<sfx:1><norepeat_global:8><clr:255,176,0>[Kugle preller af]
+<sfx><norepeat:4><clr:255,176,0>[Skud fra strider rammer]
+<sfx:1><norepeat_global:8><playerclr:255,176,0:255,255,255>[Preller af]
+<sfx><clr:255,170,0>[Advarsel: lavt helbred!]
+<sfx><clr:255,170,0>[Advarsel: lav ammunitionsmængde!]
+<sfx><clr:255,170,0>[Sprint opbrugt]
+<sfx><norepeat:5><clr:255,170,0>[Sprint aktiv]
+<sfx><clr:255,170,0>[Kan ikke bruge]
+<sfx><clr:255,0,0>[Død]
+<sfx><clr:255,170,0>[Samler batteri op]
+<sfx><clr:255,170,0>[Samler medicinsæt op]
+<sfx><clr:255,170,0>[Samler helbredsampul op]
+<sfx><clr:255,170,0>[Afvis]
+<sfx><clr:255,170,0>[Påbegynd heling]
+<sfx><norepeat:5>[Knap trykkes]
+<sfx><norepeat:10>[Antlion angriber]
+<sfx><norepeat:10>[Antlion graver]
+<sfx><norepeat:10>[Antlion dukker op]
+<sfx><norepeat:10>[Antlion har ondt]
+<sfx><norepeat:10>[Antlion knaser]
+<sfx><norepeat:3>[Barnacle bider]
+<sfx><norepeat:3><clr:255,0,0>[Barnacle er død]
+<sfx><norepeat:3>[Barnacle trækker]
+<sfx><norepeat:3>[Barnacle grynter]
+<sfx><norepeat:3>[Barnacle skriger]
+<sfx><norepeat:5>[Barnacle fordøjer]
+<sfx><norepeat:10>[Headcrab truer]
+<sfx><norepeat:10>[Alarm: Headcrab]
+<sfx><norepeat:10>[Eksplosion!]
+<sfx><norepeat:10>[Kamera trækker tilbage]
+<sfx><norepeat:10>[Kamera indsættes]
+<sfx><norepeat:10>[Alarm: Kamera]
+<sfx><norepeat:10>[Kameraklik]
+<sfx>[Kamera ødelagt]
+<sfx><norepeat:10>[Alarm: Krage]
+<sfx><norepeat:10>[Krage har ondt]
+<sfx><norepeat:10><clr:255,0,0>[Krage er død]
+<sfx><norepeat:10>[Krageskræppen!]
+<sfx><norepeat:5><clr:255,0,0>[Manhack er død]
+<sfx><norepeat:20>[Manhack-motor]
+<sfx><norepeat:10>[Plask!]
+<sfx><norepeat:10>[Manhack indsættes]
+<sfx><norepeat:5>[Manhack indsat]
+<sfx><norepeat:30>[Combine-radio: Snakken]
+<sfx><norepeat:15>[Combine-radio: Alarm!]
+<sfx><norepeat:15>[Combine-radio: Granatalarm!]
+<sfx><norepeat:15>[Combine-radio: Anmodning om støtte]
+<sfx><norepeat:25>[Combine-radio: Taktisk]
+<sfx><norepeat:10>[Alarm: Scannerrobot]
+<sfx><norepeat:5><clr:255,0,0>[Scannerrobot er død]
+<sfx><norepeat:5>[Scannerrobot klikker]
+<sfx><norepeat:10>[Scannerrobot styrtdykker]
+<sfx><norepeat:10>[Alarm: Strider]
+<sfx>[Strider har ondt]
+<sfx><norepeat:5><clr:255,0,0>[Strider er død]
+<sfx>[Strider angriber]
+<sfx><norepeat:15>[Strider affyrer rullekanon]
+<sfx><norepeat:10>[Striders fodtrin]
+<sfx>[Styrt!]
+<sfx>[Vortigaunt angriber med stråler]
+<sfx><norepeat:10>[Alarm: Zombie]
+<sfx><norepeat:10><clr:255,0,0>[Zombie er død]
+<sfx><norepeat_global:20>[Zombie stønner]
+<sfx><norepeat:10>[Zombie har ondt]
+<sfx>[Låst]
+<sfx><norepeat:1>[Dør lukkes]
+<sfx><norepeat:1>[Låge lukkes]
+<sfx><norepeat:1>[Metalklang]
+<sfx><norepeat:1>[Skab lukkes]
+<sfx><norepeat:1>[Ulåst dør]
+<sfx><norepeat:1>[Låst]
+<sfx>[Knap trykkes]
+<sfx>[Håndtag]
+<sfx>[Knap låst]
+<sfx>[Combine-knap]
+<sfx><norepeat:3>[Vandplask]
+<sfx><norepeat:1>[Glas splintres]
+<sfx><norepeat:1>[Keramik knuses]
+<sfx><norepeat:1>[Keramik splintres]
+<sfx><norepeat:1>[Skærm splintres]
+<sfx>[Melonsplat]
+<sfx><norepeat:1>[Kraftigt stød]
+<sfx><norepeat:3>[Nøglekort accepteret]
+<sfx><norepeat:3>[Nøglekort afvist]
+<sfx><norepeat:1>[Træ flækker]
+<sfx><norepeat:1>[Metal ødelagt]
+<sfx><norepeat:1>[Beton ødelægges]
+<sfx><norepeat:1>[Gips ødelægges]
+<sfx><norepeat:1>[Pap ødelægges]
+<sfx><norepeat:1>[Plastik ødelægges]
+<sfx><norepeat:1>[Træ giver efter]
+<sfx><norepeat:3>[Træ splintrer]
+<sfx><norepeat:1>[Metal ødelægges]
+<sfx><norepeat:1>[Metal giver efter]
