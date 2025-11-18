@@ -2722,8 +2722,20 @@ function showCopyAssistant() {
     const stepSpan = document.getElementById('copyAssistStep');
     const prog = document.getElementById('copyAssistProgress');
     const translator = window.i18n;
+    // Hilfsfunktion, um Platzhalter in Übersetzungen zu ersetzen
+    const formatTranslation = (key, replacements = {}) => {
+        const fallbackTemplates = {
+            'copyAssistant.status.complete': 'Fertig',
+            'copyAssistant.progress.files': 'Datei {current} von {total}',
+            'copyAssistant.progress.steps': 'Schritt {current} / {total}'
+        };
+        const template = translator ? translator.t(key) : fallbackTemplates[key] || '';
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, template);
+    };
     if (!file) {
-        countSpan.textContent = translator ? translator.t('copyAssistant.complete') : 'Fertig';
+        countSpan.textContent = formatTranslation('copyAssistant.status.complete');
         stepSpan.textContent = '';
         prog.style.width = '100%';
         return;
@@ -2739,16 +2751,14 @@ function showCopyAssistant() {
     document.getElementById('copyEn').textContent = file.enText || '';
     document.getElementById('copyDe').textContent = file.deText || '';
     document.getElementById('copyEmo').textContent = file.emotionalText || '';
-    const countText = translator
-        ? translator.t('copyAssistant.fileProgress')
-            .replace('{current}', copyAssistIndex + 1)
-            .replace('{total}', total)
-        : `Datei ${copyAssistIndex + 1} von ${total}`;
-    const stepText = translator
-        ? translator.t('copyAssistant.stepProgress')
-            .replace('{current}', copyAssistStep + 1)
-            .replace('{total}', 2)
-        : `Schritt ${copyAssistStep + 1} / 2`;
+    const countText = formatTranslation('copyAssistant.progress.files', {
+        current: copyAssistIndex + 1,
+        total
+    });
+    const stepText = formatTranslation('copyAssistant.progress.steps', {
+        current: copyAssistStep + 1,
+        total: 2
+    });
     countSpan.textContent = countText;
     stepSpan.textContent = stepText;
     const progressPercent = total > 0 ? (copyAssistIndex / total) * 100 : 100;
