@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.537
+* `web/src/migrationUI.js` ersetzt sämtliche Statusmeldungen durch i18n-Schlüssel mit Platzhaltern, nutzt `i18n.format` für Zähler/Dateinamen und rendert laufende Meldungen bei Sprachwechsel neu.
+* `web/src/i18n.js` hinterlegt neue Migrations-Statusschlüssel in Deutsch und Englisch für Vorbereitung, Export, Import, Migration sowie Fehlerhinweise.
+* `README.md` hebt Version **1.40.537** hervor und beschreibt die lokalisierten Migrations-Meldungen.
+* `artifacts/migration-status-placeholder.txt` dokumentiert als Text-Platzhalter die aktualisierten Statusanzeigen.
 # 🛠️ Patch in 1.40.536
 * `electron/main.js` nutzt i18n-Schlüssel für Start-Sperre und Debug-Report-Dialoge, setzt Dialogtitel/Buttons aus dem Übersetzer und stellt IPC-Helfer für die Sprachwahl bereit.
 * `electron/mainI18n.js` lädt Sprachdateien aus `electron/locales/main/`, cached sie mit englischem Fallback und ersetzt Platzhalter sicher.

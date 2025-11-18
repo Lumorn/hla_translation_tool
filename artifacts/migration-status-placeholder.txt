@@ -1,0 +1,1 @@
+Platzhalter für UI-Screenshot: Aktualisierte Migrations-Statusmeldungen werden nun über i18n-Schlüssel gerendert und bei Sprachwechsel neu übersetzt.
