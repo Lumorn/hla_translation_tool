@@ -50,6 +50,7 @@
                 <div class="toolbar-tabs" role="tablist" aria-label="Arbeitsbereich">
                     <button id="tab-project" class="toolbar-tab is-active" data-panel="project" role="tab" aria-selected="true" aria-controls="panel-project" data-i18n="tab.project">Projekt</button>
                     <button id="tab-tools" class="toolbar-tab" data-panel="tools" role="tab" aria-selected="false" aria-controls="panel-tools" data-i18n="tab.tools">Werkzeuge</button>
+                    <button id="tab-legacy" class="toolbar-tab" data-panel="legacy" role="tab" aria-selected="false" aria-controls="panel-legacy" data-i18n="tab.legacy">Alt</button>
                     <button id="tab-media" class="toolbar-tab" data-panel="media" role="tab" aria-selected="false" aria-controls="panel-media" data-i18n="tab.media">Medien</button>
                     <button id="tab-system" class="toolbar-tab" data-panel="system" role="tab" aria-selected="false" aria-controls="panel-system" data-i18n="tab.system">System</button>
                     <button id="tab-search" class="toolbar-tab" data-panel="search" role="tab" aria-selected="false" aria-controls="panel-search" data-i18n="tab.search">Suche &amp; Verlauf</button>
@@ -80,18 +81,27 @@
                                 <h3 id="toolbarToolsTitle" class="group-title" data-i18n="toolbar.tools.title">Werkzeuge</h3>
                                 <div class="group-buttons">
                                     <button id="gptScoreButton" class="btn btn-secondary" data-i18n="button.gptScore">Bewerten (GPT)</button>
-                                    <button id="randomProjectButton" class="btn btn-secondary" data-i18n="button.randomProject">🎲 Zufall</button>
                                     <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()" data-i18n="button.wordList">📚 Wörter</button>
                                     <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen" data-i18n="button.generateEmotions" data-i18n-title="tooltip.generateEmotions">Emotionen (DE)</button>
-                                    <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden" data-i18n="button.sendElevenLabs" data-i18n-title="tooltip.sendElevenLabs">An ElevenLabs schicken</button>
                                     <button class="btn btn-secondary" onclick="openSegmentDialog()" data-i18n="button.assignAudio">🔊 Audio-Datei zuordnen</button>
                                     <button class="btn btn-secondary" onclick="showZipImportDialog()" data-i18n="button.importZip">ZIP importieren</button>
-                                    <button class="btn btn-secondary" id="copyAssistantButton" data-i18n="button.copyAssistant">Kopierhilfe</button>
-                                    <button class="btn btn-secondary" id="copyAssistant2Button" data-i18n="button.copyAssistant2">Kopierhilfe 2</button>
                                     <button class="btn btn-secondary" id="copyAllEmosButton" data-i18n="button.copyEmotions">Emotionen kopieren</button>
                                     <button class="btn btn-secondary" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt" data-i18n="button.subtitleSearchAll" data-i18n-title="tooltip.subtitleSearchAll">UT-Suche alles</button>
-                                    <button class="btn btn-secondary" id="openDubbingLog" onclick="openDubbingLog()" data-i18n="button.dubbingLog">📝 Protokoll</button>
                                     <button class="btn btn-secondary" id="devToolsButton" data-i18n="button.devTools">🐞 DevTools</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="panel-legacy" class="toolbar-panel" data-panel="legacy" role="tabpanel" aria-labelledby="tab-legacy" aria-hidden="true">
+                        <div class="toolbar-group toolbar-group--legacy">
+                            <div class="group-main">
+                                <h3 id="toolbarLegacyTitle" class="group-title" data-i18n="toolbar.legacy.title">Alt &amp; Einstellungen</h3>
+                                <div class="group-buttons">
+                                    <button id="randomProjectButton" class="btn btn-secondary" data-i18n="button.randomProject">🎲 Zufall</button>
+                                    <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden" data-i18n="button.sendElevenLabs" data-i18n-title="tooltip.sendElevenLabs">An ElevenLabs schicken</button>
+                                    <button class="btn btn-secondary" id="copyAssistantButton" data-i18n="button.copyAssistant">Kopierhilfe</button>
+                                    <button class="btn btn-secondary" id="copyAssistant2Button" data-i18n="button.copyAssistant2">Kopierhilfe 2</button>
+                                    <button class="btn btn-secondary" id="openDubbingLog" onclick="openDubbingLog()" data-i18n="button.dubbingLog">📝 Protokoll</button>
                                     <button class="btn btn-secondary" id="debugReportButton" data-i18n="button.debugReport">📋 Debug-Bericht</button>
                                     <div class="menu-wrapper settings-container">
                                         <button id="settingsButton" class="btn btn-secondary menu-toggle" onclick="toggleSettingsMenu()" aria-haspopup="true" aria-expanded="false" data-i18n="settings.title">⚙️ Einstellungen</button>
