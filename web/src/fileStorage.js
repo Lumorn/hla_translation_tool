@@ -1,5 +1,16 @@
 // Verwaltet das Speichern und Laden großer Datenmengen über die File System Access API
 // Diese Funktionen ermöglichen es, Projektdaten außerhalb des LocalStorage abzulegen
+// Übersetzungshelfer, damit Dialoge lokalisiert bleiben
+const translator = window.i18n || {
+    t: key => key,
+    format: (key, replacements = {}) => {
+        let text = key;
+        for (const [placeholder, value] of Object.entries(replacements)) {
+            text = text.replaceAll(`{${placeholder}}`, value);
+        }
+        return text;
+    }
+};
 
 // Hilfsfunktion: Stellt anhand eines Journals unvollendete Schreibvorgänge fertig
 async function journalWiederherstellen(dirHandle) {
@@ -77,10 +88,10 @@ window.loadProjectFromFile = async function() {
         text = await file.text();
     } catch (err) {
         // Nutzer informieren und optional Sicherungsdatei anbieten
-        if (confirm('Fehler beim Lesen der Datei. Möchten Sie eine Sicherungsdatei wählen?')) {
+        if (confirm(translator.t('fileStorage.readError.confirmBackup'))) {
             return await window.loadProjectFromFile();
         }
-        alert('Ladevorgang abgebrochen: ' + err.message);
+        alert(translator.format('fileStorage.readError.abort', { message: err.message }));
         return null;
     }
 
@@ -89,10 +100,10 @@ window.loadProjectFromFile = async function() {
     try {
         project = JSON.parse(text);
     } catch (err) {
-        if (confirm('Die Datei enthält keine gültigen Projektdaten. Sicherungsdatei laden?')) {
+        if (confirm(translator.t('fileStorage.parseError.confirmBackup'))) {
             return await window.loadProjectFromFile();
         }
-        alert('Ladevorgang abgebrochen: ' + err.message);
+        alert(translator.format('fileStorage.parseError.abort', { message: err.message }));
         return null;
     }
 
@@ -101,10 +112,10 @@ window.loadProjectFromFile = async function() {
         const { validateProjectManifest } = await import('../../utils/projectSchema.js');
         validateProjectManifest(project);
     } catch (err) {
-        if (confirm('Die Datei erfüllt nicht das erforderliche Schema. Sicherungsdatei laden?')) {
+        if (confirm(translator.t('fileStorage.schema.invalid.confirmBackup'))) {
             return await window.loadProjectFromFile();
         }
-        alert('Ladevorgang abgebrochen: ' + err.message);
+        alert(translator.format('fileStorage.schema.invalid.abort', { message: err.message }));
         return null;
     }
 
