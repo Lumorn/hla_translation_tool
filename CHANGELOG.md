@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.521
+* `web/src/main.js` öffnet den DE-Audio-Editor auch ohne bestehenden Cache-Eintrag, indem ein Standardpfad als Fallback gesetzt wird.
+* `README.md` führt Version **1.40.521** ein und erwähnt den robusteren Öffnen-Fallback für DE-Audio.
 # 🛠️ Patch in 1.40.520
 * `web/src/i18n.js` führt i18n-Schlüssel für Segment-Indizes, Start-/Ende-/Längen-Texte mit Millisekunden-Vorlagen sowie die Behalten-/Löschen-Schalter ein.
 * `web/src/main.js` nutzt die neuen Schlüssel in `refreshSegmentSuggestionList()`, sodass Beschriftungen und Toggle-Buttons beim Sprachwechsel neu gerendert werden.
