@@ -88,6 +88,9 @@ async function requestPersistentStorage() {
 function setupLanguageControls() {
     if (!window.i18n) return;
 
+    // Fallback-Übersetzer bereitstellen, falls i18n temporär fehlt
+    const t = window.i18n?.t || (value => value);
+
     const staticTargets = [
         { selector: '#projectLoadingText', key: 'loading.project' },
         { selector: '#errorBannerRetry', key: 'loading.retry' },
@@ -215,7 +218,7 @@ function setupLanguageControls() {
         if (select) {
             select.value = lang;
         }
-        document.title = window.i18n.t('app.title');
+        document.title = t('app.title');
         const currentMode = window.localStorage.getItem('hla_storageMode') || 'localStorage';
         updateStorageIndicator(currentMode);
         updateStorageUsage();
@@ -239,7 +242,7 @@ function setupLanguageControls() {
     }
 
     window.i18n.initializeLanguage();
-    document.title = window.i18n.t('app.title');
+    document.title = t('app.title');
 }
 
 window.addEventListener('DOMContentLoaded', setupLanguageControls);
@@ -3922,16 +3925,18 @@ function renderProjects() {
             `;
 
             // Tooltip-Text über i18n zusammenbauen, damit Sprachen korrekt wechseln
+            // Fallback-Übersetzer nutzen, damit Tooltips auch ohne aktives i18n nicht abstürzen
+            const t = window.i18n?.t || (value => value);
             const tooltipLines = [];
             tooltipLines.push(p.name);
             if (p.levelName) {
-                tooltipLines.push(`${i18n.t('project.tooltip.label.level')}: ${p.levelName}`);
+                tooltipLines.push(`${t('project.tooltip.label.level')}: ${p.levelName}`);
             }
-            tooltipLines.push(`${i18n.t('project.tooltip.label.part')}: ${p.levelPart}`);
+            tooltipLines.push(`${t('project.tooltip.label.part')}: ${p.levelPart}`);
             tooltipLines.push('');
-            tooltipLines.push(`${i18n.t('project.tooltip.label.en')}: ${stats.enPercent}%  • ${i18n.t('project.tooltip.label.de')}: ${stats.dePercent}%`);
-            tooltipLines.push(`${i18n.t('project.tooltip.label.deAudio')}: ${stats.deAudioPercent}%  • ${i18n.t('project.tooltip.label.complete')}: ${stats.completedPercent}%${done ? i18n.t('project.tooltip.done') : ''}`);
-            tooltipLines.push(`${i18n.t('project.tooltip.label.gpt')}: ${stats.scoreMin}  • ${i18n.t('project.tooltip.label.files')}: ${stats.totalFiles}`);
+            tooltipLines.push(`${t('project.tooltip.label.en')}: ${stats.enPercent}%  • ${t('project.tooltip.label.de')}: ${stats.dePercent}%`);
+            tooltipLines.push(`${t('project.tooltip.label.deAudio')}: ${stats.deAudioPercent}%  • ${t('project.tooltip.label.complete')}: ${stats.completedPercent}%${done ? t('project.tooltip.done') : ''}`);
+            tooltipLines.push(`${t('project.tooltip.label.gpt')}: ${stats.scoreMin}  • ${t('project.tooltip.label.files')}: ${stats.totalFiles}`);
 
             card.title = tooltipLines.join('\n');
 
@@ -5152,12 +5157,18 @@ function addFiles() {
 
         // Generiert den Emotional-Text für eine Zeile
         async function generateEmotionalText(rowId, { precomputedLines = null, positionLookup = null } = {}) {
+            const t = window.i18n?.t || (value => value);
+            const format = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, t(key));
+            });
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.generate-emotions-btn');
             if (!row || !area || !btn) return;
             // Bisherigen Inhalt immer verwerfen
-            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
+            if (!openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
             btn.classList.add('loading');
             const file = files.find(f => f.id === rowId);
@@ -5165,8 +5176,8 @@ function addFiles() {
             const currentPositionRaw = positionLookup && positionLookup.has(rowId) ? positionLookup.get(rowId) : null;
             const fallbackIndex = file ? files.indexOf(file) : -1;
             const currentPosition = currentPositionRaw != null ? currentPositionRaw : (fallbackIndex >= 0 ? fallbackIndex + 1 : 1);
-            btn.textContent = i18n.format('emo.generate.button.progressSingle', { current: currentPosition, total: totalLines });
-            area.value = i18n.t('emo.generate.placeholder');
+            btn.textContent = format('emo.generate.button.progressSingle', { current: currentPosition, total: totalLines });
+            area.value = t('emo.generate.placeholder');
             if (!file) { btn.disabled = false; btn.classList.remove('loading'); return; }
             const skipImmediateSave = precomputedLines != null || positionLookup != null;
             try {
@@ -5199,17 +5210,17 @@ function addFiles() {
                 file.emoError = false;
                 updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
                 updateEmoReasonDisplay(file.id);
-                updateStatus(i18n.format('emo.generate.status.single', { filename: file.filename || '' }));
+                updateStatus(format('emo.generate.status.single', { filename: file.filename || '' }));
             } catch (e) {
                 console.error('Emotionen fehlgeschlagen', e);
-                area.value = i18n.t('emo.generate.status.error');
+                area.value = t('emo.generate.status.error');
                 file.emoReason = '';
                 file.emoError = true;
                 updateText(file.id, 'emo', area.value, true, skipImmediateSave ? { skipImmediateSave: true } : undefined);
             }
             btn.disabled = false;
             btn.classList.remove('loading');
-            btn.textContent = i18n.t('emo.generate.button.label');
+            btn.textContent = t('emo.generate.button.label');
         }
 
         // Passt den Emotional-Text an die EN-Länge an
@@ -5218,9 +5229,15 @@ function addFiles() {
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.adjust-emotions-btn');
             if (!row || !area || !btn) return;
-            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
+            const t = window.i18n?.t || (value => value);
+            const format = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, t(key));
+            });
+            if (!openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
-            area.value = i18n.t('emo.generate.placeholder');
+            area.value = t('emo.generate.placeholder');
             const file = files.find(f => f.id === rowId);
             if (!file) { btn.disabled = false; return; }
             try {
@@ -5246,10 +5263,10 @@ function addFiles() {
                 file.emoError = false;
                 updateText(file.id, 'emo', area.value, true);
                 updateEmoReasonDisplay(file.id);
-                updateStatus(i18n.format('emo.adjust.status.single', { filename: file.filename || '' }));
+                updateStatus(format('emo.adjust.status.single', { filename: file.filename || '' }));
             } catch (e) {
                 console.error('Anpassen fehlgeschlagen', e);
-                area.value = i18n.t('emo.adjust.status.error');
+                area.value = t('emo.adjust.status.error');
                 file.emoReason = '';
                 file.emoError = true;
                 updateText(file.id, 'emo', area.value, true);
@@ -5259,11 +5276,17 @@ function addFiles() {
 
         // Analysiert Übersetzung und Emotional-Text und zeigt Verbesserungsvorschläge im Dialog
         async function improveEmotionalText(rowId) {
+            const t = window.i18n?.t || (value => value);
+            const format = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, t(key));
+            });
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.improve-emotions-btn');
             if (!row || !area || !btn) return;
-            if (!openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
+            if (!openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
             btn.classList.add('loading');
             const file = files.find(f => f.id === rowId);
@@ -5285,20 +5308,20 @@ function addFiles() {
                 }));
                 const targetPosition = files.indexOf(file) + 1;
                 const suggestions = await improveEmotionText({ meta, lines, targetPosition, currentText: area.value || '', currentTranslation: file.deText || '', key: openaiApiKey, model: openaiModel });
-                const choice = await showImprovementDialog(area.value || '', suggestions || []);
-                if (choice) {
-                    area.value = choice.text || '';
-                    file.emoReason = choice.reason || '';
-                    file.emoError = false;
-                    updateText(file.id, 'emo', area.value, true);
-                    updateEmoReasonDisplay(file.id);
-                    updateStatus(i18n.format('emo.improve.status.single', { filename: file.filename || '' }));
-                } else {
-                    updateStatus(i18n.t('emo.improve.status.cancel'));
-                }
+                    const choice = await showImprovementDialog(area.value || '', suggestions || []);
+                    if (choice) {
+                        area.value = choice.text || '';
+                        file.emoReason = choice.reason || '';
+                        file.emoError = false;
+                        updateText(file.id, 'emo', area.value, true);
+                        updateEmoReasonDisplay(file.id);
+                        updateStatus(format('emo.improve.status.single', { filename: file.filename || '' }));
+                    } else {
+                        updateStatus(t('emo.improve.status.cancel'));
+                    }
             } catch (e) {
                 console.error('Verbesserung fehlgeschlagen', e);
-                updateStatus(i18n.t('emo.improve.status.error'));
+                updateStatus(t('emo.improve.status.error'));
             }
             btn.disabled = false;
             btn.classList.remove('loading');
@@ -5339,13 +5362,19 @@ function addFiles() {
 
         // Generiert die Emotional-Texte für alle Zeilen im Projekt
         async function generateEmotionsForAll() {
+            const t = window.i18n?.t || (value => value);
+            const format = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, t(key));
+            });
             const btn = document.getElementById('generateEmotionsButton');
-            if (!btn || !openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
+            if (!btn || !openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             // IDs aller Dateien sammeln – vorhandener Text wird überschrieben
             const ids = files.map(f => f.id);
             if (ids.length === 0) return;
             btn.disabled = true;
-            btn.textContent = i18n.t('emo.generate.button.start');
+            btn.textContent = t('emo.generate.button.start');
             let done = 0;
             const max = 3;
             const queue = [...ids];
@@ -5364,7 +5393,7 @@ function addFiles() {
                     const id = queue.shift();
                     await generateEmotionalText(id, { precomputedLines, positionLookup });
                     done++;
-                    btn.textContent = i18n.format('emo.generate.button.progress', { done, total: ids.length });
+                    btn.textContent = format('emo.generate.button.progress', { done, total: ids.length });
                 }
             }
             const workers = [];
@@ -5374,20 +5403,26 @@ function addFiles() {
                 // Sammeländerungen nach allen Emotionstexten einmalig sichern
                 saveCurrentProject();
             }
-            btn.textContent = i18n.t('emo.generate.button.label');
+            btn.textContent = t('emo.generate.button.label');
             btn.disabled = false;
-            updateStatus(i18n.format('emo.generate.status.complete', { done, total: ids.length }));
+            updateStatus(format('emo.generate.status.complete', { done, total: ids.length }));
         }
 
         // Generiert alle leeren oder fehlerhaften Emotional-Texte erneut
         async function regenerateMissingEmos() {
+            const t = window.i18n?.t || (value => value);
+            const format = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, t(key));
+            });
             const box = document.getElementById('emoProgress');
-            if (!box || !openaiApiKey) { updateStatus(i18n.t('emo.error.missingGptKey')); return; }
+            if (!box || !openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             const ids = files
                 .filter(f => !f.emotionalText || !f.emotionalText.trim() || f.emoError)
                 .map(f => f.id);
             if (ids.length === 0) return;
-            box.textContent = i18n.t('emo.progress.placeholder');
+            box.textContent = t('emo.progress.placeholder');
             let done = 0;
             const max = 3;
             const queue = [...ids];
@@ -5396,14 +5431,14 @@ function addFiles() {
                     const id = queue.shift();
                     await generateEmotionalText(id);
                     done++;
-                    box.textContent = i18n.format('emo.progress.counter', { current: done, total: ids.length });
+                    box.textContent = format('emo.progress.counter', { current: done, total: ids.length });
                 }
             }
             const workers = [];
             for (let i = 0; i < Math.min(max, queue.length); i++) workers.push(worker());
             await Promise.all(workers);
-            box.textContent = i18n.t('emo.progress.done');
-            updateStatus(i18n.format('emo.status.updated', { count: done }));
+            box.textContent = t('emo.progress.done');
+            updateStatus(format('emo.status.updated', { count: done }));
         }
 
         // Sendet alle Emotional-Texte in der Projektreihenfolge an ElevenLabs

@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.523
+* `web/src/main.js` ergänzt Fallback-Übersetzer für Seitentitel, Projekt-Tooltips und die Emo-Generatoren, damit Sprachwechsel ohne geladenes i18n nicht mehr zu Abstürzen führen.
+* `README.md` trägt Version **1.40.523** nach und beschreibt die stabilere DE-Audiobearbeitung beim Sprachwechsel.
 # 🛠️ Patch in 1.40.522
 * `web/src/main.js` bringt lokale Fallbacks für Übersetzungs- und Format-Helfer in der Segment-Vorschlagsliste, damit Hinweise und Labels auch ohne geladenes i18n angezeigt werden.
 * `README.md` hebt Version **1.40.522** hervor und beschreibt die abgesicherten Segment-Helfer im DE-Audio-Editor.
