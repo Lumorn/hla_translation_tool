@@ -1979,3 +1979,4 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 * **Offline‑Fähigkeit:** Vollständig lokale Web‑App
 
 ---
+\n## Unreleased\n- Neue mehrsprachige Schlüssel für den DE-Audio-Dialog hinzugefügt.
