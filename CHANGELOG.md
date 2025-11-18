@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.544
+* `web/src/dubbing.js` ersetzt Dubbing-Alerts, Statusmeldungen und Protokolle durch i18n-Schlüssel mit Platzhaltern und zeigt automatische/neue Download-Hinweise als Toast an.
+* `web/src/i18n.js` ergänzt deutsch- und englischsprachige Schlüssel für Dubbing-Status, Fehler, Logeinträge und manuelle Studio-Hinweise.
+* `README.md` hebt Version **1.40.544** sowie die lokalisierten Dubbing-Meldungen hervor.
 # 🛠️ Patch in 1.40.543
 * `web/src/main.js` ersetzt fest verdrahtete Tooltips und Platzhalter der Dateitabelle durch i18n-Schlüssel und formatiert Ordnernamen per Platzhalter.
 * `web/src/i18n.js` ergänzt deutsche und englische Schlüssel für Positionshinweise, Ordner-Titel, Kopier-Buttons sowie Emo-Text-Steuerungen.
