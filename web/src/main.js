@@ -91,12 +91,12 @@ function setupLanguageControls() {
     // Fallback-Übersetzer bereitstellen, falls i18n temporär fehlt
     const t = window.i18n?.t || (value => value);
 
-    const staticTargets = [
-        { selector: '#projectLoadingText', key: 'loading.project' },
-        { selector: '#errorBannerRetry', key: 'loading.retry' },
-        { selector: '.sidebar-header h2', key: 'sidebar.projects' },
-        { selector: '.add-project-btn', key: 'project.add' },
-        { selector: '#tab-project', key: 'tab.project' },
+        const staticTargets = [
+            { selector: '#projectLoadingText', key: 'loading.project' },
+            { selector: '#errorBannerRetry', key: 'loading.retry' },
+            { selector: '.sidebar-header h2', key: 'sidebar.projects' },
+            { selector: '.add-project-btn', key: 'project.add' },
+            { selector: '#tab-project', key: 'tab.project' },
         { selector: '#tab-tools', key: 'tab.tools' },
         { selector: '#tab-media', key: 'tab.media' },
         { selector: '#tab-system', key: 'tab.system' },
@@ -118,14 +118,29 @@ function setupLanguageControls() {
         { selector: 'button[onclick="openSegmentDialog()"]', key: 'button.assignAudio' },
         { selector: 'button[onclick="showZipImportDialog()"]', key: 'button.importZip' },
         { selector: '#copyAssistantButton', key: 'button.copyAssistant' },
-        { selector: '#copyAssistant2Button', key: 'button.copyAssistant2' },
-        { selector: '#copyAllEmosButton', key: 'button.copyEmotions' },
-        { selector: '#openDubbingLog', key: 'button.dubbingLog' },
-        { selector: '#devToolsButton', key: 'button.devTools' },
-        { selector: '#debugReportButton', key: 'button.debugReport' },
-        { selector: '#subtitleSearchAllButton', key: 'button.subtitleSearchAll' },
-        { selector: '#subtitleSearchAllButtonInline', key: 'button.subtitleSearchAll' },
-        { selector: '#settingsButton', key: 'settings.title' },
+            { selector: '#copyAssistant2Button', key: 'button.copyAssistant2' },
+            { selector: '#copyAllEmosButton', key: 'button.copyEmotions' },
+            { selector: '#openDubbingLog', key: 'button.dubbingLog' },
+            { selector: '#devToolsButton', key: 'button.devTools' },
+            { selector: '#debugReportButton', key: 'button.debugReport' },
+            { selector: '#importDialogTitle', key: 'import.title' },
+            { selector: '#importDialogDescription', key: 'import.description', html: true },
+            { selector: '#importFileButton', key: 'import.file.button' },
+            { selector: '#importFileName', key: 'import.file.none' },
+            { selector: '#importData', key: 'import.data.placeholder', attribute: 'placeholder' },
+            { selector: '#columnSelectionTitle', key: 'import.columns.title' },
+            { selector: '#columnSelectionDescription', key: 'import.columns.description' },
+            { selector: '#filenameColumnLabel', key: 'import.columns.filename' },
+            { selector: '#filenameColumnHint', key: 'import.columns.hint' },
+            { selector: '#englishColumnLabel', key: 'import.columns.english' },
+            { selector: '#germanColumnLabel', key: 'import.columns.german' },
+            { selector: '#previewTableTitle', key: 'import.preview.title' },
+            { selector: '#importCancelButton', key: 'import.buttons.cancel' },
+            { selector: '#analyzeDataBtn', key: 'import.buttons.analyze' },
+            { selector: '#startImportBtn', key: 'import.buttons.start' },
+            { selector: '#subtitleSearchAllButton', key: 'button.subtitleSearchAll' },
+            { selector: '#subtitleSearchAllButtonInline', key: 'button.subtitleSearchAll' },
+            { selector: '#settingsButton', key: 'settings.title' },
         { selector: '#settingsMenu .settings-item:nth-of-type(1)', key: 'settings.cleanupDuplicates' },
         { selector: '#settingsMenu .settings-item:nth-of-type(2)', key: 'settings.audioDuplicates' },
         { selector: '#settingsMenu .settings-item:nth-of-type(3)', key: 'settings.backup' },
@@ -11511,6 +11526,7 @@ function buildProjectFile(filename, folder) {
 
         // Import/Export functions
         function showImportDialog() {
+            const t = window.i18n?.t || (value => value);
             document.getElementById('importDialog').classList.remove('hidden');
             document.getElementById('columnSelection').style.display = 'none';
             document.getElementById('analyzeDataBtn').style.display = 'block';
@@ -11519,7 +11535,7 @@ function buildProjectFile(filename, folder) {
             field.value = '';
             const fileLabel = document.getElementById('importFileName');
             const fileInput = document.getElementById('importFileInput');
-            if (fileLabel) fileLabel.textContent = 'Keine Datei ausgewählt';
+            if (fileLabel) fileLabel.textContent = t('import.file.none');
             if (fileInput) fileInput.value = '';
             field.focus();
         }
@@ -11536,15 +11552,21 @@ function buildProjectFile(filename, folder) {
 
         // Liest den Inhalt der ausgewählten Datei ein und füllt das Textfeld
         function handleImportFile(event) {
+            const t = window.i18n?.t || (value => value);
+            const f = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                    return acc.replaceAll(`{${placeholder}}`, value);
+                }, key);
+            });
             const file = event?.target?.files?.[0];
             const label = document.getElementById('importFileName');
 
             if (!file) {
-                if (label) label.textContent = 'Keine Datei ausgewählt';
+                if (label) label.textContent = t('import.file.none');
                 return;
             }
 
-            if (label) label.textContent = `Lade ${file.name}...`;
+            if (label) label.textContent = f('import.file.loading', { name: file.name });
 
             const reader = new FileReader();
 
@@ -11552,14 +11574,14 @@ function buildProjectFile(filename, folder) {
                 const content = typeof reader.result === 'string' ? reader.result : '';
                 document.getElementById('importData').value = content;
                 if (label) {
-                    label.textContent = `${file.name} (${content.length} Zeichen)`;
+                    label.textContent = f('import.file.loaded', { name: file.name, length: content.length });
                 }
-                updateStatus(`Datei "${file.name}" geladen`);
+                updateStatus(f('import.status.fileLoaded', { name: file.name }));
             };
 
             reader.onerror = () => {
-                alert('Fehler beim Lesen der Datei. Bitte erneut versuchen.');
-                if (label) label.textContent = 'Fehler beim Laden der Datei';
+                alert(t('import.error.read'));
+                if (label) label.textContent = t('import.error.label');
             };
 
             reader.readAsText(file);
@@ -11599,9 +11621,10 @@ function buildProjectFile(filename, folder) {
         let detectedColumns = null;
 
         function analyzeImportData() {
+            const t = window.i18n?.t || (value => value);
             const data = document.getElementById('importData').value.trim();
             if (!data) {
-                alert('Bitte fügen Sie erst Daten ein!');
+                alert(t('import.error.noData'));
                 return;
             }
             
@@ -11616,7 +11639,7 @@ function buildProjectFile(filename, folder) {
                 }
                 
                 if (!parsedImportData || parsedImportData.length === 0) {
-                    alert('Keine gültigen Daten gefunden!\n\nUnterstützte Formate:\n• Wiki-Tabelle\n• Pipe-Format (Datei|Text|Text)');
+                    alert(t('import.error.noValidData'));
                     return;
                 }
                 
@@ -11624,7 +11647,7 @@ function buildProjectFile(filename, folder) {
                 detectedColumns = detectColumns(parsedImportData);
                 
                 if (detectedColumns.filenameColumn === -1) {
-                    alert('Keine Dateinamen-Spalte gefunden!\n\nDateinamen sollten erkennbar sein als:\n• Code-Tags: <code>dateiname</code>\n• Dateinamen mit Zahlen: 02_01103\n• Dateinamen mit Erweiterung: datei.mp3');
+                    alert(t('import.error.noFilenameColumn'));
                     return;
                 }
                 
@@ -11633,7 +11656,7 @@ function buildProjectFile(filename, folder) {
                 
             } catch (error) {
                 console.error('Import analysis error:', error);
-                alert('Fehler beim Analysieren der Daten: ' + error.message);
+                alert(t('import.error.analysis') + ' ' + error.message);
             }
         }
 
@@ -11771,15 +11794,16 @@ function buildProjectFile(filename, folder) {
         }
 
         function setupColumnSelection() {
+            const t = window.i18n?.t || (value => value);
             const columnSelection = document.getElementById('columnSelection');
             const filenameSelect = document.getElementById('filenameColumn');
             const englishSelect = document.getElementById('englishColumn');
             const germanSelect = document.getElementById('germanColumn');
             
             // Clear previous options
-            filenameSelect.innerHTML = '<option value="">-- Bitte auswählen --</option>';
-            englishSelect.innerHTML = '<option value="">-- Bitte auswählen --</option>';
-            germanSelect.innerHTML = '<option value="">-- Keine / Nicht vorhanden --</option>';
+            filenameSelect.innerHTML = `<option value="">${t('import.columns.selectPrompt')}</option>`;
+            englishSelect.innerHTML = `<option value="">${t('import.columns.selectPrompt')}</option>`;
+            germanSelect.innerHTML = `<option value="">${t('import.columns.noneOption')}</option>`;
             
             // Get column headers/samples for preview
             const sampleRow = parsedImportData[0] || [];
@@ -11795,7 +11819,7 @@ function buildProjectFile(filename, folder) {
                 const isLikelyFilename = (suggestedFilename === i);
                 const confidence = isLikelyFilename ? detectColumnConfidence(i) : '';
                 
-                const optionText = `Spalte ${i + 1}: ${preview}${confidence}`;
+                const optionText = `${t('import.preview.columnLabel').replace('{index}', i + 1)}: ${preview}${confidence}`;
                 
                 // Add to all dropdowns
                 filenameSelect.appendChild(new Option(optionText, i));
@@ -11830,20 +11854,22 @@ function buildProjectFile(filename, folder) {
             columnSelection.style.display = 'block';
             document.getElementById('analyzeDataBtn').style.display = 'none';
             document.getElementById('startImportBtn').style.display = 'block';
-            
-            const confidenceMsg = detectedColumns.confidence > 5 ? 
-                'Hohe Konfidenz bei Dateinamen-Erkennung' : 
-                'Niedrige Konfidenz - bitte Auswahl prüfen';
-            updateStatus(`Daten analysiert - ${confidenceMsg}`);
+
+            const confidenceMsg = detectedColumns.confidence > 5 ?
+                (window.i18n?.t || (value => value))('import.status.confidenceHigh') :
+                (window.i18n?.t || (value => value))('import.status.confidenceLow');
+            updateStatus((window.i18n?.t || (value => value))('import.status.analysis') + ' ' + confidenceMsg);
         }
 
         function detectColumnConfidence(columnIndex) {
             if (columnIndex !== detectedColumns.suggestedFilenameColumn) return '';
-            
-            if (detectedColumns.confidence > 10) return ' ✅ (sehr sicher)';
-            else if (detectedColumns.confidence > 5) return ' ✅ (sicher)';
-            else if (detectedColumns.confidence > 0) return ' ⚠️ (unsicher)';
-            else return ' ❓ (geraten)';
+
+            const t = window.i18n?.t || (value => value);
+
+            if (detectedColumns.confidence > 10) return ' ' + t('import.confidence.veryHigh');
+            else if (detectedColumns.confidence > 5) return ' ' + t('import.confidence.high');
+            else if (detectedColumns.confidence > 0) return ' ' + t('import.confidence.low');
+            else return ' ' + t('import.confidence.guess');
         }
 
         function updatePreviewHighlighting() {
@@ -11851,6 +11877,10 @@ function buildProjectFile(filename, folder) {
         }
 
         function generatePreviewTable() {
+            const t = window.i18n?.t || (value => value);
+            const f = window.i18n?.format || ((key, replacements = {}) => {
+                return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), key);
+            });
             const previewTable = document.getElementById('previewTableContent');
             const previewRows = parsedImportData.slice(0, 3);
             const columnCount = detectedColumns.columnCount;
@@ -11863,17 +11893,17 @@ function buildProjectFile(filename, folder) {
             let html = '<thead><tr>';
             for (let i = 0; i < columnCount; i++) {
                 let bgColor = '#2a2a2a';
-                let label = `Spalte ${i + 1}`;
-                
+                let label = f('import.preview.columnLabel', { index: i + 1 });
+
                 if (i === selectedFilename) {
                     bgColor = '#4caf50';
-                    label += ' (Dateinamen)';
+                    label += ' ' + t('import.preview.filename');
                 } else if (i === selectedEnglish) {
                     bgColor = '#2196f3';
-                    label += ' (EN Text)';
+                    label += ' ' + t('import.preview.english');
                 } else if (i === selectedGerman) {
                     bgColor = '#ff9800';
-                    label += ' (DE Text)';
+                    label += ' ' + t('import.preview.german');
                 }
                 
                 html += `<th style="padding: 8px; background: ${bgColor}; color: white; font-size: 11px;">

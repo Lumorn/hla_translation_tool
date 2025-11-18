@@ -435,15 +435,15 @@
     <!-- Import Dialog -->
     <div class="dialog-overlay hidden" id="importDialog">
         <div class="dialog">
-            <h3>📥 Daten importieren</h3>
-            <p style="margin-bottom: 15px; color: #999;">
+            <h3 id="importDialogTitle">📥 Daten importieren</h3>
+            <p class="import-description" id="importDialogDescription" style="margin-bottom: 15px; color: #999;">
                 Unterstützte Formate:<br>
                 • Wiki-Tabelle (automatische Spalten-Erkennung)<br>
                 • Pipe-Liste: <code>Dateiname|EN Text|DE Text</code><br>
                 • Der Import erkennt automatisch, welche Spalte die Dateinamen enthält
             </p>
             <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                <button class="btn btn-secondary" onclick="triggerImportFile()">📂 Datei auswählen</button>
+                <button class="btn btn-secondary" id="importFileButton" onclick="triggerImportFile()">📂 Datei auswählen</button>
                 <span id="importFileName" style="color: #ccc; font-size: 13px;">Keine Datei ausgewählt</span>
                 <input type="file" id="importFileInput" style="display: none;" accept=".txt,.wiki,.csv,.pipe,.log,.md,.json,*/*" onchange="handleImportFile(event)">
             </div>
@@ -451,47 +451,47 @@
             
             <!-- Column Selection (hidden initially) -->
             <div id="columnSelection" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a1a; border: 1px solid #444; border-radius: 6px;">
-                <h4 style="color: #ff6b1a; margin-bottom: 15px;">📋 Spalten-Zuordnung</h4>
-                <p style="margin-bottom: 15px; color: #999; font-size: 13px;">
+                <h4 id="columnSelectionTitle" style="color: #ff6b1a; margin-bottom: 15px;">📋 Spalten-Zuordnung</h4>
+                <p id="columnSelectionDescription" style="margin-bottom: 15px; color: #999; font-size: 13px;">
                     Bitte wählen Sie aus, welche Spalten welche Inhalte enthalten:
                 </p>
-                
+
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Dateinamen-Spalte:</label>
+                    <label id="filenameColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Dateinamen-Spalte:</label>
                     <select id="filenameColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
                         <option value="">-- Bitte auswählen --</option>
                     </select>
-                    <div style="font-size: 11px; color: #666; margin-top: 3px;">
+                    <div id="filenameColumnHint" style="font-size: 11px; color: #666; margin-top: 3px;">
                         💡 Intelligente Erkennung basierend auf Datenbank und Patterns
                     </div>
                 </div>
-                
+
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Englischer Text-Spalte:</label>
+                    <label id="englishColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Englischer Text-Spalte:</label>
                     <select id="englishColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
                         <option value="">-- Bitte auswählen --</option>
                     </select>
                 </div>
-                
+
                 <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; color: #ccc;">Deutsche Text-Spalte (optional):</label>
+                    <label id="germanColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Deutsche Text-Spalte (optional):</label>
                     <select id="germanColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
                         <option value="">-- Keine / Nicht vorhanden --</option>
                     </select>
                 </div>
-                
+
                 <!-- Preview Table -->
                 <div id="previewTable" style="margin-top: 15px;">
-                    <h5 style="color: #ff6b1a; margin-bottom: 10px;">🔍 Vorschau (erste 3 Zeilen):</h5>
+                    <h5 id="previewTableTitle" style="color: #ff6b1a; margin-bottom: 10px;">🔍 Vorschau (erste 3 Zeilen):</h5>
                     <div style="overflow-x: auto; max-height: 200px; border: 1px solid #444; border-radius: 4px;">
                         <table id="previewTableContent" style="width: 100%; font-size: 12px;">
                         </table>
                     </div>
                 </div>
             </div>
-            
+
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeImportDialog()">Abbrechen</button>
+                <button class="btn btn-secondary" id="importCancelButton" onclick="closeImportDialog()">Abbrechen</button>
                 <button class="btn" id="analyzeDataBtn" onclick="analyzeImportData()">Analysieren</button>
                 <button class="btn btn-success" id="startImportBtn" onclick="startImportProcess()" style="display: none;">Import starten</button>
             </div>
