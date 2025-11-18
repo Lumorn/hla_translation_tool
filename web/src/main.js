@@ -6253,20 +6253,20 @@ return `
     <!-- Neue kompakte Zeile mit zusammengefassten Spalten -->
     <tr data-id="${file.id}" ${isFileCompleted(file) ? 'class="completed"' : ''}>
         <td class="drag-handle" draggable="true">↕</td>
-        <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="Klick um Position zu ändern">${originalIndex + 1}</td>
+        <td class="row-number" data-file-id="${file.id}" onclick="changeRowNumber(${file.id}, ${originalIndex + 1})" title="${t('file.position.change')}">${originalIndex + 1}</td>
         <td class="filename-cell clickable" onclick="checkFilename(${file.id}, event)">${file.filename}</td>
         <td class="folder-cell">
             <span class="folder-badge clickable"
                   style="background: ${folderColor}; color: white;"
-                  title="Ordner: ${file.folder} - Klick für Datei-Austausch"
+                  title="${format('file.folder.title', { folder: file.folder })}"
                   onclick="showFileExchangeOptions(${file.id})">
                 ${folderIcon} ${lastFolder}
             </span>
-            <input type="text" class="folder-note" placeholder="Notiz" value="${escapeHtml(file.folderNote || '')}"
+            <input type="text" class="folder-note" placeholder="${t('file.folder.notePlaceholder')}" value="${escapeHtml(file.folderNote || '')}"
                    oninput="setFolderNote(${file.id}, this.value)">
             <div class="note-dup-info"></div>
         </td>
-        <td class="storage-cell" title="Speicherort">${storageIcon}</td>
+        <td class="storage-cell" title="${t('table.tooltip.storage')}">${storageIcon}</td>
         <td class="version-score-cell">
             ${hasDeAudio ? `<span class="version-badge" style="background:${getVersionColor(file.version ?? 1)}" onclick="openVersionMenu(event, ${file.id})">${file.version ?? 1}</span>` : ''}
             ${(() => {
@@ -6285,7 +6285,7 @@ return `
                      onchange="updateText(${file.id}, 'en', this.value)"
                      oninput="autoResizeInput(this)">${escapeHtml(file.enText)}</textarea>
                 <div class="btn-column">
-                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en', event)" title="EN Text kopieren">📋</button>
+                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'en', event)" title="${t('file.text.copy.en')}">📋</button>
                     <button class="play-btn" onclick="playAudio(${file.id})">▶</button>
                 </div>
             </div>
@@ -6297,18 +6297,18 @@ return `
                      onchange="updateText(${file.id}, 'de', this.value)"
                      oninput="autoResizeInput(this)">${escapeHtml(file.deText)}</textarea>
                 <div class="btn-column">
-                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de', event)" title="DE Text kopieren">📋</button>
+                    <button class="copy-btn" onclick="copyTextToClipboard(${file.id}, 'de', event)" title="${t('file.text.copy.de')}">📋</button>
                     ${hasDeAudio ? `<button class="de-play-btn" onclick="playDeAudio(${file.id})">▶</button>` : ''}
                 </div>
             </div>
             <div class="auto-trans" data-file-id="${file.id}">${escapeHtml(file.autoTranslation || '')}</div>
             <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
-                <textarea class="emotional-text" placeholder="Mit Emotionen getaggter deutscher Text…" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
+                <textarea class="emotional-text" placeholder="${t('file.emo.placeholder')}" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
                 <div class="btn-column">
-                    <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">Emotional-Text (DE) generieren</button>
-                    <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">Anpassen-Kürzen</button>
-                    <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">Verbesserungsvorschläge</button>
-                    <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="In Zwischenablage kopieren">📋</button>
+                    <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">${t('file.emo.generate')}</button>
+                    <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">${t('file.emo.adjust')}</button>
+                    <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">${t('file.emo.improve')}</button>
+                    <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="${t('file.emo.copy')}">📋</button>
                 </div>
             </div>
             <div class="emo-reason-box" data-file-id="${file.id}">${escapeHtml(file.emoReason || '')}</div>

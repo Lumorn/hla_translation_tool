@@ -1,0 +1,1 @@
+Screenshot-Platzhalter: Die Dateitabelle zeigt nun lokalisierte Tooltips und Platzhalter aus i18n, z.B. der Ordner-Badge mit dynamischem Ordnernamen, die Notiz-Eingabe, Kopier-Buttons sowie Emo-Text-Steuerungen.
