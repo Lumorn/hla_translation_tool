@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.508
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für den Hinweistext ohne Level sowie die Tabellenüberschriften der Level-Statistik in beiden Sprachen.
+* `web/src/main.js` baut die Level-Statistik mit `i18n.t(...)` auf und setzt die Beschriftungen bei Sprachwechsel automatisch neu.
+* `README.md` führt Version **1.40.508** und nennt die lokalisierten Level-Statistiken.
 # 🛠️ Patch in 1.40.507
 * `web/src/i18n.js` ergänzt Tooltip-Bausteine für Level, Teil, Fortschritts- und Dateiangaben mit Platzhaltern in Deutsch und Englisch.
 * `web/src/main.js` baut die Projektkarten-Tooltips über `i18n.format(...)` zusammen, damit alle Teile beim Sprachwechsel übersetzt werden.
