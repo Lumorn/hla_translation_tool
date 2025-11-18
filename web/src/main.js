@@ -3910,13 +3910,29 @@ function renderProjects() {
                 </div>
             `;
 
-            card.title =
-                `${p.name}\n` +
-                (p.levelName ? `Level: ${p.levelName}\n` : '') +
-                `Teil:  ${p.levelPart}\n\n` +
-                `• EN: ${stats.enPercent}%  • DE: ${stats.dePercent}%\n` +
-                `• DE-Audio: ${stats.deAudioPercent}%  • Fertig: ${stats.completedPercent}%${done ? ' ✅' : ''}\n` +
-                `• GPT: ${stats.scoreMin}  • Dateien: ${stats.totalFiles}`;
+            // Tooltip-Text über i18n zusammenbauen, damit Sprachen korrekt wechseln
+            const tooltipLines = [];
+            tooltipLines.push(p.name);
+            if (p.levelName) {
+                tooltipLines.push(i18n.format('project.tooltip.level', { level: p.levelName }));
+            }
+            tooltipLines.push(i18n.format('project.tooltip.part', { part: p.levelPart }));
+            tooltipLines.push('');
+            tooltipLines.push(i18n.format('project.tooltip.line.progress', {
+                enPercent: stats.enPercent,
+                dePercent: stats.dePercent
+            }));
+            tooltipLines.push(i18n.format('project.tooltip.line.audio', {
+                deAudioPercent: stats.deAudioPercent,
+                completedPercent: stats.completedPercent,
+                done: done ? i18n.t('project.tooltip.done') : ''
+            }));
+            tooltipLines.push(i18n.format('project.tooltip.line.gptFiles', {
+                score: stats.scoreMin,
+                files: stats.totalFiles
+            }));
+
+            card.title = tooltipLines.join('\n');
 
             // Klick-Handler wird über Event-Delegation gesetzt
             card.addEventListener('contextmenu', e => showProjectMenu(e, p.id));
