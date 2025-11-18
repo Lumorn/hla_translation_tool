@@ -616,7 +616,14 @@
             'import.status.confidenceLow': 'Niedrige Konfidenz - bitte Auswahl prüfen',
             'import.buttons.cancel': 'Abbrechen',
             'import.buttons.analyze': 'Analysieren',
-            'import.buttons.start': 'Import starten'
+            'import.buttons.start': 'Import starten',
+            'subtitle.language.default': 'Deutsch',
+            'subtitle.language.unknown': 'Unbekannte Untertitel-Sprache: "{code}" – Standard wird verwendet.',
+            'subtitle.import.defaultHint': 'Standard: Deutsch wird importiert.',
+            'subtitle.import.replacementHint': '{label} ersetzt Deutsch beim Import.',
+            'import.summary.germanColumn': 'Deutsch',
+            'import.summary.germanColumn.used': 'Spalte {column}',
+            'import.summary.germanColumn.unused': 'Nicht verwendet'
         },
         en: {
             'app.title': 'Half-Life: Alyx Translation Tool',
@@ -1119,7 +1126,14 @@
             'import.status.confidenceLow': 'Low confidence - please verify selection',
             'import.buttons.cancel': 'Cancel',
             'import.buttons.analyze': 'Analyze',
-            'import.buttons.start': 'Start import'
+            'import.buttons.start': 'Start import',
+            'subtitle.language.default': 'German',
+            'subtitle.language.unknown': 'Unknown subtitle language: "{code}" – falling back to default.',
+            'subtitle.import.defaultHint': 'Default: German will be imported.',
+            'subtitle.import.replacementHint': '{label} replaces German during import.',
+            'import.summary.germanColumn': 'German',
+            'import.summary.germanColumn.used': 'Column {column}',
+            'import.summary.germanColumn.unused': 'Not used'
         }
     };
 
