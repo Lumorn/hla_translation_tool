@@ -164,7 +164,13 @@
             'meta.part': '| Teil:',
             'language.label': 'Sprache',
             'language.german': 'Deutsch',
-            'language.english': 'Englisch'
+            'language.english': 'Englisch',
+            'project.tooltip.level': 'Level: {level}',
+            'project.tooltip.part': 'Teil: {part}',
+            'project.tooltip.line.progress': '• EN: {enPercent}%  • DE: {dePercent}%',
+            'project.tooltip.line.audio': '• DE-Audio: {deAudioPercent}%  • Fertig: {completedPercent}%{done}',
+            'project.tooltip.line.gptFiles': '• GPT: {score}  • Dateien: {files}',
+            'project.tooltip.done': ' ✅'
         },
         en: {
             'app.title': 'Half-Life: Alyx Translation Tool',
@@ -329,7 +335,13 @@
             'meta.part': '| Part:',
             'language.label': 'Language',
             'language.german': 'German',
-            'language.english': 'English'
+            'language.english': 'English',
+            'project.tooltip.level': 'Level: {level}',
+            'project.tooltip.part': 'Part: {part}',
+            'project.tooltip.line.progress': '• EN: {enPercent}%  • DE: {dePercent}%',
+            'project.tooltip.line.audio': '• DE audio: {deAudioPercent}%  • Done: {completedPercent}%{done}',
+            'project.tooltip.line.gptFiles': '• GPT: {score}  • Files: {files}',
+            'project.tooltip.done': ' ✅'
         }
     };
 

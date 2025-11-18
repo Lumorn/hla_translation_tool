@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.507
+* `web/src/i18n.js` ergänzt Tooltip-Bausteine für Level, Teil, Fortschritts- und Dateiangaben mit Platzhaltern in Deutsch und Englisch.
+* `web/src/main.js` baut die Projektkarten-Tooltips über `i18n.format(...)` zusammen, damit alle Teile beim Sprachwechsel übersetzt werden.
+* `README.md` führt Version **1.40.507** und nennt die lokalisierten Tooltip-Bausteine für die Projektkarten.
 # 🛠️ Patch in 1.40.506
 * `web/src/i18n.js` trägt die Kopierhilfe-Schlüssel für Fertig-Status, Datei-Zähler und Schrittangabe explizit im Sprachpaket ein.
 * `web/src/main.js` rendert die Kopierhilfe-Labels über `i18n.t(...)` beziehungsweise `i18n.format(...)` und reagiert damit direkt auf Sprachwechsel.
