@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.531-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.533-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -91,6 +91,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Bereinigte Abschluss-Logik:** Die früheren UI-Helfer `toggleFileCompletion`, `toggleCompletionAll`, `toggleFileSelection` und `toggleSelectAll` wurden entfernt, weil der Fertig-Status nun vollständig automatisch aus den Projekt- und Dateidaten berechnet wird.
 * **Live-Speichern:** Änderungen an Dateien oder Texten werden nach kurzer Pause automatisch gesichert.
 * **Hintergrund-Übersetzungswarteschlange:** Automatische Übersetzungen laufen projektübergreifend weiter; beim Wechsel landen neue Projekte hinten in der Warteschlange und starten, sobald die aktuelle Übersetzung abgeschlossen ist.
+* **Manueller Start der Auto-Übersetzung:** Statt sofort anzuspringen wartet die automatische Übersetzung auf einen Klick im Fortschrittsbereich und startet dann alle offenen Zeilen des aktuellen Projekts.
 * **Abbruchfeste Übersetzungswarteschlange:** Globale Resets und Projektwechsel stoppen laufende Jobs sofort, leeren alle Warteschlangen und blockieren verspätete Rückläufer, damit keine leeren Projektlisten gespeichert werden.
 * **Reset-Flag für Übersetzungen:** Während `resetGlobalState()` aktiv ist, verhindert ein globales Flag jede Projektspeicherung und verwirft späte Worker-Rückläufer nach dem Auflösen ihrer Promises, damit keine alten Antworten mehr in der Projektliste landen.
 * **Sauberer Warteschlangen-Abbruch:** Manuelle Abbrüche speichern keine unveränderten Projekte und entfernen Abschlussmeldungen unmittelbar, damit das UI den Stopp klar widerspiegelt.

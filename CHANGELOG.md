@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.533
+* `web/src/main.js` stellt die automatische Übersetzung auf einen manuellen Startknopf um, sammelt offene Zeilen pro Projekt und aktiviert die Warteschlange erst nach Klick.
+* `web/hla_translation_tool.html` ergänzt den neuen Start-Button im Übersetzungsfortschritt.
+* `web/src/style.css` formatiert den Fortschrittsbereich inklusive Schaltfläche und blendet die Fortschrittsleiste nur bei aktiven Läufen ein.
+* `README.md` erwähnt den manuellen Start der automatischen Übersetzung und hebt die neue Version **1.40.533** hervor.
 # 🛠️ Patch in 1.40.532
 * `web/src/main.js` ergänzt Level-Reihenfolgen im Blueprint-Export und baut beim Import ein neues `levelOrders`-Mapping aus den Blueprint-Einträgen auf, wobei bestehende Kapitel-Reihenfolgen erhalten bleiben und fehlende Level-Orders per Import-Index gesetzt werden.
 * `README.md` erläutert die exportierte Level-Reihenfolge im Struktur-Blueprint sowie die Übernahme der Sortierung beim Import.
