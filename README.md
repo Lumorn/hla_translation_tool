@@ -20,6 +20,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
+* Gespeicherte Dubbing-Parameter erscheinen sprachabhängig mit i18n-Vorlagen statt fest verdrahteter Labels.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.

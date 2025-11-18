@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.500
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für gespeicherte Dubbing-Parameter inklusive Platzhaltervorlage.
+* `web/src/main.js` nutzt die neuen Übersetzungen in `updateVoiceSettingsDisplay()` und ersetzt hart kodierte Labels durch i18n.
+* `README.md` weist auf die lokalisierten Dubbing-Parameter hin.
 # 🛠️ Patch in 1.40.499
 * `web/hla_translation_tool.html` ergänzt eine Dateiauswahl im Import-Dialog, damit Importdaten ohne Copy & Paste geladen werden können.
 * `web/src/main.js` liest ausgewählte Textdateien ein, zeigt den Dateinamen im Dialog und übernimmt den Inhalt automatisch in das Eingabefeld.

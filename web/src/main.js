@@ -1533,20 +1533,25 @@ function updateVoiceSettingsDisplay() {
     const list = document.getElementById('voiceSettingsDisplay');
     if (!list) return;
     list.innerHTML = '';
+    const t = window.i18n?.t || (value => value);
     if (!storedVoiceSettings) {
-        list.textContent = 'Keine gespeichert';
+        list.textContent = t('dubbing.saved.none');
         return;
     }
     const entries = [
-        ['Stability', storedVoiceSettings.stability],
-        ['Similarity Boost', storedVoiceSettings.similarity_boost],
-        ['Style', storedVoiceSettings.style],
-        ['Speed', storedVoiceSettings.speed],
-        ['Speaker-Boost', storedVoiceSettings.use_speaker_boost]
+        [t('dubbing.param.stability'), storedVoiceSettings.stability],
+        [t('dubbing.param.similarityBoost'), storedVoiceSettings.similarity_boost],
+        [t('dubbing.param.style'), storedVoiceSettings.style],
+        [t('dubbing.param.speed'), storedVoiceSettings.speed],
+        [t('dubbing.param.speakerBoost'), storedVoiceSettings.use_speaker_boost]
     ];
+    const template = t('dubbing.param.entry');
     entries.forEach(([label, val]) => {
         const li = document.createElement('li');
-        li.textContent = `${label}: ${val}`;
+        const valueText = typeof val === 'boolean' ? (val ? 'true' : 'false') : val;
+        li.textContent = template
+            .replace('{label}', label)
+            .replace('{value}', valueText);
         list.appendChild(li);
     });
 }
