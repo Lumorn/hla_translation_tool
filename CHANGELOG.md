@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.499
+* `web/hla_translation_tool.html` ergänzt eine Dateiauswahl im Import-Dialog, damit Importdaten ohne Copy & Paste geladen werden können.
+* `web/src/main.js` liest ausgewählte Textdateien ein, zeigt den Dateinamen im Dialog und übernimmt den Inhalt automatisch in das Eingabefeld.
+* `README.md` hebt den Datei-Upload im Import-Bereich hervor und führt die neue Version **1.40.499**.
 # 🛠️ Patch in 1.40.498
 * `.gitignore` lässt die Ordner `web/sounds/`, `web/backups/` und `web/Download/` wieder versionieren, damit Platzhalter für Audio- und Download-Pfade im Repository sichtbar bleiben.
 * `web/sounds/DE/README.txt` und `web/sounds/EN/README.txt` dokumentieren direkt in den Ordnern, welche Dateien dort abgelegt werden sollen.

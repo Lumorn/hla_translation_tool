@@ -442,6 +442,11 @@
                 • Pipe-Liste: <code>Dateiname|EN Text|DE Text</code><br>
                 • Der Import erkennt automatisch, welche Spalte die Dateinamen enthält
             </p>
+            <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                <button class="btn btn-secondary" onclick="triggerImportFile()">📂 Datei auswählen</button>
+                <span id="importFileName" style="color: #ccc; font-size: 13px;">Keine Datei ausgewählt</span>
+                <input type="file" id="importFileInput" style="display: none;" accept=".txt,.wiki,.csv,.pipe,.log,.md,.json,*/*" onchange="handleImportFile(event)">
+            </div>
             <textarea id="importData" placeholder="Füge hier deine Daten ein..."></textarea>
             
             <!-- Column Selection (hidden initially) -->
