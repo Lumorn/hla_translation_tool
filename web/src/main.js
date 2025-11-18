@@ -53,6 +53,28 @@ if (typeof module === 'undefined' || !module.exports) {
 }
 // =========================== SPEICHERINITIALISIERUNG END ===========================
 
+// Liefert die Datenstruktur für die aktuell ausgewählte Untertitel-Sprache
+function getSubtitleLanguageOption(code = subtitleImportLanguage) {
+    return subtitleLanguageOptions.find(opt => opt.code === code) || subtitleLanguageOptions[0];
+}
+
+// Leserlicher Anzeigename der Untertitel-Sprache
+function getSubtitleLanguageLabel(code = subtitleImportLanguage) {
+    const opt = getSubtitleLanguageOption(code);
+    return opt ? opt.label : 'Deutsch';
+}
+
+// Speichert die gewählte Untertitel-Sprache dauerhaft und leert den Cache
+function setSubtitleLanguage(code) {
+    const option = getSubtitleLanguageOption(code);
+    if (!option) return;
+    subtitleImportLanguage = option.code;
+    subtitleData = null;
+    subtitleDataLanguage = null;
+    storage.setItem('hla_subtitleLanguage', subtitleImportLanguage);
+    updateSubtitleLanguageBadge();
+}
+
 // Aktualisiert Anzeige und Beschriftung für das aktuelle Speichersystem
 function updateStorageIndicator(mode) {
     const indicator = document.getElementById('storageModeIndicator');
@@ -1561,6 +1583,43 @@ let availableVoices    = [];
 let customVoices       = JSON.parse(storage.getItem('hla_customVoices') || '[]');
 // Zwischenspeicher für eingelesene Untertitel
 let subtitleData       = null;
+// Merker für die zuletzt geladene Untertitel-Sprache
+let subtitleDataLanguage = null;
+// Unterstützte closecaption-Sprachen
+const subtitleLanguageOptions = [
+    { code: 'german',      label: 'Deutsch',                            file: 'closecaption_german.txt' },
+    { code: 'brazilian',   label: 'Brasilianisch',                      file: 'closecaption_brazilian.txt' },
+    { code: 'bulgarian',   label: 'Bulgarisch',                         file: 'closecaption_bulgarian.txt' },
+    { code: 'czech',       label: 'Tschechisch',                        file: 'closecaption_czech.txt' },
+    { code: 'danish',      label: 'Dänisch',                            file: 'closecaption_danish.txt' },
+    { code: 'dutch',       label: 'Niederländisch',                     file: 'closecaption_dutch.txt' },
+    { code: 'finnish',     label: 'Finnisch',                           file: 'closecaption_finnish.txt' },
+    { code: 'french',      label: 'Französisch',                        file: 'closecaption_french.txt' },
+    { code: 'greek',       label: 'Griechisch',                         file: 'closecaption_greek.txt' },
+    { code: 'hungarian',   label: 'Ungarisch',                          file: 'closecaption_hungarian.txt' },
+    { code: 'italian',     label: 'Italienisch',                        file: 'closecaption_italian.txt' },
+    { code: 'japanese',    label: 'Japanisch',                          file: 'closecaption_japanese.txt' },
+    { code: 'koreana',     label: 'Koreanisch',                         file: 'closecaption_koreana.txt' },
+    { code: 'latam',       label: 'Spanisch (LatAm)',                   file: 'closecaption_latam.txt' },
+    { code: 'norwegian',   label: 'Norwegisch',                         file: 'closecaption_norwegian.txt' },
+    { code: 'polish',      label: 'Polnisch',                           file: 'closecaption_polish.txt' },
+    { code: 'portuguese',  label: 'Portugiesisch',                      file: 'closecaption_portuguese.txt' },
+    { code: 'romanian',    label: 'Rumänisch',                          file: 'closecaption_romanian.txt' },
+    { code: 'russian',     label: 'Russisch',                           file: 'closecaption_russian.txt' },
+    { code: 'schinese',    label: 'Chinesisch (vereinfacht)',           file: 'closecaption_schinese.txt' },
+    { code: 'spanish',     label: 'Spanisch',                           file: 'closecaption_spanish.txt' },
+    { code: 'swedish',     label: 'Schwedisch',                         file: 'closecaption_swedish.txt' },
+    { code: 'tchinese',    label: 'Chinesisch (traditionell)',          file: 'closecaption_tchinese.txt' },
+    { code: 'thai',        label: 'Thai',                               file: 'closecaption_thai.txt' },
+    { code: 'turkish',     label: 'Türkisch',                           file: 'closecaption_turkish.txt' },
+    { code: 'ukrainian',   label: 'Ukrainisch',                         file: 'closecaption_ukrainian.txt' },
+    { code: 'vietnamese',  label: 'Vietnamesisch',                      file: 'closecaption_vietnamese.txt' }
+];
+// Ausgewählte Untertitel-Sprache für den Import (fällt auf Deutsch zurück, falls ungültig)
+let subtitleImportLanguage = storage.getItem('hla_subtitleLanguage') || 'german';
+if (!subtitleLanguageOptions.some(opt => opt.code === subtitleImportLanguage)) {
+    subtitleImportLanguage = 'german';
+}
 // Gespeicherte Voice-Settings aus dem LocalStorage laden
 let storedVoiceSettings = JSON.parse(storage.getItem('hla_voiceSettings') || 'null');
 
@@ -6429,9 +6488,14 @@ async function openSubtitleSearch(fileId) {
         }
     }
 
+    if (subtitleDataLanguage !== subtitleImportLanguage) {
+        subtitleData = null;
+    }
+
     if (!subtitleData) {
         const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
-        subtitleData = await loadClosecaptions(base);
+        subtitleData = await loadClosecaptions(base, subtitleImportLanguage);
+        subtitleDataLanguage = subtitleImportLanguage;
         if (!subtitleData) {
             alert('❌ Untertitel konnten nicht geladen werden.');
             return;
@@ -6462,8 +6526,11 @@ function showSubtitleResults(fileId, results, searchText) {
 
     dialog.innerHTML = `
         <h3>🔍 Untertitel-Suche</h3>
+        <div class="subtitle-language-chip ${subtitleImportLanguage !== 'german' ? 'subtitle-language-chip--alt' : ''}">
+            Ziel: ${getSubtitleLanguageLabel()}
+        </div>
         <div style="margin:5px 0 10px;font-style:italic;color:#ccc;">${escapeHtml(searchText)}</div>
-        <p style="margin-bottom:15px;color:#999;">Treffer auswählen, um den DE-Text zu übernehmen</p>
+        <p style="margin-bottom:15px;color:#999;">Treffer auswählen, um den ${getSubtitleLanguageLabel()}-Text zu übernehmen</p>
         <div style="max-height:300px;overflow-y:auto;">
             ${results.map((r, i) => `
                 <div class="subtitle-result" onclick="chooseSubtitleResult(${i})" style="padding:10px;margin:5px 0;border:1px solid #444;border-radius:6px;cursor:pointer;">
@@ -6540,9 +6607,14 @@ async function runGlobalSubtitleSearch() {
         }
     }
 
+    if (subtitleDataLanguage !== subtitleImportLanguage) {
+        subtitleData = null;
+    }
+
     if (!subtitleData) {
         const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
-        subtitleData = await loadClosecaptions(base);
+        subtitleData = await loadClosecaptions(base, subtitleImportLanguage);
+        subtitleDataLanguage = subtitleImportLanguage;
         if (!subtitleData) {
             alert('❌ Untertitel konnten nicht geladen werden.');
             return;
@@ -11673,21 +11745,90 @@ function buildProjectFile(filename, folder) {
         }
 
         async function showCcImportDialog() {
-            const enPath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_english.txt') : '../closecaption/closecaption_english.txt';
-            const dePath = isElectron ? window.electronAPI.join('..', 'closecaption', 'closecaption_german.txt') : '../closecaption/closecaption_german.txt';
+            const basePath = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
+            const buildPath = (file) => isElectron ? window.electronAPI.join(basePath, file) : `${basePath}/${file}`;
+            const checkFile = async (fullPath) => {
+                if (isElectron) {
+                    return window.electronAPI.fsExists(fullPath);
+                }
+                try {
+                    return (await fetch(fullPath, { method: 'HEAD' })).ok;
+                } catch {
+                    return false;
+                }
+            };
 
-            let enOk = false, deOk = false;
-            if (isElectron) {
-                enOk = window.electronAPI.fsExists(enPath);
-                deOk = window.electronAPI.fsExists(dePath);
-            } else {
-                try { enOk = (await fetch(enPath, { method: 'HEAD' })).ok; } catch (e) { enOk = false; }
-                try { deOk = (await fetch(dePath, { method: 'HEAD' })).ok; } catch (e) { deOk = false; }
+            const enPath = buildPath('closecaption_english.txt');
+            const enOk = await checkFile(enPath);
+            document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
+
+            const select = document.getElementById('ccLanguageSelect');
+            const statusTarget = document.getElementById('ccStatusTarget');
+
+            const available = [];
+            for (const opt of subtitleLanguageOptions) {
+                const fullPath = buildPath(opt.file);
+                const ok = await checkFile(fullPath);
+                if (ok) {
+                    available.push({ ...opt, path: fullPath });
+                }
             }
 
-            document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
-            document.getElementById('ccStatusDe').textContent = deOk ? '✅ vorhanden' : '❌ fehlt';
+            select.innerHTML = '';
+
+            if (available.length === 0) {
+                const fallback = document.createElement('option');
+                fallback.textContent = 'Keine Untertitel-Dateien gefunden';
+                fallback.value = '';
+                fallback.disabled = true;
+                select.appendChild(fallback);
+                statusTarget.textContent = '❌ Keine passenden Untertitel vorhanden';
+            } else {
+                available.forEach(opt => {
+                    const optionEl = document.createElement('option');
+                    optionEl.value = opt.code;
+                    optionEl.textContent = `${opt.label} (${opt.file})`;
+                    select.appendChild(optionEl);
+                });
+
+                if (!available.some(opt => opt.code === subtitleImportLanguage)) {
+                    setSubtitleLanguage(available[0].code);
+                }
+
+                const applySelection = (code) => {
+                    const targetOpt = available.find(o => o.code === code) || available[0];
+                    if (!targetOpt) return;
+                    select.value = targetOpt.code;
+                    setSubtitleLanguage(targetOpt.code);
+                    statusTarget.textContent = `✅ ${targetOpt.file} vorhanden (${targetOpt.label})`;
+                };
+
+                select.onchange = (ev) => applySelection(ev.target.value);
+                applySelection(subtitleImportLanguage);
+            }
+
+            updateSubtitleLanguageBadge();
             document.getElementById('ccImportDialog').classList.remove('hidden');
+        }
+
+        function updateSubtitleLanguageBadge() {
+            const badge = document.getElementById('ccLanguageBadge');
+            const hint = document.getElementById('ccLanguageHint');
+            const label = getSubtitleLanguageLabel();
+
+            if (badge) {
+                badge.textContent = label;
+                badge.classList.toggle('subtitle-language-badge--alt', subtitleImportLanguage !== 'german');
+            }
+
+            if (hint) {
+                if (subtitleImportLanguage === 'german') {
+                    hint.textContent = 'Standard: Deutsch wird importiert.';
+                } else {
+                    hint.textContent = `${label} ersetzt Deutsch beim Import.`;
+                }
+                hint.classList.toggle('subtitle-language-hint--alt', subtitleImportLanguage !== 'german');
+            }
         }
 
         function closeCcImportDialog() {
@@ -19318,25 +19459,25 @@ function showFolderSelectionDialog(ambiguousFiles) {
 }
 // =========================== FOLDER SELECTION DIALOG END ===========================
 
-function updateTextDatabase(filename, pathInfo, englishText, germanText) {
+function updateTextDatabase(filename, pathInfo, englishText, localizedText) {
     const fileKey = `${pathInfo.folder}/${filename}`;
     if (!textDatabase[fileKey]) {
         textDatabase[fileKey] = {};
     }
-    
+
     if (englishText) {
         textDatabase[fileKey].en = englishText;
     }
-    if (germanText) {
-        textDatabase[fileKey].de = germanText;
+    if (localizedText) {
+        textDatabase[fileKey].de = localizedText;
     }
-    
-    debugLog(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, DE=${!!germanText}`);
+
+    debugLog(`[IMPORT] Updated text for ${fileKey}: EN=${!!englishText}, ${getSubtitleLanguageLabel()}=${!!localizedText}`);
 }
 
 async function importClosecaptions() {
     const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
-    const subtitles = await loadClosecaptions(base);
+    const subtitles = await loadClosecaptions(base, subtitleImportLanguage);
     if (!subtitles) {
         alert('❌ Untertitel-Dateien konnten nicht gelesen werden.');
         return;
@@ -19345,8 +19486,9 @@ async function importClosecaptions() {
     const ambiguous = [];
     let imported = 0;
 
-    for (const { id, enText, deText } of subtitles) {
-        if (!deText) continue;
+    for (const { id, enText, deText, targetText } of subtitles) {
+        const localizedText = targetText || deText;
+        if (!localizedText) continue;
         const matches = Object.keys(textDatabase).filter(key => textDatabase[key].en && textDatabase[key].en.trim() === enText.trim());
         if (matches.length === 1) {
             const fileKey = matches[0];
@@ -19355,7 +19497,7 @@ async function importClosecaptions() {
             const folder = parts.join('/');
             const infos = filePathDatabase[filename] || [];
             const info = infos.find(p => p.folder === folder) || { folder, fullPath: '' };
-            updateTextDatabase(filename, info, enText, deText);
+            updateTextDatabase(filename, info, enText, localizedText);
             imported++;
         } else if (matches.length > 1) {
             // Sammle alle möglichen Datenbank-Einträge inklusive vorhandener Texte
@@ -19375,7 +19517,7 @@ async function importClosecaptions() {
                     dbDeText: dbEntry.de || ''
                 };
             });
-            ambiguous.push({ originalFilename: id, englishText: enText, germanText: deText, foundPaths, rowIndex: 0 });
+            ambiguous.push({ originalFilename: id, englishText: enText, targetText: localizedText, foundPaths, rowIndex: 0 });
         }
     }
 
@@ -19386,7 +19528,7 @@ async function importClosecaptions() {
                 if (sel.selectedIndex >= 0) {
                     const amb = ambiguous[idx];
                     const chosen = amb.foundPaths[sel.selectedIndex];
-                    updateTextDatabase(chosen.filename, chosen.pathInfo, amb.englishText, amb.germanText);
+                    updateTextDatabase(chosen.filename, chosen.pathInfo, amb.englishText, amb.targetText);
                     imported++;
                 }
             });

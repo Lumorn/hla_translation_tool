@@ -5297,3 +5297,76 @@ th:nth-child(8) {
 .loading-step--error .loading-step__icon {
     color: #ef5350;
 }
+
+/* Hinweis-Badge für ausgewählte Untertitel-Sprache */
+.subtitle-language-chip {
+    display: inline-block;
+    margin: 8px 0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: #1f1f1f;
+    color: #ffb74d;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.subtitle-language-chip--alt {
+    background: #1f2f4a;
+    border-color: #3f6fa1;
+    color: #9ed0ff;
+}
+
+/* Auswahlfeld im Untertitel-Dialog */
+.cc-language-row {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cc-language-row label {
+    color: #ccc;
+    font-weight: 600;
+}
+
+.cc-language-row select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.subtitle-language-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0 12px;
+}
+
+.subtitle-language-badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #ffb74d;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.subtitle-language-badge--alt {
+    background: #1f2f4a;
+    border-color: #3f6fa1;
+    color: #9ed0ff;
+}
+
+.subtitle-language-hint {
+    color: #bdbdbd;
+    font-size: 12px;
+}
+
+.subtitle-language-hint--alt {
+    color: #9ed0ff;
+}

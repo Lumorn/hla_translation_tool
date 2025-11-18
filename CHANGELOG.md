@@ -1988,4 +1988,6 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 * **Offline‑Fähigkeit:** Vollständig lokale Web‑App
 
 ---
-\n## Unreleased\n- Neue mehrsprachige Schlüssel für den DE-Audio-Dialog hinzugefügt.
+## Unreleased
+- Neue mehrsprachige Schlüssel für den DE-Audio-Dialog hinzugefügt.
+- Untertitel-Import erlaubt die Auswahl einer alternativen Zielsprache (statt Deutsch) und hebt die aktive Wahl im Dialog hervor.
