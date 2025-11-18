@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Half-Life: Alyx Translation Tool</title>
+    <title data-i18n="app.title">Half-Life: Alyx Translation Tool</title>
     <!-- Sicherheitsrichtlinie für Electron: verhindert Warnhinweise -->
     <!-- Aktualisierte CSP: Inline-Styles sind über style-src-attr erlaubt -->
     <!-- Medien-Blobs werden über media-src zugelassen -->
@@ -26,50 +26,50 @@
     <div id="projectLoadingOverlay" class="loading-overlay hidden">
         <div class="loading-box">
             <div class="progress-bar"><div class="progress-fill"></div></div>
-            <span id="projectLoadingText">Projekt wird geladen...</span>
+            <span id="projectLoadingText" data-i18n="loading.project"></span>
             <ul id="projectLoadingSteps" class="loading-steps"></ul>
         </div>
     </div>
     <div id="errorBanner" class="error-banner hidden">
         <span id="errorBannerMessage"></span>
-        <button id="errorBannerRetry">Erneut versuchen</button>
+        <button id="errorBannerRetry" data-i18n="loading.retry"></button>
     </div>
     <div class="container">
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>🎮 Projekte</h2>
+                <h2 data-i18n="sidebar.projects">🎮 Projekte</h2>
             </div>
             <div class="project-list" id="projectList"></div>
-            <button class="add-project-btn" onclick="addProject()">+ Neues Projekt</button>
+            <button class="add-project-btn" onclick="addProject()" data-i18n="project.add">+ Neues Projekt</button>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content">
             <header class="workspace-header">
                 <div class="toolbar-tabs" role="tablist" aria-label="Arbeitsbereich">
-                    <button id="tab-project" class="toolbar-tab is-active" data-panel="project" role="tab" aria-selected="true" aria-controls="panel-project">Projekt</button>
-                    <button id="tab-tools" class="toolbar-tab" data-panel="tools" role="tab" aria-selected="false" aria-controls="panel-tools">Werkzeuge</button>
-                    <button id="tab-media" class="toolbar-tab" data-panel="media" role="tab" aria-selected="false" aria-controls="panel-media">Medien</button>
-                    <button id="tab-system" class="toolbar-tab" data-panel="system" role="tab" aria-selected="false" aria-controls="panel-system">System</button>
-                    <button id="tab-search" class="toolbar-tab" data-panel="search" role="tab" aria-selected="false" aria-controls="panel-search">Suche &amp; Verlauf</button>
+                    <button id="tab-project" class="toolbar-tab is-active" data-panel="project" role="tab" aria-selected="true" aria-controls="panel-project" data-i18n="tab.project">Projekt</button>
+                    <button id="tab-tools" class="toolbar-tab" data-panel="tools" role="tab" aria-selected="false" aria-controls="panel-tools" data-i18n="tab.tools">Werkzeuge</button>
+                    <button id="tab-media" class="toolbar-tab" data-panel="media" role="tab" aria-selected="false" aria-controls="panel-media" data-i18n="tab.media">Medien</button>
+                    <button id="tab-system" class="toolbar-tab" data-panel="system" role="tab" aria-selected="false" aria-controls="panel-system" data-i18n="tab.system">System</button>
+                    <button id="tab-search" class="toolbar-tab" data-panel="search" role="tab" aria-selected="false" aria-controls="panel-search" data-i18n="tab.search">Suche &amp; Verlauf</button>
                 </div>
                 <div class="toolbar-panels">
                     <section id="panel-project" class="toolbar-panel is-active" data-panel="project" role="tabpanel" aria-labelledby="tab-project" aria-hidden="false">
                         <div class="toolbar-group toolbar-group--project">
                             <div class="group-main">
-                                <h3 id="toolbarProjectTitle" class="group-title">Projekt</h3>
+                                <h3 id="toolbarProjectTitle" class="group-title" data-i18n="toolbar.project.title">Projekt</h3>
                                 <div class="group-buttons">
-                                    <button class="btn btn-secondary" onclick="showImportDialog()">📥 Import</button>
-                                    <button class="btn btn-secondary" onclick="showCcImportDialog()">🎬 Untertitel</button>
-                                    <button class="btn btn-secondary" onclick="showFolderBrowser()">📁 Ordner</button>
+                                    <button class="btn btn-secondary" onclick="showImportDialog()" data-i18n="button.import">📥 Import</button>
+                                    <button class="btn btn-secondary" onclick="showCcImportDialog()" data-i18n="button.ccImport">🎬 Untertitel</button>
+                                    <button class="btn btn-secondary" onclick="showFolderBrowser()" data-i18n="button.folder">📁 Ordner</button>
                                 </div>
                             </div>
                             <div class="group-body">
-                                <label for="fileInput" class="group-label">Dateien hinzufügen</label>
+                                <label for="fileInput" class="group-label" data-i18n="label.addFiles">Dateien hinzufügen</label>
                                 <div class="project-inline">
-                                    <textarea class="file-input" placeholder="Dateinamen eingeben (einer pro Zeile)..." id="fileInput" rows="1"></textarea>
-                                    <button class="btn btn-primary" onclick="addFiles()">Hinzufügen</button>
+                                    <textarea class="file-input" placeholder="" data-i18n-placeholder="placeholder.addFiles" id="fileInput" rows="1"></textarea>
+                                    <button class="btn btn-primary" onclick="addFiles()" data-i18n="button.addFiles">Hinzufügen</button>
                                 </div>
                             </div>
                         </div>
@@ -77,38 +77,38 @@
                     <section id="panel-tools" class="toolbar-panel" data-panel="tools" role="tabpanel" aria-labelledby="tab-tools" aria-hidden="true">
                         <div class="toolbar-group toolbar-group--tools">
                             <div class="group-main">
-                                <h3 id="toolbarToolsTitle" class="group-title">Werkzeuge</h3>
+                                <h3 id="toolbarToolsTitle" class="group-title" data-i18n="toolbar.tools.title">Werkzeuge</h3>
                                 <div class="group-buttons">
-                                    <button id="gptScoreButton" class="btn btn-secondary">Bewerten (GPT)</button>
-                                    <button id="randomProjectButton" class="btn btn-secondary">🎲 Zufall</button>
-                                    <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()">📚 Wörter</button>
-                                    <button id="generateEmotionsButton" class="btn btn-blue" title="Erzeugt deutsche Emotionstags für alle Zeilen">Emotionen (DE)</button>
-                                    <button id="sendTextV2Button" class="btn btn-blue" title="Alle Emotional-Texte an ElevenLabs senden">An ElevenLabs schicken</button>
-                                    <button class="btn btn-secondary" onclick="openSegmentDialog()">🔊 Audio-Datei zuordnen</button>
-                                    <button class="btn btn-secondary" onclick="showZipImportDialog()">ZIP importieren</button>
-                                    <button class="btn btn-secondary" id="copyAssistantButton">Kopierhilfe</button>
-                                    <button class="btn btn-secondary" id="copyAssistant2Button">Kopierhilfe 2</button>
-                                    <button class="btn btn-secondary" id="copyAllEmosButton">Emotionen kopieren</button>
-                                    <button class="btn btn-secondary" id="subtitleSearchAllButton" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
-                                    <button class="btn btn-secondary" id="openDubbingLog" onclick="openDubbingLog()">📝 Protokoll</button>
-                                    <button class="btn btn-secondary" id="devToolsButton">🐞 DevTools</button>
-                                    <button class="btn btn-secondary" id="debugReportButton">📋 Debug-Bericht</button>
+                                    <button id="gptScoreButton" class="btn btn-secondary" data-i18n="button.gptScore">Bewerten (GPT)</button>
+                                    <button id="randomProjectButton" class="btn btn-secondary" data-i18n="button.randomProject">🎲 Zufall</button>
+                                    <button id="wordListButton" class="btn btn-secondary" onclick="openWordList()" data-i18n="button.wordList">📚 Wörter</button>
+                                    <button id="generateEmotionsButton" class="btn btn-blue" title="" data-i18n="button.generateEmotions" data-i18n-title="tooltip.generateEmotions">Emotionen (DE)</button>
+                                    <button id="sendTextV2Button" class="btn btn-blue" title="" data-i18n="button.sendElevenLabs" data-i18n-title="tooltip.sendElevenLabs">An ElevenLabs schicken</button>
+                                    <button class="btn btn-secondary" onclick="openSegmentDialog()" data-i18n="button.assignAudio">🔊 Audio-Datei zuordnen</button>
+                                    <button class="btn btn-secondary" onclick="showZipImportDialog()" data-i18n="button.importZip">ZIP importieren</button>
+                                    <button class="btn btn-secondary" id="copyAssistantButton" data-i18n="button.copyAssistant">Kopierhilfe</button>
+                                    <button class="btn btn-secondary" id="copyAssistant2Button" data-i18n="button.copyAssistant2">Kopierhilfe 2</button>
+                                    <button class="btn btn-secondary" id="copyAllEmosButton" data-i18n="button.copyEmotions">Emotionen kopieren</button>
+                                    <button class="btn btn-secondary" id="subtitleSearchAllButton" title="" data-i18n="button.subtitleSearchAll" data-i18n-title="tooltip.subtitleSearchAll">UT-Suche alles</button>
+                                    <button class="btn btn-secondary" id="openDubbingLog" onclick="openDubbingLog()" data-i18n="button.dubbingLog">📝 Protokoll</button>
+                                    <button class="btn btn-secondary" id="devToolsButton" data-i18n="button.devTools">🐞 DevTools</button>
+                                    <button class="btn btn-secondary" id="debugReportButton" data-i18n="button.debugReport">📋 Debug-Bericht</button>
                                     <div class="menu-wrapper settings-container">
-                                        <button id="settingsButton" class="btn btn-secondary menu-toggle" onclick="toggleSettingsMenu()" aria-haspopup="true" aria-expanded="false">⚙️ Einstellungen</button>
+                                        <button id="settingsButton" class="btn btn-secondary menu-toggle" onclick="toggleSettingsMenu()" aria-haspopup="true" aria-expanded="false" data-i18n="settings.title">⚙️ Einstellungen</button>
                                         <div class="settings-menu workspace-dropdown" id="settingsMenu" role="menu">
-                                            <div class="settings-item" onclick="cleanupDuplicates()">🧹 Duplikate bereinigen</div>
-                                            <div class="settings-item" onclick="scanAudioDuplicates()">🎵 Audio-Duplikate</div>
-                                            <div class="settings-item" onclick="showBackupDialog()">💾 Backup</div>
-                                            <div class="settings-item" onclick="showApiDialog()">🔊 ElevenLabs API</div>
-                                            <div class="settings-item" onclick="showGptApiDialog()">💬 ChatGPT API</div>
-                                            <div class="settings-item" onclick="resetFileDatabase()">🔄 Reset DB</div>
-                                            <div class="settings-item" onclick="updateAllFilePaths()">🔄 Projekte bereinigen</div>
-                                            <div class="settings-item" onclick="repairProjectFolders()">🔧 Ordner reparieren</div>
+                                            <div class="settings-item" onclick="cleanupDuplicates()" data-i18n="settings.cleanupDuplicates">🧹 Duplikate bereinigen</div>
+                                            <div class="settings-item" onclick="scanAudioDuplicates()" data-i18n="settings.audioDuplicates">🎵 Audio-Duplikate</div>
+                                            <div class="settings-item" onclick="showBackupDialog()" data-i18n="settings.backup">💾 Backup</div>
+                                            <div class="settings-item" onclick="showApiDialog()" data-i18n="settings.elevenLabs">🔊 ElevenLabs API</div>
+                                            <div class="settings-item" onclick="showGptApiDialog()" data-i18n="settings.gpt">💬 ChatGPT API</div>
+                                            <div class="settings-item" onclick="resetFileDatabase()" data-i18n="settings.resetDb">🔄 Reset DB</div>
+                                            <div class="settings-item" onclick="updateAllFilePaths()" data-i18n="settings.cleanupProjects">🔄 Projekte bereinigen</div>
+                                            <div class="settings-item" onclick="repairProjectFolders()" data-i18n="settings.repairFolders">🔧 Ordner reparieren</div>
                                             <div class="settings-item language-item">
-                                                <label for="languageSelect" class="language-label">🌐 Sprache</label>
+                                                <label for="languageSelect" class="language-label" data-i18n="settings.language">🌐 Sprache</label>
                                                 <select id="languageSelect">
-                                                    <option value="de">Deutsch</option>
-                                                    <option value="en">English</option>
+                                                    <option value="de" data-i18n="language.german">Deutsch</option>
+                                                    <option value="en" data-i18n="language.english">English</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -120,32 +120,32 @@
                     <section id="panel-media" class="toolbar-panel" data-panel="media" role="tabpanel" aria-labelledby="tab-media" aria-hidden="true">
                         <div class="toolbar-group toolbar-group--media">
                             <div class="group-main">
-                                <h3 id="toolbarMediaTitle" class="group-title">Medien</h3>
+                                <h3 id="toolbarMediaTitle" class="group-title" data-i18n="toolbar.media.title">Medien</h3>
                                 <div class="group-buttons">
-                                    <button id="openVideoManager" class="btn btn-secondary">🎬 Videos</button>
+                                    <button id="openVideoManager" class="btn btn-secondary" data-i18n="toolbar.media.videos">🎬 Videos</button>
                                 </div>
                             </div>
                             <div class="group-body">
                                 <div class="hla-launch">
                                     <select id="modusSelect">
-                                        <option value="normal">Spiel</option>
-                                        <option value="workshop">Workshop</option>
+                                        <option value="normal" data-i18n="label.mode">Spiel</option>
+                                        <option value="workshop" data-i18n="label.workshop">Workshop</option>
                                     </select>
                                     <select id="spracheSelect">
-                                        <option value="english">english</option>
-                                        <option value="german">german</option>
+                                        <option value="english" data-i18n="language.english">english</option>
+                                        <option value="german" data-i18n="language.german">german</option>
                                     </select>
                                     <label class="hla-launch__option">
-                                        <input type="checkbox" id="mapCheckbox"> +map
+                                        <input type="checkbox" id="mapCheckbox"> <span data-i18n="label.mapToggle">+map</span>
                                     </label>
-                                    <input type="text" id="mapSelect" placeholder="Level">
+                                    <input type="text" id="mapSelect" placeholder="" data-i18n-placeholder="placeholder.level">
                                     <div class="start-dropdown">
-                                        <button id="startButton" class="btn btn-secondary" onclick="startHla()" title="">Starten</button>
+                                        <button id="startButton" class="btn btn-secondary" onclick="startHla()" title="" data-i18n="button.start">Starten</button>
                                         <button id="startDropdown" class="btn btn-secondary" onclick="toggleStartMenu()">▼</button>
                                         <div id="startMenu" class="dropdown-menu">
-                                            <label class="dropdown-item"><input type="checkbox" id="optGod"> Godmode</label>
-                                            <label class="dropdown-item"><input type="checkbox" id="optAmmo"> Unendliche Munition</label>
-                                            <label class="dropdown-item"><input type="checkbox" id="optConsole"> Entwicklerkonsole</label>
+                                            <label class="dropdown-item"><input type="checkbox" id="optGod"> <span data-i18n="option.godmode">Godmode</span></label>
+                                            <label class="dropdown-item"><input type="checkbox" id="optAmmo"> <span data-i18n="option.ammo">Unendliche Munition</span></label>
+                                            <label class="dropdown-item"><input type="checkbox" id="optConsole"> <span data-i18n="option.console">Entwicklerkonsole</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -155,25 +155,25 @@
                     <section id="panel-system" class="toolbar-panel" data-panel="system" role="tabpanel" aria-labelledby="tab-system" aria-hidden="true">
                         <div class="toolbar-group toolbar-group--system">
                             <div class="group-main">
-                                <h3 id="toolbarSystemTitle" class="group-title">System</h3>
+                                <h3 id="toolbarSystemTitle" class="group-title" data-i18n="toolbar.system.title">System</h3>
                                 <div class="group-buttons">
-                                    <button id="startTranslateButton" class="btn btn-blue">Automatische Übersetzung</button>
+                                    <button id="startTranslateButton" class="btn btn-blue" data-i18n="button.autoTranslate">Automatische Übersetzung</button>
                                     <div class="menu-wrapper">
-                                        <button id="systemMenuToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="systemMenu" aria-haspopup="true" aria-expanded="false">Verwaltung</button>
+                                        <button id="systemMenuToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="systemMenu" aria-haspopup="true" aria-expanded="false" data-i18n="system.menu">Verwaltung</button>
                                         <div class="workspace-dropdown workspace-dropdown--wide" id="systemMenu" role="menu">
                                             <div class="dropdown-section">
-                                                <h4 class="dropdown-title">Migration</h4>
-                                                <button class="dropdown-item" onclick="startMigration()">Migration starten</button>
-                                                <button class="dropdown-item" onclick="loadMigration()">Migration laden</button>
-                                                <button class="dropdown-item" onclick="migrateData()">Daten migrieren</button>
+                                                <h4 class="dropdown-title" data-i18n="system.migration.title">Migration</h4>
+                                                <button class="dropdown-item" onclick="startMigration()" data-i18n="system.migration.start">Migration starten</button>
+                                                <button class="dropdown-item" onclick="loadMigration()" data-i18n="system.migration.load">Migration laden</button>
+                                                <button class="dropdown-item" onclick="migrateData()" data-i18n="system.migration.process">Daten migrieren</button>
                                                 <div id="migration-status" class="migration-status"></div>
                                             </div>
                                             <div class="dropdown-section">
-                                                <h4 class="dropdown-title">Speicher</h4>
+                                                <h4 class="dropdown-title" data-i18n="system.storage.title">Speicher</h4>
                                                 <div class="storage-compact">
                                                     <div class="storage-status">
                                                         <span id="storageModeIndicator"></span>
-                                                        <button id="switchStorageButton" class="btn btn-secondary btn-tight">Wechseln</button>
+                                                        <button id="switchStorageButton" class="btn btn-secondary btn-tight" data-i18n="system.storage.switch">Wechseln</button>
                                                     </div>
                                                     <div id="storageMonitor" class="storage-monitor">
                                                         <div class="progress-bar"><div class="progress-fill" id="storageUsageFill"></div></div>
@@ -183,8 +183,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="storage-actions">
-                                                        <button id="openStorageFolderButton" class="btn btn-secondary btn-tight" onclick="openStorageFolder()">📂 Speicherordner</button>
-                                                        <button id="cleanupButton" class="btn btn-secondary btn-tight">Aufräumen</button>
+                                                        <button id="openStorageFolderButton" class="btn btn-secondary btn-tight" onclick="openStorageFolder()" data-i18n="system.storage.folder">📂 Speicherordner</button>
+                                                        <button id="cleanupButton" class="btn btn-secondary btn-tight" data-i18n="system.storage.cleanup">Aufräumen</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,32 +197,32 @@
                     <section id="panel-search" class="toolbar-panel" data-panel="search" role="tabpanel" aria-labelledby="tab-search" aria-hidden="true">
                         <div class="toolbar-group toolbar-group--search">
                             <div class="group-main">
-                                <h3 id="toolbarSearchTitle" class="group-title">Suche &amp; Verlauf</h3>
-                                <button id="subtitleSearchAllButtonInline" class="btn btn-secondary" title="Sucht fehlende deutsche Texte im gesamten Projekt">UT-Suche alles</button>
+                                <h3 id="toolbarSearchTitle" class="group-title" data-i18n="toolbar.search.title">Suche &amp; Verlauf</h3>
+                                <button id="subtitleSearchAllButtonInline" class="btn btn-secondary" title="" data-i18n="button.subtitleSearchAll" data-i18n-title="tooltip.subtitleSearchAll">UT-Suche alles</button>
                             </div>
                             <div class="group-body">
                                 <div class="search-bar">
-                                    <input type="text" class="search-input" placeholder="Live-Suche: Dateiname oder Text... (Groß-/Kleinschreibung, Punkte ignoriert)" id="searchInput">
+                                    <input type="text" class="search-input" placeholder="" data-i18n-placeholder="search.placeholder" id="searchInput">
                                     <div class="search-results" id="searchResults"></div>
                                 </div>
                                 <div class="search-options copy-options">
-                                    <label class="copy-option"><input type="checkbox" id="restTranslationCheckbox"> Reste-Modus</label>
-                                    <label class="copy-option"><input type="checkbox" id="copyIncludeTime" checked> Zeit voranstellen</label>
-                                    <label class="copy-option"><input type="checkbox" id="copyAddDashes"> --- anhängen</label>
-                                    <label class="copy-option"><input type="checkbox" id="copyAddExtremeSpeed"> „extrem schnell reden“ ergänzen</label>
+                                    <label class="copy-option"><input type="checkbox" id="restTranslationCheckbox"> <span data-i18n="search.copy.remainder">Reste-Modus</span></label>
+                                    <label class="copy-option"><input type="checkbox" id="copyIncludeTime" checked> <span data-i18n="search.copy.time">Zeit voranstellen</span></label>
+                                    <label class="copy-option"><input type="checkbox" id="copyAddDashes"> <span data-i18n="search.copy.dashes">--- anhängen</span></label>
+                                    <label class="copy-option"><input type="checkbox" id="copyAddExtremeSpeed"> <span data-i18n="search.copy.speed">„extrem schnell reden“ ergänzen</span></label>
                                 </div>
                                 <div class="search-meta">
                                     <div class="sort-controls">
-                                        <span class="sort-label">Sortierung:</span>
-                                        <button class="sort-btn active" onclick="sortTable('position', event)">Position</button>
-                                        <button class="sort-btn" onclick="sortTable('filename', event)">Dateiname</button>
-                                        <button class="sort-btn" onclick="sortTable('folder', event)">Ordner</button>
-                                        <button class="sort-btn" onclick="sortTable('completion', event)">Fertig</button>
+                                        <span class="sort-label" data-i18n="search.sort">Sortierung:</span>
+                                        <button class="sort-btn active" onclick="sortTable('position', event)" data-i18n="search.sort.position">Position</button>
+                                        <button class="sort-btn" onclick="sortTable('filename', event)" data-i18n="search.sort.filename">Dateiname</button>
+                                        <button class="sort-btn" onclick="sortTable('folder', event)" data-i18n="search.sort.folder">Ordner</button>
+                                        <button class="sort-btn" onclick="sortTable('completion', event)" data-i18n="search.sort.completion">Fertig</button>
                                     </div>
                                     <div class="progress-info">
-                                        <div class="progress-stat" id="totalProgress">0% vollständig</div>
-                                        <div class="progress-stat" id="folderProgress">0 Ordner</div>
-                                        <div class="progress-stat" id="globalProjectProgress">0% gesamt</div>
+                                        <div class="progress-stat" id="totalProgress" data-i18n="progress.total">0% vollständig</div>
+                                        <div class="progress-stat" id="folderProgress" data-i18n="progress.folders">0 Ordner</div>
+                                        <div class="progress-stat" id="globalProjectProgress" data-i18n="progress.global">0% gesamt</div>
                                         <div class="progress-stat clickable" id="emoProgress" title="Leere und fehlerhafte Emo-Texte neu generieren">🟣 0 | 0 | 0</div>
                                     </div>
                                 </div>
@@ -235,7 +235,7 @@
                                             <button id="numberPrevBtn" onclick="goToPreviousNumber()" title="Eine Nummer zurück">▲</button>
                                             <button id="numberNextBtn" onclick="goToNextNumber()" title="Eine Nummer weiter">▼</button>
                                         </div>
-                                        <button id="openEnglishReviewBtn" class="btn btn-secondary project-review-btn" onclick="openEnglishReview()" title="Öffnet die EN-Review-Ansicht" aria-haspopup="dialog" aria-controls="englishReviewDialog">🇬🇧 Review</button>
+                                        <button id="openEnglishReviewBtn" class="btn btn-secondary project-review-btn" onclick="openEnglishReview()" title="" aria-haspopup="dialog" aria-controls="englishReviewDialog" data-i18n="button.review" data-i18n-title="tooltip.review">🇬🇧 Review</button>
                                     </div>
                                 </div>
                             </div>
@@ -247,10 +247,10 @@
 <!-- =========================== PROJECT META BAR START =========================== -->
 <div class="project-meta-bar" id="projectMetaBar" style="display:none;">
     <span class="meta-project" id="metaProjectName"></span>
-    <span class="meta-label">| Level:</span>
+    <span class="meta-label" data-i18n="meta.level">| Level:</span>
     <span id="metaLevelName"></span>
     <button class="copy-level-btn" onclick="copyLevelName()">⧉</button>
-    <span class="meta-label">| Teil:</span>
+    <span class="meta-label" data-i18n="meta.part">| Teil:</span>
     <span id="metaPartNumber"></span>
 </div>
 <!-- =========================== PROJECT META BAR END =========================== -->
@@ -259,7 +259,7 @@
 
             <!-- Scan Progress -->
             <div class="scan-progress" id="scanProgress">
-                <div class="scan-status" id="scanStatus">Scanne Dateien...</div>
+                <div class="scan-status" id="scanStatus" data-i18n="loading.scan">Scanne Dateien...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFill"></div>
                 </div>
@@ -267,7 +267,7 @@
 
             <!-- Übersetzungsfortschritt -->
             <div class="translate-progress" id="translateProgress">
-                <div class="translate-status" id="translateStatus">Übersetze...</div>
+                <div class="translate-status" id="translateStatus" data-i18n="loading.translate">Übersetze...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="translateFill"></div>
                 </div>
@@ -275,7 +275,7 @@
 
             <!-- Globale Untertitel-Suche -->
             <div class="subtitle-search-progress" id="subtitleSearchProgress">
-                <div class="subtitle-search-status" id="subtitleSearchStatus">Suche Untertitel...</div>
+                <div class="subtitle-search-status" id="subtitleSearchStatus" data-i18n="loading.subtitle">Suche Untertitel...</div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="subtitleSearchFill"></div>
                 </div>
@@ -284,31 +284,25 @@
             <!-- Table -->
             <div class="table-container">
                 <div id="emptyState" class="empty-state">
-                    <h3>Keine Dateien im Projekt</h3>
-                    <p>Füge Dateien über die Suche oder das Eingabefeld hinzu.</p>
-                    <p style="font-size: 14px; color: #888; margin-top: 10px;">
-                        💡 Tipps:<br>
-                        • Doppelklick auf Zeilennummern (#) um Position zu ändern<br>
-                        • Tab/Shift+Tab für Navigation zwischen Textfeldern<br>
-                        • Rechtsklick für Kontext-Menü<br>
-                        • Leertaste für Audio-Wiedergabe (wenn Zeile ausgewählt)
-                    </p>
+                    <h3 data-i18n="empty.title">Keine Dateien im Projekt</h3>
+                    <p data-i18n="empty.hint">Füge Dateien über die Suche oder das Eingabefeld hinzu.</p>
+                    <p style="font-size: 14px; color: #888; margin-top: 10px;" data-i18n="empty.tips"></p>
                 </div>
                 <!-- Tabelle mit kompakten Spalten: EN/DE und Aktionen zusammengeführt -->
                 <table id="fileTable" style="display: none;">
 <thead>
     <tr>
         <th width="30">↕</th>
-        <th width="50" title="Doppelklick auf Nummer um Position zu ändern">#</th>
-        <th class="sortable">Dateiname</th>
-        <th class="sortable">Ordner</th>
-        <th width="40" title="Speicherort">Speicher</th>
-        <th width="60"><div class="version-score-header">Version<br>Score</div></th>
-        <th>EN/DE Text</th>
-        <th width="50">UT-Suche</th>
-        <th width="90" title="Pfad der EN- und DE-Datei">Pfad</th>
-        <th width="40" title="Längenvergleich">Länge</th>
-        <th width="130">Aktionen</th>
+        <th width="50" title="" data-i18n-title="table.header.number">#</th>
+        <th class="sortable" data-i18n="table.header.filename">Dateiname</th>
+        <th class="sortable" data-i18n="table.header.folder">Ordner</th>
+        <th width="40" title="" data-i18n-title="table.header.storage">Speicher</th>
+        <th width="60"><div class="version-score-header" data-i18n="table.header.version">Version<br>Score</div></th>
+        <th data-i18n="table.header.text">EN/DE Text</th>
+        <th width="50" data-i18n="table.header.search">UT-Suche</th>
+        <th width="90" title="" data-i18n-title="table.header.path">Pfad</th>
+        <th width="40" title="" data-i18n-title="table.header.length">Länge</th>
+        <th width="130" data-i18n="table.header.actions">Aktionen</th>
     </tr>
 </thead>
                     <tbody id="fileTableBody"></tbody>
@@ -319,13 +313,13 @@
             <div class="status-bar">
                 <div class="status-message">
                     <div class="save-indicator"></div>
-                    <span id="statusText">Bereit</span>
+                    <span id="statusText" data-i18n="status.ready">Bereit</span>
                 </div>
                 <div class="status-info">
-                    <span id="fileCount">0 Dateien</span> |
-                    <span id="selectedCount">0 ausgewählt</span> |
-                    <span id="projectFolderPath">sounds</span> |
-                    <span id="accessStatus" class="access-status" onclick="handleAccessStatusClick()" title="Klicken um Dateiberechtigungen zu erneuern">
+                    <span id="fileCount" data-i18n="status.files">0 Dateien</span> |
+                    <span id="selectedCount" data-i18n="status.selected">0 ausgewählt</span> |
+                    <span id="projectFolderPath" data-i18n="status.folder">sounds</span> |
+                    <span id="accessStatus" class="access-status" onclick="handleAccessStatusClick()" title="Klicken um Dateiberechtigungen zu erneuern" data-i18n="status.access">
                         📂 Keine Auswahl
                     </span>
                 </div>
@@ -335,101 +329,101 @@
 
     <!-- Version Menu -->
     <div class="context-menu" id="versionMenu">
-        <div class="context-menu-item" onclick="selectVersion(1)">Version 1</div>
-        <div class="context-menu-item" onclick="selectVersion(2)">Version 2</div>
-        <div class="context-menu-item" onclick="selectVersion(3)">Version 3</div>
-        <div class="context-menu-item" onclick="selectVersion(4)">Version 4</div>
-        <div class="context-menu-item" onclick="selectVersion(5)">Version 5</div>
-        <div class="context-menu-item" onclick="selectVersion(6)">Version 6</div>
-        <div class="context-menu-item" onclick="selectVersion(7)">Version 7</div>
-        <div class="context-menu-item" onclick="selectVersion(8)">Version 8</div>
-        <div class="context-menu-item" onclick="selectVersion(9)">Version 9</div>
-        <div class="context-menu-item" onclick="selectVersion(10)">Version 10</div>
-        <div class="context-menu-item" onclick="selectVersion('custom')">Benutzerdefiniert...</div>
+        <div class="context-menu-item" onclick="selectVersion(1)" data-i18n="version.select.1">Version 1</div>
+        <div class="context-menu-item" onclick="selectVersion(2)" data-i18n="version.select.2">Version 2</div>
+        <div class="context-menu-item" onclick="selectVersion(3)" data-i18n="version.select.3">Version 3</div>
+        <div class="context-menu-item" onclick="selectVersion(4)" data-i18n="version.select.4">Version 4</div>
+        <div class="context-menu-item" onclick="selectVersion(5)" data-i18n="version.select.5">Version 5</div>
+        <div class="context-menu-item" onclick="selectVersion(6)" data-i18n="version.select.6">Version 6</div>
+        <div class="context-menu-item" onclick="selectVersion(7)" data-i18n="version.select.7">Version 7</div>
+        <div class="context-menu-item" onclick="selectVersion(8)" data-i18n="version.select.8">Version 8</div>
+        <div class="context-menu-item" onclick="selectVersion(9)" data-i18n="version.select.9">Version 9</div>
+        <div class="context-menu-item" onclick="selectVersion(10)" data-i18n="version.select.10">Version 10</div>
+        <div class="context-menu-item" onclick="selectVersion('custom')" data-i18n="version.select.custom">Benutzerdefiniert...</div>
     </div>
 
     <!-- Context Menu -->
     <div class="context-menu" id="contextMenu">
         <div class="context-menu-item" id="contextPlay" onclick="contextMenuAction('play')">
-            <span>▶</span> Audio abspielen
+            <span>▶</span> <span data-i18n="context.play">Audio abspielen</span>
         </div>
         <div class="context-menu-item" id="contextCopyEn" onclick="contextMenuAction('copyEN')">
-            <span>📄</span> EN Text kopieren
+            <span>📄</span> <span data-i18n="context.copyEn">EN Text kopieren</span>
         </div>
         <div class="context-menu-item" id="contextCopyDe" onclick="contextMenuAction('copyDE')">
-            <span>📄</span> DE Text kopieren
+            <span>📄</span> <span data-i18n="context.copyDe">DE Text kopieren</span>
         </div>
         <div class="context-menu-item" id="contextPasteEn" onclick="contextMenuAction('pasteEN')">
-            <span>📋</span> In EN Text einfügen
+            <span>📋</span> <span data-i18n="context.pasteEn">In EN Text einfügen</span>
         </div>
         <div class="context-menu-item" id="contextPasteDe" onclick="contextMenuAction('pasteDE')">
-            <span>📋</span> In DE Text einfügen
+            <span>📋</span> <span data-i18n="context.pasteDe">In DE Text einfügen</span>
         </div>
         <div class="context-menu-item" id="contextUploadDe" onclick="contextMenuAction('uploadDE')">
-            <span>⬆️</span> DE-Datei hochladen
+            <span>⬆️</span> <span data-i18n="context.uploadDe">DE-Datei hochladen</span>
         </div>
         <div class="context-menu-item" id="contextHistory" onclick="contextMenuAction('history')">
-            <span>🕒</span> Historie
+            <span>🕒</span> <span data-i18n="context.history">Historie</span>
         </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item" id="contextOpenFolder" onclick="contextMenuAction('openFolder')">
-            <span>📁</span> In Ordner-Browser öffnen
+            <span>📁</span> <span data-i18n="context.openFolder">In Ordner-Browser öffnen</span>
         </div>
         <div class="context-menu-divider"></div>
         <div class="context-menu-item danger" id="contextDelete" onclick="contextMenuAction('delete')">
-            <span>🗑️</span> Datei löschen
+            <span>🗑️</span> <span data-i18n="context.delete">Datei löschen</span>
         </div>
     </div>
 
     <!-- Auto-Übersetzungs-Menü -->
     <div class="context-menu" id="autoTransMenu">
         <div class="context-menu-item" id="autoTransLine" onclick="autoTransMenuAction('line')">
-            <span>🔁</span> Übersetzung für diese Zeile
+            <span>🔁</span> <span data-i18n="auto.trans.line">Übersetzung für diese Zeile</span>
         </div>
         <div class="context-menu-item" id="autoTransAll" onclick="autoTransMenuAction('all')">
-            <span>🔁</span> Übersetzung für alle Zeilen
+            <span>🔁</span> <span data-i18n="auto.trans.all">Übersetzung für alle Zeilen</span>
         </div>
     </div>
 
     <!-- Project Context Menu -->
     <div class="context-menu" id="projectContextMenu">
         <div class="context-menu-item" id="projectMenuEdit" onclick="projectMenuAction('edit')">
-            <span>⚙️</span> Projekt bearbeiten
+            <span>⚙️</span> <span data-i18n="project.menu.edit">Projekt bearbeiten</span>
         </div>
         <div class="context-menu-item" id="projectMenuAnalyze" onclick="projectMenuAction('analyze')">
-            <span>🔍</span> Projekt analysieren
+            <span>🔍</span> <span data-i18n="project.menu.analyze">Projekt analysieren</span>
         </div>
         <div class="context-menu-item danger" id="projectMenuDelete" onclick="projectMenuAction('delete')">
-            <span>🗑️</span> Projekt löschen
+            <span>🗑️</span> <span data-i18n="project.menu.delete">Projekt löschen</span>
         </div>
     </div>
 
     <!-- Level Context Menu -->
     <div class="context-menu" id="levelContextMenu">
         <div class="context-menu-item" onclick="levelMenuAction('edit')">
-            <span>⚙️</span> Level bearbeiten
+            <span>⚙️</span> <span data-i18n="level.menu.edit">Level bearbeiten</span>
         </div>
         <div class="context-menu-item" onclick="levelMenuAction('quickProject')">
-            <span>➕</span> Schnellprojekt
+            <span>➕</span> <span data-i18n="level.menu.quickProject">Schnellprojekt</span>
         </div>
         <div class="context-menu-item" onclick="levelMenuAction('exportDebug')">
-            <span>🐞</span> Debug-Bericht exportieren
+            <span>🐞</span> <span data-i18n="level.menu.exportDebug">Debug-Bericht exportieren</span>
         </div>
         <div class="context-menu-item danger" onclick="levelMenuAction('delete')">
-            <span>🗑️</span> Level löschen
+            <span>🗑️</span> <span data-i18n="level.menu.delete">Level löschen</span>
         </div>
     </div>
 
     <!-- Chapter Context Menu -->
     <div class="context-menu" id="chapterContextMenu">
         <div class="context-menu-item" onclick="chapterMenuAction('edit')">
-            <span>⚙️</span> Kapitel bearbeiten
+            <span>⚙️</span> <span data-i18n="chapter.menu.edit">Kapitel bearbeiten</span>
         </div>
         <div class="context-menu-item" onclick="chapterMenuAction('quickLevel')">
-            <span>➕</span> Schnell-Level
+            <span>➕</span> <span data-i18n="chapter.menu.quickLevel">Schnell-Level</span>
         </div>
         <div class="context-menu-item danger" onclick="chapterMenuAction('delete')">
-            <span>🗑️</span> Kapitel löschen
+            <span>🗑️</span> <span data-i18n="chapter.menu.delete">Kapitel löschen</span>
         </div>
     </div>
 

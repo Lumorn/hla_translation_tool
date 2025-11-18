@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.537-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.538-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -23,6 +23,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Der Ordner-Auswahldialog für mehrdeutige Dateien ist vollständig lokalisiert und folgt der gewählten Sprache bei Titeln, Hilfen und Buttons.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
+* Toolbar-Tabs, System-Schalter, Kontextmenüs, Statusleiste und Versionsauswahl ziehen sichtbare Texte, Tooltips und Platzhalter aus `web/src/i18n.js` und aktualisieren sich bei Sprachwechseln automatisch.
 * Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.
 * Der Datei-Import-Dialog nutzt i18n-Schlüssel für Titel, Hinweise, Buttons und Statusmeldungen und wechselt damit vollständig auf Englisch bei Sprachumschaltung.
 * Neuer Struktur-Export/-Import erstellt einen Blueprint nur mit Kapiteln, Leveln, Dateinamen und EN-Texten – ohne DE-Übersetzungen oder Audio-Pfade – damit externe Übersetzer:innen mit einer sauberen Ausgangsbasis arbeiten können.

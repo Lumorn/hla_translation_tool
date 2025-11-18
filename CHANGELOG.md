@@ -4,6 +4,7 @@
 * `translate_text_i18n.py` bündelt die englischen und deutschen Textbausteine für Installations- und JSON-Fehlerhinweise des Übersetzungsskripts.
 * `tests/test_translate_text_i18n.py` prüft die Sprachwahl inklusive Fallback-Logik und Platzhalter-Ersetzung.
 * `README.md` beschreibt die neue Sprachwahl für CLI-Aufrufe samt Beispielbefehlen.
+* `web/hla_translation_tool.html`, `web/src/main.js` und `web/src/i18n.js` ersetzen sichtbar beschriftete Tabs, Tooltips, Platzhalter sowie Versions- und Kontextmenüs durch i18n-Schlüssel und aktualisieren sie bei Sprachwechsel automatisch.
 # 🛠️ Patch in 1.40.537
 * `web/src/migrationUI.js` ersetzt sämtliche Statusmeldungen durch i18n-Schlüssel mit Platzhaltern, nutzt `i18n.format` für Zähler/Dateinamen und rendert laufende Meldungen bei Sprachwechsel neu.
 * `web/src/i18n.js` hinterlegt neue Migrations-Statusschlüssel in Deutsch und Englisch für Vorbereitung, Export, Import, Migration sowie Fehlerhinweise.
