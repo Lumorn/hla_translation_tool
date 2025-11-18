@@ -17748,7 +17748,7 @@ function refreshSegmentSuggestionList() {
     if (!autoSegments.length) {
         const hint = document.createElement('div');
         hint.className = 'segment-empty';
-        hint.textContent = 'Noch keine Segment-Vorschläge berechnet.';
+        hint.textContent = t('deEdit.segment.emptySuggestions');
         container.appendChild(hint);
         return;
     }
@@ -17756,7 +17756,7 @@ function refreshSegmentSuggestionList() {
     if (!segmente.length) {
         const hint = document.createElement('div');
         hint.className = 'segment-empty';
-        hint.textContent = 'Keine aktiven Segmente vorhanden.';
+        hint.textContent = t('deEdit.segment.emptyActive');
         container.appendChild(hint);
         return;
     }
