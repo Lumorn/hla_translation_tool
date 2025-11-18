@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.505
+* `web/src/i18n.js` ergänzt i18n-Schlüssel für Emo-Dubbing-Abschlussstatus und den Abschluss-Logeintrag in Deutsch und Englisch.
+* `web/src/dubbing.js` ruft Status- und Logmeldung beim erfolgreichen Emo-Dubbing über die neuen Übersetzungen ab, damit Sprachwechsel live greifen.
+* `README.md` trägt Version **1.40.505** und erwähnt die lokalisierten Emo-Dubbing-Rückmeldungen.
 # 🛠️ Patch in 1.40.504
 * `web/src/i18n.js` erweitert das Modul um eine Format-Funktion für Platzhalter und dokumentiert die Kopierhilfe-Schlüssel direkt im Sprachpaket.
 * `web/src/main.js` ersetzt den Kopierhilfe-Status durch i18n-Formatierung, entfernt die hartkodierten Texte und rendert die Anzeige nach einem Sprachwechsel neu.
