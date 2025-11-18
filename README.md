@@ -27,6 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Emo-Dubbing nutzt i18n-Schlüssel für Abschlussstatus und Logeinträge und aktualisiert die Rückmeldungen damit beim Sprachwechsel automatisch.
 * DE-Audio-Aktionszeile inklusive Upload-, Dubbing- und Schnitt-Schaltflächen sowie Status-Tooltips nutzt i18n-Schlüssel und zeigt Beschriftungen konsistent in Deutsch und Englisch an.
 * Wellenform-Beschriftungen im DE-Audio-Editor ziehen die Sekundenlabels nun aus i18n-Schlüsseln und spiegeln Sprachwechsel sofort wider.
+* Header, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Steuerungen und Schnellzugriff im DE-Audio-Dialog tragen data-i18n-Schlüssel für Text, Titel und Aria-Labels und behalten vorerst die deutschen Standardwerte bei.
 * Fallback-Übersetzer sichern Seitentitel, Projekt-Tooltips und Emo-Generatoren ab, sodass die DE-Audiobearbeitung auch beim Sprachwechsel ohne geladenes i18n stabil bleibt.
 * Emo-Generierung, Fortschrittsbutton, Fehlermeldungen zum fehlenden GPT-Key und Statusmeldungen greifen auf i18n-Schlüssel mit Zähler-Platzhaltern zurück und lassen sich vollständig zwischen Deutsch und Englisch umschalten.
 * Kopierhilfe-Status, Datei- und Schrittzähler liegen vollständig als i18n-Schlüssel mit Platzhaltern vor und werden über `i18n.t(...)`/`i18n.format(...)` beim Sprachwechsel automatisch zwischen Deutsch und Englisch umgeschaltet.
