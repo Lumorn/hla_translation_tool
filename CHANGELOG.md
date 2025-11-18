@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.530
+* `web/hla_translation_tool.html` markiert die EN-Einfügefelder, Playback-Buttons und Wellenform-Labels im DE-Audio-Dialog mit i18n-Attributen und eindeutigen IDs für Titel und Aria-Beschriftungen.
+* `web/src/main.js` registriert die neuen Dialog-Elemente als Übersetzungsziele, sodass Titel, Labels und Optionen bei Sprachwechseln automatisch gesetzt werden.
+* `web/src/i18n.js` ergänzt passende `deAudio.*`-Schlüssel für Wiedergabe-Buttons und EN-Insert-Steuerungen in Deutsch und Englisch.
+* `README.md` hebt Version **1.40.530** hervor und nennt die lokalisierten Einfügefelder samt Play/Stop-Kontrollen im DE-Audio-Dialog.
 # 🛠️ Patch in 1.40.529
 * `web/src/main.js` ersetzt Reset-Dialoge, Statusmeldungen, Konsolenhinweise und Toasts rund um das DE-Audio durch `window.i18n.t(...)`-Aufrufe und vermeidet damit hartkodierte Texte.
 * `web/src/i18n.js` hinterlegt neue `deAudio.*`-Schlüssel für Effektbezeichnungen, Reset-Hinweise, Fehlermeldungen und Speichertoasts in Deutsch und Englisch.

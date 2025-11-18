@@ -791,7 +791,7 @@
             <div class="wave-timeline-preview" id="waveTimelinePreview" aria-hidden="true"></div>
             <div class="wave-area">
                 <div class="wave-block wave-block-original">
-                    <span class="wave-label" id="waveLabelOriginal">EN (Original)</span>
+                    <span class="wave-label" id="waveLabelOriginal" data-i18n="deEdit.waveLabel.original">EN (Original)</span>
                     <div class="wave-controls">
                         <div class="wave-viewport" id="waveOriginalViewport">
                             <div class="wave-scroll" id="waveOriginalScroll">
@@ -800,8 +800,8 @@
                             </div>
                         </div>
                         <div class="wave-buttons">
-                            <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen" aria-label="Original abspielen">▶</button>
-                            <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen" aria-label="Wiedergabe stoppen">⏹</button>
+                            <button id="playOrigPreview" class="de-play-btn" onclick="playOriginalPreview()" title="Original abspielen" aria-label="Original abspielen" data-i18n-title="deAudio.play.original" data-i18n-aria-label="deAudio.play.original">▶</button>
+                            <button id="stopOrigPreview" class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen" aria-label="Wiedergabe stoppen" data-i18n-title="deAudio.play.stop" data-i18n-aria-label="deAudio.play.stop">⏹</button>
                         </div>
                     </div>
                     <!-- EN-Text unter der Original-Welle -->
@@ -810,20 +810,27 @@
                 <!-- Steuerung zum Runterkopieren des markierten EN-Bereichs -->
                 <div class="insert-en-section">
                     <div class="insert-controls">
-                        <label>Start EN (ms): <input type="number" id="enSegStart" value="0" step="100"></label>
-                        <label>Ende EN (ms): <input type="number" id="enSegEnd" value="0" step="100"></label>
-                        <label>Einfügen bei:
+                        <label for="enSegStart">
+                            <span class="insert-label" id="enSegStartLabel" data-i18n="deAudio.insert.start">Start EN (ms):</span>
+                            <input type="number" id="enSegStart" value="0" step="100">
+                        </label>
+                        <label for="enSegEnd">
+                            <span class="insert-label" id="enSegEndLabel" data-i18n="deAudio.insert.end">Ende EN (ms):</span>
+                            <input type="number" id="enSegEnd" value="0" step="100">
+                        </label>
+                        <label for="enInsertPos">
+                            <span class="insert-label" id="enInsertPosLabel" data-i18n="deAudio.insert.position">Einfügen bei:</span>
                             <select id="enInsertPos">
-                                <option value="cursor">Cursor</option>
-                                <option value="start">Anfang</option>
-                                <option value="end">Ende</option>
+                                <option value="cursor" data-i18n="deAudio.insert.pos.cursor">Cursor</option>
+                                <option value="start" data-i18n="deAudio.insert.pos.start">Anfang</option>
+                                <option value="end" data-i18n="deAudio.insert.pos.end">Ende</option>
                             </select>
                         </label>
-                        <button id="copyEnBtn" class="btn btn-secondary" onclick="insertEnglishSegment()" title="Markierten EN-Abschnitt in DE-Audio kopieren">⬇️ Kopieren</button>
+                        <button id="copyEnBtn" class="btn btn-secondary" onclick="insertEnglishSegment()" title="Markierten EN-Abschnitt in DE-Audio kopieren" data-i18n="deAudio.insert.copy" data-i18n-title="deAudio.insert.copyTitle">⬇️ Kopieren</button>
                     </div>
                 </div>
                 <div class="wave-block wave-block-edited">
-                    <span class="wave-label" id="waveLabelEdited">DE (bearbeiten)</span>
+                    <span class="wave-label" id="waveLabelEdited" data-i18n="deEdit.waveLabel.edited">DE (bearbeiten)</span>
                     <div class="wave-controls">
                         <div class="wave-viewport" id="waveEditedViewport">
                             <div class="wave-scroll" id="waveEditedScroll">
@@ -832,8 +839,8 @@
                             </div>
                         </div>
                         <div class="wave-buttons">
-                            <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen" aria-label="DE-Vorschau abspielen">▶</button>
-                            <button class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen" aria-label="Wiedergabe stoppen">⏹</button>
+                            <button id="playDePreview" class="de-play-btn" onclick="playDePreview()" title="DE-Vorschau abspielen" aria-label="DE-Vorschau abspielen" data-i18n-title="deAudio.play.preview" data-i18n-aria-label="deAudio.play.preview">▶</button>
+                            <button id="stopDePreview" class="de-stop-btn" onclick="stopEditPlayback()" title="Wiedergabe stoppen" aria-label="Wiedergabe stoppen" data-i18n-title="deAudio.play.stop" data-i18n-aria-label="deAudio.play.stop">⏹</button>
                         </div>
                     </div>
                     <!-- DE-Text und Emotional-Text unter der Bearbeitungs-Welle -->
