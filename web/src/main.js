@@ -12479,6 +12479,7 @@ function checkFileAccess() {
                     order: data.order,
                     levels: Object.entries(data.levels).map(([levelName, levelProjects]) => ({
                         name: levelName,
+                        order: getLevelOrder(levelName),
                         projects: levelProjects
                     }))
                 }))
@@ -12559,16 +12560,22 @@ function checkFileAccess() {
 
             const newProjects = [];
             const newLevelChapters = {};
-            const newChapterOrders = {};
+            const newLevelOrders = {};
+            const newChapterOrders = { ...chapterOrders };
             const newTextDatabase = {};
 
             blueprint.chapters.forEach((chapter, chapterIndex) => {
                 const chapterName = chapter?.name || `Kapitel ${chapterIndex + 1}`;
-                newChapterOrders[chapterName] = typeof chapter.order === 'number' ? chapter.order : chapterIndex + 1;
+                if (typeof newChapterOrders[chapterName] !== 'number') {
+                    newChapterOrders[chapterName] =
+                        typeof chapter.order === 'number' ? chapter.order : (chapterOrders?.[chapterName] ?? chapterIndex + 1);
+                }
 
                 (chapter.levels || []).forEach((level, levelIndex) => {
                     const levelName = level?.name || `Level_${chapterIndex + 1}_${levelIndex + 1}`;
                     newLevelChapters[levelName] = chapterName;
+                    const levelOrder = typeof level.order === 'number' ? level.order : levelIndex + 1;
+                    newLevelOrders[levelName] = levelOrder;
 
                     (level.projects || []).forEach((proj, projIndex) => {
                         const sanitizedFiles = (proj.files || []).map((f, idx) => sanitizeBlueprintFile(f, idx));
@@ -12602,12 +12609,14 @@ function checkFileAccess() {
             textDatabase = newTextDatabase;
             levelChapters = newLevelChapters;
             chapterOrders = newChapterOrders;
+            levelOrders = newLevelOrders;
             filePathDatabase = {}; // Audio-Pfade bewusst verwerfen
 
             saveProjects();
             saveTextDatabase();
             saveLevelChapters();
             saveChapterOrders();
+            saveLevelOrders();
             saveFilePathDatabase();
 
             renderProjects();
