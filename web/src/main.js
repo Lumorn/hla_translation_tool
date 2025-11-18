@@ -3981,6 +3981,7 @@ let projectListClickBound = false; // Merker, ob der Klick-Listener gesetzt ist
 
 function renderProjects() {
     const list = document.getElementById('projectList');
+    const t = window.i18n?.t || (value => value);
     // Event-Delegation nur einmal einrichten, um doppelte Handler zu vermeiden
     if (!projectListClickBound) {
         list.addEventListener('click', e => {
@@ -4078,7 +4079,7 @@ function renderProjects() {
         header.innerHTML = `
             <span class="level-order">${order}.</span><span class="level-id">${lvl}</span>
             <div class="progress-bar"><div class="${levelStat.progress >= 90 ? 'progress-green' : levelStat.progress >= 75 ? 'progress-yellow' : 'progress-red'}" style="width:${levelStat.progress}%"></div></div>
-            <span class="level-stats-icon" title="Level-Statistiken">📊</span>
+            <span class="level-stats-icon" title="${t('level.header.statsTooltip')}" aria-label="${t('level.header.statsTooltip')}">📊</span>
             <span class="level-arrow">${expandedLevel === lvl ? '▼' : '▶'}</span>
         `;
         header.addEventListener('contextmenu', e => showLevelMenu(e, lvl));

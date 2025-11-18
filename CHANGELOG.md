@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.542
+* `web/src/main.js` versieht das Statistik-Icon im Level-Header mit lokalisierten `title`- und `aria-label`-Texten über `t('level.header.statsTooltip')`.
+* `web/src/i18n.js` hinterlegt den neuen Schlüssel `level.header.statsTooltip` in Deutsch und Englisch.
+* `README.md` hebt die lokalisierte Beschriftung des Level-Statistik-Icons hervor und aktualisiert die Versionsplakette auf **1.40.542**.
 # 🛠️ Patch in 1.40.541
 * `web/renderer.js` zieht Refresh-, Aktualisieren- und Lösch-Schaltflächen sowie Fehlermeldungen des Bookmark-Managers über `t()` und reagiert per Sprachlistener mit neu gerenderten Beschriftungen.
 * `web/hla_translation_tool.html` markiert Titel, Platzhalter und Buttons des Video-Managers mit `data-i18n`, damit der Bereich sprachabhängig gerendert wird.
