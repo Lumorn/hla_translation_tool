@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.522
+* `web/src/main.js` bringt lokale Fallbacks für Übersetzungs- und Format-Helfer in der Segment-Vorschlagsliste, damit Hinweise und Labels auch ohne geladenes i18n angezeigt werden.
+* `README.md` hebt Version **1.40.522** hervor und beschreibt die abgesicherten Segment-Helfer im DE-Audio-Editor.
 # 🛠️ Patch in 1.40.521
 * `web/src/main.js` öffnet den DE-Audio-Editor auch ohne bestehenden Cache-Eintrag, indem ein Standardpfad als Fallback gesetzt wird.
 * `README.md` führt Version **1.40.521** ein und erwähnt den robusteren Öffnen-Fallback für DE-Audio.
