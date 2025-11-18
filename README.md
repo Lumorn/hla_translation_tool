@@ -945,6 +945,18 @@ Bei einem Upload-Fehler mit Status 400 wird zusätzlich ein Ausschnitt der erzeu
 
 `translate_text.py` übersetzt kurze Texte offline mit Argos Translate. Fehlt das Paket, versucht das Skript eine automatische Installation über `pip`. Die benötigten Pakete werden ansonsten durch `start_tool.py` automatisch installiert. Fehlende Sprachpakete lädt das Skript beim ersten Aufruf automatisch herunter. Über `--no-download` lässt sich dieser Schritt verhindern. Findet es kein passendes Paket im Index, gibt das Skript eine verständliche Fehlermeldung aus und beendet sich mit Status 1. Für eine komplett Offline-Nutzung müssen die Pakete vorher mit `argos-translate-cli` installiert werden. Seit Version 1.40.13 wird korrekt erkannt, ob ein Paket bereits vorhanden ist. Anschließend kann der gewünschte Text per `echo "Hello" | python translate_text.py` übersetzt werden.
 Neu ist der Servermodus `python translate_text.py --server`: Er lädt Argos einmalig, liest zeilenweise JSON-Aufträge (`{"id": ..., "text": ...}`) von `stdin` und liefert die Ergebnisse inklusive Fehlerhinweis als JSON nach `stdout` zurück.
+Fehlermeldungen lassen sich ab sofort lokalisiert ausgeben. Standard ist Englisch, per Umgebungsvariable `TRANSLATE_TEXT_LANG=de` oder per Flag `--lang de` wird Deutsch aktiviert (analog `--lang en` für den englischen Default). Beispielaufrufe:
+
+```bash
+# Englische Fehlermeldungen (Default)
+echo "Hello" | python translate_text.py
+
+# Deutsche Fehlermeldungen per Umgebungsvariable
+TRANSLATE_TEXT_LANG=de python translate_text.py --no-download
+
+# Servermodus mit deutscher Ausgabe via CLI-Flag
+python translate_text.py --server --lang de
+```
 In der Desktop-App läuft dieser Server dauerhaft. `electron/main.js` startet beim Programmstart einen Übersetzungs-Worker und verteilt alle IPC-Anfragen (`translate-text`) auf diesen Prozess. Jede Antwort erreicht den Renderer weiterhin als Event `translate-finished` und enthält neben dem Text auch eine mögliche Fehlermeldung. Stürzt der Worker ab, startet er automatisch neu und wiederholt offene Aufträge.
 Tritt ein Fehler auf, zeigt die Oberfläche nun den konkreten Fehltext als Hinweis an.
 Fehlt eine Abhängigkeit wie PyTorch oder das VC++‑Laufzeitpaket, bricht das Skript mit einem klaren Hinweis ab.

@@ -3,34 +3,48 @@ import sys
 import argparse
 import json
 
-try:
-    from argostranslate import package, translate
-except (ModuleNotFoundError, ImportError):
-    # Versuch, Argos Translate automatisch nachzuinstallieren
-    try:
-        import subprocess
+from translate_text_i18n import LANG_ENV_VAR, DEFAULT_LANGUAGE, format_message, resolve_language
 
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "argostranslate"],
-            stdout=subprocess.DEVNULL,
-        )
-        from argostranslate import package, translate  # erneuter Import
-    except Exception as exc2:  # pragma: no cover - nur bei fehlgeschlagener Installation
-        # Abhängigkeit fehlt oder kann nicht geladen werden -> verständlichen Hinweis ausgeben
-        sys.stderr.write(
-            "Das Paket 'argostranslate' oder eine seiner Abhängigkeiten fehlt. "
-            "Bitte vorher 'pip install -r requirements.txt' ausführen.\n"
-            "Unter Windows wird ggf. das Microsoft Visual C++ Laufzeitpaket benötigt.\n"
-            f"Fehler: {exc2}\n"
-        )
-        sys.exit(1)
+package = None
+translate = None
+selected_language = DEFAULT_LANGUAGE
+
+
+def ensure_argostranslate(lang: str) -> None:
+    """Stellt sicher, dass argostranslate importiert werden kann."""
+
+    global package, translate
+    if package is not None and translate is not None:
+        return
+
+    try:
+        from argostranslate import package as pkg_mod, translate as trans_mod
+    except (ModuleNotFoundError, ImportError):
+        # Versuch, Argos Translate automatisch nachzuinstallieren
+        try:
+            import subprocess
+
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "argostranslate"],
+                stdout=subprocess.DEVNULL,
+            )
+            from argostranslate import package as pkg_mod, translate as trans_mod  # type: ignore  # noqa: E501
+        except Exception as exc2:  # pragma: no cover - nur bei fehlgeschlagener Installation
+            # Abhängigkeit fehlt oder kann nicht geladen werden -> verständlichen Hinweis ausgeben
+            sys.stderr.write(format_message("missing_dependency", lang, error=exc2))
+            sys.exit(1)
+
+    package = pkg_mod
+    translate = trans_mod
 
 FROM_CODE = "en"
 TO_CODE = "de"
 
 
-def ensure_package(from_code: str, to_code: str, allow_download: bool = True) -> None:
-    """Stellt sicher, dass das benoetigte Sprachpaket installiert ist."""
+def ensure_package(
+    from_code: str, to_code: str, allow_download: bool = True, language: str = DEFAULT_LANGUAGE
+) -> None:
+    """Stellt sicher, dass das benötigte Sprachpaket installiert ist."""
     installed = translate.load_installed_languages()
     # prüfen, ob das gewünschte Übersetzungspaket bereits installiert ist
     have_translation = any(
@@ -45,8 +59,7 @@ def ensure_package(from_code: str, to_code: str, allow_download: bool = True) ->
         return
     if not allow_download:
         sys.stderr.write(
-            "Sprachpaket fehlt und Download ist deaktiviert (--no-download).\n"
-            "Bitte zuvor per 'argos-translate-cli' installieren.\n"
+            format_message("download_disabled", language, from_code=from_code, to_code=to_code)
         )
         sys.exit(1)
     # Paket nur herunterladen, wenn es nicht vorhanden ist
@@ -61,7 +74,7 @@ def ensure_package(from_code: str, to_code: str, allow_download: bool = True) ->
     )
     if pkg is None:
         sys.stderr.write(
-            f"Kein Sprachpaket für {from_code}->{to_code} gefunden.\n"
+            format_message("package_not_found", language, from_code=from_code, to_code=to_code)
         )
         sys.exit(1)
     package.install_from_path(pkg.download())
@@ -80,10 +93,11 @@ def _find_translator(from_code: str, to_code: str):
     return None
 
 
-def run_server(allow_download: bool) -> None:
+def run_server(allow_download: bool, language: str) -> None:
     """Verarbeitet Übersetzungsaufträge im Servermodus."""
+    ensure_argostranslate(language)
     # Pakete nur einmal beim Start sicherstellen
-    ensure_package(FROM_CODE, TO_CODE, allow_download=allow_download)
+    ensure_package(FROM_CODE, TO_CODE, allow_download=allow_download, language=language)
     translator = _find_translator(FROM_CODE, TO_CODE)
     if translator is None:
         # Verständliche Fehlermeldung zurückgeben, statt sofort zu beenden
@@ -92,7 +106,7 @@ def run_server(allow_download: bool) -> None:
                 {
                     "id": None,
                     "text": "",
-                    "error": "Kein Übersetzer für die gewünschte Sprachkombination vorhanden.",
+                    "error": format_message("translator_missing", language),
                 }
             )
             + "\n"
@@ -112,7 +126,7 @@ def run_server(allow_download: bool) -> None:
             response = {
                 "id": None,
                 "text": "",
-                "error": f"Ungültiges JSON: {exc.msg}",
+                "error": format_message("invalid_json", language, details=exc.msg),
             }
             sys.stdout.write(json.dumps(response, ensure_ascii=False) + "\n")
             sys.stdout.flush()
@@ -146,18 +160,32 @@ def main() -> None:
         action="store_true",
         help="Servermodus: JSON-Aufträge über stdin empfangen",
     )
+    parser.add_argument(
+        "--lang",
+        type=lambda value: value.lower(),
+        choices=list({DEFAULT_LANGUAGE, "de"}),
+        help=(
+            "Ausgabesprache der Fehlermeldungen. Ohne Angabe oder Umgebungsvariable "
+            f"{LANG_ENV_VAR} wird Englisch verwendet."
+        ),
+    )
     args = parser.parse_args()
 
+    global selected_language
+    selected_language = resolve_language(args.lang)
+    ensure_argostranslate(selected_language)
     allow_download = not args.no_download
     if args.server:
-        run_server(allow_download)
+        run_server(allow_download, selected_language)
         return
 
     text = sys.stdin.read()
     if not text:
         return
     # Nur falls nötig Pakete installieren
-    ensure_package(FROM_CODE, TO_CODE, allow_download=allow_download)
+    ensure_package(
+        FROM_CODE, TO_CODE, allow_download=allow_download, language=selected_language
+    )
     translated = translate.translate(text, FROM_CODE, TO_CODE)
     print(translated)
 
