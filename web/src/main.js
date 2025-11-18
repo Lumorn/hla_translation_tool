@@ -3916,23 +3916,13 @@ function renderProjects() {
             const tooltipLines = [];
             tooltipLines.push(p.name);
             if (p.levelName) {
-                tooltipLines.push(i18n.format('project.tooltip.level', { level: p.levelName }));
+                tooltipLines.push(`${i18n.t('project.tooltip.label.level')}: ${p.levelName}`);
             }
-            tooltipLines.push(i18n.format('project.tooltip.part', { part: p.levelPart }));
+            tooltipLines.push(`${i18n.t('project.tooltip.label.part')}: ${p.levelPart}`);
             tooltipLines.push('');
-            tooltipLines.push(i18n.format('project.tooltip.line.progress', {
-                enPercent: stats.enPercent,
-                dePercent: stats.dePercent
-            }));
-            tooltipLines.push(i18n.format('project.tooltip.line.audio', {
-                deAudioPercent: stats.deAudioPercent,
-                completedPercent: stats.completedPercent,
-                done: done ? i18n.t('project.tooltip.done') : ''
-            }));
-            tooltipLines.push(i18n.format('project.tooltip.line.gptFiles', {
-                score: stats.scoreMin,
-                files: stats.totalFiles
-            }));
+            tooltipLines.push(`${i18n.t('project.tooltip.label.en')}: ${stats.enPercent}%  • ${i18n.t('project.tooltip.label.de')}: ${stats.dePercent}%`);
+            tooltipLines.push(`${i18n.t('project.tooltip.label.deAudio')}: ${stats.deAudioPercent}%  • ${i18n.t('project.tooltip.label.complete')}: ${stats.completedPercent}%${done ? i18n.t('project.tooltip.done') : ''}`);
+            tooltipLines.push(`${i18n.t('project.tooltip.label.gpt')}: ${stats.scoreMin}  • ${i18n.t('project.tooltip.label.files')}: ${stats.totalFiles}`);
 
             card.title = tooltipLines.join('\n');
 
