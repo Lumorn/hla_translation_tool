@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.535
+* `web/src/main.js` blendet im Leerlauf Wartetexte und Fortschrittsbalken der automatischen Übersetzung aus und entfernt den Warteschlangen-Zähler aus dem Startknopf.
+* `README.md` hebt Version **1.40.535** hervor und beschreibt die bereinigte Anzeige ohne wartende Übersetzungen.
+* `artifacts/ui-ohne-wartemeldung.txt` dokumentiert als Text-Platzhalter das UI ohne Wartestatus.
 # 🛠️ Patch in 1.40.534
 * `web/hla_translation_tool.html` verschiebt den Startknopf für die automatische Übersetzung in den System-Tab und macht den Fortschrittsbereich kompakter.
 * `README.md` hebt die neue Position des Übersetzungs-Buttons hervor und passt die Versionsplakette auf **1.40.534** an.

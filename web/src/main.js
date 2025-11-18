@@ -7680,7 +7680,9 @@ function updateTranslationQueueDisplay() {
     const startBtn = document.getElementById('startTranslateButton');
     if (!progress || !status || !fill) return;
 
-    progress.classList.add('visible');
+    progress.classList.remove('active');
+    progress.classList.remove('visible');
+    fill.style.width = '0%';
     const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject?.id);
     const pending = collectTranslationCandidates();
 
@@ -7696,10 +7698,7 @@ function updateTranslationQueueDisplay() {
     }
 
     if (startBtn) {
-        const label = pending.length > 0
-            ? `Automatische Übersetzung starten (${pending.length})`
-            : 'Keine offenen Zeilen';
-        startBtn.textContent = label;
+        startBtn.textContent = 'Automatische Übersetzung starten';
         startBtn.disabled = translateRunning || waitingIndex >= 0 || pending.length === 0;
     }
 
@@ -7709,6 +7708,7 @@ function updateTranslationQueueDisplay() {
             const total = activeTranslateQueue.length;
             const done  = Math.min(activeTranslateIndex, total);
             const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+            progress.classList.add('visible');
             progress.classList.add('active');
             fill.style.width = percent + '%';
             if (done < total) {
@@ -7717,37 +7717,20 @@ function updateTranslationQueueDisplay() {
                 status.textContent = 'Automatische Übersetzung abgeschlossen.';
             }
         } else {
+            progress.classList.add('visible');
             progress.classList.add('active');
             fill.style.width = '0%';
-            if (waitingIndex >= 0) {
-                status.textContent = waitingIndex === 0
-                    ? 'Übersetzung startet, sobald das aktuelle Projekt fertig ist.'
-                    : `Übersetzung wartet (Position ${waitingIndex + 1}).`;
-            } else {
-                status.textContent = activeProject
-                    ? `Übersetzung läuft im Hintergrund für „${activeProject.name}“.`
-                    : 'Übersetzung läuft im Hintergrund.';
-            }
+            status.textContent = activeProject
+                ? `Übersetzung läuft im Hintergrund für „${activeProject.name}“.`
+                : 'Übersetzung läuft im Hintergrund.';
         }
     } else {
-        if (waitingIndex >= 0) {
-            progress.classList.add('active');
-            fill.style.width = '0%';
-            status.textContent = waitingIndex === 0
-                ? 'Übersetzung startet in Kürze...'
-                : `Übersetzung wartet (Position ${waitingIndex + 1}).`;
-        } else {
-            progress.classList.remove('active');
-            fill.style.width = '0%';
-            if (pending.length > 0) {
-                const suffix = pending.length === 1
-                    ? 'wartet auf eine automatische Übersetzung.'
-                    : 'warten auf eine automatische Übersetzung.';
-                status.textContent = `${pending.length} Zeilen ${suffix}`;
-            } else {
-                status.textContent = 'Alle Zeilen haben bereits eine automatische Übersetzung.';
-            }
-        }
+        progress.classList.remove('active');
+        progress.classList.remove('visible');
+        fill.style.width = '0%';
+        status.textContent = pending.length > 0
+            ? 'Automatische Übersetzung bereit.'
+            : 'Alle Zeilen haben bereits eine automatische Übersetzung.';
     }
 }
 

@@ -1,0 +1,1 @@
+Platzhalter für Screenshot: UI ohne Wartemeldung und ausgeblendeten Fortschrittsbalken.
