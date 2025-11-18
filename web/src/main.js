@@ -12489,16 +12489,32 @@ function checkFileAccess() {
             try {
                 const blueprint = buildTranslationBlueprint();
                 const fileName = `hla_translation_blueprint_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+                let fallbackDownload = false;
 
                 if (window.showSaveFilePicker) {
-                    const handle = await window.showSaveFilePicker({
-                        suggestedName: fileName,
-                        types: [{ description: 'JSON-Datei', accept: { 'application/json': ['.json'] } }]
-                    });
-                    const writable = await handle.createWritable();
-                    await writable.write(JSON.stringify(blueprint, null, 2));
-                    await writable.close();
+                    try {
+                        const handle = await window.showSaveFilePicker({
+                            suggestedName: fileName,
+                            types: [{ description: 'JSON-Datei', accept: { 'application/json': ['.json'] } }]
+                        });
+                        const writable = await handle.createWritable();
+                        await writable.write(JSON.stringify(blueprint, null, 2));
+                        await writable.close();
+                    } catch (pickerError) {
+                        // Nutzer hat den Dialog blockiert oder die API ist aus Sicherheitsgründen gesperrt, daher Fallback nutzen
+                        if (pickerError?.name === 'NotAllowedError' || pickerError?.name === 'SecurityError') {
+                            console.warn('showSaveFilePicker nicht erlaubt, nutze Download-Fallback', pickerError);
+                            fallbackDownload = true;
+                        } else {
+                            throw pickerError;
+                        }
+                    }
                 } else {
+                    // Fallback: Download-Link erzeugen
+                    fallbackDownload = true;
+                }
+
+                if (fallbackDownload) {
                     // Fallback: Download-Link erzeugen
                     const blob = new Blob([JSON.stringify(blueprint, null, 2)], { type: 'application/json' });
                     const url = URL.createObjectURL(blob);
@@ -12507,6 +12523,8 @@ function checkFileAccess() {
                     a.download = fileName;
                     a.click();
                     URL.revokeObjectURL(url);
+                    updateStatus('Speichern nicht möglich, Fallback-Download gestartet');
+                    return;
                 }
 
                 updateStatus('Struktur-Blueprint exportiert');

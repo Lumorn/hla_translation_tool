@@ -1120,6 +1120,7 @@ Ab sofort zeigt diese Auswahl zusätzlich die vorhandenen EN- und Ziel-Texte des
 ### Struktur-Blueprint für Übersetzer:innen
 
 Über den Backup-Dialog kannst du jetzt einen **Struktur-Blueprint** exportieren: Die Funktion sammelt nur Kapitel, Level, Dateinamen und EN-Texte, entfernt sämtliche DE-Einträge sowie Audiopfad-Informationen und speichert das Ergebnis als schlanke JSON-Datei. Die Import-Schaltfläche lädt diesen Blueprint wieder ein, überschreibt die aktuellen Projekte und legt eine leere, DE-freie Arbeitsgrundlage an.
+Wenn dein Browser den Zugriff auf die Dateisystem-API verweigert (z. B. durch blockierte Dialoge), startet der Export automatisch einen Download-Fallback und zeigt dies als Statusmeldung an.
 
 ## 📁 Ordner‑Management
 
