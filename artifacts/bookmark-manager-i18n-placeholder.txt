@@ -1,0 +1,1 @@
+Platzhalter: Der Bookmark-Manager zeigt die Titelzeile, Such- und URL-Eingaben sowie die Refresh-, Aktualisieren- und Löschen-Schaltflächen jetzt mit i18n-Beschriftungen und Fehlermeldungen in der gewählten Sprache an.

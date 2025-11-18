@@ -131,6 +131,12 @@ function extractYoutubeId(url) {
     return m ? m[1] : '';
 }
 
+// Liefert den aktiven Übersetzer oder fällt auf die Identität zurück
+function translate(key) {
+    const t = window.i18n?.t || (value => value);
+    return t(key);
+}
+
 
 async function getBookmarks() {
     const list = await window.videoApi.loadBookmarks();
@@ -148,6 +154,9 @@ function formatTime(sec) {
 
 async function refreshTable(sortKey='title', dir=true) {
     if (!videoGrid) return;
+    const refreshTitle = translate('videoManager.refreshThumb');
+    const updateLabel = translate('videoManager.updateButton');
+    const deleteTitle = translate('videoManager.deleteButton');
     let list = await getBookmarks();
     const q = (videoFilter?.value ?? '').toLowerCase();
     if (q) list = list.filter(b => b.title.toLowerCase().includes(q) || b.url.toLowerCase().includes(q));
@@ -161,13 +170,13 @@ async function refreshTable(sortKey='title', dir=true) {
         div.innerHTML =
             `<div class="thumb-wrapper">
                 <img src="${thumb}" class="video-thumb" data-idx="${b.origIndex}">
-                <button class="refresh-thumb" data-idx="${b.origIndex}" title="Bild neu laden">⟳</button>
+                <button class="refresh-thumb" data-idx="${b.origIndex}" title="${refreshTitle}">⟳</button>
                 <div class="thumb-overlay"><div class="progress-bar"><div class="progress-fill"></div></div></div>
              </div>`+
             `<div class="video-title" data-idx="${b.origIndex}" title="${b.title}">${b.title}</div>`+
             `<div class="video-time">${formatTime(b.time)}</div>`+
-            `<button class="btn btn-blue update" data-idx="${b.origIndex}">Aktualisieren</button>`+
-            `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="Video löschen">🗑️</button>`;
+            `<button class="btn btn-blue update" data-idx="${b.origIndex}">${updateLabel}</button>`+
+            `<button class="btn btn-danger delete" data-idx="${b.origIndex}" title="${deleteTitle}">🗑️</button>`;
         if (!videoGrid) return;
         videoGrid.appendChild(div);
 
@@ -213,7 +222,7 @@ async function handleVideoGridClick(e){
         if (!urlInput) return;
         const idx = Number(btn.dataset.idx);
         const raw = urlInput.value.trim();
-        if (!/^https:\/\/\S+$/i.test(raw)) { alert('Ungültige URL'); return; }
+        if (!/^https:\/\/\S+$/i.test(raw)) { alert(translate('videoManager.invalidUrl')); return; }
         await updateBookmark(idx, raw, list);
     } else if (item) {
         const idx = Number(item.dataset.idx);
@@ -242,14 +251,14 @@ function handleUrlInput(){
 function handleAddBtnClick(){
     if (!urlInput) return;
     const raw = urlInput.value.trim();
-    if (!/^https:\/\/\S+$/i.test(raw)) { alert('Ungültige URL'); return; }
+    if (!/^https:\/\/\S+$/i.test(raw)) { alert(translate('videoManager.invalidUrl')); return; }
     addVideoFromUrl(raw);
 }
 
 async function addVideoFromUrl(raw){
     const ytre = /^https?:\/\/(www\.)?youtube\.com\/watch\?v=/i;
     const yb = /^https?:\/\/youtu\.be\//i;
-    if (!ytre.test(raw) && !yb.test(raw)) { alert('Keine gültige YouTube-Adresse'); return; }
+    if (!ytre.test(raw) && !yb.test(raw)) { alert(translate('videoManager.invalidYoutube')); return; }
     let list = await window.videoApi.loadBookmarks();
     const id = extractYoutubeId(raw);
     let title = raw;
@@ -351,4 +360,8 @@ function initVideoManager(){
 
 window.initVideoManager = initVideoManager;
 initVideoManager();
+
+// Aktualisiert die Tafel bei Sprachwechsel, damit Beschriftungen übersetzt bleiben
+window.i18n?.onLanguageChange?.(() => refreshTable());
+
 refreshTable();
