@@ -33,9 +33,9 @@
             'button.copyAssistant': 'Kopierhilfe',
             'button.copyAssistant2': 'Kopierhilfe 2',
             // Übersetzungen für die Kopierhilfe inkl. Platzhalter
-            'copyAssistant.status.complete': 'Kopierassistent abgeschlossen',
+            'copyAssistant.status.complete': 'Kopierhilfe abgeschlossen',
             'copyAssistant.progress.files': 'Datei {current} von {total}',
-            'copyAssistant.progress.steps': 'Schritt {current} / {total}',
+            'copyAssistant.progress.steps': 'Schritt {current} von {total}',
             'button.copyEmotions': 'Emotionen kopieren',
             'button.subtitleSearchAll': 'UT-Suche alles',
             'button.dubbingLog': '📝 Protokoll',
@@ -240,9 +240,9 @@
             'button.copyAssistant': 'Copy helper',
             'button.copyAssistant2': 'Copy helper 2',
             // Copy assistant translations with placeholders
-            'copyAssistant.status.complete': 'Copy assistant completed',
+            'copyAssistant.status.complete': 'Copy helper completed',
             'copyAssistant.progress.files': 'File {current} of {total}',
-            'copyAssistant.progress.steps': 'Step {current} / {total}',
+            'copyAssistant.progress.steps': 'Step {current} of {total}',
             'button.copyEmotions': 'Copy emotions',
             'button.subtitleSearchAll': 'Subtitle search all',
             'button.dubbingLog': '📝 Log',

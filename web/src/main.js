@@ -2728,7 +2728,7 @@ function showCopyAssistant() {
     // Abbrechen, falls der Dialog noch nicht aufgebaut ist
     if (!countSpan || !stepSpan || !prog) return;
     const translator = window.i18n;
-    // Sicherstellen, dass die Kopierhilfe immer die aktuelle Sprache nutzt
+    // Übersetzungen immer über i18n abrufen, damit Platzhalter korrekt ersetzt werden
     const translateSimple = key => (translator?.t ? translator.t(key) : key);
     const formatTranslation = (key, replacements = {}) => {
         if (translator?.format) {

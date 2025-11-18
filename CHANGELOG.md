@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.515
+* `web/src/i18n.js` schärft die Kopierhilfe-Schlüssel für Abschlussstatus, Datei- und Schrittzähler mit klaren Platzhaltern in beiden Sprachen.
+* `web/src/main.js` rendert die Kopierhilfe-Zähler konsequent über `i18n.t(...)`/`i18n.format(...)`, sodass die Anzeige beim Sprachwechsel direkt umschaltet.
+* `README.md` beschreibt die aktualisierte Kopierhilfe mit automatischer DE/EN-Umschaltung und Platzhalter-Übersetzungen.
 # 🛠️ Patch in 1.40.514
 * `web/src/i18n.js` schärft die Emo-Dubbing-Schlüssel für Abschlussstatus und Logtext in beiden Sprachen, damit die Meldungen den tatsächlichen Dubbing-Vorgang widerspiegeln.
 * `web/src/dubbing.js` setzt Erfolgsstatus und Logeintrag über `i18n.t(...)`, sodass Sprachwechsel die Rückmeldungen sofort aktualisieren.
