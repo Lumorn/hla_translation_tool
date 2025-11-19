@@ -1363,53 +1363,53 @@
     <!-- EN-Review-Dialog -->
     <div class="dialog-overlay hidden" id="englishReviewDialog" role="dialog" aria-modal="true" aria-labelledby="englishReviewTitle">
         <div class="dialog english-review-dialog">
-            <button class="dialog-close-btn" type="button" onclick="closeEnglishReview()" aria-label="Dialog schließen">×</button>
-            <h3 id="englishReviewTitle">🇬🇧 EN-Review</h3>
-            <div class="english-review-language-toggle" role="radiogroup" aria-label="Audio-Auswahl">
-                <span class="english-review-language-label">Audio:</span>
+            <button class="dialog-close-btn" type="button" onclick="closeEnglishReview()" aria-label="Dialog schließen" data-i18n-aria-label="englishReview.actions.close">×</button>
+            <h3 id="englishReviewTitle" data-i18n="englishReview.dialog.title">🇬🇧 EN-Review</h3>
+            <div class="english-review-language-toggle" role="radiogroup" aria-label="Audio-Auswahl" data-i18n-aria-label="englishReview.language.groupAria">
+                <span class="english-review-language-label" data-i18n="englishReview.language.groupLabel">Audio:</span>
                 <label class="english-review-language-option" for="englishReviewLangEn">
                     <input type="radio" name="englishReviewLanguage" id="englishReviewLangEn" value="en" checked>
-                    EN-Audio
+                    <span data-i18n="englishReview.language.option.en">EN-Audio</span>
                 </label>
                 <label class="english-review-language-option" for="englishReviewLangDe">
                     <input type="radio" name="englishReviewLanguage" id="englishReviewLangDe" value="de">
-                    DE-Audio
+                    <span data-i18n="englishReview.language.option.de">DE-Audio</span>
                 </label>
             </div>
             <div class="english-review-content">
                 <section class="english-review-current" aria-labelledby="englishReviewCurrentLabel">
-                    <h4 id="englishReviewCurrentLabel">Aktuelle Datei</h4>
+                    <h4 id="englishReviewCurrentLabel" data-i18n="englishReview.current.heading">Aktuelle Datei</h4>
                     <div class="english-review-current-file" id="englishReviewCurrentFile"></div>
                     <div class="english-review-texts">
                         <article class="english-review-text-block" aria-labelledby="englishReviewEnLabel">
-                            <h5 id="englishReviewEnLabel">EN-Text</h5>
+                            <h5 id="englishReviewEnLabel" data-i18n="englishReview.text.enHeading">EN-Text</h5>
                             <p id="englishReviewEnText"></p>
                         </article>
                         <article class="english-review-text-block" aria-labelledby="englishReviewDeLabel">
-                            <h5 id="englishReviewDeLabel">DE-Text</h5>
+                            <h5 id="englishReviewDeLabel" data-i18n="englishReview.text.deHeading">DE-Text</h5>
                             <p id="englishReviewDeText"></p>
                         </article>
                     </div>
                 </section>
                 <div class="english-review-neighbours">
                     <section class="english-review-list" aria-labelledby="englishReviewPreviousLabel">
-                        <h4 id="englishReviewPreviousLabel">Zuletzt</h4>
+                        <h4 id="englishReviewPreviousLabel" data-i18n="englishReview.lists.previousHeading">Zuletzt</h4>
                         <ul id="englishReviewPreviousList" class="english-review-items" aria-live="polite"></ul>
                     </section>
                     <section class="english-review-list" aria-labelledby="englishReviewNextLabel">
-                        <h4 id="englishReviewNextLabel">Als Nächstes</h4>
+                        <h4 id="englishReviewNextLabel" data-i18n="englishReview.lists.nextHeading">Als Nächstes</h4>
                         <ul id="englishReviewNextList" class="english-review-items" aria-live="polite"></ul>
                     </section>
                 </div>
             </div>
-            <div class="english-review-progress" id="englishReviewProgress" aria-live="polite">Fortschritt: 0 / 0 (0%)</div>
+            <div class="english-review-progress" id="englishReviewProgress" aria-live="polite" data-i18n="englishReview.progress.default">Fortschritt: 0 / 0 (0%)</div>
             <div class="dialog-buttons english-review-controls">
-                <button class="btn btn-secondary" id="englishReviewPrevBtn" type="button" onclick="englishReviewPrev()" title="Vorherige Datei" aria-label="Vorherige Datei">⏮</button>
-                <button class="btn btn-secondary" id="englishReviewPlayBtn" type="button" onclick="englishReviewPlay()" title="Wiedergabe starten" aria-label="Wiedergabe starten">▶</button>
-                <button class="btn btn-secondary" id="englishReviewPauseBtn" type="button" onclick="englishReviewPause()" title="Wiedergabe anhalten" aria-label="Wiedergabe anhalten">⏸</button>
-                <button class="btn btn-secondary" id="englishReviewNextBtn" type="button" onclick="englishReviewNext()" title="Nächste Datei" aria-label="Nächste Datei">⏭</button>
-                <button class="btn btn-secondary" id="englishReviewScrollBtn" type="button" onclick="englishReviewScrollToCurrent()" title="Aktuelle Zeile anzeigen" aria-label="Zur aktuellen Zeile scrollen">⬇ Zeile</button>
-                <button class="btn btn-secondary" id="englishReviewCloseBtn" type="button" onclick="closeEnglishReview()" title="Dialog schließen" aria-label="Dialog schließen">Schließen</button>
+                <button class="btn btn-secondary" id="englishReviewPrevBtn" type="button" onclick="englishReviewPrev()" title="Vorherige Datei" aria-label="Vorherige Datei" data-i18n-title="englishReview.controls.prev" data-i18n-aria-label="englishReview.controls.prev">⏮</button>
+                <button class="btn btn-secondary" id="englishReviewPlayBtn" type="button" onclick="englishReviewPlay()" title="Wiedergabe starten" aria-label="Wiedergabe starten" data-i18n-title="englishReview.controls.play" data-i18n-aria-label="englishReview.controls.play">▶</button>
+                <button class="btn btn-secondary" id="englishReviewPauseBtn" type="button" onclick="englishReviewPause()" title="Wiedergabe anhalten" aria-label="Wiedergabe anhalten" data-i18n-title="englishReview.controls.pause" data-i18n-aria-label="englishReview.controls.pause">⏸</button>
+                <button class="btn btn-secondary" id="englishReviewNextBtn" type="button" onclick="englishReviewNext()" title="Nächste Datei" aria-label="Nächste Datei" data-i18n-title="englishReview.controls.next" data-i18n-aria-label="englishReview.controls.next">⏭</button>
+                <button class="btn btn-secondary" id="englishReviewScrollBtn" type="button" onclick="englishReviewScrollToCurrent()" title="Aktuelle Zeile anzeigen" aria-label="Zur aktuellen Zeile scrollen" data-i18n-title="englishReview.controls.scroll" data-i18n-aria-label="englishReview.controls.scroll" data-i18n="englishReview.controls.scrollButton">⬇ Zeile</button>
+                <button class="btn btn-secondary" id="englishReviewCloseBtn" type="button" onclick="closeEnglishReview()" title="Dialog schließen" aria-label="Dialog schließen" data-i18n="englishReview.actions.closeLabel" data-i18n-title="englishReview.actions.close" data-i18n-aria-label="englishReview.actions.close">Schließen</button>
             </div>
         </div>
     </div>

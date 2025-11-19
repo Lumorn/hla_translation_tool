@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.566
+* `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels, Tooltips und Buttons des 🇬🇧-Review-Dialogs mit `data-i18n`-/`data-i18n-aria-label`-Attributen, damit Titel, Sprachumschalter, Listen sowie Steuerknöpfe automatisch übersetzt werden.
+* `web/src/main.js` setzt Fortschrittsanzeige, Platzhalter und Vorschau-Hinweise des EN-Reviews über `getI18nTools()`/`i18n.format('englishReview.progress.status', …)` und aktualisiert den Dialog bei jedem Sprachwechsel erneut.
+* `web/src/i18n.js` ergänzt die neuen `englishReview.*`-Schlüssel in Deutsch und Englisch für Dialogtitel, Sprachumschalter, Listenüberschriften, Fortschrittstexte sowie Steueraktionen.
+* `README.md` hebt Version **1.40.566** hervor und beschreibt, dass der EN-Review-Workflow vollständig mehrsprachig gerendert wird.
 # 🛠️ Patch in 1.40.565
 * `web/hla_translation_tool.html` versieht die Dialoge #copyAssistantDialog und #copyAssistant2Dialog mit `data-i18n`-Attributen für Überschriften, Feldlabels sowie Buttons, sodass sämtliche Kopierhilfe-Texte automatisch übersetzt werden können.
 * `web/src/main.js` nutzt `getI18nTools()` für beide Kopierhilfen, rendert Seitenzähler über `i18n.format('copyAssistant2.progress.page', …)` und vermeidet Template-Strings ohne Übersetzung.
