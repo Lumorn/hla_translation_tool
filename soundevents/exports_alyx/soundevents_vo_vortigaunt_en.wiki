@@ -1,0 +1,269 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|The Alyx Vance! [Chuckles]
+|06_00001
+|-
+|You received my messages!
+|06_00002
+|-
+|Come! Enter.
+|06_00003
+|-
+|You are welcome!
+|06_00004
+|-
+|Cooking!
+|06_00005
+|-
+|I have a brain injury.
+|06_00006
+|-
+|My brain is injured!
+|06_00007
+|-
+|Ow.
+|06_00008
+|-
+|The
+|06_00009
+|-
+|Eli Vance!
+|06_00010
+|-
+|Yes.
+|06_00011
+|-
+|The Combine. Yes. Do not go yet! I must show you something!
+|06_00012
+|-
+|This way!
+|06_00013
+|-
+|It is important!
+|06_00014
+|-
+|The Alyx Vance must go this way anyway
+|06_00015
+|-
+|The Combine have other of my kin.
+|06_00016
+|-
+|Held, like the Eli Vance.
+|06_00017
+|-
+|The Alyx Vance will free them!
+|06_00018
+|-
+|You will not save him. He is dead.
+|06_00019
+|-
+|Or he will be
+|06_00020
+|-
+|It is a matter of perspective. But Alyx Vance alone cannot prevent his fate.
+|06_00021
+|-
+|No riddles! The Combine drilled here. I do not know when I am. I am severed from the Vortessence. I am alone in my head.
+|06_00022
+|-
+|You have saved my kin!
+|06_00023
+|-
+|Then you will! Courage, Alyx Vance!
+|06_00024
+|-
+|I will help the Alyx Vance! Look to the Northern Star.
+|06_00025
+|-
+|For guidance!
+|06_00026
+|-
+|I am not! Here.
+|06_00027
+|-
+|Sustenance!
+|06_00028
+|-
+|You will be welcome.
+|06_00029
+|-
+|Come in, come in!
+|06_00030
+|-
+|Enter, Alyx Vance.
+|06_00031
+|-
+|Your journey brings you this far. Just a little farther, perhaps.
+|06_00032
+|-
+|I have been waiting for you, Alyx Vance.
+|06_00033
+|-
+|In here!
+|06_00034
+|-
+|I must show you why I've brought you here.
+|06_00035
+|-
+|Through there, Alyx Vance.
+|06_00036
+|-
+|You must go!
+|06_00037
+|-
+|Your mission begins, Alyx Vance.
+|06_00038
+|-
+|Go!
+|06_00039
+|-
+|The Eli Vance! The Alyx Vance! I am here to help as I said I would. Go! I will ensure your father's safety.
+|06_00040
+|-
+|[Grunting]
+|06_00042
+|-
+|I will lead the Eli Vance to safety.
+|06_00043
+|-
+|Then you will.
+|06_00045
+|-
+|Courage, Alyx Vance!
+|06_00046
+|-
+|We have been in trapped in the dark.
+|06_00063
+|-
+|The Alyx Vance you are our friend.
+|06_00064
+|-
+|The Combine drain from us the power they use to protect their weapon.
+|06_00065
+|-
+|We are ripped from ourselves.
+|06_00066
+|-
+|No the Vortigaunt will extract ourselves and exact our own vengeance. YOU must go to the weapon.
+|06_00067
+|-
+|Do not worry, Alyx Vance. They will not be. We will not allow it.
+|06_00068
+|-
+|Now, go! We each have our paths. We cannot fail.
+|06_00072
+|-
+|There
+|06_00073
+|-
+|There
+|06_00074
+|-
+|There
+|06_00075
+|-
+|There
+|06_00076
+|-
+|[Gasps]
+|06_00078
+|-
+|[Groans]
+|06_00080
+|-
+|Alyx Vance! I have come to help, as I said I would.
+|06_00200
+|-
+|Look to the Northern Star
+|06_00201
+|-
+|I will accompany the Eli Vance and ensure his safety!
+|06_00202
+|-
+|No riddles! The Combine drilled here. I am severed from the Vortessence. I am alone in my head.
+|06_00203
+|-
+|[Eats Noisily]
+|06_00050
+|-
+|[Slurps Noisily]
+|06_00051
+|-
+|Hrrmph!
+|06_00052
+|-
+|Mmph! [Sniffs]
+|06_00053
+|-
+|[Sniffs] Mmm!
+|06_00054
+|-
+|[Hums Contentedly]
+|06_00055
+|-
+|Yes, creature.
+|06_00056
+|-
+|[Channelling Vortessence]
+|06_00057
+|-
+|Hrrmm ah mmmhmm interesting ah, excellent
+|06_00058
+|-
+|What they do to us all.
+|06_00081
+|-
+|[Channelling Vortessence]
+|06_00082
+|-
+|[Gasping]
+|06_00100
+|-
+|I must show the Alyx Vance.
+|06_00101
+|-
+|Come!
+|06_00102
+|-
+|Look here!
+|06_00103
+|-
+|The Alyx Vance must come.
+|06_00104
+|-
+|Please, come.
+|06_00105
+|-
+|I will clear the path.
+|06_00106
+|-
+|Go. Our paths diverge. But remember: There is no distance between us. We are coterminous.
+|06_00107
+|-
+|I am diminished. The Vortessence is distant from me I hear its song, but faintly.
+|06_00109
+|-
+|[Chuckles]
+|06_00115
+|-
+|I love you too!
+|06_00206
+|-
+|[Channelling Vortessence]
+|06_00208
+|-
+|[Channelling Vortessence]
+|06_00210
+|-
+|Rraaagh!
+|06_00212
+|-
+|[Hums Contentedly]
+|06_00214
+|-
+|The Vortigaunt will extract ourselves and exact our own vengeance. YOU must go to the weapon.
+|06_00216
+|}

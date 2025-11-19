@@ -1,0 +1,62 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Alert. Ground units. Invasive operation of anti-citizen origin. Response code: Engage. Quell. Inquire.
+|07_10000
+|-
+|Alert. Response units. Update code: Flush. Escort. Continue.
+|07_10001
+|-
+|Citizen Reminder: a civilized society demands swift and targeted oversight. Prohibit fellow citizens from threatening the community.
+|07_10002
+|-
+|Ground Protection Team: alert.  Incident response deployment required. Nine-two-one-two.
+|07_10003
+|-
+|Attention please. Access to this block is not permitted. To receive this message is to be in civil code violation.
+|07_10004
+|-
+|Attention please. Access to this block is not permitted. Local security deployed and designated to prosecute.
+|07_10005
+|-
+|Attention please. Access is not permitted. Anti-citizen scavenging will result in immediate capital prosecution.
+|07_10006
+|-
+|Alert ground units. Alert command units. Emergency code: void.
+|07_10007
+|-
+|Security alert. Re-administration in progress. Asset allocation adjustment code: Flint. Inspect. Extirpate. Priority: immediate.
+|07_10008
+|-
+|Security alert. Critical civil insurrection. Deploy technician teams to Blocks 49, 64, 77. Maintain priority.
+|07_10009
+|-
+|Security alert. Reminder, ground teams: Mission failure will result in permanent relocation. Response code: Breach. Maneuver. Inoculate.
+|07_10010
+|-
+|Critical breach. Stand by. Stand by.
+|07_10011
+|-
+|Full system alert. Operation engagement five-one-two-nine. Immediate, concurrent deployment. Five-one-two-nine.
+|07_10012
+|-
+|Response code: Shield. Key. Migrate.
+|07_10013
+|-
+|Alert. Response team. Overload protocol: Angle. Cauterize. Flash. Angle. Cauterize. Flash.
+|07_10014
+|-
+|Overwatch acknowledges activity. Confirm sector zero-two, possible necrotic interference. Sweep sector, report containment status.
+|07_10015
+|-
+|Converge sector station one, weapons free. Target has been designated as primary one objective. Prosecute on sight.
+|07_10016
+|-
+|Individual, you are now charged with multiple level five anti-civil activity violations. Please cooperate with ground protection team. Ground protection team: alert. Code: Engage. Isolate. Neutralize.
+|07_10017
+|-
+|Overwatch acknowledges containment failure. Hold for reinforcement. Suppressor inbound.
+|07_10018
+|}

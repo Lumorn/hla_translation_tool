@@ -1,0 +1,8 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|What about her?
+|28_1110
+|}

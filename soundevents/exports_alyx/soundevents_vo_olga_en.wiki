@@ -1,0 +1,41 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Psst Alyx! Alyx!
+|13_00101
+|-
+|Are we good?
+|13_00102
+|-
+|Stay safe.
+|13_00103
+|-
+|Alyx! Alyx!
+|13_00104
+|-
+|Alyx, Over here!
+|13_00105
+|-
+|This doesn't seem like a routine sweep. Are you sure everything went okay?
+|13_00106
+|-
+|Something's got the CPs riled up.
+|13_00107
+|-
+|It's probably nothing.
+|13_00108
+|-
+|Alyx!
+|13_00110
+|-
+|Alyx!
+|13_00112
+|-
+|Alyx!
+|13_00114
+|-
+|Alyx!
+|13_00116
+|}

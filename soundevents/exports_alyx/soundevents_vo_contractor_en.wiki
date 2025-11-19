@@ -1,0 +1,53 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Why can't you do it?
+|31_00002
+|-
+|Well, then who is authorized?
+|31_00003
+|-
+|Okay. Well, go get them.
+|31_00004
+|-
+|Ah, what am I even doing here? I should go.
+|31_00005
+|-
+|You took over the entire planet in seven hours. How is this taking so long?
+|31_00006
+|-
+|Oh, no, it's fine. I can wait.
+|31_00007
+|-
+|Well, what about if I went and got MY supervisor. Would that move the needle on this thing?
+|31_00009
+|-
+|Hi, okay, great, finally. Hi.
+|31_00010
+|-
+|Well, now I'm telling you it IS ready.
+|31_00012
+|-
+|Look, if it's still here when she gets there, he's gone.
+|31_00013
+|-
+|What in the history of today makes you think you're gonna stop her?
+|31_00014
+|-
+|Look, this guy we've got in there survived Black Mesa. He raised holy hell and then just disappeared. We finally caught him and you're going to let him go again? MOVE THE BOX.
+|31_00015
+|-
+|I'm not kidding around, you need to move it now.
+|31_00001
+|-
+|That was sarcasm.  Uh huh. Well, I'm thrilled you caught that.  Yes. That was sarcasm as well  and just to remind you, the thing I need to talk to your boss about is how we're running out of time.
+|31_00100
+|-
+|No, that's the point. I AM my supervisor. You're killing me.
+|31_00101
+|-
+|We need to move the box or this thing is going to be Black Mesa all over again.
+|31_00102
+|}

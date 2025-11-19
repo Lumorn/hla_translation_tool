@@ -1,0 +1,17 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|YOU-HAVE-BEEN-IN-AN-ACCIDENT.
+|25_1000
+|-
+|TAKE-THE-HEADSET.
+|25_1001
+|-
+|PUT-ON-THE-HEADSET.
+|25_1002
+|-
+|YOU-HAVE-BEEN-IN-AN-ACCIDENT.
+|25_1000
+|}

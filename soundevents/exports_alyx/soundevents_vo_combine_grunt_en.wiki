@@ -1,0 +1,2411 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Moving.
+|advancing_on_target_01
+|-
+|Moving now.
+|advancing_on_target_02
+|-
+|Pressing.
+|advancing_on_target_03
+|-
+|Approaching target.
+|advancing_on_target_04
+|-
+|Pressure.
+|advancing_on_target_05
+|-
+|Proceeding on infected.
+|advancing_on_target_06
+|-
+|Forward steady.
+|advancing_on_target_07
+|-
+|Pushing forward.
+|advancing_on_target_08
+|-
+|Moving on contaminant.
+|advancing_on_target_10
+|-
+|Pressure on.
+|advancing_on_target_11
+|-
+|Echo One is forward pressure.
+|advancing_on_target_12
+|-
+|Closing on Infected.
+|advancing_on_target_13
+|-
+|Pushing.
+|advancing_on_target_14
+|-
+|Echo One has sector ID and is moving on infected.
+|advancing_on_target_15
+|-
+|Pushing sector.
+|advancing_on_target_16
+|-
+|Approaching contaminant.
+|advancing_on_target_17
+|-
+|Going sharp.
+|announceattack_01
+|-
+|Engaging.
+|announceattack_02
+|-
+|Target engaged.
+|announceattack_03
+|-
+|Prosecuting.
+|announceattack_04
+|-
+|Responding with full active.
+|announceattack_05
+|-
+|Taking the shot.
+|announceattack_06
+|-
+|Attacking with advantage.
+|announceattack_07
+|-
+|Taking advantage.
+|announceattack_08
+|-
+|Target locked. Daggers on.
+|announceattack_09
+|-
+|Weapons free.
+|announceattack_11
+|-
+|Target one in sightlines.
+|announceattack_alyx_01
+|-
+|Stop now.
+|announceattack_alyx_02
+|-
+|Jackpot confirmed.
+|announceattack_alyx_03
+|-
+|Target one is life limited.
+|announceattack_alyx_04
+|-
+|I have her.
+|announceattack_alyx_05
+|-
+|Alyx confirmed.
+|announceattack_alyx_06
+|-
+|Open echo on Alyx.
+|announceattack_alyx_07
+|-
+|Weapons free on Alyx.
+|announceattack_alyx_08
+|-
+|Firing on Alyx.
+|announceattack_alyx_09
+|-
+|Primary target. Echo One engage.
+|announceattack_alyx_10
+|-
+|It's her.
+|announceattack_alyx_11
+|-
+|Breaking cover.
+|announceattack_cover_01
+|-
+|Changing target. Code Breakdown.
+|announceattack_cover_02
+|-
+|Designate target as shadow.
+|announceattack_cover_03
+|-
+|Exposing hostile in three.
+|announceattack_cover_04
+|-
+|Target is protected. Rectifying.
+|announceattack_cover_05
+|-
+|Echo One. Removing support.
+|announceattack_cover_06
+|-
+|Echo One. Daggers on cover.
+|announceattack_cover_07
+|-
+|Full active on target cover.
+|announceattack_cover_08
+|-
+|Echo One. Going sharp on cover.
+|announceattack_cover_09
+|-
+|Code breakdown.
+|announceattack_cover_10
+|-
+|Bouncer out.
+|announceattack_grenade_01
+|-
+|Grenade out.
+|announceattack_grenade_02
+|-
+|And extractor away.
+|announceattack_grenade_03
+|-
+|Bouncer bouncer.
+|announceattack_grenade_04
+|-
+|Get down!
+|announceattack_grenade_05
+|-
+|Extractor in 3.
+|announceattack_grenade_06
+|-
+|And extracting.
+|announceattack_grenade_07
+|-
+|Deploying grenade.
+|announceattack_grenade_08
+|-
+|Standing back.
+|announceattack_grenade_09
+|-
+|Bouncer free.
+|announceattack_grenade_10
+|-
+|Antlion.
+|announceenemy_antlion_01
+|-
+|Target antlion.
+|announceenemy_antlion_02
+|-
+|Contact. Antlion.
+|announceenemy_antlion_03
+|-
+|Antlion incoming.
+|announceenemy_antlion_04
+|-
+|Contact. Antlion.
+|announceenemy_antlion_05
+|-
+|Viscon. Antlion.
+|announceenemy_antlion_06
+|-
+|Antlion. Echo One engaging.
+|announceenemy_antlion_07
+|-
+|Echo One contact. Antlion.
+|announceenemy_antlion_08
+|-
+|Antlion here.
+|announceenemy_antlion_10
+|-
+|Parasitics.
+|announceenemy_headcrabs_01
+|-
+|Parasitics at sector
+|announceenemy_headcrabs_02
+|-
+|Ugh Free parasitics inbound.
+|announceenemy_headcrabs_03
+|-
+|Echo One. Visual on parasitics.
+|announceenemy_headcrabs_04
+|-
+|Contact. Parasitics.
+|announceenemy_headcrabs_05
+|-
+|I hate these things.
+|announceenemy_headcrabs_06
+|-
+|We've got parasitics over here.
+|announceenemy_headcrabs_07
+|-
+|Live parasitics. Echo One.
+|announceenemy_headcrabs_08
+|-
+|Parasitics here.
+|announceenemy_headcrabs_09
+|-
+|Parasitic infestation confirmed.
+|announceenemy_headcrabs_10
+|-
+|Necrotics.
+|announceenemy_zombie_01
+|-
+|Necrotics inbound.
+|announceenemy_zombie_02
+|-
+|Infestation alert.
+|announceenemy_zombie_03
+|-
+|Echo One, visual on necrotics.
+|announceenemy_zombie_04
+|-
+|Contact. Necrotics.
+|announceenemy_zombie_05
+|-
+|I see necrotics.
+|announceenemy_zombie_06
+|-
+|We've got necrotics.
+|announceenemy_zombie_07
+|-
+|Necrotics active.
+|announceenemy_zombie_08
+|-
+|Contact on necrotics.
+|announceenemy_zombie_09
+|-
+|Necrotics here.
+|announceenemy_zombie_10
+|-
+|Hostile down.
+|announcekill_01
+|-
+|Target down.
+|announcekill_02
+|-
+|Kill confirmed.
+|announcekill_03
+|-
+|Clean kill.
+|announcekill_04
+|-
+|Another one down.
+|announcekill_05
+|-
+|Ended.
+|announcekill_06
+|-
+|Dead.
+|announcekill_07
+|-
+|Clean kill.
+|announcekill_08
+|-
+|Contact down.
+|announcekill_09
+|-
+|They're dead.
+|announcekill_11
+|-
+|Echo One. Kill confirmed.
+|announcekill_12
+|-
+|Hostile neutralized.
+|announcekill_13
+|-
+|It's done.
+|announcekill_14
+|-
+|Hostile is over.
+|announcekill_15
+|-
+|Virome down.
+|announcekill_antlion_01
+|-
+|Cleaned.
+|announcekill_antlion_02
+|-
+|Target sterilized.
+|announcekill_antlion_03
+|-
+|Cleansed.
+|announcekill_antlion_04
+|-
+|Parasitics contained.
+|announcekill_antlion_05
+|-
+|Clean.
+|announcekill_headcrab_01
+|-
+|Sector clean.
+|announcekill_headcrab_02
+|-
+|That's one.
+|announcekill_headcrab_03
+|-
+|Contaminant contained.
+|announcekill_headcrab_04
+|-
+|Cleaned.
+|announcekill_headcrab_05
+|-
+|Gross.
+|announcekill_headcrab_06
+|-
+|Outbreak ineffective.
+|announcekill_headcrab_07
+|-
+|Outbreak contained.
+|announcekill_headcrab_08
+|-
+|One parasitic vacated.
+|announcekill_headcrab_09
+|-
+|High value target is contained.
+|announcekill_player_01
+|-
+|Target one is quiet.
+|announcekill_player_02
+|-
+|She's quiet.
+|announcekill_player_03
+|-
+|Alyx is over.
+|announcekill_player_04
+|-
+|Alyx secure.
+|announcekill_player_05
+|-
+|Alyx delivered.
+|announcekill_player_06
+|-
+|Dead.
+|announcekill_player_07
+|-
+|And primary hostile eliminated.
+|announcekill_player_08
+|-
+|Alyx has been ended.
+|announcekill_player_09
+|-
+|Necro contained.
+|announcekill_zombie_01
+|-
+|Necrotic contained.
+|announcekill_zombie_02
+|-
+|Stay dead.
+|announcekill_zombie_03
+|-
+|Contaminant eliminated.
+|announcekill_zombie_04
+|-
+|Back to sleep.
+|announcekill_zombie_05
+|-
+|It's dead.
+|announcekill_zombie_06
+|-
+|Cleanse successful.
+|announcekill_zombie_07
+|-
+|[Grunts]
+|avoids_rollerball_01
+|-
+|[Grunts]
+|avoids_rollerball_03
+|-
+|[Grunts]
+|avoids_rollerball_04
+|-
+|[Grunts]
+|avoids_rollerball_05
+|-
+|[Grunts]
+|avoids_rollerball_06
+|-
+|[Grunts]
+|avoids_rollerball_07
+|-
+|[Breathing Laboriously]
+|breathing_01
+|-
+|[Breathing Laboriously]
+|breathing_02
+|-
+|[Breathing Laboriously]
+|breathing_03
+|-
+|[Breathing Laboriously]
+|breathing_04
+|-
+|[Coughing and Wheezing]
+|breathing_05
+|-
+|alpha
+|calloutcode_alpha_01
+|-
+|and
+|calloutcode_and_01
+|-
+|bravo
+|calloutcode_bravo_01
+|-
+|charlie
+|calloutcode_charlie_01
+|-
+|dash
+|calloutcode_dash_01
+|-
+|delta
+|calloutcode_delta_01
+|-
+|echo
+|calloutcode_echo_01
+|-
+|eight
+|calloutcode_eight_01
+|-
+|eleven
+|calloutcode_eleven_01
+|-
+|fifty
+|calloutcode_fifty_01
+|-
+|five
+|calloutcode_five_01
+|-
+|forty
+|calloutcode_forty_01
+|-
+|four
+|calloutcode_four_01
+|-
+|hundred
+|calloutcode_hundred_01
+|-
+|niner
+|calloutcode_niner_01
+|-
+|null
+|calloutcode_null_01
+|-
+|one
+|calloutcode_one_01
+|-
+|seventy
+|calloutcode_seventy_01
+|-
+|seven
+|calloutcode_seven_01
+|-
+|sixty
+|calloutcode_sixty_01
+|-
+|six
+|calloutcode_six_01
+|-
+|ten
+|calloutcode_ten_01
+|-
+|thirty
+|calloutcode_thirty_01
+|-
+|thousand
+|calloutcode_thousand_01
+|-
+|three
+|calloutcode_three_01
+|-
+|twelve
+|calloutcode_twelve_01
+|-
+|twenty
+|calloutcode_twenty_01
+|-
+|two
+|calloutcode_two_01
+|-
+|Alyx
+|calloutentity_alyx_01
+|-
+|Anti-Citizens
+|calloutentity_anticitizens_01
+|-
+|antlion
+|calloutentity_antlion_01
+|-
+|APF
+|calloutentity_apf_01
+|-
+|APS
+|calloutentity_aps_01
+|-
+|Blade-Wall
+|calloutentity_bladewall_01
+|-
+|Co-Wall
+|calloutentity_cowall_01
+|-
+|Echo One
+|calloutentity_echoone_01
+|-
+|friendly
+|calloutentity_friendly_01
+|-
+|Hammer-Wall
+|calloutentity_hammerwall_01
+|-
+|hostiles
+|calloutentity_hostiles_01
+|-
+|free parasitics
+|calloutentity_manyparasitics_01
+|-
+|necrotic
+|calloutentity_necrotic_01
+|-
+|Overwatch
+|calloutentity_overwatch_01
+|-
+|parasitic
+|calloutentity_parasitic_01
+|-
+|Safeman
+|calloutentity_safeman_01
+|-
+|Wallhammer
+|calloutentity_wallhammer_01
+|-
+|Above.
+|calloutlocation_above_01
+|-
+|Apartment.
+|calloutlocation_apartment_01
+|-
+|Barrels.
+|calloutlocation_barrells_01
+|-
+|Behind.
+|calloutlocation_behind_01
+|-
+|Below.
+|calloutlocation_below_01
+|-
+|Bricks.
+|calloutlocation_bricks_01
+|-
+|Bridge.
+|calloutlocation_bridge_01
+|-
+|Building.
+|calloutlocation_building_01
+|-
+|Car.
+|calloutlocation_car_01
+|-
+|Crane.
+|calloutlocation_crane_01
+|-
+|Door.
+|calloutlocation_door_01
+|-
+|Elevator.
+|calloutlocation_elevator_01
+|-
+|Front.
+|calloutlocation_front_01
+|-
+|Hut.
+|calloutlocation_hut_01
+|-
+|Pipes.
+|calloutlocation_pipes_01
+|-
+|Shack.
+|calloutlocation_shack_01
+|-
+|Toilet.
+|calloutlocation_toilet_01
+|-
+|Train car.
+|calloutlocation_traincar_01
+|-
+|Trash.
+|calloutlocation_trash_01
+|-
+|Truck.
+|calloutlocation_truck_01
+|-
+|Tunnel.
+|calloutlocation_tunnel_01
+|-
+|Van.
+|calloutlocation_van_01
+|-
+|Wheels.
+|calloutlocation_wheels_01
+|-
+|Woodpile.
+|calloutlocation_woodpile_01
+|-
+|Cover me.
+|coverme_01
+|-
+|Cover.
+|coverme_02
+|-
+|Echo One requesting cover.
+|coverme_03
+|-
+|Need covering fire.
+|coverme_04
+|-
+|Echo One requesting shadow.
+|coverme_05
+|-
+|Prepare stimdose.
+|coverme_06
+|-
+|Requesting cover at
+|coverme_07
+|-
+|Evading.
+|danger_grenade_01
+|-
+|Grenade.
+|danger_grenade_02
+|-
+|Taking cover.
+|danger_grenade_03
+|-
+|Live grenade.
+|danger_grenade_04
+|-
+|Possible extractor. Evading.
+|danger_grenade_05
+|-
+|Grenade. Move.
+|danger_grenade_06
+|-
+|Go cover.
+|danger_grenade_07
+|-
+|Audible bouncer at sector
+|danger_grenade_08
+|-
+|Get back.
+|danger_grenade_09
+|-
+|Live bouncer. Finding shade.
+|danger_grenade_10
+|-
+|[Death Rattle] [Long Tone]
+|die_01
+|-
+|[Death Rattle] [Long Tone]
+|die_02
+|-
+|[Death Rattle] [Long Tone]
+|die_03
+|-
+|[Death Rattle] [Long Tone]
+|die_04
+|-
+|[Death Rattle] [Long Tone]
+|die_05
+|-
+|[Death Rattle] [Long Tone]
+|die_06
+|-
+|[Death Rattle] [Long Tone]
+|die_07
+|-
+|[Death Rattle] [Long Tone]
+|die_08
+|-
+|[Death Rattle] [Long Tone]
+|die_09
+|-
+|[Death Rattle] [Long Tone]
+|die_10
+|-
+|Over. [Long Tone]
+|die_by_player_18
+|-
+|Alyx [Long Tone]
+|die_by_player_19
+|-
+|Help us! [Long Tone]
+|die_by_player_20
+|-
+|I'm sor [Long Tone]
+|die_by_player_21
+|-
+|Overwa [Long Tone]
+|die_by_player_22
+|-
+|End. [Long Tone]
+|die_by_player_23
+|-
+|Closing in.
+|establishinglof_01
+|-
+|Echo One switching position.
+|establishinglof_02
+|-
+|Fixing visuals.
+|establishinglof_03
+|-
+|Honing sightlines.
+|establishinglof_04
+|-
+|Realigning to hostile.
+|establishinglof_05
+|-
+|Forming visual confirmation.
+|establishinglof_06
+|-
+|Clearing blocker.
+|establishinglof_07
+|-
+|Echo One no visual on target. Moving.
+|establishinglof_08
+|-
+|Realigning target delta.
+|establishinglof_09
+|-
+|Stay there.
+|establishinglof_10
+|-
+|Changing position.
+|establishinglof_11
+|-
+|Optimizing location.
+|establishinglof_12
+|-
+|Amending sightlines on hostile.
+|establishinglof_13
+|-
+|Viscon interrupted. Moving.
+|establishinglof_14
+|-
+|Clearing sightlines.
+|establishinglof_15
+|-
+|Contact in three.
+|establishinglof_17
+|-
+|Exposing primary.
+|establishinglof_18
+|-
+|Don't move.
+|establishinglof_19
+|-
+|Alyx
+|fakeout_calltoalyx_01
+|-
+|Hey Alyx!
+|fakeout_calltoalyx_02
+|-
+|Hey Alyx, it's us!
+|fakeout_calltoalyx_03
+|-
+|Alyx! You there?
+|fakeout_calltoalyx_04
+|-
+|Psst. Alyx!
+|fakeout_calltoalyx_05
+|-
+|Cease Fire! Target is friendly!
+|fakeout_responseceasefire_01
+|-
+|Weapons down! Echo One! Weapons down.
+|fakeout_responseceasefire_02
+|-
+|Ceasing fire! Daggers down.
+|fakeout_responseceasefire_03
+|-
+|Alyx is friendly! Hostile is friendly!
+|fakeout_responseceasefire_04
+|-
+|Alyx is friendly! Stop fire! Stop fire!
+|fakeout_responseceasefire_05
+|-
+|[Laughs]
+|fakeout_success_01
+|-
+|[Laughs] Friendgame effective.
+|fakeout_success_02
+|-
+|[Laughs] Hostile is scrambled.
+|fakeout_success_03
+|-
+|Firing.
+|firing_01
+|-
+|Engaging target.
+|firing_02
+|-
+|Open daggers on hostile.
+|firing_03
+|-
+|Weapons free.
+|firing_04
+|-
+|Echo One at primary set point.
+|firing_05
+|-
+|Open form. Weapons free.
+|firing_06
+|-
+|Open oppression on hostile.
+|firing_07
+|-
+|Cleaning sector.
+|firing_08
+|-
+|Committed.
+|firing_09
+|-
+|Prosecuting sector.
+|firing_10
+|-
+|Opening fire at priority one.
+|firing_player_01
+|-
+|Opening fire on Alyx.
+|firing_player_02
+|-
+|Targeting Vance.
+|firing_player_03
+|-
+|Opening fire at target one.
+|firing_player_04
+|-
+|Primary spikes incoming. Deafen response.
+|firing_player_05
+|-
+|Alyx is time limited.
+|firing_player_06
+|-
+|Animal is in the pit.
+|firing_player_07
+|-
+|Jackpot confirmed. Firing.
+|firing_player_08
+|-
+|Clearing last known.
+|flushing_01
+|-
+|Distribution on three.
+|flushing_02
+|-
+|Flushing sector
+|flushing_03
+|-
+|Extracting at last known.
+|flushing_04
+|-
+|Applying pressure on last known. Flare down.
+|flushing_05
+|-
+|Flushing hostile.
+|flushing_06
+|-
+|Bouncer. Bouncer on last known.
+|flushing_07
+|-
+|Disposing.
+|getback_01
+|-
+|Releasing with cover.
+|getback_02
+|-
+|Extractor down.
+|getback_03
+|-
+|Bouncer Bouncer.
+|getback_04
+|-
+|Releasing.
+|getback_05
+|-
+|Audible at sector
+|hear_suspicious_01
+|-
+|Possible contaminant.
+|hear_suspicious_02
+|-
+|Possible hostile active.
+|hear_suspicious_03
+|-
+|Movement.
+|hear_suspicious_04
+|-
+|Sound on.
+|hear_suspicious_05
+|-
+|Echo One is sound on. Reporting all suspects.
+|hear_suspicious_06
+|-
+|Medic.
+|injured_01
+|-
+|I'm hit. Requesting stimdose.
+|injured_02
+|-
+|Taking damage.
+|injured_03
+|-
+|Requesting additional bodypacks.
+|injured_04
+|-
+|Bodypacks holding.
+|injured_05
+|-
+|Echo One is time limited.
+|injured_06
+|-
+|Shit.
+|injured_07
+|-
+|[Laughs]
+|laugh_01
+|-
+|[Laughs]
+|laugh_02
+|-
+|[Laughs]
+|laugh_03
+|-
+|[Laughs]
+|laugh_04
+|-
+|[Laughs]
+|laugh_05
+|-
+|Contaminant not visible.
+|lostenemy_01
+|-
+|Goddamnit.
+|lostenemy_02
+|-
+|Echo One, requesting location.
+|lostenemy_03
+|-
+|Target lost. Requesting location assist.
+|lostenemy_04
+|-
+|Location assist.
+|lostenemy_05
+|-
+|Viscon negative on hostile.
+|lostenemy_06
+|-
+|Lost sightlines on contaminant.
+|lostenemy_07
+|-
+|No visual. Responder.
+|lostenemy_08
+|-
+|Missing hostile. Sector unknown.
+|lostvisual_01
+|-
+|Requesting hostile location.
+|lostvisual_02
+|-
+|Requesting location.
+|lostvisual_03
+|-
+|Lost sight of hostile.
+|lostvisual_04
+|-
+|Location assist for Echo One.
+|lostvisual_05
+|-
+|assist with location.
+|lostvisual_06
+|-
+|Need location assistance on sector
+|lostvisual_07
+|-
+|No visual. Overwatch, assist.
+|lostvisual_08
+|-
+|Echo One is negative on visual.
+|lostvisual_09
+|-
+|Possible evasion. Requesting location.
+|lostvisual_10
+|-
+|Contaminant is quiet. Requesting last known sector.
+|lostvisual_player_01
+|-
+|We have total visual blackout on Target One.
+|lostvisual_player_02
+|-
+|Primary hostile is quiet.
+|lostvisual_player_03
+|-
+|Evasive contaminant. Ordinal, report.
+|lostvisual_player_04
+|-
+|Checking cover.
+|lostvisual_player_05
+|-
+|Checking for Target One at
+|lostvisual_player_06
+|-
+|Viscon lost. Eyes on.
+|lostvisual_player_07
+|-
+|All contact quiet. Requesting recon.
+|lostvisual_player_08
+|-
+|[Breathless Panicked Shouting]
+|nearpanic_01
+|-
+|Proximity!
+|nearpanic_02
+|-
+|Stohhhhhhhhp!
+|nearpanic_03
+|-
+|Assist. Assist. Assist.
+|nearpanic_04
+|-
+|Holy sh!
+|nearpanic_05
+|-
+|Echo assist. Echo assist.
+|nearpanic_06
+|-
+|Back down. Back down.
+|nearpanic_07
+|-
+|Wheels down. Recall! Echo Seven. Recall. Echo Seven.
+|nearpanic_08
+|-
+|Proximity alert on Echo One! Responder assist!
+|nearpanic_09
+|-
+|Too close. Amending.
+|nearpanic_10
+|-
+|Copy.
+|orderresponse_positive_01
+|-
+|Roger.
+|orderresponse_positive_02
+|-
+|Copy That.
+|orderresponse_positive_03
+|-
+|Can do.
+|orderresponse_positive_04
+|-
+|Proceeding.
+|orderresponse_positive_05
+|-
+|Affirmative.
+|orderresponse_positive_06
+|-
+|Holding position.
+|overwatch_01
+|-
+|Location locked.
+|overwatch_02
+|-
+|Daggers ready.
+|overwatch_03
+|-
+|Viscon on last known position.
+|overwatch_04
+|-
+|Eyes on last known.
+|overwatch_05
+|-
+|Observing.
+|overwatch_06
+|-
+|Echo One is in position.
+|overwatch_07
+|-
+|Holding focus.
+|overwatch_08
+|-
+|Stop sound. Stop sound.
+|overwatch_09
+|-
+|Hostile unwilling. Stand by.
+|overwatch_10
+|-
+|Holding.
+|overwatch_11
+|-
+|Waiting for contact.
+|overwatch_12
+|-
+|Evaluating.
+|overwatch_13
+|-
+|Awaiting problem.
+|overwatch_14
+|-
+|Ready for containment.
+|overwatch_15
+|-
+|Holding.
+|overwatch_16
+|-
+|Eyes on.
+|overwatch_17
+|-
+|And contaminant is locked.
+|overwatch_18
+|-
+|Echo One. Securing edge.
+|overwatch_19
+|-
+|Checking all edges.
+|overwatch_20
+|-
+|[Pained Exclamation]
+|pain_01
+|-
+|[Pained Exclamation]
+|pain_02
+|-
+|[Pained Exclamation]
+|pain_03
+|-
+|[Pained Exclamation]
+|pain_04
+|-
+|[Pained Exclamation]
+|pain_05
+|-
+|[Pained Exclamation]
+|pain_06
+|-
+|[Pained Exclamation]
+|pain_07
+|-
+|[Pained Exclamation]
+|pain_08
+|-
+|[Pained Exclamation]
+|pain_09
+|-
+|[Pained Exclamation]
+|pain_10
+|-
+|[Panting]
+|panting_01
+|-
+|[Panting]
+|panting_02
+|-
+|[Panting]
+|panting_03
+|-
+|[Panting]
+|panting_04
+|-
+|[Panting]
+|panting_05
+|-
+|And hostile is vulnerable.
+|playerishurt_01
+|-
+|Target at odds.
+|playerishurt_02
+|-
+|Target compromised.
+|playerishurt_03
+|-
+|Move in. Move in.
+|playerishurt_04
+|-
+|Contaminant at low value.
+|playerishurt_05
+|-
+|Alyx is time limited.
+|playerishurt_06
+|-
+|Redrawing on hostile.
+|playerishurt_07
+|-
+|Requesting dagger amp against target one.
+|playerishurt_08
+|-
+|Red leak on hostile.
+|playerishurt_09
+|-
+|Possible tag on prime.
+|playerishurt_10
+|-
+|Daggers effective. Code zero niner.
+|playerishurt_11
+|-
+|Deny all stims on primary hostile.
+|playerishurt_12
+|-
+|Ending target one.
+|playerishurt_13
+|-
+|All sectors scanned.
+|reconnoiter_finish_01
+|-
+|Contact is silent.
+|reconnoiter_finish_02
+|-
+|Sector clear. Requesting standby.
+|reconnoiter_finish_03
+|-
+|Area clear.
+|reconnoiter_finish_04
+|-
+|Hostile is silent.
+|reconnoiter_finish_05
+|-
+|No contact.
+|reconnoiter_finish_06
+|-
+|Arena secure.
+|reconnoiter_finish_07
+|-
+|Looks clean.
+|reconnoiter_finish_08
+|-
+|Contact lost. Looks clear.
+|reconnoiter_finish_09
+|-
+|Nothing here.
+|reconnoiter_finish_10
+|-
+|Staying sharp.
+|reconnoiter_finish_11
+|-
+|No sector contaminants. Requesting stand down.
+|reconnoiter_finish_12
+|-
+|Stand by for code bravo.
+|reconnoiter_finish_13
+|-
+|Nothing.
+|reconnoiter_finish_14
+|-
+|Shadow clear.
+|reconnoiter_finish_15
+|-
+|Request end on condition shadow.
+|reconnoiter_finish_16
+|-
+|All units reporting. Silence in the pit.
+|reconnoiter_finish_17
+|-
+|Not here.
+|reconnoiter_finish_18
+|-
+|Location clear. Recall assistance.
+|reconnoiter_finish_19
+|-
+|All sectors clear. Recall.
+|reconnoiter_finish_20
+|-
+|Viscon processing
+|reconnoiter_search_01
+|-
+|Still searching
+|reconnoiter_search_02
+|-
+|Still sweeping
+|reconnoiter_search_03
+|-
+|Still scanning
+|reconnoiter_search_04
+|-
+|Recon in progress.
+|reconnoiter_search_05
+|-
+|Condition: shadow active.
+|reconnoiter_search_06
+|-
+|Recon in progress.
+|reconnoiter_search_07
+|-
+|Target is still shadow.
+|reconnoiter_search_09
+|-
+|Sector clear. Advancing.
+|reconnoiter_search_10
+|-
+|Null sector. Proceed.
+|reconnoiter_search_11
+|-
+|Area clean. Moving.
+|reconnoiter_search_12
+|-
+|Eyes still active.
+|reconnoiter_search_13
+|-
+|Nothing here.
+|reconnoiter_search_14
+|-
+|Hostile is still quiet.
+|reconnoiter_search_15
+|-
+|Scan complete. Resuming.
+|reconnoiter_search_16
+|-
+|Still no visual.
+|reconnoiter_search_17
+|-
+|Radials clear. Resuming.
+|reconnoiter_search_18
+|-
+|Spreading out.
+|reconnoiter_start_01
+|-
+|Setting condition alpha.
+|reconnoiter_start_02
+|-
+|Distributing.
+|reconnoiter_start_03
+|-
+|Echo Unit out.
+|reconnoiter_start_04
+|-
+|Eyes on.
+|reconnoiter_start_05
+|-
+|Deployed and scanning.
+|reconnoiter_start_06
+|-
+|Commencing cleanup.
+|reconnoiter_start_07
+|-
+|Reporting sightlines.
+|reconnoiter_start_08
+|-
+|Sweeping for hostiles.
+|reconnoiter_start_09
+|-
+|Sweeping for contaminant.
+|reconnoiter_start_10
+|-
+|Searching.
+|reconnoiter_start_11
+|-
+|Closing arena.
+|reconnoiter_start_12
+|-
+|Containment proceeding.
+|reconnoiter_start_13
+|-
+|Roger. Viscon. All Units.
+|reconnoiter_start_14
+|-
+|Formation on target in three.
+|reconnoiter_start_15
+|-
+|Disperse and scan.
+|reconnoiter_start_16
+|-
+|Initiate condition shadow.
+|reconnoiter_start_17
+|-
+|Going sharp on target. Delta
+|refindenemy_01
+|-
+|Target contact at
+|refindenemy_02
+|-
+|Viscon! Viscon!
+|refindenemy_03
+|-
+|Target found.
+|refindenemy_04
+|-
+|Viscon! Hostile found.
+|refindenemy_05
+|-
+|Over there.
+|refindenemy_06
+|-
+|Movement.
+|refindenemy_07
+|-
+|Animal is in the pit.
+|refindenemy_08
+|-
+|Hostile contact.
+|refindenemy_09
+|-
+|Go go go.
+|refindenemy_10
+|-
+|Echo One. Contact on sector niner four.
+|refindenemy_11
+|-
+|Hostile live. Check radials.
+|refindenemy_12
+|-
+|Slightline confirmed.
+|refindenemy_13
+|-
+|Sightline confirmed on prime.
+|refindenemy_14
+|-
+|Echo One, intercepting.
+|refindenemy_15
+|-
+|Location confirmed. Imposing stability.
+|refindenemy_16
+|-
+|Visual confirmation on three.
+|refindenemy_17
+|-
+|Active visual. Hostile refound.
+|refindenemy_18
+|-
+|Reloading.
+|reload_01
+|-
+|Refilling daggers.
+|reload_02
+|-
+|Echo low for three two one
+|reload_03
+|-
+|Requesting suppression for reload.
+|reload_04
+|-
+|Recharging.
+|reload_05
+|-
+|Empty.
+|reload_06
+|-
+|Empty dagger on Echo One.
+|reload_07
+|-
+|Provisions low. Reloading.
+|reload_08
+|-
+|Weapon renew.
+|reload_09
+|-
+|Ripcord.
+|retreat_01
+|-
+|Ripcord ripcord.
+|retreat_02
+|-
+|Ripcord on Echo One.
+|retreat_03
+|-
+|Retreating.
+|retreat_04
+|-
+|Falling back.
+|retreat_05
+|-
+|Sector is too hot.
+|retreat_06
+|-
+|Finding cover.
+|retreat_07
+|-
+|Regrouping.
+|retreat_08
+|-
+|Withdrawing.
+|retreat_09
+|-
+|Condition volatile. Finding shade.
+|retreat_10
+|-
+|Secondaries identified.
+|sees_company_01
+|-
+|Viscon on multiple unknowns.
+|sees_company_02
+|-
+|We have viscon on secondaries.
+|sees_company_03
+|-
+|Checking silhouettes. Possible multipliers.
+|sees_company_04
+|-
+|We have multiple contaminants.
+|sees_company_05
+|-
+|Target one has bouncers.
+|sees_grenades_01
+|-
+|Hostile has bouncers. Be alert.
+|sees_grenades_02
+|-
+|Contaminant has grenades. Disperse.
+|sees_grenades_03
+|-
+|Ground team alert. Target one has extractors.
+|sees_grenades_04
+|-
+|Hostile reloading. Dagger advantage.
+|sees_reloading_01
+|-
+|Target is regen. Open fire.
+|sees_reloading_02
+|-
+|Taking advantage.
+|sees_reloading_03
+|-
+|Contaminant is vulnerable.
+|sees_reloading_04
+|-
+|Alyx reloading. Full response active.
+|sees_reloading_05
+|-
+|We have rollermines. Daggers on.
+|sees_rollerball_01
+|-
+|Viscon! Rollermines!
+|sees_rollerball_03
+|-
+|Rollermines.
+|sees_rollerball_04
+|-
+|Subacute rollermines. Full active responder.
+|sees_rollerball_05
+|-
+|Changing target to rollermines.
+|sees_rollerball_06
+|-
+|Rollermines. Inbound.
+|sees_rollerball_07
+|-
+|Spikes boosted on target one.
+|sees_upgrades_01
+|-
+|Overwatch. Target one has boosters.
+|sees_upgrades_02
+|-
+|Ground team alert. Hostile has boosted spikes.
+|sees_upgrades_03
+|-
+|Viscon. Illegal spikes.
+|sees_upgrades_04
+|-
+|Boosters identified. Respond with caution.
+|sees_upgrades_05
+|-
+|Overwatch. Requesting reserve action.
+|squadmemberlost_01
+|-
+|Overwatch. Sector is not secure!
+|squadmemberlost_02
+|-
+|Outbreak, outbreak, outbreak!
+|squadmemberlost_03
+|-
+|has expired.
+|squadmemberlost_04
+|-
+|Overwatch. Ground Unit is down. Sector not controlled.
+|squadmemberlost_05
+|-
+|Overwatch. Sector overrun! Repeat. Sector overrun!
+|squadmemberlost_06
+|-
+|Overwatch. Requesting skyshield.
+|squadmemberlost_07
+|-
+|Advantage lost. Problems incoming.
+|squadmemberlost_08
+|-
+|Overwatch. Recommend new formation.
+|squadmemberlost_09
+|-
+|Friendly is down.
+|squadmemberlost_10
+|-
+|is quiet. Requesting replacement.
+|squadmemberlost_11
+|-
+|Echo One is solo active.
+|squadmemberlost_lastman_01
+|-
+|Overwatch! Echo One is last unit! Requesting assist.
+|squadmemberlost_lastman_02
+|-
+|Ugh. Requesting immediate shadow!
+|squadmemberlost_lastman_03
+|-
+|Overwatch! Outbreak is uncontained!
+|squadmemberlost_lastman_04
+|-
+|Echo One reporting excessive hostile.
+|squadmemberlost_lastman_05
+|-
+|Overwatch! No Ground Team remaining.
+|squadmemberlost_lastman_06
+|-
+|Survival mark deployed.
+|squadmemberlost_lastman_07
+|-
+|Overwatch! Requesting extraction on Echo One.
+|squadmemberlost_lastman_08
+|-
+|Overwatch. Echo One is last responder.
+|squadmemberlost_lastman_09
+|-
+|Overwatch! Ordinal is down!
+|squadmemberlost_leader_01
+|-
+|Ordinal is quiet! Requesting assist!
+|squadmemberlost_leader_02
+|-
+|Overwatch! Ordinal is condition sundown! Acknowledge!
+|squadmemberlost_leader_03
+|-
+|Ordinal is ended.
+|squadmemberlost_leader_04
+|-
+|Overwatch. Ordinal inhibited. Responding
+|squadmemberlost_leader_05
+|-
+|Ordinal is silent. Administer full response!
+|squadmemberlost_leader_06
+|-
+|Ordinal is flat line.
+|squadmemberlost_leader_07
+|-
+|[Screaming]
+|stunned_rollerball_01
+|-
+|[Screaming]
+|stunned_rollerball_03
+|-
+|[Screaming]
+|stunned_rollerball_04
+|-
+|[Screaming]
+|stunned_rollerball_05
+|-
+|[Screaming]
+|stunned_rollerball_06
+|-
+|[Screaming]
+|stunned_rollerball_07
+|-
+|Suppressing.
+|suppressing_01
+|-
+|Suppressing fire.
+|suppressing_02
+|-
+|Suppressing at
+|suppressing_03
+|-
+|Echo One is forcing compliance.
+|suppressing_04
+|-
+|Barrage on last known.
+|suppressing_05
+|-
+|Sustaining daggers on last known.
+|suppressing_06
+|-
+|And hostile is pinned.
+|suppressing_07
+|-
+|Spikes close. No damage.
+|takingfire_01
+|-
+|Missed.
+|takingfire_02
+|-
+|Target error. Taking advantage.
+|takingfire_03
+|-
+|Hostile is inaccurate.
+|takingfire_04
+|-
+|Almost.
+|takingfire_05
+|-
+|Exercising advantage on hostile error.
+|takingfire_06
+|-
+|Missed again. Taking advantage.
+|takingfire_07
+|-
+|Target has failed.
+|takingfire_08
+|-
+|Echo One is untouched.
+|takingfire_09
+|-
+|Hostile failed. Reforming.
+|takingfire_10
+|-
+|Spikes ineffective. Target is unskilled.
+|takingfire_11
+|-
+|Negative.
+|unabletocommence_01
+|-
+|Uhhh no can do.
+|unabletocommence_02
+|-
+|Negatory.
+|unabletocommence_03
+|-
+|No.
+|unabletocommence_04
+|-
+|Deny.
+|unabletocommence_05
+|-
+|Can't comply.
+|unabletocommence_06
+|-
+|That's a negative.
+|unabletocommence_07
+|-
+|Spikes confirmation. Form up.
+|underattack_01
+|-
+|Hostile is live.
+|underattack_02
+|-
+|Contact. Hostile at
+|underattack_03
+|-
+|Echo One opening oppression.
+|underattack_04
+|-
+|This is Echo One. We have loud contaminants.
+|underattack_05
+|-
+|Distribute.
+|underattack_06
+|-
+|Target is hostile. Daggers free.
+|underattack_07
+|-
+|Hostile is oppressing.
+|underattack_08
+|-
+|Overwatch. We have spikes.
+|underattack_09
+|-
+|Ugh. Preparing condition delta.
+|underattack_10
+|-
+|Taking fire.
+|underattack_11
+|-
+|Executing full response.
+|underattack_12
+|-
+|
+|calloutcode_alpha_01
+|-
+|Copy that. Echo One is sound on, reporting all suspects.
+|choreo_22_2002
+|-
+|Audible at sector Alpha niner Delta. Exposing hostile in three
+|choreo_22_2003
+|-
+|Overwatch. Echo One has sector ID and is moving on infected. Anti-citizen 7-1-3.
+|choreo_22_2004
+|-
+|Contaminant is vulnerable. Taking advantage.
+|choreo_22_2005
+|-
+|Echo One. Contact on sector niner four. Hostile live. Check radials.
+|choreo_22_2006
+|-
+|Checking for target one at Building Eleven. Primary hostile is quiet. Recon in progress.
+|choreo_22_2007
+|-
+|Setting condition alpha. And contaminant is locked. Checking all edges.
+|choreo_22_2008
+|-
+|Jackpot confirmed. Realigning to hostile. Alyx is time limited.
+|choreo_22_2009
+|-
+|Uhh yeah nothing to report. Over.
+|idle_01
+|-
+|1, 14, 3, 6, 11, Check. And all clear on Echo Four. Your turn. Over.
+|idle_02
+|-
+|Copy that. Sustaining viscon at sector nomad kilo three dash six.
+|idle_03
+|-
+|Echo One has negative movement. Grid: seven dash two.
+|idle_04
+|-
+|Tuning in Affirmative Echo One reporting low light, low sound. Standing by for opportunities.
+|idle_05
+|-
+|Transmission clearNegative on condition quicksand. Uhh wait No. Radials clear. Over.
+|idle_06
+|-
+|Overwatch. This is Echo Four requesting proximity data on hostiles. Holding for transmission.
+|idle_07
+|-
+|Sector is tracking at 43%. Stable. And... still holding for transmission. Over.
+|idle_08
+|-
+|Overwatch is confirming sector lockdown. Anti-Citizen one is uhh, displaced and activated. Keep sightlines open and sound on.
+|idle_09
+|-
+|Affirmative Outbreak status is code delta seven. Team Sundown is on contact overrun Uhhh Copy that.
+|idle_10
+|-
+|Negative. Copy that. No sector containment. No confirmation on target one vector. Waiting for secondary parameter codes.
+|idle_11
+|-
+|Updating biodat Stimdose: 32. Dagger: 78. Shield: 100. Biprox: 73. Audibles: 3. Lightvis: 15. Echo Out.
+|idle_12
+|-
+|Roger that. Setting viscerators in apex five. We have biotics at the perimeter. Uhhh Waiting for contact. Over.
+|idle_13
+|-
+|Overwatch confirms uhh non-tagged viromes inbound. All units advisory: prepare for contact.
+|idle_14
+|-
+|Callout Code: Delta Echo seven niner alpha two winder zero. Confirmed. Echo Out.
+|idle_15
+|-
+|Roger that. Still here.
+|idle_16
+|-
+|Copy that.
+|idle_17
+|-
+|Copy. Accepted. Updating cognitive suppression biodats. Update complete in T minus three seconds Dissonance resolved.
+|idle_18
+|-
+|Overwatch is requesting all units refresh and resolve. Cognitive dissonance will not be tolerated. Negative Memories included. Update is live. Acceptance is mandatory.
+|idle_19
+|-
+|Stabilization Team holding position. Lightviz at 73. Audibles at 15. Overwatch confirms HVT is perimeter inbound. Stay alert.
+|idle_20
+|-
+|Overwatch. We have active hostiles. Advise preparations.
+|combat_idle_010
+|-
+|Overwatch. We have active hostiles. Advise preparations.
+|combat_idle_012
+|-
+|Negative. Target is still active.
+|combat_idle_020
+|-
+|Negative. Target is still active.
+|combat_idle_021
+|-
+|Negative. Target is still active.
+|combat_idle_022
+|-
+|Copy that. Forming condition alpha.
+|combat_idle_030
+|-
+|Copy that. Forming condition alpha.
+|combat_idle_031
+|-
+|Copy that. Forming condition alpha at grid niner dash three seven.
+|combat_idle_032
+|-
+|Holding for advance directive. Over.
+|combat_idle_040
+|-
+|Holding for advance directive. Over.
+|combat_idle_041
+|-
+|Holding for advance directive. Over.
+|combat_idle_042
+|-
+|Confirmed. Recalibrating.
+|combat_idle_050
+|-
+|Confirmed. Recalibrating.
+|combat_idle_051
+|-
+|Confirmed. Recalibrating.
+|combat_idle_052
+|-
+|Copy. Setting up position.
+|combat_idle_060
+|-
+|Copy. Setting up position.
+|combat_idle_061
+|-
+|Copy. Setting up position.
+|combat_idle_062
+|-
+|They're still alive.
+|combat_idle_070
+|-
+|They're still alive.
+|combat_idle_071
+|-
+|They're still alive.
+|combat_idle_072
+|-
+|Copy that. Contain and control is underway.
+|combat_idle_080
+|-
+|Copy that. Contain and control is underway.
+|combat_idle_081
+|-
+|Copy that. Contain and control is underway.
+|combat_idle_082
+|-
+|Resolving.
+|combat_idle_090
+|-
+|Resolving.
+|combat_idle_091
+|-
+|Resolving.
+|combat_idle_092
+|-
+|Ten four. Negative on dagger renew. Locked and ready.
+|combat_idle_100
+|-
+|Ten four. Negative on dagger renew. Locked and ready.
+|combat_idle_101
+|-
+|Ten four. Negative on dagger renew. Locked and ready.
+|combat_idle_102
+|-
+|Forming tactical advantage.
+|combat_idle_110
+|-
+|Forming tactical advantage.
+|combat_idle_111
+|-
+|Forming tactical advantage.
+|combat_idle_112
+|-
+|Still holding.
+|combat_idle_120
+|-
+|Still holding.
+|combat_idle_121
+|-
+|Still holding.
+|combat_idle_122
+|-
+|Holding for biodat upload.
+|combat_idle_130
+|-
+|Holding for biodat upload.
+|combat_idle_131
+|-
+|Holding for biodat upload.
+|combat_idle_132
+|-
+|Preparing for sundown.
+|combat_idle_140
+|-
+|Preparing for sundown.
+|combat_idle_141
+|-
+|Preparing for sundown.
+|combat_idle_142
+|-
+|Preparing coms for extended conflict.
+|combat_idle_150
+|-
+|Preparing coms for extended conflict.
+|combat_idle_151
+|-
+|Preparing coms for extended conflict.
+|combat_idle_152
+|-
+|Negative. No daggers needed.
+|combat_idle_160
+|-
+|Negative. No daggers needed.
+|combat_idle_161
+|-
+|Negative. No daggers needed.
+|combat_idle_162
+|-
+|Extending conflict duration.
+|combat_idle_170
+|-
+|Extending conflict duration.
+|combat_idle_171
+|-
+|Extending conflict duration.
+|combat_idle_172
+|-
+|Scanning hostile biodats.
+|combat_idle_180
+|-
+|Scanning hostile biodats.
+|combat_idle_181
+|-
+|Scanning hostile biodats.
+|combat_idle_182
+|-
+|Disregarding last call.
+|combat_idle_190
+|-
+|Disregarding last call.
+|combat_idle_191
+|-
+|Disregarding last call.
+|combat_idle_192
+|-
+|Overwatch. Ten niner.
+|combat_idle_200
+|-
+|Overwatch. Ten niner.
+|combat_idle_201
+|-
+|Overwatch. Ten niner.
+|combat_idle_202
+|-
+|Echo One is engaged and firing.
+|firing_110
+|-
+|Echo One is engaged and firing.
+|firing_111
+|-
+|Echo One is engaged and firing.
+|firing_112
+|-
+|Enforcing stability on primary target.
+|firing_120
+|-
+|Enforcing stability on primary target.
+|firing_121
+|-
+|Enforcing stability on primary target in sector
+|firing_122
+|-
+|Target is in line.
+|firing_130
+|-
+|Target is in line and receiving spikes.
+|firing_131
+|-
+|Target is in line and receiving spikes.
+|firing_132
+|-
+|Escalating force on primary target.
+|firing_140
+|-
+|Escalating force on primary target.
+|firing_141
+|-
+|Escalating force on primary target.
+|firing_142
+|-
+|They're going down.
+|firing_150
+|-
+|They're going down.
+|firing_151
+|-
+|They're going down.
+|firing_152
+|-
+|Almost over.
+|firing_160
+|-
+|It's almost over.
+|firing_161
+|-
+|It's almost over.
+|firing_162
+|-
+|Sending spikes.
+|firing_170
+|-
+|Sending spikes.
+|firing_171
+|-
+|Sending spikes.
+|firing_172
+|-
+|Sending all spikes to primary target.
+|firing_180
+|-
+|Sending all spikes to primary target.
+|firing_181
+|-
+|Sending all spikes to primary target.
+|firing_182
+|-
+|Echo One sending all spikes.
+|firing_190
+|-
+|Echo One sending all spikes.
+|firing_191
+|-
+|Echo One sending all spikes.
+|firing_192
+|-
+|Don't resist.
+|firing_200
+|-
+|Don't resist.
+|firing_201
+|-
+|Don't resist.
+|firing_202
+|-
+|Wallhammer is engaged and firing.
+|firing_210
+|-
+|Wallhammer is engaged and firing.
+|firing_211
+|-
+|Wallhammer is engaged and firing.
+|firing_212
+|-
+|Ordinal is engaged and firing.
+|firing_220
+|-
+|Ordinal is engaged and firing.
+|firing_221
+|-
+|Ordinal is engaged and firing.
+|firing_222
+|-
+|APF is engaged and firing.
+|firing_230
+|-
+|APF is engaged and firing.
+|firing_231
+|-
+|APF is engaged and firing.
+|firing_232
+|-
+|Arrrgh! Heat leak on bodypack! Assist. Assist me
+|onfire_010
+|-
+|Arrrgh! Heat leak on bodypack! Assist. Assis [Garbled Shouting]
+|onfire_011
+|-
+|Echo One requesting immediate containment! [Panicked Screaming]
+|onfire_020
+|-
+|Echo One requesting immediate containment. [Panicked Screaming]
+|onfire_021
+|-
+|Aaah! Thermal limit exceeded! Gahhh!
+|onfire_030
+|-
+|Aaah! Thermal limit exceeded! Gahhh!
+|onfire_031
+|-
+|Ugh! Biodat critical. Expiration on 4 3 2
+|onfire_050
+|-
+|Ugh! Biodat critical. Expiration on 4 3
+|onfire_051
+|-
+|Arrrgh! Heat leak on bodypack! Gahhh!
+|onfire_060
+|-
+|Arrrgh! Heat leak on bodypack! [Garbled Shouting]
+|onfire_061
+|-
+|[Panicked Screaming]
+|onfire_070
+|-
+|[Panicked Screaming]
+|onfire_080
+|-
+|[Panicked Screaming]
+|onfire_081
+|-
+|[Panicked Screaming]
+|onfire_090
+|-
+|[Panicked Screaming]
+|onfire_091
+|-
+|[Panicked Screaming]
+|onfire_100
+|-
+|[Panicked Screaming]
+|onfire_101
+|-
+|Hostile is experiencing extreme panic.
+|taunt_010
+|-
+|Hostile is experiencing extreme panic.
+|taunt_011
+|-
+|Hostile is experiencing extreme panic.
+|taunt_012
+|-
+|Hostile is overwhelmed.
+|taunt_020
+|-
+|Hostile is overwhelmed.
+|taunt_021
+|-
+|Hostile is overwhelmed.
+|taunt_022
+|-
+|Target is at low motivation. Take advantage.
+|taunt_030
+|-
+|Target is at low motivation.
+|taunt_031
+|-
+|Target is at low motivation. Take advantage.
+|taunt_032
+|-
+|You can come out now.
+|taunt_040
+|-
+|You can come out now.
+|taunt_041
+|-
+|You can come out now.
+|taunt_042
+|-
+|Attention hostile target. We can help you. It is safe.
+|taunt_050
+|-
+|We can help you. It is safe.
+|taunt_051
+|-
+|Attention hostile target. We can help you. It is safe.
+|taunt_052
+|-
+|Suspect is above legal aggression threshold. Taking advantage.
+|taunt_060
+|-
+|Suspect is above legal aggression threshold.
+|taunt_061
+|-
+|Suspect is above legal aggression threshold. Taking advantage.
+|taunt_062
+|-
+|Proceeding with escalation.
+|taunt_070
+|-
+|Code 10-307. Proceeding with escalation.
+|taunt_071
+|-
+|Suspect is non-compliant with code 10-307. Proceeding with escalation
+|taunt_072
+|-
+|Hostile is hesitating.
+|taunt_080
+|-
+|Hostile is hesitating.
+|taunt_081
+|-
+|Hostile is hesitating.
+|taunt_082
+|-
+|Hostile attacks are ineffective. Proceed with containment.
+|taunt_090
+|-
+|Hostile attacks are ineffective. Proceed with containment.
+|taunt_091
+|-
+|Hostile attacks are ineffective. Proceed with containment.
+|taunt_092
+|-
+|Activating code 10-108. Standing down.
+|taunt_100
+|-
+|Activating code 10-108. Standing down.
+|taunt_101
+|-
+|Activating code 10-108. Standing down.
+|taunt_102
+|-
+|Suspending fire. Target is friendly.
+|taunt_110
+|-
+|Suspending fire. Target is friendly.
+|taunt_111
+|-
+|Suspending fire. Target is friendly.
+|taunt_112
+|-
+|Standing down. Code 10-40.
+|taunt_120
+|-
+|Standing down. Code 10-40.
+|taunt_121
+|-
+|Standing down. Code 10-40.
+|taunt_122
+|-
+|Ceasing fire! Target is non-hostile.
+|taunt_130
+|-
+|Ceasing fire! Target is non-hostile.
+|taunt_131
+|-
+|Ceasing fire! Target is non-hostile.
+|taunt_132
+|-
+|Copy. Do not shoot. Compliance confirmed.
+|taunt_140
+|-
+|Do not shoot. Compliance confirmed.
+|taunt_141
+|-
+|Copy. Do not shoot. Compliance confirmed.
+|taunt_142
+|-
+|Target is friendly.
+|taunt_150
+|-
+|Stand down. Target is friendly.
+|taunt_151
+|-
+|All units stand down. Target is friendly.
+|taunt_152
+|-
+|Friendly confirmed. Cease fire!
+|taunt_160
+|-
+|Friendly confirmed. Cease fire!
+|taunt_161
+|-
+|Friendly confirmed. Cease fire!
+|taunt_162
+|-
+|Overwatch. We have a wait-and-see at grid niner dash five.
+|taunt_170
+|-
+|Overwatch. We have a wait-and-see.
+|taunt_171
+|-
+|Overwatch. We have a wait-and-see.
+|taunt_172
+|-
+|Affirmative. Target is low value.
+|taunt_180
+|-
+|Affirmative. Target is low value.
+|taunt_181
+|-
+|Affirmative. Target is low value.
+|taunt_182
+|-
+|Copy that. Hostile is unaware and ready for containment.
+|taunt_190
+|-
+|Copy that. Hostile is unaware and ready for containment.
+|taunt_191
+|-
+|Copy that. Hostile is unaware and ready for containment.
+|taunt_192
+|-
+|Hostile is showing fatigue. Prepare containment.
+|taunt_200
+|-
+|Hostile is showing fatigue. Prepare containment.
+|taunt_201
+|-
+|Hostile is showing fatigue. Prepare containment.
+|taunt_202
+|}

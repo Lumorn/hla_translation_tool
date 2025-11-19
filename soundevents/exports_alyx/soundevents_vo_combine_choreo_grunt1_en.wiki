@@ -1,0 +1,149 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Hands up! Don't move!
+|29_0001
+|-
+|Get BACK!
+|29_0002
+|-
+|Stop! Get BACK!
+|29_0003
+|-
+|Hands off the button!
+|29_0004
+|-
+|Do not touch the button!
+|29_0005
+|-
+|Overwatch, we have taken heavy casualties from primary one objective.
+|29_0006
+|-
+|Target engaged, fall back and reinforce.
+|29_0007
+|-
+|Hey! Watch it. I don't want to get any of this crap on me.
+|29_0008
+|-
+|We're not dumping it in a pit because it's safe. Keep moving.
+|29_0009
+|-
+|Command requesting damage assessment.
+|29_0010
+|-
+|Command requesting damage assessment.
+|29_0011
+|-
+|Total?
+|29_0012
+|-
+|Incoming reinforcements.
+|29_0013
+|-
+|Taking fire!
+|29_0014
+|-
+|Target acquired. Target acquired.
+|29_0015
+|-
+|It's Alyx Vance.
+|29_0016
+|-
+|It's Alyx Vance.
+|29_0017
+|-
+|Of course it's Alyx Vance.
+|29_0018
+|-
+|Keep 'em up!
+|29_0019
+|-
+|Keep those hands up!
+|29_0020
+|-
+|Put your hands up!
+|29_0021
+|-
+|Get those hands up!
+|29_0022
+|-
+|She's clean.
+|29_0023
+|-
+|Get back!
+|29_00033
+|-
+|Move.
+|29_00500
+|-
+|Go!
+|29_00501
+|-
+|You. Move.
+|29_00502
+|-
+|Move along.
+|29_00503
+|-
+|You. Keep it moving.
+|29_00504
+|-
+|Get off the street NOW.
+|29_00505
+|-
+|Return to your housing block. NOW.
+|29_00506
+|-
+|Come on through.
+|29_00507
+|-
+|Go on through.
+|29_00508
+|-
+|You're clear. Come on through.
+|29_00509
+|-
+|Get in.
+|29_00510
+|-
+|Get in the van.
+|29_00511
+|-
+|You. Move.
+|29_00512
+|-
+|We got 'em.
+|29_00513
+|-
+|Probable Anti-Citizen. Get a scan.
+|29_00524
+|-
+|Stop talking.
+|29_00527
+|-
+|Stop moving.
+|29_00528
+|-
+|What?
+|29_00529
+|-
+|INCOMING!
+|29_00530
+|-
+|GRENADE!
+|29_00532
+|-
+|I don't see it!
+|29_00534
+|-
+|I'm throwing it n
+|29_00537
+|-
+|I got it!
+|29_00614
+|-
+|I'm looking, I'm looking!
+|29_00624
+|}

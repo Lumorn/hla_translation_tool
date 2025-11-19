@@ -1,0 +1,23 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Give us names.
+|27_1107
+|-
+|We don't care. What did you see? Who was with you?
+|27_1108
+|-
+|We'll get it out of him. Take him to the transport!
+|27_1109
+|-
+|Her too.
+|27_1111
+|-
+|Area secure.
+|27_6000
+|-
+|Bring him in.
+|27_6001
+|}

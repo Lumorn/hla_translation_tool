@@ -1,0 +1,8 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Err roger that. We'll run standard loyalty check procedure to 43 my 10-23 intake station over.
+|c17pp_searchingforalyx
+|}

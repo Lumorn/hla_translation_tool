@@ -1,0 +1,188 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|[Struggling] Son of a
+|12_00001
+|-
+|[Struggling] Come on, y'damn thing get off my foot! Gimme  Gah!
+|12_00002
+|-
+|[Struggling] Y'know, I thought we had an agreement: you keep your tongue to yourself and I don't shoot you in it.
+|12_00003
+|-
+|[Struggling] We are through, just so you know.
+|12_00004
+|-
+|[Struggling] Man
+|12_00005
+|-
+|Oh! Hey! Hey! You with the, uh, with the blood on you. You with the blood!
+|12_00006
+|-
+|I, uh, got a little situation here?
+|12_00007
+|-
+|You, uh  you don't happen to have a gun on you, do you?
+|12_00008
+|-
+|Yeah, look at that. It's a  Oof! It's a nice one too.
+|12_00009
+|-
+|Unhh. Nicer than mine, which is up inside this guy.
+|12_00010
+|-
+|Speaking of which, could you shoot this thing? Please?
+|12_00011
+|-
+|Look, I got uh, probably four, maybe five good hours of arm strength here, so
+|12_00012
+|-
+|So yeah, just take your time, but if it's no trouble, j  urragh  maybe put a plug in this thing for me.
+|12_00013
+|-
+|Ah, hey, great.
+|12_00014
+|-
+|Ah, nice. My hero.
+|12_00015
+|-
+|Uh, hey, little help?
+|12_00016
+|-
+|Mmph. Thanks.
+|12_00027
+|-
+|Oh, that's Jeff.
+|12_00028
+|-
+|Oh, don't worry, he can't see. Hears just fine, though.
+|12_00029
+|-
+|Got an ear like Mozart.
+|12_00030
+|-
+|Ugh. Alright, now let me help you out.
+|12_00031
+|-
+|Alright. See ya on the other side, greenhorn.
+|12_00032
+|-
+|And keep your voice down.
+|12_00033
+|-
+|[Whispering] There he is.
+|12_00035
+|-
+|[Whispering] Right. Watch this
+|12_00036
+|-
+|See? He's totally predictable. But he will rip your arms off if he finds you.
+|12_00037
+|-
+|Whoa whoa whoa what! Jeff is bulletproof!
+|12_00038
+|-
+|My advice is just avoid him.
+|12_00039
+|-
+|Hey hey! Those things are nasty! You gotta cover your mouth!
+|12_00041
+|-
+|I'm taking off. But good luck in there. And don't underestimate our boy Jeff. He, uh, he doesn't have much patience.
+|12_00044
+|-
+|Whoa! What did you do to Jeff?
+|12_00046
+|-
+|Goddamn! Well, I uh, I hope you came across some of the good stuff. See you around!
+|12_00047
+|-
+|What's your name?
+|12_00049
+|-
+|Hey, I-I almost forgot: What's your name?
+|12_00509
+|-
+|Hey, Alyx. I'm Larry. Nice to meet you. Try not to get killed.
+|12_00511
+|-
+|Cover your mouth so you don't cough!
+|12_00516
+|-
+|You're giving away your position! Cover your mouth so you don't cough!
+|12_00517
+|-
+|Jeff can hear you coughing! Cover your mouth!
+|12_00518
+|-
+|Hey! Hey! Cover your mouth so you don't cough!
+|12_00519
+|-
+|Hey! Alyx Vance! You made it!
+|12_00600
+|-
+|Goddamn!
+|12_00602
+|-
+|Well, I hope you came across some of the good stuff. Uh, I'll see you around!
+|12_00604
+|-
+|[Struggling]
+|12_50000
+|-
+|[Struggling] hate barnacles so much
+|12_50001
+|-
+|[Struggling] beensurviving in thisstupid factory for years. How do Ikeep getting caughtby barnacles?
+|12_50002
+|-
+|[Struggling] Alright, that is it. Gotta cut the leg off. You win, hope you choke on it, you creep.
+|12_50003
+|-
+|[Struggling] There would've been so many better ways to die than this. The indignity.
+|12_50004
+|-
+|Oh  and uh, nice hat, by the way.
+|12_50005
+|-
+|Nice hat, by the way.
+|12_50006
+|-
+|Nice helmet, by the way.
+|12_50007
+|-
+|Oh  and nice helmet, by the way.
+|12_50008
+|-
+|Nice hats, by the way.
+|12_50009
+|-
+|Oh  and nice mask.
+|12_50010
+|-
+|That'll come in handy.
+|12_50011
+|-
+|Oh, by the way  that look? It's a good one.
+|12_50012
+|-
+|Oh, by the way  whatever that is on your head? I like it.
+|12_50013
+|-
+|Ooh! Nice mask, by the way.
+|12_50014
+|-
+|Ooh, nice mask! That'll come in handy here.
+|12_50015
+|-
+|And uh, in case you lose it, be sure to cover your mouth around those things.
+|12_50016
+|-
+|Oh! But if you lose it? Cover your mouth around those things. It's  gross.
+|12_50017
+|-
+|[Struggling] Drowning. Run over by a Combine patrol. Run over by a Strider. Drowned by a Strider. Ripped in half by a Strider. Tuberculosis.
+|12_50018
+|}

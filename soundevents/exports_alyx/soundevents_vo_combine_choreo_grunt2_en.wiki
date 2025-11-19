@@ -1,0 +1,242 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Stop! STOP!
+|30_0001
+|-
+|Back! BACK!
+|30_0002
+|-
+|Hands off the button!
+|30_0003
+|-
+|Overwatch, this is five-six-zero actual. Seismic activity in region detected in sector zero-two, confirm.
+|30_0004
+|-
+|Containment proceeding, redirecting five-six-zero to subway station. Going sharp.
+|30_0005
+|-
+|Why, is it dangerous?
+|30_0006
+|-
+|Damage: 70% 80% 90% Total.
+|30_0007
+|-
+|Total.
+|30_0008
+|-
+|Repair or extraction needed.
+|30_0009
+|-
+|I don't know.
+|30_0010
+|-
+|I don't know.
+|30_0011
+|-
+|He's kicking it.
+|30_0012
+|-
+|Overwatch says stop kicking it.
+|30_0013
+|-
+|He stopped kicking it.
+|30_0014
+|-
+|Get down! She's here!
+|30_0015
+|-
+|Target identification unknown.
+|30_0016
+|-
+|No visual on Alyx Vance.
+|30_0017
+|-
+|It's Alyx Vance!
+|30_0018
+|-
+|Deliver damage assessment to Overwatch.
+|30_0019
+|-
+|Copy?
+|30_0020
+|-
+|Repeat. Deliver damage assessment to Overwatch.
+|30_0021
+|-
+|Engaging!
+|30_0022
+|-
+|Keep 'em up!
+|30_0023
+|-
+|Keep those hands up!
+|30_0024
+|-
+|Put your hands up!
+|30_0025
+|-
+|Get those hands up!
+|30_0026
+|-
+|She's clean.
+|30_0027
+|-
+|Stop! STOP!
+|30_0001
+|-
+|Back! BACK!
+|30_0002
+|-
+|Hands off the button!
+|30_0003
+|-
+|Stop!
+|30_00034
+|-
+|Stop!
+|30_00036
+|-
+|Stop! STOP!
+|30_00038
+|-
+|Overwatch, this is five-six-zero actual. Seismic activity in region detected in sector zero-two, confirm.
+|30_0004
+|-
+|Back!
+|30_00040
+|-
+|Back! BACK!
+|30_00042
+|-
+|Back. BACK!
+|30_00044
+|-
+|Containment proceeding, redirecting five-six-zero to subway station. Going sharp.
+|30_0005
+|-
+|Why, is it dangerous?
+|30_0006
+|-
+|Damage: 70% 80% 90% Total.
+|30_0007
+|-
+|Total.
+|30_0008
+|-
+|Repair or extraction needed.
+|30_0009
+|-
+|I don't know.
+|30_0010
+|-
+|I don't know.
+|30_0011
+|-
+|He's kicking it.
+|30_0012
+|-
+|Overwatch says stop kicking it.
+|30_0013
+|-
+|He stopped kicking it.
+|30_0014
+|-
+|Get down! She's here!
+|30_0015
+|-
+|Target identification unknown.
+|30_0016
+|-
+|No visual on Alyx Vance.
+|30_0017
+|-
+|It's Alyx Vance!
+|30_0018
+|-
+|Deliver damage assessment to Overwatch.
+|30_0019
+|-
+|Copy?
+|30_0020
+|-
+|Repeat. Deliver damage assessment to Overwatch.
+|30_0021
+|-
+|Engaging!
+|30_0022
+|-
+|Keep 'em up!
+|30_0023
+|-
+|Keep those hands up!
+|30_0024
+|-
+|Put your hands up!
+|30_0025
+|-
+|Get those hands up!
+|30_0026
+|-
+|She's clean.
+|30_0027
+|-
+|Move.
+|30_00500
+|-
+|Go! Go!
+|30_00501
+|-
+|Move along.
+|30_00503
+|-
+|You. Keep it moving.
+|30_00504
+|-
+|Get off the street NOW.
+|30_00505
+|-
+|Return to your housing block NOW.
+|30_00506
+|-
+|Come on through.
+|30_00507
+|-
+|Go on through.
+|30_00508
+|-
+|You're clear. Come on through.
+|30_00509
+|-
+|Get in.
+|30_00510
+|-
+|Get in the van.
+|30_00511
+|-
+|Behind you!
+|30_00517
+|-
+|Probable Anti-Citizen. Get a scan.
+|30_00524
+|-
+|Tell her to stop moving around back there.
+|30_00527
+|-
+|What is that?
+|30_00528
+|-
+|Get it, get it, get it!
+|30_00530
+|-
+|Get it!
+|30_00531
+|-
+|It's under the seat!
+|30_00610
+|-
+|Throw it, throw it
+|30_00630
+|}

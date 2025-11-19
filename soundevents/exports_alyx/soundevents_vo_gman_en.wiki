@@ -1,0 +1,71 @@
+{|class=wikitable border="1" style=width:90%
+|-
+!Quote
+!width=10%|File
+|-
+|Impressive work, Ms. Vance.
+|04_00200
+|-
+|That is a question with a multitude of
+|04_00201
+|-
+|Perhaps what I am is not as important as what I can offer you in exchange for coming all this way.
+|04_00202
+|-
+|Some believe the fate of our worlds is inflexible.
+|04_00203
+|-
+|My employers disagree. They authorize me to nudge things in a particular direction from time to time.
+|04_00204
+|-
+|What would YOU want nudged, Ms. Vance?
+|04_00205
+|-
+|Ahhh. That would be a considerably large nudge. Too large, given the interests of my employers.
+|04_00206
+|-
+|What if I could offer you something you don't know you want?
+|04_00207
+|-
+|Unless
+|04_00209
+|-
+|Good. As a consequence of your action, this entity will continue.
+|04_00210
+|-
+|And this entity will not.
+|04_00211
+|-
+|You ARE aware that you've proven yourself to be of extraordinary value.
+|04_00216
+|-
+|Unless you were to take matters into your own hands.
+|04_00300
+|-
+|A previous hire has been unable  or unwilling  to perform the tasks laid before him.
+|04_00302
+|-
+|We have struggled to find a suitable replacement.
+|04_00303
+|-
+|Until now.
+|04_00304
+|-
+|I'm afraid you misunderstand the situation, Ms. Vance.
+|04_00306
+|-
+|Release your father, Ms. Vance.
+|04_00501
+|-
+|Your glove, Ms Vance.
+|04_00503
+|-
+|We are in the future. This is the moment where you watch your father die.
+|04_00600
+|-
+|Gordon Freeman? [Chuckles]
+|04_00700
+|-
+|Ms Vance. You wouldn't need all that to imprison Gordon Freeman.
+|04_00707
+|}
