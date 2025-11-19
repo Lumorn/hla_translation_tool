@@ -379,6 +379,7 @@ function setupLanguageControls() {
             }
         }
 
+        updateEmotionLanguageUi();
         updateVersionMenuLabels();
     });
 
@@ -1705,6 +1706,42 @@ const gptPromptLanguageOptions = [
 if (!gptPromptLanguageOptions.some(opt => opt.code === gptPromptLanguage)) {
     gptPromptLanguage = 'german';
 }
+
+function getEmotionPromptLanguageInfo(code = gptPromptLanguage) {
+    const info = gptPromptLanguageOptions.find(opt => opt.code === code);
+    return info ? { code: info.code, label: info.label } : { code: 'german', label: 'Deutsch' };
+}
+
+function getEmotionPromptLanguageLabel(code = gptPromptLanguage) {
+    return getEmotionPromptLanguageInfo(code).label;
+}
+
+function updateEmotionLanguageUi() {
+    if (typeof document === 'undefined') return;
+    const { label } = getEmotionPromptLanguageInfo();
+    const translator = window.i18n;
+    const t = translator?.t || (value => value);
+    const format = translator?.format || ((key, replacements = {}) => {
+        const template = t(key);
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), template);
+    });
+    const btn = document.getElementById('generateEmotionsButton');
+    if (btn) {
+        btn.textContent = format('button.generateEmotions', { language: label });
+        btn.setAttribute('title', format('tooltip.generateEmotions', { language: label }));
+    }
+    document.querySelectorAll('button.generate-emotions-btn').forEach(button => {
+        button.textContent = format('file.emo.generate', { language: label });
+    });
+}
+
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateEmotionLanguageUi);
+    } else {
+        updateEmotionLanguageUi();
+    }
+}
 // Speichert die Ergebnisse der letzten GPT-Bewertung
 let gptEvaluationResults = null;
 // Soll der GPT-Vorschlag sofort übernommen werden?
@@ -2350,6 +2387,7 @@ async function setGptPromptLanguage(code) {
     }
     renderGptPromptLanguageSelect();
     await updateGptPromptPreview();
+    updateEmotionLanguageUi();
 }
 
 // Baut das Dropdown für die Prompt-Sprache neu auf
@@ -5511,6 +5549,7 @@ function addFiles() {
                     return acc.replaceAll(`{${placeholder}}`, value);
                 }, t(key));
             });
+            const langInfo = getEmotionPromptLanguageInfo();
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.generate-emotions-btn');
@@ -5552,7 +5591,15 @@ function addFiles() {
                     const fallbackIndex = files.indexOf(file);
                     targetPosition = fallbackIndex >= 0 ? fallbackIndex + 1 : 1;
                 }
-                const res = await generateEmotionText({ meta, lines, targetPosition, key: openaiApiKey, model: openaiModel });
+                const res = await generateEmotionText({
+                    meta,
+                    lines,
+                    targetPosition,
+                    key: openaiApiKey,
+                    model: openaiModel,
+                    language: langInfo.code,
+                    languageName: langInfo.label
+                });
                 area.value = res.text || '';
                 file.emoReason = res.reason || '';
                 file.emoError = false;
@@ -5568,7 +5615,7 @@ function addFiles() {
             }
             btn.disabled = false;
             btn.classList.remove('loading');
-            btn.textContent = t('emo.generate.button.label');
+            btn.textContent = format('file.emo.generate', { language: langInfo.label });
         }
 
         // Passt den Emotional-Text an die EN-Länge an
@@ -5583,6 +5630,7 @@ function addFiles() {
                     return acc.replaceAll(`{${placeholder}}`, value);
                 }, t(key));
             });
+            const langInfo = getEmotionPromptLanguageInfo();
             if (!openaiApiKey) { updateStatus(t('emo.error.missingGptKey')); return; }
             btn.disabled = true;
             area.value = t('emo.generate.placeholder');
@@ -5605,7 +5653,16 @@ function addFiles() {
                     text_de: f.deText || ''
                 }));
                 const targetPosition = files.indexOf(file) + 1;
-                const res = await adjustEmotionText({ meta, lines, targetPosition, lengthSeconds: dur || 0, key: openaiApiKey, model: openaiModel });
+                const res = await adjustEmotionText({
+                    meta,
+                    lines,
+                    targetPosition,
+                    lengthSeconds: dur || 0,
+                    key: openaiApiKey,
+                    model: openaiModel,
+                    language: langInfo.code,
+                    languageName: langInfo.label
+                });
                 area.value = res.text || '';
                 file.emoReason = res.reason || '';
                 file.emoError = false;
@@ -5630,6 +5687,7 @@ function addFiles() {
                     return acc.replaceAll(`{${placeholder}}`, value);
                 }, t(key));
             });
+            const langInfo = getEmotionPromptLanguageInfo();
             const row = document.querySelector(`tr[data-id='${rowId}']`);
             const area = row?.querySelector('textarea.emotional-text');
             const btn  = row?.querySelector('button.improve-emotions-btn');
@@ -5655,7 +5713,17 @@ function addFiles() {
                     emotional_de: f.emotionalText || ''
                 }));
                 const targetPosition = files.indexOf(file) + 1;
-                const suggestions = await improveEmotionText({ meta, lines, targetPosition, currentText: area.value || '', currentTranslation: file.deText || '', key: openaiApiKey, model: openaiModel });
+                const suggestions = await improveEmotionText({
+                    meta,
+                    lines,
+                    targetPosition,
+                    currentText: area.value || '',
+                    currentTranslation: file.deText || '',
+                    key: openaiApiKey,
+                    model: openaiModel,
+                    language: langInfo.code,
+                    languageName: langInfo.label
+                });
                     const choice = await showImprovementDialog(area.value || '', suggestions || []);
                     if (choice) {
                         area.value = choice.text || '';
@@ -5751,8 +5819,8 @@ function addFiles() {
                 // Sammeländerungen nach allen Emotionstexten einmalig sichern
                 saveCurrentProject();
             }
-            btn.textContent = t('emo.generate.button.label');
             btn.disabled = false;
+            updateEmotionLanguageUi();
             updateStatus(format('emo.generate.status.complete', { done, total: ids.length }));
         }
 
@@ -6275,6 +6343,8 @@ async function renderFileTableWithOrder(sortedFiles) {
         const template = t(key);
         return Object.entries(replacements).reduce((acc, [placeholder, value]) => acc.replaceAll(`{${placeholder}}`, value), template);
     });
+    const emotionLanguageLabel = getEmotionPromptLanguageLabel();
+    const emotionButtonLabel = format('file.emo.generate', { language: emotionLanguageLabel });
     
     if (sortedFiles.length === 0) {
         table.style.display = 'none';
@@ -6441,7 +6511,7 @@ return `
             <div style="position: relative; display: flex; align-items: flex-start; gap: 5px;">
                 <textarea class="emotional-text" placeholder="${t('file.emo.placeholder')}" onchange="updateText(${file.id}, 'emo', this.value)" oninput="autoResizeInput(this)">${escapeHtml(file.emotionalText || '')}</textarea>
                 <div class="btn-column">
-                    <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">${t('file.emo.generate')}</button>
+                    <button class="generate-emotions-btn" onclick="generateEmotionalText(${file.id})">${emotionButtonLabel}</button>
                     <button class="adjust-emotions-btn" onclick="adjustEmotionalText(${file.id})">${t('file.emo.adjust')}</button>
                     <button class="improve-emotions-btn" onclick="improveEmotionalText(${file.id})">${t('file.emo.improve')}</button>
                     <button class="copy-emotional-text" onclick="copyEmotionalText(${file.id})" title="${t('file.emo.copy')}">📋</button>
