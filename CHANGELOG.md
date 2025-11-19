@@ -2096,3 +2096,11 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 - Struktur-Blueprint-Export fängt blockierte `showSaveFilePicker`-Aufrufe ab und startet automatisch den Download-Fallback mit Statushinweis.
 - Level-Statistik-Dialog nutzt i18n-Schlüssel für Titel, Hinweistext und Schließen-Button.
 - `translate_text.py` entfernt automatisch Sprecherpräfixe aus Übersetzungen, wenn die Eingabe keines hatte, und protokolliert Kürzungen im Worker.
+
+### 3.8.0 - Stapel-Soundevent-Import
+
+**✨ Neue Features:**
+* **Soundevents-Stapelimport:** Der Import-Dialog bietet einen Button „Alle Soundevents importieren“, der sämtliche Exporte nacheinander lädt, automatisch analysiert (`analyzeImportData()`) und anschließend `startImportProcess()` ausführt.
+
+**🔧 Verbesserungen:**
+* **Import-Sperren & Spinner-Details:** Während des Stapelimports werden Import-, Neu-laden- und Tabellenaktionen gesperrt, der Fortschritt nennt Dateiname plus Zähler und Fehler lassen sich per Toast inkl. Retry oder Abbruch behandeln; Abschluss- und Abbruchstatus werden klar protokolliert.

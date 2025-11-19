@@ -5467,6 +5467,12 @@ th:nth-child(8) {
     overflow: auto;
 }
 
+.soundevent-table-wrapper.is-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(0.2);
+}
+
 .soundevent-table {
     width: 100%;
     border-collapse: collapse;
@@ -5517,6 +5523,13 @@ th:nth-child(8) {
 
 .soundevent-actions .btn {
     flex: 1;
+}
+
+.soundevent-bulk-hint {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #999;
+    line-height: 1.4;
 }
 
 .soundevent-progress {
