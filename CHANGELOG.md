@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.564
+* `web/hla_translation_tool.html` markiert im Wörterbuch-Dialog (#wordListDialog) Titel, Abschnittsüberschriften, Tabellenköpfe sowie die Aktionsbuttons mit `data-i18n`, damit sämtliche Beschriftungen automatisch zwischen Deutsch und Englisch umschalten.
+* `web/src/i18n.js` ergänzt die neuen `wordList.*`-Schlüssel für Titel, Spalten, Buttons und Platzhalter in beiden Sprachen, sodass HTML und Skripte dieselben Texte nutzen.
+* `web/src/main.js` erzeugt neue Wörterbuchzeilen mit lokalisierbaren Platzhaltern und übernimmt dieselben Texte auch beim Rendern bestehender Einträge, wodurch leere Felder sofort den passenden Hinweis anzeigen.
+* `README.md` hebt Version **1.40.564** hervor und beschreibt den nun vollständig lokalisierten Wörterbuch-Dialog.
 # 🛠️ Patch in 1.40.563
 * `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels und Buttons des Backup-Dialogs mit `data-i18n`, damit Intervalle, Limits, Zeilenenden sowie Blueprint-/Backup-Schaltflächen automatisch lokalisiert werden.
 * `web/src/main.js` nutzt `getI18nTools()` für Statusmeldungen beim Backup-/Sound-Backup-Lauf, setzt Restore-/Löschen-Buttons und Dateigrößenformatierung der Listen über Übersetzungsschlüssel und reagiert damit auf Sprachwechsel.
