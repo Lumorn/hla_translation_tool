@@ -13502,7 +13502,7 @@ function checkFileAccess() {
             saveFolderCustomizations();
             await validateApiKey();
             closeApiDialog();
-            updateStatus('API-Einstellungen gespeichert');
+            updateStatus(t('api.status.saved'));
         }
 
         function closeApiDialog() {
@@ -13536,15 +13536,15 @@ function checkFileAccess() {
 
         function testApiKey() {
             const btn = document.getElementById('testApiKeyBtn');
-            btn.textContent = 'Teste...';
+            btn.textContent = t('api.button.testing');
             btn.disabled = true;
             validateApiKey().then(ok => {
                 btn.disabled = false;
                 if (ok) {
-                    btn.textContent = 'Alles in Ordnung';
+                    btn.textContent = t('api.button.valid');
                     btn.style.background = '#4caf50';
                 } else {
-                    btn.textContent = 'Ungültig';
+                    btn.textContent = t('api.button.invalid');
                     btn.style.background = '#d32f2f';
                 }
             });
@@ -13560,7 +13560,7 @@ function checkFileAccess() {
         }
 
         async function testVoiceIds() {
-            updateStatus('Teste Stimmen...');
+            updateStatus(t('api.voice.status.testing'));
             for (const sel of document.querySelectorAll('#voiceIdList select')) {
                 const id = sel.value.trim();
                 if (!id) continue;
@@ -13570,11 +13570,11 @@ function checkFileAccess() {
                     });
                     if (!res.ok) throw new Error('Fehler');
                 } catch (e) {
-                    updateStatus('Fehler bei Stimme ' + id);
+                    updateStatus(t('api.voice.status.error').replace('{id}', id));
                     return;
                 }
             }
-            updateStatus('Alle Stimmen OK');
+            updateStatus(t('api.voice.status.ok'));
         }
 
         // Fuegt eine eigene Voice-ID hinzu
@@ -13627,7 +13627,7 @@ function checkFileAccess() {
             const btn = document.getElementById('testOpenaiKeyBtn');
             const status = document.getElementById('openaiKeyStatus');
             const key = document.getElementById('openaiKeyInput').value.trim();
-            btn.textContent = 'Teste...';
+            btn.textContent = t('gpt.api.button.testing');
             btn.disabled = true;
             status.textContent = '⏳';
             try {
@@ -13653,7 +13653,7 @@ function checkFileAccess() {
                 if (window.showErrorBanner) window.showErrorBanner(String(e));
             }
             btn.disabled = false;
-            btn.textContent = 'Key testen';
+            btn.textContent = t('gpt.api.button.testKey');
         }
 
         async function refreshModelList() {

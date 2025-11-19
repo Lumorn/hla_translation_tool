@@ -28,6 +28,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Im Import- und Untertitelbereich erscheinen Fehler, Abbrüche, Erfolgsstatus und Zusammenfassungen jetzt als lokalisierte Toasts bzw. Dialoge, sodass Web- und Electron-Oberfläche konsistente Rückmeldungen anzeigen.
 * Der Untertitel-Import-Dialog (#ccImportDialog) trägt Titel, Labels, Badge, Hinweis und Buttons als `data-i18n`-Ziele ein, setzt Statuszeilen für Quellen/Zieldateien über `i18n.t(...)` und aktualisiert Badge samt Hinweis dynamisch bei Sprachwechsel.
 * Der Backup-Dialog (#backupDialog) markiert Überschriften, Labels, Hinweise und Buttons mit `data-i18n`, setzt Listen/Statusmeldungen über `i18n.t(...)`/`i18n.format(...)` und reagiert beim Öffnen automatisch auf die gewählte Sprache.
+* Die ElevenLabs- und ChatGPT-API-Einstellungen verwenden `data-i18n`-/`data-i18n-title`-Attribute für alle Labels, Buttons und Tooltips und setzen Statusmeldungen wie „Teste Stimmen...“ über `web/src/main.js` direkt aus den neuen `api.*`/`gpt.api.*`-Schlüsseln, sodass die Dialoge vollständig sprachneutral bleiben.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
 * Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.

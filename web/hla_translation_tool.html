@@ -653,24 +653,24 @@
     <div class="dialog-overlay hidden" id="apiDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeApiDialog()">×</button>
-            <h3>🔊 ElevenLabs API</h3>
+            <h3 data-i18n="api.dialog.title">🔊 ElevenLabs API</h3>
             <div class="customize-field api-key-field">
-                <label>API-Key:</label>
+                <label data-i18n="api.key.label">API-Key:</label>
                 <input type="password" id="apiKeyInput" style="width:55%;" oninput="validateApiKey()">
                 <button class="btn eye-btn" onclick="toggleApiKey()">👁</button>
-                <button class="btn" id="testApiKeyBtn" onclick="testApiKey()">API-Key testen</button>
+                <button class="btn" id="testApiKeyBtn" onclick="testApiKey()" data-i18n="api.button.testKey">API-Key testen</button>
                 <span id="apiKeyStatus" class="status-indicator"></span>
             </div>
             <div id="voiceIdList" class="voice-id-list"></div>
             <div id="customVoicesList" class="custom-voices-list"></div>
-            <h4>Aktuelle Dubbing-Standardwerte</h4>
+            <h4 data-i18n="api.defaults.title">Aktuelle Dubbing-Standardwerte</h4>
             <ul id="voiceSettingsDisplay" class="voice-defaults-list"></ul>
             <div class="dialog-buttons">
-                <button class="btn" onclick="testVoiceIds()">Voice-IDs testen</button>
-                <button class="btn" onclick="clearAllVoiceIds()">Alle zurücksetzen</button>
-                <button class="btn" onclick="addCustomVoice()">Neue Stimme</button>
-                <button class="btn btn-secondary" onclick="closeApiDialog()">Abbrechen</button>
-                <button class="btn btn-success" onclick="saveApiSettings()">Speichern</button>
+                <button class="btn" onclick="testVoiceIds()" data-i18n="api.button.testVoices">Voice-IDs testen</button>
+                <button class="btn" onclick="clearAllVoiceIds()" data-i18n="api.button.resetVoices">Alle zurücksetzen</button>
+                <button class="btn" onclick="addCustomVoice()" data-i18n="api.button.addVoice">Neue Stimme</button>
+                <button class="btn btn-secondary" onclick="closeApiDialog()" data-i18n="api.button.cancel">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveApiSettings()" data-i18n="api.button.save">Speichern</button>
             </div>
         </div>
     </div>
@@ -679,22 +679,22 @@
     <div class="dialog-overlay hidden" id="gptApiDialog">
         <div class="dialog">
             <button class="dialog-close-btn" onclick="closeGptApiDialog()">×</button>
-            <h3>💬 ChatGPT API</h3>
+            <h3 data-i18n="gpt.api.dialog.title">💬 ChatGPT API</h3>
             <div class="customize-field api-key-field">
-                <label>API-Key:</label>
+                <label data-i18n="gpt.api.key.label">API-Key:</label>
                 <input type="password" id="openaiKeyInput" style="width:55%;">
                 <button class="btn eye-btn" onclick="toggleOpenaiKey()">👁</button>
-                <button class="btn" id="testOpenaiKeyBtn" onclick="testGptApiKey()">Key testen</button>
+                <button class="btn" id="testOpenaiKeyBtn" onclick="testGptApiKey()" data-i18n="gpt.api.button.testKey">Key testen</button>
                 <span id="openaiKeyStatus" class="status-indicator"></span>
             </div>
             <div class="customize-field">
-                <label>GPT-Modell:</label>
+                <label data-i18n="gpt.api.model.label">GPT-Modell:</label>
                 <select id="gptModelSelect" style="width:55%;" disabled></select>
-                <button class="btn" id="refreshModelsBtn" title="Verfügbare Modelle vom Server laden">↻</button>
+                <button class="btn" id="refreshModelsBtn" title="Verfügbare Modelle vom Server laden" data-i18n-title="gpt.api.tooltip.refresh">↻</button>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeGptApiDialog()">Abbrechen</button>
-                <button class="btn btn-success" onclick="saveGptApiSettings()">Speichern</button>
+                <button class="btn btn-secondary" onclick="closeGptApiDialog()" data-i18n="gpt.api.button.cancel">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveGptApiSettings()" data-i18n="gpt.api.button.save">Speichern</button>
             </div>
         </div>
     </div>
