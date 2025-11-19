@@ -56,8 +56,10 @@ ve **önceki ve/veya sonraki satıra açıkça atıfta bulunun**:
 **Yalnızca** aşağıdaki JSON dizisi biçiminde yanıt verin:
 
 ```json
-{ "id": <ID>, "score": <0-100>, "comment": "<öncesi/sonrası referansı da dahil olmak üzere nedenleri ile birlikte somut yorum>", "öneri": "<deyimsel, tutarlı yeniden formülasyon>" }
-''''
+{ "id": <ID>, "score": <0-100>, "comment": "<öncesi/sonrası referansı da dahil olmak üzere nedenleri ile birlikte somut yorum>", "suggestion": "<deyimsel, tutarlı yeniden formülasyon>" }
+```
+
+➡️ **Not**: `suggestion` alan adı İngilizce kalır ve çevrilmez.
 
 ---
 

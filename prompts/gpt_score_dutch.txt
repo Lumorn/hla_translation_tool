@@ -55,9 +55,11 @@ bijv. Bijvoorbeeld:
 ### Uitvoerformaat
 Reageer **alleen** in de volgende JSON-array-indeling:
 
-```Json
-{ "id": <ID>, "score": <0-100>, "comment": "<concrete opmerking met redenen, inclusief verwijzing naar voor/na>", "suggestie": "<idiomatische, coherente herformulering>" }
+```json
+{ "id": <ID>, "score": <0-100>, "comment": "<concrete opmerking met redenen, inclusief verwijzing naar voor/na>", "suggestion": "<idiomatische, coherente herformulering>" }
 ```
+
+➡️ **Let op**: de veldnaam `suggestion` blijft onvertaald in het Engels en mag niet worden aangepast.
 
 ---
 

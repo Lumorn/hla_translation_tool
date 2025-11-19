@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.555
+* `prompts/gpt_score_{spanish,latam,dutch,hungarian,turkish,vietnamese,polish,romanian}.txt` vereinheitlichen den JSON-Schlüssel `suggestion` samt Hinweisen pro Sprache, damit GPT-Ausgaben unabhängig von der Lokalisierung denselben Feldnamen liefern.
+* `README.md` hebt Version **1.40.555** hervor und erwähnt die konsistente Feldbenennung in den GPT-Score-Prompts.
 # 🛠️ Patch in 1.40.554
 * `web/src/main.js` erweitert `startImportProcess` um optionale Parameter für Soundevents-Ordner und Dialog-Skip, normalisiert Kandidatenpfade (`soundevents/`, `sounds/`), filtert Mehrfachtreffer anhand des Hinweises, zählt automatische Zuordnungen und meldet sie im Erfolgs-Alert.
 * `web/src/main.js` setzt beim Einzel- und Stapelimport den passenden Ordnerhinweis, ruft `startImportProcess({ soundeventFolder, skipFolderPrompts: true })` auf und protokolliert abgebrochene Läufe.
