@@ -1,7 +1,8 @@
+const defaultPromptLanguage = 'german';
 let systemPrompt = '';
-let systemPromptLanguage = 'german';
+let systemPromptLanguage = defaultPromptLanguage;
 let emotionPrompt = '';
-let emotionPromptLanguage = 'german';
+let emotionPromptLanguage = defaultPromptLanguage;
 let promptReady;
 // Cache für bereits geladene Prompts pro Sprache
 const promptCache = new Map();
@@ -13,6 +14,8 @@ const emotionPromptCache = new Map();
 let restMode = false;
 // Zwischenspeicher, um zu erkennen, welche Modelle den neuen Responses-Endpunkt benötigen
 const responsesModelPattern = /^(gpt-4\.1|gpt-5)/i;
+// Konfigurierbare Fallback-Reihenfolge für die Zielsprache
+let targetLanguageFallbacks = [defaultPromptLanguage];
 
 // Aktiviert oder deaktiviert den Reste-Modus
 function setRestMode(flag) {
@@ -20,6 +23,64 @@ function setRestMode(flag) {
     if (typeof window !== 'undefined') {
         window.restTranslationFlag = restMode;
     }
+}
+
+// Liefert die Übersetzungsfunktion, falls i18n bereits geladen wurde
+function getTranslator() {
+    if (typeof window !== 'undefined' && window.i18n && typeof window.i18n.t === 'function') {
+        return window.i18n.t.bind(window.i18n);
+    }
+    return null;
+}
+
+// Übersetzt das Standard-Zielsprachlabel oder fällt auf den Sprachcode zurück
+function translateDefaultTargetLanguage() {
+    const translator = getTranslator();
+    if (translator) {
+        const value = translator('language.defaultTarget');
+        if (value && value !== 'language.defaultTarget') {
+            return value;
+        }
+    }
+    return defaultPromptLanguage;
+}
+
+// Liefert die bestmögliche Bezeichnung für einen Sprachcode
+function translateLanguageCode(code) {
+    const trimmed = typeof code === 'string' ? code.trim() : '';
+    if (!trimmed) {
+        return '';
+    }
+    const translator = getTranslator();
+    if (translator) {
+        if (trimmed === defaultPromptLanguage) {
+            return translateDefaultTargetLanguage();
+        }
+        const key = `language.${trimmed.toLowerCase()}`;
+        const value = translator(key);
+        if (value && value !== key) {
+            return value;
+        }
+    }
+    if (trimmed === defaultPromptLanguage) {
+        return translateDefaultTargetLanguage();
+    }
+    return trimmed;
+}
+
+// Erlaubt extern, eigene Fallback-Reihenfolgen zu setzen
+function configureTargetLanguageFallbacks(list = []) {
+    if (!Array.isArray(list)) {
+        targetLanguageFallbacks = [defaultPromptLanguage];
+        return;
+    }
+    const normalized = list
+        .map(item => (typeof item === 'string' ? item.trim() : ''))
+        .filter(Boolean);
+    if (!normalized.includes(defaultPromptLanguage)) {
+        normalized.push(defaultPromptLanguage);
+    }
+    targetLanguageFallbacks = Array.from(new Set(normalized));
 }
 
 // Bereits gesetzten Zustand aus dem Fenster übernehmen
@@ -166,9 +227,9 @@ async function requestAssistantText({ messages, key, model, temperature = 0, ret
 
 // Hilfsfunktion: merkt, welche Sprache aus dem Speicher geladen wurde
 function detectStoredPromptLanguage() {
-    if (typeof localStorage === 'undefined') return 'german';
+    if (typeof localStorage === 'undefined') return defaultPromptLanguage;
     const stored = localStorage.getItem('hla_gptPromptLanguage');
-    return typeof stored === 'string' && stored.trim() ? stored : 'german';
+    return typeof stored === 'string' && stored.trim() ? stored : defaultPromptLanguage;
 }
 
 // Liefert den geladenen System-Prompt
@@ -186,9 +247,21 @@ function resolveTargetLanguage(languageName, languageCode) {
         return languageName.trim();
     }
     if (typeof languageCode === 'string' && languageCode.trim()) {
-        return languageCode.trim();
+        return translateLanguageCode(languageCode);
     }
-    return 'Deutsch';
+    const stored = detectStoredPromptLanguage();
+    const candidates = [stored, ...targetLanguageFallbacks];
+    const seen = new Set();
+    for (const candidate of candidates) {
+        const normalized = typeof candidate === 'string' ? candidate.trim() : '';
+        if (!normalized || seen.has(normalized)) continue;
+        seen.add(normalized);
+        const label = translateLanguageCode(normalized);
+        if (label) {
+            return label;
+        }
+    }
+    return translateDefaultTargetLanguage();
 }
 
 // Pfad-Helfer für die Score-Prompts
@@ -776,6 +849,7 @@ if (typeof module !== 'undefined') {
         getSystemPrompt,
         getSystemPromptLanguage,
         setSystemPromptLanguage,
+        configureTargetLanguageFallbacks,
         generateEmotionText,
         adjustEmotionText,
         improveEmotionText,
@@ -794,6 +868,7 @@ if (typeof window !== 'undefined') {
     window.getSystemPrompt = getSystemPrompt;
     window.getSystemPromptLanguage = getSystemPromptLanguage;
     window.setSystemPromptLanguage = setSystemPromptLanguage;
+    window.configureTargetLanguageFallbacks = configureTargetLanguageFallbacks;
     window.generateEmotionText = generateEmotionText;
     window.adjustEmotionText = adjustEmotionText;
     window.improveEmotionText = improveEmotionText;
