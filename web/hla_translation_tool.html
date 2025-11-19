@@ -1277,40 +1277,40 @@
     <div class="dialog-overlay hidden" id="wordListDialog">
         <div class="dialog">
             <button class="dialog-close-btn" onclick="closeWordList()">×</button>
-            <h3>📚 Wörterbuch</h3>
+            <h3 data-i18n="wordList.title">📚 Wörterbuch</h3>
             <div class="word-list-wrapper">
                 <div class="word-list-column">
-                    <h4>Übersetzungen</h4>
+                    <h4 data-i18n="wordList.section.translations">Übersetzungen</h4>
                     <table id="translationTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
                         <thead>
                             <tr>
-                                <th>Englisch</th>
-                                <th>Deutsch</th>
+                                <th data-i18n="wordList.column.source">Englisch</th>
+                                <th data-i18n="wordList.column.translation">Deutsch</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button class="btn btn-secondary" onclick="addTransRow()">+ Zeile</button>
+                    <button class="btn btn-secondary" onclick="addTransRow()" data-i18n="wordList.button.addRow">+ Zeile</button>
                 </div>
                 <div class="word-list-column">
-                    <h4>Phonetische Umschrift</h4>
+                    <h4 data-i18n="wordList.section.phonetics">Phonetische Umschrift</h4>
                     <table id="phoneticTable" class="word-list-table" style="width:100%; margin-bottom:15px;">
                         <thead>
                             <tr>
-                                <th>Englisch</th>
-                                <th>Phonetisch</th>
+                                <th data-i18n="wordList.column.source">Englisch</th>
+                                <th data-i18n="wordList.column.phonetic">Phonetisch</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button class="btn btn-secondary" onclick="addPhonRow()">+ Zeile</button>
+                    <button class="btn btn-secondary" onclick="addPhonRow()" data-i18n="wordList.button.addRow">+ Zeile</button>
                 </div>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeWordList()">Abbrechen</button>
-                <button class="btn btn-success" onclick="saveWordList()">Speichern</button>
+                <button class="btn btn-secondary" onclick="closeWordList()" data-i18n="wordList.button.cancel">Abbrechen</button>
+                <button class="btn btn-success" onclick="saveWordList()" data-i18n="wordList.button.save">Speichern</button>
             </div>
         </div>
     </div>

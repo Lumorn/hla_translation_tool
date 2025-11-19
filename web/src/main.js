@@ -2930,14 +2930,15 @@ function closeWordList() {
 
 // Zeigt alle gespeicherten Wörter an
 function renderWordList() {
+    const placeholders = getWordListPlaceholders();
     const phonBody = document.querySelector('#phoneticTable tbody');
     const transBody = document.querySelector('#translationTable tbody');
     if (phonBody) {
         phonBody.innerHTML = '';
         phoneticList.forEach(entry => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td><input type="text" class="text-input word-input" value="${entry.word}"></td>`+
-                           `<td><input type="text" class="text-input phon-input" value="${entry.phonetic}"></td>`+
+            tr.innerHTML = `<td><input type="text" class="text-input word-input" value="${entry.word}" placeholder="${placeholders.source}"></td>`+
+                           `<td><input type="text" class="text-input phon-input" value="${entry.phonetic}" placeholder="${placeholders.phonetic}"></td>`+
                            `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
             phonBody.appendChild(tr);
         });
@@ -2946,8 +2947,8 @@ function renderWordList() {
         transBody.innerHTML = '';
         translationList.forEach(entry => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td><input type="text" class="text-input trans-word-input" value="${entry.word}"></td>`+
-                           `<td><input type="text" class="text-input trans-de-input" value="${entry.translation}"></td>`+
+            tr.innerHTML = `<td><input type="text" class="text-input trans-word-input" value="${entry.word}" placeholder="${placeholders.source}"></td>`+
+                           `<td><input type="text" class="text-input trans-de-input" value="${entry.translation}" placeholder="${placeholders.translation}"></td>`+
                            `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
             transBody.appendChild(tr);
         });
@@ -2956,21 +2957,32 @@ function renderWordList() {
 
 // Fügt eine neue Zeile im Wörterbuch ein
 function addPhonRow() {
+    const placeholders = getWordListPlaceholders();
     const tbody = document.querySelector('#phoneticTable tbody');
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><input type="text" class="text-input word-input"></td>`+
-                   `<td><input type="text" class="text-input phon-input"></td>`+
+    tr.innerHTML = `<td><input type="text" class="text-input word-input" placeholder="${placeholders.source}"></td>`+
+                   `<td><input type="text" class="text-input phon-input" placeholder="${placeholders.phonetic}"></td>`+
                    `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
     tbody.appendChild(tr);
 }
 
 function addTransRow() {
+    const placeholders = getWordListPlaceholders();
     const tbody = document.querySelector('#translationTable tbody');
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td><input type="text" class="text-input trans-word-input"></td>`+
-                   `<td><input type="text" class="text-input trans-de-input"></td>`+
+    tr.innerHTML = `<td><input type="text" class="text-input trans-word-input" placeholder="${placeholders.source}"></td>`+
+                   `<td><input type="text" class="text-input trans-de-input" placeholder="${placeholders.translation}"></td>`+
                    `<td><button class="btn btn-secondary" onclick="deleteWordRow(this)">🗑️</button></td>`;
     tbody.appendChild(tr);
+}
+
+function getWordListPlaceholders() {
+    const t = window.i18n?.t || (value => value);
+    return {
+        source: t('wordList.placeholder.source'),
+        translation: t('wordList.placeholder.translation'),
+        phonetic: t('wordList.placeholder.phonetic')
+    };
 }
 
 // Entfernt eine Zeile aus dem Wörterbuch
