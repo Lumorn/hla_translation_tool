@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.556-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.557-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -1404,6 +1404,10 @@ Der komplette Verlauf steht in [CHANGELOG.md](CHANGELOG.md).
 * **🔎 Lokale Suchindizes** je Projekt
 * **💽 Speicher‑Monitor** mit Aufräumen‑Knopf
 * **🛈 Klare Anzeige des Speichermodus** in Toolbar und Statusleiste
+
+### Internationalisierung
+
+* **🌐 Mehrsprachigkeit als Hauptdirektive:** Jede neue UI-Komponente, jedes Feature und alle Textausgaben müssen konsequent mit dem i18n-System verknüpft werden. Neue Elemente verwenden daher `data-i18n`-Attribute oder `i18n.t(...)`/`i18n.format(...)`, bringen Platzhalter für dynamische Inhalte mit und liefern Fallbacks, damit Deutsch und Englisch jederzeit vollständig unterstützt bleiben.
 
 ---
 
