@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.559-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.560-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -159,6 +159,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Stabile Trim-Markierung trotz Längenänderungen:** Sobald Auto-Tempo, Pausenentfernung oder Speichern die Gesamtdauer verändern, klemmt der Editor Start- und End-Trim jetzt automatisch auf gültige Werte, synchronisiert die Eingabefelder und hält die grüne Auswahlmarkierung dauerhaft sichtbar.
 * **Aktive DE-Markierung nach dem Speichern:** `applyDeEdit()` setzt Start- und End-Trim nach dem Speichern über `normalizeDeTrim()` auf gültige Werte zurück, lässt `deSelectionActive` bestehen und setzt die Eingabefelder auf die echte Laufzeit statt auf `0`, sodass die Markierung den kompletten Clip weiterhin abbildet.
 * **Blockierte Doppel-Speicherläufe:** `applyDeEdit()` setzt jetzt ein globales Sperr-Flag, während der Speichervorgang läuft. Effekt-Schalter, Regler und Automatik-Helfer prüfen dieses Flag, überspringen `recomputeEditBuffer()` bei aktivem Speichern und verhindern dadurch widersprüchliche Kürzungen oder Tempoänderungen.
+* **Sprachadaptive Speicheranzeige im DE-Audio-Editor:** `web/src/main.js` nutzt `Intl.DateTimeFormat` mit `i18n.getLanguage()`, erzeugt Sekundenangaben per `i18n.format('deAudio.save.lastSaved', { time, deLength, enLength })` und sorgt so dafür, dass Uhrzeit sowie EN/DE-Laufzeiten in beiden Sprachen identische Werte anzeigen.
+* **Lokalisierte Speicherhinweise:** `web/src/i18n.js` liefert neue `deAudio.save.*`-Schlüssel für Uhrzeitformat, Statuszeile und Zugriffs-/Pfadfehler, die `applyDeEdit()` beim `updateStatus` sowie den Toasts nutzt, um Schreibrechte- oder Pfadprobleme verständlich in Deutsch und Englisch zu melden.
 * **Exaktes Fade-Out ohne Trim-Ende:** Der Audio-Editor bestimmt die effektive Clipdauer inklusive Trim und Tempoanpassung und setzt `afade=t=out` erst am wirklichen Clipende, selbst wenn kein `trimEndMs` gesetzt ist.
 * **Master-Timeline entfernt:** Die frühere Zeitleiste oberhalb der Wellen entfällt; Zoom-Tasten, Positions-Slider und Sprungknöpfe sitzen jetzt direkt in der Wave-Toolbar.
 * **Dichteres Waveform-Raster:** Kleinere Gitterabstände, schmalere Blockabstände und reduziertes Scroll-Padding rücken Original- und DE-Wellenform noch näher zusammen und verkürzen die Wege zu den Buttons.
