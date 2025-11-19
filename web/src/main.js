@@ -11951,6 +11951,8 @@ function buildProjectFile(filename, folder) {
             if (importBtn) importBtn.onclick = importSoundeventSelection;
             const reloadBtn = document.getElementById('soundeventReloadButton');
             if (reloadBtn) reloadBtn.onclick = () => loadSoundeventExportsPreview();
+            const importAllBtn = document.getElementById('soundeventImportAllButton');
+            if (importAllBtn) importAllBtn.onclick = () => startBulkSoundeventImport();
             setSoundeventImportLoading(false);
             loadSoundeventExportsPreview();
         }
@@ -12108,12 +12110,17 @@ function buildProjectFile(filename, folder) {
         let selectedSoundeventExportIndex = null;
         let soundeventImportIsLoading = false;
         let soundeventImportMessage = '';
+        let soundeventImportProgressDetail = null;
+        let soundeventBulkInProgress = false;
+        let soundeventBulkAbortRequested = false;
 
         function updateSoundeventImportControls() {
             const importBtn = document.getElementById('soundeventImportButton');
             const reloadBtn = document.getElementById('soundeventReloadButton');
+            const importAllBtn = document.getElementById('soundeventImportAllButton');
             const progressBox = document.getElementById('soundeventImportProgress');
             const progressText = document.getElementById('soundeventImportProgressText');
+            const tableWrapper = document.querySelector('.soundevent-table-wrapper');
 
             if (importBtn) {
                 importBtn.disabled = soundeventImportIsLoading || selectedSoundeventExportIndex === null;
@@ -12124,19 +12131,45 @@ function buildProjectFile(filename, folder) {
                 reloadBtn.disabled = soundeventImportIsLoading || baseDisabled;
             }
 
+            if (importAllBtn) {
+                const baseDisabled = !window.electronAPI || !soundeventExports.length;
+                if (soundeventBulkInProgress) {
+                    importAllBtn.disabled = false;
+                    importAllBtn.textContent = '⏹️ Stapel abbrechen';
+                    importAllBtn.classList.add('btn-danger');
+                } else {
+                    importAllBtn.disabled = baseDisabled || soundeventImportIsLoading;
+                    importAllBtn.textContent = '🚀 Alle Soundevents importieren';
+                    importAllBtn.classList.remove('btn-danger');
+                }
+                importAllBtn.setAttribute('aria-pressed', soundeventBulkInProgress ? 'true' : 'false');
+            }
+
             if (progressBox) {
                 const isActive = soundeventImportIsLoading && !!soundeventImportMessage;
                 progressBox.classList.toggle('is-active', isActive);
                 progressBox.setAttribute('aria-hidden', isActive ? 'false' : 'true');
                 if (progressText) {
-                    progressText.textContent = isActive ? soundeventImportMessage : '';
+                    const detailText = soundeventImportProgressDetail
+                        ? `(${soundeventImportProgressDetail.index}/${soundeventImportProgressDetail.total}) ${soundeventImportProgressDetail.file}`
+                        : '';
+                    const label = soundeventImportMessage || '';
+                    progressText.textContent = isActive
+                        ? [label, detailText].filter(Boolean).join(' ')
+                        : '';
                 }
+            }
+
+            if (tableWrapper) {
+                tableWrapper.classList.toggle('is-disabled', soundeventBulkInProgress);
+                tableWrapper.setAttribute('aria-busy', soundeventBulkInProgress ? 'true' : 'false');
             }
         }
 
-        function setSoundeventImportLoading(isLoading, message = '') {
+        function setSoundeventImportLoading(isLoading, message = '', detail = null) {
             soundeventImportIsLoading = isLoading;
             soundeventImportMessage = isLoading ? message : '';
+            soundeventImportProgressDetail = isLoading && detail ? detail : null;
             updateSoundeventImportControls();
         }
 
@@ -12467,6 +12500,7 @@ function buildProjectFile(filename, folder) {
             soundeventExports = [];
             selectedSoundeventExportIndex = null;
             setSoundeventImportLoading(false);
+            updateSoundeventImportControls();
             if (!window.electronAPI?.listSoundeventExports) {
                 statusEl.textContent = 'Nur in der Desktop-Version verfügbar.';
                 tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Soundevents-Ordner kann im Browser nicht gelesen werden.</td></tr>';
@@ -12522,6 +12556,12 @@ function buildProjectFile(filename, folder) {
         }
 
         function selectSoundeventExport(index) {
+            if (soundeventBulkInProgress) {
+                if (typeof showToast === 'function') {
+                    showToast('Der Stapelimport läuft noch – bitte warten oder abbrechen.', 'warning');
+                }
+                return;
+            }
             const importBtn = document.getElementById('soundeventImportButton');
             const tableBody = document.getElementById('soundeventExportsBody');
             if (typeof index !== 'number' || index < 0 || index >= soundeventExports.length) {
@@ -12549,6 +12589,12 @@ function buildProjectFile(filename, folder) {
         }
 
         async function importSoundeventSelection() {
+            if (soundeventBulkInProgress) {
+                if (typeof showToast === 'function') {
+                    showToast('Der Stapelimport läuft noch – bitte warte kurz oder stoppe ihn.', 'warning');
+                }
+                return;
+            }
             if (selectedSoundeventExportIndex === null) return;
             if (!window.electronAPI?.loadSoundeventExport) {
                 alert('Der automatische Import steht nur in der Desktop-Version zur Verfügung.');
@@ -12559,7 +12605,12 @@ function buildProjectFile(filename, folder) {
             const statusEl = document.getElementById('soundeventExportsStatus');
             try {
                 if (statusEl) statusEl.textContent = `Lade ${entry.file}...`;
-                setSoundeventImportLoading(true, `Übernehme ${entry.file}…`);
+                const detail = {
+                    file: entry.file,
+                    index: selectedSoundeventExportIndex + 1,
+                    total: soundeventExports.length || 1
+                };
+                setSoundeventImportLoading(true, `Übernehme ${entry.file}…`, detail);
                 const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
                 if (!fileData?.content) {
                     throw new Error('Keine Daten geladen');
@@ -12576,6 +12627,125 @@ function buildProjectFile(filename, folder) {
             } finally {
                 setSoundeventImportLoading(false);
             }
+        }
+
+        async function startBulkSoundeventImport() {
+            const statusEl = document.getElementById('soundeventExportsStatus');
+            if (!window.electronAPI?.loadSoundeventExport) {
+                alert('Der Stapelimport benötigt die Desktop-Version.');
+                return;
+            }
+            if (!soundeventExports.length) {
+                if (typeof showToast === 'function') {
+                    showToast('Keine Soundevents für den Stapelimport gefunden.', 'warning');
+                }
+                return;
+            }
+            if (soundeventBulkInProgress) {
+                soundeventBulkAbortRequested = true;
+                if (statusEl) statusEl.textContent = 'Abbruch angefordert – Stapelimport stoppt nach aktueller Datei.';
+                updateStatus('Stapelimport-Abbruch angefordert.');
+                if (typeof showToast === 'function') {
+                    showToast('Abbruch angefordert – laufender Stapelimport stoppt nach der aktuellen Datei.', 'warning');
+                }
+                return;
+            }
+
+            if (!confirm(`Alle ${soundeventExports.length} Soundevents automatisch importieren?\nImport, Neu-Laden und Tabellenklicks werden währenddessen gesperrt.`)) {
+                return;
+            }
+
+            soundeventBulkInProgress = true;
+            soundeventBulkAbortRequested = false;
+            setSoundeventImportLoading(true, 'Stapelimport läuft…');
+            updateSoundeventImportControls();
+            if (statusEl) statusEl.textContent = `Starte Stapelimport (${soundeventExports.length} Dateien)…`;
+            updateStatus(`Stapelimport gestartet (${soundeventExports.length} Dateien).`);
+
+            const summary = { success: 0, failures: [], aborted: false };
+            const total = soundeventExports.length;
+
+            const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+            try {
+                for (let index = 0; index < total; index++) {
+                    if (soundeventBulkAbortRequested) break;
+                    const entry = soundeventExports[index];
+                    if (!entry) continue;
+                    const detail = { file: entry.file, index: index + 1, total };
+                    const processed = await (async () => {
+                        while (!soundeventBulkAbortRequested) {
+                            try {
+                                setSoundeventImportLoading(true, 'Verarbeite Soundevents…', detail);
+                                if (statusEl) statusEl.textContent = `Verarbeite ${entry.file} (${detail.index}/${detail.total})…`;
+                                const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
+                                if (!fileData?.content) {
+                                    throw new Error('Keine Daten geladen');
+                                }
+                                document.getElementById('importData').value = fileData.content;
+                                const fileLabel = document.getElementById('importFileName');
+                                if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
+                                analyzeImportData();
+                                const result = await startImportProcess();
+                                if (result?.aborted) {
+                                    summary.aborted = true;
+                                    soundeventBulkAbortRequested = true;
+                                    return false;
+                                }
+                                summary.success++;
+                                updateStatus(`Import ${entry.file} abgeschlossen (${detail.index}/${detail.total})`);
+                                return true;
+                            } catch (error) {
+                                console.error('Fehler beim Stapelimport:', error);
+                                const hint = `Fehler bei ${entry.file}: ${error?.message || error}`;
+                                if (typeof showToast === 'function') {
+                                    showToast(hint, 'error');
+                                }
+                                const retry = confirm(`${hint}\nErneut versuchen? Abbrechen beendet den Stapel.`);
+                                if (!retry) {
+                                    summary.failures.push(entry.file);
+                                    summary.aborted = true;
+                                    soundeventBulkAbortRequested = true;
+                                    return false;
+                                }
+                                await delay(250);
+                            }
+                        }
+                        return false;
+                    })();
+
+                    if (!processed) {
+                        break;
+                    }
+                }
+                if (soundeventBulkAbortRequested && !summary.aborted) {
+                    summary.aborted = true;
+                }
+            } finally {
+                soundeventBulkInProgress = false;
+                setSoundeventImportLoading(false);
+                updateSoundeventImportControls();
+            }
+
+            const failCount = summary.failures.length;
+            const statusText = soundeventBulkAbortRequested || summary.aborted
+                ? `Stapelimport abgebrochen: ${summary.success} von ${total} Dateien verarbeitet (${failCount} Fehler).`
+                : `Stapelimport abgeschlossen: ${summary.success} von ${total} Dateien verarbeitet (${failCount} Fehler).`;
+
+            if (statusEl) statusEl.textContent = statusText;
+            updateStatus(statusText);
+            if (typeof showToast === 'function') {
+                const level = soundeventBulkAbortRequested || summary.aborted
+                    ? 'warning'
+                    : (failCount ? 'info' : 'success');
+                showToast(statusText, level);
+            }
+
+            if (summary.failures.length) {
+                console.warn('Folgende Soundevents konnten nicht verarbeitet werden:', summary.failures);
+            }
+
+            soundeventBulkAbortRequested = false;
         }
 
 
@@ -19618,33 +19788,53 @@ async function startImportProcess() {
     const englishColumn = parseInt(document.getElementById('englishColumn').value);
     const germanColumn = document.getElementById('germanColumn').value ? parseInt(document.getElementById('germanColumn').value) : -1;
     const t = window.i18n?.t || (value => value);
-    
+    const buildEarlySummary = (reason) => ({
+        imported: 0,
+        updated: 0,
+        notFound: [],
+        multipleFound: [],
+        skippedDueToAmbiguity: 0,
+        databaseMatches: 0,
+        aborted: true,
+        reason
+    });
+
     if (isNaN(filenameColumn)) {
         alert('Bitte wählen Sie die Spalte für die Dateinamen aus!');
-        return;
+        return buildEarlySummary('missingFilename');
     }
-    
+
     if (isNaN(englishColumn)) {
         alert('Bitte wählen Sie die Spalte für den englischen Text aus!');
-        return;
+        return buildEarlySummary('missingEnglish');
     }
-    
+
     if (filenameColumn === englishColumn) {
         alert('Dateinamen und englischer Text können nicht in derselben Spalte sein!');
-        return;
+        return buildEarlySummary('invalidColumns');
     }
-    
+
     if (germanColumn >= 0 && (germanColumn === filenameColumn || germanColumn === englishColumn)) {
         alert('Deutsche Text-Spalte muss unterschiedlich zu den anderen Spalten sein!');
-        return;
+        return buildEarlySummary('invalidGermanColumn');
     }
-    
+
     let imported = 0;
     let updated = 0;
     let notFound = [];
     let multipleFound = [];
     let databaseMatches = 0;
     let skippedDueToAmbiguity = 0;
+    const buildSummary = (aborted = false, reason = '') => ({
+        imported,
+        updated,
+        notFound,
+        multipleFound,
+        skippedDueToAmbiguity,
+        databaseMatches,
+        aborted,
+        reason
+    });
     
     // Sammle alle Dateien mit mehreren Ordnern für Batch-Auswahl
     const ambiguousFiles = [];
@@ -19719,11 +19909,11 @@ async function startImportProcess() {
     // PHASE 2: Benutzer-Auswahl für mehrdeutige Dateien
     if (ambiguousFiles.length > 0) {
         const selections = await showFolderSelectionDialog(ambiguousFiles);
-        
+
         if (selections === null) {
             // Benutzer hat abgebrochen
             alert('Import abgebrochen.');
-            return;
+            return buildSummary(true, 'folderSelectionCancelled');
         }
         
         // Verarbeite Benutzer-Auswahlen
@@ -19779,7 +19969,9 @@ async function startImportProcess() {
         }
         
         updateStatus(message);
-        closeImportDialog();
+        if (!soundeventBulkInProgress) {
+            closeImportDialog();
+        }
         
         // Erweiterte Erfolgs-Nachricht
         let summaryMessage = `✅ Import erfolgreich abgeschlossen!\n\n` +
@@ -19823,6 +20015,8 @@ async function startImportProcess() {
               `❓ Mehrdeutig übersprungen: ${skippedDueToAmbiguity}\n\n` +
               'Tipp: Scannen Sie zuerst den Ordner mit den Audio-Dateien.');
     }
+
+    return buildSummary(false);
 }
 
 // =========================== FOLDER SELECTION DIALOG START ===========================
