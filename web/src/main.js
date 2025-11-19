@@ -11947,6 +11947,11 @@ function buildProjectFile(filename, folder) {
             if (fileLabel) fileLabel.textContent = t('import.file.none');
             if (fileInput) fileInput.value = '';
             field.focus();
+            const importBtn = document.getElementById('soundeventImportButton');
+            if (importBtn) importBtn.onclick = importSoundeventSelection;
+            const reloadBtn = document.getElementById('soundeventReloadButton');
+            if (reloadBtn) reloadBtn.onclick = () => loadSoundeventExportsPreview();
+            loadSoundeventExportsPreview();
         }
 
         // Öffnet den Dateidialog, damit Anwender eine Textdatei auswählen können
@@ -12098,6 +12103,8 @@ function buildProjectFile(filename, folder) {
 
         let parsedImportData = null;
         let detectedColumns = null;
+        let soundeventExports = [];
+        let selectedSoundeventExportIndex = null;
 
         function analyzeImportData() {
             const t = window.i18n?.t || (value => value);
@@ -12415,6 +12422,122 @@ function buildProjectFile(filename, folder) {
             
             html += '</tbody>';
             previewTable.innerHTML = html;
+        }
+
+        async function loadSoundeventExportsPreview() {
+            const statusEl = document.getElementById('soundeventExportsStatus');
+            const tableBody = document.getElementById('soundeventExportsBody');
+            const importBtn = document.getElementById('soundeventImportButton');
+            const reloadBtn = document.getElementById('soundeventReloadButton');
+            if (!statusEl || !tableBody || !importBtn) return;
+            statusEl.textContent = 'Durchsuche soundevents/exports_alyx...';
+            tableBody.innerHTML = '';
+            importBtn.disabled = true;
+            if (reloadBtn) reloadBtn.disabled = !window.electronAPI;
+            soundeventExports = [];
+            selectedSoundeventExportIndex = null;
+            if (!window.electronAPI?.listSoundeventExports) {
+                statusEl.textContent = 'Nur in der Desktop-Version verfügbar.';
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Soundevents-Ordner kann im Browser nicht gelesen werden.</td></tr>';
+                return;
+            }
+            try {
+                const result = await window.electronAPI.listSoundeventExports();
+                if (!result?.available || !Array.isArray(result.files) || result.files.length === 0) {
+                    statusEl.textContent = 'Keine Dateien gefunden.';
+                    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Ordner leer oder nicht gefunden.</td></tr>';
+                    return;
+                }
+                soundeventExports = result.files.slice().sort((a, b) => a.file.localeCompare(b.file));
+                statusEl.textContent = `${soundeventExports.length} Dateien erkannt`;
+                renderSoundeventExportTable();
+            } catch (err) {
+                console.error('Soundevents-Ordner konnte nicht gelesen werden:', err);
+                statusEl.textContent = 'Fehler beim Lesen des Ordners.';
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #e57373;">Scan fehlgeschlagen. Details siehe Konsole.</td></tr>';
+            }
+        }
+
+        function renderSoundeventExportTable() {
+            const tableBody = document.getElementById('soundeventExportsBody');
+            if (!tableBody) return;
+            if (!soundeventExports.length) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Keine Einträge verfügbar.</td></tr>';
+                return;
+            }
+            const rows = soundeventExports.map((info, index) => {
+                const dateText = formatSoundeventDate(info.updatedAt);
+                const folder = info.folder || 'soundevents';
+                const entries = typeof info.entries === 'number' ? info.entries : 0;
+                const rowClass = index === selectedSoundeventExportIndex ? ' class="soundevent-row--selected"' : '';
+                return `<tr data-index="${index}"${rowClass}>`
+                    + `<td><span class="soundevent-folder-chip" title="${escapeHtml(folder)}">${escapeHtml(folder)}</span></td>`
+                    + `<td title="${escapeHtml(info.file)}">${escapeHtml(info.file)}</td>`
+                    + `<td>${entries}</td>`
+                    + `<td>${escapeHtml(dateText)}</td>`
+                    + '</tr>';
+            }).join('');
+            tableBody.innerHTML = rows;
+            tableBody.querySelectorAll('tr').forEach(row => {
+                row.addEventListener('click', () => {
+                    const idx = Number(row.dataset.index);
+                    selectSoundeventExport(idx);
+                });
+            });
+        }
+
+        function selectSoundeventExport(index) {
+            const importBtn = document.getElementById('soundeventImportButton');
+            const tableBody = document.getElementById('soundeventExportsBody');
+            if (typeof index !== 'number' || index < 0 || index >= soundeventExports.length) {
+                selectedSoundeventExportIndex = null;
+                if (importBtn) importBtn.disabled = true;
+                return;
+            }
+            selectedSoundeventExportIndex = index;
+            if (tableBody) {
+                tableBody.querySelectorAll('tr').forEach((row, idx) => {
+                    row.classList.toggle('soundevent-row--selected', idx === index);
+                });
+            }
+            if (importBtn) importBtn.disabled = false;
+        }
+
+        function formatSoundeventDate(timestamp) {
+            if (!timestamp) return '-';
+            try {
+                return new Date(timestamp).toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' });
+            } catch (err) {
+                console.warn('Konnte Datum nicht formatieren:', err);
+                return '-';
+            }
+        }
+
+        async function importSoundeventSelection() {
+            if (selectedSoundeventExportIndex === null) return;
+            if (!window.electronAPI?.loadSoundeventExport) {
+                alert('Der automatische Import steht nur in der Desktop-Version zur Verfügung.');
+                return;
+            }
+            const entry = soundeventExports[selectedSoundeventExportIndex];
+            if (!entry) return;
+            const statusEl = document.getElementById('soundeventExportsStatus');
+            try {
+                if (statusEl) statusEl.textContent = `Lade ${entry.file}...`;
+                const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
+                if (!fileData?.content) {
+                    throw new Error('Keine Daten geladen');
+                }
+                document.getElementById('importData').value = fileData.content;
+                const fileLabel = document.getElementById('importFileName');
+                if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
+                updateStatus(`Soundevents-Datei übernommen: ${entry.file}`);
+                analyzeImportData();
+            } catch (err) {
+                console.error('Soundevents-Datei konnte nicht übernommen werden:', err);
+                if (statusEl) statusEl.textContent = 'Fehler beim Laden der Datei.';
+                showToast('Soundevents-Datei konnte nicht geladen werden.', 'error');
+            }
         }
 
 

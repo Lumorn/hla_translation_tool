@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.551
+* `electron/main.js` stellt IPC-Handler für das Scannen und Laden der `.wiki`-Dateien aus `soundevents/exports_alyx` bereit und zählt direkt die Quote/File-Zeilen, damit der Renderer eine aussagekräftige Vorschau erhält.
+* `electron/preload.cjs` exportiert die neuen Funktionen `listSoundeventExports` und `loadSoundeventExport` in die Renderer-Welt.
+* `web/hla_translation_tool.html`, `web/src/style.css` und `web/src/main.js` erweitern den Import-Dialog um ein zweites Panel mit Tabelle, Statuszeile und Import-Schaltfläche für den Soundevents-Ordner inklusive automatischem Laden ins Analysefeld.
+* `README.md` hebt Version **1.40.551** hervor und beschreibt die integrierte Soundevents-Vorschau im Import-Dialog.
 # 🛠️ Patch in 1.40.550
 * `web/src/gptService.js` normalisiert GPT-Antworten robuster, erkennt Einzelobjekte sowie Wrapper-Felder (`output`/`data`/`results`) und wandelt sie automatisch in Arrays, damit der GPT-Test nicht mehr mit „kein Array“ abbricht.
 * `tests/gptService.test.js` prüft die Normalisierung einzelner Objekte und stellt sicher, dass Bewertungsergebnisse auch ohne Array-Hülle akzeptiert werden.

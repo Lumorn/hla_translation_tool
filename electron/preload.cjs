@@ -31,6 +31,8 @@ if (typeof require !== 'function') {
     versions: process.versions,
     openFolder: () => ipcRenderer.invoke('open-folder-dialog'),
     scanFolders: () => ipcRenderer.invoke('scan-folders'),
+    listSoundeventExports: () => ipcRenderer.invoke('list-soundevent-exports'),
+    loadSoundeventExport: (fileName) => ipcRenderer.invoke('load-soundevent-export', fileName),
     // Befehl an Hauptprozess senden, um DevTools umzuschalten
     toggleDevTools: () => ipcRenderer.send('toggle-devtools'),
     // Datei speichern (z.B. Backup)
