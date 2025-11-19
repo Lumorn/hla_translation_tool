@@ -27,6 +27,7 @@ async function flushPendingWrites(ms = 0) {
 
 // Entfernt alle dynamisch registrierten Event-Listener durch Klonen der Elemente
 function detachAllEventListeners() {
+  if (typeof document === 'undefined') return;
   document.querySelectorAll('*').forEach(el => {
     if (el.tagName === 'SCRIPT') return; // Skripte nicht anfassen
     const clone = el.cloneNode(true);
@@ -42,7 +43,20 @@ function detachAllEventListeners() {
   if (typeof effectSidebarOrganized !== 'undefined') {
     effectSidebarOrganized = false;
   }
+  // Alle "data-bound"-Marker löschen, damit Initialisierer ihre Listener erneut setzen können
+  document.querySelectorAll('[data-bound]').forEach(el => el.removeAttribute('data-bound'));
+  // Spezielle Tabs zusätzlich zurücksetzen, falls der Selektor schon aufgebaut war
   document.querySelectorAll('#deEditDialog .effect-tab').forEach(btn => btn.removeAttribute('data-bound'));
+  // Globale Benachrichtigung auslösen, damit Module fehlende Listener sofort nachziehen können
+  const evtName = 'ui:listenersDetached';
+  if (typeof document.dispatchEvent === 'function') {
+    const evt = typeof window !== 'undefined' && typeof window.CustomEvent === 'function'
+      ? new window.CustomEvent(evtName, { detail: { scope: 'global', source: 'detachAllEventListeners' } })
+      : (typeof Event === 'function' ? new Event(evtName) : null);
+    if (evt) {
+      document.dispatchEvent(evt);
+    }
+  }
 }
 
 // Leert In-Memory-Caches durch Aufruf des globalen Reset

@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.561
+* `web/src/projectHelpers.js` entfernt nach dem Listener-Reset sämtliche `data-bound`-Marker, setzt das Tab-Flag zurück und stößt über `ui:listenersDetached` ein globales Rebinding an, sodass nach Projektwechseln keine „toten“ Buttons übrig bleiben.
+* `web/src/dubbing.js` merkt sich die zuletzt genutzten Zoom-/Scroll-Werte, bindet Timeline- und Effekt-Tabs nach `ui:listenersDetached` automatisch neu und protokolliert Fehler im Konsolen-Warnlog.
+* `README.md` hebt Version **1.40.561** hervor und beschreibt das automatische Rebinding sämtlicher DE-Audio-Knöpfe.
 # 🛠️ Patch in 1.40.560
 * `web/src/main.js` nutzt `i18n.getLanguage()` für `Intl.DateTimeFormat`, ersetzt die Template-Strings der Speicherinfo durch `i18n.format` mit Zeit-/Längenplatzhaltern und meldet Fehlerstatus sowie Toasts komplett über neue `deAudio.save.*`-Schlüssel.
 * `web/src/i18n.js` ergänzt `deAudio.save.lastSaved`, `deAudio.save.hint.noWrite`, `deAudio.save.hint.missingPath`, `deAudio.save.timestampFormat` und `deAudio.save.statusError` in Deutsch und Englisch.
