@@ -1065,145 +1065,190 @@
                 <section class="effects-section">
                     <div class="effect-scroll">
                         <fieldset class="effect-group">
-                            <legend>🔊 Lautstärke angleichen</legend>
-                            <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen">Lautstärke angleichen</button>
+                            <legend data-i18n="deAudio.effects.volume.legend">🔊 Lautstärke angleichen</legend>
+                            <button id="volumeMatchBoxBtn" class="effect-btn" onclick="applyVolumeMatch()" title="Pegel an EN anpassen" data-i18n="deAudio.effects.volume.action" data-i18n-title="deAudio.effects.volume.actionTitle">Lautstärke angleichen</button>
                             <div class="volume-gain-controls">
-                                <p class="volume-gain-note">Booster oder Absenker für schwierige Aufnahmen.</p>
-                                <label id="volumeGainToggleLabel" class="effect-toggle" title="Manuellen Booster ein- oder ausschalten"><input type="checkbox" id="volumeGainToggle"> Booster aktivieren</label>
-                                <label for="volumeGainRange" title="Manuelle Verstärkung in dB">Verstärkung: <span id="volumeGainDisplay"></span></label>
-                                <input type="range" id="volumeGainRange" min="-12" max="12" step="0.5" value="0" title="Manuellen Pegel anpassen">
+                                <p class="volume-gain-note" data-i18n="deAudio.effects.volume.note">Booster oder Absenker für schwierige Aufnahmen.</p>
+                                <label id="volumeGainToggleLabel" class="effect-toggle" title="Manuellen Booster ein- oder ausschalten" data-i18n-title="deAudio.effects.volume.boosterToggleTitle">
+                                    <input type="checkbox" id="volumeGainToggle">
+                                    <span data-i18n="deAudio.effects.volume.boosterToggle">Booster aktivieren</span>
+                                </label>
+                                <label for="volumeGainRange" class="effect-inline-label" title="Manuelle Verstärkung in dB" data-i18n-title="deAudio.effects.volume.boosterLabelTitle">
+                                    <span data-i18n="deAudio.effects.volume.boosterLabel">Verstärkung:</span>
+                                    <span id="volumeGainDisplay"></span>
+                                </label>
+                                <input type="range" id="volumeGainRange" min="-12" max="12" step="0.5" value="0" title="Manuellen Pegel anpassen" data-i18n-title="deAudio.effects.volume.boosterRangeTitle">
                                 <div class="volume-gain-presets" id="volumeGainPresets">
-                                    <button type="button" class="btn btn-secondary" data-gain="-6">-6 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="-3">-3 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="3">+3 dB</button>
-                                    <button type="button" class="btn btn-secondary" data-gain="6">+6 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="-6" data-i18n="deAudio.effects.volume.preset.minus6">-6 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="-3" data-i18n="deAudio.effects.volume.preset.minus3">-3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="3" data-i18n="deAudio.effects.volume.preset.plus3">+3 dB</button>
+                                    <button type="button" class="btn btn-secondary" data-gain="6" data-i18n="deAudio.effects.volume.preset.plus6">+6 dB</button>
                                 </div>
-                                <button type="button" id="volumeGainResetBtn" class="btn-reset-settings" title="Booster auf Neutralwert zurücksetzen">Neutral (0 dB)</button>
+                                <button type="button" id="volumeGainResetBtn" class="btn-reset-settings" title="Booster auf Neutralwert zurücksetzen" data-i18n="deAudio.effects.volume.reset" data-i18n-title="deAudio.effects.volume.resetTitle">Neutral (0 dB)</button>
                             </div>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>📡 Funkgerät-Effekt</legend>
+                            <legend data-i18n="deAudio.effects.radio.legend">📡 Funkgerät-Effekt</legend>
                             <div class="radio-settings">
-                                <label title="Mischverhältnis">Wet: <span id="radioStrengthDisplay"></span>
+                                <label title="Mischverhältnis" data-i18n-title="deAudio.effects.radio.mixTitle">
+                                    <span data-i18n="deAudio.effects.radio.mix">Wet:</span>
+                                    <span id="radioStrengthDisplay"></span>
                                     <input type="range" id="radioStrength" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Hochpassfrequenz">Highpass (Hz):
+                                <label title="Hochpassfrequenz" data-i18n-title="deAudio.effects.radio.highpassTitle">
+                                    <span data-i18n="deAudio.effects.radio.highpass">Highpass (Hz):</span>
                                     <input type="number" id="radioHighpass" min="0" max="1000" step="50">
                                 </label>
-                                <label title="Tiefpassfrequenz">Lowpass (Hz):
+                                <label title="Tiefpassfrequenz" data-i18n-title="deAudio.effects.radio.lowpassTitle">
+                                    <span data-i18n="deAudio.effects.radio.lowpass">Lowpass (Hz):</span>
                                     <input type="number" id="radioLowpass" min="1000" max="6000" step="50">
                                 </label>
-                                <label title="Sättigungsgrad">Sättigung: <span id="radioSaturationDisplay"></span>
+                                <label title="Sättigungsgrad" data-i18n-title="deAudio.effects.radio.saturationTitle">
+                                    <span data-i18n="deAudio.effects.radio.saturation">Sättigung:</span>
+                                    <span id="radioSaturationDisplay"></span>
                                     <input type="range" id="radioSaturation" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Rauschpegel in dBFS">Rauschen (dB):
+                                <label title="Rauschpegel in dBFS" data-i18n-title="deAudio.effects.radio.noiseTitle">
+                                    <span data-i18n="deAudio.effects.radio.noise">Rauschen (dB):</span>
                                     <input type="number" id="radioNoise" min="-60" max="0" step="1">
                                 </label>
-                                <label title="Häufigkeit der Knackser">Knackser: <span id="radioCrackleDisplay"></span>
+                                <label title="Häufigkeit der Knackser" data-i18n-title="deAudio.effects.radio.crackleTitle">
+                                    <span data-i18n="deAudio.effects.radio.crackle">Knackser:</span>
+                                    <span id="radioCrackleDisplay"></span>
                                     <input type="range" id="radioCrackle" min="0" max="1" step="0.05">
                                 </label>
                                 <div class="radio-preset">
-                                    <select id="radioPresetSelect" title="Gespeicherte Presets"></select>
-                                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
-                                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
+                                    <select id="radioPresetSelect" title="Gespeicherte Presets" data-i18n-title="deAudio.effects.presets.title"></select>
+                                    <button id="saveRadioPresetBtn" type="button" title="Aktuelle Einstellungen speichern" data-i18n="deAudio.effects.presets.save" data-i18n-title="deAudio.effects.presets.saveTitle">💾 Speichern</button>
+                                    <button id="deleteRadioPresetBtn" type="button" title="Gewähltes Preset löschen" data-i18n="deAudio.effects.presets.delete" data-i18n-title="deAudio.effects.presets.deleteTitle">🗑 Löschen</button>
                                 </div>
                             </div>
                             <div class="effect-actions">
-                                <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden">Funkgerät-Effekt anwenden</button>
+                                <button id="radioEffectBoxBtn" class="effect-btn" onclick="applyRadioEffect()" title="Funkgerät-Effekt anwenden" data-i18n="deAudio.effects.radio.apply" data-i18n-title="deAudio.effects.radio.applyTitle">Funkgerät-Effekt anwenden</button>
                                 <!-- Setzt nur diesen Effekt zurück -->
-                                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                                <button class="btn-reset-settings" onclick="resetRadioSettings()" title="Setzt nur diesen Effekt zurück" data-i18n="deAudio.effects.resetButton" data-i18n-title="deAudio.effects.resetButtonTitle">⟳ Standardwerte</button>
                             </div>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>🎚️ Hall-Effekt</legend>
-                            <label id="hallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> Aktivieren</label>
+                            <legend data-i18n="deAudio.effects.hall.legend">🎚️ Hall-Effekt</legend>
+                            <label id="hallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten" data-i18n-title="deAudio.effects.hall.toggleTitle"><input type="checkbox" id="hallToggle" onchange="toggleHallEffect(this.checked)"> <span data-i18n="deAudio.effects.hall.toggle">Aktivieren</span></label>
                             <div class="hall-settings">
-                                <label title="Raumgröße">Room:
+                                <label title="Raumgröße" data-i18n-title="deAudio.effects.hall.roomTitle">
+                                    <span data-i18n="deAudio.effects.hall.room">Room:</span>
                                     <input type="range" id="hallRoom" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Mischverhältnis">Wet: <span id="hallAmountDisplay"></span>
+                                <label title="Mischverhältnis" data-i18n-title="deAudio.effects.hall.wetTitle">
+                                    <span data-i18n="deAudio.effects.hall.wet">Wet:</span>
+                                    <span id="hallAmountDisplay"></span>
                                     <input type="range" id="hallAmount" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Vorlaufzeit">Delay (ms):
+                                <label title="Vorlaufzeit" data-i18n-title="deAudio.effects.hall.delayTitle">
+                                    <span data-i18n="deAudio.effects.hall.delay">Delay (ms):</span>
                                     <input type="number" id="hallDelay" min="0" max="500" step="10">
                                 </label>
                             </div>
                             <!-- Setzt nur diesen Effekt zurück -->
-                            <button class="btn-reset-settings" onclick="resetHallSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                            <button class="btn-reset-settings" onclick="resetHallSettings()" title="Setzt nur diesen Effekt zurück" data-i18n="deAudio.effects.resetButton" data-i18n-title="deAudio.effects.resetButtonTitle">⟳ Standardwerte</button>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>🦁 Zoo-Lautsprecher</legend>
-                            <p class="effect-note">Simuliert eine Durchsage über alte Hallen-Lautsprecher in einem Betonbau.</p>
-                            <label id="zooSpeakerToggleLabel" class="effect-toggle" title="Zoo-Lautsprecher ein- oder ausschalten"><input type="checkbox" id="zooSpeakerToggle"> Zoo-Lautsprecher aktivieren</label>
-                            <p class="effect-note">Bandpass, Sättigung und kurzer Betonhall erhalten Sprachverständlichkeit bei deutlichem Raumgefühl.</p>
+                            <legend data-i18n="deAudio.effects.zoo.legend">🦁 Zoo-Lautsprecher</legend>
+                            <p class="effect-note" data-i18n="deAudio.effects.zoo.note">Simuliert eine Durchsage über alte Hallen-Lautsprecher in einem Betonbau.</p>
+                            <label id="zooSpeakerToggleLabel" class="effect-toggle" title="Zoo-Lautsprecher ein- oder ausschalten" data-i18n-title="deAudio.effects.zoo.toggleTitle"><input type="checkbox" id="zooSpeakerToggle"> <span data-i18n="deAudio.effects.zoo.toggle">Zoo-Lautsprecher aktivieren</span></label>
+                            <p class="effect-note" data-i18n="deAudio.effects.zoo.note2">Bandpass, Sättigung und kurzer Betonhall erhalten Sprachverständlichkeit bei deutlichem Raumgefühl.</p>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>⚡ EM-Störgeräusch</legend>
-                            <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> Sprachdämpfung</label>
+                            <legend data-i18n="deAudio.effects.emi.legend">⚡ EM-Störgeräusch</legend>
+                            <label id="emiVoiceDampToggleLabel" class="effect-toggle" title="Dämpft das Originalsignal bei Störungen" data-i18n-title="deAudio.effects.emi.toggleTitle"><input type="checkbox" id="emiVoiceDampToggle" onchange="toggleEmiVoiceDamp(this.checked)"> <span data-i18n="deAudio.effects.emi.toggle">Sprachdämpfung</span></label>
                             <div class="emi-settings">
                                 <!-- Canvas für die Hüllkurve des Störgeräuschs -->
                                 <canvas id="emiEnvelopeCanvas" width="200" height="60"></canvas>
-                                <label title="Stärke der Störung">Stärke <span class="info-icon" title="Regelt die Lautstärke der Störung">ℹ️</span>: <span id="emiLevelDisplay"></span>
+                                <label title="Stärke der Störung" data-i18n-title="deAudio.effects.emi.strengthTitle">
+                                    <span data-i18n="deAudio.effects.emi.strength">Stärke:</span>
+                                    <span class="info-icon" title="Regelt die Lautstärke der Störung" data-i18n-title="deAudio.effects.emi.strengthInfo">ℹ️</span>
+                                    <span id="emiLevelDisplay"></span>
                                     <input type="range" id="emiLevel" min="0" max="1" step="0.05">
                                 </label>
                                 <!-- Regler für den Anstiegszeitpunkt -->
-                                <label title="Zeitpunkt des starken Anstiegs">Anstieg ab <span class="info-icon" title="Zeitpunkt, ab dem die Störung deutlich lauter wird">ℹ️</span>: <span id="emiRampDisplay"></span>
+                                <label title="Zeitpunkt des starken Anstiegs" data-i18n-title="deAudio.effects.emi.rampTitle">
+                                    <span data-i18n="deAudio.effects.emi.ramp">Anstieg ab:</span>
+                                    <span class="info-icon" title="Zeitpunkt, ab dem die Störung deutlich lauter wird" data-i18n-title="deAudio.effects.emi.rampInfo">ℹ️</span>
+                                    <span id="emiRampDisplay"></span>
                                     <input type="range" id="emiRamp" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Häufigkeit der Aussetzer">Aussetzer-Häufigkeit <span class="info-icon" title="Wie oft die Verbindung kurz abbricht">ℹ️</span>: <span id="emiDropoutProbDisplay"></span>
+                                <label title="Häufigkeit der Aussetzer" data-i18n-title="deAudio.effects.emi.dropoutFreqTitle">
+                                    <span data-i18n="deAudio.effects.emi.dropoutFreq">Aussetzer-Häufigkeit:</span>
+                                    <span class="info-icon" title="Wie oft die Verbindung kurz abbricht" data-i18n-title="deAudio.effects.emi.dropoutFreqInfo">ℹ️</span>
+                                    <span id="emiDropoutProbDisplay"></span>
                                     <input type="range" id="emiDropoutProb" min="0" max="0.005" step="0.0001">
                                 </label>
-                                <label title="Dauer eines Aussetzers">Aussetzer-Dauer <span class="info-icon" title="Länge eines einzelnen Aussetzers">ℹ️</span>: <span id="emiDropoutDurDisplay"></span>
+                                <label title="Dauer eines Aussetzers" data-i18n-title="deAudio.effects.emi.dropoutDurTitle">
+                                    <span data-i18n="deAudio.effects.emi.dropoutDur">Aussetzer-Dauer:</span>
+                                    <span class="info-icon" title="Länge eines einzelnen Aussetzers" data-i18n-title="deAudio.effects.emi.dropoutDurInfo">ℹ️</span>
+                                    <span id="emiDropoutDurDisplay"></span>
                                     <input type="range" id="emiDropoutDur" min="0" max="0.1" step="0.005">
                                 </label>
-                                <label title="Häufigkeit der Knackser">Knackser-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für kurze Knackser">ℹ️</span>: <span id="emiCrackleProbDisplay"></span>
+                                <label title="Häufigkeit der Knackser" data-i18n-title="deAudio.effects.emi.crackleFreqTitle">
+                                    <span data-i18n="deAudio.effects.emi.crackleFreq">Knackser-Häufigkeit:</span>
+                                    <span class="info-icon" title="Wahrscheinlichkeit für kurze Knackser" data-i18n-title="deAudio.effects.emi.crackleFreqInfo">ℹ️</span>
+                                    <span id="emiCrackleProbDisplay"></span>
                                     <input type="range" id="emiCrackleProb" min="0" max="0.02" step="0.001">
                                 </label>
-                                <label title="Lautstärke der Knackser">Knackser-Amplitude <span class="info-icon" title="Lautstärke der Knackser">ℹ️</span>: <span id="emiCrackleAmpDisplay"></span>
+                                <label title="Lautstärke der Knackser" data-i18n-title="deAudio.effects.emi.crackleAmpTitle">
+                                    <span data-i18n="deAudio.effects.emi.crackleAmp">Knackser-Amplitude:</span>
+                                    <span class="info-icon" title="Lautstärke der Knackser" data-i18n-title="deAudio.effects.emi.crackleAmpInfo">ℹ️</span>
+                                    <span id="emiCrackleAmpDisplay"></span>
                                     <input type="range" id="emiCrackleAmp" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Häufigkeit großer Ausreißer">Spike-Häufigkeit <span class="info-icon" title="Wahrscheinlichkeit für starke Ausreißer">ℹ️</span>: <span id="emiSpikeProbDisplay"></span>
+                                <label title="Häufigkeit großer Ausreißer" data-i18n-title="deAudio.effects.emi.spikeFreqTitle">
+                                    <span data-i18n="deAudio.effects.emi.spikeFreq">Spike-Häufigkeit:</span>
+                                    <span class="info-icon" title="Wahrscheinlichkeit für starke Ausreißer" data-i18n-title="deAudio.effects.emi.spikeFreqInfo">ℹ️</span>
+                                    <span id="emiSpikeProbDisplay"></span>
                                     <input type="range" id="emiSpikeProb" min="0" max="0.01" step="0.0005">
                                 </label>
-                                <label title="Lautstärke der Ausreißer">Spike-Amplitude <span class="info-icon" title="Lautstärke der Ausreißer">ℹ️</span>: <span id="emiSpikeAmpDisplay"></span>
+                                <label title="Lautstärke der Ausreißer" data-i18n-title="deAudio.effects.emi.spikeAmpTitle">
+                                    <span data-i18n="deAudio.effects.emi.spikeAmp">Spike-Amplitude:</span>
+                                    <span class="info-icon" title="Lautstärke der Ausreißer" data-i18n-title="deAudio.effects.emi.spikeAmpInfo">ℹ️</span>
+                                    <span id="emiSpikeAmpDisplay"></span>
                                     <input type="range" id="emiSpikeAmp" min="0" max="1" step="0.05">
                                 </label>
-                                <label title="Verlauf der Störung">Verlauf <span class="info-icon" title="Form der Lautstärkeentwicklung">ℹ️</span>:
+                                <label title="Verlauf der Störung" data-i18n-title="deAudio.effects.emi.shapeTitle">
+                                    <span data-i18n="deAudio.effects.emi.shape">Verlauf:</span>
+                                    <span class="info-icon" title="Form der Lautstärkeentwicklung" data-i18n-title="deAudio.effects.emi.shapeInfo">ℹ️</span>
                                     <select id="emiMode">
-                                        <option value="constant">Konstant</option>
-                                        <option value="up">Anstieg</option>
-                                        <option value="updown">Anstieg &amp; Abfall</option>
-                                        <option value="down">Abfall</option>
+                                        <option value="constant" data-i18n="deAudio.effects.emi.shape.constant">Konstant</option>
+                                        <option value="up" data-i18n="deAudio.effects.emi.shape.up">Anstieg</option>
+                                        <option value="updown" data-i18n="deAudio.effects.emi.shape.updown">Anstieg &amp; Abfall</option>
+                                        <option value="down" data-i18n="deAudio.effects.emi.shape.down">Abfall</option>
                                     </select>
                                 </label>
                             </div>
                             <div class="radio-preset">
-                                <select id="emiPresetSelect" title="Gespeicherte Presets"></select>
-                                <button id="saveEmiPresetBtn" type="button" title="Aktuelle Einstellungen speichern">💾 Speichern</button>
-                                <button id="deleteEmiPresetBtn" type="button" title="Gewähltes Preset löschen">🗑 Löschen</button>
+                                <select id="emiPresetSelect" title="Gespeicherte Presets" data-i18n-title="deAudio.effects.presets.title"></select>
+                                <button id="saveEmiPresetBtn" type="button" title="Aktuelle Einstellungen speichern" data-i18n="deAudio.effects.presets.save" data-i18n-title="deAudio.effects.presets.saveTitle">💾 Speichern</button>
+                                <button id="deleteEmiPresetBtn" type="button" title="Gewähltes Preset löschen" data-i18n="deAudio.effects.presets.delete" data-i18n-title="deAudio.effects.presets.deleteTitle">🗑 Löschen</button>
                             </div>
                             <div class="effect-actions">
-                                <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden">EM-Störgeräusch anwenden</button>
+                                <button id="emiEffectBoxBtn" class="effect-btn" onclick="applyEmiEffect()" title="EM-Störgeräusch anwenden" data-i18n="deAudio.effects.emi.apply" data-i18n-title="deAudio.effects.emi.applyTitle">EM-Störgeräusch anwenden</button>
                                 <!-- Setzt nur diesen Effekt zurück -->
-                                <button class="btn-reset-settings" onclick="resetEmiSettings()" title="Setzt nur diesen Effekt zurück">⟳ Standardwerte</button>
+                                <button class="btn-reset-settings" onclick="resetEmiSettings()" title="Setzt nur diesen Effekt zurück" data-i18n="deAudio.effects.resetButton" data-i18n-title="deAudio.effects.resetButtonTitle">⟳ Standardwerte</button>
                             </div>
                         </fieldset>
 
                         <fieldset class="effect-group">
-                            <legend>🚪 Nebenraum-Effekt</legend>
-                            <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> Nebenraum-Effekt</label>
-                            <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> Hall-Effekt</label>
-                            <label id="tableMicToggleLabel" class="effect-toggle" title="Telefon-auf-Tisch-Effekt ein- oder ausschalten"><input type="checkbox" id="tableMicToggle" onchange="toggleTableMicEffect(this.checked)"> Telefon auf Tisch</label>
-                            <label for="tableMicRoom" title="Raumtyp für den Telefon-auf-Tisch-Effekt">Raumtyp:</label>
+                            <legend data-i18n="deAudio.effects.neighbor.legend">🚪 Nebenraum-Effekt</legend>
+                            <label id="neighborToggleLabel" class="effect-toggle" title="Nebenraum-Effekt ein- oder ausschalten" data-i18n-title="deAudio.effects.neighbor.toggleTitle"><input type="checkbox" id="neighborToggle" onchange="toggleNeighborEffect(this.checked)"> <span data-i18n="deAudio.effects.neighbor.toggle">Nebenraum-Effekt</span></label>
+                            <label id="neighborHallToggleLabel" class="effect-toggle" title="Hall-Effekt ein- oder ausschalten" data-i18n-title="deAudio.effects.neighbor.hallTitle"><input type="checkbox" id="neighborHallToggle" onchange="toggleNeighborHall(this.checked)"> <span data-i18n="deAudio.effects.neighbor.hall">Hall-Effekt</span></label>
+                            <label id="tableMicToggleLabel" class="effect-toggle" title="Telefon-auf-Tisch-Effekt ein- oder ausschalten" data-i18n-title="deAudio.effects.neighbor.tableTitle"><input type="checkbox" id="tableMicToggle" onchange="toggleTableMicEffect(this.checked)"> <span data-i18n="deAudio.effects.neighbor.table">Telefon auf Tisch</span></label>
+                            <label for="tableMicRoom" title="Raumtyp für den Telefon-auf-Tisch-Effekt" data-i18n-title="deAudio.effects.neighbor.roomTitle" data-i18n="deAudio.effects.neighbor.roomLabel">Raumtyp:</label>
                             <select id="tableMicRoom">
-                                <option value="wohnzimmer">Wohnzimmer</option>
-                                <option value="buero">Büro</option>
-                                <option value="halle">Halle</option>
-                                <option value="keller">Keller</option>
+                                <option value="wohnzimmer" data-i18n="deAudio.effects.neighbor.room.living">Wohnzimmer</option>
+                                <option value="buero" data-i18n="deAudio.effects.neighbor.room.office">Büro</option>
+                                <option value="halle" data-i18n="deAudio.effects.neighbor.room.hall">Halle</option>
+                                <option value="keller" data-i18n="deAudio.effects.neighbor.room.basement">Keller</option>
                             </select>
                         </fieldset>
                     </div>
