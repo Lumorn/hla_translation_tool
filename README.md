@@ -49,6 +49,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Emo-Dubbing nutzt i18n-Schlüssel für Abschlussstatus und Logeinträge und aktualisiert die Rückmeldungen damit beim Sprachwechsel automatisch.
 * Dubbing-Status, Fehlermeldungen und Download-Hinweise setzen auf i18n-Schlüssel, protokollieren Logs mehrsprachig und zeigen Studio-/Download-Aufforderungen als Toasts an.
 * DE-Audio-Aktionszeile inklusive Upload-, Dubbing- und Schnitt-Schaltflächen sowie Status-Tooltips nutzt i18n-Schlüssel und zeigt Beschriftungen konsistent in Deutsch und Englisch an.
+* Die komplette Effektsektion der DE-Audiobearbeitung (Lautstärke, Funkgerät, Hall, Zoo, EM-Störungen, Nebenraum) verwendet `data-i18n`-/`data-i18n-title`-Attribute für Überschriften, Labels, Optionen und Tooltips, sodass auch diese Regler sofort auf Sprachwechsel reagieren.
 * Wellenform-Beschriftungen im DE-Audio-Editor ziehen die Sekundenlabels nun aus i18n-Schlüsseln und spiegeln Sprachwechsel sofort wider.
 * Play-/Stop-Buttons sowie die EN-Abschnitt-Einfügefelder des DE-Audio-Dialogs nutzen i18n-Schlüssel für Titel, Labels und Optionstexte und stellen sich beim Sprachwechsel automatisch um.
 * Header, Speicher-/Reset-Buttons, Zoom-/Scroll-/Höhen-Steuerungen und Schnellzugriff im DE-Audio-Dialog tragen data-i18n-Schlüssel für Text, Titel und Aria-Labels und behalten vorerst die deutschen Standardwerte bei.

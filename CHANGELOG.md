@@ -1,5 +1,8 @@
 # Changelog
 # 🛠️ Patch in 1.40.567
+* `web/hla_translation_tool.html` versieht die komplette Effektspalte des DE-Audio-Editors (Lautstärke, Funkgerät, Hall, Zoo, EM-Störungen, Nebenraum) mit `data-i18n`-/`data-i18n-title`-Attributen und umschließt Texte in Spans, damit Buttons, Labels, Dropdowns und Tooltips automatisch übersetzt werden.
+* `web/src/i18n.js` liefert die neuen `deAudio.effects.*`-Schlüssel für sämtliche Effekt-Labels, Presets und Tooltips in Deutsch und Englisch.
+* `README.md` erwähnt im Schnellüberblick, dass auch die Effektregler des DE-Audio-Dialogs vollständig auf i18n setzen.
 * `web/src/main.js` ersetzt den HTML-Template-String des mehrteiligen Ordnerauswahldialogs durch DOM-Erzeugung, speist Überschriften, Hinweise, Badges und Buttons über `getI18nTools()`/`folderSelection.*` ein und reagiert auf Sprachwechsel; zugleich nutzt der Einzeldatei-Dialog dieselben `folderSelection.single.*`-Schlüssel.
 * `web/src/i18n.js` führt neue `folderSelection.*`-Ressourcen für Dateinamen, EN/DB-Vorschauen, Badge-Texte sowie den Einzeldatei-Dialog ein und entfernt die veralteten `singleSelection.*`-Einträge.
 * `README.md` beschreibt im Schnellüberblick, dass der Ordnerauswahldialog alle Beschriftungen dynamisch aus i18n-Schlüsseln bezieht und somit vollständig übersetzbar ist.
