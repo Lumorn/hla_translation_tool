@@ -1,4 +1,6 @@
 # Changelog
+# 🛠️ Patch in 1.40.557
+* `README.md` hebt Version **1.40.557** hervor und ergänzt eine Hauptdirektive, dass neue Features, Dialoge und Textausgaben zwingend mit dem i18n-System kompatibel sein müssen.
 # 🛠️ Patch in 1.40.556
 * `web/src/i18n.js` ersetzt die festen „(DE)“-Anhänge der Emo-Schaltflächen durch Platzhalter, damit Button- und Tooltip-Texte den aktiven GPT-Sprachcode aufnehmen können.
 * `web/src/main.js` koppelt die Emo-Schaltflächen und -Prompts an die Score-GPT-Sprachauswahl, aktualisiert Toolbar- und Zeilen-Buttons dynamisch und übergibt die gewählte Sprache an die Emotion-API-Aufrufe.
