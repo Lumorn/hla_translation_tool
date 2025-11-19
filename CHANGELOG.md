@@ -13,6 +13,10 @@
 * `web/hla_translation_tool.html` bindet den Auto-Übersetzungs-Startknopf an `autoTranslate.button.start` und verpasst dem Voice-Test-Button eine ID für die neue Statuslogik.
 * `web/src/i18n.js` liefert die frischen `autoTranslate.*`, `speaker.replace.toast.*`, `api.voice.testRunning` und `status.copyAssistant.corrected` Schlüssel in Deutsch und Englisch.
 * `README.md` ergänzt einen Abschnitt „🌐 Lokalisierte Statusanzeige“, `CHANGELOG.md` verweist auf die neuen Status- und Toast-Übersetzungen.
+* `web/hla_translation_tool.html` versieht die Soundevents-Seitenleiste des Importdialogs mit `data-i18n`-Attributen für Titel, Beschreibung, Tabellenköpfe, Buttons, Hinweise und Spinnertext, damit der komplette Bereich auf i18n-Schlüssel hört.
+* `web/src/main.js` ersetzt sämtliche Soundevents-Status- und Toast-Strings durch `getI18nTools()`-Aufrufe, meldet Reload/Import/Bulk-Prozesse über neue `import.soundevents.*`-Schlüssel und aktualisiert Spinner sowie Buttons bei Sprachwechsel.
+* `web/src/i18n.js` ergänzt die neuen `import.soundevents.*`-Ressourcen für Status, Tabellenköpfe, Buttons, Spinnertexte und Fehlermeldungen in Deutsch und Englisch.
+* `README.md` beschreibt im Import-Abschnitt, dass der komplette Soundevents-Explorer inklusive Statusmeldungen und Fortschrittsanzeige mehrsprachig gerendert wird.
 * `web/src/projectSwitch.js` nutzt eine lokale Übersetzerinstanz, ersetzt sämtliche Schritt-Titel sowie Fehlermeldungen durch `projectSwitch.*`-Schlüssel und rendert damit das Ladeoverlay zweisprachig.
 * `web/src/i18n.js` liefert die neuen deutschen und englischen Texte für `projectSwitch.*`, damit sämtliche Schritte und Warnungen lokalisiert werden können.
 * `README.md` erwähnt, dass die Projektwechsel-Schrittanzeige inklusive Fehlerlog jetzt vollständig via i18n gesteuert wird.
