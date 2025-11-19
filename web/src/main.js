@@ -2304,17 +2304,18 @@ function setupToolbarActionButtons() {
 
         if (replaceSpeakerBtn) {
             replaceSpeakerBtn.addEventListener("click", () => {
+                const { t, format } = getI18nTools();
                 // Web-Speech-API benötigt HTTPS/localhost und Browser-Unterstützung
                 if (!window.isSecureContext) {
                     console.warn("Sprecher ersetzen: Spracherkennung benötigt einen sicheren Kontext (HTTPS oder localhost).");
-                    showToast("Die Sprecher-Ersetzen-Funktion benötigt einen sicheren Kontext (HTTPS oder localhost).");
+                    showToast(t('speaker.replace.toast.secureContext'), 'warning');
                     return;
                 }
 
                 const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (!SpeechRecognitionCtor) {
                     console.warn("Sprecher ersetzen: Keine Web-Speech-API im aktuellen Browser verfügbar.");
-                    showToast("Dein Browser unterstützt die Web-Spracherkennung nicht – Sprecher ersetzen per Mikrofon ist hier nicht möglich.");
+                    showToast(t('speaker.replace.toast.unsupported'), 'error');
                     return;
                 }
 
@@ -2326,7 +2327,7 @@ function setupToolbarActionButtons() {
                 recognition.addEventListener("result", event => {
                     const transcript = event?.results?.[0]?.[0]?.transcript?.trim();
                     if (!transcript) {
-                        showToast("Es wurde keine Sprache erkannt. Bitte erneut versuchen.");
+                        showToast(t('speaker.replace.toast.noSpeech'), 'warning');
                         return;
                     }
 
@@ -2352,7 +2353,7 @@ function setupToolbarActionButtons() {
                     }
 
                     if (!handled) {
-                        showToast(`Erkannter Sprecher: ${transcript}`);
+                        showToast(format('speaker.replace.toast.result', { name: transcript }), 'success');
                     }
                 });
 
@@ -2360,15 +2361,15 @@ function setupToolbarActionButtons() {
                     console.error("Sprecher ersetzen: Spracherkennung meldet einen Fehler", recognitionError);
                     const detail = recognitionError?.error || recognitionError?.message;
                     showToast(detail
-                        ? `Spracherkennung fehlgeschlagen: ${detail}`
-                        : "Spracherkennung fehlgeschlagen – bitte erneut versuchen.");
+                        ? format('speaker.replace.toast.errorDetail', { detail })
+                        : t('speaker.replace.toast.errorGeneric'), 'error');
                 });
 
                 try {
                     recognition.start();
                 } catch (error) {
                     console.error(`Sprecher ersetzen: Spracherkennung konnte nicht gestartet werden (${error?.message || error}).`, error);
-                    showToast(`Spracherkennung konnte nicht gestartet werden: ${error?.message || error}`);
+                    showToast(format('speaker.replace.toast.startError', { detail: error?.message || error }), 'error');
                 }
             });
         }
@@ -3056,7 +3057,8 @@ async function verifyCopyAssistClipboard() {
         if (current !== expected.trim()) {
             await safeCopy(expected);
             if (typeof showToast === 'function') {
-                showToast('Zwischenablage korrigiert', 'error');
+                const { t } = getI18nTools();
+                showToast(t('status.copyAssistant.corrected'), 'error');
             }
         }
     } catch (e) {
@@ -3332,9 +3334,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Checkbox zum automatischen Übernehmen der GPT-Vorschläge anlegen
     const menu = document.getElementById('settingsMenu');
     if (menu) {
+        const { t } = getI18nTools();
         const label = document.createElement('label');
         label.className = 'settings-item';
-        label.innerHTML = `<input type="checkbox" id="autoApplySuggestionToggle"> GPT-Vorschläge automatisch übernehmen`;
+        const autoApplyLabel = t('settings.autoApplySuggestion.label');
+        label.innerHTML = `<input type="checkbox" id="autoApplySuggestionToggle"> ${autoApplyLabel}`;
         menu.appendChild(label);
         const cb = label.querySelector('input');
         cb.checked = autoApplySuggestion;
@@ -3389,20 +3393,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const startTranslateButton = document.getElementById('startTranslateButton');
     if (startTranslateButton) {
         startTranslateButton.addEventListener('click', () => {
+            const { t } = getI18nTools();
             if (!currentProject) {
-                updateStatus('Bitte zuerst ein Projekt auswählen.');
+                updateStatus(t('autoTranslate.status.noProject'));
                 return;
             }
 
             const candidates = collectTranslationCandidates(true);
             if (candidates.length === 0) {
-                updateStatus('Keine offenen Zeilen für die automatische Übersetzung.');
+                updateStatus(t('autoTranslate.status.nonePending'));
                 return;
             }
 
             runTranslationQueue(candidates, currentProject.id);
             updateTranslationQueueDisplay();
-            updateStatus('Automatische Übersetzung gestartet.');
+            updateStatus(t('autoTranslate.status.started'));
         });
     }
 
@@ -3518,6 +3523,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (window.electronAPI.onTranslateFinished) {
             window.electronAPI.onTranslateFinished(({ id, text, error }) => {
+                const { t, format } = getI18nTools();
                 const entry = pendingTranslations.get(id);
                 if (!entry) return;
                 pendingTranslations.delete(id);
@@ -3546,10 +3552,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (safeError) {
                         console.error('Übersetzung:', safeError);
                         if (typeof showToast === 'function') {
-                            showToast('Automatische Übersetzung fehlgeschlagen: ' + safeError, 'error');
+                            showToast(format('autoTranslate.toast.failedDetail', { error: safeError }), 'error');
                         }
                     } else if (typeof showToast === 'function') {
-                        showToast('Automatische Übersetzung fehlgeschlagen', 'error');
+                        showToast(t('autoTranslate.toast.failedGeneric'), 'error');
                     }
                 }
                 // Quelle merken, damit nicht erneut automatisch übersetzt wird
@@ -7966,26 +7972,28 @@ function updateTranslationQueueDisplay() {
     const fill     = document.getElementById('translateFill');
     const startBtn = document.getElementById('startTranslateButton');
     if (!progress || !status || !fill) return;
+    const { t, format } = getI18nTools();
 
     progress.classList.remove('active');
     progress.classList.remove('visible');
     fill.style.width = '0%';
     const waitingIndex = translateQueue.findIndex(entry => entry.projectId === currentProject?.id);
     const pending = collectTranslationCandidates();
+    if (startBtn) {
+        startBtn.textContent = t('autoTranslate.button.start');
+    }
 
     if (!currentProject) {
         progress.classList.remove('active');
         fill.style.width = '0%';
-        status.textContent = 'Keine Projekt-Auswahl für automatische Übersetzung.';
+        status.textContent = t('autoTranslate.status.noProject');
         if (startBtn) {
             startBtn.disabled = true;
-            startBtn.textContent = 'Automatische Übersetzung starten';
         }
         return;
     }
 
     if (startBtn) {
-        startBtn.textContent = 'Automatische Übersetzung starten';
         startBtn.disabled = translateRunning || waitingIndex >= 0 || pending.length === 0;
     }
 
@@ -7999,29 +8007,30 @@ function updateTranslationQueueDisplay() {
             progress.classList.add('active');
             fill.style.width = percent + '%';
             if (done < total) {
-                status.textContent = `Übersetze ${done + 1}/${total}...`;
+                status.textContent = format('autoTranslate.status.progress', { current: done + 1, total });
             } else {
-                status.textContent = 'Automatische Übersetzung abgeschlossen.';
+                status.textContent = t('autoTranslate.status.completed');
             }
         } else {
             progress.classList.add('visible');
             progress.classList.add('active');
             fill.style.width = '0%';
             status.textContent = activeProject
-                ? `Übersetzung läuft im Hintergrund für „${activeProject.name}“.`
-                : 'Übersetzung läuft im Hintergrund.';
+                ? format('autoTranslate.status.backgroundProject', { project: activeProject.name })
+                : t('autoTranslate.status.background');
         }
     } else {
         progress.classList.remove('active');
         progress.classList.remove('visible');
         fill.style.width = '0%';
         status.textContent = pending.length > 0
-            ? 'Automatische Übersetzung bereit.'
-            : 'Alle Zeilen haben bereits eine automatische Übersetzung.';
+            ? t('autoTranslate.status.ready')
+            : t('autoTranslate.status.allTranslated');
     }
 }
 
 async function processActiveTranslationQueue() {
+    const { t, format } = getI18nTools();
     const abbruchAktiv = () => {
         // Hilfsfunktion: Sobald ein Abbruchsignal gesetzt ist, sauber aussteigen und das Flag zurücksetzen
         if (!translateCancelled) return false;
@@ -8060,7 +8069,7 @@ async function processActiveTranslationQueue() {
         const total = activeTranslateQueue.length;
         activeTranslateIndex = i;
         if (isCurrent && progress && status && fill) {
-            status.textContent = `Übersetze ${i + 1}/${total}...`;
+            status.textContent = format('autoTranslate.status.progress', { current: i + 1, total });
             fill.style.width = `${Math.round((i / total) * 100)}%`;
         } else {
             updateTranslationQueueDisplay();
@@ -8090,7 +8099,7 @@ async function processActiveTranslationQueue() {
     if (isCurrent && progress && status && fill) {
         progress.classList.remove('active');
         fill.style.width = '0%';
-        status.textContent = 'Automatische Übersetzung abgeschlossen.';
+        status.textContent = t('autoTranslate.status.completed');
     }
 
     saveProjects();
@@ -13571,7 +13580,14 @@ function checkFileAccess() {
         }
 
         async function testVoiceIds() {
+            const { t, format } = getI18nTools();
+            const testBtn = document.getElementById('testVoiceIdsBtn');
+            if (testBtn) {
+                testBtn.disabled = true;
+                testBtn.textContent = t('api.voice.testRunning');
+            }
             updateStatus(t('api.voice.status.testing'));
+            let failedId = null;
             for (const sel of document.querySelectorAll('#voiceIdList select')) {
                 const id = sel.value.trim();
                 if (!id) continue;
@@ -13581,11 +13597,19 @@ function checkFileAccess() {
                     });
                     if (!res.ok) throw new Error('Fehler');
                 } catch (e) {
-                    updateStatus(t('api.voice.status.error').replace('{id}', id));
-                    return;
+                    failedId = id;
+                    break;
                 }
             }
-            updateStatus(t('api.voice.status.ok'));
+            if (failedId) {
+                updateStatus(format('api.voice.status.error', { id: failedId }));
+            } else {
+                updateStatus(t('api.voice.status.ok'));
+            }
+            if (testBtn) {
+                testBtn.disabled = false;
+                testBtn.textContent = t('api.button.testVoices');
+            }
         }
 
         // Fuegt eine eigene Voice-ID hinzu
