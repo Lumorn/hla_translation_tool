@@ -803,6 +803,19 @@
             'import.error.noneImported.tip': 'Tipp: Scannen Sie zuerst den Ordner mit den Audio-Dateien.',
             'import.status.fileExists': 'Datei bereits im Projekt',
             'import.status.addCancelled': 'Hinzufügen abgebrochen',
+            'subtitle.import.title': '📥 Untertitel importieren',
+            'subtitle.import.sourceLabel': 'closecaption_english.txt:',
+            'subtitle.import.languageLabel': 'Ziel-Sprache (ersetzt Deutsch):',
+            'subtitle.import.targetStatusLabel': 'Zieldatei:',
+            'subtitle.import.badgeDefault': 'Deutsch',
+            'subtitle.import.badge': '{label}',
+            'subtitle.import.cancel': 'Abbrechen',
+            'subtitle.import.start': 'Import starten',
+            'subtitle.import.noFilesOption': 'Keine Untertitel-Dateien gefunden',
+            'subtitle.import.sourceStatus.present': '✅ vorhanden',
+            'subtitle.import.sourceStatus.missing': '❌ fehlt',
+            'subtitle.import.targetStatus.none': '❌ Keine passenden Untertitel vorhanden',
+            'subtitle.import.targetStatus.available': '✅ {file} vorhanden ({label})',
             'subtitle.language.default': 'Deutsch',
             'subtitle.language.unknown': 'Unbekannte Untertitel-Sprache: "{code}" – Standard wird verwendet.',
             'subtitle.import.defaultHint': 'Standard: Deutsch wird importiert.',
@@ -1502,6 +1515,19 @@
             'import.error.noneImported.tip': 'Tip: Scan the audio folder first to populate the database.',
             'import.status.fileExists': 'File already in project',
             'import.status.addCancelled': 'Add operation cancelled',
+            'subtitle.import.title': '📥 Import subtitles',
+            'subtitle.import.sourceLabel': 'closecaption_english.txt:',
+            'subtitle.import.languageLabel': 'Target language (replaces German):',
+            'subtitle.import.targetStatusLabel': 'Target file:',
+            'subtitle.import.badgeDefault': 'German',
+            'subtitle.import.badge': '{label}',
+            'subtitle.import.cancel': 'Cancel',
+            'subtitle.import.start': 'Start import',
+            'subtitle.import.noFilesOption': 'No subtitle files found',
+            'subtitle.import.sourceStatus.present': '✅ available',
+            'subtitle.import.sourceStatus.missing': '❌ missing',
+            'subtitle.import.targetStatus.none': '❌ No matching subtitles available',
+            'subtitle.import.targetStatus.available': '✅ {file} available ({label})',
             'subtitle.language.default': 'German',
             'subtitle.language.unknown': 'Unknown subtitle language: "{code}" – falling back to default.',
             'subtitle.import.defaultHint': 'Default: German will be imported.',
@@ -1539,7 +1565,7 @@
         }
     }
 
-    function t(key) {
+    function resolveTranslation(key) {
         const langPack = resources[currentLanguage] || resources[defaultLanguage];
         if (langPack && Object.prototype.hasOwnProperty.call(langPack, key)) {
             return langPack[key];
@@ -1549,6 +1575,24 @@
             return fallbackPack[key];
         }
         return key;
+    }
+
+    function applyReplacements(template, replacements = {}) {
+        if (typeof template !== 'string' || !replacements) {
+            return template;
+        }
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            const replacement = value ?? '';
+            return acc.replaceAll(`{${placeholder}}`, replacement);
+        }, template);
+    }
+
+    function t(key, replacements) {
+        const template = resolveTranslation(key);
+        if (!replacements) {
+            return template;
+        }
+        return applyReplacements(template, replacements);
     }
 
     function applyTargets() {
@@ -1570,10 +1614,8 @@
 
     // Ersetzt Platzhalter in Übersetzungen, z.B. {current} oder {total}
     function format(key, replacements = {}) {
-        const template = t(key);
-        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
-            return acc.replaceAll(`{${placeholder}}`, value);
-        }, template);
+        const template = resolveTranslation(key);
+        return applyReplacements(template, replacements);
     }
 
     function setLanguage(lang) {
