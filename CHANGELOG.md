@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.552
+* `electron/main.js` prüft mehrere Basispfade (web/, Projektwurzel, Electron-Verzeichnis) mit denselben Soundevents-/Exports-Kandidatenlisten und stoppt beim ersten Treffer, sodass `soundevents/exports_alyx` zuverlässig gefunden wird.
+* `README.md` dokumentiert die robustere Soundevents-Erkennung im Import-Dialog und hebt Version **1.40.552** hervor.
 # 🛠️ Patch in 1.40.551
 * `electron/main.js` stellt IPC-Handler für das Scannen und Laden der `.wiki`-Dateien aus `soundevents/exports_alyx` bereit und zählt direkt die Quote/File-Zeilen, damit der Renderer eine aussagekräftige Vorschau erhält.
 * `electron/preload.cjs` exportiert die neuen Funktionen `listSoundeventExports` und `loadSoundeventExport` in die Renderer-Welt.

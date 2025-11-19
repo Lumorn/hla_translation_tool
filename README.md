@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.551-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.552-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -22,6 +22,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Wartende automatische Übersetzungen verschwinden im Leerlauf aus der Statusleiste; Fortschrittsbalken und Wartetexte bleiben ausgeblendet, bis ein Lauf aktiv ist.
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Der Datei-Import-Dialog blendet links einen Soundevents-Explorer für `soundevents/exports_alyx` ein, zeigt erkannte Ordner, Dateinamen und Zeilenanzahlen an und übernimmt die gewählte `.wiki`-Datei direkt ins Analysefeld.
+* Der Electron-Launcher findet den Soundevents-Export auch dann automatisch, wenn der Ordner eine Ebene über `web/` oder im Projektstamm liegt, weil mehrere Basispfade geprüft werden.
 * Der Ordner-Auswahldialog für mehrdeutige Dateien ist vollständig lokalisiert und folgt der gewählten Sprache bei Titeln, Hilfen und Buttons.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
