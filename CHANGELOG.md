@@ -2193,6 +2193,7 @@ Alle wesentlichen Änderungen des Projekts. Die jeweils aktuelle Version steht a
 - Struktur-Blueprint-Export fängt blockierte `showSaveFilePicker`-Aufrufe ab und startet automatisch den Download-Fallback mit Statushinweis.
 - Level-Statistik-Dialog nutzt i18n-Schlüssel für Titel, Hinweistext und Schließen-Button.
 - `translate_text.py` entfernt automatisch Sprecherpräfixe aus Übersetzungen, wenn die Eingabe keines hatte, und protokolliert Kürzungen im Worker.
+- Kapitel- und Projektbezeichnungen im Blueprint `docs/alyx_translation_overview.json` folgen nun einem einheitlichen Schema und nennen Schauplätze/Story-Kontext klar auf Deutsch.
 
 ### 3.8.0 - Stapel-Soundevent-Import
 
