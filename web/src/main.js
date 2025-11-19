@@ -11951,6 +11951,7 @@ function buildProjectFile(filename, folder) {
             if (importBtn) importBtn.onclick = importSoundeventSelection;
             const reloadBtn = document.getElementById('soundeventReloadButton');
             if (reloadBtn) reloadBtn.onclick = () => loadSoundeventExportsPreview();
+            setSoundeventImportLoading(false);
             loadSoundeventExportsPreview();
         }
 
@@ -12105,6 +12106,39 @@ function buildProjectFile(filename, folder) {
         let detectedColumns = null;
         let soundeventExports = [];
         let selectedSoundeventExportIndex = null;
+        let soundeventImportIsLoading = false;
+        let soundeventImportMessage = '';
+
+        function updateSoundeventImportControls() {
+            const importBtn = document.getElementById('soundeventImportButton');
+            const reloadBtn = document.getElementById('soundeventReloadButton');
+            const progressBox = document.getElementById('soundeventImportProgress');
+            const progressText = document.getElementById('soundeventImportProgressText');
+
+            if (importBtn) {
+                importBtn.disabled = soundeventImportIsLoading || selectedSoundeventExportIndex === null;
+            }
+
+            if (reloadBtn) {
+                const baseDisabled = !window.electronAPI;
+                reloadBtn.disabled = soundeventImportIsLoading || baseDisabled;
+            }
+
+            if (progressBox) {
+                const isActive = soundeventImportIsLoading && !!soundeventImportMessage;
+                progressBox.classList.toggle('is-active', isActive);
+                progressBox.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+                if (progressText) {
+                    progressText.textContent = isActive ? soundeventImportMessage : '';
+                }
+            }
+        }
+
+        function setSoundeventImportLoading(isLoading, message = '') {
+            soundeventImportIsLoading = isLoading;
+            soundeventImportMessage = isLoading ? message : '';
+            updateSoundeventImportControls();
+        }
 
         function analyzeImportData() {
             const t = window.i18n?.t || (value => value);
@@ -12427,18 +12461,16 @@ function buildProjectFile(filename, folder) {
         async function loadSoundeventExportsPreview() {
             const statusEl = document.getElementById('soundeventExportsStatus');
             const tableBody = document.getElementById('soundeventExportsBody');
-            const importBtn = document.getElementById('soundeventImportButton');
-            const reloadBtn = document.getElementById('soundeventReloadButton');
-            if (!statusEl || !tableBody || !importBtn) return;
+            if (!statusEl || !tableBody) return;
             statusEl.textContent = 'Durchsuche soundevents/exports_alyx...';
             tableBody.innerHTML = '';
-            importBtn.disabled = true;
-            if (reloadBtn) reloadBtn.disabled = !window.electronAPI;
             soundeventExports = [];
             selectedSoundeventExportIndex = null;
+            setSoundeventImportLoading(false);
             if (!window.electronAPI?.listSoundeventExports) {
                 statusEl.textContent = 'Nur in der Desktop-Version verfügbar.';
                 tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Soundevents-Ordner kann im Browser nicht gelesen werden.</td></tr>';
+                updateSoundeventImportControls();
                 return;
             }
             try {
@@ -12446,15 +12478,18 @@ function buildProjectFile(filename, folder) {
                 if (!result?.available || !Array.isArray(result.files) || result.files.length === 0) {
                     statusEl.textContent = 'Keine Dateien gefunden.';
                     tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Ordner leer oder nicht gefunden.</td></tr>';
+                    updateSoundeventImportControls();
                     return;
                 }
                 soundeventExports = result.files.slice().sort((a, b) => a.file.localeCompare(b.file));
                 statusEl.textContent = `${soundeventExports.length} Dateien erkannt`;
                 renderSoundeventExportTable();
+                updateSoundeventImportControls();
             } catch (err) {
                 console.error('Soundevents-Ordner konnte nicht gelesen werden:', err);
                 statusEl.textContent = 'Fehler beim Lesen des Ordners.';
                 tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #e57373;">Scan fehlgeschlagen. Details siehe Konsole.</td></tr>';
+                updateSoundeventImportControls();
             }
         }
 
@@ -12491,7 +12526,7 @@ function buildProjectFile(filename, folder) {
             const tableBody = document.getElementById('soundeventExportsBody');
             if (typeof index !== 'number' || index < 0 || index >= soundeventExports.length) {
                 selectedSoundeventExportIndex = null;
-                if (importBtn) importBtn.disabled = true;
+                updateSoundeventImportControls();
                 return;
             }
             selectedSoundeventExportIndex = index;
@@ -12500,7 +12535,7 @@ function buildProjectFile(filename, folder) {
                     row.classList.toggle('soundevent-row--selected', idx === index);
                 });
             }
-            if (importBtn) importBtn.disabled = false;
+            updateSoundeventImportControls();
         }
 
         function formatSoundeventDate(timestamp) {
@@ -12524,6 +12559,7 @@ function buildProjectFile(filename, folder) {
             const statusEl = document.getElementById('soundeventExportsStatus');
             try {
                 if (statusEl) statusEl.textContent = `Lade ${entry.file}...`;
+                setSoundeventImportLoading(true, `Übernehme ${entry.file}…`);
                 const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
                 if (!fileData?.content) {
                     throw new Error('Keine Daten geladen');
@@ -12537,6 +12573,8 @@ function buildProjectFile(filename, folder) {
                 console.error('Soundevents-Datei konnte nicht übernommen werden:', err);
                 if (statusEl) statusEl.textContent = 'Fehler beim Laden der Datei.';
                 showToast('Soundevents-Datei konnte nicht geladen werden.', 'error');
+            } finally {
+                setSoundeventImportLoading(false);
             }
         }
 
