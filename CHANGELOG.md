@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.569
+* `docs/alyx_translation_overview.json` erhält konsistente Kapitel- und Abschnittstitel (z. B. „Kapitel 1 – Entaglement (Intro + Kapitel 1)“ oder „Russells Labor – Plan & Schwerkrafthandschuhe“), damit Blueprint-Importe die Spielstruktur eindeutig spiegeln.
+* `README.md` weist auf die aktualisierten und vereinheitlichten Namen im Alyx-Blueprint hin.
+
 # 🛠️ Patch in 1.40.568
 * `web/hla_translation_tool.html` ergänzt unter 🎮 Projekte einen dedizierten Button zum Laden von `docs/alyx_translation_overview.json`, der den Blueprint-Import direkt verfügbar macht.
 * `web/src/style.css` führt eine eigene Optik für die neue Alyx-Import-Schaltfläche ein, damit sie sich klar vom regulären „+ Neues Projekt“-Button unterscheidet.
