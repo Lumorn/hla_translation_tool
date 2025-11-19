@@ -406,6 +406,7 @@ function setupLanguageControls() {
         }
 
         updateEmotionLanguageUi();
+        renderGptPromptLanguageSelect();
         updateVersionMenuLabels();
         updateEnglishReviewDialog();
     });
@@ -1734,9 +1735,34 @@ if (!gptPromptLanguageOptions.some(opt => opt.code === gptPromptLanguage)) {
     gptPromptLanguage = 'german';
 }
 
+// Beschriftung für die Standard-Zielsprache basierend auf der UI
+function getUiDefaultTargetLanguageLabel() {
+    const translator = window.i18n;
+    if (translator && typeof translator.t === 'function') {
+        const value = translator.t('language.defaultTarget');
+        if (value && value !== 'language.defaultTarget') {
+            return value;
+        }
+    }
+    return 'Deutsch';
+}
+
+// Übergibt die gewünschte Fallback-Reihenfolge an den GPT-Service
+function syncTargetLanguageFallbacks(priorityList = []) {
+    if (typeof window.configureTargetLanguageFallbacks === 'function') {
+        window.configureTargetLanguageFallbacks(priorityList);
+    }
+}
+
+syncTargetLanguageFallbacks([gptPromptLanguage, 'german']);
+
 function getEmotionPromptLanguageInfo(code = gptPromptLanguage) {
     const info = gptPromptLanguageOptions.find(opt => opt.code === code);
-    return info ? { code: info.code, label: info.label } : { code: 'german', label: 'Deutsch' };
+    if (info) {
+        const label = info.code === 'german' ? getUiDefaultTargetLanguageLabel() : info.label;
+        return { code: info.code, label };
+    }
+    return { code: 'german', label: getUiDefaultTargetLanguageLabel() };
 }
 
 function getEmotionPromptLanguageLabel(code = gptPromptLanguage) {
@@ -2410,6 +2436,7 @@ async function setGptPromptLanguage(code) {
     const validCode = gptPromptLanguageOptions.some(opt => opt.code === candidate) ? candidate : 'german';
     gptPromptLanguage = validCode;
     storage.setItem('hla_gptPromptLanguage', gptPromptLanguage);
+    syncTargetLanguageFallbacks([gptPromptLanguage, 'german']);
     if (typeof window.setSystemPromptLanguage === 'function') {
         await window.setSystemPromptLanguage(gptPromptLanguage);
     }
@@ -2426,7 +2453,8 @@ function renderGptPromptLanguageSelect() {
     gptPromptLanguageOptions.forEach(opt => {
         const option = document.createElement('option');
         option.value = opt.code;
-        option.textContent = `${opt.label} (${opt.file})`;
+        const label = opt.code === 'german' ? getUiDefaultTargetLanguageLabel() : opt.label;
+        option.textContent = `${label} (${opt.file})`;
         if (opt.code === gptPromptLanguage) option.selected = true;
         select.appendChild(option);
     });

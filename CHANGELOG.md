@@ -3,6 +3,9 @@
 * `web/src/main.js` ersetzt den HTML-Template-String des mehrteiligen Ordnerauswahldialogs durch DOM-Erzeugung, speist Überschriften, Hinweise, Badges und Buttons über `getI18nTools()`/`folderSelection.*` ein und reagiert auf Sprachwechsel; zugleich nutzt der Einzeldatei-Dialog dieselben `folderSelection.single.*`-Schlüssel.
 * `web/src/i18n.js` führt neue `folderSelection.*`-Ressourcen für Dateinamen, EN/DB-Vorschauen, Badge-Texte sowie den Einzeldatei-Dialog ein und entfernt die veralteten `singleSelection.*`-Einträge.
 * `README.md` beschreibt im Schnellüberblick, dass der Ordnerauswahldialog alle Beschriftungen dynamisch aus i18n-Schlüsseln bezieht und somit vollständig übersetzbar ist.
+* `web/src/gptService.js` nutzt für `resolveTargetLanguage` den neuen Schlüssel `language.defaultTarget`, fällt andernfalls auf den gespeicherten Sprachcode zurück und erlaubt über `configureTargetLanguageFallbacks()` frei konfigurierbare Fallback-Reihenfolgen.
+* `web/src/main.js` und `web/src/i18n.js` koppeln Emo-Buttons, Dropdowns sowie GPT-Statusmeldungen an `language.defaultTarget`, bauen den Prompt-Sprachwähler bei Sprachwechseln neu auf und melden die gewünschte Fallback-Reihenfolge an den GPT-Service.
+* `README.md` hält im Schnellüberblick fest, dass GPT-Zielsprachen nun an die UI-Sprache gekoppelt sind und andernfalls den gespeicherten Sprachcode verwenden.
 * `web/src/main.js` nutzt `showTranslatedAlert()`/`showTranslatedConfirm()` für sämtliche Systemmeldungen, ersetzt harte Texte in `alert()`/`confirm()` durch i18n-Schlüssel mit Platzhaltern und sorgt damit für konsistente Hinweise in beiden Sprachen.
 * `web/src/i18n.js` ergänzt umfangreiche `alert.*`- und `confirm.*`-Schlüssel (Deutsch/Englisch) für Dateiberechtigungen, Projekt-/Ordneraktionen, Audio- und Soundevent-Workflows sowie Warn- und Erfolgsmeldungen.
 * `README.md` dokumentiert im Schnellüberblick, dass alle Systemmeldungen mehrsprachig über i18n laufen.
