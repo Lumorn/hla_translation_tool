@@ -23,7 +23,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Leistungsfähige Import-, Ordner- und Backup-Werkzeuge inklusive History, Statistik-Dashboards und Audio-Editor.
 * Der Datei-Import-Dialog blendet links einen Soundevents-Explorer für `soundevents/exports_alyx` ein, zeigt erkannte Ordner, Dateinamen und Zeilenanzahlen an und übernimmt die gewählte `.wiki`-Datei direkt ins Analysefeld.
 * Der Electron-Launcher findet den Soundevents-Export auch dann automatisch, wenn der Ordner eine Ebene über `web/` oder im Projektstamm liegt, weil mehrere Basispfade geprüft werden.
-* Der Ordner-Auswahldialog für mehrdeutige Dateien ist vollständig lokalisiert und folgt der gewählten Sprache bei Titeln, Hilfen und Buttons.
+* Der Ordner-Auswahldialog für mehrdeutige Dateien erzeugt alle Überschriften, Hinweise, Badges und Button-Texte per i18n (`folderSelection.*`) und reagiert damit sofort auf Sprachwechsel.
 * Der Einzeldatei-Ordnerdialog für Suchtreffer erzeugt jedes Element per DOM, liest Titel, Beschreibungen, Tooltips und Buttons aus i18n-Schlüsseln mit `{filename}`-/`{count}`-Platzhaltern und reagiert damit sofort auf Sprachwechsel.
 * Im Import- und Untertitelbereich erscheinen Fehler, Abbrüche, Erfolgsstatus und Zusammenfassungen jetzt als lokalisierte Toasts bzw. Dialoge, sodass Web- und Electron-Oberfläche konsistente Rückmeldungen anzeigen.
 * Der Untertitel-Import-Dialog (#ccImportDialog) trägt Titel, Labels, Badge, Hinweis und Buttons als `data-i18n`-Ziele ein, setzt Statuszeilen für Quellen/Zieldateien über `i18n.t(...)` und aktualisiert Badge samt Hinweis dynamisch bei Sprachwechsel.
