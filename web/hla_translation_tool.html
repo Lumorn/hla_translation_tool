@@ -455,33 +455,33 @@
             </p>
             <div class="import-dialog-layout">
                 <div class="import-dialog-panel import-dialog-panel--sidebar">
-                    <h4>📂 Soundevents (exports_alyx)</h4>
-                    <p class="import-description" style="font-size: 12px; margin-bottom: 10px;">
+                    <h4 data-i18n="import.soundevents.title">📂 Soundevents (exports_alyx)</h4>
+                    <p class="import-description" style="font-size: 12px; margin-bottom: 10px;" data-i18n="import.soundevents.description">
                         Vorschau aller .wiki-Dateien im Ordner <code>soundevents/exports_alyx</code>. So erkennst du direkt, welche Dateien und Ordner bereitstehen.
                     </p>
-                    <div class="soundevent-status" id="soundeventExportsStatus">Nur in der Desktop-Version verfügbar.</div>
+                    <div class="soundevent-status" id="soundeventExportsStatus" data-i18n="import.soundevents.status.desktopOnly">Nur in der Desktop-Version verfügbar.</div>
                     <div class="soundevent-table-wrapper">
                         <table class="soundevent-table">
                             <thead>
                                 <tr>
-                                    <th>Ordner</th>
-                                    <th>Datei</th>
-                                    <th>Zeilen</th>
-                                    <th>Zuletzt</th>
+                                    <th data-i18n="import.soundevents.table.folder">Ordner</th>
+                                    <th data-i18n="import.soundevents.table.file">Datei</th>
+                                    <th data-i18n="import.soundevents.table.lines">Zeilen</th>
+                                    <th data-i18n="import.soundevents.table.updated">Zuletzt</th>
                                 </tr>
                             </thead>
                             <tbody id="soundeventExportsBody"></tbody>
                         </table>
                     </div>
                     <div class="soundevent-actions">
-                        <button class="btn btn-secondary" id="soundeventReloadButton" type="button">↻ Neu laden</button>
-                        <button class="btn btn-primary" id="soundeventImportButton" type="button" disabled>📥 In Formular übernehmen</button>
-                        <button class="btn btn-success" id="soundeventImportAllButton" type="button" disabled>🚀 Alle Soundevents importieren</button>
+                        <button class="btn btn-secondary" id="soundeventReloadButton" type="button" data-i18n="import.soundevents.reload">↻ Neu laden</button>
+                        <button class="btn btn-primary" id="soundeventImportButton" type="button" disabled data-i18n="import.soundevents.apply">📥 In Formular übernehmen</button>
+                        <button class="btn btn-success" id="soundeventImportAllButton" type="button" disabled data-i18n="import.soundevents.bulk">🚀 Alle Soundevents importieren</button>
                     </div>
-                    <p class="soundevent-bulk-hint">Automatischer Stapelimport: Lädt jede Datei nacheinander, analysiert sie und startet den Import ohne weitere Klicks.</p>
+                    <p class="soundevent-bulk-hint" data-i18n="import.soundevents.bulkHint">Automatischer Stapelimport: Lädt jede Datei nacheinander, analysiert sie und startet den Import ohne weitere Klicks.</p>
                     <div class="soundevent-progress" id="soundeventImportProgress" aria-live="polite" aria-hidden="true">
                         <span class="soundevent-progress__spinner" aria-hidden="true"></span>
-                        <span class="soundevent-progress__text" id="soundeventImportProgressText">Übernehme Soundevents…</span>
+                        <span class="soundevent-progress__text" id="soundeventImportProgressText" data-i18n="import.soundevents.progress.default">Übernehme Soundevents…</span>
                     </div>
                 </div>
                 <div class="import-dialog-panel import-dialog-panel--main">

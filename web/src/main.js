@@ -12270,6 +12270,7 @@ function buildProjectFile(filename, folder) {
         let soundeventBulkAbortRequested = false;
 
         function updateSoundeventImportControls() {
+            const { t, format } = getI18nTools();
             const importBtn = document.getElementById('soundeventImportButton');
             const reloadBtn = document.getElementById('soundeventReloadButton');
             const importAllBtn = document.getElementById('soundeventImportAllButton');
@@ -12290,11 +12291,11 @@ function buildProjectFile(filename, folder) {
                 const baseDisabled = !window.electronAPI || !soundeventExports.length;
                 if (soundeventBulkInProgress) {
                     importAllBtn.disabled = false;
-                    importAllBtn.textContent = '⏹️ Stapel abbrechen';
+                    importAllBtn.textContent = t('import.soundevents.bulkStop');
                     importAllBtn.classList.add('btn-danger');
                 } else {
                     importAllBtn.disabled = baseDisabled || soundeventImportIsLoading;
-                    importAllBtn.textContent = '🚀 Alle Soundevents importieren';
+                    importAllBtn.textContent = t('import.soundevents.bulk');
                     importAllBtn.classList.remove('btn-danger');
                 }
                 importAllBtn.setAttribute('aria-pressed', soundeventBulkInProgress ? 'true' : 'false');
@@ -12306,12 +12307,18 @@ function buildProjectFile(filename, folder) {
                 progressBox.setAttribute('aria-hidden', isActive ? 'false' : 'true');
                 if (progressText) {
                     const detailText = soundeventImportProgressDetail
-                        ? `(${soundeventImportProgressDetail.index}/${soundeventImportProgressDetail.total}) ${soundeventImportProgressDetail.file}`
+                        ? format('import.soundevents.progress.detail', {
+                            index: soundeventImportProgressDetail.index,
+                            total: soundeventImportProgressDetail.total,
+                            file: soundeventImportProgressDetail.file
+                        })
                         : '';
-                    const label = soundeventImportMessage || '';
-                    progressText.textContent = isActive
+                    const label = soundeventImportMessage || t('import.soundevents.progress.default');
+                    const combined = isActive
                         ? [label, detailText].filter(Boolean).join(' ')
                         : '';
+                    progressText.textContent = combined;
+                    progressBox.setAttribute('aria-label', isActive ? combined : t('import.soundevents.progress.default'));
                 }
             }
 
@@ -12647,46 +12654,48 @@ function buildProjectFile(filename, folder) {
         }
 
         async function loadSoundeventExportsPreview() {
+            const { t, format } = getI18nTools();
             const statusEl = document.getElementById('soundeventExportsStatus');
             const tableBody = document.getElementById('soundeventExportsBody');
             if (!statusEl || !tableBody) return;
-            statusEl.textContent = 'Durchsuche soundevents/exports_alyx...';
+            statusEl.textContent = t('import.soundevents.status.scanning');
             tableBody.innerHTML = '';
             soundeventExports = [];
             selectedSoundeventExportIndex = null;
             setSoundeventImportLoading(false);
             updateSoundeventImportControls();
             if (!window.electronAPI?.listSoundeventExports) {
-                statusEl.textContent = 'Nur in der Desktop-Version verfügbar.';
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Soundevents-Ordner kann im Browser nicht gelesen werden.</td></tr>';
+                statusEl.textContent = t('import.soundevents.status.desktopOnly');
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">${t('import.soundevents.table.browserBlocked')}</td></tr>`;
                 updateSoundeventImportControls();
                 return;
             }
             try {
                 const result = await window.electronAPI.listSoundeventExports();
                 if (!result?.available || !Array.isArray(result.files) || result.files.length === 0) {
-                    statusEl.textContent = 'Keine Dateien gefunden.';
-                    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Ordner leer oder nicht gefunden.</td></tr>';
+                    statusEl.textContent = t('import.soundevents.status.empty');
+                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">${t('import.soundevents.table.folderMissing')}</td></tr>`;
                     updateSoundeventImportControls();
                     return;
                 }
                 soundeventExports = result.files.slice().sort((a, b) => a.file.localeCompare(b.file));
-                statusEl.textContent = `${soundeventExports.length} Dateien erkannt`;
+                statusEl.textContent = format('import.soundevents.status.scanned', { count: soundeventExports.length });
                 renderSoundeventExportTable();
                 updateSoundeventImportControls();
             } catch (err) {
                 console.error('Soundevents-Ordner konnte nicht gelesen werden:', err);
-                statusEl.textContent = 'Fehler beim Lesen des Ordners.';
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #e57373;">Scan fehlgeschlagen. Details siehe Konsole.</td></tr>';
+                statusEl.textContent = t('import.soundevents.status.error');
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 16px; color: #e57373;">${t('import.soundevents.table.scanFailed')}</td></tr>`;
                 updateSoundeventImportControls();
             }
         }
 
         function renderSoundeventExportTable() {
+            const { t } = getI18nTools();
             const tableBody = document.getElementById('soundeventExportsBody');
             if (!tableBody) return;
             if (!soundeventExports.length) {
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">Keine Einträge verfügbar.</td></tr>';
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 16px; color: #777;">${t('import.soundevents.table.empty')}</td></tr>`;
                 return;
             }
             const rows = soundeventExports.map((info, index) => {
@@ -12713,7 +12722,8 @@ function buildProjectFile(filename, folder) {
         function selectSoundeventExport(index) {
             if (soundeventBulkInProgress) {
                 if (typeof showToast === 'function') {
-                    showToast('Der Stapelimport läuft noch – bitte warten oder abbrechen.', 'warning');
+                    const { t } = getI18nTools();
+                    showToast(t('import.soundevents.toast.bulkRunning'), 'warning');
                 }
                 return;
             }
@@ -12746,7 +12756,8 @@ function buildProjectFile(filename, folder) {
         async function importSoundeventSelection() {
             if (soundeventBulkInProgress) {
                 if (typeof showToast === 'function') {
-                    showToast('Der Stapelimport läuft noch – bitte warte kurz oder stoppe ihn.', 'warning');
+                    const { t } = getI18nTools();
+                    showToast(t('import.soundevents.toast.bulkRunning'), 'warning');
                 }
                 return;
             }
@@ -12759,21 +12770,22 @@ function buildProjectFile(filename, folder) {
             if (!entry) return;
             const statusEl = document.getElementById('soundeventExportsStatus');
             try {
-                if (statusEl) statusEl.textContent = `Lade ${entry.file}...`;
+                const { t, format } = getI18nTools();
+                if (statusEl) statusEl.textContent = format('import.soundevents.status.loadingFile', { file: entry.file });
                 const detail = {
                     file: entry.file,
                     index: selectedSoundeventExportIndex + 1,
                     total: soundeventExports.length || 1
                 };
-                setSoundeventImportLoading(true, `Übernehme ${entry.file}…`, detail);
+                setSoundeventImportLoading(true, format('import.soundevents.progress.apply', { file: entry.file }), detail);
                 const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
                 if (!fileData?.content) {
-                    throw new Error('Keine Daten geladen');
+                    throw new Error(t('import.soundevents.error.noData'));
                 }
                 document.getElementById('importData').value = fileData.content;
                 const fileLabel = document.getElementById('importFileName');
-                if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
-                updateStatus(`Soundevents-Datei übernommen: ${entry.file}`);
+                if (fileLabel) fileLabel.textContent = format('import.soundevents.fileLabel', { file: entry.file });
+                updateStatus(format('import.soundevents.status.importedFile', { file: entry.file }));
                 setSoundeventFolderHint(entry.folder);
                 analyzeImportData();
                 const summary = await startImportProcess({ soundeventFolder: entry.folder, skipFolderPrompts: true });
@@ -12783,8 +12795,9 @@ function buildProjectFile(filename, folder) {
                 setSoundeventFolderHint(null);
             } catch (err) {
                 console.error('Soundevents-Datei konnte nicht übernommen werden:', err);
-                if (statusEl) statusEl.textContent = 'Fehler beim Laden der Datei.';
-                showToast('Soundevents-Datei konnte nicht geladen werden.', 'error');
+                const { t } = getI18nTools();
+                if (statusEl) statusEl.textContent = t('import.soundevents.status.fileLoadError');
+                showToast(t('import.soundevents.toast.loadError'), 'error');
             } finally {
                 setSoundeventImportLoading(false);
             }
@@ -12792,22 +12805,23 @@ function buildProjectFile(filename, folder) {
 
         async function startBulkSoundeventImport() {
             const statusEl = document.getElementById('soundeventExportsStatus');
+            const { t, format } = getI18nTools();
             if (!window.electronAPI?.loadSoundeventExport) {
                 showTranslatedAlert('alert.desktop.batchImport');
                 return;
             }
             if (!soundeventExports.length) {
                 if (typeof showToast === 'function') {
-                    showToast('Keine Soundevents für den Stapelimport gefunden.', 'warning');
+                    showToast(t('import.soundevents.toast.noneFound'), 'warning');
                 }
                 return;
             }
             if (soundeventBulkInProgress) {
                 soundeventBulkAbortRequested = true;
-                if (statusEl) statusEl.textContent = 'Abbruch angefordert – Stapelimport stoppt nach aktueller Datei.';
-                updateStatus('Stapelimport-Abbruch angefordert.');
+                if (statusEl) statusEl.textContent = t('import.soundevents.status.abortQueued');
+                updateStatus(t('import.soundevents.status.abortRequested'));
                 if (typeof showToast === 'function') {
-                    showToast('Abbruch angefordert – laufender Stapelimport stoppt nach der aktuellen Datei.', 'warning');
+                    showToast(t('import.soundevents.toast.abortQueued'), 'warning');
                 }
                 return;
             }
@@ -12818,10 +12832,10 @@ function buildProjectFile(filename, folder) {
 
             soundeventBulkInProgress = true;
             soundeventBulkAbortRequested = false;
-            setSoundeventImportLoading(true, 'Stapelimport läuft…');
+            setSoundeventImportLoading(true, t('import.soundevents.progress.batchRunning'));
             updateSoundeventImportControls();
-            if (statusEl) statusEl.textContent = `Starte Stapelimport (${soundeventExports.length} Dateien)…`;
-            updateStatus(`Stapelimport gestartet (${soundeventExports.length} Dateien).`);
+            if (statusEl) statusEl.textContent = format('import.soundevents.status.bulkStart', { count: soundeventExports.length });
+            updateStatus(format('import.soundevents.status.bulkStarted', { count: soundeventExports.length }));
 
             const summary = { success: 0, failures: [], aborted: false };
             const total = soundeventExports.length;
@@ -12837,15 +12851,19 @@ function buildProjectFile(filename, folder) {
                     const processed = await (async () => {
                         while (!soundeventBulkAbortRequested) {
                             try {
-                                setSoundeventImportLoading(true, 'Verarbeite Soundevents…', detail);
-                                if (statusEl) statusEl.textContent = `Verarbeite ${entry.file} (${detail.index}/${detail.total})…`;
+                                setSoundeventImportLoading(true, t('import.soundevents.progress.processing'), detail);
+                                if (statusEl) statusEl.textContent = format('import.soundevents.status.processingFile', {
+                                    file: entry.file,
+                                    index: detail.index,
+                                    total: detail.total
+                                });
                                 const fileData = await window.electronAPI.loadSoundeventExport(entry.file);
                                 if (!fileData?.content) {
-                                    throw new Error('Keine Daten geladen');
+                                    throw new Error(t('import.soundevents.error.noData'));
                                 }
                                 document.getElementById('importData').value = fileData.content;
                                 const fileLabel = document.getElementById('importFileName');
-                                if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
+                                if (fileLabel) fileLabel.textContent = format('import.soundevents.fileLabel', { file: entry.file });
                                 setSoundeventFolderHint(entry.folder);
                                 analyzeImportData();
                                 const result = await startImportProcess({ soundeventFolder: entry.folder, skipFolderPrompts: true });
@@ -12856,11 +12874,18 @@ function buildProjectFile(filename, folder) {
                                     return false;
                                 }
                                 summary.success++;
-                                updateStatus(`Import ${entry.file} abgeschlossen (${detail.index}/${detail.total})`);
+                                updateStatus(format('import.soundevents.status.fileImportedProgress', {
+                                    file: entry.file,
+                                    index: detail.index,
+                                    total: detail.total
+                                }));
                                 return true;
                             } catch (error) {
                                 console.error('Fehler beim Stapelimport:', error);
-                                const hint = `Fehler bei ${entry.file}: ${error?.message || error}`;
+                                const hint = format('import.soundevents.toast.bulkError', {
+                                    file: entry.file,
+                                    message: error?.message || error
+                                });
                                 if (typeof showToast === 'function') {
                                     showToast(hint, 'error');
                                 }
@@ -12892,8 +12917,8 @@ function buildProjectFile(filename, folder) {
 
             const failCount = summary.failures.length;
             const statusText = soundeventBulkAbortRequested || summary.aborted
-                ? `Stapelimport abgebrochen: ${summary.success} von ${total} Dateien verarbeitet (${failCount} Fehler).`
-                : `Stapelimport abgeschlossen: ${summary.success} von ${total} Dateien verarbeitet (${failCount} Fehler).`;
+                ? format('import.soundevents.status.bulkSummaryAborted', { success: summary.success, total, failures: failCount })
+                : format('import.soundevents.status.bulkSummary', { success: summary.success, total, failures: failCount });
 
             if (statusEl) statusEl.textContent = statusText;
             updateStatus(statusText);
