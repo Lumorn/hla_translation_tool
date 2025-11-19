@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.560
+* `web/src/main.js` nutzt `i18n.getLanguage()` für `Intl.DateTimeFormat`, ersetzt die Template-Strings der Speicherinfo durch `i18n.format` mit Zeit-/Längenplatzhaltern und meldet Fehlerstatus sowie Toasts komplett über neue `deAudio.save.*`-Schlüssel.
+* `web/src/i18n.js` ergänzt `deAudio.save.lastSaved`, `deAudio.save.hint.noWrite`, `deAudio.save.hint.missingPath`, `deAudio.save.timestampFormat` und `deAudio.save.statusError` in Deutsch und Englisch.
+* `README.md` hebt Version **1.40.560** hervor und beschreibt die sprachadaptive Speicheranzeige samt lokalisierten Fehlerhinweisen.
 # 🛠️ Patch in 1.40.559
 * `web/src/main.js` ersetzt den Template-String des Einzeldatei-Ordnerdialogs durch DOM-Erzeugungen, setzt Titel, Beschreibungen, Hilfen, Buttons und Tooltips per `i18n.t/format`, übergibt `{filename}`-/`{count}`-Platzhalter und reagiert über den Language-Switcher auf Laufzeitwechsel.
 * `web/src/i18n.js` ergänzt die neuen `singleSelection.*`-Schlüssel in Deutsch und Englisch für Titel, Hilfen, Buttonbeschriftungen sowie Audio-Tooltips.

@@ -19596,6 +19596,17 @@ async function applyDeEdit(param = {}) {
     if (deSaveInProgress) return;
     if (!currentEditFile || !originalEditBuffer) return;
     deSaveInProgress = true;
+    const translate = window.i18n?.t || (value => value);
+    const format = window.i18n?.format || ((key, replacements = {}) => {
+        let template = translate(key);
+        if (typeof template !== 'string') {
+            template = String(template ?? key);
+        }
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.replaceAll(`{${placeholder}}`, value);
+        }, template);
+    });
+    const getLanguage = window.i18n?.getLanguage || (() => document.documentElement.lang || 'de');
     const closeAfterSave = typeof param === 'boolean' ? param : !!param.closeAfterSave;
     // Restlänge berechnen und ungültigen Schnitt verhindern
     const restlaenge = editDurationMs - editStartTrim - editEndTrim;
@@ -19816,19 +19827,29 @@ async function applyDeEdit(param = {}) {
         markDirty();
         renderFileTable();
         // Zeitstempel setzen und Erfolg melden
-        const now = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
         const info = document.getElementById('deEditSaveInfo');
         if (info) {
-            // Anzeige mit DE- und EN-Länge ergänzen, damit beide Werte nach dem Speichern sichtbar bleiben
-            const teile = [`Zuletzt gespeichert: ${now}`];
-            const deSekunden = finalBuffer ? (finalBuffer.length / finalBuffer.sampleRate) : null;
-            const enSekunden = editEnBuffer ? (editEnBuffer.length / editEnBuffer.sampleRate) : null;
-            if (Number.isFinite(deSekunden)) teile.push(`DE: ${deSekunden.toFixed(2)}s`);
-            if (Number.isFinite(enSekunden)) teile.push(`EN: ${enSekunden.toFixed(2)}s`);
-            info.textContent = teile.join(' • ');
+            // Einheitliche Anzeige der Uhrzeit und EN/DE-Längen für beide Sprachen erzeugen
+            const activeLanguage = getLanguage() || navigator.language || 'de';
+            const timeTemplate = translate('deAudio.save.timestampFormat');
+            const timeOptions = (timeTemplate && typeof timeTemplate === 'object')
+                ? timeTemplate
+                : { hour: '2-digit', minute: '2-digit' };
+            const timeFormatter = new Intl.DateTimeFormat(activeLanguage, timeOptions);
+            const now = timeFormatter.format(new Date());
+            const numberFormatter = new Intl.NumberFormat(activeLanguage, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const formatLength = seconds => Number.isFinite(seconds) ? `${numberFormatter.format(seconds)}s` : '—';
+            const deSeconds = finalBuffer ? (finalBuffer.length / finalBuffer.sampleRate) : NaN;
+            const enSeconds = editEnBuffer ? (editEnBuffer.length / editEnBuffer.sampleRate) : NaN;
+            const infoText = format('deAudio.save.lastSaved', {
+                time: now,
+                deLength: formatLength(deSeconds),
+                enLength: formatLength(enSeconds)
+            });
+            info.textContent = typeof infoText === 'string' ? infoText : String(infoText);
         }
         if (typeof showToast === 'function') {
-            showToast(t('deAudio.save.toast'), 'success');
+            showToast(translate('deAudio.save.toast'), 'success');
         }
         if (rebuildResult && rebuildResult.deBuffer) {
             finalBuffer = rebuildResult.deBuffer;
@@ -19841,7 +19862,7 @@ async function applyDeEdit(param = {}) {
         volumeMatchedBuffer = null;
         validateDeSelection();
         updateEffectButtons();
-        updateStatus(t('deAudio.save.statusDone'));
+        updateStatus(translate('deAudio.save.statusDone'));
         // Sofort speichern, damit die Bearbeitung gesichert ist
         saveCurrentProject();
         // Dialog nur schließen, wenn dies ausdrücklich gewünscht ist
@@ -19855,17 +19876,20 @@ async function applyDeEdit(param = {}) {
         if (!saveSucceeded) {
             restoreSilenceState();
         }
-        let hinweis = '';
+        let hintKey = '';
         if (err.code === 'EACCES' || err.name === 'NotAllowedError') {
-            hinweis = 'Kein Schreibzugriff auf den Ordner. Bitte Berechtigungen prüfen.';
+            hintKey = 'deAudio.save.hint.noWrite';
         } else if (err.code === 'ENOENT') {
-            hinweis = 'Dateipfad nicht gefunden. Wurde der Ordner verschoben?';
+            hintKey = 'deAudio.save.hint.missingPath';
         }
-        updateStatus('Fehler beim Speichern: ' + err.message);
+        const hintText = hintKey ? translate(hintKey) : '';
+        const statusText = format('deAudio.save.statusError', { message: err?.message || err });
+        updateStatus(typeof statusText === 'string' ? statusText : String(statusText));
         if (typeof showToast === 'function') {
-            const msg = hinweis ? t('deAudio.save.errorWithHint').replace('{hint}', hinweis)
-                                : t('deAudio.save.error');
-            showToast(msg, 'error');
+            const msg = hintText
+                ? format('deAudio.save.errorWithHint', { hint: hintText })
+                : translate('deAudio.save.error');
+            showToast(typeof msg === 'string' ? msg : String(msg), 'error');
         }
     } finally {
         deSaveInProgress = false;
