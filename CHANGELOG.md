@@ -3,6 +3,9 @@
 * `web/src/projectHelpers.js` entfernt nach dem Listener-Reset sämtliche `data-bound`-Marker, setzt das Tab-Flag zurück und stößt über `ui:listenersDetached` ein globales Rebinding an, sodass nach Projektwechseln keine „toten“ Buttons übrig bleiben.
 * `web/src/dubbing.js` merkt sich die zuletzt genutzten Zoom-/Scroll-Werte, bindet Timeline- und Effekt-Tabs nach `ui:listenersDetached` automatisch neu und protokolliert Fehler im Konsolen-Warnlog.
 * `README.md` hebt Version **1.40.561** hervor und beschreibt das automatische Rebinding sämtlicher DE-Audio-Knöpfe.
+* `web/hla_translation_tool.html` markiert sämtliche Elemente des CSV/Excel-Spaltendialogs mit `data-i18n`-/`data-i18n-placeholder`-Attributen und ersetzt Fallback-Texte durch neutrale Defaults, damit alle Buttons, Labels und Hinweise sprachneutral geladen werden können.
+* `web/src/i18n.js` ergänzt neue `import.dialog.*`-Schlüssel für Datei-Button, Statuslabel, Spaltenhinweise, Auswahloptionen und Aktionen in Deutsch und Englisch.
+* `README.md` weist sowohl im Schnellüberblick als auch im Import-Abschnitt auf den vollständig lokalisierten Spaltendialog hin und dokumentiert damit die neue Mehrsprachigkeit.
 # 🛠️ Patch in 1.40.560
 * `web/src/main.js` nutzt `i18n.getLanguage()` für `Intl.DateTimeFormat`, ersetzt die Template-Strings der Speicherinfo durch `i18n.format` mit Zeit-/Längenplatzhaltern und meldet Fehlerstatus sowie Toasts komplett über neue `deAudio.save.*`-Schlüssel.
 * `web/src/i18n.js` ergänzt `deAudio.save.lastSaved`, `deAudio.save.hint.noWrite`, `deAudio.save.hint.missingPath`, `deAudio.save.timestampFormat` und `deAudio.save.statusError` in Deutsch und Englisch.
