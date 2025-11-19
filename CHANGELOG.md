@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.559
+* `web/src/main.js` ersetzt den Template-String des Einzeldatei-Ordnerdialogs durch DOM-Erzeugungen, setzt Titel, Beschreibungen, Hilfen, Buttons und Tooltips per `i18n.t/format`, übergibt `{filename}`-/`{count}`-Platzhalter und reagiert über den Language-Switcher auf Laufzeitwechsel.
+* `web/src/i18n.js` ergänzt die neuen `singleSelection.*`-Schlüssel in Deutsch und Englisch für Titel, Hilfen, Buttonbeschriftungen sowie Audio-Tooltips.
+* `README.md` hebt Version **1.40.559** hervor und beschreibt den vollständig lokalisierten Einzeldatei-Ordnerdialog.
 # 🛠️ Patch in 1.40.558
 * `web/src/main.js` ersetzt Import-Alerts durch lokalisierte Toasts und Dialoge, wertet Spaltenfehler über i18n-Schlüssel aus und zeigt Erfolgs- sowie Fehlerschilderungen im UI-Banner statt im Browser-Alert.
 * `web/src/main.js` führt Zusammenfassungs- und Fehler-Dialoghelfer inklusive Platzhalterlisten ein, nutzt `getI18nTools()` zentral und meldet Untertitel- sowie Suchstatus konsequent über `t(...)`.
