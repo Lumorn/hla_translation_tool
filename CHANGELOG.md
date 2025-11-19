@@ -1,4 +1,11 @@
 # Changelog
+# 🛠️ Patch in 1.40.568
+* `web/hla_translation_tool.html` ergänzt unter 🎮 Projekte einen dedizierten Button zum Laden von `docs/alyx_translation_overview.json`, der den Blueprint-Import direkt verfügbar macht.
+* `web/src/style.css` führt eine eigene Optik für die neue Alyx-Import-Schaltfläche ein, damit sie sich klar vom regulären „+ Neues Projekt“-Button unterscheidet.
+* `web/src/main.js` lädt per `fetch` die Blueprint-Datei aus dem Docs-Ordner, bestätigt das Überschreiben aller Projekte und ruft anschließend `applyTranslationBlueprint(...)` auf; Fehler werden über lokalisierte Status- und Alert-Texte gemeldet.
+* `web/src/i18n.js` liefert neue Schlüssel für Button-Beschriftung, Statusmeldungen und Fehlerdialoge des Alyx-Imports in Deutsch und Englisch.
+* `README.md` hebt Version **1.40.568** hervor und beschreibt den neuen Alyx-Blueprint-Button im Schnellüberblick.
+
 # 🛠️ Patch in 1.40.567
 * `web/hla_translation_tool.html` versieht die komplette Effektspalte des DE-Audio-Editors (Lautstärke, Funkgerät, Hall, Zoo, EM-Störungen, Nebenraum) mit `data-i18n`-/`data-i18n-title`-Attributen und umschließt Texte in Spans, damit Buttons, Labels, Dropdowns und Tooltips automatisch übersetzt werden.
 * `web/src/i18n.js` liefert die neuen `deAudio.effects.*`-Schlüssel für sämtliche Effekt-Labels, Presets und Tooltips in Deutsch und Englisch.

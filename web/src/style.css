@@ -143,6 +143,23 @@ th:nth-child(8) {
             background: #ff8c47;
         }
 
+        .alyx-import-btn {
+            margin: 0 10px 15px;
+            padding: 10px;
+            background: #3949ab;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background 0.2s;
+            display: block;
+        }
+
+        .alyx-import-btn:hover {
+            background: #5c6bc0;
+        }
+
         /* Main Content */
         .main-content {
             flex: 1;
