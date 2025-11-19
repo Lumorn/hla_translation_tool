@@ -62,17 +62,27 @@ let mainWindow;
 // Ermittelt den Ordner soundevents/exports_alyx inklusive Groß-/Kleinschreibungsvarianten
 const soundeventRootCandidates = ['soundevents', 'Soundevents', 'SoundEvents'];
 const soundeventExportCandidates = ['exports_alyx', 'Exports_alyx', 'Exports_Alyx'];
+const soundeventBaseCandidates = Array.from(new Set([
+  projectRoot,
+  path.resolve(projectRoot, '..'), // Repositorywurzel (eine Ebene ueber web/)
+  path.resolve(__dirname, '..'), // electron/-Ordner bzw. Gesamtprojekt
+  path.resolve(__dirname, '..', '..'), // Sicherheitsnetz bei abweichender Startstruktur
+]))
+  .filter(Boolean);
 let soundeventExportPath = null;
 
-for (const rootName of soundeventRootCandidates) {
-  const possibleRoot = path.join(projectRoot, rootName);
-  if (!fs.existsSync(possibleRoot)) continue;
-  for (const exportName of soundeventExportCandidates) {
-    const possibleExport = path.join(possibleRoot, exportName);
-    if (fs.existsSync(possibleExport)) {
-      soundeventExportPath = possibleExport;
-      break;
+for (const basePath of soundeventBaseCandidates) {
+  for (const rootName of soundeventRootCandidates) {
+    const possibleRoot = path.join(basePath, rootName);
+    if (!fs.existsSync(possibleRoot)) continue;
+    for (const exportName of soundeventExportCandidates) {
+      const possibleExport = path.join(possibleRoot, exportName);
+      if (fs.existsSync(possibleExport)) {
+        soundeventExportPath = possibleExport;
+        break;
+      }
     }
+    if (soundeventExportPath) break;
   }
   if (soundeventExportPath) break;
 }
