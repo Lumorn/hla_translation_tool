@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.560-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.561-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -173,6 +173,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Manueller Lautstärke-Booster:** Ein eigener Regler erlaubt es, DE-Audio gezielt um ±12 dB zu verstärken oder abzuschwächen – inklusive Presets, Neutral-Button und automatischer History-Sicherung wie bei den anderen Effekten.
 * **Selbstheilende Effekt-Register:** Beim Öffnen des DE-Audio-Dialogs prüft das Tool die Tabs, setzt fehlende Listener nach und organisiert die Panels automatisch neu, falls ein Re-Render die Struktur ersetzt hat.
 * **Robuste Tab-Umschaltung nach Listener-Reset:** `detachAllEventListeners()` setzt das Flag `effectSidebarOrganized` zurück und entfernt geklonnten Effekt-Schaltflächen das `data-bound`-Attribut, damit „Kernfunktionen“ und „Erweiterte Optionen“ nach Projektwechseln zuverlässig neu gebunden werden.
+* **Automatisches Rebinding aller DE-Audio-Knöpfe:** `detachAllEventListeners()` meldet jetzt über das Event `ui:listenersDetached`, dass Listener verloren gingen; `web/src/dubbing.js` setzt daraufhin Tabs, Zoom-/Scroll-Schieber und Kern-/Experten-Buttons erneut auf und spielt die zuletzt bekannte Zoom- sowie Positionsanzeige sofort wieder ein.
 * **DOM-freundliche Effekt-Register:** `setupRightSidebarTabs()` prüft vor dem Umbau, ob `querySelector` und `createElement` verfügbar sind, und überspringt den Neuaufbau in Testumgebungen ohne echtes DOM.
 * **Detailliertes Fehlerfenster:** Fehlende oder beschädigte Projekte melden sich mit einer genauen Ursache und einem Reparaturhinweis.
 * **Debug-Bericht bei Fehlern:** Nach jeder Fehlermeldung kann ein Fenster mit auswählbaren Berichten samt Umgebung geöffnet werden.

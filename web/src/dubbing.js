@@ -861,6 +861,8 @@ const WAVE_ZOOM_STEP = 0.1;
 let waveTimelineElements = null;
 // Aktuell registrierte Event-Handler für Zoom und Scroll
 let waveTimelineHandlers = null;
+// Zuletzt angewendete Zoom-/Scrollwerte zur späteren Wiederherstellung
+let waveTimelineLastState = { zoom: null, scrollFraction: null };
 
 // Stellt sicher, dass die Timeline-Struktur im DOM vorhanden ist
 function ensureWaveTimelineElements() {
@@ -951,18 +953,22 @@ function mountWaveTimeline(handlers = {}) {
 
 // Stellt Slider-Anzeigen und Werte nach außen synchronisiert bereit
 function syncWaveTimelineControls(state = {}) {
+    waveTimelineLastState = {
+        zoom: Object.prototype.hasOwnProperty.call(state, 'zoom') ? state.zoom : waveTimelineLastState.zoom,
+        scrollFraction: Object.prototype.hasOwnProperty.call(state, 'scrollFraction') ? state.scrollFraction : waveTimelineLastState.scrollFraction
+    };
     const els = ensureWaveTimelineElements();
     if (!els) return;
     const { zoomInput, zoomDisplay, scrollInput, scrollDisplay } = els;
-    if (state.zoom != null && zoomInput) {
-        const clamped = Math.min(WAVE_ZOOM_MAX, Math.max(WAVE_ZOOM_MIN, state.zoom));
+    if (waveTimelineLastState.zoom != null && zoomInput) {
+        const clamped = Math.min(WAVE_ZOOM_MAX, Math.max(WAVE_ZOOM_MIN, waveTimelineLastState.zoom));
         zoomInput.value = clamped.toFixed(1);
         if (zoomDisplay) {
             zoomDisplay.textContent = `${Math.round(clamped * 100)}%`;
         }
     }
-    if (state.scrollFraction != null && scrollInput) {
-        const perc = Math.max(0, Math.min(1, state.scrollFraction)) * 100;
+    if (waveTimelineLastState.scrollFraction != null && scrollInput) {
+        const perc = Math.max(0, Math.min(1, waveTimelineLastState.scrollFraction)) * 100;
         scrollInput.value = perc.toFixed(0);
         if (scrollDisplay) {
             scrollDisplay.textContent = `${Math.round(perc)}%`;
@@ -978,6 +984,27 @@ function renderWaveTimeline(state = {}) {
     });
 }
 // =========================== TIMELINE-UNTERSTÜTZUNG END =======================
+
+// Stellt nach einem globalen Listener-Reset die Timeline-Steuerung wieder her
+function rebindWaveTimelineControls() {
+    const els = ensureWaveTimelineElements();
+    if (!els) return;
+    const keys = ['zoomInput', 'zoomOutBtn', 'zoomInBtn', 'scrollInput', 'scrollLeftBtn', 'scrollRightBtn'];
+    keys.map(key => els[key]).filter(Boolean).forEach(el => {
+        if (el.dataset?.bound) {
+            delete el.dataset.bound;
+        }
+    });
+    if (waveTimelineHandlers) {
+        mountWaveTimeline(waveTimelineHandlers);
+        if (waveTimelineLastState.zoom != null || waveTimelineLastState.scrollFraction != null) {
+            syncWaveTimelineControls({
+                zoom: waveTimelineLastState.zoom,
+                scrollFraction: waveTimelineLastState.scrollFraction
+            });
+        }
+    }
+}
 
 // Baut die Tabs für Kern- und Expertenfunktionen in der rechten Seitenleiste auf
 function setupRightSidebarTabs() {
@@ -1101,6 +1128,31 @@ function initEffectSidebarTabs() {
 }
 
 initEffectSidebarTabs();
+
+// Erzwingt nach einem globalen Listener-Reset einen Neuaufbau der Tabs
+function rebindEffectSidebarTabs() {
+    if (typeof document === 'undefined') return;
+    const scroll = document.querySelector('#deEditDialog .effect-scroll');
+    if (!scroll) return;
+    scroll.querySelectorAll('.effect-tab').forEach(btn => btn.removeAttribute('data-bound'));
+    effectSidebarOrganized = false;
+    setupRightSidebarTabs();
+}
+
+if (typeof document !== 'undefined') {
+    document.addEventListener('ui:listenersDetached', () => {
+        try {
+            rebindEffectSidebarTabs();
+        } catch (err) {
+            console.warn('Rebinding der Effekt-Tabs fehlgeschlagen:', err);
+        }
+        try {
+            rebindWaveTimelineControls();
+        } catch (err) {
+            console.warn('Rebinding der Wave-Timeline fehlgeschlagen:', err);
+        }
+    });
+}
 
 // =========================== ISDUBREADY START ===============================
 // Prüft, ob eine Dub-Datei fertig ist
