@@ -82,6 +82,20 @@ function setSubtitleLanguage(code) {
     updateSubtitleLanguageBadge();
 }
 
+function getI18nTools() {
+    const translator = window.i18n || {};
+    const t = typeof translator.t === 'function' ? translator.t : (value => value);
+    const fallbackFormat = (key, replacements = {}) => {
+        let template = t(key);
+        if (!replacements) return template;
+        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+            return acc.split(`{${placeholder}}`).join(value);
+        }, template);
+    };
+    const format = typeof translator.format === 'function' ? translator.format : fallbackFormat;
+    return { t, format };
+}
+
 // Aktualisiert Anzeige und Beschriftung für das aktuelle Speichersystem
 function updateStorageIndicator(mode) {
     const indicator = document.getElementById('storageModeIndicator');
@@ -19903,7 +19917,7 @@ async function startImportProcess(options = {}) {
     const filenameColumn = parseInt(document.getElementById('filenameColumn').value);
     const englishColumn = parseInt(document.getElementById('englishColumn').value);
     const germanColumn = document.getElementById('germanColumn').value ? parseInt(document.getElementById('germanColumn').value) : -1;
-    const t = window.i18n?.t || (value => value);
+    const { t, format } = getI18nTools();
     let autoAssignedFolders = 0;
     const buildEarlySummary = (reason) => ({
         imported: 0,
@@ -19918,22 +19932,22 @@ async function startImportProcess(options = {}) {
     });
 
     if (isNaN(filenameColumn)) {
-        alert('Bitte wählen Sie die Spalte für die Dateinamen aus!');
+        showToast(t('import.error.missingFilename'), 'error');
         return finalizeSummary(buildEarlySummary('missingFilename'));
     }
 
     if (isNaN(englishColumn)) {
-        alert('Bitte wählen Sie die Spalte für den englischen Text aus!');
+        showToast(t('import.error.missingEnglish'), 'error');
         return finalizeSummary(buildEarlySummary('missingEnglish'));
     }
 
     if (filenameColumn === englishColumn) {
-        alert('Dateinamen und englischer Text können nicht in derselben Spalte sein!');
+        showToast(t('import.error.sameColumn'), 'error');
         return finalizeSummary(buildEarlySummary('invalidColumns'));
     }
 
     if (germanColumn >= 0 && (germanColumn === filenameColumn || germanColumn === englishColumn)) {
-        alert('Deutsche Text-Spalte muss unterschiedlich zu den anderen Spalten sein!');
+        showToast(t('import.error.sameGermanColumn'), 'error');
         return finalizeSummary(buildEarlySummary('invalidGermanColumn'));
     }
 
@@ -20061,8 +20075,7 @@ async function startImportProcess(options = {}) {
         const selections = await showFolderSelectionDialog(ambiguousFiles);
 
         if (selections === null) {
-            // Benutzer hat abgebrochen
-            alert('Import abgebrochen.');
+            showToast(t('import.status.aborted'), 'warning');
             return finalizeSummary(buildSummary(true, 'folderSelectionCancelled'));
         }
         
@@ -20113,64 +20126,157 @@ async function startImportProcess(options = {}) {
             renderFileTable();
             updateProgressStats();
         }
-        
-        let message = `${imported} Texte in die Datenbank importiert`;
-        if (updated > 0) {
-            message += `\n${updated} Dateien im aktuellen Projekt aktualisiert`;
-        }
-        
-        updateStatus(message);
+
+        const statusKey = updated > 0 ? 'import.success.statusUpdated' : 'import.success.statusImported';
+        updateStatus(format(statusKey, { imported, updated }));
         if (!soundeventBulkInProgress) {
             closeImportDialog();
         }
-        
-        // Erweiterte Erfolgs-Nachricht
-        let summaryMessage = `✅ Import erfolgreich abgeschlossen!\n\n` +
-            `📊 Statistik:\n` +
-            `• ${imported} Texte importiert (${databaseMatches} DB-Matches)\n` +
-            `• ${updated} Projekt-Dateien aktualisiert\n` +
-            `• ${parsedImportData.length} Zeilen verarbeitet\n` +
-            `• ${notFound.length} nicht gefunden\n`;
-            
-        if (multipleFound.length > 0) {
-            summaryMessage += `• ${multipleFound.length} mehrdeutige Dateien aufgelöst\n`;
-        }
-        if (autoAssignedFolders > 0) {
-            summaryMessage += `• ${autoAssignedFolders} Ordner automatisch zugewiesen\n`;
-        }
-        if (skippedDueToAmbiguity > 0) {
-            summaryMessage += `• ${skippedDueToAmbiguity} mehrdeutige Dateien übersprungen\n`;
-        }
-        
-        summaryMessage += `\n🎯 Spalten-Zuordnung:\n` +
-            `• Dateinamen: Spalte ${filenameColumn + 1}\n` +
-            `• Englisch: Spalte ${englishColumn + 1}\n` +
-            `• ${t('import.summary.germanColumn')}: ${germanColumn >= 0 ? t('import.summary.germanColumn.used').replace('{column}', germanColumn + 1) : t('import.summary.germanColumn.unused')}`;
-        
-        if (multipleFound.length > 0) {
-            summaryMessage += `\n\n🎯 Ordner-Auswahlen:\n` +
-                multipleFound.slice(0, 5).map(mf => `• ${mf.original} → ${mf.selected}${mf.autoAssigned ? ' (automatisch)' : ''}`).join('\n') +
-                (multipleFound.length > 5 ? `\n... und ${multipleFound.length - 5} weitere` : '');
-        }
 
-        setTimeout(() => {
-            alert(summaryMessage + (notFound.length > 0 && notFound.length <= 10 ? `\n\n❌ Nicht gefunden:\n${notFound.join('\n')}` :
-                  notFound.length > 10 ? `\n\n❌ ${notFound.length} Dateien nicht gefunden (erste 5):\n${notFound.slice(0, 5).join('\n')}\n...` : ''));
-        }, 100);
+        showImportSummaryDialog({
+            imported,
+            updated,
+            databaseMatches,
+            processed: parsedImportData.length,
+            notFound,
+            multipleFound,
+            autoAssignedFolders,
+            skippedDueToAmbiguity,
+            filenameColumn,
+            englishColumn,
+            germanColumn
+        }, t, format);
     } else {
-        alert('❌ Keine Dateien konnten importiert werden!\n\n' +
-              'Mögliche Gründe:\n' +
-              '1. Dateien wurden nicht in der Datenbank gefunden\n' +
-              '2. Falsche Spalten-Zuordnung\n' +
-              '3. Leere oder ungültige Daten\n' +
-              '4. Alle mehrdeutigen Dateien wurden übersprungen\n\n' +
-              `📊 Versucht: ${parsedImportData.length} Zeilen\n` +
-              `❌ Nicht gefunden: ${notFound.length}\n` +
-              `❓ Mehrdeutig übersprungen: ${skippedDueToAmbiguity}\n\n` +
-              'Tipp: Scannen Sie zuerst den Ordner mit den Audio-Dateien.');
+        showImportFailureDialog({
+            processed: parsedImportData.length,
+            notFoundCount: notFound.length,
+            skippedDueToAmbiguity
+        }, t, format);
     }
 
     return finalizeSummary(buildSummary(false));
+}
+
+function showImportSummaryDialog(summary, t, format) {
+    if (typeof showModal !== 'function') return;
+    const stats = [];
+    stats.push(format('import.status.summaryImported', { count: summary.imported, matches: summary.databaseMatches }));
+    stats.push(format('import.status.summaryUpdated', { count: summary.updated }));
+    stats.push(format('import.status.summaryProcessed', { count: summary.processed }));
+    stats.push(format('import.status.summaryNotFound', { count: summary.notFound.length }));
+    if (summary.multipleFound.length > 0) {
+        stats.push(format('import.status.summaryMultiple', { count: summary.multipleFound.length }));
+    }
+    if (summary.autoAssignedFolders > 0) {
+        stats.push(format('import.status.summaryAutoAssigned', { count: summary.autoAssignedFolders }));
+    }
+    if (summary.skippedDueToAmbiguity > 0) {
+        stats.push(format('import.status.summarySkipped', { count: summary.skippedDueToAmbiguity }));
+    }
+
+    const columnItems = [
+        format('import.status.summaryColumnFilename', { column: summary.filenameColumn + 1 }),
+        format('import.status.summaryColumnEnglish', { column: summary.englishColumn + 1 }),
+        summary.germanColumn >= 0
+            ? format('import.status.summaryColumnGermanUsed', { column: summary.germanColumn + 1 })
+            : t('import.status.summaryColumnGermanUnused')
+    ].map(line => `<li>${line}</li>`).join('');
+
+    const maxFolderEntries = 5;
+    const folderItems = summary.multipleFound.slice(0, maxFolderEntries).map(entry => {
+        const suffix = entry.autoAssigned ? t('import.status.summaryFolderAutoSuffix') : '';
+        const text = format('import.status.summaryFolderEntry', {
+            original: escapeHtml(entry.original || ''),
+            selected: escapeHtml(entry.selected || ''),
+            suffix
+        });
+        return `<li>${text}</li>`;
+    }).join('');
+    const folderMore = summary.multipleFound.length > maxFolderEntries
+        ? `<p>${format('import.status.summaryFolderMore', { count: summary.multipleFound.length - maxFolderEntries })}</p>`
+        : '';
+    const folderSection = summary.multipleFound.length > 0
+        ? `<h4>${t('import.status.summaryFolderTitle')}</h4><ul>${folderItems}</ul>${folderMore}`
+        : '';
+
+    const maxNotFound = 10;
+    const notFoundItems = summary.notFound.slice(0, maxNotFound)
+        .map(name => `<li>${escapeHtml(name)}</li>`).join('');
+    const notFoundMore = summary.notFound.length > maxNotFound
+        ? `<p>${format('import.status.summaryNotFoundMore', { count: summary.notFound.length - maxNotFound })}</p>`
+        : '';
+    const notFoundSection = summary.notFound.length > 0
+        ? `<h4>${t('import.status.summaryNotFoundTitle')}</h4><ul>${notFoundItems}</ul>${notFoundMore}`
+        : '';
+
+    const html = `
+        <h3>${t('import.status.summaryTitle')}</h3>
+        <p>${t('import.status.summaryDescription')}</p>
+        <div style="background:#1e1e1e;border:1px solid #333;border-radius:6px;padding:12px;margin-bottom:16px;">
+            ${stats.map(line => `<div style="margin:4px 0;">${line}</div>`).join('')}
+        </div>
+        <h4>${t('import.status.summaryColumnsTitle')}</h4>
+        <ul>${columnItems}</ul>
+        ${folderSection}
+        ${notFoundSection}
+        <div class="dialog-buttons">
+            <button class="btn btn-primary" id="importSummaryClose">${t('dialog.close')}</button>
+        </div>
+    `;
+
+    const modal = showModal(html);
+    const dialog = modal.querySelector('.dialog');
+    if (dialog) {
+        dialog.addEventListener('click', e => e.stopPropagation());
+        const closeBtn = dialog.querySelector('#importSummaryClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                modal.remove();
+            });
+        }
+    }
+}
+
+function showImportFailureDialog(context, t, format) {
+    if (typeof showModal !== 'function') {
+        showToast(t('import.error.noneImported.title'), 'error');
+        return;
+    }
+
+    showToast(t('import.error.noneImported.title'), 'error');
+    const html = `
+        <h3>${t('import.error.noneImported.title')}</h3>
+        <p>${t('import.error.noneImported.description')}</p>
+        <ul>
+            <li>${t('import.error.noneImported.reasonMissingFiles')}</li>
+            <li>${t('import.error.noneImported.reasonColumns')}</li>
+            <li>${t('import.error.noneImported.reasonInvalid')}</li>
+            <li>${t('import.error.noneImported.reasonSkipped')}</li>
+        </ul>
+        <p>${format('import.error.noneImported.stats', {
+            processed: context.processed,
+            notFound: context.notFoundCount,
+            skipped: context.skippedDueToAmbiguity
+        })}</p>
+        <p>${t('import.error.noneImported.tip')}</p>
+        <div class="dialog-buttons">
+            <button class="btn btn-primary" id="importFailureClose">${t('dialog.close')}</button>
+        </div>
+    `;
+
+    const modal = showModal(html);
+    const dialog = modal.querySelector('.dialog');
+    if (dialog) {
+        dialog.addEventListener('click', e => e.stopPropagation());
+        const closeBtn = dialog.querySelector('#importFailureClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                modal.remove();
+            });
+        }
+    }
 }
 
 // =========================== FOLDER SELECTION DIALOG START ===========================
@@ -20442,10 +20548,11 @@ function updateTextDatabase(filename, pathInfo, englishText, localizedText) {
 }
 
 async function importClosecaptions() {
+    const { t, format } = getI18nTools();
     const base = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
     const subtitles = await loadClosecaptions(base, subtitleImportLanguage);
     if (!subtitles) {
-        alert('❌ Untertitel-Dateien konnten nicht gelesen werden.');
+        showToast(t('subtitle.import.error.unreadable'), 'error');
         return;
     }
 
@@ -20506,9 +20613,9 @@ async function importClosecaptions() {
         saveTextDatabase();
         renderFileTable();
         updateProgressStats();
-        alert(`✅ ${imported} Untertitel importiert`);
+        showToast(format('subtitle.import.success.count', { count: imported }), 'success');
     } else {
-        alert('❌ Keine passenden Einträge gefunden.');
+        showToast(t('subtitle.import.error.noneMatched'), 'warning');
     }
 
     closeCcImportDialog();
@@ -20518,10 +20625,11 @@ async function importClosecaptions() {
 
 // =========================== IMPROVED SEARCH FUNCTION START ===========================
 async function addFromSearch(result) {
+    const { t } = getI18nTools();
     // Prüfe ob Datei bereits im Projekt ist
     const existingFile = files.find(f => f.filename === result.filename && f.folder === result.folder);
     if (existingFile) {
-        updateStatus('Datei bereits im Projekt');
+        updateStatus(t('import.status.fileExists'));
         return;
     }
     
@@ -20533,7 +20641,7 @@ async function addFromSearch(result) {
         const selection = await showSingleFileSelectionDialog(result.filename, paths, result);
 
         if (selection === null) {
-            updateStatus('Hinzufügen abgebrochen');
+            updateStatus(t('import.status.addCancelled'));
             return;
         }
 

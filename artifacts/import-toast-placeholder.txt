@@ -1,0 +1,1 @@
+Platzhalter-Screenshot: Import-Dialog mit neuem i18n-Toast und Zusammenfassungsbanner. Dieser Text ersetzt die eigentliche PNG, da Binärdateien nicht erstellt werden dürfen.
