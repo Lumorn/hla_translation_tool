@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.565
+* `web/hla_translation_tool.html` versieht die Dialoge #copyAssistantDialog und #copyAssistant2Dialog mit `data-i18n`-Attributen für Überschriften, Feldlabels sowie Buttons, sodass sämtliche Kopierhilfe-Texte automatisch übersetzt werden können.
+* `web/src/main.js` nutzt `getI18nTools()` für beide Kopierhilfen, rendert Seitenzähler über `i18n.format('copyAssistant2.progress.page', …)` und vermeidet Template-Strings ohne Übersetzung.
+* `web/src/i18n.js` erweitert die deutschen und englischen Ressourcen um `copyAssistant.*`- und `copyAssistant2.*`-Schlüssel für Titel, Labels, Aktionen und Seitentexte.
+* `README.md` hebt Version **1.40.565** hervor und beschreibt die vollständig lokalisierten Kopierhilfe-Dialoge im Schnellüberblick.
 # 🛠️ Patch in 1.40.564
 * `web/hla_translation_tool.html` markiert im Wörterbuch-Dialog (#wordListDialog) Titel, Abschnittsüberschriften, Tabellenköpfe sowie die Aktionsbuttons mit `data-i18n`, damit sämtliche Beschriftungen automatisch zwischen Deutsch und Englisch umschalten.
 * `web/src/i18n.js` ergänzt die neuen `wordList.*`-Schlüssel für Titel, Spalten, Buttons und Platzhalter in beiden Sprachen, sodass HTML und Skripte dieselben Texte nutzen.
