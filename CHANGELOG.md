@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.553
+* `web/hla_translation_tool.html` ergänzt einen Fortschrittsbereich direkt unter den Soundevents-Schaltflächen, der Statusmeldungen oder einen Spinner für laufende Übernahmen anzeigt.
+* `web/src/main.js` deaktiviert während `loadSoundeventExport()` Import- und Reload-Buttons, zeigt den neuen Fortschritt und setzt den Zustand nach Erfolg oder Fehler zurück.
+* `web/src/style.css` liefert Animation, Farbgebung und Fade-In-Effekt für das neue Soundevents-Feedback.
+* `README.md` beschreibt das visuelle Feedback im Import-Abschnitt und aktualisiert die Version **1.40.553**.
+
 # 🛠️ Patch in 1.40.552
 * `electron/main.js` prüft mehrere Basispfade (web/, Projektwurzel, Electron-Verzeichnis) mit denselben Soundevents-/Exports-Kandidatenlisten und stoppt beim ersten Treffer, sodass `soundevents/exports_alyx` zuverlässig gefunden wird.
 * `README.md` dokumentiert die robustere Soundevents-Erkennung im Import-Dialog und hebt Version **1.40.552** hervor.
