@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.562
+* `web/hla_translation_tool.html` markiert den Untertitel-Importdialog (#ccImportDialog) komplett mit `data-i18n`-Attributen für Titel, Labels, Badge, Hinweise und Buttons und belässt deutsche Standardwerte als Fallback.
+* `web/src/main.js` lädt Quell-/Zielstatus sowie Badge/Hinweis über `i18n.t(...)`, zeigt fehlende Untertitel als übersetzte Meldung, aktualisiert das Badge bei Sprachwechsel und setzt die Statuszeilen per Schlüssel mit Platzhaltern.
+* `web/src/i18n.js` ergänzt die neuen `subtitle.import.*`-Schlüssel in Deutsch und Englisch und erweitert `i18n.t`/`i18n.format` um eine automatische Platzhalter-Ersetzung.
+* `README.md` hebt Version **1.40.562** hervor und beschreibt den vollständig lokalisierten Untertitel-Importdialog.
 # 🛠️ Patch in 1.40.561
 * `web/src/projectHelpers.js` entfernt nach dem Listener-Reset sämtliche `data-bound`-Marker, setzt das Tab-Flag zurück und stößt über `ui:listenersDetached` ein globales Rebinding an, sodass nach Projektwechseln keine „toten“ Buttons übrig bleiben.
 * `web/src/dubbing.js` merkt sich die zuletzt genutzten Zoom-/Scroll-Werte, bindet Timeline- und Effekt-Tabs nach `ui:listenersDetached` automatisch neu und protokolliert Fehler im Konsolen-Warnlog.

@@ -546,20 +546,26 @@
     <!-- Closecaption Import Dialog -->
     <div class="dialog-overlay hidden" id="ccImportDialog">
         <div class="dialog">
-            <h3>📥 Untertitel importieren</h3>
-            <p>closecaption_english.txt: <span id="ccStatusEn"></span></p>
+            <h3 data-i18n="subtitle.import.title">📥 Untertitel importieren</h3>
+            <p>
+                <span data-i18n="subtitle.import.sourceLabel">closecaption_english.txt:</span>
+                <span id="ccStatusEn"></span>
+            </p>
             <div class="cc-language-row">
-                <label for="ccLanguageSelect">Ziel-Sprache (ersetzt Deutsch):</label>
+                <label for="ccLanguageSelect" data-i18n="subtitle.import.languageLabel">Ziel-Sprache (ersetzt Deutsch):</label>
                 <select id="ccLanguageSelect"></select>
             </div>
-            <p id="ccLanguageStatus">Zieldatei: <span id="ccStatusTarget"></span></p>
+            <p id="ccLanguageStatus">
+                <span data-i18n="subtitle.import.targetStatusLabel">Zieldatei:</span>
+                <span id="ccStatusTarget"></span>
+            </p>
             <div class="subtitle-language-selection">
-                <span class="subtitle-language-badge" id="ccLanguageBadge">Deutsch</span>
-                <small class="subtitle-language-hint" id="ccLanguageHint">Standard: Deutsch wird importiert.</small>
+                <span class="subtitle-language-badge" id="ccLanguageBadge" data-i18n="subtitle.import.badgeDefault">Deutsch</span>
+                <small class="subtitle-language-hint" id="ccLanguageHint" data-i18n="subtitle.import.defaultHint">Standard: Deutsch wird importiert.</small>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="closeCcImportDialog()">Abbrechen</button>
-                <button class="btn btn-success" onclick="importClosecaptions()">Import starten</button>
+                <button class="btn btn-secondary" onclick="closeCcImportDialog()" data-i18n="subtitle.import.cancel">Abbrechen</button>
+                <button class="btn btn-success" onclick="importClosecaptions()" data-i18n="subtitle.import.start">Import starten</button>
             </div>
         </div>
     </div>

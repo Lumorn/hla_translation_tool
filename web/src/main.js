@@ -12089,6 +12089,7 @@ function buildProjectFile(filename, folder) {
         }
 
         async function showCcImportDialog() {
+            const { t } = getI18nTools();
             const basePath = isElectron ? window.electronAPI.join('..', 'closecaption') : '../closecaption';
             const buildPath = (file) => isElectron ? window.electronAPI.join(basePath, file) : `${basePath}/${file}`;
             const checkFile = async (fullPath) => {
@@ -12104,7 +12105,12 @@ function buildProjectFile(filename, folder) {
 
             const enPath = buildPath('closecaption_english.txt');
             const enOk = await checkFile(enPath);
-            document.getElementById('ccStatusEn').textContent = enOk ? '✅ vorhanden' : '❌ fehlt';
+            const statusEn = document.getElementById('ccStatusEn');
+            if (statusEn) {
+                statusEn.textContent = enOk
+                    ? t('subtitle.import.sourceStatus.present')
+                    : t('subtitle.import.sourceStatus.missing');
+            }
 
             const select = document.getElementById('ccLanguageSelect');
             const statusTarget = document.getElementById('ccStatusTarget');
@@ -12122,11 +12128,11 @@ function buildProjectFile(filename, folder) {
 
             if (available.length === 0) {
                 const fallback = document.createElement('option');
-                fallback.textContent = 'Keine Untertitel-Dateien gefunden';
+                fallback.textContent = t('subtitle.import.noFilesOption');
                 fallback.value = '';
                 fallback.disabled = true;
                 select.appendChild(fallback);
-                statusTarget.textContent = '❌ Keine passenden Untertitel vorhanden';
+                statusTarget.textContent = t('subtitle.import.targetStatus.none');
             } else {
                 available.forEach(opt => {
                     const optionEl = document.createElement('option');
@@ -12144,7 +12150,10 @@ function buildProjectFile(filename, folder) {
                     if (!targetOpt) return;
                     select.value = targetOpt.code;
                     setSubtitleLanguage(targetOpt.code);
-                    statusTarget.textContent = `✅ ${targetOpt.file} vorhanden (${targetOpt.label})`;
+                    statusTarget.textContent = t('subtitle.import.targetStatus.available', {
+                        file: targetOpt.file,
+                        label: targetOpt.label
+                    });
                 };
 
                 select.onchange = (ev) => applySelection(ev.target.value);
@@ -12158,22 +12167,36 @@ function buildProjectFile(filename, folder) {
         function updateSubtitleLanguageBadge() {
             const badge = document.getElementById('ccLanguageBadge');
             const hint = document.getElementById('ccLanguageHint');
-            const t = window.i18n?.t || (value => value);
+            const translator = window.i18n;
+            const translate = typeof translator?.t === 'function'
+                ? (key, replacements) => translator.t(key, replacements)
+                : (key, replacements = {}) => {
+                    return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
+                        return acc.replaceAll(`{${placeholder}}`, value ?? '');
+                    }, key);
+                };
             const label = getSubtitleLanguageLabel();
+            const isDefaultLanguage = subtitleImportLanguage === 'german';
 
             if (badge) {
-                badge.textContent = label;
-                badge.classList.toggle('subtitle-language-badge--alt', subtitleImportLanguage !== 'german');
+                const badgeText = isDefaultLanguage
+                    ? translate('subtitle.import.badgeDefault')
+                    : translate('subtitle.import.badge', { label });
+                badge.textContent = badgeText || label;
+                badge.classList.toggle('subtitle-language-badge--alt', !isDefaultLanguage);
             }
 
             if (hint) {
-                if (subtitleImportLanguage === 'german') {
-                    hint.textContent = t('subtitle.import.defaultHint');
-                } else {
-                    hint.textContent = t('subtitle.import.replacementHint').replace('{label}', label);
-                }
-                hint.classList.toggle('subtitle-language-hint--alt', subtitleImportLanguage !== 'german');
+                const hintText = isDefaultLanguage
+                    ? translate('subtitle.import.defaultHint')
+                    : translate('subtitle.import.replacementHint', { label });
+                hint.textContent = hintText;
+                hint.classList.toggle('subtitle-language-hint--alt', !isDefaultLanguage);
             }
+        }
+
+        if (window.i18n && typeof window.i18n.onLanguageChange === 'function') {
+            window.i18n.onLanguageChange(() => updateSubtitleLanguageBadge());
         }
 
         function closeCcImportDialog() {
