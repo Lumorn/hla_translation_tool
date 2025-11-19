@@ -56,7 +56,7 @@ de ex.de ex.:
 Răspundeți **numai** în următorul format de matrice JSON:
 
 ```json
-{ „id”: <ID>, „score”: <0-100>, „comment”: „<comentar concret cu motive, inclusiv referire la înainte/după>”, „suggestion”: „<reformulare idiomatică, coerentă>” }
+{ "id": 101, "score": 95, "comment": "Comentar concret cu motive, inclusiv referire la înainte/după", "suggestion": "Reformulare idiomatică, coerentă" }
 ```
 
 ➡️ **Notă**: numele câmpului `suggestion` rămâne în engleză și nu se traduce.

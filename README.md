@@ -51,6 +51,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * GPT-Start- und Test-Dialog ziehen Titel, Buttons, Tabs, Fortschrittsstufen, Protokoll und Zusammenfassungs-Tabelle aus i18n-Schlüsseln mit Platzhaltern und rendern Statusmeldungen beim Sprachwechsel neu.
 * GPT-Bewertungen akzeptieren jetzt auch Einzelobjekte oder Wrapper-Felder (`output`/`data`/`results`) und wandeln sie automatisch in das erwartete Array, sodass der Test-Dialog nicht mehr mit „kein Array“ scheitert.
 * Alle GPT-Score-Prompts nutzen in jeder Sprache denselben Feldnamen `suggestion`, inklusive Hinweis, dass dieses Feld nicht übersetzt werden darf – so können Skripte Sprachversionen konsistent verarbeiten.
+* Die polnischen und rumänischen GPT-Score-Prompts verwenden reguläre ASCII-Anführungszeichen sowie valide JSON-Beispiele mit den Feldern `id`, `score`, `comment` und `suggestion`, damit GPT die Struktur zuverlässig repliziert.
 * Kopierhilfe-Status, Datei- und Schrittzähler liegen vollständig als i18n-Schlüssel mit Platzhaltern vor und werden über `i18n.t(...)`/`i18n.format(...)` beim Sprachwechsel automatisch zwischen Deutsch und Englisch umgeschaltet.
 * Tooltip-Bausteine der Projektkarten (Level, Teil, EN/DE/DE-Audio, Fertig-Prozent, GPT, Dateien) lesen ihre Beschriftungen komplett aus i18n und schalten mit Platzhaltern nahtlos zwischen Deutsch und Englisch.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
