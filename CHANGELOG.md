@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.550
+* `web/src/gptService.js` normalisiert GPT-Antworten robuster, erkennt Einzelobjekte sowie Wrapper-Felder (`output`/`data`/`results`) und wandelt sie automatisch in Arrays, damit der GPT-Test nicht mehr mit „kein Array“ abbricht.
+* `tests/gptService.test.js` prüft die Normalisierung einzelner Objekte und stellt sicher, dass Bewertungsergebnisse auch ohne Array-Hülle akzeptiert werden.
+* `README.md` hebt Version **1.40.550** hervor und nennt die fehlertolerante GPT-Auswertung.
 # 🛠️ Patch in 1.40.549
 * `web/hla_translation_tool.html`, `web/src/main.js` und `web/src/style.css` bringen ein Sprach-Dropdown in den GPT-Test, laden den passenden Prompt pro Closecaption-Sprache und speichern die Auswahl dauerhaft.
 * `web/src/gptService.js` lädt Score-Prompts je Sprache aus dem Cache oder von der Platte, setzt `setSystemPromptLanguage`/`getSystemPromptLanguage` und koppelt `promptReady` daran.

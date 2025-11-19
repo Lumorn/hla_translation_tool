@@ -38,6 +38,37 @@ function sanitizeJSONResponse(content) {
     return text;
 }
 
+// Versucht GPT-Antworten robust in ein Array umzuwandeln
+function normalizeGptArray(value) {
+    if (Array.isArray(value)) return value;
+
+    // Strings können eingebettetes JSON enthalten
+    if (typeof value === 'string') {
+        const trimmed = value.trim();
+        if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
+            try {
+                return normalizeGptArray(JSON.parse(trimmed));
+            } catch (err) {
+                console.warn('Eingebettetes JSON konnte nicht geparst werden', err);
+            }
+        }
+        return null;
+    }
+
+    // Wrapper-Objekte wie { output: [...] } berücksichtigen
+    if (value && typeof value === 'object') {
+        if (Array.isArray(value.output)) return value.output;
+        if (Array.isArray(value.data)) return value.data;
+        if (Array.isArray(value.results)) return value.results;
+
+        // Einzelnes Bewertungsergebnis als Array zurückgeben
+        const knownKeys = ['id', 'score', 'comment', 'suggestion'];
+        if (knownKeys.some(k => k in value)) return [value];
+    }
+
+    return null;
+}
+
 // Prüft, ob ein Modell den neuen Responses-Endpunkt benötigt
 function usesResponsesEndpoint(model) {
     return responsesModelPattern.test(model || '');
@@ -433,11 +464,19 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
                 safeEmit({ type: 'stage', stage: 'request', status: 'error', message: 'Übertragung fehlgeschlagen' });
                 throw new Error('API-Fehler: ' + (e && e.message ? e.message : e));
             }
-            const resText = JSON.stringify(arr);
+            // GPT-Antworten tolerant in ein Array umwandeln
+            const normalized = normalizeGptArray(arr);
+            if (!normalized) {
+                if (ui) ui.overlay.remove();
+                safeEmit({ type: 'stage', stage: 'process', status: 'error', message: 'Antwort konnte nicht gelesen werden' });
+                throw new Error('Ungültige Antwort: GPT hat kein Array zurückgegeben');
+            }
+
+            const resText = JSON.stringify(normalized);
             if (typeof window !== 'undefined' && window.debugLog) {
                 window.debugLog('[GPT RESPONSE]', resText);
             }
-            console.log('[GPT RESPONSE]', arr);
+            console.log('[GPT RESPONSE]', normalized);
             if (ui) appendGptLog(ui, '<< ' + resText);
             safeEmit({
                 type: 'stage',
@@ -445,19 +484,14 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
                 status: 'done',
                 message: 'Antwort empfangen'
             });
-            if (!Array.isArray(arr)) {
-                if (ui) ui.overlay.remove();
-                safeEmit({ type: 'stage', stage: 'process', status: 'error', message: 'Antwort konnte nicht gelesen werden' });
-                throw new Error('Ungültige Antwort: GPT hat kein Array zurückgegeben');
-            }
             safeEmit({
                 type: 'stage',
                 stage: 'process',
                 status: 'running',
-                message: `${arr.length} Bewertungen werden ausgewertet…`
+                message: `${normalized.length} Bewertungen werden ausgewertet…`
             });
             let newlyStored = 0;
-            for (const item of arr) {
+            for (const item of normalized) {
                 if (!item || typeof item !== 'object') {
                     logProgress('⚠️ Antwort ohne Objektstruktur ignoriert.');
                     continue;
@@ -698,6 +732,7 @@ if (typeof module !== 'undefined') {
         adjustEmotionText,
         improveEmotionText,
         sanitizeJSONResponse,
+        normalizeGptArray,
         fetchWithRetry,
         queuedFetch,
         cancelGptRequests,
