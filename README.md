@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.564-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.565-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -61,6 +61,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Emotion-GPT übernimmt automatisch die im Score-GPT-Dialog gewählte Sprache: Prompt, Toolbar-Schaltfläche und die Zeilen-Buttons zeigen den passenden Sprachzusatz an und fordern GPT auf, Emotional-Texte in dieser Sprache zurückzugeben.
 * Die polnischen und rumänischen GPT-Score-Prompts verwenden reguläre ASCII-Anführungszeichen sowie valide JSON-Beispiele mit den Feldern `id`, `score`, `comment` und `suggestion`, damit GPT die Struktur zuverlässig repliziert.
 * Kopierhilfe-Status, Datei- und Schrittzähler liegen vollständig als i18n-Schlüssel mit Platzhaltern vor und werden über `i18n.t(...)`/`i18n.format(...)` beim Sprachwechsel automatisch zwischen Deutsch und Englisch umgeschaltet.
+* Beide Kopierhilfe-Dialoge (#copyAssistantDialog/#copyAssistant2Dialog) tragen ihre Überschriften, Feldlabels, Buttons und Fortschrittsanzeigen als `data-i18n`-Ziele ein, während `web/src/main.js` die Seitennummern mit `i18n.format('copyAssistant2.progress.page', …)` rendert – dadurch passen sich sämtliche Kopierhilfen vollständig an die gewählte Sprache an.
 * Tooltip-Bausteine der Projektkarten (Level, Teil, EN/DE/DE-Audio, Fertig-Prozent, GPT, Dateien) lesen ihre Beschriftungen komplett aus i18n und schalten mit Platzhaltern nahtlos zwischen Deutsch und Englisch.
 * Statusleiste und Speicherhinweise nutzen i18n-Schlüssel für Standardtexte und Modusbezeichnungen und passen sich bei Sprachwechseln sofort an.
 * Level-Statistik-Panel holt leere Hinweise sowie Spaltenüberschriften (Level, Teile, EN/DE/BEIDE/∑, Fertig-%) über i18n-Schlüssel und baut sie nach einem Sprachwechsel automatisch neu auf.

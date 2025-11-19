@@ -3136,18 +3136,7 @@ function showCopyAssistant() {
     const prog = document.getElementById('copyAssistProgress');
     // Abbrechen, falls der Dialog noch nicht aufgebaut ist
     if (!countSpan || !stepSpan || !prog) return;
-    const translator = window.i18n;
-    // Übersetzungen immer über i18n abrufen, damit Platzhalter korrekt ersetzt werden
-    const translateSimple = key => (translator?.t ? translator.t(key) : key);
-    const formatTranslation = (key, replacements = {}) => {
-        if (translator?.format) {
-            return translator.format(key, replacements);
-        }
-        const template = translateSimple(key);
-        return Object.entries(replacements).reduce((acc, [placeholder, value]) => {
-            return acc.replaceAll(`{${placeholder}}`, value);
-        }, template);
-    };
+    const { t: translateSimple, format: formatTranslation } = getI18nTools();
     if (!file) {
         countSpan.textContent = translateSimple('copyAssistant.status.complete');
         stepSpan.textContent = '';
@@ -3213,10 +3202,14 @@ function showCopyAssistant2() {
     const file = files[copyAssist2Index];
     if (!file) return;
     const total = files.length;
+    const { format } = getI18nTools();
     document.getElementById('copy2Name').textContent = file.folder || '';
     document.getElementById('copy2De').textContent = file.deText || '';
     document.getElementById('copy2Emo').textContent = file.emotionalText || '';
-    document.getElementById('copyAssist2Page').textContent = `Seite ${copyAssist2Index + 1} von ${total}`;
+    document.getElementById('copyAssist2Page').textContent = format('copyAssistant2.progress.page', {
+        current: copyAssist2Index + 1,
+        total
+    });
 }
 // =========================== COPY ASSISTANT 2 END ==========================
 

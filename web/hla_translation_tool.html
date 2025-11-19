@@ -1319,24 +1319,24 @@
     <div class="dialog-overlay hidden" id="copyAssistantDialog">
         <div class="dialog">
             <button class="dialog-close-btn" onclick="closeCopyAssistant()">×</button>
-            <h3>📋 Kopierhilfe</h3>
+            <h3 data-i18n="copyAssistant.title">📋 Kopierhilfe</h3>
             <div class="progress-bar">
                 <div class="progress-fill" id="copyAssistProgress"></div>
             </div>
             <div id="copyAssistInfo">
-                <p><strong>Ordner:</strong> <span id="copyFolder"></span> <button class="copy-btn" onclick="copyAssistCopy('folder')">⧉</button></p>
-                <p><strong>ID:</strong> <span id="copyId"></span> <button class="copy-btn" onclick="copyAssistCopy('id')">⧉</button></p>
-                <p><strong>Name:</strong> <span id="copyName"></span> <button class="copy-btn" onclick="copyAssistCopy('name')">⧉</button></p>
-                <p><strong>EN:</strong> <span id="copyEn"></span> <button class="copy-btn" onclick="copyAssistCopy('en')">⧉</button></p>
-                <p><strong>DE:</strong> <span id="copyDe"></span> <button class="copy-btn" onclick="copyAssistCopy('de')">⧉</button></p>
-                <p><strong>Emotion:</strong> <span id="copyEmo"></span> <button class="copy-btn" onclick="copyAssistCopy('emo')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.folder">Ordner:</strong> <span id="copyFolder"></span> <button class="copy-btn" onclick="copyAssistCopy('folder')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.voiceId">ID:</strong> <span id="copyId"></span> <button class="copy-btn" onclick="copyAssistCopy('id')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.voiceName">Name:</strong> <span id="copyName"></span> <button class="copy-btn" onclick="copyAssistCopy('name')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.enText">EN:</strong> <span id="copyEn"></span> <button class="copy-btn" onclick="copyAssistCopy('en')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.deText">DE:</strong> <span id="copyDe"></span> <button class="copy-btn" onclick="copyAssistCopy('de')">⧉</button></p>
+                <p><strong data-i18n="copyAssistant.field.emotion">Emotion:</strong> <span id="copyEmo"></span> <button class="copy-btn" onclick="copyAssistCopy('emo')">⧉</button></p>
             </div>
             <div id="copyAssistStep" style="margin-top:10px; color:#999;"></div>
             <div class="dialog-buttons">
                 <span id="copyAssistCount" style="margin-right:auto"></span>
-                <button class="btn btn-secondary" onclick="closeCopyAssistant()">Abbrechen</button>
-                <button class="btn btn-secondary" onclick="copyAssistPrev()">Zurück</button>
-                <button class="btn btn-success" onclick="copyAssistNext()">Weiter</button>
+                <button class="btn btn-secondary" onclick="closeCopyAssistant()" data-i18n="copyAssistant.actions.cancel">Abbrechen</button>
+                <button class="btn btn-secondary" onclick="copyAssistPrev()" data-i18n="copyAssistant.actions.prev">Zurück</button>
+                <button class="btn btn-success" onclick="copyAssistNext()" data-i18n="copyAssistant.actions.next">Weiter</button>
             </div>
         </div>
     </div>
@@ -1345,7 +1345,7 @@
     <div class="dialog-overlay hidden" id="copyAssistant2Dialog">
         <div class="dialog">
             <button class="dialog-close-btn" onclick="closeCopyAssistant2()">×</button>
-            <h3>📋 Kopierhilfe 2</h3>
+            <h3 data-i18n="copyAssistant2.title">📋 Kopierhilfe 2</h3>
             <div id="copyAssist2Content" style="text-align:center;">
                 <div id="copy2Name" style="font-size:24px; font-weight:bold; margin-bottom:10px;"></div>
                 <div id="copy2De" style="margin-bottom:10px;"></div>
@@ -1353,9 +1353,9 @@
             </div>
             <div class="dialog-buttons">
                 <span id="copyAssist2Page" style="margin-right:auto"></span>
-                <button class="btn btn-secondary" onclick="closeCopyAssistant2()">Abbrechen</button>
-                <button class="btn btn-secondary" onclick="copyAssist2Prev()">Zurück</button>
-                <button class="btn btn-success" onclick="copyAssist2Next()">Weiter</button>
+                <button class="btn btn-secondary" onclick="closeCopyAssistant2()" data-i18n="copyAssistant.actions.cancel">Abbrechen</button>
+                <button class="btn btn-secondary" onclick="copyAssist2Prev()" data-i18n="copyAssistant.actions.prev">Zurück</button>
+                <button class="btn btn-success" onclick="copyAssist2Next()" data-i18n="copyAssistant.actions.next">Weiter</button>
             </div>
         </div>
     </div>
