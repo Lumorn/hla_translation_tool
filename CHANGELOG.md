@@ -10,6 +10,9 @@
 * `web/hla_translation_tool.html` bindet den Auto-Übersetzungs-Startknopf an `autoTranslate.button.start` und verpasst dem Voice-Test-Button eine ID für die neue Statuslogik.
 * `web/src/i18n.js` liefert die frischen `autoTranslate.*`, `speaker.replace.toast.*`, `api.voice.testRunning` und `status.copyAssistant.corrected` Schlüssel in Deutsch und Englisch.
 * `README.md` ergänzt einen Abschnitt „🌐 Lokalisierte Statusanzeige“, `CHANGELOG.md` verweist auf die neuen Status- und Toast-Übersetzungen.
+* `web/src/projectSwitch.js` nutzt eine lokale Übersetzerinstanz, ersetzt sämtliche Schritt-Titel sowie Fehlermeldungen durch `projectSwitch.*`-Schlüssel und rendert damit das Ladeoverlay zweisprachig.
+* `web/src/i18n.js` liefert die neuen deutschen und englischen Texte für `projectSwitch.*`, damit sämtliche Schritte und Warnungen lokalisiert werden können.
+* `README.md` erwähnt, dass die Projektwechsel-Schrittanzeige inklusive Fehlerlog jetzt vollständig via i18n gesteuert wird.
 # 🛠️ Patch in 1.40.566
 * `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels, Tooltips und Buttons des 🇬🇧-Review-Dialogs mit `data-i18n`-/`data-i18n-aria-label`-Attributen, damit Titel, Sprachumschalter, Listen sowie Steuerknöpfe automatisch übersetzt werden.
 * `web/src/main.js` setzt Fortschrittsanzeige, Platzhalter und Vorschau-Hinweise des EN-Reviews über `getI18nTools()`/`i18n.format('englishReview.progress.status', …)` und aktualisiert den Dialog bei jedem Sprachwechsel erneut.

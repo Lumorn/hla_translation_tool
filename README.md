@@ -57,6 +57,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Fallback-Übersetzer sichern Seitentitel, Projekt-Tooltips und Emo-Generatoren ab, sodass die DE-Audiobearbeitung auch beim Sprachwechsel ohne geladenes i18n stabil bleibt.
 * Emo-Generierung, Fortschrittsbutton, Fehlermeldungen zum fehlenden GPT-Key und Statusmeldungen greifen auf i18n-Schlüssel mit Zähler-Platzhaltern zurück und lassen sich vollständig zwischen Deutsch und Englisch umschalten.
 * GPT-Start- und Test-Dialog ziehen Titel, Buttons, Tabs, Fortschrittsstufen, Protokoll und Zusammenfassungs-Tabelle aus i18n-Schlüsseln mit Platzhaltern und rendern Statusmeldungen beim Sprachwechsel neu.
+* Die Schrittanzeige des Projektwechsel-Overlays inklusive Fehlermeldungen nutzt i18n-Schlüssel und präsentiert alle Aktionen zweisprachig.
 * GPT-Bewertungen akzeptieren jetzt auch Einzelobjekte oder Wrapper-Felder (`output`/`data`/`results`) und wandeln sie automatisch in das erwartete Array, sodass der Test-Dialog nicht mehr mit „kein Array“ scheitert.
 * Alle GPT-Score-Prompts nutzen in jeder Sprache denselben Feldnamen `suggestion`, inklusive Hinweis, dass dieses Feld nicht übersetzt werden darf – so können Skripte Sprachversionen konsistent verarbeiten.
 * Emotion-GPT übernimmt automatisch die im Score-GPT-Dialog gewählte Sprache: Prompt, Toolbar-Schaltfläche und die Zeilen-Buttons zeigen den passenden Sprachzusatz an und fordern GPT auf, Emotional-Texte in dieser Sprache zurückzugeben.

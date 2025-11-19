@@ -18,6 +18,11 @@ const ui = {
   progress: (d, t) => {}
 };
 
+// Lokale Übersetzer-Hilfe mit Fallback auf den Schlüssel, falls i18n noch nicht geladen ist
+const t = window.i18n?.t
+  ? (key, replacements) => window.i18n.t(key, replacements)
+  : (key) => key;
+
 // Verwaltet die strukturierte Schritt-Anzeige im Ladeoverlay
 class LadeSchrittVerwaltung {
   constructor() {
@@ -40,7 +45,7 @@ class LadeSchrittVerwaltung {
 
     const text = document.createElement('span');
     text.className = 'loading-step__label';
-    text.textContent = titel;
+    text.textContent = t(titel);
 
     const zeit = document.createElement('span');
     zeit.className = 'loading-step__time';
@@ -136,11 +141,11 @@ function switchProjectSafe(projectId) {
     try {
       // Autosave kurz anhalten
       if (!autosavePaused) {
-        await verfolgeSchritt('Autosave pausieren', () => pauseAutosave());
+        await verfolgeSchritt(t('projectSwitch.autosavePause'), () => pauseAutosave());
         autosavePaused = true;
       }
       // Ausstehende Schreibvorgänge abwarten
-      await verfolgeSchritt('Schreibpuffer leeren', () => flushPendingWrites(3000), { ignoriereFehler: true });
+      await verfolgeSchritt(t('projectSwitch.flushWrites'), () => flushPendingWrites(3000), { ignoriereFehler: true });
       // GPT-Anfragen sofort abbrechen und verworfene Jobs protokollieren
       if (window.cancelGptRequests) window.cancelGptRequests('Projektwechsel');
       // Laufende Ladevorgänge abbrechen
@@ -149,25 +154,25 @@ function switchProjectSafe(projectId) {
       }
       projectAbort = new AbortController();
       // Event-Listener und Caches zurücksetzen
-      await verfolgeSchritt('Event-Listener lösen', async () => {
+      await verfolgeSchritt(t('projectSwitch.detachEvents'), async () => {
         detachAllEventListeners();
       });
       if (typeof window.cancelTranslationQueue === 'function') {
-        await verfolgeSchritt('Übersetzungswarteschlange stoppen', () => window.cancelTranslationQueue('Projektwechsel'));
+        await verfolgeSchritt(t('projectSwitch.stopTranslationQueue'), () => window.cancelTranslationQueue('Projektwechsel'));
       }
-      await verfolgeSchritt('Caches leeren', async () => {
+      await verfolgeSchritt(t('projectSwitch.clearCaches'), async () => {
         clearInMemoryCachesHard();
       });
       // Offenes Projekt schließen
-      await verfolgeSchritt('Projekt schließen', () => closeProjectData(), { ignoriereFehler: true });
+      await verfolgeSchritt(t('projectSwitch.closeProject'), () => closeProjectData(), { ignoriereFehler: true });
       // Projektliste aktualisieren, ohne automatisch ein Projekt zu öffnen
-      await verfolgeSchritt('Projektliste aktualisieren', () => reloadProjectList(true));
+      await verfolgeSchritt(t('projectSwitch.refreshProjects'), () => reloadProjectList(true));
       // GPT-Zustände und UI leeren
       if (window.clearGptState) window.clearGptState();
       // Neues Projekt laden und auf Promise warten
       let geladen = false;
       try {
-        await verfolgeSchritt('Projekt laden', () => loadProjectData(projectId, { signal: projectAbort.signal }));
+        await verfolgeSchritt(t('projectSwitch.loadProject'), () => loadProjectData(projectId, { signal: projectAbort.signal }));
         geladen = true;
       } catch (err) {
         // Wenn das Projekt fehlt, zunächst Reparaturversuch starten
@@ -176,11 +181,11 @@ function switchProjectSafe(projectId) {
         if (/(nicht gefunden|not found)/i.test(msg)) {
           const adapter = getStorageAdapter('current');
           try {
-            await verfolgeSchritt('Projekt reparieren', () => repairProjectIntegrity(adapter, projectId, ui));
+            await verfolgeSchritt(t('projectSwitch.repairProject'), () => repairProjectIntegrity(adapter, projectId, ui));
           } catch {}
           // Danach Liste neu laden und erneut versuchen
-          await verfolgeSchritt('Projektliste aktualisieren', () => reloadProjectList(true));
-          await verfolgeSchritt('Projekt laden', () => loadProjectData(projectId, { signal: projectAbort.signal }));
+          await verfolgeSchritt(t('projectSwitch.refreshProjects'), () => reloadProjectList(true));
+          await verfolgeSchritt(t('projectSwitch.loadProject'), () => loadProjectData(projectId, { signal: projectAbort.signal }));
           geladen = true;
         } else {
           throw err; // Unbekannter Fehler wird nach außen gereicht
@@ -189,18 +194,18 @@ function switchProjectSafe(projectId) {
       if (currentSession !== mySession || !geladen) return;
       // Direkt im Anschluss verwaiste Einträge reparieren
       const adapter = getStorageAdapter('current');
-      const neuAngelegt = await verfolgeSchritt('Projektintegrität prüfen', () => repairProjectIntegrity(adapter, projectId, ui));
+      const neuAngelegt = await verfolgeSchritt(t('projectSwitch.verifyIntegrity'), () => repairProjectIntegrity(adapter, projectId, ui));
       if (neuAngelegt) {
         // Projekt wurde angelegt: Liste neu laden und Projekt erneut öffnen
-        await verfolgeSchritt('Projektliste aktualisieren', () => reloadProjectList(true));
-        await verfolgeSchritt('Projekt laden', () => loadProjectData(projectId, { signal: projectAbort.signal }));
+        await verfolgeSchritt(t('projectSwitch.refreshProjects'), () => reloadProjectList(true));
+        await verfolgeSchritt(t('projectSwitch.loadProject'), () => loadProjectData(projectId, { signal: projectAbort.signal }));
         if (currentSession !== mySession) return;
       }
       // Nach erfolgreichem Laden alle relevanten Ordner scannen
       if (window.electronAPI?.scanFolders) {
         // Electron-Umgebung: Scan über die Hauptanwendung
-        const data = await verfolgeSchritt('Ordner scannen (Electron)', () => window.electronAPI.scanFolders());
-        await verfolgeSchritt('EN-Dateien verarbeiten', () => verarbeiteGescannteDateien(data.enFiles));
+        const data = await verfolgeSchritt(t('projectSwitch.scanFoldersElectron'), () => window.electronAPI.scanFolders());
+        await verfolgeSchritt(t('projectSwitch.processEnFiles'), () => verarbeiteGescannteDateien(data.enFiles));
         data.deFiles.forEach(f => {
           if (typeof setDeAudioCacheEntry === 'function') {
             setDeAudioCacheEntry(f.fullPath, `sounds/DE/${f.fullPath}`);
@@ -210,31 +215,31 @@ function switchProjectSafe(projectId) {
         });
       } else {
         // Browser-Fallback: lokale Ordner direkt scannen
-        await verfolgeSchritt('EN-Ordner scannen', () => scanEnOrdner());
+        await verfolgeSchritt(t('projectSwitch.scanEnFolder'), () => scanEnOrdner());
         if (typeof scanDeOrdner === 'function') {
-          await verfolgeSchritt('DE-Ordner scannen', () => scanDeOrdner());
+          await verfolgeSchritt(t('projectSwitch.scanDeFolder'), () => scanDeOrdner());
         }
       }
       // Anschließend Projekte und Zugriffsstatus aktualisieren
-      await verfolgeSchritt('Projektstatus aktualisieren', async () => {
+      await verfolgeSchritt(t('projectSwitch.updateProjectStatus'), async () => {
         updateAllProjectsAfterScan();
         updateFileAccessStatus();
       });
       // Nach dem Laden Toolbar-Knöpfe neu verbinden
-      await verfolgeSchritt('Toolbar neu verbinden', async () => {
+      await verfolgeSchritt(t('projectSwitch.rebindToolbar'), async () => {
         window.initToolbarButtons?.(); // bindet alle Listener der Werkzeugleiste erneut
         window.initVideoManager?.(); // richtet den Video-Manager nach jedem Wechsel neu ein
         window.initWorkspaceTabs?.(); // setzt die Kopf-Register nach dem Klonen der DOM-Elemente erneut
         window.initializeSystemControls?.(); // verbindet System-Schaltflächen und Menüs erneut
       });
       // Event-Listener wie die Live-Suche neu setzen
-      await verfolgeSchritt('Event-Listener reinitialisieren', async () => {
+      await verfolgeSchritt(t('projectSwitch.reinitEvents'), async () => {
         window.initializeEventListeners?.();
       });
     } finally {
       // Autosave wieder aktivieren
       if (autosavePaused) {
-        await verfolgeSchritt('Autosave fortsetzen', () => resumeAutosave());
+        await verfolgeSchritt(t('projectSwitch.autosaveResume'), () => resumeAutosave());
         autosavePaused = false;
       }
       if (currentSession === mySession) setBusy(false);
@@ -245,7 +250,7 @@ function switchProjectSafe(projectId) {
   const msg = err ? String(err.message) : '';
   if (/(from|vorherige[s]? Projekt).*?(nicht gefunden|not found)/i.test(msg)) {
     // Fehlendes Ausgangsprojekt nur protokollieren und Liste neu indizieren
-    console.warn('Vorheriges Projekt nicht gefunden, versuche es erneut:', msg);
+    console.warn(t('projectSwitch.error.previousNotFound', { details: msg || '' }));
     try {
       await reloadProjectList(true);
     } catch {}
@@ -253,7 +258,7 @@ function switchProjectSafe(projectId) {
     return switchProjectSafe(projectId);
   } else if (/(nicht gefunden|not found)/i.test(msg)) {
     // Projekt fehlt: Liste neu laden und Platzhalter versuchen
-    console.warn('Projekt nicht gefunden, versuche Platzhalter zu laden:', msg);
+    console.warn(t('projectSwitch.error.projectNotFound', { details: msg || '' }));
     try {
       const adapter = getStorageAdapter('current');
       try { await repairProjectIntegrity(adapter, projectId, ui); } catch {}
@@ -261,11 +266,11 @@ function switchProjectSafe(projectId) {
       try {
         await loadProjectData(projectId, projectAbort ? { signal: projectAbort.signal } : {});
       } catch (e2) {
-        console.warn('Platzhalter-Projekt konnte nicht geladen werden:', String(e2.message || e2));
+        console.warn(t('projectSwitch.error.placeholderLoadFailed', { details: String(e2.message || e2) }));
       }
     } catch {}
   } else {
-    console.error('switchProjectSafe error', err);
+    console.error(t('projectSwitch.error.generic'), err);
   }
 });
   return switchQueue;
