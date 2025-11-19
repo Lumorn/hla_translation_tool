@@ -20339,254 +20339,438 @@ function showImportFailureDialog(context, t, format) {
 
 // =========================== FOLDER SELECTION DIALOG START ===========================
 function showFolderSelectionDialog(ambiguousFiles) {
-    return new Promise((resolve) => {
-        const t = window.i18n?.t || (value => value);
+    return new Promise(resolve => {
         const overlay = document.createElement('div');
         overlay.className = 'dialog-overlay hidden';
-        
+
         const dialog = document.createElement('div');
         dialog.className = 'dialog';
         dialog.style.maxWidth = '800px';
         dialog.style.maxHeight = '80vh';
         dialog.style.overflow = 'auto';
-        
+
         const selections = new Array(ambiguousFiles.length).fill(null).map(() => ({ selectedIndex: -1 }));
+        const translationTargets = [];
+        const registerTarget = (element, key, options = {}) => {
+            translationTargets.push({ element, key, ...options });
+        };
 
-        dialog.innerHTML = `
-            <h3>${t('folderSelection.title')}</h3>
-            <p style="margin-bottom: 8px; color: #999;">
-                ${t('folderSelection.description')}
-            </p>
-            <p style="margin-bottom: 20px; color: #999;">
-                ${t('folderSelection.hint')}
-            </p>
-            
-            <!-- NEUE OPTION: Auswahl übertragen -->
-            <div style="background: #2a2a2a; padding: 15px; margin: 0 0 20px 0; border-radius: 6px; border: 2px solid #ff6b1a;">
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                    <input type="checkbox" id="applyToAll" style="width: 18px; height: 18px;">
-                    <strong style="color: #ff6b1a;">${t('folderSelection.applyToAll')}</strong>
-                </label>
-                <p style="margin: 8px 0 0 28px; font-size: 12px; color: #999;">
-                    ${t('folderSelection.applyToAllHint')}
-                </p>
-            </div>
+        const title = document.createElement('h3');
+        registerTarget(title, 'folderSelection.title');
 
-            <div id="folderSelectionList" style="max-height: 400px; overflow-y: auto;">
-                ${ambiguousFiles.map((item, index) => `
-                    <div id="fileItem_${index}" style="background: #1a1a1a; border: 1px solid #444; border-radius: 6px; padding: 15px; margin: 10px 0;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div style="color: #ff6b1a; font-weight: bold; margin-bottom: 10px;">
-                                📄 ${item.originalFilename}
-                            </div>
-                            <div id="autoApplied_${index}" style="display: none; background: #4caf50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px;">
-                                ${t('folderSelection.autoApplied')}
-                            </div>
-                        </div>
-                        <div style="color: #999; font-size: 12px; margin-bottom: 15px;">
-                            EN: ${item.englishText.length > 60 ? item.englishText.substring(0, 60) + '...' : item.englishText}
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <strong>${t('folderSelection.foundIn').replace('{count}', item.foundPaths.length)}</strong>
-                        </div>
-                        ${item.foundPaths.map((path, pathIndex) => {
-                            const folderName = path.folder.split('/').pop() || path.folder;
-                            const hasAudio = !!audioFileCache[path.fullPath];
-                            const dbEn = path.dbEnText || '';
-                            const dbDe = path.dbDeText || '';
-                            return `
-                                <label id="folderOption_${index}_${pathIndex}" style="display: block; padding: 8px; margin: 5px 0; background: #2a2a2a; border-radius: 4px; cursor: pointer; border: 1px solid #333;"
-                                       onclick="selectFolder(${index}, ${pathIndex})">
-                                    <input type="radio" name="folder_${index}" value="${pathIndex}" style="margin-right: 10px;">
-                                    <span style="color: #4caf50;">${hasAudio ? '🎵' : '❓'}</span>
-                                    <strong>${folderName}</strong>
-                                    <br>
-                                    <small style="color: #666; margin-left: 25px;">${path.folder}</small>
-                                    ${dbEn ? `<br><small style="color: #999; margin-left: 25px;">DB EN: ${dbEn.length > 60 ? dbEn.substring(0,60) + '...' : dbEn}</small>` : ''}
-                                    ${dbDe ? `<br><small style="color: #999; margin-left: 25px;">DB DE: ${dbDe.length > 60 ? dbDe.substring(0,60) + '...' : dbDe}</small>` : ''}
-                                    ${!hasAudio ? `<br><small style="color: #f44336; margin-left: 25px;">${t('folderSelection.missingAudio')}</small>` : ''}
-                                </label>
-                            `;
-                        }).join('')}
-                        <label id="skipOption_${index}" style="display: block; padding: 8px; margin: 5px 0; background: #333; border-radius: 4px; cursor: pointer; border: 1px solid #666;"
-                               onclick="selectFolder(${index}, -1)">
-                            <input type="radio" name="folder_${index}" value="-1" style="margin-right: 10px;">
-                            <span style="color: #f44336;">${t('folderSelection.skip')}</span>
-                        </label>
-                    </div>
-                `).join('')}
-            </div>
-            <div style="background: #2a2a2a; padding: 15px; margin: 20px 0; border-radius: 6px;">
-                <strong>${t('folderSelection.help.title')}</strong><br>
-                • ${t('folderSelection.help.audioAvailable')}<br>
-                • ${t('folderSelection.help.audioMissing')}<br>
-                • ${t('folderSelection.help.autoApplied')}<br>
-                • ${t('folderSelection.help.contextAdvice')}<br>
-                • ${t('folderSelection.help.skipAdvice')}
-            </div>
-            <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="cancelFolderSelection()">${t('folderSelection.skipAll')}</button>
-                <button class="btn btn-success" onclick="confirmFolderSelection()">${t('folderSelection.confirm')}</button>
-            </div>
-        `;
-        
-        let firstSelectionMade = false;
-        let firstSelectedPath = null;
-        
-        // Global functions for the dialog
-        window.selectFolder = (fileIndex, pathIndex) => {
+        const description = document.createElement('p');
+        description.style.marginBottom = '8px';
+        description.style.color = '#999';
+        registerTarget(description, 'folderSelection.description');
+
+        const hint = document.createElement('p');
+        hint.style.marginBottom = '20px';
+        hint.style.color = '#999';
+        registerTarget(hint, 'folderSelection.hint');
+
+        const applySection = document.createElement('div');
+        applySection.style.background = '#2a2a2a';
+        applySection.style.padding = '15px';
+        applySection.style.margin = '0 0 20px 0';
+        applySection.style.borderRadius = '6px';
+        applySection.style.border = '2px solid #ff6b1a';
+
+        const applyLabel = document.createElement('label');
+        applyLabel.style.display = 'flex';
+        applyLabel.style.alignItems = 'center';
+        applyLabel.style.gap = '10px';
+        applyLabel.style.cursor = 'pointer';
+
+        const applyCheckbox = document.createElement('input');
+        applyCheckbox.type = 'checkbox';
+        applyCheckbox.id = 'applyToAll';
+        applyCheckbox.style.width = '18px';
+        applyCheckbox.style.height = '18px';
+
+        const applyText = document.createElement('strong');
+        applyText.style.color = '#ff6b1a';
+        registerTarget(applyText, 'folderSelection.applyToAll');
+
+        applyLabel.append(applyCheckbox, applyText);
+
+        const applyHint = document.createElement('p');
+        applyHint.style.margin = '8px 0 0 28px';
+        applyHint.style.fontSize = '12px';
+        applyHint.style.color = '#999';
+        registerTarget(applyHint, 'folderSelection.applyToAllHint');
+
+        applySection.append(applyLabel, applyHint);
+
+        const listContainer = document.createElement('div');
+        listContainer.style.maxHeight = '400px';
+        listContainer.style.overflowY = 'auto';
+        listContainer.id = 'folderSelectionList';
+
+        const helpBox = document.createElement('div');
+        helpBox.style.background = '#2a2a2a';
+        helpBox.style.padding = '15px';
+        helpBox.style.margin = '20px 0';
+        helpBox.style.borderRadius = '6px';
+
+        const helpTitle = document.createElement('strong');
+        registerTarget(helpTitle, 'folderSelection.help.title');
+
+        const helpList = document.createElement('ul');
+        helpList.style.margin = '8px 0 0';
+        helpList.style.paddingLeft = '18px';
+        helpList.style.listStyle = 'disc';
+
+        const helpAudioAvailable = document.createElement('li');
+        registerTarget(helpAudioAvailable, 'folderSelection.help.audioAvailable');
+
+        const helpAudioMissing = document.createElement('li');
+        registerTarget(helpAudioMissing, 'folderSelection.help.audioMissing');
+
+        const helpAutoApplied = document.createElement('li');
+        registerTarget(helpAutoApplied, 'folderSelection.help.autoApplied');
+
+        const helpContext = document.createElement('li');
+        registerTarget(helpContext, 'folderSelection.help.contextAdvice');
+
+        const helpSkip = document.createElement('li');
+        registerTarget(helpSkip, 'folderSelection.help.skipAdvice');
+
+        helpList.append(helpAudioAvailable, helpAudioMissing, helpAutoApplied, helpContext, helpSkip);
+        helpBox.append(helpTitle, helpList);
+
+        const buttonRow = document.createElement('div');
+        buttonRow.className = 'dialog-buttons';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.className = 'btn btn-secondary';
+        registerTarget(cancelButton, 'folderSelection.skipAll');
+
+        const confirmButton = document.createElement('button');
+        confirmButton.className = 'btn btn-success';
+        registerTarget(confirmButton, 'folderSelection.confirm');
+
+        buttonRow.append(cancelButton, confirmButton);
+
+        dialog.append(title, description, hint, applySection, listContainer, helpBox, buttonRow);
+
+        const truncateText = (text, max = 60) => {
+            if (!text) return '';
+            return text.length > max ? `${text.substring(0, max)}...` : text;
+        };
+
+        const fileEntries = [];
+
+        const updateAutoState = (entry, autoApplied) => {
+            if (entry.autoBadge) {
+                entry.autoBadge.style.display = autoApplied ? 'block' : 'none';
+            }
+            entry.container.style.borderColor = autoApplied ? '#4caf50' : '#444';
+            entry.container.style.borderWidth = autoApplied ? '2px' : '1px';
+        };
+
+        const selectFolder = (fileIndex, pathIndex, options = {}) => {
+            const entry = fileEntries[fileIndex];
+            if (!entry) return;
+            const { autoApplied = false, silent = false } = options;
             selections[fileIndex].selectedIndex = pathIndex;
             debugLog(`Selected folder ${pathIndex} for file ${fileIndex}`);
-            
-            // Visuelles Feedback
-            const fileItem = document.getElementById(`fileItem_${fileIndex}`);
-            if (fileItem) {
-                // Entferne alte Auswahl-Highlights
-                fileItem.querySelectorAll('label').forEach(label => {
-                    label.style.borderColor = label.id.includes('skipOption') ? '#666' : '#333';
-                    label.style.background = label.id.includes('skipOption') ? '#333' : '#2a2a2a';
-                });
-                
-                // Highlight ausgewählte Option
+
+            entry.optionEntries.forEach(option => {
+                const isSelected = option.pathIndex === pathIndex;
+                option.radio.checked = isSelected;
+                option.label.style.borderColor = isSelected ? '#4caf50' : '#333';
+                option.label.style.background = isSelected ? '#1a3a1a' : '#2a2a2a';
+            });
+
+            const skipSelected = pathIndex === -1;
+            entry.skipOption.radio.checked = skipSelected;
+            entry.skipOption.label.style.borderColor = skipSelected ? '#f44336' : '#666';
+            entry.skipOption.label.style.background = skipSelected ? '#3a1a1a' : '#333';
+
+            updateAutoState(entry, autoApplied);
+
+            if (!silent) {
+                maybeApplyToAll(fileIndex, pathIndex);
+            }
+        };
+
+        const showApplyToAllMessage = (pathIndex, remainingCount) => {
+            const { format } = getI18nTools();
+            const message = pathIndex >= 0
+                ? format('folderSelection.applyToAllSuccess', {
+                    folder: ambiguousFiles[0].foundPaths[pathIndex]?.folder || '',
+                    count: remainingCount
+                })
+                : format('folderSelection.applyToAllSkipped', { count: remainingCount });
+
+            const msgDiv = document.createElement('div');
+            msgDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 15px 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 3000;';
+            msgDiv.textContent = message;
+            document.body.appendChild(msgDiv);
+            setTimeout(() => msgDiv.remove(), 3000);
+        };
+
+        let firstSelectionMade = false;
+        const maybeApplyToAll = (fileIndex, pathIndex) => {
+            if (!applyCheckbox.checked || firstSelectionMade || fileIndex !== 0) return;
+            firstSelectionMade = true;
+            const remainingCount = Math.max(ambiguousFiles.length - 1, 0);
+
+            for (let i = 1; i < ambiguousFiles.length; i++) {
+                let assignedIndex = -1;
+
                 if (pathIndex >= 0) {
-                    const selectedLabel = document.getElementById(`folderOption_${fileIndex}_${pathIndex}`);
-                    if (selectedLabel) {
-                        selectedLabel.style.borderColor = '#4caf50';
-                        selectedLabel.style.background = '#1a3a1a';
+                    const selectedFolder = ambiguousFiles[0].foundPaths[pathIndex]?.folder || '';
+                    if (selectedFolder) {
+                        assignedIndex = ambiguousFiles[i].foundPaths.findIndex(path => path.folder === selectedFolder);
+                        if (assignedIndex === -1) {
+                            const selectedLastPart = selectedFolder.split('/').pop();
+                            if (selectedLastPart) {
+                                assignedIndex = ambiguousFiles[i].foundPaths.findIndex(path => path.folder.endsWith(selectedLastPart));
+                            }
+                        }
                     }
+                }
+
+                if (assignedIndex < 0 || assignedIndex >= ambiguousFiles[i].foundPaths.length) {
+                    assignedIndex = pathIndex >= 0 && pathIndex < ambiguousFiles[i].foundPaths.length ? pathIndex : -1;
+                }
+
+                selectFolder(i, assignedIndex, { autoApplied: true, silent: true });
+            }
+
+            showApplyToAllMessage(pathIndex, remainingCount);
+        };
+
+        const buildEntry = (item, fileIndex) => {
+            const container = document.createElement('div');
+            container.style.background = '#1a1a1a';
+            container.style.border = '1px solid #444';
+            container.style.borderRadius = '6px';
+            container.style.padding = '15px';
+            container.style.margin = '10px 0';
+
+            const header = document.createElement('div');
+            header.style.display = 'flex';
+            header.style.justifyContent = 'space-between';
+            header.style.alignItems = 'center';
+
+            const filenameLabel = document.createElement('div');
+            filenameLabel.style.color = '#ff6b1a';
+            filenameLabel.style.fontWeight = 'bold';
+            filenameLabel.style.marginBottom = '10px';
+            registerTarget(filenameLabel, 'folderSelection.filename', {
+                replacements: () => ({ filename: item.originalFilename })
+            });
+
+            const autoAppliedBadge = document.createElement('div');
+            autoAppliedBadge.style.display = 'none';
+            autoAppliedBadge.style.background = '#4caf50';
+            autoAppliedBadge.style.color = '#fff';
+            autoAppliedBadge.style.padding = '4px 8px';
+            autoAppliedBadge.style.borderRadius = '4px';
+            autoAppliedBadge.style.fontSize = '11px';
+            registerTarget(autoAppliedBadge, 'folderSelection.autoApplied');
+
+            header.append(filenameLabel, autoAppliedBadge);
+
+            const englishPreview = document.createElement('div');
+            englishPreview.style.color = '#999';
+            englishPreview.style.fontSize = '12px';
+            englishPreview.style.marginBottom = '15px';
+            const englishSnippet = truncateText(item.englishText || '');
+            registerTarget(englishPreview, 'folderSelection.englishPreview', {
+                replacements: () => ({ text: englishSnippet })
+            });
+
+            const foundInLabel = document.createElement('div');
+            foundInLabel.style.marginBottom = '10px';
+            foundInLabel.style.fontWeight = 'bold';
+            registerTarget(foundInLabel, 'folderSelection.foundIn', {
+                replacements: () => ({ count: item.foundPaths.length })
+            });
+
+            container.append(header, englishPreview, foundInLabel);
+
+            const optionEntries = [];
+            const radioName = `folder_${fileIndex}`;
+
+            const appendOption = (path, pathIndex) => {
+                const folderName = path.folder.split('/').pop() || path.folder;
+                const hasAudio = !!audioFileCache[path.fullPath];
+                const label = document.createElement('label');
+                label.style.display = 'block';
+                label.style.padding = '8px';
+                label.style.margin = '5px 0';
+                label.style.background = '#2a2a2a';
+                label.style.borderRadius = '4px';
+                label.style.cursor = 'pointer';
+                label.style.border = '1px solid #333';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = radioName;
+                radio.value = String(pathIndex);
+                radio.style.marginRight = '10px';
+
+                const icon = document.createElement('span');
+                icon.style.color = hasAudio ? '#4caf50' : '#f44336';
+                icon.textContent = hasAudio ? '🎵' : '❓';
+
+                const strong = document.createElement('strong');
+                strong.textContent = folderName;
+
+                const pathSmall = document.createElement('small');
+                pathSmall.style.color = '#666';
+                pathSmall.style.marginLeft = '25px';
+                pathSmall.textContent = path.folder;
+
+                label.append(radio, icon, strong, document.createElement('br'), pathSmall);
+
+                const dbEn = truncateText(path.dbEnText || '');
+                if (dbEn) {
+                    const dbEnSmall = document.createElement('small');
+                    dbEnSmall.style.color = '#999';
+                    dbEnSmall.style.marginLeft = '25px';
+                    registerTarget(dbEnSmall, 'folderSelection.database.en', {
+                        replacements: () => ({ text: dbEn })
+                    });
+                    label.append(document.createElement('br'), dbEnSmall);
+                }
+
+                const dbDe = truncateText(path.dbDeText || '');
+                if (dbDe) {
+                    const dbDeSmall = document.createElement('small');
+                    dbDeSmall.style.color = '#999';
+                    dbDeSmall.style.marginLeft = '25px';
+                    registerTarget(dbDeSmall, 'folderSelection.database.de', {
+                        replacements: () => ({ text: dbDe })
+                    });
+                    label.append(document.createElement('br'), dbDeSmall);
+                }
+
+                if (!hasAudio) {
+                    const missingAudioLabel = document.createElement('small');
+                    missingAudioLabel.style.color = '#f44336';
+                    missingAudioLabel.style.marginLeft = '25px';
+                    registerTarget(missingAudioLabel, 'folderSelection.missingAudio');
+                    label.append(document.createElement('br'), missingAudioLabel);
+                }
+
+                label.addEventListener('click', event => {
+                    event.stopPropagation();
+                    radio.checked = true;
+                    selectFolder(fileIndex, pathIndex);
+                });
+                radio.addEventListener('change', () => selectFolder(fileIndex, pathIndex));
+
+                optionEntries.push({ label, radio, pathIndex });
+                container.appendChild(label);
+            };
+
+            item.foundPaths.forEach(appendOption);
+
+            const skipLabel = document.createElement('label');
+            skipLabel.style.display = 'block';
+            skipLabel.style.padding = '8px';
+            skipLabel.style.margin = '5px 0';
+            skipLabel.style.background = '#333';
+            skipLabel.style.borderRadius = '4px';
+            skipLabel.style.cursor = 'pointer';
+            skipLabel.style.border = '1px solid #666';
+
+            const skipRadio = document.createElement('input');
+            skipRadio.type = 'radio';
+            skipRadio.name = radioName;
+            skipRadio.value = '-1';
+            skipRadio.style.marginRight = '10px';
+
+            const skipText = document.createElement('span');
+            skipText.style.color = '#f44336';
+            registerTarget(skipText, 'folderSelection.skip');
+
+            skipLabel.append(skipRadio, skipText);
+            skipLabel.addEventListener('click', event => {
+                event.stopPropagation();
+                skipRadio.checked = true;
+                selectFolder(fileIndex, -1);
+            });
+            skipRadio.addEventListener('change', () => selectFolder(fileIndex, -1));
+
+            container.appendChild(skipLabel);
+
+            return {
+                container,
+                autoBadge: autoAppliedBadge,
+                optionEntries,
+                skipOption: { label: skipLabel, radio: skipRadio }
+            };
+        };
+
+        ambiguousFiles.forEach((item, index) => {
+            const entry = buildEntry(item, index);
+            fileEntries.push(entry);
+            listContainer.appendChild(entry.container);
+        });
+
+        const applyDialogTexts = () => {
+            const { format } = getI18nTools();
+            translationTargets.forEach(target => {
+                const replacements = typeof target.replacements === 'function'
+                    ? target.replacements()
+                    : target.replacements;
+                const value = format(target.key, replacements || {});
+                if (target.attribute) {
+                    target.element.setAttribute(target.attribute, value);
+                } else if (target.html) {
+                    target.element.innerHTML = value;
                 } else {
-                    const skipLabel = document.getElementById(`skipOption_${fileIndex}`);
-                    if (skipLabel) {
-                        skipLabel.style.borderColor = '#f44336';
-                        skipLabel.style.background = '#3a1a1a';
-                    }
+                    target.element.textContent = value;
                 }
-            }
-            
-            // Prüfe ob "Auf alle übertragen" aktiviert ist
-            const applyToAll = document.getElementById('applyToAll');
-            if (applyToAll && applyToAll.checked && !firstSelectionMade && fileIndex === 0) {
-                firstSelectionMade = true;
-                firstSelectedPath = pathIndex;
-                
-                // Übertrage die Auswahl auf alle anderen Dateien
-                for (let i = 1; i < ambiguousFiles.length; i++) {
-                    // Finde den passenden Ordner in den anderen Dateien
-                    let matchingPathIndex = -1;
-                    
-                    if (pathIndex >= 0) {
-                        const selectedFolder = ambiguousFiles[0].foundPaths[pathIndex].folder;
-                        
-                        // Suche nach dem gleichen Ordner in der aktuellen Datei
-                        matchingPathIndex = ambiguousFiles[i].foundPaths.findIndex(
-                            path => path.folder === selectedFolder
-                        );
-                        
-                        // Wenn nicht gefunden, versuche Teilübereinstimmung
-                        if (matchingPathIndex === -1) {
-                            const selectedFolderParts = selectedFolder.split('/');
-                            const selectedLastPart = selectedFolderParts[selectedFolderParts.length - 1];
-                            
-                            matchingPathIndex = ambiguousFiles[i].foundPaths.findIndex(
-                                path => path.folder.endsWith(selectedLastPart)
-                            );
-                        }
-                    }
-                    
-                    // Setze die Auswahl
-                    selections[i].selectedIndex = matchingPathIndex >= 0 ? matchingPathIndex : pathIndex;
-                    
-                    // Visuelles Feedback
-                    const autoIndicator = document.getElementById(`autoApplied_${i}`);
-                    if (autoIndicator) {
-                        autoIndicator.style.display = 'block';
-                    }
-                    
-                    // Setze Radio-Button
-                    const radioToCheck = document.querySelector(`input[name="folder_${i}"][value="${selections[i].selectedIndex}"]`);
-                    if (radioToCheck) {
-                        radioToCheck.checked = true;
-                    }
-                    
-                    // Highlight die automatisch ausgewählte Option
-                    const itemDiv = document.getElementById(`fileItem_${i}`);
-                    if (itemDiv) {
-                        itemDiv.style.borderColor = '#4caf50';
-                        itemDiv.style.borderWidth = '2px';
-                        
-                        if (selections[i].selectedIndex >= 0) {
-                            const autoSelectedLabel = document.getElementById(`folderOption_${i}_${selections[i].selectedIndex}`);
-                            if (autoSelectedLabel) {
-                                autoSelectedLabel.style.borderColor = '#4caf50';
-                                autoSelectedLabel.style.background = '#1a3a1a';
-                            }
-                        } else {
-                            const skipLabel = document.getElementById(`skipOption_${i}`);
-                            if (skipLabel) {
-                                skipLabel.style.borderColor = '#f44336';
-                                skipLabel.style.background = '#3a1a1a';
-                            }
-                        }
-                    }
-                }
-                
-                // Zeige Erfolgsmeldung
-                const message = pathIndex >= 0 ?
-                    t('folderSelection.applyToAllSuccess')
-                        .replace('{folder}', ambiguousFiles[0].foundPaths[pathIndex].folder)
-                        .replace('{count}', ambiguousFiles.length - 1) :
-                    t('folderSelection.applyToAllSkipped')
-                        .replace('{count}', ambiguousFiles.length - 1);
-
-                const msgDiv = document.createElement('div');
-                msgDiv.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 15px 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 3000;';
-                msgDiv.textContent = message;
-                document.body.appendChild(msgDiv);
-                
-                setTimeout(() => {
-                    msgDiv.remove();
-                }, 3000);
-            }
+            });
         };
-        
-        window.cancelFolderSelection = () => {
+
+        applyDialogTexts();
+        if (window.i18n && typeof window.i18n.onLanguageChange === 'function') {
+            window.i18n.onLanguageChange(() => applyDialogTexts());
+        }
+
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+        overlay.classList.remove('hidden');
+
+        const closeDialog = result => {
+            if (!overlay.parentNode) return;
             document.body.removeChild(overlay);
-            resolve(null);
+            resolve(result);
         };
-        
-        window.confirmFolderSelection = () => {
-            // Zähle Auswahlen
-            const selectedCount = selections.filter(s => s.selectedIndex >= 0).length;
-            const skippedCount = selections.filter(s => s.selectedIndex === -1).length;
-            const unselectedCount = selections.filter(s => s.selectedIndex < -1).length;
 
+        const cancelSelection = () => closeDialog(null);
+        const confirmSelection = () => {
+            const unselectedCount = selections.filter(s => s.selectedIndex < -1).length;
             if (unselectedCount > 0) {
-                if (!confirm(t('folderSelection.unselectedConfirm').replace('{count}', unselectedCount))) {
+                const { format } = getI18nTools();
+                const message = format('folderSelection.unselectedConfirm', { count: unselectedCount });
+                if (!confirm(message)) {
                     return;
                 }
-                // Setze unausgewählte auf "überspringen"
                 selections.forEach(s => {
                     if (s.selectedIndex < -1) s.selectedIndex = -1;
                 });
             }
-            
-            document.body.removeChild(overlay);
-            resolve(selections);
+            closeDialog(selections);
         };
-        
-        overlay.appendChild(dialog);
-        document.body.appendChild(overlay);
-        // Overlay sichtbar machen
-        overlay.classList.remove('hidden');
-        
-        // Cleanup functions when dialog closes
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                window.cancelFolderSelection();
+
+        cancelButton.addEventListener('click', cancelSelection);
+        confirmButton.addEventListener('click', confirmSelection);
+        overlay.addEventListener('click', event => {
+            if (event.target === overlay) {
+                cancelSelection();
             }
         });
     });
 }
+
 // =========================== FOLDER SELECTION DIALOG END ===========================
 
 function updateTextDatabase(filename, pathInfo, englishText, localizedText) {
@@ -20759,18 +20943,18 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
         const safeFilename = escapeHtml(filename);
 
         const title = document.createElement('h3');
-        title.dataset.i18n = 'singleSelection.title';
+        title.dataset.i18n = 'folderSelection.single.title';
 
         const description = document.createElement('p');
         description.style.marginBottom = '20px';
         description.style.color = '#999';
-        description.dataset.i18n = 'singleSelection.description';
+        description.dataset.i18n = 'folderSelection.single.description';
         description.dataset.i18nHtml = 'true';
 
         const countInfo = document.createElement('p');
         countInfo.style.margin = '-12px 0 20px';
         countInfo.style.color = '#aaa';
-        countInfo.dataset.i18n = 'singleSelection.countInfo';
+        countInfo.dataset.i18n = 'folderSelection.single.countInfo';
 
         const listContainer = document.createElement('div');
         listContainer.style.maxHeight = '300px';
@@ -20785,7 +20969,7 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
         helpBox.style.color = '#999';
 
         const helpTitle = document.createElement('strong');
-        helpTitle.dataset.i18n = 'singleSelection.help.title';
+        helpTitle.dataset.i18n = 'folderSelection.single.help.title';
 
         const helpList = document.createElement('ul');
         helpList.style.margin = '6px 0 0';
@@ -20793,13 +20977,13 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
         helpList.style.listStyle = 'disc';
 
         const helpItemAudioAvailable = document.createElement('li');
-        helpItemAudioAvailable.dataset.i18n = 'singleSelection.help.audioAvailable';
+        helpItemAudioAvailable.dataset.i18n = 'folderSelection.single.help.audioAvailable';
 
         const helpItemAudioMissing = document.createElement('li');
-        helpItemAudioMissing.dataset.i18n = 'singleSelection.help.audioMissing';
+        helpItemAudioMissing.dataset.i18n = 'folderSelection.single.help.audioMissing';
 
         const helpItemContext = document.createElement('li');
-        helpItemContext.dataset.i18n = 'singleSelection.help.context';
+        helpItemContext.dataset.i18n = 'folderSelection.single.help.context';
 
         helpList.append(helpItemAudioAvailable, helpItemAudioMissing, helpItemContext);
         helpBox.append('💡 ', helpTitle, document.createElement('br'), helpList);
@@ -20809,15 +20993,15 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
 
         const cancelButton = document.createElement('button');
         cancelButton.className = 'btn btn-secondary';
-        cancelButton.dataset.i18n = 'singleSelection.button.cancel';
+        cancelButton.dataset.i18n = 'folderSelection.single.button.cancel';
 
         const addAllButton = document.createElement('button');
         addAllButton.className = 'btn btn-blue';
-        addAllButton.dataset.i18n = 'singleSelection.button.addAll';
+        addAllButton.dataset.i18n = 'folderSelection.single.button.addAll';
 
         const confirmButton = document.createElement('button');
         confirmButton.className = 'btn btn-success';
-        confirmButton.dataset.i18n = 'singleSelection.button.confirm';
+        confirmButton.dataset.i18n = 'folderSelection.single.button.confirm';
         confirmButton.disabled = selectedIndex < 0;
 
         buttonRow.append(cancelButton, addAllButton, confirmButton);
@@ -20929,21 +21113,21 @@ function showSingleFileSelectionDialog(filename, paths, originalResult) {
 
         const applyDialogTexts = () => {
             const { t, format } = getI18nTools();
-            title.textContent = t('singleSelection.title');
-            description.innerHTML = format('singleSelection.description', { filename: `<strong>${safeFilename}</strong>` });
-            countInfo.textContent = format('singleSelection.countInfo', { count: paths.length });
-            helpTitle.textContent = t('singleSelection.help.title');
-            helpItemAudioAvailable.textContent = t('singleSelection.help.audioAvailable');
-            helpItemAudioMissing.textContent = t('singleSelection.help.audioMissing');
-            helpItemContext.textContent = t('singleSelection.help.context');
-            cancelButton.textContent = t('singleSelection.button.cancel');
-            addAllButton.textContent = t('singleSelection.button.addAll');
-            confirmButton.textContent = t('singleSelection.button.confirm');
+            title.textContent = t('folderSelection.single.title');
+            description.innerHTML = format('folderSelection.single.description', { filename: `<strong>${safeFilename}</strong>` });
+            countInfo.textContent = format('folderSelection.single.countInfo', { count: paths.length });
+            helpTitle.textContent = t('folderSelection.single.help.title');
+            helpItemAudioAvailable.textContent = t('folderSelection.single.help.audioAvailable');
+            helpItemAudioMissing.textContent = t('folderSelection.single.help.audioMissing');
+            helpItemContext.textContent = t('folderSelection.single.help.context');
+            cancelButton.textContent = t('folderSelection.single.button.cancel');
+            addAllButton.textContent = t('folderSelection.single.button.addAll');
+            confirmButton.textContent = t('folderSelection.single.button.confirm');
             entries.forEach(entry => {
                 if (entry.missingAudioLabel) {
-                    entry.missingAudioLabel.textContent = t('singleSelection.list.audioMissing');
+                    entry.missingAudioLabel.textContent = t('folderSelection.single.list.audioMissing');
                 }
-                const tooltipKey = entry.hasAudio ? 'singleSelection.tooltip.play' : 'singleSelection.tooltip.noAudio';
+                const tooltipKey = entry.hasAudio ? 'folderSelection.single.tooltip.play' : 'folderSelection.single.tooltip.noAudio';
                 const tooltip = t(tooltipKey);
                 entry.playButton.title = tooltip;
                 entry.playButton.setAttribute('aria-label', tooltip);

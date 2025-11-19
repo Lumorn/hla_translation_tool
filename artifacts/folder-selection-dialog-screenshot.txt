@@ -1,0 +1,1 @@
+Screenshot-Platzhalter: Beschreibt den aktualisierten Ordnerauswahldialog mit i18n-gestützten Überschriften, Hinweisen, Badges und Buttons. In der Darstellung sind der Titel "📁 Ordner-Auswahl für mehrdeutige Dateien", der Auto-Übertragen-Hinweis, farbige Badge-Texte sowie die neuen Skip-/Bestätigen-Schaltflächen in Deutsch sichtbar.
