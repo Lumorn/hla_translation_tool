@@ -72,6 +72,12 @@ test('sanitizeJSONResponse entfernt ```json-Blöcke', () => {
   expect(sanitizeJSONResponse(input)).toBe('[{"a":1}]');
 });
 
+test('normalizeGptArray wandelt Einzelobjekte in ein Array um', () => {
+  const { normalizeGptArray } = require('../web/src/gptService.js');
+  const single = { id: 1, score: 99, comment: 'ok' };
+  expect(normalizeGptArray(single)).toEqual([single]);
+});
+
 test('applyEvaluationResults überträgt Score und Kommentar', () => {
   const { applyEvaluationResults } = require('../web/src/actions/projectEvaluate.js');
   const files = [{ id: 1 }, { id: 2 }];
@@ -108,6 +114,19 @@ test('fasst doppelte Zeilen zusammen', async () => {
     { id: 1, score: 5, projectId: 'p1' },
     { id: 2, score: 5, projectId: 'p1' }
   ]);
+});
+
+test('evaluateScene akzeptiert einzelne Objekt-Antwort', async () => {
+  const { evaluateScene } = require('../web/src/gptService.js');
+  const lines = [{ id: 3, character: '', en: 'foo', de: 'bar' }];
+  const payload = { choices: [{ message: { content: '{"id":3,"score":88}' } }] };
+  jestFetch.mockResolvedValue({
+    ok: true,
+    json: async () => payload,
+    text: async () => JSON.stringify(payload)
+  });
+  const res = await evaluateScene({ scene: 'solo', lines, key: 'key', model: 'gpt', retries: 1, projectId: 'px' });
+  expect(res).toEqual([{ id: 3, score: 88, projectId: 'px' }]);
 });
 
 test('fordert fehlende Bewertungen erneut an', async () => {
