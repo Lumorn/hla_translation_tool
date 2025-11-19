@@ -13419,6 +13419,24 @@ function checkFileAccess() {
             input.value = '';
         }
 
+        async function importAlyxOverview() {
+            const t = window.i18n?.t || (value => value);
+            // Lädt die neue Alyx-Blueprint-Datei direkt aus dem Docs-Ordner und ersetzt die Projektliste komplett
+            try {
+                updateStatus(t('project.importAlyx.status.loading'));
+                const response = await fetch('../docs/alyx_translation_overview.json', { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error(`${response.status} ${response.statusText}`);
+                }
+                const blueprint = await response.json();
+                applyTranslationBlueprint(blueprint, t('project.importAlyx.source'));
+            } catch (err) {
+                console.error('Alyx-Blueprint-Import fehlgeschlagen:', err);
+                showTranslatedAlert('alert.project.alyxImportFailed', { message: err.message });
+                updateStatus(t('project.importAlyx.status.error'));
+            }
+        }
+
         // Backup aus Datei laden
         function initiateBackupUpload() {
             document.getElementById('backupUploadInput').click();
