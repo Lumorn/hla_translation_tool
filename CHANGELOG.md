@@ -4,6 +4,10 @@
 * `web/src/main.js` nutzt `getI18nTools()` für Statusmeldungen beim Backup-/Sound-Backup-Lauf, setzt Restore-/Löschen-Buttons und Dateigrößenformatierung der Listen über Übersetzungsschlüssel und reagiert damit auf Sprachwechsel.
 * `web/src/i18n.js` ergänzt neue `backup.*`-Schlüssel in Deutsch und Englisch für Titel, Labels, Buttons, Statusmeldungen sowie Listeneinträge.
 * `README.md` hebt Version **1.40.563** hervor und beschreibt den vollständig lokalisierten Backup-Dialog im Schnellüberblick.
+* `web/hla_translation_tool.html` weist nun auch die ElevenLabs- und ChatGPT-API-Dialoge `data-i18n`-/`data-i18n-title`-Attribute zu, sodass Labels, Buttons und Tooltips komplett über Übersetzungsschlüssel gerendert werden können.
+* `web/src/main.js` ersetzt feste Texte wie „Teste Stimmen...“, „Alles in Ordnung“ oder „Key testen“ durch `t('api.*')`-/`t('gpt.api.*')`-Aufrufe und meldet damit API-Status, Buttons und Fehlermeldungen automatisch in der aktuellen Sprache.
+* `web/src/i18n.js` liefert die neuen `api.*`- und `gpt.api.*`-Schlüssel für beide Sprachen, damit HTML und Statusmeldungen dieselben Texte verwenden.
+* `README.md` erwähnt zusätzlich die vollständig lokalisierten API-Dialoge und verweist auf die neuen i18n-Schlüssel.
 # 🛠️ Patch in 1.40.562
 * `web/hla_translation_tool.html` markiert den Untertitel-Importdialog (#ccImportDialog) komplett mit `data-i18n`-Attributen für Titel, Labels, Badge, Hinweise und Buttons und belässt deutsche Standardwerte als Fallback.
 * `web/src/main.js` lädt Quell-/Zielstatus sowie Badge/Hinweis über `i18n.t(...)`, zeigt fehlende Untertitel als übersetzte Meldung, aktualisiert das Badge bei Sprachwechsel und setzt die Statuszeilen per Schlüssel mit Platzhaltern.
