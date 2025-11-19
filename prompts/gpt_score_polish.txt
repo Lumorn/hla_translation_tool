@@ -56,8 +56,10 @@ np. Np.:
 Odpowiedz **tylko** w następującym formacie tablicy JSON:
 
 ```json
-{ "id": <ID>, "score": <0-100>, "komentarz": "<konkretny komentarz z uzasadnieniem, w tym odniesienie do przed/po>", "sugestia": "<idiomatyczne, spójne przeformułowanie>" }
+{ "id": <ID>, "score": <0-100>, "komentarz": "<konkretny komentarz z uzasadnieniem, w tym odniesienie do przed/po>", "suggestion": "<idiomatyczne, spójne przeformułowanie>" }
 ```
+
+➡️ **Uwaga**: nazwa pola `suggestion` pozostaje po angielsku i nie powinna być tłumaczona.
 
 ---
 

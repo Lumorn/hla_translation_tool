@@ -55,9 +55,11 @@ pl.Pl.:
 ### Kimeneti formátum
 Válaszoljon **csak** a következő JSON tömbformátumban:
 
-``` json
-{ "id": <ID>, "score": <0-100>, "comment": "<konkrét megjegyzés indoklással, beleértve az előtte/utána hivatkozást>", "javaslat": "<idiomatikus, koherens újrafogalmazás>" }
+```json
+{ "id": <ID>, "score": <0-100>, "comment": "<konkrét megjegyzés indoklással, beleértve az előtte/utána hivatkozást>", "suggestion": "<idiomatikus, koherens újrafogalmazás>" }
 ```
+
+➡️ **Fontos**: a `suggestion` mezőnév angolul marad, nem fordítjuk le.
 
 ---
 

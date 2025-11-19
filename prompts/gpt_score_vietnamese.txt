@@ -56,8 +56,10 @@ ví dụ: Ví dụ:
 **chỉ** trả lời ở định dạng mảng JSON sau:
 
 ```json
-{ "id": <ID>, "score": <0-100>, "comment": "<nhận xét cụ thể kèm theo lý do, bao gồm cả tham chiếu đến trước/sau>", "gợi ý": "<cách diễn đạt thành ngữ, mạch lạc>" }
+{ "id": <ID>, "score": <0-100>, "comment": "<nhận xét cụ thể kèm theo lý do, bao gồm cả tham chiếu đến trước/sau>", "suggestion": "<cách diễn đạt thành ngữ, mạch lạc>" }
 ```
+
+➡️ **Lưu ý**: tên trường `suggestion` giữ nguyên bằng tiếng Anh, không được dịch.
 
 ---
 

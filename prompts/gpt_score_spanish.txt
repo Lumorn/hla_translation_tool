@@ -56,8 +56,10 @@ por ej.Por ejemplo:
 Responda **solo** en el siguiente formato de matriz JSON:
 
 ```json
-{ "id": <ID>, "score": <0-100>, "comment": "<comentario concreto con motivos, incluida la referencia al antes/después>", "sugerencia": "<reformulación idiomática y coherente>" }
+{ "id": <ID>, "score": <0-100>, "comment": "<comentario concreto con motivos, incluida la referencia al antes/después>", "suggestion": "<reformulación idiomática y coherente>" }
 ```
+
+➡️ **Nota**: el nombre de campo `suggestion` debe permanecer en inglés y no se traduce.
 
 ---
 
