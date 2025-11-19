@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.556
+* `web/src/i18n.js` ersetzt die festen „(DE)“-Anhänge der Emo-Schaltflächen durch Platzhalter, damit Button- und Tooltip-Texte den aktiven GPT-Sprachcode aufnehmen können.
+* `web/src/main.js` koppelt die Emo-Schaltflächen und -Prompts an die Score-GPT-Sprachauswahl, aktualisiert Toolbar- und Zeilen-Buttons dynamisch und übergibt die gewählte Sprache an die Emotion-API-Aufrufe.
+* `web/src/gptService.js` lädt `gpt_emotions_{lang}.txt` mitsamt Fallback, merkt sich die Prompts pro Sprache und formuliert alle Emotion-/Adjust-/Improve-Anfragen in der gewünschten Zielsprache.
+* `tests/gptService.test.js` prüft, dass die Emotion-Payload die übergebene Sprache samt Hinweistext enthält.
+* `README.md` hebt Version **1.40.556** hervor und beschreibt die sprachgekoppelten Emotion-GPT-Schaltflächen.
 # 🛠️ Patch in 1.40.555
 * `prompts/gpt_score_{spanish,latam,dutch,hungarian,turkish,vietnamese,polish,romanian}.txt` vereinheitlichen den JSON-Schlüssel `suggestion` samt Hinweisen pro Sprache, damit GPT-Ausgaben unabhängig von der Lokalisierung denselben Feldnamen liefern.
 * `README.md` hebt Version **1.40.555** hervor und erwähnt die konsistente Feldbenennung in den GPT-Score-Prompts.

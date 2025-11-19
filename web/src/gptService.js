@@ -1,11 +1,14 @@
 let systemPrompt = '';
 let systemPromptLanguage = 'german';
 let emotionPrompt = '';
+let emotionPromptLanguage = 'german';
 let promptReady;
 // Cache für bereits geladene Prompts pro Sprache
 const promptCache = new Map();
 // Standarddatei für den Score-Prompt
 const defaultScorePrompt = 'gpt_score.txt';
+const defaultEmotionPrompt = 'gpt_emotions.txt';
+const emotionPromptCache = new Map();
 // Merker, ob die Zeilen innerhalb eines Projekts fragmentiert sind
 let restMode = false;
 // Zwischenspeicher, um zu erkennen, welche Modelle den neuen Responses-Endpunkt benötigen
@@ -178,11 +181,28 @@ function getSystemPromptLanguage() {
     return systemPromptLanguage;
 }
 
+function resolveTargetLanguage(languageName, languageCode) {
+    if (typeof languageName === 'string' && languageName.trim()) {
+        return languageName.trim();
+    }
+    if (typeof languageCode === 'string' && languageCode.trim()) {
+        return languageCode.trim();
+    }
+    return 'Deutsch';
+}
+
 // Pfad-Helfer für die Score-Prompts
 function getScorePromptNames(langCode) {
     const names = [];
     if (langCode) names.push(`gpt_score_${langCode}.txt`);
     names.push(defaultScorePrompt);
+    return names;
+}
+
+function getEmotionPromptNames(langCode) {
+    const names = [];
+    if (langCode) names.push(`gpt_emotions_${langCode}.txt`);
+    names.push(defaultEmotionPrompt);
     return names;
 }
 
@@ -244,18 +264,36 @@ async function setSystemPromptLanguage(langCode = 'german') {
     const language = langCode || 'german';
     promptReady = Promise.all([
         loadSystemPrompt(language),
-        loadEmotionPrompt()
+        loadEmotionPrompt(language)
     ]);
     await promptReady;
     return systemPrompt;
 }
 
-// Lädt den Emotion-Prompt einmalig
-async function loadEmotionPrompt() {
-    if (emotionPrompt) return emotionPrompt;
-    const content = await readPromptFile('gpt_emotions.txt');
+// Lädt den Emotion-Prompt pro Sprache mit Fallback auf die Standardsprache
+async function loadEmotionPrompt(langCode = 'german') {
+    const code = langCode || 'german';
+    if (emotionPromptCache.has(code)) {
+        emotionPrompt = emotionPromptCache.get(code) || '';
+        emotionPromptLanguage = code;
+        return emotionPrompt;
+    }
+    const content = await readPromptFile(getEmotionPromptNames(code));
     emotionPrompt = (content || '').trim();
+    emotionPromptLanguage = code;
+    emotionPromptCache.set(code, emotionPrompt);
     return emotionPrompt;
+}
+
+async function getEmotionPrompt(langCode = systemPromptLanguage) {
+    const code = langCode || systemPromptLanguage || 'german';
+    if (emotionPromptLanguage === code && emotionPrompt) {
+        return emotionPrompt;
+    }
+    if (emotionPromptCache.has(code)) {
+        return emotionPromptCache.get(code);
+    }
+    return loadEmotionPrompt(code);
 }
 
 if (typeof window !== 'undefined' && typeof fetch === 'function') {
@@ -263,13 +301,14 @@ if (typeof window !== 'undefined' && typeof fetch === 'function') {
     const storedLanguage = detectStoredPromptLanguage();
     promptReady = Promise.all([
         loadSystemPrompt(storedLanguage),
-        loadEmotionPrompt()
+        loadEmotionPrompt(storedLanguage)
     ]);
 } else {
     // Unter Node: Prompts direkt von der Festplatte lesen
+    const storedLanguage = detectStoredPromptLanguage();
     promptReady = Promise.all([
-        loadSystemPrompt(detectStoredPromptLanguage()),
-        loadEmotionPrompt()
+        loadSystemPrompt(storedLanguage),
+        loadEmotionPrompt(storedLanguage)
     ]);
 }
 
@@ -578,18 +617,21 @@ async function evaluateScene({ scene, lines, key, model = 'gpt-4o-mini', retries
 }
 
 // Erzeugt einen emotional getaggten Text für eine Zeile unter Berücksichtigung des kompletten Szenenverlaufs
-async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini', retries = 5 }) {
+async function generateEmotionText({ meta, lines, targetPosition, key, model = 'gpt-4o-mini', retries = 5, language = systemPromptLanguage, languageName = '' }) {
     await promptReady;
-    // Emotionstags müssen in Deutsch zurückgegeben werden und dürfen nie direkt aufeinander folgen
+    const targetLanguage = resolveTargetLanguage(languageName, language);
+    const promptText = await getEmotionPrompt(language);
+    // Emotionstags müssen in der aktuellen Zielsprache zurückgegeben werden und dürfen nie direkt aufeinander folgen
     const payload = {
         ...meta,
         lines,
         target_position: targetPosition,
-        instructions: 'Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch.'
+        target_language: targetLanguage,
+        instructions: `Analysiere die Szene und gib den Text komplett auf ${targetLanguage} zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags und den restlichen Text auf ${targetLanguage}.`
     };
     const emoSys = restMode
-        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
-        : emotionPrompt;
+        ? promptText + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : promptText;
     const messages = [
         { role: 'system', content: emoSys },
         { role: 'user', content: JSON.stringify(payload) }
@@ -601,19 +643,22 @@ async function generateEmotionText({ meta, lines, targetPosition, key, model = '
 }
 
 // Passt den bestehenden Emotional-Text auf eine Ziel-Länge an
-async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, key, model = 'gpt-4o-mini', retries = 5 }) {
+async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, key, model = 'gpt-4o-mini', retries = 5, language = systemPromptLanguage, languageName = '' }) {
     await promptReady;
+    const targetLanguage = resolveTargetLanguage(languageName, language);
+    const promptText = await getEmotionPrompt(language);
     const payload = {
         ...meta,
         lines,
         target_position: targetPosition,
         length_seconds: lengthSeconds,
+        target_language: targetLanguage,
         // Beim Kürzen sollen Abbrüche und Fülllaute erhalten bleiben
-        instructions: `Analysiere die Szene und gib den Text komplett auf Deutsch zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf Deutsch. Kürze den Text so, dass die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt und diese Dauer keinesfalls unterschreitet. Dabei darfst du Formulierungen ändern und unwichtige Details weglassen, solange die Aussage erhalten bleibt, der Stil des englischen Originals gewahrt bleibt und der Text natürlich klingt. Eigenheiten wie abgebrochene Sätze oder Fülllaute ("äh", "mh") aus dem englischen Original sollen sinngemäß erhalten bleiben. Beschreibe im Feld "reason" in einem Satz, wie der Text verändert wurde, um die Länge der englischen Audiodatei von ${lengthSeconds.toFixed(2)} Sekunden zu erreichen.`
+        instructions: `Analysiere die Szene und gib den Text komplett auf ${targetLanguage} zurück. Setze niemals zwei Emotionstags hintereinander und platziere jeden Tag direkt vor der passenden Textstelle. Schreibe alle Tags auf ${targetLanguage}. Kürze den Text so, dass die vorgelesene Länge ungefähr ${lengthSeconds.toFixed(2)} Sekunden beträgt und diese Dauer keinesfalls unterschreitet. Dabei darfst du Formulierungen ändern und unwichtige Details weglassen, solange die Aussage erhalten bleibt, der Stil des englischen Originals gewahrt bleibt und der Text natürlich klingt. Eigenheiten wie abgebrochene Sätze oder Fülllaute ("äh", "mh") aus dem englischen Original sollen sinngemäß erhalten bleiben. Beschreibe im Feld "reason" in einem Satz, wie der Text verändert wurde, um die Länge der englischen Audiodatei von ${lengthSeconds.toFixed(2)} Sekunden zu erreichen.`
     };
     const adjSys = restMode
-        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
-        : emotionPrompt;
+        ? promptText + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : promptText;
     const messages = [
         { role: 'system', content: adjSys },
         { role: 'user', content: JSON.stringify(payload) }
@@ -625,8 +670,10 @@ async function adjustEmotionText({ meta, lines, targetPosition, lengthSeconds, k
 }
 
 // Liefert drei Übersetzungsvorschläge für einen bestehenden Emotional-Text
-async function improveEmotionText({ meta, lines, targetPosition, currentText, currentTranslation = '', key, model = 'gpt-4o-mini', retries = 5 }) {
+async function improveEmotionText({ meta, lines, targetPosition, currentText, currentTranslation = '', key, model = 'gpt-4o-mini', retries = 5, language = systemPromptLanguage, languageName = '' }) {
     await promptReady;
+    const targetLanguage = resolveTargetLanguage(languageName, language);
+    const promptText = await getEmotionPrompt(language);
     // Kontext, Übersetzung und Emotional-Text werden an das LLM gesendet
     const payload = {
         ...meta,
@@ -634,12 +681,13 @@ async function improveEmotionText({ meta, lines, targetPosition, currentText, cu
         target_position: targetPosition,
         current_text: currentText,
         current_translation: currentTranslation,
+        target_language: targetLanguage,
         // LLM soll Alternativen liefern, die Länge und Sprechzeit des EN-Texts beachten
-        instructions: 'Analysiere die gesamte Übersetzung und schlage genau drei alternative deutsche Fassungen vor. Jede Variante soll den englischen Originaltext besser wiedergeben, alle Emotionstags beibehalten und ungefähr die gleiche Länge sowie geschätzte Sprechdauer wie der englische Text haben. Vermeide längere Formulierungen. Gib ein Array [{"text":"...","reason":"..."}] zurück und begründe kurz die Verbesserungen.'
+        instructions: `Analysiere die gesamte Übersetzung und schlage genau drei alternative ${targetLanguage}-Fassungen vor. Jede Variante soll den englischen Originaltext besser wiedergeben, alle Emotionstags beibehalten und ungefähr die gleiche Länge sowie geschätzte Sprechdauer wie der englische Text haben. Vermeide längere Formulierungen. Gib ein Array [{"text":"...","reason":"..."}] zurück und begründe kurz die Verbesserungen.`
     };
     const impSys = restMode
-        ? emotionPrompt + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
-        : emotionPrompt;
+        ? promptText + "\nHinweis: Die folgenden Zeilen sind Restbestände und müssen nicht in chronologischer Reihenfolge stehen. Behandle jede Zeile für sich."
+        : promptText;
     const messages = [
         { role: 'system', content: impSys },
         { role: 'user', content: JSON.stringify(payload) }

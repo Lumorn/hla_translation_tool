@@ -207,8 +207,12 @@ test('generateEmotionText liefert Objekt mit Begründung', async () => {
     json: async () => payload,
     text: async () => JSON.stringify(payload)
   });
-  const res = await generateEmotionText({ meta: {}, lines: [], targetPosition: 1, key: 'key', model: 'gpt', retries: 1 });
+  const res = await generateEmotionText({ meta: {}, lines: [], targetPosition: 1, key: 'key', model: 'gpt', retries: 1, language: 'spanish', languageName: 'Spanisch' });
   expect(res).toEqual({ text: 'hi', reason: 'ok' });
+  const body = JSON.parse(jestFetch.mock.calls[0][1].body);
+  const userPayload = JSON.parse(body.messages[1].content);
+  expect(userPayload.target_language).toBe('Spanisch');
+  expect(userPayload.instructions).toContain('Spanisch');
 });
 
 test('improveEmotionText liefert drei Vorschläge', async () => {
