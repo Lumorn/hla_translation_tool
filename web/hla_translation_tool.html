@@ -610,22 +610,25 @@
     <div class="dialog-overlay hidden" id="backupDialog">
         <div class="dialog">
 <button class="dialog-close-btn" onclick="closeBackupDialog()">×</button>
-            <h3>💾 Backups</h3>
+            <h3 data-i18n="backup.title">💾 Backups</h3>
             <div id="backupList" style="margin-bottom:15px;"></div>
-            <h4>Sound-ZIP-Backups</h4>
+            <h4 data-i18n="backup.sound.title">Sound-ZIP-Backups</h4>
             <div id="soundBackupList" style="margin-bottom:15px;"></div>
             <div class="translate-progress" id="soundBackupProgress">
                 <div class="translate-status" id="soundBackupStatus"></div>
                 <div class="progress-bar"><div class="progress-fill" id="soundBackupFill"></div></div>
             </div>
             <div style="margin-bottom:15px;">
-                <label>Intervall (Minuten):
+                <label>
+                    <span data-i18n="backup.interval.label">Intervall (Minuten):</span>
                     <input type="number" id="backupInterval" min="1" style="width:60px;">
                 </label>
-                <label style="margin-left:10px;">Anzahl Backups:
+                <label style="margin-left:10px;">
+                    <span data-i18n="backup.limit.label">Anzahl Backups:</span>
                     <input type="number" id="backupLimit" min="1" style="width:60px;">
                 </label>
-                <label style="margin-left:10px;">Zeilenende:
+                <label style="margin-left:10px;">
+                    <span data-i18n="backup.lineEnding.label">Zeilenende:</span>
                     <select id="lineEndingSelect" style="width:70px;">
                         <option value="LF">LF</option>
                         <option value="CRLF">CRLF</option>
@@ -633,15 +636,15 @@
                 </label>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="exportTranslationBlueprint()">Struktur exportieren</button>
-                <button class="btn btn-secondary" onclick="document.getElementById('blueprintImportInput').click()">Struktur importieren</button>
+                <button class="btn btn-secondary" onclick="exportTranslationBlueprint()" data-i18n="backup.button.exportStructure">Struktur exportieren</button>
+                <button class="btn btn-secondary" onclick="document.getElementById('blueprintImportInput').click()" data-i18n="backup.button.importStructure">Struktur importieren</button>
             </div>
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="createBackup(true)">Backup erstellen</button>
-                <button class="btn btn-secondary" onclick="createSoundBackup()">Sound-Backup erstellen</button>
-                <button class="btn btn-secondary" onclick="initiateBackupUpload()">Backup hochladen</button>
-                <button class="btn btn-secondary" onclick="openBackupFolder()">Ordner öffnen</button>
-                <button class="btn btn-secondary" onclick="closeBackupDialog()">Schließen</button>
+                <button class="btn btn-secondary" onclick="createBackup(true)" data-i18n="backup.button.create">Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="createSoundBackup()" data-i18n="backup.button.createSound">Sound-Backup erstellen</button>
+                <button class="btn btn-secondary" onclick="initiateBackupUpload()" data-i18n="backup.button.upload">Backup hochladen</button>
+                <button class="btn btn-secondary" onclick="openBackupFolder()" data-i18n="backup.button.openFolder">Ordner öffnen</button>
+                <button class="btn btn-secondary" onclick="closeBackupDialog()" data-i18n="backup.button.close">Schließen</button>
             </div>
         </div>
     </div>
