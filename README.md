@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.562-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.563-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -27,6 +27,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Der Einzeldatei-Ordnerdialog für Suchtreffer erzeugt jedes Element per DOM, liest Titel, Beschreibungen, Tooltips und Buttons aus i18n-Schlüsseln mit `{filename}`-/`{count}`-Platzhaltern und reagiert damit sofort auf Sprachwechsel.
 * Im Import- und Untertitelbereich erscheinen Fehler, Abbrüche, Erfolgsstatus und Zusammenfassungen jetzt als lokalisierte Toasts bzw. Dialoge, sodass Web- und Electron-Oberfläche konsistente Rückmeldungen anzeigen.
 * Der Untertitel-Import-Dialog (#ccImportDialog) trägt Titel, Labels, Badge, Hinweis und Buttons als `data-i18n`-Ziele ein, setzt Statuszeilen für Quellen/Zieldateien über `i18n.t(...)` und aktualisiert Badge samt Hinweis dynamisch bei Sprachwechsel.
+* Der Backup-Dialog (#backupDialog) markiert Überschriften, Labels, Hinweise und Buttons mit `data-i18n`, setzt Listen/Statusmeldungen über `i18n.t(...)`/`i18n.format(...)` und reagiert beim Öffnen automatisch auf die gewählte Sprache.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
 * Einheitliche Übersetzungsziele für statische Beschriftungen, Platzhalter, Tooltips und Dialoge in der Web-Oberfläche.

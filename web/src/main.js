@@ -12941,6 +12941,7 @@ function checkFileAccess() {
         // Backup and Restore functionality
 // =========================== CREATEBACKUP START ===========================
         function createBackup(showMsg = false) {
+            const { t } = getI18nTools();
             const backup = {
                 version: APP_VERSION,
                 date: new Date().toISOString(),
@@ -12963,7 +12964,7 @@ function checkFileAccess() {
             if (window.electronAPI && window.electronAPI.saveBackup) {
                 window.electronAPI.saveBackup(json).then(() => {
                     enforceBackupLimit();
-                    if (showMsg) updateStatus('Backup erstellt');
+                    if (showMsg) updateStatus(t('backup.status.created'));
                     loadBackupList();
                 });
             } else {
@@ -12972,7 +12973,7 @@ function checkFileAccess() {
                 list.push({ name, data: json });
                 if (list.length > autoBackupLimit) list = list.slice(list.length - autoBackupLimit);
                 storage.setItem('hla_backups', JSON.stringify(list));
-                if (showMsg) updateStatus('Backup erstellt');
+                if (showMsg) updateStatus(t('backup.status.created'));
                 loadBackupList();
             }
         }
@@ -13011,10 +13012,11 @@ function checkFileAccess() {
             const prog = document.getElementById('soundBackupProgress');
             const fill = document.getElementById('soundBackupFill');
             const status = document.getElementById('soundBackupStatus');
+            const { t } = getI18nTools();
             if (prog) {
                 prog.classList.add('active');
                 fill.style.width = '0%';
-                status.textContent = 'Erstelle Sound-Backup...';
+                status.textContent = t('backup.sound.status.running');
             }
             await window.electronAPI.createSoundBackup();
             if (prog) {
@@ -13023,7 +13025,7 @@ function checkFileAccess() {
                 status.textContent = '';
             }
             loadSoundBackupList();
-            updateStatus('Sound-Backup erstellt');
+            updateStatus(t('backup.status.soundCreated'));
         }
 
         async function loadSoundBackupList() {
@@ -13031,6 +13033,7 @@ function checkFileAccess() {
             if (!listDiv) return;
             listDiv.innerHTML = '';
             if (!window.electronAPI || !window.electronAPI.listSoundBackups) return;
+            const { t, format } = getI18nTools();
             const files = await window.electronAPI.listSoundBackups();
             files.forEach(({ name, size, mtime }, idx) => {
                 const item = document.createElement('div');
@@ -13038,10 +13041,13 @@ function checkFileAccess() {
                 const label = document.createElement('span');
                 const date = new Date(mtime);
                 const mb = (size / (1024 * 1024)).toFixed(1);
-                label.textContent = `${date.toLocaleString()} – ${mb} MB`;
+                label.textContent = format('backup.sound.item', {
+                    date: date.toLocaleString(),
+                    size: mb
+                });
                 label.title = name;
                 const del = document.createElement('button');
-                del.textContent = 'Löschen';
+                del.textContent = t('backup.list.delete');
                 del.onclick = () => { deleteSoundBackup(name); };
                 item.appendChild(label);
                 item.appendChild(del);
@@ -13069,6 +13075,7 @@ function checkFileAccess() {
             }
             // Nach Datum sortieren, neuestes zuerst
             files.sort((a, b) => parseBackupDate(b) - parseBackupDate(a));
+            const { t } = getI18nTools();
 
             files.slice(0, 10).forEach((name, idx) => {
                 const item = document.createElement('div');
@@ -13082,10 +13089,10 @@ function checkFileAccess() {
                     label.textContent = name;
                 }
                 const restoreBtn = document.createElement('button');
-                restoreBtn.textContent = 'Wiederherstellen';
+                restoreBtn.textContent = t('backup.list.restore');
                 restoreBtn.onclick = () => restoreFromBackup(name);
                 const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = 'Löschen';
+                deleteBtn.textContent = t('backup.list.delete');
                 deleteBtn.onclick = () => { deleteBackup(name); };
                 item.appendChild(label);
                 item.appendChild(restoreBtn);

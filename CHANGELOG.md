@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.563
+* `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels und Buttons des Backup-Dialogs mit `data-i18n`, damit Intervalle, Limits, Zeilenenden sowie Blueprint-/Backup-Schaltflächen automatisch lokalisiert werden.
+* `web/src/main.js` nutzt `getI18nTools()` für Statusmeldungen beim Backup-/Sound-Backup-Lauf, setzt Restore-/Löschen-Buttons und Dateigrößenformatierung der Listen über Übersetzungsschlüssel und reagiert damit auf Sprachwechsel.
+* `web/src/i18n.js` ergänzt neue `backup.*`-Schlüssel in Deutsch und Englisch für Titel, Labels, Buttons, Statusmeldungen sowie Listeneinträge.
+* `README.md` hebt Version **1.40.563** hervor und beschreibt den vollständig lokalisierten Backup-Dialog im Schnellüberblick.
 # 🛠️ Patch in 1.40.562
 * `web/hla_translation_tool.html` markiert den Untertitel-Importdialog (#ccImportDialog) komplett mit `data-i18n`-Attributen für Titel, Labels, Badge, Hinweise und Buttons und belässt deutsche Standardwerte als Fallback.
 * `web/src/main.js` lädt Quell-/Zielstatus sowie Badge/Hinweis über `i18n.t(...)`, zeigt fehlende Untertitel als übersetzte Meldung, aktualisiert das Badge bei Sprachwechsel und setzt die Statuszeilen per Schlüssel mit Platzhaltern.
