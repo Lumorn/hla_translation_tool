@@ -39,7 +39,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Die Dateitabelle zieht Platzhalter, Tooltips und Emo-Buttons in `renderFiles` über i18n-Schlüssel und formatiert dynamische Ordnernamen mit Platzhaltern.
 * Neuer Struktur-Export/-Import erstellt einen Blueprint nur mit Kapiteln, Leveln, Dateinamen und EN-Texten – ohne DE-Übersetzungen oder Audio-Pfade – damit externe Übersetzer:innen mit einer sauberen Ausgangsbasis arbeiten können.
 * Unter 🎮 Projekte steht jetzt ein Alyx-Blueprint-Import, der `docs/alyx_translation_overview.json` lädt und sämtliche Projekte exakt nach dieser Datei ersetzt.
-* Die Kapitel-, Level-Teil- und Projektnamen im Blueprint `docs/alyx_translation_overview.json` sind aktualisiert und einheitlich benannt (z. B. „Kapitel 1 – Entaglement (Intro + Kapitel 1)“ oder „Balkon – Funk mit Eli & Russell“) und spiegeln damit die Spielabschnitte klar wider.
+* Die Kapitel-, Level-Teil- und Projektnamen im Blueprint `docs/alyx_translation_overview.json` sind einheitlich benannt (z. B. „Kapitel 1 – Entaglement (Intro + Kapitel 1)“ oder „Balkon – Funk mit Eli & Russell“) und spiegeln damit die Spielabschnitte klar wider.
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.
 * Toolbar, Tabellenköpfe, Kontextmenüs und Launcher-Buttons im HTML beziehen Texte, Tooltips und Platzhalter konsequent aus den i18n-Ressourcen; neue `data-i18n`-Ziele werden automatisch registriert und bei Sprachwechseln sofort aktualisiert.
