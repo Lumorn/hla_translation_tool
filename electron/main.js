@@ -58,6 +58,49 @@ const { writeDebugReport } = require('../utils/debugReport');
 const pendingDubs = [];
 let mainWindow;
 
+// =========================== SOUNDEVENTS-EXPORT-PFAD START ===========================
+// Ermittelt den Ordner soundevents/exports_alyx inklusive Groß-/Kleinschreibungsvarianten
+const soundeventRootCandidates = ['soundevents', 'Soundevents', 'SoundEvents'];
+const soundeventExportCandidates = ['exports_alyx', 'Exports_alyx', 'Exports_Alyx'];
+let soundeventExportPath = null;
+
+for (const rootName of soundeventRootCandidates) {
+  const possibleRoot = path.join(projectRoot, rootName);
+  if (!fs.existsSync(possibleRoot)) continue;
+  for (const exportName of soundeventExportCandidates) {
+    const possibleExport = path.join(possibleRoot, exportName);
+    if (fs.existsSync(possibleExport)) {
+      soundeventExportPath = possibleExport;
+      break;
+    }
+  }
+  if (soundeventExportPath) break;
+}
+
+// Zählt Einträge einer Wiki-Tabelle (Quote/File-Blöcke)
+function countWikiEntries(content) {
+  if (!content) return 0;
+  const lines = content.split(/\r?\n/);
+  let count = 0;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].trim() === '|-' && lines[i + 1] && lines[i + 1].startsWith('|')) {
+      count++;
+    }
+  }
+  return count;
+}
+
+// Leitet aus dem Dateinamen einen Ordner-Pfad wie soundevents/vo/alyx ab
+function deriveSoundeventFolder(fileName) {
+  if (!fileName) return '';
+  let base = fileName.replace(/\.wiki$/i, '');
+  base = base.replace(/^soundevents_/i, '').replace(/_en$/i, '');
+  if (!base) return 'soundevents';
+  const parts = base.split('_').filter(Boolean);
+  return ['soundevents', ...parts].join('/');
+}
+// =========================== SOUNDEVENTS-EXPORT-PFAD END =============================
+
 // Bei erneutem Startversuch Hinweis anzeigen und Hauptfenster in den Vordergrund holen
 app.on('second-instance', () => {
   if (mainWindow) {
@@ -366,6 +409,48 @@ app.whenReady().then(() => {
       enFiles: readAudioFiles(enPath),
       deFiles: readAudioFiles(dePath),
     };
+  });
+
+  ipcMain.handle('list-soundevent-exports', async () => {
+    try {
+      if (!soundeventExportPath || !fs.existsSync(soundeventExportPath)) {
+        return { available: false, directory: soundeventExportPath ?? '', files: [] };
+      }
+      const entries = fs.readdirSync(soundeventExportPath).filter(name => /\.wiki$/i.test(name));
+      const files = entries.map(name => {
+        const fullPath = path.join(soundeventExportPath, name);
+        const stats = fs.statSync(fullPath);
+        const content = fs.readFileSync(fullPath, 'utf8');
+        return {
+          file: name,
+          folder: deriveSoundeventFolder(name),
+          entries: countWikiEntries(content),
+          size: stats.size,
+          updatedAt: stats.mtimeMs,
+        };
+      });
+      return { available: true, directory: soundeventExportPath, files };
+    } catch (err) {
+      console.error('Soundevents-Export konnte nicht gelesen werden', err);
+      return { available: false, directory: soundeventExportPath ?? '', files: [], error: String(err?.message || err) };
+    }
+  });
+
+  ipcMain.handle('load-soundevent-export', async (event, fileName) => {
+    if (!fileName) throw new Error('Dateiname fehlt');
+    if (!soundeventExportPath || !fs.existsSync(soundeventExportPath)) {
+      throw new Error('Soundevents-Exportordner wurde nicht gefunden');
+    }
+    const safeName = path.basename(fileName);
+    const fullPath = path.join(soundeventExportPath, safeName);
+    if (!fullPath.startsWith(soundeventExportPath)) {
+      throw new Error('Ungültiger Pfad');
+    }
+    if (!fs.existsSync(fullPath)) {
+      throw new Error('Datei nicht gefunden');
+    }
+    const content = fs.readFileSync(fullPath, 'utf8');
+    return { file: safeName, content };
   });
 
   // Ordnerauswahl-Dialog öffnen und gewählten Pfad zurückgeben
