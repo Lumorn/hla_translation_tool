@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.558
+* `web/src/main.js` ersetzt Import-Alerts durch lokalisierte Toasts und Dialoge, wertet Spaltenfehler über i18n-Schlüssel aus und zeigt Erfolgs- sowie Fehlerschilderungen im UI-Banner statt im Browser-Alert.
+* `web/src/main.js` führt Zusammenfassungs- und Fehler-Dialoghelfer inklusive Platzhalterlisten ein, nutzt `getI18nTools()` zentral und meldet Untertitel- sowie Suchstatus konsequent über `t(...)`.
+* `web/src/i18n.js` ergänzt die neuen Import-/Untertitel-Schlüssel in Deutsch und Englisch (Validierungen, Status, Zusammenfassungen, Toasttexte), damit Web- und Electron-Oberfläche dieselben Texte nutzen.
+* `README.md` hebt Version **1.40.558** hervor und erwähnt die lokalisierten Toast-/Dialogmeldungen im Importbereich.
 # 🛠️ Patch in 1.40.557
 * `README.md` hebt Version **1.40.557** hervor und ergänzt eine Hauptdirektive, dass neue Features, Dialoge und Textausgaben zwingend mit dem i18n-System kompatibel sein müssen.
 # 🛠️ Patch in 1.40.556
