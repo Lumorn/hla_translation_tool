@@ -1,0 +1,1 @@
+Screenshot-Platzhalter: Auto-Übersetzungsbereich mit dem Button „Automatische Übersetzung starten“, deaktivierten Statusanzeigen und dem Hinweis, dass die Statusleiste nun lokalisiert wird.

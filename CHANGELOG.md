@@ -6,6 +6,10 @@
 * `web/src/main.js` nutzt `showTranslatedAlert()`/`showTranslatedConfirm()` für sämtliche Systemmeldungen, ersetzt harte Texte in `alert()`/`confirm()` durch i18n-Schlüssel mit Platzhaltern und sorgt damit für konsistente Hinweise in beiden Sprachen.
 * `web/src/i18n.js` ergänzt umfangreiche `alert.*`- und `confirm.*`-Schlüssel (Deutsch/Englisch) für Dateiberechtigungen, Projekt-/Ordneraktionen, Audio- und Soundevent-Workflows sowie Warn- und Erfolgsmeldungen.
 * `README.md` dokumentiert im Schnellüberblick, dass alle Systemmeldungen mehrsprachig über i18n laufen.
+* `web/src/main.js` lokalisiert Startbutton, Statusleiste und Toasts der Auto-Übersetzung per `autoTranslate.status.*`, setzt die Kopierhilfe-Korrektur über `status.copyAssistant.corrected`, deaktiviert Voice-Tests mit `api.voice.testRunning` und meldet Sprecher-Erkennung per `speaker.replace.toast.*`.
+* `web/hla_translation_tool.html` bindet den Auto-Übersetzungs-Startknopf an `autoTranslate.button.start` und verpasst dem Voice-Test-Button eine ID für die neue Statuslogik.
+* `web/src/i18n.js` liefert die frischen `autoTranslate.*`, `speaker.replace.toast.*`, `api.voice.testRunning` und `status.copyAssistant.corrected` Schlüssel in Deutsch und Englisch.
+* `README.md` ergänzt einen Abschnitt „🌐 Lokalisierte Statusanzeige“, `CHANGELOG.md` verweist auf die neuen Status- und Toast-Übersetzungen.
 # 🛠️ Patch in 1.40.566
 * `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels, Tooltips und Buttons des 🇬🇧-Review-Dialogs mit `data-i18n`-/`data-i18n-aria-label`-Attributen, damit Titel, Sprachumschalter, Listen sowie Steuerknöpfe automatisch übersetzt werden.
 * `web/src/main.js` setzt Fortschrittsanzeige, Platzhalter und Vorschau-Hinweise des EN-Reviews über `getI18nTools()`/`i18n.format('englishReview.progress.status', …)` und aktualisiert den Dialog bei jedem Sprachwechsel erneut.

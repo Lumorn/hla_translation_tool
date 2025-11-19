@@ -74,6 +74,12 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Neuer Canvas-Audioeditor im v2-Renderer mit Zoom, Linealen, Undo-Funktion und ffmpeg-gestützter Effektkette.
 * Umfangreiche Debug-, Test- und Troubleshooting-Hilfen für stabile Produktions-Workflows.
 
+### 🌐 Lokalisierte Statusanzeige
+* Die Start-Schaltfläche der Auto-Übersetzung nutzt `autoTranslate.button.start` sowohl im HTML als auch bei Statuswechseln und bleibt dadurch in beiden Sprachen konsistent.
+* Fortschrittsbalken, Statusleiste und Toasts des Auto-Übersetzungs-Workflows verwenden `autoTranslate.status.*`/`autoTranslate.toast.*`, wodurch Fehler, Hintergrundläufe und Abschlussmeldungen lokalisierbar sind.
+* Die Kopierhilfe korrigiert Zwischenablagen über `status.copyAssistant.corrected`, während Voice-Tests ihre Buttons mit `api.voice.testRunning` deaktivieren und Statusmeldungen via `api.voice.status.*` ausgeben.
+* Die Sprecher-Ersetzen-Funktion meldet fehlende HTTPS-Kontexte, Browser-Limits oder Erkennungsfehler mit den neuen `speaker.replace.toast.*`-Schlüsseln und übergibt erkannte Namen als Platzhalter.
+
 ## 🧭 Inhaltsnavigator
 * [🏆 Funktionsarchiv (komplett)](#-funktionsarchiv-komplett)
   * [🎯 Kernfunktionen](#-kernfunktionen)

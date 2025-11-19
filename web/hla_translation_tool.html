@@ -167,7 +167,7 @@
                             <div class="group-main">
                                 <h3 id="toolbarSystemTitle" class="group-title" data-i18n="toolbar.system.title">System</h3>
                                 <div class="group-buttons">
-                                    <button id="startTranslateButton" class="btn btn-blue" data-i18n="system.autoTranslate">Automatische Übersetzung</button>
+                                    <button id="startTranslateButton" class="btn btn-blue" data-i18n="autoTranslate.button.start">Automatische Übersetzung starten</button>
                                     <div class="menu-wrapper">
                                         <button id="systemMenuToggle" class="btn btn-secondary menu-toggle" data-menu-toggle="systemMenu" aria-haspopup="true" aria-expanded="false" data-i18n="system.menu">Verwaltung</button>
                                         <div class="workspace-dropdown workspace-dropdown--wide" id="systemMenu" role="menu">
@@ -666,7 +666,7 @@
             <h4 data-i18n="api.defaults.title">Aktuelle Dubbing-Standardwerte</h4>
             <ul id="voiceSettingsDisplay" class="voice-defaults-list"></ul>
             <div class="dialog-buttons">
-                <button class="btn" onclick="testVoiceIds()" data-i18n="api.button.testVoices">Voice-IDs testen</button>
+                <button class="btn" id="testVoiceIdsBtn" onclick="testVoiceIds()" data-i18n="api.button.testVoices">Voice-IDs testen</button>
                 <button class="btn" onclick="clearAllVoiceIds()" data-i18n="api.button.resetVoices">Alle zurücksetzen</button>
                 <button class="btn" onclick="addCustomVoice()" data-i18n="api.button.addVoice">Neue Stimme</button>
                 <button class="btn btn-secondary" onclick="closeApiDialog()" data-i18n="api.button.cancel">Abbrechen</button>
