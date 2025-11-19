@@ -12619,7 +12619,13 @@ function buildProjectFile(filename, folder) {
                 const fileLabel = document.getElementById('importFileName');
                 if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
                 updateStatus(`Soundevents-Datei übernommen: ${entry.file}`);
+                setSoundeventFolderHint(entry.folder);
                 analyzeImportData();
+                const summary = await startImportProcess({ soundeventFolder: entry.folder, skipFolderPrompts: true });
+                if (summary?.aborted) {
+                    console.warn('Soundevents-Import abgebrochen oder unvollständig:', summary.reason);
+                }
+                setSoundeventFolderHint(null);
             } catch (err) {
                 console.error('Soundevents-Datei konnte nicht übernommen werden:', err);
                 if (statusEl) statusEl.textContent = 'Fehler beim Laden der Datei.';
@@ -12685,8 +12691,10 @@ function buildProjectFile(filename, folder) {
                                 document.getElementById('importData').value = fileData.content;
                                 const fileLabel = document.getElementById('importFileName');
                                 if (fileLabel) fileLabel.textContent = `Soundevents: ${entry.file}`;
+                                setSoundeventFolderHint(entry.folder);
                                 analyzeImportData();
-                                const result = await startImportProcess();
+                                const result = await startImportProcess({ soundeventFolder: entry.folder, skipFolderPrompts: true });
+                                setSoundeventFolderHint(null);
                                 if (result?.aborted) {
                                     summary.aborted = true;
                                     soundeventBulkAbortRequested = true;
@@ -19782,12 +19790,51 @@ async function applyDeEdit(param = {}) {
 // =========================== APPLYDEEDIT END ===============================
 
 
+let pendingSoundeventFolderHint = null;
+
+function setSoundeventFolderHint(folder) {
+    pendingSoundeventFolderHint = folder || null;
+}
+
+function normalizeSoundeventFolder(folder) {
+    if (!folder) return '';
+    let normalized = String(folder).trim().replace(/\\/g, '/');
+    normalized = normalized.replace(/^\.\/+/, '');
+    normalized = normalized.replace(/^web\//i, '');
+    normalized = normalized.replace(/^soundevents\//i, '');
+    normalized = normalized.replace(/^sounds\//i, '');
+    normalized = normalized.replace(/^exports_alyx\//i, '');
+    normalized = normalized.replace(/\/+/g, '/');
+    return normalized.toLowerCase();
+}
+
+function folderMatchesSoundeventHint(candidateFolder, normalizedHint) {
+    if (!candidateFolder || !normalizedHint) return false;
+    const normalizedCandidate = normalizeSoundeventFolder(candidateFolder);
+    if (!normalizedCandidate) return false;
+    return normalizedCandidate === normalizedHint
+        || normalizedCandidate.startsWith(`${normalizedHint}/`)
+        || normalizedHint.startsWith(`${normalizedCandidate}/`)
+        || normalizedCandidate.endsWith(`/${normalizedHint}`)
+        || normalizedHint.endsWith(`/${normalizedCandidate}`);
+}
+
 // =========================== IMPROVED IMPORT PROCESS START ===========================
-async function startImportProcess() {
+async function startImportProcess(options = {}) {
+    const opts = options || {};
+    let soundeventFolderHint = opts.soundeventFolder || '';
+    const skipFolderPrompts = Boolean(opts.skipFolderPrompts);
+    let consumedPendingHint = false;
+    if (!soundeventFolderHint && pendingSoundeventFolderHint) {
+        soundeventFolderHint = pendingSoundeventFolderHint;
+        consumedPendingHint = true;
+    }
+    const normalizedSoundeventHint = normalizeSoundeventFolder(soundeventFolderHint);
     const filenameColumn = parseInt(document.getElementById('filenameColumn').value);
     const englishColumn = parseInt(document.getElementById('englishColumn').value);
     const germanColumn = document.getElementById('germanColumn').value ? parseInt(document.getElementById('germanColumn').value) : -1;
     const t = window.i18n?.t || (value => value);
+    let autoAssignedFolders = 0;
     const buildEarlySummary = (reason) => ({
         imported: 0,
         updated: 0,
@@ -19795,28 +19842,29 @@ async function startImportProcess() {
         multipleFound: [],
         skippedDueToAmbiguity: 0,
         databaseMatches: 0,
+        autoAssignedFolders,
         aborted: true,
         reason
     });
 
     if (isNaN(filenameColumn)) {
         alert('Bitte wählen Sie die Spalte für die Dateinamen aus!');
-        return buildEarlySummary('missingFilename');
+        return finalizeSummary(buildEarlySummary('missingFilename'));
     }
 
     if (isNaN(englishColumn)) {
         alert('Bitte wählen Sie die Spalte für den englischen Text aus!');
-        return buildEarlySummary('missingEnglish');
+        return finalizeSummary(buildEarlySummary('missingEnglish'));
     }
 
     if (filenameColumn === englishColumn) {
         alert('Dateinamen und englischer Text können nicht in derselben Spalte sein!');
-        return buildEarlySummary('invalidColumns');
+        return finalizeSummary(buildEarlySummary('invalidColumns'));
     }
 
     if (germanColumn >= 0 && (germanColumn === filenameColumn || germanColumn === englishColumn)) {
         alert('Deutsche Text-Spalte muss unterschiedlich zu den anderen Spalten sein!');
-        return buildEarlySummary('invalidGermanColumn');
+        return finalizeSummary(buildEarlySummary('invalidGermanColumn'));
     }
 
     let imported = 0;
@@ -19832,13 +19880,20 @@ async function startImportProcess() {
         multipleFound,
         skippedDueToAmbiguity,
         databaseMatches,
+        autoAssignedFolders,
         aborted,
         reason
     });
+    const finalizeSummary = (result) => {
+        if (consumedPendingHint) {
+            pendingSoundeventFolderHint = null;
+        }
+        return result;
+    };
     
     // Sammle alle Dateien mit mehreren Ordnern für Batch-Auswahl
     const ambiguousFiles = [];
-    
+
     // PHASE 1: Analysiere alle Dateien und sammle mehrdeutige
     parsedImportData.forEach((row, index) => {
         const filename = row[filenameColumn];
@@ -19885,7 +19940,14 @@ async function startImportProcess() {
                 }
             }
         }
-        
+
+        if (normalizedSoundeventHint) {
+            const hintMatches = foundPaths.filter(candidate => folderMatchesSoundeventHint(candidate.folder, normalizedSoundeventHint));
+            if (hintMatches.length > 0) {
+                foundPaths = hintMatches;
+            }
+        }
+
         if (foundPaths.length === 0) {
             notFound.push(filename);
         } else if (foundPaths.length === 1) {
@@ -19895,6 +19957,24 @@ async function startImportProcess() {
             imported++;
             databaseMatches++;
         } else {
+            if (normalizedSoundeventHint && skipFolderPrompts) {
+                const autoMatch = foundPaths[0];
+                console.info('📁 Ordnerhinweis angewendet – automatische Zuordnung', {
+                    datei: filename,
+                    hinweis: soundeventFolderHint,
+                    gewaehlt: autoMatch.folder
+                });
+                updateTextDatabase(autoMatch.filename, autoMatch.pathInfo, englishText, germanText);
+                imported++;
+                databaseMatches++;
+                autoAssignedFolders++;
+                multipleFound.push({
+                    original: filename,
+                    selected: autoMatch.folder,
+                    autoAssigned: true
+                });
+                return;
+            }
             // Mehrdeutig → zur späteren Auswahl sammeln
             ambiguousFiles.push({
                 originalFilename: filename,
@@ -19913,7 +19993,7 @@ async function startImportProcess() {
         if (selections === null) {
             // Benutzer hat abgebrochen
             alert('Import abgebrochen.');
-            return buildSummary(true, 'folderSelectionCancelled');
+            return finalizeSummary(buildSummary(true, 'folderSelectionCancelled'));
         }
         
         // Verarbeite Benutzer-Auswahlen
@@ -19927,7 +20007,8 @@ async function startImportProcess() {
                 databaseMatches++;
                 multipleFound.push({
                     original: ambiguous.originalFilename,
-                    selected: selectedPath.folder
+                    selected: selectedPath.folder,
+                    autoAssigned: false
                 });
             } else {
                 skippedDueToAmbiguity++;
@@ -19984,6 +20065,9 @@ async function startImportProcess() {
         if (multipleFound.length > 0) {
             summaryMessage += `• ${multipleFound.length} mehrdeutige Dateien aufgelöst\n`;
         }
+        if (autoAssignedFolders > 0) {
+            summaryMessage += `• ${autoAssignedFolders} Ordner automatisch zugewiesen\n`;
+        }
         if (skippedDueToAmbiguity > 0) {
             summaryMessage += `• ${skippedDueToAmbiguity} mehrdeutige Dateien übersprungen\n`;
         }
@@ -19995,12 +20079,12 @@ async function startImportProcess() {
         
         if (multipleFound.length > 0) {
             summaryMessage += `\n\n🎯 Ordner-Auswahlen:\n` +
-                multipleFound.slice(0, 5).map(mf => `• ${mf.original} → ${mf.selected}`).join('\n') +
+                multipleFound.slice(0, 5).map(mf => `• ${mf.original} → ${mf.selected}${mf.autoAssigned ? ' (automatisch)' : ''}`).join('\n') +
                 (multipleFound.length > 5 ? `\n... und ${multipleFound.length - 5} weitere` : '');
         }
-        
+
         setTimeout(() => {
-            alert(summaryMessage + (notFound.length > 0 && notFound.length <= 10 ? `\n\n❌ Nicht gefunden:\n${notFound.join('\n')}` : 
+            alert(summaryMessage + (notFound.length > 0 && notFound.length <= 10 ? `\n\n❌ Nicht gefunden:\n${notFound.join('\n')}` :
                   notFound.length > 10 ? `\n\n❌ ${notFound.length} Dateien nicht gefunden (erste 5):\n${notFound.slice(0, 5).join('\n')}\n...` : ''));
         }, 100);
     } else {
@@ -20016,7 +20100,7 @@ async function startImportProcess() {
               'Tipp: Scannen Sie zuerst den Ordner mit den Audio-Dateien.');
     }
 
-    return buildSummary(false);
+    return finalizeSummary(buildSummary(false));
 }
 
 // =========================== FOLDER SELECTION DIALOG START ===========================

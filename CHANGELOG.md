@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.554
+* `web/src/main.js` erweitert `startImportProcess` um optionale Parameter für Soundevents-Ordner und Dialog-Skip, normalisiert Kandidatenpfade (`soundevents/`, `sounds/`), filtert Mehrfachtreffer anhand des Hinweises, zählt automatische Zuordnungen und meldet sie im Erfolgs-Alert.
+* `web/src/main.js` setzt beim Einzel- und Stapelimport den passenden Ordnerhinweis, ruft `startImportProcess({ soundeventFolder, skipFolderPrompts: true })` auf und protokolliert abgebrochene Läufe.
+* `README.md` hebt Version **1.40.554** hervor und beschreibt den neuen Ordnerhinweis samt automatischer Zuordnung im Import-Abschnitt.
 # 🛠️ Patch in 1.40.553
 * `web/hla_translation_tool.html` ergänzt einen Fortschrittsbereich direkt unter den Soundevents-Schaltflächen, der Statusmeldungen oder einen Spinner für laufende Übernahmen anzeigt.
 * `web/src/main.js` deaktiviert während `loadSoundeventExport()` Import- und Reload-Buttons, zeigt den neuen Fortschritt und setzt den Zustand nach Erfolg oder Fehler zurück.

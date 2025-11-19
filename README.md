@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.553-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.554-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -1141,6 +1141,7 @@ Gespeicherte Segmente werden nun projektweise automatisch geladen; jede Änderun
   * **Soundevents-Vorschau:** Zeigt die Inhalte von `soundevents/exports_alyx` tabellarisch an, inklusive erkannter Ordner und Zeilenzähler, und übernimmt jede Datei per Klick direkt in die Importanalyse.
   * **Visuelles Feedback:** Während einer Soundevents-Übernahme deaktiviert das Tool Import- und Neu-laden-Schaltflächen, zeigt einen animierten Fortschritt direkt unter den Buttons und blendet ihn nach Abschluss oder Fehler wieder aus.
   * **Stapelimport für Soundevents:** Ein neuer Button „Alle Soundevents importieren“ startet einen vollautomatischen Durchlauf über sämtliche Exporte, lädt jede Datei nacheinander via Desktop-API in das Textfeld, stößt `analyzeImportData()` sowie `startImportProcess()` an, zeigt Dateiname plus Zähler im Spinner an, sperrt Import/Reload/Tabellenklicks und ermöglicht bei Fehlern Toast, Retry oder Abbruch.
+  * **Ordnerhinweis & Auto-Zuordnung:** Nach jedem Soundevents-Ladevorgang merkt sich der Import den passenden Ordner, normalisiert Kandidaten mit Präfixen wie `soundevents/` oder `sounds/`, filtert Mehrfachtreffer auf Basis dieses Hinweises, überspringt bei Bedarf den Dialog und meldet im Erfolgs-Alert, wie viele Ordner automatisch zugewiesen wurden.
   * **Untertitel-Import:** liest `closecaption_english.txt` plus eine wählbare Ziel-Sprache (z. B. Deutsch, Französisch, Koreanisch), verknüpft Zeilen per ID und gleicht sie automatisch ab; zeigt bei Mehrdeutigkeit die vorhandenen Datenbank-Texte an
   * **Lokalisierte Untertitel-Fallbacks:** Badge, Hinweistext und Standard-Sprache greifen auf i18n-Schlüssel zurück und vermeiden hartkodierte „Deutsch“-Strings
   * **Untertitel-Suche:** neuer 🔍-Button neben jeder Datei sucht ähnliche EN-Texte in den Untertiteln und übernimmt den passenden DE-Text; der gesuchte EN-Text wird angezeigt, `<clr:...>`-Farbcodes werden entfernt, `<HEADSET>`, `<cr>` sowie `<sb>`-Markierungen werden durch Leerzeichen ersetzt
