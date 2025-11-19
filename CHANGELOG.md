@@ -3,6 +3,9 @@
 * `web/src/main.js` ersetzt den HTML-Template-String des mehrteiligen Ordnerauswahldialogs durch DOM-Erzeugung, speist Überschriften, Hinweise, Badges und Buttons über `getI18nTools()`/`folderSelection.*` ein und reagiert auf Sprachwechsel; zugleich nutzt der Einzeldatei-Dialog dieselben `folderSelection.single.*`-Schlüssel.
 * `web/src/i18n.js` führt neue `folderSelection.*`-Ressourcen für Dateinamen, EN/DB-Vorschauen, Badge-Texte sowie den Einzeldatei-Dialog ein und entfernt die veralteten `singleSelection.*`-Einträge.
 * `README.md` beschreibt im Schnellüberblick, dass der Ordnerauswahldialog alle Beschriftungen dynamisch aus i18n-Schlüsseln bezieht und somit vollständig übersetzbar ist.
+* `web/src/main.js` nutzt `showTranslatedAlert()`/`showTranslatedConfirm()` für sämtliche Systemmeldungen, ersetzt harte Texte in `alert()`/`confirm()` durch i18n-Schlüssel mit Platzhaltern und sorgt damit für konsistente Hinweise in beiden Sprachen.
+* `web/src/i18n.js` ergänzt umfangreiche `alert.*`- und `confirm.*`-Schlüssel (Deutsch/Englisch) für Dateiberechtigungen, Projekt-/Ordneraktionen, Audio- und Soundevent-Workflows sowie Warn- und Erfolgsmeldungen.
+* `README.md` dokumentiert im Schnellüberblick, dass alle Systemmeldungen mehrsprachig über i18n laufen.
 # 🛠️ Patch in 1.40.566
 * `web/hla_translation_tool.html` markiert sämtliche Überschriften, Labels, Tooltips und Buttons des 🇬🇧-Review-Dialogs mit `data-i18n`-/`data-i18n-aria-label`-Attributen, damit Titel, Sprachumschalter, Listen sowie Steuerknöpfe automatisch übersetzt werden.
 * `web/src/main.js` setzt Fortschrittsanzeige, Platzhalter und Vorschau-Hinweise des EN-Reviews über `getI18nTools()`/`i18n.format('englishReview.progress.status', …)` und aktualisiert den Dialog bei jedem Sprachwechsel erneut.

@@ -96,6 +96,18 @@ function getI18nTools() {
     return { t, format };
 }
 
+// Zeigt eine übersetzte Meldung per alert an
+function showTranslatedAlert(key, replacements = {}) {
+    const { format } = getI18nTools();
+    alert(format(key, replacements));
+}
+
+// Öffnet ein confirm-Dialogfenster mit Übersetzung
+function showTranslatedConfirm(key, replacements = {}) {
+    const { format } = getI18nTools();
+    return confirm(format(key, replacements));
+}
+
 // Aktualisiert Anzeige und Beschriftung für das aktuelle Speichersystem
 function updateStorageIndicator(mode) {
     const indicator = document.getElementById('storageModeIndicator');
@@ -3861,28 +3873,23 @@ function calculateProjectStats(project) {
 // Handle Access Status Click - für den Button unten rechts
 function handleAccessStatusClick() {
     const stats = checkFileAccess();
-    
+
     if (stats.selectedFiles === 0) {
-        alert('ℹ️ Dateiberechtigungen\n\nKeine Dateien ausgewählt.\n\nWählen Sie erst Dateien aus, um deren Berechtigung zu prüfen.');
+        showTranslatedAlert('alert.accessStatus.noneSelected');
         return;
     }
-    
+
     if (stats.inaccessibleFiles === 0) {
-        alert('✅ Dateiberechtigungen\n\nAlle ausgewählten Dateien sind verfügbar!\n\nKein Scan erforderlich.');
+        showTranslatedAlert('alert.accessStatus.allAccessible');
         return;
     }
     
     // Auto-scan für nicht verfügbare Dateien
-    const shouldScan = confirm(
-        `🔒 Dateiberechtigungen erneuern\n\n` +
-        `Status: ${stats.accessibleFiles}/${stats.selectedFiles} Dateien verfügbar\n` +
-        `${stats.inaccessibleFiles} Dateien benötigen neue Berechtigungen\n\n` +
-        `Grund: Browser-Berechtigungen sind abgelaufen oder\n` +
-        `Dateien wurden in einem anderen Ordner gefunden.\n\n` +
-        `✅ JA - Projektordner wählen\n` +
-        `❌ NEIN - Abbrechen\n\n` +
-        `Möchten Sie den Ordner-Scan starten?`
-    );
+    const shouldScan = showTranslatedConfirm('confirm.accessStatus.scan', {
+        accessible: stats.accessibleFiles,
+        selected: stats.selectedFiles,
+        missing: stats.inaccessibleFiles
+    });
     
     if (shouldScan) {
         updateStatus('Erneuere Dateiberechtigungen - Ordner-Scan...');
@@ -3909,7 +3916,7 @@ async function loadProjects(skipSelect = false) {
         if (window.electronAPI && window.electronAPI.showProjectError) {
             window.electronAPI.showProjectError('Projekt-Ladefehler', msg);
         } else {
-            alert('Projekt-Ladefehler:\n' + msg);
+            showTranslatedAlert('alert.project.loadError', { message: msg });
         }
     };
 
@@ -4561,11 +4568,11 @@ function quickAddProject(levelName) {
         function deleteProject(id, event) {
             event.stopPropagation();
             if (projects.length <= 1) {
-                alert('Das letzte Projekt kann nicht gelöscht werden!');
+                showTranslatedAlert('alert.project.deleteLast');
                 return;
             }
-            
-            if (!confirm('Projekt wirklich löschen?')) return;
+
+            if (!showTranslatedConfirm('confirm.project.delete')) return;
             
             projects = projects.filter(p => String(p.id) !== String(id));
             saveProjects();
@@ -4833,7 +4840,7 @@ function copyLevelName(){
     if(!currentProject||!currentProject.levelName) return;
     safeCopy(currentProject.levelName)
         .then(ok=>{ if(ok) updateStatus('Level-Name kopiert'); })
-        .catch(()=>alert('Kopieren fehlgeschlagen'));
+        .catch(() => showTranslatedAlert('alert.clipboard.copyFailed'));
 }
 // =========================== PROJECT META FUNCTIONS END ===========================
 
@@ -4927,7 +4934,9 @@ function addFiles() {
     
     if (notFound.length > 0) {
         setTimeout(() => {
-            alert(`Folgende Dateien wurden nicht gefunden:\n${notFound.join('\n')}\n\nBitte prüfen Sie den EN-Ordner des Projekts.`);
+            showTranslatedAlert('alert.files.notFoundList', {
+                list: notFound.join('\n')
+            });
         }, 100);
     }
     
@@ -6099,7 +6108,7 @@ function addFiles() {
                         }, 100);
                         break;
                     case 'delete':
-                        if (confirm(`Datei "${contextMenuFile.filename}" wirklich löschen?`)) {
+                        if (showTranslatedConfirm('confirm.files.deleteSingle', { filename: contextMenuFile.filename })) {
                             deleteFile(contextMenuFile.id);
                         }
                         break;
@@ -6146,7 +6155,7 @@ function addFiles() {
         function analyzeProject(projectId) {
             const prj = projects.find(p => p.id === projectId);
             if (!prj) {
-                alert('Projekt nicht gefunden.');
+                showTranslatedAlert('alert.project.notFound');
                 return;
             }
 
@@ -6173,14 +6182,14 @@ function addFiles() {
             }
 
             if (fehler.length === 0 && sortiert) {
-                alert('Analyse abgeschlossen:\nKeine Probleme gefunden.');
+                showTranslatedAlert('alert.project.analysisClean');
                 return;
             }
 
             if (!sortiert) fehler.push('Dateien sind nicht alphabetisch sortiert.');
             const bericht = 'Analysebericht:\n- ' + fehler.join('\n- ');
 
-            if (confirm(bericht + '\n\nProbleme automatisch reparieren?')) {
+            if (showTranslatedConfirm('confirm.project.autoRepair', { report: bericht })) {
                 const einzigartige = [];
                 const gesehen = new Set();
                 prj.files.forEach(f => {
@@ -6192,9 +6201,9 @@ function addFiles() {
                 prj.files = einzigartige;
                 saveProjects();
                 renderProjects();
-                alert('Projekt wurde repariert.');
+                showTranslatedAlert('alert.project.repaired');
             } else {
-                alert('Keine Änderungen vorgenommen.');
+                showTranslatedAlert('alert.project.noChanges');
             }
         }
 
@@ -6643,7 +6652,7 @@ return `
                 if (row) row.remove();
                 const msg = `❌ Keine Datei für Vorschlag mit ID ${id} gefunden. Der Eintrag wurde entfernt.`;
                 // Fragt optional nach einem Debug-Bericht
-                if (confirm(`${msg}\n\nSoll ein Debug-Bericht gespeichert werden?`)) {
+                if (showTranslatedConfirm('confirm.debugReport.save', { message: msg })) {
                     exportDebugReport();
                 }
                 return;
@@ -6684,7 +6693,7 @@ async function showFileExchangeOptions(fileId) {
     
     // Prüfe ob EN-Text vorhanden ist
     if (!file.enText || file.enText.trim().length === 0) {
-        alert('❌ Datei-Austausch nicht möglich\n\nDiese Datei hat keinen EN-Text zum Vergleichen.\nBitte fügen Sie zuerst einen englischen Text hinzu.');
+        showTranslatedAlert('alert.fileExchange.missingEnglish');
         return;
     }
     
@@ -6705,7 +6714,7 @@ async function showFileExchangeOptions(fileId) {
                 levenshteinDistance = window.levenshteinDistance;
             } else {
                 console.error('Text-Utilities konnten nicht geladen werden', err);
-                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                showTranslatedAlert('alert.textUtils.loadFailed');
                 return;
             }
         }
@@ -6715,7 +6724,7 @@ async function showFileExchangeOptions(fileId) {
     const similarEntries = searchSimilarEntriesInDatabase(file);
     
     if (similarEntries.length === 0) {
-        alert('❌ Keine ähnlichen Einträge gefunden\n\nEs wurden keine Dateien in der Datenbank gefunden, die ähnliche EN-Texte haben.\n\nTipp: Importieren Sie zuerst mehr Daten oder scannen Sie weitere Ordner.');
+        showTranslatedAlert('alert.fileExchange.noSimilarEntries');
         return;
     }
     
@@ -6800,7 +6809,7 @@ async function openSubtitleSearch(fileId) {
                 levenshteinDistance = window.levenshteinDistance;
             } else {
                 console.error('Text-Utilities konnten nicht geladen werden', err);
-                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                showTranslatedAlert('alert.textUtils.loadFailed');
                 return;
             }
         }
@@ -6815,7 +6824,7 @@ async function openSubtitleSearch(fileId) {
             moduleStatus.closecaptionParser = { loaded: true, source: 'Ausgelagert' };
         } catch (e) {
             console.error('closecaptionParser konnte nicht geladen werden', e);
-            alert('❌ Untertitel konnten nicht geladen werden.');
+            showTranslatedAlert('alert.subtitles.loadFailed');
             return;
         }
     }
@@ -6829,7 +6838,7 @@ async function openSubtitleSearch(fileId) {
         subtitleData = await loadClosecaptions(base, subtitleImportLanguage);
         subtitleDataLanguage = subtitleImportLanguage;
         if (!subtitleData) {
-            alert('❌ Untertitel konnten nicht geladen werden.');
+            showTranslatedAlert('alert.subtitles.loadFailed');
             return;
         }
     }
@@ -6905,7 +6914,7 @@ async function runGlobalSubtitleSearch() {
     // Sammle alle Dateien ohne DE-Text
     const targets = files.filter(f => !f.deText || !f.deText.trim());
     if (targets.length === 0) {
-        alert('✅ Alle Dateien besitzen bereits einen deutschen Text.');
+        showTranslatedAlert('alert.files.allHaveGerman');
         return;
     }
 
@@ -6921,7 +6930,7 @@ async function runGlobalSubtitleSearch() {
                 levenshteinDistance = window.levenshteinDistance;
             } else {
                 console.error('Text-Utilities konnten nicht geladen werden', err);
-                alert('❌ Text-Utilities konnten nicht geladen werden.');
+                showTranslatedAlert('alert.textUtils.loadFailed');
                 return;
             }
         }
@@ -6934,7 +6943,7 @@ async function runGlobalSubtitleSearch() {
             loadClosecaptions = mod.loadClosecaptions || window.loadClosecaptions;
         } catch (e) {
             console.error('closecaptionParser konnte nicht geladen werden', e);
-            alert('❌ Untertitel konnten nicht geladen werden.');
+            showTranslatedAlert('alert.subtitles.loadFailed');
             return;
         }
     }
@@ -6948,7 +6957,7 @@ async function runGlobalSubtitleSearch() {
         subtitleData = await loadClosecaptions(base, subtitleImportLanguage);
         subtitleDataLanguage = subtitleImportLanguage;
         if (!subtitleData) {
-            alert('❌ Untertitel konnten nicht geladen werden.');
+            showTranslatedAlert('alert.subtitles.loadFailed');
             return;
         }
     }
@@ -6977,7 +6986,9 @@ async function runGlobalSubtitleSearch() {
             updateText(file.id, 'de', matches[0].deText, true);
             applied++;
         } else if (matches.length > 1) {
-            const useOne = confirm(`Mehrere perfekte Treffer für "${file.filename}" gefunden. Ersten übernehmen?`);
+            const useOne = showTranslatedConfirm('confirm.subtitles.useFirst', {
+                filename: file.filename
+            });
             if (useOne) {
                 updateText(file.id, 'de', matches[0].deText, true);
                 applied++;
@@ -6993,7 +7004,7 @@ async function runGlobalSubtitleSearch() {
         renderFileTable();
         saveCurrentProject();
     }
-    alert(`🔍 Untertitelsuche abgeschlossen. ${applied} Texte übernommen.`);
+    showTranslatedAlert('alert.subtitles.searchSummary', { applied });
 }
 
 // =========================== TEXT-ÄHNLICHKEIT (siehe fileUtils.js) =====================
@@ -7131,28 +7142,25 @@ function showExchangePreview() {
 // =========================== EXECUTE FILE EXCHANGE START ===========================
 function executeFileExchange() {
     if (!fileExchangeData.currentFile || !fileExchangeData.selectedEntry) {
-        alert('❌ Fehler: Keine Auswahl getroffen');
+        showTranslatedAlert('alert.fileExchange.noSelection');
         return;
     }
-    
+
     const current = fileExchangeData.currentFile;
     const selected = fileExchangeData.selectedEntry;
     
     // Bestätigung
-    const confirmMessage = `🔄 Datei-Austausch bestätigen\n\n` +
-        `Aktuelle Datei: ${current.filename}\n` +
-        `Ordner: ${current.folder}\n\n` +
-        `Wird ersetzt durch:\n` +
-        `Neue Datei: ${selected.filename}\n` +
-        `Ordner: ${selected.folder}\n` +
-        `Ähnlichkeit: ${selected.similarityPercent}%\n\n` +
-        `Änderungen:\n` +
-        `• EN-Text: Wird aus Datenbank übernommen\n` +
-        `• DE-Text: Bleibt erhalten (${current.deText ? 'vorhanden' : 'leer'})\n` +
-        `• Dateiname & Ordner: Werden geändert\n\n` +
-        `Fortfahren?`;
-    
-    if (!confirm(confirmMessage)) {
+    const tools = getI18nTools();
+    const deStatus = tools.t(current.deText ? 'confirm.fileExchange.deStatus.present' : 'confirm.fileExchange.deStatus.empty');
+
+    if (!showTranslatedConfirm('confirm.fileExchange.execute', {
+        currentFilename: current.filename,
+        currentFolder: current.folder,
+        newFilename: selected.filename,
+        newFolder: selected.folder,
+        similarity: selected.similarityPercent,
+        deStatus
+    })) {
         return;
     }
     
@@ -7190,19 +7198,15 @@ function executeFileExchange() {
     closeFileExchangeDialog();
     
     // 7. Erfolgs-Nachricht
-    const successMessage = `✅ Datei-Austausch erfolgreich!\n\n` +
-        `Alte Datei: ${current.filename}\n` +
-        `Neue Datei: ${selected.filename}\n` +
-        `Ordner: ${selected.folder}\n` +
-        `Ähnlichkeit: ${selected.similarityPercent}%\n\n` +
-        `✓ EN-Text aus Datenbank übernommen\n` +
-        `✓ DE-Text beibehalten\n` +
-        `✓ Projekt aktualisiert`;
-    
     updateStatus(`Datei-Austausch erfolgreich: ${selected.filename} (${selected.similarityPercent}% Ähnlichkeit)`);
-    
+
     setTimeout(() => {
-        alert(successMessage);
+        showTranslatedAlert('alert.fileExchange.success', {
+            oldFilename: current.filename,
+            newFilename: selected.filename,
+            folder: selected.folder,
+            similarity: selected.similarityPercent
+        });
     }, 500);
     
     debugLog(`[FILE EXCHANGE] Erfolgreich: ${current.filename} in ${current.folder}`);
@@ -7231,7 +7235,7 @@ function closeFileExchangeDialog() {
 
 // Repariere Ordnernamen in allen Projekten basierend auf Database
 function repairProjectFolders() {
-    if (!confirm('Dies aktualisiert alle Ordnernamen in den Projekten basierend auf der Database.\nFortfahren?')) {
+    if (!showTranslatedConfirm('confirm.projectFolders.updateAll')) {
         return;
     }
     
@@ -7329,14 +7333,13 @@ function repairProjectFolders() {
         const logPreview = updateLog.slice(0, 10).join('\n');
         const moreText = updateLog.length > 10 ? `\n... und ${updateLog.length - 10} weitere` : '';
         
-        alert(`✅ Ordner-Reparatur erfolgreich!\n\n` +
-              `📊 Statistik:\n` +
-              `• ${totalUpdated} Ordnernamen aktualisiert\n` +
-              `• ${totalProjects} Projekte verarbeitet\n\n` +
-              `🔧 Beispiele:\n${logPreview}${moreText}\n\n` +
-              `🎯 Audio sollte jetzt in allen Projekten funktionieren!`);
+        showTranslatedAlert('alert.folderRepair.success', {
+            updated: totalUpdated,
+            projects: totalProjects,
+            examples: `${logPreview}${moreText}`
+        });
     } else {
-        alert('✅ Alle Ordnernamen sind bereits korrekt!\n\nKeine Aktualisierungen nötig.');
+        showTranslatedAlert('alert.folderRepair.noChanges');
     }
     
     debugLog('=== Ordner-Reparatur abgeschlossen ===');
@@ -8391,7 +8394,7 @@ function deleteFile(fileId) {
             
             // Validate input
             if (isNaN(newPosition) || newPosition < 1 || newPosition > maxPosition) {
-                alert(`Ungültige Position!\n\nBitte eine Zahl zwischen 1 und ${maxPosition} eingeben.`);
+                showTranslatedAlert('alert.files.invalidPosition', { max: maxPosition });
                 return;
             }
             
@@ -8611,7 +8614,7 @@ async function checkFilename(fileId, event) {
     }
 
     if (found) {
-        alert(`✅ Datei vorhanden: ${file.filename}`);
+        showTranslatedAlert('alert.files.exists', { filename: file.filename });
         return;
     }
 
@@ -8628,15 +8631,16 @@ async function checkFilename(fileId, event) {
     }
 
     if (kandidaten.length === 0) {
-        alert('❌ Datei nicht gefunden und keine passende Alternative vorhanden.');
+        showTranslatedAlert('alert.files.notFound');
         return;
     }
 
     let auswahl;
     if (kandidaten.length === 1) {
-        if (!confirm(`Datei ${file.filename} fehlt.\n` +
-                     `Gefundene Datei: ${kandidaten[0].filename}\n` +
-                     `Eintrag auf diese Datei ändern?`)) {
+        if (!showTranslatedConfirm('confirm.files.replaceSingle', {
+            missing: file.filename,
+            replacement: kandidaten[0].filename
+        })) {
             return;
         }
         auswahl = kandidaten[0];
@@ -9426,7 +9430,7 @@ function ensurePlaybackOrder() {
 
 // Bereinigung: Entferne fullPath aus allen Projekten
 function updateAllFilePaths() {
-    if (!confirm('Dies bereinigt alle Projekte und entfernt veraltete Pfade.\nDie Pfade werden dynamisch aus der Datenbank geladen.\n\nFortfahren?')) {
+    if (!showTranslatedConfirm('confirm.projectCleanup.run')) {
         return;
     }
     
@@ -9479,15 +9483,13 @@ function updateAllFilePaths() {
         
         updateStatus(`📁 Projekt-Bereinigung: ${totalUpdated} fullPath Einträge entfernt, ${extUpdates} Dateiendungen angepasst`);
 
-        alert(`✅ Projekt-Bereinigung erfolgreich!\n\n` +
-              `📊 Statistik:\n` +
-              `• ${totalUpdated} veraltete Pfade entfernt\n` +
-              `• ${extUpdates} Dateiendungen angepasst\n` +
-              `• ${totalProjects} Projekte bereinigt\n` +
-              `• Pfade werden jetzt dynamisch geladen\n\n` +
-              `🎯 Alle Audio-Funktionen sollten wieder funktionieren!`);
+        showTranslatedAlert('alert.projectCleanup.success', {
+            outdated: totalUpdated,
+            extensions: extUpdates,
+            projects: totalProjects
+        });
     } else {
-        alert('✅ Alle Projekte sind bereits bereinigt!\n\nKeine veralteten Pfade oder falschen Dateiendungen gefunden.');
+        showTranslatedAlert('alert.projectCleanup.none');
     }
     
     debugLog('=== Projekt-Bereinigung abgeschlossen ===');
@@ -9770,11 +9772,9 @@ function copyFolderReport() {
 
                 if (!projektOrdnerHandle) {
                     // Kein Ordner gewaehlt → Benutzer fragen
-                    const choose = confirm(
-                        `📁 ${functionName}\n\n` +
-                        'Die Audio-Dateien sind nicht zugänglich.\n' +
-                        'Möchten Sie den Projektordner auswählen?'
-                    );
+                    const choose = showTranslatedConfirm('confirm.autoScan.chooseFolder', {
+                        functionName
+                    });
 
                     if (choose) {
                         updateStatus('Projektordner wird geöffnet...');
@@ -10057,7 +10057,7 @@ function showFolderGrid() {
 
 // =========================== CLEANUPINCORRECTFOLDERNAMES START ===========================
 function cleanupIncorrectFolderNames() {
-    if (!confirm('Dies bereinigt die Datenbank von Einträgen mit falschen Ordnernamen.\n\nNur Dateien, die wirklich in dem angegebenen Ordner liegen, bleiben erhalten.\n\nFortfahren?')) {
+    if (!showTranslatedConfirm('confirm.folderCleanup.run')) {
         return;
     }
     
@@ -10158,14 +10158,6 @@ function cleanupIncorrectFolderNames() {
         if (count > 0) debugLog('Dateiendungen aktualisiert:', count);
     }
     
-    const results = `✅ Ordnernamen-Bereinigung abgeschlossen!\n\n` +
-        `📊 Statistik:\n` +
-        `• ${totalChecked} Einträge geprüft\n` +
-        `• ${totalCorrected} Ordnernamen korrigiert\n` +
-        `• ${totalRemoved} falsche Einträge entfernt\n` +
-        `• ${Object.keys(filePathDatabase).length} Dateien verbleiben\n\n` +
-        `🎯 Alle Einträge haben jetzt korrekte Ordnernamen!`;
-    
     updateStatus(`Ordnernamen bereinigt: ${totalCorrected} korrigiert, ${totalRemoved} entfernt`);
     
     // Aktualisiere aktuelle Ansicht falls Ordner-Browser offen
@@ -10174,7 +10166,12 @@ function cleanupIncorrectFolderNames() {
         showFolderGrid();
     }
     
-    alert(results);
+    showTranslatedAlert('alert.folderCleanup.summary', {
+        checked: totalChecked,
+        corrected: totalCorrected,
+        removed: totalRemoved,
+        remaining: Object.keys(filePathDatabase).length
+    });
     debugLog('=== Bereinigung abgeschlossen ===');
 }
 // =========================== CLEANUPINCORRECTFOLDERNAMES END ===========================
@@ -10726,7 +10723,7 @@ function toggleIgnoreSelectedSegments() {
 async function openSegmentDialog() {
     if (!currentProject) {
         // Ohne aktives Projekt kann keine Datei zugeordnet werden
-        alert('Bitte zuerst ein Projekt auswählen.');
+        showTranslatedAlert('alert.project.selectFirst');
         return;
     }
     const dlg = document.getElementById('segmentDialog');
@@ -11453,13 +11450,17 @@ function deleteFolderFromDatabase(folderName) {
     
     // Warnung wenn Texte oder Projekte vorhanden
     if (hasTexts || hasProjectFiles) {
+        const tools = getI18nTools();
         const warnings = [];
-        if (hasTexts) warnings.push('Übersetzungen (EN/DE Texte)');
-        if (hasProjectFiles) warnings.push('Dateien in Projekten');
-        
+        if (hasTexts) warnings.push(tools.t('confirm.folderDelete.warningTexts'));
+        if (hasProjectFiles) warnings.push(tools.t('confirm.folderDelete.warningProjects'));
+
         const warningText = warnings.join(' und ');
-        
-        if (!confirm(`⚠️ WARNUNG: Ordner kann nicht sicher gelöscht werden!\n\nDer Ordner "${lastFolderName}" enthält:\n• ${warningText}\n\nDas Löschen würde diese Daten beschädigen.\n\n💡 Empfehlung:\n1. Entfernen Sie zuerst alle Dateien aus Ihren Projekten\n2. Löschen Sie die Übersetzungen manuell\n3. Versuchen Sie dann erneut\n\nTROTZDEM LÖSCHEN? (Nicht empfohlen)`)) {
+
+        if (!showTranslatedConfirm('confirm.folderDelete.blocked', {
+            folder: lastFolderName,
+            warning: warningText
+        })) {
             return;
         }
     }
@@ -11469,7 +11470,14 @@ function deleteFolderFromDatabase(folderName) {
         return count + paths.filter(p => p.folder === folderName).length;
     }, 0);
     
-    if (!confirm(`🗑️ Ordner endgültig löschen\n\nMöchten Sie den Ordner "${lastFolderName}" wirklich aus der Datenbank löschen?\n\nDies entfernt:\n• ${fileCount} Dateipfade\n• Audio-Cache-Einträge\n• Ordner-Anpassungen\n${hasTexts ? '• Alle Übersetzungen (EN/DE)\n' : ''}${hasProjectFiles ? '• Alle Dateien aus Projekten\n' : ''}\n⚠️ Die Aktion kann NICHT rückgängig gemacht werden!\n\nFortfahren?`)) {
+    const removalTexts = hasTexts ? getI18nTools().t('confirm.folderDelete.removeTexts') : '';
+    const removalProjects = hasProjectFiles ? getI18nTools().t('confirm.folderDelete.removeProjects') : '';
+    if (!showTranslatedConfirm('confirm.folderDelete.final', {
+        folder: lastFolderName,
+        fileCount,
+        removalTexts,
+        removalProjects
+    })) {
         return;
     }
     
@@ -11546,18 +11554,17 @@ function deleteFolderFromDatabase(folderName) {
     }
     
     // Erfolgs-Nachricht
-    const successMessage = `✅ Ordner "${lastFolderName}" erfolgreich gelöscht!\n\n` +
-        `📊 Entfernt:\n` +
-        `• ${deletedFiles} Dateipfade\n` +
-        `• ${deletedAudioCache} Audio-Cache-Einträge\n` +
-        `• ${deletedTexts} Übersetzungseinträge\n` +
-        `• ${removedFromProjects} Dateien aus Projekten\n` +
-        `${hadCustomization ? '• Ordner-Anpassungen\n' : ''}` +
-        `\n🎯 Verbleibend:\n` +
-        `• ${Object.keys(filePathDatabase).length} Dateien in Datenbank\n` +
-        `• ${Object.keys(textDatabase).length} Übersetzungseinträge`;
-    
-    alert(successMessage);
+    const customizationLine = hadCustomization ? getI18nTools().t('alert.folderDelete.customizations') : '';
+    showTranslatedAlert('alert.folderDelete.success', {
+        folder: lastFolderName,
+        filePaths: deletedFiles,
+        audioCache: deletedAudioCache,
+        texts: deletedTexts,
+        projectFiles: removedFromProjects,
+        customizations: customizationLine,
+        remainingFiles: Object.keys(filePathDatabase).length,
+        remainingTexts: Object.keys(textDatabase).length
+    });
     updateStatus(`Ordner "${lastFolderName}" vollständig aus Datenbank gelöscht`);
     
     // Zurück zur Ordner-Übersicht
@@ -11729,7 +11736,7 @@ function createProjectWithMissingFiles(folderName) {
         });
     });
     if (all.length === 0) {
-        alert('Keine fehlenden Dateien gefunden.');
+        showTranslatedAlert('alert.files.missingNone');
         return;
     }
     // Numerisch sortieren
@@ -11740,11 +11747,11 @@ function createProjectWithMissingFiles(folderName) {
     // Prüfen, ob Projekt bereits existiert
     const existing = projects.find(p => p.levelName === levelName && p.name === folderName);
     if (existing) {
-        if (confirm('Projekt existiert bereits. Fehlende Dateien hinzufügen?')) {
+        if (showTranslatedConfirm('confirm.project.addMissing')) {
             const existingKeys = new Set(existing.files.map(f => `${f.folder}/${f.filename}`));
             const toAdd = all.filter(f => !existingKeys.has(`${f.folder}/${f.filename}`));
             if (toAdd.length === 0) {
-                alert('Keine neuen fehlenden Dateien gefunden.');
+                showTranslatedAlert('alert.files.missingNoNew');
                 return;
             }
             ensureOffeneStruktur(levelName);
@@ -11994,7 +12001,7 @@ function buildProjectFile(filename, folder) {
         }
 
         function resetFolderCustomization(folderName) {
-            if (confirm('Möchten Sie die Anpassungen für diesen Ordner wirklich zurücksetzen?')) {
+            if (showTranslatedConfirm('confirm.folderCustomizations.reset')) {
                 delete folderCustomizations[folderName];
                 saveFolderCustomizations();
                 closeFolderCustomization();
@@ -12708,7 +12715,7 @@ function buildProjectFile(filename, folder) {
             }
             if (selectedSoundeventExportIndex === null) return;
             if (!window.electronAPI?.loadSoundeventExport) {
-                alert('Der automatische Import steht nur in der Desktop-Version zur Verfügung.');
+                showTranslatedAlert('alert.desktop.autoImport');
                 return;
             }
             const entry = soundeventExports[selectedSoundeventExportIndex];
@@ -12749,7 +12756,7 @@ function buildProjectFile(filename, folder) {
         async function startBulkSoundeventImport() {
             const statusEl = document.getElementById('soundeventExportsStatus');
             if (!window.electronAPI?.loadSoundeventExport) {
-                alert('Der Stapelimport benötigt die Desktop-Version.');
+                showTranslatedAlert('alert.desktop.batchImport');
                 return;
             }
             if (!soundeventExports.length) {
@@ -12768,7 +12775,7 @@ function buildProjectFile(filename, folder) {
                 return;
             }
 
-            if (!confirm(`Alle ${soundeventExports.length} Soundevents automatisch importieren?\nImport, Neu-Laden und Tabellenklicks werden währenddessen gesperrt.`)) {
+            if (!showTranslatedConfirm('confirm.soundevents.bulkStart', { count: soundeventExports.length })) {
                 return;
             }
 
@@ -12820,7 +12827,7 @@ function buildProjectFile(filename, folder) {
                                 if (typeof showToast === 'function') {
                                     showToast(hint, 'error');
                                 }
-                                const retry = confirm(`${hint}\nErneut versuchen? Abbrechen beendet den Stapel.`);
+                                const retry = showTranslatedConfirm('confirm.soundevents.retry', { hint });
                                 if (!retry) {
                                     summary.failures.push(entry.file);
                                     summary.aborted = true;
@@ -13241,7 +13248,7 @@ function checkFileAccess() {
                 updateStatus('Struktur-Blueprint exportiert');
             } catch (err) {
                 console.error('Blueprint-Export fehlgeschlagen:', err);
-                alert('Fehler beim Struktur-Export: ' + err.message);
+                showTranslatedAlert('alert.backup.structureExportError', { message: err.message });
             }
         }
 
@@ -13266,7 +13273,7 @@ function checkFileAccess() {
             if (!Array.isArray(blueprint.chapters)) {
                 throw new Error('Blueprint enthält keine Kapitel-Liste');
             }
-            if (!confirm(`${sourceName} importieren? Aktuelle Projekte werden überschrieben.`)) return;
+            if (!showTranslatedConfirm('confirm.blueprint.apply', { source: sourceName })) return;
 
             const newProjects = [];
             const newLevelChapters = {};
@@ -13345,7 +13352,7 @@ function checkFileAccess() {
                 applyTranslationBlueprint(blueprint, file.name);
             } catch (err) {
                 console.error('Blueprint-Import fehlgeschlagen:', err);
-                alert('Fehler beim Struktur-Import: ' + err.message);
+                showTranslatedAlert('alert.backup.structureImportError', { message: err.message });
             }
             input.value = '';
         }
@@ -13364,7 +13371,7 @@ function checkFileAccess() {
                 const backup = JSON.parse(text);
                 applyBackupData(backup);
             } catch (err) {
-                alert('Fehler beim Importieren: ' + err.message);
+                showTranslatedAlert('alert.backup.importError', { message: err.message });
             }
             input.value = '';
         }
@@ -13814,7 +13821,7 @@ function checkFileAccess() {
 
         async function restoreHistoryVersion(relPath, name) {
             if (!window.electronAPI || !window.electronAPI.restoreDeHistory) {
-                alert('Nur in der Desktop-Version verfügbar');
+                showTranslatedAlert('alert.desktop.only');
                 return;
             }
             await window.electronAPI.restoreDeHistory(relPath, name);
@@ -13841,7 +13848,7 @@ function checkFileAccess() {
                 const backup = JSON.parse(content);
                 applyBackupData(backup);
             } catch (err) {
-                alert('Fehler beim Wiederherstellen: ' + err.message);
+                showTranslatedAlert('alert.backup.restoreError', { message: err.message });
             }
         }
 
@@ -13869,7 +13876,7 @@ function checkFileAccess() {
             if (!backup.version || !backup.projects) {
                 throw new Error('Ungültiges Backup-Format');
             }
-            if (!confirm('Dies wird alle aktuellen Daten überschreiben. Fortfahren?')) {
+            if (!showTranslatedConfirm('confirm.database.overwriteAll')) {
                 return;
             }
 
@@ -14009,7 +14016,7 @@ function cleanupDuplicates() {
             const duplicates = findDuplicates();
             
             if (duplicates.size === 0) {
-                alert('✅ Keine Duplikate gefunden!\n\nDie Datenbank ist bereits sauber.');
+                showTranslatedAlert('alert.database.noDuplicates');
                 return;
             }
             
@@ -14046,18 +14053,10 @@ function cleanupDuplicates() {
         function showCleanupConfirmation(cleanupPlan, totalToDelete) {
             const duplicateGroups = cleanupPlan.length;
             
-            const confirmMessage = `🧹 Duplikate-Bereinigung\n\n` +
-                `Gefunden: ${duplicateGroups} Duplikate-Gruppen\n` +
-                `Zu löschen: ${totalToDelete} Einträge\n` +
-                `Zu behalten: ${duplicateGroups} Einträge\n\n` +
-                `Kriterien für das Behalten:\n` +
-                `• In Projekt vorhanden: +20 Punkte\n` +
-                `• Hat EN Text: +10 Punkte\n` +
-                `• Hat DE Text: +8 Punkte\n` +
-                `• Audio verfügbar: +5 Punkte\n\n` +
-                `Möchten Sie fortfahren?`;
-            
-            if (!confirm(confirmMessage)) {
+            if (!showTranslatedConfirm('confirm.database.cleanupDuplicates', {
+                groups: duplicateGroups,
+                deleteCount: totalToDelete
+            })) {
                 return;
             }
             
@@ -14151,24 +14150,24 @@ function executeCleanup(cleanupPlan, totalToDelete) {
     updateStatus(`Intelligente Bereinigung: ${mergedCount} Dateien konsolidiert, ${deletedCount} Duplikate entfernt`);
     
     // Show detailed results
-    const resultsMessage = `✅ Intelligente Bereinigung erfolgreich!\n\n` +
-        `📊 Statistik:\n` +
-        `• ${mergedCount} Dateien konsolidiert (mehrere Pfade → ein bester Pfad)\n` +
-        `• ${deletedCount} Duplikate entfernt\n` +
-        `• ${Object.keys(filePathDatabase).length} eindeutige Dateien verbleiben\n\n` +
-        `🎯 Kriterien für beste Pfade:\n` +
-        `• In Projekt vorhanden: +20 Punkte\n` +
-        `• Hat EN Text: +10 Punkte\n` +
-        `• Hat DE Text: +8 Punkte\n` +
-        `• Audio verfügbar: +5 Punkte\n\n` +
-        `🔍 Beispiele konsolidiert:\n` +
-        deletedItems.slice(0, 5).map(item => 
-            `• ${item.filename} (entfernt: ${item.folder.split('/').pop()})`
-        ).join('\n') +
-        (deletedItems.length > 5 ? `\n... und ${deletedItems.length - 5} weitere` : '');
-    
     setTimeout(() => {
-        alert(resultsMessage);
+        const tools = getI18nTools();
+        const exampleList = deletedItems.slice(0, 5).map(item =>
+            tools.format('alert.intelligentCleanup.exampleItem', {
+                filename: item.filename,
+                folder: item.folder.split('/').pop() || item.folder
+            })
+        ).join('\n');
+        const additionalExamples = deletedItems.length > 5
+            ? tools.format('alert.intelligentCleanup.moreExamples', { count: deletedItems.length - 5 })
+            : '';
+        showTranslatedAlert('alert.intelligentCleanup.success', {
+            merged: mergedCount,
+            deleted: deletedCount,
+            remaining: Object.keys(filePathDatabase).length,
+            examples: exampleList,
+            additional: additionalExamples
+        });
         
         // Refresh folder browser if open
         const folderBrowserOpen = !document.getElementById('folderBrowserDialog').classList.contains('hidden');
@@ -14184,7 +14183,7 @@ function executeCleanup(cleanupPlan, totalToDelete) {
 // Durchsucht den DE-Ordner nach gleichnamigen Dateien mit unterschiedlicher Endung
 async function scanAudioDuplicates() {
     if (!window.electronAPI || !window.electronAPI.getDeDuplicates) {
-        alert('Nur in der Desktop-Version verfügbar');
+        showTranslatedAlert('alert.desktop.only');
         return;
     }
     const groups = {};
@@ -14227,7 +14226,7 @@ async function scanAudioDuplicates() {
 }
 
         function resetFileDatabase() {
-            if (!confirm('Dies löscht die gesamte Datei-Datenbank und alle Ordner-Anpassungen!\nAlle Pfadinformationen und Customizations gehen verloren.\n\nFortfahren?')) {
+            if (!showTranslatedConfirm('confirm.database.resetAll')) {
                 return;
             }
             
@@ -14374,7 +14373,7 @@ async function scanAudioDuplicates() {
                 const ok = await window.electronAPI.startHla(mode, lang, map, preset);
                 if (!ok) showToast('Start fehlgeschlagen', 'error');
             } else {
-                alert('Nur in der Desktop-Version verfügbar');
+                showTranslatedAlert('alert.desktop.only');
             }
 
             // Dropdown nach dem Start wieder schließen
@@ -15376,7 +15375,7 @@ async function handleDeUpload(input) {
 // =========================== HANDLEZIPIMPORT START ===========================
 function showZipImportDialog() {
     if (!currentProject) {
-        alert('Bitte zuerst ein Projekt auswählen.');
+        showTranslatedAlert('alert.project.selectFirst');
         return;
     }
     document.getElementById('zipImportInput').click();
@@ -15391,16 +15390,16 @@ async function handleZipImport(input) {
         // Pfad direkt an Electron uebergeben, vermeidet Groessenprobleme
         const result = await window.electronAPI.importZip(file.path);
         if (result?.error) {
-            alert('Fehler beim Entpacken: ' + result.error);
+            showTranslatedAlert('alert.audio.unpackError', { message: result.error });
             return;
         }
         if (!result?.files || result.files.length === 0) {
-            alert('Keine Audiodateien gefunden.');
+            showTranslatedAlert('alert.audio.noneFound');
             return;
         }
         showZipPreview(result.files);
     } catch (err) {
-        alert('Fehler beim Import: ' + err.message);
+        showTranslatedAlert('alert.audio.importError', { message: err.message });
     }
 }
 
@@ -17658,7 +17657,7 @@ async function openDeEdit(fileId) {
     }
     if (emiPresetDel) {
         emiPresetDel.onclick = () => {
-            if (emiPresetSel && emiPresetSel.value && confirm('Preset wirklich löschen?')) {
+            if (emiPresetSel && emiPresetSel.value && showTranslatedConfirm('confirm.presets.delete')) {
                 deleteEmiPreset(emiPresetSel.value);
             }
         };
@@ -17693,7 +17692,7 @@ async function openDeEdit(fileId) {
     }
     if (presetDel) {
         presetDel.onclick = () => {
-            if (presetSel && presetSel.value && confirm('Preset wirklich löschen?')) {
+            if (presetSel && presetSel.value && showTranslatedConfirm('confirm.presets.delete')) {
                 deleteRadioPreset(presetSel.value);
             }
         };
@@ -20749,9 +20748,7 @@ function showFolderSelectionDialog(ambiguousFiles) {
         const confirmSelection = () => {
             const unselectedCount = selections.filter(s => s.selectedIndex < -1).length;
             if (unselectedCount > 0) {
-                const { format } = getI18nTools();
-                const message = format('folderSelection.unselectedConfirm', { count: unselectedCount });
-                if (!confirm(message)) {
+                if (!showTranslatedConfirm('folderSelection.unselectedConfirm', { count: unselectedCount })) {
                     return;
                 }
                 selections.forEach(s => {
@@ -21187,15 +21184,15 @@ function playPreview(fullPath) {
             audioPlayer.src = url;
             audioPlayer.play().catch(err => {
                 debugLog('[PREVIEW] Abspielen fehlgeschlagen:', err.message);
-                alert('Abspielen fehlgeschlagen: ' + err.message);
+                showTranslatedAlert('alert.audio.playFailed', { message: err.message });
             });
         } catch (e) {
             debugLog('[PREVIEW] Fehler beim Erzeugen der Audio-URL:', e.message);
-            alert('Fehler beim Erzeugen der Audio-URL: ' + e.message);
+            showTranslatedAlert('alert.audio.urlError', { message: e.message });
         }
     } else {
         debugLog(`[PREVIEW] Nicht im Cache: ${fullPath}`);
-        alert('⚠️ Audio-Datei nicht im Cache verfügbar');
+        showTranslatedAlert('alert.audio.notCached');
     }
 }
 // =========================== playPreview END ===========================
@@ -21566,19 +21563,19 @@ function showProjectCustomization(id, ev, tempProject) {
 
         // Eingaben prüfen
         if (!selectedLevel && !newLevel) {
-            alert('Bitte einen Levelnamen auswählen oder einen neuen vergeben und eine Nummer angeben.');
+            showTranslatedAlert('alert.levels.missingName');
             return;
         }
         if (!selectedLevel && newLevel && !ordInp.value) {
-            alert('Bitte auch eine Level-Nummer angeben.');
+            showTranslatedAlert('alert.levels.missingNumber');
             return;
         }
         if (!prj.name) {
-            alert('Bitte einen Projektnamen eingeben.');
+            showTranslatedAlert('alert.levels.missingProjectName');
             return;
         }
         if (!selectedChapter && newChapter && !chOrd?.value) {
-            alert('Bitte auch eine Kapitel-Nummer angeben.');
+            showTranslatedAlert('alert.levels.missingChapterNumber');
             return;
         }
 
@@ -21732,7 +21729,7 @@ function showLevelCustomization(levelName, ev) {
         const chOrder  = parseInt(chapterOrd?.value);
 
         if(!selCh && newCh && !chapterOrd.value){
-            alert('Bitte auch eine Kapitel-Nummer angeben.');
+            showTranslatedAlert('alert.levels.missingChapterNumber');
             return;
         }
 
@@ -21845,7 +21842,7 @@ function showChapterCustomization(chapterName, ev) {
     pop.querySelector('#chCancel').onclick = () => document.body.removeChild(ov);
 
     pop.querySelector('#chDelete').onclick = () => {
-        if (!confirm('Kapitel wirklich löschen?')) return;
+        if (!showTranslatedConfirm('confirm.chapter.delete')) return;
         Object.keys(levelChapters).forEach(lvl => {
             if (levelChapters[lvl] === chapterName) delete levelChapters[lvl];
         });
@@ -21894,7 +21891,7 @@ function showChapterCustomization(chapterName, ev) {
 /* =========================== SHOW CHAPTER CUSTOMIZATION END ======================== */
 
 function deleteLevel(levelName) {
-    if (!confirm("Level wirklich löschen? Alle zugehörigen Projekte werden entfernt.")) return;
+    if (!showTranslatedConfirm('confirm.level.deleteAllProjects')) return;
     projects = projects.filter(p => p.levelName !== levelName);
     if (levelColors[levelName]) delete levelColors[levelName];
     if (levelOrders[levelName]) delete levelOrders[levelName];
@@ -21910,7 +21907,7 @@ function deleteLevel(levelName) {
 }
 
 function deleteChapter(chapterName) {
-    if (!confirm("Kapitel wirklich löschen?")) return;
+    if (!showTranslatedConfirm('confirm.chapter.delete')) return;
     Object.keys(levelChapters).forEach(lvl => {
         if (levelChapters[lvl] === chapterName) delete levelChapters[lvl];
     });
