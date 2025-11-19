@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.569-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.568-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -39,7 +39,6 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Die Dateitabelle zieht Platzhalter, Tooltips und Emo-Buttons in `renderFiles` über i18n-Schlüssel und formatiert dynamische Ordnernamen mit Platzhaltern.
 * Neuer Struktur-Export/-Import erstellt einen Blueprint nur mit Kapiteln, Leveln, Dateinamen und EN-Texten – ohne DE-Übersetzungen oder Audio-Pfade – damit externe Übersetzer:innen mit einer sauberen Ausgangsbasis arbeiten können.
 * Unter 🎮 Projekte steht jetzt ein Alyx-Blueprint-Import, der `docs/alyx_translation_overview.json` lädt und sämtliche Projekte exakt nach dieser Datei ersetzt.
-* Der Alyx-Import dekodiert die Blueprint-Datei explizit als UTF-8 und fällt in der Desktop-App mit `window.require` auf `fs.readFileSync` zurück, sodass Sonderzeichen auch in `file://`-Kontexten sicher verarbeitet werden.
 * Die Kapitel-, Level-Teil- und Projektnamen im Blueprint `docs/alyx_translation_overview.json` sind einheitlich benannt (z. B. „Kapitel 1 – Entaglement (Intro + Kapitel 1)“ oder „Balkon – Funk mit Eli & Russell“) und spiegeln damit die Spielabschnitte klar wider.
 * Dropdowns im Workspace lassen Formularelemente wie die Sprachwahl offen, bis du den Dialog bewusst verlässt.
 * Speichermodus-Dialog, Indikator-Beschriftungen und zugehörige Statusmeldungen hängen vollständig im i18n-Set und reagieren direkt auf Sprachwechsel.

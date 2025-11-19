@@ -1,8 +1,4 @@
 # Changelog
-# 🛠️ Patch in 1.40.569
-* `web/src/main.js` dekodiert die Alyx-Blueprint-Datei ausdrücklich als UTF-8, nutzt bei aktivem `window.require` einen direkten `fs.readFileSync`-Fallback und stellt so sicher, dass Sonderzeichen auch im `file://`-Kontext der Desktop-App korrekt verarbeitet werden.
-* `README.md` dokumentiert den UTF-8-Import samt Desktop-Fallback im Alyx-Abschnitt und hebt die Version **1.40.569** hervor.
-
 # 🛠️ Patch in 1.40.568
 * `web/hla_translation_tool.html` ergänzt unter 🎮 Projekte einen dedizierten Button zum Laden von `docs/alyx_translation_overview.json`, der den Blueprint-Import direkt verfügbar macht.
 * `web/src/style.css` führt eine eigene Optik für die neue Alyx-Import-Schaltfläche ein, damit sie sich klar vom regulären „+ Neues Projekt“-Button unterscheidet.
