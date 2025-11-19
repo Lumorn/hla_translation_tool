@@ -13424,24 +13424,11 @@ function checkFileAccess() {
             // Lädt die neue Alyx-Blueprint-Datei direkt aus dem Docs-Ordner und ersetzt die Projektliste komplett
             try {
                 updateStatus(t('project.importAlyx.status.loading'));
-                if (typeof window !== 'undefined' && typeof window.require === 'function') {
-                    // Desktop-Fallback liest die Blueprint-Datei direkt von der Platte, falls Fetch im file://-Kontext scheitert
-                    const fs = window.require('fs');
-                    const path = window.require('path');
-                    const blueprintPath = path.join(__dirname, '..', 'docs', 'alyx_translation_overview.json');
-                    const text = fs.readFileSync(blueprintPath, 'utf8');
-                    const blueprint = JSON.parse(text);
-                    applyTranslationBlueprint(blueprint, t('project.importAlyx.source'));
-                    return;
-                }
-
                 const response = await fetch('../docs/alyx_translation_overview.json', { cache: 'no-store' });
                 if (!response.ok) {
                     throw new Error(`${response.status} ${response.statusText}`);
                 }
-                const buffer = await response.arrayBuffer();
-                const text = new TextDecoder('utf-8').decode(buffer);
-                const blueprint = JSON.parse(text);
+                const blueprint = await response.json();
                 applyTranslationBlueprint(blueprint, t('project.importAlyx.source'));
             } catch (err) {
                 console.error('Alyx-Blueprint-Import fehlgeschlagen:', err);
