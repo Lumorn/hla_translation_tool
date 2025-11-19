@@ -486,46 +486,46 @@
                 </div>
                 <div class="import-dialog-panel import-dialog-panel--main">
                     <div style="margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                        <button class="btn btn-secondary" id="importFileButton" onclick="triggerImportFile()">📂 Datei auswählen</button>
-                        <span id="importFileName" style="color: #ccc; font-size: 13px;">Keine Datei ausgewählt</span>
+                        <button class="btn btn-secondary" id="importFileButton" onclick="triggerImportFile()" data-i18n="import.dialog.fileButton">—</button>
+                        <span id="importFileName" style="color: #ccc; font-size: 13px;" data-i18n="import.dialog.noFileSelected">—</span>
                         <input type="file" id="importFileInput" style="display: none;" accept=".txt,.wiki,.csv,.pipe,.log,.md,.json,*/*" onchange="handleImportFile(event)">
                     </div>
-                    <textarea id="importData" placeholder="Füge hier deine Daten ein..."></textarea>
+                    <textarea id="importData" placeholder="" data-i18n-placeholder="import.dialog.pastePlaceholder"></textarea>
 
                     <!-- Column Selection (hidden initially) -->
                     <div id="columnSelection" style="display: none; margin-top: 20px; padding: 15px; background: #1a1a1a; border: 1px solid #444; border-radius: 6px;">
-                        <h4 id="columnSelectionTitle" style="color: #ff6b1a; margin-bottom: 15px;">📋 Spalten-Zuordnung</h4>
-                        <p id="columnSelectionDescription" style="margin-bottom: 15px; color: #999; font-size: 13px;">
-                            Bitte wählen Sie aus, welche Spalten welche Inhalte enthalten:
+                        <h4 id="columnSelectionTitle" style="color: #ff6b1a; margin-bottom: 15px;" data-i18n="import.dialog.columnTitle">—</h4>
+                        <p id="columnSelectionDescription" style="margin-bottom: 15px; color: #999; font-size: 13px;" data-i18n="import.dialog.columnDescription">
+                            —
                         </p>
 
                         <div style="margin-bottom: 15px;">
-                            <label id="filenameColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Dateinamen-Spalte:</label>
+                            <label id="filenameColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;" data-i18n="import.dialog.filenameLabel">—</label>
                             <select id="filenameColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
-                                <option value="">-- Bitte auswählen --</option>
+                                <option value="" data-i18n="import.dialog.selectPrompt">—</option>
                             </select>
-                            <div id="filenameColumnHint" style="font-size: 11px; color: #666; margin-top: 3px;">
-                                💡 Intelligente Erkennung basierend auf Datenbank und Patterns
+                            <div id="filenameColumnHint" style="font-size: 11px; color: #666; margin-top: 3px;" data-i18n="import.dialog.filenameHint">
+                                —
                             </div>
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label id="englishColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Englischer Text-Spalte:</label>
+                            <label id="englishColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;" data-i18n="import.dialog.englishLabel">—</label>
                             <select id="englishColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
-                                <option value="">-- Bitte auswählen --</option>
+                                <option value="" data-i18n="import.dialog.selectPrompt">—</option>
                             </select>
                         </div>
 
                         <div style="margin-bottom: 15px;">
-                            <label id="germanColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;">Deutsche Text-Spalte (optional):</label>
+                            <label id="germanColumnLabel" style="display: block; margin-bottom: 5px; color: #ccc;" data-i18n="import.dialog.germanLabel">—</label>
                             <select id="germanColumn" style="width: 100%; padding: 8px; background: #1a1a1a; border: 1px solid #444; border-radius: 4px; color: #e0e0e0;" onchange="updatePreviewHighlighting()">
-                                <option value="">-- Keine / Nicht vorhanden --</option>
+                                <option value="" data-i18n="import.dialog.selectNone">—</option>
                             </select>
                         </div>
 
                         <!-- Preview Table -->
                         <div id="previewTable" style="margin-top: 15px;">
-                            <h5 id="previewTableTitle" style="color: #ff6b1a; margin-bottom: 10px;">🔍 Vorschau (erste 3 Zeilen):</h5>
+                            <h5 id="previewTableTitle" style="color: #ff6b1a; margin-bottom: 10px;" data-i18n="import.dialog.previewTitle">—</h5>
                             <div style="overflow-x: auto; max-height: 200px; border: 1px solid #444; border-radius: 4px;">
                                 <table id="previewTableContent" style="width: 100%; font-size: 12px;">
                                 </table>
@@ -536,9 +536,9 @@
             </div>
 
             <div class="dialog-buttons">
-                <button class="btn btn-secondary" id="importCancelButton" onclick="closeImportDialog()">Abbrechen</button>
-                <button class="btn" id="analyzeDataBtn" onclick="analyzeImportData()">Analysieren</button>
-                <button class="btn btn-success" id="startImportBtn" onclick="startImportProcess()" style="display: none;">Import starten</button>
+                <button class="btn btn-secondary" id="importCancelButton" onclick="closeImportDialog()" data-i18n="import.dialog.cancelButton">—</button>
+                <button class="btn" id="analyzeDataBtn" onclick="analyzeImportData()" data-i18n="import.dialog.analyzeButton">—</button>
+                <button class="btn btn-success" id="startImportBtn" onclick="startImportProcess()" style="display: none;" data-i18n="import.dialog.startButton">—</button>
             </div>
         </div>
     </div>
