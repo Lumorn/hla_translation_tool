@@ -20677,163 +20677,257 @@ async function addFromSearch(result) {
 // =========================== showSingleFileSelectionDialog START ===========================
 function showSingleFileSelectionDialog(filename, paths, originalResult) {
     return new Promise((resolve) => {
-        // Wenn nur ein Pfad vorhanden, direkt verwenden
         if (paths.length === 1) {
             resolve({ selectedIndex: 0 });
             return;
         }
-        
+
         const overlay = document.createElement('div');
         overlay.className = 'dialog-overlay hidden';
-        
+
         const dialog = document.createElement('div');
         dialog.className = 'dialog';
         dialog.style.maxWidth = '600px';
-        
+
         let selectedIndex = -1;
-        
-        // Versuche intelligente Vorauswahl basierend auf dem Suchergebnis
         if (originalResult && originalResult.folder) {
             const exactMatch = paths.findIndex(p => p.folder === originalResult.folder);
             if (exactMatch >= 0) {
                 selectedIndex = exactMatch;
             }
         }
-        
-        dialog.innerHTML = `
-            <h3>📁 Ordner auswählen</h3>
-            <p style="margin-bottom: 20px; color: #999;">
-                Die Datei <strong>${filename}</strong> wurde in mehreren Ordnern gefunden.<br>
-                Bitte wählen Sie den passenden Ordner aus:
-            </p>
-            <div style="max-height: 300px; overflow-y: auto;">
-                ${paths.map((pathInfo, index) => {
-                    const folderName = pathInfo.folder.split('/').pop() || pathInfo.folder;
-                    const hasAudio = !!audioFileCache[pathInfo.fullPath];
-                    const isPreselected = index === selectedIndex;
-                    return `
-                        <label style="
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: space-between; 
-                            padding: 12px; 
-                            margin: 8px 0; 
-                            background: ${isPreselected ? '#ff6b1a' : '#2a2a2a'}; 
-                            border-radius: 6px; 
-                            cursor: pointer; 
-                            border: 2px solid ${isPreselected ? '#ff6b1a' : '#333'};
-                        " onclick="selectSingleFolder(${index})">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <input 
-                                    type="radio" 
-                                    name="singleFolder" 
-                                    value="${index}" 
-                                    ${isPreselected ? 'checked' : ''} 
-                                    style="margin-right: 10px;"
-                                >
-                                <span style="font-size: 16px; color: ${hasAudio ? '#4caf50' : '#f44336'};">
-                                    ${hasAudio ? '🎵' : '❓'}
-                                </span>
-                                <div>
-                                    <strong style="color: ${isPreselected ? '#fff' : '#ff6b1a'};">
-                                        ${folderName}
-                                    </strong><br>
-                                    <small style="color: ${isPreselected ? '#fff' : '#666'};">
-                                        ${pathInfo.folder}
-                                    </small>
-                                    ${!hasAudio ? `<br><small style="color: #f44336;">⚠️ Audio nicht verfügbar</small>` : ''}
-                                </div>
-                            </div>
-                            <div>
-                                <button 
-                                    class="play-btn" 
-                                    ${hasAudio ? '' : 'disabled'} 
-                                    onclick="event.stopPropagation(); playPreview('${pathInfo.fullPath}')"
-                                    title="${hasAudio ? 'Audio abspielen' : 'Audio nicht verfügbar'}"
-                                >▶</button>
-                            </div>
-                        </label>
-                    `;
-                }).join('')}
-            </div>
-            <div style="
-                background: #1a1a1a; 
-                padding: 12px; 
-                margin: 15px 0; 
-                border-radius: 6px; 
-                font-size: 13px; 
-                color: #999;
-            ">
-                💡 <strong>Auswahlhilfe:</strong><br>
-                • 🎵 = Audio-Datei ist verfügbar<br>
-                • ❓ = Audio-Datei nicht im Cache<br>
-                • Wählen Sie den Ordner, der zu Ihrem Projekt passt
-            </div>
-            <div class="dialog-buttons">
-                <button class="btn btn-secondary" onclick="cancelSingleSelection()">Abbrechen</button>
-                <button class="btn btn-blue" onclick="confirmAddAll()">Alle hinzufügen</button>
-                <button class="btn btn-success" onclick="confirmSingleSelection()" ${selectedIndex >= 0 ? '' : 'disabled'}>
-                    Hinzufügen
-                </button>
-            </div>
-        `;
-        
-        // Globale Funktionen für den Dialog
-        window.selectSingleFolder = (index) => {
+
+        const entries = [];
+        const safeFilename = escapeHtml(filename);
+
+        const title = document.createElement('h3');
+        title.dataset.i18n = 'singleSelection.title';
+
+        const description = document.createElement('p');
+        description.style.marginBottom = '20px';
+        description.style.color = '#999';
+        description.dataset.i18n = 'singleSelection.description';
+        description.dataset.i18nHtml = 'true';
+
+        const countInfo = document.createElement('p');
+        countInfo.style.margin = '-12px 0 20px';
+        countInfo.style.color = '#aaa';
+        countInfo.dataset.i18n = 'singleSelection.countInfo';
+
+        const listContainer = document.createElement('div');
+        listContainer.style.maxHeight = '300px';
+        listContainer.style.overflowY = 'auto';
+
+        const helpBox = document.createElement('div');
+        helpBox.style.background = '#1a1a1a';
+        helpBox.style.padding = '12px';
+        helpBox.style.margin = '15px 0';
+        helpBox.style.borderRadius = '6px';
+        helpBox.style.fontSize = '13px';
+        helpBox.style.color = '#999';
+
+        const helpTitle = document.createElement('strong');
+        helpTitle.dataset.i18n = 'singleSelection.help.title';
+
+        const helpList = document.createElement('ul');
+        helpList.style.margin = '6px 0 0';
+        helpList.style.paddingLeft = '18px';
+        helpList.style.listStyle = 'disc';
+
+        const helpItemAudioAvailable = document.createElement('li');
+        helpItemAudioAvailable.dataset.i18n = 'singleSelection.help.audioAvailable';
+
+        const helpItemAudioMissing = document.createElement('li');
+        helpItemAudioMissing.dataset.i18n = 'singleSelection.help.audioMissing';
+
+        const helpItemContext = document.createElement('li');
+        helpItemContext.dataset.i18n = 'singleSelection.help.context';
+
+        helpList.append(helpItemAudioAvailable, helpItemAudioMissing, helpItemContext);
+        helpBox.append('💡 ', helpTitle, document.createElement('br'), helpList);
+
+        const buttonRow = document.createElement('div');
+        buttonRow.className = 'dialog-buttons';
+
+        const cancelButton = document.createElement('button');
+        cancelButton.className = 'btn btn-secondary';
+        cancelButton.dataset.i18n = 'singleSelection.button.cancel';
+
+        const addAllButton = document.createElement('button');
+        addAllButton.className = 'btn btn-blue';
+        addAllButton.dataset.i18n = 'singleSelection.button.addAll';
+
+        const confirmButton = document.createElement('button');
+        confirmButton.className = 'btn btn-success';
+        confirmButton.dataset.i18n = 'singleSelection.button.confirm';
+        confirmButton.disabled = selectedIndex < 0;
+
+        buttonRow.append(cancelButton, addAllButton, confirmButton);
+
+        dialog.append(title, description, countInfo, listContainer, helpBox, buttonRow);
+
+        const selectFolder = (index) => {
             selectedIndex = index;
-            // Visuelle Auswahl aktualisieren
-            dialog.querySelectorAll('label').forEach((label, i) => {
-                const isSel = (i === index);
-                label.style.background = isSel ? '#ff6b1a' : '#2a2a2a';
-                label.style.borderColor = isSel ? '#ff6b1a' : '#333';
-                
-                const strong = label.querySelector('strong');
-                const smalls = label.querySelectorAll('small');
-                if (strong) strong.style.color = isSel ? '#fff' : '#ff6b1a';
-                smalls.forEach(s => {
-                    if (!s.textContent.includes('Audio nicht verfügbar')) {
-                        s.style.color = isSel ? '#fff' : '#666';
-                    }
-                });
-                
-                const radio = label.querySelector('input[type="radio"]');
-                if (radio) radio.checked = isSel;
+            entries.forEach((entry, i) => {
+                const isSelected = i === selectedIndex;
+                entry.label.style.background = isSelected ? '#ff6b1a' : '#2a2a2a';
+                entry.label.style.borderColor = isSelected ? '#ff6b1a' : '#333';
+                entry.strong.style.color = isSelected ? '#fff' : '#ff6b1a';
+                entry.small.style.color = isSelected ? '#fff' : '#666';
+                entry.radio.checked = isSelected;
             });
-            
-            // Confirm-Button aktivieren
-            const confirmBtn = dialog.querySelector('.btn-success');
-            if (confirmBtn) confirmBtn.disabled = false;
-        };
-        
-        window.cancelSingleSelection = () => {
-            document.body.removeChild(overlay);
-            resolve(null);
-        };
-        
-        window.confirmSingleSelection = () => {
-            if (selectedIndex >= 0) {
-                document.body.removeChild(overlay);
-                resolve({ selectedIndex: selectedIndex });
-            }
+            confirmButton.disabled = selectedIndex < 0;
         };
 
-        // Fügt alle gefundenen Dateien hinzu
-        window.confirmAddAll = () => {
-            document.body.removeChild(overlay);
-            resolve({ addAll: true });
+        const buildEntry = (pathInfo, index) => {
+            const folderName = pathInfo.folder.split('/').pop() || pathInfo.folder;
+            const hasAudio = !!audioFileCache[pathInfo.fullPath];
+            const label = document.createElement('label');
+            Object.assign(label.style, {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px',
+                margin: '8px 0',
+                background: '#2a2a2a',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                border: '2px solid #333'
+            });
+
+            const infoWrapper = document.createElement('div');
+            infoWrapper.style.display = 'flex';
+            infoWrapper.style.alignItems = 'center';
+            infoWrapper.style.gap = '10px';
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = 'singleFolder';
+            radio.value = String(index);
+            radio.style.marginRight = '10px';
+
+            const icon = document.createElement('span');
+            icon.style.fontSize = '16px';
+            icon.style.color = hasAudio ? '#4caf50' : '#f44336';
+            icon.textContent = hasAudio ? '🎵' : '❓';
+
+            const textWrapper = document.createElement('div');
+
+            const strong = document.createElement('strong');
+            strong.textContent = folderName;
+
+            const small = document.createElement('small');
+            small.textContent = pathInfo.folder;
+
+            textWrapper.append(strong, document.createElement('br'), small);
+
+            let missingAudioLabel = null;
+            if (!hasAudio) {
+                missingAudioLabel = document.createElement('small');
+                missingAudioLabel.style.color = '#f44336';
+                textWrapper.append(document.createElement('br'), missingAudioLabel);
+            }
+
+            infoWrapper.append(radio, icon, textWrapper);
+
+            const buttonWrapper = document.createElement('div');
+            const playButton = document.createElement('button');
+            playButton.className = 'play-btn';
+            playButton.textContent = '▶';
+            playButton.disabled = !hasAudio;
+            playButton.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (hasAudio) {
+                    playPreview(pathInfo.fullPath);
+                }
+            });
+            buttonWrapper.appendChild(playButton);
+
+            label.addEventListener('click', () => selectFolder(index));
+            radio.addEventListener('click', (event) => {
+                event.stopPropagation();
+                selectFolder(index);
+            });
+
+            label.append(infoWrapper, buttonWrapper);
+            listContainer.appendChild(label);
+
+            entries.push({
+                label,
+                strong,
+                small,
+                missingAudioLabel,
+                playButton,
+                hasAudio,
+                radio
+            });
         };
-        
+
+        paths.forEach(buildEntry);
+
+        if (selectedIndex >= 0) {
+            selectFolder(selectedIndex);
+        }
+
+        const applyDialogTexts = () => {
+            const { t, format } = getI18nTools();
+            title.textContent = t('singleSelection.title');
+            description.innerHTML = format('singleSelection.description', { filename: `<strong>${safeFilename}</strong>` });
+            countInfo.textContent = format('singleSelection.countInfo', { count: paths.length });
+            helpTitle.textContent = t('singleSelection.help.title');
+            helpItemAudioAvailable.textContent = t('singleSelection.help.audioAvailable');
+            helpItemAudioMissing.textContent = t('singleSelection.help.audioMissing');
+            helpItemContext.textContent = t('singleSelection.help.context');
+            cancelButton.textContent = t('singleSelection.button.cancel');
+            addAllButton.textContent = t('singleSelection.button.addAll');
+            confirmButton.textContent = t('singleSelection.button.confirm');
+            entries.forEach(entry => {
+                if (entry.missingAudioLabel) {
+                    entry.missingAudioLabel.textContent = t('singleSelection.list.audioMissing');
+                }
+                const tooltipKey = entry.hasAudio ? 'singleSelection.tooltip.play' : 'singleSelection.tooltip.noAudio';
+                const tooltip = t(tooltipKey);
+                entry.playButton.title = tooltip;
+                entry.playButton.setAttribute('aria-label', tooltip);
+            });
+        };
+
+        applyDialogTexts();
         overlay.appendChild(dialog);
         document.body.appendChild(overlay);
-        // Overlay sichtbar machen
         overlay.classList.remove('hidden');
 
-        // Klick außerhalb abfangen und abbrechen
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                window.cancelSingleSelection();
+        let dialogOpen = true;
+        const closeDialog = (result) => {
+            if (!dialogOpen) return;
+            dialogOpen = false;
+            if (overlay.parentNode) {
+                document.body.removeChild(overlay);
+            }
+            resolve(result);
+        };
+
+        cancelButton.addEventListener('click', () => closeDialog(null));
+        addAllButton.addEventListener('click', () => closeDialog({ addAll: true }));
+        confirmButton.addEventListener('click', () => {
+            if (selectedIndex >= 0) {
+                closeDialog({ selectedIndex });
             }
         });
+
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                closeDialog(null);
+            }
+        });
+
+        const languageChangeHandler = () => {
+            if (!dialogOpen) return;
+            applyDialogTexts();
+        };
+        if (window.i18n && typeof window.i18n.onLanguageChange === 'function') {
+            window.i18n.onLanguageChange(languageChangeHandler);
+        }
     });
 }
 // =========================== showSingleFileSelectionDialog END ===========================

@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.558-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.559-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -24,6 +24,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Der Datei-Import-Dialog blendet links einen Soundevents-Explorer für `soundevents/exports_alyx` ein, zeigt erkannte Ordner, Dateinamen und Zeilenanzahlen an und übernimmt die gewählte `.wiki`-Datei direkt ins Analysefeld.
 * Der Electron-Launcher findet den Soundevents-Export auch dann automatisch, wenn der Ordner eine Ebene über `web/` oder im Projektstamm liegt, weil mehrere Basispfade geprüft werden.
 * Der Ordner-Auswahldialog für mehrdeutige Dateien ist vollständig lokalisiert und folgt der gewählten Sprache bei Titeln, Hilfen und Buttons.
+* Der Einzeldatei-Ordnerdialog für Suchtreffer erzeugt jedes Element per DOM, liest Titel, Beschreibungen, Tooltips und Buttons aus i18n-Schlüsseln mit `{filename}`-/`{count}`-Platzhaltern und reagiert damit sofort auf Sprachwechsel.
 * Im Import- und Untertitelbereich erscheinen Fehler, Abbrüche, Erfolgsstatus und Zusammenfassungen jetzt als lokalisierte Toasts bzw. Dialoge, sodass Web- und Electron-Oberfläche konsistente Rückmeldungen anzeigen.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
 * Mehrsprachige Oberfläche (Deutsch/Englisch) mit speicherbarer Sprachwahl im Einstellungsmenü.
