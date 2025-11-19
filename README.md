@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.565-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.566-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -225,6 +225,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * **Intelligenter Ordner‑Scan** mit Duplikat‑Prävention und Auto‑Normalisierung
 * **Eingebettete Audio‑Wiedergabe** (MP3 / WAV / OGG) direkt im Browser
 * **EN-Review-Überblick:** Der 🇬🇧-Dialog bietet jetzt eine eigene Wiedergabe mit Fortschrittsanzeige, zeigt EN/DE-Text der aktuellen Zeile, blendet zwei vergangene und zwei kommende Dateien ein und scrollt sowohl bei der automatischen Wiedergabe als auch beim manuellen Zurück/Weiter-Schritt direkt zur passenden Tabellenzeile.
+* **Mehrsprachiger EN-Review-Workflow:** Überschriften, Labels, Tooltips und Buttons des 🇬🇧-Dialogs tragen `data-i18n`-/`data-i18n-aria-label`-Attribute, während `web/src/main.js` Fortschritt, Platzhalter und Fehltexte über `i18n.format('englishReview.progress.status', …)` rendert – damit folgt der komplette Review-Ablauf sofort der aktuellen UI-Sprache.
 * **EN/DE-Audio-Umschalter im Review:** Im 🇬🇧-Dialog wählst du per Radiogruppe zwischen EN- und DE-Audio; EN ist voreingestellt und DE wird automatisch deaktiviert, wenn für die Datei kein deutsches Audio existiert.
 * **Projekt-Player entfernt:** Die frühere Projekt-Wiedergabeliste samt Play/Pause/Stop-Schaltflächen ist gestrichen; die Nummern-Navigation sitzt nun direkt neben dem 🇬🇧-Review-Knopf, der als zentrale Kontrollstelle dient.
 * **Stabile EN-Review-Läufe:** Der Audio-Player entfernt alte Review-Handler vor dem nächsten Start, erhöht den Index nach jedem Track nur einmal und setzt danach entweder automatisch zur nächsten Datei über oder stoppt die Wiedergabe sauber am Ende der Liste.

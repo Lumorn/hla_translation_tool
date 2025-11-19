@@ -395,6 +395,7 @@ function setupLanguageControls() {
 
         updateEmotionLanguageUi();
         updateVersionMenuLabels();
+        updateEnglishReviewDialog();
     });
 
     bindLanguageSelectListener();
@@ -9139,6 +9140,7 @@ async function playCurrentEnglishReviewFile() {
 
 function createEnglishReviewListItem(list, file, cssModifier) {
     if (!list || !file) return;
+    const { t } = getI18nTools();
     const li = document.createElement('li');
     li.className = `english-review-item review-item--${cssModifier}`;
 
@@ -9160,7 +9162,7 @@ function createEnglishReviewListItem(list, file, cssModifier) {
     if (text.length > 0) {
         preview.textContent = text.length > 90 ? `${text.slice(0, 87)}…` : text;
     } else {
-        preview.textContent = 'Kein EN-Text hinterlegt';
+        preview.textContent = t('englishReview.preview.noText');
     }
 
     li.appendChild(button);
@@ -9188,6 +9190,7 @@ function switchEnglishReviewLanguage(lang) {
 }
 
 function updateEnglishReviewDialog() {
+    const { t, format } = getI18nTools();
     const currentFileElem = document.getElementById('englishReviewCurrentFile');
     const enTextElem = document.getElementById('englishReviewEnText');
     const deTextElem = document.getElementById('englishReviewDeText');
@@ -9259,9 +9262,9 @@ function updateEnglishReviewDialog() {
     });
 
     if (!hasFiles) {
-        currentFileElem.textContent = 'Keine Dateien im aktuellen Projekt.';
-        enTextElem.textContent = '—';
-        deTextElem.textContent = '—';
+        currentFileElem.textContent = t('englishReview.current.none');
+        enTextElem.textContent = t('englishReview.text.placeholder');
+        deTextElem.textContent = t('englishReview.text.placeholder');
     } else if (currentFile) {
         const file = currentFile;
         const position = getFilePosition(file.id);
@@ -9285,8 +9288,8 @@ function updateEnglishReviewDialog() {
         currentFileElem.appendChild(nameBtn);
         currentFileElem.appendChild(folderInfo);
 
-        enTextElem.textContent = file.enText || '—';
-        deTextElem.textContent = file.deText || '—';
+        enTextElem.textContent = file.enText || t('englishReview.text.placeholder');
+        deTextElem.textContent = file.deText || t('englishReview.text.placeholder');
 
         const previousItems = enReviewFiles.slice(Math.max(0, enReviewIndex - 2), enReviewIndex);
         previousItems.forEach(f => createEnglishReviewListItem(prevList, f, 'previous'));
@@ -9296,14 +9299,10 @@ function updateEnglishReviewDialog() {
     }
 
     if (progressElem) {
-        if (!hasFiles) {
-            progressElem.textContent = 'Fortschritt: 0 / 0 (0%)';
-        } else {
-            const current = enReviewIndex + 1;
-            const total = enReviewFiles.length;
-            const percent = total > 0 ? Math.round((current / total) * 100) : 0;
-            progressElem.textContent = `Fortschritt: ${current} / ${total} (${percent}%)`;
-        }
+        const current = hasFiles ? enReviewIndex + 1 : 0;
+        const total = hasFiles ? enReviewFiles.length : 0;
+        const percent = total > 0 ? Math.round((current / total) * 100) : 0;
+        progressElem.textContent = format('englishReview.progress.status', { current, total, percent });
     }
 
     if (playBtn) playBtn.disabled = !hasFiles || enReviewState === 'playing';
