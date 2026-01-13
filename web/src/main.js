@@ -13081,24 +13081,33 @@ function checkFileAccess() {
 
 // =========================== SOUNDBACKUP START ============================
         async function createSoundBackup() {
-            if (!window.electronAPI || !window.electronAPI.createSoundBackup) return;
             const prog = document.getElementById('soundBackupProgress');
             const fill = document.getElementById('soundBackupFill');
             const status = document.getElementById('soundBackupStatus');
             const { t } = getI18nTools();
+            if (!window.electronAPI || !window.electronAPI.createSoundBackup) {
+                updateStatus(t('backup.status.soundUnavailable'));
+                return;
+            }
             if (prog) {
                 prog.classList.add('active');
                 fill.style.width = '0%';
                 status.textContent = t('backup.sound.status.running');
             }
-            await window.electronAPI.createSoundBackup();
-            if (prog) {
-                prog.classList.remove('active');
-                fill.style.width = '0%';
-                status.textContent = '';
+            try {
+                await window.electronAPI.createSoundBackup();
+                loadSoundBackupList();
+                updateStatus(t('backup.status.soundCreated'));
+            } catch (error) {
+                console.error('Sound-Backup fehlgeschlagen', error);
+                updateStatus(t('backup.status.soundFailed'));
+            } finally {
+                if (prog) {
+                    prog.classList.remove('active');
+                    fill.style.width = '0%';
+                    status.textContent = '';
+                }
             }
-            loadSoundBackupList();
-            updateStatus(t('backup.status.soundCreated'));
         }
 
         async function loadSoundBackupList() {
@@ -22652,4 +22661,3 @@ if (typeof module !== "undefined" && module.exports) {
         })
     };
 }
-

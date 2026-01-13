@@ -1,7 +1,7 @@
 # 🎮 Half‑Life: Alyx Translation Tool
 *(Projektname: `hla_translation_tool`)*
 
-![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.568-green?style=for-the-badge)
+![Half‑Life: Alyx Translation Tool](https://img.shields.io/badge/Version-1.40.569-green?style=for-the-badge)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Offline](https://img.shields.io/badge/Offline-Ready-green?style=for-the-badge)
@@ -29,6 +29,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * Alle systemweiten `alert()`- und `confirm()`-Meldungen greifen auf i18n-Schlüssel mit Platzhaltern zu und liefern damit identische Hinweise in Deutsch und Englisch – inklusive dynamischer Dateinamen, Zähler und Kontexttexte.
 * Der Untertitel-Import-Dialog (#ccImportDialog) trägt Titel, Labels, Badge, Hinweis und Buttons als `data-i18n`-Ziele ein, setzt Statuszeilen für Quellen/Zieldateien über `i18n.t(...)` und aktualisiert Badge samt Hinweis dynamisch bei Sprachwechsel.
 * Der Backup-Dialog (#backupDialog) markiert Überschriften, Labels, Hinweise und Buttons mit `data-i18n`, setzt Listen/Statusmeldungen über `i18n.t(...)`/`i18n.format(...)` und reagiert beim Öffnen automatisch auf die gewählte Sprache.
+* Der Sound-Backup-Button meldet jetzt zusätzlich, wenn die Funktion in der Umgebung nicht verfügbar ist oder das ZIP-Backup fehlschlägt, statt ohne Hinweis zu enden.
 * Der Wörterbuch-Dialog (#wordListDialog) setzt Titel, Abschnittsüberschriften, Tabellenköpfe, Buttons und Platzhalter über `wordList.*`-Schlüssel und sorgt dadurch dafür, dass Übersetzungen sowie phonetische Umschriften in beiden UI-Sprachen gepflegt werden können.
 * Die ElevenLabs- und ChatGPT-API-Einstellungen verwenden `data-i18n`-/`data-i18n-title`-Attribute für alle Labels, Buttons und Tooltips und setzen Statusmeldungen wie „Teste Stimmen...“ über `web/src/main.js` direkt aus den neuen `api.*`/`gpt.api.*`-Schlüsseln, sodass die Dialoge vollständig sprachneutral bleiben.
 * Der Ordner-Browser inklusive Statistiken, Aktionen, Berichten und Fehlende-Ordner-Dialog passt Beschriftungen und Hinweise dynamisch an die gewählte Sprache an.
