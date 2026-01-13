@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.569
+* `web/src/main.js` meldet fehlende Electron-API oder Fehler beim Erstellen von Sound-Backups jetzt als Statusmeldung, statt still abzubrechen, und räumt den Fortschrittsbalken zuverlässig auf.
+* `web/src/i18n.js` ergänzt Statusschlüssel für fehlgeschlagene oder nicht verfügbare Sound-Backups in Deutsch und Englisch.
+* `README.md` weist im Schnellüberblick darauf hin, dass der Sound-Backup-Button explizite Statusmeldungen bei Fehlern oder fehlender Verfügbarkeit liefert.
+
 # 🛠️ Patch in 1.40.568
 * `web/hla_translation_tool.html` ergänzt unter 🎮 Projekte einen dedizierten Button zum Laden von `docs/alyx_translation_overview.json`, der den Blueprint-Import direkt verfügbar macht.
 * `web/src/style.css` führt eine eigene Optik für die neue Alyx-Import-Schaltfläche ein, damit sie sich klar vom regulären „+ Neues Projekt“-Button unterscheidet.
