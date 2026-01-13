@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.570
+* `web/src/main.js` zeigt beim Sound-Backup eine Live-Fortschrittsanzeige mit Datei-Zähler und Prozentwert an und aktiviert die Anzeige beim Eintreffen der Progress-Events.
+* `web/src/i18n.js` ergänzt einen neuen Übersetzungsschlüssel für die Sound-Backup-Fortschrittsanzeige in Deutsch und Englisch.
+* `README.md` hebt im Backup-Abschnitt hervor, dass der Sound-Backup-Fortschritt live mit Dateizähler und Prozentwert angezeigt wird.
+
 # 🛠️ Patch in 1.40.569
 * `web/src/main.js` meldet fehlende Electron-API oder Fehler beim Erstellen von Sound-Backups jetzt als Statusmeldung, statt still abzubrechen, und räumt den Fortschrittsbalken zuverlässig auf.
 * `web/src/i18n.js` ergänzt Statusschlüssel für fehlgeschlagene oder nicht verfügbare Sound-Backups in Deutsch und Englisch.
