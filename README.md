@@ -1231,7 +1231,7 @@ Seit Patch 1.40.371 filtert der Bewertungsdienst außerdem die neuen **Reasoning
 
 ## 💾 Backup
 
-Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben. Beim Erstellen eines Sound-Backups erscheint jetzt ein Fortschrittsbalken und die Liste zeigt Datum sowie Dateigröße jeder ZIP-Datei an.
+Mit dem Backup-Dialog lassen sich alle Projekt-Daten als JSON speichern. Neu ist die Option, die Ordner **Sounds/DE**, **DE-Backup** und **DE-History** als ZIP-Archiv zu sichern. Die ZIP-Dateien liegen im Benutzerordner unter `Backups/sounds`. Das Tool behält automatisch nur die fünf neuesten ZIP-Backups. Die Liste der Backups zeigt nun Datum und Uhrzeit an, sortiert mit dem aktuellsten Eintrag oben. Beim Erstellen eines Sound-Backups erscheint jetzt ein Fortschrittsbalken mit Live-Zähler (Dateien und Prozent), und die Liste zeigt Datum sowie Dateigröße jeder ZIP-Datei an.
 
 
 ## 🗃️ Speichersysteme

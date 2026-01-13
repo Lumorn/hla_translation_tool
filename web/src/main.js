@@ -3618,14 +3618,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (window.electronAPI.onSoundBackupProgress) {
             window.electronAPI.onSoundBackupProgress(prog => {
+                const progressBar = document.getElementById('soundBackupProgress');
                 const fill = document.getElementById('soundBackupFill');
                 const status = document.getElementById('soundBackupStatus');
                 if (!fill || !status) return;
-                const total = prog.entries.total || 0;
-                const processed = prog.entries.processed || 0;
-                const percent = total ? Math.round((processed / total) * 100) : 0;
-                fill.style.width = percent + '%';
-                status.textContent = `Backup ${processed}/${total} Dateien`;
+                const { format, t } = getI18nTools();
+                const total = prog?.entries?.total || 0;
+                const processed = prog?.entries?.processed || 0;
+                const percent = total ? Math.min(100, Math.round((processed / total) * 100)) : 0;
+                if (progressBar) progressBar.classList.add('active');
+                fill.style.width = `${percent}%`;
+                status.textContent = total
+                    ? format('backup.sound.status.progress', { processed, total, percent })
+                    : t('backup.sound.status.running');
             });
         }
     }
