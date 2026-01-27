@@ -252,11 +252,28 @@ class EditorWidget(QWidget):
     def _load_audio_for_caption(self, caption: CaptionLine) -> None:
         """Lädt Original- und Dubbing-Audio für die Zeile."""
 
-        original_path = self._resolve_original_audio_path(caption.key)
+        original_path = None
+        if caption.original_audio_path:
+            candidate = Path(caption.original_audio_path)
+            if candidate.exists():
+                original_path = candidate
+
+        if original_path is None:
+            original_path = self._resolve_original_audio_path(caption.key)
+
         self._original_audio_player.load_file(str(original_path) if original_path else None)
 
-        dub_path = settings.get_dubbing_output_path(caption.key)
-        self._dub_audio_player.load_file(str(dub_path) if dub_path.exists() else None)
+        dub_path = None
+        if caption.german_audio_path:
+            candidate = Path(caption.german_audio_path)
+            if candidate.exists():
+                dub_path = candidate
+
+        if dub_path is None:
+            dub_path = settings.get_dubbing_output_path(caption.key)
+            dub_path = dub_path if dub_path.exists() else None
+
+        self._dub_audio_player.load_file(str(dub_path) if dub_path else None)
 
     def _resolve_original_audio_path(self, key: str) -> Optional[Path]:
         """Versucht, den Original-Audio-Pfad anhand des Keys zu finden."""
@@ -307,7 +324,11 @@ class EditorWidget(QWidget):
             self._audio_status_label.setText("Voice-ID ist nicht konfiguriert.")
             return
 
-        output_path = settings.get_dubbing_output_path(self._current_caption.key)
+        output_path = None
+        if self._current_caption.german_audio_path:
+            output_path = Path(self._current_caption.german_audio_path)
+        else:
+            output_path = settings.get_dubbing_output_path(self._current_caption.key)
         self._set_audio_busy_state(True, "Audio wird generiert…")
 
         worker = DubWorker(self._audio_engine, text, voice_id, str(output_path))

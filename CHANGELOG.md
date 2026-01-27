@@ -1,4 +1,13 @@
 # Changelog
+# 🛠️ Patch in 1.40.581
+* `v3/core/sound_parser.py` ergänzt einen Soundevent-Parser, der .wiki-Dateien rekursiv liest und Key-zu-Pfad-Mappings bereitstellt.
+* `v3/core/paths.py` liefert eine Pfad-Spiegelung für Sprachordner, um z. B. `vo/alyx` auf `vo/alyx_german` abzubilden.
+* `v3/core/project.py` lädt jetzt Mod-Ordner, findet `closecaption_english.txt`, parst Soundevents und verknüpft Caption-Zeilen mit Audio-Pfaden samt Existenzstatus.
+* `v3/core/models.py` erweitert die Caption-Daten um Audio-Pfade und Existenz-Flags.
+* `v3/ui/caption_model.py` zeigt den kombinierten Übersetzungs- und Audio-Status in der Tabelle an.
+* `v3/ui/main_window.py` öffnet jetzt Mod-Ordner statt einzelner Dateien.
+* `v3/ui/editor_widget.py` nutzt die Projekt-Audio-Pfade, wenn verfügbar, für Original- und DE-Audio.
+* `README.md` ergänzt den Schnellüberblick um das neue Mod- und Soundevent-Handling in V3.
 # 🛠️ Patch in 1.40.580
 * `bootstrapper.py` übernimmt den robusten V3-Start mit venv-Setup, Requirements-Installation und Modulstart über `-m v3.main`.
 * `v3/__init__.py` markiert den Ordner als Paket für zuverlässige Modulimporte.
