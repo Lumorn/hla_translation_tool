@@ -1,5 +1,9 @@
-import logging
+import os
 import sys
+# Root-Verzeichnis zum Pfad hinzufügen, falls es fehlt.
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import logging
 from pathlib import Path
 
 from PySide6.QtGui import QIcon
