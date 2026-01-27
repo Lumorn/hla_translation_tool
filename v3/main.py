@@ -1,21 +1,16 @@
 import sys
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtWidgets import QApplication
+
+from v3.ui.main_window import MainWindow
 
 
 def main() -> int:
     app = QApplication(sys.argv)
 
-    window = QMainWindow()
-    window.setWindowTitle("HLA Translation Tool V3 (Alpha)")
-    window.resize(1200, 800)
-
-    label = QLabel("V3 Backend Initialized")
-    label.setAlignment(Qt.AlignCenter)
-    window.setCentralWidget(label)
-
+    window = MainWindow()
     window.show()
+
     return app.exec()
 
 
