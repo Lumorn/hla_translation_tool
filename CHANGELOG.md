@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.573
+* `v3/core/project.py` ergänzt einen Projekt-Controller, der Dateipfad und Closecaption-Zeilen verwaltet.
+* `v3/ui/caption_model.py` stellt ein Qt-Tabellenmodell mit Sortierung und Filter-Grundlage für die GUI bereit.
+* `v3/ui/main_window.py` baut die V3-Oberfläche mit Menüleiste, Suchfeld und Tabellenansicht neu auf.
+* `v3/main.py` startet jetzt das neue Hauptfenster der V3-UI.
+* `README.md` ergänzt den Schnellüberblick um die V3-Tabelle mit Suche und Datei-Öffnen.
 # 🛠️ Patch in 1.40.572
 * `v3/core/models.py` definiert das Pydantic-Datenmodell `CaptionLine` für einzelne Closecaption-Zeilen.
 * `v3/core/parser.py` portiert die Closecaption-Parsing-Logik nach Python, inklusive UTF-16-Fallback und Kommentar-Handling.
