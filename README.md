@@ -24,6 +24,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * V3 hat jetzt einen separaten `bootstrapper.py`, der die Abhängigkeiten installiert, `PYTHONPATH` setzt und die App als Modul startet, damit Fehlermeldungen sichtbar bleiben.
 * `start_v3.bat` ruft den neuen Bootstrapper auf und bleibt bei Startfehlern offen, sodass die Konsole nicht sofort schließt.
 * V3 kann jetzt Mod-Ordner laden, Soundevents parsen und Audio-Pfade spiegeln, sodass die Tabelle Original- und DE-Audio-Status anzeigen kann.
+* V3 bietet jetzt einen Projekt-Wizard mit `project.json`, ordnet Audio-Dateien in `source_audio/` und synchronisiert neue Dateien per „Refresh Audio Files“.
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Datei-Lade- und Schema-Dialoge im Datei-Speicher setzen ihre Bestätigungs- und Abbruchtexte auf i18n-Schlüssel mit Platzhaltern.
 * Dialoge im Electron-Hauptprozess ziehen Titel, Meldungen und Buttons nun aus i18n-Schlüsseln, lassen sich per IPC auf die Renderer-Sprache setzen und fallen ohne Paket automatisch auf Englisch zurück.

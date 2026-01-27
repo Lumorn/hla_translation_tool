@@ -4,18 +4,18 @@ from typing import Callable, List, Optional
 
 from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 
-from v3.core.models import CaptionLine
+from v3.core.models import GameAsset
 
 
-class CaptionTableModel(QAbstractTableModel):
-    """Tabellenmodell für Closecaption-Zeilen."""
+class AssetTableModel(QAbstractTableModel):
+    """Tabellenmodell für Audio-Assets."""
 
-    _HEADERS = ["Key", "Original Text", "Übersetzung", "Status"]
+    _HEADERS = ["Datei", "Pfad", "Original Text", "Übersetzung", "Status"]
 
-    def __init__(self, captions: Optional[List[CaptionLine]] = None) -> None:
+    def __init__(self, assets: Optional[List[GameAsset]] = None) -> None:
         super().__init__()
-        self._captions: List[CaptionLine] = captions or []
-        self._filtered_indices: List[int] = list(range(len(self._captions)))
+        self._assets: List[GameAsset] = assets or []
+        self._filtered_indices: List[int] = list(range(len(self._assets)))
         self._filter_text: str = ""
         self._sort_column: int = 0
         self._sort_order: Qt.SortOrder = Qt.AscendingOrder
@@ -34,17 +34,19 @@ class CaptionTableModel(QAbstractTableModel):
         if not index.isValid() or role != Qt.DisplayRole:
             return None
 
-        caption = self._caption_for_row(index.row())
+        asset = self._asset_for_row(index.row())
         column = index.column()
 
         if column == 0:
-            return caption.key
+            return asset.audio_filename
         if column == 1:
-            return caption.original_text
+            return asset.relative_path
         if column == 2:
-            return caption.translated_text or ""
+            return asset.original_text
         if column == 3:
-            return self._format_status(caption)
+            return asset.translated_text
+        if column == 4:
+            return asset.status
         return None
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole):  # noqa: N802 - Qt-Konvention
@@ -59,12 +61,12 @@ class CaptionTableModel(QAbstractTableModel):
         self._sort_order = order
         self._apply_filter_and_sort()
 
-    def set_captions(self, captions: List[CaptionLine]) -> None:
+    def set_assets(self, assets: List[GameAsset]) -> None:
         """Überschreibt die Daten und aktualisiert Filter/Sortierung."""
 
         self.beginResetModel()
-        self._captions = captions
-        self._filtered_indices = list(range(len(self._captions)))
+        self._assets = assets
+        self._filtered_indices = list(range(len(self._assets)))
         self._apply_filter_and_sort(reset_model=False)
         self.endResetModel()
 
@@ -84,10 +86,10 @@ class CaptionTableModel(QAbstractTableModel):
 
         return bool(self._filter_text)
 
-    def caption_for_row(self, row: int) -> CaptionLine:
-        """Liefert die Caption-Instanz für eine Tabellenzeile."""
+    def asset_for_row(self, row: int) -> GameAsset:
+        """Liefert das Asset für eine Tabellenzeile."""
 
-        return self._caption_for_row(row)
+        return self._asset_for_row(row)
 
     def _apply_filter_and_sort(self, reset_model: bool = True) -> None:
         if reset_model:
@@ -96,13 +98,14 @@ class CaptionTableModel(QAbstractTableModel):
         if self._filter_text:
             self._filtered_indices = [
                 index
-                for index, caption in enumerate(self._captions)
-                if self._filter_text in caption.key.lower()
-                or self._filter_text in caption.original_text.lower()
-                or (caption.translated_text or "").lower().find(self._filter_text) >= 0
+                for index, asset in enumerate(self._assets)
+                if self._filter_text in asset.audio_filename.lower()
+                or self._filter_text in asset.relative_path.lower()
+                or self._filter_text in asset.original_text.lower()
+                or self._filter_text in asset.translated_text.lower()
             ]
         else:
-            self._filtered_indices = list(range(len(self._captions)))
+            self._filtered_indices = list(range(len(self._assets)))
 
         key_fn = self._sort_key_for_column(self._sort_column)
         reverse = self._sort_order == Qt.DescendingOrder
@@ -113,26 +116,17 @@ class CaptionTableModel(QAbstractTableModel):
 
     def _sort_key_for_column(self, column: int) -> Callable[[int], str]:
         if column == 0:
-            return lambda idx: self._captions[idx].key.lower()
+            return lambda idx: self._assets[idx].audio_filename.lower()
         if column == 1:
-            return lambda idx: self._captions[idx].original_text.lower()
+            return lambda idx: self._assets[idx].relative_path.lower()
         if column == 2:
-            return lambda idx: (self._captions[idx].translated_text or "").lower()
+            return lambda idx: self._assets[idx].original_text.lower()
         if column == 3:
-            return lambda idx: self._format_status(self._captions[idx]).lower()
-        return lambda idx: self._captions[idx].key.lower()
+            return lambda idx: self._assets[idx].translated_text.lower()
+        if column == 4:
+            return lambda idx: self._assets[idx].status.lower()
+        return lambda idx: self._assets[idx].audio_filename.lower()
 
-    def _caption_for_row(self, row: int) -> CaptionLine:
+    def _asset_for_row(self, row: int) -> GameAsset:
         index = self._filtered_indices[row]
-        return self._captions[index]
-
-    def _format_status(self, caption: CaptionLine) -> str:
-        """Baut die Statusanzeige für Übersetzung und Audio zusammen."""
-
-        translation_status = "Übersetzt" if caption.translated_text else "Offen"
-        if caption.audio_relative_path is None:
-            return f"{translation_status} | Audio: unbekannt"
-
-        original_status = "✓" if caption.original_audio_exists else "✗"
-        german_status = "✓" if caption.german_audio_exists else "✗"
-        return f"{translation_status} | Audio EN {original_status} / DE {german_status}"
+        return self._assets[index]

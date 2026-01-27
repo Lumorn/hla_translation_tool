@@ -1,30 +1,34 @@
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import (
     QAbstractItemView,
+    QDialog,
     QFileDialog,
     QLineEdit,
     QMainWindow,
     QMenu,
     QMessageBox,
     QProgressDialog,
+    QPushButton,
     QSplitter,
     QTableView,
     QVBoxLayout,
     QWidget,
 )
 
-from v3.config import settings
 from v3.core.audio import AudioEngine
+from v3.core.audio_scanner import AudioScanner
 from v3.core.exporter import GameExporter
 from v3.core.project import Project
 from v3.core.translator import Translator
 from v3.core.workers import BatchDubber, BatchTranslator
-from v3.ui.caption_model import CaptionTableModel
+from v3.ui.caption_model import AssetTableModel
 from v3.ui.editor_widget import EditorWidget
+from v3.ui.project_wizard import ProjectWizard
 
 
 class MainWindow(QMainWindow):
@@ -36,7 +40,7 @@ class MainWindow(QMainWindow):
         self.resize(1200, 800)
 
         self._project = Project()
-        self._model = CaptionTableModel()
+        self._model = AssetTableModel()
         self._batch_worker = None
         self._progress_dialog: QProgressDialog | None = None
         self._batch_failed = False
@@ -48,6 +52,9 @@ class MainWindow(QMainWindow):
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText("Suchen...")
         self._search_input.textChanged.connect(self._on_filter_changed)
+
+        self._refresh_button = QPushButton("Refresh Audio Files")
+        self._refresh_button.clicked.connect(self._refresh_audio_files)
 
         self._table_view = QTableView()
         self._table_view.setModel(self._model)
@@ -62,6 +69,7 @@ class MainWindow(QMainWindow):
 
         left_layout = QVBoxLayout()
         left_layout.addWidget(self._search_input)
+        left_layout.addWidget(self._refresh_button)
         left_layout.addWidget(self._table_view)
 
         left_container = QWidget()
@@ -81,13 +89,16 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(container)
 
         self._setup_menu()
+        QTimer.singleShot(0, self._show_project_wizard)
 
     def _setup_menu(self) -> None:
         """Erzeugt die Menüleiste inklusive Datei-Öffnen."""
 
         file_menu = QMenu("File", self)
-        open_action = file_menu.addAction("Open Mod Folder")
-        open_action.triggered.connect(self._open_folder_dialog)
+        new_action = file_menu.addAction("New Project")
+        new_action.triggered.connect(self._show_project_wizard)
+        open_action = file_menu.addAction("Open Project Folder")
+        open_action.triggered.connect(self._open_project_dialog)
         export_action = file_menu.addAction("Export Mod...")
         export_action.triggered.connect(self._export_mod)
         self.menuBar().addMenu(file_menu)
@@ -99,12 +110,12 @@ class MainWindow(QMainWindow):
         dub_action.triggered.connect(self._start_batch_dubbing)
         self.menuBar().addMenu(tools_menu)
 
-    def _open_folder_dialog(self) -> None:
-        """Öffnet einen Ordner-Dialog und lädt das Mod-Projekt."""
+    def _open_project_dialog(self) -> None:
+        """Öffnet einen Ordner-Dialog und lädt ein Projekt."""
 
         folder = QFileDialog.getExistingDirectory(
             self,
-            "Mod-Ordner öffnen",
+            "Projektordner öffnen",
             str(Path.cwd()),
         )
         if not folder:
@@ -116,19 +127,39 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "Projekt laden fehlgeschlagen", str(exc))
             return
 
-        self._model.set_captions(self._project.captions)
+        self._model.set_assets(self._project.assets)
 
         if self._model.rowCount() > 0:
             first_index = self._model.index(0, 0)
             self._table_view.setCurrentIndex(first_index)
             self._table_view.selectRow(0)
         else:
-            self._editor.load_caption(None)
+            self._editor.load_asset(None)
+
+    def _show_project_wizard(self) -> None:
+        """Öffnet den Projekt-Wizard zum Erstellen eines neuen Projekts."""
+
+        wizard = ProjectWizard(self)
+        if wizard.exec() != QDialog.DialogCode.Accepted:
+            return
+
+        project_root = wizard.created_project_path
+        if not project_root:
+            return
+
+        try:
+            self._project.load_project(str(project_root))
+        except Exception as exc:  # noqa: BLE001 - GUI soll Fehlermeldungen anzeigen
+            QMessageBox.critical(self, "Projekt laden fehlgeschlagen", str(exc))
+            return
+
+        self._model.set_assets(self._project.assets)
+        self._editor.load_asset(None)
 
     def _export_mod(self) -> None:
         """Exportiert Untertitel und Audio für die Mod-Struktur."""
 
-        if not self._project.captions:
+        if not self._project.assets:
             QMessageBox.information(self, "Export", "Bitte zuerst ein Projekt laden.")
             return
 
@@ -154,17 +185,17 @@ class MainWindow(QMainWindow):
 
         self._model.set_filter_text(text)
         if self._model.rowCount() == 0:
-            self._editor.load_caption(None)
+            self._editor.load_asset(None)
 
     def _on_row_changed(self, current, previous) -> None:
         """Lädt die ausgewählte Zeile in den Editor."""
 
         if not current.isValid():
-            self._editor.load_caption(None)
+            self._editor.load_asset(None)
             return
 
-        caption = self._model.caption_for_row(current.row())
-        self._editor.load_caption(caption, current.row())
+        asset = self._model.asset_for_row(current.row())
+        self._editor.load_asset(asset, current.row())
 
     def _on_editor_data_changed(self, row: int) -> None:
         """Aktualisiert das Tabellenmodell nach Speichern im Editor."""
@@ -177,13 +208,13 @@ class MainWindow(QMainWindow):
             return
 
         top_left = self._model.index(row, 2)
-        bottom_right = self._model.index(row, 3)
+        bottom_right = self._model.index(row, 4)
         self._model.dataChanged.emit(top_left, bottom_right)
 
     def _start_batch_translation(self) -> None:
-        """Startet die Stapelübersetzung fehlender Zeilen."""
+        """Startet die Stapelübersetzung fehlender Assets."""
 
-        if not self._project.captions:
+        if not self._project.assets:
             QMessageBox.information(self, "Übersetzung", "Bitte zuerst ein Projekt laden.")
             return
 
@@ -193,18 +224,18 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(self, "Übersetzung fehlgeschlagen", str(exc))
             return
 
-        worker = BatchTranslator(self._project.captions, translator)
-        self._start_batch_worker(worker, "Übersetzung läuft", len(self._project.captions))
+        worker = BatchTranslator(self._project.assets, translator)
+        self._start_batch_worker(worker, "Übersetzung läuft", len(self._project.assets))
 
     def _start_batch_dubbing(self) -> None:
         """Startet das Stapel-Dubbing für fehlende Audios."""
 
-        if not self._project.captions:
+        if not self._project.assets:
             QMessageBox.information(self, "Dubbing", "Bitte zuerst ein Projekt laden.")
             return
 
-        voice_id = settings.get_default_voice_id()
-        if not voice_id or voice_id == settings.DEFAULT_VOICE_ID:
+        voice_id = os.getenv("ELEVENLABS_VOICE_ID", "").strip()
+        if not voice_id:
             QMessageBox.warning(
                 self,
                 "Dubbing",
@@ -212,18 +243,46 @@ class MainWindow(QMainWindow):
             )
             return
 
-        captions_to_dub = [
-            caption
-            for caption in self._project.captions
-            if caption.translated_text and not settings.get_dubbing_output_path(caption.key).exists()
-        ]
+        assets_to_dub = []
+        for asset in self._project.assets:
+            if not asset.translated_text:
+                continue
+            target_path = self._project.get_target_audio_path(asset)
+            if target_path is None:
+                continue
+            if target_path.exists():
+                continue
+            assets_to_dub.append(asset)
 
-        if not captions_to_dub:
+        if not assets_to_dub:
             QMessageBox.information(self, "Dubbing", "Es gibt keine fehlenden Audios.")
             return
 
-        worker = BatchDubber(captions_to_dub, AudioEngine(), voice_id)
-        self._start_batch_worker(worker, "Dubbing läuft", len(captions_to_dub))
+        worker = BatchDubber(assets_to_dub, AudioEngine(), voice_id)
+        worker.configure_output_resolver(self._project.get_target_audio_path)
+        self._start_batch_worker(worker, "Dubbing läuft", len(assets_to_dub))
+
+    def _refresh_audio_files(self) -> None:
+        """Aktualisiert die Audio-Dateien aus dem source_audio-Ordner."""
+
+        if not self._project.source_audio_path:
+            QMessageBox.information(self, "Refresh", "Bitte zuerst ein Projekt laden.")
+            return
+
+        scanner = AudioScanner()
+        try:
+            audio_files = scanner.scan_source_folder(str(self._project.source_audio_path))
+        except Exception as exc:  # noqa: BLE001 - GUI soll Fehlermeldungen anzeigen
+            QMessageBox.critical(self, "Refresh fehlgeschlagen", str(exc))
+            return
+
+        new_assets = self._project.update_assets_from_scan(audio_files)
+        self._model.set_assets(self._project.assets)
+
+        if new_assets:
+            self._status_bar.showMessage(f"{len(new_assets)} neue Audio-Dateien hinzugefügt.")
+        else:
+            self._status_bar.showMessage("Keine neuen Audio-Dateien gefunden.")
 
     def _start_batch_worker(self, worker, title: str, total: int) -> None:
         """Startet einen Batch-Worker und zeigt den Fortschrittsdialog."""
@@ -284,8 +343,9 @@ class MainWindow(QMainWindow):
         if self._batch_failed:
             return
 
+        self._project.refresh_asset_statuses()
         self._status_bar.showMessage(
-            f"Fertig. {self._batch_total} Zeilen verarbeitet.",
+            f"Fertig. {self._batch_total} Assets verarbeitet.",
         )
 
         if self._model.has_active_filter():
@@ -295,5 +355,5 @@ class MainWindow(QMainWindow):
 
         current = self._table_view.currentIndex()
         if current.isValid():
-            caption = self._model.caption_for_row(current.row())
-            self._editor.load_caption(caption, current.row())
+            asset = self._model.asset_for_row(current.row())
+            self._editor.load_asset(asset, current.row())

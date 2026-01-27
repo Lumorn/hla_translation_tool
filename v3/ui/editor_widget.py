@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pathlib import Path
+import os
 from typing import Optional
 
 from PySide6.QtCore import QObject, Qt, QThread, Signal
@@ -16,9 +16,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from v3.config import settings
 from v3.core.audio import AudioEngine
-from v3.core.models import CaptionLine
+from v3.core.models import GameAsset
 from v3.core.project import Project
 from v3.core.translator import Translator
 from v3.ui.audio_player import AudioPlayer
@@ -74,14 +73,14 @@ class DubWorker(QObject):
 
 
 class EditorWidget(QWidget):
-    """Editor-Maske für einzelne Closecaption-Zeilen."""
+    """Editor-Maske für einzelne Mod-Assets."""
 
     dataChanged = Signal(int)
 
     def __init__(self, project: Project, parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
         self._project = project
-        self._current_caption: Optional[CaptionLine] = None
+        self._current_asset: Optional[GameAsset] = None
         self._current_row: int = -1
         self._worker_thread: Optional[QThread] = None
         self._dub_thread: Optional[QThread] = None
@@ -96,11 +95,13 @@ class EditorWidget(QWidget):
 
         self._audio_engine = AudioEngine()
 
-        self._key_input = QLineEdit()
-        self._key_input.setReadOnly(True)
+        self._filename_input = QLineEdit()
+        self._filename_input.setReadOnly(True)
+
+        self._relative_path_input = QLineEdit()
+        self._relative_path_input.setReadOnly(True)
 
         self._original_input = QTextEdit()
-        self._original_input.setReadOnly(True)
 
         self._original_audio_player = AudioPlayer("Original-Audio")
 
@@ -132,14 +133,15 @@ class EditorWidget(QWidget):
         self._build_layout()
         self._update_controls_enabled(False)
 
-    def load_caption(self, caption: Optional[CaptionLine], row: int = -1) -> None:
-        """Lädt die Daten einer Zeile in den Editor."""
+    def load_asset(self, asset: Optional[GameAsset], row: int = -1) -> None:
+        """Lädt die Daten eines Assets in den Editor."""
 
-        self._current_caption = caption
+        self._current_asset = asset
         self._current_row = row
 
-        if caption is None:
-            self._key_input.clear()
+        if asset is None:
+            self._filename_input.clear()
+            self._relative_path_input.clear()
             self._original_input.clear()
             self._translation_input.clear()
             self._context_input.clear()
@@ -150,20 +152,22 @@ class EditorWidget(QWidget):
             self._update_controls_enabled(False)
             return
 
-        self._key_input.setText(caption.key)
-        self._original_input.setPlainText(caption.original_text)
-        self._translation_input.setPlainText(caption.translated_text or "")
+        self._filename_input.setText(asset.audio_filename)
+        self._relative_path_input.setText(asset.relative_path)
+        self._original_input.setPlainText(asset.original_text)
+        self._translation_input.setPlainText(asset.translated_text)
         self._context_input.clear()
         self._status_label.setText("")
         self._audio_status_label.setText("")
-        self._load_audio_for_caption(caption)
+        self._load_audio_for_asset(asset)
         self._update_controls_enabled(True)
 
     def _build_layout(self) -> None:
         """Erstellt das Formlayout für den Editor."""
 
         layout = QFormLayout()
-        layout.addRow("Key", self._key_input)
+        layout.addRow("Audio-Datei", self._filename_input)
+        layout.addRow("Relativer Pfad", self._relative_path_input)
         layout.addRow("Original", self._original_input)
         layout.addRow("Original-Audio", self._original_audio_player)
         layout.addRow("Übersetzung", self._translation_input)
@@ -197,7 +201,7 @@ class EditorWidget(QWidget):
     def _on_translate_clicked(self) -> None:
         """Startet die Übersetzung über einen Hintergrund-Thread."""
 
-        if not self._current_caption:
+        if not self._current_asset:
             return
         if self._translator is None:
             self._status_label.setText(self._translator_error or "OpenAI ist nicht konfiguriert.")
@@ -246,72 +250,22 @@ class EditorWidget(QWidget):
             self._progress_bar.setRange(0, 0)
         else:
             self._progress_bar.setRange(0, 1)
-        self._translate_button.setEnabled(not busy and self._current_caption is not None)
-        self._save_button.setEnabled(not busy and self._current_caption is not None)
+        self._translate_button.setEnabled(not busy and self._current_asset is not None)
+        self._save_button.setEnabled(not busy and self._current_asset is not None)
 
-    def _load_audio_for_caption(self, caption: CaptionLine) -> None:
-        """Lädt Original- und Dubbing-Audio für die Zeile."""
+    def _load_audio_for_asset(self, asset: GameAsset) -> None:
+        """Lädt Original- und Dubbing-Audio für das Asset."""
 
-        original_path = None
-        if caption.original_audio_path:
-            candidate = Path(caption.original_audio_path)
-            if candidate.exists():
-                original_path = candidate
-
-        if original_path is None:
-            original_path = self._resolve_original_audio_path(caption.key)
-
+        original_path = self._project.get_source_audio_path(asset)
         self._original_audio_player.load_file(str(original_path) if original_path else None)
 
-        dub_path = None
-        if caption.german_audio_path:
-            candidate = Path(caption.german_audio_path)
-            if candidate.exists():
-                dub_path = candidate
-
-        if dub_path is None:
-            dub_path = settings.get_dubbing_output_path(caption.key)
-            dub_path = dub_path if dub_path.exists() else None
-
-        self._dub_audio_player.load_file(str(dub_path) if dub_path else None)
-
-    def _resolve_original_audio_path(self, key: str) -> Optional[Path]:
-        """Versucht, den Original-Audio-Pfad anhand des Keys zu finden."""
-
-        cleaned = key.strip().strip("\"").replace("\\", "/").lstrip("/")
-        key_path = Path(cleaned)
-        candidates = [cleaned, key_path.name]
-        search_dirs = settings.get_original_search_dirs()
-
-        for base_dir in search_dirs:
-            if not base_dir.exists():
-                continue
-
-            for name in candidates:
-                candidate_path = base_dir / name
-                if candidate_path.suffix.lower() in {".wav", ".mp3"} and candidate_path.exists():
-                    return candidate_path
-
-                for extension in (".wav", ".mp3"):
-                    with_suffix = candidate_path.with_suffix(extension)
-                    if with_suffix.exists():
-                        return with_suffix
-
-                for pattern in (
-                    f"**/{name}.wav",
-                    f"**/{name}.mp3",
-                    f"**/{name}*.wav",
-                    f"**/{name}*.mp3",
-                ):
-                    for match in base_dir.glob(pattern):
-                        return match
-
-        return None
+        dub_path = self._project.get_target_audio_path(asset)
+        self._dub_audio_player.load_file(str(dub_path) if dub_path and dub_path.exists() else None)
 
     def _on_generate_dub_clicked(self) -> None:
         """Startet die ElevenLabs-Generierung in einem Hintergrund-Thread."""
 
-        if not self._current_caption:
+        if not self._current_asset:
             return
 
         text = self._translation_input.toPlainText().strip()
@@ -319,16 +273,15 @@ class EditorWidget(QWidget):
             self._audio_status_label.setText("Kein Übersetzungstext vorhanden.")
             return
 
-        voice_id = settings.get_default_voice_id()
-        if not voice_id or voice_id == settings.DEFAULT_VOICE_ID:
+        voice_id = os.getenv("ELEVENLABS_VOICE_ID", "").strip()
+        if not voice_id:
             self._audio_status_label.setText("Voice-ID ist nicht konfiguriert.")
             return
 
-        output_path = None
-        if self._current_caption.german_audio_path:
-            output_path = Path(self._current_caption.german_audio_path)
-        else:
-            output_path = settings.get_dubbing_output_path(self._current_caption.key)
+        output_path = self._project.get_target_audio_path(self._current_asset)
+        if not output_path:
+            self._audio_status_label.setText("Zielordner für Audio fehlt.")
+            return
         self._set_audio_busy_state(True, "Audio wird generiert…")
 
         worker = DubWorker(self._audio_engine, text, voice_id, str(output_path))
@@ -361,23 +314,16 @@ class EditorWidget(QWidget):
         """Aktualisiert den Ladezustand der Audio-Generierung."""
 
         self._audio_status_label.setText(message)
-        self._generate_audio_button.setEnabled(not busy and self._current_caption is not None)
+        self._generate_audio_button.setEnabled(not busy and self._current_asset is not None)
 
     def _on_save_clicked(self) -> None:
         """Schreibt die Übersetzung in das Projekt zurück."""
 
-        if not self._current_caption:
+        if not self._current_asset:
             return
 
         new_translation = self._translation_input.toPlainText().strip()
-        if self._current_caption in self._project.captions:
-            self._current_caption.translated_text = new_translation
-        else:
-            # Fallback: Falls die Referenz nicht mehr im Projekt liegt, anhand des Keys suchen.
-            for caption in self._project.captions:
-                if caption.key == self._current_caption.key:
-                    caption.translated_text = new_translation
-                    self._current_caption = caption
-                    break
+        new_original = self._original_input.toPlainText().strip()
+        self._project.update_asset_text(self._current_asset, new_original, new_translation)
         self._status_label.setText("Änderungen gespeichert.")
         self.dataChanged.emit(self._current_row)

@@ -25,28 +25,27 @@ class GameExporter:
         caption_filename = f"closecaption_{language_slug}.txt"
         caption_path = output_root / caption_filename
 
-        lines = [f"\"{caption.key}\"\t\"{caption.translated_text or ''}\"" for caption in project.captions]
+        lines = [
+            f"\"{asset.id}\"\t\"{asset.translated_text or ''}\""
+            for asset in project.assets
+            if asset.translated_text
+        ]
         content = "\n".join(lines)
         caption_path.write_bytes(b"\xff\xfe" + content.encode("utf-16-le"))
 
         audio_root = output_root / "sound" / "vo" / "alyx"
-        dubbing_root = settings.get_repo_root() / settings.DEFAULT_DUBBING_SUBDIR
+        if project.target_audio_path:
+            for asset in project.assets:
+                if not asset.translated_text:
+                    continue
 
-        for caption in project.captions:
-            if not caption.translated_text:
-                continue
+                source_path = project.get_target_audio_path(asset)
+                if source_path is None or not source_path.exists():
+                    continue
 
-            source_path = settings.get_dubbing_output_path(caption.key)
-            if not source_path.exists():
-                continue
-
-            try:
-                relative_path = source_path.relative_to(dubbing_root)
-            except ValueError:
-                relative_path = Path(source_path.name)
-
-            target_path = audio_root / relative_path
-            target_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source_path, target_path)
+                relative_path = Path(asset.relative_path) / asset.audio_filename if asset.relative_path else Path(asset.audio_filename)
+                target_path = audio_root / relative_path
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source_path, target_path)
 
         return caption_path
