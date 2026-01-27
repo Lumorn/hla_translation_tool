@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.584
+* `v3/ui/project_tree.py` liefert einen Projekt-Explorer für `source_audio/` mit Ordner- und Audio-Icons sowie Warnsymbolen für fehlende Texte.
+* `v3/ui/caption_model.py` ergänzt einen Pfadfilter, sodass die Tabelle nach Ordnern oder Dateien gefiltert werden kann.
+* `v3/ui/main_window.py` erweitert das Layout um den neuen Tree-View, bindet die Filterlogik ein und zeigt die aktuelle Anzeige inklusive Zeilenzahl an.
+* `README.md` ergänzt den Schnellüberblick um den neuen V3-Projekt-Explorer.
 # 🛠️ Patch in 1.40.583
 * `v3/core/sound_event_parser.py` ergänzt einen Soundevent-Parser, der Wiki-Blöcke ausliest und Caption-Keys auf Audio-Pfade mappt.
 * `v3/core/path_manager.py` liefert einen Pfad-Manager, der Caption-Keys für Quell- und Zielaudio in absolute Pfade auflöst.
