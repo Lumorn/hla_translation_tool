@@ -1,4 +1,9 @@
 # Changelog
+# 🛠️ Patch in 1.40.572
+* `v3/core/models.py` definiert das Pydantic-Datenmodell `CaptionLine` für einzelne Closecaption-Zeilen.
+* `v3/core/parser.py` portiert die Closecaption-Parsing-Logik nach Python, inklusive UTF-16-Fallback und Kommentar-Handling.
+* `v3/tests/test_parser_manual.py` liest die englische Untertiteldatei ein und gibt die ersten Treffer sowie die Gesamtanzahl aus.
+* `README.md` ergänzt den Schnellüberblick um den neuen V3-Closecaption-Parser.
 # 🛠️ Patch in 1.40.571
 * `v3/` legt die Grundstruktur für die native Python-Desktop-App an (Assets, Config, Core, UI, Tests).
 * `v3/requirements.txt` definiert die Abhängigkeiten für PySide6, Datenvalidierung, Umgebungsvariablen und API-Clients.

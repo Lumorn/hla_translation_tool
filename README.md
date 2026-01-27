@@ -15,6 +15,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 ## 🔍 Schnellüberblick
 * Komplettes Übersetzungs-Ökosystem für Half-Life: Alyx mit Browser-Oberfläche und Desktop-App (Electron).
 * V3-Grundstruktur für eine native Python-Desktop-App (PySide6) inklusive Startskript und Abhängigkeitsliste vorbereitet.
+* V3 enthält nun einen Python-Parser für Source-Engine-Closecaptions samt Pydantic-Datenmodell und manuellem Testskript für die englische Untertiteldatei.
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Datei-Lade- und Schema-Dialoge im Datei-Speicher setzen ihre Bestätigungs- und Abbruchtexte auf i18n-Schlüssel mit Platzhaltern.
 * Dialoge im Electron-Hauptprozess ziehen Titel, Meldungen und Buttons nun aus i18n-Schlüsseln, lassen sich per IPC auf die Renderer-Sprache setzen und fallen ohne Paket automatisch auf Englisch zurück.
