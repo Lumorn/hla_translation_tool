@@ -1,4 +1,7 @@
 # Changelog
+# 🛠️ Patch in 1.40.579
+* `start_v3.bat` richtet beim ersten Start automatisch ein lokales `venv` ein, installiert die V3-Abhängigkeiten und startet die App über das virtuelle Python.
+* `README.md` ergänzt den Schnellüberblick um den neuen V3-Launcher mit automatischem venv-Setup.
 # 🛠️ Patch in 1.40.578
 * `start_v3.py` hält das Fenster bei Startfehlern offen und zeigt den Rückgabecode an.
 * `start_v3.bat` pausiert bei fehlendem Python oder Fehlern, damit Fehlermeldungen sichtbar bleiben.
