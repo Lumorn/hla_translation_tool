@@ -86,8 +86,8 @@ class MainWindow(QMainWindow):
         """Erzeugt die Menüleiste inklusive Datei-Öffnen."""
 
         file_menu = QMenu("File", self)
-        open_action = file_menu.addAction("Open")
-        open_action.triggered.connect(self._open_file_dialog)
+        open_action = file_menu.addAction("Open Mod Folder")
+        open_action.triggered.connect(self._open_folder_dialog)
         export_action = file_menu.addAction("Export Mod...")
         export_action.triggered.connect(self._export_mod)
         self.menuBar().addMenu(file_menu)
@@ -99,19 +99,23 @@ class MainWindow(QMainWindow):
         dub_action.triggered.connect(self._start_batch_dubbing)
         self.menuBar().addMenu(tools_menu)
 
-    def _open_file_dialog(self) -> None:
-        """Öffnet einen Datei-Dialog und lädt die ausgewählte Datei."""
+    def _open_folder_dialog(self) -> None:
+        """Öffnet einen Ordner-Dialog und lädt das Mod-Projekt."""
 
-        filepath, _ = QFileDialog.getOpenFileName(
+        folder = QFileDialog.getExistingDirectory(
             self,
-            "Closecaption-Datei öffnen",
+            "Mod-Ordner öffnen",
             str(Path.cwd()),
-            "Closecaption-Dateien (*.txt)",
         )
-        if not filepath:
+        if not folder:
             return
 
-        self._project.load_from_file(filepath)
+        try:
+            self._project.load_project(folder)
+        except Exception as exc:  # noqa: BLE001 - GUI soll Fehlermeldungen anzeigen
+            QMessageBox.critical(self, "Projekt laden fehlgeschlagen", str(exc))
+            return
+
         self._model.set_captions(self._project.captions)
 
         if self._model.rowCount() > 0:

@@ -44,7 +44,7 @@ class CaptionTableModel(QAbstractTableModel):
         if column == 2:
             return caption.translated_text or ""
         if column == 3:
-            return "Übersetzt" if caption.translated_text else "Offen"
+            return self._format_status(caption)
         return None
 
     def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.DisplayRole):  # noqa: N802 - Qt-Konvention
@@ -119,9 +119,20 @@ class CaptionTableModel(QAbstractTableModel):
         if column == 2:
             return lambda idx: (self._captions[idx].translated_text or "").lower()
         if column == 3:
-            return lambda idx: "0" if self._captions[idx].translated_text else "1"
+            return lambda idx: self._format_status(self._captions[idx]).lower()
         return lambda idx: self._captions[idx].key.lower()
 
     def _caption_for_row(self, row: int) -> CaptionLine:
         index = self._filtered_indices[row]
         return self._captions[index]
+
+    def _format_status(self, caption: CaptionLine) -> str:
+        """Baut die Statusanzeige für Übersetzung und Audio zusammen."""
+
+        translation_status = "Übersetzt" if caption.translated_text else "Offen"
+        if caption.audio_relative_path is None:
+            return f"{translation_status} | Audio: unbekannt"
+
+        original_status = "✓" if caption.original_audio_exists else "✗"
+        german_status = "✓" if caption.german_audio_exists else "✗"
+        return f"{translation_status} | Audio EN {original_status} / DE {german_status}"
