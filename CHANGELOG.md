@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.571
+* `v3/` legt die Grundstruktur für die native Python-Desktop-App an (Assets, Config, Core, UI, Tests).
+* `v3/requirements.txt` definiert die Abhängigkeiten für PySide6, Datenvalidierung, Umgebungsvariablen und API-Clients.
+* `v3/main.py` startet eine minimale PySide6-App mit einem Hauptfenster und Platzhalter-Label für V3.
+* `start_v3.bat` startet die neue V3-App unter Windows und prüft zuvor die Python-Installation.
+* `README.md` ergänzt den Schnellüberblick um den Start der V3-Desktop-Struktur.
 # 🛠️ Patch in 1.40.570
 * `web/src/main.js` zeigt beim Sound-Backup eine Live-Fortschrittsanzeige mit Datei-Zähler und Prozentwert an und aktiviert die Anzeige beim Eintreffen der Progress-Events.
 * `web/src/i18n.js` ergänzt einen neuen Übersetzungsschlüssel für die Sound-Backup-Fortschrittsanzeige in Deutsch und Englisch.
