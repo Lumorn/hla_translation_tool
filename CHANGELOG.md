@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.583
+* `v3/core/sound_event_parser.py` ergänzt einen Soundevent-Parser, der Wiki-Blöcke ausliest und Caption-Keys auf Audio-Pfade mappt.
+* `v3/core/path_manager.py` liefert einen Pfad-Manager, der Caption-Keys für Quell- und Zielaudio in absolute Pfade auflöst.
+* `v3/core/models.py` erweitert `CaptionLine` um Audio-Pfad, Audio-Flags und einen Emotions-Text-Platzhalter.
+* `v3/core/project.py` lädt Closecaptions samt Soundevents, matcht Audio-Dateien und prüft deren Existenz in `source_audio/` und `target_audio/`.
+* `README.md` aktualisiert den Schnellüberblick für das neue Soundevent- und Caption-Matching in V3.
 # 🛠️ Patch in 1.40.582
 * `v3/core/project_manager.py` erstellt die V3-Projektstruktur mit `source_audio/`, `target_audio/`, `backups/`, `data/` und initialisiert `project.json`.
 * `v3/core/audio_scanner.py` durchsucht den `source_audio`-Ordner rekursiv und liefert Metadaten zu `.wav`/`.mp3`.
