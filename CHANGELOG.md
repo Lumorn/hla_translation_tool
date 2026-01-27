@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.575
+* `v3/core/audio.py` ergänzt ein Audio-Backend mit ElevenLabs-Anbindung, API-Key-Handling und direktem Datei-Export.
+* `v3/ui/audio_player.py` liefert ein kompaktes Audio-Widget mit Play/Stop, Platzhalter-Waveform und Statusanzeige.
+* `v3/ui/editor_widget.py` integriert Original- und Dubbing-Player, die Audio-Suche nach Key sowie den ElevenLabs-Button mit Hintergrund-Thread.
+* `v3/config/settings.py` hält Default-Voice-IDs und Standardpfade für Audioquellen und Dubbing-Ausgaben bereit.
+* `README.md` ergänzt den Schnellüberblick um die neue Audio-Integration in V3.
 # 🛠️ Patch in 1.40.574
 * `v3/core/translator.py` ersetzt den bisherigen JS-Service durch einen Python-Translator, der System-Prompts lädt, `.env` nutzt und OpenAI aufruft.
 * `v3/ui/editor_widget.py` ergänzt einen Editor mit Key/Original/Übersetzung/KI-Kontext, Speichern-Button und KI-Aufruf samt Ladeanzeige.
