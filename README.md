@@ -19,6 +19,7 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * V3 zeigt Closecaptions jetzt in einer PySide6-Tabelle mit Suchfeld, Sortierung und Datei-Öffnen-Menü.
 * V3 besitzt jetzt eine Editor-Maske mit KI-Übersetzung, Ladeanzeige und Speicheraktion direkt neben der Tabelle.
 * V3 integriert jetzt ein Audio-Backend mit Player-Widgets, Original-Audio-Suche und ElevenLabs-Dubbing direkt im Editor.
+* V3 ergänzt jetzt Settings-Handling, Batch-Übersetzung, Batch-Dubbing und einen Export für spielbereite Untertitel/Audios inklusive UTF-16-Export.
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Datei-Lade- und Schema-Dialoge im Datei-Speicher setzen ihre Bestätigungs- und Abbruchtexte auf i18n-Schlüssel mit Platzhaltern.
 * Dialoge im Electron-Hauptprozess ziehen Titel, Meldungen und Buttons nun aus i18n-Schlüsseln, lassen sich per IPC auf die Renderer-Sprache setzen und fallen ohne Paket automatisch auf Englisch zurück.

@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.576
+* `v3/config/settings.py` ergänzt einen Settings-Manager auf Basis von Pydantic inklusive JSON-Speicher und Environment-Bridge.
+* `v3/core/workers.py` liefert Batch-Threads für Übersetzung und Dubbing mit Fortschrittssignalen.
+* `v3/core/exporter.py` exportiert Closecaptions in UTF-16 LE (BOM) und kopiert Dubbing-Audio in die Mod-Struktur.
+* `v3/ui/main_window.py` ergänzt Tools-Menü, Export-Aktion und Fortschrittsdialoge für Batch-Jobs.
+* `README.md` ergänzt den Schnellüberblick um Batch- und Export-Features in V3.
 # 🛠️ Patch in 1.40.575
 * `v3/core/audio.py` ergänzt ein Audio-Backend mit ElevenLabs-Anbindung, API-Key-Handling und direktem Datei-Export.
 * `v3/ui/audio_player.py` liefert ein kompaktes Audio-Widget mit Play/Stop, Platzhalter-Waveform und Statusanzeige.

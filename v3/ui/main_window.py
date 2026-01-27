@@ -9,13 +9,20 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QMainWindow,
     QMenu,
+    QMessageBox,
+    QProgressDialog,
     QSplitter,
     QTableView,
     QVBoxLayout,
     QWidget,
 )
 
+from v3.config import settings
+from v3.core.audio import AudioEngine
+from v3.core.exporter import GameExporter
 from v3.core.project import Project
+from v3.core.translator import Translator
+from v3.core.workers import BatchDubber, BatchTranslator
 from v3.ui.caption_model import CaptionTableModel
 from v3.ui.editor_widget import EditorWidget
 
@@ -30,6 +37,9 @@ class MainWindow(QMainWindow):
 
         self._project = Project()
         self._model = CaptionTableModel()
+        self._batch_worker = None
+        self._progress_dialog: QProgressDialog | None = None
+        self._batch_failed = False
 
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText("Suchen...")
@@ -74,7 +84,16 @@ class MainWindow(QMainWindow):
         file_menu = QMenu("File", self)
         open_action = file_menu.addAction("Open")
         open_action.triggered.connect(self._open_file_dialog)
+        export_action = file_menu.addAction("Export Mod...")
+        export_action.triggered.connect(self._export_mod)
         self.menuBar().addMenu(file_menu)
+
+        tools_menu = QMenu("Tools", self)
+        translate_action = tools_menu.addAction("Alle fehlenden übersetzen")
+        translate_action.triggered.connect(self._start_batch_translation)
+        dub_action = tools_menu.addAction("Alle fehlenden vertonen")
+        dub_action.triggered.connect(self._start_batch_dubbing)
+        self.menuBar().addMenu(tools_menu)
 
     def _open_file_dialog(self) -> None:
         """Öffnet einen Datei-Dialog und lädt die ausgewählte Datei."""
@@ -97,6 +116,30 @@ class MainWindow(QMainWindow):
             self._table_view.selectRow(0)
         else:
             self._editor.load_caption(None)
+
+    def _export_mod(self) -> None:
+        """Exportiert Untertitel und Audio für die Mod-Struktur."""
+
+        if not self._project.captions:
+            QMessageBox.information(self, "Export", "Bitte zuerst ein Projekt laden.")
+            return
+
+        output_dir = QFileDialog.getExistingDirectory(self, "Export-Zielordner wählen")
+        if not output_dir:
+            return
+
+        exporter = GameExporter()
+        try:
+            caption_path = exporter.export_to_game(self._project, output_dir)
+        except Exception as exc:  # noqa: BLE001 - GUI soll Fehlermeldungen anzeigen
+            QMessageBox.critical(self, "Export fehlgeschlagen", str(exc))
+            return
+
+        QMessageBox.information(
+            self,
+            "Export abgeschlossen",
+            f"Export abgeschlossen. Untertitel-Datei: {caption_path}",
+        )
 
     def _on_filter_changed(self, text: str) -> None:
         """Reicht Filtertexte an das Tabellenmodell weiter."""
@@ -128,3 +171,113 @@ class MainWindow(QMainWindow):
         top_left = self._model.index(row, 2)
         bottom_right = self._model.index(row, 3)
         self._model.dataChanged.emit(top_left, bottom_right)
+
+    def _start_batch_translation(self) -> None:
+        """Startet die Stapelübersetzung fehlender Zeilen."""
+
+        if not self._project.captions:
+            QMessageBox.information(self, "Übersetzung", "Bitte zuerst ein Projekt laden.")
+            return
+
+        try:
+            translator = Translator()
+        except Exception as exc:  # noqa: BLE001 - GUI soll Fehlermeldungen anzeigen
+            QMessageBox.critical(self, "Übersetzung fehlgeschlagen", str(exc))
+            return
+
+        worker = BatchTranslator(self._project.captions, translator)
+        self._start_batch_worker(worker, "Übersetzung läuft", len(self._project.captions))
+
+    def _start_batch_dubbing(self) -> None:
+        """Startet das Stapel-Dubbing für fehlende Audios."""
+
+        if not self._project.captions:
+            QMessageBox.information(self, "Dubbing", "Bitte zuerst ein Projekt laden.")
+            return
+
+        voice_id = settings.get_default_voice_id()
+        if not voice_id or voice_id == settings.DEFAULT_VOICE_ID:
+            QMessageBox.warning(
+                self,
+                "Dubbing",
+                "Bitte eine gültige ElevenLabs-Voice-ID in den Settings setzen.",
+            )
+            return
+
+        captions_to_dub = [
+            caption
+            for caption in self._project.captions
+            if caption.translated_text and not settings.get_dubbing_output_path(caption.key).exists()
+        ]
+
+        if not captions_to_dub:
+            QMessageBox.information(self, "Dubbing", "Es gibt keine fehlenden Audios.")
+            return
+
+        worker = BatchDubber(captions_to_dub, AudioEngine(), voice_id)
+        self._start_batch_worker(worker, "Dubbing läuft", len(captions_to_dub))
+
+    def _start_batch_worker(self, worker, title: str, total: int) -> None:
+        """Startet einen Batch-Worker und zeigt den Fortschrittsdialog."""
+
+        if self._batch_worker is not None and self._batch_worker.isRunning():
+            QMessageBox.warning(
+                self,
+                "Batch läuft",
+                "Es läuft bereits ein Batch-Prozess. Bitte warten.",
+            )
+            return
+
+        self._batch_failed = False
+        self._batch_worker = worker
+        self._progress_dialog = QProgressDialog(title, "", 0, total, self)
+        self._progress_dialog.setWindowTitle(title)
+        self._progress_dialog.setWindowModality(Qt.WindowModal)
+        self._progress_dialog.setAutoClose(False)
+        self._progress_dialog.setAutoReset(False)
+        self._progress_dialog.setValue(0)
+        self._progress_dialog.show()
+
+        worker.progress_update.connect(self._on_batch_progress)
+        worker.error.connect(self._on_batch_failed)
+        worker.finished.connect(self._on_batch_finished)
+        worker.start()
+
+    def _on_batch_progress(self, current: int, total: int) -> None:
+        """Aktualisiert den Fortschrittsdialog."""
+
+        if not self._progress_dialog:
+            return
+
+        if self._progress_dialog.maximum() != total:
+            self._progress_dialog.setMaximum(total)
+        self._progress_dialog.setValue(current)
+
+    def _on_batch_failed(self, message: str) -> None:
+        """Zeigt Fehler im Batch-Prozess an."""
+
+        self._batch_failed = True
+        if self._progress_dialog:
+            self._progress_dialog.close()
+        QMessageBox.critical(self, "Batch fehlgeschlagen", message)
+
+    def _on_batch_finished(self) -> None:
+        """Schließt den Fortschrittsdialog und aktualisiert die UI."""
+
+        if self._progress_dialog:
+            self._progress_dialog.close()
+
+        self._batch_worker = None
+
+        if self._batch_failed:
+            return
+
+        if self._model.has_active_filter():
+            self._model.refresh()
+        else:
+            self._model.layoutChanged.emit()
+
+        current = self._table_view.currentIndex()
+        if current.isValid():
+            caption = self._model.caption_for_row(current.row())
+            self._editor.load_caption(caption, current.row())
