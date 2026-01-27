@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.580
+* `bootstrapper.py` übernimmt den robusten V3-Start mit venv-Setup, Requirements-Installation und Modulstart über `-m v3.main`.
+* `v3/__init__.py` markiert den Ordner als Paket für zuverlässige Modulimporte.
+* `v3/main.py` ergänzt einen defensiven `sys.path`-Eintrag für das Projekt-Root.
+* `start_v3.bat` startet nur noch den Bootstrapper und hält die Konsole bei Fehlern offen.
+* `README.md` beschreibt den neuen Bootstrapper-Startflow im Schnellüberblick.
 # 🛠️ Patch in 1.40.579
 * `start_v3.bat` richtet beim ersten Start automatisch ein lokales `venv` ein, installiert die V3-Abhängigkeiten und startet die App über das virtuelle Python.
 * `README.md` ergänzt den Schnellüberblick um den neuen V3-Launcher mit automatischem venv-Setup.

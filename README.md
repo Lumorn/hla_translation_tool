@@ -21,8 +21,8 @@ Eine vollständige **Offline‑Web‑App** zum Verwalten und Übersetzen aller A
 * V3 integriert jetzt ein Audio-Backend mit Player-Widgets, Original-Audio-Suche und ElevenLabs-Dubbing direkt im Editor.
 * V3 ergänzt jetzt Settings-Handling, Batch-Übersetzung, Batch-Dubbing und einen Export für spielbereite Untertitel/Audios inklusive UTF-16-Export.
 * V3 liefert jetzt ein Dark-Mode-Designsystem, lädt ein globales Stylesheet und protokolliert Abstürze sowie Logs in `v3/logs/app.log`.
-* V3 hat jetzt einen separaten `start_v3.py`-Launcher und eine pausierende `start_v3.bat`, damit Fehlermeldungen beim Start sichtbar bleiben.
-* `start_v3.bat` erstellt beim ersten Start automatisch ein lokales `venv`, installiert die V3-Abhängigkeiten und startet die App über das virtuelle Python.
+* V3 hat jetzt einen separaten `bootstrapper.py`, der die Abhängigkeiten installiert, `PYTHONPATH` setzt und die App als Modul startet, damit Fehlermeldungen sichtbar bleiben.
+* `start_v3.bat` ruft den neuen Bootstrapper auf und bleibt bei Startfehlern offen, sodass die Konsole nicht sofort schließt.
 * Automatisiertes Projekt-Handling inklusive GPT-Bewertungen, Emotionstexten und ElevenLabs-Dubbing.
 * Datei-Lade- und Schema-Dialoge im Datei-Speicher setzen ihre Bestätigungs- und Abbruchtexte auf i18n-Schlüssel mit Platzhaltern.
 * Dialoge im Electron-Hauptprozess ziehen Titel, Meldungen und Buttons nun aus i18n-Schlüsseln, lassen sich per IPC auf die Renderer-Sprache setzen und fallen ohne Paket automatisch auf Englisch zurück.
