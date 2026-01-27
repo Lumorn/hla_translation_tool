@@ -40,6 +40,10 @@ class MainWindow(QMainWindow):
         self._batch_worker = None
         self._progress_dialog: QProgressDialog | None = None
         self._batch_failed = False
+        self._batch_total = 0
+
+        self._status_bar = self.statusBar()
+        self._status_bar.showMessage("Bereit.")
 
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText("Suchen...")
@@ -229,6 +233,7 @@ class MainWindow(QMainWindow):
             return
 
         self._batch_failed = False
+        self._batch_total = total
         self._batch_worker = worker
         self._progress_dialog = QProgressDialog(title, "", 0, total, self)
         self._progress_dialog.setWindowTitle(title)
@@ -237,6 +242,8 @@ class MainWindow(QMainWindow):
         self._progress_dialog.setAutoReset(False)
         self._progress_dialog.setValue(0)
         self._progress_dialog.show()
+
+        self._status_bar.showMessage("Batch-Verarbeitung läuft...")
 
         worker.progress_update.connect(self._on_batch_progress)
         worker.error.connect(self._on_batch_failed)
@@ -257,6 +264,7 @@ class MainWindow(QMainWindow):
         """Zeigt Fehler im Batch-Prozess an."""
 
         self._batch_failed = True
+        self._status_bar.showMessage("Batch fehlgeschlagen.")
         if self._progress_dialog:
             self._progress_dialog.close()
         QMessageBox.critical(self, "Batch fehlgeschlagen", message)
@@ -271,6 +279,10 @@ class MainWindow(QMainWindow):
 
         if self._batch_failed:
             return
+
+        self._status_bar.showMessage(
+            f"Fertig. {self._batch_total} Zeilen verarbeitet.",
+        )
 
         if self._model.has_active_filter():
             self._model.refresh()

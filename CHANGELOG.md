@@ -1,4 +1,11 @@
 # Changelog
+# 🛠️ Patch in 1.40.577
+* `v3/assets/styles.qss` liefert ein neues Dark-Mode-Designsystem im Alyx-Stil mit dezenten Tabellen- und Input-Styles.
+* `v3/core/logger.py` initialisiert ein Logging-Setup mit Datei- und Konsolenausgabe sowie einem `sys.excepthook` für ungefangene Fehler.
+* `v3/main.py` lädt das globale Stylesheet, initialisiert das Logging frühzeitig und nutzt optional ein App-Icon.
+* `v3/ui/main_window.py` nutzt die Statusbar für Batch-Feedback und meldet Start/Fertigstellung direkt im UI.
+* `v3/README.md` dokumentiert den Kurzstart für die V3-App.
+* `README.md` ergänzt den Schnellüberblick um Dark-Mode- und Logging-Hinweise für V3.
 # 🛠️ Patch in 1.40.576
 * `v3/config/settings.py` ergänzt einen Settings-Manager auf Basis von Pydantic inklusive JSON-Speicher und Environment-Bridge.
 * `v3/core/workers.py` liefert Batch-Threads für Übersetzung und Dubbing mit Fortschrittssignalen.
