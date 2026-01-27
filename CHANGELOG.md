@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.585
+* `v3/ui/project_tree.py` baut den Explorer jetzt direkt aus den Projekt-Assets, sendet den ausgewählten Pfad und markiert fertige Ordner mit einem grünen Häkchen.
+* `v3/ui/caption_model.py` führt `CaptionTableModel.filter_by_path()` ein, um Ordner- und Dateifilter sauber zu unterscheiden.
+* `v3/ui/main_window.py` verbindet den Split-View mit dem neuen Tree-Signal, nutzt die Pfadfilterung und zeigt den Status „Pfad: … – X Zeilen gefunden“ an.
+* `README.md` ergänzt den Schnellüberblick um die Explorer-Split-View mit Zeilenzähler und Fertig-Häkchen.
+* `CHANGELOG.md` dokumentiert das Update für die Explorer-Ansicht.
 # 🛠️ Patch in 1.40.584
 * `v3/ui/project_tree.py` liefert einen Projekt-Explorer für `source_audio/` mit Ordner- und Audio-Icons sowie Warnsymbolen für fehlende Texte.
 * `v3/ui/caption_model.py` ergänzt einen Pfadfilter, sodass die Tabelle nach Ordnern oder Dateien gefiltert werden kann.

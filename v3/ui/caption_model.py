@@ -7,7 +7,7 @@ from PySide6.QtCore import QAbstractTableModel, QModelIndex, Qt
 from v3.core.models import GameAsset
 
 
-class AssetTableModel(QAbstractTableModel):
+class CaptionTableModel(QAbstractTableModel):
     """Tabellenmodell für Audio-Assets."""
 
     _HEADERS = ["Datei", "Pfad", "Original Text", "Übersetzung", "Status"]
@@ -18,6 +18,7 @@ class AssetTableModel(QAbstractTableModel):
         self._filtered_indices: List[int] = list(range(len(self._assets)))
         self._filter_text: str = ""
         self._filter_path: str = ""
+        self._filter_is_file: Optional[bool] = None
         self._sort_column: int = 0
         self._sort_order: Qt.SortOrder = Qt.AscendingOrder
 
@@ -68,6 +69,8 @@ class AssetTableModel(QAbstractTableModel):
         self.beginResetModel()
         self._assets = assets
         self._filtered_indices = list(range(len(self._assets)))
+        if self._filter_path:
+            self._filter_is_file = self._infer_filter_is_file(self._filter_path)
         self._apply_filter_and_sort(reset_model=False)
         self.endResetModel()
 
@@ -80,8 +83,21 @@ class AssetTableModel(QAbstractTableModel):
     def set_filter_path(self, relative_path: str) -> None:
         """Setzt einen Pfadfilter relativ zum source_audio-Ordner."""
 
-        self._filter_path = self._normalize_path_filter(relative_path)
-        self._apply_filter_and_sort()
+        self.filter_by_path(relative_path)
+
+    def filter_by_path(self, path: Optional[str]) -> None:
+        """Filtert die Tabelle nach Ordner- oder Dateipfad."""
+
+        self.beginResetModel()
+        if not path:
+            self._filter_path = ""
+            self._filter_is_file = None
+        else:
+            normalized = self._normalize_path_filter(path)
+            self._filter_path = normalized
+            self._filter_is_file = self._infer_filter_is_file(normalized)
+        self._apply_filter_and_sort(reset_model=False)
+        self.endResetModel()
 
     def refresh(self) -> None:
         """Aktualisiert Filter und Sortierung nach Änderungen."""
@@ -160,12 +176,21 @@ class AssetTableModel(QAbstractTableModel):
 
     def _matches_path_filter(self, asset: GameAsset) -> bool:
         asset_path = self._build_asset_path(asset)
-        if asset_path == self._filter_path:
-            return True
         if not self._filter_path:
             return True
-        return asset_path.startswith(f"{self._filter_path}/")
+        if self._filter_is_file:
+            return asset_path == self._filter_path
+        return asset_path == self._filter_path or asset_path.startswith(f"{self._filter_path}/")
+
+    def _infer_filter_is_file(self, normalized_path: str) -> bool:
+        if normalized_path.lower().endswith((".wav", ".mp3")):
+            return True
+        asset_paths = {self._build_asset_path(asset) for asset in self._assets}
+        return normalized_path in asset_paths
 
     def _asset_for_row(self, row: int) -> GameAsset:
         index = self._filtered_indices[row]
         return self._assets[index]
+
+
+AssetTableModel = CaptionTableModel

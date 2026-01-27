@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Dict, Iterable, Optional
 
@@ -8,14 +7,13 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QStyle, QTreeWidget, QTreeWidgetItem
 
 from v3.core.models import GameAsset
+from v3.core.project import Project
 
 
 class ProjectTree(QTreeWidget):
     """Zeigt den source_audio-Ordner als Projektbaum."""
 
-    filter_requested = Signal(str, str)
-
-    _SUPPORTED_SUFFIXES = {".wav", ".mp3"}
+    selection_changed = Signal(str)
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
@@ -26,53 +24,68 @@ class ProjectTree(QTreeWidget):
         self._folder_icon = self.style().standardIcon(QStyle.SP_DirIcon)
         self._audio_icon = self.style().standardIcon(QStyle.SP_MediaVolume)
         self._warning_icon = self.style().standardIcon(QStyle.SP_MessageBoxWarning)
+        self._complete_icon = self.style().standardIcon(QStyle.SP_DialogApplyButton)
 
         self._source_path: Optional[Path] = None
 
-    def set_source_path(self, source_path: Optional[Path], assets: Iterable[GameAsset]) -> None:
-        """Lädt den Ordnerbaum für den angegebenen source_audio-Pfad."""
+    def populate_from_project(self, project: Project) -> None:
+        """Erzeugt den Projektbaum basierend auf den Projekt-Assets."""
 
-        self._source_path = source_path
+        self._source_path = project.source_audio_path
         self.clear()
 
-        root_item = QTreeWidgetItem(self, ["Root"])
+        root_item = QTreeWidgetItem(self, ["Projekt"])
         root_item.setIcon(0, self._folder_icon)
         root_item.setData(0, Qt.UserRole, "")
-        root_item.setData(0, Qt.UserRole + 1, False)
-        root_item.setData(0, Qt.UserRole + 2, "Alle anzeigen")
         self.addTopLevelItem(root_item)
 
-        if not source_path or not source_path.exists():
+        if not self._source_path or not self._source_path.exists():
             root_item.setExpanded(True)
             return
 
-        asset_map = self._build_asset_map(assets)
+        asset_map = self._build_asset_map(project.assets)
         dir_items: Dict[str, QTreeWidgetItem] = {"": root_item}
+        folder_completion: Dict[str, list[bool]] = {}
 
-        for dirpath, dirnames, filenames in os.walk(source_path):
-            relative_dir = self._relative_dir(Path(dirpath))
-            parent_item = dir_items.get(relative_dir, root_item)
+        for asset_path, asset in sorted(asset_map.items()):
+            relative_dir = asset.relative_path.strip("/").replace("\\", "/")
+            parent_item = root_item
+            if relative_dir:
+                for part in relative_dir.split("/"):
+                    parent_path = parent_item.data(0, Qt.UserRole) or ""
+                    folder_path = self._join_relative(parent_path, part)
+                    existing = dir_items.get(folder_path)
+                    if existing is None:
+                        existing = QTreeWidgetItem(parent_item, [part])
+                        existing.setIcon(0, self._folder_icon)
+                        existing.setData(0, Qt.UserRole, folder_path)
+                        dir_items[folder_path] = existing
+                    parent_item = existing
 
-            for dirname in sorted(dirnames):
-                relative_child = self._join_relative(relative_dir, dirname)
-                item = QTreeWidgetItem(parent_item, [dirname])
+            file_item = QTreeWidgetItem(parent_item, [asset.audio_filename])
+            file_item.setIcon(0, self._icon_for_asset(asset, project))
+            file_item.setData(0, Qt.UserRole, asset_path)
+
+            completion = self._is_asset_complete(asset, project)
+            for folder_path in self._parent_folders(relative_dir):
+                folder_completion.setdefault(folder_path, []).append(completion)
+
+        for folder_path, item in dir_items.items():
+            completion_list = folder_completion.get(folder_path)
+            if completion_list and all(completion_list):
+                item.setIcon(0, self._complete_icon)
+            else:
                 item.setIcon(0, self._folder_icon)
-                item.setData(0, Qt.UserRole, relative_child)
-                item.setData(0, Qt.UserRole + 1, False)
-                item.setData(0, Qt.UserRole + 2, dirname)
-                dir_items[relative_child] = item
-
-            for filename in sorted(filenames):
-                if not self._is_audio_file(filename):
-                    continue
-                relative_file = self._join_relative(relative_dir, filename)
-                item = QTreeWidgetItem(parent_item, [filename])
-                item.setIcon(0, self._icon_for_asset(asset_map.get(relative_file)))
-                item.setData(0, Qt.UserRole, relative_file)
-                item.setData(0, Qt.UserRole + 1, True)
-                item.setData(0, Qt.UserRole + 2, filename)
 
         root_item.setExpanded(True)
+
+    def set_source_path(self, source_path: Optional[Path], assets: Iterable[GameAsset]) -> None:
+        """Legacy-Hilfsmethode, um ältere Aufrufe weiterhin zu unterstützen."""
+
+        temp_project = Project()
+        temp_project.source_audio_path = source_path
+        temp_project.assets = list(assets)
+        self.populate_from_project(temp_project)
 
     def _on_item_changed(self, item: QTreeWidgetItem, previous: QTreeWidgetItem | None = None) -> None:
         """Meldet den ausgewählten Pfad an die UI weiter."""
@@ -80,11 +93,7 @@ class ProjectTree(QTreeWidget):
         if item is None:
             return
         relative_path = item.data(0, Qt.UserRole)
-        label = item.data(0, Qt.UserRole + 2)
-        if not relative_path:
-            self.filter_requested.emit("", "Alle anzeigen")
-            return
-        self.filter_requested.emit(relative_path, label or relative_path)
+        self.selection_changed.emit(relative_path or "")
 
     def _build_asset_map(self, assets: Iterable[GameAsset]) -> Dict[str, GameAsset]:
         asset_map: Dict[str, GameAsset] = {}
@@ -94,23 +103,30 @@ class ProjectTree(QTreeWidget):
             asset_map[full_path] = asset
         return asset_map
 
-    def _icon_for_asset(self, asset: Optional[GameAsset]):
+    def _icon_for_asset(self, asset: Optional[GameAsset], project: Project):
         if asset is None:
             return self._warning_icon
-        if asset.status == "Ready":
+        if self._is_asset_complete(asset, project):
             return self._audio_icon
         return self._warning_icon
 
-    def _relative_dir(self, path: Path) -> str:
-        if not self._source_path:
-            return ""
-        relative = path.relative_to(self._source_path).as_posix()
-        return "" if relative == "." else relative
+    def _is_asset_complete(self, asset: GameAsset, project: Project) -> bool:
+        """Prüft, ob ein Asset sowohl Text als auch DE-Audio besitzt."""
+
+        if not asset.original_text.strip() or not asset.translated_text.strip():
+            return False
+        target_path = project.get_target_audio_path(asset)
+        if not target_path:
+            return False
+        return target_path.exists()
+
+    def _parent_folders(self, relative_dir: str) -> list[str]:
+        if not relative_dir:
+            return [""]
+        parts = relative_dir.split("/")
+        return [""] + ["/".join(parts[:index + 1]) for index in range(len(parts))]
 
     def _join_relative(self, relative_dir: str, name: str) -> str:
         if not relative_dir:
             return name
         return f"{relative_dir}/{name}"
-
-    def _is_audio_file(self, filename: str) -> bool:
-        return Path(filename).suffix.lower() in self._SUPPORTED_SUFFIXES
