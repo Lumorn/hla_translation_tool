@@ -1,4 +1,10 @@
 # Changelog
+# 🛠️ Patch in 1.40.574
+* `v3/core/translator.py` ersetzt den bisherigen JS-Service durch einen Python-Translator, der System-Prompts lädt, `.env` nutzt und OpenAI aufruft.
+* `v3/ui/editor_widget.py` ergänzt einen Editor mit Key/Original/Übersetzung/KI-Kontext, Speichern-Button und KI-Aufruf samt Ladeanzeige.
+* `v3/ui/main_window.py` wechselt auf einen horizontalen Splitter und verbindet Tabellenselektion und Editor.
+* `v3/ui/caption_model.py` bietet Hilfsmethoden zum Refresh und zur Caption-Auflösung für Editor-Updates.
+* `README.md` erweitert den Schnellüberblick um die neue V3-Editor-Maske mit KI-Übersetzung.
 # 🛠️ Patch in 1.40.573
 * `v3/core/project.py` ergänzt einen Projekt-Controller, der Dateipfad und Closecaption-Zeilen verwaltet.
 * `v3/ui/caption_model.py` stellt ein Qt-Tabellenmodell mit Sortierung und Filter-Grundlage für die GUI bereit.

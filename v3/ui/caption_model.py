@@ -74,6 +74,21 @@ class CaptionTableModel(QAbstractTableModel):
         self._filter_text = text.strip().lower()
         self._apply_filter_and_sort()
 
+    def refresh(self) -> None:
+        """Aktualisiert Filter und Sortierung nach Änderungen."""
+
+        self._apply_filter_and_sort()
+
+    def has_active_filter(self) -> bool:
+        """Gibt an, ob aktuell ein Filtertext aktiv ist."""
+
+        return bool(self._filter_text)
+
+    def caption_for_row(self, row: int) -> CaptionLine:
+        """Liefert die Caption-Instanz für eine Tabellenzeile."""
+
+        return self._caption_for_row(row)
+
     def _apply_filter_and_sort(self, reset_model: bool = True) -> None:
         if reset_model:
             self.beginResetModel()
