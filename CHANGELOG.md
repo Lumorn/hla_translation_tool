@@ -1,4 +1,8 @@
 # Changelog
+# 🛠️ Patch in 1.40.578
+* `start_v3.py` hält das Fenster bei Startfehlern offen und zeigt den Rückgabecode an.
+* `start_v3.bat` pausiert bei fehlendem Python oder Fehlern, damit Fehlermeldungen sichtbar bleiben.
+* `README.md` ergänzt den Schnellüberblick um die neuen V3-Launcher-Hinweise.
 # 🛠️ Patch in 1.40.577
 * `v3/assets/styles.qss` liefert ein neues Dark-Mode-Designsystem im Alyx-Stil mit dezenten Tabellen- und Input-Styles.
 * `v3/core/logger.py` initialisiert ein Logging-Setup mit Datei- und Konsolenausgabe sowie einem `sys.excepthook` für ungefangene Fehler.
