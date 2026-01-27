@@ -1,4 +1,13 @@
 # Changelog
+# 🛠️ Patch in 1.40.582
+* `v3/core/project_manager.py` erstellt die V3-Projektstruktur mit `source_audio/`, `target_audio/`, `backups/`, `data/` und initialisiert `project.json`.
+* `v3/core/audio_scanner.py` durchsucht den `source_audio`-Ordner rekursiv und liefert Metadaten zu `.wav`/`.mp3`.
+* `v3/core/models.py` ergänzt das neue `GameAsset`-Modell sowie ein `AudioFile`-DTO für den Scanner.
+* `v3/core/project.py` verwaltet jetzt Assets, Statusfelder und das project.json-basierte Projekt-Handling.
+* `v3/ui/project_wizard.py` liefert den Projekt-Wizard mit Name-, Speicherort- und Hinweisdialog.
+* `v3/ui/caption_model.py` zeigt Audio-Dateien primär nach Dateinamen/Pfad und sekundär nach Texten.
+* `v3/ui/editor_widget.py` bearbeitet nun Mod-Assets inklusive Originaltext, Übersetzung und Projektpfaden.
+* `v3/ui/main_window.py` ergänzt einen Refresh-Button, neue Projektmenüs und die Synchronisierung mit `project.json`.
 # 🛠️ Patch in 1.40.581
 * `v3/core/sound_parser.py` ergänzt einen Soundevent-Parser, der .wiki-Dateien rekursiv liest und Key-zu-Pfad-Mappings bereitstellt.
 * `v3/core/paths.py` liefert eine Pfad-Spiegelung für Sprachordner, um z. B. `vo/alyx` auf `vo/alyx_german` abzubilden.
