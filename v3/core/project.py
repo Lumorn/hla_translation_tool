@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 from typing import Dict, List, Optional
 
-from v3.core.models import AudioFile, GameAsset
+from v3.core.models import AudioFile, CaptionLine, GameAsset
+from v3.core.parser import CaptionParser
+from v3.core.path_manager import PathManager
+from v3.core.sound_event_parser import SoundEventParser
 
 
 class Project:
@@ -19,6 +22,7 @@ class Project:
         self.data_path: Optional[Path] = None
         self.project_file: Optional[Path] = None
         self.assets: List[GameAsset] = []
+        self.captions: List[CaptionLine] = []
         self._available_audio_ids: set[str] = set()
 
     def load_project(self, folder_path: str) -> None:
@@ -37,6 +41,69 @@ class Project:
         self.project_name = payload.get("project_name", root.name)
         self.assets = [GameAsset.model_validate(item) for item in payload.get("assets", [])]
         self._available_audio_ids = {self._build_asset_id(asset.relative_path, asset.audio_filename) for asset in self.assets}
+
+    def load_from_folder(self, folder_path: str, target_language: str = "german") -> List[CaptionLine]:
+        """Lädt Untertitel, Soundevents und Audio-Status aus einem Mod-Ordner."""
+
+        root = Path(folder_path)
+        if not root.exists():
+            raise FileNotFoundError(f"Projektordner nicht gefunden: {folder_path}")
+
+        self._apply_project_paths(root)
+        self.project_name = root.name
+
+        captions_root = root / "closecaption"
+        if not captions_root.exists():
+            captions_root = root
+
+        english_path = captions_root / "closecaption_english.txt"
+        if not english_path.exists():
+            raise FileNotFoundError(f"closecaption_english.txt nicht gefunden: {english_path}")
+
+        target_slug = target_language.lower().replace(" ", "_")
+        target_path = captions_root / f"closecaption_{target_slug}.txt"
+
+        parser = CaptionParser()
+        english_lines = parser.parse_file(str(english_path))
+        target_lines = parser.parse_file(str(target_path)) if target_path.exists() else []
+        target_map = {line.key: line.original_text for line in target_lines}
+
+        for line in english_lines:
+            line.translated_text = target_map.get(line.key, "")
+            line.audio_file_path = None
+            line.has_original_audio = False
+            line.has_german_audio = False
+            if not line.emotional_text:
+                line.emotional_text = ""
+
+        soundevents_dir = root / "soundevents"
+        sound_parser = SoundEventParser()
+        audio_mapping = sound_parser.parse_directory(str(soundevents_dir))
+        path_manager = PathManager(root, audio_mapping)
+
+        for line in english_lines:
+            relative_path = audio_mapping.get(line.key)
+            if not relative_path:
+                continue
+
+            line.audio_file_path = relative_path
+            source_path = path_manager.get_audio_path(line.key, "en")
+            target_path = path_manager.get_audio_path(line.key, target_language)
+
+            resolved_source = self._resolve_audio_path(source_path)
+            resolved_target = self._resolve_audio_path(target_path)
+
+            if resolved_source:
+                line.has_original_audio = True
+                line.audio_file_path = resolved_source.relative_to(self.source_audio_path).as_posix()
+
+            if resolved_target:
+                line.has_german_audio = True
+                if not resolved_source and self.target_audio_path:
+                    line.audio_file_path = resolved_target.relative_to(self.target_audio_path).as_posix()
+
+        self.captions = english_lines
+        return english_lines
 
     def save_project(self) -> None:
         """Speichert die Projektmetadaten zurück in project.json."""
@@ -142,3 +209,23 @@ class Project:
                 asset.status = "No Translation"
             else:
                 asset.status = "Ready"
+
+    def _resolve_audio_path(self, absolute_path: Optional[Path]) -> Optional[Path]:
+        """Sucht Audio-Dateien inklusive .wav/.mp3-Fallback."""
+
+        if absolute_path is None:
+            return None
+        if absolute_path.exists():
+            return absolute_path
+
+        suffix = absolute_path.suffix.lower()
+        if suffix == ".wav":
+            alternative = absolute_path.with_suffix(".mp3")
+        elif suffix == ".mp3":
+            alternative = absolute_path.with_suffix(".wav")
+        else:
+            alternative = None
+
+        if alternative and alternative.exists():
+            return alternative
+        return None
