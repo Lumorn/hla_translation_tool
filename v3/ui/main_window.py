@@ -8,6 +8,7 @@ from PySide6.QtWidgets import (
     QAbstractItemView,
     QDialog,
     QFileDialog,
+    QLabel,
     QLineEdit,
     QMainWindow,
     QMenu,
@@ -28,6 +29,7 @@ from v3.core.translator import Translator
 from v3.core.workers import BatchDubber, BatchTranslator
 from v3.ui.caption_model import AssetTableModel
 from v3.ui.editor_widget import EditorWidget
+from v3.ui.project_tree import ProjectTree
 from v3.ui.project_wizard import ProjectWizard
 
 
@@ -45,9 +47,13 @@ class MainWindow(QMainWindow):
         self._progress_dialog: QProgressDialog | None = None
         self._batch_failed = False
         self._batch_total = 0
+        self._current_filter_label = "Alle anzeigen"
 
         self._status_bar = self.statusBar()
         self._status_bar.showMessage("Bereit.")
+
+        self._tree_view = ProjectTree()
+        self._tree_view.filter_requested.connect(self._on_tree_filter_requested)
 
         self._search_input = QLineEdit()
         self._search_input.setPlaceholderText("Suchen...")
@@ -55,6 +61,9 @@ class MainWindow(QMainWindow):
 
         self._refresh_button = QPushButton("Refresh Audio Files")
         self._refresh_button.clicked.connect(self._refresh_audio_files)
+
+        self._filter_label = QLabel()
+        self._update_filter_label()
 
         self._table_view = QTableView()
         self._table_view.setModel(self._model)
@@ -70,16 +79,19 @@ class MainWindow(QMainWindow):
         left_layout = QVBoxLayout()
         left_layout.addWidget(self._search_input)
         left_layout.addWidget(self._refresh_button)
+        left_layout.addWidget(self._filter_label)
         left_layout.addWidget(self._table_view)
 
         left_container = QWidget()
         left_container.setLayout(left_layout)
 
         splitter = QSplitter(Qt.Horizontal)
+        splitter.addWidget(self._tree_view)
         splitter.addWidget(left_container)
         splitter.addWidget(self._editor)
-        splitter.setStretchFactor(0, 3)
-        splitter.setStretchFactor(1, 2)
+        splitter.setStretchFactor(0, 1)
+        splitter.setStretchFactor(1, 3)
+        splitter.setStretchFactor(2, 2)
 
         main_layout = QVBoxLayout()
         main_layout.addWidget(splitter)
@@ -128,6 +140,8 @@ class MainWindow(QMainWindow):
             return
 
         self._model.set_assets(self._project.assets)
+        self._tree_view.set_source_path(self._project.source_audio_path, self._project.assets)
+        self._apply_filter("", "Alle anzeigen")
 
         if self._model.rowCount() > 0:
             first_index = self._model.index(0, 0)
@@ -154,6 +168,8 @@ class MainWindow(QMainWindow):
             return
 
         self._model.set_assets(self._project.assets)
+        self._tree_view.set_source_path(self._project.source_audio_path, self._project.assets)
+        self._apply_filter("", "Alle anzeigen")
         self._editor.load_asset(None)
 
     def _export_mod(self) -> None:
@@ -184,8 +200,14 @@ class MainWindow(QMainWindow):
         """Reicht Filtertexte an das Tabellenmodell weiter."""
 
         self._model.set_filter_text(text)
+        self._update_filter_label()
         if self._model.rowCount() == 0:
             self._editor.load_asset(None)
+
+    def _on_tree_filter_requested(self, relative_path: str, label: str) -> None:
+        """Filtert die Tabelle anhand des ausgewählten Ordners oder der Datei."""
+
+        self._apply_filter(relative_path, label)
 
     def _on_row_changed(self, current, previous) -> None:
         """Lädt die ausgewählte Zeile in den Editor."""
@@ -278,11 +300,34 @@ class MainWindow(QMainWindow):
 
         new_assets = self._project.update_assets_from_scan(audio_files)
         self._model.set_assets(self._project.assets)
+        self._tree_view.set_source_path(self._project.source_audio_path, self._project.assets)
+        self._apply_filter(self._model.current_filter_path(), self._current_filter_label)
 
         if new_assets:
             self._status_bar.showMessage(f"{len(new_assets)} neue Audio-Dateien hinzugefügt.")
         else:
             self._status_bar.showMessage("Keine neuen Audio-Dateien gefunden.")
+
+    def _apply_filter(self, relative_path: str, label: str | None = None) -> None:
+        """Setzt den Pfadfilter und aktualisiert die Anzeige."""
+
+        self._model.set_filter_path(relative_path)
+        if label is not None:
+            self._current_filter_label = label
+        self._update_filter_label()
+
+        if self._model.rowCount() > 0:
+            first_index = self._model.index(0, 0)
+            self._table_view.setCurrentIndex(first_index)
+            self._table_view.selectRow(0)
+        else:
+            self._editor.load_asset(None)
+
+    def _update_filter_label(self) -> None:
+        """Aktualisiert den Anzeige-Text über der Tabelle."""
+
+        count = self._model.rowCount()
+        self._filter_label.setText(f"Anzeige: {self._current_filter_label} ({count} Zeilen)")
 
     def _start_batch_worker(self, worker, title: str, total: int) -> None:
         """Startet einen Batch-Worker und zeigt den Fortschrittsdialog."""
